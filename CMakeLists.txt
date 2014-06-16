@@ -10,7 +10,11 @@ find_package(Qt5Widgets REQUIRED)
 add_executable(
     ${PROJECT_NAME}
     WIN32
+    EvernusApplication.cpp
+    EvernusApplication.h
     main.cpp
+    MainWindow.cpp
+    MainWindow.h
 )
 
 if(WIN32)

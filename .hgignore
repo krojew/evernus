@@ -104,3 +104,5 @@ Debug/libGLESv2d.dll
 evernus.vcxproj.user
 x64/Debug/ZERO_CHECK/ZERO_CHECK.tlog/unsuccessfulbuild
 .settings/org.eclipse.cdt.codan.core.prefs
+evernus.dir/Debug/EvernusApplication.obj
+evernus.dir/Debug/MainWindow.obj
