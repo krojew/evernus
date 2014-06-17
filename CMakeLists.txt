@@ -8,7 +8,7 @@ set(PROJECT_NAME "evernus")
 find_package(Qt5Widgets REQUIRED)
 
 if(UNIX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -g")
 endif()
 
 add_executable(
