@@ -8,11 +8,35 @@ namespace Evernus
 {
     void CharacterRepository::create(const KeyRepository &keyRepository) const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS characters (
+        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id BIGINT PRIMARY KEY,
-            key_id BITINT NOT NULL REFERENCES %1(id),
+            key_id BITINT NOT NULL REFERENCES %2(id),
             name TEXT NOT NULL,
             enabled TINYINT NOT NULL
-        ))"}.arg(keyRepository.getTableName()));
+        ))"}.arg(getTableName()).arg(keyRepository.getTableName()));
+    }
+
+    QString CharacterRepository::getTableName() const
+    {
+        return "characters";
+    }
+
+    Character CharacterRepository::populate(const QSqlQuery &query) const
+    {
+        return Character{};
+    }
+
+    QStringList CharacterRepository::getColumns() const
+    {
+        return QStringList{}
+            << "id"
+            << "key_id"
+            << "name"
+            << "enabled";
+    }
+
+    void CharacterRepository::bindValues(const Character &entity, QSqlQuery &query) const
+    {
+
     }
 }

@@ -7,6 +7,7 @@
 
 #include "CharacterRepository.h"
 #include "KeyRepository.h"
+#include "KeyEditDialog.h"
 
 #include "CharacterManagerDialog.h"
 
@@ -19,21 +20,25 @@ namespace Evernus
         , mCharacterRepository{characterRepository}
         , mKeyRepository{keyRepository}
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
-        auto tabs = new QTabWidget{};
-        mainLayout->addWidget(tabs);
-
+        auto tabs = new QTabWidget{this};
         tabs->addTab(createCharacterTab(), tr("Characters"));
         tabs->addTab(createKeyTab(), tr("Keys"));
+        mainLayout->addWidget(tabs);
 
+        setLayout(mainLayout);
         setModal(true);
     }
 
     void CharacterManagerDialog::addKey()
     {
-
+        Key newKey;
+        KeyEditDialog dlg{newKey, this};
+        if (dlg.exec() == QDialog::Accepted)
+        {
+            mKeyRepository.store(newKey);
+        }
     }
 
     void CharacterManagerDialog::editKey()
@@ -77,6 +82,8 @@ namespace Evernus
         auto removeBtn = new QPushButton{tr("Remove")};
         btnLayout->addWidget(removeBtn);
         connect(removeBtn, &QPushButton::clicked, this, &CharacterManagerDialog::removeKey);
+
+        auto keys = mKeyRepository.fetchAll();
 
         return page.release();
     }

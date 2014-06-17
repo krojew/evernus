@@ -21,18 +21,23 @@ qt5_wrap_cpp(
 add_executable(
     ${PROJECT_NAME}
     WIN32
+    Character.cpp
+    Character.h
     CharacterManagerDialog.cpp
     CharacterManagerDialog.h
     CharacterRepository.cpp
     CharacterRepository.h
     EvernusApplication.cpp
     EvernusApplication.h
+    Key.cpp
+    Key.h
+    KeyEditDialog.cpp
+    KeyEditDialog.h
     KeyRepository.cpp
     KeyRepository.h
     main.cpp
     MainWindow.cpp
     MainWindow.h
-    Repository.cpp
     Repository.h
     ${MOC_FILES}
 )
