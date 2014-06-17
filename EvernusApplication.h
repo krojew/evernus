@@ -6,6 +6,7 @@
 #include <QSqlDatabase>
 
 #include "CharacterRepository.h"
+#include "KeyRepository.h"
 
 namespace Evernus
 {
@@ -19,6 +20,7 @@ namespace Evernus
     private:
         QSqlDatabase mMainDb;
 
+        std::unique_ptr<KeyRepository> mKeyRepository;
         std::unique_ptr<CharacterRepository> mCharacterRepository;
 
         void createDb();

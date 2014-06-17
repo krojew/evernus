@@ -4,6 +4,8 @@
 
 namespace Evernus
 {
+    class KeyRepository;
+
     class CharacterRepository
         : public Repository
     {
@@ -11,6 +13,6 @@ namespace Evernus
         using Repository::Repository;
         virtual ~CharacterRepository() = default;
 
-        void create() const;
+        void create(const KeyRepository &keyRepository) const;
     };
 }

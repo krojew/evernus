@@ -24,6 +24,8 @@ add_executable(
     CharacterRepository.h
     EvernusApplication.cpp
     EvernusApplication.h
+    KeyRepository.cpp
+    KeyRepository.h
     main.cpp
     MainWindow.cpp
     MainWindow.h

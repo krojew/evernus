@@ -50,11 +50,13 @@ namespace Evernus
         if (!mMainDb.open())
             throw std::runtime_error{tr("Error opening DB!").toStdString()};
 
+        mKeyRepository.reset(new KeyRepository{mMainDb});
         mCharacterRepository.reset(new CharacterRepository{mMainDb});
     }
 
     void EvernusApplication::createDbSchema()
     {
-        mCharacterRepository->create();
+        mKeyRepository->create();
+        mCharacterRepository->create(*mKeyRepository);
     }
 }
