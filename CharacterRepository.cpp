@@ -8,7 +8,8 @@ namespace Evernus
     {
         exec(R"(CREATE TABLE IF NOT EXISTS characters (
             id BIGINT PRIMARY KEY,
-            name TEXT NOT NULL
+            name TEXT NOT NULL,
+            enabled TINYINT NOT NULL
         ))");
     }
 }
