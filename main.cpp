@@ -1,14 +1,32 @@
 #include <QApplication>
+#include <QMessageBox>
+#include <QDebug>
 
 #include "EvernusApplication.h"
 #include "MainWindow.h"
 
 int main(int argc, char *argv[])
 {
-    Evernus::EvernusApplication app{argc, argv};
+    try
+    {
+        Evernus::EvernusApplication app{argc, argv};
 
-    Evernus::MainWindow mainWnd;
-    mainWnd.showAsSaved();
+        try
+        {
+            Evernus::MainWindow mainWnd;
+            mainWnd.showAsSaved();
 
-    return app.exec();
+            return app.exec();
+        }
+        catch (const std::exception &e)
+        {
+            qCritical() << e.what();
+            QMessageBox::critical(nullptr, QCoreApplication::translate("main", "Error"), e.what());
+            throw;
+        }
+    }
+    catch (...)
+    {
+        return 1;
+    }
 }

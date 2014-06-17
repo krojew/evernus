@@ -6,6 +6,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_NAME "evernus")
 
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Sql REQUIRED)
 
 if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -g")
@@ -14,11 +15,15 @@ endif()
 add_executable(
     ${PROJECT_NAME}
     WIN32
+    CharacterRepository.cpp
+    CharacterRepository.h
     EvernusApplication.cpp
     EvernusApplication.h
     main.cpp
     MainWindow.cpp
     MainWindow.h
+    Repository.cpp
+    Repository.h
 )
 
 if(WIN32)
@@ -29,4 +34,5 @@ endif()
 target_link_libraries(
     ${PROJECT_NAME}
     Qt5::Widgets
+    Qt5::Sql
 )
