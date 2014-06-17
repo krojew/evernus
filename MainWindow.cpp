@@ -4,6 +4,8 @@
 #include <QSettings>
 #include <QMenuBar>
 
+#include "CharacterManagerDialog.h"
+
 #include "MainWindow.h"
 
 namespace Evernus
@@ -12,8 +14,13 @@ namespace Evernus
     const QString MainWindow::settingsPosKey = "mainWindow/pos";
     const QString MainWindow::settingsSizeKey = "mainWindow/size";
 
-    MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
+    MainWindow::MainWindow(const CharacterRepository &characterRepository,
+                           const KeyRepository &keyRepository,
+                           QWidget *parent,
+                           Qt::WindowFlags flags)
         : QMainWindow{parent, flags}
+        , mCharacterRepository{characterRepository}
+        , mKeyRepository{keyRepository}
     {
         readSettings();
         createMenu();
@@ -25,6 +32,14 @@ namespace Evernus
             showMaximized();
         else
             show();
+    }
+
+    void MainWindow::showCharacterManagement()
+    {
+        if (mCharacterManager == nullptr)
+            mCharacterManager = new CharacterManagerDialog{mCharacterRepository, mKeyRepository, this};
+
+        mCharacterManager->show();
     }
 
     void MainWindow::showAbout()
@@ -64,6 +79,11 @@ namespace Evernus
     void MainWindow::createMenu()
     {
         auto bar = menuBar();
+
+        auto fileMenu = bar->addMenu(tr("&File"));
+        fileMenu->addAction(tr("&Manage characters..."), this, SLOT(showCharacterManagement()));
+        fileMenu->addSeparator();
+        fileMenu->addAction(tr("E&xit"), this, SLOT(close()));
 
         auto helpMenu = bar->addMenu(tr("&Help"));
         helpMenu->addAction(tr("&About..."), this, SLOT(showAbout()));

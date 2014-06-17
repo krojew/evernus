@@ -30,6 +30,16 @@ namespace Evernus
         }
     }
 
+    const KeyRepository &EvernusApplication::getKeyRepository() const noexcept
+    {
+        return *mKeyRepository;
+    }
+
+    const CharacterRepository &EvernusApplication::getCharacterRepository() const noexcept
+    {
+        return *mCharacterRepository;
+    }
+
     void EvernusApplication::createDb()
     {
         if (!mMainDb.isValid())

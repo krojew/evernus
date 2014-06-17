@@ -14,12 +14,15 @@ endif()
 
 qt5_wrap_cpp(
     MOC_FILES
+    CharacterManagerDialog.h
     MainWindow.h
 )
 
 add_executable(
     ${PROJECT_NAME}
     WIN32
+    CharacterManagerDialog.cpp
+    CharacterManagerDialog.h
     CharacterRepository.cpp
     CharacterRepository.h
     EvernusApplication.cpp

@@ -17,6 +17,9 @@ namespace Evernus
         EvernusApplication(int &argc, char *argv[]);
         virtual ~EvernusApplication() = default;
 
+        const KeyRepository &getKeyRepository() const noexcept;
+        const CharacterRepository &getCharacterRepository() const noexcept;
+
     private:
         QSqlDatabase mMainDb;
 
