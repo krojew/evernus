@@ -12,6 +12,11 @@ if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -g")
 endif()
 
+qt5_wrap_cpp(
+    MOC_FILES
+    MainWindow.h
+)
+
 add_executable(
     ${PROJECT_NAME}
     WIN32
@@ -24,6 +29,7 @@ add_executable(
     MainWindow.h
     Repository.cpp
     Repository.h
+    ${MOC_FILES}
 )
 
 if(WIN32)

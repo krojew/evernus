@@ -1,5 +1,8 @@
+#include <QCoreApplication>
 #include <QCloseEvent>
+#include <QMessageBox>
 #include <QSettings>
+#include <QMenuBar>
 
 #include "MainWindow.h"
 
@@ -13,6 +16,7 @@ namespace Evernus
         : QMainWindow{parent, flags}
     {
         readSettings();
+        createMenu();
     }
 
     void MainWindow::showAsSaved()
@@ -21,6 +25,13 @@ namespace Evernus
             showMaximized();
         else
             show();
+    }
+
+    void MainWindow::showAbout()
+    {
+        QMessageBox::about(this,
+                           tr("About Evernus"),
+                           QString{tr("Evernus %1\nCreated by Pete Butcher\nAll donations are welcome :)")}.arg(QCoreApplication::applicationVersion()));
     }
 
     void MainWindow::closeEvent(QCloseEvent *event)
@@ -48,5 +59,13 @@ namespace Evernus
         settings.setValue(settingsPosKey, pos());
         settings.setValue(settingsSizeKey, size());
         settings.setValue(settingsMaximizedKey, isMaximized());
+    }
+
+    void MainWindow::createMenu()
+    {
+        auto bar = menuBar();
+
+        auto helpMenu = bar->addMenu(tr("&Help"));
+        helpMenu->addAction(tr("&About..."), this, SLOT(showAbout()));
     }
 }
