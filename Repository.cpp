@@ -120,7 +120,7 @@ namespace Evernus
 
         QStringList updateList;
         for (const auto &column : columns)
-            updateList << QString{"%1 = :%1"}.arg(column);
+            updateList << QString("%1 = :%1").arg(column);
 
         const auto queryStr = QString{"UPDATE %1 SET %2 WHERE %3 = :id_for_update"}
             .arg(getTableName())
