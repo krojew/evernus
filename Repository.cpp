@@ -17,8 +17,6 @@ namespace Evernus
     template<class T>
     QSqlQuery Repository<T>::exec(const QString &query) const
     {
-        qDebug() << "DB query: " << query;
-
         auto result = mDb.exec(query);
         const auto error = mDb.lastError();
 
@@ -44,8 +42,6 @@ namespace Evernus
             .arg(getTableName())
             .arg(columns.join(", "))
             .arg(prefixedColumns.join(", "));
-
-        qDebug() << "DB query: " << queryStr;
 
         QSqlQuery query{mDb};
         if (!query.prepare(queryStr))
