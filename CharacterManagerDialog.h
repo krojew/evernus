@@ -47,7 +47,6 @@ namespace Evernus
         void showEditKeyDialog(Key &key);
 
         QWidget *createKeyTab();
-
-        static QWidget *createCharacterTab();
+        QWidget *createCharacterTab();
     };
 }

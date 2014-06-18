@@ -107,14 +107,13 @@ namespace Evernus
         pageLayout->addWidget(keyGroup);
 
         auto groupLayout = new QVBoxLayout{};
+        keyGroup->setLayout(groupLayout);
 
         auto keyView = new QTreeView{this};
         groupLayout->addWidget(keyView);
         keyView->setModel(&mKeyModel);
         connect(keyView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &CharacterManagerDialog::selectKey);
-
-        keyGroup->setLayout(groupLayout);
 
         auto btnLayout = new QHBoxLayout{};
         pageLayout->addLayout(btnLayout);
@@ -142,6 +141,12 @@ namespace Evernus
 
         auto pageLayout = new QVBoxLayout{};
         page->setLayout(pageLayout);
+
+        auto charGroup = new QGroupBox{tr("Available characters"), this};
+        pageLayout->addWidget(charGroup);
+
+        auto groupLayout = new QVBoxLayout{};
+        charGroup->setLayout(groupLayout);
 
         return page.release();
     }
