@@ -1,3 +1,4 @@
+#include <QSqlRecord>
 #include <QSqlQuery>
 
 #include "KeyRepository.h"
@@ -17,9 +18,12 @@ namespace Evernus
         ))"}.arg(getTableName()));
     }
 
-    Key KeyRepository::populate(const QSqlQuery &query) const
+    Key KeyRepository::populate(const QSqlRecord &record) const
     {
-        return Key{query.value("id").value<Key::IdType>(), query.value("code").toString()};
+        Key key{record.value("id").value<Key::IdType>(), record.value("code").toString()};
+        key.setNew(false);
+
+        return key;
     }
 
     QStringList KeyRepository::getColumns() const
@@ -27,6 +31,11 @@ namespace Evernus
         return QStringList{}
             << "id"
             << "code";
+    }
+
+    QString KeyRepository::getIdColumn() const
+    {
+        return "id";
     }
 
     void KeyRepository::bindValues(const Key &entity, QSqlQuery &query) const

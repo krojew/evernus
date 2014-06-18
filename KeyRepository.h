@@ -14,11 +14,13 @@ namespace Evernus
 
         virtual QString getTableName() const override;
 
+        virtual Key populate(const QSqlRecord &record) const override;
+
         void create() const;
 
     private:
-        virtual Key populate(const QSqlQuery &query) const override;
         virtual QStringList getColumns() const override;
+        virtual QString getIdColumn() const override;
         virtual void bindValues(const Key &entity, QSqlQuery &query) const override;
     };
 }

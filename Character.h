@@ -1,11 +1,16 @@
 #pragma once
 
+#include <QString>
+
+#include "Entity.h"
+
 namespace Evernus
 {
     class Character
+        : public Entity<quint64>
     {
     public:
-        Character() = default;
-        ~Character() = default;
+        using Entity::Entity;
+        virtual ~Character() = default;
     };
 }

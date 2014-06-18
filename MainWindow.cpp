@@ -46,7 +46,8 @@ namespace Evernus
     {
         QMessageBox::about(this,
                            tr("About Evernus"),
-                           QString{tr("Evernus %1\nCreated by Pete Butcher\nAll donations are welcome :)")}.arg(QCoreApplication::applicationVersion()));
+                           QString{tr("Evernus %1\nCreated by Pete Butcher\nAll donations are welcome :)")}
+                               .arg(QCoreApplication::applicationVersion()));
     }
 
     void MainWindow::closeEvent(QCloseEvent *event)

@@ -21,9 +21,12 @@ namespace Evernus
         return "characters";
     }
 
-    Character CharacterRepository::populate(const QSqlQuery &query) const
+    Character CharacterRepository::populate(const QSqlRecord &record) const
     {
-        return Character{};
+        Character character{};
+        character.setNew(false);
+
+        return character;
     }
 
     QStringList CharacterRepository::getColumns() const
@@ -33,6 +36,11 @@ namespace Evernus
             << "key_id"
             << "name"
             << "enabled";
+    }
+
+    QString CharacterRepository::getIdColumn() const
+    {
+        return "id";
     }
 
     void CharacterRepository::bindValues(const Character &entity, QSqlQuery &query) const

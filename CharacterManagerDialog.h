@@ -1,6 +1,11 @@
 #pragma once
 
+#include <QSqlQueryModel>
+#include <QModelIndex>
 #include <QDialog>
+
+class QItemSelection;
+class QPushButton;
 
 namespace Evernus
 {
@@ -25,9 +30,21 @@ namespace Evernus
         void editKey();
         void removeKey();
 
+        void selectKey(const QItemSelection &selected, const QItemSelection &deselected);
+
     private:
         const Repository<Character> &mCharacterRepository;
         const Repository<Key> &mKeyRepository;
+
+        QSqlQueryModel mKeyModel;
+
+        QPushButton *mEditKeyBtn = nullptr;
+        QPushButton *mRemoveKeyBtn = nullptr;
+
+        QModelIndexList mSelectedKeys;
+
+        void refreshKeys();
+        void showEditKeyDialog(Key &key);
 
         QWidget *createKeyTab();
 

@@ -1,9 +1,13 @@
 #include <memory>
 
+#include <QDialogButtonBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QSqlRecord>
 #include <QTabWidget>
+#include <QGroupBox>
+#include <QTreeView>
 
 #include "KeyEditDialog.h"
 #include "Repository.h"
@@ -20,35 +24,76 @@ namespace Evernus
         , mCharacterRepository{characterRepository}
         , mKeyRepository{keyRepository}
     {
-        auto mainLayout = new QVBoxLayout{this};
+        auto mainLayout = new QVBoxLayout{};
+        setLayout(mainLayout);
 
         auto tabs = new QTabWidget{this};
+        mainLayout->addWidget(tabs);
         tabs->addTab(createCharacterTab(), tr("Characters"));
         tabs->addTab(createKeyTab(), tr("Keys"));
-        mainLayout->addWidget(tabs);
 
-        setLayout(mainLayout);
+        auto btnBox = new QDialogButtonBox{QDialogButtonBox::Close, this};
+        mainLayout->addWidget(btnBox);
+        connect(btnBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
         setModal(true);
+        setWindowTitle(tr("Character Manager"));
+
+        refreshKeys();
     }
 
     void CharacterManagerDialog::addKey()
     {
         Key newKey;
-        KeyEditDialog dlg{newKey, this};
-        if (dlg.exec() == QDialog::Accepted)
-        {
-            mKeyRepository.store(newKey);
-        }
+        showEditKeyDialog(newKey);
     }
 
     void CharacterManagerDialog::editKey()
     {
+        Q_ASSERT(mSelectedKeys.count() == 1);
 
+        auto key = mKeyRepository.populate(mKeyModel.record(mSelectedKeys.first().row()));
+        showEditKeyDialog(key);
     }
 
     void CharacterManagerDialog::removeKey()
     {
+        for (const auto &index : mSelectedKeys)
+        {
+            const auto id = mKeyModel.data(mKeyModel.index(index.row(), 0)).value<Key::IdType>();
+            mKeyRepository.remove(id);
+        }
 
+        refreshKeys();
+    }
+
+    void CharacterManagerDialog::selectKey(const QItemSelection &selected, const QItemSelection &deselected)
+    {
+        mEditKeyBtn->setEnabled(true);
+        mRemoveKeyBtn->setEnabled(true);
+
+        mSelectedKeys = selected.indexes();
+    }
+
+    void CharacterManagerDialog::refreshKeys()
+    {
+        mKeyModel.setQuery(QString{"SELECT id, code FROM %1"}.arg(mKeyRepository.getTableName()));
+
+        mKeyModel.setHeaderData(0, Qt::Horizontal, tr("Key ID"));
+        mKeyModel.setHeaderData(1, Qt::Horizontal, tr("Verification code"));
+
+        mEditKeyBtn->setDisabled(true);
+        mRemoveKeyBtn->setDisabled(true);
+    }
+
+    void CharacterManagerDialog::showEditKeyDialog(Key &key)
+    {
+        KeyEditDialog dlg{key, this};
+        if (dlg.exec() == QDialog::Accepted)
+        {
+            mKeyRepository.store(key);
+            refreshKeys();
+        }
     }
 
     QWidget *CharacterManagerDialog::createKeyTab()
@@ -58,22 +103,35 @@ namespace Evernus
         auto pageLayout = new QVBoxLayout{};
         page->setLayout(pageLayout);
 
+        auto keyGroup = new QGroupBox{tr("Added keys"), this};
+        pageLayout->addWidget(keyGroup);
+
+        auto groupLayout = new QVBoxLayout{};
+
+        auto keyView = new QTreeView{this};
+        groupLayout->addWidget(keyView);
+        keyView->setModel(&mKeyModel);
+        connect(keyView->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &CharacterManagerDialog::selectKey);
+
+        keyGroup->setLayout(groupLayout);
+
         auto btnLayout = new QHBoxLayout{};
         pageLayout->addLayout(btnLayout);
 
-        auto addBtn = new QPushButton{tr("Add...")};
+        auto addBtn = new QPushButton{tr("Add..."), this};
         btnLayout->addWidget(addBtn);
         connect(addBtn, &QPushButton::clicked, this, &CharacterManagerDialog::addKey);
 
-        auto editBtn = new QPushButton{tr("Edit...")};
-        btnLayout->addWidget(editBtn);
-        connect(editBtn, &QPushButton::clicked, this, &CharacterManagerDialog::editKey);
+        mEditKeyBtn = new QPushButton{tr("Edit..."), this};
+        btnLayout->addWidget(mEditKeyBtn);
+        mEditKeyBtn->setDisabled(true);
+        connect(mEditKeyBtn, &QPushButton::clicked, this, &CharacterManagerDialog::editKey);
 
-        auto removeBtn = new QPushButton{tr("Remove")};
-        btnLayout->addWidget(removeBtn);
-        connect(removeBtn, &QPushButton::clicked, this, &CharacterManagerDialog::removeKey);
-
-        auto keys = mKeyRepository.fetchAll();
+        mRemoveKeyBtn = new QPushButton{tr("Remove"), this};
+        btnLayout->addWidget(mRemoveKeyBtn);
+        mRemoveKeyBtn->setDisabled(true);
+        connect(mRemoveKeyBtn, &QPushButton::clicked, this, &CharacterManagerDialog::removeKey);
 
         return page.release();
     }

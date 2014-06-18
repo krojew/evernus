@@ -2,16 +2,6 @@
 
 namespace Evernus
 {
-    Key::IdType Key::getId() const noexcept
-    {
-        return mId;
-    }
-
-    void Key::setId(IdType id) noexcept
-    {
-        mId = id;
-    }
-
     QString Key::getCode() const &
     {
         return mCode;

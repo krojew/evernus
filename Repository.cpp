@@ -4,8 +4,6 @@
 #include <QSqlError>
 #include <QDebug>
 
-#include "Repository.h"
-
 namespace Evernus
 {
     template<class T>
@@ -30,35 +28,23 @@ namespace Evernus
     }
 
     template<class T>
-    void Repository<T>::store(const T &entity) const
+    void Repository<T>::store(T &entity) const
     {
-        const auto columns = getColumns();
+        if (entity.isNew())
+            insert(entity);
+        else
+            update(entity);
 
-        QStringList prefixedColumns;
-        for (const auto &column : columns)
-            prefixedColumns << ":" + column;
+        entity.updateOriginalId();
+    }
 
-        const auto queryStr = QString{"REPLACE INTO %1 (%2) VALUES (%3)"}
-            .arg(getTableName())
-            .arg(columns.join(", "))
-            .arg(prefixedColumns.join(", "));
-
-        QSqlQuery query{mDb};
-        if (!query.prepare(queryStr))
-        {
-            qCritical() << "Error preparing statement!";
-            throw std::runtime_error{"Error preparing statement!"};
-        }
-
-        bindValues(entity, query);
-
-        if (!query.exec())
-        {
-            auto error = query.lastError().text();
-
-            qCritical() << error;
-            throw std::runtime_error{error.toStdString()};
-        }
+    template<class T>
+    template<class Id>
+    void Repository<T>::remove(const Id &id) const
+    {
+        auto query = prepare(QString{"DELETE FROM %1 WHERE %2 = :id"}.arg(getTableName()).arg(getIdColumn()));
+        query.bindValue(":id", id);
+        execQuery(query);
     }
 
     template<class T>
@@ -72,7 +58,7 @@ namespace Evernus
             out.reserve(size);
 
         while (result.next())
-            out.emplace_back(populate(result));
+            out.emplace_back(populate(result.record()));
 
         return out;
     }
@@ -81,5 +67,70 @@ namespace Evernus
     QSqlDatabase Repository<T>::getDatabase() const
     {
         return mDb;
+    }
+
+    template<class T>
+    QSqlQuery Repository<T>::prepare(const QString &queryStr) const
+    {
+        QSqlQuery query{mDb};
+        if (!query.prepare(queryStr))
+        {
+            qCritical() << "Error preparing statement!";
+            throw std::runtime_error{"Error preparing statement!"};
+        }
+
+        return query;
+    }
+
+    template<class T>
+    void Repository<T>::execQuery(QSqlQuery &query) const
+    {
+        if (!query.exec())
+        {
+            auto error = query.lastError().text();
+
+            qCritical() << error;
+            throw std::runtime_error{error.toStdString()};
+        }
+    }
+
+    template<class T>
+    void Repository<T>::insert(const T &entity) const
+    {
+        const auto columns = getColumns();
+
+        QStringList prefixedColumns;
+        for (const auto &column : columns)
+            prefixedColumns << ":" + column;
+
+        const auto queryStr = QString{"REPLACE INTO %1 (%2) VALUES (%3)"}
+            .arg(getTableName())
+            .arg(columns.join(", "))
+            .arg(prefixedColumns.join(", "));
+
+        auto query = prepare(queryStr);
+        bindValues(entity, query);
+        execQuery(query);
+    }
+
+    template<class T>
+    void Repository<T>::update(const T &entity) const
+    {
+        const auto columns = getColumns();
+
+        QStringList updateList;
+        for (const auto &column : columns)
+            updateList << QString{"%1 = :%1"}.arg(column);
+
+        const auto queryStr = QString{"UPDATE %1 SET %2 WHERE %3 = :id_for_update"}
+            .arg(getTableName())
+            .arg(updateList.join(", "))
+            .arg(getIdColumn());
+
+        auto query = prepare(queryStr);
+        query.bindValue(":id_for_update", entity.getOriginalId());
+
+        bindValues(entity, query);
+        execQuery(query);
     }
 }

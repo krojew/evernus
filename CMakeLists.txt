@@ -27,6 +27,7 @@ add_executable(
     CharacterManagerDialog.h
     CharacterRepository.cpp
     CharacterRepository.h
+    Entity.h
     EvernusApplication.cpp
     EvernusApplication.h
     Key.cpp
