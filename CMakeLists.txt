@@ -34,6 +34,8 @@ add_executable(
     Character.h
     CharacterManagerDialog.cpp
     CharacterManagerDialog.h
+    CharacterModel.cpp
+    CharacterModel.h
     CharacterRepository.cpp
     CharacterRepository.h
     Entity.h
