@@ -10,7 +10,7 @@ namespace Evernus
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id BIGINT PRIMARY KEY,
-            key_id BITINT NOT NULL REFERENCES %2(id),
+            key_id BITINT NULL REFERENCES %2(id) ON UPDATE SET NULL ON DELETE SET NULL,
             name TEXT NOT NULL,
             enabled TINYINT NOT NULL
         ))"}.arg(getTableName()).arg(keyRepository.getTableName()));

@@ -60,6 +60,8 @@ namespace Evernus
         if (!mMainDb.open())
             throw std::runtime_error{tr("Error opening DB!").toStdString()};
 
+        mMainDb.exec("PRAGMA foreign_keys = ON");
+
         mKeyRepository.reset(new KeyRepository{mMainDb});
         mCharacterRepository.reset(new CharacterRepository{mMainDb});
     }
