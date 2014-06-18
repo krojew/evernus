@@ -12,6 +12,10 @@ if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -g")
 endif()
 
+if(WIN32)
+    set(ADDITIONAL_SRC "evernus.rc")
+endif()
+
 qt5_wrap_cpp(
     MOC_FILES
     CharacterManagerDialog.h
@@ -47,6 +51,7 @@ add_executable(
     Repository.h
     ${MOC_FILES}
     ${RCC_FILES}
+    ${ADDITIONAL_SRC}
 )
 
 if(WIN32)

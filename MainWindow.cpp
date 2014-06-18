@@ -24,6 +24,8 @@ namespace Evernus
     {
         readSettings();
         createMenu();
+
+        setWindowIcon(QIcon{":/images/main-icon.png"});
     }
 
     void MainWindow::showAsSaved()
