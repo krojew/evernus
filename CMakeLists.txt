@@ -7,6 +7,7 @@ set(PROJECT_NAME "evernus")
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
+find_package(Boost REQUIRED)
 
 if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -g")
@@ -26,6 +27,8 @@ qt5_add_resources(
     RCC_FILES
     evernus.qrc
 )
+
+include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(
     ${PROJECT_NAME}
@@ -63,6 +66,7 @@ endif()
 
 target_link_libraries(
     ${PROJECT_NAME}
+    ${Boost_LIBRARIES}
     Qt5::Widgets
     Qt5::Sql
 )

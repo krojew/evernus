@@ -24,7 +24,7 @@ namespace Evernus
         ~Key() = default;
 
         QString getCode() const &;
-        QString &&getCode() &&;
+        QString &&getCode() && noexcept;
         void setCode(const QString &code);
         void setCode(QString &&code);
 

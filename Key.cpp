@@ -7,7 +7,7 @@ namespace Evernus
         return mCode;
     }
 
-    QString &&Key::getCode() &&
+    QString &&Key::getCode() && noexcept
     {
         return std::move(mCode);
     }
