@@ -50,7 +50,7 @@ namespace Evernus
 
     void CharacterManagerDialog::editKey()
     {
-        Q_ASSERT(mSelectedKeys.count() == 1);
+        Q_ASSERT(mSelectedKeys.count() > 0);
 
         auto key = mKeyRepository.populate(mKeyModel.record(mSelectedKeys.first().row()));
         showEditKeyDialog(key);
