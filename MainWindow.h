@@ -4,9 +4,11 @@
 
 namespace Evernus
 {
+    template<class T>
+    class Repository;
     class CharacterManagerDialog;
-    class CharacterRepository;
-    class KeyRepository;
+    class Character;
+    class Key;
 
     class MainWindow
         : public QMainWindow
@@ -14,8 +16,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MainWindow(const CharacterRepository &characterRepository,
-                   const KeyRepository &keyRepository,
+        MainWindow(const Repository<Character> &characterRepository,
+                   const Repository<Key> &keyRepository,
                    QWidget *parent = nullptr,
                    Qt::WindowFlags flags = 0);
         virtual ~MainWindow() = default;
@@ -34,8 +36,8 @@ namespace Evernus
         static const QString settingsPosKey;
         static const QString settingsSizeKey;
 
-        const CharacterRepository &mCharacterRepository;
-        const KeyRepository &mKeyRepository;
+        const Repository<Character> &mCharacterRepository;
+        const Repository<Key> &mKeyRepository;
 
         bool mShowMaximized = false;
 

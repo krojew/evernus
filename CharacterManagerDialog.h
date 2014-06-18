@@ -4,8 +4,10 @@
 
 namespace Evernus
 {
-    class CharacterRepository;
-    class KeyRepository;
+    template<class T>
+    class Repository;
+    class Character;
+    class Key;
 
     class CharacterManagerDialog
         : public QDialog
@@ -13,8 +15,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        CharacterManagerDialog(const CharacterRepository &characterRepository,
-                               const KeyRepository &keyRepository,
+        CharacterManagerDialog(const Repository<Character> &characterRepository,
+                               const Repository<Key> &keyRepository,
                                QWidget *parent = nullptr);
         virtual ~CharacterManagerDialog() = default;
 
@@ -24,10 +26,11 @@ namespace Evernus
         void removeKey();
 
     private:
-        const CharacterRepository &mCharacterRepository;
-        const KeyRepository &mKeyRepository;
+        const Repository<Character> &mCharacterRepository;
+        const Repository<Key> &mKeyRepository;
+
+        QWidget *createKeyTab();
 
         static QWidget *createCharacterTab();
-        QWidget *createKeyTab();
     };
 }

@@ -5,16 +5,16 @@
 #include <QPushButton>
 #include <QTabWidget>
 
-#include "CharacterRepository.h"
-#include "KeyRepository.h"
 #include "KeyEditDialog.h"
+#include "Repository.h"
+#include "Key.h"
 
 #include "CharacterManagerDialog.h"
 
 namespace Evernus
 {
-    CharacterManagerDialog::CharacterManagerDialog(const CharacterRepository &characterRepository,
-                                                   const KeyRepository &keyRepository,
+    CharacterManagerDialog::CharacterManagerDialog(const Repository<Character> &characterRepository,
+                                                   const Repository<Key> &keyRepository,
                                                    QWidget *parent)
         : QDialog{parent, Qt::Dialog | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint}
         , mCharacterRepository{characterRepository}
@@ -51,16 +51,6 @@ namespace Evernus
 
     }
 
-    QWidget *CharacterManagerDialog::createCharacterTab()
-    {
-        std::unique_ptr<QWidget> page{new QWidget{}};
-
-        auto pageLayout = new QVBoxLayout{};
-        page->setLayout(pageLayout);
-
-        return page.release();
-    }
-
     QWidget *CharacterManagerDialog::createKeyTab()
     {
         std::unique_ptr<QWidget> page{new QWidget{}};
@@ -84,6 +74,16 @@ namespace Evernus
         connect(removeBtn, &QPushButton::clicked, this, &CharacterManagerDialog::removeKey);
 
         auto keys = mKeyRepository.fetchAll();
+
+        return page.release();
+    }
+
+    QWidget *CharacterManagerDialog::createCharacterTab()
+    {
+        std::unique_ptr<QWidget> page{new QWidget{}};
+
+        auto pageLayout = new QVBoxLayout{};
+        page->setLayout(pageLayout);
 
         return page.release();
     }

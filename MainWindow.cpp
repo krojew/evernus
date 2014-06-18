@@ -14,8 +14,8 @@ namespace Evernus
     const QString MainWindow::settingsPosKey = "mainWindow/pos";
     const QString MainWindow::settingsSizeKey = "mainWindow/size";
 
-    MainWindow::MainWindow(const CharacterRepository &characterRepository,
-                           const KeyRepository &keyRepository,
+    MainWindow::MainWindow(const Repository<Character> &characterRepository,
+                           const Repository<Key> &keyRepository,
                            QWidget *parent,
                            Qt::WindowFlags flags)
         : QMainWindow{parent, flags}
