@@ -118,16 +118,16 @@ namespace Evernus
         auto btnLayout = new QHBoxLayout{};
         pageLayout->addLayout(btnLayout);
 
-        auto addBtn = new QPushButton{tr("Add..."), this};
+        auto addBtn = new QPushButton{QIcon{":/images/add.png"}, tr("Add..."), this};
         btnLayout->addWidget(addBtn);
         connect(addBtn, &QPushButton::clicked, this, &CharacterManagerDialog::addKey);
 
-        mEditKeyBtn = new QPushButton{tr("Edit..."), this};
+        mEditKeyBtn = new QPushButton{QIcon{":/images/edit.png"}, tr("Edit..."), this};
         btnLayout->addWidget(mEditKeyBtn);
         mEditKeyBtn->setDisabled(true);
         connect(mEditKeyBtn, &QPushButton::clicked, this, &CharacterManagerDialog::editKey);
 
-        mRemoveKeyBtn = new QPushButton{tr("Remove"), this};
+        mRemoveKeyBtn = new QPushButton{QIcon{":/images/delete.png"}, tr("Remove"), this};
         btnLayout->addWidget(mRemoveKeyBtn);
         mRemoveKeyBtn->setDisabled(true);
         connect(mRemoveKeyBtn, &QPushButton::clicked, this, &CharacterManagerDialog::removeKey);

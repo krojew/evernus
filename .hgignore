@@ -22,3 +22,5 @@ evernus.vcxproj.user
 Makefile
 evernus
 moc_*
+evernus.qrc.depends
+qrc_evernus.cpp

@@ -18,6 +18,11 @@ qt5_wrap_cpp(
     MainWindow.h
 )
 
+qt5_add_resources(
+    RCC_FILES
+    evernus.qrc
+)
+
 add_executable(
     ${PROJECT_NAME}
     WIN32
@@ -41,6 +46,7 @@ add_executable(
     MainWindow.h
     Repository.h
     ${MOC_FILES}
+    ${RCC_FILES}
 )
 
 if(WIN32)
