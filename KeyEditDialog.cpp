@@ -3,6 +3,7 @@
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QLineEdit>
+#include <QLabel>
 
 #include "Key.h"
 
@@ -29,6 +30,12 @@ namespace Evernus
 
         mCodeEdit = new QLineEdit{mKey.getCode(), this};
         formLayout->addRow(tr("Verification Code:"), mCodeEdit);
+
+        mainLayout->addWidget(new QLabel{tr("To create a predefined key, use the following link:")});
+
+        auto linkLabel = new QLabel{"<a href='https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8'>https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8</a>", this};
+        mainLayout->addWidget(linkLabel);
+        linkLabel->setOpenExternalLinks(true);
 
         auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);
