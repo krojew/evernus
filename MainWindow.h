@@ -26,6 +26,7 @@ namespace Evernus
 
     public slots:
         void showCharacterManagement();
+        void showPreferences();
         void showAbout();
 
     protected:
@@ -41,7 +42,7 @@ namespace Evernus
 
         bool mShowMaximized = false;
 
-        CharacterManagerDialog *mCharacterManager = nullptr;
+        CharacterManagerDialog *mCharacterManagerDialog = nullptr;
 
         void readSettings();
         void writeSettings();

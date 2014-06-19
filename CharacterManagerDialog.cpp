@@ -20,7 +20,7 @@ namespace Evernus
     CharacterManagerDialog::CharacterManagerDialog(const Repository<Character> &characterRepository,
                                                    const Repository<Key> &keyRepository,
                                                    QWidget *parent)
-        : QDialog{parent, Qt::Dialog | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint}
+        : QDialog{parent}
         , mCharacterRepository{characterRepository}
         , mKeyRepository{keyRepository}
     {
@@ -36,7 +36,6 @@ namespace Evernus
         mainLayout->addWidget(btnBox);
         connect(btnBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-        setModal(true);
         setWindowTitle(tr("Character Manager"));
 
         refreshKeys();

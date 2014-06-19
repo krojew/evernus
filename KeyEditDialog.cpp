@@ -12,7 +12,7 @@
 namespace Evernus
 {
     KeyEditDialog::KeyEditDialog(Key &key, QWidget *parent)
-        : QDialog{parent, Qt::Dialog | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint}
+        : QDialog{parent}
         , mKey{key}
     {
         auto mainLayout = new QVBoxLayout{};
@@ -39,7 +39,7 @@ namespace Evernus
 
         auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);
-        connect(buttons, &QDialogButtonBox::accepted, this, &KeyEditDialog::accept);
+        connect(buttons, &QDialogButtonBox::accepted, this, &QDialog::accept);
         connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
         setWindowTitle(tr("Key Edit"));

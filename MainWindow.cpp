@@ -5,6 +5,7 @@
 #include <QMenuBar>
 
 #include "CharacterManagerDialog.h"
+#include "PreferencesDialog.h"
 
 #include "MainWindow.h"
 
@@ -38,10 +39,16 @@ namespace Evernus
 
     void MainWindow::showCharacterManagement()
     {
-        if (mCharacterManager == nullptr)
-            mCharacterManager = new CharacterManagerDialog{mCharacterRepository, mKeyRepository, this};
+        if (mCharacterManagerDialog == nullptr)
+            mCharacterManagerDialog = new CharacterManagerDialog{mCharacterRepository, mKeyRepository, this};
 
-        mCharacterManager->exec();
+        mCharacterManagerDialog->exec();
+    }
+
+    void MainWindow::showPreferences()
+    {
+        PreferencesDialog dlg{this};
+        dlg.exec();
     }
 
     void MainWindow::showAbout()
@@ -85,6 +92,7 @@ namespace Evernus
 
         auto fileMenu = bar->addMenu(tr("&File"));
         fileMenu->addAction(tr("&Manage characters..."), this, SLOT(showCharacterManagement()));
+        fileMenu->addAction(tr("&Preferences..."), this, SLOT(showPreferences()), Qt::CTRL + Qt::Key_O);
         fileMenu->addSeparator();
         fileMenu->addAction(tr("E&xit"), this, SLOT(close()));
 

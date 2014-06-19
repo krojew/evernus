@@ -7,6 +7,7 @@ set(PROJECT_NAME "evernus")
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
+find_package(Qt5Network REQUIRED)
 find_package(Boost REQUIRED)
 
 if(UNIX)
@@ -21,6 +22,8 @@ qt5_wrap_cpp(
     MOC_FILES
     CharacterManagerDialog.h
     MainWindow.h
+    NetworkPreferencesWidget.h
+    PreferencesDialog.h
 )
 
 qt5_add_resources(
@@ -53,7 +56,14 @@ add_executable(
     main.cpp
     MainWindow.cpp
     MainWindow.h
+    NetworkPreferencesWidget.cpp
+    NetworkPreferencesWidget.h
+    NetworkSettings.h
+    PreferencesDialog.cpp
+    PreferencesDialog.h
     Repository.h
+    SimpleCrypt.cpp
+    SimpleCrypt.h
     ${MOC_FILES}
     ${RCC_FILES}
     ${ADDITIONAL_SRC}
@@ -69,4 +79,5 @@ target_link_libraries(
     ${Boost_LIBRARIES}
     Qt5::Widgets
     Qt5::Sql
+    Qt5::Network
 )
