@@ -31,5 +31,8 @@ namespace Evernus
         QLineEdit *mProxyPortEdit = nullptr;
         QLineEdit *mProxyUserEdit = nullptr;
         QLineEdit *mProxyPasswordEdit = nullptr;
+
+        QRadioButton *mUseDefaultProviderBtn = nullptr;
+        QLineEdit *mProviderHostEdit = nullptr;
     };
 }
