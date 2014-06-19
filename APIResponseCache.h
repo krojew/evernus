@@ -20,6 +20,7 @@ namespace Evernus
 
         bool hasChracterListData(Key::IdType key) const;
         CharacterList getCharacterListData(Key::IdType key) const;
+        void setChracterListData(Key::IdType key, const CharacterList &data, const QDateTime &cacheUntil);
 
     private:
         template<class T>

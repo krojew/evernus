@@ -24,4 +24,13 @@ namespace Evernus
 
         return it->second.mData;
     }
+    
+    void APIResponseCache::setChracterListData(Key::IdType key, const CharacterList &data, const QDateTime &cacheUntil)
+    {
+        CacheEntry<CharacterList> entry;
+        entry.mCachedUntil = cacheUntil;
+        entry.mData = data;
+        
+        mCharacterListCache.emplace(key, std::move(entry));
+    }
 }
