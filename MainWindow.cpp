@@ -17,11 +17,13 @@ namespace Evernus
 
     MainWindow::MainWindow(const Repository<Character> &characterRepository,
                            const Repository<Key> &keyRepository,
+                           APIManager &apiManager,
                            QWidget *parent,
                            Qt::WindowFlags flags)
         : QMainWindow{parent, flags}
         , mCharacterRepository{characterRepository}
         , mKeyRepository{keyRepository}
+        , mApiManager{apiManager}
     {
         readSettings();
         createMenu();
@@ -40,7 +42,7 @@ namespace Evernus
     void MainWindow::showCharacterManagement()
     {
         if (mCharacterManagerDialog == nullptr)
-            mCharacterManagerDialog = new CharacterManagerDialog{mCharacterRepository, mKeyRepository, this};
+            mCharacterManagerDialog = new CharacterManagerDialog{mCharacterRepository, mKeyRepository, mApiManager, this};
 
         mCharacterManagerDialog->exec();
     }

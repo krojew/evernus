@@ -28,6 +28,19 @@ namespace Evernus
     }
 
     template<class T>
+    QSqlQuery Repository<T>::prepare(const QString &queryStr) const
+    {
+        QSqlQuery query{mDb};
+        if (!query.prepare(queryStr))
+        {
+            qCritical() << "Error preparing statement!";
+            throw std::runtime_error{"Error preparing statement!"};
+        }
+
+        return query;
+    }
+
+    template<class T>
     void Repository<T>::store(T &entity) const
     {
         if (entity.isNew())
@@ -67,19 +80,6 @@ namespace Evernus
     QSqlDatabase Repository<T>::getDatabase() const
     {
         return mDb;
-    }
-
-    template<class T>
-    QSqlQuery Repository<T>::prepare(const QString &queryStr) const
-    {
-        QSqlQuery query{mDb};
-        if (!query.prepare(queryStr))
-        {
-            qCritical() << "Error preparing statement!";
-            throw std::runtime_error{"Error preparing statement!"};
-        }
-
-        return query;
     }
 
     template<class T>

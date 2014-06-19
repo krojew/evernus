@@ -7,6 +7,7 @@ namespace Evernus
     template<class T>
     class Repository;
     class CharacterManagerDialog;
+    class APIManager;
     class Character;
     class Key;
 
@@ -18,6 +19,7 @@ namespace Evernus
     public:
         MainWindow(const Repository<Character> &characterRepository,
                    const Repository<Key> &keyRepository,
+                   APIManager &apiManager,
                    QWidget *parent = nullptr,
                    Qt::WindowFlags flags = 0);
         virtual ~MainWindow() = default;
@@ -39,6 +41,8 @@ namespace Evernus
 
         const Repository<Character> &mCharacterRepository;
         const Repository<Key> &mKeyRepository;
+
+        APIManager &mApiManager;
 
         bool mShowMaximized = false;
 

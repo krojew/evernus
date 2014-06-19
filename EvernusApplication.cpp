@@ -40,6 +40,11 @@ namespace Evernus
         return *mCharacterRepository;
     }
 
+    APIManager &EvernusApplication::getAPIManager() noexcept
+    {
+        return mAPIManager;
+    }
+
     void EvernusApplication::createDb()
     {
         if (!mMainDb.isValid())

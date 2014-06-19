@@ -8,6 +8,7 @@ set(PROJECT_NAME "evernus")
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Network REQUIRED)
+find_package(Qt5XmlPatterns REQUIRED)
 find_package(Boost REQUIRED)
 
 if(UNIX)
@@ -20,6 +21,7 @@ endif()
 
 qt5_wrap_cpp(
     MOC_FILES
+    APIInterface.h
     CharacterManagerDialog.h
     MainWindow.h
     NetworkPreferencesWidget.h
@@ -36,6 +38,12 @@ include_directories(${Boost_INCLUDE_DIRS})
 add_executable(
     ${PROJECT_NAME}
     WIN32
+    APIInterface.cpp
+    APIInterface.h
+    APIManager.cpp
+    APIManager.h
+    APIResponseCache.cpp
+    APIResponseCache.h
     Character.cpp
     Character.h
     CharacterManagerDialog.cpp
@@ -80,4 +88,5 @@ target_link_libraries(
     Qt5::Widgets
     Qt5::Sql
     Qt5::Network
+    Qt5::XmlPatterns
 )

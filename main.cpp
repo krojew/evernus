@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            Evernus::MainWindow mainWnd{app.getCharacterRepository(), app.getKeyRepository()};
+            Evernus::MainWindow mainWnd{app.getCharacterRepository(), app.getKeyRepository(), app.getAPIManager()};
             mainWnd.showAsSaved();
 
             return app.exec();

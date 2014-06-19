@@ -13,6 +13,7 @@ namespace Evernus
         virtual ~KeyRepository() = default;
 
         virtual QString getTableName() const override;
+        virtual QString getIdColumn() const override;
 
         virtual Key populate(const QSqlRecord &record) const override;
 
@@ -20,7 +21,6 @@ namespace Evernus
 
     private:
         virtual QStringList getColumns() const override;
-        virtual QString getIdColumn() const override;
         virtual void bindValues(const Key &entity, QSqlQuery &query) const override;
     };
 }

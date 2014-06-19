@@ -10,12 +10,9 @@ namespace Evernus
         return "keys";
     }
 
-    void KeyRepository::create() const
+    QString KeyRepository::getIdColumn() const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY,
-            code TEXT NOT NULL
-        ))"}.arg(getTableName()));
+        return "id";
     }
 
     Key KeyRepository::populate(const QSqlRecord &record) const
@@ -26,16 +23,19 @@ namespace Evernus
         return key;
     }
 
+    void KeyRepository::create() const
+    {
+        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
+            id INTEGER PRIMARY KEY,
+            code TEXT NOT NULL
+        ))"}.arg(getTableName()));
+    }
+
     QStringList KeyRepository::getColumns() const
     {
         return QStringList{}
             << "id"
             << "code";
-    }
-
-    QString KeyRepository::getIdColumn() const
-    {
-        return "id";
     }
 
     void KeyRepository::bindValues(const Key &entity, QSqlQuery &query) const
