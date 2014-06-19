@@ -2,7 +2,8 @@
 
 #include <unordered_map>
 #include <vector>
-#include <chrono>
+
+#include <QDateTime>
 
 #include "Character.h"
 #include "Key.h"
@@ -24,7 +25,7 @@ namespace Evernus
         template<class T>
         struct CacheEntry
         {
-            std::chrono::steady_clock::time_point mCachedUntil;
+            QDateTime mCachedUntil;
             T mData;
         };
 

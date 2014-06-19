@@ -8,7 +8,7 @@ namespace Evernus
         if (it == std::end(mCharacterListCache))
             return false;
 
-        if (std::chrono::steady_clock::now() > it->second.mCachedUntil)
+        if (QDateTime::currentDateTimeUtc() > it->second.mCachedUntil)
         {
             mCharacterListCache.erase(it);
             return false;

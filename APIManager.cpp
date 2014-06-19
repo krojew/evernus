@@ -16,10 +16,8 @@ namespace Evernus
         }
 
         mInterface.fetchCharacterList(key, [callback](const QString &response) {
-            const auto currentTime = QDateTime::fromString(queryPath("/eveapi/currentTime/text()", response), eveTimeFormat);
-            const auto cachedUntil = QDateTime::fromString(queryPath("/eveapi/cachedUntil/text()", response), eveTimeFormat);
-
-            const std::chrono::seconds cacheDelta{currentTime.secsTo(cachedUntil)};
+            auto cachedUntil = QDateTime::fromString(queryPath("/eveapi/cachedUntil/text()", response), eveTimeFormat);
+            cachedUntil.setTimeSpec(Qt::UTC);
         });
     }
 
