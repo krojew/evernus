@@ -24,7 +24,7 @@ namespace Evernus
         const auto useProxy = settings.value(NetworkSettings::useProxyKey).toBool();
         const auto proxyType = settings.value(NetworkSettings::proxyTypeKey).toInt();
         const auto proxyHost = settings.value(NetworkSettings::proxyHostKey).toString();
-        const auto proxyPort = settings.value(NetworkSettings::proxyPortKey).toInt();
+        const quint16 proxyPort = settings.value(NetworkSettings::proxyPortKey).toUInt();
         const auto proxyUser = settings.value(NetworkSettings::proxyUserKey).toString();
         const auto proxyPassword = mCrypt.decryptToString(settings.value(NetworkSettings::proxyPasswordKey).toString());
 
@@ -92,11 +92,28 @@ namespace Evernus
     {
         QSettings settings;
 
-        settings.setValue(NetworkSettings::useProxyKey, mNoProxyBtn->isChecked());
-        settings.setValue(NetworkSettings::proxyTypeKey, mProxyTypeCombo->itemData(mProxyTypeCombo->currentIndex()).toInt());
-        settings.setValue(NetworkSettings::proxyHostKey, mProxyHostEdit->text());
-        settings.setValue(NetworkSettings::proxyPortKey, mProxyPortEdit->text());
-        settings.setValue(NetworkSettings::proxyUserKey, mProxyUserEdit->text());
-        settings.setValue(NetworkSettings::proxyPasswordKey, mCrypt.encryptToString(mProxyPasswordEdit->text()));
+        const auto useProxy = !mNoProxyBtn->isChecked();
+        const auto proxyType = mProxyTypeCombo->itemData(mProxyTypeCombo->currentIndex()).toInt();
+        const auto proxyHost = mProxyHostEdit->text();
+        const quint16 proxyPort = mProxyPortEdit->text().toUInt();
+        const auto proxyUser = mProxyUserEdit->text();
+        const auto proxyPassword = mProxyPasswordEdit->text();
+
+        settings.setValue(NetworkSettings::useProxyKey, useProxy);
+        settings.setValue(NetworkSettings::proxyTypeKey, proxyType);
+        settings.setValue(NetworkSettings::proxyHostKey, proxyHost);
+        settings.setValue(NetworkSettings::proxyPortKey, proxyPort);
+        settings.setValue(NetworkSettings::proxyUserKey, proxyUser);
+        settings.setValue(NetworkSettings::proxyPasswordKey, mCrypt.encryptToString(proxyPassword));
+
+        if (useProxy)
+        {
+            QNetworkProxy proxy{static_cast<QNetworkProxy::ProxyType>(proxyType), proxyHost, proxyPort, proxyUser, proxyPassword};
+            QNetworkProxy::setApplicationProxy(proxy);
+        }
+        else
+        {
+            QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
+        }
     }
 }
