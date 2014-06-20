@@ -65,7 +65,6 @@ namespace Evernus
         query.setFocus(xml);
         query.setQuery(QString{"//rowset[@name='%1']/row"}.arg(rowsetName));
 
-
         APIXmlReceiver<T> receiver{result, query.namePool()};
         query.evaluateTo(&receiver);
 
