@@ -74,7 +74,7 @@ namespace Evernus
         fillTaskItem(taskId, new QTreeWidgetItem{item->second}, description);
         mTaskWidget->resizeColumnToContents(0);
 
-        ++mSubTaskCount[parentTask];
+        ++mSubTaskInfo[parentTask].mCount;
     }
 
     void ActiveTasksDialog::setTaskStatus(quint32 taskId, bool success)
@@ -93,14 +93,16 @@ namespace Evernus
 
         if (parent != nullptr)
         {
-            const auto it = mSubTaskCount.find(parent->data(0, Qt::UserRole).toUInt());
-            Q_ASSERT(it != std::end(mSubTaskCount));
+            const auto it = mSubTaskInfo.find(parent->data(0, Qt::UserRole).toUInt());
+            Q_ASSERT(it != std::end(mSubTaskInfo));
 
-            --it->second;
-            if (it->second == 0)
+            it->second.mError = it->second.mError || !success;
+
+            --it->second.mCount;
+            if (it->second.mCount == 0)
             {
-                setTaskStatus(it->first, success);
-                mSubTaskCount.erase(it);
+                setTaskStatus(it->first, !it->second.mError);
+                mSubTaskInfo.erase(it);
             }
         }
         else if (mTaskItems.empty() && mAutoCloseBtn->isChecked() && !mHadError)

@@ -29,12 +29,18 @@ namespace Evernus
         void autoCloseSave(bool enabled);
 
     private:
+        struct SubTaskInfo
+        {
+            size_t mCount = 0;
+            bool mError = false;
+        };
+
         QTreeWidget *mTaskWidget = nullptr;
         QProgressBar *mTotalProgressWidget = nullptr;
         QCheckBox *mAutoCloseBtn = nullptr;
 
         std::unordered_map<quint32, QTreeWidgetItem *> mTaskItems;
-        std::unordered_map<quint32, size_t> mSubTaskCount;
+        std::unordered_map<quint32, SubTaskInfo> mSubTaskInfo;
 
         bool mHadError = false;
 
