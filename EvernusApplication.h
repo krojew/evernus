@@ -25,6 +25,11 @@ namespace Evernus
 
         APIManager &getAPIManager() noexcept;
 
+    signals:
+        void taskStarted(quint32 taskId, const QString &description);
+        void taskStarted(quint32 taskId, quint32 parentTask, const QString &description);
+        void taskStatusChanged(quint32 taskId, bool success);
+
     public slots:
         void fetchCharacters();
 
@@ -36,7 +41,12 @@ namespace Evernus
 
         APIManager mAPIManager;
 
+        quint32 mTaskId = 0;
+
         void createDb();
         void createDbSchema();
+
+        quint32 startTask(const QString &description);
+        quint32 startTask(quint32 parentTask, const QString &description);
     };
 }

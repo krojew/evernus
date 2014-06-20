@@ -119,4 +119,16 @@ namespace Evernus
         mKeyRepository->create();
         mCharacterRepository->create(*mKeyRepository);
     }
+
+    quint32 EvernusApplication::startTask(const QString &description)
+    {
+        emit taskStarted(mTaskId, description);
+        return mTaskId++;
+    }
+
+    quint32 EvernusApplication::startTask(quint32 parentTask, const QString &description)
+    {
+        emit taskStarted(mTaskId, parentTask, description);
+        return mTaskId++;
+    }
 }

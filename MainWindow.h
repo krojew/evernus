@@ -7,6 +7,7 @@ namespace Evernus
     template<class T>
     class Repository;
     class CharacterManagerDialog;
+    class ActiveTasksDialog;
     class APIManager;
     class Character;
     class Key;
@@ -29,10 +30,16 @@ namespace Evernus
     signals:
         void keysChanged();
 
+        void newTaskInfoAdded(quint32 taskId, const QString &description);
+        void newSubTaskInfoAdded(quint32 taskId, quint32 parentTask, const QString &description);
+        void taskStatusChanged(quint32 taskId, bool success);
+
     public slots:
         void showCharacterManagement();
         void showPreferences();
         void showAbout();
+
+        void addNewTaskInfo(quint32 taskId, const QString &description);
 
     protected:
         virtual void closeEvent(QCloseEvent *event) override;
@@ -50,6 +57,7 @@ namespace Evernus
         bool mShowMaximized = false;
 
         CharacterManagerDialog *mCharacterManagerDialog = nullptr;
+        ActiveTasksDialog *mActiveTasksDialog = nullptr;
 
         void readSettings();
         void writeSettings();

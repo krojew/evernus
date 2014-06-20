@@ -15,6 +15,10 @@ int main(int argc, char *argv[])
         {
             Evernus::MainWindow mainWnd{app.getCharacterRepository(), app.getKeyRepository(), app.getAPIManager()};
             app.connect(&mainWnd, SIGNAL(keysChanged()), SLOT(fetchCharacters()));
+            mainWnd.connect(&app, SIGNAL(taskStarted(quint32, const QString &)), SLOT(addNewTaskInfo(quint32, const QString &)));
+            mainWnd.connect(
+                &app, SIGNAL(taskStarted(quint32, quint32, const QString &)), SIGNAL(newSubTaskInfoAdded(quint32, quint32, const QString &)));
+            mainWnd.connect(&app, SIGNAL(taskStatusChanged(quint32, bool)), SIGNAL(taskStatusChanged(quint32, bool)));
             mainWnd.showAsSaved();
 
             return app.exec();

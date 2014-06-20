@@ -21,6 +21,7 @@ endif()
 
 qt5_wrap_cpp(
     MOC_FILES
+    ActiveTasksDialog.h
     APIInterface.h
     CharacterManagerDialog.h
     EvernusApplication.h
@@ -39,6 +40,8 @@ include_directories(${Boost_INCLUDE_DIRS})
 add_executable(
     ${PROJECT_NAME}
     WIN32
+    ActiveTasksDialog.cpp
+    ActiveTasksDialog.h
     APIInterface.cpp
     APIInterface.h
     APIManager.cpp
@@ -73,6 +76,7 @@ add_executable(
     Repository.h
     SimpleCrypt.cpp
     SimpleCrypt.h
+    UISettings.h
     ${MOC_FILES}
     ${RCC_FILES}
     ${ADDITIONAL_SRC}

@@ -5,6 +5,7 @@
 #include <QMenuBar>
 
 #include "CharacterManagerDialog.h"
+#include "ActiveTasksDialog.h"
 #include "PreferencesDialog.h"
 
 #include "MainWindow.h"
@@ -62,6 +63,26 @@ namespace Evernus
                            tr("About Evernus"),
                            QString{tr("Evernus %1\nCreated by Pete Butcher\nAll donations are welcome :)")}
                                .arg(QCoreApplication::applicationVersion()));
+    }
+
+    void MainWindow::addNewTaskInfo(quint32 taskId, const QString &description)
+    {
+        if (mActiveTasksDialog == nullptr)
+        {
+            mActiveTasksDialog = new ActiveTasksDialog{this};
+            connect(this, &MainWindow::newTaskInfoAdded, mActiveTasksDialog, &ActiveTasksDialog::addNewTaskInfo);
+            connect(this, &MainWindow::newSubTaskInfoAdded, mActiveTasksDialog, &ActiveTasksDialog::addNewSubTaskInfo);
+            connect(this, &MainWindow::taskStatusChanged, mActiveTasksDialog, &ActiveTasksDialog::setTaskStatus);
+            mActiveTasksDialog->setModal(true);
+            mActiveTasksDialog->show();
+        }
+        else
+        {
+            mActiveTasksDialog->show();
+            mActiveTasksDialog->activateWindow();
+        }
+
+        emit newTaskInfoAdded(taskId, description);
     }
 
     void MainWindow::closeEvent(QCloseEvent *event)
