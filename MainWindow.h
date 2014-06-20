@@ -38,6 +38,7 @@ namespace Evernus
         void showCharacterManagement();
         void showPreferences();
         void showAbout();
+        void showError(const QString &info);
 
         void addNewTaskInfo(quint32 taskId, const QString &description);
 

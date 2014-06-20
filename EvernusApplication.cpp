@@ -28,6 +28,8 @@ namespace Evernus
             QMessageBox::critical(nullptr, tr("Error"), e.what());
             throw;
         }
+
+        connect(&mAPIManager, &APIManager::error, this, &EvernusApplication::apiError);
     }
 
     const KeyRepository &EvernusApplication::getKeyRepository() const noexcept
@@ -49,41 +51,50 @@ namespace Evernus
     {
         qDebug() << "Fetching characters...";
 
+        const auto task = startTask(tr("Fetching characters..."));
+
         const auto keys = mKeyRepository->fetchAll();
         for (const auto &key : keys)
         {
-            mAPIManager.fetchCharacterList(key, [key, this](const APIManager::CharacterList &characters) {
-                try
+            const auto subtask = startTask(task, QString{tr("Fetching characters for key %1...")}.arg(key.getId()));
+            mAPIManager.fetchCharacterList(key, [key, subtask, this](const APIManager::CharacterList &characters, bool success) {
+                if (success)
                 {
-                    if (characters.empty())
+                    try
                     {
-                        auto query = mCharacterRepository->prepare(
-                            QString{"UPDATE %1 SET key_id = NULL WHERE key_id = ?"}.arg(mCharacterRepository->getTableName()));
-                        query.bindValue(0, key.getCode());
-                        query.exec();
+                        if (characters.empty())
+                        {
+                            auto query = mCharacterRepository->prepare(
+                                QString{"UPDATE %1 SET key_id = NULL WHERE key_id = ?"}.arg(mCharacterRepository->getTableName()));
+                            query.bindValue(0, key.getCode());
+                            query.exec();
+                        }
+                        else
+                        {
+                            QStringList ids;
+                            for (auto i = 0; i < characters.size(); ++i)
+                                ids << "?";
+
+                            auto query = mCharacterRepository->prepare(QString{"UPDATE %1 SET key_id = NULL WHERE %2 NOT IN (%3)"}
+                                .arg(mCharacterRepository->getTableName())
+                                .arg(mCharacterRepository->getIdColumn())
+                                .arg(ids.join(", ")));
+
+                            for (auto i = 0; i < characters.size(); ++i)
+                                query.bindValue(i, characters[i]);
+
+                            query.exec();
+                        }
                     }
-                    else
+                    catch (...)
                     {
-                        QStringList ids;
-                        for (auto i = 0; i < characters.size(); ++i)
-                            ids << "?";
-
-                        auto query = mCharacterRepository->prepare(QString{"UPDATE %1 SET key_id = NULL WHERE %2 NOT IN (%3)"}
-                            .arg(mCharacterRepository->getTableName())
-                            .arg(mCharacterRepository->getIdColumn())
-                            .arg(ids.join(", ")));
-
-                        for (auto i = 0; i < characters.size(); ++i)
-                            query.bindValue(i, characters[i]);
-
-                        query.exec();
+                        QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred updating character key information. "
+                            "Data sync should work, but character tab will display incorrect information."));
+                        return;
                     }
                 }
-                catch (...)
-                {
-                    QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred updating character key information. "
-                        "Data sync should work, but character tab will display incorrect information."));
-                }
+
+                emit taskStatusChanged(subtask, success);
             });
         }
     }

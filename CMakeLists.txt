@@ -23,6 +23,7 @@ qt5_wrap_cpp(
     MOC_FILES
     ActiveTasksDialog.h
     APIInterface.h
+    APIManager.h
     CharacterManagerDialog.h
     EvernusApplication.h
     MainWindow.h

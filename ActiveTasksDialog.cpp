@@ -81,7 +81,7 @@ namespace Evernus
         auto item = mTaskItems.find(taskId);
         Q_ASSERT(item != std::end(mTaskItems));
 
-        mHadError = mHadError && !success;
+        mHadError = mHadError || !success;
 
         const auto parent = item->second->parent();
 

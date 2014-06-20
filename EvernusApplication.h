@@ -30,6 +30,8 @@ namespace Evernus
         void taskStarted(quint32 taskId, quint32 parentTask, const QString &description);
         void taskStatusChanged(quint32 taskId, bool success);
 
+        void apiError(const QString &info);
+
     public slots:
         void fetchCharacters();
 

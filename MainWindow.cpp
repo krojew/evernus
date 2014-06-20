@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QMenuBar>
+#include <QDebug>
 
 #include "CharacterManagerDialog.h"
 #include "ActiveTasksDialog.h"
@@ -63,6 +64,12 @@ namespace Evernus
                            tr("About Evernus"),
                            QString{tr("Evernus %1\nCreated by Pete Butcher\nAll donations are welcome :)")}
                                .arg(QCoreApplication::applicationVersion()));
+    }
+
+    void MainWindow::showError(const QString &info)
+    {
+        qCritical() << info;
+        QMessageBox::warning(this, tr("Error"), info);
     }
 
     void MainWindow::addNewTaskInfo(quint32 taskId, const QString &description)
