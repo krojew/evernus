@@ -60,6 +60,8 @@ add_executable(
     CharacterRepository.cpp
     CharacterRepository.h
     Entity.h
+    DatabaseUtils.cpp
+    DatabaseUtils.h
     EvernusApplication.cpp
     EvernusApplication.h
     Key.cpp

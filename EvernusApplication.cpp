@@ -1,9 +1,9 @@
 #include <stdexcept>
 
-#include <QStandardPaths>
 #include <QMessageBox>
 #include <QDebug>
-#include <QDir>
+
+#include "DatabaseUtils.h"
 
 #include "EvernusApplication.h"
 
@@ -11,7 +11,7 @@ namespace Evernus
 {
     EvernusApplication::EvernusApplication(int &argc, char *argv[])
         : QApplication{argc, argv}
-        , mMainDb{QSqlDatabase::addDatabase("QSQLITE")}
+        , mMainDb{QSqlDatabase::addDatabase("QSQLITE", "main")}
     {
         setApplicationName("Evernus");
         setApplicationVersion("0.1 BETA");
@@ -101,25 +101,7 @@ namespace Evernus
 
     void EvernusApplication::createDb()
     {
-        if (!mMainDb.isValid())
-            throw std::runtime_error{tr("Error crating DB object!").toStdString()};
-
-        const auto dbPath =
-            QStandardPaths::writableLocation(QStandardPaths::DataLocation) +
-            QDir::separator() +
-            "db" +
-            QDir::separator();
-
-        qDebug() << "DB path: " << dbPath;
-
-        if (!QDir{}.mkpath(dbPath))
-            throw std::runtime_error{tr("Error creating DB path!").toStdString()};
-
-        mMainDb.setDatabaseName(dbPath + "main.db");
-        if (!mMainDb.open())
-            throw std::runtime_error{tr("Error opening DB!").toStdString()};
-
-        mMainDb.exec("PRAGMA foreign_keys = ON");
+        DatabaseUtils::createDb(mMainDb, "main.db");
 
         mKeyRepository.reset(new KeyRepository{mMainDb});
         mCharacterRepository.reset(new CharacterRepository{mMainDb});

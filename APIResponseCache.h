@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include <QSqlDatabase>
 #include <QDateTime>
 
 #include "Character.h"
@@ -15,7 +16,7 @@ namespace Evernus
     public:
         typedef std::vector<Character::IdType> CharacterList;
 
-        APIResponseCache() = default;
+        APIResponseCache();
         virtual ~APIResponseCache() = default;
 
         bool hasChracterListData(Key::IdType key) const;
@@ -31,5 +32,10 @@ namespace Evernus
         };
 
         mutable std::unordered_map<Key::IdType, CacheEntry<CharacterList>> mCharacterListCache;
+
+        QSqlDatabase mCacheDb;
+
+        void createDb();
+        void createDbSchema();
     };
 }

@@ -1,7 +1,15 @@
+#include "DatabaseUtils.h"
+
 #include "APIResponseCache.h"
 
 namespace Evernus
 {
+    APIResponseCache::APIResponseCache()
+        : mCacheDb{QSqlDatabase::addDatabase("QSQLITE", "cache")}
+    {
+        createDb();
+    }
+
     bool APIResponseCache::hasChracterListData(Key::IdType key) const
     {
         const auto it = mCharacterListCache.find(key);
@@ -24,13 +32,18 @@ namespace Evernus
 
         return it->second.mData;
     }
-    
+
     void APIResponseCache::setChracterListData(Key::IdType key, const CharacterList &data, const QDateTime &cacheUntil)
     {
         CacheEntry<CharacterList> entry;
         entry.mCachedUntil = cacheUntil;
         entry.mData = data;
-        
+
         mCharacterListCache.emplace(key, std::move(entry));
+    }
+
+    void APIResponseCache::createDb()
+    {
+        DatabaseUtils::createDb(mCacheDb, "cache.db");
     }
 }
