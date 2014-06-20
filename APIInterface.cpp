@@ -45,7 +45,7 @@ namespace Evernus
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
         auto reply = mNetworkManager.post(request, postData.toString(QUrl::FullyEncoded).toUtf8());
-        connect(reply, &QNetworkReply::finished, this, &APIInterface::processReply/*, Qt::QueuedConnection*/);
+        connect(reply, &QNetworkReply::finished, this, &APIInterface::processReply, Qt::QueuedConnection);
 
         mPendingCallbacks[reply] = callback;
     }

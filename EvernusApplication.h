@@ -14,6 +14,8 @@ namespace Evernus
     class EvernusApplication
         : public QApplication
     {
+        Q_OBJECT
+
     public:
         EvernusApplication(int &argc, char *argv[]);
         virtual ~EvernusApplication() = default;
@@ -22,6 +24,9 @@ namespace Evernus
         const CharacterRepository &getCharacterRepository() const noexcept;
 
         APIManager &getAPIManager() noexcept;
+
+    public slots:
+        void fetchCharacters();
 
     private:
         QSqlDatabase mMainDb;

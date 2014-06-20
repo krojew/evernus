@@ -11,7 +11,6 @@ namespace Evernus
 {
     template<class T>
     class Repository;
-    class APIManager;
     class Character;
     class Key;
 
@@ -23,9 +22,11 @@ namespace Evernus
     public:
         CharacterManagerDialog(const Repository<Character> &characterRepository,
                                const Repository<Key> &keyRepository,
-                               APIManager &apiManager,
                                QWidget *parent = nullptr);
         virtual ~CharacterManagerDialog() = default;
+
+    signals:
+        void keysChanged();
 
     private slots:
         void addKey();
@@ -38,8 +39,6 @@ namespace Evernus
         const Repository<Character> &mCharacterRepository;
         const Repository<Key> &mKeyRepository;
 
-        APIManager &mApiManager;
-
         QSqlQueryModel mKeyModel;
 
         QPushButton *mEditKeyBtn = nullptr;
@@ -49,8 +48,6 @@ namespace Evernus
 
         void refreshKeys();
         void showEditKeyDialog(Key &key);
-
-        void fetchCharacters();
 
         QWidget *createKeyTab();
         QWidget *createCharacterTab();

@@ -42,7 +42,10 @@ namespace Evernus
     void MainWindow::showCharacterManagement()
     {
         if (mCharacterManagerDialog == nullptr)
-            mCharacterManagerDialog = new CharacterManagerDialog{mCharacterRepository, mKeyRepository, mApiManager, this};
+        {
+            mCharacterManagerDialog = new CharacterManagerDialog{mCharacterRepository, mKeyRepository, this};
+            connect(mCharacterManagerDialog, &CharacterManagerDialog::keysChanged, this, &MainWindow::keysChanged);
+        }
 
         mCharacterManagerDialog->exec();
     }

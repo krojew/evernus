@@ -1,5 +1,6 @@
 #include <stdexcept>
 
+#include <QSqlRecord>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>

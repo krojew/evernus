@@ -26,6 +26,9 @@ namespace Evernus
 
         void showAsSaved();
 
+    signals:
+        void keysChanged();
+
     public slots:
         void showCharacterManagement();
         void showPreferences();

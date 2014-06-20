@@ -1,7 +1,6 @@
 #include <memory>
 
 #include <QDialogButtonBox>
-#include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -21,12 +20,10 @@ namespace Evernus
 {
     CharacterManagerDialog::CharacterManagerDialog(const Repository<Character> &characterRepository,
                                                    const Repository<Key> &keyRepository,
-                                                   APIManager &apiManager,
                                                    QWidget *parent)
         : QDialog{parent}
         , mCharacterRepository{characterRepository}
         , mKeyRepository{keyRepository}
-        , mApiManager{apiManager}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -96,48 +93,8 @@ namespace Evernus
         {
             mKeyRepository.store(key);
             refreshKeys();
-            fetchCharacters();
-        }
-    }
 
-    void CharacterManagerDialog::fetchCharacters()
-    {
-        const auto keys = mKeyRepository.fetchAll();
-        for (const auto &key : keys)
-        {
-            mApiManager.fetchCharacterList(key, [key, this](const APIManager::CharacterList &characters) {
-                try
-                {
-                    if (characters.empty())
-                    {
-                        auto query = mCharacterRepository.prepare(
-                            QString{"UPDATE %1 SET key_id = NULL WHERE key_id = ?"}.arg(mCharacterRepository.getTableName()));
-                        query.bindValue(0, key.getCode());
-                        query.exec();
-                    }
-                    else
-                    {
-                        QStringList ids;
-                        for (auto i = 0; i < characters.size(); ++i)
-                            ids << "?";
-
-                        auto query = mCharacterRepository.prepare(QString{"UPDATE %1 SET key_id = NULL WHERE %2 NOT IN (%3)"}
-                            .arg(mCharacterRepository.getTableName())
-                            .arg(mCharacterRepository.getIdColumn())
-                            .arg(ids.join(", ")));
-
-                        for (auto i = 0; i < characters.size(); ++i)
-                            query.bindValue(i, characters[i]);
-
-                        query.exec();
-                    }
-                }
-                catch (...)
-                {
-                    QMessageBox::warning(this, tr("Evernus"), tr("An error occurred updating character key information. "
-                        "Data sync should work, but character tab will display incorrect information."));
-                }
-            });
+            emit keysChanged();
         }
     }
 

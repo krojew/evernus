@@ -23,6 +23,7 @@ qt5_wrap_cpp(
     MOC_FILES
     APIInterface.h
     CharacterManagerDialog.h
+    EvernusApplication.h
     MainWindow.h
     NetworkPreferencesWidget.h
     PreferencesDialog.h

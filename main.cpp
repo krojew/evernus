@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
         try
         {
             Evernus::MainWindow mainWnd{app.getCharacterRepository(), app.getKeyRepository(), app.getAPIManager()};
+            app.connect(&mainWnd, SIGNAL(keysChanged()), SLOT(fetchCharacters()));
             mainWnd.showAsSaved();
 
             return app.exec();
