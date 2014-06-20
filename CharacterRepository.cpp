@@ -18,7 +18,10 @@ namespace Evernus
 
     Character CharacterRepository::populate(const QSqlRecord &record) const
     {
-        Character character{};
+        Character character;
+        character.setKeyId(record.value("key_id").value<Key::IdType>());
+        character.setName(record.value("name").toString());
+        character.setEnabled(record.value("enabled").toBool());
         character.setNew(false);
 
         return character;
@@ -47,6 +50,11 @@ namespace Evernus
 
     void CharacterRepository::bindValues(const Character &entity, QSqlQuery &query) const
     {
+        const auto keyId = entity.getKeyId();
 
+        query.bindValue(":id", entity.getId());
+        query.bindValue(":key_id", (keyId) ? (*keyId) : (QVariant{QVariant::UInt}));
+        query.bindValue(":name", entity.getName());
+        query.bindValue(":enabled", entity.isEnabled());
     }
 }
