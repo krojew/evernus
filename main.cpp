@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(taskStarted(quint32, const QString &)), SLOT(addNewTaskInfo(quint32, const QString &)));
             mainWnd.connect(
                 &app, SIGNAL(taskStarted(quint32, quint32, const QString &)), SIGNAL(newSubTaskInfoAdded(quint32, quint32, const QString &)));
-            mainWnd.connect(&app, SIGNAL(taskStatusChanged(quint32, bool)), SIGNAL(taskStatusChanged(quint32, bool)));
+            mainWnd.connect(&app, SIGNAL(taskStatusChanged(quint32, const QString &)), SIGNAL(taskStatusChanged(quint32, const QString &)));
             mainWnd.connect(&app, SIGNAL(apiError(const QString &)), SLOT(showError(const QString &)));
             mainWnd.showAsSaved();
 

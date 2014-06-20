@@ -23,7 +23,7 @@ namespace Evernus
     public slots:
         void addNewTaskInfo(quint32 taskId, const QString &description);
         void addNewSubTaskInfo(quint32 taskId, quint32 parentTask, const QString &description);
-        void setTaskStatus(quint32 taskId, bool success);
+        void setTaskStatus(quint32 taskId, const QString &error);
 
     private slots:
         void autoCloseSave(bool enabled);

@@ -20,18 +20,13 @@ namespace Evernus
         const auto it = mPendingCallbacks.find(reply);
         Q_ASSERT(it != std::end(mPendingCallbacks));
 
-        it->second(reply->readAll(), reply->error() == QNetworkReply::NoError);
+        const auto error = reply->error();
+
+        it->second(reply->readAll(),
+                   (error == QNetworkReply::NoError || error == QNetworkReply::ContentAccessDenied) ? (QString{}) : (reply->errorString()));
         mPendingCallbacks.erase(it);
 
         reply->deleteLater();
-    }
-
-    void APIInterface::processNetworkError(QNetworkReply::NetworkError code)
-    {
-        Q_UNUSED(code);
-
-        auto reply = qobject_cast<QNetworkReply *>(sender());
-        emit error(reply->errorString());
     }
 
     void APIInterface::processSslErrors(const QList<QSslError> &errors)
@@ -40,7 +35,7 @@ namespace Evernus
         for (const auto &error : errors)
             errorTexts << error.errorString();
 
-        emit error(QString{tr("Encountered SSL errors:\n\n%1")}.arg(errorTexts.join("\n")));
+        emit generalError(QString{tr("Encountered SSL errors:\n\n%1")}.arg(errorTexts.join("\n")));
     }
 
     void APIInterface::makeRequest(const QString &endpoint, const Key &key, const Callback &callback)
@@ -62,7 +57,6 @@ namespace Evernus
 
         auto reply = mNetworkManager.post(request, postData.toString(QUrl::FullyEncoded).toUtf8());
         connect(reply, &QNetworkReply::finished, this, &APIInterface::processReply, Qt::QueuedConnection);
-        connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(processNetworkError(QNetworkReply::NetworkError)));
         connect(reply, &QNetworkReply::sslErrors, this, &APIInterface::processSslErrors);
 
         mPendingCallbacks[reply] = callback;

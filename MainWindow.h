@@ -32,7 +32,7 @@ namespace Evernus
 
         void newTaskInfoAdded(quint32 taskId, const QString &description);
         void newSubTaskInfoAdded(quint32 taskId, quint32 parentTask, const QString &description);
-        void taskStatusChanged(quint32 taskId, bool success);
+        void taskStatusChanged(quint32 taskId, const QString &error);
 
     public slots:
         void showCharacterManagement();

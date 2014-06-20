@@ -29,7 +29,7 @@ namespace Evernus
             throw;
         }
 
-        connect(&mAPIManager, &APIManager::error, this, &EvernusApplication::apiError);
+        connect(&mAPIManager, &APIManager::generalError, this, &EvernusApplication::apiError);
     }
 
     const KeyRepository &EvernusApplication::getKeyRepository() const noexcept
@@ -57,8 +57,8 @@ namespace Evernus
         for (const auto &key : keys)
         {
             const auto subtask = startTask(task, QString{tr("Fetching characters for key %1...")}.arg(key.getId()));
-            mAPIManager.fetchCharacterList(key, [key, subtask, this](const APIManager::CharacterList &characters, bool success) {
-                if (success)
+            mAPIManager.fetchCharacterList(key, [key, subtask, this](const APIManager::CharacterList &characters, const QString &error) {
+                if (error.isEmpty())
                 {
                     try
                     {
@@ -94,7 +94,7 @@ namespace Evernus
                     }
                 }
 
-                emit taskStatusChanged(subtask, success);
+                emit taskStatusChanged(subtask, error);
             });
         }
     }

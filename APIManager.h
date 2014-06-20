@@ -18,7 +18,7 @@ namespace Evernus
 
     public:
         template<class T>
-        using Callback = std::function<void (const T &, bool)>;
+        using Callback = std::function<void (const T &data, const QString &error)>;
 
         typedef std::vector<Character::IdType> CharacterList;
 
@@ -28,13 +28,15 @@ namespace Evernus
         void fetchCharacterList(const Key &key, const Callback<CharacterList> &callback);
 
     signals:
-        void error(const QString &info);
+        void generalError(const QString &info);
 
     private:
         static const QString eveTimeFormat;
 
         APIResponseCache mCache;
         APIInterface mInterface;
+
+        void handlePotentialError(const QString &xml, const QString &error);
 
         static QString queryPath(const QString &path, const QString &xml);
     };

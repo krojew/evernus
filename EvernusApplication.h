@@ -28,7 +28,7 @@ namespace Evernus
     signals:
         void taskStarted(quint32 taskId, const QString &description);
         void taskStarted(quint32 taskId, quint32 parentTask, const QString &description);
-        void taskStatusChanged(quint32 taskId, bool success);
+        void taskStatusChanged(quint32 taskId, const QString &error);
 
         void apiError(const QString &info);
 

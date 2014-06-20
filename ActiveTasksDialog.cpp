@@ -77,16 +77,24 @@ namespace Evernus
         ++mSubTaskInfo[parentTask].mCount;
     }
 
-    void ActiveTasksDialog::setTaskStatus(quint32 taskId, bool success)
+    void ActiveTasksDialog::setTaskStatus(quint32 taskId, const QString &error)
     {
         auto item = mTaskItems.find(taskId);
         Q_ASSERT(item != std::end(mTaskItems));
+
+        const auto subTaskInfo = mSubTaskInfo.find(taskId);
+        const auto success = error.isEmpty() && (subTaskInfo == std::end(mSubTaskInfo) || !subTaskInfo->second.mError);
 
         mHadError = mHadError || !success;
 
         const auto parent = item->second->parent();
 
         item->second->setIcon(0, QIcon{(success) ? (":/images/accept.png") : (":/images/exclamation.png")});
+        if (!success && !error.isEmpty())
+        {
+            auto errorItem = new QTreeWidgetItem{item->second};
+            errorItem->setText(1, error);
+        }
 
         mTaskItems.erase(item);
         mTotalProgressWidget->setValue(mTotalProgressWidget->value() + 1);
@@ -101,7 +109,7 @@ namespace Evernus
             --it->second.mCount;
             if (it->second.mCount == 0)
             {
-                setTaskStatus(it->first, !it->second.mError);
+                setTaskStatus(it->first, QString{});
                 mSubTaskInfo.erase(it);
             }
         }
