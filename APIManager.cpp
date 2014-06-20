@@ -29,9 +29,10 @@ namespace Evernus
                 auto cachedUntil = QDateTime::fromString(queryPath("/eveapi/cachedUntil/text()", response), eveTimeFormat);
                 cachedUntil.setTimeSpec(Qt::UTC);
 
-    //            mCache.setChracterListData(key, , cachedUntil);
+                CharacterList list{parseResults<Character::IdType>(response, "characters")};
+                mCache.setChracterListData(key.getId(), list, cachedUntil);
 
-                callback(CharacterList{}, QString{});
+                callback(list, QString{});
             }
             catch (const std::exception &e)
             {
@@ -51,6 +52,22 @@ namespace Evernus
         const auto errorText = queryPath("/eveapi/error/text()", xml);
         if (!errorText.isEmpty())
             throw std::runtime_error{errorText.toStdString()};
+    }
+
+    template<class T>
+    std::vector<T> APIManager::parseResults(const QString &xml, const QString &rowsetName)
+    {
+        std::vector<T> result;
+
+        QXmlQuery query;
+        query.setFocus(xml);
+        query.setQuery(QString{"//rowset[@name='%1']/row"}.arg(rowsetName));
+
+
+        APIXmlReceiver<T> receiver{result, query.namePool()};
+        query.evaluateTo(&receiver);
+
+        return result;
     }
 
     QString APIManager::queryPath(const QString &path, const QString &xml)

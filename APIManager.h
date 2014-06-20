@@ -38,6 +38,9 @@ namespace Evernus
 
         void handlePotentialError(const QString &xml, const QString &error);
 
+        template<class T>
+        std::vector<T> parseResults(const QString &xml, const QString &rowsetName);
+
         static QString queryPath(const QString &path, const QString &xml);
     };
 }

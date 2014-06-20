@@ -49,8 +49,10 @@ add_executable(
     APIManager.h
     APIResponseCache.cpp
     APIResponseCache.h
+    APIXmlReceiver.h
     Character.cpp
     Character.h
+    CharacterListXmlReceiver.h
     CharacterManagerDialog.cpp
     CharacterManagerDialog.h
     CharacterModel.cpp
