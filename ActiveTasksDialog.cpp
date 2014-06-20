@@ -53,6 +53,7 @@ namespace Evernus
             mHadError = false;
             mTotalProgressWidget->setValue(0);
             mTotalProgressWidget->setMaximum(1);
+            mTaskWidget->clear();
         }
         else
         {
