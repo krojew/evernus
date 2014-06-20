@@ -1,6 +1,8 @@
 #include <QXmlQuery>
 #include <QDateTime>
 
+#include "CharacterListXmlReceiver.h"
+
 #include "APIManager.h"
 
 namespace Evernus
