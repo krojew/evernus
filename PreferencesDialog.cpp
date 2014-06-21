@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QTreeWidget>
 
+#include "CharacterImportPreferencesWidget.h"
 #include "NetworkPreferencesWidget.h"
 
 #include "PreferencesDialog.h"
@@ -31,34 +32,42 @@ namespace Evernus
         mPreferencesStack = new QStackedWidget{this};
         preferencesLayout->addWidget(mPreferencesStack, 1);
 
-        QList<QTreeWidgetItem *> mainCategories;
-        try
+        std::vector<std::pair<QString, std::unique_ptr<QWidget>>> categories;
+        categories.emplace_back(std::make_pair(QString{tr("Network")}, std::unique_ptr<QWidget>{new NetworkPreferencesWidget{}}));
+
+        for (auto i = 0; i < categories.size(); ++i)
         {
-            std::vector<std::pair<QString, std::unique_ptr<QWidget>>> categories;
-            categories.emplace_back(std::make_pair(QString{tr("Network")}, std::unique_ptr<QWidget>{new NetworkPreferencesWidget{}}));
+            auto item = new QTreeWidgetItem{categoryTree, QStringList{categories[i].first}};
+            item->setData(0, Qt::UserRole, i);
 
-            for (auto i = 0; i < categories.size(); ++i)
-            {
-                auto item = new QTreeWidgetItem{QStringList{categories[i].first}};
-                item->setData(0, Qt::UserRole, i);
-
-                mainCategories << item;
-            }
-
-            for (auto &category : categories)
-            {
-                connect(this, SIGNAL(settingsInvalidated()), category.second.get(), SLOT(applySettings()));
-                mPreferencesStack->addWidget(category.second.release());
-            }
-        }
-        catch (...)
-        {
-            qDeleteAll(mainCategories);
-            throw;
+            if (i == 0)
+                categoryTree->setCurrentItem(item);
         }
 
-        categoryTree->addTopLevelItems(mainCategories);
-        categoryTree->setCurrentItem(mainCategories.first());
+        for (auto &category : categories)
+        {
+            connect(this, SIGNAL(settingsInvalidated()), category.second.get(), SLOT(applySettings()));
+            mPreferencesStack->addWidget(category.second.release());
+        }
+
+        auto importItem = new QTreeWidgetItem{categoryTree, QStringList{tr("Import")}};
+        importItem->setData(0, Qt::UserRole, -1);
+        importItem->setExpanded(true);
+
+        std::vector<std::pair<QString, std::unique_ptr<QWidget>>> importCategories;
+        importCategories.emplace_back(std::make_pair(QString{tr("Character")}, std::unique_ptr<QWidget>{new CharacterImportPreferencesWidget{}}));
+
+        for (auto i = 0; i < importCategories.size(); ++i)
+        {
+            auto item = new QTreeWidgetItem{importItem, QStringList{importCategories[i].first}};
+            item->setData(0, Qt::UserRole, i + categories.size());
+        }
+
+        for (auto &category : importCategories)
+        {
+            connect(this, SIGNAL(settingsInvalidated()), category.second.get(), SLOT(applySettings()));
+            mPreferencesStack->addWidget(category.second.release());
+        }
 
         auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);
@@ -78,8 +87,19 @@ namespace Evernus
     void PreferencesDialog::setCurrentPage(QTreeWidgetItem *current, QTreeWidgetItem *previous)
     {
         if (current == nullptr)
+        {
             mPreferencesStack->setCurrentIndex(-1);
+        }
         else
-            mPreferencesStack->setCurrentIndex(current->data(0, Qt::UserRole).toInt());
+        {
+            auto index = current->data(0, Qt::UserRole).toInt();
+            if (index == -1)
+            {
+                Q_ASSERT(current->childCount() > 0);
+                index = current->child(0)->data(0, Qt::UserRole).toInt();
+            }
+
+            mPreferencesStack->setCurrentIndex(index);
+        }
     }
 }

@@ -25,6 +25,7 @@ qt5_wrap_cpp(
     APIInterface.h
     APIManager.h
     CharacterManagerDialog.h
+    CharacterImportPreferencesWidget.h
     EvernusApplication.h
     MainWindow.h
     NetworkPreferencesWidget.h
@@ -59,6 +60,8 @@ add_executable(
     CacheRepository.h
     Character.cpp
     Character.h
+    CharacterImportPreferencesWidget.cpp
+    CharacterImportPreferencesWidget.h
     CharacterListXmlReceiver.h
     CharacterManagerDialog.cpp
     CharacterManagerDialog.h
@@ -71,6 +74,7 @@ add_executable(
     DatabaseUtils.h
     EvernusApplication.cpp
     EvernusApplication.h
+    ImportSettings.h
     Key.cpp
     Key.h
     KeyEditDialog.cpp

@@ -95,6 +95,8 @@ namespace Evernus
         providerLayout->addWidget(mProviderHostEdit);
         connect(customProviderBtn, &QRadioButton::toggled, mProviderHostEdit, &QWidget::setEnabled);
 
+        mainLayout->addStretch();
+
         if (useProxy)
         {
             customProxyBtn->setChecked(true);
