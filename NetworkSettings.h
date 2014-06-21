@@ -9,7 +9,7 @@ namespace Evernus
         const auto useProxyKey = "network/useProxy";
         const auto proxyTypeKey = "network/proxy/type";
         const auto proxyHostKey = "network/proxy/host";
-        const auto proxyPortKey = "network/proxy/post";
+        const auto proxyPortKey = "network/proxy/port";
         const auto proxyUserKey = "network/proxy/user";
         const auto proxyPasswordKey = "network/proxy/password";
 
