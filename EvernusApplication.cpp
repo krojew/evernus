@@ -1,6 +1,7 @@
 #include <stdexcept>
 
 #include <QMessageBox>
+#include <QSettings>
 #include <QDebug>
 
 #include "DatabaseUtils.h"
@@ -9,6 +10,8 @@
 
 namespace Evernus
 {
+    const QString EvernusApplication::versionKey = "version";
+
     EvernusApplication::EvernusApplication(int &argc, char *argv[])
         : QApplication{argc, argv}
         , mMainDb{QSqlDatabase::addDatabase("QSQLITE", "main")}
@@ -17,6 +20,9 @@ namespace Evernus
         {
             createDb();
             createDbSchema();
+
+            QSettings settings;
+            settings.setValue(versionKey, applicationVersion());
         }
         catch (const std::exception &e)
         {

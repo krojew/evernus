@@ -36,6 +36,8 @@ namespace Evernus
         void fetchCharacters();
 
     private:
+        static const QString versionKey;
+
         QSqlDatabase mMainDb;
 
         std::unique_ptr<KeyRepository> mKeyRepository;
