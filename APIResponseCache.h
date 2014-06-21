@@ -1,11 +1,13 @@
 #pragma once
 
 #include <unordered_map>
+#include <memory>
 #include <vector>
 
 #include <QSqlDatabase>
 #include <QDateTime>
 
+#include "CachedCharacterListRepository.h"
 #include "Character.h"
 #include "Key.h"
 
@@ -27,7 +29,7 @@ namespace Evernus
         template<class T>
         struct CacheEntry
         {
-            QDateTime mCachedUntil;
+            QDateTime mCacheUntil;
             T mData;
         };
 
@@ -35,7 +37,11 @@ namespace Evernus
 
         QSqlDatabase mCacheDb;
 
+        std::unique_ptr<CachedCharacterListRepository> mCharacterListRepository;
+
         void createDb();
         void createDbSchema();
+        void clearOldData();
+        void refreshCaches();
     };
 }
