@@ -70,7 +70,7 @@ namespace Evernus
                             for (auto i = 0; i < characters.size(); ++i)
                                 ids << "?";
 
-                            auto query = mCharacterRepository->prepare(QString{"UPDATE %1 SET key_id = NULL WHERE %2 NOT IN (%3)"}
+                            auto query = mCharacterRepository->prepare(QString{"UPDATE %1 SET key_id = NULL, enabled = 0 WHERE %2 NOT IN (%3)"}
                                 .arg(mCharacterRepository->getTableName())
                                 .arg(mCharacterRepository->getIdColumn())
                                 .arg(ids.join(", ")));
@@ -83,7 +83,7 @@ namespace Evernus
                     }
                     catch (...)
                     {
-                        QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred updating character key information. "
+                        QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred while updating character key information. "
                             "Data sync should work, but character tab will display incorrect information."));
                         return;
                     }
