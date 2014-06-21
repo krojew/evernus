@@ -77,7 +77,7 @@ namespace Evernus
 
     void CharacterManagerDialog::refreshKeys()
     {
-        mKeyModel.setQuery(QString{"SELECT id, code FROM %1"}.arg(mKeyRepository.getTableName()));
+        mKeyModel.setQuery(QString{"SELECT id, code FROM %1"}.arg(mKeyRepository.getTableName()), mKeyRepository.getDatabase());
 
         mKeyModel.setHeaderData(0, Qt::Horizontal, tr("Key ID"));
         mKeyModel.setHeaderData(1, Qt::Horizontal, tr("Verification code"));
