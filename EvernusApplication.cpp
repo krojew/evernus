@@ -81,6 +81,12 @@ namespace Evernus
                             query.exec();
                         }
                     }
+                    catch (const std::exception &e)
+                    {
+                        QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred while updating character key information: %1. "
+                            "Data sync should work, but character tab will display incorrect information.").arg(e.what()));
+                        return;
+                    }
                     catch (...)
                     {
                         QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred while updating character key information. "
