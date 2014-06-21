@@ -13,11 +13,6 @@ namespace Evernus
         : QApplication{argc, argv}
         , mMainDb{QSqlDatabase::addDatabase("QSQLITE", "main")}
     {
-        setApplicationName("Evernus");
-        setApplicationVersion("0.1 BETA");
-        setOrganizationDomain("evernus.com");
-        setOrganizationName("evernus.com");
-
         try
         {
             createDb();

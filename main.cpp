@@ -9,6 +9,11 @@ int main(int argc, char *argv[])
 {
     try
     {
+        QCoreApplication::setApplicationName("Evernus");
+        QCoreApplication::setApplicationVersion("0.1 BETA");
+        QCoreApplication::setOrganizationDomain("evernus.com");
+        QCoreApplication::setOrganizationName("evernus.com");
+
         Evernus::EvernusApplication app{argc, argv};
 
         try
@@ -31,8 +36,14 @@ int main(int argc, char *argv[])
             throw;
         }
     }
-    catch (...)
+    catch (const std::exception &e)
     {
+        qCritical() << e.what();
+
+        QApplication tempApp{argc, argv};
+        QMessageBox::critical(nullptr, QCoreApplication::translate("main", "Initialization error"), e.what());
         return 1;
     }
+
+    return 0;
 }
