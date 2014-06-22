@@ -1,7 +1,9 @@
+#include <QDomDocument>
 #include <QXmlQuery>
 #include <QDateTime>
 
 #include "CharacterListXmlReceiver.h"
+#include "CharacterDomParser.h"
 
 #include "APIManager.h"
 
@@ -15,7 +17,7 @@ namespace Evernus
         connect(&mInterface, &APIInterface::generalError, this, &APIManager::generalError);
     }
 
-    void APIManager::fetchCharacterList(const Key &key, const Callback<CharacterList> &callback)
+    void APIManager::fetchCharacterList(const Key &key, const Callback<CharacterList> &callback) const
     {
         if (mCache.hasChracterListData(key.getId()))
         {
@@ -28,8 +30,7 @@ namespace Evernus
             {
                 handlePotentialError(response, error);
 
-                auto cachedUntil = QDateTime::fromString(queryPath("/eveapi/cachedUntil/text()", response), eveTimeFormat);
-                cachedUntil.setTimeSpec(Qt::UTC);
+                auto cachedUntil = getCachedUntil(response);
 
                 CharacterList list{parseResults<Character::IdType>(response, "characters")};
                 mCache.setChracterListData(key.getId(), list, cachedUntil);
@@ -43,17 +44,32 @@ namespace Evernus
         });
     }
 
-    void APIManager::handlePotentialError(const QString &xml, const QString &error)
+    void APIManager::fetchCharacter(const Key &key, Character::IdType characterId, const Callback<Character> &callback) const
     {
-        if (!error.isEmpty())
-            throw std::runtime_error{error.toStdString()};
+        if (mCache.hasCharacterData(key.getId(), characterId))
+        {
+            callback(mCache.getCharacterData(key.getId(), characterId), QString{});
+            return;
+        }
 
-        if (xml.isEmpty())
-            throw std::runtime_error{tr("No XML document received!").toUtf8().constData()};
+        mInterface.fetchCharacter(key, characterId, [key, callback, this](const QString &response, const QString &error) {
+            try
+            {
+                handlePotentialError(response, error);
 
-        const auto errorText = queryPath("/eveapi/error/text()", xml);
-        if (!errorText.isEmpty())
-            throw std::runtime_error{errorText.toStdString()};
+                auto cachedUntil = getCachedUntil(response);
+
+                Character character{parseResult<Character>(response)};
+                character.setKeyId(key.getId());
+                mCache.setCharacterData(key.getId(), character.getId(), character, cachedUntil);
+
+                callback(character, QString{});
+            }
+            catch (const std::exception &e)
+            {
+                callback(Character{}, e.what());
+            }
+        });
     }
 
     template<class T>
@@ -71,6 +87,16 @@ namespace Evernus
         return result;
     }
 
+    template<class T>
+    T APIManager::parseResult(const QString &xml)
+    {
+        QDomDocument document;
+        if (!document.setContent(xml))
+            throw std::runtime_error{tr("Invalid XML document received!").toStdString()};
+
+        return APIDomParser::parse<T>(document.documentElement().firstChildElement("result"));
+    }
+
     QString APIManager::queryPath(const QString &path, const QString &xml)
     {
         QString out;
@@ -81,5 +107,26 @@ namespace Evernus
         query.evaluateTo(&out);
 
         return out.trimmed();
+    }
+
+    QDateTime APIManager::getCachedUntil(const QString &xml)
+    {
+        auto cachedUntil = QDateTime::fromString(queryPath("/eveapi/cachedUntil/text()", xml), eveTimeFormat);
+        cachedUntil.setTimeSpec(Qt::UTC);
+
+        return cachedUntil;
+    }
+
+    void APIManager::handlePotentialError(const QString &xml, const QString &error)
+    {
+        if (!error.isEmpty())
+            throw std::runtime_error{error.toStdString()};
+
+        if (xml.isEmpty())
+            throw std::runtime_error{tr("No XML document received!").toStdString()};
+
+        const auto errorText = queryPath("/eveapi/error/text()", xml);
+        if (!errorText.isEmpty())
+            throw std::runtime_error{errorText.toStdString()};
     }
 }

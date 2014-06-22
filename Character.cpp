@@ -2,26 +2,6 @@
 
 namespace Evernus
 {
-    QString Character::getName() const &
-    {
-        return mName;
-    }
-
-    QString &&Character::getName() && noexcept
-    {
-        return std::move(mName);
-    }
-
-    void Character::setName(const QString &name)
-    {
-        mName = name;
-    }
-
-    void Character::setName(QString &&name)
-    {
-        mName = std::move(name);
-    }
-
     Character::KeyIdType Character::getKeyId() const noexcept
     {
         return mKeyId;
@@ -32,204 +12,234 @@ namespace Evernus
         mKeyId = id;
     }
 
+    QString Character::getName() const &
+    {
+        return mData.mName;
+    }
+
+    QString &&Character::getName() && noexcept
+    {
+        return std::move(mData.mName);
+    }
+
+    void Character::setName(const QString &name)
+    {
+        mData.mName = name;
+    }
+
+    void Character::setName(QString &&name)
+    {
+        mData.mName = std::move(name);
+    }
+
     QString Character::getCorporationName() const &
     {
-        return mCorporationName;
+        return mData.mCorporationName;
     }
 
     QString &&Character::getCorporationName() && noexcept
     {
-        return std::move(mCorporationName);
+        return std::move(mData.mCorporationName);
     }
 
     void Character::setCorporationName(const QString &name)
     {
-        mCorporationName = name;
+        mData.mCorporationName = name;
     }
 
     void Character::setCorporationName(QString &&name)
     {
-        mCorporationName = std::move(name);
+        mData.mCorporationName = std::move(name);
     }
 
     QString Character::getRace() const &
     {
-        return mRace;
+        return mData.mRace;
     }
 
     QString &&Character::getRace() && noexcept
     {
-        return std::move(mRace);
+        return std::move(mData.mRace);
     }
 
     void Character::setRace(const QString &race)
     {
-        mRace = race;
+        mData.mRace = race;
     }
 
     void Character::setRace(QString &&race)
     {
-        mRace = std::move(race);
+        mData.mRace = std::move(race);
     }
 
     QString Character::getBloodline() const &
     {
-        return mBloodline;
+        return mData.mBloodline;
     }
 
     QString &&Character::getBloodline() && noexcept
     {
-        return std::move(mBloodline);
+        return std::move(mData.mBloodline);
     }
 
     void Character::setBloodline(const QString &bloodline)
     {
-        mBloodline = bloodline;
+        mData.mBloodline = bloodline;
     }
 
     void Character::setBloodline(QString &&bloodline)
     {
-        mBloodline = std::move(bloodline);
+        mData.mBloodline = std::move(bloodline);
     }
 
     QString Character::getAncestry() const &
     {
-        return mAncestry;
+        return mData.mAncestry;
     }
 
     QString &&Character::getAncestry() && noexcept
     {
-        return std::move(mAncestry);
+        return std::move(mData.mAncestry);
     }
 
     void Character::setAncestry(const QString &ancestry)
     {
-        mAncestry = ancestry;
+        mData.mAncestry = ancestry;
     }
 
     void Character::setAncestry(QString &&ancestry)
     {
-        mAncestry = std::move(ancestry);
+        mData.mAncestry = std::move(ancestry);
     }
 
     QString Character::getGender() const &
     {
-        return mGender;
+        return mData.mGender;
     }
 
     QString &&Character::getGender() && noexcept
     {
-        return std::move(mGender);
+        return std::move(mData.mGender);
     }
 
     void Character::setGender(const QString &gender)
     {
-        mGender = gender;
+        mData.mGender = gender;
     }
 
     void Character::setGender(QString &&gender)
     {
-        mGender = std::move(gender);
+        mData.mGender = std::move(gender);
     }
 
-    uint Character::getSkillPoints() const noexcept
+    CharacterData::ISKType Character::getISK() const
     {
-        return mSkillPoints;
+        return mData.mISK;
     }
 
-    void Character::setSkillPoints(uint points) noexcept
+    void Character::setISK(CharacterData::ISKType isk)
     {
-        mSkillPoints = points;
-    }
-
-    Character::ISKType Character::getISK() const
-    {
-        return mISK;
-    }
-
-    void Character::setISK(ISKType isk)
-    {
-        mISK = isk;
+        mData.mISK = isk;
     }
 
     float Character::getCorpStanding() const noexcept
     {
-        return mCorpStanding;
+        return mData.mCorpStanding;
     }
 
     void Character::setCorpStanding(float standing) noexcept
     {
-        mCorpStanding = standing;
+        mData.mCorpStanding = standing;
     }
 
     float Character::getFactionStanding() const noexcept
     {
-        return mFactionStanding;
+        return mData.mFactionStanding;
     }
 
     void Character::setFactionStanding(float standing) noexcept
     {
-        mFactionStanding = standing;
+        mData.mFactionStanding = standing;
     }
 
-    Character::OrderAmountSkills Character::getOrderAmountSkills() const noexcept
+    CharacterData::OrderAmountSkills Character::getOrderAmountSkills() const noexcept
     {
-        return mOrderAmountSkills;
+        return mData.mOrderAmountSkills;
     }
 
-    void Character::setOrderAmountSkills(const OrderAmountSkills &skills) noexcept
+    void Character::setOrderAmountSkills(const CharacterData::OrderAmountSkills &skills) noexcept
     {
-        mOrderAmountSkills = skills;
+        mData.mOrderAmountSkills = skills;
     }
 
-    void Character::setOrderAmountSkills(OrderAmountSkills &&skills) noexcept
+    void Character::setOrderAmountSkills(CharacterData::OrderAmountSkills &&skills) noexcept
     {
-        mOrderAmountSkills = std::move(skills);
+        mData.mOrderAmountSkills = std::move(skills);
     }
 
-    Character::TradeRangeSkills Character::getTradeRangeSkills() const noexcept
+    CharacterData::TradeRangeSkills Character::getTradeRangeSkills() const noexcept
     {
-        return mTradeRangeSkills;
+        return mData.mTradeRangeSkills;
     }
 
-    void Character::setTradeRangeSkills(const TradeRangeSkills &skills) noexcept
+    void Character::setTradeRangeSkills(const CharacterData::TradeRangeSkills &skills) noexcept
     {
-        mTradeRangeSkills = skills;
+        mData.mTradeRangeSkills = skills;
     }
 
-    void Character::setTradeRangeSkills(TradeRangeSkills &&skills) noexcept
+    void Character::setTradeRangeSkills(CharacterData::TradeRangeSkills &&skills) noexcept
     {
-        mTradeRangeSkills = std::move(skills);
+        mData.mTradeRangeSkills = std::move(skills);
     }
 
-    Character::FeeSkills Character::getFeeSkills() const noexcept
+    CharacterData::FeeSkills Character::getFeeSkills() const noexcept
     {
-        return mFeeSkills;
+        return mData.mFeeSkills;
     }
 
-    void Character::setFeeSkills(const FeeSkills &skills) noexcept
+    void Character::setFeeSkills(const CharacterData::FeeSkills &skills) noexcept
     {
-        mFeeSkills = skills;
+        mData.mFeeSkills = skills;
     }
 
-    void Character::setFeeSkills(FeeSkills &&skills) noexcept
+    void Character::setFeeSkills(CharacterData::FeeSkills &&skills) noexcept
     {
-        mFeeSkills = std::move(skills);
+        mData.mFeeSkills = std::move(skills);
     }
 
-    Character::ContractSkills Character::getContractSkills() const noexcept
+    CharacterData::ContractSkills Character::getContractSkills() const noexcept
     {
-        return mContractSkills;
+        return mData.mContractSkills;
     }
 
-    void Character::setContractSkills(const ContractSkills &skills) noexcept
+    void Character::setContractSkills(const CharacterData::ContractSkills &skills) noexcept
     {
-        mContractSkills = skills;
+        mData.mContractSkills = skills;
     }
 
-    void Character::setContractSkills(ContractSkills &&skills) noexcept
+    void Character::setContractSkills(CharacterData::ContractSkills &&skills) noexcept
     {
-        mContractSkills = std::move(skills);
+        mData.mContractSkills = std::move(skills);
+    }
+
+    CharacterData Character::getCharacterData() const &
+    {
+        return mData;
+    }
+
+    CharacterData &&Character::getCharacterData() && noexcept
+    {
+        return std::move(mData);
+    }
+
+    void Character::setCharacterData(const CharacterData &data)
+    {
+        mData = data;
+    }
+
+    void Character::setCharacterData(CharacterData &&data)
+    {
+        mData = std::move(data);
     }
 
     bool Character::isEnabled() const noexcept

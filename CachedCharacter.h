@@ -1,25 +1,19 @@
 #pragma once
 
-#include <boost/optional.hpp>
-
-#include <QString>
-
-#include "CharacterData.h"
-#include "Key.h"
+#include "CachedEntity.h"
+#include "Character.h"
 
 namespace Evernus
 {
-    class Character
-        : public Entity<quint64>
+    class CachedCharacter
+        : public CachedEntity
     {
     public:
-        typedef boost::optional<Key::IdType> KeyIdType;
+        using CachedEntity::CachedEntity;
+        virtual ~CachedCharacter() = default;
 
-        using Entity::Entity;
-        virtual ~Character() = default;
-
-        KeyIdType getKeyId() const noexcept;
-        void setKeyId(Key::IdType id);
+        Character::IdType getCharacterId() const noexcept;
+        void setCharacterId(Character::IdType id) noexcept;
 
         QString getName() const &;
         QString &&getName() && noexcept;
@@ -81,13 +75,8 @@ namespace Evernus
         void setCharacterData(const CharacterData &data);
         void setCharacterData(CharacterData &&data);
 
-        bool isEnabled() const noexcept;
-        void setEnabled(bool flag) noexcept;
-
     private:
+        Character::IdType mCharacterId;
         CharacterData mData;
-        KeyIdType mKeyId;
-
-        bool mEnabled = true;
     };
 }

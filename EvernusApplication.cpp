@@ -58,7 +58,7 @@ namespace Evernus
         for (const auto &key : keys)
         {
             const auto subtask = startTask(task, QString{tr("Fetching characters for key %1...")}.arg(key.getId()));
-            mAPIManager.fetchCharacterList(key, [key, subtask, this](const APIManager::CharacterList &characters, const QString &error) {
+            mAPIManager.fetchCharacterList(key, [key, subtask, this](const auto &characters, const auto &error) {
                 if (error.isEmpty())
                 {
                     try
@@ -98,6 +98,13 @@ namespace Evernus
                         QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred while updating character key information. "
                             "Data sync should work, but character tab will display incorrect information."));
                         return;
+                    }
+
+                    for (const auto id : characters)
+                    {
+                        mAPIManager.fetchCharacter(key, id, [](const auto &data, const auto &error) {
+
+                        });
                     }
                 }
 

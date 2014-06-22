@@ -2,9 +2,12 @@
 
 #include <unordered_map>
 #include <functional>
+#include <vector>
 
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+
+#include "Character.h"
 
 namespace Evernus
 {
@@ -21,7 +24,8 @@ namespace Evernus
         using QObject::QObject;
         virtual ~APIInterface() = default;
 
-        void fetchCharacterList(const Key &key, const Callback &callback);
+        void fetchCharacterList(const Key &key, const Callback &callback) const;
+        void fetchCharacter(const Key &key, Character::IdType characterId, const Callback &callback) const;
 
     signals:
         void generalError(const QString &info);
@@ -31,10 +35,15 @@ namespace Evernus
         void processSslErrors(const QList<QSslError> &errors);
 
     private:
-        QNetworkAccessManager mNetworkManager;
+        typedef std::vector<std::pair<QString, QString>> QueryParams;
 
-        std::unordered_map<QNetworkReply *, Callback> mPendingCallbacks;
+        mutable QNetworkAccessManager mNetworkManager;
 
-        void makeRequest(const QString &endpoint, const Key &key, const Callback &callback);
+        mutable std::unordered_map<QNetworkReply *, Callback> mPendingCallbacks;
+
+        void makeRequest(const QString &endpoint,
+                         const Key &key,
+                         const Callback &callback,
+                         const QueryParams &additionalParams = QueryParams{}) const;
     };
 }

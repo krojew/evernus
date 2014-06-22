@@ -25,7 +25,8 @@ namespace Evernus
         APIManager();
         virtual ~APIManager() = default;
 
-        void fetchCharacterList(const Key &key, const Callback<CharacterList> &callback);
+        void fetchCharacterList(const Key &key, const Callback<CharacterList> &callback) const;
+        void fetchCharacter(const Key &key, Character::IdType characterId, const Callback<Character> &callback) const;
 
     signals:
         void generalError(const QString &info);
@@ -33,13 +34,18 @@ namespace Evernus
     private:
         static const QString eveTimeFormat;
 
-        APIResponseCache mCache;
+        mutable APIResponseCache mCache;
         APIInterface mInterface;
 
-        void handlePotentialError(const QString &xml, const QString &error);
 
         template<class T>
         static std::vector<T> parseResults(const QString &xml, const QString &rowsetName);
+        template<class T>
+        static T parseResult(const QString &xml);
+
         static QString queryPath(const QString &path, const QString &xml);
+
+        static QDateTime getCachedUntil(const QString &xml);
+        static void handlePotentialError(const QString &xml, const QString &error);
     };
 }

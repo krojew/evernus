@@ -8,9 +8,14 @@
 
 namespace Evernus
 {
-    void APIInterface::fetchCharacterList(const Key &key, const Callback &callback)
+    void APIInterface::fetchCharacterList(const Key &key, const Callback &callback) const
     {
         makeRequest("/account/Characters.xml.aspx", key, callback);
+    }
+
+    void APIInterface::fetchCharacter(const Key &key, Character::IdType characterId, const Callback &callback) const
+    {
+        makeRequest("/char/CharacterSheet.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
     }
 
     void APIInterface::processReply()
@@ -38,7 +43,7 @@ namespace Evernus
         emit generalError(QString{tr("Encountered SSL errors:\n\n%1")}.arg(errorTexts.join("\n")));
     }
 
-    void APIInterface::makeRequest(const QString &endpoint, const Key &key, const Callback &callback)
+    void APIInterface::makeRequest(const QString &endpoint, const Key &key, const Callback &callback, const QueryParams &additionalParams) const
     {
         QSettings settings;
         QString url;
@@ -51,6 +56,9 @@ namespace Evernus
         QUrlQuery postData;
         postData.addQueryItem("keyID", QString::number(key.getId()));
         postData.addQueryItem("vCode", key.getCode());
+
+        for (const auto &param : additionalParams)
+            postData.addQueryItem(param.first, param. second);
 
         QNetworkRequest request{url + endpoint};
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");

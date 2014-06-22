@@ -8,6 +8,7 @@ set(PROJECT_NAME "evernus")
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Network REQUIRED)
+find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
 find_package(Boost REQUIRED)
 
@@ -44,6 +45,7 @@ add_executable(
     WIN32
     ActiveTasksDialog.cpp
     ActiveTasksDialog.h
+    APIDomParser.h
     APIInterface.cpp
     APIInterface.h
     APIManager.cpp
@@ -51,15 +53,21 @@ add_executable(
     APIResponseCache.cpp
     APIResponseCache.h
     APIXmlReceiver.h
+    CachedCharacter.cpp
+    CachedCharacter.h
     CachedCharacterList.cpp
     CachedCharacterList.h
     CachedCharacterListRepository.cpp
     CachedCharacterListRepository.h
+    CachedCharacterRepository.cpp
+    CachedCharacterRepository.h
     CachedEntity.cpp
     CachedEntity.h
     CacheRepository.h
     Character.cpp
     Character.h
+    CharacterData.h
+    CharacterDomParser.h
     CharacterImportPreferencesWidget.cpp
     CharacterImportPreferencesWidget.h
     CharacterListXmlReceiver.h
@@ -69,9 +77,9 @@ add_executable(
     CharacterModel.h
     CharacterRepository.cpp
     CharacterRepository.h
-    Entity.h
     DatabaseUtils.cpp
     DatabaseUtils.h
+    Entity.h
     EvernusApplication.cpp
     EvernusApplication.h
     ImportSettings.h
@@ -109,5 +117,6 @@ target_link_libraries(
     Qt5::Widgets
     Qt5::Sql
     Qt5::Network
+    Qt5::Xml
     Qt5::XmlPatterns
 )

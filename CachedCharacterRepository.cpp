@@ -1,25 +1,23 @@
 #include <QSqlQuery>
 
-#include "KeyRepository.h"
-
-#include "CharacterRepository.h"
+#include "CachedCharacterRepository.h"
 
 namespace Evernus
 {
-    QString CharacterRepository::getTableName() const
+    QString CachedCharacterRepository::getTableName() const
     {
         return "characters";
     }
 
-    QString CharacterRepository::getIdColumn() const
+    QString CachedCharacterRepository::getIdColumn() const
     {
-        return "id";
+        return "key_id";
     }
 
-    Character CharacterRepository::populate(const QSqlRecord &record) const
+    CachedCharacter CachedCharacterRepository::populate(const QSqlRecord &record) const
     {
-        Character character{record.value("id").value<Character::IdType>()};
-        character.setKeyId(record.value("key_id").value<Key::IdType>());
+        CachedCharacter character{record.value("key_id").value<CachedCharacter::IdType>()};
+        character.setCharacterId(record.value("character_id").value<Character::IdType>());
         character.setName(record.value("name").toString());
         character.setCorporationName(record.value("corporation_name").toString());
         character.setRace(record.value("race").toString());
@@ -29,7 +27,6 @@ namespace Evernus
         character.setISK(CharacterData::ISKType{record.value("isk").toString().toLatin1().data()});
         character.setCorpStanding(record.value("corp_standing").toFloat());
         character.setFactionStanding(record.value("faction_standing").toFloat());
-        character.setEnabled(record.value("enabled").toBool());
 
         CharacterData::OrderAmountSkills orderAmountSkills;
         orderAmountSkills.mTrade = record.value("trade_skill").toInt();
@@ -61,11 +58,12 @@ namespace Evernus
         return character;
     }
 
-    void CharacterRepository::create(const KeyRepository &keyRepository) const
+    void CachedCharacterRepository::create() const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id BIGINT PRIMARY KEY,
-            key_id INTEGER NULL REFERENCES %2(id) ON UPDATE SET NULL ON DELETE SET NULL,
+            key_id INTEGER NOT NULL,
+            character_id BIGINT NOT NULL,
+            cache_until TEXT NOT NULL,
             name TEXT NOT NULL,
             corporation_name TEXT NOT NULL,
             race TEXT NOT NULL,
@@ -88,17 +86,17 @@ namespace Evernus
             margin_trading_skill TINYINT NOT NULL,
             contracting_skill TINYINT NOT NULL,
             corporation_contracting_skill TINYINT NOT NULL,
-            enabled TINYINT NOT NULL
-        ))"}.arg(getTableName()).arg(keyRepository.getTableName()));
 
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(key_id)"}.arg(getTableName()).arg(keyRepository.getTableName()));
+            CONSTRAINT pk PRIMARY KEY (key_id, character_id)
+        ))"}.arg(getTableName()));
     }
 
-    QStringList CharacterRepository::getColumns() const
+    QStringList CachedCharacterRepository::getColumns() const
     {
         return QStringList{}
-            << "id"
             << "key_id"
+            << "character_id"
+            << "cache_until"
             << "name"
             << "corporation_name"
             << "race"
@@ -120,21 +118,19 @@ namespace Evernus
             << "broker_relations_skill"
             << "margin_trading_skill"
             << "contracting_skill"
-            << "corporation_contracting_skill"
-            << "enabled";
+            << "corporation_contracting_skill";
     }
 
-    void CharacterRepository::bindValues(const Character &entity, QSqlQuery &query) const
+    void CachedCharacterRepository::bindValues(const CachedCharacter &entity, QSqlQuery &query) const
     {
-        const auto keyId = entity.getKeyId();
-
         const auto orderAmountSkills = entity.getOrderAmountSkills();
         const auto tradeRangeSkills = entity.getTradeRangeSkills();
         const auto feeSkills = entity.getFeeSkills();
         const auto contractSkills = entity.getContractSkills();
 
-        query.bindValue(":id", entity.getId());
-        query.bindValue(":key_id", (keyId) ? (*keyId) : (QVariant{QVariant::UInt}));
+        query.bindValue(":key_id", entity.getId());
+        query.bindValue(":character_id", entity.getCharacterId());
+        query.bindValue(":cache_until", entity.getCacheUntil());
         query.bindValue(":name", entity.getName());
         query.bindValue(":corporation_name", entity.getCorporationName());
         query.bindValue(":race", entity.getRace());
@@ -157,6 +153,5 @@ namespace Evernus
         query.bindValue(":margin_trading_skill", feeSkills.mMarginTrading);
         query.bindValue(":contracting_skill", contractSkills.mContracting);
         query.bindValue(":corporation_contracting_skill", contractSkills.mCorporationContracting);
-        query.bindValue(":enabled", entity.isEnabled());
     }
 }
