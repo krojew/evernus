@@ -141,7 +141,7 @@ namespace Evernus
         query.bindValue(":bloodline", entity.getBloodline());
         query.bindValue(":ancestry", entity.getAncestry());
         query.bindValue(":gender", entity.getGender());
-        query.bindValue(":isk", QString::fromStdString(entity.getISK().str(20, 0)));
+        query.bindValue(":isk", QString::fromStdString(entity.getISK().str(20)));
         query.bindValue(":corp_standing", entity.getCorpStanding());
         query.bindValue(":faction_standing", entity.getFactionStanding());
         query.bindValue(":trade_skill", orderAmountSkills.mTrade);

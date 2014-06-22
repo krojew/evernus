@@ -60,7 +60,7 @@ namespace Evernus
         for (auto i = 0; i < importCategories.size(); ++i)
         {
             auto item = new QTreeWidgetItem{importItem, QStringList{importCategories[i].first}};
-            item->setData(0, Qt::UserRole, i + categories.size());
+            item->setData(0, Qt::UserRole, i + static_cast<int>(categories.size()));
         }
 
         for (auto &category : importCategories)

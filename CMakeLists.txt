@@ -13,7 +13,7 @@ find_package(Qt5XmlPatterns REQUIRED)
 find_package(Boost REQUIRED)
 
 if(UNIX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -stdlib=libc++ -g")
 endif()
 
 if(WIN32)
