@@ -9,6 +9,8 @@
 #include "KeyRepository.h"
 #include "APIManager.h"
 
+class QSplashScreen;
+
 namespace Evernus
 {
     class EvernusApplication
@@ -52,5 +54,7 @@ namespace Evernus
 
         quint32 startTask(const QString &description);
         quint32 startTask(quint32 parentTask, const QString &description);
+
+        static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };
 }

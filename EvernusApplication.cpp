@@ -1,5 +1,6 @@
 #include <stdexcept>
 
+#include <QSplashScreen>
 #include <QMessageBox>
 #include <QSettings>
 #include <QDebug>
@@ -16,10 +17,21 @@ namespace Evernus
         : QApplication{argc, argv}
         , mMainDb{QSqlDatabase::addDatabase("QSQLITE", "main")}
     {
+        QSplashScreen splash{QPixmap{":/images/splash.png"}};
+        splash.show();
+        showSplashMessage(tr("Loading..."), splash);
+
         try
         {
+            showSplashMessage(tr("Creating databases..."), splash);
+
             createDb();
+
+            showSplashMessage(tr("Creating schemas..."), splash);
+
             createDbSchema();
+
+            showSplashMessage(tr("Loading..."), splash);
 
             QSettings settings;
             settings.setValue(versionKey, applicationVersion());
@@ -137,5 +149,11 @@ namespace Evernus
     {
         emit taskStarted(mTaskId, parentTask, description);
         return mTaskId++;
+    }
+
+    void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)
+    {
+        splash.showMessage(message, Qt::AlignBottom | Qt::AlignHCenter, Qt::white);
+        processEvents();
     }
 }

@@ -8,5 +8,6 @@
         <file>images/delete.png</file>
         <file>images/information.png</file>
         <file>images/main-icon.png</file>
+        <file>images/splash.png</file>
     </qresource>
 </RCC>
