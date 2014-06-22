@@ -87,6 +87,12 @@ namespace Evernus
         ISKType getISK() const;
         void setISK(ISKType isk);
 
+        float getCorpStanding() const noexcept;
+        void setCorpStanding(float standing) noexcept;
+
+        float getFactionStanding() const noexcept;
+        void setFactionStanding(float standing) noexcept;
+
         OrderAmountSkills getOrderAmountSkills() const noexcept;
         void setOrderAmountSkills(const OrderAmountSkills &skills) noexcept;
         void setOrderAmountSkills(OrderAmountSkills &&skills) noexcept;
@@ -116,6 +122,8 @@ namespace Evernus
         QString mGender;
         uint mSkillPoints = 0;
         ISKType mISK = 0;
+        float mCorpStanding = 0.f;
+        float mFactionStanding = 0.f;
 
         OrderAmountSkills mOrderAmountSkills;
         TradeRangeSkills mTradeRangeSkills;

@@ -152,6 +152,26 @@ namespace Evernus
         mISK = isk;
     }
 
+    float Character::getCorpStanding() const noexcept
+    {
+        return mCorpStanding;
+    }
+
+    void Character::setCorpStanding(float standing) noexcept
+    {
+        mCorpStanding = standing;
+    }
+
+    float Character::getFactionStanding() const noexcept
+    {
+        return mFactionStanding;
+    }
+
+    void Character::setFactionStanding(float standing) noexcept
+    {
+        mFactionStanding = standing;
+    }
+
     Character::OrderAmountSkills Character::getOrderAmountSkills() const noexcept
     {
         return mOrderAmountSkills;
