@@ -69,8 +69,8 @@ namespace Evernus
         const auto keys = mKeyRepository->fetchAll();
         for (const auto &key : keys)
         {
-            const auto subtask = startTask(task, QString{tr("Fetching characters for key %1...")}.arg(key.getId()));
-            mAPIManager.fetchCharacterList(key, [key, subtask, this](const auto &characters, const auto &error) {
+            const auto charListSubtask = startTask(task, QString{tr("Fetching characters for key %1...")}.arg(key.getId()));
+            mAPIManager.fetchCharacterList(key, [key, charListSubtask, this](const auto &characters, const auto &error) {
                 if (error.isEmpty())
                 {
                     try
@@ -114,13 +114,13 @@ namespace Evernus
 
                     for (const auto id : characters)
                     {
-                        mAPIManager.fetchCharacter(key, id, [](const auto &data, const auto &error) {
+                        const auto charSubtask = startTask(charListSubtask, QString{tr("Fetching character %1...")}.arg(id));
+                        mAPIManager.fetchCharacter(key, id, [charSubtask, this](const auto &data, const auto &error) {
 
+                            emit taskStatusChanged(charSubtask, error);
                         });
                     }
                 }
-
-                emit taskStatusChanged(subtask, error);
             });
         }
     }
