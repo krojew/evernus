@@ -66,10 +66,14 @@ namespace Evernus
 
     void ActiveTasksDialog::addNewSubTaskInfo(quint32 taskId, quint32 parentTask, const QString &description)
     {
-        mTotalProgressWidget->setMaximum(mTotalProgressWidget->maximum() + 1);
-
         auto item = mTaskItems.find(parentTask);
-        Q_ASSERT(item != std::end(mTaskItems));
+        if (item == std::end(mTaskItems))
+        {
+            QMetaObject::invokeMethod(this, "addNewSubTaskInfo", Qt::QueuedConnection, Q_ARG(quint32, taskId), Q_ARG(quint32, parentTask), Q_ARG(QString, description));
+            return;
+        }
+
+        mTotalProgressWidget->setMaximum(mTotalProgressWidget->maximum() + 1);
 
         fillTaskItem(taskId, new QTreeWidgetItem{item->second}, description);
         mTaskWidget->resizeColumnToContents(0);
@@ -80,7 +84,11 @@ namespace Evernus
     void ActiveTasksDialog::setTaskStatus(quint32 taskId, const QString &error)
     {
         auto item = mTaskItems.find(taskId);
-        Q_ASSERT(item != std::end(mTaskItems));
+        if (item == std::end(mTaskItems))
+        {
+            QMetaObject::invokeMethod(this, "setTaskStatus", Qt::QueuedConnection, Q_ARG(quint32, taskId), Q_ARG(QString, error));
+            return;
+        }
 
         const auto subTaskInfo = mSubTaskInfo.find(taskId);
         const auto success = error.isEmpty() && (subTaskInfo == std::end(mSubTaskInfo) || !subTaskInfo->second.mError);
