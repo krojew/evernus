@@ -16,8 +16,12 @@ namespace Evernus
 
     CachedCharacter CachedCharacterRepository::populate(const QSqlRecord &record) const
     {
+        auto cacheUntil = record.value("cache_until").toDateTime();
+        cacheUntil.setTimeSpec(Qt::UTC);
+
         CachedCharacter character{record.value("key_id").value<CachedCharacter::IdType>()};
         character.setCharacterId(record.value("character_id").value<Character::IdType>());
+        character.setCacheUntil(cacheUntil);
         character.setName(record.value("name").toString());
         character.setCorporationName(record.value("corporation_name").toString());
         character.setRace(record.value("race").toString());
