@@ -26,6 +26,7 @@ qt5_wrap_cpp(
     APIInterface.h
     APIManager.h
     CharacterManagerDialog.h
+    CharacterModel.h
     CharacterImportPreferencesWidget.h
     EvernusApplication.h
     MainWindow.h

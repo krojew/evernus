@@ -1,5 +1,6 @@
 #include <memory>
 
+#include <QSortFilterProxyModel>
 #include <QDialogButtonBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -24,6 +25,7 @@ namespace Evernus
         : QDialog{parent}
         , mCharacterRepository{characterRepository}
         , mKeyRepository{keyRepository}
+        , mCharacterModel{mCharacterRepository}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -38,6 +40,8 @@ namespace Evernus
         connect(btnBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
         setWindowTitle(tr("Character Manager"));
+
+        connect(this, &CharacterManagerDialog::charactersChanged, &mCharacterModel, &CharacterModel::reset);
 
         refreshKeys();
     }
@@ -149,6 +153,15 @@ namespace Evernus
 
         auto groupLayout = new QVBoxLayout{};
         charGroup->setLayout(groupLayout);
+
+        auto proxyModel = new QSortFilterProxyModel{this};
+        proxyModel->setSourceModel(&mCharacterModel);
+
+        auto characterView = new QTreeView{this};
+        groupLayout->addWidget(characterView);
+        characterView->setModel(proxyModel);
+        characterView->setMinimumWidth(320);
+        characterView->setSortingEnabled(true);
 
         return page.release();
     }

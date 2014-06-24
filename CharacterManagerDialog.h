@@ -4,6 +4,8 @@
 #include <QModelIndex>
 #include <QDialog>
 
+#include "CharacterModel.h"
+
 class QItemSelection;
 class QPushButton;
 
@@ -27,6 +29,7 @@ namespace Evernus
 
     signals:
         void keysChanged();
+        void charactersChanged();
 
     private slots:
         void addKey();
@@ -40,6 +43,7 @@ namespace Evernus
         const Repository<Key> &mKeyRepository;
 
         QSqlQueryModel mKeyModel;
+        CharacterModel mCharacterModel;
 
         QPushButton *mEditKeyBtn = nullptr;
         QPushButton *mRemoveKeyBtn = nullptr;

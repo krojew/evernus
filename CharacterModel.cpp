@@ -1,3 +1,5 @@
+#include "Repository.h"
+
 #include "CharacterModel.h"
 
 namespace Evernus
@@ -5,21 +7,91 @@ namespace Evernus
     CharacterModel::CharacterModel(const Repository<Character> &characterRepository, QObject *parent)
         : QAbstractTableModel{parent}
         , mCharacterRepository{characterRepository}
+        , mData{mCharacterRepository.fetchAll()}
     {
+    }
+
+    Qt::ItemFlags CharacterModel::flags(const QModelIndex &index) const
+    {
+        auto flags = QAbstractTableModel::flags(index);
+        if (index.isValid() && index.column() == 0)
+            flags |= Qt::ItemIsUserCheckable;
+
+        return flags;
+    }
+
+    QVariant CharacterModel::headerData(int section, Qt::Orientation orientation, int role) const
+    {
+        if (role == Qt::DisplayRole)
+        {
+            switch (section) {
+            case 0:
+                return "Id";
+            case 1:
+                return "Name";
+            case 2:
+                return "Key id";
+            }
+        }
+
+        return QVariant{};
     }
 
     int CharacterModel::columnCount(const QModelIndex &parent) const
     {
-        return 2;
+        return 3;
     }
 
     QVariant CharacterModel::data(const QModelIndex &index, int role) const
     {
+        if (!index.isValid())
+            return QVariant{};
+
+        if (role == Qt::DisplayRole)
+        {
+            const auto &character = mData[index.row()];
+            switch (index.column()) {
+            case 0:
+                return character.getId();
+            case 1:
+                return character.getName();
+            case 2:
+                {
+                    const auto key = character.getKeyId();;
+                    return (key) ? (QString::number(*key)) : (QString{"none"});
+                }
+            }
+        }
+        else if (role == Qt::CheckStateRole && index.column() == 0)
+        {
+            return (mData[index.row()].isEnabled()) ? (Qt::Checked) : (Qt::Unchecked);
+        }
+
         return QVariant{};
+    }
+
+    bool CharacterModel::setData(const QModelIndex &index, const QVariant &value, int role)
+    {
+        if (role == Qt::CheckStateRole && index.isValid() && index.column() == 0)
+        {
+            mData[index.row()].setEnabled(value.toInt() == Qt::Checked);
+            mCharacterRepository.store(mData[index.row()]);
+
+            emit dataChanged(index, index, QVector<int>{1, Qt::CheckStateRole});
+        }
+
+        return false;
     }
 
     int CharacterModel::rowCount(const QModelIndex &parent) const
     {
-        return 0;
+        return static_cast<int>(mData.size());
+    }
+
+    void CharacterModel::reset()
+    {
+        beginResetModel();
+        mData = mCharacterRepository.fetchAll();
+        endResetModel();
     }
 }

@@ -29,6 +29,7 @@ namespace Evernus
 
     signals:
         void keysChanged();
+        void charactersChanged();
 
         void newTaskInfoAdded(quint32 taskId, const QString &description);
         void newSubTaskInfoAdded(quint32 taskId, quint32 parentTask, const QString &description);

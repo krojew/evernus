@@ -34,8 +34,14 @@ namespace Evernus
 
         void apiError(const QString &info);
 
+        void charactersChanged();
+
     public slots:
         void fetchCharacters();
+
+    private slots:
+        void scheduleCharacterUpdate();
+        void updateCharacters();
 
     private:
         static const QString versionKey;
@@ -48,6 +54,8 @@ namespace Evernus
         APIManager mAPIManager;
 
         quint32 mTaskId = 0;
+
+        bool mCharacterUpdateScheduled = false;
 
         void createDb();
         void createDbSchema();

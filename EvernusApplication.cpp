@@ -67,62 +67,104 @@ namespace Evernus
         const auto task = startTask(tr("Fetching characters..."));
 
         const auto keys = mKeyRepository->fetchAll();
-        for (const auto &key : keys)
+
+        if (keys.empty())
         {
-            const auto charListSubtask = startTask(task, QString{tr("Fetching characters for key %1...")}.arg(key.getId()));
-            mAPIManager.fetchCharacterList(key, [key, charListSubtask, this](const auto &characters, const auto &error) {
-                if (error.isEmpty())
-                {
-                    try
+            mCharacterRepository->exec(QString{"UPDATE %1 SET key_id = NULL, enabled = 0"}.arg(mCharacterRepository->getTableName()));
+            emit taskStatusChanged(task, QString{});
+        }
+        else
+        {
+            for (const auto &key : keys)
+            {
+                const auto charListSubtask = startTask(task, QString{tr("Fetching characters for key %1...")}.arg(key.getId()));
+                mAPIManager.fetchCharacterList(key, [key, charListSubtask, this](const auto &characters, const auto &error) {
+                    if (error.isEmpty())
                     {
+                        try
+                        {
+                            if (characters.empty())
+                            {
+                                auto query = mCharacterRepository->prepare(
+                                    QString{"UPDATE %1 SET key_id = NULL, enabled = 0 WHERE key_id = ?"}.arg(mCharacterRepository->getTableName()));
+                                query.bindValue(0, key.getId());
+                                query.exec();
+                            }
+                            else
+                            {
+                                QStringList ids;
+                                for (auto i = 0; i < characters.size(); ++i)
+                                    ids << "?";
+
+                                auto query = mCharacterRepository->prepare(QString{"UPDATE %1 SET key_id = NULL, enabled = 0 WHERE key_id = ? AND %2 NOT IN (%3)"}
+                                    .arg(mCharacterRepository->getTableName())
+                                    .arg(mCharacterRepository->getIdColumn())
+                                    .arg(ids.join(", ")));
+
+                                query.bindValue(0, key.getId());
+
+                                for (auto i = 0; i < characters.size(); ++i)
+                                    query.bindValue(i + 1, characters[i]);
+
+                                query.exec();
+                            }
+                        }
+                        catch (const std::exception &e)
+                        {
+                            QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred while updating character key information: %1. "
+                                "Data sync should work, but character tab will display incorrect information.").arg(e.what()));
+                            return;
+                        }
+                        catch (...)
+                        {
+                            QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred while updating character key information. "
+                                "Data sync should work, but character tab will display incorrect information."));
+                            return;
+                        }
+
                         if (characters.empty())
                         {
-                            auto query = mCharacterRepository->prepare(
-                                QString{"UPDATE %1 SET key_id = NULL WHERE key_id = ?"}.arg(mCharacterRepository->getTableName()));
-                            query.bindValue(0, key.getCode());
-                            query.exec();
+                            emit taskStatusChanged(charListSubtask, error);
                         }
                         else
                         {
-                            QStringList ids;
-                            for (auto i = 0; i < characters.size(); ++i)
-                                ids << "?";
+                            for (const auto id : characters)
+                            {
+                                const auto charSubtask = startTask(charListSubtask, QString{tr("Fetching character %1...")}.arg(id));
+                                mAPIManager.fetchCharacter(key, id, [charSubtask, this](auto data, const auto &error) {
+                                    if (error.isEmpty())
+                                    {
+                                        mCharacterRepository->store(data);
+                                        QMetaObject::invokeMethod(this, "scheduleCharacterUpdate", Qt::QueuedConnection);
+                                    }
 
-                            auto query = mCharacterRepository->prepare(QString{"UPDATE %1 SET key_id = NULL, enabled = 0 WHERE %2 NOT IN (%3)"}
-                                .arg(mCharacterRepository->getTableName())
-                                .arg(mCharacterRepository->getIdColumn())
-                                .arg(ids.join(", ")));
-
-                            for (auto i = 0; i < characters.size(); ++i)
-                                query.bindValue(i, characters[i]);
-
-                            query.exec();
+                                    emit taskStatusChanged(charSubtask, error);
+                                });
+                            }
                         }
                     }
-                    catch (const std::exception &e)
+                    else
                     {
-                        QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred while updating character key information: %1. "
-                            "Data sync should work, but character tab will display incorrect information.").arg(e.what()));
-                        return;
+                        emit taskStatusChanged(charListSubtask, error);
                     }
-                    catch (...)
-                    {
-                        QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred while updating character key information. "
-                            "Data sync should work, but character tab will display incorrect information."));
-                        return;
-                    }
-
-                    for (const auto id : characters)
-                    {
-                        const auto charSubtask = startTask(charListSubtask, QString{tr("Fetching character %1...")}.arg(id));
-                        mAPIManager.fetchCharacter(key, id, [charSubtask, this](const auto &data, const auto &error) {
-
-                            emit taskStatusChanged(charSubtask, error);
-                        });
-                    }
-                }
-            });
+                });
+            }
         }
+    }
+
+    void EvernusApplication::scheduleCharacterUpdate()
+    {
+        if (mCharacterUpdateScheduled)
+            return;
+
+        mCharacterUpdateScheduled = true;
+        QMetaObject::invokeMethod(this, "updateCharacters", Qt::QueuedConnection);
+    }
+
+    void EvernusApplication::updateCharacters()
+    {
+        mCharacterUpdateScheduled = false;
+        emit charactersChanged();
     }
 
     void EvernusApplication::createDb()
