@@ -19,7 +19,7 @@ namespace Evernus
         virtual ~Character() = default;
 
         KeyIdType getKeyId() const noexcept;
-        void setKeyId(Key::IdType id);
+        void setKeyId(KeyIdType id);
 
         QString getName() const &;
         QString &&getName() && noexcept;

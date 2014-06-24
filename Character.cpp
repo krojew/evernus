@@ -7,7 +7,7 @@ namespace Evernus
         return mKeyId;
     }
 
-    void Character::setKeyId(Key::IdType id)
+    void Character::setKeyId(KeyIdType id)
     {
         mKeyId = id;
     }

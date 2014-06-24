@@ -18,8 +18,10 @@ namespace Evernus
 
     Character CharacterRepository::populate(const QSqlRecord &record) const
     {
+        const auto keyId = record.value("key_id");
+
         Character character{record.value("id").value<Character::IdType>()};
-        character.setKeyId(record.value("key_id").value<Key::IdType>());
+        character.setKeyId((keyId.isNull()) ? (Character::KeyIdType{}) : (keyId.value<Key::IdType>()));
         character.setName(record.value("name").toString());
         character.setCorporationName(record.value("corporation_name").toString());
         character.setRace(record.value("race").toString());
