@@ -46,7 +46,7 @@ namespace Evernus
         if (mCharacterManagerDialog == nullptr)
         {
             mCharacterManagerDialog = new CharacterManagerDialog{mCharacterRepository, mKeyRepository, this};
-            connect(mCharacterManagerDialog, &CharacterManagerDialog::keysChanged, this, &MainWindow::keysChanged);
+            connect(mCharacterManagerDialog, &CharacterManagerDialog::refreshCharacters, this, &MainWindow::refreshCharacters);
             connect(this, &MainWindow::charactersChanged, mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged);
         }
 

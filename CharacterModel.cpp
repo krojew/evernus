@@ -83,8 +83,24 @@ namespace Evernus
         return false;
     }
 
+    bool CharacterModel::removeRows(int row, int count, const QModelIndex &parent)
+    {
+        beginRemoveRows(parent, row, row + count);
+
+        for (auto i = row; i < row + count; ++i)
+            mCharacterRepository.remove(mData[i].getId());
+
+        mData.erase(std::next(std::begin(mData), row), std::next(std::begin(mData), row + count));
+
+        endRemoveRows();
+        return true;
+    }
+
     int CharacterModel::rowCount(const QModelIndex &parent) const
     {
+        if (parent.isValid())
+            return 0;
+
         return static_cast<int>(mData.size());
     }
 

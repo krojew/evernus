@@ -14,10 +14,9 @@ find_package(Boost REQUIRED)
 
 if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -stdlib=libc++ -g")
-endif()
-
-if(WIN32)
+elseif(WIN32)
     set(ADDITIONAL_SRC "evernus.rc")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
 endif()
 
 qt5_wrap_cpp(

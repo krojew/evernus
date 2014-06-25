@@ -6,6 +6,7 @@
 
 #include "CharacterModel.h"
 
+class QSortFilterProxyModel;
 class QItemSelection;
 class QPushButton;
 
@@ -28,7 +29,7 @@ namespace Evernus
         virtual ~CharacterManagerDialog() = default;
 
     signals:
-        void keysChanged();
+        void refreshCharacters();
         void charactersChanged();
 
     private slots:
@@ -38,17 +39,23 @@ namespace Evernus
 
         void selectKey(const QItemSelection &selected, const QItemSelection &deselected);
 
+        void removeCharacter();
+
+        void selectCharacter(const QItemSelection &selected, const QItemSelection &deselected);
+
     private:
         const Repository<Character> &mCharacterRepository;
         const Repository<Key> &mKeyRepository;
 
         QSqlQueryModel mKeyModel;
         CharacterModel mCharacterModel;
+        QSortFilterProxyModel *mCharacterModelProxy = nullptr;
 
         QPushButton *mEditKeyBtn = nullptr;
         QPushButton *mRemoveKeyBtn = nullptr;
+        QPushButton *mRemoveCharacterBtn = nullptr;
 
-        QModelIndexList mSelectedKeys;
+        QModelIndexList mSelectedKeys, mSelectedCharacters;
 
         void refreshKeys();
         void showEditKeyDialog(Key &key);

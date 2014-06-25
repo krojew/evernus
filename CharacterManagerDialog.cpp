@@ -1,3 +1,4 @@
+#include <unordered_set>
 #include <memory>
 
 #include <QSortFilterProxyModel>
@@ -62,21 +63,35 @@ namespace Evernus
 
     void CharacterManagerDialog::removeKey()
     {
-        for (const auto &index : mSelectedKeys)
-        {
-            const auto id = mKeyModel.data(mKeyModel.index(index.row(), 0)).value<Key::IdType>();
-            mKeyRepository.remove(id);
-        }
+        const auto index = mSelectedKeys.first();
+        const auto id = mKeyModel.data(mKeyModel.index(index.row(), 0)).value<Key::IdType>();
 
+        mKeyRepository.remove(id);
         refreshKeys();
     }
 
     void CharacterManagerDialog::selectKey(const QItemSelection &selected, const QItemSelection &deselected)
     {
+        Q_UNUSED(deselected);
+
         mEditKeyBtn->setEnabled(true);
         mRemoveKeyBtn->setEnabled(true);
 
         mSelectedKeys = selected.indexes();
+    }
+
+    void CharacterManagerDialog::removeCharacter()
+    {
+        mCharacterModel.removeRow(mCharacterModelProxy->mapToSource(mSelectedCharacters.first()).row());
+        mCharacterModelProxy->invalidate();
+    }
+
+    void CharacterManagerDialog::selectCharacter(const QItemSelection &selected, const QItemSelection &deselected)
+    {
+        Q_UNUSED(deselected);
+
+        mRemoveCharacterBtn->setEnabled(true);
+        mSelectedCharacters = selected.indexes();
     }
 
     void CharacterManagerDialog::refreshKeys()
@@ -98,7 +113,7 @@ namespace Evernus
             mKeyRepository.store(key);
             refreshKeys();
 
-            emit keysChanged();
+            emit refreshCharacters();
         }
     }
 
@@ -154,14 +169,28 @@ namespace Evernus
         auto groupLayout = new QVBoxLayout{};
         charGroup->setLayout(groupLayout);
 
-        auto proxyModel = new QSortFilterProxyModel{this};
-        proxyModel->setSourceModel(&mCharacterModel);
+        mCharacterModelProxy = new QSortFilterProxyModel{this};
+        mCharacterModelProxy->setSourceModel(&mCharacterModel);
 
         auto characterView = new QTreeView{this};
         groupLayout->addWidget(characterView);
-        characterView->setModel(proxyModel);
+        characterView->setModel(mCharacterModelProxy);
         characterView->setMinimumWidth(320);
         characterView->setSortingEnabled(true);
+        connect(characterView->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &CharacterManagerDialog::selectCharacter);
+
+        auto btnLayout = new QHBoxLayout{};
+        pageLayout->addLayout(btnLayout);
+
+        auto refreshCharsBtn = new QPushButton{QIcon{":/images/arrow_refresh.png"}, tr("Refresh"), this};
+        btnLayout->addWidget(refreshCharsBtn);
+        connect(refreshCharsBtn, &QPushButton::clicked, this, &CharacterManagerDialog::refreshCharacters);
+
+        mRemoveCharacterBtn = new QPushButton{QIcon{":/images/delete.png"}, tr("Remove"), this};
+        btnLayout->addWidget(mRemoveCharacterBtn);
+        mRemoveCharacterBtn->setDisabled(true);
+        connect(mRemoveCharacterBtn, &QPushButton::clicked, this, &CharacterManagerDialog::removeCharacter);
 
         return page.release();
     }

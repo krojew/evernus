@@ -28,7 +28,7 @@ namespace Evernus
         void showAsSaved();
 
     signals:
-        void keysChanged();
+        void refreshCharacters();
         void charactersChanged();
 
         void newTaskInfoAdded(quint32 taskId, const QString &description);
