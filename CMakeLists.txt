@@ -78,6 +78,8 @@ add_executable(
     CharacterModel.h
     CharacterRepository.cpp
     CharacterRepository.h
+    CharacterWidget.cpp
+    CharacterWidget.h
     DatabaseUtils.cpp
     DatabaseUtils.h
     Entity.h

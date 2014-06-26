@@ -1,6 +1,7 @@
 #include <QCoreApplication>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QTabWidget>
 #include <QSettings>
 #include <QMenuBar>
 #include <QDebug>
@@ -8,6 +9,7 @@
 #include "CharacterManagerDialog.h"
 #include "ActiveTasksDialog.h"
 #include "PreferencesDialog.h"
+#include "CharacterWidget.h"
 #include "MenuBarWidget.h"
 
 #include "MainWindow.h"
@@ -30,6 +32,7 @@ namespace Evernus
     {
         readSettings();
         createMenu();
+        createMainView();
 
         setWindowIcon(QIcon{":/images/main-icon.png"});
     }
@@ -139,5 +142,13 @@ namespace Evernus
         mMenuWidget = new MenuBarWidget{mCharacterRepository, this};
         bar->setCornerWidget(mMenuWidget);
         connect(this, &MainWindow::charactersChanged, mMenuWidget, &MenuBarWidget::refreshCharacters);
+    }
+
+    void MainWindow::createMainView()
+    {
+        auto tabs = new QTabWidget{this};
+        setCentralWidget(tabs);
+
+        tabs->addTab(new CharacterWidget{this}, tr("Character"));
     }
 }

@@ -68,5 +68,6 @@ namespace Evernus
         void writeSettings();
 
         void createMenu();
+        void createMainView();
     };
 }
