@@ -20,6 +20,7 @@ namespace Evernus
 
         mCharacterCombo = new QComboBox{this};
         mainLayout->addWidget(mCharacterCombo);
+        mCharacterCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         connect(mCharacterCombo, SIGNAL(currentIndexChanged(int)), SLOT(changeCharacter(int)), Qt::QueuedConnection);
 
         refreshCharacters();

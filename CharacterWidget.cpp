@@ -44,6 +44,8 @@ namespace Evernus
 
         mISKLabel = new QLabel{this};
         backgroundLayout->addWidget(mISKLabel);
+
+        backgroundLayout->addStretch();
     }
 
     void CharacterWidget::setCharacter(Character::IdType id)
