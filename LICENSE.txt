@@ -16,6 +16,10 @@ Evernus:
 
 3rd party licenses:
 
+Eve Online with related content:
+
+©CCP hf. All rights reserved. Used with permission.
+
 Simplecrypt:
 
 Copyright (c) 2011, Andre Somers
