@@ -37,8 +37,6 @@ namespace Evernus
     private:
         QSqlDatabase mDb;
 
-        void execQuery(QSqlQuery &query) const;
-
         void insert(const T &entity) const;
         void update(const T &entity) const;
 

@@ -1,7 +1,10 @@
+#include <stdexcept>
+
 #include <QCoreApplication>
 #include <QStandardPaths>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QDebug>
 #include <QDir>
 
@@ -32,6 +35,17 @@ namespace Evernus
                 throw std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error opening DB!").toStdString()};
 
             db.exec("PRAGMA foreign_keys = ON");
+        }
+
+        void execQuery(QSqlQuery &query)
+        {
+            if (!query.exec())
+            {
+                auto error = query.lastError().text();
+
+                qCritical() << error;
+                throw std::runtime_error{error.toStdString()};
+            }
         }
     }
 }

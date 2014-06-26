@@ -4,6 +4,7 @@
 
 #include "Character.h"
 
+class QDoubleSpinBox;
 class QLabel;
 
 namespace Evernus
@@ -23,12 +24,23 @@ namespace Evernus
     public slots:
         void setCharacter(Character::IdType id);
 
+    private slots:
+        void setCorpStanding(double value);
+        void setFactionStanding(double value);
+
     private:
         const Repository<Character> &mCharacterRepository;
+
+        Character::IdType mCharacterId = Character::invalidId;
 
         QLabel *mNameLabel = nullptr;
         QLabel *mBackgroundLabel = nullptr;
         QLabel *mCorporationLabel = nullptr;
         QLabel *mISKLabel = nullptr;
+
+        QDoubleSpinBox *mCorpStandingEdit = nullptr;
+        QDoubleSpinBox *mFactionStandingEdit = nullptr;
+
+        void updateStanding(const QString &type, double value) const;
     };
 }

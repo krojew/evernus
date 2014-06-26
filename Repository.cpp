@@ -5,6 +5,8 @@
 #include <QSqlError>
 #include <QDebug>
 
+#include "DatabaseUtils.h"
+
 namespace Evernus
 {
     template<class T>
@@ -58,7 +60,7 @@ namespace Evernus
     {
         auto query = prepare(QString{"DELETE FROM %1 WHERE %2 = :id"}.arg(getTableName()).arg(getIdColumn()));
         query.bindValue(":id", id);
-        execQuery(query);
+        DatabaseUtils::execQuery(query);
     }
 
     template<class T>
@@ -83,7 +85,7 @@ namespace Evernus
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE %2 = :id"}.arg(getTableName()).arg(getIdColumn()));
         query.bindValue(":id", id);
-        execQuery(query);
+        DatabaseUtils::execQuery(query);
 
         if (query.size() == 0)
             throw NotFoundException{};
@@ -96,18 +98,6 @@ namespace Evernus
     QSqlDatabase Repository<T>::getDatabase() const
     {
         return mDb;
-    }
-
-    template<class T>
-    void Repository<T>::execQuery(QSqlQuery &query) const
-    {
-        if (!query.exec())
-        {
-            auto error = query.lastError().text();
-
-            qCritical() << error;
-            throw std::runtime_error{error.toStdString()};
-        }
     }
 
     template<class T>
@@ -126,7 +116,7 @@ namespace Evernus
 
         auto query = prepare(queryStr);
         bindValues(entity, query);
-        execQuery(query);
+        DatabaseUtils::execQuery(query);
     }
 
     template<class T>
@@ -147,6 +137,6 @@ namespace Evernus
         query.bindValue(":id_for_update", entity.getOriginalId());
 
         bindValues(entity, query);
-        execQuery(query);
+        DatabaseUtils::execQuery(query);
     }
 }
