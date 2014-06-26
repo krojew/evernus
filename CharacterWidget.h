@@ -38,6 +38,8 @@ namespace Evernus
 
         Character::IdType mCharacterId = Character::invalidId;
 
+        QLabel *mPortrait = nullptr;
+
         QLabel *mNameLabel = nullptr;
         QLabel *mBackgroundLabel = nullptr;
         QLabel *mCorporationLabel = nullptr;

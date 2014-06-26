@@ -30,8 +30,12 @@ namespace Evernus
         auto infoLayout = new QHBoxLayout{};
         infoGroup->setLayout(infoLayout);
 
+        mPortrait = new QLabel{this};
+        infoLayout->addWidget(mPortrait);
+        mPortrait->setPixmap(QPixmap{":/images/generic-portrait.jpg"});
+
         auto backgroundLayout = new QVBoxLayout{};
-        infoLayout->addLayout(backgroundLayout);
+        infoLayout->addLayout(backgroundLayout, 1);
 
         mNameLabel = new QLabel{this};
         backgroundLayout->addWidget(mNameLabel);
@@ -50,8 +54,6 @@ namespace Evernus
 
         mISKLabel = new QLabel{this};
         backgroundLayout->addWidget(mISKLabel);
-
-        backgroundLayout->addStretch();
 
         auto standingsGroup = new QGroupBox{tr("Station owner standings"), this};
         mainLayout->addWidget(standingsGroup);
@@ -120,6 +122,8 @@ namespace Evernus
         contractingLayout->addRow(tr("Contracting:"), createSkillEdit(mContractingSkillEdit, "contracting_skill"));
         contractingLayout->addRow(tr("Corporation contracting:"),
                                   createSkillEdit(mCorporationContractingSkillEdit, "corporation_contracting_skill"));
+
+        mainLayout->addStretch();
     }
 
     void CharacterWidget::setCharacter(Character::IdType id)
