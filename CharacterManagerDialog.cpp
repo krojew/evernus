@@ -40,6 +40,9 @@ namespace Evernus
         mainLayout->addWidget(btnBox);
         connect(btnBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
+        connect(&mCharacterModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
+                SIGNAL(charactersChanged()));
+
         setWindowTitle(tr("Character Manager"));
 
         refreshKeys();
