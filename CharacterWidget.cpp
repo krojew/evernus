@@ -70,7 +70,7 @@ namespace Evernus
                     .arg(character.getBloodline())
                     .arg(character.getAncestry()));
                 mCorporationLabel->setText(character.getCorporationName());
-                mISKLabel->setText(QString::fromStdString(character.getISK().str(20)));
+                mISKLabel->setText(character.getISKPresentation());
             }
             catch (const Repository<Character>::NotFoundException &)
             {

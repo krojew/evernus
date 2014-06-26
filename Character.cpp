@@ -1,3 +1,5 @@
+#include <QLocale>
+
 #include "Character.h"
 
 namespace Evernus
@@ -132,12 +134,18 @@ namespace Evernus
         mData.mGender = std::move(gender);
     }
 
-    CharacterData::ISKType Character::getISK() const
+    CharacterData::ISKType Character::getISK() const noexcept
     {
         return mData.mISK;
     }
 
-    void Character::setISK(CharacterData::ISKType isk)
+    QString Character::getISKPresentation() const
+    {
+        QLocale locale;
+        return locale.toCurrencyString(getISK() / 100., "ISK");
+    }
+
+    void Character::setISK(CharacterData::ISKType isk) noexcept
     {
         mData.mISK = isk;
     }

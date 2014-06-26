@@ -28,7 +28,7 @@ namespace Evernus
         character.setBloodline(record.value("bloodline").toString());
         character.setAncestry(record.value("ancestry").toString());
         character.setGender(record.value("gender").toString());
-        character.setISK(CharacterData::ISKType{record.value("isk").toString().toLatin1().data()});
+        character.setISK(record.value("isk").value<CharacterData::ISKType>());
         character.setCorpStanding(record.value("corp_standing").toFloat());
         character.setFactionStanding(record.value("faction_standing").toFloat());
         character.setEnabled(record.value("enabled").toBool());
@@ -74,7 +74,7 @@ namespace Evernus
             bloodline TEXT NOT NULL,
             ancestry TEXT NOT NULL,
             gender TEXT NOT NULL,
-            isk NUMERIC NOT NULL,
+            isk BIGINT NOT NULL,
             corp_standing FLOAT NOT NULL,
             faction_standing FLOAT NOT NULL,
             trade_skill TINYINT NOT NULL,
@@ -143,7 +143,7 @@ namespace Evernus
         query.bindValue(":bloodline", entity.getBloodline());
         query.bindValue(":ancestry", entity.getAncestry());
         query.bindValue(":gender", entity.getGender());
-        query.bindValue(":isk", QString::fromStdString(entity.getISK().str(20)));
+        query.bindValue(":isk", entity.getISK());
         query.bindValue(":corp_standing", entity.getCorpStanding());
         query.bindValue(":faction_standing", entity.getFactionStanding());
         query.bindValue(":trade_skill", orderAmountSkills.mTrade);

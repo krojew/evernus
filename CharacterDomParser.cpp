@@ -10,6 +10,9 @@ namespace Evernus
         template<>
         Character parse<Character>(const QDomElement &node)
         {
+            auto balance = node.firstChildElement("balance").text();
+            balance.remove('.');
+
             Character result;
             result.setId(node.firstChildElement("characterID").text().toULongLong());
             result.setName(node.firstChildElement("name").text());
@@ -18,7 +21,7 @@ namespace Evernus
             result.setBloodline(node.firstChildElement("bloodLine").text());
             result.setAncestry(node.firstChildElement("ancestry").text());
             result.setGender(node.firstChildElement("gender").text());
-            result.setISK(CharacterData::ISKType{node.firstChildElement("balance").text().toLatin1().data()});
+            result.setISK(balance.toLongLong());
 
             QSettings settings;
             if (settings.value(ImportSettings::importSkillsKey, true).toBool())

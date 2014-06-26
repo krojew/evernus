@@ -1,12 +1,12 @@
 #pragma once
 
-#include <boost/multiprecision/cpp_dec_float.hpp>
+#include <QString>
 
 namespace Evernus
 {
     struct CharacterData
     {
-        typedef boost::multiprecision::cpp_dec_float_50 ISKType;
+        typedef qint64 ISKType;
 
         struct OrderAmountSkills
         {

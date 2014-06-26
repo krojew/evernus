@@ -51,8 +51,9 @@ namespace Evernus
         void setGender(const QString &gender);
         void setGender(QString &&gender);
 
-        CharacterData::ISKType getISK() const;
-        void setISK(CharacterData::ISKType isk);
+        CharacterData::ISKType getISK() const noexcept;
+        QString getISKPresentation() const;
+        void setISK(CharacterData::ISKType isk) noexcept;
 
         float getCorpStanding() const noexcept;
         void setCorpStanding(float standing) noexcept;
