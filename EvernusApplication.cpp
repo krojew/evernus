@@ -5,6 +5,7 @@
 #include <QSettings>
 #include <QDebug>
 
+#include "ImportSettings.h"
 #include "DatabaseUtils.h"
 
 #include "EvernusApplication.h"
@@ -134,6 +135,22 @@ namespace Evernus
                                 mAPIManager.fetchCharacter(key, id, [charSubtask, this](auto data, const auto &error) {
                                     if (error.isEmpty())
                                     {
+                                        QSettings settings;
+                                        if (!settings.value(ImportSettings::importSkillsKey, true).toBool())
+                                        {
+                                            try
+                                            {
+                                                const auto prevData = mCharacterRepository->find(data.getId());
+                                                data.setOrderAmountSkills(prevData.getOrderAmountSkills());
+                                                data.setTradeRangeSkills(prevData.getTradeRangeSkills());
+                                                data.setFeeSkills(prevData.getFeeSkills());
+                                                data.setContractSkills(prevData.getContractSkills());
+                                            }
+                                            catch (const CharacterRepository::NotFoundException &)
+                                            {
+                                            }
+                                        }
+
                                         mCharacterRepository->store(data);
                                         QMetaObject::invokeMethod(this, "scheduleCharacterUpdate", Qt::QueuedConnection);
                                     }
