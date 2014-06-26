@@ -1,8 +1,10 @@
 #include <QDoubleSpinBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QFormLayout>
 #include <QMessageBox>
 #include <QGroupBox>
+#include <QSpinBox>
 #include <QLabel>
 #include <QFont>
 
@@ -68,6 +70,54 @@ namespace Evernus
         standingsLayout->addWidget(mFactionStandingEdit);
         mFactionStandingEdit->setSingleStep(0.01);
         connect(mFactionStandingEdit, SIGNAL(valueChanged(double)), SLOT(setFactionStanding(double)));
+
+        auto skillsGroup = new QGroupBox{tr("Trade skills"), this};
+        mainLayout->addWidget(skillsGroup);
+
+        auto skillsLayout = new QHBoxLayout{};
+        skillsGroup->setLayout(skillsLayout);
+
+        auto orderAmountGroup = new QGroupBox{tr("Order amount skills"), this};
+        skillsLayout->addWidget(orderAmountGroup);
+
+        auto orderAmountLayout = new QFormLayout{};
+        orderAmountGroup->setLayout(orderAmountLayout);
+
+        orderAmountLayout->addRow(tr("Trade:"), createSkillEdit(mTradeSkillEdit, "trade_skill"));
+        orderAmountLayout->addRow(tr("Retail:"), createSkillEdit(mRetailSkillEdit, "retail_skill"));
+        orderAmountLayout->addRow(tr("Wholesale:"), createSkillEdit(mWholesaleSkillEdit, "wholesale_skill"));
+        orderAmountLayout->addRow(tr("Tycoon:"), createSkillEdit(mTycoonSkillEdit, "tycoon_skill"));
+
+        auto tradeRangeGroup = new QGroupBox{tr("Trade range skills"), this};
+        skillsLayout->addWidget(tradeRangeGroup);
+
+        auto tradeRangeLayout = new QFormLayout{};
+        tradeRangeGroup->setLayout(tradeRangeLayout);
+
+        tradeRangeLayout->addRow(tr("Marketing:"), createSkillEdit(mMarketingSkillEdit, "marketing_skill"));
+        tradeRangeLayout->addRow(tr("Procurement:"), createSkillEdit(mProcurementSkillEdit, "procurement_skill"));
+        tradeRangeLayout->addRow(tr("Daytrading:"), createSkillEdit(mDaytradingSkillEdit, "daytrading_skill"));
+        tradeRangeLayout->addRow(tr("Visibility:"), createSkillEdit(mVisibilitySkillEdit, "visibility_skill"));
+
+        auto feeGroup = new QGroupBox{tr("Fee skills"), this};
+        skillsLayout->addWidget(feeGroup);
+
+        auto feeLayout = new QFormLayout{};
+        feeGroup->setLayout(feeLayout);
+
+        feeLayout->addRow(tr("Accounting:"), createSkillEdit(mAccountingSkillEdit, "accounting_skill"));
+        feeLayout->addRow(tr("Broker relations:"), createSkillEdit(mBrokerRelationsSkillEdit, "broker_relations_skill"));
+        feeLayout->addRow(tr("Margin trading:"), createSkillEdit(mMarginTradingSkillEdit, "margin_trading_skill"));
+
+        auto contractingGroup = new QGroupBox{tr("Contracting skills"), this};
+        skillsLayout->addWidget(contractingGroup);
+
+        auto contractingLayout = new QFormLayout{};
+        contractingGroup->setLayout(contractingLayout);
+
+        contractingLayout->addRow(tr("Contracting:"), createSkillEdit(mContractingSkillEdit, "contracting_skill"));
+        contractingLayout->addRow(tr("Corporation contracting:"),
+                                  createSkillEdit(mCorporationContractingSkillEdit, "corporation_contracting_skill"));
     }
 
     void CharacterWidget::setCharacter(Character::IdType id)
@@ -78,6 +128,19 @@ namespace Evernus
 
         mCorpStandingEdit->blockSignals(true);
         mFactionStandingEdit->blockSignals(true);
+        mTradeSkillEdit->blockSignals(true);
+        mRetailSkillEdit->blockSignals(true);
+        mWholesaleSkillEdit->blockSignals(true);
+        mTycoonSkillEdit->blockSignals(true);
+        mMarketingSkillEdit->blockSignals(true);
+        mProcurementSkillEdit->blockSignals(true);
+        mDaytradingSkillEdit->blockSignals(true);
+        mVisibilitySkillEdit->blockSignals(true);
+        mAccountingSkillEdit->blockSignals(true);
+        mBrokerRelationsSkillEdit->blockSignals(true);
+        mMarginTradingSkillEdit->blockSignals(true);
+        mContractingSkillEdit->blockSignals(true);
+        mCorporationContractingSkillEdit->blockSignals(true);
 
         if (mCharacterId == Character::invalidId)
         {
@@ -87,6 +150,19 @@ namespace Evernus
             mISKLabel->setText(QString{});
             mCorpStandingEdit->setValue(0.);
             mFactionStandingEdit->setValue(0.);
+            mTradeSkillEdit->setValue(0);
+            mRetailSkillEdit->setValue(0);
+            mWholesaleSkillEdit->setValue(0);
+            mTycoonSkillEdit->setValue(0);
+            mMarketingSkillEdit->setValue(0);
+            mProcurementSkillEdit->setValue(0);
+            mDaytradingSkillEdit->setValue(0);
+            mVisibilitySkillEdit->setValue(0);
+            mAccountingSkillEdit->setValue(0);
+            mBrokerRelationsSkillEdit->setValue(0);
+            mMarginTradingSkillEdit->setValue(0);
+            mContractingSkillEdit->setValue(0);
+            mCorporationContractingSkillEdit->setValue(0);
         }
         else
         {
@@ -105,6 +181,25 @@ namespace Evernus
 
                 mCorpStandingEdit->setValue(character.getCorpStanding());
                 mFactionStandingEdit->setValue(character.getFactionStanding());
+
+                const auto orderAmountSkills = character.getOrderAmountSkills();
+                const auto tradeRangeSkills = character.getTradeRangeSkills();
+                const auto feeSkills = character.getFeeSkills();
+                const auto contractSkills = character.getContractSkills();
+
+                mTradeSkillEdit->setValue(orderAmountSkills.mTrade);
+                mRetailSkillEdit->setValue(orderAmountSkills.mRetail);
+                mWholesaleSkillEdit->setValue(orderAmountSkills.mWholesale);
+                mTycoonSkillEdit->setValue(orderAmountSkills.mTycoon);
+                mMarketingSkillEdit->setValue(tradeRangeSkills.mMarketing);
+                mProcurementSkillEdit->setValue(tradeRangeSkills.mProcurement);
+                mDaytradingSkillEdit->setValue(tradeRangeSkills.mDaytrading);
+                mVisibilitySkillEdit->setValue(tradeRangeSkills.mVisibility);
+                mAccountingSkillEdit->setValue(feeSkills.mAccounting);
+                mBrokerRelationsSkillEdit->setValue(feeSkills.mBrokerRelations);
+                mMarginTradingSkillEdit->setValue(feeSkills.mMarginTrading);
+                mContractingSkillEdit->setValue(contractSkills.mContracting);
+                mCorporationContractingSkillEdit->setValue(contractSkills.mCorporationContracting);
             }
             catch (const Repository<Character>::NotFoundException &)
             {
@@ -114,6 +209,19 @@ namespace Evernus
 
         mCorpStandingEdit->blockSignals(false);
         mFactionStandingEdit->blockSignals(false);
+        mTradeSkillEdit->blockSignals(false);
+        mRetailSkillEdit->blockSignals(false);
+        mWholesaleSkillEdit->blockSignals(false);
+        mTycoonSkillEdit->blockSignals(false);
+        mMarketingSkillEdit->blockSignals(false);
+        mProcurementSkillEdit->blockSignals(false);
+        mDaytradingSkillEdit->blockSignals(false);
+        mVisibilitySkillEdit->blockSignals(false);
+        mAccountingSkillEdit->blockSignals(false);
+        mBrokerRelationsSkillEdit->blockSignals(false);
+        mMarginTradingSkillEdit->blockSignals(false);
+        mContractingSkillEdit->blockSignals(false);
+        mCorporationContractingSkillEdit->blockSignals(false);
     }
 
     void CharacterWidget::setCorpStanding(double value)
@@ -124,6 +232,21 @@ namespace Evernus
     void CharacterWidget::setFactionStanding(double value)
     {
         updateStanding("faction_standing", value);
+    }
+
+    void CharacterWidget::setSkillLevel(int level)
+    {
+        Q_ASSERT(mCharacterId != Character::invalidId);
+
+        const auto fieldName = sender()->property(skillFieldProperty).toString();
+
+        auto query = mCharacterRepository.prepare(QString{"UPDATE %1 SET %2 = :level WHERE %3 = :id"}
+            .arg(mCharacterRepository.getTableName())
+            .arg(fieldName)
+            .arg(mCharacterRepository.getIdColumn()));
+        query.bindValue(":level", level);
+        query.bindValue(":id", mCharacterId);
+        DatabaseUtils::execQuery(query);
     }
 
     void CharacterWidget::updateStanding(const QString &type, double value) const
@@ -137,5 +260,15 @@ namespace Evernus
         query.bindValue(":standing", value);
         query.bindValue(":id", mCharacterId);
         DatabaseUtils::execQuery(query);
+    }
+
+    QSpinBox *CharacterWidget::createSkillEdit(QSpinBox *&target, const QString &skillField)
+    {
+        target = new QSpinBox{this};
+        target->setMaximum(5);
+        target->setProperty(skillFieldProperty, skillField);
+        connect(target, SIGNAL(valueChanged(int)), SLOT(setSkillLevel(int)));
+
+        return target;
     }
 }

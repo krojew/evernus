@@ -5,6 +5,7 @@
 #include "Character.h"
 
 class QDoubleSpinBox;
+class QSpinBox;
 class QLabel;
 
 namespace Evernus
@@ -28,7 +29,11 @@ namespace Evernus
         void setCorpStanding(double value);
         void setFactionStanding(double value);
 
+        void setSkillLevel(int level);
+
     private:
+        static constexpr auto skillFieldProperty = "field";
+
         const Repository<Character> &mCharacterRepository;
 
         Character::IdType mCharacterId = Character::invalidId;
@@ -41,6 +46,22 @@ namespace Evernus
         QDoubleSpinBox *mCorpStandingEdit = nullptr;
         QDoubleSpinBox *mFactionStandingEdit = nullptr;
 
+        QSpinBox *mTradeSkillEdit = nullptr;
+        QSpinBox *mRetailSkillEdit = nullptr;
+        QSpinBox *mWholesaleSkillEdit = nullptr;
+        QSpinBox *mTycoonSkillEdit = nullptr;
+        QSpinBox *mMarketingSkillEdit = nullptr;
+        QSpinBox *mProcurementSkillEdit = nullptr;
+        QSpinBox *mDaytradingSkillEdit = nullptr;
+        QSpinBox *mVisibilitySkillEdit = nullptr;
+        QSpinBox *mAccountingSkillEdit = nullptr;
+        QSpinBox *mBrokerRelationsSkillEdit = nullptr;
+        QSpinBox *mMarginTradingSkillEdit = nullptr;
+        QSpinBox *mContractingSkillEdit = nullptr;
+        QSpinBox *mCorporationContractingSkillEdit = nullptr;
+
         void updateStanding(const QString &type, double value) const;
+
+        QSpinBox *createSkillEdit(QSpinBox *&target, const QString &skillField);
     };
 }
