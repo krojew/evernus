@@ -2,6 +2,7 @@
 
 #include <QCoreApplication>
 #include <QStandardPaths>
+#include <QStringBuilder>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
@@ -19,10 +20,10 @@ namespace Evernus
             if (!db.isValid())
                 throw std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error crating DB object!").toStdString()};
 
-            const auto dbPath =
-                QStandardPaths::writableLocation(QStandardPaths::DataLocation) +
-                QDir::separator() +
-                "db" +
+            const QString dbPath =
+                QStandardPaths::writableLocation(QStandardPaths::DataLocation) %
+                QDir::separator() %
+                "db" %
                 QDir::separator();
 
             qDebug() << "DB path: " << dbPath;

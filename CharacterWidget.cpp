@@ -1,13 +1,20 @@
+#include <QStringBuilder>
+#include <QStandardPaths>
 #include <QDoubleSpinBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFormLayout>
 #include <QMessageBox>
+#include <QSettings>
 #include <QGroupBox>
 #include <QSpinBox>
 #include <QLabel>
 #include <QFont>
+#include <QFile>
+#include <QDir>
+#include <QUrl>
 
+#include "ImportSettings.h"
 #include "DatabaseUtils.h"
 #include "Repository.h"
 
@@ -16,6 +23,9 @@
 namespace Evernus
 {
     const char * const CharacterWidget::skillFieldProperty = "field";
+    const char * const CharacterWidget::downloadIdProperty = "downloadId";
+
+    const QString CharacterWidget::defaultPortrait = ":/images/generic-portrait.jpg";
 
     CharacterWidget::CharacterWidget(const Repository<Character> &characterRepository, QWidget *parent)
         : QWidget{parent}
@@ -32,7 +42,7 @@ namespace Evernus
 
         mPortrait = new QLabel{this};
         infoLayout->addWidget(mPortrait);
-        mPortrait->setPixmap(QPixmap{":/images/generic-portrait.jpg"});
+        mPortrait->setPixmap(defaultPortrait);
 
         auto backgroundLayout = new QVBoxLayout{};
         infoLayout->addLayout(backgroundLayout, 1);
@@ -154,8 +164,10 @@ namespace Evernus
             mBackgroundLabel->setText(QString{});
             mCorporationLabel->setText(QString{});
             mISKLabel->setText(QString{});
+
             mCorpStandingEdit->setValue(0.);
             mFactionStandingEdit->setValue(0.);
+
             mTradeSkillEdit->setValue(0);
             mRetailSkillEdit->setValue(0);
             mWholesaleSkillEdit->setValue(0);
@@ -169,6 +181,8 @@ namespace Evernus
             mMarginTradingSkillEdit->setValue(0);
             mContractingSkillEdit->setValue(0);
             mCorporationContractingSkillEdit->setValue(0);
+
+            mPortrait->setPixmap(defaultPortrait);
         }
         else
         {
@@ -206,6 +220,39 @@ namespace Evernus
                 mMarginTradingSkillEdit->setValue(feeSkills.mMarginTrading);
                 mContractingSkillEdit->setValue(contractSkills.mContracting);
                 mCorporationContractingSkillEdit->setValue(contractSkills.mCorporationContracting);
+
+                QSettings settings;
+                if (settings.value(ImportSettings::importPortraitKey, true).toBool())
+                {
+                    const auto portraitPath = getPortraitPath(mCharacterId);
+
+                    QFile portrait{portraitPath};
+                    if (portrait.exists())
+                    {
+                        mPortrait->setPixmap(portraitPath);
+                    }
+                    else if (mPortraitDownloads.find(mCharacterId) == std::end(mPortraitDownloads))
+                    {
+                        try
+                        {
+                            auto download = new FileDownload{QUrl{QString{"https://image.eveonline.com/Character/%1_128.jpg"}.arg(mCharacterId)},
+                                                             portraitPath,
+                                                             this};
+                            download->setProperty(downloadIdProperty, mCharacterId);
+                            connect(download, &FileDownload::finished, this, &CharacterWidget::downloadFinished);
+
+                            mPortraitDownloads.emplace(mCharacterId, download);
+                        }
+                        catch (const std::exception &e)
+                        {
+                            qWarning() << e.what();
+                        }
+                    }
+                }
+                else
+                {
+                    mPortrait->setPixmap(defaultPortrait);
+                }
             }
             catch (const Repository<Character>::NotFoundException &)
             {
@@ -255,6 +302,19 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    void CharacterWidget::downloadFinished()
+    {
+        const auto id = sender()->property(downloadIdProperty).value<Character::IdType>();
+        const auto it = mPortraitDownloads.find(id);
+        Q_ASSERT(it != std::end(mPortraitDownloads));
+
+        QPixmap px{getPortraitPath(id)};
+        if (!px.isNull())
+            mPortrait->setPixmap(px);
+
+        mPortraitDownloads.erase(it);
+    }
+
     void CharacterWidget::updateStanding(const QString &type, double value) const
     {
         Q_ASSERT(mCharacterId != Character::invalidId);
@@ -276,5 +336,17 @@ namespace Evernus
         connect(target, SIGNAL(valueChanged(int)), SLOT(setSkillLevel(int)));
 
         return target;
+    }
+
+    QString CharacterWidget::getPortraitPath(Character::IdType id)
+    {
+        return QStandardPaths::writableLocation(QStandardPaths::DataLocation) %
+            QDir::separator() %
+            "cache" %
+            QDir::separator() %
+            "portrait" %
+            QDir::separator() %
+            QString::number(id) %
+            ".jpg";
     }
 }

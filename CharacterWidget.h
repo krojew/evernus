@@ -1,7 +1,10 @@
 #pragma once
 
+#include <unordered_map>
+
 #include <QWidget>
 
+#include "FileDownload.h"
 #include "Character.h"
 
 class QDoubleSpinBox;
@@ -31,8 +34,12 @@ namespace Evernus
 
         void setSkillLevel(int level);
 
+        void downloadFinished();
+
     private:
         static const char * const skillFieldProperty;
+        static const char * const downloadIdProperty;
+        static const QString defaultPortrait;
 
         const Repository<Character> &mCharacterRepository;
 
@@ -62,8 +69,12 @@ namespace Evernus
         QSpinBox *mContractingSkillEdit = nullptr;
         QSpinBox *mCorporationContractingSkillEdit = nullptr;
 
+        std::unordered_map<Character::IdType, FileDownload *> mPortraitDownloads;
+
         void updateStanding(const QString &type, double value) const;
 
         QSpinBox *createSkillEdit(QSpinBox *&target, const QString &skillField);
+
+        static QString getPortraitPath(Character::IdType id);
     };
 }

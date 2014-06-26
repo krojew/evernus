@@ -20,5 +20,6 @@ namespace Evernus
 
     private:
         QCheckBox *mImportSkillsBox = nullptr;
+        QCheckBox *mImportPortraitBox = nullptr;
     };
 }

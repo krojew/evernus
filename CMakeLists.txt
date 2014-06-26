@@ -29,6 +29,7 @@ qt5_wrap_cpp(
     CharacterImportPreferencesWidget.h
     CharacterWidget.h
     EvernusApplication.h
+    FileDownload.h
     MainWindow.h
     MenuBarWidget.h
     NetworkPreferencesWidget.h
@@ -86,6 +87,8 @@ add_executable(
     Entity.h
     EvernusApplication.cpp
     EvernusApplication.h
+    FileDownload.cpp
+    FileDownload.h
     ImportSettings.h
     Key.cpp
     Key.h

@@ -27,6 +27,10 @@ namespace Evernus
         importBoxLayout->addWidget(mImportSkillsBox);
         mImportSkillsBox->setChecked(settings.value(ImportSettings::importSkillsKey, true).toBool());
 
+        mImportPortraitBox = new QCheckBox{tr("Import portrait"), this};
+        importBoxLayout->addWidget(mImportPortraitBox);
+        mImportPortraitBox->setChecked(settings.value(ImportSettings::importPortraitKey, true).toBool());
+
         mainLayout->addStretch();
     }
 
@@ -34,5 +38,6 @@ namespace Evernus
     {
         QSettings settings;
         settings.setValue(ImportSettings::importSkillsKey, mImportSkillsBox->isChecked());
+        settings.setValue(ImportSettings::importPortraitKey, mImportPortraitBox->isChecked());
     }
 }
