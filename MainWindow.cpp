@@ -149,6 +149,8 @@ namespace Evernus
         auto tabs = new QTabWidget{this};
         setCentralWidget(tabs);
 
-        tabs->addTab(new CharacterWidget{this}, tr("Character"));
+        auto charTab = new CharacterWidget{mCharacterRepository, this};
+        tabs->addTab(charTab, tr("Character"));
+        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, charTab, &CharacterWidget::setCharacter);
     }
 }

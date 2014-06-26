@@ -10,6 +10,8 @@ namespace Evernus
     class Repository
     {
     public:
+        struct NotFoundException : std::exception { };
+
         Repository(const QSqlDatabase &db);
         virtual ~Repository() = default;
 
@@ -23,9 +25,12 @@ namespace Evernus
         void store(T &entity) const;
 
         template<class Id>
-        void remove(const Id &id) const;
+        void remove(Id &&id) const;
 
         std::vector<T> fetchAll() const;
+
+        template<class Id>
+        T find(Id &&id) const;
 
         QSqlDatabase getDatabase() const;
 

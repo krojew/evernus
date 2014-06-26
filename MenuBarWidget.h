@@ -2,6 +2,8 @@
 
 #include <QWidget>
 
+#include "Character.h"
+
 class QComboBox;
 
 namespace Evernus
@@ -21,6 +23,12 @@ namespace Evernus
 
     public slots:
         void refreshCharacters();
+
+    private slots:
+        void changeCharacter(int index);
+
+    signals:
+        void currentCharacterChanged(Character::IdType id);
 
     private:
         const Repository<Character> &mCharacterRepository;

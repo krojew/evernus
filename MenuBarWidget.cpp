@@ -20,6 +20,7 @@ namespace Evernus
 
         mCharacterCombo = new QComboBox{this};
         mainLayout->addWidget(mCharacterCombo);
+        connect(mCharacterCombo, SIGNAL(currentIndexChanged(int)), SLOT(changeCharacter(int)), Qt::QueuedConnection);
 
         refreshCharacters();
     }
@@ -31,6 +32,13 @@ namespace Evernus
         auto characters = mCharacterRepository.exec(
             QString{"SELECT id, name FROM %1 WHERE enabled != 0 AND key_id IS NOT NULL"}.arg(mCharacterRepository.getTableName()));
         while (characters.next())
-            mCharacterCombo->addItem(characters.value(1).toString(), characters.value(1).value<Character::IdType>());
+            mCharacterCombo->addItem(characters.value("name").toString(), characters.value("id").value<Character::IdType>());
+    }
+
+    void MenuBarWidget::changeCharacter(int index)
+    {
+        Q_UNUSED(index);
+
+        emit currentCharacterChanged(mCharacterCombo->currentData().value<Character::IdType>());
     }
 }

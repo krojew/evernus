@@ -54,7 +54,7 @@ namespace Evernus
 
     template<class T>
     template<class Id>
-    void Repository<T>::remove(const Id &id) const
+    void Repository<T>::remove(Id &&id) const
     {
         auto query = prepare(QString{"DELETE FROM %1 WHERE %2 = :id"}.arg(getTableName()).arg(getIdColumn()));
         query.bindValue(":id", id);
@@ -75,6 +75,21 @@ namespace Evernus
             out.emplace_back(populate(result.record()));
 
         return out;
+    }
+
+    template<class T>
+    template<class Id>
+    T Repository<T>::find(Id &&id) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE %2 = :id"}.arg(getTableName()).arg(getIdColumn()));
+        query.bindValue(":id", id);
+        execQuery(query);
+
+        if (query.size() == 0)
+            throw NotFoundException{};
+
+        query.next();
+        return populate(query.record());
     }
 
     template<class T>

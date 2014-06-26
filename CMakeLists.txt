@@ -27,6 +27,7 @@ qt5_wrap_cpp(
     CharacterManagerDialog.h
     CharacterModel.h
     CharacterImportPreferencesWidget.h
+    CharacterWidget.h
     EvernusApplication.h
     MainWindow.h
     MenuBarWidget.h

@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
         {
             qCritical() << e.what();
             QMessageBox::critical(nullptr, QCoreApplication::translate("main", "Error"), e.what());
-            throw;
+            return 1;
         }
     }
     catch (const std::exception &e)
