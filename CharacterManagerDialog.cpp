@@ -42,9 +42,12 @@ namespace Evernus
 
         setWindowTitle(tr("Character Manager"));
 
-        connect(this, &CharacterManagerDialog::charactersChanged, &mCharacterModel, &CharacterModel::reset);
-
         refreshKeys();
+    }
+
+    void CharacterManagerDialog::updateCharacters()
+    {
+        mCharacterModel.reset();
     }
 
     void CharacterManagerDialog::addKey()
@@ -84,6 +87,8 @@ namespace Evernus
     {
         mCharacterModel.removeRow(mCharacterModelProxy->mapToSource(mSelectedCharacters.first()).row());
         mCharacterModelProxy->invalidate();
+
+        emit charactersChanged();
     }
 
     void CharacterManagerDialog::selectCharacter(const QItemSelection &selected, const QItemSelection &deselected)

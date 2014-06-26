@@ -32,6 +32,9 @@ namespace Evernus
         void refreshCharacters();
         void charactersChanged();
 
+    public slots:
+        void updateCharacters();
+
     private slots:
         void addKey();
         void editKey();

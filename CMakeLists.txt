@@ -29,6 +29,7 @@ qt5_wrap_cpp(
     CharacterImportPreferencesWidget.h
     EvernusApplication.h
     MainWindow.h
+    MenuBarWidget.h
     NetworkPreferencesWidget.h
     PreferencesDialog.h
 )
@@ -92,6 +93,8 @@ add_executable(
     main.cpp
     MainWindow.cpp
     MainWindow.h
+    MenuBarWidget.cpp
+    MenuBarWidget.h
     NetworkPreferencesWidget.cpp
     NetworkPreferencesWidget.h
     NetworkSettings.h

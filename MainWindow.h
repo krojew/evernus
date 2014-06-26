@@ -8,6 +8,7 @@ namespace Evernus
     class Repository;
     class CharacterManagerDialog;
     class ActiveTasksDialog;
+    class MenuBarWidget;
     class APIManager;
     class Character;
     class Key;
@@ -53,6 +54,8 @@ namespace Evernus
 
         const Repository<Character> &mCharacterRepository;
         const Repository<Key> &mKeyRepository;
+
+        MenuBarWidget *mMenuWidget = nullptr;
 
         APIManager &mApiManager;
 

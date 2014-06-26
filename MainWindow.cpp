@@ -8,6 +8,7 @@
 #include "CharacterManagerDialog.h"
 #include "ActiveTasksDialog.h"
 #include "PreferencesDialog.h"
+#include "MenuBarWidget.h"
 
 #include "MainWindow.h"
 
@@ -47,7 +48,9 @@ namespace Evernus
         {
             mCharacterManagerDialog = new CharacterManagerDialog{mCharacterRepository, mKeyRepository, this};
             connect(mCharacterManagerDialog, &CharacterManagerDialog::refreshCharacters, this, &MainWindow::refreshCharacters);
-            connect(this, &MainWindow::charactersChanged, mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged);
+            connect(this, &MainWindow::charactersChanged, mCharacterManagerDialog, &CharacterManagerDialog::updateCharacters);
+            connect(mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged,
+                    mMenuWidget, &MenuBarWidget::refreshCharacters);
         }
 
         mCharacterManagerDialog->exec();
@@ -132,5 +135,9 @@ namespace Evernus
 
         auto helpMenu = bar->addMenu(tr("&Help"));
         helpMenu->addAction(tr("&About..."), this, SLOT(showAbout()));
+
+        mMenuWidget = new MenuBarWidget{mCharacterRepository, this};
+        bar->setCornerWidget(mMenuWidget);
+        connect(this, &MainWindow::charactersChanged, mMenuWidget, &MenuBarWidget::refreshCharacters);
     }
 }
