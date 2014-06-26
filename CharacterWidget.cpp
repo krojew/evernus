@@ -15,6 +15,8 @@
 
 namespace Evernus
 {
+    const char * const CharacterWidget::skillFieldProperty = "field";
+
     CharacterWidget::CharacterWidget(const Repository<Character> &characterRepository, QWidget *parent)
         : QWidget{parent}
         , mCharacterRepository{characterRepository}

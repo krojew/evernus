@@ -136,7 +136,7 @@ namespace Evernus
                                     if (error.isEmpty())
                                     {
                                         QSettings settings;
-                                        if (!settings.value(ImportSettings::importSkillsKey, true).toBool())
+                                        if (!settings.value(Evernus::ImportSettings::importSkillsKey, true).toBool())
                                         {
                                             try
                                             {
@@ -146,7 +146,7 @@ namespace Evernus
                                                 data.setFeeSkills(prevData.getFeeSkills());
                                                 data.setContractSkills(prevData.getContractSkills());
                                             }
-                                            catch (const CharacterRepository::NotFoundException &)
+                                            catch (const Evernus::CharacterRepository::NotFoundException &)
                                             {
                                             }
                                         }

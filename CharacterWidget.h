@@ -32,7 +32,7 @@ namespace Evernus
         void setSkillLevel(int level);
 
     private:
-        static constexpr auto skillFieldProperty = "field";
+        static const char * const skillFieldProperty;
 
         const Repository<Character> &mCharacterRepository;
 
