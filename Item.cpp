@@ -2,49 +2,49 @@
 
 namespace Evernus
 {
-    Item::Item(quint64 id)
+    Item::Item(ItemData::IdType id)
         : mId{id}
     {
     }
 
-    quint64 Item::getId() const noexcept
+    ItemData::IdType Item::getId() const noexcept
     {
         return mId;
     }
 
-    void Item::setId(quint64 id) noexcept
+    void Item::setId(ItemData::IdType id) noexcept
     {
         mId = id;
     }
 
-    Item::TypeIdType Item::getTypeId() const
+    ItemData::TypeIdType Item::getTypeId() const
     {
-        return mTypeId;
+        return mData.mTypeId;
     }
 
-    void Item::setTypeId(const TypeIdType &id)
+    void Item::setTypeId(const ItemData::TypeIdType &id)
     {
-        mTypeId = id;
+        mData.mTypeId = id;
     }
 
-    Item::LocationIdType Item::getLocationId() const
+    ItemData::LocationIdType Item::getLocationId() const
     {
-        return mLocationId;
+        return mData.mLocationId;
     }
 
-    void Item::setLocationId(const LocationIdType &id)
+    void Item::setLocationId(const ItemData::LocationIdType &id)
     {
-        mLocationId = id;
+        mData.mLocationId = id;
     }
 
     uint Item::getQuantity() const noexcept
     {
-        return mQuantity;
+        return mData.mQuantity;
     }
 
     void Item::setQuantity(uint value) noexcept
     {
-        mQuantity = value;
+        mData.mQuantity = value;
     }
 
     Item::ItemIterator Item::begin() noexcept

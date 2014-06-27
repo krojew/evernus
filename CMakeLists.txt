@@ -66,6 +66,8 @@ add_executable(
     CachedCharacterRepository.h
     CachedEntity.cpp
     CachedEntity.h
+    CachedItem.cpp
+    CachedItem.h
     CacheRepository.h
     Character.cpp
     Character.h
@@ -96,6 +98,7 @@ add_executable(
     ImportSettings.h
     Item.cpp
     Item.h
+    ItemData.h
     Key.cpp
     Key.h
     KeyEditDialog.cpp

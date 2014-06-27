@@ -3,34 +3,31 @@
 #include <vector>
 #include <memory>
 
-#include <boost/optional.hpp>
-
-#include "EveType.h"
+#include "ItemData.h"
 
 namespace Evernus
 {
     class Item
     {
     public:
-        typedef boost::optional<quint64> LocationIdType;
-        typedef EveType::IdType TypeIdType;
+
 
         typedef std::vector<std::unique_ptr<Item>> ItemList;
         typedef ItemList::iterator ItemIterator;
         typedef ItemList::const_iterator ConstItemIterator;
 
         Item() = default;
-        explicit Item(quint64 id);
+        explicit Item(ItemData::IdType id);
         virtual ~Item() = default;
 
-        quint64 getId() const noexcept;
-        void setId(quint64 id) noexcept;
+        ItemData::IdType getId() const noexcept;
+        void setId(ItemData::IdType id) noexcept;
 
-        TypeIdType getTypeId() const;
-        void setTypeId(const TypeIdType &id);
+        ItemData::TypeIdType getTypeId() const;
+        void setTypeId(const ItemData::TypeIdType &id);
 
-        LocationIdType getLocationId() const;
-        void setLocationId(const LocationIdType &id);
+        ItemData::LocationIdType getLocationId() const;
+        void setLocationId(const ItemData::LocationIdType &id);
 
         uint getQuantity() const noexcept;
         void setQuantity(uint value) noexcept;
@@ -43,10 +40,8 @@ namespace Evernus
         void addItem(std::unique_ptr<Item> &&item);
 
     private:
-        quint64 mId = 0;
-        TypeIdType mTypeId = 0;
-        LocationIdType mLocationId;
-        uint mQuantity = 0;
+        ItemData::IdType mId = 0;
+        ItemData mData;
         ItemList mContents;
     };
 }
