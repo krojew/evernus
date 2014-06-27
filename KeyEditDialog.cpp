@@ -33,7 +33,7 @@ namespace Evernus
 
         mainLayout->addWidget(new QLabel{tr("To create a predefined key, use the following link:")});
 
-        auto linkLabel = new QLabel{"<a href='https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8'>https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8</a>", this};
+        auto linkLabel = new QLabel{"<a href='https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=10'>https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=10</a>", this};
         mainLayout->addWidget(linkLabel);
         linkLabel->setOpenExternalLinks(true);
 
