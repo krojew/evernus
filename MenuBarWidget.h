@@ -30,6 +30,8 @@ namespace Evernus
     signals:
         void currentCharacterChanged(Character::IdType id);
 
+        void importAll();
+
     private:
         const Repository<Character> &mCharacterRepository;
 

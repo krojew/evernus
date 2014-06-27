@@ -169,6 +169,7 @@ namespace Evernus
         bar->setCornerWidget(mMenuWidget);
         connect(this, &MainWindow::charactersChanged, mMenuWidget, &MenuBarWidget::refreshCharacters);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, this, &MainWindow::setCharacter);
+        connect(mMenuWidget, &MenuBarWidget::importAll, this, &MainWindow::refreshCharacters);
     }
 
     void MainWindow::createMainView()

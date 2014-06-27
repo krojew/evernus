@@ -1,6 +1,6 @@
 #include <QHBoxLayout>
+#include <QPushButton>
 #include <QComboBox>
-#include <QLabel>
 
 #include "Repository.h"
 #include "Character.h"
@@ -17,7 +17,10 @@ namespace Evernus
         setLayout(mainLayout);
         mainLayout->setContentsMargins(QMargins{});
 
-        mainLayout->addWidget(new QLabel{tr("Character:"), this});
+        auto importBtn = new QPushButton{QIcon{":/images/arrow_refresh.png"}, tr("Import all"), this};
+        mainLayout->addWidget(importBtn);
+        importBtn->setFlat(true);
+        connect(importBtn, &QPushButton::clicked, this, &MenuBarWidget::importAll);
 
         mCharacterCombo = new QComboBox{this};
         mainLayout->addWidget(mCharacterCombo);
