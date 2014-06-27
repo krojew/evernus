@@ -8,7 +8,7 @@ namespace Evernus
     public:
         typedef Id IdType;
 
-        static constexpr IdType invalidId = 0;
+        static constexpr IdType invalidId = IdType{};
 
         Entity() = default;
         Entity(const IdType &id);
@@ -25,7 +25,7 @@ namespace Evernus
         void setNew(bool isNew) noexcept;
 
     private:
-        IdType mId = IdType{}, mOriginalId = IdType{};
+        IdType mId = invalidId, mOriginalId = invalidId;
 
         bool mIsNew = true;
     };
