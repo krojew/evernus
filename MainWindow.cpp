@@ -1,9 +1,11 @@
 #include <QCoreApplication>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QStatusBar>
 #include <QTabWidget>
 #include <QSettings>
 #include <QMenuBar>
+#include <QLabel>
 #include <QDebug>
 
 #include "CharacterManagerDialog.h"
@@ -11,6 +13,7 @@
 #include "PreferencesDialog.h"
 #include "CharacterWidget.h"
 #include "MenuBarWidget.h"
+#include "Repository.h"
 
 #include "MainWindow.h"
 
@@ -33,6 +36,7 @@ namespace Evernus
         readSettings();
         createMenu();
         createMainView();
+        createStatusBar();
 
         setWindowIcon(QIcon{":/images/main-icon.png"});
     }
@@ -99,6 +103,28 @@ namespace Evernus
         emit newTaskInfoAdded(taskId, description);
     }
 
+    void MainWindow::updateStatus()
+    {
+        if (mCurrentCharacterId != Character::invalidId)
+        {
+            const auto character = mCharacterRepository.find(mCurrentCharacterId);
+            QLocale locale;
+
+            mStatusWalletLabel->setText(QString{tr("Wallet: <strong>%1</strong>")}
+                .arg(locale.toCurrencyString(character.getISK() / 100., "ISK")));
+        }
+        else
+        {
+            mStatusWalletLabel->setText(QString{});
+        }
+    }
+
+    void MainWindow::setCharacter(Character::IdType id)
+    {
+        mCurrentCharacterId = id;
+        updateStatus();
+    }
+
     void MainWindow::closeEvent(QCloseEvent *event)
     {
         writeSettings();
@@ -142,6 +168,7 @@ namespace Evernus
         mMenuWidget = new MenuBarWidget{mCharacterRepository, this};
         bar->setCornerWidget(mMenuWidget);
         connect(this, &MainWindow::charactersChanged, mMenuWidget, &MenuBarWidget::refreshCharacters);
+        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, this, &MainWindow::setCharacter);
     }
 
     void MainWindow::createMainView()
@@ -152,5 +179,11 @@ namespace Evernus
         auto charTab = new CharacterWidget{mCharacterRepository, this};
         tabs->addTab(charTab, tr("Character"));
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, charTab, &CharacterWidget::setCharacter);
+    }
+
+    void MainWindow::createStatusBar()
+    {
+        mStatusWalletLabel = new QLabel{this};
+        statusBar()->addPermanentWidget(mStatusWalletLabel);
     }
 }

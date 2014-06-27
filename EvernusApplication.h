@@ -35,6 +35,7 @@ namespace Evernus
         void apiError(const QString &info);
 
         void charactersChanged();
+        void iskChanged();
 
     public slots:
         void fetchCharacters();

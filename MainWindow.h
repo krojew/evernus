@@ -2,6 +2,10 @@
 
 #include <QMainWindow>
 
+#include "Character.h"
+
+class QLabel;
+
 namespace Evernus
 {
     template<class T>
@@ -10,7 +14,6 @@ namespace Evernus
     class ActiveTasksDialog;
     class MenuBarWidget;
     class APIManager;
-    class Character;
     class Key;
 
     class MainWindow
@@ -44,6 +47,10 @@ namespace Evernus
 
         void addNewTaskInfo(quint32 taskId, const QString &description);
 
+        void updateStatus();
+
+        void setCharacter(Character::IdType id);
+
     protected:
         virtual void closeEvent(QCloseEvent *event) override;
 
@@ -64,10 +71,15 @@ namespace Evernus
         CharacterManagerDialog *mCharacterManagerDialog = nullptr;
         ActiveTasksDialog *mActiveTasksDialog = nullptr;
 
+        QLabel *mStatusWalletLabel = nullptr;
+
+        Character::IdType mCurrentCharacterId = Character::invalidId;
+
         void readSettings();
         void writeSettings();
 
         void createMenu();
         void createMainView();
+        void createStatusBar();
     };
 }

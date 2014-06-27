@@ -181,7 +181,9 @@ namespace Evernus
     void EvernusApplication::updateCharacters()
     {
         mCharacterUpdateScheduled = false;
+
         emit charactersChanged();
+        emit iskChanged();
     }
 
     void EvernusApplication::createDb()
