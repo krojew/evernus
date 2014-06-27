@@ -15,6 +15,7 @@ namespace Evernus
     {
         auto mainLayout = new QHBoxLayout{};
         setLayout(mainLayout);
+        mainLayout->setContentsMargins(QMargins{});
 
         mainLayout->addWidget(new QLabel{tr("Character:"), this});
 
