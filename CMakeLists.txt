@@ -57,6 +57,8 @@ add_executable(
     APIResponseCache.h
     APIXmlReceiver.h
     AssetList.h
+    CachedAssetList.cpp
+    CachedAssetList.h
     CachedCharacter.cpp
     CachedCharacter.h
     CachedCharacterList.cpp
