@@ -99,6 +99,8 @@ add_executable(
     main.cpp
     MainWindow.cpp
     MainWindow.h
+    MarketGroup.cpp
+    MarketGroup.h
     MenuBarWidget.cpp
     MenuBarWidget.h
     NetworkPreferencesWidget.cpp
