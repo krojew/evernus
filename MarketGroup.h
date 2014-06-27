@@ -43,6 +43,6 @@ namespace Evernus
         QString mName;
         DescriptionType mDescription;
         IconIdType mIconId;
-        bool mHasTypes;
+        bool mHasTypes = true;
     };
 }

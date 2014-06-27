@@ -59,17 +59,17 @@ namespace Evernus
         void setChanceOfDuplicating(double value) noexcept;
 
     private:
-        uint mGroupId;
+        uint mGroupId = 0;
         QString mName;
         DescriptionType mDescription;
-        double mMass;
-        double mVolume;
-        double mCapacity;
-        int mPortionSize;
+        double mMass = 0.;
+        double mVolume = 0.;
+        double mCapacity = 0.;
+        int mPortionSize = 0;
         RaceIdType mRaceId;
-        double mBasePrice;
-        bool mPublished;
+        double mBasePrice = 0.;
+        bool mPublished = true;
         MarketGroupIdType mMarketGroup;
-        double mChanceOfDuplicating;
+        double mChanceOfDuplicating = 0.;
     };
 }
