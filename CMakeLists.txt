@@ -101,6 +101,8 @@ add_executable(
     MainWindow.h
     MarketGroup.cpp
     MarketGroup.h
+    MarketGroupRepository.cpp
+    MarketGroupRepository.h
     MenuBarWidget.cpp
     MenuBarWidget.h
     NetworkPreferencesWidget.cpp
