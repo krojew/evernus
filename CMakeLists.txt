@@ -68,6 +68,8 @@ add_executable(
     CachedEntity.h
     CachedItem.cpp
     CachedItem.h
+    CachedItemRepository.cpp
+    CachedItemRepository.h
     CacheRepository.h
     Character.cpp
     Character.h
