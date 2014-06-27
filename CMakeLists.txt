@@ -94,6 +94,8 @@ add_executable(
     FileDownload.cpp
     FileDownload.h
     ImportSettings.h
+    Item.cpp
+    Item.h
     Key.cpp
     Key.h
     KeyEditDialog.cpp
