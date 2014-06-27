@@ -32,18 +32,39 @@ namespace Evernus
 
     void MenuBarWidget::refreshCharacters()
     {
+        const auto index = mCharacterCombo->currentIndex();
+        const auto prevId = (index == -1) ? (Character::invalidId) : (mCharacterCombo->currentData().value<Character::IdType>());
+        auto emitPrevious = false;
+
+        mCharacterCombo->blockSignals(true);
         mCharacterCombo->clear();
 
         auto characters = mCharacterRepository.exec(
             QString{"SELECT id, name FROM %1 WHERE enabled != 0 AND key_id IS NOT NULL"}.arg(mCharacterRepository.getTableName()));
+
         while (characters.next())
-            mCharacterCombo->addItem(characters.value("name").toString(), characters.value("id").value<Character::IdType>());
+        {
+            const auto id = characters.value("id").value<Character::IdType>();
+
+            mCharacterCombo->addItem(characters.value("name").toString(), id);
+            if (id == prevId)
+            {
+                emitPrevious = true;
+                mCharacterCombo->setCurrentIndex(mCharacterCombo->count() - 1);
+            }
+        }
+
+        mCharacterCombo->model()->sort(0);
+
+        mCharacterCombo->blockSignals(false);
+
+        if (!emitPrevious)
+            QMetaObject::invokeMethod(this, "changeCharacter", Qt::QueuedConnection, Q_ARG(int, mCharacterCombo->currentIndex()));
     }
 
     void MenuBarWidget::changeCharacter(int index)
     {
-        Q_UNUSED(index);
-
-        emit currentCharacterChanged(mCharacterCombo->currentData().value<Character::IdType>());
+        const auto id = (index == -1) ? (Character::invalidId) : (mCharacterCombo->currentData().value<Character::IdType>());
+        emit currentCharacterChanged(id);
     }
 }

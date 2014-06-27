@@ -6,6 +6,7 @@
 #include <QSqlDatabase>
 
 #include "CharacterRepository.h"
+#include "TaskConstants.h"
 #include "KeyRepository.h"
 #include "APIManager.h"
 
@@ -39,6 +40,7 @@ namespace Evernus
 
     public slots:
         void fetchCharacters();
+        void refreshCharacter(Character::IdType id, quint32 parentTask = TaskConstants::invalidTask);
 
     private slots:
         void scheduleCharacterUpdate();
@@ -54,7 +56,7 @@ namespace Evernus
 
         APIManager mAPIManager;
 
-        quint32 mTaskId = 0;
+        quint32 mTaskId = TaskConstants::invalidTask + 1;
 
         bool mCharacterUpdateScheduled = false;
 
@@ -63,6 +65,8 @@ namespace Evernus
 
         quint32 startTask(const QString &description);
         quint32 startTask(quint32 parentTask, const QString &description);
+
+        void importCharacter(Character::IdType id, quint32 parentTask, const Key &key);
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };

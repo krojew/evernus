@@ -39,6 +39,8 @@ namespace Evernus
         void newSubTaskInfoAdded(quint32 taskId, quint32 parentTask, const QString &description);
         void taskStatusChanged(quint32 taskId, const QString &error);
 
+        void importCharacter(Character::IdType id);
+
     public slots:
         void showCharacterManagement();
         void showPreferences();

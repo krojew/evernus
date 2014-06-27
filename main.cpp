@@ -20,9 +20,9 @@ int main(int argc, char *argv[])
         {
             Evernus::MainWindow mainWnd{app.getCharacterRepository(), app.getKeyRepository(), app.getAPIManager()};
             app.connect(&mainWnd, SIGNAL(refreshCharacters()), SLOT(fetchCharacters()));
+            app.connect(&mainWnd, SIGNAL(importCharacter(Character::IdType)), SLOT(refreshCharacter(Character::IdType)));
             mainWnd.connect(&app, SIGNAL(taskStarted(quint32, const QString &)), SLOT(addNewTaskInfo(quint32, const QString &)));
-            mainWnd.connect(
-                &app, SIGNAL(taskStarted(quint32, quint32, const QString &)), SIGNAL(newSubTaskInfoAdded(quint32, quint32, const QString &)));
+            mainWnd.connect(&app, SIGNAL(taskStarted(quint32, quint32, const QString &)), SIGNAL(newSubTaskInfoAdded(quint32, quint32, const QString &)));
             mainWnd.connect(&app, SIGNAL(taskStatusChanged(quint32, const QString &)), SIGNAL(taskStatusChanged(quint32, const QString &)));
             mainWnd.connect(&app, SIGNAL(apiError(const QString &)), SLOT(showError(const QString &)));
             mainWnd.connect(&app, SIGNAL(charactersChanged()), SIGNAL(charactersChanged()));

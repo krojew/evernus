@@ -32,6 +32,8 @@ namespace Evernus
         Character getCharacterData(Key::IdType key, Character::IdType characterId) const;
         void setCharacterData(Key::IdType key, Character::IdType characterId, const Character &data, const QDateTime &cacheUntil);
 
+        QDateTime getCharacterDataLocalCacheTime(Key::IdType key, Character::IdType characterId) const;
+
     private:
         template<class T>
         struct CacheEntry

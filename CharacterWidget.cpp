@@ -14,8 +14,10 @@
 #include <QDir>
 #include <QUrl>
 
+#include "ButtonWithTimer.h"
 #include "ImportSettings.h"
 #include "DatabaseUtils.h"
+#include "APIManager.h"
 #include "Repository.h"
 
 #include "CharacterWidget.h"
@@ -27,12 +29,22 @@ namespace Evernus
 
     const QString CharacterWidget::defaultPortrait = ":/images/generic-portrait.jpg";
 
-    CharacterWidget::CharacterWidget(const Repository<Character> &characterRepository, QWidget *parent)
+    CharacterWidget::CharacterWidget(const Repository<Character> &characterRepository, const APIManager &apiManager, QWidget *parent)
         : QWidget{parent}
         , mCharacterRepository{characterRepository}
+        , mAPIManager{apiManager}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
+
+        auto toolBarLayout = new QHBoxLayout{};
+        mainLayout->addLayout(toolBarLayout);
+
+        mImportBtn = new ButtonWithTimer{tr("API import"), this};
+        toolBarLayout->addWidget(mImportBtn);
+        connect(mImportBtn, &QPushButton::clicked, this, &CharacterWidget::requestUpdate);
+
+        toolBarLayout->addStretch();
 
         auto infoGroup = new QGroupBox{tr("Character info"), this};
         mainLayout->addWidget(infoGroup);
@@ -160,6 +172,9 @@ namespace Evernus
 
         if (mCharacterId == Character::invalidId)
         {
+            mImportBtn->setDisabled(true);
+            mImportBtn->stopTimer();
+
             mNameLabel->setText(QString{});
             mBackgroundLabel->setText(QString{});
             mCorporationLabel->setText(QString{});
@@ -189,6 +204,9 @@ namespace Evernus
             try
             {
                 const auto character = mCharacterRepository.find(mCharacterId);
+
+                mImportBtn->setEnabled(true);
+                refreshImportTimer();
 
                 mNameLabel->setText(character.getName());
                 mBackgroundLabel->setText(QString{"%1 %2, %3, %4"}
@@ -277,6 +295,36 @@ namespace Evernus
         mCorporationContractingSkillEdit->blockSignals(false);
     }
 
+    void CharacterWidget::refreshImportTimer()
+    {
+        struct CannotSetTimerException { };
+
+        try
+        {
+            if (mCharacterId == Character::invalidId)
+                throw CannotSetTimerException{};
+
+            try
+            {
+                const auto character = mCharacterRepository.find(mCharacterId);
+                const auto key = character.getKeyId();
+
+                if (!key)
+                    throw CannotSetTimerException{};
+
+                const auto time = mAPIManager.getCharacterLocalCacheTime(*key, mCharacterId);
+                mImportBtn->setTimer(time);
+            }
+            catch (const Repository<Character>::NotFoundException &)
+            {
+                throw CannotSetTimerException{};
+            }
+        }
+        catch (const CannotSetTimerException &)
+        {
+        }
+    }
+
     void CharacterWidget::setCorpStanding(double value)
     {
         updateStanding("corp_standing", value);
@@ -313,6 +361,12 @@ namespace Evernus
             mPortrait->setPixmap(px);
 
         mPortraitDownloads.erase(it);
+    }
+
+    void CharacterWidget::requestUpdate()
+    {
+        Q_ASSERT(mCharacterId != Character::invalidId);
+        emit importCharacter(mCharacterId);
     }
 
     void CharacterWidget::updateStanding(const QString &type, double value) const

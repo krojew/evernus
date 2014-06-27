@@ -177,9 +177,11 @@ namespace Evernus
         auto tabs = new QTabWidget{this};
         setCentralWidget(tabs);
 
-        auto charTab = new CharacterWidget{mCharacterRepository, this};
+        auto charTab = new CharacterWidget{mCharacterRepository, mApiManager, this};
         tabs->addTab(charTab, tr("Character"));
+        connect(charTab, &CharacterWidget::importCharacter, this, &MainWindow::importCharacter);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, charTab, &CharacterWidget::setCharacter);
+        connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::refreshImportTimer);
     }
 
     void MainWindow::createStatusBar()

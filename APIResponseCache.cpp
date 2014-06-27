@@ -101,6 +101,15 @@ namespace Evernus
         mCharacterRepository->store(cachedEntry);
     }
 
+    QDateTime APIResponseCache::getCharacterDataLocalCacheTime(Key::IdType key, Character::IdType characterId) const
+    {
+        const auto it = mCharacterCache.find(std::make_pair(key, characterId));
+        if (it == std::end(mCharacterCache))
+            return QDateTime::currentDateTime();
+
+        return it->second.mCacheUntil.toLocalTime();
+    }
+
     void APIResponseCache::createDb()
     {
         DatabaseUtils::createDb(mCacheDb, "cache.db");

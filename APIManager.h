@@ -28,6 +28,8 @@ namespace Evernus
         void fetchCharacterList(const Key &key, const Callback<CharacterList> &callback) const;
         void fetchCharacter(const Key &key, Character::IdType characterId, const Callback<Character> &callback) const;
 
+        QDateTime getCharacterLocalCacheTime(Key::IdType key, Character::IdType characterId) const;
+
     signals:
         void generalError(const QString &info);
 

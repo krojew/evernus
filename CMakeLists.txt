@@ -132,6 +132,7 @@ add_executable(
     Repository.h
     SimpleCrypt.cpp
     SimpleCrypt.h
+    TaskConstants.h
     UISettings.h
     ${MOC_FILES}
     ${RCC_FILES}

@@ -130,34 +130,7 @@ namespace Evernus
                         else
                         {
                             for (const auto id : characters)
-                            {
-                                const auto charSubtask = startTask(charListSubtask, QString{tr("Fetching character %1...")}.arg(id));
-                                mAPIManager.fetchCharacter(key, id, [charSubtask, this](auto data, const auto &error) {
-                                    if (error.isEmpty())
-                                    {
-                                        QSettings settings;
-                                        if (!settings.value(Evernus::ImportSettings::importSkillsKey, true).toBool())
-                                        {
-                                            try
-                                            {
-                                                const auto prevData = mCharacterRepository->find(data.getId());
-                                                data.setOrderAmountSkills(prevData.getOrderAmountSkills());
-                                                data.setTradeRangeSkills(prevData.getTradeRangeSkills());
-                                                data.setFeeSkills(prevData.getFeeSkills());
-                                                data.setContractSkills(prevData.getContractSkills());
-                                            }
-                                            catch (const Evernus::CharacterRepository::NotFoundException &)
-                                            {
-                                            }
-                                        }
-
-                                        mCharacterRepository->store(data);
-                                        QMetaObject::invokeMethod(this, "scheduleCharacterUpdate", Qt::QueuedConnection);
-                                    }
-
-                                    emit taskStatusChanged(charSubtask, error);
-                                });
-                            }
+                                importCharacter(id, charListSubtask, key);
                         }
                     }
                     else
@@ -166,6 +139,34 @@ namespace Evernus
                     }
                 });
             }
+        }
+    }
+
+    void EvernusApplication::refreshCharacter(Character::IdType id, quint32 parentTask)
+    {
+        qDebug() << "Refreshing character: " << id;
+
+        try
+        {
+            const auto character = mCharacterRepository->find(id);
+            const auto keyId = character.getKeyId();
+
+            if (keyId)
+            {
+                try
+                {
+                    const auto key = mKeyRepository->find(*keyId);
+                    importCharacter(id, parentTask, key);
+                }
+                catch (const KeyRepository::NotFoundException &)
+                {
+                    qCritical() << "Attempted to refresh character without a key!";
+                }
+            }
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            qCritical() << "Attempted to refresh non-existent character!";
         }
     }
 
@@ -208,8 +209,41 @@ namespace Evernus
 
     quint32 EvernusApplication::startTask(quint32 parentTask, const QString &description)
     {
+        if (parentTask == TaskConstants::invalidTask)
+            return startTask(description);
+
         emit taskStarted(mTaskId, parentTask, description);
         return mTaskId++;
+    }
+
+    void EvernusApplication::importCharacter(Character::IdType id, quint32 parentTask, const Key &key)
+    {
+        const auto charSubtask = startTask(parentTask, QString{tr("Fetching character %1...")}.arg(id));
+        mAPIManager.fetchCharacter(key, id, [charSubtask, this](auto data, const auto &error) {
+            if (error.isEmpty())
+            {
+                QSettings settings;
+                if (!settings.value(Evernus::ImportSettings::importSkillsKey, true).toBool())
+                {
+                    try
+                    {
+                        const auto prevData = mCharacterRepository->find(data.getId());
+                        data.setOrderAmountSkills(prevData.getOrderAmountSkills());
+                        data.setTradeRangeSkills(prevData.getTradeRangeSkills());
+                        data.setFeeSkills(prevData.getFeeSkills());
+                        data.setContractSkills(prevData.getContractSkills());
+                    }
+                    catch (const Evernus::CharacterRepository::NotFoundException &)
+                    {
+                    }
+                }
+
+                mCharacterRepository->store(data);
+                QMetaObject::invokeMethod(this, "scheduleCharacterUpdate", Qt::QueuedConnection);
+            }
+
+            emit taskStatusChanged(charSubtask, error);
+        });
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)

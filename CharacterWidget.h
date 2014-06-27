@@ -15,6 +15,8 @@ namespace Evernus
 {
     template<class T>
     class Repository;
+    class ButtonWithTimer;
+    class APIManager;
 
     class CharacterWidget
         : public QWidget
@@ -22,11 +24,18 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit CharacterWidget(const Repository<Character> &characterRepository, QWidget *parent = nullptr);
+        CharacterWidget(const Repository<Character> &characterRepository,
+                        const APIManager &apiManager,
+                        QWidget *parent = nullptr);
         virtual ~CharacterWidget() = default;
+
+    signals:
+        void importCharacter(Character::IdType id);
 
     public slots:
         void setCharacter(Character::IdType id);
+
+        void refreshImportTimer();
 
     private slots:
         void setCorpStanding(double value);
@@ -36,14 +45,19 @@ namespace Evernus
 
         void downloadFinished();
 
+        void requestUpdate();
+
     private:
         static const char * const skillFieldProperty;
         static const char * const downloadIdProperty;
         static const QString defaultPortrait;
 
         const Repository<Character> &mCharacterRepository;
+        const APIManager &mAPIManager;
 
         Character::IdType mCharacterId = Character::invalidId;
+
+        ButtonWithTimer *mImportBtn = nullptr;
 
         QLabel *mPortrait = nullptr;
 
