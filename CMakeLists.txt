@@ -59,6 +59,8 @@ add_executable(
     AssetList.h
     CachedAssetList.cpp
     CachedAssetList.h
+    CachedAssetListRepository.cpp
+    CachedAssetListRepository.h
     CachedCharacter.cpp
     CachedCharacter.h
     CachedCharacterList.cpp

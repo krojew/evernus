@@ -1,6 +1,8 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 
+#include "CachedAssetListRepository.h"
+
 #include "CachedItemRepository.h"
 
 namespace Evernus
@@ -21,6 +23,7 @@ namespace Evernus
         const auto parentId = record.value("parent_id");
 
         CachedItem item{record.value("id").value<CachedItem::IdType>()};
+        item.setListId(record.value("asset_list_id").value<CachedAssetList::IdType>());
         item.setParentId((parentId.isNull()) ? (CachedItem::ParentIdType{}) : (parentId.value<CachedItem::IdType>()));
         item.setTypeId(record.value("type_id").toUInt());
         item.setLocationId((locationId.isNull()) ? (ItemData::LocationIdType{}) : (locationId.value<ItemData::LocationIdType::value_type>()));
@@ -30,21 +33,25 @@ namespace Evernus
         return item;
     }
 
-    void CachedItemRepository::create() const
+    void CachedItemRepository::create(const CachedAssetListRepository &assetRepo) const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id BIGINT PRIMARY KEY,
+            asset_list_id INTEGER NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,
             parent_id BIGINT NULL REFERENCES %1(id) ON UPDATE CASCADE ON DELETE CASCADE,
             type_id INTEGER NOT NULL,
             location_id BIGINT NULL,
             quantity INTEGER NOT NULL
-        ))"}.arg(getTableName()));
+        ))"}.arg(getTableName()).arg(assetRepo.getTableName()).arg(assetRepo.getIdColumn()));
+
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(asset_list_id)"}.arg(getTableName()).arg(assetRepo.getTableName()));
     }
 
     QStringList CachedItemRepository::getColumns() const
     {
         return QStringList{}
             << "id"
+            << "asset_list_id"
             << "parent_id"
             << "type_id"
             << "location_id"
@@ -57,6 +64,7 @@ namespace Evernus
         const auto parentId = entity.getParentId();
 
         query.bindValue(":id", entity.getId());
+        query.bindValue(":asset_list_id", entity.getListId());
         query.bindValue(":parent_id", (parentId) ? (*parentId) : (QVariant{QVariant::ULongLong}));
         query.bindValue(":type_id", entity.getTypeId());
         query.bindValue(":location_id", (locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));

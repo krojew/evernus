@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CachedAssetList.h"
 #include "ItemData.h"
 #include "Entity.h"
 
@@ -17,6 +18,9 @@ namespace Evernus
         ParentIdType getParentId() const noexcept;
         void setParentId(const ParentIdType &id) noexcept;
 
+        CachedAssetList::IdType getListId() const noexcept;
+        void setListId(CachedAssetList::IdType id) noexcept;
+
         ItemData::TypeIdType getTypeId() const;
         void setTypeId(const ItemData::TypeIdType &id);
 
@@ -28,6 +32,7 @@ namespace Evernus
 
     private:
         ParentIdType mParentId;
+        CachedAssetList::IdType mListId = 0;
         ItemData mData;
     };
 }

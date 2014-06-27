@@ -12,6 +12,16 @@ namespace Evernus
         mParentId = id;
     }
 
+    CachedAssetList::IdType CachedItem::getListId() const noexcept
+    {
+        return mListId;
+    }
+
+    void CachedItem::setListId(CachedAssetList::IdType id) noexcept
+    {
+        mListId = id;
+    }
+
     ItemData::TypeIdType CachedItem::getTypeId() const
     {
         return mData.mTypeId;

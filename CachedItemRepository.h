@@ -5,6 +5,8 @@
 
 namespace Evernus
 {
+    class CachedAssetListRepository;
+
     class CachedItemRepository
         : public Repository<CachedItem>
     {
@@ -17,7 +19,7 @@ namespace Evernus
 
         virtual CachedItem populate(const QSqlRecord &record) const override;
 
-        void create() const;
+        void create(const CachedAssetListRepository &assetRepo) const;
 
     private:
         virtual QStringList getColumns() const override;
