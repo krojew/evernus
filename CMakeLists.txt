@@ -87,6 +87,8 @@ add_executable(
     Entity.h
     EvernusApplication.cpp
     EvernusApplication.h
+    EveType.cpp
+    EveType.h
     FileDownload.cpp
     FileDownload.h
     ImportSettings.h
