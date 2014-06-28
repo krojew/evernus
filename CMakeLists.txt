@@ -34,6 +34,7 @@ qt5_wrap_cpp(
     MainWindow.h
     MenuBarWidget.h
     NetworkPreferencesWidget.h
+    PathPreferencesWidget.h
     PreferencesDialog.h
 )
 
@@ -127,6 +128,9 @@ add_executable(
     NetworkPreferencesWidget.cpp
     NetworkPreferencesWidget.h
     NetworkSettings.h
+    PathPreferencesWidget.cpp
+    PathPreferencesWidget.h
+    PathSettings.h
     PreferencesDialog.cpp
     PreferencesDialog.h
     Repository.h
