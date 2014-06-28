@@ -110,6 +110,61 @@ namespace Evernus
         return it->second.mCacheUntil.toLocalTime();
     }
 
+    bool APIResponseCache::hasAssetData(Key::IdType key, Character::IdType characterId) const
+    {
+        const auto it = mAssetCache.find(std::make_pair(key, characterId));
+        if (it == std::end(mAssetCache))
+            return false;
+
+        if (QDateTime::currentDateTimeUtc() > it->second.mCacheUntil)
+        {
+            mAssetCache.erase(it);
+
+            auto query = mAssetListRepository->prepare(QString{"DELETE FROM %1 WHERE key_id = :key_id AND character_id = :character_id"}
+                .arg(mAssetListRepository->getTableName()));
+            query.bindValue(":key_id", key);
+            query.bindValue(":character_id", characterId);
+            query.exec();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    AssetList APIResponseCache::getAssetData(Key::IdType key, Character::IdType characterId) const
+    {
+        const auto it = mAssetCache.find(std::make_pair(key, characterId));
+        Q_ASSERT(it != std::end(mAssetCache));
+
+        return it->second.mData;
+    }
+
+    void APIResponseCache::setAssetData(Key::IdType key, Character::IdType characterId, const AssetList &data, const QDateTime &cacheUntil)
+    {
+        CacheEntry<AssetList> entry;
+        entry.mCacheUntil = cacheUntil;
+        entry.mData = data;
+
+        mAssetCache.emplace(std::make_pair(key, characterId), std::move(entry));
+
+        auto query = mAssetListRepository->prepare(QString{"DELETE FROM %1 WHERE key_id = :key_id AND character_id = :character_id"}
+            .arg(mAssetListRepository->getTableName()));
+        query.bindValue(":key_id", key);
+        query.bindValue(":character_id", characterId);
+        query.exec();
+
+        CachedAssetList list;
+        list.setKeyId(key);
+        list.setCacheUntil(cacheUntil);
+        list.setCharacterId(characterId);
+
+        mAssetListRepository->store(list);
+
+        for (const auto &item : data)
+            saveItemTree(*item, nullptr, list.getId());
+    }
+
     void APIResponseCache::createDb()
     {
         DatabaseUtils::createDb(mCacheDb, "cache.db");
@@ -214,13 +269,25 @@ namespace Evernus
                 continue;
 
             auto &entry = mAssetCache[std::make_pair(assetList->getKeyId(), assetList->getCharacterId())];
-            if (!entry)
-            {
-                entry.reset(new CacheEntry<AssetList>{});
-                entry->mCacheUntil = assetList->getCacheUntil();
-            }
+            if (entry.mCacheUntil.isNull())
+                entry.mCacheUntil = assetList->getCacheUntil();
 
-            entry->mData.emplace_back(std::move(itemMap[item.getId()]));
+            entry.mData.emplace_back(std::move(itemMap[item.getId()]));
         }
+    }
+
+    void APIResponseCache::saveItemTree(const Item &item, const Item *parent, CachedAssetList::IdType listId) const
+    {
+        CachedItem cachedItem{item.getId()};
+        cachedItem.setListId(listId);
+        cachedItem.setItemData(item.getItemData());
+
+        if (parent != nullptr)
+            cachedItem.setParentId(parent->getId());
+
+        mItemRepository->store(cachedItem);
+
+        for (const auto &child : item)
+            saveItemTree(*child, &item, listId);
     }
 }

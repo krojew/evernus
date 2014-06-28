@@ -34,10 +34,12 @@ namespace Evernus
 
         QSqlDatabase getDatabase() const;
 
+        typename T::IdType getLastInsertId() const;
+
     private:
         QSqlDatabase mDb;
 
-        void insert(const T &entity) const;
+        void insert(T &entity) const;
         void update(const T &entity) const;
 
         virtual QStringList getColumns() const = 0;

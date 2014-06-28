@@ -4,5 +4,5 @@
 
 namespace Evernus
 {
-    typedef std::vector<std::unique_ptr<Item>> AssetList;
+    typedef std::vector<std::shared_ptr<Item>> AssetList;
 }

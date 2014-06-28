@@ -50,7 +50,9 @@ namespace Evernus
 
     void CachedAssetListRepository::bindValues(const CachedAssetList &entity, QSqlQuery &query) const
     {
-        query.bindValue(":id", entity.getId());
+        if (!entity.isNew())
+            query.bindValue(":id", entity.getId());
+
         query.bindValue(":key_id", entity.getKeyId());
         query.bindValue(":character_id", entity.getCharacterId());
         query.bindValue(":cache_until", entity.getCacheUntil());

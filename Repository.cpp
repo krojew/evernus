@@ -101,13 +101,20 @@ namespace Evernus
     }
 
     template<class T>
-    void Repository<T>::insert(const T &entity) const
+    void Repository<T>::insert(T &entity) const
     {
-        const auto columns = getColumns();
+        auto columns = getColumns();
 
         QStringList prefixedColumns;
         for (const auto &column : columns)
             prefixedColumns << ":" + column;
+
+        const auto setNewId = entity.getId() == T::invalidId;
+        if (setNewId)
+        {
+            columns.removeOne(getIdColumn());
+            prefixedColumns.removeOne(":" + getIdColumn());
+        }
 
         const auto queryStr = QString{"REPLACE INTO %1 (%2) VALUES (%3)"}
             .arg(getTableName())
@@ -117,6 +124,19 @@ namespace Evernus
         auto query = prepare(queryStr);
         bindValues(entity, query);
         DatabaseUtils::execQuery(query);
+
+        if (setNewId)
+        {
+            const auto rowId = query.lastInsertId();
+            if (!rowId.isNull())
+            {
+                auto query = prepare(QString{"SELECT %1 FROM %2 WHERE ROWID = :id"}.arg(getIdColumn()).arg(getTableName()));
+                DatabaseUtils::execQuery(query);
+                query.next();
+
+                entity.setId(query.value(0).value<typename T::IdType>());
+            }
+        }
     }
 
     template<class T>

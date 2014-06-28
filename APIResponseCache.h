@@ -37,6 +37,10 @@ namespace Evernus
 
         QDateTime getCharacterDataLocalCacheTime(Key::IdType key, Character::IdType characterId) const;
 
+        bool hasAssetData(Key::IdType key, Character::IdType characterId) const;
+        AssetList getAssetData(Key::IdType key, Character::IdType characterId) const;
+        void setAssetData(Key::IdType key, Character::IdType characterId, const AssetList &data, const QDateTime &cacheUntil);
+
     private:
         template<class T>
         struct CacheEntry
@@ -49,7 +53,7 @@ namespace Evernus
 
         mutable std::unordered_map<Key::IdType, CacheEntry<CharacterList>> mCharacterListCache;
         mutable std::unordered_map<KeyCharacterPair, CacheEntry<Character>, boost::hash<KeyCharacterPair>> mCharacterCache;
-        mutable std::unordered_map<KeyCharacterPair, std::unique_ptr<CacheEntry<AssetList>>, boost::hash<KeyCharacterPair>> mAssetCache;
+        mutable std::unordered_map<KeyCharacterPair, CacheEntry<AssetList>, boost::hash<KeyCharacterPair>> mAssetCache;
 
         QSqlDatabase mCacheDb;
 
@@ -66,5 +70,7 @@ namespace Evernus
         void refreshCharacterLists();
         void refreshCharacters();
         void refreshAssets();
+
+        void saveItemTree(const Item &item, const Item *parent, CachedAssetList::IdType listId) const;
     };
 }
