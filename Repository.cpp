@@ -134,7 +134,7 @@ namespace Evernus
                 DatabaseUtils::execQuery(query);
                 query.next();
 
-                entity.setId(query.value(0).value<typename T::IdType>());
+                entity.setId(query.value(0).template value<typename T::IdType>());
             }
         }
     }
