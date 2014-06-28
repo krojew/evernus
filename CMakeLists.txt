@@ -36,6 +36,7 @@ qt5_wrap_cpp(
     NetworkPreferencesWidget.h
     PathPreferencesWidget.h
     PreferencesDialog.h
+    PricePreferencesWidget.h
 )
 
 qt5_add_resources(
@@ -133,6 +134,9 @@ add_executable(
     PathSettings.h
     PreferencesDialog.cpp
     PreferencesDialog.h
+    PricePreferencesWidget.cpp
+    PricePreferencesWidget.h
+    PriceSettings.h
     Repository.h
     SimpleCrypt.cpp
     SimpleCrypt.h
