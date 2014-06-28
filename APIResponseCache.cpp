@@ -116,21 +116,33 @@ namespace Evernus
 
         mCharacterListRepository.reset(new CachedCharacterListRepository{mCacheDb});
         mCharacterRepository.reset(new CachedCharacterRepository{mCacheDb});
+        mAssetListRepository.reset(new CachedAssetListRepository{mCacheDb});
+        mItemRepository.reset(new CachedItemRepository{mCacheDb});
     }
 
     void APIResponseCache::createDbSchema()
     {
         mCharacterListRepository->create();
         mCharacterRepository->create();
+        mAssetListRepository->create();
+        mItemRepository->create(*mAssetListRepository);
     }
 
     void APIResponseCache::clearOldData()
     {
         mCharacterListRepository->clearOldData();
         mCharacterRepository->clearOldData();
+        mAssetListRepository->clearOldData();
     }
 
     void APIResponseCache::refreshCaches()
+    {
+        refreshCharacterLists();
+        refreshCharacters();
+        refreshAssets();
+    }
+
+    void APIResponseCache::refreshCharacterLists()
     {
         const auto characterLists = mCharacterListRepository->fetchAll();
         for (const auto &list : characterLists)
@@ -141,7 +153,10 @@ namespace Evernus
 
             mCharacterListCache.emplace(list.getId(), std::move(entry));
         }
+    }
 
+    void APIResponseCache::refreshCharacters()
+    {
         const auto characters = mCharacterRepository->fetchAll();
         for (const auto &character : characters)
         {
@@ -152,6 +167,60 @@ namespace Evernus
             entry.mData.setCharacterData(std::move(character).getCharacterData());
 
             mCharacterCache.emplace(std::make_pair(character.getId(), character.getCharacterId()), std::move(entry));
+        }
+    }
+
+    void APIResponseCache::refreshAssets()
+    {
+        const auto assetLists = mAssetListRepository->fetchAll();
+        const auto items = mItemRepository->fetchAll();
+
+        std::unordered_map<CachedAssetList::IdType, const CachedAssetList *> assetMap;
+        for (const auto &list : assetLists)
+            assetMap[list.getId()] = &list;
+
+        std::unordered_map<Item::IdType, std::unique_ptr<Item>> itemMap;
+        std::unordered_map<Item::IdType, Item *> persistentItemMap;
+        for (const auto &item : items)
+        {
+            std::unique_ptr<Item> realItem{new Item{item.getId()}};
+            realItem->setItemData(std::move(item).getItemData());
+
+            persistentItemMap.emplace(realItem->getId(), realItem.get());
+            itemMap.emplace(realItem->getId(), std::move(realItem));
+        }
+
+        for (const auto &item : items)
+        {
+            const auto parentId = item.getParentId();
+            if (parentId)
+            {
+                const auto it = persistentItemMap.find(*parentId);
+                if (it != std::end(persistentItemMap))
+                {
+                    const auto child = itemMap.find(item.getId());
+                    it->second->addItem(std::move(child->second));
+                }
+            }
+        }
+
+        for (const auto &item : items)
+        {
+            const auto assetList = assetMap[item.getListId()];
+            if (assetList == nullptr)
+                continue;
+
+            if (!itemMap[item.getId()])
+                continue;
+
+            auto &entry = mAssetCache[std::make_pair(assetList->getKeyId(), assetList->getCharacterId())];
+            if (!entry)
+            {
+                entry.reset(new CacheEntry<AssetList>{});
+                entry->mCacheUntil = assetList->getCacheUntil();
+            }
+
+            entry->mData.emplace_back(std::move(itemMap[item.getId()]));
         }
     }
 }

@@ -2,17 +2,17 @@
 
 namespace Evernus
 {
-    Item::Item(ItemData::IdType id)
+    Item::Item(IdType id)
         : mId{id}
     {
     }
 
-    ItemData::IdType Item::getId() const noexcept
+    Item::IdType Item::getId() const noexcept
     {
         return mId;
     }
 
-    void Item::setId(ItemData::IdType id) noexcept
+    void Item::setId(IdType id) noexcept
     {
         mId = id;
     }
@@ -45,6 +45,26 @@ namespace Evernus
     void Item::setQuantity(uint value) noexcept
     {
         mData.mQuantity = value;
+    }
+
+    ItemData Item::getItemData() const &
+    {
+        return mData;
+    }
+
+    ItemData &&Item::getItemData() && noexcept
+    {
+        return std::move(mData);
+    }
+
+    void Item::setItemData(const ItemData &data)
+    {
+        mData = data;
+    }
+
+    void Item::setItemData(ItemData &&data)
+    {
+        mData = std::move(data);
     }
 
     Item::ItemIterator Item::begin() noexcept

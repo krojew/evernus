@@ -11,6 +11,9 @@
 
 #include "CachedCharacterListRepository.h"
 #include "CachedCharacterRepository.h"
+#include "CachedAssetListRepository.h"
+#include "CachedItemRepository.h"
+#include "AssetList.h"
 #include "Character.h"
 #include "Key.h"
 
@@ -46,15 +49,22 @@ namespace Evernus
 
         mutable std::unordered_map<Key::IdType, CacheEntry<CharacterList>> mCharacterListCache;
         mutable std::unordered_map<KeyCharacterPair, CacheEntry<Character>, boost::hash<KeyCharacterPair>> mCharacterCache;
+        mutable std::unordered_map<KeyCharacterPair, std::unique_ptr<CacheEntry<AssetList>>, boost::hash<KeyCharacterPair>> mAssetCache;
 
         QSqlDatabase mCacheDb;
 
         std::unique_ptr<CachedCharacterListRepository> mCharacterListRepository;
         std::unique_ptr<CachedCharacterRepository> mCharacterRepository;
+        std::unique_ptr<CachedAssetListRepository> mAssetListRepository;
+        std::unique_ptr<CachedItemRepository> mItemRepository;
 
         void createDb();
         void createDbSchema();
         void clearOldData();
+
         void refreshCaches();
+        void refreshCharacterLists();
+        void refreshCharacters();
+        void refreshAssets();
     };
 }

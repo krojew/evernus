@@ -51,4 +51,24 @@ namespace Evernus
     {
         mData.mQuantity = value;
     }
+
+    ItemData CachedItem::getItemData() const &
+    {
+        return mData;
+    }
+
+    ItemData &&CachedItem::getItemData() && noexcept
+    {
+        return std::move(mData);
+    }
+
+    void CachedItem::setItemData(const ItemData &data)
+    {
+        mData = data;
+    }
+
+    void CachedItem::setItemData(ItemData &&data)
+    {
+        mData = std::move(data);
+    }
 }

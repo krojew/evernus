@@ -30,6 +30,11 @@ namespace Evernus
         uint getQuantity() const noexcept;
         void setQuantity(uint value) noexcept;
 
+        ItemData getItemData() const &;
+        ItemData &&getItemData() && noexcept;
+        void setItemData(const ItemData &data);
+        void setItemData(ItemData &&data);
+
     private:
         ParentIdType mParentId;
         CachedAssetList::IdType mListId = 0;
