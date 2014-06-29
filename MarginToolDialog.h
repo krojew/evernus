@@ -2,6 +2,8 @@
 
 #include <QDialog>
 
+class QLabel;
+
 namespace Evernus
 {
     class MarginToolDialog
@@ -12,5 +14,14 @@ namespace Evernus
     public:
         explicit MarginToolDialog(QWidget *parent = nullptr);
         virtual ~MarginToolDialog() = default;
+
+    private slots:
+        void toggleAlwaysOnTop(int state);
+
+    private:
+        QLabel *mMarginLabel = nullptr;
+        QLabel *mMarkupLabel = nullptr;
+
+        void setNewWindowFlags(bool alwaysOnTop);
     };
 }

@@ -123,6 +123,7 @@ add_executable(
     MainWindow.h
     MarginToolDialog.cpp
     MarginToolDialog.h
+    MarginToolSettings.h
     MarketGroup.cpp
     MarketGroup.h
     MarketGroupRepository.cpp
