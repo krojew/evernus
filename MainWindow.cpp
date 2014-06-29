@@ -74,7 +74,11 @@ namespace Evernus
     void MainWindow::showMarginTool()
     {
         if (mMarginToolDialog.isNull())
-            mMarginToolDialog = new MarginToolDialog{};
+        {
+            mMarginToolDialog = new MarginToolDialog{mCharacterRepository};
+            mMarginToolDialog->setCharacter(mCurrentCharacterId);
+            connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, mMarginToolDialog, &MarginToolDialog::setCharacter);
+        }
 
         mMarginToolDialog->show();
         mMarginToolDialog->activateWindow();

@@ -1,17 +1,22 @@
 #include <functional>
+#include <thread>
+#include <cmath>
 #include <set>
 
 #include <QDialogButtonBox>
 #include <QStandardPaths>
-#include <QTextStream>
+#include <QStringBuilder>
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGridLayout>
+#include <QDateTime>
 #include <QSettings>
 #include <QCheckBox>
+#include <QFileInfo>
 #include <QGroupBox>
 #include <QLabel>
+#include <QDebug>
 #include <QFont>
 #include <QFile>
 #include <QDir>
@@ -23,26 +28,28 @@
 
 #include "MarginToolSettings.h"
 #include "PathSettings.h"
+#include "Repository.h"
 
 #include "MarginToolDialog.h"
 
 namespace Evernus
 {
-    MarginToolDialog::MarginToolDialog(QWidget *parent)
+    MarginToolDialog::MarginToolDialog(const Repository<Character> &characterRepository, QWidget *parent)
         : QDialog{parent}
+        , mCharacterRepository{characterRepository}
     {
         QSettings settings;
 
         QFont font;
         font.setBold(true);
-        font.setPointSize(18);
+        font.setPointSize(14);
 
         const auto alwaysOnTop = settings.value(MarginToolSettings::alwaysOnTopKey, true).toBool();
 
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
-        mNameLabel = new QLabel{this};
+        mNameLabel = new QLabel{tr("export market logs in game"), this};
         mainLayout->addWidget(mNameLabel);
         mNameLabel->setFont(font);
 
@@ -113,6 +120,11 @@ namespace Evernus
         setNewWindowFlags(alwaysOnTop);
     }
 
+    void MarginToolDialog::setCharacter(Character::IdType id)
+    {
+        mCharacterId = id;
+    }
+
     void MarginToolDialog::toggleAlwaysOnTop(int state)
     {
         const auto alwaysOnTop = state == Qt::Checked;
@@ -125,25 +137,51 @@ namespace Evernus
 
     void MarginToolDialog::refreshData(const QString &path)
     {
-        const auto newFiles = getKnownFiles(path);
+        QString targetFile;
+        QLocale locale;
+
+        auto newFiles = getKnownFiles(path);
 
         auto fileDiff = newFiles;
         fileDiff -= mKnownFiles;
 
         if (!fileDiff.isEmpty())
         {
-            const auto firstFile = *fileDiff.cbegin();
+            targetFile = std::move(*fileDiff.begin());
+        }
+        else
+        {
+            // TODO: check modifications
+        }
 
-            QFile file{firstFile};
-            if (file.open(QIODevice::ReadOnly))
+        if (!targetFile.isEmpty())
+        {
+            const QString logFile = path % QDir::separator() % targetFile;
+
+            qDebug() << "Calculating margin from file: " << logFile;
+
+            QFile file{logFile};
+            if (file.open(QIODevice::ReadOnly | QIODevice::Text))
             {
-                std::multiset<double> buy;
-                std::multiset<double, std::greater<double>> sell;
-
-                QTextStream stream{&file};
-                while (!stream.atEnd())
+                QFileInfo info{file};
+                forever
                 {
-                    const auto values = stream.readLine().split(',');
+                    // wait for Eve to finish dumping data
+                    const auto modTime = info.lastModified();
+                    if (modTime.secsTo(QDateTime::currentDateTime()) >= 2)
+                        break;
+
+                    std::this_thread::sleep_for(std::chrono::milliseconds{500});
+                }
+
+                std::multiset<double, std::greater<double>> buy;
+                std::multiset<double> sell;
+
+                while (!file.atEnd())
+                {
+                    const QString line = file.readLine();
+                    const auto values = line.split(',');
+
                     if (values.count() >= 14)
                     {
                         if (values[13] != "0")
@@ -156,12 +194,42 @@ namespace Evernus
                     }
                 }
 
-                mBestBuyLabel->setText((buy.empty()) ? ("-") : (QString::number(*std::begin(buy))));
-                mBestSellLabel->setText((sell.empty()) ? ("-") : (QString::number(*std::begin(sell))));
+                if (buy.empty() || sell.empty())
+                {
+                    mBestBuyLabel->setText((buy.empty()) ? ("-") : (locale.toCurrencyString(*std::begin(buy), "ISK")));
+                    mBestSellLabel->setText((sell.empty()) ? ("-") : (locale.toCurrencyString(*std::begin(sell), "ISK")));
+                }
+                else
+                {
+                    try
+                    {
+                        const auto character = mCharacterRepository.find(mCharacterId);
+                        const auto feeSkills = character.getFeeSkills();
+                        const auto brokerFee = (0.01 - 0.0005 * feeSkills.mBrokerRelations) /
+                                               std::exp(0.1 * character.getFactionStanding() + 0.04 * character.getCorpStanding());
+                        const auto salesTax = 0.015 * (1. - feeSkills.mAccounting * 0.1);
+                        const auto sellPrice = *std::begin(sell) - 0.01;
+                        const auto buyPrice = *std::begin(buy) + 0.01;
+                        const auto revenue = sellPrice - sellPrice * salesTax - sellPrice * brokerFee;
+                        const auto cos = buyPrice + buyPrice * brokerFee;
+                        const auto margin = 100. * (revenue - cos) / revenue;
+                        const auto markup = 100. * (revenue - cos) / cos;
+
+                        mMarginLabel->setText(QString{"%1%"}.arg(margin, 0, 'f', 2));
+                        mMarkupLabel->setText(QString{"%1%"}.arg(markup, 0, 'f', 2));
+
+                        mBestBuyLabel->setText(locale.toCurrencyString(*std::begin(buy), "ISK"));
+                        mBestSellLabel->setText(locale.toCurrencyString(*std::begin(sell), "ISK"));
+                    }
+                    catch (const Repository<Character>::NotFoundException &)
+                    {
+                    }
+                }
             }
 
-            mKnownFiles = std::move(fileDiff);
         }
+
+        mKnownFiles = std::move(newFiles);
     }
 
     void MarginToolDialog::setNewWindowFlags(bool alwaysOnTop)
