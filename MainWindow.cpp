@@ -138,6 +138,9 @@ namespace Evernus
 
     void MainWindow::closeEvent(QCloseEvent *event)
     {
+        if (!mMarginToolDialog.isNull())
+            mMarginToolDialog->close();
+
         writeSettings();
         event->accept();
     }
