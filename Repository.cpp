@@ -131,6 +131,7 @@ namespace Evernus
             if (!rowId.isNull())
             {
                 auto query = prepare(QString{"SELECT %1 FROM %2 WHERE ROWID = :id"}.arg(getIdColumn()).arg(getTableName()));
+                query.bindValue(":id", rowId);
                 DatabaseUtils::execQuery(query);
                 query.next();
 
