@@ -1,3 +1,5 @@
+#include <QCoreApplication>
+
 namespace Evernus
 {
     template<class T, class CurElem>
