@@ -73,8 +73,8 @@ namespace Evernus
 
     void MainWindow::showMarginTool()
     {
-        if (mMarginToolDialog == nullptr)
-            mMarginToolDialog = new MarginToolDialog{this};
+        if (mMarginToolDialog.isNull())
+            mMarginToolDialog = new MarginToolDialog{};
 
         mMarginToolDialog->show();
         mMarginToolDialog->activateWindow();

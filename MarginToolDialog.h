@@ -2,6 +2,7 @@
 
 #include <QFileSystemWatcher>
 #include <QDialog>
+#include <QSet>
 
 class QLabel;
 
@@ -19,14 +20,21 @@ namespace Evernus
     private slots:
         void toggleAlwaysOnTop(int state);
 
-        void refreshData();
+        void refreshData(const QString &path);
 
     private:
         QFileSystemWatcher mWatcher;
 
+        QLabel *mNameLabel = nullptr;
+        QLabel *mBestBuyLabel = nullptr;
+        QLabel *mBestSellLabel = nullptr;
         QLabel *mMarginLabel = nullptr;
         QLabel *mMarkupLabel = nullptr;
 
+        QSet<QString> mKnownFiles;
+
         void setNewWindowFlags(bool alwaysOnTop);
+
+        static QSet<QString> getKnownFiles(const QString &path);
     };
 }
