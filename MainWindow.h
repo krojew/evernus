@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QPointer>
 
 #include "Character.h"
 
@@ -75,7 +76,7 @@ namespace Evernus
 
         CharacterManagerDialog *mCharacterManagerDialog = nullptr;
         ActiveTasksDialog *mActiveTasksDialog = nullptr;
-        MarginToolDialog *mMarginToolDialog = nullptr;
+        QPointer<MarginToolDialog> mMarginToolDialog;
 
         QLabel *mStatusWalletLabel = nullptr;
 

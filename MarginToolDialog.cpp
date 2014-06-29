@@ -1,4 +1,6 @@
 #include <QDialogButtonBox>
+#include <QStandardPaths>
+#include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGridLayout>
@@ -14,6 +16,7 @@
 #endif
 
 #include "MarginToolSettings.h"
+#include "PathSettings.h"
 
 #include "MarginToolDialog.h"
 
@@ -68,7 +71,21 @@ namespace Evernus
         mainLayout->addWidget(buttons);
         connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
+        auto logPath = settings.value(PathSettings::marketLogsPath).toString();
+        if (logPath.isEmpty())
+            logPath = QStandardPaths::locate(QStandardPaths::DocumentsLocation, "EVE/logs/marketlogs", QStandardPaths::LocateDirectory);
+
+        if (!mWatcher.addPath(logPath))
+        {
+            QMessageBox::warning(this,
+                                 tr("Margin tool error"),
+                                 tr("Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again."));
+        }
+
+        connect(&mWatcher, &QFileSystemWatcher::directoryChanged, this, &MarginToolDialog::refreshData);
+
         setWindowTitle(tr("Margin tool"));
+        setAttribute(Qt::WA_DeleteOnClose);
         setNewWindowFlags(alwaysOnTop);
     }
 
@@ -80,6 +97,11 @@ namespace Evernus
         settings.setValue(MarginToolSettings::alwaysOnTopKey, alwaysOnTop);
 
         setNewWindowFlags(alwaysOnTop);
+    }
+
+    void MarginToolDialog::refreshData()
+    {
+
     }
 
     void MarginToolDialog::setNewWindowFlags(bool alwaysOnTop)

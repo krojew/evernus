@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QFileSystemWatcher>
 #include <QDialog>
 
 class QLabel;
@@ -18,7 +19,11 @@ namespace Evernus
     private slots:
         void toggleAlwaysOnTop(int state);
 
+        void refreshData();
+
     private:
+        QFileSystemWatcher mWatcher;
+
         QLabel *mMarginLabel = nullptr;
         QLabel *mMarkupLabel = nullptr;
 
