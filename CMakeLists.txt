@@ -24,6 +24,7 @@ qt5_wrap_cpp(
     ActiveTasksDialog.h
     APIInterface.h
     APIManager.h
+    AssetsWidget.h
     ButtonWithTimer.h
     CharacterManagerDialog.h
     CharacterModel.h
@@ -61,6 +62,10 @@ add_executable(
     APIResponseCache.h
     APIXmlReceiver.h
     AssetList.h
+    AssetListXmlReceiver.cpp
+    AssetListXmlReceiver.h
+    AssetsWidget.cpp
+    AssetsWidget.h
     ButtonWithTimer.cpp
     ButtonWithTimer.h
     CachedAssetList.cpp
@@ -88,6 +93,7 @@ add_executable(
     CharacterDomParser.h
     CharacterImportPreferencesWidget.cpp
     CharacterImportPreferencesWidget.h
+    CharacterListXmlReceiver.cpp
     CharacterListXmlReceiver.h
     CharacterManagerDialog.cpp
     CharacterManagerDialog.h

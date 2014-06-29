@@ -41,6 +41,7 @@ namespace Evernus
         void taskStatusChanged(quint32 taskId, const QString &error);
 
         void importCharacter(Character::IdType id);
+        void importAssets(Character::IdType id);
 
     public slots:
         void showCharacterManagement();

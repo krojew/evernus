@@ -5,12 +5,11 @@
 
 #include "APIResponseCache.h"
 #include "APIInterface.h"
+#include "AssetList.h"
 #include "Character.h"
 
 namespace Evernus
 {
-    class Character;
-
     class APIManager
         : public QObject
     {
@@ -27,8 +26,10 @@ namespace Evernus
 
         void fetchCharacterList(const Key &key, const Callback<CharacterList> &callback) const;
         void fetchCharacter(const Key &key, Character::IdType characterId, const Callback<Character> &callback) const;
+        void fetchAssets(const Key &key, Character::IdType characterId, const Callback<AssetList> &callback) const;
 
         QDateTime getCharacterLocalCacheTime(Key::IdType key, Character::IdType characterId) const;
+        QDateTime getAssetsLocalCacheTime(Key::IdType key, Character::IdType characterId) const;
 
     signals:
         void generalError(const QString &info);
@@ -40,7 +41,7 @@ namespace Evernus
         APIInterface mInterface;
 
 
-        template<class T>
+        template<class T, class CurElem>
         static std::vector<T> parseResults(const QString &xml, const QString &rowsetName);
         template<class T>
         static T parseResult(const QString &xml);

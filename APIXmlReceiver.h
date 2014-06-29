@@ -8,10 +8,15 @@
 namespace Evernus
 {
     template<class T>
+    struct APIXmlReceiverAdditionalData { };
+
+    template<class T, class CurElem = std::unique_ptr<T>>
     class APIXmlReceiver
         : public QAbstractXmlReceiver
     {
     public:
+        typedef CurElem CurElemType;
+
         typedef std::vector<T> Container;
 
         APIXmlReceiver(Container &container, const QXmlNamePool &namePool);
@@ -34,7 +39,12 @@ namespace Evernus
         Container &mContainer;
         const QXmlNamePool &mNamePool;
 
-        std::unique_ptr<T> mCurrentElement;
+        CurElemType mCurrentElement;
+
+        APIXmlReceiverAdditionalData<T> mAdditionalData;
+
+        template<class U>
+        static U convert(QVariant value);
     };
 }
 

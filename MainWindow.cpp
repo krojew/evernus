@@ -14,6 +14,7 @@
 #include "MarginToolDialog.h"
 #include "CharacterWidget.h"
 #include "MenuBarWidget.h"
+#include "AssetsWidget.h"
 #include "Repository.h"
 
 #include "MainWindow.h"
@@ -194,6 +195,11 @@ namespace Evernus
         connect(charTab, &CharacterWidget::importCharacter, this, &MainWindow::importCharacter);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, charTab, &CharacterWidget::setCharacter);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::refreshImportTimer);
+
+        auto assetsTab = new AssetsWidget{this};
+        tabs->addTab(assetsTab, tr("Assets"));
+        connect(assetsTab, &AssetsWidget::importAssets, this, &MainWindow::importAssets);
+        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, assetsTab, &AssetsWidget::setCharacter);
     }
 
     void MainWindow::createStatusBar()

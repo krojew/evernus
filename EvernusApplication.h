@@ -14,6 +14,8 @@ class QSplashScreen;
 
 namespace Evernus
 {
+    class Key;
+
     class EvernusApplication
         : public QApplication
     {
@@ -42,6 +44,8 @@ namespace Evernus
         void fetchCharacters();
         void refreshCharacter(Character::IdType id, quint32 parentTask = TaskConstants::invalidTask);
 
+        void refreshAssets(Character::IdType id, quint32 parentTask = TaskConstants::invalidTask);
+
     private slots:
         void scheduleCharacterUpdate();
         void updateCharacters();
@@ -67,6 +71,8 @@ namespace Evernus
         quint32 startTask(quint32 parentTask, const QString &description);
 
         void importCharacter(Character::IdType id, quint32 parentTask, const Key &key);
+
+        Key getCharacterKey(Character::IdType id) const;
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };

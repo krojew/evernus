@@ -1,14 +1,42 @@
+#include <QAbstractMessageHandler>
 #include <QDomDocument>
 #include <QXmlQuery>
 #include <QDateTime>
 
 #include "CharacterListXmlReceiver.h"
+#include "AssetListXmlReceiver.h"
 #include "CharacterDomParser.h"
 
 #include "APIManager.h"
 
 namespace Evernus
 {
+    namespace
+    {
+        class APIXmlMessageHandler
+            : public QAbstractMessageHandler
+        {
+        public:
+            explicit APIXmlMessageHandler(QString &error)
+                : QAbstractMessageHandler{}
+                , mError{error}
+            {
+            }
+
+            virtual ~APIXmlMessageHandler() = default;
+
+        protected:
+            virtual void handleMessage(QtMsgType type, const QString &description, const QUrl &identifier, const QSourceLocation &sourceLocation) override
+            {
+                if (type == QtFatalMsg && mError.isEmpty())
+                    mError = QString{"%1 (%2:%3)"}.arg(description).arg(sourceLocation.line()).arg(sourceLocation.column());
+            }
+
+        private:
+            QString &mError;
+        };
+    }
+
     const QString APIManager::eveTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
     APIManager::APIManager()
@@ -30,10 +58,8 @@ namespace Evernus
             {
                 handlePotentialError(response, error);
 
-                auto cachedUntil = getCachedUntil(response);
-
-                CharacterList list{parseResults<Character::IdType>(response, "characters")};
-                mCache.setChracterListData(key.getId(), list, cachedUntil);
+                CharacterList list{parseResults<Character::IdType, APIXmlReceiver<Character::IdType>::CurElemType>(response, "characters")};
+                mCache.setChracterListData(key.getId(), list, getCachedUntil(response));
 
                 callback(list, QString{});
             }
@@ -57,11 +83,9 @@ namespace Evernus
             {
                 handlePotentialError(response, error);
 
-                auto cachedUntil = getCachedUntil(response);
-
                 Character character{parseResult<Character>(response)};
                 character.setKeyId(key.getId());
-                mCache.setCharacterData(key.getId(), character.getId(), character, cachedUntil);
+                mCache.setCharacterData(key.getId(), character.getId(), character, getCachedUntil(response));
 
                 callback(character, QString{});
             }
@@ -72,22 +96,54 @@ namespace Evernus
         });
     }
 
+    void APIManager::fetchAssets(const Key &key, Character::IdType characterId, const Callback<AssetList> &callback) const
+    {
+        if (mCache.hasAssetData(key.getId(), characterId))
+        {
+            callback(mCache.getAssetData(key.getId(), characterId), QString{});
+            return;
+        }
+
+        mInterface.fetchAssets(key, characterId, [key, characterId, callback, this](const QString &response, const QString &error) {
+            try
+            {
+                handlePotentialError(response, error);
+
+                AssetList assets{parseResults<AssetList::value_type, std::unique_ptr<AssetList::value_type::element_type>>(response, "assets")};
+                mCache.setAssetData(key.getId(), characterId, assets, getCachedUntil(response));
+
+                callback(assets, QString{});
+            }
+            catch (const std::exception &e)
+            {
+                callback(AssetList{}, e.what());
+            }
+        });
+    }
+
     QDateTime APIManager::getCharacterLocalCacheTime(Key::IdType key, Character::IdType characterId) const
     {
         return mCache.getCharacterDataLocalCacheTime(key, characterId);
     }
 
-    template<class T>
+    template<class T, class CurElem>
     std::vector<T> APIManager::parseResults(const QString &xml, const QString &rowsetName)
     {
         std::vector<T> result;
+        QString error;
+
+        APIXmlMessageHandler handler{error};
 
         QXmlQuery query;
+        query.setMessageHandler(&handler);
         query.setFocus(xml);
         query.setQuery(QString{"//rowset[@name='%1']/row"}.arg(rowsetName));
 
-        APIXmlReceiver<T> receiver{result, query.namePool()};
+        APIXmlReceiver<T, CurElem> receiver{result, query.namePool()};
         query.evaluateTo(&receiver);
+
+        if (!error.isEmpty())
+            throw std::runtime_error{error.toStdString()};
 
         return result;
     }

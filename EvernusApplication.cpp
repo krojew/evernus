@@ -148,25 +148,34 @@ namespace Evernus
 
         try
         {
-            const auto character = mCharacterRepository->find(id);
-            const auto keyId = character.getKeyId();
-
-            if (keyId)
-            {
-                try
-                {
-                    const auto key = mKeyRepository->find(*keyId);
-                    importCharacter(id, parentTask, key);
-                }
-                catch (const KeyRepository::NotFoundException &)
-                {
-                    qCritical() << "Attempted to refresh character without a key!";
-                }
-            }
+            importCharacter(id, parentTask, getCharacterKey(id));
+        }
+        catch (const KeyRepository::NotFoundException &)
+        {
         }
         catch (const CharacterRepository::NotFoundException &)
         {
-            qCritical() << "Attempted to refresh non-existent character!";
+        }
+    }
+
+    void EvernusApplication::refreshAssets(Character::IdType id, quint32 parentTask)
+    {
+        qDebug() << "Refreshing assets: " << id;
+
+        try
+        {
+            const auto key = getCharacterKey(id);
+            const auto assetSubtask = startTask(parentTask, QString{tr("Fetching assets for character %1...")}.arg(id));
+
+            mAPIManager.fetchAssets(key, id, [assetSubtask, this](auto data, const auto &error) {
+                emit taskStatusChanged(assetSubtask, error);
+            });
+        }
+        catch (const KeyRepository::NotFoundException &)
+        {
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
         }
     }
 
@@ -244,6 +253,37 @@ namespace Evernus
 
             emit taskStatusChanged(charSubtask, error);
         });
+    }
+
+    Key EvernusApplication::getCharacterKey(Character::IdType id) const
+    {
+        try
+        {
+            const auto character = mCharacterRepository->find(id);
+            const auto keyId = character.getKeyId();
+
+            if (keyId)
+            {
+                try
+                {
+                    return mKeyRepository->find(*keyId);
+                }
+                catch (const KeyRepository::NotFoundException &)
+                {
+                    qCritical() << "Attempted to refresh character without a key!";
+                    throw;
+                }
+            }
+            else
+            {
+                throw KeyRepository::NotFoundException{};
+            }
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            qCritical() << "Attempted to refresh non-existent character!";
+            throw;
+        }
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)
