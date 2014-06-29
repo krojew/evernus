@@ -77,6 +77,7 @@ namespace Evernus
             mMarginToolDialog = new MarginToolDialog{this};
 
         mMarginToolDialog->show();
+        mMarginToolDialog->activateWindow();
     }
 
     void MainWindow::showAbout()
