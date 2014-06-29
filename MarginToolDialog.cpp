@@ -8,6 +8,11 @@
 #include <QLabel>
 #include <QFont>
 
+#ifdef Q_OS_WIN
+// see setNewWindowFlags()
+#   include <windows.h>
+#endif
+
 #include "MarginToolSettings.h"
 
 #include "MarginToolDialog.h"
@@ -79,6 +84,13 @@ namespace Evernus
 
     void MarginToolDialog::setNewWindowFlags(bool alwaysOnTop)
     {
+#ifdef Q_OS_WIN
+        // https://bugreports.qt-project.org/browse/QTBUG-30359
+        if (alwaysOnTop)
+            SetWindowPos(reinterpret_cast<HWND>(winId()), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+        else
+            SetWindowPos(reinterpret_cast<HWND>(winId()), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+#else
         auto flags = windowFlags();
         if (alwaysOnTop)
             flags |= Qt::WindowStaysOnTopHint;
@@ -87,5 +99,6 @@ namespace Evernus
 
         setWindowFlags(flags);
         show();
+#endif
     }
 }
