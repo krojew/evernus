@@ -32,6 +32,7 @@ qt5_wrap_cpp(
     EvernusApplication.h
     FileDownload.h
     MainWindow.h
+    MarginToolDialog.h
     MenuBarWidget.h
     NetworkPreferencesWidget.h
     PathPreferencesWidget.h
@@ -120,6 +121,8 @@ add_executable(
     main.cpp
     MainWindow.cpp
     MainWindow.h
+    MarginToolDialog.cpp
+    MarginToolDialog.h
     MarketGroup.cpp
     MarketGroup.h
     MarketGroupRepository.cpp

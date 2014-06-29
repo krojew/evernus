@@ -12,6 +12,7 @@ namespace Evernus
     class Repository;
     class CharacterManagerDialog;
     class ActiveTasksDialog;
+    class MarginToolDialog;
     class MenuBarWidget;
     class APIManager;
     class Key;
@@ -44,6 +45,7 @@ namespace Evernus
     public slots:
         void showCharacterManagement();
         void showPreferences();
+        void showMarginTool();
         void showAbout();
         void showError(const QString &info);
 
@@ -72,6 +74,7 @@ namespace Evernus
 
         CharacterManagerDialog *mCharacterManagerDialog = nullptr;
         ActiveTasksDialog *mActiveTasksDialog = nullptr;
+        MarginToolDialog *mMarginToolDialog = nullptr;
 
         QLabel *mStatusWalletLabel = nullptr;
 

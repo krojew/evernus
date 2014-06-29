@@ -11,6 +11,7 @@
 #include "CharacterManagerDialog.h"
 #include "ActiveTasksDialog.h"
 #include "PreferencesDialog.h"
+#include "MarginToolDialog.h"
 #include "CharacterWidget.h"
 #include "MenuBarWidget.h"
 #include "Repository.h"
@@ -67,6 +68,14 @@ namespace Evernus
     {
         PreferencesDialog dlg{this};
         dlg.exec();
+    }
+
+    void MainWindow::showMarginTool()
+    {
+        if (mMarginToolDialog == nullptr)
+            mMarginToolDialog = new MarginToolDialog{this};
+
+        mMarginToolDialog->show();
     }
 
     void MainWindow::showAbout()
@@ -161,6 +170,9 @@ namespace Evernus
         fileMenu->addAction(tr("&Preferences..."), this, SLOT(showPreferences()), Qt::CTRL + Qt::Key_O);
         fileMenu->addSeparator();
         fileMenu->addAction(tr("E&xit"), this, SLOT(close()));
+
+        auto toolsMenu = bar->addMenu(tr("&Tools"));
+        toolsMenu->addAction(tr("Ma&rgin tool..."), this, SLOT(showMarginTool()), Qt::CTRL + Qt::Key_M);
 
         auto helpMenu = bar->addMenu(tr("&Help"));
         helpMenu->addAction(tr("&About..."), this, SLOT(showAbout()));
