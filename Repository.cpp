@@ -36,8 +36,10 @@ namespace Evernus
         QSqlQuery query{mDb};
         if (!query.prepare(queryStr))
         {
-            qCritical() << "Error preparing statement!";
-            throw std::runtime_error{"Error preparing statement!"};
+            const auto error = query.lastError().text();
+
+            qCritical() << error;
+            throw std::runtime_error{error.toStdString()};
         }
 
         return query;
