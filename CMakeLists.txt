@@ -80,6 +80,14 @@ add_executable(
     CachedCharacterListRepository.h
     CachedCharacterRepository.cpp
     CachedCharacterRepository.h
+    CachedConquerableStation.cpp
+    CachedConquerableStation.h
+    CachedConquerableStationList.cpp
+    CachedConquerableStationList.h
+    CachedConquerableStationListRepository.cpp
+    CachedConquerableStationListRepository.h
+    CachedConquerableStationRepository.cpp
+    CachedConquerableStationRepository.h
     CachedEntity.cpp
     CachedEntity.h
     CachedItem.cpp
