@@ -29,7 +29,7 @@ namespace Evernus
         const auto curTime = QDateTime::currentDateTime();
         if (curTime >= mEndTime)
         {
-            mTimer.stop();
+            stopTimer();
         }
         else
         {
