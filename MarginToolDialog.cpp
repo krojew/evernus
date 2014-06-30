@@ -1,5 +1,4 @@
 #include <functional>
-#include <thread>
 #include <cmath>
 #include <set>
 
@@ -234,15 +233,19 @@ namespace Evernus
             QFile file{logFile};
             if (file.open(QIODevice::ReadOnly | QIODevice::Text))
             {
+#ifdef Q_OS_WIN
+                const auto modTimeDelay = 500;
+#else
+                const auto modTimeDelay = 1000;
+#endif
+
                 QFileInfo info{file};
                 forever
                 {
                     // wait for Eve to finish dumping data
                     const auto modTime = info.lastModified();
-                    if (modTime.secsTo(QDateTime::currentDateTime()) >= 2)
+                    if (modTime.msecsTo(QDateTime::currentDateTime()) >= modTimeDelay)
                         break;
-
-                    std::this_thread::sleep_for(std::chrono::milliseconds{500});
                 }
 
                 std::multiset<double, std::greater<double>> buy;
