@@ -10,11 +10,12 @@ namespace Evernus
     template<>
     void APIXmlReceiver<AssetList::value_type, std::unique_ptr<AssetList::value_type::element_type>>::startElement(const QXmlName &name)
     {
-        if (name.localName(mNamePool) == "row")
+        const auto localName = name.localName(mNamePool);
+        if (localName == "row")
         {
             mCurrentElement.reset(new AssetList::value_type::element_type{});
         }
-        else if (name.localName(mNamePool) == "rowset")
+        else if (localName == "rowset")
         {
             mAdditionalData.mParsingRowset = true;
             mAdditionalData.mElementStack.emplace(std::move(mCurrentElement));
