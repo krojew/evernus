@@ -117,7 +117,13 @@ namespace Evernus
         if (logPath.isEmpty())
             logPath = QStandardPaths::locate(QStandardPaths::DocumentsLocation, "EVE/logs/Marketlogs", QStandardPaths::LocateDirectory);
 
-        if (logPath.isEmpty() || !mWatcher.addPath(logPath))
+        if (logPath.isEmpty())
+        {
+            QMessageBox::warning(this,
+                                 tr("Margin tool error"),
+                                 tr("Could not determine market log path. Please enter log path in settings."));
+        }
+        else if (!mWatcher.addPath(logPath))
         {
             QMessageBox::warning(this,
                                  tr("Margin tool error"),
