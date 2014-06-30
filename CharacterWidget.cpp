@@ -30,9 +30,9 @@ namespace Evernus
     const QString CharacterWidget::defaultPortrait = ":/images/generic-portrait.jpg";
 
     CharacterWidget::CharacterWidget(const Repository<Character> &characterRepository, const APIManager &apiManager, QWidget *parent)
-        : QWidget{parent}
-        , mCharacterRepository{characterRepository}
-        , mAPIManager{apiManager}
+        : CharacterBoundWidget{characterRepository,
+                               std::bind(&APIManager::getCharacterLocalCacheTime, &apiManager, std::placeholders::_1, std::placeholders::_2),
+                               parent}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -40,9 +40,8 @@ namespace Evernus
         auto toolBarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolBarLayout);
 
-        mImportBtn = new ButtonWithTimer{tr("API import"), this};
-        toolBarLayout->addWidget(mImportBtn);
-        connect(mImportBtn, &QPushButton::clicked, this, &CharacterWidget::requestUpdate);
+        auto &importBtn = getAPIImportButton();
+        toolBarLayout->addWidget(&importBtn);
 
         toolBarLayout->addStretch();
 
@@ -148,11 +147,37 @@ namespace Evernus
         mainLayout->addStretch();
     }
 
-    void CharacterWidget::setCharacter(Character::IdType id)
+    void CharacterWidget::setCorpStanding(double value)
     {
-        mCharacterId = id;
+        updateStanding("corp_standing", value);
+    }
 
-        qDebug() << "Switching character to" << mCharacterId;
+    void CharacterWidget::setFactionStanding(double value)
+    {
+        updateStanding("faction_standing", value);
+    }
+
+    void CharacterWidget::setSkillLevel(int level)
+    {
+        const auto id = getCharacterId();
+
+        Q_ASSERT(id != Character::invalidId);
+
+        const auto fieldName = sender()->property(skillFieldProperty).toString();
+        const auto &repo = getCharacterRepository();
+
+        auto query = repo.prepare(QString{"UPDATE %1 SET %2 = :level WHERE %3 = :id"}
+            .arg(repo.getTableName())
+            .arg(fieldName)
+            .arg(repo.getIdColumn()));
+        query.bindValue(":level", level);
+        query.bindValue(":id", id);
+        DatabaseUtils::execQuery(query);
+    }
+
+    void CharacterWidget::handleNewCharacter(Character::IdType id)
+    {
+        qDebug() << "Switching character to" << id;
 
         mCorpStandingEdit->blockSignals(true);
         mFactionStandingEdit->blockSignals(true);
@@ -170,11 +195,8 @@ namespace Evernus
         mContractingSkillEdit->blockSignals(true);
         mCorporationContractingSkillEdit->blockSignals(true);
 
-        if (mCharacterId == Character::invalidId)
+        if (id == Character::invalidId)
         {
-            mImportBtn->setDisabled(true);
-            mImportBtn->stopTimer();
-
             mNameLabel->setText(QString{});
             mBackgroundLabel->setText(QString{});
             mCorporationLabel->setText(QString{});
@@ -203,10 +225,7 @@ namespace Evernus
         {
             try
             {
-                const auto character = mCharacterRepository.find(mCharacterId);
-
-                mImportBtn->setEnabled(true);
-                refreshImportTimer();
+                const auto character = getCharacterRepository().find(id);
 
                 mNameLabel->setText(character.getName());
                 mBackgroundLabel->setText(QString{"%1 %2, %3, %4"}
@@ -242,24 +261,24 @@ namespace Evernus
                 QSettings settings;
                 if (settings.value(ImportSettings::importPortraitKey, true).toBool())
                 {
-                    const auto portraitPath = getPortraitPath(mCharacterId);
+                    const auto portraitPath = getPortraitPath(id);
 
                     QFile portrait{portraitPath};
                     if (portrait.exists())
                     {
                         mPortrait->setPixmap(portraitPath);
                     }
-                    else if (mPortraitDownloads.find(mCharacterId) == std::end(mPortraitDownloads))
+                    else if (mPortraitDownloads.find(id) == std::end(mPortraitDownloads))
                     {
                         try
                         {
-                            auto download = new FileDownload{QUrl{QString{"https://image.eveonline.com/Character/%1_128.jpg"}.arg(mCharacterId)},
+                            auto download = new FileDownload{QUrl{QString{"https://image.eveonline.com/Character/%1_128.jpg"}.arg(id)},
                                                              portraitPath,
                                                              this};
-                            download->setProperty(downloadIdProperty, mCharacterId);
+                            download->setProperty(downloadIdProperty, id);
                             connect(download, &FileDownload::finished, this, &CharacterWidget::downloadFinished);
 
-                            mPortraitDownloads.emplace(mCharacterId, download);
+                            mPortraitDownloads.emplace(id, download);
                         }
                         catch (const std::exception &e)
                         {
@@ -295,61 +314,6 @@ namespace Evernus
         mCorporationContractingSkillEdit->blockSignals(false);
     }
 
-    void CharacterWidget::refreshImportTimer()
-    {
-        struct CannotSetTimerException { };
-
-        try
-        {
-            if (mCharacterId == Character::invalidId)
-                throw CannotSetTimerException{};
-
-            try
-            {
-                const auto character = mCharacterRepository.find(mCharacterId);
-                const auto key = character.getKeyId();
-
-                if (!key)
-                    throw CannotSetTimerException{};
-
-                const auto time = mAPIManager.getCharacterLocalCacheTime(*key, mCharacterId);
-                mImportBtn->setTimer(time);
-            }
-            catch (const Repository<Character>::NotFoundException &)
-            {
-                throw CannotSetTimerException{};
-            }
-        }
-        catch (const CannotSetTimerException &)
-        {
-        }
-    }
-
-    void CharacterWidget::setCorpStanding(double value)
-    {
-        updateStanding("corp_standing", value);
-    }
-
-    void CharacterWidget::setFactionStanding(double value)
-    {
-        updateStanding("faction_standing", value);
-    }
-
-    void CharacterWidget::setSkillLevel(int level)
-    {
-        Q_ASSERT(mCharacterId != Character::invalidId);
-
-        const auto fieldName = sender()->property(skillFieldProperty).toString();
-
-        auto query = mCharacterRepository.prepare(QString{"UPDATE %1 SET %2 = :level WHERE %3 = :id"}
-            .arg(mCharacterRepository.getTableName())
-            .arg(fieldName)
-            .arg(mCharacterRepository.getIdColumn()));
-        query.bindValue(":level", level);
-        query.bindValue(":id", mCharacterId);
-        DatabaseUtils::execQuery(query);
-    }
-
     void CharacterWidget::downloadFinished()
     {
         const auto id = sender()->property(downloadIdProperty).value<Character::IdType>();
@@ -363,22 +327,19 @@ namespace Evernus
         mPortraitDownloads.erase(it);
     }
 
-    void CharacterWidget::requestUpdate()
-    {
-        Q_ASSERT(mCharacterId != Character::invalidId);
-        emit importCharacter(mCharacterId);
-    }
-
     void CharacterWidget::updateStanding(const QString &type, double value) const
     {
-        Q_ASSERT(mCharacterId != Character::invalidId);
+        const auto id = getCharacterId();
 
-        auto query = mCharacterRepository.prepare(QString{"UPDATE %1 SET %2 = :standing WHERE %3 = :id"}
-            .arg(mCharacterRepository.getTableName())
+        Q_ASSERT(id != Character::invalidId);
+
+        const auto &repo = getCharacterRepository();
+        auto query = repo.prepare(QString{"UPDATE %1 SET %2 = :standing WHERE %3 = :id"}
+            .arg(repo.getTableName())
             .arg(type)
-            .arg(mCharacterRepository.getIdColumn()));
+            .arg(repo.getIdColumn()));
         query.bindValue(":standing", value);
-        query.bindValue(":id", mCharacterId);
+        query.bindValue(":id", id);
         DatabaseUtils::execQuery(query);
     }
 

@@ -24,8 +24,8 @@ qt5_wrap_cpp(
     ActiveTasksDialog.h
     APIInterface.h
     APIManager.h
-    AssetsWidget.h
     ButtonWithTimer.h
+    CharacterBoundWidget.h
     CharacterManagerDialog.h
     CharacterModel.h
     CharacterImportPreferencesWidget.h
@@ -97,6 +97,8 @@ add_executable(
     CacheRepository.h
     Character.cpp
     Character.h
+    CharacterBoundWidget.cpp
+    CharacterBoundWidget.h
     CharacterData.h
     CharacterDomParser.h
     CharacterImportPreferencesWidget.cpp

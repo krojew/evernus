@@ -2,10 +2,8 @@
 
 #include <unordered_map>
 
-#include <QWidget>
-
+#include "CharacterBoundWidget.h"
 #include "FileDownload.h"
-#include "Character.h"
 
 class QDoubleSpinBox;
 class QSpinBox;
@@ -13,13 +11,10 @@ class QLabel;
 
 namespace Evernus
 {
-    template<class T>
-    class Repository;
-    class ButtonWithTimer;
     class APIManager;
 
     class CharacterWidget
-        : public QWidget
+        : public CharacterBoundWidget
     {
         Q_OBJECT
 
@@ -29,14 +24,6 @@ namespace Evernus
                         QWidget *parent = nullptr);
         virtual ~CharacterWidget() = default;
 
-    signals:
-        void importCharacter(Character::IdType id);
-
-    public slots:
-        void setCharacter(Character::IdType id);
-
-        void refreshImportTimer();
-
     private slots:
         void setCorpStanding(double value);
         void setFactionStanding(double value);
@@ -45,19 +32,10 @@ namespace Evernus
 
         void downloadFinished();
 
-        void requestUpdate();
-
     private:
         static const char * const skillFieldProperty;
         static const char * const downloadIdProperty;
         static const QString defaultPortrait;
-
-        const Repository<Character> &mCharacterRepository;
-        const APIManager &mAPIManager;
-
-        Character::IdType mCharacterId = Character::invalidId;
-
-        ButtonWithTimer *mImportBtn = nullptr;
 
         QLabel *mPortrait = nullptr;
 
@@ -84,6 +62,8 @@ namespace Evernus
         QSpinBox *mCorporationContractingSkillEdit = nullptr;
 
         std::unordered_map<Character::IdType, FileDownload *> mPortraitDownloads;
+
+        virtual void handleNewCharacter(Character::IdType id) override;
 
         void updateStanding(const QString &type, double value) const;
 
