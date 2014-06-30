@@ -61,9 +61,9 @@ namespace Evernus
         return mAPIManager;
     }
 
-    void EvernusApplication::fetchCharacters()
+    void EvernusApplication::refreshCharacters()
     {
-        qDebug() << "Fetching characters...";
+        qDebug() << "Refreshing characters...";
 
         const auto task = startTask(tr("Fetching characters..."));
 
@@ -177,6 +177,17 @@ namespace Evernus
         catch (const CharacterRepository::NotFoundException &)
         {
         }
+    }
+
+    void EvernusApplication::refreshConquerableStations()
+    {
+        qDebug() << "Refreshing conquerable stations...";
+
+        const auto task = startTask(tr("Fetching conquerable stations..."));
+
+        mAPIManager.fetchConquerableStationList([task, this](const auto &list, const auto &error) {
+            emit taskStatusChanged(task, error);
+        });
     }
 
     void EvernusApplication::scheduleCharacterUpdate()

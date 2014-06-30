@@ -140,6 +140,12 @@ namespace Evernus
         updateStatus();
     }
 
+    void MainWindow::refreshAssets()
+    {
+        if (mCurrentCharacterId != Character::invalidId)
+            emit importAssets(mCurrentCharacterId);
+    }
+
     void MainWindow::closeEvent(QCloseEvent *event)
     {
         if (!mMarginToolDialog.isNull())
@@ -181,6 +187,7 @@ namespace Evernus
         fileMenu->addAction(tr("E&xit"), this, SLOT(close()));
 
         auto toolsMenu = bar->addMenu(tr("&Tools"));
+        toolsMenu->addAction(tr("Import conquerable stations"), this, SIGNAL(refreshConquerableStations()));
         toolsMenu->addAction(tr("Ma&rgin tool..."), this, SLOT(showMarginTool()), Qt::CTRL + Qt::Key_M);
 
         auto helpMenu = bar->addMenu(tr("&Help"));
@@ -191,6 +198,8 @@ namespace Evernus
         connect(this, &MainWindow::charactersChanged, mMenuWidget, &MenuBarWidget::refreshCharacters);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, this, &MainWindow::setCharacter);
         connect(mMenuWidget, &MenuBarWidget::importAll, this, &MainWindow::refreshCharacters);
+        connect(mMenuWidget, &MenuBarWidget::importAll, this, &MainWindow::refreshAssets);
+        connect(mMenuWidget, &MenuBarWidget::importAll, this, &MainWindow::refreshConquerableStations);
     }
 
     void MainWindow::createMainView()

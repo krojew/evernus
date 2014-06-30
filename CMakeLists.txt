@@ -111,6 +111,9 @@ add_executable(
     CharacterRepository.h
     CharacterWidget.cpp
     CharacterWidget.h
+    ConquerableStationList.h
+    ConquerableStationListXmlReceiver.cpp
+    ConquerableStationListXmlReceiver.h
     DatabaseUtils.cpp
     DatabaseUtils.h
     Entity.h

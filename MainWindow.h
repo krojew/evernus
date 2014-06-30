@@ -35,6 +35,8 @@ namespace Evernus
 
     signals:
         void refreshCharacters();
+        void refreshConquerableStations();
+
         void charactersChanged();
 
         void newTaskInfoAdded(quint32 taskId, const QString &description);
@@ -56,6 +58,8 @@ namespace Evernus
         void updateStatus();
 
         void setCharacter(Character::IdType id);
+
+        void refreshAssets();
 
     protected:
         virtual void closeEvent(QCloseEvent *event) override;

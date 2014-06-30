@@ -165,6 +165,64 @@ namespace Evernus
             saveItemTree(*item, nullptr, list.getId());
     }
 
+    bool APIResponseCache::hasConquerableStationListData() const
+    {
+        if (QDateTime::currentDateTimeUtc() >  mConquerableStationCache.mCacheUntil)
+        {
+            mConquerableStationCache.mData.clear();
+            return false;
+        }
+
+        return !mConquerableStationCache.mData.empty();
+    }
+
+    ConquerableStationList APIResponseCache::getConquerableStationListData() const
+    {
+        return mConquerableStationCache.mData;
+    }
+
+    void APIResponseCache::setConquerableStationListData(const ConquerableStationList &data, const QDateTime &cacheUntil)
+    {
+        mConquerableStationCache.mCacheUntil = cacheUntil;
+        mConquerableStationCache.mData = data;
+
+        mConquerableStationListRepository->exec(QString{"DELETE FROM %1"}.arg(mConquerableStationListRepository->getTableName()));
+
+        CachedConquerableStationList list;
+        list.setCacheUntil(cacheUntil);
+
+        mConquerableStationListRepository->store(list);
+
+        const auto maxRowsPerInsert = 100u;
+        const auto batches = data.size() / maxRowsPerInsert;
+
+        for (auto batch = 0u; batch < batches; ++batch)
+        {
+            auto query = prepareBatchConquerableStationInsertQuery(maxRowsPerInsert);
+
+            const auto end = std::next(std::begin(data), (batch + 1) * maxRowsPerInsert);
+            for (auto it = std::next(std::begin(data), batch * maxRowsPerInsert); it != end; ++it)
+            {
+                query.addBindValue(it->mId);
+                query.addBindValue(list.getId());
+                query.addBindValue(it->mName);
+            }
+
+            DatabaseUtils::execQuery(query);
+        }
+
+        auto query = prepareBatchConquerableStationInsertQuery(data.size() % maxRowsPerInsert);
+
+        for (auto it = std::next(std::begin(data), batches * maxRowsPerInsert); it != std::end(data); ++it)
+        {
+            query.addBindValue(it->mId);
+            query.addBindValue(list.getId());
+            query.addBindValue(it->mName);
+        }
+
+        DatabaseUtils::execQuery(query);
+    }
+
     void APIResponseCache::createDb()
     {
         DatabaseUtils::createDb(mCacheDb, "cache.db");
@@ -173,6 +231,8 @@ namespace Evernus
         mCharacterRepository.reset(new CachedCharacterRepository{mCacheDb});
         mAssetListRepository.reset(new CachedAssetListRepository{mCacheDb});
         mItemRepository.reset(new CachedItemRepository{mCacheDb});
+        mConquerableStationListRepository.reset(new CachedConquerableStationListRepository{mCacheDb});
+        mConquerableStationRepository.reset(new CachedConquerableStationRepository{mCacheDb});
     }
 
     void APIResponseCache::createDbSchema()
@@ -181,6 +241,8 @@ namespace Evernus
         mCharacterRepository->create();
         mAssetListRepository->create();
         mItemRepository->create(*mAssetListRepository);
+        mConquerableStationListRepository->create();
+        mConquerableStationRepository->create(*mConquerableStationListRepository);
     }
 
     void APIResponseCache::clearOldData()
@@ -188,6 +250,7 @@ namespace Evernus
         mCharacterListRepository->clearOldData();
         mCharacterRepository->clearOldData();
         mAssetListRepository->clearOldData();
+        mConquerableStationListRepository->clearOldData();
     }
 
     void APIResponseCache::refreshCaches()
@@ -195,6 +258,7 @@ namespace Evernus
         refreshCharacterLists();
         refreshCharacters();
         refreshAssets();
+        refreshConquerableStations();
     }
 
     void APIResponseCache::refreshCharacterLists()
@@ -276,6 +340,30 @@ namespace Evernus
         }
     }
 
+    void APIResponseCache::refreshConquerableStations()
+    {
+        auto query = mConquerableStationListRepository->exec(QString{
+            "SELECT * FROM %1 ORDER BY cache_until DESC LIMIT 1"}.arg(mConquerableStationListRepository->getTableName()));
+        if (!query.next())
+            return;
+
+        const auto stationList = mConquerableStationListRepository->populate(query.record());
+
+        mConquerableStationCache.mCacheUntil = stationList.getCacheUntil();
+
+        query = mConquerableStationRepository->prepare(QString{
+            "SELECT * FROM %1 WHERE list_id = :id"}.arg(mConquerableStationRepository->getTableName()));
+        query.bindValue(":id", stationList.getId());
+        if (!query.exec())
+            return;
+
+        while (query.next())
+        {
+            const auto station = mConquerableStationRepository->populate(query.record());
+            mConquerableStationCache.mData.emplace_back(ConquerableStation{station.getId(), station.getName()});
+        }
+    }
+
     void APIResponseCache::saveItemTree(const Item &item, const Item *parent, CachedAssetList::IdType listId) const
     {
         CachedItem cachedItem{item.getId()};
@@ -289,5 +377,17 @@ namespace Evernus
 
         for (const auto &child : item)
             saveItemTree(*child, &item, listId);
+    }
+
+    QSqlQuery APIResponseCache::prepareBatchConquerableStationInsertQuery(size_t numValues) const
+    {
+        QStringList values;
+        for (auto i = 0u; i < numValues; ++i)
+            values << "(?, ?, ?)";
+
+        return mConquerableStationRepository->prepare(QString{"INSERT INTO %1 (%3, list_id, name) VALUES %2"}
+            .arg(mConquerableStationRepository->getTableName())
+            .arg(values.join(", "))
+            .arg(mConquerableStationRepository->getIdColumn()));
     }
 }

@@ -19,7 +19,8 @@ int main(int argc, char *argv[])
         try
         {
             Evernus::MainWindow mainWnd{app.getCharacterRepository(), app.getKeyRepository(), app.getAPIManager()};
-            app.connect(&mainWnd, SIGNAL(refreshCharacters()), SLOT(fetchCharacters()));
+            app.connect(&mainWnd, SIGNAL(refreshCharacters()), SLOT(refreshCharacters()));
+            app.connect(&mainWnd, SIGNAL(refreshConquerableStations()), SLOT(refreshConquerableStations()));
             app.connect(&mainWnd, SIGNAL(importCharacter(Character::IdType)), SLOT(refreshCharacter(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importAssets(Character::IdType)), SLOT(refreshAssets(Character::IdType)));
             mainWnd.connect(&app, SIGNAL(taskStarted(quint32, const QString &)), SLOT(addNewTaskInfo(quint32, const QString &)));

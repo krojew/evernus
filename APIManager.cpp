@@ -3,6 +3,7 @@
 #include <QXmlQuery>
 #include <QDateTime>
 
+#include "ConquerableStationListXmlReceiver.h"
 #include "CharacterListXmlReceiver.h"
 #include "AssetListXmlReceiver.h"
 #include "CharacterDomParser.h"
@@ -117,6 +118,31 @@ namespace Evernus
             catch (const std::exception &e)
             {
                 callback(AssetList{}, e.what());
+            }
+        });
+    }
+
+    void APIManager::fetchConquerableStationList(const Callback<ConquerableStationList> &callback) const
+    {
+        if (mCache.hasConquerableStationListData())
+        {
+            callback(mCache.getConquerableStationListData(), QString{});
+            return;
+        }
+
+        mInterface.fetchConquerableStationList([callback, this](const QString &response, const QString &error) {
+            try
+            {
+                handlePotentialError(response, error);
+
+                ConquerableStationList stations{parseResults<ConquerableStation, APIXmlReceiver<ConquerableStation>::CurElemType>(response, "outposts")};
+                mCache.setConquerableStationListData(stations, getCachedUntil(response));
+
+                callback(stations, QString{});
+            }
+            catch (const std::exception &e)
+            {
+                callback(ConquerableStationList{}, e.what());
             }
         });
     }

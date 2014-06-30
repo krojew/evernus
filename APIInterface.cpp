@@ -23,6 +23,11 @@ namespace Evernus
         makeRequest("/char/AssetList.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
     }
 
+    void APIInterface::fetchConquerableStationList(const Callback &callback) const
+    {
+        makeRequest("/eve/ConquerableStationList.xml.aspx", Key{}, callback);
+    }
+
     void APIInterface::processReply()
     {
         auto reply = qobject_cast<QNetworkReply *>(sender());

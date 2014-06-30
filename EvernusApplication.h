@@ -41,10 +41,10 @@ namespace Evernus
         void iskChanged();
 
     public slots:
-        void fetchCharacters();
+        void refreshCharacters();
         void refreshCharacter(Character::IdType id, quint32 parentTask = TaskConstants::invalidTask);
-
         void refreshAssets(Character::IdType id, quint32 parentTask = TaskConstants::invalidTask);
+        void refreshConquerableStations();
 
     private slots:
         void scheduleCharacterUpdate();
