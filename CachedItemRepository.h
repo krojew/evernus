@@ -11,6 +11,8 @@ namespace Evernus
         : public Repository<CachedItem>
     {
     public:
+        static const auto columnCount = 6;
+
         using Repository::Repository;
         virtual ~CachedItemRepository() = default;
 

@@ -161,8 +161,38 @@ namespace Evernus
 
         mAssetListRepository->store(list);
 
+        QVariantList boundValues[CachedItemRepository::columnCount - 1];
+
         for (const auto &item : data)
-            saveItemTree(*item, nullptr, list.getId());
+            saveItemTree(*item, nullptr, boundValues);
+
+        const auto maxRowsPerInsert = 100u;
+        const auto batches = data.size() / maxRowsPerInsert;
+
+        for (auto batch = 0u; batch < batches; ++batch)
+        {
+            query = prepareBatchItemInsertQuery(maxRowsPerInsert);
+
+            for (auto row = batch * maxRowsPerInsert; row < (batch + 1) * maxRowsPerInsert; ++row)
+            {
+                query.addBindValue(list.getId());
+                for (const auto &column : boundValues)
+                    query.addBindValue(column[row]);
+            }
+
+            DatabaseUtils::execQuery(query);
+        }
+
+        query = prepareBatchItemInsertQuery(data.size() % maxRowsPerInsert);
+
+        for (auto row = batches * maxRowsPerInsert; row < data.size(); ++row)
+        {
+            query.addBindValue(list.getId());
+            for (const auto &column : boundValues)
+                query.addBindValue(column[row]);
+        }
+
+        DatabaseUtils::execQuery(query);
     }
 
     QDateTime APIResponseCache::getAssetsDataLocalCacheTime(Key::IdType key, Character::IdType characterId) const
@@ -373,19 +403,16 @@ namespace Evernus
         }
     }
 
-    void APIResponseCache::saveItemTree(const Item &item, const Item *parent, CachedAssetList::IdType listId) const
+    void APIResponseCache::saveItemTree(const Item &item, const Item *parent, QVariantList boundValues[CachedItemRepository::columnCount - 1]) const
     {
-        CachedItem cachedItem{item.getId()};
-        cachedItem.setListId(listId);
-        cachedItem.setItemData(item.getItemData());
-
-        if (parent != nullptr)
-            cachedItem.setParentId(parent->getId());
-
-        mItemRepository->store(cachedItem);
+        boundValues[0] << item.getId();
+        boundValues[1] << ((parent == nullptr) ? (QVariant{QVariant::ULongLong}) : (parent->getId()));
+        boundValues[2] << item.getTypeId();
+        boundValues[3] << ((item.getLocationId()) ? (*item.getLocationId()) : (QVariant{QVariant::ULongLong}));
+        boundValues[4] << item.getQuantity();
 
         for (const auto &child : item)
-            saveItemTree(*child, &item, listId);
+            saveItemTree(*child, &item, boundValues);
     }
 
     QSqlQuery APIResponseCache::prepareBatchConquerableStationInsertQuery(size_t numValues) const
@@ -398,5 +425,23 @@ namespace Evernus
             .arg(mConquerableStationRepository->getTableName())
             .arg(values.join(", "))
             .arg(mConquerableStationRepository->getIdColumn()));
+    }
+
+    QSqlQuery APIResponseCache::prepareBatchItemInsertQuery(size_t numValues) const
+    {
+        QStringList columns;
+        for (auto j = 0; j < CachedItemRepository::columnCount; ++j)
+            columns << "?";
+
+        const auto columnBindings = QString{"(%1)"}.arg(columns.join(", "));
+
+        QStringList values;
+        for (auto i = 0u; i < numValues; ++i)
+            values << columnBindings;
+
+        return mItemRepository->prepare(QString{"INSERT INTO %1 (asset_list_id, %3, parent_id, type_id, location_id, quantity) VALUES %2"}
+            .arg(mItemRepository->getTableName())
+            .arg(values.join(", "))
+            .arg(mItemRepository->getIdColumn()));
     }
 }

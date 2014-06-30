@@ -84,8 +84,9 @@ namespace Evernus
         void refreshAssets();
         void refreshConquerableStations();
 
-        void saveItemTree(const Item &item, const Item *parent, CachedAssetList::IdType listId) const;
+        void saveItemTree(const Item &item, const Item *parent, QVariantList boundValues[CachedItemRepository::columnCount - 1]) const;
 
         QSqlQuery prepareBatchConquerableStationInsertQuery(size_t numValues) const;
+        QSqlQuery prepareBatchItemInsertQuery(size_t numValues) const;
     };
 }
