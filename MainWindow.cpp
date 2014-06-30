@@ -124,10 +124,8 @@ namespace Evernus
         if (mCurrentCharacterId != Character::invalidId)
         {
             const auto character = mCharacterRepository.find(mCurrentCharacterId);
-            QLocale locale;
-
             mStatusWalletLabel->setText(QString{tr("Wallet: <strong>%1</strong>")}
-                .arg(locale.toCurrencyString(character.getISK() / 100., "ISK")));
+                .arg(character.getISKPresentation()));
         }
         else
         {

@@ -74,7 +74,7 @@ namespace Evernus
             bloodline TEXT NOT NULL,
             ancestry TEXT NOT NULL,
             gender TEXT NOT NULL,
-            isk BIGINT NOT NULL,
+            isk DOUBLE NOT NULL,
             corp_standing FLOAT NOT NULL,
             faction_standing FLOAT NOT NULL,
             trade_skill TINYINT NOT NULL,

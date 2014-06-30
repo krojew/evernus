@@ -142,7 +142,7 @@ namespace Evernus
     QString Character::getISKPresentation() const
     {
         QLocale locale;
-        return locale.toCurrencyString(getISK() / 100., "ISK");
+        return locale.toCurrencyString(getISK(), "ISK");
     }
 
     void Character::setISK(CharacterData::ISKType isk) noexcept

@@ -6,7 +6,7 @@ namespace Evernus
 {
     struct CharacterData
     {
-        typedef qint64 ISKType;
+        typedef double ISKType;
 
         struct OrderAmountSkills
         {

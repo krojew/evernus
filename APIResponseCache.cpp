@@ -162,7 +162,7 @@ namespace Evernus
             saveItemTree(*item, nullptr, boundValues);
 
         const auto maxRowsPerInsert = 100;
-        const int batches = data.size() / maxRowsPerInsert;
+        const auto batches = static_cast<int>(data.size()) / maxRowsPerInsert;
 
         for (auto batch = 0; batch < batches; ++batch)
         {
