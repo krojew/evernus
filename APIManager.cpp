@@ -152,6 +152,11 @@ namespace Evernus
         return mCache.getCharacterDataLocalCacheTime(key, characterId);
     }
 
+    QDateTime APIManager::getAssetsLocalCacheTime(Key::IdType key, Character::IdType characterId) const
+    {
+        return mCache.getAssetsDataLocalCacheTime(key, characterId);
+    }
+
     template<class T, class CurElem>
     std::vector<T> APIManager::parseResults(const QString &xml, const QString &rowsetName)
     {

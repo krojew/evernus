@@ -6,7 +6,10 @@
 
 namespace Evernus
 {
+    template<class T>
+    class Repository;
     class ButtonWithTimer;
+    class APIManager;
 
     class AssetsWidget
         : public QWidget
@@ -14,7 +17,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit AssetsWidget(QWidget *parent = nullptr);
+        AssetsWidget(const Repository<Character> &characterRepository, const APIManager &apiManager, QWidget *parent = nullptr);
         virtual ~AssetsWidget() = default;
 
     signals:
@@ -23,10 +26,15 @@ namespace Evernus
     public slots:
         void setCharacter(Character::IdType id);
 
+        void refreshImportTimer();
+
     private slots:
         void requestUpdate();
 
     private:
+        const Repository<Character> &mCharacterRepository;
+        const APIManager &mAPIManager;
+
         ButtonWithTimer *mImportBtn = nullptr;
 
         Character::IdType mCharacterId = Character::invalidId;

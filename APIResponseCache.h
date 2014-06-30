@@ -44,6 +44,8 @@ namespace Evernus
         AssetList getAssetData(Key::IdType key, Character::IdType characterId) const;
         void setAssetData(Key::IdType key, Character::IdType characterId, const AssetList &data, const QDateTime &cacheUntil);
 
+        QDateTime getAssetsDataLocalCacheTime(Key::IdType key, Character::IdType characterId) const;
+
         bool hasConquerableStationListData() const;
         ConquerableStationList getConquerableStationListData() const;
         void setConquerableStationListData(const ConquerableStationList &data, const QDateTime &cacheUntil);

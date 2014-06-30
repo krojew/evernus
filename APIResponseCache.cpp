@@ -165,6 +165,15 @@ namespace Evernus
             saveItemTree(*item, nullptr, list.getId());
     }
 
+    QDateTime APIResponseCache::getAssetsDataLocalCacheTime(Key::IdType key, Character::IdType characterId) const
+    {
+        const auto it = mAssetCache.find(std::make_pair(key, characterId));
+        if (it == std::end(mAssetCache))
+            return QDateTime::currentDateTime();
+
+        return it->second.mCacheUntil.toLocalTime();
+    }
+
     bool APIResponseCache::hasConquerableStationListData() const
     {
         if (QDateTime::currentDateTimeUtc() >  mConquerableStationCache.mCacheUntil)

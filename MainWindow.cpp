@@ -213,10 +213,11 @@ namespace Evernus
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, charTab, &CharacterWidget::setCharacter);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::refreshImportTimer);
 
-        auto assetsTab = new AssetsWidget{this};
+        auto assetsTab = new AssetsWidget{mCharacterRepository, mApiManager, this};
         tabs->addTab(assetsTab, tr("Assets"));
         connect(assetsTab, &AssetsWidget::importAssets, this, &MainWindow::importAssets);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, assetsTab, &AssetsWidget::setCharacter);
+        connect(this, &MainWindow::charactersChanged, assetsTab, &AssetsWidget::refreshImportTimer);
     }
 
     void MainWindow::createStatusBar()
