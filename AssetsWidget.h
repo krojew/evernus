@@ -4,6 +4,8 @@
 
 namespace Evernus
 {
+    template<class T>
+    class Repository;
     class APIManager;
 
     class AssetsWidget
@@ -14,6 +16,8 @@ namespace Evernus
         virtual ~AssetsWidget() = default;
 
     private:
+        const Repository<Character> &mCharacterRepository;
+
         virtual void handleNewCharacter(Character::IdType id) override;
     };
 }

@@ -4,8 +4,6 @@
 #include <memory>
 #include <vector>
 
-#include <boost/functional/hash.hpp>
-
 #include <QSqlDatabase>
 #include <QDateTime>
 
@@ -34,17 +32,17 @@ namespace Evernus
         CharacterList getCharacterListData(Key::IdType key) const;
         void setChracterListData(Key::IdType key, const CharacterList &data, const QDateTime &cacheUntil);
 
-        bool hasCharacterData(Key::IdType key, Character::IdType characterId) const;
-        Character getCharacterData(Key::IdType key, Character::IdType characterId) const;
-        void setCharacterData(Key::IdType key, Character::IdType characterId, const Character &data, const QDateTime &cacheUntil);
+        bool hasCharacterData(Character::IdType characterId) const;
+        Character getCharacterData(Character::IdType characterId) const;
+        void setCharacterData(Character::IdType characterId, const Character &data, const QDateTime &cacheUntil);
 
-        QDateTime getCharacterDataLocalCacheTime(Key::IdType key, Character::IdType characterId) const;
+        QDateTime getCharacterDataLocalCacheTime(Character::IdType characterId) const;
 
-        bool hasAssetData(Key::IdType key, Character::IdType characterId) const;
-        AssetList getAssetData(Key::IdType key, Character::IdType characterId) const;
-        void setAssetData(Key::IdType key, Character::IdType characterId, const AssetList &data, const QDateTime &cacheUntil);
+        bool hasAssetData(Character::IdType characterId) const;
+        AssetList getAssetData(Character::IdType characterId) const;
+        void setAssetData(Character::IdType characterId, const AssetList &data, const QDateTime &cacheUntil);
 
-        QDateTime getAssetsDataLocalCacheTime(Key::IdType key, Character::IdType characterId) const;
+        QDateTime getAssetsDataLocalCacheTime(Character::IdType characterId) const;
 
         bool hasConquerableStationListData() const;
         ConquerableStationList getConquerableStationListData() const;
@@ -58,11 +56,9 @@ namespace Evernus
             T mData;
         };
 
-        typedef std::pair<Key::IdType, Character::IdType> KeyCharacterPair;
-
         mutable std::unordered_map<Key::IdType, CacheEntry<CharacterList>> mCharacterListCache;
-        mutable std::unordered_map<KeyCharacterPair, CacheEntry<Character>, boost::hash<KeyCharacterPair>> mCharacterCache;
-        mutable std::unordered_map<KeyCharacterPair, CacheEntry<AssetList>, boost::hash<KeyCharacterPair>> mAssetCache;
+        mutable std::unordered_map<Character::IdType, CacheEntry<Character>> mCharacterCache;
+        mutable std::unordered_map<Character::IdType, CacheEntry<AssetList>> mAssetCache;
         mutable CacheEntry<ConquerableStationList> mConquerableStationCache;
 
         QSqlDatabase mCacheDb;

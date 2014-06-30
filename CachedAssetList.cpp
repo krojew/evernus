@@ -2,16 +2,6 @@
 
 namespace Evernus
 {
-    Key::IdType CachedAssetList::getKeyId() const noexcept
-    {
-        return mKeyId;
-    }
-
-    void CachedAssetList::setKeyId(Key::IdType id) noexcept
-    {
-        mKeyId = id;
-    }
-
     Character::IdType CachedAssetList::getCharacterId() const noexcept
     {
         return mCharacterId;

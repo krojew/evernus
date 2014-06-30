@@ -2,12 +2,12 @@
 
 #include <QDateTime>
 
-#include "Key.h"
+#include "Character.h"
 
 namespace Evernus
 {
     class CachedEntity
-        : public Entity<Key::IdType>
+        : public Entity<Character::IdType>
     {
     public:
         using Entity::Entity;

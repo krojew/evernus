@@ -11,7 +11,7 @@ namespace Evernus
 
     QString CachedCharacterRepository::getIdColumn() const
     {
-        return "key_id";
+        return "character_id";
     }
 
     CachedCharacter CachedCharacterRepository::populate(const QSqlRecord &record) const
@@ -19,8 +19,7 @@ namespace Evernus
         auto cacheUntil = record.value("cache_until").toDateTime();
         cacheUntil.setTimeSpec(Qt::UTC);
 
-        CachedCharacter character{record.value("key_id").value<CachedCharacter::IdType>()};
-        character.setCharacterId(record.value("character_id").value<Character::IdType>());
+        CachedCharacter character{record.value("character_id").value<CachedCharacter::IdType>()};
         character.setCacheUntil(cacheUntil);
         character.setName(record.value("name").toString());
         character.setCorporationName(record.value("corporation_name").toString());
@@ -65,8 +64,7 @@ namespace Evernus
     void CachedCharacterRepository::create() const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            key_id INTEGER NOT NULL,
-            character_id BIGINT NOT NULL,
+            character_id BIGINT PRIMARY KEY,
             cache_until TEXT NOT NULL,
             name TEXT NOT NULL,
             corporation_name TEXT NOT NULL,
@@ -89,16 +87,13 @@ namespace Evernus
             broker_relations_skill TINYINT NOT NULL,
             margin_trading_skill TINYINT NOT NULL,
             contracting_skill TINYINT NOT NULL,
-            corporation_contracting_skill TINYINT NOT NULL,
-
-            CONSTRAINT pk PRIMARY KEY (key_id, character_id)
+            corporation_contracting_skill TINYINT NOT NULL
         ))"}.arg(getTableName()));
     }
 
     QStringList CachedCharacterRepository::getColumns() const
     {
         return QStringList{}
-            << "key_id"
             << "character_id"
             << "cache_until"
             << "name"
@@ -132,8 +127,7 @@ namespace Evernus
         const auto feeSkills = entity.getFeeSkills();
         const auto contractSkills = entity.getContractSkills();
 
-        query.bindValue(":key_id", entity.getId());
-        query.bindValue(":character_id", entity.getCharacterId());
+        query.bindValue(":character_id", entity.getId());
         query.bindValue(":cache_until", entity.getCacheUntil());
         query.bindValue(":name", entity.getName());
         query.bindValue(":corporation_name", entity.getCorporationName());

@@ -16,4 +16,14 @@ namespace Evernus
     {
         mCharacterList = std::move(list);
     }
+
+    QDateTime CachedCharacterList::getCacheUntil() const
+    {
+        return mCacheUntil;
+    }
+
+    void CachedCharacterList::setCacheUntil(const QDateTime &dt)
+    {
+        mCacheUntil = dt;
+    }
 }

@@ -1,15 +1,12 @@
 #include "ButtonWithTimer.h"
-#include "Repository.h"
 
 #include "CharacterBoundWidget.h"
 
 namespace Evernus
 {
-    CharacterBoundWidget::CharacterBoundWidget(const Repository<Character> &characterRepository,
-                                               const TimeGetter &timeGetter,
+    CharacterBoundWidget::CharacterBoundWidget(const TimeGetter &timeGetter,
                                                QWidget *parent)
         : QWidget{parent}
-        , mCharacterRepository{characterRepository}
         , mTimeGetter{timeGetter}
         , mImportBtn{new ButtonWithTimer{tr("API import"), this}}
     {
@@ -18,32 +15,8 @@ namespace Evernus
 
     void CharacterBoundWidget::refreshImportTimer()
     {
-        struct CannotSetTimerException { };
-
-        try
-        {
-            if (mCharacterId == Character::invalidId)
-                throw CannotSetTimerException{};
-
-            try
-            {
-                const auto character = mCharacterRepository.find(mCharacterId);
-                const auto key = character.getKeyId();
-
-                if (!key)
-                    throw CannotSetTimerException{};
-
-                const auto time = mTimeGetter(*key, mCharacterId);
-                mImportBtn->setTimer(time);
-            }
-            catch (const Repository<Character>::NotFoundException &)
-            {
-                throw CannotSetTimerException{};
-            }
-        }
-        catch (const CannotSetTimerException &)
-        {
-        }
+        if (mCharacterId != Character::invalidId)
+            mImportBtn->setTimer(mTimeGetter(mCharacterId));
     }
 
     void CharacterBoundWidget::setCharacter(Character::IdType id)
@@ -72,11 +45,6 @@ namespace Evernus
     ButtonWithTimer &CharacterBoundWidget::getAPIImportButton() const noexcept
     {
         return *mImportBtn;
-    }
-
-    const Repository<Character> &CharacterBoundWidget::getCharacterRepository() const noexcept
-    {
-        return mCharacterRepository;
     }
 
     Character::IdType CharacterBoundWidget::getCharacterId() const noexcept

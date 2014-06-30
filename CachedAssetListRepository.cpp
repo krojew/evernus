@@ -19,7 +19,6 @@ namespace Evernus
 
         CachedAssetList list;
         list.setId(record.value("id").value<CachedAssetList::IdType>());
-        list.setKeyId(record.value("key_id").value<Key::IdType>());
         list.setCharacterId(record.value("character_id").value<Character::IdType>());
         list.setCacheUntil(cacheUntil);
         list.setNew(false);
@@ -31,19 +30,15 @@ namespace Evernus
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id INTEGER PRIMARY KEY ASC,
-            key_id INTEGER NOT NULL,
-            character_id BIGINT NOT NULL,
+            character_id BIGINT NOT NULL UNIQUE,
             cache_until TEXT NOT NULL
         ))"}.arg(getTableName()));
-
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_key_character_index ON %1(key_id, character_id)"}.arg(getTableName()));
     }
 
     QStringList CachedAssetListRepository::getColumns() const
     {
         return QStringList{}
             << "id"
-            << "key_id"
             << "character_id"
             << "cache_until";
     }
@@ -53,7 +48,6 @@ namespace Evernus
         if (!entity.isNew())
             query.bindValue(":id", entity.getId());
 
-        query.bindValue(":key_id", entity.getKeyId());
         query.bindValue(":character_id", entity.getCharacterId());
         query.bindValue(":cache_until", entity.getCacheUntil());
     }

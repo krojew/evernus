@@ -73,9 +73,9 @@ namespace Evernus
 
     void APIManager::fetchCharacter(const Key &key, Character::IdType characterId, const Callback<Character> &callback) const
     {
-        if (mCache.hasCharacterData(key.getId(), characterId))
+        if (mCache.hasCharacterData(characterId))
         {
-            callback(mCache.getCharacterData(key.getId(), characterId), QString{});
+            callback(mCache.getCharacterData(characterId), QString{});
             return;
         }
 
@@ -86,7 +86,7 @@ namespace Evernus
 
                 Character character{parseResult<Character>(response)};
                 character.setKeyId(key.getId());
-                mCache.setCharacterData(key.getId(), character.getId(), character, getCachedUntil(response));
+                mCache.setCharacterData(character.getId(), character, getCachedUntil(response));
 
                 callback(character, QString{});
             }
@@ -99,9 +99,9 @@ namespace Evernus
 
     void APIManager::fetchAssets(const Key &key, Character::IdType characterId, const Callback<AssetList> &callback) const
     {
-        if (mCache.hasAssetData(key.getId(), characterId))
+        if (mCache.hasAssetData(characterId))
         {
-            callback(mCache.getAssetData(key.getId(), characterId), QString{});
+            callback(mCache.getAssetData(characterId), QString{});
             return;
         }
 
@@ -111,7 +111,7 @@ namespace Evernus
                 handlePotentialError(response, error);
 
                 AssetList assets{parseResults<AssetList::value_type, std::unique_ptr<AssetList::value_type::element_type>>(response, "assets")};
-                mCache.setAssetData(key.getId(), characterId, assets, getCachedUntil(response));
+                mCache.setAssetData(characterId, assets, getCachedUntil(response));
 
                 callback(assets, QString{});
             }
@@ -147,14 +147,14 @@ namespace Evernus
         });
     }
 
-    QDateTime APIManager::getCharacterLocalCacheTime(Key::IdType key, Character::IdType characterId) const
+    QDateTime APIManager::getCharacterLocalCacheTime(Character::IdType characterId) const
     {
-        return mCache.getCharacterDataLocalCacheTime(key, characterId);
+        return mCache.getCharacterDataLocalCacheTime(characterId);
     }
 
-    QDateTime APIManager::getAssetsLocalCacheTime(Key::IdType key, Character::IdType characterId) const
+    QDateTime APIManager::getAssetsLocalCacheTime(Character::IdType characterId) const
     {
-        return mCache.getAssetsDataLocalCacheTime(key, characterId);
+        return mCache.getAssetsDataLocalCacheTime(characterId);
     }
 
     template<class T, class CurElem>

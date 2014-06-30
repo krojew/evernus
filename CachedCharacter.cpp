@@ -2,16 +2,6 @@
 
 namespace Evernus
 {
-    Character::IdType CachedCharacter::getCharacterId() const noexcept
-    {
-        return mCharacterId;
-    }
-
-    void CachedCharacter::setCharacterId(Character::IdType id) noexcept
-    {
-        mCharacterId = id;
-    }
-
     QString CachedCharacter::getName() const &
     {
         return mData.mName;

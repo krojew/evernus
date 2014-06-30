@@ -30,9 +30,9 @@ namespace Evernus
     const QString CharacterWidget::defaultPortrait = ":/images/generic-portrait.jpg";
 
     CharacterWidget::CharacterWidget(const Repository<Character> &characterRepository, const APIManager &apiManager, QWidget *parent)
-        : CharacterBoundWidget{characterRepository,
-                               std::bind(&APIManager::getCharacterLocalCacheTime, &apiManager, std::placeholders::_1, std::placeholders::_2),
+        : CharacterBoundWidget{std::bind(&APIManager::getCharacterLocalCacheTime, &apiManager, std::placeholders::_1),
                                parent}
+        , mCharacterRepository{characterRepository}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -164,12 +164,11 @@ namespace Evernus
         Q_ASSERT(id != Character::invalidId);
 
         const auto fieldName = sender()->property(skillFieldProperty).toString();
-        const auto &repo = getCharacterRepository();
 
-        auto query = repo.prepare(QString{"UPDATE %1 SET %2 = :level WHERE %3 = :id"}
-            .arg(repo.getTableName())
+        auto query = mCharacterRepository.prepare(QString{"UPDATE %1 SET %2 = :level WHERE %3 = :id"}
+            .arg(mCharacterRepository.getTableName())
             .arg(fieldName)
-            .arg(repo.getIdColumn()));
+            .arg(mCharacterRepository.getIdColumn()));
         query.bindValue(":level", level);
         query.bindValue(":id", id);
         DatabaseUtils::execQuery(query);
@@ -225,7 +224,7 @@ namespace Evernus
         {
             try
             {
-                const auto character = getCharacterRepository().find(id);
+                const auto character = mCharacterRepository.find(id);
 
                 mNameLabel->setText(character.getName());
                 mBackgroundLabel->setText(QString{"%1 %2, %3, %4"}
@@ -330,14 +329,12 @@ namespace Evernus
     void CharacterWidget::updateStanding(const QString &type, double value) const
     {
         const auto id = getCharacterId();
-
         Q_ASSERT(id != Character::invalidId);
 
-        const auto &repo = getCharacterRepository();
-        auto query = repo.prepare(QString{"UPDATE %1 SET %2 = :standing WHERE %3 = :id"}
-            .arg(repo.getTableName())
+        auto query = mCharacterRepository.prepare(QString{"UPDATE %1 SET %2 = :standing WHERE %3 = :id"}
+            .arg(mCharacterRepository.getTableName())
             .arg(type)
-            .arg(repo.getIdColumn()));
+            .arg(mCharacterRepository.getIdColumn()));
         query.bindValue(":standing", value);
         query.bindValue(":id", id);
         DatabaseUtils::execQuery(query);

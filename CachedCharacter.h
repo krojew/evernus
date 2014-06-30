@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CachedEntity.h"
-#include "Character.h"
 
 namespace Evernus
 {
@@ -11,9 +10,6 @@ namespace Evernus
     public:
         using CachedEntity::CachedEntity;
         virtual ~CachedCharacter() = default;
-
-        Character::IdType getCharacterId() const noexcept;
-        void setCharacterId(Character::IdType id) noexcept;
 
         QString getName() const &;
         QString &&getName() && noexcept;
@@ -76,7 +72,6 @@ namespace Evernus
         void setCharacterData(CharacterData &&data);
 
     private:
-        Character::IdType mCharacterId;
         CharacterData mData;
     };
 }

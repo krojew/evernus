@@ -30,8 +30,8 @@ namespace Evernus
         void fetchAssets(const Key &key, Character::IdType characterId, const Callback<AssetList> &callback) const;
         void fetchConquerableStationList(const Callback<ConquerableStationList> &callback) const;
 
-        QDateTime getCharacterLocalCacheTime(Key::IdType key, Character::IdType characterId) const;
-        QDateTime getAssetsLocalCacheTime(Key::IdType key, Character::IdType characterId) const;
+        QDateTime getCharacterLocalCacheTime(Character::IdType characterId) const;
+        QDateTime getAssetsLocalCacheTime(Character::IdType characterId) const;
 
     signals:
         void generalError(const QString &info);

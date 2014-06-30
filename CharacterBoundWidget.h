@@ -5,12 +5,9 @@
 #include <QWidget>
 
 #include "Character.h"
-#include "Key.h"
 
 namespace Evernus
 {
-    template<class T>
-    class Repository;
     class ButtonWithTimer;
 
     class CharacterBoundWidget
@@ -19,10 +16,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        typedef std::function<QDateTime (Key::IdType, Character::IdType)> TimeGetter;
+        typedef std::function<QDateTime (Character::IdType)> TimeGetter;
 
-        CharacterBoundWidget(const Repository<Character> &characterRepository,
-                             const TimeGetter &timeGetter,
+        CharacterBoundWidget(const TimeGetter &timeGetter,
                              QWidget *parent = nullptr);
         virtual ~CharacterBoundWidget() = default;
 
@@ -39,11 +35,9 @@ namespace Evernus
 
     protected:
         ButtonWithTimer &getAPIImportButton() const noexcept;
-        const Repository<Character> &getCharacterRepository() const noexcept;
         Character::IdType getCharacterId() const noexcept;
 
     private:
-        const Repository<Character> &mCharacterRepository;
         TimeGetter mTimeGetter;
 
         ButtonWithTimer *mImportBtn = nullptr;

@@ -11,6 +11,8 @@ class QLabel;
 
 namespace Evernus
 {
+    template<class T>
+    class Repository;
     class APIManager;
 
     class CharacterWidget
@@ -36,6 +38,8 @@ namespace Evernus
         static const char * const skillFieldProperty;
         static const char * const downloadIdProperty;
         static const QString defaultPortrait;
+
+        const Repository<Character> &mCharacterRepository;
 
         QLabel *mPortrait = nullptr;
 
