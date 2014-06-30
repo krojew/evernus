@@ -147,6 +147,12 @@ namespace Evernus
         mainLayout->addStretch();
     }
 
+    void CharacterWidget::updateData()
+    {
+        refreshImportTimer();
+        handleNewCharacter(getCharacterId());
+    }
+
     void CharacterWidget::setCorpStanding(double value)
     {
         updateStanding("corp_standing", value);

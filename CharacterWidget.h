@@ -26,6 +26,9 @@ namespace Evernus
                         QWidget *parent = nullptr);
         virtual ~CharacterWidget() = default;
 
+    public slots:
+        void updateData();
+
     private slots:
         void setCorpStanding(double value);
         void setFactionStanding(double value);
