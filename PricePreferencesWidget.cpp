@@ -30,14 +30,14 @@ namespace Evernus
         mMinMarginEdit = new QDoubleSpinBox{this};
         marginLayout->addWidget(mMinMarginEdit);
         mMinMarginEdit->setSuffix("%");
-        mMinMarginEdit->setValue(settings.value(PriceSettings::minMarginKey, 10.).toDouble());
+        mMinMarginEdit->setValue(settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble());
 
         marginLayout->addWidget(new QLabel{tr("Preferred:"), this});
 
         mPreferredMarginEdit = new QDoubleSpinBox{this};
         marginLayout->addWidget(mPreferredMarginEdit);
         mPreferredMarginEdit->setSuffix("%");
-        mPreferredMarginEdit->setValue(settings.value(PriceSettings::preferredMarginKey, 30.).toDouble());
+        mPreferredMarginEdit->setValue(settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble());
 
         mainLayout->addStretch();
     }

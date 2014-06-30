@@ -26,6 +26,7 @@
 #endif
 
 #include "MarginToolSettings.h"
+#include "PriceSettings.h"
 #include "PathSettings.h"
 #include "Repository.h"
 
@@ -41,7 +42,7 @@ namespace Evernus
 
         QFont bigFont;
         bigFont.setBold(true);
-        bigFont.setPointSize(bigFont.pointSize() + 2);
+        bigFont.setPointSize(bigFont.pointSize() + 3);
 
         QFont boldFont;
         boldFont.setBold(true);
@@ -272,6 +273,7 @@ namespace Evernus
                 {
                     mBestBuyLabel->setText((buy.empty()) ? ("-") : (locale.toCurrencyString(*std::begin(buy), "ISK")));
                     mBestSellLabel->setText((sell.empty()) ? ("-") : (locale.toCurrencyString(*std::begin(sell), "ISK")));
+                    mMarginLabel->setStyleSheet("color: palette(text);");
                 }
                 else
                 {
@@ -296,6 +298,15 @@ namespace Evernus
                         mProfitLabel->setText(locale.toCurrencyString(sellPrice - buyPrice, "ISK"));
                         mRevenueLabel->setText(locale.toCurrencyString(revenue, "ISK"));
                         mCostOfSalesLabel->setText(locale.toCurrencyString(cos, "ISK"));
+
+                        QSettings settings;
+
+                        if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
+                            mMarginLabel->setStyleSheet("color: red;");
+                        else if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
+                            mMarginLabel->setStyleSheet("color: orange;");
+                        else
+                            mMarginLabel->setStyleSheet("color: green;");
                     }
                     catch (const Repository<Character>::NotFoundException &)
                     {
