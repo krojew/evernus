@@ -54,7 +54,14 @@ namespace Evernus
             return;
         }
 
+        if (mPendingCharacterListRequests.find(key.getId()) != std::end(mPendingCharacterListRequests))
+            return;
+
+        mPendingCharacterListRequests.emplace(key.getId());
+
         mInterface.fetchCharacterList(key, [key, callback, this](const QString &response, const QString &error) {
+            mPendingCharacterListRequests.erase(key.getId());
+
             try
             {
                 handlePotentialError(response, error);
@@ -79,7 +86,14 @@ namespace Evernus
             return;
         }
 
-        mInterface.fetchCharacter(key, characterId, [key, callback, this](const QString &response, const QString &error) {
+        if (mPendingCharacterRequests.find(characterId) != std::end(mPendingCharacterRequests))
+            return;
+
+        mPendingCharacterRequests.emplace(characterId);
+
+        mInterface.fetchCharacter(key, characterId, [key, callback, characterId, this](const QString &response, const QString &error) {
+            mPendingCharacterRequests.erase(characterId);
+
             try
             {
                 handlePotentialError(response, error);
@@ -105,7 +119,14 @@ namespace Evernus
             return;
         }
 
+        if (mPendingAssetsRequests.find(characterId) != std::end(mPendingAssetsRequests))
+            return;
+
+        mPendingAssetsRequests.emplace(characterId);
+
         mInterface.fetchAssets(key, characterId, [key, characterId, callback, this](const QString &response, const QString &error) {
+            mPendingAssetsRequests.erase(characterId);
+
             try
             {
                 handlePotentialError(response, error);

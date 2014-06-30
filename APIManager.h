@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_set>
 #include <functional>
 #include <vector>
 
@@ -42,6 +43,9 @@ namespace Evernus
         mutable APIResponseCache mCache;
         APIInterface mInterface;
 
+        mutable std::unordered_set<Key::IdType> mPendingCharacterListRequests;
+        mutable std::unordered_set<Character::IdType> mPendingCharacterRequests;
+        mutable std::unordered_set<Character::IdType> mPendingAssetsRequests;
 
         template<class T, class CurElem>
         static std::vector<T> parseResults(const QString &xml, const QString &rowsetName);
