@@ -13,6 +13,7 @@
 #include "PreferencesDialog.h"
 #include "MarginToolDialog.h"
 #include "CharacterWidget.h"
+#include "ImportSettings.h"
 #include "MenuBarWidget.h"
 #include "AssetsWidget.h"
 #include "Repository.h"
@@ -146,6 +147,16 @@ namespace Evernus
             emit importAssets(mCurrentCharacterId);
     }
 
+    void MainWindow::refreshAll()
+    {
+        emit refreshCharacters();
+        emit refreshConquerableStations();
+
+        QSettings settings;
+        if (settings.value(ImportSettings::importAssetsKey, true).toBool())
+            emit refreshAssets();
+    }
+
     void MainWindow::closeEvent(QCloseEvent *event)
     {
         if (!mMarginToolDialog.isNull())
@@ -197,9 +208,7 @@ namespace Evernus
         bar->setCornerWidget(mMenuWidget);
         connect(this, &MainWindow::charactersChanged, mMenuWidget, &MenuBarWidget::refreshCharacters);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, this, &MainWindow::setCharacter);
-        connect(mMenuWidget, &MenuBarWidget::importAll, this, &MainWindow::refreshCharacters);
-        connect(mMenuWidget, &MenuBarWidget::importAll, this, &MainWindow::refreshAssets);
-        connect(mMenuWidget, &MenuBarWidget::importAll, this, &MainWindow::refreshConquerableStations);
+        connect(mMenuWidget, &MenuBarWidget::importAll, this, &MainWindow::refreshAll);
     }
 
     void MainWindow::createMainView()

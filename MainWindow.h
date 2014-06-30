@@ -60,6 +60,7 @@ namespace Evernus
         void setCharacter(Character::IdType id);
 
         void refreshAssets();
+        void refreshAll();
 
     protected:
         virtual void closeEvent(QCloseEvent *event) override;

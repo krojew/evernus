@@ -8,6 +8,7 @@
 #include <QTreeWidget>
 
 #include "CharacterImportPreferencesWidget.h"
+#include "AssetsImportPreferencesWidget.h"
 #include "NetworkPreferencesWidget.h"
 #include "PricePreferencesWidget.h"
 #include "PathPreferencesWidget.h"
@@ -60,6 +61,7 @@ namespace Evernus
 
         std::vector<std::pair<QString, std::unique_ptr<QWidget>>> importCategories;
         importCategories.emplace_back(std::make_pair(QString{tr("Character")}, std::unique_ptr<QWidget>{new CharacterImportPreferencesWidget{}}));
+        importCategories.emplace_back(std::make_pair(QString{tr("Assets")}, std::unique_ptr<QWidget>{new AssetsImportPreferencesWidget{}}));
 
         for (auto i = 0; i < importCategories.size(); ++i)
         {

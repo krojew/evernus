@@ -6,5 +6,6 @@ namespace Evernus
     {
         const auto importSkillsKey = "import/character/importSkills";
         const auto importPortraitKey = "import/character/importPortrait";
+        const auto importAssetsKey = "import/assets/import";
     }
 }
