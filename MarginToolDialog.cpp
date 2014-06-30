@@ -72,7 +72,6 @@ namespace Evernus
 
         mMarkupLabel = new QLabel{"-", this};
         marginLayout->addWidget(mMarkupLabel, 1, 1);
-        mMarkupLabel->setFont(font);
 
         auto priceGroup = new QGroupBox{this};
         infoLayout->addWidget(priceGroup);
@@ -89,6 +88,22 @@ namespace Evernus
         mBestSellLabel = new QLabel{"-", this};
         priceLayout->addWidget(mBestSellLabel, 1, 1);
 
+        auto taxesGroup = new QGroupBox{this};
+        mainLayout->addWidget(taxesGroup);
+
+        auto taxesLayout = new QHBoxLayout{};
+        taxesGroup->setLayout(taxesLayout);
+
+        taxesLayout->addWidget(new QLabel{tr("Broker fee:"), this});
+
+        mBrokerFeeLabel = new QLabel{"-", this};
+        taxesLayout->addWidget(mBrokerFeeLabel);
+
+        taxesLayout->addWidget(new QLabel{tr("Sales tax:"), this});
+
+        mSalesTaxLabel = new QLabel{"-", this};
+        taxesLayout->addWidget(mSalesTaxLabel);
+
         auto alwaysOnTopBtn = new QCheckBox{tr("Always on top"), this};
         mainLayout->addWidget(alwaysOnTopBtn);
         alwaysOnTopBtn->setChecked(alwaysOnTop);
@@ -102,7 +117,7 @@ namespace Evernus
         if (logPath.isEmpty())
             logPath = QStandardPaths::locate(QStandardPaths::DocumentsLocation, "EVE/logs/Marketlogs", QStandardPaths::LocateDirectory);
 
-        if (!mWatcher.addPath(logPath))
+        if (logPath.isEmpty() || !mWatcher.addPath(logPath))
         {
             QMessageBox::warning(this,
                                  tr("Margin tool error"),
@@ -123,6 +138,19 @@ namespace Evernus
     void MarginToolDialog::setCharacter(Character::IdType id)
     {
         mCharacterId = id;
+
+        try
+        {
+            const auto taxes = calculateTaxes();
+
+            mBrokerFeeLabel->setText(QString{"%1%"}.arg(taxes.mBrokerFee * 100., 0, 'f', 2));
+            mSalesTaxLabel->setText(QString{"%1%"}.arg(taxes.mSalesTax * 100., 0, 'f', 2));
+        }
+        catch (const Repository<Character>::NotFoundException &)
+        {
+            mBrokerFeeLabel->setText("-");
+            mSalesTaxLabel->setText("-");
+        }
     }
 
     void MarginToolDialog::toggleAlwaysOnTop(int state)
@@ -203,15 +231,11 @@ namespace Evernus
                 {
                     try
                     {
-                        const auto character = mCharacterRepository.find(mCharacterId);
-                        const auto feeSkills = character.getFeeSkills();
-                        const auto brokerFee = (0.01 - 0.0005 * feeSkills.mBrokerRelations) /
-                                               std::exp(0.1 * character.getFactionStanding() + 0.04 * character.getCorpStanding());
-                        const auto salesTax = 0.015 * (1. - feeSkills.mAccounting * 0.1);
+                        const auto taxes = calculateTaxes();
                         const auto sellPrice = *std::begin(sell) - 0.01;
                         const auto buyPrice = *std::begin(buy) + 0.01;
-                        const auto revenue = sellPrice - sellPrice * salesTax - sellPrice * brokerFee;
-                        const auto cos = buyPrice + buyPrice * brokerFee;
+                        const auto revenue = sellPrice - sellPrice * taxes.mSalesTax - sellPrice * taxes.mBrokerFee;
+                        const auto cos = buyPrice + buyPrice * taxes.mBrokerFee;
                         const auto margin = 100. * (revenue - cos) / revenue;
                         const auto markup = 100. * (revenue - cos) / cos;
 
@@ -250,6 +274,17 @@ namespace Evernus
         setWindowFlags(flags);
         show();
 #endif
+    }
+
+    MarginToolDialog::Taxes MarginToolDialog::calculateTaxes() const
+    {
+        const auto character = mCharacterRepository.find(mCharacterId);
+        const auto feeSkills = character.getFeeSkills();
+        const auto brokerFee = (0.01 - 0.0005 * feeSkills.mBrokerRelations) /
+                               std::exp(0.1 * character.getFactionStanding() + 0.04 * character.getCorpStanding());
+        const auto salesTax = 0.015 * (1. - feeSkills.mAccounting * 0.1);
+
+        return Taxes{brokerFee, salesTax};
     }
 
     QSet<QString> MarginToolDialog::getKnownFiles(const QString &path)

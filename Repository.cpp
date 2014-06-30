@@ -89,10 +89,9 @@ namespace Evernus
         query.bindValue(":id", id);
         DatabaseUtils::execQuery(query);
 
-        if (query.size() == 0)
+        if (!query.next())
             throw NotFoundException{};
 
-        query.next();
         return populate(query.record());
     }
 

@@ -32,6 +32,12 @@ namespace Evernus
         void refreshData(const QString &path);
 
     private:
+        struct Taxes
+        {
+            double mBrokerFee;
+            double mSalesTax;
+        };
+
         const Repository<Character> &mCharacterRepository;
 
         QFileSystemWatcher mWatcher;
@@ -41,12 +47,16 @@ namespace Evernus
         QLabel *mBestSellLabel = nullptr;
         QLabel *mMarginLabel = nullptr;
         QLabel *mMarkupLabel = nullptr;
+        QLabel *mBrokerFeeLabel = nullptr;
+        QLabel *mSalesTaxLabel = nullptr;
 
         QSet<QString> mKnownFiles;
 
         Character::IdType mCharacterId = Character::invalidId;
 
         void setNewWindowFlags(bool alwaysOnTop);
+
+        Taxes calculateTaxes() const;
 
         static QSet<QString> getKnownFiles(const QString &path);
     };
