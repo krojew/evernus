@@ -168,6 +168,7 @@ namespace Evernus
             const auto assetSubtask = startTask(parentTask, QString{tr("Fetching assets for character %1...")}.arg(id));
 
             mAPIManager.fetchAssets(key, id, [assetSubtask, this](auto data, const auto &error) {
+                emit assetsChanged();
                 emit taskStatusChanged(assetSubtask, error);
             });
         }

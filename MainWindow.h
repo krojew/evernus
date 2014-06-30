@@ -38,6 +38,7 @@ namespace Evernus
         void refreshConquerableStations();
 
         void charactersChanged();
+        void assetsChanged();
 
         void newTaskInfoAdded(quint32 taskId, const QString &description);
         void newSubTaskInfoAdded(quint32 taskId, quint32 parentTask, const QString &description);

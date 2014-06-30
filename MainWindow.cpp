@@ -226,7 +226,7 @@ namespace Evernus
         tabs->addTab(assetsTab, tr("Assets"));
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, assetsTab, &AssetsWidget::setCharacter);
-        connect(this, &MainWindow::charactersChanged, assetsTab, &AssetsWidget::refreshImportTimer);
+        connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::refreshImportTimer);
     }
 
     void MainWindow::createStatusBar()

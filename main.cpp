@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(taskStatusChanged(quint32, const QString &)), SIGNAL(taskStatusChanged(quint32, const QString &)));
             mainWnd.connect(&app, SIGNAL(apiError(const QString &)), SLOT(showError(const QString &)));
             mainWnd.connect(&app, SIGNAL(charactersChanged()), SIGNAL(charactersChanged()));
+            mainWnd.connect(&app, SIGNAL(assetsChanged()), SIGNAL(assetsChanged()));
             mainWnd.connect(&app, SIGNAL(iskChanged()), SLOT(updateStatus()));
             mainWnd.showAsSaved();
 
