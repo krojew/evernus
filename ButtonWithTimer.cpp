@@ -34,7 +34,21 @@ namespace Evernus
         else
         {
             const auto delta = curTime.secsTo(mEndTime);
-            setText(QString{"%1 (%2:%3)"}.arg(mOrigText).arg(delta / 60, 2, 10, QLatin1Char{'0'}).arg(delta % 60, 2, 10, QLatin1Char{'0'}));
+            if (delta < 3600)
+            {
+                setText(QString{"%1 (%2:%3)"}
+                    .arg(mOrigText)
+                    .arg(delta / 60, 2, 10, QLatin1Char{'0'})
+                    .arg(delta % 60, 2, 10, QLatin1Char{'0'}));
+            }
+            else
+            {
+                setText(QString{"%1 (%4:%2:%3)"}
+                    .arg(mOrigText)
+                    .arg((delta % 3600) / 60, 2, 10, QLatin1Char{'0'})
+                    .arg(delta % 60, 2, 10, QLatin1Char{'0'})
+                    .arg(delta / 3600, 2, 10, QLatin1Char{'0'}));
+            }
         }
     }
 }
