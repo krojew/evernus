@@ -1,8 +1,9 @@
 #pragma once
 
 #include <QFileSystemWatcher>
+#include <QDateTime>
 #include <QDialog>
-#include <QSet>
+#include <QHash>
 
 #include "Character.h"
 
@@ -32,6 +33,8 @@ namespace Evernus
         void refreshData(const QString &path);
 
     private:
+        typedef QHash<QString, QDateTime> FileModificationMap;
+
         struct Taxes
         {
             double mBrokerFee;
@@ -45,12 +48,15 @@ namespace Evernus
         QLabel *mNameLabel = nullptr;
         QLabel *mBestBuyLabel = nullptr;
         QLabel *mBestSellLabel = nullptr;
+        QLabel *mProfitLabel = nullptr;
+        QLabel *mRevenueLabel = nullptr;
+        QLabel *mCostOfSalesLabel = nullptr;
         QLabel *mMarginLabel = nullptr;
         QLabel *mMarkupLabel = nullptr;
         QLabel *mBrokerFeeLabel = nullptr;
         QLabel *mSalesTaxLabel = nullptr;
 
-        QSet<QString> mKnownFiles;
+        FileModificationMap mKnownFiles;
 
         Character::IdType mCharacterId = Character::invalidId;
 
@@ -58,6 +64,6 @@ namespace Evernus
 
         Taxes calculateTaxes() const;
 
-        static QSet<QString> getKnownFiles(const QString &path);
+        static FileModificationMap getKnownFiles(const QString &path);
     };
 }

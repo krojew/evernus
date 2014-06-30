@@ -40,9 +40,12 @@ namespace Evernus
     {
         QSettings settings;
 
-        QFont font;
-        font.setBold(true);
-        font.setPointSize(14);
+        QFont bigFont;
+        bigFont.setBold(true);
+        bigFont.setPointSize(bigFont.pointSize() + 2);
+
+        QFont boldFont;
+        boldFont.setBold(true);
 
         const auto alwaysOnTop = settings.value(MarginToolSettings::alwaysOnTopKey, true).toBool();
 
@@ -51,7 +54,35 @@ namespace Evernus
 
         mNameLabel = new QLabel{tr("export market logs in game"), this};
         mainLayout->addWidget(mNameLabel);
-        mNameLabel->setFont(font);
+        mNameLabel->setFont(bigFont);
+
+        auto priceGroup = new QGroupBox{this};
+        mainLayout->addWidget(priceGroup);
+
+        auto priceLayout = new QGridLayout{};
+        priceGroup->setLayout(priceLayout);
+
+        priceLayout->addWidget(new QLabel{tr("Max buy:")}, 0, 0);
+        priceLayout->addWidget(new QLabel{tr("Min sell:")}, 1, 0);
+        priceLayout->addWidget(new QLabel{tr("Profit:")}, 2, 0);
+        priceLayout->addWidget(new QLabel{tr("Revenue:")}, 0, 2);
+        priceLayout->addWidget(new QLabel{tr("Cost of sales:")}, 1, 2);
+
+        mBestBuyLabel = new QLabel{"-", this};
+        priceLayout->addWidget(mBestBuyLabel, 0, 1);
+
+        mBestSellLabel = new QLabel{"-", this};
+        priceLayout->addWidget(mBestSellLabel, 1, 1);
+
+        mProfitLabel = new QLabel{"-", this};
+        priceLayout->addWidget(mProfitLabel, 2, 1);
+        mProfitLabel->setFont(boldFont);
+
+        mRevenueLabel = new QLabel{"-", this};
+        priceLayout->addWidget(mRevenueLabel, 0, 3);
+
+        mCostOfSalesLabel = new QLabel{"-", this};
+        priceLayout->addWidget(mCostOfSalesLabel, 1, 3);
 
         auto infoLayout = new QHBoxLayout{};
         mainLayout->addLayout(infoLayout);
@@ -66,27 +97,12 @@ namespace Evernus
 
         mMarginLabel = new QLabel{"-", this};
         marginLayout->addWidget(mMarginLabel, 0, 1);
-        mMarginLabel->setFont(font);
+        mMarginLabel->setFont(bigFont);
 
         marginLayout->addWidget(new QLabel{tr("Markup:")}, 1, 0);
 
         mMarkupLabel = new QLabel{"-", this};
         marginLayout->addWidget(mMarkupLabel, 1, 1);
-
-        auto priceGroup = new QGroupBox{this};
-        infoLayout->addWidget(priceGroup);
-
-        auto priceLayout = new QGridLayout{};
-        priceGroup->setLayout(priceLayout);
-
-        priceLayout->addWidget(new QLabel{tr("Max buy:")}, 0, 0);
-        priceLayout->addWidget(new QLabel{tr("Min sell:")}, 1, 0);
-
-        mBestBuyLabel = new QLabel{"-", this};
-        priceLayout->addWidget(mBestBuyLabel, 0, 1);
-
-        mBestSellLabel = new QLabel{"-", this};
-        priceLayout->addWidget(mBestSellLabel, 1, 1);
 
         auto taxesGroup = new QGroupBox{this};
         mainLayout->addWidget(taxesGroup);
@@ -176,17 +192,38 @@ namespace Evernus
 
         auto newFiles = getKnownFiles(path);
 
-        auto fileDiff = newFiles;
-        fileDiff -= mKnownFiles;
+        QHashIterator<QString, QDateTime> it{newFiles};
+        while (it.hasNext())
+        {
+            it.next();
+            if (!mKnownFiles.contains(it.key()))
+            {
+                targetFile = it.key();
+                break;
+            }
+        }
 
-        if (!fileDiff.isEmpty())
+        if (targetFile.isEmpty())
         {
-            targetFile = std::move(*fileDiff.begin());
+            QHashIterator<QString, QDateTime> it{newFiles};
+            while (it.hasNext())
+            {
+                it.next();
+                if (it.value() != mKnownFiles[it.key()])
+                {
+                    targetFile = it.key();
+                    break;
+                }
+            }
+
+            if (targetFile.isEmpty())
+            {
+                mKnownFiles = std::move(newFiles);
+                return;
+            }
         }
-        else
-        {
-            // TODO: check modifications
-        }
+
+        mKnownFiles = std::move(newFiles);
 
         if (!targetFile.isEmpty())
         {
@@ -238,8 +275,10 @@ namespace Evernus
                     try
                     {
                         const auto taxes = calculateTaxes();
-                        const auto sellPrice = *std::begin(sell) - 0.01;
-                        const auto buyPrice = *std::begin(buy) + 0.01;
+                        const auto bestBuy = *std::begin(buy);
+                        const auto bestSell = *std::begin(sell);
+                        const auto sellPrice = bestSell - 0.01;
+                        const auto buyPrice = bestBuy + 0.01;
                         const auto revenue = sellPrice - sellPrice * taxes.mSalesTax - sellPrice * taxes.mBrokerFee;
                         const auto cos = buyPrice + buyPrice * taxes.mBrokerFee;
                         const auto margin = 100. * (revenue - cos) / revenue;
@@ -248,8 +287,12 @@ namespace Evernus
                         mMarginLabel->setText(QString{"%1%"}.arg(margin, 0, 'f', 2));
                         mMarkupLabel->setText(QString{"%1%"}.arg(markup, 0, 'f', 2));
 
-                        mBestBuyLabel->setText(locale.toCurrencyString(*std::begin(buy), "ISK"));
-                        mBestSellLabel->setText(locale.toCurrencyString(*std::begin(sell), "ISK"));
+                        mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
+                        mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
+
+                        mProfitLabel->setText(locale.toCurrencyString(sellPrice - buyPrice, "ISK"));
+                        mRevenueLabel->setText(locale.toCurrencyString(revenue, "ISK"));
+                        mCostOfSalesLabel->setText(locale.toCurrencyString(cos, "ISK"));
                     }
                     catch (const Repository<Character>::NotFoundException &)
                     {
@@ -258,8 +301,6 @@ namespace Evernus
             }
 
         }
-
-        mKnownFiles = std::move(newFiles);
     }
 
     void MarginToolDialog::setNewWindowFlags(bool alwaysOnTop)
@@ -293,8 +334,18 @@ namespace Evernus
         return Taxes{brokerFee, salesTax};
     }
 
-    QSet<QString> MarginToolDialog::getKnownFiles(const QString &path)
+    MarginToolDialog::FileModificationMap MarginToolDialog::getKnownFiles(const QString &path)
     {
-        return QSet<QString>::fromList(QDir{path}.entryList(QStringList{"*.txt"}, QDir::Files | QDir::Readable));
+        const QDir basePath{path};
+        const auto files = basePath.entryList(QStringList{"*.txt"}, QDir::Files | QDir::Readable);
+
+        FileModificationMap out;
+        for (const auto &file : files)
+        {
+            QFileInfo info{basePath.filePath(file)};
+            out[file] = info.lastModified();
+        }
+
+        return out;
     }
 }
