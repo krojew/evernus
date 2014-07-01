@@ -34,9 +34,11 @@
 
 namespace Evernus
 {
-    MarginToolDialog::MarginToolDialog(const Repository<Character> &characterRepository, QWidget *parent)
+    MarginToolDialog
+    ::MarginToolDialog(const Repository<Character> &characterRepository, const NameProvider &nameProvider, QWidget *parent)
         : QDialog{parent}
         , mCharacterRepository{characterRepository}
+        , mNameProvider{nameProvider}
     {
         QSettings settings;
 

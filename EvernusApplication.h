@@ -1,13 +1,16 @@
 #pragma once
 
+#include <unordered_map>
 #include <memory>
 
 #include <QApplication>
 #include <QSqlDatabase>
 
 #include "CharacterRepository.h"
+#include "EveTypeRepository.h"
 #include "TaskConstants.h"
 #include "KeyRepository.h"
+#include "NameProvider.h"
 #include "APIManager.h"
 
 class QSplashScreen;
@@ -18,12 +21,15 @@ namespace Evernus
 
     class EvernusApplication
         : public QApplication
+        , public NameProvider
     {
         Q_OBJECT
 
     public:
         EvernusApplication(int &argc, char *argv[]);
         virtual ~EvernusApplication() = default;
+
+        virtual QString getName(EveType::IdType id) const override;
 
         const KeyRepository &getKeyRepository() const noexcept;
         const CharacterRepository &getCharacterRepository() const noexcept;
@@ -58,12 +64,15 @@ namespace Evernus
 
         std::unique_ptr<KeyRepository> mKeyRepository;
         std::unique_ptr<CharacterRepository> mCharacterRepository;
+        std::unique_ptr<EveTypeRepository> mEveTypeRepository;
 
         APIManager mAPIManager;
 
         quint32 mTaskId = TaskConstants::invalidTask + 1;
 
         bool mCharacterUpdateScheduled = false;
+
+        mutable std::unordered_map<EveType::IdType, QString> mNameCache;
 
         void createDb();
         void createDbSchema();

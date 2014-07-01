@@ -13,6 +13,7 @@ namespace Evernus
 {
     template<class T>
     class Repository;
+    class NameProvider;
 
     class MarginToolDialog
         : public QDialog
@@ -20,8 +21,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit MarginToolDialog(const Repository<Character> &characterRepository,
-                                  QWidget *parent = nullptr);
+        MarginToolDialog(const Repository<Character> &characterRepository,
+                         const NameProvider &nameProvider,
+                         QWidget *parent = nullptr);
         virtual ~MarginToolDialog() = default;
 
     public slots:
@@ -42,6 +44,7 @@ namespace Evernus
         };
 
         const Repository<Character> &mCharacterRepository;
+        const NameProvider &mNameProvider;
 
         QFileSystemWatcher mWatcher;
 

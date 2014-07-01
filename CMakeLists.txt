@@ -152,6 +152,7 @@ add_executable(
     MarketGroupRepository.h
     MenuBarWidget.cpp
     MenuBarWidget.h
+    NameProvider.h
     NetworkPreferencesWidget.cpp
     NetworkPreferencesWidget.h
     NetworkSettings.h

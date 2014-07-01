@@ -28,12 +28,14 @@ namespace Evernus
 
     MainWindow::MainWindow(const Repository<Character> &characterRepository,
                            const Repository<Key> &keyRepository,
+                           const NameProvider &nameProvider,
                            APIManager &apiManager,
                            QWidget *parent,
                            Qt::WindowFlags flags)
         : QMainWindow{parent, flags}
         , mCharacterRepository{characterRepository}
         , mKeyRepository{keyRepository}
+        , mNameProvider{nameProvider}
         , mApiManager{apiManager}
     {
         readSettings();
@@ -76,7 +78,7 @@ namespace Evernus
     {
         if (mMarginToolDialog.isNull())
         {
-            mMarginToolDialog = new MarginToolDialog{mCharacterRepository};
+            mMarginToolDialog = new MarginToolDialog{mCharacterRepository, mNameProvider};
             mMarginToolDialog->setCharacter(mCurrentCharacterId);
             connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, mMarginToolDialog, &MarginToolDialog::setCharacter);
         }

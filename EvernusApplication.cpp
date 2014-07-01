@@ -39,6 +39,26 @@ namespace Evernus
         connect(&mAPIManager, &APIManager::generalError, this, &EvernusApplication::apiError);
     }
 
+    QString EvernusApplication::getName(EveType::IdType id) const
+    {
+        const auto it = mNameCache.find(id);
+        if (it != std::end(mNameCache))
+            return it->second;
+
+        QString result;
+
+        try
+        {
+            result = mEveTypeRepository->find(id).getName();
+        }
+        catch (const EveTypeRepository::NotFoundException &)
+        {
+        }
+
+        mNameCache.emplace(id, result);
+        return result;
+    }
+
     const KeyRepository &EvernusApplication::getKeyRepository() const noexcept
     {
         return *mKeyRepository;
@@ -216,6 +236,7 @@ namespace Evernus
 
         mKeyRepository.reset(new KeyRepository{mMainDb});
         mCharacterRepository.reset(new CharacterRepository{mMainDb});
+        mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
     }
 
     void EvernusApplication::createDbSchema()

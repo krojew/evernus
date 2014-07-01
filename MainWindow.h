@@ -15,6 +15,7 @@ namespace Evernus
     class ActiveTasksDialog;
     class MarginToolDialog;
     class MenuBarWidget;
+    class NameProvider;
     class APIManager;
     class Key;
 
@@ -26,6 +27,7 @@ namespace Evernus
     public:
         MainWindow(const Repository<Character> &characterRepository,
                    const Repository<Key> &keyRepository,
+                   const NameProvider &nameProvider,
                    APIManager &apiManager,
                    QWidget *parent = nullptr,
                    Qt::WindowFlags flags = 0);
@@ -74,9 +76,11 @@ namespace Evernus
         const Repository<Character> &mCharacterRepository;
         const Repository<Key> &mKeyRepository;
 
-        MenuBarWidget *mMenuWidget = nullptr;
+        const NameProvider &mNameProvider;
 
         APIManager &mApiManager;
+
+        MenuBarWidget *mMenuWidget = nullptr;
 
         bool mShowMaximized = false;
 
