@@ -2,21 +2,6 @@
 
 namespace Evernus
 {
-    Item::Item(IdType id)
-        : mId{id}
-    {
-    }
-
-    Item::IdType Item::getId() const noexcept
-    {
-        return mId;
-    }
-
-    void Item::setId(IdType id) noexcept
-    {
-        mId = id;
-    }
-
     ItemData::TypeIdType Item::getTypeId() const
     {
         return mData.mTypeId;

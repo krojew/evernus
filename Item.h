@@ -4,25 +4,24 @@
 #include <memory>
 
 #include "ItemData.h"
+#include "Entity.h"
 
 namespace Evernus
 {
     class Item
+        : public Entity<ItemData::IdType>
     {
     public:
-        typedef ItemData::IdType IdType;
         typedef std::vector<std::unique_ptr<Item>> ItemList;
         typedef ItemList::iterator ItemIterator;
         typedef ItemList::const_iterator ConstItemIterator;
 
+        using Entity::Entity;
+
         Item() = default;
-        explicit Item(IdType id);
         Item(const Item &) = delete;
         Item(Item &&) = default;
         virtual ~Item() = default;
-
-        IdType getId() const noexcept;
-        void setId(IdType id) noexcept;
 
         ItemData::TypeIdType getTypeId() const;
         void setTypeId(const ItemData::TypeIdType &id);
@@ -49,7 +48,6 @@ namespace Evernus
         Item &operator =(Item &&) = default;
 
     private:
-        IdType mId = 0;
         ItemData mData;
         ItemList mContents;
     };

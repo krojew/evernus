@@ -8,12 +8,12 @@
 namespace Evernus
 {
     template<>
-    void APIXmlReceiver<AssetList::value_type, std::unique_ptr<AssetList::value_type::element_type>>::startElement(const QXmlName &name)
+    void APIXmlReceiver<AssetList::ItemType, std::unique_ptr<AssetList::ItemType::element_type>>::startElement(const QXmlName &name)
     {
         const auto localName = name.localName(mNamePool);
         if (localName == "row")
         {
-            mCurrentElement.reset(new AssetList::value_type::element_type{});
+            mCurrentElement.reset(new AssetList::ItemType::element_type{});
         }
         else if (localName == "rowset")
         {
@@ -23,7 +23,7 @@ namespace Evernus
     }
 
     template<>
-    void APIXmlReceiver<AssetList::value_type, std::unique_ptr<AssetList::value_type::element_type>>::endElement()
+    void APIXmlReceiver<AssetList::ItemType, std::unique_ptr<AssetList::ItemType::element_type>>::endElement()
     {
         if (mCurrentElement)
         {
@@ -42,7 +42,7 @@ namespace Evernus
     }
 
     template<>
-    void APIXmlReceiver<AssetList::value_type, std::unique_ptr<AssetList::value_type::element_type>>::attribute(const QXmlName &name, const QStringRef &value)
+    void APIXmlReceiver<AssetList::ItemType, std::unique_ptr<AssetList::ItemType::element_type>>::attribute(const QXmlName &name, const QStringRef &value)
     {
         const auto localName = name.localName(mNamePool);
         if (localName == "itemID")

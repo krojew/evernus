@@ -369,7 +369,7 @@ namespace Evernus
             if (entry.mCacheUntil.isNull())
                 entry.mCacheUntil = assetList->getCacheUntil();
 
-            entry.mData.emplace_back(std::move(itemMap[item.getId()]));
+            entry.mData.addItem(std::move(itemMap[item.getId()]));
         }
     }
 

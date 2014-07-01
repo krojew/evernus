@@ -8,16 +8,16 @@
 namespace Evernus
 {
     template<>
-    struct APIXmlReceiverAdditionalData<AssetList::value_type>
+    struct APIXmlReceiverAdditionalData<AssetList::ItemType>
     {
-        std::stack<std::unique_ptr<AssetList::value_type::element_type>> mElementStack;
+        std::stack<std::unique_ptr<AssetList::ItemType::element_type>> mElementStack;
         bool mParsingRowset = false;
     };
 
     template<>
-    void APIXmlReceiver<AssetList::value_type, std::unique_ptr<AssetList::value_type::element_type>>::startElement(const QXmlName &name);
+    void APIXmlReceiver<AssetList::ItemType, std::unique_ptr<AssetList::ItemType::element_type>>::startElement(const QXmlName &name);
     template<>
-    void APIXmlReceiver<AssetList::value_type, std::unique_ptr<AssetList::value_type::element_type>>::endElement();
+    void APIXmlReceiver<AssetList::ItemType, std::unique_ptr<AssetList::ItemType::element_type>>::endElement();
     template<>
-    void APIXmlReceiver<AssetList::value_type, std::unique_ptr<AssetList::value_type::element_type>>::attribute(const QXmlName &name, const QStringRef &value);
+    void APIXmlReceiver<AssetList::ItemType, std::unique_ptr<AssetList::ItemType::element_type>>::attribute(const QXmlName &name, const QStringRef &value);
 }

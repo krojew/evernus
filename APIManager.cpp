@@ -131,7 +131,8 @@ namespace Evernus
             {
                 handlePotentialError(response, error);
 
-                AssetList assets{parseResults<AssetList::value_type, std::unique_ptr<AssetList::value_type::element_type>>(response, "assets")};
+                AssetList assets{parseResults<AssetList::ItemType, std::unique_ptr<AssetList::ItemType::element_type>>(response, "assets")};
+                assets.setCharacterId(characterId);
                 mCache.setAssetData(characterId, assets, getCachedUntil(response));
 
                 callback(assets, QString{});

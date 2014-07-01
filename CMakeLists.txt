@@ -62,7 +62,10 @@ add_executable(
     APIResponseCache.cpp
     APIResponseCache.h
     APIXmlReceiver.h
+    AssetList.cpp
     AssetList.h
+    AssetListRepository.cpp
+    AssetListRepository.h
     AssetListXmlReceiver.cpp
     AssetListXmlReceiver.h
     AssetsImportPreferencesWidget.cpp
