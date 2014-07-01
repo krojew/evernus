@@ -220,7 +220,7 @@ namespace Evernus
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, charTab, &CharacterWidget::setCharacter);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::updateData);
 
-        auto assetsTab = new AssetsWidget{mCharacterRepository, mApiManager, this};
+        auto assetsTab = new AssetsWidget{mApiManager, this};
         tabs->addTab(assetsTab, tr("Assets"));
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, assetsTab, &AssetsWidget::setCharacter);
