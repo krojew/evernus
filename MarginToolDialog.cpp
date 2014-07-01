@@ -62,8 +62,8 @@ namespace Evernus
         auto priceLayout = new QGridLayout{};
         priceGroup->setLayout(priceLayout);
 
-        priceLayout->addWidget(new QLabel{tr("Max buy:")}, 0, 0);
-        priceLayout->addWidget(new QLabel{tr("Min sell:")}, 1, 0);
+        priceLayout->addWidget(new QLabel{tr("Buy:")}, 0, 0);
+        priceLayout->addWidget(new QLabel{tr("Sell:")}, 1, 0);
         priceLayout->addWidget(new QLabel{tr("Profit:")}, 2, 0);
         priceLayout->addWidget(new QLabel{tr("Revenue:")}, 0, 2);
         priceLayout->addWidget(new QLabel{tr("Cost of sales:")}, 1, 2);
@@ -172,6 +172,10 @@ namespace Evernus
         {
             mBrokerFeeLabel->setText("-");
             mSalesTaxLabel->setText("-");
+            mRevenueLabel->setText("-");
+            mCostOfSalesLabel->setText("-");
+            mMarginLabel->setText("-");
+            mMarkupLabel->setText("-");
         }
     }
 
@@ -269,48 +273,74 @@ namespace Evernus
                     }
                 }
 
-                if (buy.empty() || sell.empty())
+                try
                 {
-                    mBestBuyLabel->setText((buy.empty()) ? ("-") : (locale.toCurrencyString(*std::begin(buy), "ISK")));
-                    mBestSellLabel->setText((sell.empty()) ? ("-") : (locale.toCurrencyString(*std::begin(sell), "ISK")));
-                    mMarginLabel->setStyleSheet("color: palette(text);");
-                }
-                else
-                {
-                    try
+                    const auto taxes = calculateTaxes();
+
+                    if (buy.empty() || sell.empty())
                     {
-                        const auto taxes = calculateTaxes();
-                        const auto bestBuy = *std::begin(buy);
-                        const auto bestSell = *std::begin(sell);
-                        const auto sellPrice = bestSell - 0.01;
-                        const auto buyPrice = bestBuy + 0.01;
-                        const auto revenue = sellPrice - sellPrice * taxes.mSalesTax - sellPrice * taxes.mBrokerFee;
-                        const auto cos = buyPrice + buyPrice * taxes.mBrokerFee;
-                        const auto margin = 100. * (revenue - cos) / revenue;
-                        const auto markup = 100. * (revenue - cos) / cos;
-
-                        mMarginLabel->setText(QString{"%1%"}.arg(margin, 0, 'f', 2));
-                        mMarkupLabel->setText(QString{"%1%"}.arg(markup, 0, 'f', 2));
-
-                        mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
-                        mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
-
-                        mProfitLabel->setText(locale.toCurrencyString(sellPrice - buyPrice, "ISK"));
-                        mRevenueLabel->setText(locale.toCurrencyString(revenue, "ISK"));
-                        mCostOfSalesLabel->setText(locale.toCurrencyString(cos, "ISK"));
-
-                        QSettings settings;
-
-                        if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
-                            mMarginLabel->setStyleSheet("color: red;");
-                        else if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
-                            mMarginLabel->setStyleSheet("color: orange;");
+                        if (buy.empty())
+                        {
+                            mBestBuyLabel->setText("-");
+                            mCostOfSalesLabel->setText("-");
+                        }
                         else
-                            mMarginLabel->setStyleSheet("color: green;");
+                        {
+                            const auto buyPrice = *std::begin(buy) + 0.01;
+
+                            mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
+                            mCostOfSalesLabel->setText(locale.toCurrencyString(getCoS(buyPrice, taxes), "ISK"));
+                        }
+
+                        if (sell.empty())
+                        {
+                            mBestSellLabel->setText("-");
+                            mRevenueLabel->setText("-");
+                        }
+                        else
+                        {
+                            const auto sellPrice = *std::begin(sell) + 0.01;
+
+                            mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
+                            mRevenueLabel->setText(locale.toCurrencyString(getRevenue(sellPrice, taxes), "ISK"));
+                        }
+
+                        mProfitLabel->setText("-");
+                        mMarginLabel->setStyleSheet("color: palette(text);");
                     }
-                    catch (const Repository<Character>::NotFoundException &)
+                    else
                     {
+                            const auto bestBuy = *std::begin(buy);
+                            const auto bestSell = *std::begin(sell);
+                            const auto sellPrice = bestSell - 0.01;
+                            const auto buyPrice = bestBuy + 0.01;
+                            const auto revenue = getRevenue(sellPrice, taxes);
+                            const auto cos = getCoS(buyPrice, taxes);
+                            const auto margin = 100. * (revenue - cos) / revenue;
+                            const auto markup = 100. * (revenue - cos) / cos;
+
+                            mMarginLabel->setText(QString{"%1%"}.arg(margin, 0, 'f', 2));
+                            mMarkupLabel->setText(QString{"%1%"}.arg(markup, 0, 'f', 2));
+
+                            mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
+                            mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
+
+                            mProfitLabel->setText(locale.toCurrencyString(sellPrice - buyPrice, "ISK"));
+                            mRevenueLabel->setText(locale.toCurrencyString(revenue, "ISK"));
+                            mCostOfSalesLabel->setText(locale.toCurrencyString(cos, "ISK"));
+
+                            QSettings settings;
+
+                            if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
+                                mMarginLabel->setStyleSheet("color: red;");
+                            else if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
+                                mMarginLabel->setStyleSheet("color: orange;");
+                            else
+                                mMarginLabel->setStyleSheet("color: green;");
                     }
+                }
+                catch (const Repository<Character>::NotFoundException &)
+                {
                 }
             }
 
@@ -361,5 +391,15 @@ namespace Evernus
         }
 
         return out;
+    }
+
+    double MarginToolDialog::getCoS(double buyPrice, const Taxes &taxes)
+    {
+        return buyPrice + buyPrice * taxes.mBrokerFee;
+    }
+
+    double MarginToolDialog::getRevenue(double sellPrice, const Taxes &taxes)
+    {
+        return sellPrice - sellPrice * taxes.mSalesTax - sellPrice * taxes.mBrokerFee;
     }
 }

@@ -65,5 +65,8 @@ namespace Evernus
         Taxes calculateTaxes() const;
 
         static FileModificationMap getKnownFiles(const QString &path);
+
+        static double getCoS(double buyPrice, const Taxes &taxes);
+        static double getRevenue(double sellPrice, const Taxes &taxes);
     };
 }
