@@ -107,6 +107,16 @@ namespace Evernus
         mMarkupLabel = new QLabel{"-", this};
         marginLayout->addWidget(mMarkupLabel, 1, 1);
 
+        marginLayout->addWidget(new QLabel{tr("Buy volume/movement:")}, 0, 2);
+
+        mBuyVolLabel = new QLabel{"-", this};
+        marginLayout->addWidget(mBuyVolLabel, 0, 3);
+
+        marginLayout->addWidget(new QLabel{tr("Sell volume/movement:")}, 1, 2);
+
+        mSellVolLabel = new QLabel{"-", this};
+        marginLayout->addWidget(mSellVolLabel, 1, 3);
+
         auto taxesGroup = new QGroupBox{this};
         mainLayout->addWidget(taxesGroup);
 
