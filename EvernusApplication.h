@@ -54,7 +54,7 @@ namespace Evernus
     private:
         static const QString versionKey;
 
-        QSqlDatabase mMainDb;
+        QSqlDatabase mMainDb, mEveDb;
 
         std::unique_ptr<KeyRepository> mKeyRepository;
         std::unique_ptr<CharacterRepository> mCharacterRepository;

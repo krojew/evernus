@@ -17,31 +17,24 @@ namespace Evernus
     EvernusApplication::EvernusApplication(int &argc, char *argv[])
         : QApplication{argc, argv}
         , mMainDb{QSqlDatabase::addDatabase("QSQLITE", "main")}
+        , mEveDb{QSqlDatabase::addDatabase("QSQLITE", "eve")}
     {
         QSplashScreen splash{QPixmap{":/images/splash.png"}};
         splash.show();
         showSplashMessage(tr("Loading..."), splash);
 
-        try
-        {
-            showSplashMessage(tr("Creating databases..."), splash);
+        showSplashMessage(tr("Creating databases..."), splash);
 
-            createDb();
+        createDb();
 
-            showSplashMessage(tr("Creating schemas..."), splash);
+        showSplashMessage(tr("Creating schemas..."), splash);
 
-            createDbSchema();
+        createDbSchema();
 
-            showSplashMessage(tr("Loading..."), splash);
+        showSplashMessage(tr("Loading..."), splash);
 
-            QSettings settings;
-            settings.setValue(versionKey, applicationVersion());
-        }
-        catch (const std::exception &e)
-        {
-            QMessageBox::critical(nullptr, tr("Error"), e.what());
-            throw;
-        }
+        QSettings settings;
+        settings.setValue(versionKey, applicationVersion());
 
         connect(&mAPIManager, &APIManager::generalError, this, &EvernusApplication::apiError);
     }
@@ -211,6 +204,15 @@ namespace Evernus
     void EvernusApplication::createDb()
     {
         DatabaseUtils::createDb(mMainDb, "main.db");
+
+        if (!mEveDb.isValid())
+            throw std::runtime_error{"Error crating Eve DB object!"};
+
+        mEveDb.setDatabaseName(applicationDirPath() + "/res/eve.db");
+        mEveDb.setConnectOptions("QSQLITE_OPEN_READONLY");
+
+        if (!mEveDb.open())
+            throw std::runtime_error{"Error opening Eve DB!"};
 
         mKeyRepository.reset(new KeyRepository{mMainDb});
         mCharacterRepository.reset(new CharacterRepository{mMainDb});
