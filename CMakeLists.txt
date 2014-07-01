@@ -24,6 +24,7 @@ qt5_wrap_cpp(
     ActiveTasksDialog.h
     APIInterface.h
     APIManager.h
+    AssetModel.h
     AssetsImportPreferencesWidget.h
     ButtonWithTimer.h
     CharacterBoundWidget.h
@@ -68,6 +69,8 @@ add_executable(
     AssetListRepository.h
     AssetListXmlReceiver.cpp
     AssetListXmlReceiver.h
+    AssetModel.cpp
+    AssetModel.h
     AssetsImportPreferencesWidget.cpp
     AssetsImportPreferencesWidget.h
     AssetsWidget.cpp
