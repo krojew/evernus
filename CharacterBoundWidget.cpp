@@ -15,13 +15,6 @@ namespace Evernus
 
     void CharacterBoundWidget::refreshImportTimer()
     {
-        if (mCharacterId != Character::invalidId)
-            mImportBtn->setTimer(mTimeGetter(mCharacterId));
-    }
-
-    void CharacterBoundWidget::setCharacter(Character::IdType id)
-    {
-        mCharacterId = id;
         if (mCharacterId == Character::invalidId)
         {
             mImportBtn->setDisabled(true);
@@ -30,9 +23,15 @@ namespace Evernus
         else
         {
             mImportBtn->setEnabled(true);
-            refreshImportTimer();
+            mImportBtn->setTimer(mTimeGetter(mCharacterId));
         }
+    }
 
+    void CharacterBoundWidget::setCharacter(Character::IdType id)
+    {
+        mCharacterId = id;
+
+        refreshImportTimer();
         handleNewCharacter(mCharacterId);
     }
 
