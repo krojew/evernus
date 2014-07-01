@@ -4,12 +4,23 @@
 
 namespace Evernus
 {
+    AssetList::AssetList()
+        : Entity{}
+    {
+    }
+
     AssetList::AssetList(const AssetList &other)
         : Entity{other}
         , mCharacterId{other.mCharacterId}
     {
         for (const auto &item : other)
             addItem(std::make_unique<Item>(*item));
+    }
+
+    AssetList::AssetList(ItemList &&items)
+        : Entity{}
+        , mItems{std::move(items)}
+    {
     }
 
     AssetList::~AssetList()
@@ -51,13 +62,17 @@ namespace Evernus
         return mItems.size();
     }
 
-    AssetList &AssetList::operator =(const AssetList &other)
+    void AssetList::addItem(ItemType &&item)
+    {
+        item->setListId(getId());
+        mItems.emplace_back(std::move(item));
+    }
+
+    AssetList &AssetList::operator =(AssetList other)
     {
         using std::swap;
 
-        AssetList copy{other};
-        swap(*this, copy);
-
+        swap(*this, other);
         return *this;
     }
 }

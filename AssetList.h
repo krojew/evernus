@@ -21,16 +21,10 @@ namespace Evernus
 
         using Entity::Entity;
 
-        AssetList() = default;
+        AssetList();
         AssetList(const AssetList &other);
-        AssetList(AssetList &&) = default;
-
-        template<class T>
-        explicit AssetList(T &&items)
-            : Entity{}
-            , mItems{std::forward<T>(items)}
-        {
-        }
+        AssetList(AssetList &&other) = default;
+        explicit AssetList(ItemList &&items);
 
         virtual ~AssetList();
 
@@ -44,15 +38,9 @@ namespace Evernus
 
         size_t size() const noexcept;
 
-        template<class T>
-        void addItem(T &&item)
-        {
-            item->setListId(getId());
-            mItems.emplace_back(std::forward<T>(item));
-        }
+        void addItem(ItemType &&item);
 
-        AssetList &operator =(const AssetList &other);
-        AssetList &operator =(AssetList &&) = default;
+        AssetList &operator =(AssetList other);
 
     private:
         Character::IdType mCharacterId = Character::invalidId;

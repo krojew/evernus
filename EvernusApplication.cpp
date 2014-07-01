@@ -185,7 +185,7 @@ namespace Evernus
                     .arg(mAssetListRepository->getTableName()));
                 query.bindValue(0, id);
 
-                DatabaseUtils::execQuery(query);
+                Evernus::DatabaseUtils::execQuery(query);
 
                 mAssetListRepository->store(data);
 
