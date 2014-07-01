@@ -28,6 +28,7 @@
 #include "MarginToolSettings.h"
 #include "PriceSettings.h"
 #include "PathSettings.h"
+#include "NameProvider.h"
 #include "Repository.h"
 
 #include "MarginToolDialog.h"
@@ -258,6 +259,8 @@ namespace Evernus
                 std::set<double, std::greater<double>> buy;
                 std::set<double> sell;
 
+                QString name;
+
                 while (!file.atEnd())
                 {
                     const QString line = file.readLine();
@@ -265,6 +268,15 @@ namespace Evernus
 
                     if (values.count() >= 14)
                     {
+                        if (name.isNull())
+                        {
+                            auto ok = false;
+                            const auto id = values[2].toULong(&ok);
+
+                            if (ok)
+                                name = mNameProvider.getName(id);
+                        }
+
                         if (values[13] != "0")
                             continue;
 
@@ -274,6 +286,8 @@ namespace Evernus
                             sell.emplace(values[0].toDouble());
                     }
                 }
+
+                mNameLabel->setText(name);
 
                 try
                 {
