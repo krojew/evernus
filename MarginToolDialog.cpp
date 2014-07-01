@@ -386,6 +386,9 @@ namespace Evernus
         FileModificationMap out;
         for (const auto &file : files)
         {
+            if (file.startsWith("My Orders"))
+                continue;
+
             QFileInfo info{basePath.filePath(file)};
             out[file] = info.lastModified();
         }
