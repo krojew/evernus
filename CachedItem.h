@@ -37,7 +37,7 @@ namespace Evernus
 
     private:
         ParentIdType mParentId;
-        CachedAssetList::IdType mListId = 0;
+        CachedAssetList::IdType mListId = CachedAssetList::invalidId;
         ItemData mData;
     };
 }

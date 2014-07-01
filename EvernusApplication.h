@@ -7,7 +7,9 @@
 #include <QSqlDatabase>
 
 #include "CharacterRepository.h"
+#include "AssetListRepository.h"
 #include "EveTypeRepository.h"
+#include "ItemRepository.h"
 #include "TaskConstants.h"
 #include "KeyRepository.h"
 #include "NameProvider.h"
@@ -64,6 +66,8 @@ namespace Evernus
 
         std::unique_ptr<KeyRepository> mKeyRepository;
         std::unique_ptr<CharacterRepository> mCharacterRepository;
+        std::unique_ptr<ItemRepository> mItemRepository;
+        std::unique_ptr<AssetListRepository> mAssetListRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
 
         APIManager mAPIManager;

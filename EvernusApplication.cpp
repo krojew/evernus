@@ -180,7 +180,15 @@ namespace Evernus
             const auto key = getCharacterKey(id);
             const auto assetSubtask = startTask(parentTask, QString{tr("Fetching assets for character %1...")}.arg(id));
 
-            mAPIManager.fetchAssets(key, id, [assetSubtask, this](auto data, const auto &error) {
+            mAPIManager.fetchAssets(key, id, [assetSubtask, id, this](auto data, const auto &error) {
+                auto query = mAssetListRepository->prepare(QString{"DELETE FROM %1 WHERE character_id = ?"}
+                    .arg(mAssetListRepository->getTableName()));
+                query.bindValue(0, id);
+
+                DatabaseUtils::execQuery(query);
+
+                mAssetListRepository->store(data);
+
                 emit assetsChanged();
                 emit taskStatusChanged(assetSubtask, error);
             });
@@ -236,6 +244,8 @@ namespace Evernus
 
         mKeyRepository.reset(new KeyRepository{mMainDb});
         mCharacterRepository.reset(new CharacterRepository{mMainDb});
+        mItemRepository.reset(new ItemRepository{mMainDb});
+        mAssetListRepository.reset(new AssetListRepository{mMainDb, *mItemRepository});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
     }
 
@@ -243,6 +253,8 @@ namespace Evernus
     {
         mKeyRepository->create();
         mCharacterRepository->create(*mKeyRepository);
+        mAssetListRepository->create(*mCharacterRepository);
+        mItemRepository->create(*mAssetListRepository);
     }
 
     quint32 EvernusApplication::startTask(const QString &description)

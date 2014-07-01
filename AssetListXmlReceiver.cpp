@@ -3,6 +3,8 @@
 
 #include <QCoreApplication>
 
+#include "Item.h"
+
 #include "AssetListXmlReceiver.h"
 
 namespace Evernus

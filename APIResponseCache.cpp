@@ -1,4 +1,5 @@
 #include "DatabaseUtils.h"
+#include "Item.h"
 
 #include "APIResponseCache.h"
 
@@ -367,7 +368,10 @@ namespace Evernus
 
             auto &entry = mAssetCache[assetList->getCharacterId()];
             if (entry.mCacheUntil.isNull())
+            {
                 entry.mCacheUntil = assetList->getCacheUntil();
+                entry.mData.setCharacterId(assetList->getCharacterId());
+            }
 
             entry.mData.addItem(std::move(itemMap[item.getId()]));
         }

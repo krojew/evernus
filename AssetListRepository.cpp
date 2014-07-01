@@ -1,10 +1,18 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 
+#include "ItemRepository.h"
+
 #include "AssetListRepository.h"
 
 namespace Evernus
 {
+    AssetListRepository::AssetListRepository(const QSqlDatabase &db, const ItemRepository &itemRepository)
+        : Repository{db}
+        , mItemRepository{itemRepository}
+    {
+    }
+
     QString AssetListRepository::getTableName() const
     {
         return "asset_lists";
@@ -45,5 +53,29 @@ namespace Evernus
     {
         query.bindValue(":id", entity.getId());
         query.bindValue(":character_id", entity.getCharacterId());
+    }
+
+    void AssetListRepository::preStore(AssetList &entity) const
+    {
+        if (!entity.isNew())
+        {
+            auto query = mItemRepository.prepare(QString{"DELETE FROM %1 WHERE asset_list_id = ?"}.arg(mItemRepository.getTableName()));
+            query.bindValue(0, entity.getId());
+
+            DatabaseUtils::execQuery(query);
+        }
+    }
+
+    void AssetListRepository::postStore(AssetList &entity) const
+    {
+        for (const auto &item : entity)
+            item->setListId(entity.getId());
+
+        ItemRepository::PropertyMap map;
+
+        for (const auto &item : entity)
+            ItemRepository::fillProperties(*item, map);
+
+        mItemRepository.batchStore(map);
     }
 }

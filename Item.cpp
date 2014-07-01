@@ -2,6 +2,39 @@
 
 namespace Evernus
 {
+    Item::Item(const Item &other)
+        : Entity{other}
+        , mParentId{other.mParentId}
+        , mListId{other.mListId}
+        , mData(other.mData)
+    {
+        for (const auto &item : other)
+            addItem(std::make_unique<Item>(*item));
+    }
+
+    Item::ParentIdType Item::getParentId() const noexcept
+    {
+        return mParentId;
+    }
+
+    void Item::setParentId(const ParentIdType &id) noexcept
+    {
+        mParentId = id;
+    }
+
+    AssetList::IdType Item::getListId() const noexcept
+    {
+        return mListId;
+    }
+
+    void Item::setListId(AssetList::IdType id) noexcept
+    {
+        mListId = id;
+
+        for (auto &item : mContents)
+            item->setListId(mListId);
+    }
+
     ItemData::TypeIdType Item::getTypeId() const
     {
         return mData.mTypeId;
@@ -74,6 +107,20 @@ namespace Evernus
 
     void Item::addItem(std::unique_ptr<Item> &&item)
     {
+        Q_ASSERT(item);
+
+        item->setParentId(getId());
+        item->setListId(getListId());
         mContents.emplace_back(std::move(item));
+    }
+
+    Item &Item::operator =(const Item &other)
+    {
+        using std::swap;
+
+        Item copy{other};
+        swap(*this, copy);
+
+        return *this;
     }
 }

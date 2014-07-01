@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 
+#include "AssetList.h"
 #include "ItemData.h"
 #include "Entity.h"
 
@@ -16,12 +17,20 @@ namespace Evernus
         typedef ItemList::iterator ItemIterator;
         typedef ItemList::const_iterator ConstItemIterator;
 
+        typedef boost::optional<ItemData::IdType> ParentIdType;
+
         using Entity::Entity;
 
         Item() = default;
-        Item(const Item &) = delete;
+        Item(const Item &other);
         Item(Item &&) = default;
         virtual ~Item() = default;
+
+        ParentIdType getParentId() const noexcept;
+        void setParentId(const ParentIdType &id) noexcept;
+
+        AssetList::IdType getListId() const noexcept;
+        void setListId(AssetList::IdType id) noexcept;
 
         ItemData::TypeIdType getTypeId() const;
         void setTypeId(const ItemData::TypeIdType &id);
@@ -44,10 +53,12 @@ namespace Evernus
 
         void addItem(std::unique_ptr<Item> &&item);
 
-        Item &operator =(const Item &) = delete;
+        Item &operator =(const Item &other);
         Item &operator =(Item &&) = default;
 
     private:
+        ParentIdType mParentId;
+        AssetList::IdType mListId = AssetList::invalidId;
         ItemData mData;
         ItemList mContents;
     };

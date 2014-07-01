@@ -7,6 +7,7 @@
 #include "CharacterListXmlReceiver.h"
 #include "AssetListXmlReceiver.h"
 #include "CharacterDomParser.h"
+#include "Item.h"
 
 #include "APIManager.h"
 
@@ -132,7 +133,6 @@ namespace Evernus
                 handlePotentialError(response, error);
 
                 AssetList assets{parseResults<AssetList::ItemType, std::unique_ptr<AssetList::ItemType::element_type>>(response, "assets")};
-                assets.setCharacterId(characterId);
                 mCache.setAssetData(characterId, assets, getCachedUntil(response));
 
                 callback(assets, QString{});

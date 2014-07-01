@@ -44,6 +44,9 @@ namespace Evernus
 
         virtual QStringList getColumns() const = 0;
         virtual void bindValues(const T &entity, QSqlQuery &query) const = 0;
+
+        virtual void preStore(T &entity) const;
+        virtual void postStore(T &entity) const;
     };
 }
 

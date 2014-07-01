@@ -48,12 +48,17 @@ namespace Evernus
     template<class T>
     void Repository<T>::store(T &entity) const
     {
+        preStore(entity);
+
         if (entity.isNew())
             insert(entity);
         else
             update(entity);
 
         entity.updateOriginalId();
+        entity.setNew(false);
+
+        postStore(entity);
     }
 
     template<class T>
@@ -160,5 +165,15 @@ namespace Evernus
 
         bindValues(entity, query);
         DatabaseUtils::execQuery(query);
+    }
+
+    template<class T>
+    void Repository<T>::preStore(T &entity) const
+    {
+    }
+
+    template<class T>
+    void Repository<T>::postStore(T &entity) const
+    {
     }
 }

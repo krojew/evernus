@@ -137,6 +137,8 @@ add_executable(
     Item.cpp
     Item.h
     ItemData.h
+    ItemRepository.cpp
+    ItemRepository.h
     Key.cpp
     Key.h
     KeyEditDialog.cpp

@@ -1,16 +1,20 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include "Character.h"
 #include "Entity.h"
-#include "Item.h"
 
 namespace Evernus
 {
+    class Item;
+
     class AssetList
         : public Entity<uint>
     {
     public:
-        typedef std::shared_ptr<Item> ItemType;
+        typedef std::unique_ptr<Item> ItemType;
         typedef std::vector<ItemType> ItemList;
         typedef ItemList::iterator Iterator;
         typedef ItemList::const_iterator ConstIterator;
@@ -18,7 +22,7 @@ namespace Evernus
         using Entity::Entity;
 
         AssetList() = default;
-        AssetList(const AssetList &) = default;
+        AssetList(const AssetList &other);
         AssetList(AssetList &&) = default;
 
         template<class T>
@@ -28,7 +32,7 @@ namespace Evernus
         {
         }
 
-        virtual ~AssetList() = default;
+        virtual ~AssetList();
 
         Character::IdType getCharacterId() const noexcept;
         void setCharacterId(Character::IdType id) noexcept;
@@ -43,10 +47,11 @@ namespace Evernus
         template<class T>
         void addItem(T &&item)
         {
+            item->setListId(getId());
             mItems.emplace_back(std::forward<T>(item));
         }
 
-        AssetList &operator =(const AssetList &) = default;
+        AssetList &operator =(const AssetList &other);
         AssetList &operator =(AssetList &&) = default;
 
     private:

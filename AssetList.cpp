@@ -1,7 +1,21 @@
+#include "Item.h"
+
 #include "AssetList.h"
 
 namespace Evernus
 {
+    AssetList::AssetList(const AssetList &other)
+        : Entity{other}
+        , mCharacterId{other.mCharacterId}
+    {
+        for (const auto &item : other)
+            addItem(std::make_unique<Item>(*item));
+    }
+
+    AssetList::~AssetList()
+    {
+    }
+
     Character::IdType AssetList::getCharacterId() const noexcept
     {
         return mCharacterId;
@@ -35,5 +49,15 @@ namespace Evernus
     size_t AssetList::size() const noexcept
     {
         return mItems.size();
+    }
+
+    AssetList &AssetList::operator =(const AssetList &other)
+    {
+        using std::swap;
+
+        AssetList copy{other};
+        swap(*this, copy);
+
+        return *this;
     }
 }
