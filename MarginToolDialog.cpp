@@ -255,8 +255,8 @@ namespace Evernus
                         break;
                 }
 
-                std::multiset<double, std::greater<double>> buy;
-                std::multiset<double> sell;
+                std::set<double, std::greater<double>> buy;
+                std::set<double> sell;
 
                 while (!file.atEnd())
                 {
