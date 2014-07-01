@@ -1,4 +1,5 @@
 #include <functional>
+#include <thread>
 #include <cmath>
 #include <set>
 
@@ -12,7 +13,6 @@
 #include <QDateTime>
 #include <QSettings>
 #include <QCheckBox>
-#include <QFileInfo>
 #include <QGroupBox>
 #include <QLabel>
 #include <QDebug>
@@ -239,127 +239,111 @@ namespace Evernus
             qDebug() << "Calculating margin from file: " << logFile;
 
             QFile file{logFile};
-            if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+            while (!file.open(QIODevice::ReadWrite))
+                std::this_thread::sleep_for(std::chrono::milliseconds{25});
+
+            std::set<double, std::greater<double>> buy;
+            std::set<double> sell;
+
+            QString name;
+
+            while (!file.atEnd())
             {
-#ifdef Q_OS_WIN
-                const auto modTimeDelay = 500;
-#else
-                const auto modTimeDelay = 1000;
-#endif
+                const QString line = file.readLine();
+                const auto values = line.split(',');
 
-                QFileInfo info{file};
-                forever
+                if (values.count() >= 14)
                 {
-                    // wait for Eve to finish dumping data
-                    const auto modTime = info.lastModified();
-                    if (modTime.msecsTo(QDateTime::currentDateTime()) >= modTimeDelay)
-                        break;
-                }
-
-                std::set<double, std::greater<double>> buy;
-                std::set<double> sell;
-
-                QString name;
-
-                while (!file.atEnd())
-                {
-                    const QString line = file.readLine();
-                    const auto values = line.split(',');
-
-                    if (values.count() >= 14)
+                    if (name.isNull())
                     {
-                        if (name.isNull())
-                        {
-                            auto ok = false;
-                            const auto id = values[2].toULong(&ok);
+                        auto ok = false;
+                        const auto id = values[2].toULong(&ok);
 
-                            if (ok)
-                                name = mNameProvider.getName(id);
-                        }
-
-                        if (values[13] != "0")
-                            continue;
-
-                        if (values[7] == "True")
-                            buy.emplace(values[0].toDouble());
-                        else if (values[7] == "False")
-                            sell.emplace(values[0].toDouble());
+                        if (ok)
+                            name = mNameProvider.getName(id);
                     }
-                }
 
-                mNameLabel->setText(name);
+                    if (values[13] != "0")
+                        continue;
 
-                try
-                {
-                    const auto taxes = calculateTaxes();
-
-                    if (buy.empty() || sell.empty())
-                    {
-                        if (buy.empty())
-                        {
-                            mBestBuyLabel->setText("-");
-                            mCostOfSalesLabel->setText("-");
-                        }
-                        else
-                        {
-                            const auto buyPrice = *std::begin(buy) + 0.01;
-
-                            mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
-                            mCostOfSalesLabel->setText(locale.toCurrencyString(getCoS(buyPrice, taxes), "ISK"));
-                        }
-
-                        if (sell.empty())
-                        {
-                            mBestSellLabel->setText("-");
-                            mRevenueLabel->setText("-");
-                        }
-                        else
-                        {
-                            const auto sellPrice = *std::begin(sell) + 0.01;
-
-                            mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
-                            mRevenueLabel->setText(locale.toCurrencyString(getRevenue(sellPrice, taxes), "ISK"));
-                        }
-
-                        mProfitLabel->setText("-");
-                        mMarginLabel->setStyleSheet("color: palette(text);");
-                    }
-                    else
-                    {
-                            const auto bestBuy = *std::begin(buy);
-                            const auto bestSell = *std::begin(sell);
-                            const auto sellPrice = bestSell - 0.01;
-                            const auto buyPrice = bestBuy + 0.01;
-                            const auto revenue = getRevenue(sellPrice, taxes);
-                            const auto cos = getCoS(buyPrice, taxes);
-                            const auto margin = 100. * (revenue - cos) / revenue;
-                            const auto markup = 100. * (revenue - cos) / cos;
-
-                            mMarginLabel->setText(QString{"%1%"}.arg(margin, 0, 'f', 2));
-                            mMarkupLabel->setText(QString{"%1%"}.arg(markup, 0, 'f', 2));
-
-                            mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
-                            mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
-
-                            mProfitLabel->setText(locale.toCurrencyString(sellPrice - buyPrice, "ISK"));
-                            mRevenueLabel->setText(locale.toCurrencyString(revenue, "ISK"));
-                            mCostOfSalesLabel->setText(locale.toCurrencyString(cos, "ISK"));
-
-                            QSettings settings;
-
-                            if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
-                                mMarginLabel->setStyleSheet("color: red;");
-                            else if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
-                                mMarginLabel->setStyleSheet("color: orange;");
-                            else
-                                mMarginLabel->setStyleSheet("color: green;");
-                    }
-                }
-                catch (const Repository<Character>::NotFoundException &)
-                {
+                    if (values[7] == "True")
+                        buy.emplace(values[0].toDouble());
+                    else if (values[7] == "False")
+                        sell.emplace(values[0].toDouble());
                 }
             }
 
+            mNameLabel->setText(name);
+
+            try
+            {
+                const auto taxes = calculateTaxes();
+
+                if (buy.empty() || sell.empty())
+                {
+                    if (buy.empty())
+                    {
+                        mBestBuyLabel->setText("-");
+                        mCostOfSalesLabel->setText("-");
+                    }
+                    else
+                    {
+                        const auto buyPrice = *std::begin(buy) + 0.01;
+
+                        mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
+                        mCostOfSalesLabel->setText(locale.toCurrencyString(getCoS(buyPrice, taxes), "ISK"));
+                    }
+
+                    if (sell.empty())
+                    {
+                        mBestSellLabel->setText("-");
+                        mRevenueLabel->setText("-");
+                    }
+                    else
+                    {
+                        const auto sellPrice = *std::begin(sell) + 0.01;
+
+                        mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
+                        mRevenueLabel->setText(locale.toCurrencyString(getRevenue(sellPrice, taxes), "ISK"));
+                    }
+
+                    mProfitLabel->setText("-");
+                    mMarginLabel->setStyleSheet("color: palette(text);");
+                }
+                else
+                {
+                        const auto bestBuy = *std::begin(buy);
+                        const auto bestSell = *std::begin(sell);
+                        const auto sellPrice = bestSell - 0.01;
+                        const auto buyPrice = bestBuy + 0.01;
+                        const auto revenue = getRevenue(sellPrice, taxes);
+                        const auto cos = getCoS(buyPrice, taxes);
+                        const auto margin = 100. * (revenue - cos) / revenue;
+                        const auto markup = 100. * (revenue - cos) / cos;
+
+                        mMarginLabel->setText(QString{"%1%"}.arg(margin, 0, 'f', 2));
+                        mMarkupLabel->setText(QString{"%1%"}.arg(markup, 0, 'f', 2));
+
+                        mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
+                        mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
+
+                        mProfitLabel->setText(locale.toCurrencyString(sellPrice - buyPrice, "ISK"));
+                        mRevenueLabel->setText(locale.toCurrencyString(revenue, "ISK"));
+                        mCostOfSalesLabel->setText(locale.toCurrencyString(cos, "ISK"));
+
+                        QSettings settings;
+
+                        if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
+                            mMarginLabel->setStyleSheet("color: red;");
+                        else if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
+                            mMarginLabel->setStyleSheet("color: orange;");
+                        else
+                            mMarginLabel->setStyleSheet("color: green;");
+                }
+            }
+            catch (const Repository<Character>::NotFoundException &)
+            {
+            }
         }
     }
 
