@@ -83,6 +83,8 @@ namespace Evernus
             connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, mMarginToolDialog, &MarginToolDialog::setCharacter);
         }
 
+        showMinimized();
+
         mMarginToolDialog->show();
         mMarginToolDialog->activateWindow();
     }
