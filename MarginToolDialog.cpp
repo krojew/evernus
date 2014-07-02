@@ -86,6 +86,32 @@ namespace Evernus
         mCostOfSalesLabel = new QLabel{"-", this};
         priceLayout->addWidget(mCostOfSalesLabel, 1, 3);
 
+        auto orderGroup = new QGroupBox{this};
+        mainLayout->addWidget(orderGroup);
+
+        auto orderLayout = new QGridLayout{};
+        orderGroup->setLayout(orderLayout);
+
+        orderLayout->addWidget(new QLabel{tr("Buy orders:")}, 0, 0);
+
+        mBuyOrdersLabel = new QLabel{"-", this};
+        orderLayout->addWidget(mBuyOrdersLabel, 0, 1);
+
+        orderLayout->addWidget(new QLabel{tr("Sell orders:")}, 1, 0);
+
+        mSellOrdersLabel = new QLabel{"-", this};
+        orderLayout->addWidget(mSellOrdersLabel, 1, 1);
+
+        orderLayout->addWidget(new QLabel{tr("Buy volume/movement:")}, 0, 2);
+
+        mBuyVolLabel = new QLabel{"-", this};
+        orderLayout->addWidget(mBuyVolLabel, 0, 3);
+
+        orderLayout->addWidget(new QLabel{tr("Sell volume/movement:")}, 1, 2);
+
+        mSellVolLabel = new QLabel{"-", this};
+        orderLayout->addWidget(mSellVolLabel, 1, 3);
+
         auto infoLayout = new QHBoxLayout{};
         mainLayout->addLayout(infoLayout);
 
@@ -105,16 +131,6 @@ namespace Evernus
 
         mMarkupLabel = new QLabel{"-", this};
         marginLayout->addWidget(mMarkupLabel, 1, 1);
-
-        marginLayout->addWidget(new QLabel{tr("Buy volume/movement:")}, 0, 2);
-
-        mBuyVolLabel = new QLabel{"-", this};
-        marginLayout->addWidget(mBuyVolLabel, 0, 3);
-
-        marginLayout->addWidget(new QLabel{tr("Sell volume/movement:")}, 1, 2);
-
-        mSellVolLabel = new QLabel{"-", this};
-        marginLayout->addWidget(mSellVolLabel, 1, 3);
 
         auto taxesGroup = new QGroupBox{this};
         mainLayout->addWidget(taxesGroup);
@@ -249,10 +265,16 @@ namespace Evernus
 
             QFile file{logFile};
             while (!file.open(QIODevice::ReadWrite))
-                std::this_thread::sleep_for(std::chrono::milliseconds{25});
+                std::this_thread::sleep_for(std::chrono::milliseconds{10});
 
             auto buy = -1.;
             auto sell = -1.;
+
+            uint buyVol = 0, buyInit = 0;
+            uint sellVol = 0, sellInit = 0;
+
+            auto buyCount = 0u;
+            auto sellCount = 0u;
 
             QString name;
 
@@ -281,16 +303,30 @@ namespace Evernus
                     {
                         if (curValue > buy)
                             buy = curValue;
+
+                        buyVol += static_cast<uint>(values[1].toDouble());
+                        buyInit += static_cast<uint>(values[5].toDouble());
+
+                        ++buyCount;
                     }
                     else if (values[7] == "False")
                     {
                         if (curValue < sell || sell < 0.)
                             sell = curValue;
+
+                        sellVol += static_cast<uint>(values[1].toDouble());
+                        sellInit += static_cast<uint>(values[5].toDouble());
+
+                        ++sellCount;
                     }
                 }
             }
 
             mNameLabel->setText(name);
+            mBuyOrdersLabel->setText(QString::number(buyCount));
+            mSellOrdersLabel->setText(QString::number(sellCount));
+            mBuyVolLabel->setText(QString{"%1/%2"}.arg(locale.toString(buyVol)).arg(locale.toString(buyInit - buyVol)));
+            mSellVolLabel->setText(QString{"%1/%2"}.arg(locale.toString(sellVol)).arg(locale.toString(sellInit - sellVol)));
 
             try
             {

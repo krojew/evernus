@@ -60,6 +60,8 @@ namespace Evernus
         QLabel *mSalesTaxLabel = nullptr;
         QLabel *mBuyVolLabel = nullptr;
         QLabel *mSellVolLabel = nullptr;
+        QLabel *mBuyOrdersLabel = nullptr;
+        QLabel *mSellOrdersLabel = nullptr;
 
         FileModificationMap mKnownFiles;
 
