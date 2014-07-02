@@ -7,6 +7,7 @@
 
 #include "Character.h"
 
+class QRadioButton;
 class QLabel;
 
 namespace Evernus
@@ -33,6 +34,8 @@ namespace Evernus
         void toggleAlwaysOnTop(int state);
 
         void refreshData(const QString &path);
+
+        void saveCopyMode();
 
     private:
         typedef QHash<QString, QDateTime> FileModificationMap;
@@ -62,6 +65,10 @@ namespace Evernus
         QLabel *mSellVolLabel = nullptr;
         QLabel *mBuyOrdersLabel = nullptr;
         QLabel *mSellOrdersLabel = nullptr;
+
+        QRadioButton *mDontCopyBtn = nullptr;
+        QRadioButton *mCopySellBtn = nullptr;
+        QRadioButton *mCopyBuyBtn = nullptr;
 
         FileModificationMap mKnownFiles;
 

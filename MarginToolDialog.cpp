@@ -5,10 +5,13 @@
 #include <QDialogButtonBox>
 #include <QStandardPaths>
 #include <QStringBuilder>
+#include <QApplication>
+#include <QRadioButton>
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGridLayout>
+#include <QClipboard>
 #include <QDateTime>
 #include <QSettings>
 #include <QCheckBox>
@@ -131,6 +134,34 @@ namespace Evernus
 
         mMarkupLabel = new QLabel{"-", this};
         marginLayout->addWidget(mMarkupLabel, 1, 1);
+
+        auto copyGroup = new QGroupBox{tr("Autocopy"), this};
+        infoLayout->addWidget(copyGroup);
+
+        auto copyLayout = new QVBoxLayout{};
+        copyGroup->setLayout(copyLayout);
+
+        const auto copyMode = static_cast<const PriceSettings::CopyMode>(
+            settings.value(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::CopyMode::DontCopy)).toInt());
+
+        mDontCopyBtn = new QRadioButton{tr("Nothing"), this};
+        copyLayout->addWidget(mDontCopyBtn);
+        if (copyMode == PriceSettings::CopyMode::DontCopy)
+            mDontCopyBtn->setChecked(true);
+
+        mCopySellBtn = new QRadioButton{tr("Sell price"), this};
+        copyLayout->addWidget(mCopySellBtn);
+        if (copyMode == PriceSettings::CopyMode::CopySell)
+            mCopySellBtn->setChecked(true);
+
+        mCopyBuyBtn = new QRadioButton{tr("Buy price"), this};
+        copyLayout->addWidget(mCopyBuyBtn);
+        if (copyMode == PriceSettings::CopyMode::CopyBuy)
+            mCopyBuyBtn->setChecked(true);
+
+        connect(mDontCopyBtn, &QRadioButton::toggled, this, &MarginToolDialog::saveCopyMode);
+        connect(mCopySellBtn, &QRadioButton::toggled, this, &MarginToolDialog::saveCopyMode);
+        connect(mCopyBuyBtn, &QRadioButton::toggled, this, &MarginToolDialog::saveCopyMode);
 
         auto taxesGroup = new QGroupBox{this};
         mainLayout->addWidget(taxesGroup);
@@ -406,12 +437,31 @@ namespace Evernus
                             mMarginLabel->setStyleSheet("color: orange;");
                         else
                             mMarginLabel->setStyleSheet("color: green;");
+
+                        auto clipboard = QApplication::clipboard();
+
+                        if (mCopySellBtn->isChecked())
+                            clipboard->setText(QString::number(sellPrice, 'f', 2));
+                        else if (mCopyBuyBtn->isChecked())
+                            clipboard->setText(QString::number(buyPrice, 'f', 2));
                 }
             }
             catch (const Repository<Character>::NotFoundException &)
             {
             }
         }
+    }
+
+    void MarginToolDialog::saveCopyMode()
+    {
+        QSettings settings;
+
+        if (mDontCopyBtn->isChecked())
+            settings.setValue(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::CopyMode::DontCopy));
+        else if (mCopySellBtn->isChecked())
+            settings.setValue(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::CopyMode::CopySell));
+        else if (mCopyBuyBtn->isChecked())
+            settings.setValue(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::CopyMode::CopyBuy));
     }
 
     void MarginToolDialog::setNewWindowFlags(bool alwaysOnTop)
