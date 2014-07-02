@@ -7,6 +7,7 @@
 
 #include "Character.h"
 
+class QTableWidget;
 class QRadioButton;
 class QLabel;
 
@@ -46,6 +47,8 @@ namespace Evernus
             double mSalesTax;
         };
 
+        static const auto samples = 100000000;
+
         const Repository<Character> &mCharacterRepository;
         const NameProvider &mNameProvider;
 
@@ -70,6 +73,9 @@ namespace Evernus
         QRadioButton *mCopySellBtn = nullptr;
         QRadioButton *mCopyBuyBtn = nullptr;
 
+        QTableWidget *m1SampleDataTable = nullptr;
+        QTableWidget *m5SampleDataTable = nullptr;
+
         FileModificationMap mKnownFiles;
 
         Character::IdType mCharacterId = Character::invalidId;
@@ -77,6 +83,10 @@ namespace Evernus
         void setNewWindowFlags(bool alwaysOnTop);
 
         Taxes calculateTaxes() const;
+
+        QTableWidget *createSampleTable();
+
+        static void fillSampleData(QTableWidget &table, double revenue, double cos, int multiplier);
 
         static FileModificationMap getKnownFiles(const QString &path);
 

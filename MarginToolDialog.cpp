@@ -1,4 +1,5 @@
 #include <functional>
+#include <memory>
 #include <thread>
 #include <cmath>
 
@@ -7,6 +8,8 @@
 #include <QStringBuilder>
 #include <QApplication>
 #include <QRadioButton>
+#include <QTableWidget>
+#include <QHeaderView>
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -178,6 +181,18 @@ namespace Evernus
 
         mSalesTaxLabel = new QLabel{"-", this};
         taxesLayout->addWidget(mSalesTaxLabel);
+
+        auto sampleGroup = new QGroupBox{tr("Sample data"), this};
+        mainLayout->addWidget(sampleGroup);
+
+        auto sampleLayout = new QHBoxLayout{};
+        sampleGroup->setLayout(sampleLayout);
+
+        m1SampleDataTable = createSampleTable();
+        sampleLayout->addWidget(m1SampleDataTable);
+
+        m5SampleDataTable = createSampleTable();
+        sampleLayout->addWidget(m5SampleDataTable);
 
         auto alwaysOnTopBtn = new QCheckBox{tr("Always on top"), this};
         mainLayout->addWidget(alwaysOnTopBtn);
@@ -407,6 +422,8 @@ namespace Evernus
 
                     mProfitLabel->setText("-");
                     mMarginLabel->setStyleSheet("color: palette(text);");
+                    m1SampleDataTable->clearContents();
+                    m5SampleDataTable->clearContents();
                 }
                 else
                 {
@@ -425,7 +442,7 @@ namespace Evernus
                         mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
                         mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
 
-                        mProfitLabel->setText(locale.toCurrencyString(sellPrice - buyPrice, "ISK"));
+                        mProfitLabel->setText(locale.toCurrencyString(revenue - cos, "ISK"));
                         mRevenueLabel->setText(locale.toCurrencyString(revenue, "ISK"));
                         mCostOfSalesLabel->setText(locale.toCurrencyString(cos, "ISK"));
 
@@ -444,6 +461,9 @@ namespace Evernus
                             clipboard->setText(QString::number(sellPrice, 'f', 2));
                         else if (mCopyBuyBtn->isChecked())
                             clipboard->setText(QString::number(buyPrice, 'f', 2));
+
+                        fillSampleData(*m1SampleDataTable, revenue, cos, 1);
+                        fillSampleData(*m5SampleDataTable, revenue, cos, 5);
                 }
             }
             catch (const Repository<Character>::NotFoundException &)
@@ -493,6 +513,40 @@ namespace Evernus
         const auto salesTax = 0.015 * (1. - feeSkills.mAccounting * 0.1);
 
         return Taxes{brokerFee, salesTax};
+    }
+
+    QTableWidget *MarginToolDialog::createSampleTable()
+    {
+        auto table = new QTableWidget{this};
+        table->setColumnCount(3);
+        table->setRowCount(static_cast<int>(std::log10(samples)));
+        table->setHorizontalHeaderLabels(QStringList{} << "Volume" << "Cost" << "Profit");
+        table->verticalHeader()->hide();
+
+        return table;
+    }
+
+    void MarginToolDialog::fillSampleData(QTableWidget &table, double revenue, double cos, int multiplier)
+    {
+        const auto inserter = [&table](auto &&text, auto row, auto column) {
+            std::unique_ptr<QTableWidgetItem> item{new QTableWidgetItem{std::forward<decltype(text)>(text)}};
+            table.setItem(row, column, item.get());
+            item.release();
+        };
+
+        const auto realMultiplier = multiplier / 1000000.;
+        const auto profit = revenue - cos;
+
+        QLocale locale;
+
+        for (auto i = 1, row = 0; i < samples; i *= 10, ++row)
+        {
+            inserter(locale.toString(i * multiplier), row, 0);
+            inserter(locale.toString(cos * i * realMultiplier, 'f', 2) + "M", row, 1);
+            inserter(locale.toString(profit * i * realMultiplier, 'f', 2) + "M", row, 2);
+        }
+
+        table.resizeColumnsToContents();
     }
 
     MarginToolDialog::FileModificationMap MarginToolDialog::getKnownFiles(const QString &path)
