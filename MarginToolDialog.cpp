@@ -264,8 +264,22 @@ namespace Evernus
             qDebug() << "Calculating margin from file: " << logFile;
 
             QFile file{logFile};
+
+#ifdef Q_OS_WIN
             while (!file.open(QIODevice::ReadWrite))
                 std::this_thread::sleep_for(std::chrono::milliseconds{10});
+#else
+            const auto modTimeDelay = 1000;
+
+            // wait for Eve to finish dumping data
+            QFileInfo info{file};
+            forever
+            {
+                const auto modTime = info.lastModified();
+                if (modTime.msecsTo(QDateTime::currentDateTime()) >= modTimeDelay)
+                    break;
+            }
+#endif
 
             auto buy = -1.;
             auto sell = -1.;
