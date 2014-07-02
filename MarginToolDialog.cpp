@@ -1,7 +1,6 @@
 #include <functional>
 #include <thread>
 #include <cmath>
-#include <set>
 
 #include <QDialogButtonBox>
 #include <QStandardPaths>
@@ -252,8 +251,8 @@ namespace Evernus
             while (!file.open(QIODevice::ReadWrite))
                 std::this_thread::sleep_for(std::chrono::milliseconds{25});
 
-            std::set<double, std::greater<double>> buy;
-            std::set<double> sell;
+            auto buy = -1.;
+            auto sell = -1.;
 
             QString name;
 
@@ -276,10 +275,18 @@ namespace Evernus
                     if (values[13] != "0")
                         continue;
 
+                    const auto curValue = values[0].toDouble();
+
                     if (values[7] == "True")
-                        buy.emplace(values[0].toDouble());
+                    {
+                        if (curValue > buy)
+                            buy = curValue;
+                    }
                     else if (values[7] == "False")
-                        sell.emplace(values[0].toDouble());
+                    {
+                        if (curValue < sell || sell < 0.)
+                            sell = curValue;
+                    }
                 }
             }
 
@@ -289,29 +296,29 @@ namespace Evernus
             {
                 const auto taxes = calculateTaxes();
 
-                if (buy.empty() || sell.empty())
+                if (buy < 0. || sell < 0.)
                 {
-                    if (buy.empty())
+                    if (buy < 0.)
                     {
                         mBestBuyLabel->setText("-");
                         mCostOfSalesLabel->setText("-");
                     }
                     else
                     {
-                        const auto buyPrice = *std::begin(buy) + 0.01;
+                        const auto buyPrice = buy + 0.01;
 
                         mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
                         mCostOfSalesLabel->setText(locale.toCurrencyString(getCoS(buyPrice, taxes), "ISK"));
                     }
 
-                    if (sell.empty())
+                    if (sell < 0.)
                     {
                         mBestSellLabel->setText("-");
                         mRevenueLabel->setText("-");
                     }
                     else
                     {
-                        const auto sellPrice = *std::begin(sell) + 0.01;
+                        const auto sellPrice = sell + 0.01;
 
                         mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
                         mRevenueLabel->setText(locale.toCurrencyString(getRevenue(sellPrice, taxes), "ISK"));
@@ -322,8 +329,8 @@ namespace Evernus
                 }
                 else
                 {
-                        const auto bestBuy = *std::begin(buy);
-                        const auto bestSell = *std::begin(sell);
+                        const auto bestBuy = buy;
+                        const auto bestSell = sell;
                         const auto sellPrice = bestSell - 0.01;
                         const auto buyPrice = bestBuy + 0.01;
                         const auto revenue = getRevenue(sellPrice, taxes);
