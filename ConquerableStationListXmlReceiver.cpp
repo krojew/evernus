@@ -7,8 +7,8 @@ namespace Evernus
     {
         const auto localName = name.localName(mNamePool);
         if (localName == "stationID")
-            mCurrentElement->mId = convert<uint>(value.toString());
+            mCurrentElement->setId(convert<uint>(value.toString()));
         else if (localName == "stationName")
-            mCurrentElement->mName = value.toString();
+            mCurrentElement->setName(value.toString());
     }
 }

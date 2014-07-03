@@ -208,6 +208,7 @@ namespace Evernus
         const auto task = startTask(tr("Fetching conquerable stations..."));
 
         mAPIManager.fetchConquerableStationList([task, this](const auto &list, const auto &error) {
+            mConquerableStationRepository->batchStore(list);
             emit taskStatusChanged(task, error);
         });
     }
@@ -246,6 +247,7 @@ namespace Evernus
         mCharacterRepository.reset(new CharacterRepository{mMainDb});
         mItemRepository.reset(new ItemRepository{mMainDb});
         mAssetListRepository.reset(new AssetListRepository{mMainDb, *mItemRepository});
+        mConquerableStationRepository.reset(new ConquerableStationRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
     }
 
@@ -255,6 +257,7 @@ namespace Evernus
         mCharacterRepository->create(*mKeyRepository);
         mAssetListRepository->create(*mCharacterRepository);
         mItemRepository->create(*mAssetListRepository);
+        mConquerableStationRepository->create();
     }
 
     quint32 EvernusApplication::startTask(const QString &description)

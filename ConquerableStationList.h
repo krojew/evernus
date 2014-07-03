@@ -2,15 +2,9 @@
 
 #include <vector>
 
-#include <QString>
+#include "ConquerableStation.h"
 
 namespace Evernus
 {
-    struct ConquerableStation
-    {
-        uint mId;
-        QString mName;
-    };
-
     typedef std::vector<ConquerableStation> ConquerableStationList;
 }

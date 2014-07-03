@@ -238,9 +238,9 @@ namespace Evernus
             const auto end = std::next(std::begin(data), (batch + 1) * maxRowsPerInsert);
             for (auto it = std::next(std::begin(data), batch * maxRowsPerInsert); it != end; ++it)
             {
-                query.addBindValue(it->mId);
+                query.addBindValue(it->getId());
                 query.addBindValue(list.getId());
-                query.addBindValue(it->mName);
+                query.addBindValue(it->getName());
             }
 
             DatabaseUtils::execQuery(query);
@@ -250,9 +250,9 @@ namespace Evernus
 
         for (auto it = std::next(std::begin(data), batches * maxRowsPerInsert); it != std::end(data); ++it)
         {
-            query.addBindValue(it->mId);
+            query.addBindValue(it->getId());
             query.addBindValue(list.getId());
-            query.addBindValue(it->mName);
+            query.addBindValue(it->getName());
         }
 
         DatabaseUtils::execQuery(query);

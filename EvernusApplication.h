@@ -6,6 +6,7 @@
 #include <QApplication>
 #include <QSqlDatabase>
 
+#include "ConquerableStationRepository.h"
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
 #include "EveTypeRepository.h"
@@ -68,6 +69,7 @@ namespace Evernus
         std::unique_ptr<CharacterRepository> mCharacterRepository;
         std::unique_ptr<ItemRepository> mItemRepository;
         std::unique_ptr<AssetListRepository> mAssetListRepository;
+        std::unique_ptr<ConquerableStationRepository> mConquerableStationRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
 
         APIManager mAPIManager;

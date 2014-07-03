@@ -122,9 +122,13 @@ add_executable(
     CharacterRepository.h
     CharacterWidget.cpp
     CharacterWidget.h
+    ConquerableStation.cpp
+    ConquerableStation.h
     ConquerableStationList.h
     ConquerableStationListXmlReceiver.cpp
     ConquerableStationListXmlReceiver.h
+    ConquerableStationRepository.cpp
+    ConquerableStationRepository.h
     DatabaseUtils.cpp
     DatabaseUtils.h
     Entity.h
