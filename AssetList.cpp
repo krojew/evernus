@@ -72,7 +72,10 @@ namespace Evernus
     {
         using std::swap;
 
-        swap(*this, other);
+        swap(static_cast<Entity &>(*this), static_cast<Entity &>(other));
+        swap(mCharacterId, other.mCharacterId);
+        swap(mItems, other.mItems);
+
         return *this;
     }
 }
