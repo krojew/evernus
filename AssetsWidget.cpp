@@ -1,4 +1,5 @@
 #include <QSortFilterProxyModel>
+#include <QHeaderView>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QTreeView>
@@ -12,7 +13,7 @@
 namespace Evernus
 {
     AssetsWidget::AssetsWidget(const AssetListRepository &assetRepository,
-                               const NameProvider &nameProvider,
+                               const EveDataProvider &nameProvider,
                                const APIManager &apiManager,
                                QWidget *parent)
         : CharacterBoundWidget{std::bind(&APIManager::getAssetsLocalCacheTime, &apiManager, std::placeholders::_1),
@@ -31,9 +32,11 @@ namespace Evernus
         auto modelProxy = new QSortFilterProxyModel{this};
         modelProxy->setSourceModel(&mModel);
 
-        auto assetView = new QTreeView{this};
-        mainLayout->addWidget(assetView);
-        assetView->setModel(modelProxy);
+        mAssetView = new QTreeView{this};
+        mainLayout->addWidget(mAssetView);
+        mAssetView->setModel(modelProxy);
+        mAssetView->setSortingEnabled(true);
+        mAssetView->header()->setSectionResizeMode(QHeaderView::Stretch);
 
         toolBarLayout->addStretch();
     }
@@ -42,6 +45,7 @@ namespace Evernus
     {
         refreshImportTimer();
         mModel.reset();
+        mAssetView->expandAll();
     }
 
     void AssetsWidget::handleNewCharacter(Character::IdType id)
@@ -49,5 +53,6 @@ namespace Evernus
         qDebug() << "Switching assets to" << id;
 
         mModel.setCharacter(id);
+        mAssetView->expandAll();
     }
 }

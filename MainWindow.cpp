@@ -29,7 +29,7 @@ namespace Evernus
     MainWindow::MainWindow(const Repository<Character> &characterRepository,
                            const Repository<Key> &keyRepository,
                            const AssetListRepository &assetRepository,
-                           const NameProvider &nameProvider,
+                           const EveDataProvider &nameProvider,
                            APIManager &apiManager,
                            QWidget *parent,
                            Qt::WindowFlags flags)

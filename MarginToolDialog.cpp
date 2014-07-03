@@ -31,9 +31,9 @@
 #endif
 
 #include "MarginToolSettings.h"
+#include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "PathSettings.h"
-#include "NameProvider.h"
 #include "Repository.h"
 
 #include "MarginToolDialog.h"
@@ -41,10 +41,10 @@
 namespace Evernus
 {
     MarginToolDialog
-    ::MarginToolDialog(const Repository<Character> &characterRepository, const NameProvider &nameProvider, QWidget *parent)
+    ::MarginToolDialog(const Repository<Character> &characterRepository, const EveDataProvider &nameProvider, QWidget *parent)
         : QDialog{parent}
         , mCharacterRepository{characterRepository}
-        , mNameProvider{nameProvider}
+        , mDataProvider{nameProvider}
     {
         QSettings settings;
 
@@ -351,7 +351,7 @@ namespace Evernus
                         const auto id = values[2].toULong(&ok);
 
                         if (ok)
-                            name = mNameProvider.getTypeName(id);
+                            name = mDataProvider.getTypeName(id);
                     }
 
                     if (values[13] != "0")

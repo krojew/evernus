@@ -59,6 +59,26 @@ namespace Evernus
         return result;
     }
 
+    double EvernusApplication::getTypeVolume(EveType::IdType id) const
+    {
+        const auto it = mTypeVolumeCache.find(id);
+        if (it != std::end(mTypeVolumeCache))
+            return it->second;
+
+        auto result = 0.;
+
+        try
+        {
+            result = mEveTypeRepository->find(id).getVolume();
+        }
+        catch (const EveTypeRepository::NotFoundException &)
+        {
+        }
+
+        mTypeVolumeCache.emplace(id, result);
+        return result;
+    }
+
     QString EvernusApplication::getLocationName(quint64 id) const
     {
         const auto it = mLocationNameCache.find(id);

@@ -10,10 +10,10 @@
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
 #include "EveTypeRepository.h"
+#include "EveDataProvider.h"
 #include "ItemRepository.h"
 #include "TaskConstants.h"
 #include "KeyRepository.h"
-#include "NameProvider.h"
 #include "APIManager.h"
 
 class QSplashScreen;
@@ -24,7 +24,7 @@ namespace Evernus
 
     class EvernusApplication
         : public QApplication
-        , public NameProvider
+        , public EveDataProvider
     {
         Q_OBJECT
 
@@ -33,6 +33,7 @@ namespace Evernus
         virtual ~EvernusApplication() = default;
 
         virtual QString getTypeName(EveType::IdType id) const override;
+        virtual double getTypeVolume(EveType::IdType id) const override;
         virtual QString getLocationName(quint64 id) const override;
 
         const KeyRepository &getKeyRepository() const noexcept;
@@ -82,6 +83,7 @@ namespace Evernus
         bool mCharacterUpdateScheduled = false;
 
         mutable std::unordered_map<EveType::IdType, QString> mTypeNameCache;
+        mutable std::unordered_map<EveType::IdType, double> mTypeVolumeCache;
         mutable std::unordered_map<quint64, QString> mLocationNameCache;
 
         void createDb();

@@ -16,7 +16,7 @@ namespace Evernus
     class ActiveTasksDialog;
     class MarginToolDialog;
     class MenuBarWidget;
-    class NameProvider;
+    class EveDataProvider;
     class APIManager;
     class Key;
 
@@ -29,7 +29,7 @@ namespace Evernus
         MainWindow(const Repository<Character> &characterRepository,
                    const Repository<Key> &keyRepository,
                    const AssetListRepository &assetRepository,
-                   const NameProvider &nameProvider,
+                   const EveDataProvider &nameProvider,
                    APIManager &apiManager,
                    QWidget *parent = nullptr,
                    Qt::WindowFlags flags = 0);
@@ -80,7 +80,7 @@ namespace Evernus
         const Repository<Key> &mKeyRepository;
         const AssetListRepository &mAssetRepository;
 
-        const NameProvider &mNameProvider;
+        const EveDataProvider &mNameProvider;
 
         APIManager &mApiManager;
 

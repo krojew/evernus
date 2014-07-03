@@ -132,6 +132,7 @@ add_executable(
     DatabaseUtils.cpp
     DatabaseUtils.h
     Entity.h
+    EveDataProvider.h
     EvernusApplication.cpp
     EvernusApplication.h
     EveType.cpp
@@ -164,7 +165,6 @@ add_executable(
     MarketGroupRepository.h
     MenuBarWidget.cpp
     MenuBarWidget.h
-    NameProvider.h
     NetworkPreferencesWidget.cpp
     NetworkPreferencesWidget.h
     NetworkSettings.h

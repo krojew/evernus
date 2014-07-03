@@ -1,11 +1,13 @@
+#include <QFont>
+
 #include "AssetListRepository.h"
-#include "NameProvider.h"
+#include "EveDataProvider.h"
 
 #include "AssetModel.h"
 
 namespace Evernus
 {
-    AssetModel::TreeItem::TreeItem(const QList<QVariant> &data)
+    AssetModel::TreeItem::TreeItem(const QVariantList &data)
         : mItemData{data}
     {
     }
@@ -63,11 +65,11 @@ namespace Evernus
         return mParentItem;
     }
 
-    AssetModel::AssetModel(const AssetListRepository &assetRepository, const NameProvider &nameProvider, QObject *parent)
+    AssetModel::AssetModel(const AssetListRepository &assetRepository, const EveDataProvider &nameProvider, QObject *parent)
         : QAbstractItemModel{parent}
         , mAssetRepository{assetRepository}
-        , mNameProvider{nameProvider}
-        , mRootItem{QVariantList{} << "name" << "quantity" << "size"}
+        , mDataProvider{nameProvider}
+        , mRootItem{QVariantList{} << "Name" << "Quantity" << "Unit volume" << "Total volume"}
     {
     }
 
@@ -84,11 +86,32 @@ namespace Evernus
         if (!index.isValid())
              return QVariant{};
 
-         if (role != Qt::DisplayRole)
-             return QVariant{};
-
          auto item = static_cast<const TreeItem *>(index.internalPointer());
-         return item->data(index.column());
+
+         switch (role) {
+         case Qt::DisplayRole:
+             return item->data(index.column());
+         case Qt::FontRole:
+             if (item->parent() == &mRootItem)
+             {
+                 QFont font;
+                 font.setBold(true);
+
+                 return font;
+             }
+
+             return QFont{};
+         }
+
+         return QVariant{};
+    }
+
+    QVariant AssetModel::headerData(int section, Qt::Orientation orientation, int role) const
+    {
+        if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+            return mRootItem.data(section);
+
+        return QVariant{};
     }
 
     QModelIndex AssetModel::index(int row, int column, const QModelIndex &parent) const
@@ -166,7 +189,10 @@ namespace Evernus
                 if (it == std::end(mLocationItems))
                 {
                     auto treeItem = std::make_unique<TreeItem>(QVariantList{}
-                        << mNameProvider.getLocationName(*id));
+                        << mDataProvider.getLocationName(*id)
+                        << QString{}
+                        << QString{}
+                        << QString{});
                     locationItem = treeItem.get();
 
                     mLocationItems[*id] = locationItem;
@@ -200,8 +226,15 @@ namespace Evernus
 
     std::unique_ptr<AssetModel::TreeItem> AssetModel::createTreeItemForItem(const Item &item) const
     {
-        auto treeItem = std::make_unique<TreeItem>(QVariantList()
-            << mNameProvider.getTypeName(item.getTypeId())
+        QLocale locale;
+
+        const auto volume = mDataProvider.getTypeVolume(item.getTypeId());
+
+        auto treeItem = std::make_unique<TreeItem>(QVariantList{}
+            << mDataProvider.getTypeName(item.getTypeId())
+            << locale.toString(item.getQuantity())
+            << QString{"%1m³"}.arg(locale.toString(volume, 'f', 2))
+            << QString{"%1m³"}.arg(locale.toString(volume * item.getQuantity(), 'f', 2))
         );
 
         return treeItem;

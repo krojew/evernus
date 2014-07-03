@@ -10,18 +10,19 @@
 namespace Evernus
 {
     class AssetListRepository;
-    class NameProvider;
+    class EveDataProvider;
     class AssetList;
 
     class AssetModel
         : public QAbstractItemModel
     {
     public:
-        AssetModel(const AssetListRepository &assetRepository, const NameProvider &nameProvider, QObject *parent = nullptr);
+        AssetModel(const AssetListRepository &assetRepository, const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~AssetModel() = default;
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
         virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+        virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex{}) const override;
         virtual QModelIndex parent(const QModelIndex &index) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
@@ -55,7 +56,7 @@ namespace Evernus
         };
 
         const AssetListRepository &mAssetRepository;
-        const NameProvider &mNameProvider;
+        const EveDataProvider &mDataProvider;
 
         Character::IdType mCharacterId = Character::invalidId;
 

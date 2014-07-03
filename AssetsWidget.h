@@ -3,10 +3,12 @@
 #include "CharacterBoundWidget.h"
 #include "AssetModel.h"
 
+class QTreeView;
+
 namespace Evernus
 {
     class AssetListRepository;
-    class NameProvider;
+    class EveDataProvider;
     class APIManager;
     class AssetList;
 
@@ -17,7 +19,7 @@ namespace Evernus
 
     public:
         AssetsWidget(const AssetListRepository &assetRepository,
-                     const NameProvider &nameProvider,
+                     const EveDataProvider &nameProvider,
                      const APIManager &apiManager,
                      QWidget *parent = nullptr);
         virtual ~AssetsWidget() = default;
@@ -26,6 +28,8 @@ namespace Evernus
         void updateData();
 
     private:
+        QTreeView *mAssetView = nullptr;
+
         AssetModel mModel;
 
         virtual void handleNewCharacter(Character::IdType id) override;
