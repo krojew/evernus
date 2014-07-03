@@ -28,6 +28,7 @@ namespace Evernus
 
     MainWindow::MainWindow(const Repository<Character> &characterRepository,
                            const Repository<Key> &keyRepository,
+                           const AssetListRepository &assetRepository,
                            const NameProvider &nameProvider,
                            APIManager &apiManager,
                            QWidget *parent,
@@ -35,6 +36,7 @@ namespace Evernus
         : QMainWindow{parent, flags}
         , mCharacterRepository{characterRepository}
         , mKeyRepository{keyRepository}
+        , mAssetRepository{assetRepository}
         , mNameProvider{nameProvider}
         , mApiManager{apiManager}
     {
@@ -224,11 +226,12 @@ namespace Evernus
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, charTab, &CharacterWidget::setCharacter);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::updateData);
 
-        auto assetsTab = new AssetsWidget{mApiManager, this};
+        auto assetsTab = new AssetsWidget{mAssetRepository, mNameProvider, mApiManager, this};
         tabs->addTab(assetsTab, tr("Assets"));
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, assetsTab, &AssetsWidget::setCharacter);
-        connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::refreshImportTimer);
+        connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
+        connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
     }
 
     void MainWindow::createStatusBar()

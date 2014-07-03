@@ -18,7 +18,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            Evernus::MainWindow mainWnd{app.getCharacterRepository(), app.getKeyRepository(), app, app.getAPIManager()};
+            Evernus::MainWindow mainWnd{app.getCharacterRepository(),
+                                        app.getKeyRepository(),
+                                        app.getAssetListRepository(),
+                                        app,
+                                        app.getAPIManager()};
+
             app.connect(&mainWnd, SIGNAL(refreshCharacters()), SLOT(refreshCharacters()));
             app.connect(&mainWnd, SIGNAL(refreshConquerableStations()), SLOT(refreshConquerableStations()));
             app.connect(&mainWnd, SIGNAL(importCharacter(Character::IdType)), SLOT(refreshCharacter(Character::IdType)));
@@ -27,6 +32,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(taskStarted(quint32, quint32, const QString &)), SIGNAL(newSubTaskInfoAdded(quint32, quint32, const QString &)));
             mainWnd.connect(&app, SIGNAL(taskStatusChanged(quint32, const QString &)), SIGNAL(taskStatusChanged(quint32, const QString &)));
             mainWnd.connect(&app, SIGNAL(apiError(const QString &)), SLOT(showError(const QString &)));
+            mainWnd.connect(&app, SIGNAL(conquerableStationsChanged()), SIGNAL(conquerableStationsChanged()));
             mainWnd.connect(&app, SIGNAL(charactersChanged()), SIGNAL(charactersChanged()));
             mainWnd.connect(&app, SIGNAL(assetsChanged()), SIGNAL(assetsChanged()));
             mainWnd.connect(&app, SIGNAL(iskChanged()), SLOT(updateStatus()));

@@ -51,6 +51,8 @@ namespace Evernus
         ItemIterator end() noexcept;
         ConstItemIterator end() const noexcept;
 
+        size_t getChildCount() const noexcept;
+
         void addItem(std::unique_ptr<Item> &&item);
 
         Item &operator =(const Item &other);

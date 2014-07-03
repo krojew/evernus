@@ -24,8 +24,8 @@ qt5_wrap_cpp(
     ActiveTasksDialog.h
     APIInterface.h
     APIManager.h
-    AssetModel.h
     AssetsImportPreferencesWidget.h
+    AssetsWidget.h
     ButtonWithTimer.h
     CharacterBoundWidget.h
     CharacterManagerDialog.h

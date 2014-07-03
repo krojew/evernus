@@ -32,10 +32,12 @@ namespace Evernus
         EvernusApplication(int &argc, char *argv[]);
         virtual ~EvernusApplication() = default;
 
-        virtual QString getName(EveType::IdType id) const override;
+        virtual QString getTypeName(EveType::IdType id) const override;
+        virtual QString getLocationName(quint64 id) const override;
 
         const KeyRepository &getKeyRepository() const noexcept;
         const CharacterRepository &getCharacterRepository() const noexcept;
+        const AssetListRepository &getAssetListRepository() const noexcept;
 
         APIManager &getAPIManager() noexcept;
 
@@ -46,6 +48,7 @@ namespace Evernus
 
         void apiError(const QString &info);
 
+        void conquerableStationsChanged();
         void charactersChanged();
         void assetsChanged();
         void iskChanged();
@@ -78,7 +81,8 @@ namespace Evernus
 
         bool mCharacterUpdateScheduled = false;
 
-        mutable std::unordered_map<EveType::IdType, QString> mNameCache;
+        mutable std::unordered_map<EveType::IdType, QString> mTypeNameCache;
+        mutable std::unordered_map<quint64, QString> mLocationNameCache;
 
         void createDb();
         void createDbSchema();

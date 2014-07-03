@@ -22,6 +22,8 @@ namespace Evernus
 
         void create(const Repository<Character> &characterRepo) const;
 
+        AssetList fetchForCharacter(Character::IdType id) const;
+
     private:
         const ItemRepository &mItemRepository;
 

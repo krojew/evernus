@@ -10,6 +10,7 @@ namespace Evernus
         NameProvider() = default;
         virtual ~NameProvider() = default;
 
-        virtual QString getName(EveType::IdType id) const = 0;
+        virtual QString getTypeName(EveType::IdType id) const = 0;
+        virtual QString getLocationName(quint64 id) const = 0;
     };
 }

@@ -12,6 +12,7 @@ namespace Evernus
     template<class T>
     class Repository;
     class CharacterManagerDialog;
+    class AssetListRepository;
     class ActiveTasksDialog;
     class MarginToolDialog;
     class MenuBarWidget;
@@ -27,6 +28,7 @@ namespace Evernus
     public:
         MainWindow(const Repository<Character> &characterRepository,
                    const Repository<Key> &keyRepository,
+                   const AssetListRepository &assetRepository,
                    const NameProvider &nameProvider,
                    APIManager &apiManager,
                    QWidget *parent = nullptr,
@@ -39,6 +41,7 @@ namespace Evernus
         void refreshCharacters();
         void refreshConquerableStations();
 
+        void conquerableStationsChanged();
         void charactersChanged();
         void assetsChanged();
 
@@ -75,6 +78,7 @@ namespace Evernus
 
         const Repository<Character> &mCharacterRepository;
         const Repository<Key> &mKeyRepository;
+        const AssetListRepository &mAssetRepository;
 
         const NameProvider &mNameProvider;
 

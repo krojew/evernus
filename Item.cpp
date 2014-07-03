@@ -105,6 +105,11 @@ namespace Evernus
         return mContents.end();
     }
 
+    size_t Item::getChildCount() const noexcept
+    {
+        return mContents.size();
+    }
+
     void Item::addItem(std::unique_ptr<Item> &&item)
     {
         Q_ASSERT(item);

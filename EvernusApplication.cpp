@@ -39,10 +39,10 @@ namespace Evernus
         connect(&mAPIManager, &APIManager::generalError, this, &EvernusApplication::apiError);
     }
 
-    QString EvernusApplication::getName(EveType::IdType id) const
+    QString EvernusApplication::getTypeName(EveType::IdType id) const
     {
-        const auto it = mNameCache.find(id);
-        if (it != std::end(mNameCache))
+        const auto it = mTypeNameCache.find(id);
+        if (it != std::end(mTypeNameCache))
             return it->second;
 
         QString result;
@@ -55,7 +55,82 @@ namespace Evernus
         {
         }
 
-        mNameCache.emplace(id, result);
+        mTypeNameCache.emplace(id, result);
+        return result;
+    }
+
+    QString EvernusApplication::getLocationName(quint64 id) const
+    {
+        const auto it = mLocationNameCache.find(id);
+        if (it != std::end(mLocationNameCache))
+            return it->second;
+
+        QString result;
+        if (id >= 66000000 && id <= 66014933)
+        {
+            QSqlQuery query{"SELECT stationName FROM staStations WHERE stationID = ?", mEveDb};
+            query.bindValue(0, id - 6000001);
+
+            DatabaseUtils::execQuery(query);
+            query.next();
+
+            result = query.value(0).toString();
+        }
+        else if (id >= 66014934 && id <= 67999999)
+        {
+            try
+            {
+                auto station = mConquerableStationRepository->find(id - 6000000);
+                result = station.getName();
+            }
+            catch (const ConquerableStationRepository::NotFoundException &)
+            {
+            }
+        }
+        else if (id >= 60014861 && id <= 60014928)
+        {
+            try
+            {
+                auto station = mConquerableStationRepository->find(id);
+                result = station.getName();
+            }
+            catch (const ConquerableStationRepository::NotFoundException &)
+            {
+            }
+        }
+        else if (id > 60000000 && id <= 61000000)
+        {
+            QSqlQuery query{"SELECT stationName FROM staStations WHERE stationID = ?", mEveDb};
+            query.bindValue(0, id);
+
+            DatabaseUtils::execQuery(query);
+            query.next();
+
+            result = query.value(0).toString();
+        }
+        else if (id > 61000000)
+        {
+            try
+            {
+                auto station = mConquerableStationRepository->find(id);
+                result = station.getName();
+            }
+            catch (const ConquerableStationRepository::NotFoundException &)
+            {
+            }
+        }
+        else
+        {
+            QSqlQuery query{"SELECT itemName FROM staStations WHERE itemID = ?", mEveDb};
+            query.bindValue(0, id);
+
+            DatabaseUtils::execQuery(query);
+            query.next();
+
+            result = query.value(0).toString();
+        }
+
+        mLocationNameCache.emplace(id, result);
         return result;
     }
 
@@ -67,6 +142,11 @@ namespace Evernus
     const CharacterRepository &EvernusApplication::getCharacterRepository() const noexcept
     {
         return *mCharacterRepository;
+    }
+
+    const AssetListRepository &EvernusApplication::getAssetListRepository() const noexcept
+    {
+        return *mAssetListRepository;
     }
 
     APIManager &EvernusApplication::getAPIManager() noexcept
@@ -210,6 +290,8 @@ namespace Evernus
         mAPIManager.fetchConquerableStationList([task, this](const auto &list, const auto &error) {
             mConquerableStationRepository->exec(QString{"DELETE FROM %1"}.arg(mConquerableStationRepository->getTableName()));
             mConquerableStationRepository->batchStore(list);
+
+            emit conquerableStationsChanged();
             emit taskStatusChanged(task, error);
         });
     }

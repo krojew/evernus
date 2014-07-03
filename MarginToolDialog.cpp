@@ -351,7 +351,7 @@ namespace Evernus
                         const auto id = values[2].toULong(&ok);
 
                         if (ok)
-                            name = mNameProvider.getName(id);
+                            name = mNameProvider.getTypeName(id);
                     }
 
                     if (values[13] != "0")

@@ -1,3 +1,5 @@
+#include <unordered_map>
+
 #include <QSqlRecord>
 #include <QSqlQuery>
 
@@ -40,6 +42,49 @@ namespace Evernus
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
+    }
+
+    AssetList AssetListRepository::fetchForCharacter(Character::IdType id) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ?"}.arg(getTableName()));
+        query.bindValue(0, id);
+
+        DatabaseUtils::execQuery(query);
+        query.next();
+
+        auto assets = populate(query.record());
+
+        query = mItemRepository.prepare(QString{"SELECT * FROM %1 WHERE asset_list_id = ?"}.arg(mItemRepository.getTableName()));
+        query.bindValue(0, assets.getId());
+
+        DatabaseUtils::execQuery(query);
+
+        std::unordered_map<Item::IdType, Item *> itemMap;
+        std::vector<std::unique_ptr<Item>> items;
+
+        while (query.next())
+        {
+            auto item = mItemRepository.populate(query.record());
+            auto itemPtr = std::make_unique<Item>(std::move(item));
+
+            itemMap[item.getId()] = itemPtr.get();
+            items.emplace_back(std::move(itemPtr));
+        }
+
+        for (auto &item : items)
+        {
+            const auto parentId = item->getParentId();
+            if (parentId && itemMap.find(*parentId) != std::end(itemMap))
+                itemMap[*parentId]->addItem(std::move(item));
+        }
+
+        for (auto &item : items)
+        {
+            if (item)
+                assets.addItem(std::move(item));
+        }
+
+        return assets;
     }
 
     QStringList AssetListRepository::getColumns() const
