@@ -67,6 +67,7 @@ namespace Evernus
         : QAbstractItemModel{parent}
         , mAssetRepository{assetRepository}
         , mNameProvider{nameProvider}
+        , mRootItem{QVariantList{} << "name" << "quantity" << "size"}
     {
     }
 
