@@ -354,8 +354,14 @@ namespace Evernus
                             name = mDataProvider.getTypeName(id);
                     }
 
-                    if (values[13] != "0")
-                        continue;
+                    const auto jumps = values[13].toInt();
+
+                    if (jumps != 0)
+                    {
+                        const auto range = values[3].toInt();
+                        if (range == -1 || jumps - range > 0)
+                            continue;
+                    }
 
                     const auto curValue = values[0].toDouble();
 
