@@ -3,6 +3,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QTreeView>
+#include <QLocale>
+#include <QLabel>
 #include <QDebug>
 
 #include "ButtonWithTimer.h"
@@ -29,6 +31,8 @@ namespace Evernus
         auto &importBtn = getAPIImportButton();
         toolBarLayout->addWidget(&importBtn);
 
+        toolBarLayout->addStretch();
+
         auto modelProxy = new QSortFilterProxyModel{this};
         modelProxy->setSourceModel(&mModel);
 
@@ -38,7 +42,8 @@ namespace Evernus
         mAssetView->setSortingEnabled(true);
         mAssetView->header()->setSectionResizeMode(QHeaderView::Stretch);
 
-        toolBarLayout->addStretch();
+        mInfoLabel = new QLabel{this};
+        mainLayout->addWidget(mInfoLabel);
     }
 
     void AssetsWidget::updateData()
@@ -46,6 +51,8 @@ namespace Evernus
         refreshImportTimer();
         mModel.reset();
         mAssetView->expandAll();
+
+        setNewInfo();
     }
 
     void AssetsWidget::handleNewCharacter(Character::IdType id)
@@ -54,5 +61,15 @@ namespace Evernus
 
         mModel.setCharacter(id);
         mAssetView->expandAll();
+
+        setNewInfo();
+    }
+
+    void AssetsWidget::setNewInfo()
+    {
+        QLocale locale;
+        mInfoLabel->setText(QString{"Total assets: <strong>%1</strong> Total volume: <strong>%2m³</strong>"}
+            .arg(locale.toString(mModel.getTotalAssets()))
+            .arg(locale.toString(mModel.getTotalVolume(), 'f', 2)));
     }
 }

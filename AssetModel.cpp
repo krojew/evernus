@@ -174,6 +174,9 @@ namespace Evernus
         mRootItem.clearChildren();
         mLocationItems.clear();
 
+        mTotalAssets = 0;
+        mTotalVolume = 0.;
+
         if (mCharacterId != Character::invalidId)
         {
             const auto assets = mAssetRepository.fetchForCharacter(mCharacterId);
@@ -213,8 +216,21 @@ namespace Evernus
         endResetModel();
     }
 
+    uint AssetModel::getTotalAssets() const noexcept
+    {
+        return mTotalAssets;
+    }
+
+    double AssetModel::getTotalVolume() const noexcept
+    {
+        return mTotalVolume;
+    }
+
     void AssetModel::buildItemMap(const Item &item, TreeItem &treeItem)
     {
+        ++mTotalAssets;
+        mTotalVolume += mDataProvider.getTypeVolume(item.getTypeId());
+
         for (const auto &child : item)
         {
             auto childItem = createTreeItemForItem(*child);
@@ -229,12 +245,13 @@ namespace Evernus
         QLocale locale;
 
         const auto volume = mDataProvider.getTypeVolume(item.getTypeId());
+        const auto quantity = item.getQuantity();
 
         auto treeItem = std::make_unique<TreeItem>(QVariantList{}
             << mDataProvider.getTypeName(item.getTypeId())
-            << locale.toString(item.getQuantity())
+            << locale.toString(quantity)
             << QString{"%1m³"}.arg(locale.toString(volume, 'f', 2))
-            << QString{"%1m³"}.arg(locale.toString(volume * item.getQuantity(), 'f', 2))
+            << QString{"%1m³"}.arg(locale.toString(volume * quantity, 'f', 2))
         );
 
         return treeItem;

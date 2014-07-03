@@ -4,6 +4,7 @@
 #include "AssetModel.h"
 
 class QTreeView;
+class QLabel;
 
 namespace Evernus
 {
@@ -29,9 +30,12 @@ namespace Evernus
 
     private:
         QTreeView *mAssetView = nullptr;
+        QLabel *mInfoLabel = nullptr;
 
         AssetModel mModel;
 
         virtual void handleNewCharacter(Character::IdType id) override;
+
+        void setNewInfo();
     };
 }

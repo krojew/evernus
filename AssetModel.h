@@ -31,6 +31,9 @@ namespace Evernus
 
         void reset();
 
+        uint getTotalAssets() const noexcept;
+        double getTotalVolume() const noexcept;
+
     private:
         class TreeItem
         {
@@ -61,6 +64,9 @@ namespace Evernus
         Character::IdType mCharacterId = Character::invalidId;
 
         TreeItem mRootItem;
+
+        uint mTotalAssets = 0;
+        double mTotalVolume = 0.;
 
         std::unordered_map<ItemData::LocationIdType::value_type, TreeItem *> mLocationItems;
 
