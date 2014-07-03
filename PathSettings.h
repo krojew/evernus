@@ -4,6 +4,7 @@ namespace Evernus
 {
     namespace PathSettings
     {
-        const auto marketLogsPath = "path/marketLogs";
+        const auto marketLogsPathKey = "path/marketLogs/path";
+        const auto deleteLogsKey = "path/marketLogs/delete";
     }
 }

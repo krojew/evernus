@@ -2,6 +2,7 @@
 
 #include <QWidget>
 
+class QCheckBox;
 class QLineEdit;
 
 namespace Evernus
@@ -23,5 +24,6 @@ namespace Evernus
 
     private:
         QLineEdit *mMarketLogPathEdit = nullptr;
+        QCheckBox *mDeleteLogsBtn = nullptr;
     };
 }

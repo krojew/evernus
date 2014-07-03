@@ -203,7 +203,7 @@ namespace Evernus
         mainLayout->addWidget(buttons);
         connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-        auto logPath = settings.value(PathSettings::marketLogsPath).toString();
+        auto logPath = settings.value(PathSettings::marketLogsPathKey).toString();
         if (logPath.isEmpty())
             logPath = QStandardPaths::locate(QStandardPaths::DocumentsLocation, "EVE/logs/Marketlogs", QStandardPaths::LocateDirectory);
 
@@ -388,6 +388,10 @@ namespace Evernus
                 }
             }
 
+            QSettings settings;
+            if (settings.value(PathSettings::deleteLogsKey, true).toBool())
+                file.remove();
+
             mNameLabel->setText(name);
             mBuyOrdersLabel->setText(QString::number(buyCount));
             mSellOrdersLabel->setText(QString::number(sellCount));
@@ -451,8 +455,6 @@ namespace Evernus
                         mProfitLabel->setText(locale.toCurrencyString(revenue - cos, "ISK"));
                         mRevenueLabel->setText(locale.toCurrencyString(revenue, "ISK"));
                         mCostOfSalesLabel->setText(locale.toCurrencyString(cos, "ISK"));
-
-                        QSettings settings;
 
                         if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
                             mMarginLabel->setStyleSheet("color: red;");

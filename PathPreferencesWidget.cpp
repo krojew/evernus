@@ -5,6 +5,7 @@
 #include <QSettings>
 #include <QGroupBox>
 #include <QLineEdit>
+#include <QCheckBox>
 #include <QLabel>
 
 #include "PathSettings.h"
@@ -36,12 +37,16 @@ namespace Evernus
         auto inputLayout = new QHBoxLayout{};
         marketLogGroupLayout->addLayout(inputLayout);
 
-        mMarketLogPathEdit = new QLineEdit{settings.value(PathSettings::marketLogsPath).toString(), this};
+        mMarketLogPathEdit = new QLineEdit{settings.value(PathSettings::marketLogsPathKey).toString(), this};
         inputLayout->addWidget(mMarketLogPathEdit);
 
         auto browseBtn = new QPushButton{tr("Browse..."), this};
         inputLayout->addWidget(browseBtn);
         connect(browseBtn, &QPushButton::clicked, this, &PathPreferencesWidget::browseForFolder);
+
+        mDeleteLogsBtn = new QCheckBox{tr("Delete parsed logs"), this};
+        marketLogGroupLayout->addWidget(mDeleteLogsBtn);
+        mDeleteLogsBtn->setChecked(settings.value(PathSettings::deleteLogsKey, true).toBool());
 
         mainLayout->addStretch();
     }
@@ -49,7 +54,8 @@ namespace Evernus
     void PathPreferencesWidget::applySettings()
     {
         QSettings settings;
-        settings.setValue(PathSettings::marketLogsPath, mMarketLogPathEdit->text());
+        settings.setValue(PathSettings::marketLogsPathKey, mMarketLogPathEdit->text());
+        settings.setValue(PathSettings::deleteLogsKey, mDeleteLogsBtn->isChecked());
     }
 
     void PathPreferencesWidget::browseForFolder()
