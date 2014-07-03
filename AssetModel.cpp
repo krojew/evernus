@@ -5,13 +5,14 @@
 
 namespace Evernus
 {
-    AssetModel::TreeItem::TreeItem(const QList<QVariant> &data, TreeItem *parent)
+    AssetModel::TreeItem::TreeItem(const QList<QVariant> &data)
         : mItemData{data}
     {
     }
 
     void AssetModel::TreeItem::appendChild(std::unique_ptr<TreeItem> &&child)
     {
+        child->mParentItem = this;
         mChildItems.emplace_back(std::move(child));
     }
 
@@ -27,7 +28,7 @@ namespace Evernus
 
     int AssetModel::TreeItem::childCount() const
     {
-        return mChildItems.size();
+        return static_cast<int>(mChildItems.size());
     }
 
     int AssetModel::TreeItem::columnCount() const
@@ -147,6 +148,7 @@ namespace Evernus
         beginResetModel();
 
         mRootItem.clearChildren();
+        mLocationItems.clear();
 
         if (mCharacterId != Character::invalidId)
         {

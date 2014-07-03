@@ -35,7 +35,7 @@ namespace Evernus
         {
         public:
             TreeItem() = default;
-            TreeItem(const QVariantList &data, TreeItem *parent = nullptr);
+            explicit TreeItem(const QVariantList &data);
             ~TreeItem() = default;
 
             void appendChild(std::unique_ptr<TreeItem> &&child);
