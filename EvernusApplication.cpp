@@ -208,6 +208,7 @@ namespace Evernus
         const auto task = startTask(tr("Fetching conquerable stations..."));
 
         mAPIManager.fetchConquerableStationList([task, this](const auto &list, const auto &error) {
+            mConquerableStationRepository->exec(QString{"DELETE FROM %1"}.arg(mConquerableStationRepository->getTableName()));
             mConquerableStationRepository->batchStore(list);
             emit taskStatusChanged(task, error);
         });
