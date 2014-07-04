@@ -354,19 +354,18 @@ namespace Evernus
                             name = mDataProvider.getTypeName(id);
                     }
 
-                    const auto jumps = values[13].toInt();
-
-                    if (jumps != 0)
-                    {
-                        const auto range = values[3].toInt();
-                        if (range == -1 || jumps - range > 0)
-                            continue;
-                    }
-
                     const auto curValue = values[0].toDouble();
+                    const auto jumps = values[13].toInt();
 
                     if (values[7] == "True")
                     {
+                        if (jumps != 0)
+                        {
+                            const auto range = values[3].toInt();
+                            if (range == -1 || jumps - range > 0)
+                                continue;
+                        }
+
                         if (curValue > buy)
                             buy = curValue;
 
@@ -377,6 +376,9 @@ namespace Evernus
                     }
                     else if (values[7] == "False")
                     {
+                        if (jumps != 0)
+                            continue;
+
                         if (curValue < sell || sell < 0.)
                             sell = curValue;
 
