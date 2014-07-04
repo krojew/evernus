@@ -9,15 +9,15 @@
 
 namespace Evernus
 {
-    class AssetListRepository;
     class EveDataProvider;
+    class AssetProvider;
     class AssetList;
 
     class AssetModel
         : public QAbstractItemModel
     {
     public:
-        AssetModel(const AssetListRepository &assetRepository, const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        AssetModel(const AssetProvider &assetProvider, const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~AssetModel() = default;
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
@@ -59,7 +59,7 @@ namespace Evernus
             TreeItem *mParentItem = nullptr;
         };
 
-        const AssetListRepository &mAssetRepository;
+        const AssetProvider &mAssetProvider;
         const EveDataProvider &mDataProvider;
 
         Character::IdType mCharacterId = Character::invalidId;

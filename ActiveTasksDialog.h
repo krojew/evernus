@@ -21,9 +21,9 @@ namespace Evernus
         virtual ~ActiveTasksDialog() = default;
 
     public slots:
-        void addNewTaskInfo(quint32 taskId, const QString &description);
-        void addNewSubTaskInfo(quint32 taskId, quint32 parentTask, const QString &description);
-        void setTaskStatus(quint32 taskId, const QString &error);
+        void addNewTaskInfo(uint taskId, const QString &description);
+        void addNewSubTaskInfo(uint taskId, uint parentTask, const QString &description);
+        void setTaskStatus(uint taskId, const QString &error);
 
     private slots:
         void autoCloseSave(bool enabled);
@@ -39,11 +39,11 @@ namespace Evernus
         QProgressBar *mTotalProgressWidget = nullptr;
         QCheckBox *mAutoCloseBtn = nullptr;
 
-        std::unordered_map<quint32, QTreeWidgetItem *> mTaskItems;
-        std::unordered_map<quint32, SubTaskInfo> mSubTaskInfo;
+        std::unordered_map<uint, QTreeWidgetItem *> mTaskItems;
+        std::unordered_map<uint, SubTaskInfo> mSubTaskInfo;
 
         bool mHadError = false;
 
-        void fillTaskItem(quint32 taskId, QTreeWidgetItem *item, const QString &description);
+        void fillTaskItem(uint taskId, QTreeWidgetItem *item, const QString &description);
     };
 }

@@ -46,7 +46,7 @@ namespace Evernus
         setWindowTitle(tr("Active Tasks"));
     }
 
-    void ActiveTasksDialog::addNewTaskInfo(quint32 taskId, const QString &description)
+    void ActiveTasksDialog::addNewTaskInfo(uint taskId, const QString &description)
     {
         if (mTaskItems.empty())
         {
@@ -64,12 +64,12 @@ namespace Evernus
         mTaskWidget->resizeColumnToContents(0);
     }
 
-    void ActiveTasksDialog::addNewSubTaskInfo(quint32 taskId, quint32 parentTask, const QString &description)
+    void ActiveTasksDialog::addNewSubTaskInfo(uint taskId, uint parentTask, const QString &description)
     {
         auto item = mTaskItems.find(parentTask);
         if (item == std::end(mTaskItems))
         {
-            QMetaObject::invokeMethod(this, "addNewSubTaskInfo", Qt::QueuedConnection, Q_ARG(quint32, taskId), Q_ARG(quint32, parentTask), Q_ARG(QString, description));
+            QMetaObject::invokeMethod(this, "addNewSubTaskInfo", Qt::QueuedConnection, Q_ARG(uint, taskId), Q_ARG(uint, parentTask), Q_ARG(QString, description));
             return;
         }
 
@@ -81,12 +81,12 @@ namespace Evernus
         ++mSubTaskInfo[parentTask].mCount;
     }
 
-    void ActiveTasksDialog::setTaskStatus(quint32 taskId, const QString &error)
+    void ActiveTasksDialog::setTaskStatus(uint taskId, const QString &error)
     {
         auto item = mTaskItems.find(taskId);
         if (item == std::end(mTaskItems))
         {
-            QMetaObject::invokeMethod(this, "setTaskStatus", Qt::QueuedConnection, Q_ARG(quint32, taskId), Q_ARG(QString, error));
+            QMetaObject::invokeMethod(this, "setTaskStatus", Qt::QueuedConnection, Q_ARG(uint, taskId), Q_ARG(QString, error));
             return;
         }
 
@@ -133,7 +133,7 @@ namespace Evernus
         settings.setValue(UISettings::autoCloseTasksKey, enabled);
     }
 
-    void ActiveTasksDialog::fillTaskItem(quint32 taskId, QTreeWidgetItem *item, const QString &description)
+    void ActiveTasksDialog::fillTaskItem(uint taskId, QTreeWidgetItem *item, const QString &description)
     {
         item->setIcon(0, QIcon{":/images/information.png"});
         item->setData(0, Qt::UserRole, taskId);

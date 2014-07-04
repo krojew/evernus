@@ -5,6 +5,7 @@
 #include <QSettings>
 #include <QDebug>
 
+#include "ItemPriceImporterNames.h"
 #include "ImportSettings.h"
 #include "DatabaseUtils.h"
 
@@ -16,6 +17,9 @@ namespace Evernus
 
     EvernusApplication::EvernusApplication(int &argc, char *argv[])
         : QApplication{argc, argv}
+        , EveDataProvider{}
+        , ItemPriceImporterRegistry{}
+        , AssetProvider{}
         , mMainDb{QSqlDatabase::addDatabase("QSQLITE", "main")}
         , mEveDb{QSqlDatabase::addDatabase("QSQLITE", "eve")}
     {
@@ -175,6 +179,36 @@ namespace Evernus
         return result;
     }
 
+    void EvernusApplication::registerImporter(const std::string &name, std::unique_ptr<ItemPriceImporter> &&importer)
+    {
+        connect(importer.get(), &ItemPriceImporter::error, this, &EvernusApplication::showPriceImportError);
+        connect(importer.get(), &ItemPriceImporter::itemPricesChanged, this, &EvernusApplication::updateItemPrices);
+        mItemPriceImporters.emplace(name, std::move(importer));
+    }
+
+    const AssetList &EvernusApplication::fetchForCharacter(Character::IdType id) const
+    {
+        const auto it = mCharacterAssets.find(id);
+        if (it != std::end(mCharacterAssets))
+            return *it->second;
+
+        std::unique_ptr<AssetList> assets;
+
+        try
+        {
+            assets = std::make_unique<AssetList>(mAssetListRepository->fetchForCharacter(id));
+        }
+        catch (const AssetListRepository &)
+        {
+            assets = std::make_unique<AssetList>();
+        }
+
+        const auto assetPtr = assets.get();
+
+        mCharacterAssets.emplace(id, std::move(assets));
+        return *assetPtr;
+    }
+
     const KeyRepository &EvernusApplication::getKeyRepository() const noexcept
     {
         return *mKeyRepository;
@@ -183,11 +217,6 @@ namespace Evernus
     const CharacterRepository &EvernusApplication::getCharacterRepository() const noexcept
     {
         return *mCharacterRepository;
-    }
-
-    const AssetListRepository &EvernusApplication::getAssetListRepository() const noexcept
-    {
-        return *mAssetListRepository;
     }
 
     APIManager &EvernusApplication::getAPIManager() noexcept
@@ -276,7 +305,7 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::refreshCharacter(Character::IdType id, quint32 parentTask)
+    void EvernusApplication::refreshCharacter(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing character: " << id;
 
@@ -292,7 +321,7 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::refreshAssets(Character::IdType id, quint32 parentTask)
+    void EvernusApplication::refreshAssets(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing assets: " << id;
 
@@ -308,6 +337,7 @@ namespace Evernus
 
                 Evernus::DatabaseUtils::execQuery(query);
 
+                mCharacterAssets.erase(id);
                 mAssetListRepository->store(data);
 
                 emit assetsChanged();
@@ -337,6 +367,11 @@ namespace Evernus
         });
     }
 
+    void EvernusApplication::refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target)
+    {
+        importItemPrices(ItemPriceImporterNames::webImporter, target);
+    }
+
     void EvernusApplication::scheduleCharacterUpdate()
     {
         if (mCharacterUpdateScheduled)
@@ -352,6 +387,42 @@ namespace Evernus
 
         emit charactersChanged();
         emit iskChanged();
+    }
+
+    void EvernusApplication::showPriceImportError(const QString &info)
+    {
+        Q_ASSERT(mCurrentItemPriceImportTask != TaskConstants::invalidTask);
+        finishItemPriceImportTask(info);
+    }
+
+    void EvernusApplication::updateItemPrices(const std::vector<ItemPrice> &prices)
+    {
+        auto query = mItemPriceRepository->prepare(QString{"DELETE FROM %1 WHERE type = :type AND type_id = :type_id AND location_id = :location_id"}
+            .arg(mItemPriceRepository->getTableName()));
+
+        try
+        {
+            for (auto price : prices)
+            {
+                query.bindValue(":type", static_cast<int>(price.getType()));
+                query.bindValue(":type_id", price.getTypeId());
+                query.bindValue(":location_id", price.getTypeId());
+
+                DatabaseUtils::execQuery(query);
+            }
+
+            mItemPriceRepository->batchStore(prices);
+
+            finishItemPriceImportTask(QString{});
+        }
+        catch (const std::exception &e)
+        {
+            finishItemPriceImportTask(e.what());
+        }
+
+        mSellPrices.clear();
+
+        emit itemPricesChanged();
     }
 
     void EvernusApplication::createDb()
@@ -388,13 +459,13 @@ namespace Evernus
         mItemPriceRepository->create();
     }
 
-    quint32 EvernusApplication::startTask(const QString &description)
+    uint EvernusApplication::startTask(const QString &description)
     {
         emit taskStarted(mTaskId, description);
         return mTaskId++;
     }
 
-    quint32 EvernusApplication::startTask(quint32 parentTask, const QString &description)
+    uint EvernusApplication::startTask(uint parentTask, const QString &description)
     {
         if (parentTask == TaskConstants::invalidTask)
             return startTask(description);
@@ -403,7 +474,7 @@ namespace Evernus
         return mTaskId++;
     }
 
-    void EvernusApplication::importCharacter(Character::IdType id, quint32 parentTask, const Key &key)
+    void EvernusApplication::importCharacter(Character::IdType id, uint parentTask, const Key &key)
     {
         const auto charSubtask = startTask(parentTask, QString{tr("Fetching character %1...")}.arg(id));
         mAPIManager.fetchCharacter(key, id, [charSubtask, this](auto data, const auto &error) {
@@ -438,6 +509,21 @@ namespace Evernus
         });
     }
 
+    void EvernusApplication::importItemPrices(const std::string &importerName, const ItemPriceImporter::TypeLocationPairs &target)
+    {
+        if (mCurrentItemPriceImportTask != TaskConstants::invalidTask)
+            return;
+
+        qDebug() << "Refreshing item prices using importer:" << importerName.c_str();
+
+        const auto it = mItemPriceImporters.find(importerName);
+        Q_ASSERT(it != std::end(mItemPriceImporters));
+
+        mCurrentItemPriceImportTask = startTask(tr("Importing item prices..."));
+
+        it->second->fetchItemPrices(target);
+    }
+
     Key EvernusApplication::getCharacterKey(Character::IdType id) const
     {
         try
@@ -467,6 +553,14 @@ namespace Evernus
             qCritical() << "Attempted to refresh non-existent character!";
             throw;
         }
+    }
+
+    void EvernusApplication::finishItemPriceImportTask(const QString &info)
+    {
+        const auto task = mCurrentItemPriceImportTask;
+        mCurrentItemPriceImportTask = TaskConstants::invalidTask;
+
+        emit taskStatusChanged(task, info);
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)

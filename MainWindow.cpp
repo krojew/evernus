@@ -28,16 +28,16 @@ namespace Evernus
 
     MainWindow::MainWindow(const Repository<Character> &characterRepository,
                            const Repository<Key> &keyRepository,
-                           const AssetListRepository &assetRepository,
-                           const EveDataProvider &nameProvider,
+                           const AssetProvider &assetProvider,
+                           const EveDataProvider &eveDataProvider,
                            APIManager &apiManager,
                            QWidget *parent,
                            Qt::WindowFlags flags)
         : QMainWindow{parent, flags}
         , mCharacterRepository{characterRepository}
         , mKeyRepository{keyRepository}
-        , mAssetRepository{assetRepository}
-        , mNameProvider{nameProvider}
+        , mAssetProvider{assetProvider}
+        , mEveDataProvider{eveDataProvider}
         , mApiManager{apiManager}
     {
         readSettings();
@@ -80,7 +80,7 @@ namespace Evernus
     {
         if (mMarginToolDialog.isNull())
         {
-            mMarginToolDialog = new MarginToolDialog{mCharacterRepository, mNameProvider};
+            mMarginToolDialog = new MarginToolDialog{mCharacterRepository, mEveDataProvider};
             mMarginToolDialog->setCharacter(mCurrentCharacterId);
             connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, mMarginToolDialog, &MarginToolDialog::setCharacter);
         }
@@ -105,7 +105,7 @@ namespace Evernus
         QMessageBox::warning(this, tr("Error"), info);
     }
 
-    void MainWindow::addNewTaskInfo(quint32 taskId, const QString &description)
+    void MainWindow::addNewTaskInfo(uint taskId, const QString &description)
     {
         if (mActiveTasksDialog == nullptr)
         {
@@ -226,12 +226,14 @@ namespace Evernus
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, charTab, &CharacterWidget::setCharacter);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::updateData);
 
-        auto assetsTab = new AssetsWidget{mAssetRepository, mNameProvider, mApiManager, this};
+        auto assetsTab = new AssetsWidget{mAssetProvider, mEveDataProvider, mApiManager, this};
         tabs->addTab(assetsTab, tr("Assets"));
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
+        connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importItemPricesFromWeb);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, assetsTab, &AssetsWidget::setCharacter);
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
+        connect(this, &MainWindow::itemPricesChanged, assetsTab, &AssetsWidget::updateData);
     }
 
     void MainWindow::createStatusBar()

@@ -1,7 +1,8 @@
+#include <QLocale>
 #include <QFont>
 
-#include "AssetListRepository.h"
 #include "EveDataProvider.h"
+#include "AssetProvider.h"
 #include "ItemPrice.h"
 
 #include "AssetModel.h"
@@ -66,12 +67,18 @@ namespace Evernus
         return mParentItem;
     }
 
-    AssetModel::AssetModel(const AssetListRepository &assetRepository, const EveDataProvider &nameProvider, QObject *parent)
+    AssetModel::AssetModel(const AssetProvider &assetProvider, const EveDataProvider &nameProvider, QObject *parent)
         : QAbstractItemModel{parent}
-        , mAssetRepository{assetRepository}
+        , mAssetProvider{assetProvider}
         , mDataProvider{nameProvider}
     {
-        mRootItem.setData(QVariantList{} << "Name" << "Quantity" << "Unit volume" << "Total volume" << "Local sell price");
+        mRootItem.setData(QVariantList{}
+            << "Name"
+            << "Quantity"
+            << "Unit volume"
+            << "Total volume"
+            << "Local unit sell price"
+            << "Local total sell price");
     }
 
     int AssetModel::columnCount(const QModelIndex &parent) const
@@ -180,7 +187,7 @@ namespace Evernus
 
         if (mCharacterId != Character::invalidId)
         {
-            const auto assets = mAssetRepository.fetchForCharacter(mCharacterId);
+            const auto &assets = mAssetProvider.fetchForCharacter(mCharacterId);
             for (const auto &item : assets)
             {
                 auto id = item->getLocationId();
@@ -195,6 +202,7 @@ namespace Evernus
                     auto treeItem = std::make_unique<TreeItem>();
                     treeItem->setData(QVariantList{}
                         << mDataProvider.getLocationName(*id)
+                        << QString{}
                         << QString{}
                         << QString{}
                         << QString{}
@@ -240,7 +248,7 @@ namespace Evernus
 
         ++mTotalAssets;
         mTotalVolume += mDataProvider.getTypeVolume(typeId);
-        mTotalSellPrice += mDataProvider.getTypeSellPrice(typeId, locationId).getValue();
+        mTotalSellPrice += mDataProvider.getTypeSellPrice(typeId, locationId).getValue() * item.getQuantity();
 
         for (const auto &child : item)
         {
@@ -259,6 +267,7 @@ namespace Evernus
         const auto typeId = item.getTypeId();
         const auto volume = mDataProvider.getTypeVolume(typeId);
         const auto quantity = item.getQuantity();
+        const auto sellPrice = mDataProvider.getTypeSellPrice(typeId, locationId).getValue();
 
         auto treeItem = std::make_unique<TreeItem>();
         treeItem->setData(QVariantList{}
@@ -266,7 +275,8 @@ namespace Evernus
             << locale.toString(quantity)
             << QString{"%1m³"}.arg(locale.toString(volume, 'f', 2))
             << QString{"%1m³"}.arg(locale.toString(volume * quantity, 'f', 2))
-            << locale.toCurrencyString(mDataProvider.getTypeSellPrice(typeId, locationId).getValue(), "ISK")
+            << locale.toCurrencyString(sellPrice, "ISK")
+            << locale.toCurrencyString(sellPrice * quantity, "ISK")
         );
 
         return treeItem;

@@ -32,15 +32,24 @@ namespace Evernus
 
     void ConquerableStationRepository::batchStore(const ConquerableStationList &list) const
     {
+        if (list.empty())
+            return;
+
         const auto maxRowsPerInsert = 100;
         const auto totalRows = list.size();
         const auto batches = totalRows / maxRowsPerInsert;
+        const auto bindingStr = "(?, ?)";
+
+        const auto binder = [](auto &query, const auto &row) {
+            query.addBindValue(row->getId());
+            query.addBindValue(row->getName());
+        };
 
         const auto baseQueryStr = QString{"INSERT INTO %1 (id, name) VALUES %2"}.arg(getTableName());
 
         QStringList batchBindings;
         for (auto i = 0; i < maxRowsPerInsert; ++i)
-            batchBindings << "(?, ?)";
+            batchBindings << bindingStr;
 
         const auto batchQueryStr = baseQueryStr.arg(batchBindings.join(", "));
 
@@ -50,26 +59,20 @@ namespace Evernus
 
             const auto end = std::next(std::begin(list), (batch + 1) * maxRowsPerInsert);
             for (auto row = std::next(std::begin(list), batch * maxRowsPerInsert); row != end; ++row)
-            {
-                query.addBindValue(row->getId());
-                query.addBindValue(row->getName());
-            }
+                binder(query, row);
 
             DatabaseUtils::execQuery(query);
         }
 
         QStringList restBindings;
         for (auto i = 0; i < totalRows % maxRowsPerInsert; ++i)
-            restBindings << "(?, ?)";
+            restBindings << bindingStr;
 
         const auto restQueryStr = baseQueryStr.arg(restBindings.join(", "));
         auto query = prepare(restQueryStr);
 
         for (auto row = std::next(std::begin(list), batches * maxRowsPerInsert); row != std::end(list); ++row)
-        {
-            query.addBindValue(row->getId());
-            query.addBindValue(row->getName());
-        }
+            binder(query, row);
 
         DatabaseUtils::execQuery(query);
     }

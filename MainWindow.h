@@ -3,6 +3,7 @@
 #include <QMainWindow>
 #include <QPointer>
 
+#include "ItemPriceImporter.h"
 #include "Character.h"
 
 class QLabel;
@@ -12,11 +13,11 @@ namespace Evernus
     template<class T>
     class Repository;
     class CharacterManagerDialog;
-    class AssetListRepository;
     class ActiveTasksDialog;
     class MarginToolDialog;
-    class MenuBarWidget;
     class EveDataProvider;
+    class MenuBarWidget;
+    class AssetProvider;
     class APIManager;
     class Key;
 
@@ -28,8 +29,8 @@ namespace Evernus
     public:
         MainWindow(const Repository<Character> &characterRepository,
                    const Repository<Key> &keyRepository,
-                   const AssetListRepository &assetRepository,
-                   const EveDataProvider &nameProvider,
+                   const AssetProvider &assetProvider,
+                   const EveDataProvider &eveDataProvider,
                    APIManager &apiManager,
                    QWidget *parent = nullptr,
                    Qt::WindowFlags flags = 0);
@@ -44,13 +45,16 @@ namespace Evernus
         void conquerableStationsChanged();
         void charactersChanged();
         void assetsChanged();
+        void itemPricesChanged();
 
-        void newTaskInfoAdded(quint32 taskId, const QString &description);
-        void newSubTaskInfoAdded(quint32 taskId, quint32 parentTask, const QString &description);
-        void taskStatusChanged(quint32 taskId, const QString &error);
+        void newTaskInfoAdded(uint taskId, const QString &description);
+        void newSubTaskInfoAdded(uint taskId, uint parentTask, const QString &description);
+        void taskStatusChanged(uint taskId, const QString &error);
 
         void importCharacter(Character::IdType id);
         void importAssets(Character::IdType id);
+
+        void importItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
 
     public slots:
         void showCharacterManagement();
@@ -59,7 +63,7 @@ namespace Evernus
         void showAbout();
         void showError(const QString &info);
 
-        void addNewTaskInfo(quint32 taskId, const QString &description);
+        void addNewTaskInfo(uint taskId, const QString &description);
 
         void updateStatus();
 
@@ -78,9 +82,9 @@ namespace Evernus
 
         const Repository<Character> &mCharacterRepository;
         const Repository<Key> &mKeyRepository;
-        const AssetListRepository &mAssetRepository;
+        const AssetProvider &mAssetProvider;
 
-        const EveDataProvider &mNameProvider;
+        const EveDataProvider &mEveDataProvider;
 
         APIManager &mApiManager;
 

@@ -9,13 +9,16 @@
 #include <QSqlDatabase>
 
 #include "ConquerableStationRepository.h"
+#include "ItemPriceImporterRegistry.h"
 #include "WalletSnapshotRepository.h"
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
 #include "ItemPriceRepository.h"
+#include "ItemPriceImporter.h"
 #include "EveTypeRepository.h"
 #include "EveDataProvider.h"
 #include "ItemRepository.h"
+#include "AssetProvider.h"
 #include "TaskConstants.h"
 #include "KeyRepository.h"
 #include "APIManager.h"
@@ -29,6 +32,8 @@ namespace Evernus
     class EvernusApplication
         : public QApplication
         , public EveDataProvider
+        , public ItemPriceImporterRegistry
+        , public AssetProvider
     {
         Q_OBJECT
 
@@ -42,16 +47,19 @@ namespace Evernus
 
         virtual QString getLocationName(quint64 id) const override;
 
+        virtual void registerImporter(const std::string &name, std::unique_ptr<ItemPriceImporter> &&importer) override;
+
+        virtual const AssetList &fetchForCharacter(Character::IdType id) const override;
+
         const KeyRepository &getKeyRepository() const noexcept;
         const CharacterRepository &getCharacterRepository() const noexcept;
-        const AssetListRepository &getAssetListRepository() const noexcept;
 
         APIManager &getAPIManager() noexcept;
 
     signals:
-        void taskStarted(quint32 taskId, const QString &description);
-        void taskStarted(quint32 taskId, quint32 parentTask, const QString &description);
-        void taskStatusChanged(quint32 taskId, const QString &error);
+        void taskStarted(uint taskId, const QString &description);
+        void taskStarted(uint taskId, uint parentTask, const QString &description);
+        void taskStatusChanged(uint taskId, const QString &error);
 
         void apiError(const QString &info);
 
@@ -59,16 +67,21 @@ namespace Evernus
         void charactersChanged();
         void assetsChanged();
         void iskChanged();
+        void itemPricesChanged();
 
     public slots:
         void refreshCharacters();
-        void refreshCharacter(Character::IdType id, quint32 parentTask = TaskConstants::invalidTask);
-        void refreshAssets(Character::IdType id, quint32 parentTask = TaskConstants::invalidTask);
+        void refreshCharacter(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshConquerableStations();
+        void refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
 
     private slots:
         void scheduleCharacterUpdate();
         void updateCharacters();
+
+        void showPriceImportError(const QString &info);
+        void updateItemPrices(const std::vector<ItemPrice> &prices);
 
     private:
         typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
@@ -88,7 +101,8 @@ namespace Evernus
 
         APIManager mAPIManager;
 
-        quint32 mTaskId = TaskConstants::invalidTask + 1;
+        uint mTaskId = TaskConstants::invalidTask + 1;
+        uint mCurrentItemPriceImportTask = TaskConstants::invalidTask;
 
         bool mCharacterUpdateScheduled = false;
 
@@ -97,15 +111,22 @@ namespace Evernus
         mutable std::unordered_map<quint64, QString> mLocationNameCache;
         mutable std::unordered_map<TypeLocationPair, ItemPrice, boost::hash<TypeLocationPair>> mSellPrices;
 
+        std::unordered_map<std::string, ImporterPtr> mItemPriceImporters;
+
+        mutable std::unordered_map<Character::IdType, std::unique_ptr<AssetList>> mCharacterAssets;
+
         void createDb();
         void createDbSchema();
 
-        quint32 startTask(const QString &description);
-        quint32 startTask(quint32 parentTask, const QString &description);
+        uint startTask(const QString &description);
+        uint startTask(uint parentTask, const QString &description);
 
-        void importCharacter(Character::IdType id, quint32 parentTask, const Key &key);
+        void importCharacter(Character::IdType id, uint parentTask, const Key &key);
+        void importItemPrices(const std::string &importerName, const ItemPriceImporter::TypeLocationPairs &target);
 
         Key getCharacterKey(Character::IdType id) const;
+
+        void finishItemPriceImportTask(const QString &info);
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };

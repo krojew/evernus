@@ -6,6 +6,6 @@ namespace Evernus
 {
     namespace TaskConstants
     {
-        const quint32 invalidTask = 0;
+        const uint invalidTask = 0;
     }
 }

@@ -34,6 +34,7 @@ qt5_wrap_cpp(
     CharacterWidget.h
     EvernusApplication.h
     FileDownload.h
+    ItemPriceImporter.h
     MainWindow.h
     MarginToolDialog.h
     MenuBarWidget.h
@@ -71,6 +72,7 @@ add_executable(
     AssetListXmlReceiver.h
     AssetModel.cpp
     AssetModel.h
+    AssetProvider.h
     AssetsImportPreferencesWidget.cpp
     AssetsImportPreferencesWidget.h
     AssetsWidget.cpp
@@ -133,6 +135,10 @@ add_executable(
     DatabaseUtils.h
     Entity.h
     EveDataProvider.h
+    EveMarketDataItemPriceImporter.cpp
+    EveMarketDataItemPriceImporter.h
+    EveMarketDataItemPriceImporterXmlReceiver.cpp
+    EveMarketDataItemPriceImporterXmlReceiver.h
     EvernusApplication.cpp
     EvernusApplication.h
     EveType.cpp
@@ -147,6 +153,9 @@ add_executable(
     ItemData.h
     ItemPrice.cpp
     ItemPrice.h
+    ItemPriceImporter.h
+    ItemPriceImporterNames.h
+    ItemPriceImporterRegistry.h
     ItemPriceRepository.cpp
     ItemPriceRepository.h
     ItemRepository.cpp

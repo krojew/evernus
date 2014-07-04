@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Repository.h"
 #include "ItemPrice.h"
 
@@ -20,6 +22,8 @@ namespace Evernus
         void create() const;
 
         ItemPrice findSellByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const;
+
+        void batchStore(const std::vector<ItemPrice> &prices) const;
 
     private:
         virtual QStringList getColumns() const override;
