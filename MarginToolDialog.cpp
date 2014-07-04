@@ -70,17 +70,17 @@ namespace Evernus
         auto priceLayout = new QGridLayout{};
         priceGroup->setLayout(priceLayout);
 
-        priceLayout->addWidget(new QLabel{tr("Buy:")}, 0, 0);
-        priceLayout->addWidget(new QLabel{tr("Sell:")}, 1, 0);
+        priceLayout->addWidget(new QLabel{tr("Sell:")}, 0, 0);
+        priceLayout->addWidget(new QLabel{tr("Buy:")}, 1, 0);
         priceLayout->addWidget(new QLabel{tr("Profit:")}, 2, 0);
         priceLayout->addWidget(new QLabel{tr("Revenue:")}, 0, 2);
         priceLayout->addWidget(new QLabel{tr("Cost of sales:")}, 1, 2);
 
-        mBestBuyLabel = new QLabel{"-", this};
-        priceLayout->addWidget(mBestBuyLabel, 0, 1);
-
         mBestSellLabel = new QLabel{"-", this};
-        priceLayout->addWidget(mBestSellLabel, 1, 1);
+        priceLayout->addWidget(mBestSellLabel, 0, 1);
+
+        mBestBuyLabel = new QLabel{"-", this};
+        priceLayout->addWidget(mBestBuyLabel, 1, 1);
 
         mProfitLabel = new QLabel{"-", this};
         priceLayout->addWidget(mProfitLabel, 2, 1);
