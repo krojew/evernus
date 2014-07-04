@@ -15,6 +15,8 @@ namespace Evernus
         : QDialog{parent}
         , mKey{key}
     {
+        const auto keyLink = "https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=10";
+
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
@@ -33,7 +35,7 @@ namespace Evernus
 
         mainLayout->addWidget(new QLabel{tr("To create a predefined key, use the following link:")});
 
-        auto linkLabel = new QLabel{"<a href='https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=10'>https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=10</a>", this};
+        auto linkLabel = new QLabel{QString{"<a href='%1'>%1</a>"}.arg(keyLink), this};
         mainLayout->addWidget(linkLabel);
         linkLabel->setOpenExternalLinks(true);
 
