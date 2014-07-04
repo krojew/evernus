@@ -10,6 +10,7 @@
 #include "WalletSnapshotRepository.h"
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
+#include "ItemPriceRepository.h"
 #include "EveTypeRepository.h"
 #include "EveDataProvider.h"
 #include "ItemRepository.h"
@@ -76,6 +77,7 @@ namespace Evernus
         std::unique_ptr<AssetListRepository> mAssetListRepository;
         std::unique_ptr<ConquerableStationRepository> mConquerableStationRepository;
         std::unique_ptr<WalletSnapshotRepository> mWalletSnapshotRepository;
+        std::unique_ptr<ItemPriceRepository> mItemPriceRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
 
         APIManager mAPIManager;

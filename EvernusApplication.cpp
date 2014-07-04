@@ -352,6 +352,7 @@ namespace Evernus
         mAssetListRepository.reset(new AssetListRepository{mMainDb, *mItemRepository});
         mConquerableStationRepository.reset(new ConquerableStationRepository{mMainDb});
         mWalletSnapshotRepository.reset(new WalletSnapshotRepository{mMainDb});
+        mItemPriceRepository.reset(new ItemPriceRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
     }
 
@@ -363,6 +364,7 @@ namespace Evernus
         mItemRepository->create(*mAssetListRepository);
         mConquerableStationRepository->create();
         mWalletSnapshotRepository->create(*mCharacterRepository);
+        mItemPriceRepository->create();
     }
 
     quint32 EvernusApplication::startTask(const QString &description)

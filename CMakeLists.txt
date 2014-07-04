@@ -145,6 +145,10 @@ add_executable(
     Item.cpp
     Item.h
     ItemData.h
+    ItemPrice.cpp
+    ItemPrice.h
+    ItemPriceRepository.cpp
+    ItemPriceRepository.h
     ItemRepository.cpp
     ItemRepository.h
     Key.cpp
