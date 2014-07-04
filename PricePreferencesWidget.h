@@ -21,5 +21,6 @@ namespace Evernus
     private:
         QDoubleSpinBox *mMinMarginEdit = nullptr;
         QDoubleSpinBox *mPreferredMarginEdit = nullptr;
+        QDoubleSpinBox *mPriceDeltaEdit = nullptr;
     };
 }

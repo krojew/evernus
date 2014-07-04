@@ -39,6 +39,23 @@ namespace Evernus
         mPreferredMarginEdit->setSuffix("%");
         mPreferredMarginEdit->setValue(settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble());
 
+        auto pricesGroup = new QGroupBox{this};
+        mainLayout->addWidget(pricesGroup);
+
+        auto pricesLayout = new QHBoxLayout{};
+        pricesGroup->setLayout(pricesLayout);
+
+        pricesLayout->addWidget(new QLabel{tr("Price delta:"), this});
+
+        mPriceDeltaEdit = new QDoubleSpinBox{this};
+        pricesLayout->addWidget(mPriceDeltaEdit);
+        mPriceDeltaEdit->setSingleStep(0.01);
+        mPriceDeltaEdit->setMinimum(0.01);
+        mPriceDeltaEdit->setMaximum(100000000.);
+        mPriceDeltaEdit->setValue(settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble());
+
+        pricesLayout->addStretch();
+
         mainLayout->addStretch();
     }
 
@@ -47,5 +64,6 @@ namespace Evernus
         QSettings settings;
         settings.setValue(PriceSettings::minMarginKey, mMinMarginEdit->value());
         settings.setValue(PriceSettings::preferredMarginKey, mPreferredMarginEdit->value());
+        settings.setValue(PriceSettings::priceDeltaKey, mPriceDeltaEdit->value());
     }
 }

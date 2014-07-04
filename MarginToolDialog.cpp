@@ -402,6 +402,7 @@ namespace Evernus
 
             try
             {
+                const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
                 const auto taxes = calculateTaxes();
 
                 if (buy < 0. || sell < 0.)
@@ -413,7 +414,7 @@ namespace Evernus
                     }
                     else
                     {
-                        const auto buyPrice = buy + 0.01;
+                        const auto buyPrice = buy + priceDelta;
 
                         mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
                         mCostOfSalesLabel->setText(locale.toCurrencyString(getCoS(buyPrice, taxes), "ISK"));
@@ -426,7 +427,7 @@ namespace Evernus
                     }
                     else
                     {
-                        const auto sellPrice = sell + 0.01;
+                        const auto sellPrice = sell - priceDelta;
 
                         mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
                         mRevenueLabel->setText(locale.toCurrencyString(getRevenue(sellPrice, taxes), "ISK"));
@@ -441,8 +442,8 @@ namespace Evernus
                 {
                         const auto bestBuy = buy;
                         const auto bestSell = sell;
-                        const auto sellPrice = bestSell - 0.01;
-                        const auto buyPrice = bestBuy + 0.01;
+                        const auto sellPrice = bestSell - priceDelta;
+                        const auto buyPrice = bestBuy + priceDelta;
                         const auto revenue = getRevenue(sellPrice, taxes);
                         const auto cos = getCoS(buyPrice, taxes);
                         const auto margin = 100. * (revenue - cos) / revenue;
