@@ -7,11 +7,6 @@
 
 namespace Evernus
 {
-    AssetModel::TreeItem::TreeItem(const QVariantList &data)
-        : mItemData{data}
-    {
-    }
-
     void AssetModel::TreeItem::appendChild(std::unique_ptr<TreeItem> &&child)
     {
         child->mParentItem = this;
@@ -43,6 +38,11 @@ namespace Evernus
         return mItemData.value(column);
     }
 
+    void AssetModel::TreeItem::setData(const QVariantList &data)
+    {
+        mItemData = data;
+    }
+
     int AssetModel::TreeItem::row() const
     {
         if (mParentItem != nullptr)
@@ -69,8 +69,8 @@ namespace Evernus
         : QAbstractItemModel{parent}
         , mAssetRepository{assetRepository}
         , mDataProvider{nameProvider}
-        , mRootItem{QVariantList{} << "Name" << "Quantity" << "Unit volume" << "Total volume"}
     {
+        mRootItem.setData(QVariantList{} << "Name" << "Quantity" << "Unit volume" << "Total volume");
     }
 
     int AssetModel::columnCount(const QModelIndex &parent) const
@@ -191,7 +191,8 @@ namespace Evernus
                 const auto it = mLocationItems.find(*id);
                 if (it == std::end(mLocationItems))
                 {
-                    auto treeItem = std::make_unique<TreeItem>(QVariantList{}
+                    auto treeItem = std::make_unique<TreeItem>();
+                    treeItem->setData(QVariantList{}
                         << mDataProvider.getLocationName(*id)
                         << QString{}
                         << QString{}
@@ -247,7 +248,8 @@ namespace Evernus
         const auto volume = mDataProvider.getTypeVolume(item.getTypeId());
         const auto quantity = item.getQuantity();
 
-        auto treeItem = std::make_unique<TreeItem>(QVariantList{}
+        auto treeItem = std::make_unique<TreeItem>();
+        treeItem->setData(QVariantList{}
             << mDataProvider.getTypeName(item.getTypeId())
             << locale.toString(quantity)
             << QString{"%1m³"}.arg(locale.toString(volume, 'f', 2))
