@@ -189,6 +189,8 @@ add_executable(
     PricePreferencesWidget.cpp
     PricePreferencesWidget.h
     PriceSettings.h
+    qcustomplot.cpp
+    qcustomplot.h
     Repository.h
     SimpleCrypt.cpp
     SimpleCrypt.h
