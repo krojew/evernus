@@ -351,6 +351,7 @@ namespace Evernus
         mItemRepository.reset(new ItemRepository{mMainDb});
         mAssetListRepository.reset(new AssetListRepository{mMainDb, *mItemRepository});
         mConquerableStationRepository.reset(new ConquerableStationRepository{mMainDb});
+        mWalletSnapshotRepository.reset(new WalletSnapshotRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
     }
 
@@ -361,6 +362,7 @@ namespace Evernus
         mAssetListRepository->create(*mCharacterRepository);
         mItemRepository->create(*mAssetListRepository);
         mConquerableStationRepository->create();
+        mWalletSnapshotRepository->create(*mCharacterRepository);
     }
 
     quint32 EvernusApplication::startTask(const QString &description)
@@ -401,6 +403,11 @@ namespace Evernus
                 }
 
                 mCharacterRepository->store(data);
+
+                WalletSnapshot snapshot{QDateTime::currentDateTimeUtc(), data.getISK()};
+                snapshot.setCharacterId(data.getId());
+                mWalletSnapshotRepository->store(snapshot);
+
                 QMetaObject::invokeMethod(this, "scheduleCharacterUpdate", Qt::QueuedConnection);
             }
 

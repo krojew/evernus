@@ -3,6 +3,9 @@
 namespace Evernus
 {
     template<class Id>
+    const typename Entity<Id>::IdType Entity<Id>::invalidId = IdType{};
+
+    template<class Id>
     Entity<Id>::Entity(const IdType &id)
         : mId{id}
         , mOriginalId{id}

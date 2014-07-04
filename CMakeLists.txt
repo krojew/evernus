@@ -181,6 +181,10 @@ add_executable(
     SimpleCrypt.h
     TaskConstants.h
     UISettings.h
+    WalletSnapshot.cpp
+    WalletSnapshot.h
+    WalletSnapshotRepository.cpp
+    WalletSnapshotRepository.h
     ${MOC_FILES}
     ${RCC_FILES}
     ${ADDITIONAL_SRC}

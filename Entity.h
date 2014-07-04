@@ -8,7 +8,7 @@ namespace Evernus
     public:
         typedef Id IdType;
 
-        static const IdType invalidId = IdType{};
+        static const IdType invalidId;
 
         Entity() = default;
         Entity(const IdType &id);
