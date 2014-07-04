@@ -498,7 +498,7 @@ namespace Evernus
 
                 mCharacterRepository->store(data);
 
-                WalletSnapshot snapshot{QDateTime::currentDateTimeUtc(), data.getISK()};
+                Evernus::WalletSnapshot snapshot{QDateTime::currentDateTimeUtc(), data.getISK()};
                 snapshot.setCharacterId(data.getId());
                 mWalletSnapshotRepository->store(snapshot);
 
