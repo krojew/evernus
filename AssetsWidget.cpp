@@ -68,8 +68,9 @@ namespace Evernus
     void AssetsWidget::setNewInfo()
     {
         QLocale locale;
-        mInfoLabel->setText(QString{"Total assets: <strong>%1</strong> Total volume: <strong>%2m³</strong>"}
+        mInfoLabel->setText(QString{"Total assets: <strong>%1</strong> Total volume: <strong>%2m³</strong> Total sell price: <strong>%3</strong>"}
             .arg(locale.toString(mModel.getTotalAssets()))
-            .arg(locale.toString(mModel.getTotalVolume(), 'f', 2)));
+            .arg(locale.toString(mModel.getTotalVolume(), 'f', 2))
+            .arg(locale.toCurrencyString(mModel.getTotalSellPrice(), "ISK")));
     }
 }

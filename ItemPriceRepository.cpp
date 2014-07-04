@@ -38,6 +38,24 @@ namespace Evernus
             update_time TEXT NOT NULL,
             value DOUBLE NOT NULL
         ))"}.arg(getTableName()));
+
+        exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_type_id_location_index ON %1(type, type_id, location_id)"}
+            .arg(getTableName()));
+    }
+
+    ItemPrice ItemPriceRepository::findSellByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ?"}
+            .arg(getTableName()));
+        query.addBindValue(static_cast<int>(ItemPrice::Type::Sell));
+        query.addBindValue(typeId);
+        query.addBindValue(locationId);
+
+        DatabaseUtils::execQuery(query);
+        if (!query.next())
+            throw NotFoundException{};
+
+        return populate(query.record());
     }
 
     QStringList ItemPriceRepository::getColumns() const

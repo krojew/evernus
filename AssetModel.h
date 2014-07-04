@@ -33,6 +33,7 @@ namespace Evernus
 
         uint getTotalAssets() const noexcept;
         double getTotalVolume() const noexcept;
+        double getTotalSellPrice() const noexcept;
 
     private:
         class TreeItem
@@ -67,11 +68,12 @@ namespace Evernus
 
         uint mTotalAssets = 0;
         double mTotalVolume = 0.;
+        double mTotalSellPrice = 0.;
 
         std::unordered_map<ItemData::LocationIdType::value_type, TreeItem *> mLocationItems;
 
-        void buildItemMap(const Item &item, TreeItem &treeItem);
+        void buildItemMap(const Item &item, TreeItem &treeItem, ItemData::LocationIdType::value_type locationId);
 
-        std::unique_ptr<TreeItem> createTreeItemForItem(const Item &item) const;
+        std::unique_ptr<TreeItem> createTreeItemForItem(const Item &item, ItemData::LocationIdType::value_type locationId) const;
     };
 }

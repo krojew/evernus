@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include <memory>
 
+#include <boost/functional/hash.hpp>
+
 #include <QApplication>
 #include <QSqlDatabase>
 
@@ -36,6 +38,8 @@ namespace Evernus
 
         virtual QString getTypeName(EveType::IdType id) const override;
         virtual double getTypeVolume(EveType::IdType id) const override;
+        virtual ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
+
         virtual QString getLocationName(quint64 id) const override;
 
         const KeyRepository &getKeyRepository() const noexcept;
@@ -67,6 +71,8 @@ namespace Evernus
         void updateCharacters();
 
     private:
+        typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
+
         static const QString versionKey;
 
         QSqlDatabase mMainDb, mEveDb;
@@ -89,6 +95,7 @@ namespace Evernus
         mutable std::unordered_map<EveType::IdType, QString> mTypeNameCache;
         mutable std::unordered_map<EveType::IdType, double> mTypeVolumeCache;
         mutable std::unordered_map<quint64, QString> mLocationNameCache;
+        mutable std::unordered_map<TypeLocationPair, ItemPrice, boost::hash<TypeLocationPair>> mSellPrices;
 
         void createDb();
         void createDbSchema();

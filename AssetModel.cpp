@@ -2,6 +2,7 @@
 
 #include "AssetListRepository.h"
 #include "EveDataProvider.h"
+#include "ItemPrice.h"
 
 #include "AssetModel.h"
 
@@ -70,7 +71,7 @@ namespace Evernus
         , mAssetRepository{assetRepository}
         , mDataProvider{nameProvider}
     {
-        mRootItem.setData(QVariantList{} << "Name" << "Quantity" << "Unit volume" << "Total volume");
+        mRootItem.setData(QVariantList{} << "Name" << "Quantity" << "Unit volume" << "Total volume" << "Local sell price");
     }
 
     int AssetModel::columnCount(const QModelIndex &parent) const
@@ -175,7 +176,7 @@ namespace Evernus
         mLocationItems.clear();
 
         mTotalAssets = 0;
-        mTotalVolume = 0.;
+        mTotalVolume = mTotalSellPrice = 0.;
 
         if (mCharacterId != Character::invalidId)
         {
@@ -196,6 +197,7 @@ namespace Evernus
                         << mDataProvider.getLocationName(*id)
                         << QString{}
                         << QString{}
+                        << QString{}
                         << QString{});
                     locationItem = treeItem.get();
 
@@ -207,9 +209,9 @@ namespace Evernus
                     locationItem = mLocationItems[*id];
                 }
 
-                auto treeItem = createTreeItemForItem(*item);
+                auto treeItem = createTreeItemForItem(*item, *id);
 
-                buildItemMap(*item, *treeItem);
+                buildItemMap(*item, *treeItem, *id);
                 locationItem->appendChild(std::move(treeItem));
             }
         }
@@ -227,33 +229,44 @@ namespace Evernus
         return mTotalVolume;
     }
 
-    void AssetModel::buildItemMap(const Item &item, TreeItem &treeItem)
+    double AssetModel::getTotalSellPrice() const noexcept
     {
+        return mTotalSellPrice;
+    }
+
+    void AssetModel::buildItemMap(const Item &item, TreeItem &treeItem, ItemData::LocationIdType::value_type locationId)
+    {
+        const auto typeId = item.getTypeId();
+
         ++mTotalAssets;
-        mTotalVolume += mDataProvider.getTypeVolume(item.getTypeId());
+        mTotalVolume += mDataProvider.getTypeVolume(typeId);
+        mTotalSellPrice += mDataProvider.getTypeSellPrice(typeId, locationId).getValue();
 
         for (const auto &child : item)
         {
-            auto childItem = createTreeItemForItem(*child);
-            buildItemMap(*child, *childItem);
+            auto childItem = createTreeItemForItem(*child, locationId);
+            buildItemMap(*child, *childItem, locationId);
 
             treeItem.appendChild(std::move(childItem));
         }
     }
 
-    std::unique_ptr<AssetModel::TreeItem> AssetModel::createTreeItemForItem(const Item &item) const
+    std::unique_ptr<AssetModel::TreeItem> AssetModel
+    ::createTreeItemForItem(const Item &item, ItemData::LocationIdType::value_type locationId) const
     {
         QLocale locale;
 
-        const auto volume = mDataProvider.getTypeVolume(item.getTypeId());
+        const auto typeId = item.getTypeId();
+        const auto volume = mDataProvider.getTypeVolume(typeId);
         const auto quantity = item.getQuantity();
 
         auto treeItem = std::make_unique<TreeItem>();
         treeItem->setData(QVariantList{}
-            << mDataProvider.getTypeName(item.getTypeId())
+            << mDataProvider.getTypeName(typeId)
             << locale.toString(quantity)
             << QString{"%1m³"}.arg(locale.toString(volume, 'f', 2))
             << QString{"%1m³"}.arg(locale.toString(volume * quantity, 'f', 2))
+            << locale.toCurrencyString(mDataProvider.getTypeSellPrice(typeId, locationId).getValue(), "ISK")
         );
 
         return treeItem;

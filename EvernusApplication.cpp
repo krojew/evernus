@@ -79,6 +79,27 @@ namespace Evernus
         return result;
     }
 
+    ItemPrice EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId) const
+    {
+        const auto key = std::make_pair(id, stationId);
+        const auto it = mSellPrices.find(key);
+        if (it != std::end(mSellPrices))
+            return it->second;
+
+        ItemPrice result;
+
+        try
+        {
+            result = mItemPriceRepository->findSellByTypeAndLocation(id, stationId);
+        }
+        catch (const ItemPriceRepository::NotFoundException &)
+        {
+        }
+
+        mSellPrices.emplace(key, result);
+        return result;
+    }
+
     QString EvernusApplication::getLocationName(quint64 id) const
     {
         const auto it = mLocationNameCache.find(id);
