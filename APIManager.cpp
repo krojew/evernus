@@ -83,7 +83,10 @@ namespace Evernus
     {
         if (mCache.hasCharacterData(characterId))
         {
-            callback(mCache.getCharacterData(characterId), QString{});
+            auto data = mCache.getCharacterData(characterId);
+            data.setKeyId(key.getId());
+
+            callback(std::move(data), QString{});
             return;
         }
 
