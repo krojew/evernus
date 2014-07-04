@@ -40,6 +40,11 @@ namespace Evernus
         return mItemData.value(column);
     }
 
+    QVariantList AssetModel::TreeItem::data() const
+    {
+        return mItemData;
+    }
+
     void AssetModel::TreeItem::setData(const QVariantList &data)
     {
         mItemData = data;
@@ -202,11 +207,11 @@ namespace Evernus
                     auto treeItem = std::make_unique<TreeItem>();
                     treeItem->setData(QVariantList{}
                         << mDataProvider.getLocationName(*id)
+                        << 0
                         << QString{}
+                        << 0.
                         << QString{}
-                        << QString{}
-                        << QString{}
-                        << QString{});
+                        << 0.);
                     locationItem = treeItem.get();
 
                     mLocationItems[*id] = locationItem;
@@ -219,9 +224,30 @@ namespace Evernus
 
                 auto treeItem = createTreeItemForItem(*item, *id);
 
+                const auto curAssets = mTotalAssets;
+                const auto curVolume = mTotalVolume;
+                const auto curSellPrice = mTotalSellPrice;
+
                 buildItemMap(*item, *treeItem, *id);
                 locationItem->appendChild(std::move(treeItem));
+
+                auto data = locationItem->data();
+                data[1] = data[1].toUInt() + mTotalAssets - curAssets;
+                data[3] = data[3].toDouble() + mTotalVolume - curVolume;
+                data[5] = data[5].toDouble() + mTotalSellPrice - curSellPrice;
+                locationItem->setData(data);
             }
+        }
+
+        QLocale locale;
+
+        for (auto &item : mLocationItems)
+        {
+            auto data = item.second->data();
+            data[1] = locale.toString(data[1].toUInt());
+            data[3] = QString{"%1m³"}.arg(locale.toString(data[3].toDouble(), 'f', 2));
+            data[5] = locale.toCurrencyString(data[5].toDouble(), "ISK");
+            item.second->setData(data);
         }
 
         endResetModel();
@@ -244,11 +270,12 @@ namespace Evernus
 
     void AssetModel::buildItemMap(const Item &item, TreeItem &treeItem, ItemData::LocationIdType::value_type locationId)
     {
+        const auto quantity = item.getQuantity();
         const auto typeId = item.getTypeId();
 
-        ++mTotalAssets;
-        mTotalVolume += mDataProvider.getTypeVolume(typeId);
-        mTotalSellPrice += mDataProvider.getTypeSellPrice(typeId, locationId).getValue() * item.getQuantity();
+        mTotalAssets += quantity;
+        mTotalVolume += mDataProvider.getTypeVolume(typeId) * quantity;
+        mTotalSellPrice += mDataProvider.getTypeSellPrice(typeId, locationId).getValue() * quantity;
 
         for (const auto &child : item)
         {
