@@ -16,6 +16,7 @@
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QSettings>
+#include <QLabel>
 
 #include "ImportSettings.h"
 
@@ -41,6 +42,14 @@ namespace Evernus
         importBoxLayout->addWidget(mImportAssetsBox);
         mImportAssetsBox->setChecked(settings.value(ImportSettings::importAssetsKey, true).toBool());
 
+        mAutoUpdateValueBox = new QCheckBox{tr("Store total asset value on import/price import*"), this};
+        importBoxLayout->addWidget(mAutoUpdateValueBox);
+        mAutoUpdateValueBox->setChecked(settings.value(ImportSettings::autoUpdateAssetValueKey, true).toBool());
+
+        auto autoUpdateLabel = new QLabel{tr("* Requires full price data to be present. If you don't see stored value, try importing prices."), this};
+        importBoxLayout->addWidget(autoUpdateLabel);
+        autoUpdateLabel->setWordWrap(true);
+
         mainLayout->addStretch();
     }
 
@@ -48,5 +57,6 @@ namespace Evernus
     {
         QSettings settings;
         settings.setValue(ImportSettings::importAssetsKey, mImportAssetsBox->isChecked());
+        settings.setValue(ImportSettings::autoUpdateAssetValueKey, mAutoUpdateValueBox->isChecked());
     }
 }

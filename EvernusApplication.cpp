@@ -99,23 +99,7 @@ namespace Evernus
 
     ItemPrice EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId) const
     {
-        const auto key = std::make_pair(id, stationId);
-        const auto it = mSellPrices.find(key);
-        if (it != std::end(mSellPrices))
-            return it->second;
-
-        ItemPrice result;
-
-        try
-        {
-            result = mItemPriceRepository->findSellByTypeAndLocation(id, stationId);
-        }
-        catch (const ItemPriceRepository::NotFoundException &)
-        {
-        }
-
-        mSellPrices.emplace(key, result);
-        return result;
+        return getTypeSellPrice(id, stationId, true);
     }
 
     QString EvernusApplication::getLocationName(quint64 id) const
@@ -215,6 +199,7 @@ namespace Evernus
         catch (const AssetListRepository &)
         {
             assets = std::make_unique<AssetList>();
+            assets->setCharacterId(id);
         }
 
         const auto assetPtr = assets.get();
@@ -354,6 +339,11 @@ namespace Evernus
                 mCharacterAssets.erase(id);
                 mAssetListRepository->store(data);
 
+                QSettings settings;
+
+                if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, true).toBool())
+                    computeAssetListSellValue(data);
+
                 emit assetsChanged();
                 emit taskStatusChanged(assetSubtask, error);
             });
@@ -433,6 +423,13 @@ namespace Evernus
 
             mItemPriceRepository->batchStore(prices);
 
+            QSettings settings;
+            if (settings.value(ImportSettings::autoUpdateAssetValueKey, true).toBool())
+            {
+                for (const auto &list : mCharacterAssets)
+                    computeAssetListSellValue(*list.second);
+            }
+
             finishItemPriceImportTask(QString{});
         }
         catch (const std::exception &e)
@@ -465,6 +462,7 @@ namespace Evernus
         mConquerableStationRepository.reset(new ConquerableStationRepository{mMainDb});
         mWalletSnapshotRepository.reset(new WalletSnapshotRepository{mMainDb});
         mItemPriceRepository.reset(new ItemPriceRepository{mMainDb});
+        mAssetValueSnapshotRepository.reset(new AssetValueSnapshotRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
     }
 
@@ -476,6 +474,7 @@ namespace Evernus
         mItemRepository->create(*mAssetListRepository);
         mConquerableStationRepository->create();
         mWalletSnapshotRepository->create(*mCharacterRepository);
+        mAssetValueSnapshotRepository->create(*mCharacterRepository);
         mItemPriceRepository->create();
     }
 
@@ -581,6 +580,62 @@ namespace Evernus
         mCurrentItemPriceImportTask = TaskConstants::invalidTask;
 
         emit taskStatusChanged(task, info);
+    }
+
+    ItemPrice EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
+    {
+        const auto key = std::make_pair(id, stationId);
+        const auto it = mSellPrices.find(key);
+        if (it != std::end(mSellPrices))
+            return it->second;
+
+        ItemPrice result;
+
+        try
+        {
+            result = mItemPriceRepository->findSellByTypeAndLocation(id, stationId);
+        }
+        catch (const ItemPriceRepository::NotFoundException &)
+        {
+            if (!dontThrow)
+                throw;
+        }
+
+        mSellPrices.emplace(key, result);
+        return result;
+    }
+
+    void EvernusApplication::computeAssetListSellValue(const AssetList &list) const
+    {
+        try
+        {
+            auto value = 0.;
+            for (const auto &item : list)
+            {
+                const auto locationId = item->getLocationId();
+                if (!locationId)
+                    continue;
+
+                value += getTotalItemSellValue(*item, *locationId);
+            }
+
+            AssetValueSnapshot snapshot{QDateTime::currentDateTimeUtc(), value};
+            snapshot.setCharacterId(list.getCharacterId());
+
+            mAssetValueSnapshotRepository->store(snapshot);
+        }
+        catch (const ItemPriceRepository::NotFoundException &)
+        {
+        }
+    }
+
+    double EvernusApplication::getTotalItemSellValue(const Item &item, quint64 locationId) const
+    {
+        auto price = getTypeSellPrice(item.getTypeId(), locationId, false).getValue() * item.getQuantity();
+        for (const auto &child : item)
+            price += getTotalItemSellValue(*child, locationId);
+
+        return price;
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)

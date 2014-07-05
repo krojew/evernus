@@ -23,6 +23,7 @@
 #include <QSqlDatabase>
 
 #include "ConquerableStationRepository.h"
+#include "AssetValueSnapshotRepository.h"
 #include "ItemPriceImporterRegistry.h"
 #include "WalletSnapshotRepository.h"
 #include "CharacterRepository.h"
@@ -111,6 +112,7 @@ namespace Evernus
         std::unique_ptr<ConquerableStationRepository> mConquerableStationRepository;
         std::unique_ptr<WalletSnapshotRepository> mWalletSnapshotRepository;
         std::unique_ptr<ItemPriceRepository> mItemPriceRepository;
+        std::unique_ptr<AssetValueSnapshotRepository> mAssetValueSnapshotRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
 
         APIManager mAPIManager;
@@ -141,6 +143,10 @@ namespace Evernus
         Key getCharacterKey(Character::IdType id) const;
 
         void finishItemPriceImportTask(const QString &info);
+
+        ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
+        void computeAssetListSellValue(const AssetList &list) const;
+        double getTotalItemSellValue(const Item &item, quint64 locationId) const;
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };

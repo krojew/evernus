@@ -79,6 +79,10 @@ add_executable(
     AssetsImportPreferencesWidget.h
     AssetsWidget.cpp
     AssetsWidget.h
+    AssetValueSnapshot.cpp
+    AssetValueSnapshot.h
+    AssetValueSnapshotRepository.cpp
+    AssetValueSnapshotRepository.h
     ButtonWithTimer.cpp
     ButtonWithTimer.h
     CachedAssetList.cpp

@@ -14,26 +14,29 @@
  */
 #pragma once
 
-#include <QWidget>
-
-class QCheckBox;
+#include "Repository.h"
+#include "AssetValueSnapshot.h"
 
 namespace Evernus
 {
-    class AssetsImportPreferencesWidget
-        : public QWidget
+    class Character;
+
+    class AssetValueSnapshotRepository
+        : public Repository<AssetValueSnapshot>
     {
-        Q_OBJECT
-
     public:
-        explicit AssetsImportPreferencesWidget(QWidget *parent = nullptr);
-        virtual ~AssetsImportPreferencesWidget() = default;
+        using Repository::Repository;
+        virtual ~AssetValueSnapshotRepository() = default;
 
-    public slots:
-        void applySettings();
+        virtual QString getTableName() const override;
+        virtual QString getIdColumn() const override;
+
+        virtual AssetValueSnapshot populate(const QSqlRecord &record) const override;
+
+        void create(const Repository<Character> &characterRepo) const;
 
     private:
-        QCheckBox *mImportAssetsBox = nullptr;
-        QCheckBox *mAutoUpdateValueBox = nullptr;
+        virtual QStringList getColumns() const override;
+        virtual void bindValues(const AssetValueSnapshot &entity, QSqlQuery &query) const override;
     };
 }
