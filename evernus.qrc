@@ -3,6 +3,7 @@
     <qresource prefix="/">
         <file>images/accept.png</file>
         <file>images/add.png</file>
+        <file>images/arrow_down.png</file>
         <file>images/arrow_refresh.png</file>
         <file>images/delete.png</file>
         <file>images/edit.png</file>
