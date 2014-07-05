@@ -33,6 +33,7 @@ qt5_wrap_cpp(
     CharacterModel.h
     CharacterImportPreferencesWidget.h
     CharacterWidget.h
+    DateFilteredPlotWidget.h
     EvernusApplication.h
     FileDownload.h
     ItemPriceImporter.h
@@ -44,6 +45,7 @@ qt5_wrap_cpp(
     PreferencesDialog.h
     PricePreferencesWidget.h
     qcustomplot.h
+    StatisticsWidget.h
 )
 
 qt5_add_resources(
@@ -139,6 +141,8 @@ add_executable(
     ConquerableStationRepository.h
     DatabaseUtils.cpp
     DatabaseUtils.h
+    DateFilteredPlotWidget.cpp
+    DateFilteredPlotWidget.h
     Entity.h
     EveDataProvider.h
     EveMarketDataItemPriceImporter.cpp
@@ -200,6 +204,8 @@ add_executable(
     Repository.h
     SimpleCrypt.cpp
     SimpleCrypt.h
+    StatisticsWidget.cpp
+    StatisticsWidget.h
     TaskConstants.h
     UISettings.h
     WalletSnapshot.cpp
