@@ -448,6 +448,8 @@ namespace Evernus
                     }
 
                     mProfitLabel->setText("-");
+                    mMarginLabel->setText("-");
+                    mMarkupLabel->setText("-");
                     mMarginLabel->setStyleSheet("color: palette(text);");
                     m1SampleDataTable->clearContents();
                     m5SampleDataTable->clearContents();
