@@ -416,14 +416,20 @@ namespace Evernus
 
         try
         {
+            QVariantList types, typeIds, locationIds;
             for (auto price : prices)
             {
-                query.bindValue(":type", static_cast<int>(price.getType()));
-                query.bindValue(":type_id", price.getTypeId());
-                query.bindValue(":location_id", price.getTypeId());
-
-                DatabaseUtils::execQuery(query);
+                types << static_cast<int>(price.getType());
+                typeIds << price.getTypeId();
+                locationIds << price.getLocationId();
             }
+
+            query.bindValue(":type", types);
+            query.bindValue(":type_id", typeIds);
+            query.bindValue(":location_id", locationIds);
+
+            if (!query.execBatch())
+                throw std::runtime_error{tr("Error deleting obsolete price data.").toStdString()};
 
             mItemPriceRepository->batchStore(prices);
 
