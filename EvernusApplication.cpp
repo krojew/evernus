@@ -515,7 +515,9 @@ namespace Evernus
                     }
                 }
 
+                mMainDb.exec("PRAGMA foreign_keys = OFF;");
                 mCharacterRepository->store(data);
+                mMainDb.exec("PRAGMA foreign_keys = ON;");
 
                 Evernus::WalletSnapshot snapshot{QDateTime::currentDateTimeUtc(), data.getISK()};
                 snapshot.setCharacterId(data.getId());
