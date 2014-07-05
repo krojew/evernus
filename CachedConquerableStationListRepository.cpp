@@ -43,7 +43,7 @@ namespace Evernus
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id INTEGER PRIMARY KEY ASC,
-            cache_until TEXT NOT NULL
+            cache_until DATETIME NOT NULL
         ))"}.arg(getTableName()));
     }
 

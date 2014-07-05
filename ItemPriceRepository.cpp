@@ -49,7 +49,7 @@ namespace Evernus
             type TINYINT NOT NULL,
             type_id INTEGER NOT NULL,
             location_id BIGINT NOT NULL,
-            update_time TEXT NOT NULL,
+            update_time DATETIME NOT NULL,
             value DOUBLE NOT NULL
         ))"}.arg(getTableName()));
 

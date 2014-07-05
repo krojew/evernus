@@ -79,7 +79,7 @@ namespace Evernus
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             character_id BIGINT PRIMARY KEY,
-            cache_until TEXT NOT NULL,
+            cache_until DATETIME NOT NULL,
             name TEXT NOT NULL,
             corporation_name TEXT NOT NULL,
             race TEXT NOT NULL,
