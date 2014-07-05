@@ -5,11 +5,12 @@ project(Evernus)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_NAME "evernus")
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Sql REQUIRED)
 find_package(Qt5Network REQUIRED)
+find_package(Qt5PrintSupport REQUIRED)
+find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
+find_package(Qt5Widgets REQUIRED)
 find_package(Boost REQUIRED)
 
 if(UNIX)
@@ -42,6 +43,7 @@ qt5_wrap_cpp(
     PathPreferencesWidget.h
     PreferencesDialog.h
     PricePreferencesWidget.h
+    qcustomplot.h
 )
 
 qt5_add_resources(
@@ -213,9 +215,10 @@ endif()
 target_link_libraries(
     ${PROJECT_NAME}
     ${Boost_LIBRARIES}
-    Qt5::Widgets
-    Qt5::Sql
     Qt5::Network
+    Qt5::PrintSupport
+    Qt5::Sql
     Qt5::Xml
     Qt5::XmlPatterns
+    Qt5::Widgets
 )
