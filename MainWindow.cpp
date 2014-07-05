@@ -26,6 +26,7 @@
 #include "ActiveTasksDialog.h"
 #include "PreferencesDialog.h"
 #include "MarginToolDialog.h"
+#include "StatisticsWidget.h"
 #include "CharacterWidget.h"
 #include "ImportSettings.h"
 #include "MenuBarWidget.h"
@@ -42,6 +43,8 @@ namespace Evernus
 
     MainWindow::MainWindow(const Repository<Character> &characterRepository,
                            const Repository<Key> &keyRepository,
+                           const AssetValueSnapshotRepository &assetSnapshotRepo,
+                           const WalletSnapshotRepository &walletSnapshotRepo,
                            const AssetProvider &assetProvider,
                            const EveDataProvider &eveDataProvider,
                            APIManager &apiManager,
@@ -50,6 +53,8 @@ namespace Evernus
         : QMainWindow{parent, flags}
         , mCharacterRepository{characterRepository}
         , mKeyRepository{keyRepository}
+        , mAssetSnapshotRepository{assetSnapshotRepo}
+        , mWalletSnapshotRepository{walletSnapshotRepo}
         , mAssetProvider{assetProvider}
         , mEveDataProvider{eveDataProvider}
         , mApiManager{apiManager}
@@ -139,7 +144,7 @@ namespace Evernus
         emit newTaskInfoAdded(taskId, description);
     }
 
-    void MainWindow::updateStatus()
+    void MainWindow::updateIskData()
     {
         if (mCurrentCharacterId != Character::invalidId)
         {
@@ -156,7 +161,7 @@ namespace Evernus
     void MainWindow::setCharacter(Character::IdType id)
     {
         mCurrentCharacterId = id;
-        updateStatus();
+        updateIskData();
     }
 
     void MainWindow::refreshAssets()
@@ -239,6 +244,13 @@ namespace Evernus
         connect(charTab, &CharacterWidget::importFromAPI, this, &MainWindow::importCharacter);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, charTab, &CharacterWidget::setCharacter);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::updateData);
+
+        auto statsTab = new StatisticsWidget{mAssetSnapshotRepository, mWalletSnapshotRepository, this};
+        tabs->addTab(statsTab, tr("Statistics"));
+        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, statsTab, &StatisticsWidget::setCharacter);
+        connect(this, &MainWindow::charactersChanged, statsTab, &StatisticsWidget::updateData);
+        connect(this, &MainWindow::itemPricesChanged, statsTab, &StatisticsWidget::updateData);
+        connect(this, &MainWindow::assetsChanged, statsTab, &StatisticsWidget::updateData);
 
         auto assetsTab = new AssetsWidget{mAssetProvider, mEveDataProvider, mApiManager, this};
         tabs->addTab(assetsTab, tr("Assets"));

@@ -26,6 +26,8 @@ namespace Evernus
 {
     template<class T>
     class Repository;
+    class AssetValueSnapshotRepository;
+    class WalletSnapshotRepository;
     class CharacterManagerDialog;
     class ActiveTasksDialog;
     class MarginToolDialog;
@@ -43,6 +45,8 @@ namespace Evernus
     public:
         MainWindow(const Repository<Character> &characterRepository,
                    const Repository<Key> &keyRepository,
+                   const AssetValueSnapshotRepository &assetSnapshotRepo,
+                   const WalletSnapshotRepository &walletSnapshotRepo,
                    const AssetProvider &assetProvider,
                    const EveDataProvider &eveDataProvider,
                    APIManager &apiManager,
@@ -79,7 +83,7 @@ namespace Evernus
 
         void addNewTaskInfo(uint taskId, const QString &description);
 
-        void updateStatus();
+        void updateIskData();
 
         void setCharacter(Character::IdType id);
 
@@ -96,6 +100,8 @@ namespace Evernus
 
         const Repository<Character> &mCharacterRepository;
         const Repository<Key> &mKeyRepository;
+        const AssetValueSnapshotRepository &mAssetSnapshotRepository;
+        const WalletSnapshotRepository &mWalletSnapshotRepository;
         const AssetProvider &mAssetProvider;
 
         const EveDataProvider &mEveDataProvider;

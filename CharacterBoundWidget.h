@@ -32,8 +32,8 @@ namespace Evernus
     public:
         typedef std::function<QDateTime (Character::IdType)> TimeGetter;
 
-        CharacterBoundWidget(const TimeGetter &timeGetter,
-                             QWidget *parent = nullptr);
+        explicit CharacterBoundWidget(const TimeGetter &timeGetter,
+                                      QWidget *parent = nullptr);
         virtual ~CharacterBoundWidget() = default;
 
     signals:

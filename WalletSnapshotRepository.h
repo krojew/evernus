@@ -25,6 +25,8 @@ namespace Evernus
         : public Repository<WalletSnapshot>
     {
     public:
+        typedef std::vector<WalletSnapshot> SnapshotList;
+
         using Repository::Repository;
         virtual ~WalletSnapshotRepository() = default;
 
@@ -34,6 +36,8 @@ namespace Evernus
         virtual WalletSnapshot populate(const QSqlRecord &record) const override;
 
         void create(const Repository<Character> &characterRepo) const;
+
+        SnapshotList fetchRange(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const;
 
     private:
         virtual QStringList getColumns() const override;

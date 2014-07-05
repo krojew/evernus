@@ -218,6 +218,16 @@ namespace Evernus
         return *mCharacterRepository;
     }
 
+    const WalletSnapshotRepository &EvernusApplication::getWalletSnapshotRepository() const noexcept
+    {
+        return *mWalletSnapshotRepository;
+    }
+
+    const AssetValueSnapshotRepository &EvernusApplication::getAssetValueSnapshotRepository() const noexcept
+    {
+        return *mAssetValueSnapshotRepository;
+    }
+
     APIManager &EvernusApplication::getAPIManager() noexcept
     {
         return mAPIManager;

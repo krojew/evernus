@@ -39,6 +39,8 @@ int main(int argc, char *argv[])
         {
             Evernus::MainWindow mainWnd{app.getCharacterRepository(),
                                         app.getKeyRepository(),
+                                        app.getAssetValueSnapshotRepository(),
+                                        app.getWalletSnapshotRepository(),
                                         app,
                                         app,
                                         app.getAPIManager()};
@@ -56,7 +58,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(charactersChanged()), SIGNAL(charactersChanged()));
             mainWnd.connect(&app, SIGNAL(assetsChanged()), SIGNAL(assetsChanged()));
             mainWnd.connect(&app, SIGNAL(itemPricesChanged()), SIGNAL(itemPricesChanged()));
-            mainWnd.connect(&app, SIGNAL(iskChanged()), SLOT(updateStatus()));
+            mainWnd.connect(&app, SIGNAL(iskChanged()), SLOT(updateIskData()));
             mainWnd.showAsSaved();
 
             return app.exec();

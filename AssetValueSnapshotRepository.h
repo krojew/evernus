@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include "Repository.h"
 #include "AssetValueSnapshot.h"
 
@@ -25,6 +27,8 @@ namespace Evernus
         : public Repository<AssetValueSnapshot>
     {
     public:
+        typedef std::vector<AssetValueSnapshot> SnapshotList;
+
         using Repository::Repository;
         virtual ~AssetValueSnapshotRepository() = default;
 
@@ -34,6 +38,8 @@ namespace Evernus
         virtual AssetValueSnapshot populate(const QSqlRecord &record) const override;
 
         void create(const Repository<Character> &characterRepo) const;
+
+        SnapshotList fetchRange(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const;
 
     private:
         virtual QStringList getColumns() const override;

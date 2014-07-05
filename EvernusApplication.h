@@ -68,6 +68,8 @@ namespace Evernus
 
         const KeyRepository &getKeyRepository() const noexcept;
         const CharacterRepository &getCharacterRepository() const noexcept;
+        const WalletSnapshotRepository &getWalletSnapshotRepository() const noexcept;
+        const AssetValueSnapshotRepository &getAssetValueSnapshotRepository() const noexcept;
 
         APIManager &getAPIManager() noexcept;
 

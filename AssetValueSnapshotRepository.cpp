@@ -49,6 +49,30 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
     }
 
+    AssetValueSnapshotRepository::SnapshotList AssetValueSnapshotRepository
+    ::fetchRange(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ? ORDER BY timestamp ASC"}
+            .arg(getTableName()));
+
+        query.addBindValue(characterId);
+        query.addBindValue(from);
+        query.addBindValue(to);
+
+        DatabaseUtils::execQuery(query);
+
+        SnapshotList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
     QStringList AssetValueSnapshotRepository::getColumns() const
     {
         return QStringList{}
