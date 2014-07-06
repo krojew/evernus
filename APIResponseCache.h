@@ -62,6 +62,8 @@ namespace Evernus
         ConquerableStationList getConquerableStationListData() const;
         void setConquerableStationListData(const ConquerableStationList &data, const QDateTime &cacheUntil);
 
+        QDateTime getWalletJournalLocalCacheTime(Character::IdType characterId) const;
+
     private:
         template<class T>
         struct CacheEntry

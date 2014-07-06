@@ -50,6 +50,7 @@ namespace Evernus
 
         QDateTime getCharacterLocalCacheTime(Character::IdType characterId) const;
         QDateTime getAssetsLocalCacheTime(Character::IdType characterId) const;
+        QDateTime getWalletJournalLocalCacheTime(Character::IdType characterId) const;
 
     signals:
         void generalError(const QString &info);

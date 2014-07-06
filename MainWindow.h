@@ -71,6 +71,7 @@ namespace Evernus
 
         void importCharacter(Character::IdType id);
         void importAssets(Character::IdType id);
+        void importWalletJournal(Character::IdType id);
 
         void importItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
 

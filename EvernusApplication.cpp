@@ -367,6 +367,11 @@ namespace Evernus
         }
     }
 
+    void EvernusApplication::refreshWalletJournal(Character::IdType id, uint parentTask)
+    {
+        qDebug() << "Refreshing wallet journal: " << id;
+    }
+
     void EvernusApplication::refreshConquerableStations()
     {
         qDebug() << "Refreshing conquerable stations...";

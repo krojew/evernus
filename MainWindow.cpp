@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "CharacterManagerDialog.h"
+#include "WalletJournalWidget.h"
 #include "ActiveTasksDialog.h"
 #include "PreferencesDialog.h"
 #include "MarginToolDialog.h"
@@ -260,6 +261,11 @@ namespace Evernus
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::itemPricesChanged, assetsTab, &AssetsWidget::updateData);
+
+        auto journalTab = new WalletJournalWidget{mApiManager, this};
+        tabs->addTab(journalTab, tr("Journal"));
+        connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
+        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, journalTab, &WalletJournalWidget::setCharacter);
     }
 
     void MainWindow::createStatusBar()

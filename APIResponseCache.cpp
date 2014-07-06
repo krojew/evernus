@@ -272,6 +272,12 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    QDateTime APIResponseCache::getWalletJournalLocalCacheTime(Character::IdType characterId) const
+    {
+        // TODO: do
+        return QDateTime{};
+    }
+
     void APIResponseCache::createDb()
     {
         DatabaseUtils::createDb(mCacheDb, "cache.db");
