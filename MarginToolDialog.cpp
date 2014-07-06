@@ -339,6 +339,9 @@ namespace Evernus
                 if (modTime.msecsTo(QDateTime::currentDateTime()) >= modTimeDelay)
                     break;
             }
+
+            if (!file.open(QIODevice::ReadOnly))
+                return;
 #endif
 
             auto buy = -1.;
