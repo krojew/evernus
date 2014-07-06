@@ -90,7 +90,7 @@ namespace Evernus
             query.addBindValue(row->getValue());
         };
 
-        const auto baseQueryStr = QString{"INSERT INTO %1 (type, type_id, location_id, update_time, value) VALUES %2"}
+        const auto baseQueryStr = QString{"REPLACE INTO %1 (type, type_id, location_id, update_time, value) VALUES %2"}
             .arg(getTableName());
 
         QStringList batchBindings;

@@ -411,26 +411,8 @@ namespace Evernus
 
     void EvernusApplication::updateItemPrices(const std::vector<ItemPrice> &prices)
     {
-        auto query = mItemPriceRepository->prepare(QString{"DELETE FROM %1 WHERE type = :type AND type_id = :type_id AND location_id = :location_id"}
-            .arg(mItemPriceRepository->getTableName()));
-
         try
         {
-            QVariantList types, typeIds, locationIds;
-            for (auto price : prices)
-            {
-                types << static_cast<int>(price.getType());
-                typeIds << price.getTypeId();
-                locationIds << price.getLocationId();
-            }
-
-            query.bindValue(":type", types);
-            query.bindValue(":type_id", typeIds);
-            query.bindValue(":location_id", locationIds);
-
-            if (!query.execBatch())
-                throw std::runtime_error{tr("Error deleting obsolete price data.").toStdString()};
-
             mItemPriceRepository->batchStore(prices);
 
             QSettings settings;
