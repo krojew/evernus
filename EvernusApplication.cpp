@@ -531,20 +531,23 @@ namespace Evernus
         mAPIManager.fetchCharacter(key, id, [charSubtask, this](auto data, const auto &error) {
             if (error.isEmpty())
             {
-                QSettings settings;
-                if (!settings.value(Evernus::ImportSettings::importSkillsKey, true).toBool())
+                try
                 {
-                    try
+                    const auto prevData = mCharacterRepository->find(data.getId());
+
+                    QSettings settings;
+                    if (!settings.value(Evernus::ImportSettings::importSkillsKey, true).toBool())
                     {
-                        const auto prevData = mCharacterRepository->find(data.getId());
                         data.setOrderAmountSkills(prevData.getOrderAmountSkills());
                         data.setTradeRangeSkills(prevData.getTradeRangeSkills());
                         data.setFeeSkills(prevData.getFeeSkills());
                         data.setContractSkills(prevData.getContractSkills());
                     }
-                    catch (const Evernus::CharacterRepository::NotFoundException &)
-                    {
-                    }
+
+                    data.setEnabled(prevData.isEnabled());
+                }
+                catch (const Evernus::CharacterRepository::NotFoundException &)
+                {
                 }
 
                 mMainDb.exec("PRAGMA foreign_keys = OFF;");
