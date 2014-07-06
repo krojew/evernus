@@ -456,6 +456,7 @@ namespace Evernus
         mWalletSnapshotRepository.reset(new WalletSnapshotRepository{mMainDb});
         mItemPriceRepository.reset(new ItemPriceRepository{mMainDb});
         mAssetValueSnapshotRepository.reset(new AssetValueSnapshotRepository{mMainDb});
+        mWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{mMainDb});
         mRefTypeRepository.reset(new RefTypeRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
     }
@@ -469,6 +470,7 @@ namespace Evernus
         mConquerableStationRepository->create();
         mWalletSnapshotRepository->create(*mCharacterRepository);
         mAssetValueSnapshotRepository->create(*mCharacterRepository);
+        mWalletJournalEntryRepository->create(*mCharacterRepository);
         mItemPriceRepository->create();
         mRefTypeRepository->create();
     }
