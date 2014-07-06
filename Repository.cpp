@@ -93,8 +93,8 @@ namespace Evernus
 
         if (!hasId)
         {
-            columns.removeFirst();
-            columnBindings.removeFirst();
+            columns.removeOne(getIdColumn());
+            columnBindings.removeLast();
         }
 
         const auto bindingStr = "(" + columnBindings.join(", ") + ")";
