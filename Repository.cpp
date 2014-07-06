@@ -76,7 +76,7 @@ namespace Evernus
     }
 
     template<class T>
-    void Repository<T>::batchStore(const std::vector<T> &entities) const
+    void Repository<T>::batchStore(const std::vector<T> &entities, bool hasId) const
     {
         if (entities.empty())
             return;
@@ -85,11 +85,17 @@ namespace Evernus
         const auto totalRows = entities.size();
         const auto batches = totalRows / maxRowsPerInsert;
 
-        const auto columns = getColumns();
+        auto columns = getColumns();
 
         QStringList columnBindings;
         for (auto i = 0; i < columns.size(); ++i)
             columnBindings << "?";
+
+        if (!hasId)
+        {
+            columns.removeFirst();
+            columnBindings.removeFirst();
+        }
 
         const auto bindingStr = "(" + columnBindings.join(", ") + ")";
 

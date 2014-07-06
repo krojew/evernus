@@ -77,7 +77,9 @@ namespace Evernus
         const auto locationId = entity.getLocationId();
         const auto parentId = entity.getParentId();
 
-        query.bindValue(":id", entity.getId());
+        if (entity.getId() != CachedItem::invalidId)
+            query.bindValue(":id", entity.getId());
+
         query.bindValue(":asset_list_id", entity.getListId());
         query.bindValue(":parent_id", (parentId) ? (*parentId) : (QVariant{QVariant::ULongLong}));
         query.bindValue(":type_id", entity.getTypeId());
@@ -90,7 +92,9 @@ namespace Evernus
         const auto locationId = entity.getLocationId();
         const auto parentId = entity.getParentId();
 
-        query.addBindValue(entity.getId());
+        if (entity.getId() != CachedItem::invalidId)
+            query.addBindValue(entity.getId());
+
         query.addBindValue(entity.getListId());
         query.addBindValue((parentId) ? (*parentId) : (QVariant{QVariant::ULongLong}));
         query.addBindValue(entity.getTypeId());

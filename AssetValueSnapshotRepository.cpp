@@ -83,14 +83,18 @@ namespace Evernus
 
     void AssetValueSnapshotRepository::bindValues(const AssetValueSnapshot &entity, QSqlQuery &query) const
     {
-        query.bindValue(":timestamp", entity.getId());
+        if (entity.getId() != AssetValueSnapshot::invalidId)
+            query.bindValue(":timestamp", entity.getId());
+
         query.bindValue(":balance", entity.getBalance());
         query.bindValue(":character_id", entity.getCharacterId());
     }
 
     void AssetValueSnapshotRepository::bindPositionalValues(const AssetValueSnapshot &entity, QSqlQuery &query) const
     {
-        query.addBindValue(entity.getId());
+        if (entity.getId() != AssetValueSnapshot::invalidId)
+            query.addBindValue(entity.getId());
+
         query.addBindValue(entity.getBalance());
         query.addBindValue(entity.getCharacterId());
     }

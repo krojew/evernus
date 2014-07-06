@@ -68,7 +68,9 @@ namespace Evernus
     {
         const auto data = entity.getCharacterList();
 
-        query.bindValue(":key_id", entity.getId());
+        if (entity.getId() != CachedCharacterList::invalidId)
+            query.bindValue(":key_id", entity.getId());
+
         query.bindValue(":cache_until", entity.getCacheUntil());
         query.bindValue(":data", QByteArray{
             reinterpret_cast<const char *>(data.data()),
@@ -79,7 +81,9 @@ namespace Evernus
     {
         const auto data = entity.getCharacterList();
 
-        query.addBindValue(entity.getId());
+        if (entity.getId() != CachedCharacterList::invalidId)
+            query.addBindValue(entity.getId());
+
         query.addBindValue(entity.getCacheUntil());
         query.addBindValue(QByteArray{
             reinterpret_cast<const char *>(data.data()),

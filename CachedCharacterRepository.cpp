@@ -143,7 +143,9 @@ namespace Evernus
         const auto feeSkills = entity.getFeeSkills();
         const auto contractSkills = entity.getContractSkills();
 
-        query.bindValue(":character_id", entity.getId());
+        if (entity.getId() != CachedCharacter::invalidId)
+            query.bindValue(":character_id", entity.getId());
+
         query.bindValue(":cache_until", entity.getCacheUntil());
         query.bindValue(":name", entity.getName());
         query.bindValue(":corporation_name", entity.getCorporationName());
@@ -176,7 +178,9 @@ namespace Evernus
         const auto feeSkills = entity.getFeeSkills();
         const auto contractSkills = entity.getContractSkills();
 
-        query.addBindValue(entity.getId());
+        if (entity.getId() != CachedCharacter::invalidId)
+            query.addBindValue(entity.getId());
+
         query.addBindValue(entity.getCacheUntil());
         query.addBindValue(entity.getName());
         query.addBindValue(entity.getCorporationName());

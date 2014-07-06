@@ -53,13 +53,17 @@ namespace Evernus
 
     void ConquerableStationRepository::bindValues(const ConquerableStation &entity, QSqlQuery &query) const
     {
-        query.bindValue(":id", entity.getId());
+        if (entity.getId() != ConquerableStation::invalidId)
+            query.bindValue(":id", entity.getId());
+
         query.bindValue(":name", entity.getName());
     }
 
     void ConquerableStationRepository::bindPositionalValues(const ConquerableStation &entity, QSqlQuery &query) const
     {
-        query.addBindValue(entity.getId());
+        if (entity.getId() != ConquerableStation::invalidId)
+            query.addBindValue(entity.getId());
+
         query.addBindValue(entity.getName());
     }
 }

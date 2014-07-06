@@ -54,13 +54,17 @@ namespace Evernus
 
     void RefTypeRepository::bindValues(const RefType &entity, QSqlQuery &query) const
     {
-        query.bindValue(":id", entity.getId());
+        if (entity.getId() != RefType::invalidId)
+            query.bindValue(":id", entity.getId());
+
         query.bindValue(":name", entity.getName());
     }
 
     void RefTypeRepository::bindPositionalValues(const RefType &entity, QSqlQuery &query) const
     {
-        query.addBindValue(entity.getId());
+        if (entity.getId() != RefType::invalidId)
+            query.addBindValue(entity.getId());
+
         query.addBindValue(entity.getName());
     }
 }

@@ -85,7 +85,9 @@ namespace Evernus
 
     void ItemPriceRepository::bindValues(const ItemPrice &entity, QSqlQuery &query) const
     {
-        query.bindValue(":id", entity.getId());
+        if (entity.getId() != ItemPrice::invalidId)
+            query.bindValue(":id", entity.getId());
+
         query.bindValue(":type", static_cast<int>(entity.getType()));
         query.bindValue(":type_id", entity.getTypeId());
         query.bindValue(":location_id", entity.getLocationId());
@@ -95,7 +97,9 @@ namespace Evernus
 
     void ItemPriceRepository::bindPositionalValues(const ItemPrice &entity, QSqlQuery &query) const
     {
-        query.addBindValue(entity.getId());
+        if (entity.getId() != ItemPrice::invalidId)
+            query.addBindValue(entity.getId());
+
         query.addBindValue(static_cast<int>(entity.getType()));
         query.addBindValue(entity.getTypeId());
         query.addBindValue(entity.getLocationId());

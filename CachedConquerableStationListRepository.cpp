@@ -58,7 +58,7 @@ namespace Evernus
 
     void CachedConquerableStationListRepository::bindValues(const CachedConquerableStationList &entity, QSqlQuery &query) const
     {
-        if (!entity.isNew())
+        if (entity.getId() != CachedConquerableStationList::invalidId)
             query.bindValue(":id", entity.getId());
 
         query.bindValue(":cache_until", entity.getCacheUntil());
@@ -66,7 +66,9 @@ namespace Evernus
 
     void CachedConquerableStationListRepository::bindPositionalValues(const CachedConquerableStationList &entity, QSqlQuery &query) const
     {
-        query.addBindValue(entity.getId());
+        if (entity.getId() != CachedConquerableStationList::invalidId)
+            query.addBindValue(entity.getId());
+
         query.addBindValue(entity.getCacheUntil());
     }
 }

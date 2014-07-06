@@ -110,13 +110,17 @@ namespace Evernus
 
     void AssetListRepository::bindValues(const AssetList &entity, QSqlQuery &query) const
     {
-        query.bindValue(":id", entity.getId());
+        if (entity.getId() != AssetList::invalidId)
+            query.bindValue(":id", entity.getId());
+
         query.bindValue(":character_id", entity.getCharacterId());
     }
 
     void AssetListRepository::bindPositionalValues(const AssetList &entity, QSqlQuery &query) const
     {
-        query.addBindValue(entity.getId());
+        if (entity.getId() != AssetList::invalidId)
+            query.addBindValue(entity.getId());
+
         query.addBindValue(entity.getCharacterId());
     }
 

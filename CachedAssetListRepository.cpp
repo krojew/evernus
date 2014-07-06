@@ -61,7 +61,7 @@ namespace Evernus
 
     void CachedAssetListRepository::bindValues(const CachedAssetList &entity, QSqlQuery &query) const
     {
-        if (!entity.isNew())
+        if (entity.getId() != CachedAssetList::invalidId)
             query.bindValue(":id", entity.getId());
 
         query.bindValue(":character_id", entity.getCharacterId());
@@ -70,7 +70,9 @@ namespace Evernus
 
     void CachedAssetListRepository::bindPositionalValues(const CachedAssetList &entity, QSqlQuery &query) const
     {
-        query.addBindValue(entity.getId());
+        if (entity.getId() != CachedAssetList::invalidId)
+            query.addBindValue(entity.getId());
+
         query.addBindValue(entity.getCharacterId());
         query.addBindValue(entity.getCacheUntil());
     }

@@ -375,7 +375,7 @@ namespace Evernus
 
         mAPIManager.fetchConquerableStationList([task, this](const auto &list, const auto &error) {
             mConquerableStationRepository->exec(QString{"DELETE FROM %1"}.arg(mConquerableStationRepository->getTableName()));
-            mConquerableStationRepository->batchStore(list);
+            mConquerableStationRepository->batchStore(list, true);
 
             emit conquerableStationsChanged();
             emit taskStatusChanged(task, error);
@@ -414,7 +414,7 @@ namespace Evernus
     {
         try
         {
-            mItemPriceRepository->batchStore(prices);
+            mItemPriceRepository->batchStore(prices, false);
 
             QSettings settings;
             if (settings.value(ImportSettings::autoUpdateAssetValueKey, true).toBool())
@@ -482,7 +482,7 @@ namespace Evernus
             mAPIManager.fetchRefTypes([this](const auto &refs, const auto &error) {
                 if (error.isEmpty())
                 {
-                    mRefTypeRepository->batchStore(refs);
+                    mRefTypeRepository->batchStore(refs, true);
                     precacheRefTypes(refs);
                 }
                 else

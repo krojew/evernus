@@ -60,14 +60,18 @@ namespace Evernus
 
     void CachedConquerableStationRepository::bindValues(const CachedConquerableStation &entity, QSqlQuery &query) const
     {
-        query.bindValue(":id", entity.getId());
+        if (entity.getId() != CachedConquerableStation::invalidId)
+            query.bindValue(":id", entity.getId());
+
         query.bindValue(":list_id", entity.getListId());
         query.bindValue(":name", entity.getName());
     }
 
     void CachedConquerableStationRepository::bindPositionalValues(const CachedConquerableStation &entity, QSqlQuery &query) const
     {
-        query.addBindValue(entity.getId());
+        if (entity.getId() != CachedConquerableStation::invalidId)
+            query.addBindValue(entity.getId());
+
         query.addBindValue(entity.getListId());
         query.addBindValue(entity.getName());
     }
