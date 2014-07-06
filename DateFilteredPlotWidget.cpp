@@ -16,6 +16,7 @@
 #include <QHBoxLayout>
 #include <QFileDialog>
 #include <QPushButton>
+#include <QMessageBox>
 #include <QDateEdit>
 #include <QLocale>
 #include <QLabel>
@@ -98,7 +99,8 @@ namespace Evernus
         if (file.isEmpty())
             return;
 
-        mPlot->saveRastered(file, width(), height(), 1., nullptr);
+        if (!mPlot->saveRastered(file, width(), height(), 1., nullptr))
+            QMessageBox::warning(this, tr("Error"), tr("Error saving image."));
     }
 
     void DateFilteredPlotWidget::fromChanged(const QDate &date)
