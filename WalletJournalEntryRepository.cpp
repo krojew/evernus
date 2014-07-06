@@ -51,6 +51,7 @@ namespace Evernus
         walletJournalEntry.setReason((reason.isNull()) ? (WalletJournalEntry::ReasonType{}) : (reason.toString()));
         walletJournalEntry.setTaxReceiverId((taxReceiverId.isNull()) ? (WalletJournalEntry::TaxReceiverType{}) : (taxReceiverId.toULongLong()));
         walletJournalEntry.setTaxAmount((taxAmount.isNull()) ? (WalletJournalEntry::TaxAmountType{}) : (taxAmount.toDouble()));
+        walletJournalEntry.setIgnored(record.value("ignored").toBool());
         walletJournalEntry.setNew(false);
 
         return walletJournalEntry;
@@ -73,7 +74,8 @@ namespace Evernus
             balance NUMERIC NOT NULL,
             reason TEXT NULL,
             tax_receiver_id BIGINT NULL,
-            tax_amount NUMERIC NULL
+            tax_amount NUMERIC NULL,
+            ignored TINYINT NOT NULL
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
@@ -96,7 +98,8 @@ namespace Evernus
             << "balance"
             << "reason"
             << "tax_receiver_id"
-            << "tax_amount";
+            << "tax_amount"
+            << "ignored";
     }
 
     void WalletJournalEntryRepository::bindValues(const WalletJournalEntry &entity, QSqlQuery &query) const
@@ -123,6 +126,7 @@ namespace Evernus
         query.bindValue(":reason", (reason) ? (*reason) : (QVariant{QVariant::String}));
         query.bindValue(":tax_receiver_id", (taxReceiverId) ? (*taxReceiverId) : (QVariant{QVariant::ULongLong}));
         query.bindValue(":tax_amount", (taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
+        query.bindValue(":ignored", entity.isIgnored());
     }
 
     void WalletJournalEntryRepository::bindPositionalValues(const WalletJournalEntry &entity, QSqlQuery &query) const
@@ -149,5 +153,6 @@ namespace Evernus
         query.addBindValue((reason) ? (*reason) : (QVariant{QVariant::String}));
         query.addBindValue((taxReceiverId) ? (*taxReceiverId) : (QVariant{QVariant::ULongLong}));
         query.addBindValue((taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
+        query.addBindValue(entity.isIgnored());
     }
 }

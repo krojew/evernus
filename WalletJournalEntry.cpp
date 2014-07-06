@@ -195,4 +195,14 @@ namespace Evernus
     {
         mData.mTaxAmount = amount;
     }
+
+    bool WalletJournalEntry::isIgnored() const noexcept
+    {
+        return mIgnored;
+    }
+
+    void WalletJournalEntry::setIgnored(bool flag) noexcept
+    {
+        mIgnored = flag;
+    }
 }

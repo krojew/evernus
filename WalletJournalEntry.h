@@ -81,7 +81,11 @@ namespace Evernus
         TaxAmountType getTaxAmount() const noexcept;
         void setTaxAmount(TaxAmountType amount) noexcept;
 
+        bool isIgnored() const noexcept;
+        void setIgnored(bool flag) noexcept;
+
     private:
         WalletJournalData mData;
+        bool mIgnored = false;
     };
 }
