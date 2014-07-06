@@ -42,6 +42,11 @@ namespace Evernus
         makeRequest("/eve/ConquerableStationList.xml.aspx", Key{}, callback);
     }
 
+    void APIInterface::fetchRefTypes(const Callback &callback) const
+    {
+        makeRequest("/eve/RefTypes.xml.aspx", Key{}, callback);
+    }
+
     void APIInterface::processReply()
     {
         auto reply = qobject_cast<QNetworkReply *>(sender());

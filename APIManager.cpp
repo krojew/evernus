@@ -20,6 +20,7 @@
 #include "ConquerableStationListXmlReceiver.h"
 #include "CharacterListXmlReceiver.h"
 #include "AssetListXmlReceiver.h"
+#include "RefTypeXmlReceiver.h"
 #include "CharacterDomParser.h"
 #include "Item.h"
 
@@ -183,6 +184,22 @@ namespace Evernus
             catch (const std::exception &e)
             {
                 callback(ConquerableStationList{}, e.what());
+            }
+        });
+    }
+
+    void APIManager::fetchRefTypes(const Callback<RefTypeList> &callback) const
+    {
+        mInterface.fetchRefTypes([callback, this](const QString &response, const QString &error) {
+            try
+            {
+                handlePotentialError(response, error);
+
+                callback(parseResults<RefType, APIXmlReceiver<RefType>::CurElemType>(response, "refTypes"), QString{});
+            }
+            catch (const std::exception &e)
+            {
+                callback(RefTypeList{}, e.what());
             }
         });
     }

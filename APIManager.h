@@ -23,6 +23,7 @@
 #include "APIInterface.h"
 #include "AssetList.h"
 #include "Character.h"
+#include "RefType.h"
 
 namespace Evernus
 {
@@ -36,6 +37,7 @@ namespace Evernus
         using Callback = std::function<void (const T &data, const QString &error)>;
 
         typedef std::vector<Character::IdType> CharacterList;
+        typedef std::vector<RefType> RefTypeList;
 
         APIManager();
         virtual ~APIManager() = default;
@@ -44,6 +46,7 @@ namespace Evernus
         void fetchCharacter(const Key &key, Character::IdType characterId, const Callback<Character> &callback) const;
         void fetchAssets(const Key &key, Character::IdType characterId, const Callback<AssetList> &callback) const;
         void fetchConquerableStationList(const Callback<ConquerableStationList> &callback) const;
+        void fetchRefTypes(const Callback<RefTypeList> &callback) const;
 
         QDateTime getCharacterLocalCacheTime(Character::IdType characterId) const;
         QDateTime getAssetsLocalCacheTime(Character::IdType characterId) const;

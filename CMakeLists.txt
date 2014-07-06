@@ -205,6 +205,8 @@ add_executable(
     RefType.h
     RefTypeRepository.cpp
     RefTypeRepository.h
+    RefTypeXmlReceiver.cpp
+    RefTypeXmlReceiver.h
     Repository.h
     SimpleCrypt.cpp
     SimpleCrypt.h

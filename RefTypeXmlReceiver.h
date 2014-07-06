@@ -14,33 +14,11 @@
  */
 #pragma once
 
-#include <vector>
-
-#include "Repository.h"
+#include "APIXmlReceiver.h"
 #include "RefType.h"
 
 namespace Evernus
 {
-    class RefTypeRepository
-        : public Repository<RefType>
-    {
-    public:
-        typedef std::vector<RefType> RefTypeList;
-
-        using Repository::Repository;
-        virtual ~RefTypeRepository() = default;
-
-        virtual QString getTableName() const override;
-        virtual QString getIdColumn() const override;
-
-        virtual RefType populate(const QSqlRecord &record) const override;
-
-        void create() const;
-
-        void batchStore(const RefTypeList &refs) const;
-
-    private:
-        virtual QStringList getColumns() const override;
-        virtual void bindValues(const RefType &entity, QSqlQuery &query) const override;
-    };
+    template<>
+    void APIXmlReceiver<RefType>::attribute(const QXmlName &name, const QStringRef &value);
 }

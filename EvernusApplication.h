@@ -31,6 +31,7 @@
 #include "ItemPriceRepository.h"
 #include "ItemPriceImporter.h"
 #include "EveTypeRepository.h"
+#include "RefTypeRepository.h"
 #include "EveDataProvider.h"
 #include "ItemRepository.h"
 #include "AssetProvider.h"
@@ -115,6 +116,7 @@ namespace Evernus
         std::unique_ptr<WalletSnapshotRepository> mWalletSnapshotRepository;
         std::unique_ptr<ItemPriceRepository> mItemPriceRepository;
         std::unique_ptr<AssetValueSnapshotRepository> mAssetValueSnapshotRepository;
+        std::unique_ptr<RefTypeRepository> mRefTypeRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
 
         APIManager mAPIManager;
@@ -131,10 +133,14 @@ namespace Evernus
 
         std::unordered_map<std::string, ImporterPtr> mItemPriceImporters;
 
+        std::unordered_map<RefType::IdType, QString> mRefTypeNames;
+
         mutable std::unordered_map<Character::IdType, std::unique_ptr<AssetList>> mCharacterAssets;
 
         void createDb();
         void createDbSchema();
+        void precacheRefTypes();
+        void precacheRefTypes(const RefTypeRepository::RefTypeList &refs);
 
         uint startTask(const QString &description);
         uint startTask(uint parentTask, const QString &description);

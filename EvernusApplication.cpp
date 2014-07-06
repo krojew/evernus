@@ -42,12 +42,13 @@ namespace Evernus
         showSplashMessage(tr("Loading..."), splash);
 
         showSplashMessage(tr("Creating databases..."), splash);
-
         createDb();
 
         showSplashMessage(tr("Creating schemas..."), splash);
-
         createDbSchema();
+
+        showSplashMessage(tr("Precaching ref types..."), splash);
+        precacheRefTypes();
 
         showSplashMessage(tr("Loading..."), splash);
 
@@ -455,6 +456,7 @@ namespace Evernus
         mWalletSnapshotRepository.reset(new WalletSnapshotRepository{mMainDb});
         mItemPriceRepository.reset(new ItemPriceRepository{mMainDb});
         mAssetValueSnapshotRepository.reset(new AssetValueSnapshotRepository{mMainDb});
+        mRefTypeRepository.reset(new RefTypeRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
     }
 
@@ -468,6 +470,37 @@ namespace Evernus
         mWalletSnapshotRepository->create(*mCharacterRepository);
         mAssetValueSnapshotRepository->create(*mCharacterRepository);
         mItemPriceRepository->create();
+        mRefTypeRepository->create();
+    }
+
+    void EvernusApplication::precacheRefTypes()
+    {
+        const auto refs = mRefTypeRepository->fetchAll();
+        if (refs.empty())
+        {
+            qDebug() << "Fetching ref types...";
+            mAPIManager.fetchRefTypes([this](const auto &refs, const auto &error) {
+                if (error.isEmpty())
+                {
+                    mRefTypeRepository->batchStore(refs);
+                    precacheRefTypes(refs);
+                }
+                else
+                {
+                    qDebug() << error;
+                }
+            });
+        }
+        else
+        {
+            precacheRefTypes(refs);
+        }
+    }
+
+    void EvernusApplication::precacheRefTypes(const RefTypeRepository::RefTypeList &refs)
+    {
+        for (const auto &ref : refs)
+            mRefTypeNames.emplace(ref.getId(), std::move(ref).getName());
     }
 
     uint EvernusApplication::startTask(const QString &description)

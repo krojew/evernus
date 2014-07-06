@@ -12,31 +12,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
-
-#include <QString>
-
-#include "Entity.h"
+#include "RefTypeXmlReceiver.h"
 
 namespace Evernus
 {
-    class RefType
-        : public Entity<uint>
+    template<>
+    void APIXmlReceiver<RefType>::attribute(const QXmlName &name, const QStringRef &value)
     {
-    public:
-        using Entity::Entity;
-
-        RefType() = default;
-        RefType(IdType id, const QString &name);
-        RefType(IdType id, QString &&name);
-        virtual ~RefType() = default;
-
-        QString getName() const &;
-        QString &&getName() && noexcept;
-        void setName(const QString &name);
-        void setName(QString &&name);
-
-    private:
-        QString mName;
-    };
+        if (name.localName(mNamePool) == "refTypeID")
+            mCurrentElement->setId(convert<RefType::IdType>(value.toString()));
+        else if (name.localName(mNamePool) == "refTypeName")
+            mCurrentElement->setName(value.toString());
+    }
 }
