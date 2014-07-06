@@ -201,6 +201,10 @@ add_executable(
     PriceSettings.h
     qcustomplot.cpp
     qcustomplot.h
+    RefType.cpp
+    RefType.h
+    RefTypeRepository.cpp
+    RefTypeRepository.h
     Repository.h
     SimpleCrypt.cpp
     SimpleCrypt.h
