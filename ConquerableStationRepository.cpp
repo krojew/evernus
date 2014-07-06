@@ -44,53 +44,6 @@ namespace Evernus
         ))"}.arg(getTableName()));
     }
 
-    void ConquerableStationRepository::batchStore(const ConquerableStationList &list) const
-    {
-        if (list.empty())
-            return;
-
-        const auto maxRowsPerInsert = 100;
-        const auto totalRows = list.size();
-        const auto batches = totalRows / maxRowsPerInsert;
-        const auto bindingStr = "(?, ?)";
-
-        const auto binder = [](auto &query, const auto &row) {
-            query.addBindValue(row->getId());
-            query.addBindValue(row->getName());
-        };
-
-        const auto baseQueryStr = QString{"INSERT INTO %1 (id, name) VALUES %2"}.arg(getTableName());
-
-        QStringList batchBindings;
-        for (auto i = 0; i < maxRowsPerInsert; ++i)
-            batchBindings << bindingStr;
-
-        const auto batchQueryStr = baseQueryStr.arg(batchBindings.join(", "));
-
-        for (auto batch = 0; batch < batches; ++batch)
-        {
-            auto query = prepare(batchQueryStr);
-
-            const auto end = std::next(std::begin(list), (batch + 1) * maxRowsPerInsert);
-            for (auto row = std::next(std::begin(list), batch * maxRowsPerInsert); row != end; ++row)
-                binder(query, row);
-
-            DatabaseUtils::execQuery(query);
-        }
-
-        QStringList restBindings;
-        for (auto i = 0; i < totalRows % maxRowsPerInsert; ++i)
-            restBindings << bindingStr;
-
-        const auto restQueryStr = baseQueryStr.arg(restBindings.join(", "));
-        auto query = prepare(restQueryStr);
-
-        for (auto row = std::next(std::begin(list), batches * maxRowsPerInsert); row != std::end(list); ++row)
-            binder(query, row);
-
-        DatabaseUtils::execQuery(query);
-    }
-
     QStringList ConquerableStationRepository::getColumns() const
     {
         return QStringList{}
@@ -102,5 +55,11 @@ namespace Evernus
     {
         query.bindValue(":id", entity.getId());
         query.bindValue(":name", entity.getName());
+    }
+
+    void ConquerableStationRepository::bindPositionalValues(const ConquerableStation &entity, QSqlQuery &query) const
+    {
+        query.addBindValue(entity.getId());
+        query.addBindValue(entity.getName());
     }
 }

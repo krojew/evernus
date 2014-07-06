@@ -84,4 +84,17 @@ namespace Evernus
         query.bindValue(":location_id", (locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));
         query.bindValue(":quantity", entity.getQuantity());
     }
+
+    void CachedItemRepository::bindPositionalValues(const CachedItem &entity, QSqlQuery &query) const
+    {
+        const auto locationId = entity.getLocationId();
+        const auto parentId = entity.getParentId();
+
+        query.addBindValue(entity.getId());
+        query.addBindValue(entity.getListId());
+        query.addBindValue((parentId) ? (*parentId) : (QVariant{QVariant::ULongLong}));
+        query.addBindValue(entity.getTypeId());
+        query.addBindValue((locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));
+        query.addBindValue(entity.getQuantity());
+    }
 }

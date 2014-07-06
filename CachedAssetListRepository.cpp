@@ -65,4 +65,11 @@ namespace Evernus
         query.bindValue(":character_id", entity.getCharacterId());
         query.bindValue(":cache_until", entity.getCacheUntil());
     }
+
+    void CachedAssetListRepository::bindPositionalValues(const CachedAssetList &entity, QSqlQuery &query) const
+    {
+        query.addBindValue(entity.getId());
+        query.addBindValue(entity.getCharacterId());
+        query.addBindValue(entity.getCacheUntil());
+    }
 }

@@ -37,6 +37,7 @@ namespace Evernus
         QSqlQuery exec(const QString &query) const;
         QSqlQuery prepare(const QString &queryStr) const;
         void store(T &entity) const;
+        void batchStore(const std::vector<T> &entities) const;
 
         template<class Id>
         void remove(Id &&id) const;
@@ -58,6 +59,7 @@ namespace Evernus
 
         virtual QStringList getColumns() const = 0;
         virtual void bindValues(const T &entity, QSqlQuery &query) const = 0;
+        virtual void bindPositionalValues(const T &entity, QSqlQuery &query) const = 0;
 
         virtual void preStore(T &entity) const;
         virtual void postStore(T &entity) const;

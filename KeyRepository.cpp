@@ -57,4 +57,10 @@ namespace Evernus
         query.bindValue(":id", entity.getId());
         query.bindValue(":code", entity.getCode());
     }
+
+    void KeyRepository::bindPositionalValues(const Key &entity, QSqlQuery &query) const
+    {
+        query.addBindValue(entity.getId());
+        query.addBindValue(entity.getCode());
+    }
 }

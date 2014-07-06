@@ -45,55 +45,6 @@ namespace Evernus
         ))"}.arg(getTableName()));
     }
 
-    void RefTypeRepository::batchStore(const RefTypeList &refs) const
-    {
-        if (refs.empty())
-            return;
-
-        const auto maxRowsPerInsert = 100;
-        const auto totalRows = refs.size();
-        const auto batches = totalRows / maxRowsPerInsert;
-        const auto bindingStr = "(?, ?)";
-
-        const auto binder = [](auto &query, const auto &row) {
-            query.addBindValue(row->getId());
-            query.addBindValue(row->getName());
-        };
-
-        const auto baseQueryStr = QString{"REPLACE INTO %1 (%2, name) VALUES %3"}
-            .arg(getTableName())
-            .arg(getIdColumn());
-
-        QStringList batchBindings;
-        for (auto i = 0; i < maxRowsPerInsert; ++i)
-            batchBindings << bindingStr;
-
-        const auto batchQueryStr = baseQueryStr.arg(batchBindings.join(", "));
-
-        for (auto batch = 0; batch < batches; ++batch)
-        {
-            auto query = prepare(batchQueryStr);
-
-            const auto end = std::next(std::begin(refs), (batch + 1) * maxRowsPerInsert);
-            for (auto row = std::next(std::begin(refs), batch * maxRowsPerInsert); row != end; ++row)
-                binder(query, row);
-
-            DatabaseUtils::execQuery(query);
-        }
-
-        QStringList restBindings;
-        for (auto i = 0; i < totalRows % maxRowsPerInsert; ++i)
-            restBindings << bindingStr;
-
-        const auto restQueryStr = baseQueryStr.arg(restBindings.join(", "));
-        auto query = prepare(restQueryStr);
-
-        for (auto row = std::next(std::begin(refs), batches * maxRowsPerInsert); row != std::end(refs); ++row)
-            binder(query, row);
-
-        DatabaseUtils::execQuery(query);
-    }
-
     QStringList RefTypeRepository::getColumns() const
     {
         return QStringList{}
@@ -105,5 +56,11 @@ namespace Evernus
     {
         query.bindValue(":id", entity.getId());
         query.bindValue(":name", entity.getName());
+    }
+
+    void RefTypeRepository::bindPositionalValues(const RefType &entity, QSqlQuery &query) const
+    {
+        query.addBindValue(entity.getId());
+        query.addBindValue(entity.getName());
     }
 }

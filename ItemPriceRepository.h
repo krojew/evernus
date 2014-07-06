@@ -37,10 +37,9 @@ namespace Evernus
 
         ItemPrice findSellByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const;
 
-        void batchStore(const std::vector<ItemPrice> &prices) const;
-
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const ItemPrice &entity, QSqlQuery &query) const override;
+        virtual void bindPositionalValues(const ItemPrice &entity, QSqlQuery &query) const override;
     };
 }

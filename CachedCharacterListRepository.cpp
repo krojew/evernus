@@ -72,4 +72,15 @@ namespace Evernus
             reinterpret_cast<const char *>(data.data()),
             static_cast<int>(data.size() * sizeof(CachedCharacterList::CharacterList::value_type))});
     }
+
+    void CachedCharacterListRepository::bindPositionalValues(const CachedCharacterList &entity, QSqlQuery &query) const
+    {
+        const auto data = entity.getCharacterList();
+
+        query.addBindValue(entity.getId());
+        query.addBindValue(entity.getCacheUntil());
+        query.addBindValue(QByteArray{
+            reinterpret_cast<const char *>(data.data()),
+            static_cast<int>(data.size() * sizeof(CachedCharacterList::CharacterList::value_type))});
+    }
 }

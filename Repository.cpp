@@ -76,6 +76,58 @@ namespace Evernus
     }
 
     template<class T>
+    void Repository<T>::batchStore(const std::vector<T> &entities) const
+    {
+        if (entities.empty())
+            return;
+
+        const auto maxRowsPerInsert = 100;
+        const auto totalRows = entities.size();
+        const auto batches = totalRows / maxRowsPerInsert;
+
+        const auto columns = getColumns();
+
+        QStringList columnBindings;
+        for (auto i = 0; i < columns.size(); ++i)
+            columnBindings << "?";
+
+        const auto bindingStr = "(" + columnBindings.join(", ") + ")";
+
+        const auto baseQueryStr = QString{"REPLACE INTO %1 (%2) VALUES %3"}
+            .arg(getTableName())
+            .arg(columns.join(", "));
+
+        QStringList batchBindings;
+        for (auto i = 0; i < maxRowsPerInsert; ++i)
+            batchBindings << bindingStr;
+
+        const auto batchQueryStr = baseQueryStr.arg(batchBindings.join(", "));
+
+        for (auto batch = 0; batch < batches; ++batch)
+        {
+            auto query = prepare(batchQueryStr);
+
+            const auto end = std::next(std::begin(entities), (batch + 1) * maxRowsPerInsert);
+            for (auto row = std::next(std::begin(entities), batch * maxRowsPerInsert); row != end; ++row)
+                bindPositionalValues(*row, query);
+
+            DatabaseUtils::execQuery(query);
+        }
+
+        QStringList restBindings;
+        for (auto i = 0; i < totalRows % maxRowsPerInsert; ++i)
+            restBindings << bindingStr;
+
+        const auto restQueryStr = baseQueryStr.arg(restBindings.join(", "));
+        auto query = prepare(restQueryStr);
+
+        for (auto row = std::next(std::begin(entities), batches * maxRowsPerInsert); row != std::end(entities); ++row)
+            bindPositionalValues(*row, query);
+
+        DatabaseUtils::execQuery(query);
+    }
+
+    template<class T>
     template<class Id>
     void Repository<T>::remove(Id &&id) const
     {

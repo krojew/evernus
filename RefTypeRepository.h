@@ -37,10 +37,9 @@ namespace Evernus
 
         void create() const;
 
-        void batchStore(const RefTypeList &refs) const;
-
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const RefType &entity, QSqlQuery &query) const override;
+        virtual void bindPositionalValues(const RefType &entity, QSqlQuery &query) const override;
     };
 }

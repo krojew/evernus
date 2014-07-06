@@ -72,57 +72,6 @@ namespace Evernus
         return populate(query.record());
     }
 
-    void ItemPriceRepository::batchStore(const std::vector<ItemPrice> &prices) const
-    {
-        if (prices.empty())
-            return;
-
-        const auto maxRowsPerInsert = 100;
-        const auto totalRows = prices.size();
-        const auto batches = totalRows / maxRowsPerInsert;
-        const auto bindingStr = "(?, ?, ?, ?, ?)";
-
-        const auto binder = [](auto &query, const auto &row) {
-            query.addBindValue(static_cast<int>(row->getType()));
-            query.addBindValue(row->getTypeId());
-            query.addBindValue(row->getLocationId());
-            query.addBindValue(row->getUpdateTime());
-            query.addBindValue(row->getValue());
-        };
-
-        const auto baseQueryStr = QString{"REPLACE INTO %1 (type, type_id, location_id, update_time, value) VALUES %2"}
-            .arg(getTableName());
-
-        QStringList batchBindings;
-        for (auto i = 0; i < maxRowsPerInsert; ++i)
-            batchBindings << bindingStr;
-
-        const auto batchQueryStr = baseQueryStr.arg(batchBindings.join(", "));
-
-        for (auto batch = 0; batch < batches; ++batch)
-        {
-            auto query = prepare(batchQueryStr);
-
-            const auto end = std::next(std::begin(prices), (batch + 1) * maxRowsPerInsert);
-            for (auto row = std::next(std::begin(prices), batch * maxRowsPerInsert); row != end; ++row)
-                binder(query, row);
-
-            DatabaseUtils::execQuery(query);
-        }
-
-        QStringList restBindings;
-        for (auto i = 0; i < totalRows % maxRowsPerInsert; ++i)
-            restBindings << bindingStr;
-
-        const auto restQueryStr = baseQueryStr.arg(restBindings.join(", "));
-        auto query = prepare(restQueryStr);
-
-        for (auto row = std::next(std::begin(prices), batches * maxRowsPerInsert); row != std::end(prices); ++row)
-            binder(query, row);
-
-        DatabaseUtils::execQuery(query);
-    }
-
     QStringList ItemPriceRepository::getColumns() const
     {
         return QStringList{}
@@ -142,5 +91,15 @@ namespace Evernus
         query.bindValue(":location_id", entity.getLocationId());
         query.bindValue(":update_time", entity.getUpdateTime());
         query.bindValue(":value", entity.getValue());
+    }
+
+    void ItemPriceRepository::bindPositionalValues(const ItemPrice &entity, QSqlQuery &query) const
+    {
+        query.addBindValue(entity.getId());
+        query.addBindValue(static_cast<int>(entity.getType()));
+        query.addBindValue(entity.getTypeId());
+        query.addBindValue(entity.getLocationId());
+        query.addBindValue(entity.getUpdateTime());
+        query.addBindValue(entity.getValue());
     }
 }

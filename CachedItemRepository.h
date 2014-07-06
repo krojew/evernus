@@ -40,5 +40,6 @@ namespace Evernus
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const CachedItem &entity, QSqlQuery &query) const override;
+        virtual void bindPositionalValues(const CachedItem &entity, QSqlQuery &query) const override;
     };
 }

@@ -87,4 +87,11 @@ namespace Evernus
         query.bindValue(":balance", entity.getBalance());
         query.bindValue(":character_id", entity.getCharacterId());
     }
+
+    void AssetValueSnapshotRepository::bindPositionalValues(const AssetValueSnapshot &entity, QSqlQuery &query) const
+    {
+        query.addBindValue(entity.getId());
+        query.addBindValue(entity.getBalance());
+        query.addBindValue(entity.getCharacterId());
+    }
 }

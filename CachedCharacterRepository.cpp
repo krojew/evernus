@@ -166,4 +166,37 @@ namespace Evernus
         query.bindValue(":contracting_skill", contractSkills.mContracting);
         query.bindValue(":corporation_contracting_skill", contractSkills.mCorporationContracting);
     }
+
+    void CachedCharacterRepository::bindPositionalValues(const CachedCharacter &entity, QSqlQuery &query) const
+    {
+        const auto orderAmountSkills = entity.getOrderAmountSkills();
+        const auto tradeRangeSkills = entity.getTradeRangeSkills();
+        const auto feeSkills = entity.getFeeSkills();
+        const auto contractSkills = entity.getContractSkills();
+
+        query.addBindValue(entity.getId());
+        query.addBindValue(entity.getCacheUntil());
+        query.addBindValue(entity.getName());
+        query.addBindValue(entity.getCorporationName());
+        query.addBindValue(entity.getRace());
+        query.addBindValue(entity.getBloodline());
+        query.addBindValue(entity.getAncestry());
+        query.addBindValue(entity.getGender());
+        query.addBindValue(entity.getISK());
+        query.addBindValue(entity.getCorpStanding());
+        query.addBindValue(entity.getFactionStanding());
+        query.addBindValue(orderAmountSkills.mTrade);
+        query.addBindValue(orderAmountSkills.mRetail);
+        query.addBindValue(orderAmountSkills.mWholesale);
+        query.addBindValue(orderAmountSkills.mTycoon);
+        query.addBindValue(tradeRangeSkills.mMarketing);
+        query.addBindValue(tradeRangeSkills.mProcurement);
+        query.addBindValue(tradeRangeSkills.mDaytrading);
+        query.addBindValue(tradeRangeSkills.mVisibility);
+        query.addBindValue(feeSkills.mAccounting);
+        query.addBindValue(feeSkills.mBrokerRelations);
+        query.addBindValue(feeSkills.mMarginTrading);
+        query.addBindValue(contractSkills.mContracting);
+        query.addBindValue(contractSkills.mCorporationContracting);
+    }
 }

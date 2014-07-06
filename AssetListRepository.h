@@ -43,6 +43,7 @@ namespace Evernus
 
         virtual QStringList getColumns() const override;
         virtual void bindValues(const AssetList &entity, QSqlQuery &query) const override;
+        virtual void bindPositionalValues(const AssetList &entity, QSqlQuery &query) const override;
 
         virtual void preStore(AssetList &entity) const override;
         virtual void postStore(AssetList &entity) const override;

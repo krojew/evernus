@@ -78,4 +78,12 @@ namespace Evernus
 
         throw std::logic_error{"Type repository is read-only."};
     }
+
+    void EveTypeRepository::bindPositionalValues(const EveType &entity, QSqlQuery &query) const
+    {
+        Q_UNUSED(entity);
+        Q_UNUSED(query);
+
+        throw std::logic_error{"Type repository is read-only."};
+    }
 }

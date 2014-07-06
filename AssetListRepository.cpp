@@ -114,6 +114,12 @@ namespace Evernus
         query.bindValue(":character_id", entity.getCharacterId());
     }
 
+    void AssetListRepository::bindPositionalValues(const AssetList &entity, QSqlQuery &query) const
+    {
+        query.addBindValue(entity.getId());
+        query.addBindValue(entity.getCharacterId());
+    }
+
     void AssetListRepository::preStore(AssetList &entity) const
     {
         if (!entity.isNew())

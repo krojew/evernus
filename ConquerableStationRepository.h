@@ -32,10 +32,10 @@ namespace Evernus
         virtual ConquerableStation populate(const QSqlRecord &record) const override;
 
         void create() const;
-        void batchStore(const ConquerableStationList &list) const;
 
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const ConquerableStation &entity, QSqlQuery &query) const override;
+        virtual void bindPositionalValues(const ConquerableStation &entity, QSqlQuery &query) const override;
     };
 }

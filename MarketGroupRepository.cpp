@@ -64,4 +64,12 @@ namespace Evernus
 
         throw std::logic_error{"Market group repository is read-only."};
     }
+
+    void MarketGroupRepository::bindPositionalValues(const MarketGroup &entity, QSqlQuery &query) const
+    {
+        Q_UNUSED(entity);
+        Q_UNUSED(query);
+
+        throw std::logic_error{"Market group repository is read-only."};
+    }
 }
