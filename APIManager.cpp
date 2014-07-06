@@ -190,7 +190,11 @@ namespace Evernus
 
     void APIManager::fetchRefTypes(const Callback<RefTypeList> &callback) const
     {
+#ifdef Q_OS_WIN
+        mInterface.fetchRefTypes([callback, this](const QString &response, const QString &error) {
+#else
         mInterface.fetchRefTypes([callback = callback, this](const QString &response, const QString &error) {
+#endif
             try
             {
                 handlePotentialError(response, error);
