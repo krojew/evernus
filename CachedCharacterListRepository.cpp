@@ -52,6 +52,8 @@ namespace Evernus
             cache_until DATETIME NOT NULL,
             data BLOB NOT NULL
         ))"}.arg(getTableName()));
+
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_cache_until ON %1(cache_until)"}.arg(getTableName()));
     }
 
     QStringList CachedCharacterListRepository::getColumns() const

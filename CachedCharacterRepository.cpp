@@ -103,6 +103,8 @@ namespace Evernus
             contracting_skill TINYINT NOT NULL,
             corporation_contracting_skill TINYINT NOT NULL
         ))"}.arg(getTableName()));
+
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_cache_until ON %1(cache_until)"}.arg(getTableName()));
     }
 
     QStringList CachedCharacterRepository::getColumns() const
