@@ -257,7 +257,7 @@ namespace Evernus
                                         const Callback<WalletJournal> &callback) const
     {
         mInterface.fetchWalletJournal(key, characterId, fromId,
-                                      [=, journal = std::move(journal)](const QString &response, const QString &error) mutable {
+                                      [=](const QString &response, const QString &error) mutable {
             try
             {
                 handlePotentialError(response, error);

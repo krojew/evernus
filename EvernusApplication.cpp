@@ -383,7 +383,7 @@ namespace Evernus
 
             mAPIManager.fetchWalletJournal(key, id, WalletJournalEntry::invalidId, maxId,
                                            [task, this](const auto &data, const auto &error) {
-                std::vector<WalletJournalEntry> vectorData;
+                std::vector<Evernus::WalletJournalEntry> vectorData;
                 vectorData.reserve(data.size());
 
                 std::move(std::begin(data), std::end(data), std::back_inserter(vectorData));
