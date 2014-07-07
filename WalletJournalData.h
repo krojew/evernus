@@ -41,7 +41,7 @@ namespace Evernus
         double mAmount = 0.;
         double mBalance = 0.;
         ReasonType mReason;
-        TaxReceiverType mTaxReceiverId = 0;
+        TaxReceiverType mTaxReceiverId = static_cast<quint64>(0u);
         TaxAmountType mTaxAmount = 0.;
     };
 }
