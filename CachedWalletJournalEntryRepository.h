@@ -15,17 +15,17 @@
 #pragma once
 
 #include "CachedWalletJournalEntry.h"
-#include "Repository.h"
+#include "CacheRepository.h"
 
 namespace Evernus
 {
     class Character;
 
     class CachedWalletJournalEntryRepository
-        : public Repository<CachedWalletJournalEntry>
+        : public CacheRepository<CachedWalletJournalEntry>
     {
     public:
-        using Repository::Repository;
+        using CacheRepository::CacheRepository;
         virtual ~CachedWalletJournalEntryRepository() = default;
 
         virtual QString getTableName() const override;
