@@ -218,6 +218,7 @@ add_executable(
     StatisticsWidget.h
     TaskConstants.h
     UISettings.h
+    WalletJournal.h
     WalletJournalData.h
     WalletJournalEntry.cpp
     WalletJournalEntry.h
