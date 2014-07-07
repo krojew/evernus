@@ -113,6 +113,10 @@ add_executable(
     CachedItem.h
     CachedItemRepository.cpp
     CachedItemRepository.h
+    CachedWalletJournalEntry.cpp
+    CachedWalletJournalEntry.h
+    CachedWalletJournalEntryRepository.cpp
+    CachedWalletJournalEntryRepository.h
     CacheRepository.h
     Character.cpp
     Character.h

@@ -288,6 +288,7 @@ namespace Evernus
         mItemRepository.reset(new CachedItemRepository{mCacheDb});
         mConquerableStationListRepository.reset(new CachedConquerableStationListRepository{mCacheDb});
         mConquerableStationRepository.reset(new CachedConquerableStationRepository{mCacheDb});
+        mWalletJournalEntryRepository.reset(new CachedWalletJournalEntryRepository{mCacheDb});
     }
 
     void APIResponseCache::createDbSchema()
@@ -298,6 +299,7 @@ namespace Evernus
         mItemRepository->create(*mAssetListRepository);
         mConquerableStationListRepository->create();
         mConquerableStationRepository->create(*mConquerableStationListRepository);
+        mWalletJournalEntryRepository->create();
     }
 
     void APIResponseCache::clearOldData()

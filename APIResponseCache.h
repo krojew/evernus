@@ -23,6 +23,7 @@
 
 #include "CachedConquerableStationListRepository.h"
 #include "CachedConquerableStationRepository.h"
+#include "CachedWalletJournalEntryRepository.h"
 #include "CachedCharacterListRepository.h"
 #include "CachedCharacterRepository.h"
 #include "CachedAssetListRepository.h"
@@ -85,6 +86,7 @@ namespace Evernus
         std::unique_ptr<CachedItemRepository> mItemRepository;
         std::unique_ptr<CachedConquerableStationListRepository> mConquerableStationListRepository;
         std::unique_ptr<CachedConquerableStationRepository> mConquerableStationRepository;
+        std::unique_ptr<CachedWalletJournalEntryRepository> mWalletJournalEntryRepository;
 
         void createDb();
         void createDbSchema();
