@@ -24,4 +24,11 @@ namespace Evernus
         else if (name.localName(mNamePool) == "refTypeName")
             mCurrentElement->setName(value.toString());
     }
+
+    template<>
+    void APIXmlReceiver<RefType>::endElement()
+    {
+        if (mCurrentElement->getId() != RefType::invalidId)
+            mContainer.emplace_back(*mCurrentElement);
+    }
 }

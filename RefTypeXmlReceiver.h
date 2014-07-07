@@ -21,4 +21,6 @@ namespace Evernus
 {
     template<>
     void APIXmlReceiver<RefType>::attribute(const QXmlName &name, const QStringRef &value);
+    template<>
+    void APIXmlReceiver<RefType>::endElement();
 }
