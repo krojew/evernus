@@ -21,6 +21,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
+#include "WalletJournalEntry.h"
 #include "Character.h"
 
 namespace Evernus
@@ -43,6 +44,10 @@ namespace Evernus
         void fetchAssets(const Key &key, Character::IdType characterId, const Callback &callback) const;
         void fetchConquerableStationList(const Callback &callback) const;
         void fetchRefTypes(const Callback &callback) const;
+        void fetchWalletJournal(const Key &key,
+                                Character::IdType characterId,
+                                WalletJournalEntry::IdType fromId,
+                                const Callback &callback) const;
 
     signals:
         void generalError(const QString &info);

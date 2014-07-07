@@ -47,6 +47,18 @@ namespace Evernus
         makeRequest("/eve/RefTypes.xml.aspx", Key{}, callback);
     }
 
+    void APIInterface::fetchWalletJournal(const Key &key,
+                                          Character::IdType characterId,
+                                          WalletJournalEntry::IdType fromId,
+                                          const Callback &callback) const
+    {
+        QueryParams params{std::make_pair("characterId", QString::number(characterId))};
+        if (fromId != WalletJournalEntry::invalidId)
+            params.emplace_back("fromID", QString::number(fromId));
+
+        makeRequest("/char/WalletJournal.xml.aspx", key, callback, params);
+    }
+
     void APIInterface::processReply()
     {
         auto reply = qobject_cast<QNetworkReply *>(sender());
