@@ -3,15 +3,15 @@
     <qresource prefix="/">
         <file>images/accept.png</file>
         <file>images/add.png</file>
-        <file>images/arrow_down.png</file>
         <file>images/arrow_refresh.png</file>
         <file>images/delete.png</file>
-        <file>images/edit.png</file>
         <file>images/exclamation.png</file>
         <file>images/generic-portrait.jpg</file>
         <file>images/image.png</file>
         <file>images/information.png</file>
         <file>images/main-icon.png</file>
+        <file>images/pencil.png</file>
         <file>images/splash.png</file>
+        <file>images/world.png</file>
     </qresource>
 </RCC>

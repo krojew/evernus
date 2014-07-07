@@ -47,7 +47,7 @@ namespace Evernus
         auto &importBtn = getAPIImportButton();
         toolBarLayout->addWidget(&importBtn);
 
-        auto importFromWeb = new QPushButton{QIcon{":/images/arrow_down.png"}, tr("Import prices from Web"), this};
+        auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import prices from Web"), this};
         toolBarLayout->addWidget(importFromWeb);
         importFromWeb->setFlat(true);
         connect(importFromWeb, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromWeb);

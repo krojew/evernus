@@ -165,7 +165,7 @@ namespace Evernus
         btnLayout->addWidget(addBtn);
         connect(addBtn, &QPushButton::clicked, this, &CharacterManagerDialog::addKey);
 
-        mEditKeyBtn = new QPushButton{QIcon{":/images/edit.png"}, tr("Edit..."), this};
+        mEditKeyBtn = new QPushButton{QIcon{":/images/pencil.png"}, tr("Edit..."), this};
         btnLayout->addWidget(mEditKeyBtn);
         mEditKeyBtn->setDisabled(true);
         connect(mEditKeyBtn, &QPushButton::clicked, this, &CharacterManagerDialog::editKey);
