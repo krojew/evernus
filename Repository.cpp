@@ -81,7 +81,7 @@ namespace Evernus
         if (entities.empty())
             return;
 
-        const auto maxRowsPerInsert = 100;
+        const auto maxRowsPerInsert = getMaxRowsPerInsert();
         const auto totalRows = entities.size();
         const auto batches = totalRows / maxRowsPerInsert;
 
@@ -247,5 +247,11 @@ namespace Evernus
     template<class T>
     void Repository<T>::postStore(T &entity) const
     {
+    }
+
+    template<class T>
+    size_t Repository<T>::getMaxRowsPerInsert() const
+    {
+        return 100;
     }
 }

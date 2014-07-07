@@ -166,4 +166,9 @@ namespace Evernus
         query.addBindValue((taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
         query.addBindValue(entity.isIgnored());
     }
+
+    size_t WalletJournalEntryRepository::getMaxRowsPerInsert() const
+    {
+        return 60;
+    }
 }
