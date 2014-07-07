@@ -181,4 +181,24 @@ namespace Evernus
     {
         mData.mTaxAmount = amount;
     }
+
+    WalletJournalData CachedWalletJournalEntry::getWalletJournalData() const &
+    {
+        return mData;
+    }
+
+    WalletJournalData &&CachedWalletJournalEntry::getWalletJournalData() && noexcept
+    {
+        return std::move(mData);
+    }
+
+    void CachedWalletJournalEntry::setWalletJournalData(const WalletJournalData &data)
+    {
+        mData = data;
+    }
+
+    void CachedWalletJournalEntry::setWalletJournalData(WalletJournalData &&data)
+    {
+        mData = std::move(data);
+    }
 }

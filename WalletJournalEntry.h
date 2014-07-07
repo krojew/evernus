@@ -81,6 +81,11 @@ namespace Evernus
         TaxAmountType getTaxAmount() const noexcept;
         void setTaxAmount(TaxAmountType amount) noexcept;
 
+        WalletJournalData getWalletJournalData() const &;
+        WalletJournalData &&getWalletJournalData() && noexcept;
+        void setWalletJournalData(const WalletJournalData &data);
+        void setWalletJournalData(WalletJournalData &&data);
+
         bool isIgnored() const noexcept;
         void setIgnored(bool flag) noexcept;
 
@@ -88,4 +93,6 @@ namespace Evernus
         WalletJournalData mData;
         bool mIgnored = false;
     };
+
+    bool operator <(const WalletJournalEntry &a, const WalletJournalEntry &b);
 }

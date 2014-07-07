@@ -196,6 +196,26 @@ namespace Evernus
         mData.mTaxAmount = amount;
     }
 
+    WalletJournalData WalletJournalEntry::getWalletJournalData() const &
+    {
+        return mData;
+    }
+
+    WalletJournalData &&WalletJournalEntry::getWalletJournalData() && noexcept
+    {
+        return std::move(mData);
+    }
+
+    void WalletJournalEntry::setWalletJournalData(const WalletJournalData &data)
+    {
+        mData = data;
+    }
+
+    void WalletJournalEntry::setWalletJournalData(WalletJournalData &&data)
+    {
+        mData = std::move(data);
+    }
+
     bool WalletJournalEntry::isIgnored() const noexcept
     {
         return mIgnored;
@@ -204,5 +224,10 @@ namespace Evernus
     void WalletJournalEntry::setIgnored(bool flag) noexcept
     {
         mIgnored = flag;
+    }
+
+    bool operator <(const WalletJournalEntry &a, const WalletJournalEntry &b)
+    {
+        return a.getId() < b.getId();
     }
 }

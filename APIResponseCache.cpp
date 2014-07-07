@@ -272,10 +272,64 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    bool APIResponseCache::hasWalletJournalData(Character::IdType characterId) const
+    {
+        const auto it = mWalletJournalCache.find(characterId);
+        if (it == std::end(mWalletJournalCache))
+            return false;
+
+        if (QDateTime::currentDateTimeUtc() > it->second.mCacheUntil)
+        {
+            mWalletJournalCache.erase(it);
+
+            auto query = mWalletJournalEntryRepository->prepare(QString{"DELETE FROM %1 WHERE %2 = :character_id"}
+                .arg(mWalletJournalEntryRepository->getTableName())
+                .arg(mWalletJournalEntryRepository->getIdColumn()));
+            query.bindValue(":character_id", characterId);
+            query.exec();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    WalletJournal APIResponseCache::getWalletJournalData(Character::IdType characterId) const
+    {
+        const auto it = mWalletJournalCache.find(characterId);
+        Q_ASSERT(it != std::end(mWalletJournalCache));
+
+        return it->second.mData;
+    }
+
+    void APIResponseCache::setWalletJournalData(Character::IdType characterId, const WalletJournal &data, const QDateTime &cacheUntil) const
+    {
+        CacheEntry<WalletJournal> entry;
+        entry.mCacheUntil = cacheUntil;
+        entry.mData = data;
+
+        mWalletJournalCache.emplace(characterId, std::move(entry));
+
+        std::vector<CachedWalletJournalEntry> cachedEntries;
+        for (const auto &entry : data)
+        {
+            CachedWalletJournalEntry cachedEntry{entry.getId()};
+            cachedEntry.setCacheUntil(cacheUntil);
+            cachedEntry.setWalletJournalData(entry.getWalletJournalData());
+
+            cachedEntries.emplace_back(std::move(cachedEntry));
+        }
+
+        mWalletJournalEntryRepository->batchStore(cachedEntries, true);
+    }
+
     QDateTime APIResponseCache::getWalletJournalLocalCacheTime(Character::IdType characterId) const
     {
-        // TODO: do
-        return QDateTime{};
+        const auto it = mWalletJournalCache.find(characterId);
+        if (it == std::end(mWalletJournalCache))
+            return QDateTime::currentDateTime();
+
+        return it->second.mCacheUntil.toLocalTime();
     }
 
     void APIResponseCache::createDb()
@@ -308,6 +362,7 @@ namespace Evernus
         mCharacterRepository->clearOldData();
         mAssetListRepository->clearOldData();
         mConquerableStationListRepository->clearOldData();
+        mWalletJournalEntryRepository->clearOldData();
     }
 
     void APIResponseCache::refreshCaches()
@@ -316,6 +371,7 @@ namespace Evernus
         refreshCharacters();
         refreshAssets();
         refreshConquerableStations();
+        refreshWalletJournal();
     }
 
     void APIResponseCache::refreshCharacterLists()
@@ -420,6 +476,23 @@ namespace Evernus
         {
             const auto station = mConquerableStationRepository->populate(query.record());
             mConquerableStationCache.mData.emplace_back(ConquerableStation{station.getId(), station.getName()});
+        }
+    }
+
+    void APIResponseCache::refreshWalletJournal()
+    {
+        auto entries = mWalletJournalEntryRepository->fetchAll();
+        for (auto &cachedEntry : entries)
+        {
+            auto &cache = mWalletJournalCache[cachedEntry.getCharacterId()];
+
+            if (cache.mCacheUntil < cachedEntry.getCacheUntil())
+                cache.mCacheUntil = cachedEntry.getCacheUntil();
+
+            WalletJournalEntry entry{cachedEntry.getId()};
+            entry.setWalletJournalData(std::move(cachedEntry).getWalletJournalData());
+
+            cache.mData.emplace(std::move(entry));
         }
     }
 

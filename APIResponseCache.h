@@ -29,6 +29,7 @@
 #include "CachedAssetListRepository.h"
 #include "ConquerableStationList.h"
 #include "CachedItemRepository.h"
+#include "WalletJournal.h"
 #include "AssetList.h"
 #include "Character.h"
 #include "Key.h"
@@ -63,6 +64,9 @@ namespace Evernus
         ConquerableStationList getConquerableStationListData() const;
         void setConquerableStationListData(const ConquerableStationList &data, const QDateTime &cacheUntil);
 
+        bool hasWalletJournalData(Character::IdType characterId) const;
+        WalletJournal getWalletJournalData(Character::IdType characterId) const;
+        void setWalletJournalData(Character::IdType characterId, const WalletJournal &data, const QDateTime &cacheUntil) const;
         QDateTime getWalletJournalLocalCacheTime(Character::IdType characterId) const;
 
     private:
@@ -77,6 +81,7 @@ namespace Evernus
         mutable std::unordered_map<Character::IdType, CacheEntry<Character>> mCharacterCache;
         mutable std::unordered_map<Character::IdType, CacheEntry<AssetList>> mAssetCache;
         mutable CacheEntry<ConquerableStationList> mConquerableStationCache;
+        mutable std::unordered_map<Character::IdType, CacheEntry<WalletJournal>> mWalletJournalCache;
 
         QSqlDatabase mCacheDb;
 
@@ -97,6 +102,7 @@ namespace Evernus
         void refreshCharacters();
         void refreshAssets();
         void refreshConquerableStations();
+        void refreshWalletJournal();
 
         void saveItemTree(const Item &item, const Item *parent, QVariantList boundValues[CachedItemRepository::columnCount - 1]) const;
 
