@@ -20,6 +20,7 @@
 
 #include "ConquerableStationList.h"
 #include "APIResponseCache.h"
+#include "WalletJournal.h"
 #include "APIInterface.h"
 #include "AssetList.h"
 #include "Character.h"
@@ -39,6 +40,8 @@ namespace Evernus
         typedef std::vector<Character::IdType> CharacterList;
         typedef std::vector<RefType> RefTypeList;
 
+        static const QString eveTimeFormat;
+
         APIManager();
         virtual ~APIManager() = default;
 
@@ -47,6 +50,11 @@ namespace Evernus
         void fetchAssets(const Key &key, Character::IdType characterId, const Callback<AssetList> &callback) const;
         void fetchConquerableStationList(const Callback<ConquerableStationList> &callback) const;
         void fetchRefTypes(const Callback<RefTypeList> &callback) const;
+        void fetchWalletJournal(const Key &key,
+                                Character::IdType characterId,
+                                WalletJournalEntry::IdType fromId,
+                                WalletJournalEntry::IdType tillId,
+                                const Callback<WalletJournal> &callback) const;
 
         QDateTime getCharacterLocalCacheTime(Character::IdType characterId) const;
         QDateTime getAssetsLocalCacheTime(Character::IdType characterId) const;
@@ -56,14 +64,19 @@ namespace Evernus
         void generalError(const QString &info);
 
     private:
-        static const QString eveTimeFormat;
-
         mutable APIResponseCache mCache;
         APIInterface mInterface;
 
         mutable std::unordered_set<Key::IdType> mPendingCharacterListRequests;
         mutable std::unordered_set<Character::IdType> mPendingCharacterRequests;
         mutable std::unordered_set<Character::IdType> mPendingAssetsRequests;
+
+        void fetchWalletJournal(const Key &key,
+                                Character::IdType characterId,
+                                WalletJournalEntry::IdType fromId,
+                                WalletJournalEntry::IdType tillId,
+                                std::shared_ptr<WalletJournal> &&journal,
+                                const Callback<WalletJournal> &callback) const;
 
         template<class T, class CurElem>
         static std::vector<T> parseResults(const QString &xml, const QString &rowsetName);

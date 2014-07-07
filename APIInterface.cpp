@@ -53,6 +53,7 @@ namespace Evernus
                                           const Callback &callback) const
     {
         QueryParams params{std::make_pair("characterId", QString::number(characterId))};
+        params.emplace_back("rowCount", "2560");
         if (fromId != WalletJournalEntry::invalidId)
             params.emplace_back("fromID", QString::number(fromId));
 

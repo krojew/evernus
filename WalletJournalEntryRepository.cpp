@@ -81,6 +81,17 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
     }
 
+    WalletJournalEntry::IdType WalletJournalEntryRepository::getLatestEntryId(Character::IdType characterId) const
+    {
+        auto query = prepare(QString{"SELECT MAX(%1) FROM %2 WHERE character_id = ?"}.arg(getIdColumn()).arg(getTableName()));
+        query.bindValue(0, characterId);
+
+        DatabaseUtils::execQuery(query);
+
+        query.next();
+        return query.value(0).value<WalletJournalEntry::IdType>();
+    }
+
     QStringList WalletJournalEntryRepository::getColumns() const
     {
         return QStringList{}

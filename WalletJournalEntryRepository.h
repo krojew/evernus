@@ -35,6 +35,8 @@ namespace Evernus
 
         void create(const Repository<Character> &characterRepo) const;
 
+        WalletJournalEntry::IdType getLatestEntryId(Character::IdType characterId) const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const WalletJournalEntry &entity, QSqlQuery &query) const override;

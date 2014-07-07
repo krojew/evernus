@@ -18,6 +18,7 @@
 #include <QDateTime>
 
 #include "ConquerableStationListXmlReceiver.h"
+#include "WalletJournalXmlReceiver.h"
 #include "CharacterListXmlReceiver.h"
 #include "AssetListXmlReceiver.h"
 #include "RefTypeXmlReceiver.h"
@@ -208,6 +209,31 @@ namespace Evernus
         });
     }
 
+    void APIManager::fetchWalletJournal(const Key &key,
+                                        Character::IdType characterId,
+                                        WalletJournalEntry::IdType fromId,
+                                        WalletJournalEntry::IdType tillId,
+                                        const Callback<WalletJournal> &callback) const
+    {
+        if (mCache.hasWalletJournalData(characterId))
+        {
+            auto data = mCache.getWalletJournalData(characterId);
+            const auto end = std::end(data);
+            auto it = data.find(tillId);
+
+            if (it == end)
+                it = data.upper_bound(tillId);
+
+            if (it != end)
+                data.erase(it, end);
+
+            callback(data, QString{});
+            return;
+        }
+
+        fetchWalletJournal(key, characterId, fromId, tillId, std::make_shared<WalletJournal>(), callback);
+    }
+
     QDateTime APIManager::getCharacterLocalCacheTime(Character::IdType characterId) const
     {
         return mCache.getCharacterDataLocalCacheTime(characterId);
@@ -221,6 +247,58 @@ namespace Evernus
     QDateTime APIManager::getWalletJournalLocalCacheTime(Character::IdType characterId) const
     {
         return mCache.getWalletJournalLocalCacheTime(characterId);
+    }
+
+    void APIManager::fetchWalletJournal(const Key &key,
+                                        Character::IdType characterId,
+                                        WalletJournalEntry::IdType fromId,
+                                        WalletJournalEntry::IdType tillId,
+                                        std::shared_ptr<WalletJournal> &&journal,
+                                        const Callback<WalletJournal> &callback) const
+    {
+        mInterface.fetchWalletJournal(key, characterId, fromId,
+                                      [=, journal = std::move(journal)](const QString &response, const QString &error) mutable {
+            try
+            {
+                handlePotentialError(response, error);
+
+                auto parsed
+                    = parseResults<WalletJournal::value_type, APIXmlReceiver<WalletJournal::value_type>::CurElemType>(response, "transactions");
+
+                auto reachedEnd = parsed.empty();
+                auto nextFromId = std::numeric_limits<WalletJournalEntry::IdType>::max();
+
+                for (auto &entry : parsed)
+                {
+                    const auto id = entry.getId();
+                    if (id > tillId)
+                    {
+                        entry.setCharacterId(characterId);
+                        journal->emplace(std::move(entry));
+
+                        if (nextFromId > id)
+                            nextFromId = id;
+                    }
+                    else
+                    {
+                        reachedEnd = true;
+                    }
+                }
+
+                if (reachedEnd)
+                {
+                    callback(*journal, QString{});
+                }
+                else
+                {
+                    fetchWalletJournal(key, characterId, nextFromId, tillId, std::move(journal), callback);
+                }
+            }
+            catch (const std::exception &e)
+            {
+                callback(WalletJournal{}, e.what());
+            }
+        });
     }
 
     template<class T, class CurElem>
