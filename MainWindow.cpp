@@ -257,6 +257,7 @@ namespace Evernus
         tabs->addTab(assetsTab, tr("Assets"));
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importItemPricesFromWeb);
+        connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importItemPricesFromFile);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, assetsTab, &AssetsWidget::setCharacter);
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);

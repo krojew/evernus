@@ -95,6 +95,7 @@ namespace Evernus
         void refreshWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshConquerableStations();
         void refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
+        void refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
 
     private slots:
         void scheduleCharacterUpdate();

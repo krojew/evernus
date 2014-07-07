@@ -19,5 +19,6 @@ namespace Evernus
     namespace ItemPriceImporterNames
     {
         const auto webImporter = "web";
+        const auto logImporter = "logs";
     }
 }

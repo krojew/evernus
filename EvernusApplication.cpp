@@ -180,6 +180,8 @@ namespace Evernus
 
     void EvernusApplication::registerImporter(const std::string &name, std::unique_ptr<ItemPriceImporter> &&importer)
     {
+        Q_ASSERT(mItemPriceImporters.find(name) == std::end(mItemPriceImporters));
+
         connect(importer.get(), &ItemPriceImporter::error, this, &EvernusApplication::showPriceImportError);
         connect(importer.get(), &ItemPriceImporter::itemPricesChanged, this, &EvernusApplication::updateItemPrices);
         mItemPriceImporters.emplace(name, std::move(importer));
@@ -421,6 +423,11 @@ namespace Evernus
     void EvernusApplication::refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target)
     {
         importItemPrices(ItemPriceImporterNames::webImporter, target);
+    }
+
+    void EvernusApplication::refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target)
+    {
+        importItemPrices(ItemPriceImporterNames::logImporter, target);
     }
 
     void EvernusApplication::scheduleCharacterUpdate()

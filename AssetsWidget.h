@@ -42,12 +42,14 @@ namespace Evernus
 
     signals:
         void importPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
+        void importPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
 
     public slots:
         void updateData();
 
     private slots:
         void prepareItemImportFromWeb();
+        void prepareItemImportFromFile();
 
     private:
         const AssetProvider &mAssetProvider;
@@ -60,6 +62,8 @@ namespace Evernus
         virtual void handleNewCharacter(Character::IdType id) override;
 
         void setNewInfo();
+
+        ItemPriceImporter::TypeLocationPairs getImportTarget() const;
 
         static void buildImportTarget(ItemPriceImporter::TypeLocationPairs &target, const Item &item, quint64 locationId);
     };

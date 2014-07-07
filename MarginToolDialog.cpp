@@ -18,7 +18,6 @@
 #include <cmath>
 
 #include <QDialogButtonBox>
-#include <QStandardPaths>
 #include <QStringBuilder>
 #include <QApplication>
 #include <QRadioButton>
@@ -49,6 +48,7 @@
 #include "PriceSettings.h"
 #include "PathSettings.h"
 #include "Repository.h"
+#include "PathUtils.h"
 
 #include "MarginToolDialog.h"
 
@@ -217,10 +217,7 @@ namespace Evernus
         mainLayout->addWidget(buttons);
         connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-        auto logPath = settings.value(PathSettings::marketLogsPathKey).toString();
-        if (logPath.isEmpty())
-            logPath = QStandardPaths::locate(QStandardPaths::DocumentsLocation, "EVE/logs/Marketlogs", QStandardPaths::LocateDirectory);
-
+        const auto logPath = PathUtils::getMarketLogsPath();
         if (logPath.isEmpty())
         {
             QMessageBox::warning(this,

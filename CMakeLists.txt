@@ -39,6 +39,8 @@ qt5_wrap_cpp(
     ItemPriceImporter.h
     MainWindow.h
     MarginToolDialog.h
+    MarketLogItemPriceImporter.h
+    MarketLogItemPriceImporterThread.h
     MenuBarWidget.h
     NetworkPreferencesWidget.h
     PathPreferencesWidget.h
@@ -190,6 +192,10 @@ add_executable(
     MarketGroup.h
     MarketGroupRepository.cpp
     MarketGroupRepository.h
+    MarketLogItemPriceImporter.cpp
+    MarketLogItemPriceImporter.h
+    MarketLogItemPriceImporterThread.cpp
+    MarketLogItemPriceImporterThread.h
     MenuBarWidget.cpp
     MenuBarWidget.h
     NetworkPreferencesWidget.cpp
@@ -198,6 +204,8 @@ add_executable(
     PathPreferencesWidget.cpp
     PathPreferencesWidget.h
     PathSettings.h
+    PathUtils.cpp
+    PathUtils.h
     PreferencesDialog.cpp
     PreferencesDialog.h
     PricePreferencesWidget.cpp

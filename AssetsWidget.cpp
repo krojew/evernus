@@ -52,6 +52,11 @@ namespace Evernus
         importFromWeb->setFlat(true);
         connect(importFromWeb, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromWeb);
 
+        auto importFromFile = new QPushButton{QIcon{":/images/page_refresh.png"}, tr("Import prices from logs"), this};
+        toolBarLayout->addWidget(importFromFile);
+        importFromFile->setFlat(true);
+        connect(importFromFile, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromFile);
+
         toolBarLayout->addStretch();
 
         auto modelProxy = new QSortFilterProxyModel{this};
@@ -78,19 +83,12 @@ namespace Evernus
 
     void AssetsWidget::prepareItemImportFromWeb()
     {
-        ItemPriceImporter::TypeLocationPairs target;
+        emit importPricesFromWeb(getImportTarget());
+    }
 
-        const auto &assets = mAssetProvider.fetchForCharacter(getCharacterId());
-        for (const auto &item : assets)
-        {
-            const auto locationId = item->getLocationId();
-            if (!locationId)
-                continue;
-
-            buildImportTarget(target, *item, *locationId);
-        }
-
-        emit importPricesFromWeb(target);
+    void AssetsWidget::prepareItemImportFromFile()
+    {
+        emit importPricesFromFile(getImportTarget());
     }
 
     void AssetsWidget::handleNewCharacter(Character::IdType id)
@@ -110,6 +108,23 @@ namespace Evernus
             .arg(locale.toString(mModel.getTotalAssets()))
             .arg(locale.toString(mModel.getTotalVolume(), 'f', 2))
             .arg(locale.toCurrencyString(mModel.getTotalSellPrice(), "ISK")));
+    }
+
+    ItemPriceImporter::TypeLocationPairs AssetsWidget::getImportTarget() const
+    {
+        ItemPriceImporter::TypeLocationPairs target;
+
+        const auto &assets = mAssetProvider.fetchForCharacter(getCharacterId());
+        for (const auto &item : assets)
+        {
+            const auto locationId = item->getLocationId();
+            if (!locationId)
+                continue;
+
+            buildImportTarget(target, *item, *locationId);
+        }
+
+        return target;
     }
 
     void AssetsWidget::buildImportTarget(ItemPriceImporter::TypeLocationPairs &target, const Item &item, quint64 locationId)

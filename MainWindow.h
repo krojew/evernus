@@ -74,6 +74,7 @@ namespace Evernus
         void importWalletJournal(Character::IdType id);
 
         void importItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
+        void importItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
 
     public slots:
         void showCharacterManagement();
