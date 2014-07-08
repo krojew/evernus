@@ -86,8 +86,8 @@ namespace Evernus
         if (entity.getId() != WalletSnapshot::invalidId)
             query.bindValue(":timestamp", entity.getId());
 
-        query.bindValue(":balance", entity.getBalance());
         query.bindValue(":character_id", entity.getCharacterId());
+        query.bindValue(":balance", entity.getBalance());
     }
 
     void WalletSnapshotRepository::bindPositionalValues(const WalletSnapshot &entity, QSqlQuery &query) const
@@ -95,7 +95,7 @@ namespace Evernus
         if (entity.getId() != WalletSnapshot::invalidId)
             query.addBindValue(entity.getId());
 
-        query.addBindValue(entity.getBalance());
         query.addBindValue(entity.getCharacterId());
+        query.addBindValue(entity.getBalance());
     }
 }
