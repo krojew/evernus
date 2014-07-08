@@ -17,6 +17,7 @@
 #include <QFileDialog>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QCheckBox>
 #include <QDateEdit>
 #include <QLocale>
 #include <QLabel>
@@ -49,6 +50,11 @@ namespace Evernus
         filterLayout->addWidget(mToEdit);
         mToEdit->setCalendarPopup(true);
         connect(mToEdit, &QDateEdit::dateChanged, this, &DateFilteredPlotWidget::toChanged);
+
+        auto labelBtn = new QCheckBox{tr("Show time labels"), this};
+        filterLayout->addWidget(labelBtn);
+        labelBtn->setChecked(true);
+        connect(labelBtn, &QCheckBox::stateChanged, this, &DateFilteredPlotWidget::showLabels);
 
         auto saveBtn = new QPushButton{QIcon{":/images/image.png"}, tr("Save..."), this};
         filterLayout->addWidget(saveBtn);
@@ -118,5 +124,11 @@ namespace Evernus
             mFromEdit->setDate(date.addDays(-1));
         else
             emit filterChanged();
+    }
+
+    void DateFilteredPlotWidget::showLabels(int state)
+    {
+        mPlot->xAxis->setTickLabels(state == Qt::Checked);
+        mPlot->replot();
     }
 }
