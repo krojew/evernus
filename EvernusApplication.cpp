@@ -18,6 +18,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QDebug>
+#include <QSet>
 
 #include "ItemPriceImporterNames.h"
 #include "ImportSettings.h"
@@ -392,9 +393,29 @@ namespace Evernus
                 std::vector<Evernus::WalletJournalEntry> vectorData;
                 vectorData.reserve(data.size());
 
-                std::move(std::begin(data), std::end(data), std::back_inserter(vectorData));
+                std::vector<Evernus::WalletSnapshot> snapshots;
+                snapshots.reserve(data.size());
+
+                QSet<QDateTime> usedSnapshots;
+
+                for (auto &entry : data)
+                {
+                    const auto timestamp = entry.getTimestamp();
+
+                    if (!usedSnapshots.contains(timestamp))
+                    {
+                        Evernus::WalletSnapshot snapshot{timestamp, entry.getBalance()};
+                        snapshot.setCharacterId(entry.getCharacterId());
+
+                        snapshots.emplace_back(std::move(snapshot));
+                        usedSnapshots << timestamp;
+                    }
+                    
+                    vectorData.emplace_back(std::move(entry));
+                }
 
                 mWalletJournalEntryRepository->batchStore(vectorData, true);
+                mWalletSnapshotRepository->batchStore(snapshots, true);
 
                 emit taskStatusChanged(task, error);
             });
