@@ -13,10 +13,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QSettings>
 #include <QSpinBox>
+#include <QLabel>
 
 #include "WalletSettings.h"
 
@@ -42,10 +44,18 @@ namespace Evernus
         journalLayout->addWidget(mDeleteOldJournalBtn);
         connect(mDeleteOldJournalBtn, &QCheckBox::stateChanged, this, &WalletPreferencesWidget::deleteOldJournalToggled);
 
+        auto journalDaysLayout = new QHBoxLayout{};
+        journalLayout->addLayout(journalDaysLayout);
+
+        journalDaysLayout->addWidget(new QLabel{tr("Delete older than:"), this});
+
         mOldJournalDaysEdit = new QSpinBox{this};
-        journalLayout->addWidget(mOldJournalDaysEdit);
-        mOldJournalDaysEdit->setMinimum(1);
+        journalDaysLayout->addWidget(mOldJournalDaysEdit);
+        mOldJournalDaysEdit->setMinimum(2);
+        mOldJournalDaysEdit->setSuffix(tr("days"));
         mOldJournalDaysEdit->setValue(settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
+
+        journalDaysLayout->addStretch();
 
         mDeleteOldJournalBtn->setChecked(settings.value(WalletSettings::deleteOldJournalKey, true).toBool());
 
