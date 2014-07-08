@@ -54,7 +54,8 @@ namespace Evernus
 
         void addItem(ItemType &&item);
 
-        AssetList &operator =(AssetList other);
+        AssetList &operator =(const AssetList &other);
+        AssetList &operator =(AssetList &&other) = default;
 
     private:
         Character::IdType mCharacterId = Character::invalidId;

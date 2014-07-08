@@ -82,13 +82,15 @@ namespace Evernus
         mItems.emplace_back(std::move(item));
     }
 
-    AssetList &AssetList::operator =(AssetList other)
+    AssetList &AssetList::operator =(const AssetList &other)
     {
         using std::swap;
 
-        swap(static_cast<Entity &>(*this), static_cast<Entity &>(other));
-        swap(mCharacterId, other.mCharacterId);
-        swap(mItems, other.mItems);
+        AssetList temp{other};
+
+        swap(static_cast<Entity &>(*this), static_cast<Entity &>(temp));
+        swap(mCharacterId, temp.mCharacterId);
+        swap(mItems, temp.mItems);
 
         return *this;
     }

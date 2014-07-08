@@ -138,7 +138,11 @@ namespace Evernus
         using std::swap;
 
         Item copy{other};
-        swap(*this, copy);
+        swap(static_cast<Entity &>(*this), static_cast<Entity &>(copy));
+        swap(mParentId, copy.mParentId);
+        swap(mListId, copy.mListId);
+        swap(mData, copy.mData);
+        swap(mContents, copy.mContents);
 
         return *this;
     }
