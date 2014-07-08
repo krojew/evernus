@@ -287,6 +287,7 @@ namespace Evernus
 
                 if (reachedEnd)
                 {
+                    mCache.setWalletJournalData(characterId, *journal, getCachedUntil(response));
                     callback(*journal, QString{});
                 }
                 else
