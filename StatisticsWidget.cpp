@@ -92,16 +92,11 @@ namespace Evernus
         QVector<double> assetTicks, assetValues;
         QVector<double> walletTicks, walletValues;
 
-        auto xMin = std::numeric_limits<double>::max(), xMax = -1.;
         auto yMax = -1.;
 
         for (const auto &shot : assetShots)
         {
             const auto secs = shot.getId().toMSecsSinceEpoch() / 1000.;
-            if (secs > xMax)
-                xMax = secs;
-            if (secs < xMin)
-                xMin = secs;
 
             assetTicks << secs;
             assetValues << shot.getBalance();
@@ -110,10 +105,6 @@ namespace Evernus
         for (const auto &shot : walletShots)
         {
             const auto secs = shot.getId().toMSecsSinceEpoch() / 1000.;
-            if (secs > xMax)
-                xMax = secs;
-            if (secs < xMin)
-                xMin = secs;
 
             walletTicks << secs;
             walletValues << shot.getBalance();
@@ -237,15 +228,15 @@ namespace Evernus
 
         mBalancePlot->getPlot().xAxis->setTickVector(sumTicks);
 
-        if (!walletTicks.isEmpty() || !assetTicks.isEmpty())
-        {
-            mBalancePlot->getPlot().xAxis->setRange(xMin, xMax);
-            mBalancePlot->getPlot().yAxis->setRange(0., yMax);
-        }
-
         assetGraph->setData(assetTicks, assetValues);
         walletGraph->setData(walletTicks, walletValues);
         sumGraph->setData(sumTicks, sumValues);
+
+        if (!walletTicks.isEmpty() || !assetTicks.isEmpty())
+        {
+            mBalancePlot->getPlot().xAxis->rescale();
+            mBalancePlot->getPlot().yAxis->setRange(0., yMax);
+        }
 
         mBalancePlot->getPlot().replot();
     }
