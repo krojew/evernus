@@ -39,5 +39,7 @@ namespace Evernus
         virtual QStringList getColumns() const override;
         virtual void bindValues(const CachedWalletJournalEntry &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const CachedWalletJournalEntry &entity, QSqlQuery &query) const override;
+
+        virtual size_t getMaxRowsPerInsert() const override;
     };
 }

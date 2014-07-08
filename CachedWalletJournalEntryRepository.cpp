@@ -159,4 +159,9 @@ namespace Evernus
         query.addBindValue((taxReceiverId) ? (*taxReceiverId) : (QVariant{QVariant::ULongLong}));
         query.addBindValue((taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
     }
+
+    size_t CachedWalletJournalEntryRepository::getMaxRowsPerInsert() const
+    {
+        return 60;
+    }
 }
