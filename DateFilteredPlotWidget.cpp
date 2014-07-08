@@ -59,13 +59,14 @@ namespace Evernus
 
         mPlot = new QCustomPlot{this};
         mainLayout->addWidget(mPlot);
-        mPlot->setMinimumHeight(200);
+        mPlot->setMinimumHeight(300);
+        mPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
         mPlot->xAxis->setAutoTicks(false);
         mPlot->xAxis->setAutoTickLabels(true);
         mPlot->xAxis->setTickLabelRotation(60);
         mPlot->xAxis->setSubTickCount(0);
         mPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
-        mPlot->xAxis->setDateTimeFormat(locale().dateFormat());
+        mPlot->xAxis->setDateTimeFormat(locale().dateFormat(QLocale::NarrowFormat));
     }
 
     QDate DateFilteredPlotWidget::getFrom() const
