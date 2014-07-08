@@ -37,6 +37,8 @@ namespace Evernus
 
         WalletJournalEntry::IdType getLatestEntryId(Character::IdType characterId) const;
 
+        void deleteOldEntires(const QDateTime &from);
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const WalletJournalEntry &entity, QSqlQuery &query) const override;

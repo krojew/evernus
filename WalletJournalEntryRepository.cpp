@@ -79,6 +79,7 @@ namespace Evernus
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)"}.arg(getTableName()));
     }
 
     WalletJournalEntry::IdType WalletJournalEntryRepository::getLatestEntryId(Character::IdType characterId) const
@@ -90,6 +91,14 @@ namespace Evernus
 
         query.next();
         return query.value(0).value<WalletJournalEntry::IdType>();
+    }
+
+    void WalletJournalEntryRepository::deleteOldEntires(const QDateTime &from)
+    {
+        auto query = prepare(QString{"DELETE FROM %1 WHERE timestamp < ?"}.arg(getTableName()));
+        query.bindValue(0, from);
+
+        DatabaseUtils::execQuery(query);
     }
 
     QStringList WalletJournalEntryRepository::getColumns() const

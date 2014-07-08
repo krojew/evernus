@@ -145,6 +145,7 @@ namespace Evernus
         void createDbSchema();
         void precacheRefTypes();
         void precacheRefTypes(const RefTypeRepository::RefTypeList &refs);
+        void deleteOldWalletEntries();
 
         uint startTask(const QString &description);
         uint startTask(uint parentTask, const QString &description);

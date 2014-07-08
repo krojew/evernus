@@ -24,6 +24,7 @@
 #include "CharacterImportPreferencesWidget.h"
 #include "AssetsImportPreferencesWidget.h"
 #include "NetworkPreferencesWidget.h"
+#include "WalletPreferencesWidget.h"
 #include "PricePreferencesWidget.h"
 #include "PathPreferencesWidget.h"
 
@@ -53,6 +54,7 @@ namespace Evernus
         categories.emplace_back(std::make_pair(QString{tr("Paths")}, std::unique_ptr<QWidget>{new PathPreferencesWidget{}}));
         categories.emplace_back(std::make_pair(QString{tr("Price")}, std::unique_ptr<QWidget>{new PricePreferencesWidget{}}));
         categories.emplace_back(std::make_pair(QString{tr("Network")}, std::unique_ptr<QWidget>{new NetworkPreferencesWidget{}}));
+        categories.emplace_back(std::make_pair(QString{tr("Wallet")}, std::unique_ptr<QWidget>{new WalletPreferencesWidget{}}));
 
         for (auto i = 0; i < categories.size(); ++i)
         {

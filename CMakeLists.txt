@@ -48,6 +48,7 @@ qt5_wrap_cpp(
     PricePreferencesWidget.h
     qcustomplot.h
     StatisticsWidget.h
+    WalletPreferencesWidget.h
 )
 
 qt5_add_resources(
@@ -236,6 +237,9 @@ add_executable(
     WalletJournalWidget.h
     WalletJournalXmlReceiver.cpp
     WalletJournalXmlReceiver.h
+    WalletPreferencesWidget.cpp
+    WalletPreferencesWidget.h
+    WalletSettings.h
     WalletSnapshot.cpp
     WalletSnapshot.h
     WalletSnapshotRepository.cpp

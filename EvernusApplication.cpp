@@ -21,6 +21,7 @@
 
 #include "ItemPriceImporterNames.h"
 #include "ImportSettings.h"
+#include "WalletSettings.h"
 #include "DatabaseUtils.h"
 
 #include "EvernusApplication.h"
@@ -49,6 +50,9 @@ namespace Evernus
 
         showSplashMessage(tr("Precaching ref types..."), splash);
         precacheRefTypes();
+
+        showSplashMessage(tr("Clearing old wallet entries..."), splash);
+        deleteOldWalletEntries();
 
         showSplashMessage(tr("Loading..."), splash);
 
@@ -546,6 +550,15 @@ namespace Evernus
     {
         for (const auto &ref : refs)
             mRefTypeNames.emplace(ref.getId(), std::move(ref).getName());
+    }
+
+    void EvernusApplication::deleteOldWalletEntries()
+    {
+        QSettings settings;
+
+        const auto dt = QDateTime::currentDateTimeUtc().addDays(
+             -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
+        mWalletJournalEntryRepository->deleteOldEntires(dt);
     }
 
     uint EvernusApplication::startTask(const QString &description)
