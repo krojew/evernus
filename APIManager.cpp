@@ -225,7 +225,7 @@ namespace Evernus
                 it = data.upper_bound(tillId);
 
             if (it != end)
-                data.erase(it, end);
+                data.erase(std::begin(data), std::next(it));
 
             callback(data, QString{});
             return;
