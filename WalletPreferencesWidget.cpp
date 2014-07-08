@@ -41,12 +41,13 @@ namespace Evernus
         mDeleteOldJournalBtn = new QCheckBox{tr("Delete old entries"), this};
         journalLayout->addWidget(mDeleteOldJournalBtn);
         connect(mDeleteOldJournalBtn, &QCheckBox::stateChanged, this, &WalletPreferencesWidget::deleteOldJournalToggled);
-        mDeleteOldJournalBtn->setChecked(settings.value(WalletSettings::deleteOldJournalKey, true).toBool());
 
         mOldJournalDaysEdit = new QSpinBox{this};
         journalLayout->addWidget(mOldJournalDaysEdit);
         mOldJournalDaysEdit->setMinimum(1);
         mOldJournalDaysEdit->setValue(settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
+
+        mDeleteOldJournalBtn->setChecked(settings.value(WalletSettings::deleteOldJournalKey, true).toBool());
 
         mainLayout->addStretch();
     }
