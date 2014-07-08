@@ -233,6 +233,8 @@ add_executable(
     WalletJournalEntry.h
     WalletJournalEntryRepository.cpp
     WalletJournalEntryRepository.h
+    WalletJournalModel.cpp
+    WalletJournalModel.h
     WalletJournalWidget.cpp
     WalletJournalWidget.h
     WalletJournalXmlReceiver.cpp
