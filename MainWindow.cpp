@@ -46,6 +46,7 @@ namespace Evernus
                            const Repository<Key> &keyRepository,
                            const AssetValueSnapshotRepository &assetSnapshotRepo,
                            const WalletSnapshotRepository &walletSnapshotRepo,
+                           const WalletJournalEntryRepository &walletJournalRepo,
                            const AssetProvider &assetProvider,
                            const EveDataProvider &eveDataProvider,
                            APIManager &apiManager,
@@ -56,6 +57,7 @@ namespace Evernus
         , mKeyRepository{keyRepository}
         , mAssetSnapshotRepository{assetSnapshotRepo}
         , mWalletSnapshotRepository{walletSnapshotRepo}
+        , mWalletJournalRepository{walletJournalRepo}
         , mAssetProvider{assetProvider}
         , mEveDataProvider{eveDataProvider}
         , mApiManager{apiManager}
@@ -263,10 +265,11 @@ namespace Evernus
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::itemPricesChanged, assetsTab, &AssetsWidget::updateData);
 
-        auto journalTab = new WalletJournalWidget{mApiManager, this};
+        auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mApiManager, this};
         tabs->addTab(journalTab, tr("Journal"));
         connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, journalTab, &WalletJournalWidget::setCharacter);
+        connect(this, &MainWindow::walletJournalChanged, journalTab, &WalletJournalWidget::updateData);
     }
 
     void MainWindow::createStatusBar()

@@ -72,6 +72,7 @@ namespace Evernus
         const CharacterRepository &getCharacterRepository() const noexcept;
         const WalletSnapshotRepository &getWalletSnapshotRepository() const noexcept;
         const AssetValueSnapshotRepository &getAssetValueSnapshotRepository() const noexcept;
+        const WalletJournalEntryRepository &getWalletJournalEntryRepository() const noexcept;
 
         APIManager &getAPIManager() noexcept;
 
@@ -87,6 +88,7 @@ namespace Evernus
         void assetsChanged();
         void iskChanged();
         void itemPricesChanged();
+        void walletJournalChanged();
 
     public slots:
         void refreshCharacters();

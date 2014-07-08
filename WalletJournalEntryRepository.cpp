@@ -80,6 +80,7 @@ namespace Evernus
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp ON %1(character_id, timestamp)"}.arg(getTableName()));
     }
 
     WalletJournalEntry::IdType WalletJournalEntryRepository::getLatestEntryId(Character::IdType characterId) const
@@ -93,12 +94,34 @@ namespace Evernus
         return query.value(0).value<WalletJournalEntry::IdType>();
     }
 
-    void WalletJournalEntryRepository::deleteOldEntires(const QDateTime &from)
+    void WalletJournalEntryRepository::deleteOldEntires(const QDateTime &from) const
     {
         auto query = prepare(QString{"DELETE FROM %1 WHERE timestamp < ?"}.arg(getTableName()));
         query.bindValue(0, from);
 
         DatabaseUtils::execQuery(query);
+    }
+
+    std::vector<WalletJournalEntry> WalletJournalEntryRepository
+    ::fetchForCharacterInRange(Character::IdType characterId, const QDateTime &from, const QDateTime &till) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ?"}.arg(getTableName()));
+        query.addBindValue(characterId);
+        query.addBindValue(from);
+        query.addBindValue(till);
+
+        DatabaseUtils::execQuery(query);
+
+        const auto size = query.size();
+
+        std::vector<WalletJournalEntry> result;
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
     }
 
     QStringList WalletJournalEntryRepository::getColumns() const

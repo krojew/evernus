@@ -12,19 +12,57 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QSortFilterProxyModel>
+#include <QHeaderView>
+#include <QVBoxLayout>
+#include <QTreeView>
+
+#include "WalletEntryFilterWidget.h"
+#include "ButtonWithTimer.h"
 #include "APIManager.h"
 
 #include "WalletJournalWidget.h"
 
 namespace Evernus
 {
-    WalletJournalWidget::WalletJournalWidget(const APIManager &apiManager, QWidget *parent)
+    WalletJournalWidget::WalletJournalWidget(const WalletJournalEntryRepository &journalRepo, const APIManager &apiManager, QWidget *parent)
         : CharacterBoundWidget{std::bind(&APIManager::getWalletJournalLocalCacheTime, &apiManager, std::placeholders::_1), parent}
+        , mModel{journalRepo}
     {
+        auto mainLayout = new QVBoxLayout{};
+        setLayout(mainLayout);
+
+        auto toolBarLayout = new QHBoxLayout{};
+        mainLayout->addLayout(toolBarLayout);
+
+        auto &importBtn = getAPIImportButton();
+        toolBarLayout->addWidget(&importBtn);
+
+        toolBarLayout->addStretch();
+
+        auto filter = new WalletEntryFilterWidget{this};
+        mainLayout->addWidget(filter);
+
+        auto proxy = new QSortFilterProxyModel{this};
+        proxy->setSourceModel(&mModel);
+
+        auto journalView = new QTreeView{this};
+        mainLayout->addWidget(journalView, 1);
+        journalView->setModel(proxy);
+        journalView->setSortingEnabled(true);
+        journalView->header()->setSectionResizeMode(QHeaderView::Stretch);
+    }
+
+    void WalletJournalWidget::updateData()
+    {
+        refreshImportTimer();
+        mModel.reset();
     }
 
     void WalletJournalWidget::handleNewCharacter(Character::IdType id)
     {
+        qDebug() << "Switching wallet journal to" << id;
 
+        mModel.setCharacter(id);
     }
 }

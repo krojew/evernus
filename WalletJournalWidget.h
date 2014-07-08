@@ -14,20 +14,30 @@
  */
 #pragma once
 
+#include "WalletJournalModel.h"
+
 #include "CharacterBoundWidget.h"
 
 namespace Evernus
 {
+    class WalletJournalEntryRepository;
     class APIManager;
 
     class WalletJournalWidget
         : public CharacterBoundWidget
     {
+        Q_OBJECT
+
     public:
-        explicit WalletJournalWidget(const APIManager &apiManager, QWidget *parent = nullptr);
+        WalletJournalWidget(const WalletJournalEntryRepository &journalRepo, const APIManager &apiManager, QWidget *parent = nullptr);
         virtual ~WalletJournalWidget() = default;
 
+    public slots:
+        void updateData();
+
     private:
+        WalletJournalModel mModel;
+
         virtual void handleNewCharacter(Character::IdType id) override;
     };
 }

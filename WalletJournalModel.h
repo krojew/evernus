@@ -14,15 +14,30 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <QAbstractTableModel>
+#include <QDate>
+
+#include "WalletJournalEntry.h"
+#include "Character.h"
 
 namespace Evernus
 {
+    class WalletJournalEntryRepository;
+
     class WalletJournalModel
         : public QAbstractTableModel
     {
     public:
-        explicit WalletJournalModel(QObject *parent = nullptr);
+        enum class EntryType
+        {
+            All,
+            Incomig,
+            Outgoing
+        };
+
+        explicit WalletJournalModel(const WalletJournalEntryRepository &journalRepo, QObject *parent = nullptr);
         virtual ~WalletJournalModel() = default;
 
         virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
@@ -32,6 +47,16 @@ namespace Evernus
         virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
+        void setCharacter(Character::IdType id);
+
+        void reset();
+
     private:
+        const WalletJournalEntryRepository &mJournalRepository;
+
+        Character::IdType mCharacterId = Character::invalidId;
+        QDate mFrom, mTill;
+
+        std::vector<WalletJournalEntry> mData;
     };
 }

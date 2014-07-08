@@ -236,6 +236,11 @@ namespace Evernus
         return *mAssetValueSnapshotRepository;
     }
 
+    const WalletJournalEntryRepository &EvernusApplication::getWalletJournalEntryRepository() const noexcept
+    {
+        return *mWalletJournalEntryRepository;
+    }
+
     APIManager &EvernusApplication::getAPIManager() noexcept
     {
         return mAPIManager;
@@ -343,6 +348,7 @@ namespace Evernus
         qDebug() << "Refreshing assets: " << id;
 
         const auto assetSubtask = startTask(parentTask, QString{tr("Fetching assets for character %1...")}.arg(id));
+        processEvents();
 
         try
         {
@@ -382,6 +388,7 @@ namespace Evernus
         qDebug() << "Refreshing wallet journal: " << id;
 
         const auto task = startTask(tr("Fetching wallet journal for character %1...").arg(id));
+        processEvents();
 
         try
         {
@@ -417,6 +424,7 @@ namespace Evernus
                 mWalletJournalEntryRepository->batchStore(vectorData, true);
                 mWalletSnapshotRepository->batchStore(snapshots, true);
 
+                emit walletJournalChanged();
                 emit taskStatusChanged(task, error);
             });
         }
@@ -435,6 +443,7 @@ namespace Evernus
         qDebug() << "Refreshing conquerable stations...";
 
         const auto task = startTask(tr("Fetching conquerable stations..."));
+        processEvents();
 
         mAPIManager.fetchConquerableStationList([task, this](const auto &list, const auto &error) {
             mConquerableStationRepository->exec(QString{"DELETE FROM %1"}.arg(mConquerableStationRepository->getTableName()));
@@ -648,6 +657,7 @@ namespace Evernus
         Q_ASSERT(it != std::end(mItemPriceImporters));
 
         mCurrentItemPriceImportTask = startTask(tr("Importing item prices..."));
+        processEvents();
 
         it->second->fetchItemPrices(target);
     }

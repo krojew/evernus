@@ -48,6 +48,8 @@ qt5_wrap_cpp(
     PricePreferencesWidget.h
     qcustomplot.h
     StatisticsWidget.h
+    WalletEntryFilterWidget.h
+    WalletJournalWidget.h
     WalletPreferencesWidget.h
 )
 
@@ -227,6 +229,8 @@ add_executable(
     StatisticsWidget.h
     TaskConstants.h
     UISettings.h
+    WalletEntryFilterWidget.cpp
+    WalletEntryFilterWidget.h
     WalletJournal.h
     WalletJournalData.h
     WalletJournalEntry.cpp

@@ -19,6 +19,7 @@
 #include "MarketLogItemPriceImporterThread.h"
 #include "EveMarketDataItemPriceImporter.h"
 #include "MarketLogItemPriceImporter.h"
+#include "WalletEntryFilterWidget.h"
 #include "ItemPriceImporterNames.h"
 #include "EvernusApplication.h"
 #include "MainWindow.h"
@@ -33,6 +34,7 @@ int main(int argc, char *argv[])
         QCoreApplication::setOrganizationName("evernus.com");
 
         qRegisterMetaType<Evernus::MarketLogItemPriceImporterThread::ItemPriceList>("ItemPriceList");
+        qRegisterMetaType<Evernus::WalletEntryFilterWidget::EntryType>("EntryType");
 
         Evernus::EvernusApplication app{argc, argv};
 
@@ -47,6 +49,7 @@ int main(int argc, char *argv[])
                                         app.getKeyRepository(),
                                         app.getAssetValueSnapshotRepository(),
                                         app.getWalletSnapshotRepository(),
+                                        app.getWalletJournalEntryRepository(),
                                         app,
                                         app,
                                         app.getAPIManager()};
@@ -66,6 +69,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(charactersChanged()), SIGNAL(charactersChanged()));
             mainWnd.connect(&app, SIGNAL(assetsChanged()), SIGNAL(assetsChanged()));
             mainWnd.connect(&app, SIGNAL(itemPricesChanged()), SIGNAL(itemPricesChanged()));
+            mainWnd.connect(&app, SIGNAL(walletJournalChanged()), SIGNAL(walletJournalChanged()));
             mainWnd.connect(&app, SIGNAL(iskChanged()), SLOT(updateIskData()));
             mainWnd.showAsSaved();
 

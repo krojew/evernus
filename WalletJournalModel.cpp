@@ -12,12 +12,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "WalletJournalEntryRepository.h"
+
 #include "WalletJournalModel.h"
 
 namespace Evernus
 {
-    WalletJournalModel::WalletJournalModel(QObject *parent)
+    WalletJournalModel::WalletJournalModel(const WalletJournalEntryRepository &journalRepo, QObject *parent)
         : QAbstractTableModel{parent}
+        , mJournalRepository{journalRepo}
     {
     }
 
@@ -28,6 +31,30 @@ namespace Evernus
 
     QVariant WalletJournalModel::headerData(int section, Qt::Orientation orientation, int role) const
     {
+        if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+        {
+            switch (section) {
+            case 0:
+                return tr("Ignored");
+            case 1:
+                return tr("Date");
+            case 2:
+                return tr("Type");
+            case 3:
+                return tr("First party");
+            case 4:
+                return tr("Second party");
+            case 5:
+                return tr("Additional data");
+            case 6:
+                return tr("Amount");
+            case 7:
+                return tr("Balance after");
+            case 8:
+                return tr("Reason");
+            }
+        }
+
         return QVariant{};
     }
 
@@ -49,5 +76,23 @@ namespace Evernus
     int WalletJournalModel::rowCount(const QModelIndex &parent) const
     {
         return 0;
+    }
+
+    void WalletJournalModel::setCharacter(Character::IdType id)
+    {
+        mCharacterId = id;
+        reset();
+    }
+
+    void WalletJournalModel::reset()
+    {
+        beginResetModel();
+
+        if (mCharacterId == Character::invalidId)
+            mData.clear();
+        else
+            mData = mJournalRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}, QDateTime{mTill});
+
+        endResetModel();
     }
 }
