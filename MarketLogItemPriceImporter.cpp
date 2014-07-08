@@ -67,8 +67,13 @@ namespace Evernus
     void MarketLogItemPriceImporter::deleteThread(MarketLogItemPriceImporterThread *thread)
     {
         thread->deleteLater();
-        mScanningThreads.erase(std::find_if(std::begin(mScanningThreads), std::end(mScanningThreads), [thread](const auto &entry) {
+
+        const auto it = std::find_if(std::begin(mScanningThreads), std::end(mScanningThreads), [thread](const auto &entry) {
             return entry.get() == thread;
-        }));
+        });
+
+        Q_ASSERT(it != std::end(mScanningThreads));
+        it->release();
+        mScanningThreads.erase(it);
     }
 }
