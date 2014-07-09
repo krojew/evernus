@@ -31,7 +31,10 @@ namespace Evernus
 
     CacheTimer CacheTimerRepository::populate(const QSqlRecord &record) const
     {
-        CacheTimer cacheTimer{record.value("id").value<CacheTimer::IdType>(), record.value("cache_until").toDateTime()};
+        auto dt = record.value("cache_until").toDateTime();
+        dt.setTimeSpec(Qt::UTC);
+
+        CacheTimer cacheTimer{record.value("id").value<CacheTimer::IdType>(), dt};
         cacheTimer.setCharacterId(record.value("character_id").value<Character::IdType>());
         cacheTimer.setNew(false);
 
