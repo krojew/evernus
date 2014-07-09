@@ -14,12 +14,12 @@
  */
 #pragma once
 
+#include <unordered_map>
 #include <unordered_set>
 #include <functional>
 #include <vector>
 
 #include "ConquerableStationList.h"
-#include "APIResponseCache.h"
 #include "WalletJournal.h"
 #include "APIInterface.h"
 #include "AssetList.h"
@@ -39,8 +39,6 @@ namespace Evernus
 
         typedef std::vector<Character::IdType> CharacterList;
         typedef std::vector<RefType> RefTypeList;
-
-        static const QString eveTimeFormat;
 
         APIManager();
         virtual ~APIManager() = default;
@@ -64,12 +62,15 @@ namespace Evernus
         void generalError(const QString &info);
 
     private:
-        mutable APIResponseCache mCache;
         APIInterface mInterface;
 
         mutable std::unordered_set<Key::IdType> mPendingCharacterListRequests;
         mutable std::unordered_set<Character::IdType> mPendingCharacterRequests;
         mutable std::unordered_set<Character::IdType> mPendingAssetsRequests;
+
+        mutable std::unordered_map<Character::IdType, QDateTime> mCharacterLocalCacheTimes;
+        mutable std::unordered_map<Character::IdType, QDateTime> mAssetsLocalCacheTimes;
+        mutable std::unordered_map<Character::IdType, QDateTime> mWalletJournalLocalCacheTimes;
 
         void fetchWalletJournal(const Key &key,
                                 Character::IdType characterId,
@@ -85,7 +86,6 @@ namespace Evernus
 
         static QString queryPath(const QString &path, const QString &xml);
 
-        static QDateTime getCachedUntil(const QString &xml);
         static void handlePotentialError(const QString &xml, const QString &error);
     };
 }

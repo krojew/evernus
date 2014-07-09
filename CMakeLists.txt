@@ -72,6 +72,8 @@ add_executable(
     APIManager.h
     APIResponseCache.cpp
     APIResponseCache.h
+    APIUtils.cpp
+    APIUtils.h
     APIXmlReceiver.h
     AssetList.cpp
     AssetList.h
@@ -92,37 +94,6 @@ add_executable(
     AssetValueSnapshotRepository.h
     ButtonWithTimer.cpp
     ButtonWithTimer.h
-    CachedAssetList.cpp
-    CachedAssetList.h
-    CachedAssetListRepository.cpp
-    CachedAssetListRepository.h
-    CachedCharacter.cpp
-    CachedCharacter.h
-    CachedCharacterList.cpp
-    CachedCharacterList.h
-    CachedCharacterListRepository.cpp
-    CachedCharacterListRepository.h
-    CachedCharacterRepository.cpp
-    CachedCharacterRepository.h
-    CachedConquerableStation.cpp
-    CachedConquerableStation.h
-    CachedConquerableStationList.cpp
-    CachedConquerableStationList.h
-    CachedConquerableStationListRepository.cpp
-    CachedConquerableStationListRepository.h
-    CachedConquerableStationRepository.cpp
-    CachedConquerableStationRepository.h
-    CachedEntity.cpp
-    CachedEntity.h
-    CachedItem.cpp
-    CachedItem.h
-    CachedItemRepository.cpp
-    CachedItemRepository.h
-    CachedWalletJournalEntry.cpp
-    CachedWalletJournalEntry.h
-    CachedWalletJournalEntryRepository.cpp
-    CachedWalletJournalEntryRepository.h
-    CacheRepository.h
     Character.cpp
     Character.h
     CharacterBoundWidget.cpp

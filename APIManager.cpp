@@ -23,6 +23,7 @@
 #include "AssetListXmlReceiver.h"
 #include "RefTypeXmlReceiver.h"
 #include "CharacterDomParser.h"
+#include "APIUtils.h"
 #include "Item.h"
 
 #include "APIManager.h"
@@ -55,8 +56,6 @@ namespace Evernus
         };
     }
 
-    const QString APIManager::eveTimeFormat = "yyyy-MM-dd HH:mm:ss";
-
     APIManager::APIManager()
         : QObject{}
     {
@@ -65,12 +64,6 @@ namespace Evernus
 
     void APIManager::fetchCharacterList(const Key &key, const Callback<CharacterList> &callback) const
     {
-        if (mCache.hasChracterListData(key.getId()))
-        {
-            callback(mCache.getCharacterListData(key.getId()), QString{});
-            return;
-        }
-
         if (mPendingCharacterListRequests.find(key.getId()) != std::end(mPendingCharacterListRequests))
             return;
 
@@ -84,8 +77,6 @@ namespace Evernus
                 handlePotentialError(response, error);
 
                 CharacterList list{parseResults<Character::IdType, APIXmlReceiver<Character::IdType>::CurElemType>(response, "characters")};
-                mCache.setChracterListData(key.getId(), list, getCachedUntil(response));
-
                 callback(list, QString{});
             }
             catch (const std::exception &e)
@@ -97,15 +88,6 @@ namespace Evernus
 
     void APIManager::fetchCharacter(const Key &key, Character::IdType characterId, const Callback<Character> &callback) const
     {
-        if (mCache.hasCharacterData(characterId))
-        {
-            auto data = mCache.getCharacterData(characterId);
-            data.setKeyId(key.getId());
-
-            callback(std::move(data), QString{});
-            return;
-        }
-
         if (mPendingCharacterRequests.find(characterId) != std::end(mPendingCharacterRequests))
             return;
 
@@ -120,7 +102,8 @@ namespace Evernus
 
                 Character character{parseResult<Character>(response)};
                 character.setKeyId(key.getId());
-                mCache.setCharacterData(character.getId(), character, getCachedUntil(response));
+
+                mCharacterLocalCacheTimes[characterId] = APIUtils::getCachedUntil(response);
 
                 callback(character, QString{});
             }
@@ -133,12 +116,6 @@ namespace Evernus
 
     void APIManager::fetchAssets(const Key &key, Character::IdType characterId, const Callback<AssetList> &callback) const
     {
-        if (mCache.hasAssetData(characterId))
-        {
-            callback(mCache.getAssetData(characterId), QString{});
-            return;
-        }
-
         if (mPendingAssetsRequests.find(characterId) != std::end(mPendingAssetsRequests))
             return;
 
@@ -153,7 +130,8 @@ namespace Evernus
 
                 AssetList assets{parseResults<AssetList::ItemType, std::unique_ptr<AssetList::ItemType::element_type>>(response, "assets")};
                 assets.setCharacterId(characterId);
-                mCache.setAssetData(characterId, assets, getCachedUntil(response));
+
+                mAssetsLocalCacheTimes[characterId] = APIUtils::getCachedUntil(response);
 
                 callback(assets, QString{});
             }
@@ -166,20 +144,16 @@ namespace Evernus
 
     void APIManager::fetchConquerableStationList(const Callback<ConquerableStationList> &callback) const
     {
-        if (mCache.hasConquerableStationListData())
-        {
-            callback(mCache.getConquerableStationListData(), QString{});
-            return;
-        }
-
+#ifdef Q_OS_WIN
         mInterface.fetchConquerableStationList([callback, this](const QString &response, const QString &error) {
+#else
+        mInterface.fetchConquerableStationList([callback = callback, this](const QString &response, const QString &error) {
+#endif
             try
             {
                 handlePotentialError(response, error);
 
                 ConquerableStationList stations{parseResults<ConquerableStation, APIXmlReceiver<ConquerableStation>::CurElemType>(response, "outposts")};
-                mCache.setConquerableStationListData(stations, getCachedUntil(response));
-
                 callback(stations, QString{});
             }
             catch (const std::exception &e)
@@ -215,38 +189,25 @@ namespace Evernus
                                         WalletJournalEntry::IdType tillId,
                                         const Callback<WalletJournal> &callback) const
     {
-        if (mCache.hasWalletJournalData(characterId))
-        {
-            auto data = mCache.getWalletJournalData(characterId);
-            const auto end = std::end(data);
-            auto it = data.find(tillId);
-
-            if (it == end)
-                it = data.upper_bound(tillId);
-
-            if (it != end)
-                data.erase(std::begin(data), std::next(it));
-
-            callback(data, QString{});
-            return;
-        }
-
         fetchWalletJournal(key, characterId, fromId, tillId, std::make_shared<WalletJournal>(), callback);
     }
 
     QDateTime APIManager::getCharacterLocalCacheTime(Character::IdType characterId) const
     {
-        return mCache.getCharacterDataLocalCacheTime(characterId);
+        const auto it = mCharacterLocalCacheTimes.find(characterId);
+        return (it == std::end(mCharacterLocalCacheTimes)) ? (QDateTime::currentDateTime()) : (it->second);
     }
 
     QDateTime APIManager::getAssetsLocalCacheTime(Character::IdType characterId) const
     {
-        return mCache.getAssetsDataLocalCacheTime(characterId);
+        const auto it = mAssetsLocalCacheTimes.find(characterId);
+        return (it == std::end(mAssetsLocalCacheTimes)) ? (QDateTime::currentDateTime()) : (it->second);
     }
 
     QDateTime APIManager::getWalletJournalLocalCacheTime(Character::IdType characterId) const
     {
-        return mCache.getWalletJournalLocalCacheTime(characterId);
+        const auto it = mWalletJournalLocalCacheTimes.find(characterId);
+        return (it == std::end(mWalletJournalLocalCacheTimes)) ? (QDateTime::currentDateTime()) : (it->second);
     }
 
     void APIManager::fetchWalletJournal(const Key &key,
@@ -287,7 +248,7 @@ namespace Evernus
 
                 if (reachedEnd)
                 {
-                    mCache.setWalletJournalData(characterId, *journal, getCachedUntil(response));
+                    mWalletJournalLocalCacheTimes[characterId] = APIUtils::getCachedUntil(response);
                     callback(*journal, QString{});
                 }
                 else
@@ -344,14 +305,6 @@ namespace Evernus
         query.evaluateTo(&out);
 
         return out.trimmed();
-    }
-
-    QDateTime APIManager::getCachedUntil(const QString &xml)
-    {
-        auto cachedUntil = QDateTime::fromString(queryPath("/eveapi/cachedUntil/text()", xml), eveTimeFormat);
-        cachedUntil.setTimeSpec(Qt::UTC);
-
-        return cachedUntil;
     }
 
     void APIManager::handlePotentialError(const QString &xml, const QString &error)

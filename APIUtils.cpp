@@ -12,25 +12,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include "APIUtils.h"
 
-#include <QDateTime>
-
-#include "Entity.h"
+#include <QXmlQuery>
 
 namespace Evernus
 {
-    class CachedConquerableStationList
-        : public Entity<uint>
+    namespace APIUtils
     {
-    public:
-        using Entity::Entity;
-        virtual ~CachedConquerableStationList() = default;
+        QDateTime getCachedUntil(const QString &xml)
+        {
+            QString out;
 
-        QDateTime getCacheUntil() const;
-        void setCacheUntil(const QDateTime &dt);
+            QXmlQuery query;
+            query.setFocus(xml);
+            query.setQuery("/eveapi/cachedUntil/text()");
+            query.evaluateTo(&out);
 
-    private:
-        QDateTime mCacheUntil;
-    };
+            auto cachedUntil = QDateTime::fromString(out.trimmed(), eveTimeFormat);
+            cachedUntil.setTimeSpec(Qt::UTC);
+
+            return cachedUntil;
+        }
+    }
 }

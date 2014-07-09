@@ -22,6 +22,7 @@
 #include <QNetworkReply>
 
 #include "WalletJournalEntry.h"
+#include "APIResponseCache.h"
 #include "Character.h"
 
 namespace Evernus
@@ -36,7 +37,7 @@ namespace Evernus
     public:
         typedef std::function<void (const QString &response, const QString &error)> Callback;
 
-        using QObject::QObject;
+        APIInterface(QObject *parent = nullptr);
         virtual ~APIInterface() = default;
 
         void fetchCharacterList(const Key &key, const Callback &callback) const;
@@ -59,6 +60,7 @@ namespace Evernus
     private:
         typedef std::vector<std::pair<QString, QString>> QueryParams;
 
+        APIResponseCache *mCache = nullptr;
         mutable QNetworkAccessManager mNetworkManager;
 
         mutable std::unordered_map<QNetworkReply *, Callback> mPendingCallbacks;

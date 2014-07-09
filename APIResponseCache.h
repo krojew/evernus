@@ -15,98 +15,58 @@
 #pragma once
 
 #include <unordered_map>
+#include <exception>
 #include <memory>
-#include <vector>
+#include <list>
 
-#include <QSqlDatabase>
-#include <QDateTime>
-
-#include "CachedConquerableStationListRepository.h"
-#include "CachedConquerableStationRepository.h"
-#include "CachedWalletJournalEntryRepository.h"
-#include "CachedCharacterListRepository.h"
-#include "CachedCharacterRepository.h"
-#include "CachedAssetListRepository.h"
-#include "ConquerableStationList.h"
-#include "CachedItemRepository.h"
-#include "WalletJournal.h"
-#include "AssetList.h"
-#include "Character.h"
-#include "Key.h"
+#include <QAbstractNetworkCache>
+#include <QDir>
 
 namespace Evernus
 {
     class APIResponseCache
+        : public QAbstractNetworkCache
     {
     public:
-        typedef std::vector<Character::IdType> CharacterList;
-
-        APIResponseCache();
+        explicit APIResponseCache(QObject *parent = nullptr);
         virtual ~APIResponseCache() = default;
 
-        bool hasChracterListData(Key::IdType key) const;
-        CharacterList getCharacterListData(Key::IdType key) const;
-        void setChracterListData(Key::IdType key, const CharacterList &data, const QDateTime &cacheUntil);
+        virtual qint64 cacheSize() const override;
+        virtual QIODevice *data(const QUrl &url) override;
+        virtual void insert(QIODevice *device) override;
+        virtual QNetworkCacheMetaData metaData(const QUrl &url) override;
+        virtual QIODevice *prepare(const QNetworkCacheMetaData &metaData) override;
+        virtual bool remove(const QUrl &url) override;
+        virtual void updateMetaData(const QNetworkCacheMetaData &metaData) override;
 
-        bool hasCharacterData(Character::IdType characterId) const;
-        Character getCharacterData(Character::IdType characterId) const;
-        void setCharacterData(Character::IdType characterId, const Character &data, const QDateTime &cacheUntil);
-
-        QDateTime getCharacterDataLocalCacheTime(Character::IdType characterId) const;
-
-        bool hasAssetData(Character::IdType characterId) const;
-        AssetList getAssetData(Character::IdType characterId) const;
-        void setAssetData(Character::IdType characterId, const AssetList &data, const QDateTime &cacheUntil);
-
-        QDateTime getAssetsDataLocalCacheTime(Character::IdType characterId) const;
-
-        bool hasConquerableStationListData() const;
-        ConquerableStationList getConquerableStationListData() const;
-        void setConquerableStationListData(const ConquerableStationList &data, const QDateTime &cacheUntil);
-
-        bool hasWalletJournalData(Character::IdType characterId) const;
-        WalletJournal getWalletJournalData(Character::IdType characterId) const;
-        void setWalletJournalData(Character::IdType characterId, const WalletJournal &data, const QDateTime &cacheUntil) const;
-        QDateTime getWalletJournalLocalCacheTime(Character::IdType characterId) const;
+        virtual void clear() override;
 
     private:
-        template<class T>
-        struct CacheEntry
+        static const QString cacheDir;
+
+        struct ErrorReadingCacheException : std::exception { };
+
+        struct CacheItem
         {
-            QDateTime mCacheUntil;
-            T mData;
+            QByteArray mData;
+            QDateTime mCacheTime;
+            QNetworkCacheMetaData mMetaData;
         };
 
-        mutable std::unordered_map<Key::IdType, CacheEntry<CharacterList>> mCharacterListCache;
-        mutable std::unordered_map<Character::IdType, CacheEntry<Character>> mCharacterCache;
-        mutable std::unordered_map<Character::IdType, CacheEntry<AssetList>> mAssetCache;
-        mutable CacheEntry<ConquerableStationList> mConquerableStationCache;
-        mutable std::unordered_map<Character::IdType, CacheEntry<WalletJournal>> mWalletJournalCache;
+        struct UrlHash
+        {
+            size_t operator ()(const QUrl &url) const;
+        };
 
-        QSqlDatabase mCacheDb;
+        QDir mPathDir;
 
-        std::unique_ptr<CachedCharacterListRepository> mCharacterListRepository;
-        std::unique_ptr<CachedCharacterRepository> mCharacterRepository;
-        std::unique_ptr<CachedAssetListRepository> mAssetListRepository;
-        std::unique_ptr<CachedItemRepository> mItemRepository;
-        std::unique_ptr<CachedConquerableStationListRepository> mConquerableStationListRepository;
-        std::unique_ptr<CachedConquerableStationRepository> mConquerableStationRepository;
-        std::unique_ptr<CachedWalletJournalEntryRepository> mWalletJournalEntryRepository;
+        std::unordered_map<QUrl, std::unique_ptr<CacheItem>, UrlHash> mData;
+        std::unordered_map<QIODevice *, std::unique_ptr<CacheItem>> mInsertingDataMap;
+        std::list<std::unique_ptr<QIODevice>> mInsertingData;
 
-        void createDb();
-        void createDbSchema();
-        void clearOldData();
+        CacheItem *readFile(const QUrl &url);
+        void writeFile(const CacheItem &item);
 
-        void refreshCaches();
-        void refreshCharacterLists();
-        void refreshCharacters();
-        void refreshAssets();
-        void refreshConquerableStations();
-        void refreshWalletJournal();
-
-        void saveItemTree(const Item &item, const Item *parent, QVariantList boundValues[CachedItemRepository::columnCount - 1]) const;
-
-        QSqlQuery prepareBatchConquerableStationInsertQuery(size_t numValues) const;
-        QSqlQuery prepareBatchItemInsertQuery(size_t numValues) const;
+        static QString getCacheFileName(const QUrl &url);
     };
 }

@@ -22,6 +22,13 @@
 
 namespace Evernus
 {
+    APIInterface::APIInterface(QObject *parent)
+        : QObject{parent}
+        , mCache{new APIResponseCache{this}}
+    {
+        mNetworkManager.setCache(mCache);
+    }
+
     void APIInterface::fetchCharacterList(const Key &key, const Callback &callback) const
     {
         makeRequest("/account/Characters.xml.aspx", key, callback);
@@ -88,24 +95,26 @@ namespace Evernus
     void APIInterface::makeRequest(const QString &endpoint, const Key &key, const Callback &callback, const QueryParams &additionalParams) const
     {
         QSettings settings;
-        QString url;
+        QUrl url;
 
         if (settings.value(NetworkSettings::useCustomProvider).toBool())
-            url = settings.value(NetworkSettings::providerHost).toString();
+            url = settings.value(NetworkSettings::providerHost).toString() + endpoint;
         else
-            url = NetworkSettings::defaultAPIProvider;
+            url = NetworkSettings::defaultAPIProvider + endpoint;
 
-        QUrlQuery postData;
-        postData.addQueryItem("keyID", QString::number(key.getId()));
-        postData.addQueryItem("vCode", key.getCode());
+        QUrlQuery queryData;
+        queryData.addQueryItem("keyID", QString::number(key.getId()));
+        queryData.addQueryItem("vCode", key.getCode());
 
         for (const auto &param : additionalParams)
-            postData.addQueryItem(param.first, param. second);
+            queryData.addQueryItem(param.first, param. second);
 
-        QNetworkRequest request{url + endpoint};
-        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+        url.setQuery(queryData);
 
-        auto reply = mNetworkManager.post(request, postData.toString(QUrl::FullyEncoded).toUtf8());
+        QNetworkRequest request{url};
+        request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
+
+        auto reply = mNetworkManager.get(request);
         connect(reply, &QNetworkReply::finished, this, &APIInterface::processReply, Qt::QueuedConnection);
         connect(reply, &QNetworkReply::sslErrors, this, &APIInterface::processSslErrors);
 

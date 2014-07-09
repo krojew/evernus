@@ -12,7 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "APIManager.h"
+#include "APIUtils.h"
 
 #include "WalletJournalXmlReceiver.h"
 
@@ -25,7 +25,7 @@ namespace Evernus
         const auto strValue = value.toString();
 
         if (localName == "date")
-            mCurrentElement->setTimestamp(QDateTime::fromString(strValue, APIManager::eveTimeFormat));
+            mCurrentElement->setTimestamp(QDateTime::fromString(strValue, APIUtils::eveTimeFormat));
         else if (localName == "refID")
             mCurrentElement->setId(convert<WalletJournal::value_type::IdType>(strValue));
         else if (localName == "refTypeID")

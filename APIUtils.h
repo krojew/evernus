@@ -12,17 +12,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "CachedConquerableStationList.h"
+#pragma once
+
+#include <QDateTime>
+#include <QString>
 
 namespace Evernus
 {
-    QDateTime CachedConquerableStationList::getCacheUntil() const
+    namespace APIUtils
     {
-        return mCacheUntil;
-    }
+        const auto eveTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
-    void CachedConquerableStationList::setCacheUntil(const QDateTime &dt)
-    {
-        mCacheUntil = dt;
+        QDateTime getCachedUntil(const QString &xml);
     }
 }
