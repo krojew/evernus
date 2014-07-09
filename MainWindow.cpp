@@ -173,14 +173,22 @@ namespace Evernus
             emit importAssets(mCurrentCharacterId);
     }
 
+    void MainWindow::refreshWalletJournal()
+    {
+        if (mCurrentCharacterId != Character::invalidId)
+            emit importWalletJournal(mCurrentCharacterId);
+    }
+
     void MainWindow::refreshAll()
     {
         emit refreshCharacters();
         emit refreshConquerableStations();
 
+        refreshWalletJournal();
+
         QSettings settings;
         if (settings.value(ImportSettings::importAssetsKey, true).toBool())
-            emit refreshAssets();
+            refreshAssets();
     }
 
     void MainWindow::closeEvent(QCloseEvent *event)

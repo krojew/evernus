@@ -94,6 +94,7 @@ namespace Evernus
         void setCharacter(Character::IdType id);
 
         void refreshAssets();
+        void refreshWalletJournal();
         void refreshAll();
 
     protected:
