@@ -43,6 +43,7 @@ namespace Evernus
     signals:
         void importPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
         void importPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
+        void importPricesFromCache(const ItemPriceImporter::TypeLocationPairs &target);
 
     public slots:
         void updateData();
@@ -50,6 +51,7 @@ namespace Evernus
     private slots:
         void prepareItemImportFromWeb();
         void prepareItemImportFromFile();
+        void prepareItemImportFromCache();
 
     private:
         const AssetProvider &mAssetProvider;

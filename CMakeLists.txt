@@ -94,6 +94,8 @@ add_executable(
     AssetValueSnapshotRepository.h
     ButtonWithTimer.cpp
     ButtonWithTimer.h
+    CacheItemPriceImporter.cpp
+    CacheItemPriceImporter.h
     CacheTimer.cpp
     CacheTimer.h
     CacheTimerProvider.h

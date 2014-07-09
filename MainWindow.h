@@ -79,6 +79,7 @@ namespace Evernus
 
         void importItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
         void importItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
+        void importItemPricesFromCache(const ItemPriceImporter::TypeLocationPairs &target);
 
     public slots:
         void showCharacterManagement();

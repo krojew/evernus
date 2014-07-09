@@ -516,6 +516,11 @@ namespace Evernus
         importItemPrices(ItemPriceImporterNames::logImporter, target);
     }
 
+    void EvernusApplication::refreshItemPricesFromCache(const ItemPriceImporter::TypeLocationPairs &target)
+    {
+        importItemPrices(ItemPriceImporterNames::cacheImporter, target);
+    }
+
     void EvernusApplication::scheduleCharacterUpdate()
     {
         if (mCharacterUpdateScheduled)

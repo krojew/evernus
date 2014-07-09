@@ -21,6 +21,7 @@
 #include "MarketLogItemPriceImporter.h"
 #include "WalletEntryFilterWidget.h"
 #include "ItemPriceImporterNames.h"
+#include "CacheItemPriceImporter.h"
 #include "EvernusApplication.h"
 #include "MainWindow.h"
 
@@ -42,6 +43,8 @@ int main(int argc, char *argv[])
                              std::make_unique<Evernus::EveMarketDataItemPriceImporter>());
         app.registerImporter(Evernus::ItemPriceImporterNames::logImporter,
                              std::make_unique<Evernus::MarketLogItemPriceImporter>());
+        app.registerImporter(Evernus::ItemPriceImporterNames::cacheImporter,
+                             std::make_unique<Evernus::CacheItemPriceImporter>());
 
         try
         {
@@ -61,6 +64,7 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(importWalletJournal(Character::IdType)), SLOT(refreshWalletJournal(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &)), SLOT(refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(importItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &)), SLOT(refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &)));
+            app.connect(&mainWnd, SIGNAL(importItemPricesFromCache(const ItemPriceImporter::TypeLocationPairs &)), SLOT(refreshItemPricesFromCache(const ItemPriceImporter::TypeLocationPairs &)));
             mainWnd.connect(&app, SIGNAL(taskStarted(uint, const QString &)), SLOT(addNewTaskInfo(uint, const QString &)));
             mainWnd.connect(&app, SIGNAL(taskStarted(uint, uint, const QString &)), SIGNAL(newSubTaskInfoAdded(uint, uint, const QString &)));
             mainWnd.connect(&app, SIGNAL(taskStatusChanged(uint, const QString &)), SIGNAL(taskStatusChanged(uint, const QString &)));
