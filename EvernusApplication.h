@@ -27,6 +27,7 @@
 #include "WalletJournalEntryRepository.h"
 #include "ItemPriceImporterRegistry.h"
 #include "WalletSnapshotRepository.h"
+#include "CacheTimerRepository.h"
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
 #include "ItemPriceRepository.h"
@@ -123,6 +124,7 @@ namespace Evernus
         std::unique_ptr<AssetValueSnapshotRepository> mAssetValueSnapshotRepository;
         std::unique_ptr<WalletJournalEntryRepository> mWalletJournalEntryRepository;
         std::unique_ptr<RefTypeRepository> mRefTypeRepository;
+        std::unique_ptr<CacheTimerRepository> mCacheTimerRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
 
         APIManager mAPIManager;
