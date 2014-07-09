@@ -25,7 +25,7 @@ namespace Evernus
     public:
         enum class TimerType
         {
-            Character,
+            Character = 1,
             AssetList,
             WalletJournal
         };
