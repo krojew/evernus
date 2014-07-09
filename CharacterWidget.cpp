@@ -373,9 +373,7 @@ namespace Evernus
 
     QString CharacterWidget::getPortraitPath(Character::IdType id)
     {
-        return QStandardPaths::writableLocation(QStandardPaths::DataLocation) %
-            QDir::separator() %
-            "cache" %
+        return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) %
             QDir::separator() %
             "portrait" %
             QDir::separator() %
