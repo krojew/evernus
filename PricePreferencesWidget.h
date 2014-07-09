@@ -17,6 +17,7 @@
 #include <QWidget>
 
 class QDoubleSpinBox;
+class QCheckBox;
 
 namespace Evernus
 {
@@ -36,5 +37,8 @@ namespace Evernus
         QDoubleSpinBox *mMinMarginEdit = nullptr;
         QDoubleSpinBox *mPreferredMarginEdit = nullptr;
         QDoubleSpinBox *mPriceDeltaEdit = nullptr;
+#ifdef Q_OS_WIN
+        QCheckBox *mAltImportBtn = nullptr;
+#endif
     };
 }

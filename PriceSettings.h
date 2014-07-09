@@ -33,5 +33,6 @@ namespace Evernus
         const auto preferredMarginKey = "prices/margin/preferred";
         const auto copyModeKey = "prices/copyMode";
         const auto priceDeltaKey = "prices/delta";
+        const auto priceAltImport = "prices/import/alt";
     }
 }

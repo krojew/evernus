@@ -17,6 +17,7 @@
 #include <QVBoxLayout>
 #include <QSettings>
 #include <QGroupBox>
+#include <QCheckBox>
 #include <QLabel>
 
 #include "PriceSettings.h"
@@ -36,22 +37,35 @@ namespace Evernus
         auto marginGroup = new QGroupBox{tr("Margins"), this};
         mainLayout->addWidget(marginGroup);
 
-        auto marginLayout = new QHBoxLayout{};
+        auto marginLayout = new QVBoxLayout{};
         marginGroup->setLayout(marginLayout);
 
-        marginLayout->addWidget(new QLabel{tr("Minimum:"), this});
+        auto marginValuesLayout = new QHBoxLayout{};
+        marginLayout->addLayout(marginValuesLayout);
+
+        marginValuesLayout->addWidget(new QLabel{tr("Minimum:"), this});
 
         mMinMarginEdit = new QDoubleSpinBox{this};
-        marginLayout->addWidget(mMinMarginEdit);
+        marginValuesLayout->addWidget(mMinMarginEdit);
         mMinMarginEdit->setSuffix("%");
         mMinMarginEdit->setValue(settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble());
 
-        marginLayout->addWidget(new QLabel{tr("Preferred:"), this});
+        marginValuesLayout->addWidget(new QLabel{tr("Preferred:"), this});
 
         mPreferredMarginEdit = new QDoubleSpinBox{this};
-        marginLayout->addWidget(mPreferredMarginEdit);
+        marginValuesLayout->addWidget(mPreferredMarginEdit);
         mPreferredMarginEdit->setSuffix("%");
         mPreferredMarginEdit->setValue(settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble());
+
+#ifdef Q_OS_WIN
+        mAltImportBtn = new QCheckBox{tr("Use alternative margin import method*"), this};
+        marginLayout->addWidget(mAltImportBtn);
+        mAltImportBtn->setChecked(settings.value(PriceSettings::priceAltImport, true).toBool());
+
+        auto infoLabel = new QLabel{tr("* Gives faster results, but can sometimes be incorrect. If the price fluctuates after a few imports, turn it off."), this};
+        infoLabel->setWordWrap(true);
+        marginLayout->addWidget(infoLabel);
+#endif
 
         auto pricesGroup = new QGroupBox{this};
         mainLayout->addWidget(pricesGroup);
@@ -79,5 +93,8 @@ namespace Evernus
         settings.setValue(PriceSettings::minMarginKey, mMinMarginEdit->value());
         settings.setValue(PriceSettings::preferredMarginKey, mPreferredMarginEdit->value());
         settings.setValue(PriceSettings::priceDeltaKey, mPriceDeltaEdit->value());
+#ifdef Q_OS_WIN
+        settings.setValue(PriceSettings::priceAltImport, mAltImportBtn->isChecked());
+#endif
     }
 }

@@ -52,7 +52,7 @@ namespace Evernus
 
         std::vector<std::pair<QString, std::unique_ptr<QWidget>>> categories;
         categories.emplace_back(std::make_pair(QString{tr("Paths")}, std::unique_ptr<QWidget>{new PathPreferencesWidget{}}));
-        categories.emplace_back(std::make_pair(QString{tr("Price")}, std::unique_ptr<QWidget>{new PricePreferencesWidget{}}));
+        categories.emplace_back(std::make_pair(QString{tr("Prices")}, std::unique_ptr<QWidget>{new PricePreferencesWidget{}}));
         categories.emplace_back(std::make_pair(QString{tr("Network")}, std::unique_ptr<QWidget>{new NetworkPreferencesWidget{}}));
         categories.emplace_back(std::make_pair(QString{tr("Wallet")}, std::unique_ptr<QWidget>{new WalletPreferencesWidget{}}));
 

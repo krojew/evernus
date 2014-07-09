@@ -320,25 +320,33 @@ namespace Evernus
 
             qDebug() << "Calculating margin from file: " << logFile;
 
+            QSettings settings;
             QFile file{logFile};
 
 #ifdef Q_OS_WIN
-            while (!file.open(QIODevice::ReadWrite))
-                std::this_thread::sleep_for(std::chrono::milliseconds{10});
-#else
-            const auto modTimeDelay = 1000;
-
-            // wait for Eve to finish dumping data
-            QFileInfo info{file};
-            forever
+            if (settings.value(PriceSettings::priceAltImport, true).toBool())
             {
-                const auto modTime = info.lastModified();
-                if (modTime.msecsTo(QDateTime::currentDateTime()) >= modTimeDelay)
-                    break;
+                while (!file.open(QIODevice::ReadWrite))
+                    std::this_thread::sleep_for(std::chrono::milliseconds{10});
             }
+            else
+            {
+#endif
+                const auto modTimeDelay = 1000;
 
-            if (!file.open(QIODevice::ReadOnly))
-                return;
+                // wait for Eve to finish dumping data
+                QFileInfo info{file};
+                forever
+                {
+                    const auto modTime = info.lastModified();
+                    if (modTime.msecsTo(QDateTime::currentDateTime()) >= modTimeDelay)
+                        break;
+                }
+
+                if (!file.open(QIODevice::ReadOnly))
+                    return;
+#ifdef Q_OS_WIN
+            }
 #endif
 
             auto buy = -1.;
@@ -404,7 +412,6 @@ namespace Evernus
                 }
             }
 
-            QSettings settings;
             if (settings.value(PathSettings::deleteLogsKey, true).toBool())
                 file.remove();
 
