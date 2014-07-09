@@ -23,9 +23,9 @@ class QLabel;
 
 namespace Evernus
 {
+    class CacheTimerProvider;
     class EveDataProvider;
     class AssetProvider;
-    class APIManager;
     class AssetList;
 
     class AssetsWidget
@@ -36,7 +36,7 @@ namespace Evernus
     public:
         AssetsWidget(const AssetProvider &assetProvider,
                      const EveDataProvider &nameProvider,
-                     const APIManager &apiManager,
+                     const CacheTimerProvider &cacheTimerProvider,
                      QWidget *parent = nullptr);
         virtual ~AssetsWidget() = default;
 

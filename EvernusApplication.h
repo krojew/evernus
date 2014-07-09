@@ -31,6 +31,7 @@
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
 #include "ItemPriceRepository.h"
+#include "CacheTimerProvider.h"
 #include "ItemPriceImporter.h"
 #include "EveTypeRepository.h"
 #include "RefTypeRepository.h"
@@ -52,6 +53,7 @@ namespace Evernus
         , public EveDataProvider
         , public ItemPriceImporterRegistry
         , public AssetProvider
+        , public CacheTimerProvider
     {
         Q_OBJECT
 
@@ -69,13 +71,14 @@ namespace Evernus
 
         virtual const AssetList &fetchForCharacter(Character::IdType id) const override;
 
+        virtual QDateTime getLocalCacheTimer(Character::IdType id, TimerType type) const override;
+        virtual void setUtcCacheTimer(Character::IdType id, TimerType type, const QDateTime &dt) override;
+
         const KeyRepository &getKeyRepository() const noexcept;
         const CharacterRepository &getCharacterRepository() const noexcept;
         const WalletSnapshotRepository &getWalletSnapshotRepository() const noexcept;
         const AssetValueSnapshotRepository &getAssetValueSnapshotRepository() const noexcept;
         const WalletJournalEntryRepository &getWalletJournalEntryRepository() const noexcept;
-
-        APIManager &getAPIManager() noexcept;
 
     signals:
         void taskStarted(uint taskId, const QString &description);
@@ -109,6 +112,7 @@ namespace Evernus
 
     private:
         typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
+        typedef std::unordered_map<Character::IdType, QDateTime> CacheTimerMap;
 
         static const QString versionKey;
 
@@ -145,10 +149,15 @@ namespace Evernus
 
         mutable std::unordered_map<Character::IdType, std::unique_ptr<AssetList>> mCharacterAssets;
 
+        CacheTimerMap mCharacterLocalCacheTimes;
+        CacheTimerMap mAssetsLocalCacheTimes;
+        CacheTimerMap mWalletJournalLocalCacheTimes;
+
         void createDb();
         void createDbSchema();
         void precacheRefTypes();
         void precacheRefTypes(const RefTypeRepository::RefTypeList &refs);
+        void precacheCacheTimers();
         void deleteOldWalletEntries();
 
         uint startTask(const QString &description);

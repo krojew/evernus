@@ -32,23 +32,28 @@ namespace Evernus
     CacheTimer CacheTimerRepository::populate(const QSqlRecord &record) const
     {
         CacheTimer cacheTimer{record.value("id").value<CacheTimer::IdType>(), record.value("cache_until").toDateTime()};
+        cacheTimer.setCharacterId(record.value("character_id").value<Character::IdType>());
         cacheTimer.setNew(false);
 
         return cacheTimer;
     }
 
-    void CacheTimerRepository::create() const
+    void CacheTimerRepository::create(const Repository<Character> &characterRepo) const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id INTEGER PRIMARY KEY,
+            character_id BIGINT NOT NULL REFERENCES %2(%3),
             cache_until DATETIME NOT NULL
-        ))"}.arg(getTableName()));
+        ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
+
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
     }
 
     QStringList CacheTimerRepository::getColumns() const
     {
         return QStringList{}
             << "id"
+            << "character_id"
             << "cache_until";
     }
 
@@ -57,6 +62,7 @@ namespace Evernus
         if (entity.getId() != CacheTimer::invalidId)
             query.bindValue(":id", entity.getId());
 
+        query.bindValue(":character_id", entity.getCharacterId());
         query.bindValue(":cache_until", entity.getCacheUntil());
     }
 
@@ -65,6 +71,7 @@ namespace Evernus
         if (entity.getId() != CacheTimer::invalidId)
             query.addBindValue(entity.getId());
 
+        query.addBindValue(entity.getCharacterId());
         query.addBindValue(entity.getCacheUntil());
     }
 }

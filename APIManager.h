@@ -28,6 +28,8 @@
 
 namespace Evernus
 {
+    class CacheTimerProvider;
+
     class APIManager
         : public QObject
     {
@@ -40,7 +42,7 @@ namespace Evernus
         typedef std::vector<Character::IdType> CharacterList;
         typedef std::vector<RefType> RefTypeList;
 
-        APIManager();
+        explicit APIManager(CacheTimerProvider &cacheTimerProvider);
         virtual ~APIManager() = default;
 
         void fetchCharacterList(const Key &key, const Callback<CharacterList> &callback) const;
@@ -54,23 +56,17 @@ namespace Evernus
                                 WalletJournalEntry::IdType tillId,
                                 const Callback<WalletJournal> &callback) const;
 
-        QDateTime getCharacterLocalCacheTime(Character::IdType characterId) const;
-        QDateTime getAssetsLocalCacheTime(Character::IdType characterId) const;
-        QDateTime getWalletJournalLocalCacheTime(Character::IdType characterId) const;
-
     signals:
         void generalError(const QString &info);
 
     private:
+        CacheTimerProvider &mCacheTimerProvider;
+
         APIInterface mInterface;
 
         mutable std::unordered_set<Key::IdType> mPendingCharacterListRequests;
         mutable std::unordered_set<Character::IdType> mPendingCharacterRequests;
         mutable std::unordered_set<Character::IdType> mPendingAssetsRequests;
-
-        mutable std::unordered_map<Character::IdType, QDateTime> mCharacterLocalCacheTimes;
-        mutable std::unordered_map<Character::IdType, QDateTime> mAssetsLocalCacheTimes;
-        mutable std::unordered_map<Character::IdType, QDateTime> mWalletJournalLocalCacheTimes;
 
         void fetchWalletJournal(const Key &key,
                                 Character::IdType characterId,

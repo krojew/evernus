@@ -27,7 +27,7 @@ namespace Evernus
 {
     template<class T>
     class Repository;
-    class APIManager;
+    class CacheTimerProvider;
 
     class CharacterWidget
         : public CharacterBoundWidget
@@ -36,7 +36,7 @@ namespace Evernus
 
     public:
         CharacterWidget(const Repository<Character> &characterRepository,
-                        const APIManager &apiManager,
+                        const CacheTimerProvider &cacheTimerProvider,
                         QWidget *parent = nullptr);
         virtual ~CharacterWidget() = default;
 

@@ -31,12 +31,12 @@ namespace Evernus
     class WalletSnapshotRepository;
     class CharacterManagerDialog;
     class WalletJournalEntry;
+    class CacheTimerProvider;
     class ActiveTasksDialog;
     class MarginToolDialog;
     class EveDataProvider;
     class MenuBarWidget;
     class AssetProvider;
-    class APIManager;
     class Key;
 
     class MainWindow
@@ -52,7 +52,7 @@ namespace Evernus
                    const WalletJournalEntryRepository &walletJournalRepo,
                    const AssetProvider &assetProvider,
                    const EveDataProvider &eveDataProvider,
-                   APIManager &apiManager,
+                   const CacheTimerProvider &cacheTimerProvider,
                    QWidget *parent = nullptr,
                    Qt::WindowFlags flags = 0);
         virtual ~MainWindow() = default;
@@ -114,7 +114,7 @@ namespace Evernus
 
         const EveDataProvider &mEveDataProvider;
 
-        APIManager &mApiManager;
+        const CacheTimerProvider &mCacheTimerProvider;
 
         MenuBarWidget *mMenuWidget = nullptr;
 

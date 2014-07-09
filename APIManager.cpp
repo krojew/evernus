@@ -23,6 +23,7 @@
 #include "AssetListXmlReceiver.h"
 #include "RefTypeXmlReceiver.h"
 #include "CharacterDomParser.h"
+#include "CacheTimerProvider.h"
 #include "APIUtils.h"
 #include "Item.h"
 
@@ -56,8 +57,9 @@ namespace Evernus
         };
     }
 
-    APIManager::APIManager()
+    APIManager::APIManager(CacheTimerProvider &cacheTimerProvider)
         : QObject{}
+        , mCacheTimerProvider{cacheTimerProvider}
     {
         connect(&mInterface, &APIInterface::generalError, this, &APIManager::generalError);
     }
@@ -103,7 +105,9 @@ namespace Evernus
                 Character character{parseResult<Character>(response)};
                 character.setKeyId(key.getId());
 
-                mCharacterLocalCacheTimes[characterId] = APIUtils::getCachedUntil(response);
+                mCacheTimerProvider.setUtcCacheTimer(characterId,
+                                                     CacheTimerProvider::TimerType::Character,
+                                                     APIUtils::getCachedUntil(response));
 
                 callback(character, QString{});
             }
@@ -131,7 +135,9 @@ namespace Evernus
                 AssetList assets{parseResults<AssetList::ItemType, std::unique_ptr<AssetList::ItemType::element_type>>(response, "assets")};
                 assets.setCharacterId(characterId);
 
-                mAssetsLocalCacheTimes[characterId] = APIUtils::getCachedUntil(response);
+                mCacheTimerProvider.setUtcCacheTimer(characterId,
+                                                     CacheTimerProvider::TimerType::AssetList,
+                                                     APIUtils::getCachedUntil(response));
 
                 callback(assets, QString{});
             }
@@ -192,24 +198,6 @@ namespace Evernus
         fetchWalletJournal(key, characterId, fromId, tillId, std::make_shared<WalletJournal>(), callback);
     }
 
-    QDateTime APIManager::getCharacterLocalCacheTime(Character::IdType characterId) const
-    {
-        const auto it = mCharacterLocalCacheTimes.find(characterId);
-        return (it == std::end(mCharacterLocalCacheTimes)) ? (QDateTime::currentDateTime()) : (it->second);
-    }
-
-    QDateTime APIManager::getAssetsLocalCacheTime(Character::IdType characterId) const
-    {
-        const auto it = mAssetsLocalCacheTimes.find(characterId);
-        return (it == std::end(mAssetsLocalCacheTimes)) ? (QDateTime::currentDateTime()) : (it->second);
-    }
-
-    QDateTime APIManager::getWalletJournalLocalCacheTime(Character::IdType characterId) const
-    {
-        const auto it = mWalletJournalLocalCacheTimes.find(characterId);
-        return (it == std::end(mWalletJournalLocalCacheTimes)) ? (QDateTime::currentDateTime()) : (it->second);
-    }
-
     void APIManager::fetchWalletJournal(const Key &key,
                                         Character::IdType characterId,
                                         WalletJournalEntry::IdType fromId,
@@ -248,7 +236,10 @@ namespace Evernus
 
                 if (reachedEnd)
                 {
-                    mWalletJournalLocalCacheTimes[characterId] = APIUtils::getCachedUntil(response);
+                    mCacheTimerProvider.setUtcCacheTimer(characterId,
+                                                         CacheTimerProvider::TimerType::WalletJournal,
+                                                         APIUtils::getCachedUntil(response));
+
                     callback(*journal, QString{});
                 }
                 else

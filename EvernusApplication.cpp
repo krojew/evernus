@@ -36,8 +36,10 @@ namespace Evernus
         , EveDataProvider{}
         , ItemPriceImporterRegistry{}
         , AssetProvider{}
+        , CacheTimerProvider{}
         , mMainDb{QSqlDatabase::addDatabase("QSQLITE", "main")}
         , mEveDb{QSqlDatabase::addDatabase("QSQLITE", "eve")}
+        , mAPIManager{*this}
     {
         QSplashScreen splash{QPixmap{":/images/splash.png"}};
         splash.show();
@@ -51,6 +53,9 @@ namespace Evernus
 
         showSplashMessage(tr("Precaching ref types..."), splash);
         precacheRefTypes();
+
+        showSplashMessage(tr("Precaching cache timers..."), splash);
+        precacheCacheTimers();
 
         showSplashMessage(tr("Clearing old wallet entries..."), splash);
         deleteOldWalletEntries();
@@ -216,6 +221,58 @@ namespace Evernus
         return *assetPtr;
     }
 
+    QDateTime EvernusApplication::getLocalCacheTimer(Character::IdType id, TimerType type) const
+    {
+        CacheTimerMap::const_iterator it;
+
+        switch (type) {
+        case TimerType::Character:
+            it = mCharacterLocalCacheTimes.find(id);
+            if (it == std::end(mCharacterLocalCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
+        case TimerType::AssetList:
+            it = mAssetsLocalCacheTimes.find(id);
+            if (it == std::end(mAssetsLocalCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
+        case TimerType::WalletJournal:
+            it = mWalletJournalLocalCacheTimes.find(id);
+            if (it == std::end(mWalletJournalLocalCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
+        default:
+            throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
+        }
+
+        return it->second.toLocalTime();
+    }
+
+    void EvernusApplication::setUtcCacheTimer(Character::IdType id, TimerType type, const QDateTime &dt)
+    {
+        if (!dt.isValid())
+            return;
+
+        switch (type) {
+        case TimerType::Character:
+            mCharacterLocalCacheTimes[id] = dt;
+            break;
+        case TimerType::AssetList:
+            mAssetsLocalCacheTimes[id] = dt;
+            break;
+        case TimerType::WalletJournal:
+            mWalletJournalLocalCacheTimes[id] = dt;
+            break;
+        default:
+            throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
+        }
+
+        CacheTimer timer{static_cast<CacheTimer::IdType>(type), dt};
+        timer.setCharacterId(id);
+
+        mCacheTimerRepository->store(timer);
+    }
+
     const KeyRepository &EvernusApplication::getKeyRepository() const noexcept
     {
         return *mKeyRepository;
@@ -239,11 +296,6 @@ namespace Evernus
     const WalletJournalEntryRepository &EvernusApplication::getWalletJournalEntryRepository() const noexcept
     {
         return *mWalletJournalEntryRepository;
-    }
-
-    APIManager &EvernusApplication::getAPIManager() noexcept
-    {
-        return mAPIManager;
     }
 
     void EvernusApplication::refreshCharacters()
@@ -550,7 +602,7 @@ namespace Evernus
         mAssetValueSnapshotRepository->create(*mCharacterRepository);
         mWalletJournalEntryRepository->create(*mCharacterRepository);
         mItemPriceRepository->create();
-        mCacheTimerRepository->create();
+        mCacheTimerRepository->create(*mCharacterRepository);
         mRefTypeRepository->create();
     }
 
@@ -582,6 +634,24 @@ namespace Evernus
     {
         for (const auto &ref : refs)
             mRefTypeNames.emplace(ref.getId(), std::move(ref).getName());
+    }
+
+    void EvernusApplication::precacheCacheTimers()
+    {
+        const auto timers = mCacheTimerRepository->fetchAll();
+        for (const auto &timer : timers)
+        {
+            switch (static_cast<TimerType>(timer.getId())) {
+            case TimerType::Character:
+                mCharacterLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                break;
+            case TimerType::AssetList:
+                mAssetsLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                break;
+            case TimerType::WalletJournal:
+                mWalletJournalLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+            }
+        }
     }
 
     void EvernusApplication::deleteOldWalletEntries()

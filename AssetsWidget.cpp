@@ -21,9 +21,9 @@
 #include <QLabel>
 #include <QDebug>
 
+#include "CacheTimerProvider.h"
 #include "ButtonWithTimer.h"
 #include "AssetProvider.h"
-#include "APIManager.h"
 
 #include "AssetsWidget.h"
 
@@ -31,9 +31,9 @@ namespace Evernus
 {
     AssetsWidget::AssetsWidget(const AssetProvider &assetProvider,
                                const EveDataProvider &nameProvider,
-                               const APIManager &apiManager,
+                               const CacheTimerProvider &cacheTimerProvider,
                                QWidget *parent)
-        : CharacterBoundWidget{std::bind(&APIManager::getAssetsLocalCacheTime, &apiManager, std::placeholders::_1),
+        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::AssetList),
                                parent}
         , mAssetProvider{assetProvider}
         , mModel{mAssetProvider, nameProvider}

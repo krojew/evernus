@@ -49,7 +49,7 @@ namespace Evernus
                            const WalletJournalEntryRepository &walletJournalRepo,
                            const AssetProvider &assetProvider,
                            const EveDataProvider &eveDataProvider,
-                           APIManager &apiManager,
+                           const CacheTimerProvider &cacheTimerProvider,
                            QWidget *parent,
                            Qt::WindowFlags flags)
         : QMainWindow{parent, flags}
@@ -60,7 +60,7 @@ namespace Evernus
         , mWalletJournalRepository{walletJournalRepo}
         , mAssetProvider{assetProvider}
         , mEveDataProvider{eveDataProvider}
-        , mApiManager{apiManager}
+        , mCacheTimerProvider{cacheTimerProvider}
     {
         readSettings();
         createMenu();
@@ -250,7 +250,7 @@ namespace Evernus
         auto tabs = new QTabWidget{this};
         setCentralWidget(tabs);
 
-        auto charTab = new CharacterWidget{mCharacterRepository, mApiManager, this};
+        auto charTab = new CharacterWidget{mCharacterRepository, mCacheTimerProvider, this};
         tabs->addTab(charTab, tr("Character"));
         connect(charTab, &CharacterWidget::importFromAPI, this, &MainWindow::importCharacter);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, charTab, &CharacterWidget::setCharacter);
@@ -263,7 +263,7 @@ namespace Evernus
         connect(this, &MainWindow::itemPricesChanged, statsTab, &StatisticsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, statsTab, &StatisticsWidget::updateData);
 
-        auto assetsTab = new AssetsWidget{mAssetProvider, mEveDataProvider, mApiManager, this};
+        auto assetsTab = new AssetsWidget{mAssetProvider, mEveDataProvider, mCacheTimerProvider, this};
         tabs->addTab(assetsTab, tr("Assets"));
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importItemPricesFromWeb);
@@ -273,7 +273,7 @@ namespace Evernus
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::itemPricesChanged, assetsTab, &AssetsWidget::updateData);
 
-        auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mApiManager, this};
+        auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mCacheTimerProvider, this};
         tabs->addTab(journalTab, tr("Journal"));
         connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, journalTab, &WalletJournalWidget::setCharacter);

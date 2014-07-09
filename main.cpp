@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
                                         app.getWalletJournalEntryRepository(),
                                         app,
                                         app,
-                                        app.getAPIManager()};
+                                        app};
 
             app.connect(&mainWnd, SIGNAL(refreshCharacters()), SLOT(refreshCharacters()));
             app.connect(&mainWnd, SIGNAL(refreshConquerableStations()), SLOT(refreshConquerableStations()));

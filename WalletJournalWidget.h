@@ -21,7 +21,7 @@
 namespace Evernus
 {
     class WalletJournalEntryRepository;
-    class APIManager;
+    class CacheTimerProvider;
 
     class WalletJournalWidget
         : public CharacterBoundWidget
@@ -29,7 +29,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        WalletJournalWidget(const WalletJournalEntryRepository &journalRepo, const APIManager &apiManager, QWidget *parent = nullptr);
+        WalletJournalWidget(const WalletJournalEntryRepository &journalRepo,
+                            const CacheTimerProvider &cacheTimerProvider,
+                            QWidget *parent = nullptr);
         virtual ~WalletJournalWidget() = default;
 
     public slots:

@@ -17,6 +17,7 @@
 #include <QDateTime>
 #include <QString>
 
+#include "Character.h"
 #include "Entity.h"
 
 namespace Evernus
@@ -31,10 +32,14 @@ namespace Evernus
         CacheTimer(IdType id, const QDateTime &dt);
         virtual ~CacheTimer() = default;
 
+        Character::IdType getCharacterId() const noexcept;
+        void setCharacterId(Character::IdType id) noexcept;
+
         QDateTime getCacheUntil() const;
         void setCacheUntil(const QDateTime &dt);
 
     private:
+        Character::IdType mCharacterId = Character::invalidId;
         QDateTime mCacheUntil;
     };
 }

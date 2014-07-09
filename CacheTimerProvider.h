@@ -12,33 +12,28 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "CacheTimer.h"
+#pragma once
+
+#include <QDateTime>
+
+#include "Character.h"
 
 namespace Evernus
 {
-    CacheTimer::CacheTimer(IdType id, const QDateTime &dt)
-        : Entity{id}
-        , mCacheUntil{dt}
+    class CacheTimerProvider
     {
-    }
+    public:
+        enum class TimerType
+        {
+            Character,
+            AssetList,
+            WalletJournal
+        };
 
-    Character::IdType CacheTimer::getCharacterId() const noexcept
-    {
-        return mCharacterId;
-    }
+        CacheTimerProvider() = default;
+        virtual ~CacheTimerProvider() = default;
 
-    void CacheTimer::setCharacterId(Character::IdType id) noexcept
-    {
-        mCharacterId = id;
-    }
-
-    QDateTime CacheTimer::getCacheUntil() const
-    {
-        return mCacheUntil;
-    }
-
-    void CacheTimer::setCacheUntil(const QDateTime &dt)
-    {
-        mCacheUntil = dt;
-    }
+        virtual QDateTime getLocalCacheTimer(Character::IdType id, TimerType type) const = 0;
+        virtual void setUtcCacheTimer(Character::IdType id, TimerType type, const QDateTime &dt) = 0;
+    };
 }

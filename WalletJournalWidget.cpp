@@ -16,17 +16,20 @@
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QTreeView>
+#include <QDebug>
 
 #include "WalletEntryFilterWidget.h"
+#include "CacheTimerProvider.h"
 #include "ButtonWithTimer.h"
-#include "APIManager.h"
 
 #include "WalletJournalWidget.h"
 
 namespace Evernus
 {
-    WalletJournalWidget::WalletJournalWidget(const WalletJournalEntryRepository &journalRepo, const APIManager &apiManager, QWidget *parent)
-        : CharacterBoundWidget{std::bind(&APIManager::getWalletJournalLocalCacheTime, &apiManager, std::placeholders::_1), parent}
+    WalletJournalWidget::WalletJournalWidget(const WalletJournalEntryRepository &journalRepo,
+                                             const CacheTimerProvider &cacheTimerProvider,
+                                             QWidget *parent)
+        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::WalletJournal), parent}
         , mModel{journalRepo}
     {
         auto mainLayout = new QVBoxLayout{};

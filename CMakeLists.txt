@@ -96,6 +96,7 @@ add_executable(
     ButtonWithTimer.h
     CacheTimer.cpp
     CacheTimer.h
+    CacheTimerProvider.h
     CacheTimerRepository.cpp
     CacheTimerRepository.h
     Character.cpp

@@ -31,7 +31,7 @@ namespace Evernus
 
         virtual CacheTimer populate(const QSqlRecord &record) const override;
 
-        void create() const;
+        void create(const Repository<Character> &characterRepo) const;
 
     private:
         virtual QStringList getColumns() const override;

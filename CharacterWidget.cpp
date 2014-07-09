@@ -28,10 +28,10 @@
 #include <QDir>
 #include <QUrl>
 
+#include "CacheTimerProvider.h"
 #include "ButtonWithTimer.h"
 #include "ImportSettings.h"
 #include "DatabaseUtils.h"
-#include "APIManager.h"
 #include "Repository.h"
 
 #include "CharacterWidget.h"
@@ -43,8 +43,9 @@ namespace Evernus
 
     const QString CharacterWidget::defaultPortrait = ":/images/generic-portrait.jpg";
 
-    CharacterWidget::CharacterWidget(const Repository<Character> &characterRepository, const APIManager &apiManager, QWidget *parent)
-        : CharacterBoundWidget{std::bind(&APIManager::getCharacterLocalCacheTime, &apiManager, std::placeholders::_1),
+    CharacterWidget
+    ::CharacterWidget(const Repository<Character> &characterRepository, const CacheTimerProvider &cacheTimerProvider, QWidget *parent)
+        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::Character),
                                parent}
         , mCharacterRepository{characterRepository}
     {
