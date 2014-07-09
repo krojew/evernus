@@ -52,7 +52,7 @@ namespace Evernus
             if (file.startsWith("My Orders"))
                 continue;
 
-            getItemPrice(logPath % QDir::separator() % file, result, deleteLogs);
+            getItemPrice(logPath % "/" % file, result, deleteLogs);
         }
 
         emit finished(result);

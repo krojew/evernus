@@ -42,8 +42,7 @@ namespace Evernus
 
         const QString path =
             QStandardPaths::writableLocation(QStandardPaths::CacheLocation) %
-            QDir::separator() %
-            "api";
+            "/api";
 
         qDebug() << "Cache path:" << path;
 

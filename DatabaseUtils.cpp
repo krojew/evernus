@@ -36,9 +36,7 @@ namespace Evernus
 
             const QString dbPath =
                 QStandardPaths::writableLocation(QStandardPaths::DataLocation) %
-                QDir::separator() %
-                "db" %
-                QDir::separator();
+                "/db/";
 
             qDebug() << "DB path: " << dbPath;
 

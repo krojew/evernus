@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <QStringList>
+
 #include "ItemPriceImporter.h"
 
 namespace Evernus
@@ -26,5 +28,8 @@ namespace Evernus
         virtual ~CacheItemPriceImporter() = default;
 
         virtual void fetchItemPrices(const TypeLocationPairs &target) const override;
+
+    private:
+        static QStringList getEveCachePaths();
     };
 }
