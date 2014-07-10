@@ -16,7 +16,6 @@
 #include <QLocale>
 #include <QColor>
 #include <QFont>
-#include <QDebug>
 
 #include "EveDataProvider.h"
 #include "AssetProvider.h"
