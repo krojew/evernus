@@ -50,7 +50,15 @@ namespace Evernus
         EveCacheManager manager{cachePath};
         manager.addCacheFolderFilter("CachedMethodCalls");
         manager.addMethodFilter("GetOrders");
-        manager.parseMachoNet();
+
+        try
+        {
+            manager.parseMachoNet();
+        }
+        catch (const std::exception &e)
+        {
+            emit error(e.what());
+        }
     }
 
     QString CacheItemPriceImporter::getEveCachePath()

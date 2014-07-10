@@ -14,6 +14,11 @@
  */
 #pragma once
 
+#include <vector>
+#include <memory>
+
+#include "EveCacheNodes.h"
+
 namespace Evernus
 {
     class EveCacheFile;
@@ -28,5 +33,7 @@ namespace Evernus
 
     private:
         EveCacheFile &mFile;
+
+        std::vector<std::unique_ptr<EveCacheNode::Base>> mStreams;
     };
 }

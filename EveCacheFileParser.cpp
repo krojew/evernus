@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <stdexcept>
+
 #include "EveCacheFile.h"
 
 #include "EveCacheFileParser.h"
@@ -25,6 +27,12 @@ namespace Evernus
 
     void EveCacheFileParser::parse()
     {
-
+        while (!mFile.atEnd())
+        {
+            const auto check = mFile.readChar();
+            if (static_cast<EveCacheNode::Base::StreamCode>(check) != EveCacheNode::Base::StreamCode::StreamStart)
+//                throw std::runtime_error{tr("Stream start not found!").toStdString()};
+                continue;
+        }
     }
 }

@@ -28,5 +28,7 @@ namespace Evernus
         void open();
 
         bool atEnd() const;
+
+        unsigned char readChar();
     };
 }

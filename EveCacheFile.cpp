@@ -28,4 +28,14 @@ namespace Evernus
     {
         return QFile::atEnd();
     }
+
+    unsigned char EveCacheFile::readChar()
+    {
+        unsigned char out;
+
+        if (read(reinterpret_cast<char *>(&out), sizeof(out)) < sizeof(out))
+            throw std::runtime_error{tr("Error reading file.").toStdString()};
+
+        return out;
+    }
 }
