@@ -129,6 +129,9 @@ namespace Evernus
 
          auto item = static_cast<const TreeItem *>(index.internalPointer());
 
+         const auto unitPriceColumn = 4;
+         const auto totalPriceColumn = 5;
+
          const auto column = index.column();
 
          switch (role) {
@@ -145,7 +148,7 @@ namespace Evernus
 
              return QFont{};
          case Qt::BackgroundRole:
-             if ((column == 4 || column == 5) && item->parent() != &mRootItem)
+             if ((column == unitPriceColumn || column == totalPriceColumn) && item->parent() != &mRootItem)
              {
                  QSettings settings;
                  const auto maxPriceAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
@@ -154,7 +157,7 @@ namespace Evernus
              }
              break;
          case Qt::ToolTipRole:
-             if ((column == 4 || column == 5) && item->parent() != &mRootItem)
+             if ((column == unitPriceColumn || column == totalPriceColumn) && item->parent() != &mRootItem)
                  return tr("Price update time: %1").arg(item->priceTimestamp().toLocalTime().toString());
          }
 
