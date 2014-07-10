@@ -12,11 +12,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QSettings>
 #include <QLocale>
+#include <QColor>
 #include <QFont>
+#include <QDebug>
 
 #include "EveDataProvider.h"
 #include "AssetProvider.h"
+#include "PriceSettings.h"
 #include "ItemPrice.h"
 
 #include "AssetModel.h"
@@ -62,6 +66,16 @@ namespace Evernus
     void AssetModel::TreeItem::setData(const QVariantList &data)
     {
         mItemData = data;
+    }
+
+    QDateTime AssetModel::TreeItem::priceTimestamp() const
+    {
+        return mPriceTimestamp;
+    }
+
+    void AssetModel::TreeItem::setPriceTimestamp(const QDateTime &dt)
+    {
+        mPriceTimestamp = dt;
     }
 
     int AssetModel::TreeItem::row() const
@@ -115,9 +129,11 @@ namespace Evernus
 
          auto item = static_cast<const TreeItem *>(index.internalPointer());
 
+         const auto column = index.column();
+
          switch (role) {
          case Qt::DisplayRole:
-             return item->data(index.column());
+             return item->data(column);
          case Qt::FontRole:
              if (item->parent() == &mRootItem)
              {
@@ -128,6 +144,18 @@ namespace Evernus
              }
 
              return QFont{};
+         case Qt::BackgroundRole:
+             if ((column == 4 || column == 5) && item->parent() != &mRootItem)
+             {
+                 QSettings settings;
+                 const auto maxPriceAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
+                 if (item->priceTimestamp() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxPriceAge))
+                     return QColor{255, 255, 192};
+             }
+             break;
+         case Qt::ToolTipRole:
+             if ((column == 4 || column == 5) && item->parent() != &mRootItem)
+                 return tr("Price update time: %1").arg(item->priceTimestamp().toLocalTime().toString());
          }
 
          return QVariant{};
@@ -308,7 +336,7 @@ namespace Evernus
         const auto typeId = item.getTypeId();
         const auto volume = mDataProvider.getTypeVolume(typeId);
         const auto quantity = item.getQuantity();
-        const auto sellPrice = mDataProvider.getTypeSellPrice(typeId, locationId).getValue();
+        const auto sellPrice = mDataProvider.getTypeSellPrice(typeId, locationId);
 
         auto treeItem = std::make_unique<TreeItem>();
         treeItem->setData(QVariantList{}
@@ -316,9 +344,10 @@ namespace Evernus
             << locale.toString(quantity)
             << QString{"%1m³"}.arg(locale.toString(volume, 'f', 2))
             << QString{"%1m³"}.arg(locale.toString(volume * quantity, 'f', 2))
-            << locale.toCurrencyString(sellPrice, "ISK")
-            << locale.toCurrencyString(sellPrice * quantity, "ISK")
+            << locale.toCurrencyString(sellPrice.getValue(), "ISK")
+            << locale.toCurrencyString(sellPrice.getValue() * quantity, "ISK")
         );
+        treeItem->setPriceTimestamp(sellPrice.getUpdateTime());
 
         return treeItem;
     }

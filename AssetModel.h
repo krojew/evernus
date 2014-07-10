@@ -17,6 +17,7 @@
 #include <unordered_map>
 
 #include <QAbstractItemModel>
+#include <QDateTime>
 
 #include "Character.h"
 #include "Item.h"
@@ -60,17 +61,25 @@ namespace Evernus
             void clearChildren();
 
             TreeItem *child(int row) const;
+
             int childCount() const;
             int columnCount() const;
+
             QVariant data(int column) const;
             QVariantList data() const;
             void setData(const QVariantList &data);
+
+            QDateTime priceTimestamp() const;
+            void setPriceTimestamp(const QDateTime &dt);
+
             int row() const;
+
             TreeItem *parent() const;
 
         private:
             std::vector<std::unique_ptr<TreeItem>> mChildItems;
             QVariantList mItemData;
+            QDateTime mPriceTimestamp;
             TreeItem *mParentItem = nullptr;
         };
 
