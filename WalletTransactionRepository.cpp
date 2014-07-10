@@ -66,6 +66,17 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
     }
 
+    WalletTransaction::IdType WalletTransactionRepository::getLatestEntryId(Character::IdType characterId) const
+    {
+        auto query = prepare(QString{"SELECT MAX(%1) FROM %2 WHERE character_id = ?"}.arg(getIdColumn()).arg(getTableName()));
+        query.bindValue(0, characterId);
+
+        DatabaseUtils::execQuery(query);
+
+        query.next();
+        return query.value(0).value<WalletTransaction::IdType>();
+    }
+
     QStringList WalletTransactionRepository::getColumns() const
     {
         return QStringList{}
@@ -114,5 +125,10 @@ namespace Evernus
         query.addBindValue(static_cast<int>(entity.getType()));
         query.addBindValue(entity.getJournalId());
         query.addBindValue(entity.isIgnored());
+    }
+
+    size_t WalletTransactionRepository::getMaxRowsPerInsert() const
+    {
+        return 90;
     }
 }

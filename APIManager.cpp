@@ -18,6 +18,7 @@
 #include <QDateTime>
 
 #include "ConquerableStationListXmlReceiver.h"
+#include "WalletTransactionsXmlReceiver.h"
 #include "WalletJournalXmlReceiver.h"
 #include "CharacterListXmlReceiver.h"
 #include "AssetListXmlReceiver.h"
@@ -198,6 +199,15 @@ namespace Evernus
         fetchWalletJournal(key, characterId, fromId, tillId, std::make_shared<WalletJournal>(), callback);
     }
 
+    void APIManager::fetchWalletTransactions(const Key &key,
+                                             Character::IdType characterId,
+                                             WalletTransaction::IdType fromId,
+                                             WalletTransaction::IdType tillId,
+                                             const Callback<WalletTransactions> &callback) const
+    {
+        fetchWalletTransactions(key, characterId, fromId, tillId, std::make_shared<WalletTransactions>(), callback);
+    }
+
     void APIManager::fetchWalletJournal(const Key &key,
                                         Character::IdType characterId,
                                         WalletJournalEntry::IdType fromId,
@@ -250,6 +260,62 @@ namespace Evernus
             catch (const std::exception &e)
             {
                 callback(WalletJournal{}, e.what());
+            }
+        });
+    }
+
+    void APIManager::fetchWalletTransactions(const Key &key,
+                                             Character::IdType characterId,
+                                             WalletTransaction::IdType fromId,
+                                             WalletTransaction::IdType tillId,
+                                             std::shared_ptr<WalletTransactions> &&transactions,
+                                             const Callback<WalletTransactions> &callback) const
+    {
+        mInterface.fetchWalletTransactions(key, characterId, fromId,
+                                           [=](const QString &response, const QString &error) mutable {
+            try
+            {
+                handlePotentialError(response, error);
+
+                auto parsed
+                    = parseResults<WalletTransactions::value_type, APIXmlReceiver<WalletTransactions::value_type>::CurElemType>(response, "transactions");
+
+                auto reachedEnd = parsed.empty();
+                auto nextFromId = std::numeric_limits<WalletTransaction::IdType>::max();
+
+                for (auto &entry : parsed)
+                {
+                    const auto id = entry.getId();
+                    if (id > tillId)
+                    {
+                        entry.setCharacterId(characterId);
+                        transactions->emplace(std::move(entry));
+
+                        if (nextFromId > id)
+                            nextFromId = id;
+                    }
+                    else
+                    {
+                        reachedEnd = true;
+                    }
+                }
+
+                if (reachedEnd)
+                {
+                    mCacheTimerProvider.setUtcCacheTimer(characterId,
+                                                         CacheTimerProvider::TimerType::WalletJournal,
+                                                         APIUtils::getCachedUntil(response));
+
+                    callback(*transactions, QString{});
+                }
+                else
+                {
+                    fetchWalletTransactions(key, characterId, nextFromId, tillId, std::move(transactions), callback);
+                }
+            }
+            catch (const std::exception &e)
+            {
+                callback(WalletTransactions{}, e.what());
             }
         });
     }

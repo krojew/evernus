@@ -233,8 +233,11 @@ add_executable(
     WalletTransaction.h
     WalletTransactionRepository.cpp
     WalletTransactionRepository.h
+    WalletTransactions.h
     WalletTransactionsWidget.cpp
     WalletTransactionsWidget.h
+    WalletTransactionsXmlReceiver.cpp
+    WalletTransactionsXmlReceiver.h
     ${MOC_FILES}
     ${RCC_FILES}
     ${ADDITIONAL_SRC}

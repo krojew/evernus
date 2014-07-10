@@ -22,6 +22,8 @@
 
 namespace Evernus
 {
+    const QString APIInterface::rowLimit = "1500";
+
     APIInterface::APIInterface(QObject *parent)
         : QObject{parent}
         , mCache{new APIResponseCache{this}}
@@ -60,11 +62,24 @@ namespace Evernus
                                           const Callback &callback) const
     {
         QueryParams params{std::make_pair("characterId", QString::number(characterId))};
-        params.emplace_back("rowCount", "1500");
+        params.emplace_back("rowCount", rowLimit);
         if (fromId != WalletJournalEntry::invalidId)
             params.emplace_back("fromID", QString::number(fromId));
 
         makeRequest("/char/WalletJournal.xml.aspx", key, callback, params);
+    }
+
+    void APIInterface::fetchWalletTransactions(const Key &key,
+                                               Character::IdType characterId,
+                                               WalletTransaction::IdType fromId,
+                                               const Callback &callback) const
+    {
+        QueryParams params{std::make_pair("characterId", QString::number(characterId))};
+        params.emplace_back("rowCount", rowLimit);
+        if (fromId != WalletJournalEntry::invalidId)
+            params.emplace_back("fromID", QString::number(fromId));
+
+        makeRequest("/char/WalletTransactions.xml.aspx", key, callback, params);
     }
 
     void APIInterface::processReply()

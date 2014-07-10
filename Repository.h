@@ -37,7 +37,9 @@ namespace Evernus
         QSqlQuery exec(const QString &query) const;
         QSqlQuery prepare(const QString &queryStr) const;
         void store(T &entity) const;
-        void batchStore(const std::vector<T> &entities, bool hasId) const;
+
+        template<class U>
+        void batchStore(const U &entities, bool hasId) const;
 
         template<class Id>
         void remove(Id &&id) const;

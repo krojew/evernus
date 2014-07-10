@@ -97,6 +97,7 @@ namespace Evernus
         void iskChanged();
         void itemPricesChanged();
         void walletJournalChanged();
+        void walletTransactionsChanged();
 
     public slots:
         void refreshCharacters();

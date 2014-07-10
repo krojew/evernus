@@ -135,4 +135,9 @@ namespace Evernus
     {
         mIgnored = flag;
     }
+
+    bool operator <(const WalletTransaction &a, const WalletTransaction &b)
+    {
+        return a.getId() < b.getId();
+    }
 }

@@ -294,7 +294,7 @@ namespace Evernus
         tabs->addTab(transactionsTab, tr("Transactions"));
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, transactionsTab, &WalletTransactionsWidget::setCharacter);
-        connect(this, &MainWindow::walletJournalChanged, transactionsTab, &WalletTransactionsWidget::updateData);
+        connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
     }
 
     void MainWindow::createStatusBar()

@@ -70,6 +70,7 @@ namespace Evernus
         void assetsChanged();
         void itemPricesChanged();
         void walletJournalChanged();
+        void walletTransactionsChanged();
 
         void newTaskInfoAdded(uint taskId, const QString &description);
         void newSubTaskInfoAdded(uint taskId, uint parentTask, const QString &description);

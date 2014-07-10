@@ -20,6 +20,7 @@
 #include <vector>
 
 #include "ConquerableStationList.h"
+#include "WalletTransactions.h"
 #include "WalletJournal.h"
 #include "APIInterface.h"
 #include "AssetList.h"
@@ -55,6 +56,11 @@ namespace Evernus
                                 WalletJournalEntry::IdType fromId,
                                 WalletJournalEntry::IdType tillId,
                                 const Callback<WalletJournal> &callback) const;
+        void fetchWalletTransactions(const Key &key,
+                                     Character::IdType characterId,
+                                     WalletTransaction::IdType fromId,
+                                     WalletTransaction::IdType tillId,
+                                     const Callback<WalletTransactions> &callback) const;
 
     signals:
         void generalError(const QString &info);
@@ -74,6 +80,13 @@ namespace Evernus
                                 WalletJournalEntry::IdType tillId,
                                 std::shared_ptr<WalletJournal> &&journal,
                                 const Callback<WalletJournal> &callback) const;
+
+        void fetchWalletTransactions(const Key &key,
+                                     Character::IdType characterId,
+                                     WalletTransaction::IdType fromId,
+                                     WalletTransaction::IdType tillId,
+                                     std::shared_ptr<WalletTransactions> &&transactions,
+                                     const Callback<WalletTransactions> &callback) const;
 
         template<class T, class CurElem>
         static std::vector<T> parseResults(const QString &xml, const QString &rowsetName);

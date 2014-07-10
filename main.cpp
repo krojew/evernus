@@ -76,6 +76,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(assetsChanged()), SIGNAL(assetsChanged()));
             mainWnd.connect(&app, SIGNAL(itemPricesChanged()), SIGNAL(itemPricesChanged()));
             mainWnd.connect(&app, SIGNAL(walletJournalChanged()), SIGNAL(walletJournalChanged()));
+            mainWnd.connect(&app, SIGNAL(walletTransactionsChanged()), SIGNAL(walletTransactionsChanged()));
             mainWnd.connect(&app, SIGNAL(iskChanged()), SLOT(updateIskData()));
             mainWnd.showAsSaved();
 

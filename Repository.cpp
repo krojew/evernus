@@ -76,7 +76,8 @@ namespace Evernus
     }
 
     template<class T>
-    void Repository<T>::batchStore(const std::vector<T> &entities, bool hasId) const
+    template<class U>
+    void Repository<T>::batchStore(const U &entities, bool hasId) const
     {
         if (entities.empty())
             return;

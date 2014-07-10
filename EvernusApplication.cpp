@@ -468,9 +468,6 @@ namespace Evernus
 
             mAPIManager.fetchWalletJournal(key, id, WalletJournalEntry::invalidId, maxId,
                                            [task, this](const auto &data, const auto &error) {
-                std::vector<Evernus::WalletJournalEntry> vectorData;
-                vectorData.reserve(data.size());
-
                 std::vector<Evernus::WalletSnapshot> snapshots;
                 snapshots.reserve(data.size());
 
@@ -488,11 +485,9 @@ namespace Evernus
                         snapshots.emplace_back(std::move(snapshot));
                         usedSnapshots << timestamp;
                     }
-                    
-                    vectorData.emplace_back(std::move(entry));
                 }
 
-                mWalletJournalEntryRepository->batchStore(vectorData, true);
+                mWalletJournalEntryRepository->batchStore(data, true);
                 mWalletSnapshotRepository->batchStore(snapshots, true);
 
                 emit walletJournalChanged();
@@ -512,6 +507,31 @@ namespace Evernus
     void EvernusApplication::refreshWalletTransactions(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing wallet transactions: " << id;
+
+        const auto task = startTask(tr("Fetching wallet transactions for character %1...").arg(id));
+        processEvents();
+
+        try
+        {
+            const auto key = getCharacterKey(id);
+            const auto maxId = mWalletTransactionRepository->getLatestEntryId(id);
+
+            mAPIManager.fetchWalletTransactions(key, id, WalletTransaction::invalidId, maxId,
+                                                [task, this](const auto &data, const auto &error) {
+                mWalletTransactionRepository->batchStore(data, true);
+
+                emit walletTransactionsChanged();
+                emit taskStatusChanged(task, error);
+            });
+        }
+        catch (const KeyRepository::NotFoundException &)
+        {
+            emit taskStatusChanged(task, tr("Key not found!"));
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            emit taskStatusChanged(task, tr("Character not found!"));
+        }
     }
 
     void EvernusApplication::refreshConquerableStations()

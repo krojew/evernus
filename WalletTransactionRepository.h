@@ -33,9 +33,13 @@ namespace Evernus
 
         void create(const Repository<Character> &characterRepo) const;
 
+        WalletTransaction::IdType getLatestEntryId(Character::IdType characterId) const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const WalletTransaction &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const WalletTransaction &entity, QSqlQuery &query) const override;
+
+        virtual size_t getMaxRowsPerInsert() const override;
     };
 }

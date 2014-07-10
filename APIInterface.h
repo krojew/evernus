@@ -22,6 +22,7 @@
 #include <QNetworkReply>
 
 #include "WalletJournalEntry.h"
+#include "WalletTransaction.h"
 #include "APIResponseCache.h"
 #include "Character.h"
 
@@ -49,6 +50,10 @@ namespace Evernus
                                 Character::IdType characterId,
                                 WalletJournalEntry::IdType fromId,
                                 const Callback &callback) const;
+        void fetchWalletTransactions(const Key &key,
+                                     Character::IdType characterId,
+                                     WalletTransaction::IdType fromId,
+                                     const Callback &callback) const;
 
     signals:
         void generalError(const QString &info);
@@ -59,6 +64,8 @@ namespace Evernus
 
     private:
         typedef std::vector<std::pair<QString, QString>> QueryParams;
+
+        static const QString rowLimit;
 
         APIResponseCache *mCache = nullptr;
         mutable QNetworkAccessManager mNetworkManager;

@@ -91,4 +91,6 @@ namespace Evernus
         WalletJournalEntry::IdType mJournalId = WalletJournalEntry::invalidId;
         bool mIgnored = false;
     };
+
+    bool operator <(const WalletTransaction &a, const WalletTransaction &b);
 }
