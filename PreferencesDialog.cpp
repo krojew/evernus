@@ -51,10 +51,10 @@ namespace Evernus
         preferencesLayout->addWidget(mPreferencesStack, 1);
 
         std::vector<std::pair<QString, std::unique_ptr<QWidget>>> categories;
-        categories.emplace_back(std::make_pair(QString{tr("Paths")}, std::unique_ptr<QWidget>{new PathPreferencesWidget{}}));
-        categories.emplace_back(std::make_pair(QString{tr("Prices")}, std::unique_ptr<QWidget>{new PricePreferencesWidget{}}));
-        categories.emplace_back(std::make_pair(QString{tr("Network")}, std::unique_ptr<QWidget>{new NetworkPreferencesWidget{}}));
-        categories.emplace_back(std::make_pair(QString{tr("Wallet")}, std::unique_ptr<QWidget>{new WalletPreferencesWidget{}}));
+        categories.emplace_back(std::make_pair(tr("Paths"), std::unique_ptr<QWidget>{new PathPreferencesWidget{}}));
+        categories.emplace_back(std::make_pair(tr("Prices"), std::unique_ptr<QWidget>{new PricePreferencesWidget{}}));
+        categories.emplace_back(std::make_pair(tr("Network"), std::unique_ptr<QWidget>{new NetworkPreferencesWidget{}}));
+        categories.emplace_back(std::make_pair(tr("Wallet"), std::unique_ptr<QWidget>{new WalletPreferencesWidget{}}));
 
         for (auto i = 0; i < categories.size(); ++i)
         {
@@ -76,8 +76,8 @@ namespace Evernus
         importItem->setExpanded(true);
 
         std::vector<std::pair<QString, std::unique_ptr<QWidget>>> importCategories;
-        importCategories.emplace_back(std::make_pair(QString{tr("Character")}, std::unique_ptr<QWidget>{new CharacterImportPreferencesWidget{}}));
-        importCategories.emplace_back(std::make_pair(QString{tr("Assets")}, std::unique_ptr<QWidget>{new AssetsImportPreferencesWidget{}}));
+        importCategories.emplace_back(std::make_pair(tr("Character"), std::unique_ptr<QWidget>{new CharacterImportPreferencesWidget{}}));
+        importCategories.emplace_back(std::make_pair(tr("Assets"), std::unique_ptr<QWidget>{new AssetsImportPreferencesWidget{}}));
 
         for (auto i = 0; i < importCategories.size(); ++i)
         {

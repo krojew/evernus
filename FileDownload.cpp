@@ -30,7 +30,7 @@ namespace Evernus
         QDir{}.mkpath(info.dir().path());
 
         if (!mOutput.open(QIODevice::WriteOnly | QIODevice::Truncate))
-            throw std::runtime_error(QString{tr("Error creating file: %1")}.arg(dest).toStdString());
+            throw std::runtime_error(tr("Error creating file: %1").arg(dest).toStdString());
 
         auto reply = mNetworkManager.get(QNetworkRequest{addr});
         connect(reply, &QNetworkReply::readyRead, this, &FileDownload::process);

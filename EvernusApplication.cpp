@@ -315,7 +315,7 @@ namespace Evernus
         {
             for (const auto &key : keys)
             {
-                const auto charListSubtask = startTask(task, QString{tr("Fetching characters for key %1...")}.arg(key.getId()));
+                const auto charListSubtask = startTask(task, tr("Fetching characters for key %1...").arg(key.getId()));
                 mAPIManager.fetchCharacterList(key, [key, charListSubtask, this](const auto &characters, const auto &error) {
                     if (error.isEmpty())
                     {
@@ -399,7 +399,7 @@ namespace Evernus
     {
         qDebug() << "Refreshing assets: " << id;
 
-        const auto assetSubtask = startTask(parentTask, QString{tr("Fetching assets for character %1...")}.arg(id));
+        const auto assetSubtask = startTask(parentTask, tr("Fetching assets for character %1...").arg(id));
         processEvents();
 
         try
@@ -685,7 +685,7 @@ namespace Evernus
 
     void EvernusApplication::importCharacter(Character::IdType id, uint parentTask, const Key &key)
     {
-        const auto charSubtask = startTask(parentTask, QString{tr("Fetching character %1...")}.arg(id));
+        const auto charSubtask = startTask(parentTask, tr("Fetching character %1...").arg(id));
         mAPIManager.fetchCharacter(key, id, [charSubtask, this](auto data, const auto &error) {
             if (error.isEmpty())
             {

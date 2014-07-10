@@ -117,7 +117,7 @@ namespace Evernus
     {
         QMessageBox::about(this,
                            tr("About Evernus"),
-                           QString{tr("Evernus %1\nCreated by Pete Butcher\nAll donations are welcome :)")}
+                           tr("Evernus %1\nCreated by Pete Butcher\nAll donations are welcome :)")
                                .arg(QCoreApplication::applicationVersion()));
     }
 
@@ -152,7 +152,7 @@ namespace Evernus
         if (mCurrentCharacterId != Character::invalidId)
         {
             const auto character = mCharacterRepository.find(mCurrentCharacterId);
-            mStatusWalletLabel->setText(QString{tr("Wallet: <strong>%1</strong>")}
+            mStatusWalletLabel->setText(tr("Wallet: <strong>%1</strong>")
                 .arg(character.getISKPresentation()));
         }
         else

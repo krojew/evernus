@@ -89,7 +89,7 @@ namespace Evernus
         for (const auto &error : errors)
             errorTexts << error.errorString();
 
-        emit generalError(QString{tr("Encountered SSL errors:\n\n%1")}.arg(errorTexts.join("\n")));
+        emit generalError(tr("Encountered SSL errors:\n\n%1").arg(errorTexts.join("\n")));
     }
 
     void APIInterface::makeRequest(const QString &endpoint, const Key &key, const Callback &callback, const QueryParams &additionalParams) const
