@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
                                         app.getAssetValueSnapshotRepository(),
                                         app.getWalletSnapshotRepository(),
                                         app.getWalletJournalEntryRepository(),
+                                        app.getWalletTransactionRepository(),
                                         app,
                                         app,
                                         app};
@@ -62,6 +63,7 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(importCharacter(Character::IdType)), SLOT(refreshCharacter(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importAssets(Character::IdType)), SLOT(refreshAssets(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importWalletJournal(Character::IdType)), SLOT(refreshWalletJournal(Character::IdType)));
+            app.connect(&mainWnd, SIGNAL(importWalletTransactions(Character::IdType)), SLOT(refreshWalletTransactions(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &)), SLOT(refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(importItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &)), SLOT(refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(importItemPricesFromCache(const ItemPriceImporter::TypeLocationPairs &)), SLOT(refreshItemPricesFromCache(const ItemPriceImporter::TypeLocationPairs &)));

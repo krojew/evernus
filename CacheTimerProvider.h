@@ -27,7 +27,8 @@ namespace Evernus
         {
             Character = 1,
             AssetList,
-            WalletJournal
+            WalletJournal,
+            WalletTransactions,
         };
 
         CacheTimerProvider() = default;

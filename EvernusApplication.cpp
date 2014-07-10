@@ -247,6 +247,11 @@ namespace Evernus
             if (it == std::end(mWalletJournalLocalCacheTimes))
                 return QDateTime::currentDateTime();
             break;
+        case TimerType::WalletTransactions:
+            it = mWalletTransactionsLocalCacheTimes.find(id);
+            if (it == std::end(mWalletTransactionsLocalCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
         default:
             throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
         }
@@ -268,6 +273,9 @@ namespace Evernus
             break;
         case TimerType::WalletJournal:
             mWalletJournalLocalCacheTimes[id] = dt;
+            break;
+        case TimerType::WalletTransactions:
+            mWalletTransactionsLocalCacheTimes[id] = dt;
             break;
         default:
             throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
@@ -302,6 +310,11 @@ namespace Evernus
     const WalletJournalEntryRepository &EvernusApplication::getWalletJournalEntryRepository() const noexcept
     {
         return *mWalletJournalEntryRepository;
+    }
+
+    const WalletTransactionRepository &EvernusApplication::getWalletTransactionRepository() const noexcept
+    {
+        return *mWalletTransactionRepository;
     }
 
     void EvernusApplication::refreshCharacters()
@@ -496,6 +509,11 @@ namespace Evernus
         }
     }
 
+    void EvernusApplication::refreshWalletTransactions(Character::IdType id, uint parentTask)
+    {
+        qDebug() << "Refreshing wallet transactions: " << id;
+    }
+
     void EvernusApplication::refreshConquerableStations()
     {
         qDebug() << "Refreshing conquerable stations...";
@@ -663,6 +681,9 @@ namespace Evernus
                 break;
             case TimerType::WalletJournal:
                 mWalletJournalLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                break;
+            case TimerType::WalletTransactions:
+                mWalletTransactionsLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
             }
         }
     }

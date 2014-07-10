@@ -28,6 +28,7 @@ namespace Evernus
     class Repository;
     class AssetValueSnapshotRepository;
     class WalletJournalEntryRepository;
+    class WalletTransactionRepository;
     class WalletSnapshotRepository;
     class CharacterManagerDialog;
     class WalletJournalEntry;
@@ -50,6 +51,7 @@ namespace Evernus
                    const AssetValueSnapshotRepository &assetSnapshotRepo,
                    const WalletSnapshotRepository &walletSnapshotRepo,
                    const WalletJournalEntryRepository &walletJournalRepo,
+                   const WalletTransactionRepository &walletTransactionRepo,
                    const AssetProvider &assetProvider,
                    const EveDataProvider &eveDataProvider,
                    const CacheTimerProvider &cacheTimerProvider,
@@ -76,6 +78,7 @@ namespace Evernus
         void importCharacter(Character::IdType id);
         void importAssets(Character::IdType id);
         void importWalletJournal(Character::IdType id);
+        void importWalletTransactions(Character::IdType id);
 
         void importItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
         void importItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
@@ -96,6 +99,7 @@ namespace Evernus
 
         void refreshAssets();
         void refreshWalletJournal();
+        void refreshWalletTransactions();
         void refreshAll();
 
     protected:
@@ -111,6 +115,7 @@ namespace Evernus
         const AssetValueSnapshotRepository &mAssetSnapshotRepository;
         const WalletSnapshotRepository &mWalletSnapshotRepository;
         const WalletJournalEntryRepository &mWalletJournalRepository;
+        const WalletTransactionRepository &mWalletTransactionRepository;
         const AssetProvider &mAssetProvider;
 
         const EveDataProvider &mEveDataProvider;

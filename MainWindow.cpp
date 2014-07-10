@@ -22,6 +22,7 @@
 #include <QLabel>
 #include <QDebug>
 
+#include "WalletTransactionsWidget.h"
 #include "CharacterManagerDialog.h"
 #include "WalletJournalWidget.h"
 #include "ActiveTasksDialog.h"
@@ -47,6 +48,7 @@ namespace Evernus
                            const AssetValueSnapshotRepository &assetSnapshotRepo,
                            const WalletSnapshotRepository &walletSnapshotRepo,
                            const WalletJournalEntryRepository &walletJournalRepo,
+                           const WalletTransactionRepository &walletTransactionRepo,
                            const AssetProvider &assetProvider,
                            const EveDataProvider &eveDataProvider,
                            const CacheTimerProvider &cacheTimerProvider,
@@ -58,6 +60,7 @@ namespace Evernus
         , mAssetSnapshotRepository{assetSnapshotRepo}
         , mWalletSnapshotRepository{walletSnapshotRepo}
         , mWalletJournalRepository{walletJournalRepo}
+        , mWalletTransactionRepository{walletTransactionRepo}
         , mAssetProvider{assetProvider}
         , mEveDataProvider{eveDataProvider}
         , mCacheTimerProvider{cacheTimerProvider}
@@ -179,12 +182,19 @@ namespace Evernus
             emit importWalletJournal(mCurrentCharacterId);
     }
 
+    void MainWindow::refreshWalletTransactions()
+    {
+        if (mCurrentCharacterId != Character::invalidId)
+            emit importWalletTransactions(mCurrentCharacterId);
+    }
+
     void MainWindow::refreshAll()
     {
         emit refreshCharacters();
         emit refreshConquerableStations();
 
         refreshWalletJournal();
+        refreshWalletTransactions();
 
         QSettings settings;
         if (settings.value(ImportSettings::importAssetsKey, true).toBool())
@@ -279,6 +289,12 @@ namespace Evernus
         connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, journalTab, &WalletJournalWidget::setCharacter);
         connect(this, &MainWindow::walletJournalChanged, journalTab, &WalletJournalWidget::updateData);
+
+        auto transactionsTab = new WalletTransactionsWidget{mWalletTransactionRepository, mCacheTimerProvider, mEveDataProvider, this};
+        tabs->addTab(transactionsTab, tr("Transactions"));
+        connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
+        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, transactionsTab, &WalletTransactionsWidget::setCharacter);
+        connect(this, &MainWindow::walletJournalChanged, transactionsTab, &WalletTransactionsWidget::updateData);
     }
 
     void MainWindow::createStatusBar()

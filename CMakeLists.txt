@@ -51,6 +51,7 @@ qt5_wrap_cpp(
     WalletEntryFilterWidget.h
     WalletJournalWidget.h
     WalletPreferencesWidget.h
+    WalletTransactionsWidget.h
 )
 
 qt5_add_resources(
@@ -232,6 +233,8 @@ add_executable(
     WalletTransaction.h
     WalletTransactionRepository.cpp
     WalletTransactionRepository.h
+    WalletTransactionsWidget.cpp
+    WalletTransactionsWidget.h
     ${MOC_FILES}
     ${RCC_FILES}
     ${ADDITIONAL_SRC}

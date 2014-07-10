@@ -82,6 +82,7 @@ namespace Evernus
         const WalletSnapshotRepository &getWalletSnapshotRepository() const noexcept;
         const AssetValueSnapshotRepository &getAssetValueSnapshotRepository() const noexcept;
         const WalletJournalEntryRepository &getWalletJournalEntryRepository() const noexcept;
+        const WalletTransactionRepository &getWalletTransactionRepository() const noexcept;
 
     signals:
         void taskStarted(uint taskId, const QString &description);
@@ -102,6 +103,7 @@ namespace Evernus
         void refreshCharacter(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshConquerableStations();
         void refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
         void refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
@@ -157,6 +159,7 @@ namespace Evernus
         CacheTimerMap mCharacterLocalCacheTimes;
         CacheTimerMap mAssetsLocalCacheTimes;
         CacheTimerMap mWalletJournalLocalCacheTimes;
+        CacheTimerMap mWalletTransactionsLocalCacheTimes;
 
         void createDb();
         void createDbSchema();
