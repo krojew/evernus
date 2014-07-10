@@ -52,6 +52,7 @@ namespace Evernus
         static const auto ignoredColumn = 0;
         static const auto timestampColumn = 1;
         static const auto amountColumn = 6;
+        static const auto balanceColumn = 7;
         static const auto idColumn = 9;
 
         const WalletJournalEntryRepository &mJournalRepository;

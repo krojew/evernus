@@ -75,6 +75,8 @@ namespace Evernus
         const auto column = index.column();
 
         switch (role) {
+        case Qt::UserRole:
+            return mData[row][column];
         case Qt::DisplayRole:
             switch (column) {
             case ignoredColumn:
@@ -82,6 +84,7 @@ namespace Evernus
             case timestampColumn:
                 return mData[row][timestampColumn].toDateTime().toString();
             case amountColumn:
+            case balanceColumn:
                 return QLocale{}.toCurrencyString(mData[row][column].toDouble(), "ISK");
             }
 
@@ -154,7 +157,6 @@ namespace Evernus
             mData.reserve(entries.size());
 
             QRegularExpression re{"^DESC: "};
-            QLocale locale;
 
             for (const auto &entry : entries)
             {
@@ -172,7 +174,7 @@ namespace Evernus
                     << entry.getOwnerName2()
                     << ((argName) ? (*argName) : (QVariant{}))
                     << entry.getAmount()
-                    << locale.toCurrencyString(entry.getBalance(), "ISK")
+                    << entry.getBalance()
                     << ((reason) ? (reason->remove(re)) : (QVariant{}))
                     << entry.getId();
             }

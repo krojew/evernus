@@ -49,6 +49,7 @@ namespace Evernus
         connect(mFilter, &WalletEntryFilterWidget::filterChanged, this, &WalletJournalWidget::updateFilter);
 
         mFilterModel = new QSortFilterProxyModel{this};
+        mFilterModel->setSortRole(Qt::UserRole);
         mFilterModel->setFilterKeyColumn(-1);
         mFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
         mFilterModel->setSourceModel(&mModel);
