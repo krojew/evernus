@@ -14,20 +14,19 @@
  */
 #pragma once
 
-#include "ItemPriceImporter.h"
+#include <QFile>
 
 namespace Evernus
 {
-    class CacheItemPriceImporter
-        : public ItemPriceImporter
+    class EveCacheFile
+        : private QFile
     {
     public:
-        using ItemPriceImporter::ItemPriceImporter;
-        virtual ~CacheItemPriceImporter() = default;
+        using QFile::QFile;
+        virtual ~EveCacheFile() = default;
 
-        virtual void fetchItemPrices(const TypeLocationPairs &target) const override;
+        void open();
 
-    private:
-        static QString getEveCachePath();
+        bool atEnd() const;
     };
 }

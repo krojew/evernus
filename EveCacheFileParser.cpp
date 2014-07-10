@@ -12,22 +12,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include "EveCacheFile.h"
 
-#include "ItemPriceImporter.h"
+#include "EveCacheFileParser.h"
 
 namespace Evernus
 {
-    class CacheItemPriceImporter
-        : public ItemPriceImporter
+    EveCacheFileParser::EveCacheFileParser(EveCacheFile &file)
+        : mFile{file}
     {
-    public:
-        using ItemPriceImporter::ItemPriceImporter;
-        virtual ~CacheItemPriceImporter() = default;
+    }
 
-        virtual void fetchItemPrices(const TypeLocationPairs &target) const override;
+    void EveCacheFileParser::parse()
+    {
 
-    private:
-        static QString getEveCachePath();
-    };
+    }
 }

@@ -14,20 +14,27 @@
  */
 #pragma once
 
-#include "ItemPriceImporter.h"
+#include <QStringList>
 
 namespace Evernus
 {
-    class CacheItemPriceImporter
-        : public ItemPriceImporter
+    class EveCacheManager
     {
     public:
-        using ItemPriceImporter::ItemPriceImporter;
-        virtual ~CacheItemPriceImporter() = default;
+        explicit EveCacheManager(const QString &machoNetPath);
+        explicit EveCacheManager(QString &&machoNetPath);
+        ~EveCacheManager() = default;
 
-        virtual void fetchItemPrices(const TypeLocationPairs &target) const override;
+        void addCacheFolderFilter(const QString &name);
+        void addCacheFolderFilter(QString &&name);
+
+        void addMethodFilter(const QString &name);
+        void addMethodFilter(QString &&name);
+
+        void parseMachoNet() const;
 
     private:
-        static QString getEveCachePath();
+        const QString mMachoNetPath;
+        QStringList mCacheFolderFilters, mMethodFilters;
     };
 }

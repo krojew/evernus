@@ -12,22 +12,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include <stdexcept>
 
-#include "ItemPriceImporter.h"
+#include "EveCacheFile.h"
 
 namespace Evernus
 {
-    class CacheItemPriceImporter
-        : public ItemPriceImporter
+    void EveCacheFile::open()
     {
-    public:
-        using ItemPriceImporter::ItemPriceImporter;
-        virtual ~CacheItemPriceImporter() = default;
+        if (!QFile::open(QIODevice::ReadOnly))
+            throw std::runtime_error{tr("Cannot open file.").toStdString()};
+    }
 
-        virtual void fetchItemPrices(const TypeLocationPairs &target) const override;
-
-    private:
-        static QString getEveCachePath();
-    };
+    bool EveCacheFile::atEnd() const
+    {
+        return QFile::atEnd();
+    }
 }

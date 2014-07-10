@@ -18,6 +18,7 @@
 #include <QDebug>
 #include <QDir>
 
+#include "EveCacheManager.h"
 #include "PathSettings.h"
 #include "ItemPrice.h"
 
@@ -33,19 +34,29 @@ namespace Evernus
             return;
         }
 
-        const auto cachePaths = getEveCachePaths();
-        if (cachePaths.isEmpty())
+        const auto cachePath = getEveCachePath();
+        if (cachePath.isEmpty())
         {
             emit error(tr("Couldn't determine Eve cache path."));
             return;
         }
+
+        if (!QDir{cachePath}.exists())
+        {
+            emit error(tr("Eve cache path doesn't exist."));
+            return;
+        }
+
+        EveCacheManager manager{cachePath};
+        manager.addCacheFolderFilter("CachedMethodCalls");
+        manager.addMethodFilter("GetOrders");
+        manager.parseMachoNet();
     }
 
-    QStringList CacheItemPriceImporter::getEveCachePaths()
+    QString CacheItemPriceImporter::getEveCachePath()
     {
         QSettings settings;
 
-        const auto bulkDataPathSegment = "bulkdata/";
         const auto machoNetPathSegment = "MachoNet/";
         const auto tranquilityIpPathSegment = "87.237.38.200/";
 
@@ -56,7 +67,7 @@ namespace Evernus
         qDebug() << "Eve path:" << basePath;
 
         if (basePath.isEmpty())
-            return QStringList{};
+            return QString{};
 
         const QString tranquilityPathSegment = "_tranquility";
         const QString cachePathSegment = "cache";
@@ -75,14 +86,10 @@ namespace Evernus
         qDebug() << "Eve path:" << basePath;
 
         if (basePath.isEmpty())
-            return QStringList{};
+            return QString{};
 
         basePath += "/";
-
 #endif
-        const QString bulkDataPath = basePath % bulkDataPathSegment;
-        const QString machoNetPath = basePath % machoNetPathSegment % tranquilityIpPathSegment;
-
-        return QStringList{} << bulkDataPath << machoNetPath;
+        return basePath % machoNetPathSegment % tranquilityIpPathSegment;
     }
 }
