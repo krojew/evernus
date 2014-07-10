@@ -599,6 +599,7 @@ namespace Evernus
         mWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{mMainDb});
         mRefTypeRepository.reset(new RefTypeRepository{mMainDb});
         mCacheTimerRepository.reset(new CacheTimerRepository{mMainDb});
+        mWalletTransactionRepository.reset(new WalletTransactionRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
     }
 
@@ -614,6 +615,7 @@ namespace Evernus
         mWalletJournalEntryRepository->create(*mCharacterRepository);
         mItemPriceRepository->create();
         mCacheTimerRepository->create(*mCharacterRepository);
+        mWalletTransactionRepository->create(*mCharacterRepository);
         mRefTypeRepository->create();
     }
 

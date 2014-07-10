@@ -228,6 +228,10 @@ add_executable(
     WalletSnapshot.h
     WalletSnapshotRepository.cpp
     WalletSnapshotRepository.h
+    WalletTransaction.cpp
+    WalletTransaction.h
+    WalletTransactionRepository.cpp
+    WalletTransactionRepository.h
     ${MOC_FILES}
     ${RCC_FILES}
     ${ADDITIONAL_SRC}

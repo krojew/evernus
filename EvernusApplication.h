@@ -25,6 +25,7 @@
 #include "ConquerableStationRepository.h"
 #include "AssetValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
+#include "WalletTransactionRepository.h"
 #include "ItemPriceImporterRegistry.h"
 #include "WalletSnapshotRepository.h"
 #include "CacheTimerRepository.h"
@@ -132,6 +133,7 @@ namespace Evernus
         std::unique_ptr<WalletJournalEntryRepository> mWalletJournalEntryRepository;
         std::unique_ptr<RefTypeRepository> mRefTypeRepository;
         std::unique_ptr<CacheTimerRepository> mCacheTimerRepository;
+        std::unique_ptr<WalletTransactionRepository> mWalletTransactionRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
 
         APIManager mAPIManager;
