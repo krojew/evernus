@@ -57,7 +57,7 @@ namespace Evernus
     template<class T, class CurElem>
     void APIXmlReceiver<T, CurElem>::endElement()
     {
-        mContainer.emplace_back(*mCurrentElement);
+        mContainer.emplace_back(std::move(*mCurrentElement));
     }
 
     template<class T, class CurElem>
