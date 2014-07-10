@@ -18,6 +18,8 @@
 
 #include "CharacterBoundWidget.h"
 
+class QSortFilterProxyModel;
+
 namespace Evernus
 {
     class WalletJournalEntryRepository;
@@ -31,6 +33,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        typedef WalletJournalModel::EntryType EntryType;
+
         WalletJournalWidget(const WalletJournalEntryRepository &journalRepo,
                             const CacheTimerProvider &cacheTimerProvider,
                             const EveDataProvider &dataProvider,
@@ -40,8 +44,11 @@ namespace Evernus
     public slots:
         void updateData();
 
+        void updateFilter(const QDate &from, const QDate &to, const QString &filter, EntryType type);
+
     private:
         WalletJournalModel mModel;
+        QSortFilterProxyModel *mFilterModel = nullptr;
 
         WalletEntryFilterWidget *mFilter = nullptr;
 

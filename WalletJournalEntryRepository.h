@@ -25,6 +25,13 @@ namespace Evernus
         : public Repository<WalletJournalEntry>
     {
     public:
+        enum class EntryType
+        {
+            All,
+            Incomig,
+            Outgoing
+        };
+
         using Repository::Repository;
         virtual ~WalletJournalEntryRepository() = default;
 
@@ -40,7 +47,10 @@ namespace Evernus
         void setIgnored(WalletJournalEntry::IdType id, bool ignored) const;
         void deleteOldEntires(const QDateTime &from) const;
 
-        std::vector<WalletJournalEntry> fetchForCharacterInRange(Character::IdType characterId, const QDateTime &from, const QDateTime &till) const;
+        std::vector<WalletJournalEntry> fetchForCharacterInRange(Character::IdType characterId,
+                                                                 const QDateTime &from,
+                                                                 const QDateTime &till,
+                                                                 EntryType type) const;
 
     private:
         virtual QStringList getColumns() const override;

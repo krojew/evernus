@@ -16,8 +16,11 @@
 
 #include <QWidget>
 
+#include "WalletJournalEntryRepository.h"
+
 class QLineEdit;
 class QDateEdit;
+class QComboBox;
 class QDate;
 
 namespace Evernus
@@ -28,12 +31,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        enum class EntryType
-        {
-            All,
-            Incomig,
-            Outgoing
-        };
+        typedef WalletJournalEntryRepository::EntryType EntryType;
 
         explicit WalletEntryFilterWidget(QWidget *parent = nullptr);
         virtual ~WalletEntryFilterWidget() = default;
@@ -42,7 +40,7 @@ namespace Evernus
         void filterChanged(const QDate &from, const QDate &to, const QString &filter, EntryType type);
 
     public slots:
-        void setRange(const QDate &from, const QDate &to);
+        void setFilter(const QDate &from, const QDate &to, const QString &filter, EntryType type);
 
     private slots:
         void changeEntryType();
@@ -52,6 +50,7 @@ namespace Evernus
         void toChanged(const QDate &date);
 
     private:
+        QComboBox *mTypeCombo = nullptr;
         QDateEdit *mFromEdit = nullptr;
         QDateEdit *mToEdit = nullptr;
         QLineEdit *mFilterEdit = nullptr;

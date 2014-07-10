@@ -46,13 +46,16 @@ namespace Evernus
 
         mFilter = new WalletEntryFilterWidget{this};
         mainLayout->addWidget(mFilter);
+        connect(mFilter, &WalletEntryFilterWidget::filterChanged, this, &WalletJournalWidget::updateFilter);
 
-        auto proxy = new QSortFilterProxyModel{this};
-        proxy->setSourceModel(&mModel);
+        mFilterModel = new QSortFilterProxyModel{this};
+        mFilterModel->setFilterKeyColumn(-1);
+        mFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+        mFilterModel->setSourceModel(&mModel);
 
         auto journalView = new QTreeView{this};
         mainLayout->addWidget(journalView, 1);
-        journalView->setModel(proxy);
+        journalView->setModel(mFilterModel);
         journalView->setSortingEnabled(true);
         journalView->sortByColumn(1, Qt::DescendingOrder);
         journalView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -64,6 +67,12 @@ namespace Evernus
         mModel.reset();
     }
 
+    void WalletJournalWidget::updateFilter(const QDate &from, const QDate &to, const QString &filter, EntryType type)
+    {
+        mModel.setFilter(getCharacterId(), from, to, type);
+        mFilterModel->setFilterFixedString(filter);
+    }
+
     void WalletJournalWidget::handleNewCharacter(Character::IdType id)
     {
         qDebug() << "Switching wallet journal to" << id;
@@ -72,9 +81,9 @@ namespace Evernus
         const auto fromDate = tillDate.addMonths(-1);
 
         mFilter->blockSignals(true);
-        mFilter->setRange(fromDate, tillDate);
+        mFilter->setFilter(fromDate, tillDate, QString{}, EntryType::All);
         mFilter->blockSignals(false);
 
-        mModel.setFilter(id, fromDate, tillDate);
+        mModel.setFilter(id, fromDate, tillDate, EntryType::All);
     }
 }

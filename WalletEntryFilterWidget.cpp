@@ -30,12 +30,12 @@ namespace Evernus
 
         mainLayout->addWidget(new QLabel(tr("Show:"), this));
 
-        auto typeCombo = new QComboBox{this};
-        mainLayout->addWidget(typeCombo);
-        typeCombo->addItem(tr("all"), static_cast<int>(EntryType::All));
-        typeCombo->addItem(tr("incoming"), static_cast<int>(EntryType::Incomig));
-        typeCombo->addItem(tr("outgoing"), static_cast<int>(EntryType::Outgoing));
-        connect(typeCombo, SIGNAL(currentIndexChanged(int)), SLOT(changeEntryType()));
+        mTypeCombo = new QComboBox{this};
+        mainLayout->addWidget(mTypeCombo);
+        mTypeCombo->addItem(tr("all"), static_cast<int>(EntryType::All));
+        mTypeCombo->addItem(tr("incoming"), static_cast<int>(EntryType::Incomig));
+        mTypeCombo->addItem(tr("outgoing"), static_cast<int>(EntryType::Outgoing));
+        connect(mTypeCombo, SIGNAL(currentIndexChanged(int)), SLOT(changeEntryType()));
 
         mainLayout->addWidget(new QLabel{tr("From:"), this});
 
@@ -58,14 +58,18 @@ namespace Evernus
         connect(mFilterEdit, &QLineEdit::returnPressed, this, &WalletEntryFilterWidget::applyKeywords);
     }
 
-    void WalletEntryFilterWidget::setRange(const QDate &from, const QDate &to)
+    void WalletEntryFilterWidget::setFilter(const QDate &from, const QDate &to, const QString &filter, EntryType type)
     {
         mFromEdit->blockSignals(true);
         mToEdit->blockSignals(true);
+        mTypeCombo->blockSignals(true);
 
+        mTypeCombo->setCurrentIndex(0);
         mFromEdit->setDate(from);
         mToEdit->setDate(to);
+        mFilterEdit->clear();
 
+        mTypeCombo->blockSignals(false);
         mFromEdit->blockSignals(false);
         mToEdit->blockSignals(false);
 
@@ -74,9 +78,7 @@ namespace Evernus
 
     void WalletEntryFilterWidget::changeEntryType()
     {
-        const auto combo = static_cast<const QComboBox *>(sender());
-        mCurrentType = static_cast<EntryType>(combo->currentData().toInt());
-
+        mCurrentType = static_cast<EntryType>(mTypeCombo->currentData().toInt());
         emit filterChanged(mFromEdit->date(), mToEdit->date(), mFilterEdit->text(), mCurrentType);
     }
 

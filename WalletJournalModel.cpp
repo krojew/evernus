@@ -17,7 +17,6 @@
 #include <QColor>
 #include <QFont>
 
-#include "WalletJournalEntryRepository.h"
 #include "EveDataProvider.h"
 
 #include "WalletJournalModel.h"
@@ -134,11 +133,12 @@ namespace Evernus
         return 0;
     }
 
-    void WalletJournalModel::setFilter(Character::IdType id, const QDate &from, const QDate &till)
+    void WalletJournalModel::setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type)
     {
         mCharacterId = id;
         mFrom = from;
         mTill = till;
+        mType = type;
 
         reset();
     }
@@ -150,7 +150,7 @@ namespace Evernus
         mData.clear();
         if (mCharacterId != Character::invalidId)
         {
-            const auto entries = mJournalRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}, QDateTime{mTill});
+            const auto entries = mJournalRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}, QDateTime{mTill}, mType);
             mData.reserve(entries.size());
 
             QRegularExpression re{"^DESC: "};

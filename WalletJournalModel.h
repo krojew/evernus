@@ -19,23 +19,18 @@
 #include <QAbstractTableModel>
 #include <QDate>
 
+#include "WalletJournalEntryRepository.h"
 #include "Character.h"
 
 namespace Evernus
 {
-    class WalletJournalEntryRepository;
     class EveDataProvider;
 
     class WalletJournalModel
         : public QAbstractTableModel
     {
     public:
-        enum class EntryType
-        {
-            All,
-            Incomig,
-            Outgoing
-        };
+        typedef WalletJournalEntryRepository::EntryType EntryType;
 
         WalletJournalModel(const WalletJournalEntryRepository &journalRepo,
                            const EveDataProvider &dataProvider,
@@ -49,7 +44,7 @@ namespace Evernus
         virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
-        void setFilter(Character::IdType id, const QDate &from, const QDate &till);
+        void setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type);
 
         void reset();
 
@@ -64,6 +59,7 @@ namespace Evernus
 
         Character::IdType mCharacterId = Character::invalidId;
         QDate mFrom, mTill;
+        EntryType mType = EntryType::All;
 
         std::vector<QVariantList> mData;
 

@@ -112,9 +112,21 @@ namespace Evernus
     }
 
     std::vector<WalletJournalEntry> WalletJournalEntryRepository
-    ::fetchForCharacterInRange(Character::IdType characterId, const QDateTime &from, const QDateTime &till) const
+    ::fetchForCharacterInRange(Character::IdType characterId, const QDateTime &from, const QDateTime &till, EntryType type) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ?"}.arg(getTableName()));
+        QString queryStr;
+        switch (type) {
+        case EntryType::Incomig:
+            queryStr = "SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ? AND amount >= 0";
+            break;
+        case EntryType::Outgoing:
+            queryStr = "SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ? AND amount < 0";
+            break;
+        default:
+            queryStr = "SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ?";
+        }
+
+        auto query = prepare(queryStr.arg(getTableName()));
         query.addBindValue(characterId);
         query.addBindValue(from);
         query.addBindValue(till);
