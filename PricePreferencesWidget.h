@@ -18,6 +18,7 @@
 
 class QDoubleSpinBox;
 class QCheckBox;
+class QSpinBox;
 
 namespace Evernus
 {
@@ -40,5 +41,6 @@ namespace Evernus
 #ifdef Q_OS_WIN
         QCheckBox *mAltImportBtn = nullptr;
 #endif
+        QSpinBox *mPriceMaxAgeEdit = nullptr;
     };
 }

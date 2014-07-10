@@ -15,9 +15,11 @@
 #include <QDoubleSpinBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QFormLayout>
 #include <QSettings>
 #include <QGroupBox>
 #include <QCheckBox>
+#include <QSpinBox>
 #include <QLabel>
 
 #include "PriceSettings.h"
@@ -43,14 +45,14 @@ namespace Evernus
         auto marginValuesLayout = new QHBoxLayout{};
         marginLayout->addLayout(marginValuesLayout);
 
-        marginValuesLayout->addWidget(new QLabel{tr("Minimum:"), this});
+        marginValuesLayout->addWidget(new QLabel{tr("Minimum:"), this}, 0, Qt::AlignRight);
 
         mMinMarginEdit = new QDoubleSpinBox{this};
         marginValuesLayout->addWidget(mMinMarginEdit);
         mMinMarginEdit->setSuffix("%");
         mMinMarginEdit->setValue(settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble());
 
-        marginValuesLayout->addWidget(new QLabel{tr("Preferred:"), this});
+        marginValuesLayout->addWidget(new QLabel{tr("Preferred:"), this}, 0, Qt::AlignRight);
 
         mPreferredMarginEdit = new QDoubleSpinBox{this};
         marginValuesLayout->addWidget(mPreferredMarginEdit);
@@ -70,19 +72,22 @@ namespace Evernus
         auto pricesGroup = new QGroupBox{this};
         mainLayout->addWidget(pricesGroup);
 
-        auto pricesLayout = new QHBoxLayout{};
+        auto pricesLayout = new QFormLayout{};
         pricesGroup->setLayout(pricesLayout);
 
-        pricesLayout->addWidget(new QLabel{tr("Price delta:"), this});
-
         mPriceDeltaEdit = new QDoubleSpinBox{this};
-        pricesLayout->addWidget(mPriceDeltaEdit);
+        pricesLayout->addRow(tr("Price delta:"), mPriceDeltaEdit);
         mPriceDeltaEdit->setSingleStep(0.01);
         mPriceDeltaEdit->setMinimum(0.01);
         mPriceDeltaEdit->setMaximum(100000000.);
         mPriceDeltaEdit->setValue(settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble());
 
-        pricesLayout->addStretch();
+        mPriceMaxAgeEdit = new QSpinBox{this};
+        pricesLayout->addRow(tr("Max price age:"), mPriceMaxAgeEdit);
+        mPriceMaxAgeEdit->setMinimum(1);
+        mPriceMaxAgeEdit->setMaximum(24 * 30);
+        mPriceMaxAgeEdit->setSuffix("h");
+        mPriceMaxAgeEdit->setValue(settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toUInt());
 
         mainLayout->addStretch();
     }
@@ -96,5 +101,6 @@ namespace Evernus
 #ifdef Q_OS_WIN
         settings.setValue(PriceSettings::priceAltImport, mAltImportBtn->isChecked());
 #endif
+        settings.setValue(PriceSettings::priceMaxAgeKey, mPriceMaxAgeEdit->value());
     }
 }
