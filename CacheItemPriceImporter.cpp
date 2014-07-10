@@ -52,7 +52,7 @@ namespace Evernus
 #ifdef Q_OS_WIN
         qDebug() << "Looking for eve cache path...";
 
-        auto basePath = settings.value(PathSettings::evePathKey).toString().toLower();
+        auto basePath = settings.value(PathSettings::evePathKey).toString();
         qDebug() << "Eve path:" << basePath;
 
         if (basePath.isEmpty())
@@ -61,7 +61,7 @@ namespace Evernus
         const QString tranquilityPathSegment = "_tranquility";
         const QString cachePathSegment = "cache";
 
-        basePath.replace(":", QString{}).replace("\\", "_").replace(" ", "_").replace("/", "_");
+        basePath.remove(":").replace("\\", "_").replace(" ", "_").replace("/", "_");
         basePath += tranquilityPathSegment % "/" % cachePathSegment % "/";
 
         qDebug() << "Combined base path:" << basePath;
