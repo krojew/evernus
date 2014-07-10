@@ -31,11 +31,14 @@ namespace Evernus
 
     ItemPrice ItemPriceRepository::populate(const QSqlRecord &record) const
     {
+        auto dt = record.value("update_time").toDateTime();
+        dt.setTimeSpec(Qt::UTC);
+
         ItemPrice itemPrice{record.value("id").value<ItemPrice::IdType>()};
         itemPrice.setType(static_cast<ItemPrice::Type>(record.value("type").toInt()));
         itemPrice.setTypeId(record.value("type_id").value<ItemPrice::TypeIdType>());
         itemPrice.setLocationId(record.value("location_id").value<ItemPrice::LocationIdType>());
-        itemPrice.setUpdateTime(record.value("update_time").toDateTime());
+        itemPrice.setUpdateTime(dt);
         itemPrice.setValue(record.value("value").toDouble());
         itemPrice.setNew(false);
 
