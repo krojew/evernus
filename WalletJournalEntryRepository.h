@@ -37,6 +37,7 @@ namespace Evernus
 
         WalletJournalEntry::IdType getLatestEntryId(Character::IdType characterId) const;
 
+        void setIgnored(WalletJournalEntry::IdType id, bool ignored) const;
         void deleteOldEntires(const QDateTime &from) const;
 
         std::vector<WalletJournalEntry> fetchForCharacterInRange(Character::IdType characterId, const QDateTime &from, const QDateTime &till) const;

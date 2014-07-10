@@ -58,6 +58,20 @@ namespace Evernus
         connect(mFilterEdit, &QLineEdit::returnPressed, this, &WalletEntryFilterWidget::applyKeywords);
     }
 
+    void WalletEntryFilterWidget::setRange(const QDate &from, const QDate &to)
+    {
+        mFromEdit->blockSignals(true);
+        mToEdit->blockSignals(true);
+
+        mFromEdit->setDate(from);
+        mToEdit->setDate(to);
+
+        mFromEdit->blockSignals(false);
+        mToEdit->blockSignals(false);
+
+        emit filterChanged(from, to, mFilterEdit->text(), mCurrentType);
+    }
+
     void WalletEntryFilterWidget::changeEntryType()
     {
         const auto combo = static_cast<const QComboBox *>(sender());

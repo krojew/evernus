@@ -21,7 +21,9 @@
 namespace Evernus
 {
     class WalletJournalEntryRepository;
+    class WalletEntryFilterWidget;
     class CacheTimerProvider;
+    class EveDataProvider;
 
     class WalletJournalWidget
         : public CharacterBoundWidget
@@ -31,6 +33,7 @@ namespace Evernus
     public:
         WalletJournalWidget(const WalletJournalEntryRepository &journalRepo,
                             const CacheTimerProvider &cacheTimerProvider,
+                            const EveDataProvider &dataProvider,
                             QWidget *parent = nullptr);
         virtual ~WalletJournalWidget() = default;
 
@@ -39,6 +42,8 @@ namespace Evernus
 
     private:
         WalletJournalModel mModel;
+
+        WalletEntryFilterWidget *mFilter = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
     };

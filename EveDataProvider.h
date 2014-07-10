@@ -31,5 +31,7 @@ namespace Evernus
         virtual ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId) const = 0;
 
         virtual QString getLocationName(quint64 id) const = 0;
+
+        virtual QString getRefTypeName(uint id) const = 0;
     };
 }

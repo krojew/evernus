@@ -92,6 +92,7 @@ namespace Evernus
             mCharacterRepository.store(mData[index.row()]);
 
             emit dataChanged(index, index, QVector<int>{1, Qt::CheckStateRole});
+            return true;
         }
 
         return false;

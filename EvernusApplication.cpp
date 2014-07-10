@@ -188,6 +188,12 @@ namespace Evernus
         return result;
     }
 
+    QString EvernusApplication::getRefTypeName(uint id) const
+    {
+        const auto it = mRefTypeNames.find(id);
+        return (it != std::end(mRefTypeNames)) ? (it->second) : (QString{});
+    }
+
     void EvernusApplication::registerImporter(const std::string &name, std::unique_ptr<ItemPriceImporter> &&importer)
     {
         Q_ASSERT(mItemPriceImporters.find(name) == std::end(mItemPriceImporters));

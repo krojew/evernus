@@ -67,6 +67,8 @@ namespace Evernus
 
         virtual QString getLocationName(quint64 id) const override;
 
+        virtual QString getRefTypeName(uint id) const override;
+
         virtual void registerImporter(const std::string &name, std::unique_ptr<ItemPriceImporter> &&importer) override;
 
         virtual const AssetList &fetchForCharacter(Character::IdType id) const override;

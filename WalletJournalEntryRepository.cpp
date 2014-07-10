@@ -94,6 +94,15 @@ namespace Evernus
         return query.value(0).value<WalletJournalEntry::IdType>();
     }
 
+    void WalletJournalEntryRepository::setIgnored(WalletJournalEntry::IdType id, bool ignored) const
+    {
+        auto query = prepare(QString{"UPDATE %1 SET ignored = ? WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
+        query.bindValue(0, ignored);
+        query.bindValue(1, id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     void WalletJournalEntryRepository::deleteOldEntires(const QDateTime &from) const
     {
         auto query = prepare(QString{"DELETE FROM %1 WHERE timestamp < ?"}.arg(getTableName()));

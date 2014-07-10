@@ -19,12 +19,12 @@
 #include <QAbstractTableModel>
 #include <QDate>
 
-#include "WalletJournalEntry.h"
 #include "Character.h"
 
 namespace Evernus
 {
     class WalletJournalEntryRepository;
+    class EveDataProvider;
 
     class WalletJournalModel
         : public QAbstractTableModel
@@ -37,7 +37,9 @@ namespace Evernus
             Outgoing
         };
 
-        explicit WalletJournalModel(const WalletJournalEntryRepository &journalRepo, QObject *parent = nullptr);
+        WalletJournalModel(const WalletJournalEntryRepository &journalRepo,
+                           const EveDataProvider &dataProvider,
+                           QObject *parent = nullptr);
         virtual ~WalletJournalModel() = default;
 
         virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
@@ -47,16 +49,24 @@ namespace Evernus
         virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
-        void setCharacter(Character::IdType id);
+        void setFilter(Character::IdType id, const QDate &from, const QDate &till);
 
         void reset();
 
     private:
+        static const auto ignoredColumn = 0;
+        static const auto timestampColumn = 1;
+        static const auto amountColumn = 6;
+        static const auto idColumn = 9;
+
         const WalletJournalEntryRepository &mJournalRepository;
+        const EveDataProvider &mDataProvider;
 
         Character::IdType mCharacterId = Character::invalidId;
         QDate mFrom, mTill;
 
-        std::vector<WalletJournalEntry> mData;
+        std::vector<QVariantList> mData;
+
+        QStringList mColumns;
     };
 }

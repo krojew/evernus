@@ -28,9 +28,10 @@ namespace Evernus
 {
     WalletJournalWidget::WalletJournalWidget(const WalletJournalEntryRepository &journalRepo,
                                              const CacheTimerProvider &cacheTimerProvider,
+                                             const EveDataProvider &dataProvider,
                                              QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::WalletJournal), parent}
-        , mModel{journalRepo}
+        , mModel{journalRepo, dataProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -43,8 +44,8 @@ namespace Evernus
 
         toolBarLayout->addStretch();
 
-        auto filter = new WalletEntryFilterWidget{this};
-        mainLayout->addWidget(filter);
+        mFilter = new WalletEntryFilterWidget{this};
+        mainLayout->addWidget(mFilter);
 
         auto proxy = new QSortFilterProxyModel{this};
         proxy->setSourceModel(&mModel);
@@ -53,7 +54,8 @@ namespace Evernus
         mainLayout->addWidget(journalView, 1);
         journalView->setModel(proxy);
         journalView->setSortingEnabled(true);
-        journalView->header()->setSectionResizeMode(QHeaderView::Stretch);
+        journalView->sortByColumn(1, Qt::DescendingOrder);
+        journalView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     }
 
     void WalletJournalWidget::updateData()
@@ -66,6 +68,13 @@ namespace Evernus
     {
         qDebug() << "Switching wallet journal to" << id;
 
-        mModel.setCharacter(id);
+        const auto tillDate = QDate::currentDate();
+        const auto fromDate = tillDate.addMonths(-1);
+
+        mFilter->blockSignals(true);
+        mFilter->setRange(fromDate, tillDate);
+        mFilter->blockSignals(false);
+
+        mModel.setFilter(id, fromDate, tillDate);
     }
 }

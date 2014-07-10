@@ -41,6 +41,9 @@ namespace Evernus
     signals:
         void filterChanged(const QDate &from, const QDate &to, const QString &filter, EntryType type);
 
+    public slots:
+        void setRange(const QDate &from, const QDate &to);
+
     private slots:
         void changeEntryType();
         void applyKeywords();

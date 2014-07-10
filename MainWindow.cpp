@@ -274,7 +274,7 @@ namespace Evernus
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::itemPricesChanged, assetsTab, &AssetsWidget::updateData);
 
-        auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mCacheTimerProvider, this};
+        auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mCacheTimerProvider, mEveDataProvider, this};
         tabs->addTab(journalTab, tr("Journal"));
         connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, journalTab, &WalletJournalWidget::setCharacter);
