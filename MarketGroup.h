@@ -31,6 +31,10 @@ namespace Evernus
         typedef boost::optional<uint> IconIdType;
 
         using Entity::Entity;
+
+        MarketGroup() = default;
+        MarketGroup(const MarketGroup &) = default;
+        MarketGroup(MarketGroup &&) = default;
         virtual ~MarketGroup() = default;
 
         ParentIdType getParentId() const;
@@ -51,6 +55,9 @@ namespace Evernus
 
         bool hasTypes() const noexcept;
         void setHasTypes(bool has);
+
+        MarketGroup &operator =(const MarketGroup &) = default;
+        MarketGroup &operator =(MarketGroup &&) = default;
 
     private:
         ParentIdType mParentId;

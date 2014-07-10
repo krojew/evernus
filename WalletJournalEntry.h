@@ -29,6 +29,10 @@ namespace Evernus
         typedef WalletJournalData::TaxAmountType TaxAmountType;
 
         using Entity::Entity;
+
+        WalletJournalEntry() = default;
+        WalletJournalEntry(const WalletJournalEntry &) = default;
+        WalletJournalEntry(WalletJournalEntry &&) = default;
         virtual ~WalletJournalEntry() = default;
 
         Character::IdType getCharacterId() const noexcept;
@@ -88,6 +92,9 @@ namespace Evernus
 
         bool isIgnored() const noexcept;
         void setIgnored(bool flag) noexcept;
+
+        WalletJournalEntry &operator =(const WalletJournalEntry &) = default;
+        WalletJournalEntry &operator =(WalletJournalEntry &&) = default;
 
     private:
         WalletJournalData mData;

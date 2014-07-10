@@ -35,6 +35,10 @@ namespace Evernus
         };
 
         using Entity::Entity;
+
+        ItemPrice() = default;
+        ItemPrice(const ItemPrice &) = default;
+        ItemPrice(ItemPrice &&) = default;
         virtual ~ItemPrice() = default;
 
         Type getType() const noexcept;
@@ -51,6 +55,9 @@ namespace Evernus
 
         double getValue() const noexcept;
         void setValue(double value) noexcept;
+
+        ItemPrice &operator =(const ItemPrice &) = default;
+        ItemPrice &operator =(ItemPrice &&) = default;
 
     private:
         Type mType = Type::Buy;

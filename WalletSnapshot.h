@@ -27,7 +27,10 @@ namespace Evernus
     public:
         using Entity::Entity;
 
+        WalletSnapshot() = default;
         WalletSnapshot(const IdType &id, double balance);
+        WalletSnapshot(const WalletSnapshot &) = default;
+        WalletSnapshot(WalletSnapshot &&) = default;
         virtual ~WalletSnapshot() = default;
 
         Character::IdType getCharacterId() const noexcept;
@@ -35,6 +38,9 @@ namespace Evernus
 
         double getBalance() const noexcept;
         void setBalance(double balance) noexcept;
+
+        WalletSnapshot &operator =(const WalletSnapshot &) = default;
+        WalletSnapshot &operator =(WalletSnapshot &&) = default;
 
     private:
         Character::IdType mCharacterId = Character::invalidId;

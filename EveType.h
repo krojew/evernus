@@ -32,6 +32,10 @@ namespace Evernus
         typedef boost::optional<MarketGroup::IdType> MarketGroupIdType;
 
         using Entity::Entity;
+
+        EveType() = default;
+        EveType(const EveType &) = default;
+        EveType(EveType &&) = default;
         virtual ~EveType() = default;
 
         uint getGroupId() const noexcept;
@@ -71,6 +75,9 @@ namespace Evernus
 
         double getChanceOfDuplicating() const noexcept;
         void setChanceOfDuplicating(double value) noexcept;
+
+        EveType &operator =(const EveType &) = default;
+        EveType &operator =(EveType &&) = default;
 
     private:
         uint mGroupId = 0;

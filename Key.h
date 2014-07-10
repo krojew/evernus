@@ -35,12 +35,17 @@ namespace Evernus
         {
         }
 
-        ~Key() = default;
+        Key(const Key &) = default;
+        Key(Key &&) = default;
+        virtual ~Key() = default;
 
         QString getCode() const &;
         QString &&getCode() && noexcept;
         void setCode(const QString &code);
         void setCode(QString &&code);
+
+        Key &operator =(const Key &) = default;
+        Key &operator =(Key &&) = default;
 
     private:
         QString mCode;

@@ -30,6 +30,8 @@ namespace Evernus
 
         CacheTimer() = default;
         CacheTimer(IdType id, const QDateTime &dt);
+        CacheTimer(const CacheTimer &) = default;
+        CacheTimer(CacheTimer &&) = default;
         virtual ~CacheTimer() = default;
 
         Character::IdType getCharacterId() const noexcept;
@@ -37,6 +39,9 @@ namespace Evernus
 
         QDateTime getCacheUntil() const;
         void setCacheUntil(const QDateTime &dt);
+
+        CacheTimer &operator =(const CacheTimer &) = default;
+        CacheTimer &operator =(CacheTimer &&) = default;
 
     private:
         Character::IdType mCharacterId = Character::invalidId;

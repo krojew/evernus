@@ -29,12 +29,17 @@ namespace Evernus
         RefType() = default;
         RefType(IdType id, const QString &name);
         RefType(IdType id, QString &&name);
+        RefType(const RefType &) = default;
+        RefType(RefType &&) = default;
         virtual ~RefType() = default;
 
         QString getName() const &;
         QString &&getName() && noexcept;
         void setName(const QString &name);
         void setName(QString &&name);
+
+        RefType &operator =(const RefType &) = default;
+        RefType &operator =(RefType &&) = default;
 
     private:
         QString mName;

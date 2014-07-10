@@ -34,6 +34,9 @@ namespace Evernus
         };
 
         using Entity::Entity;
+
+        WalletTransaction() = default;
+        WalletTransaction(const WalletTransaction &) = default;
         WalletTransaction(WalletTransaction &&) = default;
         virtual ~WalletTransaction() = default;
 
@@ -72,6 +75,7 @@ namespace Evernus
         bool isIgnored() const noexcept;
         void setIgnored(bool flag) noexcept;
 
+        WalletTransaction &operator =(const WalletTransaction &) = default;
         WalletTransaction &operator =(WalletTransaction &&) = default;
 
     private:
