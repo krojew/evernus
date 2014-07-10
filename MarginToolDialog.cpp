@@ -324,7 +324,7 @@ namespace Evernus
             QFile file{logFile};
 
 #ifdef Q_OS_WIN
-            if (settings.value(PriceSettings::priceAltImport, true).toBool())
+            if (settings.value(PriceSettings::priceAltImportKey, true).toBool())
             {
                 while (!file.open(QIODevice::ReadWrite))
                     std::this_thread::sleep_for(std::chrono::milliseconds{10});

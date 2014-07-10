@@ -131,7 +131,7 @@ namespace Evernus
     int WalletJournalModel::rowCount(const QModelIndex &parent) const
     {
         if (!parent.isValid())
-            return mData.size();
+            return static_cast<int>(mData.size());
 
         return 0;
     }

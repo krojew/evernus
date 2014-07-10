@@ -62,7 +62,7 @@ namespace Evernus
 #ifdef Q_OS_WIN
         mAltImportBtn = new QCheckBox{tr("Use alternative margin import method*"), this};
         marginLayout->addWidget(mAltImportBtn);
-        mAltImportBtn->setChecked(settings.value(PriceSettings::priceAltImport, true).toBool());
+        mAltImportBtn->setChecked(settings.value(PriceSettings::priceAltImportKey, true).toBool());
 
         auto infoLabel = new QLabel{tr("* Gives faster results, but can sometimes be incorrect. If the price fluctuates after a few imports, turn it off."), this};
         infoLabel->setWordWrap(true);
@@ -99,7 +99,7 @@ namespace Evernus
         settings.setValue(PriceSettings::preferredMarginKey, mPreferredMarginEdit->value());
         settings.setValue(PriceSettings::priceDeltaKey, mPriceDeltaEdit->value());
 #ifdef Q_OS_WIN
-        settings.setValue(PriceSettings::priceAltImport, mAltImportBtn->isChecked());
+        settings.setValue(PriceSettings::priceAltImportKey, mAltImportBtn->isChecked());
 #endif
         settings.setValue(PriceSettings::priceMaxAgeKey, mPriceMaxAgeEdit->value());
     }
