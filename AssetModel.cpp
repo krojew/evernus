@@ -128,13 +128,30 @@ namespace Evernus
 
          auto item = static_cast<const TreeItem *>(index.internalPointer());
 
-         const auto unitPriceColumn = 4;
-         const auto totalPriceColumn = 5;
-
          const auto column = index.column();
 
+         QLocale locale;
+
          switch (role) {
+         case Qt::UserRole:
+             return item->data(column);
          case Qt::DisplayRole:
+             switch (column) {
+             case quantityColumn:
+                 return locale.toString(item->data(quantityColumn).toUInt());
+             case unitVolumeColumn:
+                 if (item->parent() != &mRootItem)
+                     return QString{"%1m³"}.arg(locale.toString(item->data(unitVolumeColumn).toDouble(), 'f', 2));
+                 break;
+             case totalVolumeColumn:
+                 return QString{"%1m³"}.arg(locale.toString(item->data(totalVolumeColumn).toDouble(), 'f', 2));
+             case unitPriceColumn:
+                 if (item->parent() != &mRootItem)
+                     return locale.toCurrencyString(item->data(unitPriceColumn).toDouble(), "ISK");
+                 break;
+             case totalPriceColumn:
+                 return locale.toCurrencyString(item->data(totalPriceColumn).toDouble(), "ISK");
+             }
              return item->data(column);
          case Qt::FontRole:
              if (item->parent() == &mRootItem)
@@ -276,22 +293,11 @@ namespace Evernus
                 locationItem->appendChild(std::move(treeItem));
 
                 auto data = locationItem->data();
-                data[1] = data[1].toUInt() + mTotalAssets - curAssets;
-                data[3] = data[3].toDouble() + mTotalVolume - curVolume;
-                data[5] = data[5].toDouble() + mTotalSellPrice - curSellPrice;
+                data[quantityColumn] = data[quantityColumn].toUInt() + mTotalAssets - curAssets;
+                data[totalVolumeColumn] = data[totalVolumeColumn].toDouble() + mTotalVolume - curVolume;
+                data[totalPriceColumn] = data[totalPriceColumn].toDouble() + mTotalSellPrice - curSellPrice;
                 locationItem->setData(data);
             }
-        }
-
-        QLocale locale;
-
-        for (auto &item : mLocationItems)
-        {
-            auto data = item.second->data();
-            data[1] = locale.toString(data[1].toUInt());
-            data[3] = QString{"%1m³"}.arg(locale.toString(data[3].toDouble(), 'f', 2));
-            data[5] = locale.toCurrencyString(data[5].toDouble(), "ISK");
-            item.second->setData(data);
         }
 
         endResetModel();
@@ -333,8 +339,6 @@ namespace Evernus
     std::unique_ptr<AssetModel::TreeItem> AssetModel
     ::createTreeItemForItem(const Item &item, ItemData::LocationIdType::value_type locationId) const
     {
-        QLocale locale;
-
         const auto typeId = item.getTypeId();
         const auto volume = mDataProvider.getTypeVolume(typeId);
         const auto quantity = item.getQuantity();
@@ -343,11 +347,11 @@ namespace Evernus
         auto treeItem = std::make_unique<TreeItem>();
         treeItem->setData(QVariantList{}
             << mDataProvider.getTypeName(typeId)
-            << locale.toString(quantity)
-            << QString{"%1m³"}.arg(locale.toString(volume, 'f', 2))
-            << QString{"%1m³"}.arg(locale.toString(volume * quantity, 'f', 2))
-            << locale.toCurrencyString(sellPrice.getValue(), "ISK")
-            << locale.toCurrencyString(sellPrice.getValue() * quantity, "ISK")
+            << quantity
+            << volume
+            << (volume * quantity)
+            << sellPrice.getValue()
+            << (sellPrice.getValue() * quantity)
         );
         treeItem->setPriceTimestamp(sellPrice.getUpdateTime());
 

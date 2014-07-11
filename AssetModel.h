@@ -83,6 +83,12 @@ namespace Evernus
             TreeItem *mParentItem = nullptr;
         };
 
+        static const auto quantityColumn = 1;
+        static const auto unitVolumeColumn = 2;
+        static const auto totalVolumeColumn = 3;
+        static const auto unitPriceColumn = 4;
+        static const auto totalPriceColumn = 5;
+
         const AssetProvider &mAssetProvider;
         const EveDataProvider &mDataProvider;
 

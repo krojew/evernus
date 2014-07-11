@@ -61,6 +61,7 @@ namespace Evernus
 
         auto modelProxy = new QSortFilterProxyModel{this};
         modelProxy->setSourceModel(&mModel);
+        modelProxy->setSortRole(Qt::UserRole);
 
         mAssetView = new QTreeView{this};
         mainLayout->addWidget(mAssetView);
