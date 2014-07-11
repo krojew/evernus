@@ -23,6 +23,13 @@ namespace Evernus
         : public Repository<WalletTransaction>
     {
     public:
+        enum class EntryType
+        {
+            All,
+            Buy,
+            Sell
+        };
+
         using Repository::Repository;
         virtual ~WalletTransactionRepository() = default;
 
@@ -34,6 +41,14 @@ namespace Evernus
         void create(const Repository<Character> &characterRepo) const;
 
         WalletTransaction::IdType getLatestEntryId(Character::IdType characterId) const;
+
+        void setIgnored(WalletTransaction::IdType id, bool ignored) const;
+        void deleteOldEntires(const QDateTime &from) const;
+
+        std::vector<WalletTransaction> fetchForCharacterInRange(Character::IdType characterId,
+                                                                const QDateTime &from,
+                                                                const QDateTime &till,
+                                                                EntryType type) const;
 
     private:
         virtual QStringList getColumns() const override;

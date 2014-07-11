@@ -18,9 +18,13 @@ namespace Evernus
 {
     namespace WalletSettings
     {
-        const auto oldJournalDaysDefault = 7;
+        const auto oldJournalDaysDefault = 60;
+        const auto oldTransactionsDaysDefault = 60;
 
         const auto deleteOldJournalKey = "wallet/journal/deleteOld";
         const auto oldJournalDaysKey = "wallet/journal/oldDays";
+
+        const auto deleteOldTransactionsKey = "wallet/transactions/deleteOld";
+        const auto oldTransactionsDaysKey = "wallet/transactions/oldDays";
     }
 }

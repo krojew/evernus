@@ -22,7 +22,7 @@
 
 namespace Evernus
 {
-    WalletEntryFilterWidget::WalletEntryFilterWidget(QWidget *parent)
+    WalletEntryFilterWidget::WalletEntryFilterWidget(const QStringList &typeFilters, QWidget *parent)
         : QWidget{parent}
     {
         auto mainLayout = new QHBoxLayout{};
@@ -32,9 +32,10 @@ namespace Evernus
 
         mTypeCombo = new QComboBox{this};
         mainLayout->addWidget(mTypeCombo);
-        mTypeCombo->addItem(tr("all"), static_cast<int>(EntryType::All));
-        mTypeCombo->addItem(tr("incoming"), static_cast<int>(EntryType::Incomig));
-        mTypeCombo->addItem(tr("outgoing"), static_cast<int>(EntryType::Outgoing));
+
+        for (auto i = 0; i < typeFilters.count(); ++i)
+            mTypeCombo->addItem(typeFilters[i], i);
+
         connect(mTypeCombo, SIGNAL(currentIndexChanged(int)), SLOT(changeEntryType()));
 
         mainLayout->addWidget(new QLabel{tr("From:"), this});
@@ -58,7 +59,7 @@ namespace Evernus
         connect(mFilterEdit, &QLineEdit::returnPressed, this, &WalletEntryFilterWidget::applyKeywords);
     }
 
-    void WalletEntryFilterWidget::setFilter(const QDate &from, const QDate &to, const QString &filter, EntryType type)
+    void WalletEntryFilterWidget::setFilter(const QDate &from, const QDate &to, const QString &filter, int type)
     {
         mFromEdit->blockSignals(true);
         mToEdit->blockSignals(true);
@@ -78,7 +79,7 @@ namespace Evernus
 
     void WalletEntryFilterWidget::changeEntryType()
     {
-        mCurrentType = static_cast<EntryType>(mTypeCombo->currentData().toInt());
+        mCurrentType = mTypeCombo->currentData().toInt();
         emit filterChanged(mFromEdit->date(), mToEdit->date(), mFilterEdit->text(), mCurrentType);
     }
 

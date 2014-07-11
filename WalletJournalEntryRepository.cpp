@@ -36,9 +36,12 @@ namespace Evernus
         const auto taxReceiverId = record.value("tax_receiver_id");
         const auto taxAmount = record.value("tax_amount");
 
+        auto timestamp = record.value("timestamp").toDateTime();
+        timestamp.setTimeSpec(Qt::UTC);
+
         WalletJournalEntry walletJournalEntry{record.value("id").value<WalletJournalEntry::IdType>()};
         walletJournalEntry.setCharacterId(record.value("character_id").value<Character::IdType>());
-        walletJournalEntry.setTimestamp(record.value("timestamp").toDateTime());
+        walletJournalEntry.setTimestamp(timestamp);
         walletJournalEntry.setRefTypeId(record.value("ref_type_id").toUInt());
         walletJournalEntry.setOwnerName1(record.value("owner_name_1").toString());
         walletJournalEntry.setOwnerId1(record.value("owner_id_1").toULongLong());

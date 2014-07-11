@@ -14,9 +14,8 @@
  */
 #pragma once
 
-#include "WalletJournalModel.h"
-
 #include "CharacterBoundWidget.h"
+#include "WalletJournalModel.h"
 
 class QSortFilterProxyModel;
 
@@ -44,7 +43,7 @@ namespace Evernus
     public slots:
         void updateData();
 
-        void updateFilter(const QDate &from, const QDate &to, const QString &filter, EntryType type);
+        void updateFilter(const QDate &from, const QDate &to, const QString &filter, int type);
 
     private:
         WalletJournalModel mModel;

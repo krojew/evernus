@@ -18,6 +18,7 @@
 #include <QTreeView>
 #include <QDebug>
 
+#include "WalletEntryFilterWidget.h"
 #include "CacheTimerProvider.h"
 #include "ButtonWithTimer.h"
 
@@ -30,6 +31,7 @@ namespace Evernus
                                                        const EveDataProvider &dataProvider,
                                                        QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::WalletTransactions), parent}
+        , mModel{walletRepo, dataProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -41,15 +43,48 @@ namespace Evernus
         toolBarLayout->addWidget(&importBtn);
 
         toolBarLayout->addStretch();
+
+        mFilter = new WalletEntryFilterWidget{QStringList{} << tr("all") << tr("buy") << tr("sell"), this};
+        mainLayout->addWidget(mFilter);
+        connect(mFilter, &WalletEntryFilterWidget::filterChanged, this, &WalletTransactionsWidget::updateFilter);
+
+        mFilterModel = new QSortFilterProxyModel{this};
+        mFilterModel->setSortRole(Qt::UserRole);
+        mFilterModel->setFilterKeyColumn(-1);
+        mFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+        mFilterModel->setSourceModel(&mModel);
+
+        auto journalView = new QTreeView{this};
+        mainLayout->addWidget(journalView, 1);
+        journalView->setModel(mFilterModel);
+        journalView->setSortingEnabled(true);
+        journalView->sortByColumn(1, Qt::DescendingOrder);
+        journalView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     }
 
     void WalletTransactionsWidget::updateData()
     {
         refreshImportTimer();
+        mModel.reset();
+    }
+
+    void WalletTransactionsWidget::updateFilter(const QDate &from, const QDate &to, const QString &filter, int type)
+    {
+        mModel.setFilter(getCharacterId(), from, to, static_cast<EntryType>(type));
+        mFilterModel->setFilterFixedString(filter);
     }
 
     void WalletTransactionsWidget::handleNewCharacter(Character::IdType id)
     {
         qDebug() << "Switching wallet transactions to" << id;
+
+        const auto tillDate = QDate::currentDate();
+        const auto fromDate = tillDate.addMonths(-1);
+
+        mFilter->blockSignals(true);
+        mFilter->setFilter(fromDate, tillDate, QString{}, static_cast<int>(EntryType::All));
+        mFilter->blockSignals(false);
+
+        mModel.setFilter(id, fromDate, tillDate, EntryType::All);
     }
 }

@@ -19,7 +19,6 @@
 #include "MarketLogItemPriceImporterThread.h"
 #include "EveMarketDataItemPriceImporter.h"
 #include "MarketLogItemPriceImporter.h"
-#include "WalletEntryFilterWidget.h"
 #include "ItemPriceImporterNames.h"
 #include "EvernusApplication.h"
 #include "MainWindow.h"
@@ -34,7 +33,6 @@ int main(int argc, char *argv[])
         QCoreApplication::setOrganizationName("evernus.com");
 
         qRegisterMetaType<Evernus::MarketLogItemPriceImporterThread::ItemPriceList>("ItemPriceList");
-        qRegisterMetaType<Evernus::WalletEntryFilterWidget::EntryType>("EntryType");
 
         Evernus::EvernusApplication app{argc, argv};
 

@@ -31,8 +31,12 @@ namespace Evernus
 
     WalletTransaction WalletTransactionRepository::populate(const QSqlRecord &record) const
     {
+        auto timestamp = record.value("timestamp").toDateTime();
+        timestamp.setTimeSpec(Qt::UTC);
+
         WalletTransaction walletTransaction{record.value("id").value<WalletTransaction::IdType>()};
         walletTransaction.setCharacterId(record.value("character_id").value<Character::IdType>());
+        walletTransaction.setTimestamp(timestamp);
         walletTransaction.setQuantity(record.value("quantity").toUInt());
         walletTransaction.setTypeId(record.value("type_id").value<EveType::IdType>());
         walletTransaction.setPrice(record.value("price").toDouble());
@@ -52,6 +56,7 @@ namespace Evernus
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id INTEGER PRIMARY KEY,
             character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,
+            timestamp DATETIME NOT NULL,
             quantity INTEGER NOT NULL,
             type_id INTEGER NOT NULL,
             price NUMERIC NOT NULL,
@@ -64,6 +69,8 @@ namespace Evernus
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp_type ON %1(character_id, timestamp, type)"}.arg(getTableName()));
     }
 
     WalletTransaction::IdType WalletTransactionRepository::getLatestEntryId(Character::IdType characterId) const
@@ -77,11 +84,60 @@ namespace Evernus
         return query.value(0).value<WalletTransaction::IdType>();
     }
 
+    void WalletTransactionRepository::setIgnored(WalletTransaction::IdType id, bool ignored) const
+    {
+        auto query = prepare(QString{"UPDATE %1 SET ignored = ? WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
+        query.bindValue(0, ignored);
+        query.bindValue(1, id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
+    void WalletTransactionRepository::deleteOldEntires(const QDateTime &from) const
+    {
+        auto query = prepare(QString{"DELETE FROM %1 WHERE timestamp < ?"}.arg(getTableName()));
+        query.bindValue(0, from);
+
+        DatabaseUtils::execQuery(query);
+    }
+
+    std::vector<WalletTransaction> WalletTransactionRepository
+    ::fetchForCharacterInRange(Character::IdType characterId, const QDateTime &from, const QDateTime &till, EntryType type) const
+    {
+        QString queryStr;
+        if (type == EntryType::All)
+            queryStr = "SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ?";
+        else
+            queryStr = "SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ? AND type = ?";
+
+        auto query = prepare(queryStr.arg(getTableName()));
+        query.addBindValue(characterId);
+        query.addBindValue(from);
+        query.addBindValue(till);
+
+        if (type != EntryType::All)
+            query.addBindValue(static_cast<int>((type == EntryType::Buy) ? (WalletTransaction::Type::Buy) : (WalletTransaction::Type::Sell)));
+
+        DatabaseUtils::execQuery(query);
+
+        const auto size = query.size();
+
+        std::vector<WalletTransaction> result;
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
     QStringList WalletTransactionRepository::getColumns() const
     {
         return QStringList{}
             << "id"
             << "character_id"
+            << "timestamp"
             << "quantity"
             << "type_id"
             << "price"
@@ -99,6 +155,7 @@ namespace Evernus
             query.bindValue(":id", entity.getId());
 
         query.bindValue(":character_id", entity.getCharacterId());
+        query.bindValue(":timestamp", entity.getTimestamp());
         query.bindValue(":quantity", entity.getQuantity());
         query.bindValue(":type_id", entity.getTypeId());
         query.bindValue(":price", entity.getPrice());
@@ -116,6 +173,7 @@ namespace Evernus
             query.addBindValue(entity.getId());
 
         query.addBindValue(entity.getCharacterId());
+        query.addBindValue(entity.getTimestamp());
         query.addBindValue(entity.getQuantity());
         query.addBindValue(entity.getTypeId());
         query.addBindValue(entity.getPrice());
@@ -129,6 +187,6 @@ namespace Evernus
 
     size_t WalletTransactionRepository::getMaxRowsPerInsert() const
     {
-        return 90;
+        return 80;
     }
 }

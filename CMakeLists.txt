@@ -232,6 +232,8 @@ add_executable(
     WalletTransactionRepository.cpp
     WalletTransactionRepository.h
     WalletTransactions.h
+    WalletTransactionsModel.cpp
+    WalletTransactionsModel.h
     WalletTransactionsWidget.cpp
     WalletTransactionsWidget.h
     WalletTransactionsXmlReceiver.cpp

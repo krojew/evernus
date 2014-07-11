@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include "WalletTransactionsModel.h"
 #include "CharacterBoundWidget.h"
 
 class QSortFilterProxyModel;
@@ -21,6 +22,7 @@ class QSortFilterProxyModel;
 namespace Evernus
 {
     class WalletTransactionRepository;
+    class WalletEntryFilterWidget;
     class CacheTimerProvider;
     class EveDataProvider;
 
@@ -30,6 +32,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        typedef WalletTransactionsModel::EntryType EntryType;
+
         WalletTransactionsWidget(const WalletTransactionRepository &walletRepo,
                                  const CacheTimerProvider &cacheTimerProvider,
                                  const EveDataProvider &dataProvider,
@@ -39,8 +43,13 @@ namespace Evernus
     public slots:
         void updateData();
 
+        void updateFilter(const QDate &from, const QDate &to, const QString &filter, int type);
+
     private:
+        WalletTransactionsModel mModel;
         QSortFilterProxyModel *mFilterModel = nullptr;
+
+        WalletEntryFilterWidget *mFilter = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
     };

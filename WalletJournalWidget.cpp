@@ -44,7 +44,7 @@ namespace Evernus
 
         toolBarLayout->addStretch();
 
-        mFilter = new WalletEntryFilterWidget{this};
+        mFilter = new WalletEntryFilterWidget{QStringList{} << tr("all") << tr("incoming") << tr("outgoing"), this};
         mainLayout->addWidget(mFilter);
         connect(mFilter, &WalletEntryFilterWidget::filterChanged, this, &WalletJournalWidget::updateFilter);
 
@@ -68,9 +68,9 @@ namespace Evernus
         mModel.reset();
     }
 
-    void WalletJournalWidget::updateFilter(const QDate &from, const QDate &to, const QString &filter, EntryType type)
+    void WalletJournalWidget::updateFilter(const QDate &from, const QDate &to, const QString &filter, int type)
     {
-        mModel.setFilter(getCharacterId(), from, to, type);
+        mModel.setFilter(getCharacterId(), from, to, static_cast<EntryType>(type));
         mFilterModel->setFilterFixedString(filter);
     }
 
@@ -82,7 +82,7 @@ namespace Evernus
         const auto fromDate = tillDate.addMonths(-1);
 
         mFilter->blockSignals(true);
-        mFilter->setFilter(fromDate, tillDate, QString{}, EntryType::All);
+        mFilter->setFilter(fromDate, tillDate, QString{}, static_cast<int>(EntryType::All));
         mFilter->blockSignals(false);
 
         mModel.setFilter(id, fromDate, tillDate, EntryType::All);

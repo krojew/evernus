@@ -303,7 +303,7 @@ namespace Evernus
                 if (reachedEnd)
                 {
                     mCacheTimerProvider.setUtcCacheTimer(characterId,
-                                                         CacheTimerProvider::TimerType::WalletJournal,
+                                                         CacheTimerProvider::TimerType::WalletTransactions,
                                                          APIUtils::getCachedUntil(response));
 
                     callback(*transactions, QString{});

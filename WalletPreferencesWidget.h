@@ -35,9 +35,12 @@ namespace Evernus
 
     private slots:
         void deleteOldJournalToggled(int state);
+        void deleteOldTransactionsToggled(int state);
 
     private:
         QCheckBox *mDeleteOldJournalBtn = nullptr;
         QSpinBox *mOldJournalDaysEdit = nullptr;
+        QCheckBox *mDeleteOldTransactionsBtn = nullptr;
+        QSpinBox *mOldTransactionsDaysEdit = nullptr;
     };
 }

@@ -707,9 +707,19 @@ namespace Evernus
     {
         QSettings settings;
 
-        const auto dt = QDateTime::currentDateTimeUtc().addDays(
-             -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
-        mWalletJournalEntryRepository->deleteOldEntires(dt);
+        if (settings.value(WalletSettings::deleteOldJournalKey, true).toBool())
+        {
+            const auto journalDt = QDateTime::currentDateTimeUtc().addDays(
+                 -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
+            mWalletJournalEntryRepository->deleteOldEntires(journalDt);
+        }
+
+        if (settings.value(WalletSettings::deleteOldTransactionsKey, true).toBool())
+        {
+            const auto transactionDt = QDateTime::currentDateTimeUtc().addDays(
+                 -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
+            mWalletTransactionRepository->deleteOldEntires(transactionDt);
+        }
     }
 
     uint EvernusApplication::startTask(const QString &description)

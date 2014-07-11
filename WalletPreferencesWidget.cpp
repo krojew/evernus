@@ -59,6 +59,31 @@ namespace Evernus
 
         mDeleteOldJournalBtn->setChecked(settings.value(WalletSettings::deleteOldJournalKey, true).toBool());
 
+        auto transactionsGroup = new QGroupBox{tr("Transactions"), this};
+        mainLayout->addWidget(transactionsGroup);
+
+        auto transactionsLayout = new QVBoxLayout{};
+        transactionsGroup->setLayout(transactionsLayout);
+
+        mDeleteOldTransactionsBtn = new QCheckBox{tr("Delete old entries"), this};
+        transactionsLayout->addWidget(mDeleteOldTransactionsBtn);
+        connect(mDeleteOldTransactionsBtn, &QCheckBox::stateChanged, this, &WalletPreferencesWidget::deleteOldTransactionsToggled);
+
+        auto transactionsDaysLayout = new QHBoxLayout{};
+        transactionsLayout->addLayout(transactionsDaysLayout);
+
+        transactionsDaysLayout->addWidget(new QLabel{tr("Delete older than:"), this});
+
+        mOldTransactionsDaysEdit = new QSpinBox{this};
+        transactionsDaysLayout->addWidget(mOldTransactionsDaysEdit);
+        mOldTransactionsDaysEdit->setMinimum(2);
+        mOldTransactionsDaysEdit->setSuffix(tr("days"));
+        mOldTransactionsDaysEdit->setValue(settings.value(WalletSettings::oldTransactionsDaysKey, WalletSettings::oldTransactionsDaysDefault).toInt());
+
+        transactionsDaysLayout->addStretch();
+
+        mDeleteOldTransactionsBtn->setChecked(settings.value(WalletSettings::deleteOldTransactionsKey, true).toBool());
+
         mainLayout->addStretch();
     }
 
@@ -67,10 +92,17 @@ namespace Evernus
         QSettings settings;
         settings.setValue(WalletSettings::deleteOldJournalKey, mDeleteOldJournalBtn->isChecked());
         settings.setValue(WalletSettings::oldJournalDaysKey, mOldJournalDaysEdit->value());
+        settings.setValue(WalletSettings::deleteOldTransactionsKey, mDeleteOldTransactionsBtn->isChecked());
+        settings.setValue(WalletSettings::oldTransactionsDaysKey, mOldTransactionsDaysEdit->value());
     }
 
     void WalletPreferencesWidget::deleteOldJournalToggled(int state)
     {
         mOldJournalDaysEdit->setEnabled(state == Qt::Checked);
+    }
+
+    void WalletPreferencesWidget::deleteOldTransactionsToggled(int state)
+    {
+        mOldTransactionsDaysEdit->setEnabled(state == Qt::Checked);
     }
 }
