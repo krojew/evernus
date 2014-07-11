@@ -18,12 +18,14 @@
 
 #include "Character.h"
 
-class DateFilteredPlotWidget;
+class QCPBars;
 
 namespace Evernus
 {
+    class WalletJournalEntryRepository;
     class AssetValueSnapshotRepository;
     class WalletSnapshotRepository;
+    class DateFilteredPlotWidget;
 
     class StatisticsWidget
         : public QWidget
@@ -33,12 +35,14 @@ namespace Evernus
     public:
         StatisticsWidget(const AssetValueSnapshotRepository &assetSnapshotRepo,
                          const WalletSnapshotRepository &walletSnapshotRepo,
+                         const WalletJournalEntryRepository &journalRepo,
                          QWidget *parent = nullptr);
         virtual ~StatisticsWidget() = default;
 
     public slots:
         void setCharacter(Character::IdType id);
-        void updateData();
+        void updateBalanceData();
+        void updateJournalData();
 
     private:
         static constexpr auto assetValueGraph = 0;
@@ -47,11 +51,18 @@ namespace Evernus
 
         const AssetValueSnapshotRepository &mAssetSnapshotRepository;
         const WalletSnapshotRepository &mWalletSnapshotRepository;
+        const WalletJournalEntryRepository &mJournalRepo;
 
         DateFilteredPlotWidget *mBalancePlot = nullptr;
+        DateFilteredPlotWidget *mJournalPlot = nullptr;
+
+        QCPBars *mIncomingPlot = nullptr;
+        QCPBars *mOutgoingPlot = nullptr;
 
         Character::IdType mCharacterId = Character::invalidId;
 
         void updateGraphAndLegend();
+
+        DateFilteredPlotWidget *createPlot();
     };
 }

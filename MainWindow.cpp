@@ -15,6 +15,7 @@
 #include <QCoreApplication>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QScrollArea>
 #include <QStatusBar>
 #include <QTabWidget>
 #include <QSettings>
@@ -261,20 +262,23 @@ namespace Evernus
         setCentralWidget(tabs);
 
         auto charTab = new CharacterWidget{mCharacterRepository, mCacheTimerProvider, this};
-        tabs->addTab(charTab, tr("Character"));
+        tabs->addTab(createMainViewTab(charTab), tr("Character"));
         connect(charTab, &CharacterWidget::importFromAPI, this, &MainWindow::importCharacter);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, charTab, &CharacterWidget::setCharacter);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::updateData);
 
-        auto statsTab = new StatisticsWidget{mAssetSnapshotRepository, mWalletSnapshotRepository, this};
-        tabs->addTab(statsTab, tr("Statistics"));
+        auto statsTab = new StatisticsWidget{mAssetSnapshotRepository,
+                                             mWalletSnapshotRepository,
+                                             mWalletJournalRepository,
+                                             this};
+        tabs->addTab(createMainViewTab(statsTab), tr("Statistics"));
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, statsTab, &StatisticsWidget::setCharacter);
-        connect(this, &MainWindow::charactersChanged, statsTab, &StatisticsWidget::updateData);
-        connect(this, &MainWindow::itemPricesChanged, statsTab, &StatisticsWidget::updateData);
-        connect(this, &MainWindow::assetsChanged, statsTab, &StatisticsWidget::updateData);
+        connect(this, &MainWindow::charactersChanged, statsTab, &StatisticsWidget::updateBalanceData);
+        connect(this, &MainWindow::itemPricesChanged, statsTab, &StatisticsWidget::updateBalanceData);
+        connect(this, &MainWindow::assetsChanged, statsTab, &StatisticsWidget::updateBalanceData);
 
         auto assetsTab = new AssetsWidget{mAssetProvider, mEveDataProvider, mCacheTimerProvider, this};
-        tabs->addTab(assetsTab, tr("Assets"));
+        tabs->addTab(createMainViewTab(assetsTab), tr("Assets"));
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importItemPricesFromWeb);
         connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importItemPricesFromFile);
@@ -284,13 +288,13 @@ namespace Evernus
         connect(this, &MainWindow::itemPricesChanged, assetsTab, &AssetsWidget::updateData);
 
         auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mCacheTimerProvider, mEveDataProvider, this};
-        tabs->addTab(journalTab, tr("Journal"));
+        tabs->addTab(createMainViewTab(journalTab), tr("Journal"));
         connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, journalTab, &WalletJournalWidget::setCharacter);
         connect(this, &MainWindow::walletJournalChanged, journalTab, &WalletJournalWidget::updateData);
 
         auto transactionsTab = new WalletTransactionsWidget{mWalletTransactionRepository, mCacheTimerProvider, mEveDataProvider, this};
-        tabs->addTab(transactionsTab, tr("Transactions"));
+        tabs->addTab(createMainViewTab(transactionsTab), tr("Transactions"));
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, transactionsTab, &WalletTransactionsWidget::setCharacter);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
@@ -300,5 +304,14 @@ namespace Evernus
     {
         mStatusWalletLabel = new QLabel{this};
         statusBar()->addPermanentWidget(mStatusWalletLabel);
+    }
+
+    QWidget *MainWindow::createMainViewTab(QWidget *content)
+    {
+        auto scroll = new QScrollArea{this};
+        scroll->setWidgetResizable(true);
+        scroll->setWidget(content);
+
+        return scroll;
     }
 }

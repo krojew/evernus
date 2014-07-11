@@ -14,7 +14,9 @@
  */
 #include <QVBoxLayout>
 #include <QGroupBox>
+#include <QHash>
 
+#include "WalletJournalEntryRepository.h"
 #include "AssetValueSnapshotRepository.h"
 #include "WalletSnapshotRepository.h"
 #include "DateFilteredPlotWidget.h"
@@ -26,10 +28,12 @@ namespace Evernus
 {
     StatisticsWidget::StatisticsWidget(const AssetValueSnapshotRepository &assetSnapshotRepo,
                                        const WalletSnapshotRepository &walletSnapshotRepo,
+                                       const WalletJournalEntryRepository &journalRepo,
                                        QWidget *parent)
         : QWidget{parent}
         , mAssetSnapshotRepository{assetSnapshotRepo}
         , mWalletSnapshotRepository{walletSnapshotRepo}
+        , mJournalRepo{journalRepo}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -40,13 +44,19 @@ namespace Evernus
         auto balanceLayout = new QVBoxLayout{};
         balanceGroup->setLayout(balanceLayout);
 
-        mBalancePlot = new DateFilteredPlotWidget{this};
+        mBalancePlot = createPlot();
         balanceLayout->addWidget(mBalancePlot);
-        connect(mBalancePlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateData);
+        connect(mBalancePlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateBalanceData);
 
-        mBalancePlot->getPlot().yAxis->setNumberFormat("gbc");
-        mBalancePlot->getPlot().yAxis->setNumberPrecision(2);
-        mBalancePlot->getPlot().yAxis->setLabel("ISK");
+        auto journalGroup = new QGroupBox{tr("Wallet journal"), this};
+        mainLayout->addWidget(journalGroup);
+
+        auto journalLayout = new QVBoxLayout{};
+        journalGroup->setLayout(journalLayout);
+
+        mJournalPlot = createPlot();
+        journalLayout->addWidget(mJournalPlot);
+        connect(mJournalPlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateJournalData);
 
         mainLayout->addStretch();
 
@@ -60,24 +70,30 @@ namespace Evernus
         if (mCharacterId == Character::invalidId)
         {
             mBalancePlot->getPlot().clearPlottables();
+            mJournalPlot->getPlot().clearPlottables();
             updateGraphAndLegend();
         }
         else
         {
             mBalancePlot->blockSignals(true);
+            mJournalPlot->blockSignals(true);
 
             const auto date = QDate::currentDate();
 
             mBalancePlot->setFrom(date.addMonths(-1));
             mBalancePlot->setTo(date);
+            mJournalPlot->setFrom(date.addMonths(-1));
+            mJournalPlot->setTo(date);
 
-            updateData();
+            updateBalanceData();
+            updateJournalData();
 
+            mJournalPlot->blockSignals(false);
             mBalancePlot->blockSignals(false);
         }
     }
 
-    void StatisticsWidget::updateData()
+    void StatisticsWidget::updateBalanceData()
     {
         const QDateTime from{mBalancePlot->getFrom()};
         const QDateTime to{mBalancePlot->getTo()};
@@ -241,6 +257,52 @@ namespace Evernus
         mBalancePlot->getPlot().replot();
     }
 
+    void StatisticsWidget::updateJournalData()
+    {
+        const auto entries = mJournalRepo.fetchForCharacterInRange(mCharacterId,
+                                                                   QDateTime{mJournalPlot->getFrom()},
+                                                                   QDateTime{mJournalPlot->getTo()},
+                                                                   WalletJournalEntryRepository::EntryType::All);
+
+        QHash<QDate, std::pair<double, double>> values;
+        for (const auto &entry : entries)
+        {
+            auto &value = values[entry.getTimestamp().toLocalTime().date()];
+
+            const auto amount = entry.getAmount();
+            if (amount < 0.)
+                value.first -= amount;
+            else
+                value.second += amount;
+        }
+
+        QVector<double> ticks, incomingTicks, outgoingTicks, incomingValues, outgoingValues;
+
+        QHashIterator<QDate, std::pair<double, double>> it{values};
+        while (it.hasNext())
+        {
+            it.next();
+
+            const auto secs = QDateTime{it.key()}.toMSecsSinceEpoch() / 1000.;
+
+            ticks << secs;
+
+            incomingTicks << secs - 3600 * 3;
+            outgoingTicks << secs + 3600 * 3;
+
+            outgoingValues << it.value().first;
+            incomingValues << it.value().second;
+        }
+
+        mIncomingPlot->setData(incomingTicks, incomingValues);
+        mOutgoingPlot->setData(outgoingTicks, outgoingValues);
+
+        mJournalPlot->getPlot().xAxis->setTickVector(ticks);
+
+        mJournalPlot->getPlot().rescaleAxes();
+        mJournalPlot->getPlot().replot();
+    }
+
     void StatisticsWidget::updateGraphAndLegend()
     {
         auto assetGraph = mBalancePlot->getPlot().addGraph();
@@ -256,5 +318,35 @@ namespace Evernus
         totalGraph->setPen(QPen{Qt::green});
 
         mBalancePlot->getPlot().legend->setVisible(true);
+
+        auto incomingGraph = std::make_unique<QCPBars>(mJournalPlot->getPlot().xAxis, mJournalPlot->getPlot().yAxis);
+        mIncomingPlot = incomingGraph.get();
+        mIncomingPlot->setWidth(3600 * 6);
+        mIncomingPlot->setName(tr("Incoming"));
+        mIncomingPlot->setPen(QPen{Qt::green});
+        mIncomingPlot->setBrush(Qt::green);
+        mJournalPlot->getPlot().addPlottable(mIncomingPlot);
+        incomingGraph.release();
+
+        auto outgoingGraph = std::make_unique<QCPBars>(mJournalPlot->getPlot().xAxis, mJournalPlot->getPlot().yAxis);
+        mOutgoingPlot = outgoingGraph.get();
+        mOutgoingPlot->setWidth(3600 * 6);
+        mOutgoingPlot->setName(tr("Outgoing"));
+        mOutgoingPlot->setPen(QPen{Qt::red});
+        mOutgoingPlot->setBrush(Qt::red);
+        mJournalPlot->getPlot().addPlottable(mOutgoingPlot);
+        outgoingGraph.release();
+
+        mJournalPlot->getPlot().legend->setVisible(true);
+    }
+
+    DateFilteredPlotWidget *StatisticsWidget::createPlot()
+    {
+        auto plot = new DateFilteredPlotWidget{this};
+        plot->getPlot().yAxis->setNumberFormat("gbc");
+        plot->getPlot().yAxis->setNumberPrecision(2);
+        plot->getPlot().yAxis->setLabel("ISK");
+
+        return plot;
     }
 }

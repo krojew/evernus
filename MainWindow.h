@@ -140,5 +140,7 @@ namespace Evernus
         void createMenu();
         void createMainView();
         void createStatusBar();
+
+        QWidget *createMainViewTab(QWidget *content);
     };
 }
