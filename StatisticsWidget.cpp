@@ -269,6 +269,9 @@ namespace Evernus
         QHash<QDate, std::pair<double, double>> values;
         for (const auto &entry : entries)
         {
+            if (entry.isIgnored())
+                continue;
+
             auto &value = values[entry.getTimestamp().toLocalTime().date()];
 
             const auto amount = entry.getAmount();
