@@ -95,8 +95,6 @@ add_executable(
     AssetValueSnapshotRepository.h
     ButtonWithTimer.cpp
     ButtonWithTimer.h
-    CacheItemPriceImporter.cpp
-    CacheItemPriceImporter.h
     CacheTimer.cpp
     CacheTimer.h
     CacheTimerProvider.h
@@ -132,14 +130,6 @@ add_executable(
     DateFilteredPlotWidget.cpp
     DateFilteredPlotWidget.h
     Entity.h
-    EveCacheFile.cpp
-    EveCacheFile.h
-    EveCacheFileParser.cpp
-    EveCacheFileParser.h
-    EveCacheManager.cpp
-    EveCacheManager.h
-    EveCacheNodes.cpp
-    EveCacheNodes.h
     EveDataProvider.h
     EveMarketDataItemPriceImporter.cpp
     EveMarketDataItemPriceImporter.h

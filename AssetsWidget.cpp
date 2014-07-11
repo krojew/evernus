@@ -57,11 +57,6 @@ namespace Evernus
         importFromFile->setFlat(true);
         connect(importFromFile, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromFile);
 
-        auto importFromCache = new QPushButton{QIcon{":/images/disk_multiple.png"}, tr("Import prices from cache"), this};
-        toolBarLayout->addWidget(importFromCache);
-        importFromCache->setFlat(true);
-        connect(importFromCache, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromCache);
-
         toolBarLayout->addStretch();
 
         auto modelProxy = new QSortFilterProxyModel{this};
@@ -94,11 +89,6 @@ namespace Evernus
     void AssetsWidget::prepareItemImportFromFile()
     {
         emit importPricesFromFile(getImportTarget());
-    }
-
-    void AssetsWidget::prepareItemImportFromCache()
-    {
-        emit importPricesFromCache(getImportTarget());
     }
 
     void AssetsWidget::handleNewCharacter(Character::IdType id)

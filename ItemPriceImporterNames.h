@@ -20,6 +20,5 @@ namespace Evernus
     {
         const auto webImporter = "web";
         const auto logImporter = "logs";
-        const auto cacheImporter = "cache";
     }
 }

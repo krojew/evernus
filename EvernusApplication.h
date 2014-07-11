@@ -108,7 +108,6 @@ namespace Evernus
         void refreshConquerableStations();
         void refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
         void refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
-        void refreshItemPricesFromCache(const ItemPriceImporter::TypeLocationPairs &target);
 
     private slots:
         void scheduleCharacterUpdate();
