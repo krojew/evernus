@@ -57,7 +57,9 @@ namespace Evernus
 
         journalDaysLayout->addStretch();
 
-        mDeleteOldJournalBtn->setChecked(settings.value(WalletSettings::deleteOldJournalKey, true).toBool());
+        const auto deleteJournal = settings.value(WalletSettings::deleteOldJournalKey, true).toBool();
+        mDeleteOldJournalBtn->setChecked(deleteJournal);
+        mOldJournalDaysEdit->setEnabled(deleteJournal);
 
         auto transactionsGroup = new QGroupBox{tr("Transactions"), this};
         mainLayout->addWidget(transactionsGroup);
@@ -82,7 +84,9 @@ namespace Evernus
 
         transactionsDaysLayout->addStretch();
 
-        mDeleteOldTransactionsBtn->setChecked(settings.value(WalletSettings::deleteOldTransactionsKey, true).toBool());
+        const auto deleteTransactions = settings.value(WalletSettings::deleteOldTransactionsKey, true).toBool();
+        mDeleteOldTransactionsBtn->setChecked(deleteTransactions);
+        mOldTransactionsDaysEdit->setEnabled(deleteTransactions);
 
         mainLayout->addStretch();
     }
