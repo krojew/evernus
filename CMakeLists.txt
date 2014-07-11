@@ -162,6 +162,8 @@ add_executable(
     KeyEditDialog.h
     KeyRepository.cpp
     KeyRepository.h
+    LeafFilterProxyModel.cpp
+    LeafFilterProxyModel.h
     main.cpp
     MainWindow.cpp
     MainWindow.h
