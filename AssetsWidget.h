@@ -19,10 +19,12 @@
 #include "AssetModel.h"
 
 class QTreeView;
+class QLineEdit;
 class QLabel;
 
 namespace Evernus
 {
+    class LeafFilterProxyModel;
     class CacheTimerProvider;
     class EveDataProvider;
     class AssetProvider;
@@ -51,13 +53,17 @@ namespace Evernus
         void prepareItemImportFromWeb();
         void prepareItemImportFromFile();
 
+        void applyKeywords();
+
     private:
         const AssetProvider &mAssetProvider;
 
+        QLineEdit *mFilterEdit = nullptr;
         QTreeView *mAssetView = nullptr;
         QLabel *mInfoLabel = nullptr;
 
         AssetModel mModel;
+        LeafFilterProxyModel *mModelProxy = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
 

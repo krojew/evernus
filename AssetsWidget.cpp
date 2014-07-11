@@ -17,10 +17,12 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QTreeView>
+#include <QLineEdit>
 #include <QLocale>
 #include <QLabel>
 #include <QDebug>
 
+#include "LeafFilterProxyModel.h"
 #include "CacheTimerProvider.h"
 #include "ButtonWithTimer.h"
 #include "AssetProvider.h"
@@ -57,15 +59,20 @@ namespace Evernus
         importFromFile->setFlat(true);
         connect(importFromFile, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromFile);
 
-        toolBarLayout->addStretch();
+        mFilterEdit = new QLineEdit{this};
+        toolBarLayout->addWidget(mFilterEdit);
+        mFilterEdit->setPlaceholderText(tr("type in keywords and press Enter"));
+        mFilterEdit->setClearButtonEnabled(true);
+        connect(mFilterEdit, &QLineEdit::returnPressed, this, &AssetsWidget::applyKeywords);
 
-        auto modelProxy = new QSortFilterProxyModel{this};
-        modelProxy->setSourceModel(&mModel);
-        modelProxy->setSortRole(Qt::UserRole);
+        mModelProxy = new LeafFilterProxyModel{this};
+        mModelProxy->setSourceModel(&mModel);
+        mModelProxy->setSortRole(Qt::UserRole);
+        mModelProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
         mAssetView = new QTreeView{this};
         mainLayout->addWidget(mAssetView);
-        mAssetView->setModel(modelProxy);
+        mAssetView->setModel(mModelProxy);
         mAssetView->setSortingEnabled(true);
         mAssetView->header()->setSectionResizeMode(QHeaderView::Stretch);
 
@@ -90,6 +97,11 @@ namespace Evernus
     void AssetsWidget::prepareItemImportFromFile()
     {
         emit importPricesFromFile(getImportTarget());
+    }
+
+    void AssetsWidget::applyKeywords()
+    {
+        mModelProxy->setFilterFixedString(mFilterEdit->text());
     }
 
     void AssetsWidget::handleNewCharacter(Character::IdType id)
