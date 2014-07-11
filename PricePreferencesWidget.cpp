@@ -56,7 +56,7 @@ namespace Evernus
 
         mPreferredMarginEdit = new QDoubleSpinBox{this};
         marginValuesLayout->addWidget(mPreferredMarginEdit);
-        mPreferredMarginEdit->setSuffix("%");
+        mPreferredMarginEdit->setSuffix(locale().percent());
         mPreferredMarginEdit->setValue(settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble());
 
 #ifdef Q_OS_WIN
@@ -80,6 +80,7 @@ namespace Evernus
         mPriceDeltaEdit->setSingleStep(0.01);
         mPriceDeltaEdit->setMinimum(0.01);
         mPriceDeltaEdit->setMaximum(100000000.);
+        mPriceDeltaEdit->setSuffix(" ISK");
         mPriceDeltaEdit->setValue(settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble());
 
         mPriceMaxAgeEdit = new QSpinBox{this};
