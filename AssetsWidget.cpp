@@ -26,6 +26,7 @@
 #include "CacheTimerProvider.h"
 #include "ButtonWithTimer.h"
 #include "AssetProvider.h"
+#include "AssetList.h"
 
 #include "AssetsWidget.h"
 

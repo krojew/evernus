@@ -27,6 +27,8 @@ namespace Evernus
         Entity() = default;
         Entity(const IdType &id);
         Entity(IdType &&id);
+        Entity(const Entity &other) = default;
+        Entity(Entity &&other) = default;
         virtual ~Entity() = default;
 
         IdType getId() const;
@@ -37,6 +39,9 @@ namespace Evernus
 
         bool isNew() const noexcept;
         void setNew(bool isNew) noexcept;
+
+        Entity &operator =(const Entity &other) = default;
+        Entity &operator =(Entity &&other) = default;
 
     private:
         IdType mId = invalidId, mOriginalId = invalidId;

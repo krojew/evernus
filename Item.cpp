@@ -36,12 +36,12 @@ namespace Evernus
         mParentId = id;
     }
 
-    AssetList::IdType Item::getListId() const noexcept
+    uint Item::getListId() const noexcept
     {
         return mListId;
     }
 
-    void Item::setListId(AssetList::IdType id) noexcept
+    void Item::setListId(uint id) noexcept
     {
         mListId = id;
 

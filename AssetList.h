@@ -19,11 +19,10 @@
 
 #include "Character.h"
 #include "Entity.h"
+#include "Item.h"
 
 namespace Evernus
 {
-    class Item;
-
     class AssetList
         : public Entity<uint>
     {

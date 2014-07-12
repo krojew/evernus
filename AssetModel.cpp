@@ -20,6 +20,7 @@
 #include "EveDataProvider.h"
 #include "AssetProvider.h"
 #include "PriceSettings.h"
+#include "AssetList.h"
 #include "ItemPrice.h"
 
 #include "AssetModel.h"

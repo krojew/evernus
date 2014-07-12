@@ -17,7 +17,6 @@
 #include <vector>
 #include <memory>
 
-#include "AssetList.h"
 #include "ItemData.h"
 #include "Entity.h"
 
@@ -43,8 +42,8 @@ namespace Evernus
         ParentIdType getParentId() const noexcept;
         void setParentId(const ParentIdType &id) noexcept;
 
-        AssetList::IdType getListId() const noexcept;
-        void setListId(AssetList::IdType id) noexcept;
+        uint getListId() const noexcept;
+        void setListId(uint id) noexcept;
 
         ItemData::TypeIdType getTypeId() const;
         void setTypeId(const ItemData::TypeIdType &id);
@@ -74,7 +73,7 @@ namespace Evernus
 
     private:
         ParentIdType mParentId;
-        AssetList::IdType mListId = AssetList::invalidId;
+        uint mListId = 0;
         ItemData mData;
         ItemList mContents;
     };
