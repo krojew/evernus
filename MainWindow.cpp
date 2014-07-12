@@ -141,7 +141,7 @@ namespace Evernus
             mActiveTasksDialog = new ActiveTasksDialog{this};
             connect(this, &MainWindow::newTaskInfoAdded, mActiveTasksDialog, &ActiveTasksDialog::addNewTaskInfo);
             connect(this, &MainWindow::newSubTaskInfoAdded, mActiveTasksDialog, &ActiveTasksDialog::addNewSubTaskInfo);
-            connect(this, &MainWindow::taskStatusChanged, mActiveTasksDialog, &ActiveTasksDialog::setTaskStatus);
+            connect(this, &MainWindow::taskEnded, mActiveTasksDialog, &ActiveTasksDialog::setTaskStatus);
             mActiveTasksDialog->setModal(true);
             mActiveTasksDialog->show();
         }

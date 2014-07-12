@@ -343,7 +343,7 @@ namespace Evernus
         if (keys.empty())
         {
             mCharacterRepository->exec(QString{"UPDATE %1 SET key_id = NULL, enabled = 0"}.arg(mCharacterRepository->getTableName()));
-            emit taskStatusChanged(task, QString{});
+            emit taskEnded(task, QString{});
         }
         else
         {
@@ -396,7 +396,7 @@ namespace Evernus
 
                         if (characters.empty())
                         {
-                            emit taskStatusChanged(charListSubtask, error);
+                            emit taskEnded(charListSubtask, error);
                         }
                         else
                         {
@@ -406,7 +406,7 @@ namespace Evernus
                     }
                     else
                     {
-                        emit taskStatusChanged(charListSubtask, error);
+                        emit taskEnded(charListSubtask, error);
                     }
                 });
             }
@@ -456,16 +456,16 @@ namespace Evernus
                     computeAssetListSellValue(data);
 
                 emit assetsChanged();
-                emit taskStatusChanged(assetSubtask, error);
+                emit taskEnded(assetSubtask, error);
             });
         }
         catch (const KeyRepository::NotFoundException &)
         {
-            emit taskStatusChanged(assetSubtask, tr("Key not found!"));
+            emit taskEnded(assetSubtask, tr("Key not found!"));
         }
         catch (const CharacterRepository::NotFoundException &)
         {
-            emit taskStatusChanged(assetSubtask, tr("Character not found!"));
+            emit taskEnded(assetSubtask, tr("Character not found!"));
         }
     }
 
@@ -506,16 +506,16 @@ namespace Evernus
                 mWalletSnapshotRepository->batchStore(snapshots, true);
 
                 emit walletJournalChanged();
-                emit taskStatusChanged(task, error);
+                emit taskEnded(task, error);
             });
         }
         catch (const KeyRepository::NotFoundException &)
         {
-            emit taskStatusChanged(task, tr("Key not found!"));
+            emit taskEnded(task, tr("Key not found!"));
         }
         catch (const CharacterRepository::NotFoundException &)
         {
-            emit taskStatusChanged(task, tr("Character not found!"));
+            emit taskEnded(task, tr("Character not found!"));
         }
     }
 
@@ -536,16 +536,16 @@ namespace Evernus
                 mWalletTransactionRepository->batchStore(data, true);
 
                 emit walletTransactionsChanged();
-                emit taskStatusChanged(task, error);
+                emit taskEnded(task, error);
             });
         }
         catch (const KeyRepository::NotFoundException &)
         {
-            emit taskStatusChanged(task, tr("Key not found!"));
+            emit taskEnded(task, tr("Key not found!"));
         }
         catch (const CharacterRepository::NotFoundException &)
         {
-            emit taskStatusChanged(task, tr("Character not found!"));
+            emit taskEnded(task, tr("Character not found!"));
         }
     }
 
@@ -563,16 +563,16 @@ namespace Evernus
                 mMarketOrderRepository->batchStore(data, true);
 
                 emit marketOrdersChanged();
-                emit taskStatusChanged(task, error);
+                emit taskEnded(task, error);
             });
         }
         catch (const KeyRepository::NotFoundException &)
         {
-            emit taskStatusChanged(task, tr("Key not found!"));
+            emit taskEnded(task, tr("Key not found!"));
         }
         catch (const CharacterRepository::NotFoundException &)
         {
-            emit taskStatusChanged(task, tr("Character not found!"));
+            emit taskEnded(task, tr("Character not found!"));
         }
     }
 
@@ -588,7 +588,7 @@ namespace Evernus
             mConquerableStationRepository->batchStore(list, true);
 
             emit conquerableStationsChanged();
-            emit taskStatusChanged(task, error);
+            emit taskEnded(task, error);
         });
     }
 
@@ -820,7 +820,7 @@ namespace Evernus
                 QMetaObject::invokeMethod(this, "scheduleCharacterUpdate", Qt::QueuedConnection);
             }
 
-            emit taskStatusChanged(charSubtask, error);
+            emit taskEnded(charSubtask, error);
         });
     }
 
@@ -876,7 +876,7 @@ namespace Evernus
         const auto task = mCurrentItemPriceImportTask;
         mCurrentItemPriceImportTask = TaskConstants::invalidTask;
 
-        emit taskStatusChanged(task, info);
+        emit taskEnded(task, info);
     }
 
     ItemPrice EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const

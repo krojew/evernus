@@ -89,7 +89,7 @@ namespace Evernus
     signals:
         void taskStarted(uint taskId, const QString &description);
         void taskStarted(uint taskId, uint parentTask, const QString &description);
-        void taskStatusChanged(uint taskId, const QString &error);
+        void taskEnded(uint taskId, const QString &error);
 
         void apiError(const QString &info);
 
