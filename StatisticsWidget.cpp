@@ -404,6 +404,7 @@ namespace Evernus
     DateFilteredPlotWidget *StatisticsWidget::createPlot()
     {
         auto plot = new DateFilteredPlotWidget{this};
+        plot->getPlot().xAxis->grid()->setVisible(false);
         plot->getPlot().yAxis->setNumberFormat("gbc");
         plot->getPlot().yAxis->setNumberPrecision(2);
         plot->getPlot().yAxis->setLabel("ISK");
