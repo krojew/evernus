@@ -119,12 +119,12 @@ namespace Evernus
         ++mSubTaskInfo[parentTask].mCount;
     }
 
-    void ActiveTasksDialog::setTaskStatus(uint taskId, const QString &error)
+    void ActiveTasksDialog::endTask(uint taskId, const QString &error)
     {
         auto item = mTaskItems.find(taskId);
         if (item == std::end(mTaskItems))
         {
-            QMetaObject::invokeMethod(this, "setTaskStatus", Qt::QueuedConnection, Q_ARG(uint, taskId), Q_ARG(QString, error));
+            QMetaObject::invokeMethod(this, "endTask", Qt::QueuedConnection, Q_ARG(uint, taskId), Q_ARG(QString, error));
             return;
         }
 
@@ -158,7 +158,7 @@ namespace Evernus
             --it->second.mCount;
             if (it->second.mCount == 0)
             {
-                setTaskStatus(it->first, QString{});
+                endTask(it->first, QString{});
                 mSubTaskInfo.erase(it);
             }
         }
