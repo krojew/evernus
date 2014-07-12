@@ -25,32 +25,63 @@ namespace Evernus
         const auto strValue = value.toString();
 
         if (localName == "date")
-            mCurrentElement->setTimestamp(QDateTime::fromString(strValue, APIUtils::eveTimeFormat));
+        {
+            auto dt = QDateTime::fromString(strValue, APIUtils::eveTimeFormat);
+            dt.setTimeSpec(Qt::UTC);
+
+            mCurrentElement->setTimestamp(dt);
+        }
         else if (localName == "refID")
+        {
             mCurrentElement->setId(convert<WalletJournal::value_type::IdType>(strValue));
+        }
         else if (localName == "refTypeID")
+        {
             mCurrentElement->setRefTypeId(convert<uint>(strValue));
+        }
         else if (localName == "ownerName1")
+        {
             mCurrentElement->setOwnerName1(strValue);
+        }
         else if (localName == "ownerID1")
+        {
             mCurrentElement->setOwnerId1(convert<uint>(strValue));
+        }
         else if (localName == "ownerName2")
+        {
             mCurrentElement->setOwnerName2(strValue);
+        }
         else if (localName == "ownerID2")
+        {
             mCurrentElement->setOwnerId2(convert<uint>(strValue));
+        }
         else if (localName == "argName1" && !strValue.isEmpty())
+        {
             mCurrentElement->setArgName(strValue);
+        }
         else if (localName == "argID1")
+        {
             mCurrentElement->setArgId(convert<quint64>(strValue));
+        }
         else if (localName == "amount")
+        {
             mCurrentElement->setAmount(convert<double>(strValue));
+        }
         else if (localName == "balance")
+        {
             mCurrentElement->setBalance(convert<double>(strValue));
+        }
         else if (localName == "reason" && !strValue.isEmpty())
+        {
             mCurrentElement->setReason(strValue);
+        }
         else if (localName == "taxReceiverID" && !strValue.isEmpty())
+        {
             mCurrentElement->setTaxReceiverId(convert<WalletJournal::value_type::TaxReceiverType::value_type>(strValue));
+        }
         else if (localName == "taxAmount" && !strValue.isEmpty())
+        {
             mCurrentElement->setTaxAmount(convert<WalletJournal::value_type::TaxAmountType::value_type>(strValue));
+        }
     }
 }

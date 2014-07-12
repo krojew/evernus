@@ -25,24 +25,47 @@ namespace Evernus
         auto strValue = value.toString();
 
         if (localName == "transactionDateTime")
-            mCurrentElement->setTimestamp(QDateTime::fromString(strValue, APIUtils::eveTimeFormat));
+        {
+            auto dt = QDateTime::fromString(strValue, APIUtils::eveTimeFormat);
+            dt.setTimeSpec(Qt::UTC);
+
+            mCurrentElement->setTimestamp(dt);
+        }
         else if (localName == "transactionID")
+        {
             mCurrentElement->setId(convert<WalletTransactions::value_type::IdType>(strValue));
+        }
         else if (localName == "quantity")
+        {
             mCurrentElement->setQuantity(convert<uint>(strValue));
+        }
         else if (localName == "typeID")
+        {
             mCurrentElement->setTypeId(convert<EveType::IdType>(strValue));
+        }
         else if (localName == "price")
+        {
             mCurrentElement->setPrice(convert<double>(strValue));
+        }
         else if (localName == "clientID")
+        {
             mCurrentElement->setClientId(convert<quint64>(strValue));
+        }
         else if (localName == "clientName")
+        {
             mCurrentElement->setClientName(std::move(strValue));
+        }
         else if (localName == "stationID")
+        {
             mCurrentElement->setLocationId(convert<quint64>(strValue));
+        }
         else if (localName == "transactionType")
+        {
             mCurrentElement->setType((strValue == "buy") ? (WalletTransaction::Type::Buy) : (WalletTransaction::Type::Sell));
+        }
         else if (localName == "journalTransactionID")
+        {
             mCurrentElement->setJournalId(convert<WalletJournalEntry::IdType>(strValue));
+        }
     }
 }
