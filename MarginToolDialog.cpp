@@ -277,8 +277,8 @@ namespace Evernus
     void MarginToolDialog::refreshData(const QString &path)
     {
         QString targetFile;
-        QLocale locale;
 
+        auto curLocale = locale();
         auto newFiles = getKnownFiles(path);
 
         QHashIterator<QString, QDateTime> it{newFiles};
@@ -332,7 +332,7 @@ namespace Evernus
             else
             {
 #endif
-                const auto modTimeDelay = 1000;
+                const auto modTimeDelay = settings.value(PriceSettings::importLogWaitTimeKey, PriceSettings::importLogWaitTimeDefault).toUInt();
 
                 // wait for Eve to finish dumping data
                 QFileInfo info{file};
@@ -418,8 +418,8 @@ namespace Evernus
             mNameLabel->setText(name);
             mBuyOrdersLabel->setText(QString::number(buyCount));
             mSellOrdersLabel->setText(QString::number(sellCount));
-            mBuyVolLabel->setText(QString{"%1/%2"}.arg(locale.toString(buyVol)).arg(locale.toString(buyInit - buyVol)));
-            mSellVolLabel->setText(QString{"%1/%2"}.arg(locale.toString(sellVol)).arg(locale.toString(sellInit - sellVol)));
+            mBuyVolLabel->setText(QString{"%1/%2"}.arg(curLocale.toString(buyVol)).arg(curLocale.toString(buyInit - buyVol)));
+            mSellVolLabel->setText(QString{"%1/%2"}.arg(curLocale.toString(sellVol)).arg(curLocale.toString(sellInit - sellVol)));
 
             try
             {
@@ -437,8 +437,8 @@ namespace Evernus
                     {
                         const auto buyPrice = buy + priceDelta;
 
-                        mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
-                        mCostOfSalesLabel->setText(locale.toCurrencyString(getCoS(buyPrice, taxes), "ISK"));
+                        mBestBuyLabel->setText(curLocale.toCurrencyString(buyPrice, "ISK"));
+                        mCostOfSalesLabel->setText(curLocale.toCurrencyString(getCoS(buyPrice, taxes), "ISK"));
                     }
 
                     if (sell < 0.)
@@ -450,8 +450,8 @@ namespace Evernus
                     {
                         const auto sellPrice = sell - priceDelta;
 
-                        mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
-                        mRevenueLabel->setText(locale.toCurrencyString(getRevenue(sellPrice, taxes), "ISK"));
+                        mBestSellLabel->setText(curLocale.toCurrencyString(sellPrice, "ISK"));
+                        mRevenueLabel->setText(curLocale.toCurrencyString(getRevenue(sellPrice, taxes), "ISK"));
                     }
 
                     mProfitLabel->setText("-");
@@ -472,15 +472,15 @@ namespace Evernus
                         const auto margin = 100. * (revenue - cos) / revenue;
                         const auto markup = 100. * (revenue - cos) / cos;
 
-                        mMarginLabel->setText(QString{"%1%"}.arg(margin, 0, 'f', 2));
-                        mMarkupLabel->setText(QString{"%1%"}.arg(markup, 0, 'f', 2));
+                        mMarginLabel->setText(QString{"%1%2"}.arg(margin, 0, 'f', 2).arg(curLocale.percent()));
+                        mMarkupLabel->setText(QString{"%1%2"}.arg(markup, 0, 'f', 2).arg(curLocale.percent()));
 
-                        mBestBuyLabel->setText(locale.toCurrencyString(buyPrice, "ISK"));
-                        mBestSellLabel->setText(locale.toCurrencyString(sellPrice, "ISK"));
+                        mBestBuyLabel->setText(curLocale.toCurrencyString(buyPrice, "ISK"));
+                        mBestSellLabel->setText(curLocale.toCurrencyString(sellPrice, "ISK"));
 
-                        mProfitLabel->setText(locale.toCurrencyString(revenue - cos, "ISK"));
-                        mRevenueLabel->setText(locale.toCurrencyString(revenue, "ISK"));
-                        mCostOfSalesLabel->setText(locale.toCurrencyString(cos, "ISK"));
+                        mProfitLabel->setText(curLocale.toCurrencyString(revenue - cos, "ISK"));
+                        mRevenueLabel->setText(curLocale.toCurrencyString(revenue, "ISK"));
+                        mCostOfSalesLabel->setText(curLocale.toCurrencyString(cos, "ISK"));
 
                         if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
                             mMarginLabel->setStyleSheet("color: red;");

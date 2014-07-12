@@ -59,6 +59,19 @@ namespace Evernus
         mPreferredMarginEdit->setSuffix(locale().percent());
         mPreferredMarginEdit->setValue(settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble());
 
+        auto logWaitTimeLayout = new QHBoxLayout{};
+        marginLayout->addLayout(logWaitTimeLayout);
+
+        logWaitTimeLayout->addWidget(new QLabel{tr("Import log wait timer:"), this});
+
+        mImportLogWaitTimeEdit = new QSpinBox{this};
+        logWaitTimeLayout->addWidget(mImportLogWaitTimeEdit);
+        mImportLogWaitTimeEdit->setMaximum(10000);
+        mImportLogWaitTimeEdit->setSuffix("ms");
+        mImportLogWaitTimeEdit->setValue(settings.value(PriceSettings::importLogWaitTimeKey, PriceSettings::importLogWaitTimeDefault).toUInt());
+
+        logWaitTimeLayout->addStretch();
+
 #ifdef Q_OS_WIN
         mAltImportBtn = new QCheckBox{tr("Use alternative margin import method*"), this};
         marginLayout->addWidget(mAltImportBtn);
@@ -102,6 +115,7 @@ namespace Evernus
 #ifdef Q_OS_WIN
         settings.setValue(PriceSettings::priceAltImportKey, mAltImportBtn->isChecked());
 #endif
+        settings.setValue(PriceSettings::importLogWaitTimeKey, mImportLogWaitTimeEdit->value());
         settings.setValue(PriceSettings::priceMaxAgeKey, mPriceMaxAgeEdit->value());
     }
 }

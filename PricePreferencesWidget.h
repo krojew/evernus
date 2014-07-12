@@ -41,6 +41,7 @@ namespace Evernus
 #ifdef Q_OS_WIN
         QCheckBox *mAltImportBtn = nullptr;
 #endif
+        QSpinBox *mImportLogWaitTimeEdit = nullptr;
         QSpinBox *mPriceMaxAgeEdit = nullptr;
     };
 }
