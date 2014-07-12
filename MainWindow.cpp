@@ -172,6 +172,7 @@ namespace Evernus
     {
         mCurrentCharacterId = id;
         updateIskData();
+        updateCurrentTab(mMainTabs->currentIndex());
     }
 
     void MainWindow::refreshAssets()
@@ -210,6 +211,19 @@ namespace Evernus
         QSettings settings;
         if (settings.value(ImportSettings::importAssetsKey, true).toBool())
             refreshAssets();
+    }
+
+    void MainWindow::updateCurrentTab(int index)
+    {
+        auto widget = mMainTabs->widget(index);
+        if (widget != nullptr)
+        {
+            if (mCurrentCharacterId != mTabCharacterIds[index])
+            {
+                mTabCharacterIds[index] = mCurrentCharacterId;
+                QMetaObject::invokeMethod(mTabWidgets[index], "setCharacter", Qt::AutoConnection, Q_ARG(Character::IdType, mCurrentCharacterId));
+            }
+        }
     }
 
     void MainWindow::closeEvent(QCloseEvent *event)
@@ -268,13 +282,13 @@ namespace Evernus
 
     void MainWindow::createMainView()
     {
-        auto tabs = new QTabWidget{this};
-        setCentralWidget(tabs);
+        mMainTabs = new QTabWidget{this};
+        setCentralWidget(mMainTabs);
+        connect(mMainTabs, &QTabWidget::currentChanged, this, &MainWindow::updateCurrentTab);
 
         auto charTab = new CharacterWidget{mCharacterRepository, mCacheTimerProvider, this};
-        tabs->addTab(createMainViewTab(charTab), tr("Character"));
+        addTab(charTab, tr("Character"));
         connect(charTab, &CharacterWidget::importFromAPI, this, &MainWindow::importCharacter);
-        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, charTab, &CharacterWidget::setCharacter);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::updateData);
 
         auto statsTab = new StatisticsWidget{mAssetSnapshotRepository,
@@ -282,8 +296,7 @@ namespace Evernus
                                              mWalletJournalRepository,
                                              mWalletTransactionRepository,
                                              this};
-        tabs->addTab(createMainViewTab(statsTab), tr("Statistics"));
-        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, statsTab, &StatisticsWidget::setCharacter);
+        addTab(statsTab, tr("Statistics"));
         connect(this, &MainWindow::charactersChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::itemPricesChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::assetsChanged, statsTab, &StatisticsWidget::updateBalanceData);
@@ -291,31 +304,27 @@ namespace Evernus
         connect(this, &MainWindow::walletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
 
         auto assetsTab = new AssetsWidget{mAssetProvider, mEveDataProvider, mCacheTimerProvider, this};
-        tabs->addTab(createMainViewTab(assetsTab), tr("Assets"));
+        addTab(assetsTab, tr("Assets"));
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importItemPricesFromWeb);
         connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importItemPricesFromFile);
-        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, assetsTab, &AssetsWidget::setCharacter);
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::itemPricesChanged, assetsTab, &AssetsWidget::updateData);
 
         auto orderTab = new MarketOrderWidget{mMarketOrderRepository, mCacheTimerProvider, this};
-        tabs->addTab(createMainViewTab(orderTab), tr("Orders"));
+        addTab(orderTab, tr("Orders"));
         connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importMarketOrders);
-        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, orderTab, &MarketOrderWidget::setCharacter);
         connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
 
         auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mCacheTimerProvider, mEveDataProvider, this};
-        tabs->addTab(createMainViewTab(journalTab), tr("Journal"));
+        addTab(journalTab, tr("Journal"));
         connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
-        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, journalTab, &WalletJournalWidget::setCharacter);
         connect(this, &MainWindow::walletJournalChanged, journalTab, &WalletJournalWidget::updateData);
 
         auto transactionsTab = new WalletTransactionsWidget{mWalletTransactionRepository, mCacheTimerProvider, mEveDataProvider, this};
-        tabs->addTab(createMainViewTab(transactionsTab), tr("Transactions"));
+        addTab(transactionsTab, tr("Transactions"));
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
-        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, transactionsTab, &WalletTransactionsWidget::setCharacter);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
     }
 
@@ -333,5 +342,10 @@ namespace Evernus
         scroll->setFrameStyle(QFrame::NoFrame);
 
         return scroll;
+    }
+
+    void MainWindow::addTab(QWidget *widget, const QString &label)
+    {
+        mTabWidgets[mMainTabs->addTab(createMainViewTab(widget), label)] = widget;
     }
 }

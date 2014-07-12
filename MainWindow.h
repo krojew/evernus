@@ -14,12 +14,15 @@
  */
 #pragma once
 
+#include <unordered_map>
+
 #include <QMainWindow>
 #include <QPointer>
 
 #include "ItemPriceImporter.h"
 #include "Character.h"
 
+class QTabWidget;
 class QLabel;
 
 namespace Evernus
@@ -107,6 +110,9 @@ namespace Evernus
         void refreshMarketOrders();
         void refreshAll();
 
+    private slots:
+        void updateCurrentTab(int index);
+
     protected:
         virtual void closeEvent(QCloseEvent *event) override;
 
@@ -129,6 +135,7 @@ namespace Evernus
         const CacheTimerProvider &mCacheTimerProvider;
 
         MenuBarWidget *mMenuWidget = nullptr;
+        QTabWidget *mMainTabs = nullptr;
 
         bool mShowMaximized = false;
 
@@ -140,6 +147,9 @@ namespace Evernus
 
         Character::IdType mCurrentCharacterId = Character::invalidId;
 
+        std::unordered_map<int, Character::IdType> mTabCharacterIds;
+        std::unordered_map<int, QWidget *> mTabWidgets;
+
         void readSettings();
         void writeSettings();
 
@@ -148,5 +158,6 @@ namespace Evernus
         void createStatusBar();
 
         QWidget *createMainViewTab(QWidget *content);
+        void addTab(QWidget *widget, const QString &label);
     };
 }

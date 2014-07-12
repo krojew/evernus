@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
         QCoreApplication::setOrganizationName("evernus.com");
 
         qRegisterMetaType<Evernus::MarketLogItemPriceImporterThread::ItemPriceList>("ItemPriceList");
+        qRegisterMetaType<Evernus::Character::IdType>("Character::IdType");
 
         Evernus::EvernusApplication app{argc, argv};
 
