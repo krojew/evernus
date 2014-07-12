@@ -252,6 +252,11 @@ namespace Evernus
             if (it == std::end(mWalletTransactionsLocalCacheTimes))
                 return QDateTime::currentDateTime();
             break;
+        case TimerType::MarketOrders:
+            it = mMarketOrdersLocalCacheTimes.find(id);
+            if (it == std::end(mMarketOrdersLocalCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
         default:
             throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
         }
@@ -276,6 +281,9 @@ namespace Evernus
             break;
         case TimerType::WalletTransactions:
             mWalletTransactionsLocalCacheTimes[id] = dt;
+            break;
+        case TimerType::MarketOrders:
+            mMarketOrdersLocalCacheTimes[id] = dt;
             break;
         default:
             throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
@@ -317,6 +325,11 @@ namespace Evernus
     const WalletTransactionRepository &EvernusApplication::getWalletTransactionRepository() const noexcept
     {
         return *mWalletTransactionRepository;
+    }
+
+    const MarketOrderRepository &EvernusApplication::getMarketOrderRepository() const noexcept
+    {
+        return *mMarketOrderRepository;
     }
 
     void EvernusApplication::refreshCharacters()
@@ -536,6 +549,33 @@ namespace Evernus
         }
     }
 
+    void EvernusApplication::refreshMarketOrders(Character::IdType id, uint parentTask)
+    {
+        qDebug() << "Refreshing market orders: " << id;
+
+        const auto task = startTask(tr("Fetching market orders for character %1...").arg(id));
+        processEvents();
+
+        try
+        {
+            const auto key = getCharacterKey(id);
+            mAPIManager.fetchMarketOrders(key, id, [task, this](const auto &data, const auto &error) {
+                mMarketOrderRepository->batchStore(data, true);
+
+                emit marketOrdersChanged();
+                emit taskStatusChanged(task, error);
+            });
+        }
+        catch (const KeyRepository::NotFoundException &)
+        {
+            emit taskStatusChanged(task, tr("Key not found!"));
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            emit taskStatusChanged(task, tr("Character not found!"));
+        }
+    }
+
     void EvernusApplication::refreshConquerableStations()
     {
         qDebug() << "Refreshing conquerable stations...";
@@ -635,6 +675,7 @@ namespace Evernus
         mRefTypeRepository.reset(new RefTypeRepository{mMainDb});
         mCacheTimerRepository.reset(new CacheTimerRepository{mMainDb});
         mWalletTransactionRepository.reset(new WalletTransactionRepository{mMainDb});
+        mMarketOrderRepository.reset(new MarketOrderRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
     }
 
@@ -651,6 +692,7 @@ namespace Evernus
         mItemPriceRepository->create();
         mCacheTimerRepository->create(*mCharacterRepository);
         mWalletTransactionRepository->create(*mCharacterRepository);
+        mMarketOrderRepository->create(*mCharacterRepository);
         mRefTypeRepository->create();
     }
 
@@ -701,6 +743,9 @@ namespace Evernus
                 break;
             case TimerType::WalletTransactions:
                 mWalletTransactionsLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                break;
+            case TimerType::MarketOrders:
+                mMarketOrdersLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
             }
         }
     }

@@ -22,6 +22,7 @@
 #include "ConquerableStationList.h"
 #include "WalletTransactions.h"
 #include "WalletJournal.h"
+#include "MarketOrders.h"
 #include "APIInterface.h"
 #include "AssetList.h"
 #include "Character.h"
@@ -61,6 +62,7 @@ namespace Evernus
                                      WalletTransaction::IdType fromId,
                                      WalletTransaction::IdType tillId,
                                      const Callback<WalletTransactions> &callback) const;
+        void fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const;
 
     signals:
         void generalError(const QString &info);

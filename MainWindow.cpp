@@ -28,6 +28,7 @@
 #include "WalletJournalWidget.h"
 #include "ActiveTasksDialog.h"
 #include "PreferencesDialog.h"
+#include "MarketOrderWidget.h"
 #include "MarginToolDialog.h"
 #include "StatisticsWidget.h"
 #include "CharacterWidget.h"
@@ -50,6 +51,7 @@ namespace Evernus
                            const WalletSnapshotRepository &walletSnapshotRepo,
                            const WalletJournalEntryRepository &walletJournalRepo,
                            const WalletTransactionRepository &walletTransactionRepo,
+                           const MarketOrderRepository &orderRepo,
                            const AssetProvider &assetProvider,
                            const EveDataProvider &eveDataProvider,
                            const CacheTimerProvider &cacheTimerProvider,
@@ -62,6 +64,7 @@ namespace Evernus
         , mWalletSnapshotRepository{walletSnapshotRepo}
         , mWalletJournalRepository{walletJournalRepo}
         , mWalletTransactionRepository{walletTransactionRepo}
+        , mMarketOrderRepository{orderRepo}
         , mAssetProvider{assetProvider}
         , mEveDataProvider{eveDataProvider}
         , mCacheTimerProvider{cacheTimerProvider}
@@ -189,6 +192,12 @@ namespace Evernus
             emit importWalletTransactions(mCurrentCharacterId);
     }
 
+    void MainWindow::refreshMarketOrders()
+    {
+        if (mCurrentCharacterId != Character::invalidId)
+            emit importMarketOrders(mCurrentCharacterId);
+    }
+
     void MainWindow::refreshAll()
     {
         emit refreshCharacters();
@@ -196,6 +205,7 @@ namespace Evernus
 
         refreshWalletJournal();
         refreshWalletTransactions();
+        refreshMarketOrders();
 
         QSettings settings;
         if (settings.value(ImportSettings::importAssetsKey, true).toBool())
@@ -289,6 +299,12 @@ namespace Evernus
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::itemPricesChanged, assetsTab, &AssetsWidget::updateData);
+
+        auto orderTab = new MarketOrderWidget{mMarketOrderRepository, mCacheTimerProvider, this};
+        tabs->addTab(createMainViewTab(orderTab), tr("Orders"));
+        connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importMarketOrders);
+        connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, orderTab, &MarketOrderWidget::setCharacter);
+        connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
 
         auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mCacheTimerProvider, mEveDataProvider, this};
         tabs->addTab(createMainViewTab(journalTab), tr("Journal"));

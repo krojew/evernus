@@ -28,6 +28,7 @@
 #include "WalletTransactionRepository.h"
 #include "ItemPriceImporterRegistry.h"
 #include "WalletSnapshotRepository.h"
+#include "MarketOrderRepository.h"
 #include "CacheTimerRepository.h"
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
@@ -83,6 +84,7 @@ namespace Evernus
         const AssetValueSnapshotRepository &getAssetValueSnapshotRepository() const noexcept;
         const WalletJournalEntryRepository &getWalletJournalEntryRepository() const noexcept;
         const WalletTransactionRepository &getWalletTransactionRepository() const noexcept;
+        const MarketOrderRepository &getMarketOrderRepository() const noexcept;
 
     signals:
         void taskStarted(uint taskId, const QString &description);
@@ -98,6 +100,7 @@ namespace Evernus
         void itemPricesChanged();
         void walletJournalChanged();
         void walletTransactionsChanged();
+        void marketOrdersChanged();
 
     public slots:
         void refreshCharacters();
@@ -105,6 +108,7 @@ namespace Evernus
         void refreshAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshMarketOrders(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshConquerableStations();
         void refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
         void refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
@@ -136,6 +140,7 @@ namespace Evernus
         std::unique_ptr<RefTypeRepository> mRefTypeRepository;
         std::unique_ptr<CacheTimerRepository> mCacheTimerRepository;
         std::unique_ptr<WalletTransactionRepository> mWalletTransactionRepository;
+        std::unique_ptr<MarketOrderRepository> mMarketOrderRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
 
         APIManager mAPIManager;
@@ -160,6 +165,7 @@ namespace Evernus
         CacheTimerMap mAssetsLocalCacheTimes;
         CacheTimerMap mWalletJournalLocalCacheTimes;
         CacheTimerMap mWalletTransactionsLocalCacheTimes;
+        CacheTimerMap mMarketOrdersLocalCacheTimes;
 
         void createDb();
         void createDbSchema();

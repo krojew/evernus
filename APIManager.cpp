@@ -21,6 +21,7 @@
 #include "WalletTransactionsXmlReceiver.h"
 #include "WalletJournalXmlReceiver.h"
 #include "CharacterListXmlReceiver.h"
+#include "MarketOrdersXmlReceiver.h"
 #include "AssetListXmlReceiver.h"
 #include "RefTypeXmlReceiver.h"
 #include "CharacterDomParser.h"
@@ -206,6 +207,22 @@ namespace Evernus
                                              const Callback<WalletTransactions> &callback) const
     {
         fetchWalletTransactions(key, characterId, fromId, tillId, std::make_shared<WalletTransactions>(), callback);
+    }
+
+    void APIManager::fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const
+    {
+        mInterface.fetchMarketOrders(key, characterId, [callback, this](const QString &response, const QString &error) {
+            try
+            {
+                handlePotentialError(response, error);
+
+                callback(parseResults<MarketOrders::value_type, APIXmlReceiver<MarketOrders::value_type>::CurElemType>(response, "orders"), QString{});
+            }
+            catch (const std::exception &e)
+            {
+                callback(MarketOrders{}, e.what());
+            }
+        });
     }
 
     void APIManager::fetchWalletJournal(const Key &key,

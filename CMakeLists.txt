@@ -41,6 +41,7 @@ qt5_wrap_cpp(
     MarginToolDialog.h
     MarketLogItemPriceImporter.h
     MarketLogItemPriceImporterThread.h
+    MarketOrderWidget.h
     MenuBarWidget.h
     NetworkPreferencesWidget.h
     PathPreferencesWidget.h
@@ -182,6 +183,11 @@ add_executable(
     MarketOrder.h
     MarketOrderRepository.cpp
     MarketOrderRepository.h
+    MarketOrders.h
+    MarketOrdersXmlReceiver.cpp
+    MarketOrdersXmlReceiver.h
+    MarketOrderWidget.cpp
+    MarketOrderWidget.h
     MenuBarWidget.cpp
     MenuBarWidget.h
     NetworkPreferencesWidget.cpp

@@ -31,6 +31,7 @@ namespace Evernus
     class WalletTransactionRepository;
     class WalletSnapshotRepository;
     class CharacterManagerDialog;
+    class MarketOrderRepository;
     class WalletJournalEntry;
     class CacheTimerProvider;
     class ActiveTasksDialog;
@@ -52,6 +53,7 @@ namespace Evernus
                    const WalletSnapshotRepository &walletSnapshotRepo,
                    const WalletJournalEntryRepository &walletJournalRepo,
                    const WalletTransactionRepository &walletTransactionRepo,
+                   const MarketOrderRepository &orderRepo,
                    const AssetProvider &assetProvider,
                    const EveDataProvider &eveDataProvider,
                    const CacheTimerProvider &cacheTimerProvider,
@@ -71,6 +73,7 @@ namespace Evernus
         void itemPricesChanged();
         void walletJournalChanged();
         void walletTransactionsChanged();
+        void marketOrdersChanged();
 
         void newTaskInfoAdded(uint taskId, const QString &description);
         void newSubTaskInfoAdded(uint taskId, uint parentTask, const QString &description);
@@ -80,6 +83,7 @@ namespace Evernus
         void importAssets(Character::IdType id);
         void importWalletJournal(Character::IdType id);
         void importWalletTransactions(Character::IdType id);
+        void importMarketOrders(Character::IdType id);
 
         void importItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
         void importItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
@@ -100,6 +104,7 @@ namespace Evernus
         void refreshAssets();
         void refreshWalletJournal();
         void refreshWalletTransactions();
+        void refreshMarketOrders();
         void refreshAll();
 
     protected:
@@ -116,6 +121,7 @@ namespace Evernus
         const WalletSnapshotRepository &mWalletSnapshotRepository;
         const WalletJournalEntryRepository &mWalletJournalRepository;
         const WalletTransactionRepository &mWalletTransactionRepository;
+        const MarketOrderRepository &mMarketOrderRepository;
         const AssetProvider &mAssetProvider;
 
         const EveDataProvider &mEveDataProvider;
