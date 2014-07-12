@@ -52,7 +52,7 @@ namespace Evernus
         mOldJournalDaysEdit = new QSpinBox{this};
         journalDaysLayout->addWidget(mOldJournalDaysEdit);
         mOldJournalDaysEdit->setMinimum(2);
-        mOldJournalDaysEdit->setSuffix(tr("days"));
+        mOldJournalDaysEdit->setSuffix(tr(" days"));
         mOldJournalDaysEdit->setValue(settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
 
         journalDaysLayout->addStretch();
@@ -79,7 +79,7 @@ namespace Evernus
         mOldTransactionsDaysEdit = new QSpinBox{this};
         transactionsDaysLayout->addWidget(mOldTransactionsDaysEdit);
         mOldTransactionsDaysEdit->setMinimum(2);
-        mOldTransactionsDaysEdit->setSuffix(tr("days"));
+        mOldTransactionsDaysEdit->setSuffix(tr(" days"));
         mOldTransactionsDaysEdit->setValue(settings.value(WalletSettings::oldTransactionsDaysKey, WalletSettings::oldTransactionsDaysDefault).toInt());
 
         transactionsDaysLayout->addStretch();

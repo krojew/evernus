@@ -311,6 +311,7 @@ namespace Evernus
         auto scroll = new QScrollArea{this};
         scroll->setWidgetResizable(true);
         scroll->setWidget(content);
+        scroll->setFrameStyle(QFrame::NoFrame);
 
         return scroll;
     }

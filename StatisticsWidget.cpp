@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <memory>
+
 #include <QVBoxLayout>
 #include <QGroupBox>
 #include <QHash>
@@ -267,6 +269,9 @@ namespace Evernus
         QHash<QDate, std::pair<double, double>> values;
         for (const auto &entry : entries)
         {
+            if (entry.isIgnored())
+                continue;
+
             auto &value = values[entry.getTimestamp().toLocalTime().date()];
 
             const auto amount = entry.getAmount();
