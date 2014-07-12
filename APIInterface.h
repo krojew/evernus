@@ -54,6 +54,7 @@ namespace Evernus
                                      Character::IdType characterId,
                                      WalletTransaction::IdType fromId,
                                      const Callback &callback) const;
+        void fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback &callback) const;
 
     signals:
         void generalError(const QString &info);

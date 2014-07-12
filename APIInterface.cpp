@@ -82,6 +82,11 @@ namespace Evernus
         makeRequest("/char/WalletTransactions.xml.aspx", key, callback, params);
     }
 
+    void APIInterface::fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback &callback) const
+    {
+        makeRequest("/char/MarketOrders.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
+    }
+
     void APIInterface::processReply()
     {
         auto reply = qobject_cast<QNetworkReply *>(sender());
