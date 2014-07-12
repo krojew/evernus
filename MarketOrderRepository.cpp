@@ -125,7 +125,7 @@ namespace Evernus
         query.bindValue(":escrow", entity.getEscrow());
         query.bindValue(":price", entity.getPrice());
         query.bindValue(":type", static_cast<int>(entity.getType()));
-        query.bindValue(":issued", entity.getPrice());
+        query.bindValue(":issued", entity.getIssued());
         query.bindValue(":first_seen", entity.getFirstSeen());
     }
 
@@ -148,7 +148,12 @@ namespace Evernus
         query.addBindValue(entity.getEscrow());
         query.addBindValue(entity.getPrice());
         query.addBindValue(static_cast<int>(entity.getType()));
-        query.addBindValue(entity.getPrice());
+        query.addBindValue(entity.getIssued());
         query.addBindValue(entity.getFirstSeen());
+    }
+
+    size_t MarketOrderRepository::getMaxRowsPerInsert() const
+    {
+        return 58;
     }
 }
