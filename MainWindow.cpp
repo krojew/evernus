@@ -270,12 +270,15 @@ namespace Evernus
         auto statsTab = new StatisticsWidget{mAssetSnapshotRepository,
                                              mWalletSnapshotRepository,
                                              mWalletJournalRepository,
+                                             mWalletTransactionRepository,
                                              this};
         tabs->addTab(createMainViewTab(statsTab), tr("Statistics"));
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, statsTab, &StatisticsWidget::setCharacter);
         connect(this, &MainWindow::charactersChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::itemPricesChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::assetsChanged, statsTab, &StatisticsWidget::updateBalanceData);
+        connect(this, &MainWindow::walletJournalChanged, statsTab, &StatisticsWidget::updateJournalData);
+        connect(this, &MainWindow::walletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
 
         auto assetsTab = new AssetsWidget{mAssetProvider, mEveDataProvider, mCacheTimerProvider, this};
         tabs->addTab(createMainViewTab(assetsTab), tr("Assets"));

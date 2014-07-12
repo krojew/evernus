@@ -20,6 +20,7 @@
 
 #include "WalletJournalEntryRepository.h"
 #include "AssetValueSnapshotRepository.h"
+#include "WalletTransactionRepository.h"
 #include "WalletSnapshotRepository.h"
 #include "DateFilteredPlotWidget.h"
 #include "qcustomplot.h"
@@ -31,11 +32,13 @@ namespace Evernus
     StatisticsWidget::StatisticsWidget(const AssetValueSnapshotRepository &assetSnapshotRepo,
                                        const WalletSnapshotRepository &walletSnapshotRepo,
                                        const WalletJournalEntryRepository &journalRepo,
+                                       const WalletTransactionRepository &transactionRepo,
                                        QWidget *parent)
         : QWidget{parent}
         , mAssetSnapshotRepository{assetSnapshotRepo}
         , mWalletSnapshotRepository{walletSnapshotRepo}
         , mJournalRepo{journalRepo}
+        , mTransactionRepo{transactionRepo}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -60,6 +63,16 @@ namespace Evernus
         journalLayout->addWidget(mJournalPlot);
         connect(mJournalPlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateJournalData);
 
+        auto transactionGroup = new QGroupBox{tr("Wallet transactions"), this};
+        mainLayout->addWidget(transactionGroup);
+
+        auto transactionLayout = new QVBoxLayout{};
+        transactionGroup->setLayout(transactionLayout);
+
+        mTransactionPlot = createPlot();
+        transactionLayout->addWidget(mTransactionPlot);
+        connect(mTransactionPlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateTransactionData);
+
         mainLayout->addStretch();
 
         updateGraphAndLegend();
@@ -79,6 +92,7 @@ namespace Evernus
         {
             mBalancePlot->blockSignals(true);
             mJournalPlot->blockSignals(true);
+            mTransactionPlot->blockSignals(true);
 
             const auto date = QDate::currentDate();
 
@@ -86,10 +100,14 @@ namespace Evernus
             mBalancePlot->setTo(date);
             mJournalPlot->setFrom(date.addMonths(-1));
             mJournalPlot->setTo(date);
+            mTransactionPlot->setFrom(date.addMonths(-1));
+            mTransactionPlot->setTo(date);
 
             updateBalanceData();
             updateJournalData();
+            updateTransactionData();
 
+            mTransactionPlot->blockSignals(false);
             mJournalPlot->blockSignals(false);
             mBalancePlot->blockSignals(false);
         }
@@ -308,6 +326,55 @@ namespace Evernus
         mJournalPlot->getPlot().replot();
     }
 
+    void StatisticsWidget::updateTransactionData()
+    {
+        const auto entries = mTransactionRepo.fetchForCharacterInRange(mCharacterId,
+                                                                       QDateTime{mTransactionPlot->getFrom()},
+                                                                       QDateTime{mTransactionPlot->getTo()},
+                                                                       WalletTransactionRepository::EntryType::All);
+
+        QHash<QDate, std::pair<double, double>> values;
+        for (const auto &entry : entries)
+        {
+            if (entry.isIgnored())
+                continue;
+
+            auto &value = values[entry.getTimestamp().toLocalTime().date()];
+
+            const auto amount = entry.getPrice();
+            if (entry.getType() == WalletTransaction::Type::Buy)
+                value.first += amount;
+            else
+                value.second += amount;
+        }
+
+        QVector<double> ticks, incomingTicks, outgoingTicks, incomingValues, outgoingValues;
+
+        QHashIterator<QDate, std::pair<double, double>> it{values};
+        while (it.hasNext())
+        {
+            it.next();
+
+            const auto secs = QDateTime{it.key()}.toMSecsSinceEpoch() / 1000.;
+
+            ticks << secs;
+
+            incomingTicks << secs - 3600 * 3;
+            outgoingTicks << secs + 3600 * 3;
+
+            outgoingValues << it.value().first;
+            incomingValues << it.value().second;
+        }
+
+        mSellPlot->setData(incomingTicks, incomingValues);
+        mBuyPlot->setData(outgoingTicks, outgoingValues);
+
+        mTransactionPlot->getPlot().xAxis->setTickVector(ticks);
+
+        mTransactionPlot->getPlot().rescaleAxes();
+        mTransactionPlot->getPlot().replot();
+    }
+
     void StatisticsWidget::updateGraphAndLegend()
     {
         auto assetGraph = mBalancePlot->getPlot().addGraph();
@@ -324,25 +391,14 @@ namespace Evernus
 
         mBalancePlot->getPlot().legend->setVisible(true);
 
-        auto incomingGraph = std::make_unique<QCPBars>(mJournalPlot->getPlot().xAxis, mJournalPlot->getPlot().yAxis);
-        mIncomingPlot = incomingGraph.get();
-        mIncomingPlot->setWidth(3600 * 6);
-        mIncomingPlot->setName(tr("Incoming"));
-        mIncomingPlot->setPen(QPen{Qt::green});
-        mIncomingPlot->setBrush(Qt::green);
-        mJournalPlot->getPlot().addPlottable(mIncomingPlot);
-        incomingGraph.release();
+        mIncomingPlot = createBarPlot(mJournalPlot, tr("Incoming"), Qt::green);
+        mOutgoingPlot = createBarPlot(mJournalPlot, tr("Outgoing"), Qt::red);
 
-        auto outgoingGraph = std::make_unique<QCPBars>(mJournalPlot->getPlot().xAxis, mJournalPlot->getPlot().yAxis);
-        mOutgoingPlot = outgoingGraph.get();
-        mOutgoingPlot->setWidth(3600 * 6);
-        mOutgoingPlot->setName(tr("Outgoing"));
-        mOutgoingPlot->setPen(QPen{Qt::red});
-        mOutgoingPlot->setBrush(Qt::red);
-        mJournalPlot->getPlot().addPlottable(mOutgoingPlot);
-        outgoingGraph.release();
+        mSellPlot = createBarPlot(mTransactionPlot, tr("Sell"), Qt::green);
+        mBuyPlot = createBarPlot(mTransactionPlot, tr("Buy"), Qt::red);
 
         mJournalPlot->getPlot().legend->setVisible(true);
+        mTransactionPlot->getPlot().legend->setVisible(true);
     }
 
     DateFilteredPlotWidget *StatisticsWidget::createPlot()
@@ -353,5 +409,19 @@ namespace Evernus
         plot->getPlot().yAxis->setLabel("ISK");
 
         return plot;
+    }
+
+    QCPBars *StatisticsWidget::createBarPlot(DateFilteredPlotWidget *plot, const QString &name, Qt::GlobalColor color)
+    {
+        auto graph = std::make_unique<QCPBars>(plot->getPlot().xAxis, plot->getPlot().yAxis);
+        auto graphPtr = graph.get();
+        graphPtr->setWidth(3600 * 6);
+        graphPtr->setName(name);
+        graphPtr->setPen(QPen{color});
+        graphPtr->setBrush(color);
+        plot->getPlot().addPlottable(graphPtr);
+        graph.release();
+
+        return graphPtr;
     }
 }

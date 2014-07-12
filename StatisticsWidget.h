@@ -24,6 +24,7 @@ namespace Evernus
 {
     class WalletJournalEntryRepository;
     class AssetValueSnapshotRepository;
+    class WalletTransactionRepository;
     class WalletSnapshotRepository;
     class DateFilteredPlotWidget;
 
@@ -36,6 +37,7 @@ namespace Evernus
         StatisticsWidget(const AssetValueSnapshotRepository &assetSnapshotRepo,
                          const WalletSnapshotRepository &walletSnapshotRepo,
                          const WalletJournalEntryRepository &journalRepo,
+                         const WalletTransactionRepository &transactionRepo,
                          QWidget *parent = nullptr);
         virtual ~StatisticsWidget() = default;
 
@@ -43,6 +45,7 @@ namespace Evernus
         void setCharacter(Character::IdType id);
         void updateBalanceData();
         void updateJournalData();
+        void updateTransactionData();
 
     private:
         static constexpr auto assetValueGraph = 0;
@@ -52,17 +55,24 @@ namespace Evernus
         const AssetValueSnapshotRepository &mAssetSnapshotRepository;
         const WalletSnapshotRepository &mWalletSnapshotRepository;
         const WalletJournalEntryRepository &mJournalRepo;
+        const WalletTransactionRepository &mTransactionRepo;
 
         DateFilteredPlotWidget *mBalancePlot = nullptr;
         DateFilteredPlotWidget *mJournalPlot = nullptr;
+        DateFilteredPlotWidget *mTransactionPlot = nullptr;
 
         QCPBars *mIncomingPlot = nullptr;
         QCPBars *mOutgoingPlot = nullptr;
+
+        QCPBars *mBuyPlot = nullptr;
+        QCPBars *mSellPlot = nullptr;
 
         Character::IdType mCharacterId = Character::invalidId;
 
         void updateGraphAndLegend();
 
         DateFilteredPlotWidget *createPlot();
+
+        static QCPBars *createBarPlot(DateFilteredPlotWidget *plot, const QString &name, Qt::GlobalColor color);
     };
 }
