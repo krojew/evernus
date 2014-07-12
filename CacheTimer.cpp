@@ -16,12 +16,6 @@
 
 namespace Evernus
 {
-    CacheTimer::CacheTimer(IdType id, const QDateTime &dt)
-        : Entity{id}
-        , mCacheUntil{dt}
-    {
-    }
-
     Character::IdType CacheTimer::getCharacterId() const noexcept
     {
         return mCharacterId;
@@ -30,6 +24,16 @@ namespace Evernus
     void CacheTimer::setCharacterId(Character::IdType id) noexcept
     {
         mCharacterId = id;
+    }
+
+    CacheTimer::TimerType CacheTimer::getType() const noexcept
+    {
+        return mType;
+    }
+
+    void CacheTimer::setType(TimerType type) noexcept
+    {
+        mType = type;
     }
 
     QDateTime CacheTimer::getCacheUntil() const

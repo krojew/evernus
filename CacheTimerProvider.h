@@ -14,22 +14,14 @@
  */
 #pragma once
 
-#include <QDateTime>
-
-#include "Character.h"
+#include "CacheTimer.h"
 
 namespace Evernus
 {
     class CacheTimerProvider
     {
     public:
-        enum class TimerType
-        {
-            Character = 1,
-            AssetList,
-            WalletJournal,
-            WalletTransactions,
-        };
+        typedef CacheTimer::TimerType TimerType;
 
         CacheTimerProvider() = default;
         virtual ~CacheTimerProvider() = default;

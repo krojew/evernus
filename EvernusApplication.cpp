@@ -281,8 +281,10 @@ namespace Evernus
             throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
         }
 
-        CacheTimer timer{static_cast<CacheTimer::IdType>(type), dt};
+        CacheTimer timer;
         timer.setCharacterId(id);
+        timer.setType(type);
+        timer.setCacheUntil(dt);
 
         mCacheTimerRepository->store(timer);
     }
@@ -687,7 +689,7 @@ namespace Evernus
         const auto timers = mCacheTimerRepository->fetchAll();
         for (const auto &timer : timers)
         {
-            switch (static_cast<TimerType>(timer.getId())) {
+            switch (timer.getType()) {
             case TimerType::Character:
                 mCharacterLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
                 break;

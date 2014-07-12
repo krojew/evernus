@@ -34,8 +34,10 @@ namespace Evernus
         auto dt = record.value("cache_until").toDateTime();
         dt.setTimeSpec(Qt::UTC);
 
-        CacheTimer cacheTimer{record.value("id").value<CacheTimer::IdType>(), dt};
+        CacheTimer cacheTimer{record.value("id").value<CacheTimer::IdType>()};
         cacheTimer.setCharacterId(record.value("character_id").value<Character::IdType>());
+        cacheTimer.setType(static_cast<CacheTimer::TimerType>(record.value("type").toInt()));
+        cacheTimer.setCacheUntil(dt);
         cacheTimer.setNew(false);
 
         return cacheTimer;
@@ -44,8 +46,9 @@ namespace Evernus
     void CacheTimerRepository::create(const Repository<Character> &characterRepo) const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY ASC,
             character_id BIGINT NOT NULL REFERENCES %2(%3),
+            type TINYINT NOT NULL,
             cache_until DATETIME NOT NULL
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
@@ -57,6 +60,7 @@ namespace Evernus
         return QStringList{}
             << "id"
             << "character_id"
+            << "type"
             << "cache_until";
     }
 
@@ -66,6 +70,7 @@ namespace Evernus
             query.bindValue(":id", entity.getId());
 
         query.bindValue(":character_id", entity.getCharacterId());
+        query.bindValue(":type", static_cast<int>(entity.getType()));
         query.bindValue(":cache_until", entity.getCacheUntil());
     }
 
@@ -75,6 +80,7 @@ namespace Evernus
             query.addBindValue(entity.getId());
 
         query.addBindValue(entity.getCharacterId());
+        query.addBindValue(static_cast<int>(entity.getType()));
         query.addBindValue(entity.getCacheUntil());
     }
 }

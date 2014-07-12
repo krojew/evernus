@@ -26,16 +26,27 @@ namespace Evernus
         : public Entity<uint>
     {
     public:
+        enum class TimerType
+        {
+            Character,
+            AssetList,
+            WalletJournal,
+            WalletTransactions,
+            MarketOrders
+        };
+
         using Entity::Entity;
 
         CacheTimer() = default;
-        CacheTimer(IdType id, const QDateTime &dt);
         CacheTimer(const CacheTimer &) = default;
         CacheTimer(CacheTimer &&) = default;
         virtual ~CacheTimer() = default;
 
         Character::IdType getCharacterId() const noexcept;
         void setCharacterId(Character::IdType id) noexcept;
+
+        TimerType getType() const noexcept;
+        void setType(TimerType type) noexcept;
 
         QDateTime getCacheUntil() const;
         void setCacheUntil(const QDateTime &dt);
@@ -45,6 +56,7 @@ namespace Evernus
 
     private:
         Character::IdType mCharacterId = Character::invalidId;
+        TimerType mType = TimerType::Character;
         QDateTime mCacheUntil;
     };
 }
