@@ -84,6 +84,7 @@ namespace Evernus
 
         void newTaskInfoAdded(uint taskId, const QString &description);
         void newSubTaskInfoAdded(uint taskId, uint parentTask, const QString &description);
+        void taskInfoChanged(uint taskId, const QString &text);
         void taskEnded(uint taskId, const QString &error);
 
         void importCharacter(Character::IdType id);

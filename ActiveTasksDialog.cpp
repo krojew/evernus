@@ -119,6 +119,18 @@ namespace Evernus
         ++mSubTaskInfo[parentTask].mCount;
     }
 
+    void ActiveTasksDialog::setTaskInfo(uint taskId, const QString &description)
+    {
+        auto item = mTaskItems.find(taskId);
+        if (item == std::end(mTaskItems))
+        {
+            QMetaObject::invokeMethod(this, "setTaskInfo", Qt::QueuedConnection, Q_ARG(uint, taskId), Q_ARG(QString, description));
+            return;
+        }
+
+        item->second->setText(1, description);
+    }
+
     void ActiveTasksDialog::endTask(uint taskId, const QString &error)
     {
         auto item = mTaskItems.find(taskId);

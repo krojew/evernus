@@ -47,6 +47,7 @@ namespace Evernus
     public slots:
         void addNewTaskInfo(uint taskId, const QString &description);
         void addNewSubTaskInfo(uint taskId, uint parentTask, const QString &description);
+        void setTaskInfo(uint taskId, const QString &description);
         void endTask(uint taskId, const QString &error);
 
     private slots:

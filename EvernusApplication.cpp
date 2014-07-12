@@ -481,6 +481,9 @@ namespace Evernus
             const auto key = getCharacterKey(id);
             const auto maxId = mWalletJournalEntryRepository->getLatestEntryId(id);
 
+            if (maxId == WalletJournalEntry::invalidId)
+                emit taskInfoChanged(task, tr("Fetching wallet journal for character %1 (this may take a while)...").arg(id));
+
             mAPIManager.fetchWalletJournal(key, id, WalletJournalEntry::invalidId, maxId,
                                            [task, this](const auto &data, const auto &error) {
                 std::vector<Evernus::WalletSnapshot> snapshots;
@@ -530,6 +533,9 @@ namespace Evernus
         {
             const auto key = getCharacterKey(id);
             const auto maxId = mWalletTransactionRepository->getLatestEntryId(id);
+
+            if (maxId == WalletTransaction::invalidId)
+                emit taskInfoChanged(task, tr("Fetching wallet transactions for character %1 (this may take a while)...").arg(id));
 
             mAPIManager.fetchWalletTransactions(key, id, WalletTransaction::invalidId, maxId,
                                                 [task, this](const auto &data, const auto &error) {
