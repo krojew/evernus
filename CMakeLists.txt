@@ -178,6 +178,10 @@ add_executable(
     MarketLogItemPriceImporter.h
     MarketLogItemPriceImporterThread.cpp
     MarketLogItemPriceImporterThread.h
+    MarketOrder.cpp
+    MarketOrder.h
+    MarketOrderRepository.cpp
+    MarketOrderRepository.h
     MenuBarWidget.cpp
     MenuBarWidget.h
     NetworkPreferencesWidget.cpp
