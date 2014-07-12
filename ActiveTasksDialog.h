@@ -23,6 +23,11 @@ class QProgressBar;
 class QTreeWidget;
 class QCheckBox;
 
+#ifdef Q_OS_WIN
+class QWinTaskbarProgress;
+class QWinTaskbarButton;
+#endif
+
 namespace Evernus
 {
     class ActiveTasksDialog
@@ -31,7 +36,12 @@ namespace Evernus
         Q_OBJECT
 
     public:
+#ifdef Q_OS_WIN
+        explicit ActiveTasksDialog(QWinTaskbarButton &taskbarButton, QWidget *parent = nullptr);
+#else
         explicit ActiveTasksDialog(QWidget *parent = nullptr);
+#endif
+
         virtual ~ActiveTasksDialog() = default;
 
     public slots:
@@ -48,6 +58,10 @@ namespace Evernus
             size_t mCount = 0;
             bool mError = false;
         };
+
+#ifdef Q_OS_WIN
+        QWinTaskbarProgress *mTaskbarProgress = nullptr;
+#endif
 
         QTreeWidget *mTaskWidget = nullptr;
         QProgressBar *mTotalProgressWidget = nullptr;

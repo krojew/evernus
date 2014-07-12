@@ -25,6 +25,10 @@
 class QTabWidget;
 class QLabel;
 
+#ifdef Q_OS_WIN
+class QWinTaskbarButton;
+#endif
+
 namespace Evernus
 {
     template<class T>
@@ -133,6 +137,10 @@ namespace Evernus
         const EveDataProvider &mEveDataProvider;
 
         const CacheTimerProvider &mCacheTimerProvider;
+
+#ifdef Q_OS_WIN
+        QWinTaskbarButton *mTaskbarButton = nullptr;
+#endif
 
         MenuBarWidget *mMenuWidget = nullptr;
         QTabWidget *mMainTabs = nullptr;

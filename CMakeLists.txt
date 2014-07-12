@@ -16,8 +16,11 @@ find_package(Boost REQUIRED)
 if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -stdlib=libc++ -g")
 elseif(WIN32)
+    find_package(Qt5WinExtras REQUIRED)
+    
     set(ADDITIONAL_SRC "evernus.rc")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
+    set(ADDITIONAL_LIBS Qt5::WinExtras)
 endif()
 
 qt5_wrap_cpp(
@@ -269,4 +272,5 @@ target_link_libraries(
     Qt5::Xml
     Qt5::XmlPatterns
     Qt5::Widgets
+    ${ADDITIONAL_LIBS}
 )

@@ -23,6 +23,10 @@
 #include <QLabel>
 #include <QDebug>
 
+#ifdef Q_OS_WIN
+#   include <QWinTaskbarButton>
+#endif
+
 #include "WalletTransactionsWidget.h"
 #include "CharacterManagerDialog.h"
 #include "WalletJournalWidget.h"
@@ -138,7 +142,17 @@ namespace Evernus
     {
         if (mActiveTasksDialog == nullptr)
         {
+#ifdef Q_OS_WIN
+            if (mTaskbarButton == nullptr)
+            {
+                mTaskbarButton = new QWinTaskbarButton{this};
+                mTaskbarButton->setWindow(windowHandle());
+            }
+
+            mActiveTasksDialog = new ActiveTasksDialog{*mTaskbarButton, this};
+#else
             mActiveTasksDialog = new ActiveTasksDialog{this};
+#endif
             connect(this, &MainWindow::newTaskInfoAdded, mActiveTasksDialog, &ActiveTasksDialog::addNewTaskInfo);
             connect(this, &MainWindow::newSubTaskInfoAdded, mActiveTasksDialog, &ActiveTasksDialog::addNewSubTaskInfo);
             connect(this, &MainWindow::taskEnded, mActiveTasksDialog, &ActiveTasksDialog::setTaskStatus);

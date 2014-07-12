@@ -20,13 +20,22 @@
 #include <QCheckBox>
 #include <QSettings>
 
+#ifdef Q_OS_WIN
+#   include <QWinTaskbarProgress>
+#   include <QWinTaskbarButton>
+#endif
+
 #include "UISettings.h"
 
 #include "ActiveTasksDialog.h"
 
 namespace Evernus
 {
+#ifdef Q_OS_WIN
+    ActiveTasksDialog::ActiveTasksDialog(QWinTaskbarButton &taskbarButton, QWidget *parent)
+#else
     ActiveTasksDialog::ActiveTasksDialog(QWidget *parent)
+#endif
         : QDialog{parent}
     {
         QSettings settings;
@@ -57,6 +66,10 @@ namespace Evernus
         mainLayout->addWidget(btnBox);
         connect(btnBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
+#ifdef Q_OS_WIN
+        mTaskbarProgress = taskbarButton.progress();
+#endif
+
         setWindowTitle(tr("Active Tasks"));
     }
 
@@ -67,11 +80,19 @@ namespace Evernus
             mHadError = false;
             mTotalProgressWidget->setValue(0);
             mTotalProgressWidget->setMaximum(1);
+#ifdef Q_OS_WIN
+            mTaskbarProgress->setValue(0);
+            mTaskbarProgress->setMaximum(1);
+            mTaskbarProgress->setVisible(true);
+#endif
             mTaskWidget->clear();
         }
         else
         {
             mTotalProgressWidget->setMaximum(mTotalProgressWidget->maximum() + 1);
+#ifdef Q_OS_WIN
+            mTaskbarProgress->setMaximum(mTaskbarProgress->maximum() + 1);
+#endif
         }
 
         fillTaskItem(taskId, new QTreeWidgetItem{mTaskWidget}, description);
@@ -88,6 +109,9 @@ namespace Evernus
         }
 
         mTotalProgressWidget->setMaximum(mTotalProgressWidget->maximum() + 1);
+#ifdef Q_OS_WIN
+        mTaskbarProgress->setMaximum(mTaskbarProgress->maximum() + 1);
+#endif
 
         fillTaskItem(taskId, new QTreeWidgetItem{item->second}, description);
         mTaskWidget->resizeColumnToContents(0);
@@ -120,6 +144,9 @@ namespace Evernus
 
         mTaskItems.erase(item);
         mTotalProgressWidget->setValue(mTotalProgressWidget->value() + 1);
+#ifdef Q_OS_WIN
+        mTaskbarProgress->setValue(mTaskbarProgress->value() + 1);
+#endif
 
         if (parent != nullptr)
         {
@@ -135,9 +162,15 @@ namespace Evernus
                 mSubTaskInfo.erase(it);
             }
         }
-        else if (mTaskItems.empty() && mAutoCloseBtn->isChecked() && !mHadError)
+        else if (mTaskItems.empty())
         {
-            close();
+#ifdef Q_OS_WIN
+            mTaskbarProgress->setVisible(false);
+#endif
+            if (mAutoCloseBtn->isChecked() && !mHadError)
+            {
+                close();
+            }
         }
     }
 
