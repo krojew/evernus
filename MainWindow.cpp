@@ -36,6 +36,7 @@
 #include "MarginToolDialog.h"
 #include "StatisticsWidget.h"
 #include "CharacterWidget.h"
+#include "ItemCostWidget.h"
 #include "ImportSettings.h"
 #include "MenuBarWidget.h"
 #include "AssetsWidget.h"
@@ -56,6 +57,7 @@ namespace Evernus
                            const WalletJournalEntryRepository &walletJournalRepo,
                            const WalletTransactionRepository &walletTransactionRepo,
                            const MarketOrderRepository &orderRepo,
+                           const ItemCostRepository &itemCostRepo,
                            const AssetProvider &assetProvider,
                            const EveDataProvider &eveDataProvider,
                            const CacheTimerProvider &cacheTimerProvider,
@@ -69,6 +71,7 @@ namespace Evernus
         , mWalletJournalRepository{walletJournalRepo}
         , mWalletTransactionRepository{walletTransactionRepo}
         , mMarketOrderRepository{orderRepo}
+        , mItemCostRepo{itemCostRepo}
         , mAssetProvider{assetProvider}
         , mEveDataProvider{eveDataProvider}
         , mCacheTimerProvider{cacheTimerProvider}
@@ -341,6 +344,9 @@ namespace Evernus
         addTab(transactionsTab, tr("Transactions"));
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
+
+        auto itemCostTab = new ItemCostWidget{mItemCostRepo, mEveDataProvider, this};
+        addTab(itemCostTab, tr("Item costs"));
     }
 
     void MainWindow::createStatusBar()

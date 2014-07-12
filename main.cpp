@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
                                         app.getWalletJournalEntryRepository(),
                                         app.getWalletTransactionRepository(),
                                         app.getMarketOrderRepository(),
+                                        app.getItemCostRepository(),
                                         app,
                                         app,
                                         app};

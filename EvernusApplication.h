@@ -33,6 +33,7 @@
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
 #include "ItemPriceRepository.h"
+#include "ItemCostRepository.h"
 #include "CacheTimerProvider.h"
 #include "ItemPriceImporter.h"
 #include "EveTypeRepository.h"
@@ -85,6 +86,7 @@ namespace Evernus
         const WalletJournalEntryRepository &getWalletJournalEntryRepository() const noexcept;
         const WalletTransactionRepository &getWalletTransactionRepository() const noexcept;
         const MarketOrderRepository &getMarketOrderRepository() const noexcept;
+        const ItemCostRepository &getItemCostRepository() const noexcept;
 
     signals:
         void taskStarted(uint taskId, const QString &description);
@@ -142,6 +144,7 @@ namespace Evernus
         std::unique_ptr<CacheTimerRepository> mCacheTimerRepository;
         std::unique_ptr<WalletTransactionRepository> mWalletTransactionRepository;
         std::unique_ptr<MarketOrderRepository> mMarketOrderRepository;
+        std::unique_ptr<ItemCostRepository> mItemCostRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
 
         APIManager mAPIManager;

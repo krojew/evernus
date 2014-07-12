@@ -332,6 +332,11 @@ namespace Evernus
         return *mMarketOrderRepository;
     }
 
+    const ItemCostRepository &EvernusApplication::getItemCostRepository() const noexcept
+    {
+        return *mItemCostRepository;
+    }
+
     void EvernusApplication::refreshCharacters()
     {
         qDebug() << "Refreshing characters...";
@@ -682,6 +687,7 @@ namespace Evernus
         mCacheTimerRepository.reset(new CacheTimerRepository{mMainDb});
         mWalletTransactionRepository.reset(new WalletTransactionRepository{mMainDb});
         mMarketOrderRepository.reset(new MarketOrderRepository{mMainDb});
+        mItemCostRepository.reset(new ItemCostRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
     }
 
@@ -699,6 +705,7 @@ namespace Evernus
         mCacheTimerRepository->create(*mCharacterRepository);
         mWalletTransactionRepository->create(*mCharacterRepository);
         mMarketOrderRepository->create(*mCharacterRepository);
+        mItemCostRepository->create(*mCharacterRepository);
         mRefTypeRepository->create();
     }
 
