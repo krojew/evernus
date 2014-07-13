@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_map>
 #include <memory>
 #include <thread>
 
@@ -19,6 +20,7 @@
 #include <QGroupBox>
 #include <QHash>
 
+#include "MarketOrderValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
 #include "AssetValueSnapshotRepository.h"
 #include "WalletTransactionRepository.h"
@@ -32,12 +34,14 @@ namespace Evernus
 {
     StatisticsWidget::StatisticsWidget(const AssetValueSnapshotRepository &assetSnapshotRepo,
                                        const WalletSnapshotRepository &walletSnapshotRepo,
+                                       const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
                                        const WalletJournalEntryRepository &journalRepo,
                                        const WalletTransactionRepository &transactionRepo,
                                        QWidget *parent)
         : QWidget{parent}
         , mAssetSnapshotRepository{assetSnapshotRepo}
         , mWalletSnapshotRepository{walletSnapshotRepo}
+        , mMarketOrderSnapshotRepository{marketOrderSnapshotRepo}
         , mJournalRepo{journalRepo}
         , mTransactionRepo{transactionRepo}
     {
@@ -127,155 +131,83 @@ namespace Evernus
 
         const auto assetShots = mAssetSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC().addDays(1));
         const auto walletShots = mWalletSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC().addDays(1));
+        const auto orderShots = mMarketOrderSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC().addDays(1));
 
         auto assetGraph = mBalancePlot->getPlot().graph(assetValueGraph);
         auto walletGraph = mBalancePlot->getPlot().graph(walletBalanceGraph);
+        auto buyGraph = mBalancePlot->getPlot().graph(buyOrdersGraph);
+        auto sellGraph = mBalancePlot->getPlot().graph(sellOrdersGraph);
         auto sumGraph = mBalancePlot->getPlot().graph(totalValueGraph);
 
         QVector<double> assetTicks, assetValues;
         QVector<double> walletTicks, walletValues;
+        QVector<double> orderTicks, buyValues, sellValues;
 
         auto yMax = -1.;
 
-        for (const auto &shot : assetShots)
-        {
-            const auto secs = shot.getTimestamp().toMSecsSinceEpoch() / 1000.;
-
-            assetTicks << secs;
-            assetValues << shot.getBalance();
-        }
-
-        for (const auto &shot : walletShots)
-        {
-            const auto secs = shot.getTimestamp().toMSecsSinceEpoch() / 1000.;
-
-            walletTicks << secs;
-            walletValues << shot.getBalance();
-        }
-
-        if (!walletTicks.isEmpty() && !assetTicks.isEmpty())
-        {
-            const auto ab = assetTicks.back();
-            const auto wb = walletTicks.back();
-
-            if (wb > ab)
+        const auto dataInserter = [](auto &ticks, auto &values, const auto &range) {
+            for (const auto &shot : range)
             {
-                assetTicks << wb;
-                assetValues << assetValues.back();
+                const auto secs = shot.getTimestamp().toMSecsSinceEpoch() / 1000.;
+
+                ticks << secs;
+                values << shot.getBalance();
             }
-            else if (ab > wb)
-            {
-                walletTicks << ab;
-                walletValues << walletValues.back();
-            }
+        };
+
+        dataInserter(assetTicks, assetValues, assetShots);
+        dataInserter(walletTicks, walletValues, walletShots);
+
+        for (const auto &order : orderShots)
+        {
+            orderTicks << (order.getTimestamp().toMSecsSinceEpoch() / 1000.);
+            buyValues << order.getBuyValue();
+            sellValues << order.getSellValue();
         }
 
         QVector<double> sumTicks, sumValues;
+        std::unordered_map<double, std::reference_wrapper<double>> usedTicks;
 
-        auto assetTickIt = std::begin(assetTicks);
-        auto walletTickIt = std::begin(walletTicks);
-        auto assetValueIt = std::begin(assetValues);
-        auto walletValueIt = std::begin(walletValues);
-        auto prevAsset = 0.;
-        auto prevWallet = 0.;
-
-        const auto lerp = [](double a, double b, double t) {
-            return a + (b - a) * t;
-        };
-
-        while (assetTickIt != std::end(assetTicks) || walletTickIt != std::end(walletTicks))
-        {
-            if (assetTickIt == std::end(assetTicks))
+        const auto summer = [&sumTicks, &sumValues, &usedTicks, &yMax](const auto &ticks, const auto &values) {
+            for (auto i = 0; i < ticks.size(); ++i)
             {
-                const auto value = prevAsset + *walletValueIt;
-                if (value > yMax)
-                    yMax = value;
+                const auto tick = ticks[i];
+                const auto value = values[i];
 
-                sumTicks << *walletTickIt;
-                sumValues << value;
-
-                ++walletTickIt;
-                ++walletValueIt;
-            }
-            else if (walletTickIt == std::end(walletTicks))
-            {
-                const auto value = prevWallet + *assetValueIt;
-                if (value > yMax)
-                    yMax = value;
-
-                sumTicks << *assetTickIt;
-                sumValues << value;
-
-                ++assetTickIt;
-                ++assetValueIt;
-            }
-            else
-            {
-                if (*assetTickIt < *walletTickIt)
+                const auto it = usedTicks.find(tick);
+                if (it != std::end(usedTicks))
                 {
-                    const auto prevTick = (walletTickIt == std::begin(walletTicks)) ? (assetTicks.front()) : (*std::prev(walletTickIt));
-                    const auto div = *walletTickIt - prevTick;
-                    while (*assetTickIt < *walletTickIt && assetTickIt != std::end(assetTicks))
-                    {
-                        prevAsset = *assetValueIt;
-
-                        const auto value = lerp(prevWallet, *walletValueIt, (*assetTickIt - prevTick) / div) + prevAsset;
-                        if (value > yMax)
-                            yMax = value;
-
-                        sumTicks << *assetTickIt;
-                        sumValues << value;
-
-                        ++assetTickIt;
-                        ++assetValueIt;
-                    }
-                }
-                else if (*assetTickIt > *walletTickIt)
-                {
-                    const auto prevTick = (assetTickIt == std::begin(assetTicks)) ? (walletTicks.front()) : (*std::prev(assetTickIt));
-                    const auto div = *assetTickIt - prevTick;
-                    while (*assetTickIt > *walletTickIt && walletTickIt != std::end(walletTicks))
-                    {
-                        prevWallet = *walletValueIt;
-
-                        const auto value = prevWallet + lerp(prevAsset, *assetValueIt, (*walletTickIt - prevTick) / div);
-                        if (value > yMax)
-                            yMax = value;
-
-                        sumTicks << *walletTickIt;
-                        sumValues << value;
-
-                        ++walletTickIt;
-                        ++walletValueIt;
-                    }
+                    it->second += value;
+                    if (it->second > yMax)
+                        yMax = it->second;
                 }
                 else
                 {
-                    prevWallet = *walletValueIt;
-                    prevAsset = *assetValueIt;
-
-                    const auto value = prevWallet + prevAsset;
-                    if (value > yMax)
-                        yMax = value;
-
-                    sumTicks << *assetTickIt;
+                    sumTicks << tick;
                     sumValues << value;
 
-                    ++assetTickIt;
-                    ++assetValueIt;
-                    ++walletTickIt;
-                    ++walletValueIt;
+                    usedTicks.emplace(tick, std::ref(sumValues.last()));
+
+                    if (value > yMax)
+                        yMax = value;
                 }
             }
-        }
+        };
+
+        summer(assetTicks, assetValues);
+        summer(walletTicks, walletValues);
+        summer(orderTicks, buyValues);
+        summer(orderTicks, sellValues);
 
         mBalancePlot->getPlot().xAxis->setTickVector(sumTicks);
 
         assetGraph->setData(assetTicks, assetValues);
         walletGraph->setData(walletTicks, walletValues);
+        buyGraph->setData(orderTicks, buyValues);
+        sellGraph->setData(orderTicks, sellValues);
         sumGraph->setData(sumTicks, sumValues);
 
-        if (!walletTicks.isEmpty() || !assetTicks.isEmpty())
+        if (!walletTicks.isEmpty() || !assetTicks.isEmpty() || !orderTicks.isEmpty())
         {
             mBalancePlot->getPlot().xAxis->rescale();
             mBalancePlot->getPlot().yAxis->setRange(0., yMax);
@@ -391,6 +323,14 @@ namespace Evernus
         auto walletGraph = mBalancePlot->getPlot().addGraph();
         walletGraph->setName(tr("Wallet balance"));
         walletGraph->setPen(QPen{Qt::red});
+
+        auto buyGraph = mBalancePlot->getPlot().addGraph();
+        buyGraph->setName(tr("Buy order value"));
+        buyGraph->setPen(QPen{Qt::yellow});
+
+        auto sellGraph = mBalancePlot->getPlot().addGraph();
+        sellGraph->setName(tr("Sell order value"));
+        sellGraph->setPen(QPen{Qt::magenta});
 
         auto totalGraph = mBalancePlot->getPlot().addGraph();
         totalGraph->setName(tr("Total value"));

@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
                                         app.getKeyRepository(),
                                         app.getAssetValueSnapshotRepository(),
                                         app.getWalletSnapshotRepository(),
+                                        app.getMarketOrderValueSnapshotRepository(),
                                         app.getWalletJournalEntryRepository(),
                                         app.getWalletTransactionRepository(),
                                         app.getMarketOrderRepository(),

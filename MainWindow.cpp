@@ -54,6 +54,7 @@ namespace Evernus
                            const Repository<Key> &keyRepository,
                            const AssetValueSnapshotRepository &assetSnapshotRepo,
                            const WalletSnapshotRepository &walletSnapshotRepo,
+                           const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
                            const WalletJournalEntryRepository &walletJournalRepo,
                            const WalletTransactionRepository &walletTransactionRepo,
                            const MarketOrderRepository &orderRepo,
@@ -68,6 +69,7 @@ namespace Evernus
         , mKeyRepository{keyRepository}
         , mAssetSnapshotRepository{assetSnapshotRepo}
         , mWalletSnapshotRepository{walletSnapshotRepo}
+        , mMarketOrderSnapshotRepository{marketOrderSnapshotRepo}
         , mWalletJournalRepository{walletJournalRepo}
         , mWalletTransactionRepository{walletTransactionRepo}
         , mMarketOrderRepository{orderRepo}
@@ -311,6 +313,7 @@ namespace Evernus
 
         auto statsTab = new StatisticsWidget{mAssetSnapshotRepository,
                                              mWalletSnapshotRepository,
+                                             mMarketOrderSnapshotRepository,
                                              mWalletJournalRepository,
                                              mWalletTransactionRepository,
                                              this};

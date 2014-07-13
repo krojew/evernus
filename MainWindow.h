@@ -33,6 +33,7 @@ namespace Evernus
 {
     template<class T>
     class Repository;
+    class MarketOrderValueSnapshotRepository;
     class AssetValueSnapshotRepository;
     class WalletJournalEntryRepository;
     class WalletTransactionRepository;
@@ -59,6 +60,7 @@ namespace Evernus
                    const Repository<Key> &keyRepository,
                    const AssetValueSnapshotRepository &assetSnapshotRepo,
                    const WalletSnapshotRepository &walletSnapshotRepo,
+                   const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
                    const WalletJournalEntryRepository &walletJournalRepo,
                    const WalletTransactionRepository &walletTransactionRepo,
                    const MarketOrderRepository &orderRepo,
@@ -132,6 +134,7 @@ namespace Evernus
         const Repository<Key> &mKeyRepository;
         const AssetValueSnapshotRepository &mAssetSnapshotRepository;
         const WalletSnapshotRepository &mWalletSnapshotRepository;
+        const MarketOrderValueSnapshotRepository &mMarketOrderSnapshotRepository;
         const WalletJournalEntryRepository &mWalletJournalRepository;
         const WalletTransactionRepository &mWalletTransactionRepository;
         const MarketOrderRepository &mMarketOrderRepository;

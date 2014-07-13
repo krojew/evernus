@@ -22,6 +22,7 @@ class QCPBars;
 
 namespace Evernus
 {
+    class MarketOrderValueSnapshotRepository;
     class WalletJournalEntryRepository;
     class AssetValueSnapshotRepository;
     class WalletTransactionRepository;
@@ -36,6 +37,7 @@ namespace Evernus
     public:
         StatisticsWidget(const AssetValueSnapshotRepository &assetSnapshotRepo,
                          const WalletSnapshotRepository &walletSnapshotRepo,
+                         const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
                          const WalletJournalEntryRepository &journalRepo,
                          const WalletTransactionRepository &transactionRepo,
                          QWidget *parent = nullptr);
@@ -50,10 +52,13 @@ namespace Evernus
     private:
         static constexpr auto assetValueGraph = 0;
         static constexpr auto walletBalanceGraph = 1;
-        static constexpr auto totalValueGraph = 2;
+        static constexpr auto buyOrdersGraph = 2;
+        static constexpr auto sellOrdersGraph = 3;
+        static constexpr auto totalValueGraph = 4;
 
         const AssetValueSnapshotRepository &mAssetSnapshotRepository;
         const WalletSnapshotRepository &mWalletSnapshotRepository;
+        const MarketOrderValueSnapshotRepository &mMarketOrderSnapshotRepository;
         const WalletJournalEntryRepository &mJournalRepo;
         const WalletTransactionRepository &mTransactionRepo;
 
