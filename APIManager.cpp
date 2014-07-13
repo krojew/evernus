@@ -211,7 +211,11 @@ namespace Evernus
 
     void APIManager::fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const
     {
+#ifdef Q_OS_WIN
         mInterface.fetchMarketOrders(key, characterId, [callback, this](const QString &response, const QString &error) {
+#else
+        mInterface.fetchMarketOrders(key, characterId, [callback = callback, this](const QString &response, const QString &error) {
+#endif
             try
             {
                 handlePotentialError(response, error);

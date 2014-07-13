@@ -577,7 +577,27 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            mAPIManager.fetchMarketOrders(key, id, [task, this](const auto &data, const auto &error) {
+            mAPIManager.fetchMarketOrders(key, id, [task, id, this](const auto &data, const auto &error) {
+                Evernus::MarketOrderValueSnapshot snapshot;
+                snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
+                snapshot.setCharacterId(id);
+
+                double buy = 0., sell = 0.;
+                for (const auto &order : data)
+                {
+                    if (order.getState() != Evernus::MarketOrder::State::Active)
+                        continue;
+
+                    if (order.getType() == Evernus::MarketOrder::Type::Buy)
+                        buy += order.getPrice() * order.getVolumeRemaining();
+                    else
+                        sell += order.getPrice() * order.getVolumeRemaining();
+                }
+
+                snapshot.setBuyValue(buy);
+                snapshot.setSellValue(sell);
+
+                mMarketOrderValueSnapshotRepository->store(snapshot);
                 mMarketOrderRepository->batchStore(data, true);
 
                 emit marketOrdersChanged();

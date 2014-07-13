@@ -26,6 +26,7 @@ namespace Evernus
     public:
         using Entity::Entity;
 
+        MarketOrderValueSnapshot() = default;
         MarketOrderValueSnapshot(const MarketOrderValueSnapshot &) = default;
         MarketOrderValueSnapshot(MarketOrderValueSnapshot &&) = default;
         virtual ~MarketOrderValueSnapshot() = default;
