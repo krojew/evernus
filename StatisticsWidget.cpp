@@ -132,80 +132,148 @@ namespace Evernus
         auto sellGraph = mBalancePlot->getPlot().graph(sellOrdersGraph);
         auto sumGraph = mBalancePlot->getPlot().graph(totalValueGraph);
 
-        QVector<double> assetTicks, assetValues;
-        QVector<double> walletTicks, walletValues;
-        QVector<double> orderTicks, buyValues, sellValues;
+        auto assetValues = std::make_unique<QCPDataMap>();
+        auto walletValues = std::make_unique<QCPDataMap>();
+        auto buyValues = std::make_unique<QCPDataMap>();
+        auto sellValues = std::make_unique<QCPDataMap>();;
 
         auto yMax = -1.;
 
-        const auto dataInserter = [](auto &ticks, auto &values, const auto &range) {
+        const auto dataInserter = [](auto &values, const auto &range) {
             for (const auto &shot : range)
             {
                 const auto secs = shot.getTimestamp().toMSecsSinceEpoch() / 1000.;
-
-                ticks << secs;
-                values << shot.getBalance();
+                values->insert(secs, QCPData{secs, shot.getBalance()});
             }
         };
 
-        dataInserter(assetTicks, assetValues, assetShots);
-        dataInserter(walletTicks, walletValues, walletShots);
+        dataInserter(assetValues, assetShots);
+        dataInserter(walletValues, walletShots);
 
         for (const auto &order : orderShots)
         {
-            orderTicks << (order.getTimestamp().toMSecsSinceEpoch() / 1000.);
-            buyValues << order.getBuyValue();
-            sellValues << order.getSellValue();
+            const auto secs = order.getTimestamp().toMSecsSinceEpoch() / 1000.;
+
+            buyValues->insert(secs, QCPData{secs, order.getBuyValue()});
+            sellValues->insert(secs, QCPData{secs, order.getSellValue()});
         }
 
-        QVector<double> sumTicks, sumValues;
-        std::unordered_map<double, std::reference_wrapper<double>> usedTicks;
+        auto sumData = std::make_unique<QCPDataMap>();
+        const auto merger = [&yMax](const auto &values1, const auto &values2) -> QCPDataMap {
+            QCPDataMap result;
 
-        const auto summer = [&sumTicks, &sumValues, &usedTicks, &yMax](const auto &ticks, const auto &values) {
-            for (auto i = 0; i < ticks.size(); ++i)
+            auto value1It = std::begin(values1);
+            auto value2It = std::begin(values2);
+            auto prevValue1 = 0.;
+            auto prevValue2 = 0.;
+
+            const auto lerp = [](double a, double b, double t) {
+                return a + (b - a) * t;
+            };
+
+            while (value1It != std::end(values1) || value2It != std::end(values2))
             {
-                const auto tick = ticks[i];
-                const auto value = values[i];
-
-                const auto it = usedTicks.find(tick);
-                if (it != std::end(usedTicks))
+                if (value1It == std::end(values1))
                 {
-                    it->second += value;
-                    if (it->second > yMax)
-                        yMax = it->second;
+                    const auto value = prevValue1 + value2It->value;
+                    if (value > yMax)
+                        yMax = value;
+
+                    result.insert(value2It->key, QCPData{value2It->key, value});
+
+                    ++value2It;
+                }
+                else if (value2It == std::end(values2))
+                {
+                    const auto value = prevValue2 + value1It->value;
+                    if (value > yMax)
+                        yMax = value;
+
+                    result.insert(value1It->key, QCPData{value1It->key, value});
+
+                    ++value1It;
                 }
                 else
                 {
-                    sumTicks << tick;
-                    sumValues << value;
+                    if (value1It->key < value2It->key)
+                    {
+                        const auto prevTick = (value2It == std::begin(values2)) ? (values1.firstKey()) : (std::prev(value2It)->key);
+                        const auto div = value2It->key - prevTick;
+                        while (value1It->key < value2It->key && value1It != std::end(values1))
+                        {
+                            prevValue1 = value1It->value;
 
-                    usedTicks.emplace(tick, std::ref(sumValues.last()));
+                            const auto value = lerp(prevValue2, value2It->value, (value1It->key - prevTick) / div) + prevValue1;
+                            if (value > yMax)
+                                yMax = value;
 
-                    if (value > yMax)
-                        yMax = value;
+                            result.insert(value1It->key, QCPData{value1It->key, value});
+
+                            ++value1It;
+                        }
+                    }
+                    else if (value1It->key > value2It->key)
+                    {
+                        const auto prevTick = (value1It == std::begin(values1)) ? (values2.firstKey()) : (std::prev(value1It)->key);
+                        const auto div = value1It->key - prevTick;
+                        while (value1It->key > value2It->key && value2It != std::end(values2))
+                        {
+                            prevValue2 = value2It->value;
+
+                            const auto value = prevValue2 + lerp(prevValue1, value1It->value, (value2It->key - prevTick) / div);
+                            if (value > yMax)
+                                yMax = value;
+
+                            result.insert(value2It->key, QCPData{value2It->key, value});
+
+                            ++value2It;
+                        }
+                    }
+                    else
+                    {
+                        prevValue2 = value2It->value;
+                        prevValue1 = value1It->value;
+
+                        const auto value = prevValue2 + prevValue1;
+                        if (value > yMax)
+                            yMax = value;
+
+                        result.insert(value1It->key, QCPData{value1It->key, value});
+
+                        ++value1It;
+                        ++value2It;
+                    }
                 }
             }
+
+            return result;
         };
 
-        summer(assetTicks, assetValues);
-        summer(walletTicks, walletValues);
-        summer(orderTicks, buyValues);
-        summer(orderTicks, sellValues);
+        *sumData = merger(*assetValues, *walletValues);
+
+        QVector<double> sumTicks;
+        for (const auto &entry : *sumData)
+            sumTicks << entry.key;
 
         mBalancePlot->getPlot().xAxis->setTickVector(sumTicks);
 
-        assetGraph->setData(assetTicks, assetValues);
-        walletGraph->setData(walletTicks, walletValues);
-        buyGraph->setData(orderTicks, buyValues);
-        sellGraph->setData(orderTicks, sellValues);
-        sumGraph->setData(sumTicks, sumValues);
+        assetGraph->setData(assetValues.get(), false);
+        assetValues.release();
 
-        if (!walletTicks.isEmpty() || !assetTicks.isEmpty() || !orderTicks.isEmpty())
-        {
-            mBalancePlot->getPlot().xAxis->rescale();
-            mBalancePlot->getPlot().yAxis->setRange(0., yMax);
-        }
+        walletGraph->setData(walletValues.get(), false);
+        walletValues.release();
 
+        buyGraph->setData(buyValues.get(), false);
+        buyValues.release();
+
+        sellGraph->setData(sellValues.get(), false);
+        sellValues.release();
+
+        sumGraph->setData(sumData.get(), false);
+        sumData.release();
+
+        mBalancePlot->getPlot().xAxis->rescale();
+        mBalancePlot->getPlot().yAxis->setRange(0., yMax);
         mBalancePlot->getPlot().replot();
     }
 
