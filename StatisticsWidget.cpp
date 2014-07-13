@@ -250,6 +250,8 @@ namespace Evernus
         };
 
         *sumData = merger(*assetValues, *walletValues);
+        *sumData = merger(*sumData, *buyValues);
+        *sumData = merger(*sumData, *sellValues);
 
         QVector<double> sumTicks;
         for (const auto &entry : *sumData)
