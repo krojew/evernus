@@ -33,8 +33,7 @@ namespace Evernus
 
         void create(const Repository<Character> &characterRepo) const;
 
-        QSqlQuery prepareQueryForCharacter(Character::IdType id) const;
-
+        std::vector<ItemCost> fetchForCharacter(Character::IdType id) const;
         ItemCost fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const;
 
     private:

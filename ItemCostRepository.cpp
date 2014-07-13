@@ -33,7 +33,7 @@ namespace Evernus
     {
         ItemCost itemCost{record.value("id").value<ItemCost::IdType>()};
         itemCost.setCharacterId(record.value("character_id").value<Character::IdType>());
-        itemCost.setTypeId(record.value("character_id").value<EveType::IdType>());
+        itemCost.setTypeId(record.value("type_id").value<EveType::IdType>());
         itemCost.setCost(record.value("cost").toDouble());
         itemCost.setNew(false);
 
@@ -53,12 +53,23 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type_id)"}.arg(getTableName()));
     }
 
-    QSqlQuery ItemCostRepository::prepareQueryForCharacter(Character::IdType id) const
+    std::vector<ItemCost> ItemCostRepository::fetchForCharacter(Character::IdType id) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ?"}.arg(getTableName()));
         query.bindValue(0, id);
 
-        return query;
+        DatabaseUtils::execQuery(query);
+
+        std::vector<ItemCost> result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
     }
 
     ItemCost ItemCostRepository::fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const

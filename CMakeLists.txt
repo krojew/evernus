@@ -153,6 +153,8 @@ add_executable(
     Item.h
     ItemCost.cpp
     ItemCost.h
+    ItemCostModel.cpp
+    ItemCostModel.h
     ItemCostRepository.cpp
     ItemCostRepository.h
     ItemCostWidget.cpp

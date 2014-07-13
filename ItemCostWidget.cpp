@@ -13,11 +13,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QSortFilterProxyModel>
+#include <QHeaderView>
+#include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QTreeView>
-
-#include "ItemCostRepository.h"
 
 #include "ItemCostWidget.h"
 
@@ -27,8 +27,8 @@ namespace Evernus
                                    const EveDataProvider &eveDataProvider,
                                    QWidget *parent)
         : QWidget{parent}
-        , mItemCostRepo{itemCostRepo}
         , mEveDataProvider{eveDataProvider}
+        , mModel{itemCostRepo, mEveDataProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -36,17 +36,53 @@ namespace Evernus
         auto toolbarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolbarLayout);
 
+        auto addBtn = new QPushButton{QIcon{":/images/add.png"}, tr("Add..."), this};
+        toolbarLayout->addWidget(addBtn);
+        addBtn->setFlat(true);
+        connect(addBtn, &QPushButton::clicked, this, &ItemCostWidget::addCost);
+
+        mEditBtn = new QPushButton{QIcon{":/images/pencil.png"}, tr("Edit..."), this};
+        toolbarLayout->addWidget(mEditBtn);
+        mEditBtn->setFlat(true);
+        mEditBtn->setDisabled(true);
+        connect(mEditBtn, &QPushButton::clicked, this, &ItemCostWidget::editCost);
+
+        mRemoveBtn = new QPushButton{QIcon{":/images/delete.png"}, tr("Remove"), this};
+        toolbarLayout->addWidget(mRemoveBtn);
+        mRemoveBtn->setFlat(true);
+        mRemoveBtn->setDisabled(true);
+        connect(mRemoveBtn, &QPushButton::clicked, this, &ItemCostWidget::deleteCost);
+
+        toolbarLayout->addStretch();
+
         auto proxy = new QSortFilterProxyModel{this};
+        proxy->setSortRole(Qt::UserRole);
         proxy->setSourceModel(&mModel);
 
         auto view = new QTreeView{this};
         mainLayout->addWidget(view, 1);
         view->setModel(proxy);
         view->setSortingEnabled(true);
+        view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     }
 
     void ItemCostWidget::setCharacter(Character::IdType id)
     {
-        mModel.setQuery(mItemCostRepo.prepareQueryForCharacter(id));
+        mModel.setCharacter(id);
+    }
+
+    void ItemCostWidget::addCost()
+    {
+
+    }
+
+    void ItemCostWidget::editCost()
+    {
+
+    }
+
+    void ItemCostWidget::deleteCost()
+    {
+
     }
 }

@@ -36,7 +36,7 @@ namespace Evernus
 
     QVariant CharacterModel::headerData(int section, Qt::Orientation orientation, int role) const
     {
-        if (role == Qt::DisplayRole)
+        if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
         {
             switch (section) {
             case 0:

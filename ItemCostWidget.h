@@ -17,7 +17,10 @@
 #include <QSqlQueryModel>
 #include <QWidget>
 
+#include "ItemCostModel.h"
 #include "Character.h"
+
+class QPushButton;
 
 namespace Evernus
 {
@@ -40,10 +43,17 @@ namespace Evernus
     public slots:
         void setCharacter(Character::IdType id);
 
+    private slots:
+        void addCost();
+        void editCost();
+        void deleteCost();
+
     private:
-        const ItemCostRepository &mItemCostRepo;
         const EveDataProvider &mEveDataProvider;
 
-        QSqlQueryModel mModel;
+        QPushButton *mEditBtn = nullptr;
+        QPushButton *mRemoveBtn = nullptr;
+
+        ItemCostModel mModel;
     };
 }
