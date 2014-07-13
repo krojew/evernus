@@ -100,11 +100,11 @@ namespace Evernus
 
             const auto date = QDate::currentDate();
 
-            mBalancePlot->setFrom(date.addMonths(-1));
+            mBalancePlot->setFrom(date.addDays(-7));
             mBalancePlot->setTo(date);
-            mJournalPlot->setFrom(date.addMonths(-1));
+            mJournalPlot->setFrom(date.addDays(-7));
             mJournalPlot->setTo(date);
-            mTransactionPlot->setFrom(date.addMonths(-1));
+            mTransactionPlot->setFrom(date.addDays(-7));
             mTransactionPlot->setTo(date);
 
             updateBalanceData();
