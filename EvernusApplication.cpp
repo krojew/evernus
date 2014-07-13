@@ -502,7 +502,9 @@ namespace Evernus
 
                     if (!usedSnapshots.contains(timestamp))
                     {
-                        Evernus::WalletSnapshot snapshot{timestamp, entry.getBalance()};
+                        Evernus::WalletSnapshot snapshot;
+                        snapshot.setTimestamp(timestamp);
+                        snapshot.setBalance(entry.getBalance());
                         snapshot.setCharacterId(entry.getCharacterId());
 
                         snapshots.emplace_back(std::move(snapshot));
@@ -511,7 +513,7 @@ namespace Evernus
                 }
 
                 mWalletJournalEntryRepository->batchStore(data, true);
-                mWalletSnapshotRepository->batchStore(snapshots, true);
+                mWalletSnapshotRepository->batchStore(snapshots, false);
 
                 emit walletJournalChanged();
                 emit taskEnded(task, error);
@@ -825,7 +827,9 @@ namespace Evernus
                 mCharacterRepository->store(data);
                 mMainDb.exec("PRAGMA foreign_keys = ON;");
 
-                Evernus::WalletSnapshot snapshot{QDateTime::currentDateTimeUtc(), data.getISK()};
+                Evernus::WalletSnapshot snapshot;
+                snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
+                snapshot.setBalance(data.getISK());
                 snapshot.setCharacterId(data.getId());
                 mWalletSnapshotRepository->store(snapshot);
 
@@ -928,7 +932,9 @@ namespace Evernus
                 value += getTotalItemSellValue(*item, *locationId);
             }
 
-            AssetValueSnapshot snapshot{QDateTime::currentDateTimeUtc(), value};
+            AssetValueSnapshot snapshot;
+            snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
+            snapshot.setBalance(value);
             snapshot.setCharacterId(list.getCharacterId());
 
             mAssetValueSnapshotRepository->store(snapshot);

@@ -26,12 +26,16 @@ namespace Evernus
 
     QString AssetValueSnapshotRepository::getIdColumn() const
     {
-        return "timestamp";
+        return "id";
     }
 
     AssetValueSnapshot AssetValueSnapshotRepository::populate(const QSqlRecord &record) const
     {
-        AssetValueSnapshot assetValueSnapshot{record.value("timestamp").value<AssetValueSnapshot::IdType>(), record.value("balance").toDouble()};
+        auto dt = record.value("timestamp").toDateTime();
+        dt.setTimeSpec(Qt::UTC);
+
+        AssetValueSnapshot assetValueSnapshot{record.value("id").value<AssetValueSnapshot::IdType>(), record.value("balance").toDouble()};
+        assetValueSnapshot.setTimestamp(dt);
         assetValueSnapshot.setCharacterId(record.value("character_id").value<Character::IdType>());
         assetValueSnapshot.setNew(false);
 
@@ -41,12 +45,14 @@ namespace Evernus
     void AssetValueSnapshotRepository::create(const Repository<Character> &characterRepo) const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            timestamp DATETIME PRIMARY KEY,
+            id INTEGER PRIMARY KEY ASC,
+            timestamp DATETIME NOT NULL,
             character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,
             balance DOUBLE NOT NULL
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_character_timestamp ON %1(character_id, timestamp)"}.arg(getTableName()));
     }
 
     AssetValueSnapshotRepository::SnapshotList AssetValueSnapshotRepository
@@ -76,6 +82,7 @@ namespace Evernus
     QStringList AssetValueSnapshotRepository::getColumns() const
     {
         return QStringList{}
+            << "id"
             << "timestamp"
             << "character_id"
             << "balance";
@@ -84,8 +91,9 @@ namespace Evernus
     void AssetValueSnapshotRepository::bindValues(const AssetValueSnapshot &entity, QSqlQuery &query) const
     {
         if (entity.getId() != AssetValueSnapshot::invalidId)
-            query.bindValue(":timestamp", entity.getId());
+            query.bindValue(":id", entity.getId());
 
+        query.bindValue(":timestamp", entity.getTimestamp());
         query.bindValue(":balance", entity.getBalance());
         query.bindValue(":character_id", entity.getCharacterId());
     }
@@ -95,6 +103,7 @@ namespace Evernus
         if (entity.getId() != AssetValueSnapshot::invalidId)
             query.addBindValue(entity.getId());
 
+        query.addBindValue(entity.getTimestamp());
         query.addBindValue(entity.getBalance());
         query.addBindValue(entity.getCharacterId());
     }

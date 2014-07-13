@@ -22,6 +22,16 @@ namespace Evernus
     {
     }
 
+    QDateTime WalletSnapshot::getTimestamp() const
+    {
+        return mTimestamp;
+    }
+
+    void WalletSnapshot::setTimestamp(const QDateTime &dt)
+    {
+        mTimestamp = dt;
+    }
+
     Character::IdType WalletSnapshot::getCharacterId() const noexcept
     {
         return mCharacterId;

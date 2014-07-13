@@ -17,12 +17,11 @@
 #include <QDateTime>
 
 #include "Character.h"
-#include "Entity.h"
 
 namespace Evernus
 {
     class WalletSnapshot
-        : public Entity<QDateTime>
+        : public Entity<uint>
     {
     public:
         using Entity::Entity;
@@ -32,6 +31,9 @@ namespace Evernus
         WalletSnapshot(const WalletSnapshot &) = default;
         WalletSnapshot(WalletSnapshot &&) = default;
         virtual ~WalletSnapshot() = default;
+
+        QDateTime getTimestamp() const;
+        void setTimestamp(const QDateTime &dt);
 
         Character::IdType getCharacterId() const noexcept;
         void setCharacterId(Character::IdType id) noexcept;
@@ -43,6 +45,7 @@ namespace Evernus
         WalletSnapshot &operator =(WalletSnapshot &&) = default;
 
     private:
+        QDateTime mTimestamp;
         Character::IdType mCharacterId = Character::invalidId;
         double mBalance = 0.;
     };

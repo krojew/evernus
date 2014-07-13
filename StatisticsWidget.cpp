@@ -132,7 +132,7 @@ namespace Evernus
 
         for (const auto &shot : assetShots)
         {
-            const auto secs = shot.getId().toMSecsSinceEpoch() / 1000.;
+            const auto secs = shot.getTimestamp().toMSecsSinceEpoch() / 1000.;
 
             assetTicks << secs;
             assetValues << shot.getBalance();
@@ -140,7 +140,7 @@ namespace Evernus
 
         for (const auto &shot : walletShots)
         {
-            const auto secs = shot.getId().toMSecsSinceEpoch() / 1000.;
+            const auto secs = shot.getTimestamp().toMSecsSinceEpoch() / 1000.;
 
             walletTicks << secs;
             walletValues << shot.getBalance();

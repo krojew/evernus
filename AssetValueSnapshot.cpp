@@ -22,6 +22,16 @@ namespace Evernus
     {
     }
 
+    QDateTime AssetValueSnapshot::getTimestamp() const
+    {
+        return mTimestamp;
+    }
+
+    void AssetValueSnapshot::setTimestamp(const QDateTime &dt)
+    {
+        mTimestamp = dt;
+    }
+
     Character::IdType AssetValueSnapshot::getCharacterId() const noexcept
     {
         return mCharacterId;
