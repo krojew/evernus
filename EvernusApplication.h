@@ -99,7 +99,6 @@ namespace Evernus
         void conquerableStationsChanged();
         void charactersChanged();
         void assetsChanged();
-        void iskChanged();
         void itemPricesChanged();
         void walletJournalChanged();
         void walletTransactionsChanged();

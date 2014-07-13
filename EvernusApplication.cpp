@@ -627,7 +627,6 @@ namespace Evernus
         mCharacterUpdateScheduled = false;
 
         emit charactersChanged();
-        emit iskChanged();
     }
 
     void EvernusApplication::showPriceImportError(const QString &info)
