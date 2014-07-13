@@ -14,7 +14,6 @@
  */
 #include <unordered_map>
 #include <memory>
-#include <thread>
 
 #include <QVBoxLayout>
 #include <QGroupBox>
@@ -108,15 +107,9 @@ namespace Evernus
             mTransactionPlot->setFrom(date.addMonths(-1));
             mTransactionPlot->setTo(date);
 
-            std::thread balanceThread{&StatisticsWidget::updateBalanceData, this};
-            std::thread journalThread{&StatisticsWidget::updateJournalData, this};
-
+            updateBalanceData();
+            updateJournalData();
             updateTransactionData();
-
-            if (balanceThread.joinable())
-                balanceThread.join();
-            if (journalThread.joinable())
-                journalThread.join();
 
             mTransactionPlot->blockSignals(false);
             mJournalPlot->blockSignals(false);
