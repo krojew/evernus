@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <memory>
+#include <thread>
 
 #include <QVBoxLayout>
 #include <QGroupBox>
@@ -103,9 +104,15 @@ namespace Evernus
             mTransactionPlot->setFrom(date.addMonths(-1));
             mTransactionPlot->setTo(date);
 
-            updateBalanceData();
-            updateJournalData();
+            std::thread balanceThread{&StatisticsWidget::updateBalanceData, this};
+            std::thread journalThread{&StatisticsWidget::updateJournalData, this};
+
             updateTransactionData();
+
+            if (balanceThread.joinable())
+                balanceThread.join();
+            if (journalThread.joinable())
+                journalThread.join();
 
             mTransactionPlot->blockSignals(false);
             mJournalPlot->blockSignals(false);
