@@ -79,7 +79,7 @@ namespace Evernus
         qDebug() << "Switching wallet transactions to" << id;
 
         const auto tillDate = QDate::currentDate();
-        const auto fromDate = tillDate.addMonths(-1);
+        const auto fromDate = tillDate.addDays(-7);
 
         mFilter->blockSignals(true);
         mFilter->setFilter(fromDate, tillDate, QString{}, static_cast<int>(EntryType::All));
