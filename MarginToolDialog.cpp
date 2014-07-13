@@ -43,6 +43,7 @@
 #   include <windows.h>
 #endif
 
+#include "ItemCostRepository.h"
 #include "MarginToolSettings.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
@@ -54,11 +55,14 @@
 
 namespace Evernus
 {
-    MarginToolDialog
-    ::MarginToolDialog(const Repository<Character> &characterRepository, const EveDataProvider &nameProvider, QWidget *parent)
+    MarginToolDialog::MarginToolDialog(const Repository<Character> &characterRepository,
+                                       const ItemCostRepository &itemCostRepository,
+                                       const EveDataProvider &dataProvider,
+                                       QWidget *parent)
         : QDialog{parent}
         , mCharacterRepository{characterRepository}
-        , mDataProvider{nameProvider}
+        , mItemCostRepository{itemCostRepository}
+        , mDataProvider{dataProvider}
     {
         QSettings settings;
 
@@ -360,6 +364,8 @@ namespace Evernus
 
             QString name;
 
+            auto typeId = EveType::invalidId;
+
             while (!file.atEnd())
             {
                 const QString line = file.readLine();
@@ -367,13 +373,13 @@ namespace Evernus
 
                 if (values.count() >= 14)
                 {
-                    if (name.isNull())
+                    if (typeId == EveType::invalidId)
                     {
                         auto ok = false;
-                        const auto id = values[2].toULong(&ok);
+                        typeId = values[2].toULong(&ok);
 
                         if (ok)
-                            name = mDataProvider.getTypeName(id);
+                            name = mDataProvider.getTypeName(typeId);
                     }
 
                     const auto curValue = values[0].toDouble();
@@ -412,6 +418,21 @@ namespace Evernus
                 }
             }
 
+            const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+
+            if (settings.value(PriceSettings::preferCustomItemCostKey, true).toBool())
+            {
+                try
+                {
+                    const auto cost = mItemCostRepository.fetchForCharacterAndType(mCharacterId, typeId);
+                    buy = cost.getCost() - priceDelta;
+
+                }
+                catch (const ItemCostRepository::NotFoundException &)
+                {
+                }
+            }
+
             if (settings.value(PathSettings::deleteLogsKey, true).toBool())
                 file.remove();
 
@@ -423,7 +444,6 @@ namespace Evernus
 
             try
             {
-                const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
                 const auto taxes = calculateTaxes();
 
                 if (buy < 0. || sell < 0.)
@@ -472,8 +492,8 @@ namespace Evernus
                         const auto margin = 100. * (revenue - cos) / revenue;
                         const auto markup = 100. * (revenue - cos) / cos;
 
-                        mMarginLabel->setText(QString{"%1%2"}.arg(margin, 0, 'f', 2).arg(curLocale.percent()));
-                        mMarkupLabel->setText(QString{"%1%2"}.arg(markup, 0, 'f', 2).arg(curLocale.percent()));
+                        mMarginLabel->setText(QString{"%1%2"}.arg(curLocale.toString(margin, 'f', 2)).arg(curLocale.percent()));
+                        mMarkupLabel->setText(QString{"%1%2"}.arg(curLocale.toString(markup, 'f', 2)).arg(curLocale.percent()));
 
                         mBestBuyLabel->setText(curLocale.toCurrencyString(buyPrice, "ISK"));
                         mBestSellLabel->setText(curLocale.toCurrencyString(sellPrice, "ISK"));

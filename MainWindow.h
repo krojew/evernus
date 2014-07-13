@@ -135,7 +135,7 @@ namespace Evernus
         const WalletJournalEntryRepository &mWalletJournalRepository;
         const WalletTransactionRepository &mWalletTransactionRepository;
         const MarketOrderRepository &mMarketOrderRepository;
-        const ItemCostRepository &mItemCostRepo;
+        const ItemCostRepository &mItemCostRepository;
         const AssetProvider &mAssetProvider;
 
         const EveDataProvider &mEveDataProvider;

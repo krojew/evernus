@@ -71,7 +71,7 @@ namespace Evernus
         , mWalletJournalRepository{walletJournalRepo}
         , mWalletTransactionRepository{walletTransactionRepo}
         , mMarketOrderRepository{orderRepo}
-        , mItemCostRepo{itemCostRepo}
+        , mItemCostRepository{itemCostRepo}
         , mAssetProvider{assetProvider}
         , mEveDataProvider{eveDataProvider}
         , mCacheTimerProvider{cacheTimerProvider}
@@ -116,7 +116,7 @@ namespace Evernus
     {
         if (mMarginToolDialog.isNull())
         {
-            mMarginToolDialog = new MarginToolDialog{mCharacterRepository, mEveDataProvider};
+            mMarginToolDialog = new MarginToolDialog{mCharacterRepository, mItemCostRepository, mEveDataProvider};
             mMarginToolDialog->setCharacter(mCurrentCharacterId);
             connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, mMarginToolDialog, &MarginToolDialog::setCharacter);
         }
@@ -345,7 +345,7 @@ namespace Evernus
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
 
-        auto itemCostTab = new ItemCostWidget{mItemCostRepo, mEveDataProvider, this};
+        auto itemCostTab = new ItemCostWidget{mItemCostRepository, mEveDataProvider, this};
         addTab(itemCostTab, tr("Item costs"));
     }
 

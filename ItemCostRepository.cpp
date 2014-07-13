@@ -50,6 +50,7 @@ namespace Evernus
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type_id)"}.arg(getTableName()));
     }
 
     QSqlQuery ItemCostRepository::prepareQueryForCharacter(Character::IdType id) const
@@ -58,6 +59,20 @@ namespace Evernus
         query.bindValue(0, id);
 
         return query;
+    }
+
+    ItemCost ItemCostRepository::fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND type_id = ?"}.arg(getTableName()));
+        query.bindValue(0, characterId);
+        query.bindValue(1, typeId);
+
+        DatabaseUtils::execQuery(query);
+
+        if (!query.next())
+            throw NotFoundException{};
+
+        return populate(query.record());
     }
 
     QStringList ItemCostRepository::getColumns() const

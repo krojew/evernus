@@ -35,6 +35,8 @@ namespace Evernus
 
         QSqlQuery prepareQueryForCharacter(Character::IdType id) const;
 
+        ItemCost fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const ItemCost &entity, QSqlQuery &query) const override;

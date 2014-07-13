@@ -15,6 +15,7 @@
 #include <QDoubleSpinBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QGridLayout>
 #include <QFormLayout>
 #include <QSettings>
 #include <QGroupBox>
@@ -42,35 +43,34 @@ namespace Evernus
         auto marginLayout = new QVBoxLayout{};
         marginGroup->setLayout(marginLayout);
 
-        auto marginValuesLayout = new QHBoxLayout{};
-        marginLayout->addLayout(marginValuesLayout);
+        auto marginControlsLayout = new QGridLayout{};
+        marginLayout->addLayout(marginControlsLayout);
 
-        marginValuesLayout->addWidget(new QLabel{tr("Minimum:"), this}, 0, Qt::AlignRight);
+        marginControlsLayout->addWidget(new QLabel{tr("Minimum:"), this}, 0, 0, Qt::AlignRight);
 
         mMinMarginEdit = new QDoubleSpinBox{this};
-        marginValuesLayout->addWidget(mMinMarginEdit);
+        marginControlsLayout->addWidget(mMinMarginEdit, 0, 1);
         mMinMarginEdit->setSuffix("%");
         mMinMarginEdit->setValue(settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble());
 
-        marginValuesLayout->addWidget(new QLabel{tr("Preferred:"), this}, 0, Qt::AlignRight);
+        marginControlsLayout->addWidget(new QLabel{tr("Preferred:"), this}, 0, 2, Qt::AlignRight);
 
         mPreferredMarginEdit = new QDoubleSpinBox{this};
-        marginValuesLayout->addWidget(mPreferredMarginEdit);
+        marginControlsLayout->addWidget(mPreferredMarginEdit, 0, 3);
         mPreferredMarginEdit->setSuffix(locale().percent());
         mPreferredMarginEdit->setValue(settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble());
 
-        auto logWaitTimeLayout = new QHBoxLayout{};
-        marginLayout->addLayout(logWaitTimeLayout);
+        mPreferCustomCostBtn = new QCheckBox{tr("Prefer custom item costs over current prices"), this};
+        marginControlsLayout->addWidget(mPreferCustomCostBtn, 1, 0, 1, 4);
+        mPreferCustomCostBtn->setChecked(settings.value(PriceSettings::preferCustomItemCostKey, true).toBool());
 
-        logWaitTimeLayout->addWidget(new QLabel{tr("Import log wait timer:"), this});
+        marginControlsLayout->addWidget(new QLabel{tr("Import log wait timer:"), this}, 2, 0, Qt::AlignRight);
 
         mImportLogWaitTimeEdit = new QSpinBox{this};
-        logWaitTimeLayout->addWidget(mImportLogWaitTimeEdit);
+        marginControlsLayout->addWidget(mImportLogWaitTimeEdit, 2, 1);
         mImportLogWaitTimeEdit->setMaximum(10000);
         mImportLogWaitTimeEdit->setSuffix("ms");
         mImportLogWaitTimeEdit->setValue(settings.value(PriceSettings::importLogWaitTimeKey, PriceSettings::importLogWaitTimeDefault).toUInt());
-
-        logWaitTimeLayout->addStretch();
 
 #ifdef Q_OS_WIN
         mAltImportBtn = new QCheckBox{tr("Use alternative margin import method*"), this};
@@ -112,6 +112,7 @@ namespace Evernus
         settings.setValue(PriceSettings::minMarginKey, mMinMarginEdit->value());
         settings.setValue(PriceSettings::preferredMarginKey, mPreferredMarginEdit->value());
         settings.setValue(PriceSettings::priceDeltaKey, mPriceDeltaEdit->value());
+        settings.setValue(PriceSettings::preferCustomItemCostKey, mPreferCustomCostBtn->isChecked());
 #ifdef Q_OS_WIN
         settings.setValue(PriceSettings::priceAltImportKey, mAltImportBtn->isChecked());
 #endif

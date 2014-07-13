@@ -29,6 +29,7 @@ namespace Evernus
 {
     template<class T>
     class Repository;
+    class ItemCostRepository;
     class EveDataProvider;
 
     class MarginToolDialog
@@ -38,6 +39,7 @@ namespace Evernus
 
     public:
         MarginToolDialog(const Repository<Character> &characterRepository,
+                         const ItemCostRepository &itemCostRepository,
                          const EveDataProvider &dataProvider,
                          QWidget *parent = nullptr);
         virtual ~MarginToolDialog() = default;
@@ -64,6 +66,7 @@ namespace Evernus
         static const auto samples = 100000000;
 
         const Repository<Character> &mCharacterRepository;
+        const ItemCostRepository &mItemCostRepository;
         const EveDataProvider &mDataProvider;
 
         QFileSystemWatcher mWatcher;
