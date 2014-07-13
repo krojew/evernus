@@ -22,6 +22,7 @@
 #include <QApplication>
 #include <QSqlDatabase>
 
+#include "MarketOrderValueSnapshotRepository.h"
 #include "ConquerableStationRepository.h"
 #include "AssetValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
@@ -87,6 +88,7 @@ namespace Evernus
         const WalletTransactionRepository &getWalletTransactionRepository() const noexcept;
         const MarketOrderRepository &getMarketOrderRepository() const noexcept;
         const ItemCostRepository &getItemCostRepository() const noexcept;
+        const MarketOrderValueSnapshotRepository &getMarketOrderValueSnapshotRepository() const noexcept;
 
     signals:
         void taskStarted(uint taskId, const QString &description);
@@ -144,6 +146,7 @@ namespace Evernus
         std::unique_ptr<WalletTransactionRepository> mWalletTransactionRepository;
         std::unique_ptr<MarketOrderRepository> mMarketOrderRepository;
         std::unique_ptr<ItemCostRepository> mItemCostRepository;
+        std::unique_ptr<MarketOrderValueSnapshotRepository> mMarketOrderValueSnapshotRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
 
         APIManager mAPIManager;

@@ -196,6 +196,10 @@ add_executable(
     MarketOrders.h
     MarketOrdersXmlReceiver.cpp
     MarketOrdersXmlReceiver.h
+    MarketOrderValueSnapshot.cpp
+    MarketOrderValueSnapshot.h
+    MarketOrderValueSnapshotRepository.cpp
+    MarketOrderValueSnapshotRepository.h
     MarketOrderWidget.cpp
     MarketOrderWidget.h
     MenuBarWidget.cpp
