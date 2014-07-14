@@ -549,6 +549,13 @@ namespace Evernus
             settings.setValue(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::CopyMode::CopyBuy));
     }
 
+    void MarginToolDialog::hideEvent(QHideEvent *event)
+    {
+        emit hidden();
+
+        QDialog::hideEvent(event);
+    }
+
     void MarginToolDialog::setNewWindowFlags(bool alwaysOnTop)
     {
 #ifdef Q_OS_WIN

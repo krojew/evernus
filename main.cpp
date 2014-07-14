@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(importMarketOrders(Character::IdType)), SLOT(refreshMarketOrders(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &)), SLOT(refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(importItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &)), SLOT(refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &)));
+            app.connect(&mainWnd, SIGNAL(marginToolHidden(Character::IdType)), SLOT(updateAssetsValue(Character::IdType)));
             mainWnd.connect(&app, SIGNAL(taskStarted(uint, const QString &)), SLOT(addNewTaskInfo(uint, const QString &)));
             mainWnd.connect(&app, SIGNAL(taskStarted(uint, uint, const QString &)), SIGNAL(newSubTaskInfoAdded(uint, uint, const QString &)));
             mainWnd.connect(&app, SIGNAL(taskInfoChanged(uint, const QString &)), SIGNAL(taskInfoChanged(uint, const QString &)));

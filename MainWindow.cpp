@@ -121,6 +121,9 @@ namespace Evernus
             mMarginToolDialog = new MarginToolDialog{mCharacterRepository, mItemCostRepository, mEveDataProvider};
             mMarginToolDialog->setCharacter(mCurrentCharacterId);
             connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, mMarginToolDialog, &MarginToolDialog::setCharacter);
+            connect(mMarginToolDialog, &MarginToolDialog::hidden, this, [this]() {
+                emit marginToolHidden(mCurrentCharacterId);
+            });
         }
 
         showMinimized();
@@ -330,6 +333,7 @@ namespace Evernus
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importItemPricesFromWeb);
         connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importItemPricesFromFile);
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
+        connect(this, &MainWindow::marginToolHidden, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::itemPricesChanged, assetsTab, &AssetsWidget::updateData);
 

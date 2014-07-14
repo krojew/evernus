@@ -84,7 +84,7 @@ namespace Evernus
 
         virtual void registerImporter(const std::string &name, std::unique_ptr<ItemPriceImporter> &&importer) override;
 
-        virtual const AssetList &fetchForCharacter(Character::IdType id) const override;
+        virtual const AssetList &fetchAssetsForCharacter(Character::IdType id) const override;
 
         virtual QDateTime getLocalCacheTimer(Character::IdType id, TimerType type) const override;
         virtual void setUtcCacheTimer(Character::IdType id, TimerType type, const QDateTime &dt) override;
@@ -125,6 +125,8 @@ namespace Evernus
         void refreshConquerableStations();
         void refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
         void refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
+
+        void updateAssetsValue(Character::IdType id);
 
     private slots:
         void scheduleCharacterUpdate();

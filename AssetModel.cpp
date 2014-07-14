@@ -254,7 +254,7 @@ namespace Evernus
 
         if (mCharacterId != Character::invalidId)
         {
-            const auto &assets = mAssetProvider.fetchForCharacter(mCharacterId);
+            const auto &assets = mAssetProvider.fetchAssetsForCharacter(mCharacterId);
             for (const auto &item : assets)
             {
                 auto id = item->getLocationId();

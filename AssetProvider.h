@@ -26,6 +26,6 @@ namespace Evernus
         AssetProvider() = default;
         virtual ~AssetProvider() = default;
 
-        virtual const AssetList &fetchForCharacter(Character::IdType id) const = 0;
+        virtual const AssetList &fetchAssetsForCharacter(Character::IdType id) const = 0;
     };
 }

@@ -44,6 +44,9 @@ namespace Evernus
                          QWidget *parent = nullptr);
         virtual ~MarginToolDialog() = default;
 
+    signals:
+        void hidden();
+
     public slots:
         void setCharacter(Character::IdType id);
 
@@ -53,6 +56,9 @@ namespace Evernus
         void refreshData(const QString &path);
 
         void saveCopyMode();
+
+    protected:
+        virtual void hideEvent(QHideEvent *event) override;
 
     private:
         typedef QHash<QString, QDateTime> FileModificationMap;

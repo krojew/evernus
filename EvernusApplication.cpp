@@ -219,7 +219,7 @@ namespace Evernus
         mItemPriceImporters.emplace(name, std::move(importer));
     }
 
-    const AssetList &EvernusApplication::fetchForCharacter(Character::IdType id) const
+    const AssetList &EvernusApplication::fetchAssetsForCharacter(Character::IdType id) const
     {
         const auto it = mCharacterAssets.find(id);
         if (it != std::end(mCharacterAssets))
@@ -473,7 +473,10 @@ namespace Evernus
 
                 Evernus::DatabaseUtils::execQuery(query);
 
-                mCharacterAssets.erase(id);
+                const auto it = mCharacterAssets.find(id);
+                if (it != std::end(mCharacterAssets))
+                    *it->second = data;
+
                 mAssetListRepository->store(data);
 
                 QSettings settings;
@@ -654,6 +657,11 @@ namespace Evernus
     void EvernusApplication::refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target)
     {
         importItemPrices(ItemPriceImporterNames::logImporter, target);
+    }
+
+    void EvernusApplication::updateAssetsValue(Character::IdType id)
+    {
+        computeAssetListSellValue(fetchAssetsForCharacter(id));
     }
 
     void EvernusApplication::scheduleCharacterUpdate()
