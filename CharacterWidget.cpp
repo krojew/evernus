@@ -15,6 +15,7 @@
 #include <QStringBuilder>
 #include <QStandardPaths>
 #include <QDoubleSpinBox>
+#include <QGridLayout>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFormLayout>
@@ -28,6 +29,7 @@
 #include <QDir>
 #include <QUrl>
 
+#include "MarketOrderRepository.h"
 #include "CacheTimerProvider.h"
 #include "ButtonWithTimer.h"
 #include "ImportSettings.h"
@@ -43,11 +45,14 @@ namespace Evernus
 
     const QString CharacterWidget::defaultPortrait = ":/images/generic-portrait.jpg";
 
-    CharacterWidget
-    ::CharacterWidget(const Repository<Character> &characterRepository, const CacheTimerProvider &cacheTimerProvider, QWidget *parent)
+    CharacterWidget::CharacterWidget(const Repository<Character> &characterRepository,
+                                     const MarketOrderRepository &marketOrderRepository,
+                                     const CacheTimerProvider &cacheTimerProvider,
+                                     QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::Character),
                                parent}
         , mCharacterRepository{characterRepository}
+        , mMarketOrderRepository{marketOrderRepository}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -91,23 +96,52 @@ namespace Evernus
         mISKLabel = new QLabel{this};
         backgroundLayout->addWidget(mISKLabel);
 
-        auto standingsGroup = new QGroupBox{tr("Station owner standings"), this};
-        mainLayout->addWidget(standingsGroup);
+        auto underInfoLayout = new QHBoxLayout{};
+        mainLayout->addLayout(underInfoLayout);
 
-        auto standingsLayout = new QHBoxLayout{};
+        auto addInfoGroup = new QGroupBox{tr("Orders"), this};
+        underInfoLayout->addWidget(addInfoGroup);
+
+        auto addInfoLayout = new QGridLayout{};
+        addInfoGroup->setLayout(addInfoLayout);
+
+        addInfoLayout->addWidget(new QLabel{tr("Buy orders:"), this}, 0, 0);
+
+        mBuyOrderCountLabel = new QLabel{this};
+        addInfoLayout->addWidget(mBuyOrderCountLabel, 0, 1);
+
+        mBuyOrderValueLabel = new QLabel{this};
+        addInfoLayout->addWidget(mBuyOrderValueLabel, 0, 2);
+
+        addInfoLayout->addWidget(new QLabel{tr("Sell orders:"), this}, 1, 0);
+
+        mSellOrderCountLabel = new QLabel{this};
+        addInfoLayout->addWidget(mSellOrderCountLabel, 1, 1);
+
+        mSellOrderValueLabel = new QLabel{this};
+        addInfoLayout->addWidget(mSellOrderValueLabel, 1, 2);
+
+        addInfoLayout->addWidget(new QLabel{tr("Total:"), this}, 2, 0);
+
+        mTotalOrderCountLabel = new QLabel{this};
+        addInfoLayout->addWidget(mTotalOrderCountLabel, 2, 1);
+
+        mTotalOrderValueLabel = new QLabel{this};
+        addInfoLayout->addWidget(mTotalOrderValueLabel, 2, 2);
+
+        auto standingsGroup = new QGroupBox{tr("Station owner standings"), this};
+        underInfoLayout->addWidget(standingsGroup);
+
+        auto standingsLayout = new QFormLayout{};
         standingsGroup->setLayout(standingsLayout);
 
-        standingsLayout->addWidget(new QLabel{tr("Corporation standing:"), this}, 0, Qt::AlignVCenter | Qt::AlignRight);
-
         mCorpStandingEdit = new QDoubleSpinBox{this};
-        standingsLayout->addWidget(mCorpStandingEdit);
+        standingsLayout->addRow(tr("Corporation standing:"), mCorpStandingEdit);
         mCorpStandingEdit->setSingleStep(0.01);
         connect(mCorpStandingEdit, SIGNAL(valueChanged(double)), SLOT(setCorpStanding(double)));
 
-        standingsLayout->addWidget(new QLabel{tr("Faction standing:"), this}, 0, Qt::AlignVCenter | Qt::AlignRight);
-
         mFactionStandingEdit = new QDoubleSpinBox{this};
-        standingsLayout->addWidget(mFactionStandingEdit);
+        standingsLayout->addRow(tr("Faction standing:"), mFactionStandingEdit);
         mFactionStandingEdit->setSingleStep(0.01);
         connect(mFactionStandingEdit, SIGNAL(valueChanged(double)), SLOT(setFactionStanding(double)));
 
@@ -222,6 +256,14 @@ namespace Evernus
             mCorporationLabel->setText(QString{});
             mISKLabel->setText(QString{});
 
+            mBuyOrderCountLabel->clear();
+            mSellOrderCountLabel->clear();
+            mTotalOrderCountLabel->clear();
+
+            mBuyOrderValueLabel->clear();
+            mSellOrderValueLabel->clear();
+            mTotalOrderValueLabel->clear();
+
             mCorpStandingEdit->setValue(0.);
             mFactionStandingEdit->setValue(0.);
 
@@ -247,6 +289,11 @@ namespace Evernus
             {
                 const auto character = mCharacterRepository.find(id);
 
+                const auto orderAmountSkills = character.getOrderAmountSkills();
+                const auto tradeRangeSkills = character.getTradeRangeSkills();
+                const auto feeSkills = character.getFeeSkills();
+                const auto contractSkills = character.getContractSkills();
+
                 mNameLabel->setText(character.getName());
                 mBackgroundLabel->setText(QString{"%1 %2, %3, %4"}
                     .arg(character.getGender())
@@ -256,13 +303,27 @@ namespace Evernus
                 mCorporationLabel->setText(character.getCorporationName());
                 mISKLabel->setText(character.getISKPresentation());
 
+                const auto aggrData = mMarketOrderRepository.getAggregatedData(id);
+                const auto curLocale = locale();
+
+                const auto maxBuyOrders = orderAmountSkills.mTrade * 4 +
+                                          orderAmountSkills.mRetail * 8 +
+                                          orderAmountSkills.mWholesale * 16 +
+                                          orderAmountSkills.mTycoon * 32 + 5;
+
+                mBuyOrderCountLabel->setText(curLocale.toString(aggrData.mBuyData.mCount));
+                mSellOrderCountLabel->setText(curLocale.toString(aggrData.mSellData.mCount));
+                mTotalOrderCountLabel->setText(tr("<strong>%1 of %2</strong>")
+                    .arg(curLocale.toString(aggrData.mBuyData.mCount + aggrData.mSellData.mCount))
+                    .arg(curLocale.toString(maxBuyOrders)));
+
+                mBuyOrderValueLabel->setText(curLocale.toCurrencyString(aggrData.mBuyData.mPriceSum, "ISK"));
+                mSellOrderValueLabel->setText(curLocale.toCurrencyString(aggrData.mSellData.mPriceSum, "ISK"));
+                mTotalOrderValueLabel->setText(tr("<strong>%1</strong>")
+                    .arg(curLocale.toCurrencyString(aggrData.mBuyData.mPriceSum + aggrData.mSellData.mPriceSum, "ISK")));
+
                 mCorpStandingEdit->setValue(character.getCorpStanding());
                 mFactionStandingEdit->setValue(character.getFactionStanding());
-
-                const auto orderAmountSkills = character.getOrderAmountSkills();
-                const auto tradeRangeSkills = character.getTradeRangeSkills();
-                const auto feeSkills = character.getFeeSkills();
-                const auto contractSkills = character.getContractSkills();
 
                 mTradeSkillEdit->setValue(orderAmountSkills.mTrade);
                 mRetailSkillEdit->setValue(orderAmountSkills.mRetail);

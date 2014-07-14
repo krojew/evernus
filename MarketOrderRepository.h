@@ -23,6 +23,18 @@ namespace Evernus
         : public Repository<MarketOrder>
     {
     public:
+        struct SingleAggrData
+        {
+            uint mCount = 0;
+            double mPriceSum = 0.;
+        };
+
+        struct AggrData
+        {
+            SingleAggrData mBuyData;
+            SingleAggrData mSellData;
+        };
+
         using Repository::Repository;
         virtual ~MarketOrderRepository() = default;
 
@@ -32,6 +44,8 @@ namespace Evernus
         virtual MarketOrder populate(const QSqlRecord &record) const override;
 
         void create(const Repository<Character> &characterRepo) const;
+
+        AggrData getAggregatedData(Character::IdType characterId) const;
 
     private:
         virtual QStringList getColumns() const override;

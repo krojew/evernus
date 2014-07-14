@@ -27,6 +27,7 @@ namespace Evernus
 {
     template<class T>
     class Repository;
+    class MarketOrderRepository;
     class CacheTimerProvider;
 
     class CharacterWidget
@@ -36,6 +37,7 @@ namespace Evernus
 
     public:
         CharacterWidget(const Repository<Character> &characterRepository,
+                        const MarketOrderRepository &marketOrderRepository,
                         const CacheTimerProvider &cacheTimerProvider,
                         QWidget *parent = nullptr);
         virtual ~CharacterWidget() = default;
@@ -57,6 +59,7 @@ namespace Evernus
         static const QString defaultPortrait;
 
         const Repository<Character> &mCharacterRepository;
+        const MarketOrderRepository &mMarketOrderRepository;
 
         QLabel *mPortrait = nullptr;
 
@@ -64,6 +67,12 @@ namespace Evernus
         QLabel *mBackgroundLabel = nullptr;
         QLabel *mCorporationLabel = nullptr;
         QLabel *mISKLabel = nullptr;
+        QLabel *mBuyOrderCountLabel = nullptr;
+        QLabel *mSellOrderCountLabel = nullptr;
+        QLabel *mTotalOrderCountLabel = nullptr;
+        QLabel *mBuyOrderValueLabel = nullptr;
+        QLabel *mSellOrderValueLabel = nullptr;
+        QLabel *mTotalOrderValueLabel = nullptr;
 
         QDoubleSpinBox *mCorpStandingEdit = nullptr;
         QDoubleSpinBox *mFactionStandingEdit = nullptr;

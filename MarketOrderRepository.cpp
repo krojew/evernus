@@ -82,6 +82,41 @@ namespace Evernus
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_state ON %1(character_id, state)"}.arg(getTableName()));
+    }
+
+    MarketOrderRepository::AggrData MarketOrderRepository::getAggregatedData(Character::IdType characterId) const
+    {
+        auto query = prepare(QString{"SELECT type, COUNT(*), SUM(price) FROM %1 WHERE character_id = ? AND state = ? GROUP BY type"}
+            .arg(getTableName()));
+        query.bindValue(0, characterId);
+        query.bindValue(1, static_cast<int>(MarketOrder::State::Active));
+
+        DatabaseUtils::execQuery(query);
+
+        AggrData data;
+
+        for (auto i = 0; i < 2; ++i)
+        {
+            if (query.next())
+            {
+                SingleAggrData *singleData = nullptr;
+
+                const auto type = static_cast<MarketOrder::Type>(query.value(0).toInt());
+                if (type == MarketOrder::Type::Buy)
+                    singleData = &data.mBuyData;
+                else if (type == MarketOrder::Type::Sell)
+                    singleData = &data.mSellData;
+
+                if (singleData != nullptr)
+                {
+                    singleData->mCount = query.value(1).toUInt();
+                    singleData->mPriceSum = query.value(2).toDouble();
+                }
+            }
+        }
+
+        return data;
     }
 
     QStringList MarketOrderRepository::getColumns() const

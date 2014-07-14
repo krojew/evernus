@@ -309,7 +309,7 @@ namespace Evernus
         setCentralWidget(mMainTabs);
         connect(mMainTabs, &QTabWidget::currentChanged, this, &MainWindow::updateCurrentTab);
 
-        auto charTab = new CharacterWidget{mCharacterRepository, mCacheTimerProvider, this};
+        auto charTab = new CharacterWidget{mCharacterRepository, mMarketOrderRepository, mCacheTimerProvider, this};
         addTab(charTab, tr("Character"));
         connect(charTab, &CharacterWidget::importFromAPI, this, &MainWindow::importCharacter);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::updateData);
