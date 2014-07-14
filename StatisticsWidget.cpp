@@ -137,6 +137,8 @@ namespace Evernus
         auto buyValues = std::make_unique<QCPDataMap>();
         auto sellValues = std::make_unique<QCPDataMap>();;
 
+        QCPDataMap buyAndSellValues;
+
         auto yMax = -1.;
 
         const auto dataInserter = [](auto &values, const auto &range) {
@@ -156,6 +158,8 @@ namespace Evernus
 
             buyValues->insert(secs, QCPData{secs, order.getBuyValue()});
             sellValues->insert(secs, QCPData{secs, order.getSellValue()});
+
+            buyAndSellValues.insert(secs, QCPData{secs, order.getBuyValue() + order.getSellValue()});
         }
 
         auto sumData = std::make_unique<QCPDataMap>();
@@ -250,8 +254,7 @@ namespace Evernus
         };
 
         *sumData = merger(*assetValues, *walletValues);
-        *sumData = merger(*sumData, *buyValues);
-        *sumData = merger(*sumData, *sellValues);
+        *sumData = merger(*sumData, buyAndSellValues);
 
         QVector<double> sumTicks;
         for (const auto &entry : *sumData)
