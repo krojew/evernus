@@ -326,6 +326,7 @@ namespace Evernus
 
             QSettings settings;
             QFile file{logFile};
+            QFileInfo info{file};
 
 #ifdef Q_OS_WIN
             if (settings.value(PriceSettings::priceAltImportKey, true).toBool())
@@ -339,7 +340,6 @@ namespace Evernus
                 const auto modTimeDelay = settings.value(PriceSettings::importLogWaitTimeKey, PriceSettings::importLogWaitTimeDefault).toUInt();
 
                 // wait for Eve to finish dumping data
-                QFileInfo info{file};
                 forever
                 {
                     const auto modTime = info.lastModified();
@@ -363,8 +363,10 @@ namespace Evernus
             auto sellCount = 0u;
 
             QString name;
+            const auto priceTime = info.created();
 
             auto typeId = EveType::invalidId;
+            auto locationId = 0u;
 
             while (!file.atEnd())
             {
@@ -381,6 +383,8 @@ namespace Evernus
                         if (ok)
                             name = mDataProvider.getTypeName(typeId);
                     }
+                    if (locationId == 0)
+                        locationId = values[10].toULongLong();
 
                     const auto curValue = values[0].toDouble();
                     const auto jumps = values[13].toInt();
@@ -459,6 +463,8 @@ namespace Evernus
 
                         mBestBuyLabel->setText(curLocale.toCurrencyString(buyPrice, "ISK"));
                         mCostOfSalesLabel->setText(curLocale.toCurrencyString(getCoS(buyPrice, taxes), "ISK"));
+
+                        mDataProvider.setTypeBuyPrice(locationId, typeId, priceTime, buy);
                     }
 
                     if (sell < 0.)
@@ -472,6 +478,8 @@ namespace Evernus
 
                         mBestSellLabel->setText(curLocale.toCurrencyString(sellPrice, "ISK"));
                         mRevenueLabel->setText(curLocale.toCurrencyString(getRevenue(sellPrice, taxes), "ISK"));
+
+                        mDataProvider.setTypeSellPrice(locationId, typeId, priceTime, sell);
                     }
 
                     mProfitLabel->setText("-");
@@ -518,6 +526,9 @@ namespace Evernus
 
                         fillSampleData(*m1SampleDataTable, revenue, cos, 1);
                         fillSampleData(*m5SampleDataTable, revenue, cos, 5);
+
+                        mDataProvider.setTypeBuyPrice(locationId, typeId, priceTime, buy);
+                        mDataProvider.setTypeSellPrice(locationId, typeId, priceTime, sell);
                 }
             }
             catch (const Repository<Character>::NotFoundException &)

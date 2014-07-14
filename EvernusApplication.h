@@ -69,6 +69,15 @@ namespace Evernus
         virtual double getTypeVolume(EveType::IdType id) const override;
         virtual ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
 
+        virtual void setTypeSellPrice(quint64 stationId,
+                                      EveType::IdType typeId,
+                                      const QDateTime &priceTime,
+                                      double price) const override;
+        virtual void setTypeBuyPrice(quint64 stationId,
+                                     EveType::IdType typeId,
+                                     const QDateTime &priceTime,
+                                     double price) const override;
+
         virtual QString getLocationName(quint64 id) const override;
 
         virtual QString getRefTypeName(uint id) const override;
@@ -193,6 +202,12 @@ namespace Evernus
         ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
         void computeAssetListSellValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;
+
+        ItemPrice saveTypePrice(ItemPrice::Type type,
+                                quint64 stationId,
+                                EveType::IdType typeId,
+                                const QDateTime &priceTime,
+                                double price) const;
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };
