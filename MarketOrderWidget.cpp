@@ -12,8 +12,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QTabWidget>
+
+#include "MarketOrderViewWithTransactions.h"
 #include "MarketOrderRepository.h"
 #include "CacheTimerProvider.h"
+#include "ButtonWithTimer.h"
 
 #include "MarketOrderWidget.h"
 
@@ -24,13 +30,28 @@ namespace Evernus
                                          QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::MarketOrders),
                                parent}
-        , mOrderRepo{orderRepo}
+        , mSellModel{orderRepo}
     {
+        auto mainLayout = new QVBoxLayout{};
+        setLayout(mainLayout);
+
+        auto toolBarLayout = new QHBoxLayout{};
+        mainLayout->addLayout(toolBarLayout);
+
+        auto &importBtn = getAPIImportButton();
+        toolBarLayout->addWidget(&importBtn);
+
+        auto mainTabs = new QTabWidget{this};
+        mainLayout->addWidget(mainTabs);
+
+        auto sellView = new MarketOrderViewWithTransactions{this};
+        mainTabs->addTab(sellView, tr("Sell"));
+        sellView->setModel(&mSellModel);
     }
 
     void MarketOrderWidget::updateData()
     {
-
+        refreshImportTimer();
     }
 
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)

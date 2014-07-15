@@ -14,31 +14,21 @@
  */
 #pragma once
 
-#include "MarketOrderSellModel.h"
-#include "CharacterBoundWidget.h"
+#include <QAbstractItemModel>
 
 namespace Evernus
 {
-    class MarketOrderRepository;
-    class CacheTimerProvider;
-
-    class MarketOrderWidget
-        : public CharacterBoundWidget
+    class MarketOrderModel
+        : public QAbstractItemModel
     {
-        Q_OBJECT
-
     public:
-        MarketOrderWidget(const MarketOrderRepository &orderRepo,
-                          const CacheTimerProvider &cacheTimerProvider,
-                          QWidget *parent = nullptr);
-        virtual ~MarketOrderWidget() = default;
+        using QAbstractItemModel::QAbstractItemModel;
+        virtual ~MarketOrderModel() = default;
 
-    public slots:
-        void updateData();
-
-    private:
-        MarketOrderSellModel mSellModel;
-
-        virtual void handleNewCharacter(Character::IdType id) override;
+        virtual uint getOrderCount() const = 0;
+        virtual quint64 getVolumeRemaining() const = 0;
+        virtual quint64 getVolumeEntered() const = 0;
+        virtual double getTotalISK() const = 0;
+        virtual double getTotalSize() const = 0;
     };
 }

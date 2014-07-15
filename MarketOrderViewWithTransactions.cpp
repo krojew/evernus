@@ -12,33 +12,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include <QVBoxLayout>
 
-#include "MarketOrderSellModel.h"
-#include "CharacterBoundWidget.h"
+#include "MarketOrderView.h"
+
+#include "MarketOrderViewWithTransactions.h"
 
 namespace Evernus
 {
-    class MarketOrderRepository;
-    class CacheTimerProvider;
-
-    class MarketOrderWidget
-        : public CharacterBoundWidget
+    MarketOrderViewWithTransactions::MarketOrderViewWithTransactions(QWidget *parent)
+        : QWidget{parent}
     {
-        Q_OBJECT
+        auto mainLayout = new QVBoxLayout{};
+        setLayout(mainLayout);
 
-    public:
-        MarketOrderWidget(const MarketOrderRepository &orderRepo,
-                          const CacheTimerProvider &cacheTimerProvider,
-                          QWidget *parent = nullptr);
-        virtual ~MarketOrderWidget() = default;
+        mView = new MarketOrderView{this};
+        mainLayout->addWidget(mView, 1);
+    }
 
-    public slots:
-        void updateData();
-
-    private:
-        MarketOrderSellModel mSellModel;
-
-        virtual void handleNewCharacter(Character::IdType id) override;
-    };
+    void MarketOrderViewWithTransactions::setModel(MarketOrderModel *model)
+    {
+        mView->setModel(model);
+    }
 }

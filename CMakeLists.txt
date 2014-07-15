@@ -195,15 +195,22 @@ add_executable(
     MarketLogItemPriceImporterThread.h
     MarketOrder.cpp
     MarketOrder.h
+    MarketOrderModel.h
     MarketOrderRepository.cpp
     MarketOrderRepository.h
     MarketOrders.h
+    MarketOrderSellModel.cpp
+    MarketOrderSellModel.h
     MarketOrdersXmlReceiver.cpp
     MarketOrdersXmlReceiver.h
     MarketOrderValueSnapshot.cpp
     MarketOrderValueSnapshot.h
     MarketOrderValueSnapshotRepository.cpp
     MarketOrderValueSnapshotRepository.h
+    MarketOrderView.cpp
+    MarketOrderView.h
+    MarketOrderViewWithTransactions.cpp
+    MarketOrderViewWithTransactions.h
     MarketOrderWidget.cpp
     MarketOrderWidget.h
     MenuBarWidget.cpp

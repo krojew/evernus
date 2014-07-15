@@ -46,6 +46,7 @@ namespace Evernus
 
         typedef std::unordered_map<MarketOrder::IdType, OrderState> OrderStateMap;
         typedef std::unordered_set<MarketOrder::IdType> OrderIdList;
+        typedef std::vector<MarketOrder> OrderList;
 
         using Repository::Repository;
         virtual ~MarketOrderRepository() = default;
@@ -61,6 +62,8 @@ namespace Evernus
         OrderStateMap getOrderStatesAndVolumes(Character::IdType characterId) const;
 
         void archive(const OrderIdList &list) const;
+
+        OrderList fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const;
 
     private:
         virtual QStringList getColumns() const override;
