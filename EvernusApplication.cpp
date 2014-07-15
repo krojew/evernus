@@ -606,7 +606,40 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            mAPIManager.fetchMarketOrders(key, id, [task, id, this](const auto &data, const auto &error) {
+            mAPIManager.fetchMarketOrders(key, id, [task, id, this](auto data, const auto &error) {
+                const auto curStates = mMarketOrderRepository->getOrderStates(id);
+
+                Evernus::MarketOrderRepository::OrderIdList idsToArchive;
+                for (const auto &cur : curStates)
+                    idsToArchive.emplace(cur.first);
+
+                for (auto it = std::begin(data); it != std::end(data);)
+                {
+                    idsToArchive.erase(it->getId());
+
+                    const auto cIt = curStates.find(it->getId());
+                    if (cIt != std::end(curStates) && it->getState() != Evernus::MarketOrder::State::Active)
+                    {
+                        if (cIt->second == Evernus::MarketOrder::State::Archieved)
+                        {
+                            it = data.erase(it);
+                        }
+                        else
+                        {
+                            if (cIt->second != Evernus::MarketOrder::State::Active)
+                                it->setState(Evernus::MarketOrder::State::Archieved);
+
+                            ++it;
+                        }
+                    }
+                    else
+                    {
+                        ++it;
+                    }
+                }
+
+                mMarketOrderRepository->archive(idsToArchive);
+
                 Evernus::MarketOrderValueSnapshot snapshot;
                 snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
                 snapshot.setCharacterId(id);

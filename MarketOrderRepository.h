@@ -14,6 +14,9 @@
  */
 #pragma once
 
+#include <unordered_map>
+#include <unordered_set>
+
 #include "MarketOrder.h"
 #include "Repository.h"
 
@@ -35,6 +38,9 @@ namespace Evernus
             SingleAggrData mSellData;
         };
 
+        typedef std::unordered_map<MarketOrder::IdType, MarketOrder::State> OrderStateMap;
+        typedef std::unordered_set<MarketOrder::IdType> OrderIdList;
+
         using Repository::Repository;
         virtual ~MarketOrderRepository() = default;
 
@@ -46,6 +52,9 @@ namespace Evernus
         void create(const Repository<Character> &characterRepo) const;
 
         AggrData getAggregatedData(Character::IdType characterId) const;
+        OrderStateMap getOrderStates(Character::IdType characterId) const;
+
+        void archive(const OrderIdList &list) const;
 
     private:
         virtual QStringList getColumns() const override;

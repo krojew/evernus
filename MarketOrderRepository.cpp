@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QTextStream>
 #include <QSqlRecord>
 #include <QSqlQuery>
 
@@ -117,6 +118,52 @@ namespace Evernus
         }
 
         return data;
+    }
+
+    MarketOrderRepository::OrderStateMap MarketOrderRepository::getOrderStates(Character::IdType characterId) const
+    {
+        OrderStateMap result;
+
+        auto query = prepare(QString{"SELECT %1, state FROM %2 WHERE character_id = ?"}.arg(getIdColumn()).arg(getTableName()));
+        query.bindValue(0, characterId);
+
+        DatabaseUtils::execQuery(query);
+
+        while (query.next())
+            result[query.value(0).value<MarketOrder::IdType>()] = static_cast<MarketOrder::State>(query.value(1).toInt());
+
+        return result;
+    }
+
+    void MarketOrderRepository::archive(const OrderIdList &list) const
+    {
+        QString queryStr;
+        QTextStream stream(&queryStr);
+
+        stream
+            << "UPDATE "
+            << getTableName()
+            << " SET state = "
+            << static_cast<int>(MarketOrder::State::Archieved)
+            << " WHERE "
+            << getIdColumn()
+            << " IN (";
+
+        QStringList idList;
+        for (auto i = 0; i < list.size(); ++i)
+            idList << "?";
+
+        stream
+            << idList.join(", ")
+            << ")";
+
+        stream.flush();
+
+        auto query = prepare(queryStr);
+        for (const auto &id : list)
+            query.addBindValue(id);
+
+        DatabaseUtils::execQuery(query);
     }
 
     QStringList MarketOrderRepository::getColumns() const
