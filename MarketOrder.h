@@ -68,8 +68,8 @@ namespace Evernus
         uint getMinVolume() const noexcept;
         void setMinVolume(uint value) noexcept;
 
-        uint getDelta() const noexcept;
-        void setDelta(uint value) noexcept;
+        int getDelta() const noexcept;
+        void setDelta(int value) noexcept;
 
         State getState() const noexcept;
         void setState(State state) noexcept;
@@ -110,7 +110,7 @@ namespace Evernus
         uint mVolumeEntered = 0;
         uint mVolumeRemaining = 0;
         uint mMinVolume = 0;
-        uint mDelta = 0;
+        int mDelta = 0;
         State mState = State::Active;
         EveType::IdType mTypeId = EveType::invalidId;
         short mRange = 0;

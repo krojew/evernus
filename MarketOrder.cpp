@@ -66,12 +66,12 @@ namespace Evernus
         mMinVolume = value;
     }
 
-    uint MarketOrder::getDelta() const noexcept
+    int MarketOrder::getDelta() const noexcept
     {
         return mDelta;
     }
 
-    void MarketOrder::setDelta(uint value) noexcept
+    void MarketOrder::setDelta(int value) noexcept
     {
         mDelta = value;
     }

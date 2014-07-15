@@ -44,7 +44,7 @@ namespace Evernus
         marketOrder.setVolumeEntered(record.value("volume_entered").toUInt());
         marketOrder.setVolumeRemaining(record.value("volume_remaining").toUInt());
         marketOrder.setMinVolume(record.value("min_volume").toUInt());
-        marketOrder.setDelta(record.value("delta").toUInt());
+        marketOrder.setDelta(record.value("delta").toInt());
         marketOrder.setState(static_cast<MarketOrder::State>(record.value("state").toInt()));
         marketOrder.setTypeId(record.value("type_id").value<EveType::IdType>());
         marketOrder.setRange(record.value("delta").value<short>());
@@ -69,7 +69,7 @@ namespace Evernus
             volume_entered INTEGER NOT NULL,
             volume_remaining INTEGER NOT NULL,
             min_volume INTEGER NOT NULL,
-            delta INTEGER NOT NULL,
+            delta INTEGER NOT NULL DEFAULT 0,
             state TINYINT NOT NULL,
             type_id INTEGER NOT NULL,
             range INTEGER NOT NULL,
@@ -120,17 +120,23 @@ namespace Evernus
         return data;
     }
 
-    MarketOrderRepository::OrderStateMap MarketOrderRepository::getOrderStates(Character::IdType characterId) const
+    MarketOrderRepository::OrderStateMap MarketOrderRepository::getOrderStatesAndVolumes(Character::IdType characterId) const
     {
         OrderStateMap result;
 
-        auto query = prepare(QString{"SELECT %1, state FROM %2 WHERE character_id = ?"}.arg(getIdColumn()).arg(getTableName()));
+        auto query = prepare(QString{"SELECT %1, state, volume_remaining FROM %2 WHERE character_id = ?"}.arg(getIdColumn()).arg(getTableName()));
         query.bindValue(0, characterId);
 
         DatabaseUtils::execQuery(query);
 
         while (query.next())
-            result[query.value(0).value<MarketOrder::IdType>()] = static_cast<MarketOrder::State>(query.value(1).toInt());
+        {
+            OrderState state;
+            state.mState = static_cast<MarketOrder::State>(query.value(1).toInt());
+            state.mVolumeRemaining = query.value(2).toUInt();
+
+            result.emplace(query.value(0).value<MarketOrder::IdType>(), std::move(state));
+        }
 
         return result;
     }

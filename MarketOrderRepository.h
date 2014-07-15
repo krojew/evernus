@@ -38,7 +38,13 @@ namespace Evernus
             SingleAggrData mSellData;
         };
 
-        typedef std::unordered_map<MarketOrder::IdType, MarketOrder::State> OrderStateMap;
+        struct OrderState
+        {
+            MarketOrder::State mState = MarketOrder::State::Archieved;
+            uint mVolumeRemaining = 0;
+        };
+
+        typedef std::unordered_map<MarketOrder::IdType, OrderState> OrderStateMap;
         typedef std::unordered_set<MarketOrder::IdType> OrderIdList;
 
         using Repository::Repository;
@@ -52,7 +58,7 @@ namespace Evernus
         void create(const Repository<Character> &characterRepo) const;
 
         AggrData getAggregatedData(Character::IdType characterId) const;
-        OrderStateMap getOrderStates(Character::IdType characterId) const;
+        OrderStateMap getOrderStatesAndVolumes(Character::IdType characterId) const;
 
         void archive(const OrderIdList &list) const;
 

@@ -607,7 +607,7 @@ namespace Evernus
         {
             const auto key = getCharacterKey(id);
             mAPIManager.fetchMarketOrders(key, id, [task, id, this](auto data, const auto &error) {
-                const auto curStates = mMarketOrderRepository->getOrderStates(id);
+                const auto curStates = mMarketOrderRepository->getOrderStatesAndVolumes(id);
 
                 Evernus::MarketOrderRepository::OrderIdList idsToArchive;
                 for (const auto &cur : curStates)
@@ -618,17 +618,25 @@ namespace Evernus
                     idsToArchive.erase(it->getId());
 
                     const auto cIt = curStates.find(it->getId());
-                    if (cIt != std::end(curStates) && it->getState() != Evernus::MarketOrder::State::Active)
+                    if (cIt != std::end(curStates))
                     {
-                        if (cIt->second == Evernus::MarketOrder::State::Archieved)
+                        it->setDelta(it->getVolumeRemaining() - cIt->second.mVolumeRemaining);
+                        if (it->getState() != Evernus::MarketOrder::State::Active)
                         {
-                            it = data.erase(it);
+                            if (cIt->second.mState == Evernus::MarketOrder::State::Archieved)
+                            {
+                                it = data.erase(it);
+                            }
+                            else
+                            {
+                                if (cIt->second.mState != Evernus::MarketOrder::State::Active)
+                                    it->setState(Evernus::MarketOrder::State::Archieved);
+
+                                ++it;
+                            }
                         }
                         else
                         {
-                            if (cIt->second != Evernus::MarketOrder::State::Active)
-                                it->setState(Evernus::MarketOrder::State::Archieved);
-
                             ++it;
                         }
                     }
