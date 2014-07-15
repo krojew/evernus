@@ -50,7 +50,7 @@ namespace Evernus
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type_id)"}.arg(getTableName()));
+        exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type_id)"}.arg(getTableName()));
     }
 
     std::vector<ItemCost> ItemCostRepository::fetchForCharacter(Character::IdType id) const

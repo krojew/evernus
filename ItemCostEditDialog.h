@@ -16,6 +16,7 @@
 
 #include <QDialog>
 
+class QDoubleSpinBox;
 class QComboBox;
 
 namespace Evernus
@@ -36,5 +37,6 @@ namespace Evernus
         ItemCost &mCost;
 
         QComboBox *mTypeCombo = nullptr;
+        QDoubleSpinBox *mCostEdit = nullptr;
     };
 }

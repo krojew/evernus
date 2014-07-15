@@ -65,7 +65,7 @@ namespace Evernus
         virtual ~EvernusApplication() = default;
 
         virtual QString getTypeName(EveType::IdType id) const override;
-        virtual std::unordered_map<EveType::IdType, QString> getAllTypeNames() const override;
+        virtual const std::unordered_map<EveType::IdType, QString> &getAllTypeNames() const override;
 
         virtual double getTypeVolume(EveType::IdType id) const override;
         virtual ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
@@ -167,6 +167,7 @@ namespace Evernus
         uint mCurrentItemPriceImportTask = TaskConstants::invalidTask;
 
         bool mCharacterUpdateScheduled = false;
+        mutable bool mCachedAllTypes = false;
 
         mutable std::unordered_map<EveType::IdType, QString> mTypeNameCache;
         mutable std::unordered_map<EveType::IdType, double> mTypeVolumeCache;

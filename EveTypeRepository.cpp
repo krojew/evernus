@@ -53,6 +53,17 @@ namespace Evernus
         return type;
     }
 
+    std::unordered_map<EveType::IdType, QString> EveTypeRepository::fetchAllNames() const
+    {
+        auto query = exec(QString{"SELECT %1, typeName FROM %2"}.arg(getIdColumn()).arg(getTableName()));
+
+        std::unordered_map<EveType::IdType, QString> result;
+        while (query.next())
+            result[query.value(0).toUInt()] = query.value(1).toString();
+
+        return result;
+    }
+
     QStringList EveTypeRepository::getColumns() const
     {
         return QStringList{}

@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <unordered_map>
+
 #include "Repository.h"
 #include "EveType.h"
 
@@ -30,6 +32,8 @@ namespace Evernus
         virtual QString getIdColumn() const override;
 
         virtual EveType populate(const QSqlRecord &record) const override;
+
+        std::unordered_map<EveType::IdType, QString> fetchAllNames() const;
 
     private:
         virtual QStringList getColumns() const override;

@@ -13,8 +13,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QDialogButtonBox>
+#include <QDoubleSpinBox>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QComboBox>
+#include <QLabel>
 
 #include "EveDataProvider.h"
 #include "ItemCost.h"
@@ -33,13 +36,26 @@ namespace Evernus
         mTypeCombo = new QComboBox{this};
         mainLayout->addWidget(mTypeCombo);
 
-        const auto types = dataProvider.getAllTypeNames();
+        const auto &types = dataProvider.getAllTypeNames();
         for (const auto &type : types)
             mTypeCombo->addItem(type.second, type.first);
 
         mTypeCombo->setEditable(true);
         mTypeCombo->setInsertPolicy(QComboBox::NoInsert);
         mTypeCombo->model()->sort(0);
+
+        auto costLayout = new QHBoxLayout{};
+        mainLayout->addLayout(costLayout);
+
+        costLayout->addWidget(new QLabel{tr("Cost:"), this});
+
+        mCostEdit = new QDoubleSpinBox{};
+        costLayout->addWidget(mCostEdit);
+        mCostEdit->setMaximum(1000000000000.);
+        mCostEdit->setSuffix(" ISK");
+        mCostEdit->setValue(mCost.getCost());
+
+        costLayout->addStretch();
 
         auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);
@@ -51,6 +67,13 @@ namespace Evernus
 
     void ItemCostEditDialog::accept()
     {
+        const auto data = mTypeCombo->currentData();
+        if (data.isNull())
+            return;
+
+        mCost.setTypeId(data.value<EveType::IdType>());
+        mCost.setCost(mCostEdit->value());
+
         QDialog::accept();
     }
 }

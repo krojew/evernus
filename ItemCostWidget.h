@@ -20,6 +20,7 @@
 #include "ItemCostModel.h"
 #include "Character.h"
 
+class QItemSelection;
 class QPushButton;
 
 namespace Evernus
@@ -48,14 +49,19 @@ namespace Evernus
         void editCost();
         void deleteCost();
 
+        void selectCost(const QItemSelection &selected, const QItemSelection &deselected);
+
     private:
         const ItemCostRepository &mItemCostRepo;
         const EveDataProvider &mEveDataProvider;
 
+        QPushButton *mAddBtn = nullptr;
         QPushButton *mEditBtn = nullptr;
         QPushButton *mRemoveBtn = nullptr;
 
         ItemCostModel mModel;
+
+        Character::IdType mCharacterId = Character::invalidId;
 
         void showCostEditDialog(ItemCost &cost);
     };

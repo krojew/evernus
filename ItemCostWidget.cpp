@@ -40,10 +40,10 @@ namespace Evernus
         auto toolbarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolbarLayout);
 
-        auto addBtn = new QPushButton{QIcon{":/images/add.png"}, tr("Add..."), this};
-        toolbarLayout->addWidget(addBtn);
-        addBtn->setFlat(true);
-        connect(addBtn, &QPushButton::clicked, this, &ItemCostWidget::addCost);
+        mAddBtn = new QPushButton{QIcon{":/images/add.png"}, tr("Add..."), this};
+        toolbarLayout->addWidget(mAddBtn);
+        mAddBtn->setFlat(true);
+        connect(mAddBtn, &QPushButton::clicked, this, &ItemCostWidget::addCost);
 
         mEditBtn = new QPushButton{QIcon{":/images/pencil.png"}, tr("Edit..."), this};
         toolbarLayout->addWidget(mEditBtn);
@@ -68,16 +68,23 @@ namespace Evernus
         view->setModel(proxy);
         view->setSortingEnabled(true);
         view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        connect(view->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &ItemCostWidget::selectCost);
     }
 
     void ItemCostWidget::setCharacter(Character::IdType id)
     {
-        mModel.setCharacter(id);
+        mCharacterId = id;
+        mModel.setCharacter(mCharacterId);
+
+        mAddBtn->setDisabled(mCharacterId == Character::invalidId);
     }
 
     void ItemCostWidget::addCost()
     {
         ItemCost cost;
+        cost.setCharacterId(mCharacterId);
+
         showCostEditDialog(cost);
     }
 
@@ -87,6 +94,11 @@ namespace Evernus
     }
 
     void ItemCostWidget::deleteCost()
+    {
+
+    }
+
+    void ItemCostWidget::selectCost(const QItemSelection &selected, const QItemSelection &deselected)
     {
 
     }
