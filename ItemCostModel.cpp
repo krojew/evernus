@@ -106,4 +106,9 @@ namespace Evernus
 
         endResetModel();
     }
+
+    ItemCost::IdType ItemCostModel::getId(int row) const
+    {
+        return mData[row].getId();
+    }
 }

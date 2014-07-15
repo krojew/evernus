@@ -94,17 +94,43 @@ namespace Evernus
 
     void ItemCostWidget::editCost()
     {
+        Q_ASSERT(mSelectedCosts.count() > 0);
 
+        const auto index = mSelectedCosts.first();
+        const auto id = mModel.getId(index.row());
+
+        try
+        {
+            auto cost = mItemCostRepo.find(id);
+            showCostEditDialog(cost);
+        }
+        catch (const ItemCostRepository::NotFoundException &)
+        {
+        }
     }
 
     void ItemCostWidget::deleteCost()
     {
+        Q_ASSERT(mSelectedCosts.count() > 0);
 
+        const auto index = mSelectedCosts.first();
+        const auto id = mModel.getId(index.row());
+
+        mItemCostRepo.remove(id);
+        mModel.reset();
+
+        mEditBtn->setDisabled(true);
+        mRemoveBtn->setDisabled(true);
     }
 
     void ItemCostWidget::selectCost(const QItemSelection &selected, const QItemSelection &deselected)
     {
+        Q_UNUSED(deselected);
 
+        mEditBtn->setEnabled(true);
+        mRemoveBtn->setEnabled(true);
+
+        mSelectedCosts = selected.indexes();
     }
 
     void ItemCostWidget::applyKeywords()

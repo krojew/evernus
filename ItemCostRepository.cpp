@@ -43,7 +43,7 @@ namespace Evernus
     void ItemCostRepository::create(const Repository<Character> &characterRepo) const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id BIGINT PRIMARY KEY ASC,
+            id INTEGER PRIMARY KEY ASC,
             character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,
             type_id INTEGER NOT NULL,
             cost NUMERIC NOT NULL

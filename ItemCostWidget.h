@@ -70,6 +70,8 @@ namespace Evernus
 
         Character::IdType mCharacterId = Character::invalidId;
 
+        QModelIndexList mSelectedCosts;
+
         void showCostEditDialog(ItemCost &cost);
     };
 }

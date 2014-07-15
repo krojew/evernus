@@ -45,6 +45,8 @@ namespace Evernus
 
         void reset();
 
+        ItemCost::IdType getId(int row) const;
+
     private:
         const ItemCostRepository &mItemRepo;
         const EveDataProvider &mDataProvider;

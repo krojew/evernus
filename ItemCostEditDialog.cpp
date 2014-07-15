@@ -38,7 +38,13 @@ namespace Evernus
 
         const auto &types = dataProvider.getAllTypeNames();
         for (const auto &type : types)
+        {
+            const auto index = mTypeCombo->count();
             mTypeCombo->addItem(type.second, type.first);
+
+            if (type.first == cost.getTypeId())
+                mTypeCombo->setCurrentIndex(index);
+        }
 
         mTypeCombo->setEditable(true);
         mTypeCombo->setInsertPolicy(QComboBox::NoInsert);
