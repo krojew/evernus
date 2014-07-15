@@ -61,7 +61,7 @@ namespace Evernus
         connect(importFromFile, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromFile);
 
         mFilterEdit = new QLineEdit{this};
-        toolBarLayout->addWidget(mFilterEdit);
+        toolBarLayout->addWidget(mFilterEdit, 1);
         mFilterEdit->setPlaceholderText(tr("type in keywords and press Enter"));
         mFilterEdit->setClearButtonEnabled(true);
         connect(mFilterEdit, &QLineEdit::returnPressed, this, &AssetsWidget::applyKeywords);

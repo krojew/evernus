@@ -14,14 +14,16 @@
  */
 #pragma once
 
-#include <QSqlQueryModel>
+#include <QSortFilterProxyModel>
 #include <QWidget>
 
 #include "ItemCostModel.h"
 #include "Character.h"
 
+class QSortFilterProxyModel;
 class QItemSelection;
 class QPushButton;
+class QLineEdit;
 
 namespace Evernus
 {
@@ -51,6 +53,8 @@ namespace Evernus
 
         void selectCost(const QItemSelection &selected, const QItemSelection &deselected);
 
+        void applyKeywords();
+
     private:
         const ItemCostRepository &mItemCostRepo;
         const EveDataProvider &mEveDataProvider;
@@ -59,7 +63,10 @@ namespace Evernus
         QPushButton *mEditBtn = nullptr;
         QPushButton *mRemoveBtn = nullptr;
 
+        QLineEdit *mFilterEdit = nullptr;
+
         ItemCostModel mModel;
+        QSortFilterProxyModel mProxy;
 
         Character::IdType mCharacterId = Character::invalidId;
 

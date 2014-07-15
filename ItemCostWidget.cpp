@@ -12,12 +12,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QSortFilterProxyModel>
 #include <QHeaderView>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QTreeView>
+#include <QLineEdit>
 
 #include "ItemCostEditDialog.h"
 #include "ItemCostRepository.h"
@@ -37,35 +37,39 @@ namespace Evernus
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
-        auto toolbarLayout = new QHBoxLayout{};
-        mainLayout->addLayout(toolbarLayout);
+        auto toolBarLayout = new QHBoxLayout{};
+        mainLayout->addLayout(toolBarLayout);
 
         mAddBtn = new QPushButton{QIcon{":/images/add.png"}, tr("Add..."), this};
-        toolbarLayout->addWidget(mAddBtn);
+        toolBarLayout->addWidget(mAddBtn);
         mAddBtn->setFlat(true);
         connect(mAddBtn, &QPushButton::clicked, this, &ItemCostWidget::addCost);
 
         mEditBtn = new QPushButton{QIcon{":/images/pencil.png"}, tr("Edit..."), this};
-        toolbarLayout->addWidget(mEditBtn);
+        toolBarLayout->addWidget(mEditBtn);
         mEditBtn->setFlat(true);
         mEditBtn->setDisabled(true);
         connect(mEditBtn, &QPushButton::clicked, this, &ItemCostWidget::editCost);
 
         mRemoveBtn = new QPushButton{QIcon{":/images/delete.png"}, tr("Remove"), this};
-        toolbarLayout->addWidget(mRemoveBtn);
+        toolBarLayout->addWidget(mRemoveBtn);
         mRemoveBtn->setFlat(true);
         mRemoveBtn->setDisabled(true);
         connect(mRemoveBtn, &QPushButton::clicked, this, &ItemCostWidget::deleteCost);
 
-        toolbarLayout->addStretch();
+        mFilterEdit = new QLineEdit{this};
+        toolBarLayout->addWidget(mFilterEdit, 1);
+        mFilterEdit->setPlaceholderText(tr("type in keywords and press Enter"));
+        mFilterEdit->setClearButtonEnabled(true);
+        connect(mFilterEdit, &QLineEdit::returnPressed, this, &ItemCostWidget::applyKeywords);
 
-        auto proxy = new QSortFilterProxyModel{this};
-        proxy->setSortRole(Qt::UserRole);
-        proxy->setSourceModel(&mModel);
+        mProxy.setSortRole(Qt::UserRole);
+        mProxy.setSourceModel(&mModel);
+        mProxy.setFilterCaseSensitivity(Qt::CaseInsensitive);
 
         auto view = new QTreeView{this};
         mainLayout->addWidget(view, 1);
-        view->setModel(proxy);
+        view->setModel(&mProxy);
         view->setSortingEnabled(true);
         view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
         connect(view->selectionModel(), &QItemSelectionModel::selectionChanged,
@@ -101,6 +105,11 @@ namespace Evernus
     void ItemCostWidget::selectCost(const QItemSelection &selected, const QItemSelection &deselected)
     {
 
+    }
+
+    void ItemCostWidget::applyKeywords()
+    {
+        mProxy.setFilterFixedString(mFilterEdit->text());
     }
 
     void ItemCostWidget::showCostEditDialog(ItemCost &cost)
