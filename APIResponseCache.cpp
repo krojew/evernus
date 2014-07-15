@@ -196,11 +196,11 @@ namespace Evernus
 
         if (it != std::end(mInsertingDataMap))
         {
-            mInsertingDataMap.erase(it);
-
             const auto dIt = std::find_if(std::begin(mInsertingData), std::end(mInsertingData), [&it](const auto &entry) {
                 return entry.get() == it->first;
             });
+
+            mInsertingDataMap.erase(it);
             Q_ASSERT(dIt != std::end(mInsertingData));
 
             mInsertingData.erase(dIt);
