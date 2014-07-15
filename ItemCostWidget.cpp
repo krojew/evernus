@@ -19,6 +19,9 @@
 #include <QHBoxLayout>
 #include <QTreeView>
 
+#include "ItemCostEditDialog.h"
+#include "ItemCostRepository.h"
+
 #include "ItemCostWidget.h"
 
 namespace Evernus
@@ -27,8 +30,9 @@ namespace Evernus
                                    const EveDataProvider &eveDataProvider,
                                    QWidget *parent)
         : QWidget{parent}
+        , mItemCostRepo{itemCostRepo}
         , mEveDataProvider{eveDataProvider}
-        , mModel{itemCostRepo, mEveDataProvider}
+        , mModel{mItemCostRepo, mEveDataProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -73,7 +77,8 @@ namespace Evernus
 
     void ItemCostWidget::addCost()
     {
-
+        ItemCost cost;
+        showCostEditDialog(cost);
     }
 
     void ItemCostWidget::editCost()
@@ -84,5 +89,15 @@ namespace Evernus
     void ItemCostWidget::deleteCost()
     {
 
+    }
+
+    void ItemCostWidget::showCostEditDialog(ItemCost &cost)
+    {
+        ItemCostEditDialog dlg{cost, mEveDataProvider, this};
+        if (dlg.exec() == QDialog::Accepted)
+        {
+            mItemCostRepo.store(cost);
+            mModel.reset();
+        }
     }
 }

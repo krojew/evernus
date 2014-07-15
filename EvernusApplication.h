@@ -14,7 +14,6 @@
  */
 #pragma once
 
-#include <unordered_map>
 #include <memory>
 
 #include <boost/functional/hash.hpp>
@@ -66,6 +65,8 @@ namespace Evernus
         virtual ~EvernusApplication() = default;
 
         virtual QString getTypeName(EveType::IdType id) const override;
+        virtual std::unordered_map<EveType::IdType, QString> getAllTypeNames() const override;
+
         virtual double getTypeVolume(EveType::IdType id) const override;
         virtual ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
 

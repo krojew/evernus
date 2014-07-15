@@ -91,8 +91,19 @@ namespace Evernus
 
     void ItemCostModel::setCharacter(Character::IdType id)
     {
+        mCharacterId = id;
+        reset();
+    }
+
+    void ItemCostModel::reset()
+    {
         beginResetModel();
-        mData = mItemRepo.fetchForCharacter(id);
+
+        if (mCharacterId == Character::invalidId)
+            mData.clear();
+        else
+            mData = mItemRepo.fetchForCharacter(mCharacterId);
+
         endResetModel();
     }
 }

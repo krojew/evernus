@@ -43,9 +43,13 @@ namespace Evernus
 
         void setCharacter(Character::IdType id);
 
+        void reset();
+
     private:
         const ItemCostRepository &mItemRepo;
         const EveDataProvider &mDataProvider;
+
+        Character::IdType mCharacterId = Character::invalidId;
 
         std::vector<ItemCost> mData;
     };

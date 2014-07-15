@@ -88,6 +88,21 @@ namespace Evernus
         return result;
     }
 
+    std::unordered_map<EveType::IdType, QString> EvernusApplication::getAllTypeNames() const
+    {
+        const auto data = mEveTypeRepository->fetchAll();
+        if (data.size() > mTypeNameCache.size())
+        {
+            for (const auto &entry : data)
+            {
+                mTypeNameCache[entry.getId()] = entry.getName();
+                mTypeVolumeCache[entry.getId()] = entry.getVolume();
+            }
+        }
+
+        return mTypeNameCache;
+    }
+
     double EvernusApplication::getTypeVolume(EveType::IdType id) const
     {
         const auto it = mTypeVolumeCache.find(id);

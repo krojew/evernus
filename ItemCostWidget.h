@@ -49,11 +49,14 @@ namespace Evernus
         void deleteCost();
 
     private:
+        const ItemCostRepository &mItemCostRepo;
         const EveDataProvider &mEveDataProvider;
 
         QPushButton *mEditBtn = nullptr;
         QPushButton *mRemoveBtn = nullptr;
 
         ItemCostModel mModel;
+
+        void showCostEditDialog(ItemCost &cost);
     };
 }

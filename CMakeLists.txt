@@ -17,7 +17,7 @@ if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -stdlib=libc++ -g")
 elseif(WIN32)
     find_package(Qt5WinExtras REQUIRED)
-    
+
     set(ADDITIONAL_SRC "evernus.rc")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
     set(ADDITIONAL_LIBS Qt5::WinExtras)
@@ -153,6 +153,8 @@ add_executable(
     Item.h
     ItemCost.cpp
     ItemCost.h
+    ItemCostEditDialog.cpp
+    ItemCostEditDialog.h
     ItemCostModel.cpp
     ItemCostModel.h
     ItemCostRepository.cpp
