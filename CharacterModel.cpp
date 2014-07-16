@@ -40,11 +40,11 @@ namespace Evernus
         {
             switch (section) {
             case 0:
-                return "Id";
+                return tr("Id");
             case 1:
-                return "Name";
+                return tr("Name");
             case 2:
-                return "Key id";
+                return tr("Key id");
             }
         }
 
