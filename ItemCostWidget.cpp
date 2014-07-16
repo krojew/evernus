@@ -71,6 +71,7 @@ namespace Evernus
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
         mView->setSortingEnabled(true);
+        mView->header()->resizeSections(QHeaderView::Stretch);
         connect(mView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &ItemCostWidget::selectCost);
     }

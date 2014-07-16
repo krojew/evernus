@@ -15,6 +15,9 @@
 #pragma once
 
 #include <QAbstractItemModel>
+#include <QDateTime>
+
+#include "WalletTransactionsModel.h"
 
 namespace Evernus
 {
@@ -22,6 +25,11 @@ namespace Evernus
         : public QAbstractItemModel
     {
     public:
+        struct Range
+        {
+            QDateTime mFrom, mTo;
+        };
+
         using QAbstractItemModel::QAbstractItemModel;
         virtual ~MarketOrderModel() = default;
 
@@ -30,5 +38,8 @@ namespace Evernus
         virtual quint64 getVolumeEntered() const = 0;
         virtual double getTotalISK() const = 0;
         virtual double getTotalSize() const = 0;
+        virtual Range getOrderRange(const QModelIndex &index) const = 0;
+        virtual EveType::IdType getOrderTypeId(const QModelIndex &index) const = 0;
+        virtual WalletTransactionsModel::EntryType getOrderTypeFilter() const = 0;
     };
 }

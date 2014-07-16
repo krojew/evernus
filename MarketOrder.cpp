@@ -175,4 +175,14 @@ namespace Evernus
     {
         mFirstSeen = dt;
     }
+
+    QDateTime MarketOrder::getLastSeen() const
+    {
+        return mLastSeen;
+    }
+
+    void MarketOrder::setLastSeen(const QDateTime &dt)
+    {
+        mLastSeen = dt;
+    }
 }

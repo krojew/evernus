@@ -46,6 +46,7 @@ qt5_wrap_cpp(
     MarketLogItemPriceImporter.h
     MarketLogItemPriceImporterThread.h
     MarketOrderView.h
+    MarketOrderViewWithTransactions.h
     MarketOrderWidget.h
     MenuBarWidget.h
     NetworkPreferencesWidget.h

@@ -38,6 +38,9 @@ namespace Evernus
         auto firstSeen = record.value("first_seen").toDateTime();
         firstSeen.setTimeSpec(Qt::UTC);
 
+        auto lastSeen = record.value("last_seen").toDateTime();
+        lastSeen.setTimeSpec(Qt::UTC);
+
         MarketOrder marketOrder{record.value("id").value<MarketOrder::IdType>()};
         marketOrder.setCharacterId(record.value("character_id").value<Character::IdType>());
         marketOrder.setLocationId(record.value("location_id").toULongLong());
@@ -55,6 +58,7 @@ namespace Evernus
         marketOrder.setType(static_cast<MarketOrder::Type>(record.value("type").toInt()));
         marketOrder.setIssued(issued);
         marketOrder.setFirstSeen(firstSeen);
+        marketOrder.setLastSeen(lastSeen);
         marketOrder.setNew(false);
 
         return marketOrder;
@@ -79,7 +83,8 @@ namespace Evernus
             price NUMERIC NOT NULL,
             type TINYINT NOT NULL,
             issued DATETIME NOT NULL,
-            first_seen DATETIME NOT NULL
+            first_seen DATETIME NOT NULL,
+            last_seen DATETIME NULL
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
@@ -237,7 +242,8 @@ namespace Evernus
             << "price"
             << "type"
             << "issued"
-            << "first_seen";
+            << "first_seen"
+            << "last_seen";
     }
 
     void MarketOrderRepository::bindValues(const MarketOrder &entity, QSqlQuery &query) const
@@ -261,6 +267,7 @@ namespace Evernus
         query.bindValue(":type", static_cast<int>(entity.getType()));
         query.bindValue(":issued", entity.getIssued());
         query.bindValue(":first_seen", entity.getFirstSeen());
+        query.bindValue(":last_seen", entity.getLastSeen());
     }
 
     void MarketOrderRepository::bindPositionalValues(const MarketOrder &entity, QSqlQuery &query) const
@@ -284,10 +291,11 @@ namespace Evernus
         query.addBindValue(static_cast<int>(entity.getType()));
         query.addBindValue(entity.getIssued());
         query.addBindValue(entity.getFirstSeen());
+        query.addBindValue(entity.getLastSeen());
     }
 
     size_t MarketOrderRepository::getMaxRowsPerInsert() const
     {
-        return 58;
+        return 55;
     }
 }

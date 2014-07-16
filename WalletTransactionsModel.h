@@ -44,9 +44,10 @@ namespace Evernus
         virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
-        void setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type);
+        void setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, EveType::IdType typeId = EveType::invalidId);
 
         void reset();
+        void clear();
 
     private:
         static const auto ignoredColumn = 0;
@@ -62,6 +63,7 @@ namespace Evernus
         Character::IdType mCharacterId = Character::invalidId;
         QDate mFrom, mTill;
         EntryType mType = EntryType::All;
+        EveType::IdType mTypeId = EveType::invalidId;
 
         std::vector<QVariantList> mData;
 

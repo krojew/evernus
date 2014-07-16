@@ -727,9 +727,14 @@ namespace Evernus
                             else
                             {
                                 if (cIt->second.mState != Evernus::MarketOrder::State::Active)
+                                {
                                     it->setState(Evernus::MarketOrder::State::Archived);
+                                }
                                 else
+                                {
+                                    it->setLastSeen(QDateTime::currentDateTimeUtc());
                                     addToCache(*it);
+                                }
 
                                 ++it;
                             }

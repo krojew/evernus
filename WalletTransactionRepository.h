@@ -48,7 +48,8 @@ namespace Evernus
         std::vector<WalletTransaction> fetchForCharacterInRange(Character::IdType characterId,
                                                                 const QDateTime &from,
                                                                 const QDateTime &till,
-                                                                EntryType type) const;
+                                                                EntryType type,
+                                                                EveType::IdType typeId = EveType::invalidId) const;
 
     private:
         virtual QStringList getColumns() const override;

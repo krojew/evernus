@@ -82,7 +82,7 @@ namespace Evernus
             case ignoredColumn:
                 return QVariant{};
             case timestampColumn:
-                return mData[row][timestampColumn].toDateTime().toString();
+                return QLocale{}.toString(mData[row][timestampColumn].toDateTime().toLocalTime());
             case amountColumn:
             case balanceColumn:
                 return QLocale{}.toCurrencyString(mData[row][column].toDouble(), "ISK");
@@ -153,7 +153,7 @@ namespace Evernus
         mData.clear();
         if (mCharacterId != Character::invalidId)
         {
-            const auto entries = mJournalRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}, QDateTime{mTill}, mType);
+            const auto entries = mJournalRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}.toUTC(), QDateTime{mTill}.toUTC(), mType);
             mData.reserve(entries.size());
 
             QRegularExpression re{"^DESC: "};

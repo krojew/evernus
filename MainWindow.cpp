@@ -341,7 +341,12 @@ namespace Evernus
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::itemPricesChanged, assetsTab, &AssetsWidget::updateData);
 
-        auto orderTab = new MarketOrderWidget{mOrderProvider, mCacheTimerProvider, mEveDataProvider, mItemCostProvider, this};
+        auto orderTab = new MarketOrderWidget{mOrderProvider,
+                                              mCacheTimerProvider,
+                                              mEveDataProvider,
+                                              mItemCostProvider,
+                                              mWalletTransactionRepository,
+                                              this};
         addTab(orderTab, tr("Orders"));
         connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importMarketOrders);
         connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);

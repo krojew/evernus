@@ -19,6 +19,7 @@
 
 namespace Evernus
 {
+    class WalletTransactionRepository;
     class MarketOrderProvider;
     class CacheTimerProvider;
     class ItemCostProvider;
@@ -34,8 +35,12 @@ namespace Evernus
                           const CacheTimerProvider &cacheTimerProvider,
                           const EveDataProvider &dataProvider,
                           const ItemCostProvider &itemCostProvider,
+                          const WalletTransactionRepository &transactionsRepo,
                           QWidget *parent = nullptr);
         virtual ~MarketOrderWidget() = default;
+
+    signals:
+        void characterChanged(Character::IdType id);
 
     public slots:
         void updateData();

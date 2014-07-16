@@ -17,6 +17,7 @@
 #include <QSortFilterProxyModel>
 #include <QWidget>
 
+class QItemSelectionModel;
 class QTreeView;
 class QLabel;
 
@@ -32,6 +33,9 @@ namespace Evernus
     public:
         explicit MarketOrderView(QWidget *parent = nullptr);
         virtual ~MarketOrderView() = default;
+
+        QItemSelectionModel *getSelectionModel() const;
+        const QAbstractProxyModel &getProxyModel() const;
 
         void setModel(MarketOrderModel *model);
 

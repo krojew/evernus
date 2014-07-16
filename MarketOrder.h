@@ -101,6 +101,9 @@ namespace Evernus
         QDateTime getFirstSeen() const;
         void setFirstSeen(const QDateTime &dt);
 
+        QDateTime getLastSeen() const;
+        void setLastSeen(const QDateTime &dt);
+
         MarketOrder &operator =(const MarketOrder &) = default;
         MarketOrder &operator =(MarketOrder &&) = default;
 
@@ -120,6 +123,6 @@ namespace Evernus
         double mPrice = 0.;
         Type mType = Type::Buy;
         QDateTime mIssued;
-        QDateTime mFirstSeen;
+        QDateTime mFirstSeen, mLastSeen;
     };
 }

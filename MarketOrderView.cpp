@@ -72,6 +72,16 @@ namespace Evernus
         infoLayout->addStretch();
     }
 
+    QItemSelectionModel *MarketOrderView::getSelectionModel() const
+    {
+        return mView->selectionModel();
+    }
+
+    const QAbstractProxyModel &MarketOrderView::getProxyModel() const
+    {
+        return mProxy;
+    }
+
     void MarketOrderView::setModel(MarketOrderModel *model)
     {
         mSource = model;

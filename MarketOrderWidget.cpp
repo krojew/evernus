@@ -28,6 +28,7 @@ namespace Evernus
                                          const CacheTimerProvider &cacheTimerProvider,
                                          const EveDataProvider &dataProvider,
                                          const ItemCostProvider &itemCostProvider,
+                                         const WalletTransactionRepository &transactionsRepo,
                                          QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::MarketOrders),
                                parent}
@@ -45,9 +46,12 @@ namespace Evernus
         auto mainTabs = new QTabWidget{this};
         mainLayout->addWidget(mainTabs);
 
-        auto sellView = new MarketOrderViewWithTransactions{this};
+        auto sellView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, this};
         mainTabs->addTab(sellView, QIcon{":/images/arrow_out.png"}, tr("Sell"));
         sellView->setModel(&mSellModel);
+        connect(this, &MarketOrderWidget::characterChanged, sellView, &MarketOrderViewWithTransactions::setCharacter);
+
+        connect(this, &MarketOrderWidget::characterChanged, &mSellModel, &MarketOrderSellModel::setCharacter);
     }
 
     void MarketOrderWidget::updateData()
@@ -59,6 +63,6 @@ namespace Evernus
 
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)
     {
-        mSellModel.setCharacter(id);
+        emit characterChanged(id);
     }
 }

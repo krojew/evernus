@@ -101,8 +101,11 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
-    std::vector<WalletTransaction> WalletTransactionRepository
-    ::fetchForCharacterInRange(Character::IdType characterId, const QDateTime &from, const QDateTime &till, EntryType type) const
+    std::vector<WalletTransaction> WalletTransactionRepository::fetchForCharacterInRange(Character::IdType characterId,
+                                                                                         const QDateTime &from,
+                                                                                         const QDateTime &till,
+                                                                                         EntryType type,
+                                                                                         EveType::IdType typeId) const
     {
         QString queryStr;
         if (type == EntryType::All)
@@ -110,13 +113,19 @@ namespace Evernus
         else
             queryStr = "SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ? AND type = ?";
 
+        if (typeId != EveType::invalidId)
+            queryStr += " AND type_id = ?";
+
         auto query = prepare(queryStr.arg(getTableName()));
         query.addBindValue(characterId);
         query.addBindValue(from);
-        query.addBindValue(till);
+        query.addBindValue(till.addDays(1));
 
         if (type != EntryType::All)
             query.addBindValue(static_cast<int>((type == EntryType::Buy) ? (WalletTransaction::Type::Buy) : (WalletTransaction::Type::Sell)));
+
+        if (typeId != EveType::invalidId)
+            query.addBindValue(typeId);
 
         DatabaseUtils::execQuery(query);
 

@@ -185,15 +185,16 @@ namespace Evernus
                         const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
                         if (price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                             return tr("Data too old");
-
-                        return tr("OK");
                     }
+                    break;
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(data.getVolumeRemaining())).arg(locale.toString(data.getVolumeEntered()));
                 case totalColumn:
                     return locale.toCurrencyString(data.getVolumeRemaining() * data.getPrice(), "ISK");
                 case deltaColumn:
-                    return locale.toString(data.getDelta());
+                    if (data.getDelta() != 0)
+                        return locale.toString(data.getDelta());
+                    break;
                 case profitColumn:
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
@@ -228,7 +229,7 @@ namespace Evernus
                     }
                     break;
                 case firstSeenColumn:
-                    return locale.toString(data.getFirstSeen());
+                    return locale.toString(data.getFirstSeen().toLocalTime());
                 case stationColumn:
                     return mDataProvider.getLocationName(data.getLocationId());
                 }
@@ -287,7 +288,7 @@ namespace Evernus
         case Qt::TextAlignmentRole:
             if (column == priceStatusColumn)
                 return Qt::AlignHCenter;
-            if (column == volumeColumn)
+            if (column == volumeColumn || column == deltaColumn)
                 return Qt::AlignRight;
         }
 
@@ -378,6 +379,25 @@ namespace Evernus
     double MarketOrderSellModel::getTotalSize() const
     {
         return mTotalSize;
+    }
+
+    MarketOrderModel::Range MarketOrderSellModel::getOrderRange(const QModelIndex &index) const
+    {
+        Range range;
+        range.mFrom = mData[index.row()].getFirstSeen();
+        range.mTo = mData[index.row()].getLastSeen();
+
+        return range;
+    }
+
+    EveType::IdType MarketOrderSellModel::getOrderTypeId(const QModelIndex &index) const
+    {
+        return mData[index.row()].getTypeId();
+    }
+
+    WalletTransactionsModel::EntryType MarketOrderSellModel::getOrderTypeFilter() const
+    {
+        return WalletTransactionsModel::EntryType::Sell;
     }
 
     void MarketOrderSellModel::setCharacter(Character::IdType id)

@@ -12,26 +12,75 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QHeaderView>
 #include <QVBoxLayout>
+#include <QGroupBox>
+#include <QTreeView>
 
+#include "MarketOrderModel.h"
 #include "MarketOrderView.h"
 
 #include "MarketOrderViewWithTransactions.h"
 
 namespace Evernus
 {
-    MarketOrderViewWithTransactions::MarketOrderViewWithTransactions(QWidget *parent)
+    MarketOrderViewWithTransactions::MarketOrderViewWithTransactions(const WalletTransactionRepository &transactionsRepo,
+                                                                     const EveDataProvider &dataProvider,
+                                                                     QWidget *parent)
         : QWidget{parent}
+        , mTransactionModel{transactionsRepo, dataProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
-        mView = new MarketOrderView{this};
-        mainLayout->addWidget(mView, 1);
+        mOrderView = new MarketOrderView{this};
+        mainLayout->addWidget(mOrderView, 1);
+
+        auto transactionGroup = new QGroupBox{tr("Transactions"), this};
+        mainLayout->addWidget(transactionGroup);
+
+        auto groupLayout = new QVBoxLayout{};
+        transactionGroup->setLayout(groupLayout);
+
+        mTransactionProxyModel.setSortRole(Qt::UserRole);
+        mTransactionProxyModel.setSourceModel(&mTransactionModel);
+
+        auto transactionView = new QTreeView{this};
+        groupLayout->addWidget(transactionView);
+        transactionView->setModel(&mTransactionProxyModel);
+        transactionView->setSortingEnabled(true);
+        transactionView->sortByColumn(1, Qt::DescendingOrder);
+        transactionView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        connect(mOrderView->getSelectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &MarketOrderViewWithTransactions::selectOrder);
     }
 
     void MarketOrderViewWithTransactions::setModel(MarketOrderModel *model)
     {
-        mView->setModel(model);
+        mOrderModel = model;
+        mOrderView->setModel(mOrderModel);
+    }
+
+    void MarketOrderViewWithTransactions::setCharacter(Character::IdType id)
+    {
+        mCharacterId = id;
+        mTransactionModel.clear();
+    }
+
+    void MarketOrderViewWithTransactions::selectOrder(const QItemSelection &selected, const QItemSelection &deselected)
+    {
+        Q_UNUSED(deselected);
+
+        if (mOrderModel != nullptr)
+        {
+            const auto index = mOrderView->getProxyModel().mapToSource(selected.indexes().first());
+            const auto typeId = mOrderModel->getOrderTypeId(index);
+            auto range = mOrderModel->getOrderRange(index);
+
+            if (!range.mTo.isValid())
+                range.mTo = QDateTime::currentDateTimeUtc();
+
+            mTransactionModel.setFilter(mCharacterId, range.mFrom.date(), range.mTo.date(), mOrderModel->getOrderTypeFilter(), typeId);
+        }
     }
 }

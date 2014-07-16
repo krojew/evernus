@@ -49,6 +49,9 @@ namespace Evernus
         virtual quint64 getVolumeEntered() const override;
         virtual double getTotalISK() const override;
         virtual double getTotalSize() const override;
+        virtual Range getOrderRange(const QModelIndex &index) const override;
+        virtual EveType::IdType getOrderTypeId(const QModelIndex &index) const override;
+        virtual WalletTransactionsModel::EntryType getOrderTypeFilter() const override;
 
         void setCharacter(Character::IdType id);
 

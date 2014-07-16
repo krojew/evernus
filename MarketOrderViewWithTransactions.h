@@ -14,23 +14,44 @@
  */
 #pragma once
 
+#include <QSortFilterProxyModel>
 #include <QWidget>
+
+#include "WalletTransactionsModel.h"
+
+class QItemSelection;
 
 namespace Evernus
 {
+    class WalletTransactionRepository;
     class MarketOrderModel;
+    class EveDataProvider;
     class MarketOrderView;
 
     class MarketOrderViewWithTransactions
         : public QWidget
     {
+        Q_OBJECT
+
     public:
-        explicit MarketOrderViewWithTransactions(QWidget *parent = nullptr);
+        MarketOrderViewWithTransactions(const WalletTransactionRepository &transactionsRepo,
+                                        const EveDataProvider &dataProvider,
+                                        QWidget *parent = nullptr);
         virtual ~MarketOrderViewWithTransactions() = default;
 
         void setModel(MarketOrderModel *model);
+        void setCharacter(Character::IdType id);
+
+    private slots:
+        void selectOrder(const QItemSelection &selected, const QItemSelection &deselected);
 
     private:
-        MarketOrderView *mView = nullptr;
+        MarketOrderView *mOrderView = nullptr;
+
+        MarketOrderModel *mOrderModel = nullptr;
+        WalletTransactionsModel mTransactionModel;
+        QSortFilterProxyModel mTransactionProxyModel;
+
+        Character::IdType mCharacterId = Character::invalidId;
     };
 }

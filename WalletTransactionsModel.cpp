@@ -80,7 +80,7 @@ namespace Evernus
             case ignoredColumn:
                 return QVariant{};
             case timestampColumn:
-                return mData[row][timestampColumn].toDateTime().toString();
+                return QLocale{}.toString(mData[row][timestampColumn].toDateTime().toLocalTime());
             case typeColumn:
                 return (static_cast<WalletTransaction::Type>(mData[row][typeColumn].toInt()) == WalletTransaction::Type::Buy) ?
                        ("Buy") :
@@ -143,12 +143,13 @@ namespace Evernus
         return 0;
     }
 
-    void WalletTransactionsModel::setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type)
+    void WalletTransactionsModel::setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, EveType::IdType typeId)
     {
         mCharacterId = id;
         mFrom = from;
         mTill = till;
         mType = type;
+        mTypeId = typeId;
 
         reset();
     }
@@ -160,7 +161,7 @@ namespace Evernus
         mData.clear();
         if (mCharacterId != Character::invalidId)
         {
-            const auto entries = mTransactionsRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}, QDateTime{mTill}, mType);
+            const auto entries = mTransactionsRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}.toUTC(), QDateTime{mTill}.toUTC(), mType, mTypeId);
             mData.reserve(entries.size());
 
             for (const auto &entry : entries)
@@ -181,6 +182,13 @@ namespace Evernus
             }
         }
 
+        endResetModel();
+    }
+
+    void WalletTransactionsModel::clear()
+    {
+        beginResetModel();
+        mData.clear();
         endResetModel();
     }
 }
