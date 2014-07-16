@@ -41,5 +41,6 @@ namespace Evernus
     void MarketOrderView::setModel(MarketOrderModel *model)
     {
         mProxy.setSourceModel(model);
+        mProxy.sort(0);
     }
 }

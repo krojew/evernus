@@ -25,7 +25,7 @@ namespace Evernus
         using QAbstractItemModel::QAbstractItemModel;
         virtual ~MarketOrderModel() = default;
 
-        virtual uint getOrderCount() const = 0;
+        virtual size_t getOrderCount() const = 0;
         virtual quint64 getVolumeRemaining() const = 0;
         virtual quint64 getVolumeEntered() const = 0;
         virtual double getTotalISK() const = 0;

@@ -14,28 +14,19 @@
  */
 #pragma once
 
-#include "MarketGroup.h"
-#include "Repository.h"
+#include "Character.h"
+#include "EveType.h"
 
 namespace Evernus
 {
-    class MarketGroupRepository
-        : public Repository<MarketGroup>
+    class ItemCost;
+
+    class ItemCostProvider
     {
     public:
-        using Repository::Repository;
-        virtual ~MarketGroupRepository() = default;
+        ItemCostProvider() = default;
+        virtual ~ItemCostProvider() = default;
 
-        virtual QString getTableName() const override;
-        virtual QString getIdColumn() const override;
-
-        virtual MarketGroup populate(const QSqlRecord &record) const override;
-
-        MarketGroup findParent(MarketGroup::IdType id) const;
-
-    private:
-        virtual QStringList getColumns() const override;
-        virtual void bindValues(const MarketGroup &entity, QSqlQuery &query) const override;
-        virtual void bindPositionalValues(const MarketGroup &entity, QSqlQuery &query) const override;
+        virtual ItemCost fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const = 0;
     };
 }

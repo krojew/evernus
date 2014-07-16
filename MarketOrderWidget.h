@@ -19,8 +19,10 @@
 
 namespace Evernus
 {
-    class MarketOrderRepository;
+    class MarketOrderProvider;
     class CacheTimerProvider;
+    class ItemCostProvider;
+    class EveDataProvider;
 
     class MarketOrderWidget
         : public CharacterBoundWidget
@@ -28,8 +30,10 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MarketOrderWidget(const MarketOrderRepository &orderRepo,
+        MarketOrderWidget(const MarketOrderProvider &orderProvider,
                           const CacheTimerProvider &cacheTimerProvider,
+                          const EveDataProvider &dataProvider,
+                          const ItemCostProvider &itemCostProvider,
                           QWidget *parent = nullptr);
         virtual ~MarketOrderWidget() = default;
 

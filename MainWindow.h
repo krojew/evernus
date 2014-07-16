@@ -40,11 +40,13 @@ namespace Evernus
     class WalletSnapshotRepository;
     class CharacterManagerDialog;
     class MarketOrderRepository;
+    class MarketOrderProvider;
     class ItemCostRepository;
     class WalletJournalEntry;
     class CacheTimerProvider;
     class ActiveTasksDialog;
     class MarginToolDialog;
+    class ItemCostProvider;
     class EveDataProvider;
     class MenuBarWidget;
     class AssetProvider;
@@ -65,9 +67,11 @@ namespace Evernus
                    const WalletTransactionRepository &walletTransactionRepo,
                    const MarketOrderRepository &orderRepo,
                    const ItemCostRepository &itemCostRepo,
+                   const MarketOrderProvider &orderProvider,
                    const AssetProvider &assetProvider,
                    const EveDataProvider &eveDataProvider,
                    const CacheTimerProvider &cacheTimerProvider,
+                   const ItemCostProvider &itemCostProvider,
                    QWidget *parent = nullptr,
                    Qt::WindowFlags flags = 0);
         virtual ~MainWindow() = default;
@@ -85,6 +89,7 @@ namespace Evernus
         void walletJournalChanged();
         void walletTransactionsChanged();
         void marketOrdersChanged();
+        void itemCostsChanged();
 
         void marginToolHidden(Character::IdType id);
 
@@ -141,7 +146,9 @@ namespace Evernus
         const WalletTransactionRepository &mWalletTransactionRepository;
         const MarketOrderRepository &mMarketOrderRepository;
         const ItemCostRepository &mItemCostRepository;
+        const MarketOrderProvider &mOrderProvider;
         const AssetProvider &mAssetProvider;
+        const ItemCostProvider &mItemCostProvider;
 
         const EveDataProvider &mEveDataProvider;
 

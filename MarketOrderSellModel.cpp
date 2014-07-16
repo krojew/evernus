@@ -12,25 +12,285 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "MarketOrderRepository.h"
+#include <QSettings>
+#include <QLocale>
+#include <QColor>
+#include <QFont>
+
+#include "MarketOrderProvider.h"
+#include "ItemCostProvider.h"
+#include "EveDataProvider.h"
+#include "PriceSettings.h"
+#include "ItemPrice.h"
+#include "ItemCost.h"
 
 #include "MarketOrderSellModel.h"
 
 namespace Evernus
 {
-    MarketOrderSellModel::MarketOrderSellModel(const MarketOrderRepository &orderRepo, QObject *parent)
+    MarketOrderSellModel::MarketOrderSellModel(const MarketOrderProvider &orderProvider,
+                                               const EveDataProvider &dataProvider,
+                                               const ItemCostProvider &itemCostProvider,
+                                               QObject *parent)
         : MarketOrderModel{parent}
-        , mOrderRepo{orderRepo}
+        , mOrderProvider{orderProvider}
+        , mDataProvider{dataProvider}
+        , mItemCostProvider{itemCostProvider}
     {
     }
 
     int MarketOrderSellModel::columnCount(const QModelIndex &parent) const
     {
-        return 15;
+        return 16;
     }
 
     QVariant MarketOrderSellModel::data(const QModelIndex &index, int role) const
     {
+        if (!index.isValid())
+            return QVariant{};
+
+        const auto column = index.column();
+        const auto row = index.row();
+        const auto &data = mData[row];
+
+        const auto secondsToString = [this](auto duration) {
+            QString res;
+
+            duration /= 60;
+
+            const auto minutes = duration % 60;
+            duration /= 60;
+
+            const auto hours = duration % 24;
+            const auto days = duration / 24;
+
+            if (hours == 0 && days == 0)
+                return res.sprintf(tr("%02dmin").toLatin1().data(), minutes);
+
+            if (days == 0)
+                return res.sprintf(tr("%02dh %02dmin").toLatin1().data(), hours, minutes);
+
+            return res.sprintf(tr("%dd %02dh").toLatin1().data(), days, hours);
+        };
+
+        switch (role) {
+        case Qt::UserRole:
+            switch (column) {
+            case nameColumn:
+                return mDataProvider.getTypeName(data.getTypeId());
+            case groupColumn:
+                return mDataProvider.getTypeMarketGroupName(data.getTypeId());
+            case statusColumn:
+                return static_cast<int>(data.getState());
+            case customCostColumn:
+                return mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId()).getCost();
+            case priceColumn:
+                return data.getPrice();
+            case priceStatusColumn:
+                {
+                    const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+                    if (price.isNew())
+                        return 0;
+
+                    QSettings settings;
+                    const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
+                    if (price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
+                        return 1;
+
+                    return 2;
+                }
+            case volumeColumn:
+                return data.getVolumeRemaining();
+            case totalColumn:
+                return data.getVolumeRemaining() * data.getPrice();
+            case deltaColumn:
+                return data.getDelta();
+            case profitColumn:
+                {
+                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
+                    return data.getVolumeRemaining() * (data.getPrice() - cost.getCost());
+                }
+            case totalProfitColumn:
+                {
+                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
+                    return data.getVolumeEntered() * (data.getPrice() - cost.getCost());
+                }
+            case profitPerItemColumn:
+                {
+                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
+                    return data.getPrice() - cost.getCost();
+                }
+            case timeLeftColumn:
+                {
+                    const auto timeEnd = data.getIssued().addDays(data.getDuration()).toMSecsSinceEpoch() / 1000;
+                    const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
+
+                    if (timeEnd > timeCur)
+                        return timeEnd - timeCur;
+                }
+                break;
+            case orderAgeColumn:
+                {
+                    const auto timeStart = data.getIssued().toMSecsSinceEpoch() / 1000;
+                    const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
+
+                    if (timeCur > timeStart)
+                        return timeCur - timeStart;
+                }
+                break;
+            case firstSeenColumn:
+                return data.getFirstSeen();
+            case stationColumn:
+                return mDataProvider.getLocationName(data.getLocationId());
+            }
+            break;
+        case Qt::DisplayRole:
+            {
+                const char * const stateNames[] = { "Active", "Closed", "Fulfilled", "Cancelled", "Pending", "Character Deleted" };
+
+                QLocale locale;
+
+                switch (column) {
+                case nameColumn:
+                    return mDataProvider.getTypeName(data.getTypeId());
+                case groupColumn:
+                    return mDataProvider.getTypeMarketGroupName(data.getTypeId());
+                case statusColumn:
+                    {
+                        const auto prefix = (data.getDelta() != 0) ? ("*") : ("");
+
+                        if ((data.getState() >= MarketOrder::State::Active && data.getState() <= MarketOrder::State::CharacterDeleted))
+                            return prefix + tr(stateNames[static_cast<size_t>(data.getState())]);
+
+                        if (data.getState() == MarketOrder::State::Archived)
+                            return tr("Archived");
+                    }
+                    break;
+                case customCostColumn:
+                    {
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
+                        if (!cost.isNew())
+                            return locale.toCurrencyString(cost.getCost(), "ISK");
+                    }
+                    break;
+                case priceColumn:
+                    return locale.toCurrencyString(data.getPrice(), "ISK");
+                case priceStatusColumn:
+                    {
+                        const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+                        if (price.isNew())
+                            return tr("No price data");
+
+                        QSettings settings;
+                        const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
+                        if (price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
+                            return tr("Data too old");
+
+                        return tr("OK");
+                    }
+                case volumeColumn:
+                    return QString{"%1/%2"}.arg(locale.toString(data.getVolumeRemaining())).arg(locale.toString(data.getVolumeEntered()));
+                case totalColumn:
+                    return locale.toCurrencyString(data.getVolumeRemaining() * data.getPrice(), "ISK");
+                case deltaColumn:
+                    return locale.toString(data.getDelta());
+                case profitColumn:
+                    {
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
+                        return locale.toCurrencyString(data.getVolumeRemaining() * (data.getPrice() - cost.getCost()), "ISK");
+                    }
+                case totalProfitColumn:
+                    {
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
+                        return locale.toCurrencyString(data.getVolumeEntered() * (data.getPrice() - cost.getCost()), "ISK");
+                    }
+                case profitPerItemColumn:
+                    {
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
+                        return locale.toCurrencyString(data.getPrice() - cost.getCost(), "ISK");
+                    }
+                case timeLeftColumn:
+                    {
+                        const auto timeEnd = data.getIssued().addDays(data.getDuration()).toMSecsSinceEpoch() / 1000;
+                        const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
+
+                        if (timeEnd > timeCur)
+                            return secondsToString(timeEnd - timeCur);
+                    }
+                    break;
+                case orderAgeColumn:
+                    {
+                        const auto timeStart = data.getIssued().toMSecsSinceEpoch() / 1000;
+                        const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
+
+                        if (timeCur > timeStart)
+                            return secondsToString(timeCur - timeStart);
+                    }
+                    break;
+                case firstSeenColumn:
+                    return locale.toString(data.getFirstSeen());
+                case stationColumn:
+                    return mDataProvider.getLocationName(data.getLocationId());
+                }
+            }
+            break;
+        case Qt::FontRole:
+            if ((column == statusColumn && data.getDelta() != 0) || (column == statusColumn && data.getState() == MarketOrder::State::Fulfilled))
+            {
+                QFont font;
+                font.setBold(true);
+
+                return font;
+            }
+            break;
+        case Qt::BackgroundRole:
+            if (column == priceColumn)
+            {
+                const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+                if (!price.isNew())
+                {
+                    if (price.getValue() > data.getPrice())
+                        return QColor{255, 192, 192};
+
+                    QSettings settings;
+                    const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
+                    if (price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
+                        return QColor{255, 255, 192};
+                }
+            }
+            break;
+        case Qt::ForegroundRole:
+            switch (column) {
+            case statusColumn:
+                switch (data.getState()) {
+                case MarketOrder::State::Active:
+                    return QColor{Qt::darkGreen};
+                case MarketOrder::State::Closed:
+                    return QColor{Qt::gray};
+                case MarketOrder::State::Pending:
+                    return QColor{Qt::cyan};
+                case MarketOrder::State::Cancelled:
+                case MarketOrder::State::CharacterDeleted:
+                    return QColor{Qt::red};
+                case MarketOrder::State::Fulfilled:
+                    return QColor{0, 64, 0};
+                }
+                break;
+            case priceStatusColumn:
+                return QColor{Qt::darkRed};
+            case profitColumn:
+            case totalProfitColumn:
+            case profitPerItemColumn:
+                return QColor{Qt::darkGreen};
+            }
+            break;
+        case Qt::TextAlignmentRole:
+            if (column == priceStatusColumn)
+                return Qt::AlignHCenter;
+            if (column == volumeColumn)
+                return Qt::AlignRight;
+        }
+
         return QVariant{};
     }
 
@@ -39,35 +299,37 @@ namespace Evernus
         if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
         {
             switch (section) {
-            case 0:
+            case nameColumn:
                 return tr("Name");
-            case 1:
+            case groupColumn:
                 return tr("Group");
-            case 2:
+            case statusColumn:
                 return tr("Status");
-            case 3:
+            case customCostColumn:
                 return tr("Custom cost");
-            case 4:
+            case priceColumn:
                 return tr("Price");
-            case 5:
+            case priceStatusColumn:
                 return tr("Price status");
-            case 6:
+            case volumeColumn:
                 return tr("Volume");
-            case 7:
+            case totalColumn:
                 return tr("Total");
-            case 8:
+            case deltaColumn:
                 return tr("Delta");
-            case 9:
+            case profitColumn:
                 return tr("Profit");
-            case 10:
+            case totalProfitColumn:
                 return tr("Total profit");
-            case 11:
+            case profitPerItemColumn:
                 return tr("Profit per item");
-            case 12:
+            case timeLeftColumn:
                 return tr("Time left");
-            case 13:
+            case orderAgeColumn:
                 return tr("Order age");
-            case 14:
+            case firstSeenColumn:
+                return tr("First issued");
+            case stationColumn:
                 return tr("Station");
             }
         }
@@ -77,7 +339,7 @@ namespace Evernus
 
     QModelIndex MarketOrderSellModel::index(int row, int column, const QModelIndex &parent) const
     {
-        return QModelIndex{};
+        return (hasIndex(row, column, parent)) ? (createIndex(row, column)) : (QModelIndex{});
     }
 
     QModelIndex MarketOrderSellModel::parent(const QModelIndex &index) const
@@ -87,12 +349,15 @@ namespace Evernus
 
     int MarketOrderSellModel::rowCount(const QModelIndex &parent) const
     {
-        return 0;
+        if (parent.isValid())
+            return 0;
+
+        return static_cast<int>(mData.size());
     }
 
-    uint MarketOrderSellModel::getOrderCount() const
+    size_t MarketOrderSellModel::getOrderCount() const
     {
-        return 0;
+        return mData.size();
     }
 
     quint64 MarketOrderSellModel::getVolumeRemaining() const
@@ -123,6 +388,8 @@ namespace Evernus
 
     void MarketOrderSellModel::reset()
     {
-
+        beginResetModel();
+        mData = mOrderProvider.getSellOrders(mCharacterId);
+        endResetModel();
     }
 }

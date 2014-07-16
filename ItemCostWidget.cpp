@@ -119,6 +119,8 @@ namespace Evernus
         mItemCostRepo.remove(id);
         mModel.reset();
 
+        emit costsChanged();
+
         mEditBtn->setDisabled(true);
         mRemoveBtn->setDisabled(true);
     }
@@ -145,6 +147,8 @@ namespace Evernus
         {
             mItemCostRepo.store(cost);
             mModel.reset();
+
+            emit costsChanged();
         }
     }
 }

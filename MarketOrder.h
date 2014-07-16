@@ -35,7 +35,7 @@ namespace Evernus
             Pending,
             CharacterDeleted,
 
-            Archieved = 100
+            Archived = 100
         };
 
         enum class Type

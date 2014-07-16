@@ -29,6 +29,7 @@
 #include "ItemPriceImporterRegistry.h"
 #include "WalletSnapshotRepository.h"
 #include "MarketOrderRepository.h"
+#include "MarketGroupRepository.h"
 #include "CacheTimerRepository.h"
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
@@ -39,6 +40,7 @@
 #include "ItemPriceImporter.h"
 #include "EveTypeRepository.h"
 #include "RefTypeRepository.h"
+#include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "ItemRepository.h"
 #include "AssetProvider.h"
@@ -59,6 +61,7 @@ namespace Evernus
         , public AssetProvider
         , public CacheTimerProvider
         , public MarketOrderProvider
+        , public ItemCostProvider
     {
         Q_OBJECT
 
@@ -67,6 +70,7 @@ namespace Evernus
         virtual ~EvernusApplication() = default;
 
         virtual QString getTypeName(EveType::IdType id) const override;
+        virtual QString getTypeMarketGroupName(EveType::IdType id) const override;
         virtual const std::unordered_map<EveType::IdType, QString> &getAllTypeNames() const override;
 
         virtual double getTypeVolume(EveType::IdType id) const override;
@@ -95,6 +99,8 @@ namespace Evernus
         virtual std::vector<MarketOrder> getSellOrders(Character::IdType characterId) const override;
         virtual std::vector<MarketOrder> getBuyOrders(Character::IdType characterId) const override;
         virtual std::vector<MarketOrder> getArchivedOrders(Character::IdType characterId) const override;
+
+        virtual ItemCost fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const override;
 
         const KeyRepository &getKeyRepository() const noexcept;
         const CharacterRepository &getCharacterRepository() const noexcept;
@@ -135,6 +141,8 @@ namespace Evernus
 
         void updateAssetsValue(Character::IdType id);
 
+        void resetItemCostCache();
+
     private slots:
         void scheduleCharacterUpdate();
         void updateCharacters();
@@ -144,6 +152,8 @@ namespace Evernus
 
     private:
         typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
+        typedef std::pair<Character::IdType, EveType::IdType> CharacterTypePair;
+
         typedef std::unordered_map<Character::IdType, QDateTime> CacheTimerMap;
         typedef std::unordered_map<Character::IdType, std::vector<MarketOrder>> MarketOrderMap;
 
@@ -167,6 +177,7 @@ namespace Evernus
         std::unique_ptr<ItemCostRepository> mItemCostRepository;
         std::unique_ptr<MarketOrderValueSnapshotRepository> mMarketOrderValueSnapshotRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
+        std::unique_ptr<MarketGroupRepository> mMarketGroupRepository;
 
         APIManager mAPIManager;
 
@@ -174,10 +185,10 @@ namespace Evernus
         uint mCurrentItemPriceImportTask = TaskConstants::invalidTask;
 
         bool mCharacterUpdateScheduled = false;
-        mutable bool mCachedAllTypes = false;
 
+        mutable std::unordered_map<EveType::IdType, EveType> mTypeCache;
         mutable std::unordered_map<EveType::IdType, QString> mTypeNameCache;
-        mutable std::unordered_map<EveType::IdType, double> mTypeVolumeCache;
+        mutable std::unordered_map<EveType::IdType, QString> mTypeMarketGroupNameCache;
         mutable std::unordered_map<quint64, QString> mLocationNameCache;
         mutable std::unordered_map<TypeLocationPair, ItemPrice, boost::hash<TypeLocationPair>> mSellPrices;
 
@@ -196,6 +207,8 @@ namespace Evernus
         mutable MarketOrderMap mSellOrders;
         mutable MarketOrderMap mBuyOrders;
         mutable MarketOrderMap mArchivedOrders;
+
+        mutable std::unordered_map<CharacterTypePair, ItemCost, boost::hash<CharacterTypePair>> mItemCostCache;
 
         void createDb();
         void createDbSchema();

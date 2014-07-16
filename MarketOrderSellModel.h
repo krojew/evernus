@@ -14,18 +14,28 @@
  */
 #pragma once
 
+#include <vector>
+
 #include "MarketOrderModel.h"
+#include "MarketOrder.h"
 #include "Character.h"
 
 namespace Evernus
 {
-    class MarketOrderRepository;
+    class MarketOrderProvider;
+    class ItemCostProvider;
+    class EveDataProvider;
+    class MarketOrder;
 
     class MarketOrderSellModel
         : public MarketOrderModel
     {
     public:
-        explicit MarketOrderSellModel(const MarketOrderRepository &orderRepo, QObject *parent = nullptr);
+        explicit MarketOrderSellModel(const MarketOrderProvider &orderProvider,
+                                      const EveDataProvider &dataProvider,
+                                      const ItemCostProvider &itemCostProvider,
+                                      QObject *parent = nullptr);
+        virtual ~MarketOrderSellModel() = default;
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
         virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -34,7 +44,7 @@ namespace Evernus
         virtual QModelIndex parent(const QModelIndex &index) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
-        virtual uint getOrderCount() const override;
+        virtual size_t getOrderCount() const override;
         virtual quint64 getVolumeRemaining() const override;
         virtual quint64 getVolumeEntered() const override;
         virtual double getTotalISK() const override;
@@ -45,7 +55,28 @@ namespace Evernus
         void reset();
 
     private:
-        const MarketOrderRepository &mOrderRepo;
+        static const auto nameColumn = 0;
+        static const auto groupColumn = 1;
+        static const auto statusColumn = 2;
+        static const auto customCostColumn = 3;
+        static const auto priceColumn = 4;
+        static const auto priceStatusColumn = 5;
+        static const auto volumeColumn = 6;
+        static const auto totalColumn = 7;
+        static const auto deltaColumn = 8;
+        static const auto profitColumn = 9;
+        static const auto totalProfitColumn = 10;
+        static const auto profitPerItemColumn = 11;
+        static const auto timeLeftColumn = 12;
+        static const auto orderAgeColumn = 13;
+        static const auto firstSeenColumn = 14;
+        static const auto stationColumn = 15;
+
+        const MarketOrderProvider &mOrderProvider;
+        const EveDataProvider &mDataProvider;
+        const ItemCostProvider &mItemCostProvider;
+
+        std::vector<MarketOrder> mData;
 
         Character::IdType mCharacterId = Character::invalidId;
     };

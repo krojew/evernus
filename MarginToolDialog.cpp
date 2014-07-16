@@ -43,25 +43,26 @@
 #   include <windows.h>
 #endif
 
-#include "ItemCostRepository.h"
 #include "MarginToolSettings.h"
+#include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "PathSettings.h"
 #include "Repository.h"
 #include "PathUtils.h"
+#include "ItemCost.h"
 
 #include "MarginToolDialog.h"
 
 namespace Evernus
 {
     MarginToolDialog::MarginToolDialog(const Repository<Character> &characterRepository,
-                                       const ItemCostRepository &itemCostRepository,
+                                       const ItemCostProvider &itemCostProvider,
                                        const EveDataProvider &dataProvider,
                                        QWidget *parent)
         : QDialog{parent}
         , mCharacterRepository{characterRepository}
-        , mItemCostRepository{itemCostRepository}
+        , mItemCostProvider{itemCostProvider}
         , mDataProvider{dataProvider}
     {
         QSettings settings;
@@ -426,15 +427,9 @@ namespace Evernus
 
             if (settings.value(PriceSettings::preferCustomItemCostKey, true).toBool())
             {
-                try
-                {
-                    const auto cost = mItemCostRepository.fetchForCharacterAndType(mCharacterId, typeId);
+                const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, typeId);
+                if (!cost.isNew())
                     buy = cost.getCost() - priceDelta;
-
-                }
-                catch (const ItemCostRepository::NotFoundException &)
-                {
-                }
             }
 
             if (settings.value(PathSettings::deleteLogsKey, true).toBool())

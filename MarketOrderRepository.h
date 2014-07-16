@@ -40,8 +40,9 @@ namespace Evernus
 
         struct OrderState
         {
-            MarketOrder::State mState = MarketOrder::State::Archieved;
+            MarketOrder::State mState = MarketOrder::State::Archived;
             uint mVolumeRemaining = 0;
+            QDateTime mFirstSeen;
         };
 
         typedef std::unordered_map<MarketOrder::IdType, OrderState> OrderStateMap;
@@ -64,6 +65,7 @@ namespace Evernus
         void archive(const OrderIdList &list) const;
 
         OrderList fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const;
+        OrderList fetchArchivedForCharacter(Character::IdType characterId) const;
 
     private:
         virtual QStringList getColumns() const override;

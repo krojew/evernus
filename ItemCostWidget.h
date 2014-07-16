@@ -43,6 +43,9 @@ namespace Evernus
                        QWidget *parent = nullptr);
         virtual ~ItemCostWidget() = default;
 
+    signals:
+        void costsChanged();
+
     public slots:
         void setCharacter(Character::IdType id);
 

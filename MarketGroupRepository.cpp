@@ -46,6 +46,21 @@ namespace Evernus
         return group;
     }
 
+    MarketGroup MarketGroupRepository::findParent(MarketGroup::IdType id) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE %2 = (SELECT parentGroupID FROM %1 WHERE %2 = ?)"}
+            .arg(getTableName())
+            .arg(getIdColumn()));
+        query.bindValue(0, id);
+
+        DatabaseUtils::execQuery(query);
+
+        if (!query.next())
+            throw NotFoundException{};
+
+        return populate(query.record());
+    }
+
     QStringList MarketGroupRepository::getColumns() const
     {
         return QStringList{}

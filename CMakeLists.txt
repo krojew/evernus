@@ -157,6 +157,7 @@ add_executable(
     ItemCostEditDialog.h
     ItemCostModel.cpp
     ItemCostModel.h
+    ItemCostProvider.h
     ItemCostRepository.cpp
     ItemCostRepository.h
     ItemCostWidget.cpp

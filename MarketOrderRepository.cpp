@@ -84,6 +84,7 @@ namespace Evernus
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_state ON %1(character_id, state)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_type_state ON %1(character_id, type, state)"}.arg(getTableName()));
     }
 
     MarketOrderRepository::AggrData MarketOrderRepository::getAggregatedData(Character::IdType characterId) const
@@ -124,7 +125,9 @@ namespace Evernus
     {
         OrderStateMap result;
 
-        auto query = prepare(QString{"SELECT %1, state, volume_remaining FROM %2 WHERE character_id = ?"}.arg(getIdColumn()).arg(getTableName()));
+        auto query = prepare(QString{"SELECT %1, state, volume_remaining, first_seen FROM %2 WHERE character_id = ?"}
+            .arg(getIdColumn())
+            .arg(getTableName()));
         query.bindValue(0, characterId);
 
         DatabaseUtils::execQuery(query);
@@ -134,6 +137,8 @@ namespace Evernus
             OrderState state;
             state.mState = static_cast<MarketOrder::State>(query.value(1).toInt());
             state.mVolumeRemaining = query.value(2).toUInt();
+            state.mFirstSeen = query.value(3).toDateTime();
+            state.mFirstSeen.setTimeSpec(Qt::UTC);
 
             result.emplace(query.value(0).value<MarketOrder::IdType>(), std::move(state));
         }
@@ -150,7 +155,7 @@ namespace Evernus
             << "UPDATE "
             << getTableName()
             << " SET state = "
-            << static_cast<int>(MarketOrder::State::Archieved)
+            << static_cast<int>(MarketOrder::State::Archived)
             << " WHERE "
             << getIdColumn()
             << " IN (";
@@ -174,8 +179,30 @@ namespace Evernus
 
     MarketOrderRepository::OrderList MarketOrderRepository::fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND type = "}.arg(getTableName()));
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND type = ? AND state != ?"}.arg(getTableName()));
         query.bindValue(0, characterId);
+        query.bindValue(1, static_cast<int>(type));
+        query.bindValue(2, static_cast<int>(MarketOrder::State::Archived));
+
+        DatabaseUtils::execQuery(query);
+
+        OrderList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
+    MarketOrderRepository::OrderList MarketOrderRepository::fetchArchivedForCharacter(Character::IdType characterId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND state = ?"}.arg(getTableName()));
+        query.bindValue(0, characterId);
+        query.bindValue(1, static_cast<int>(MarketOrder::State::Archived));
 
         DatabaseUtils::execQuery(query);
 

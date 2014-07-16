@@ -59,9 +59,11 @@ namespace Evernus
                            const WalletTransactionRepository &walletTransactionRepo,
                            const MarketOrderRepository &orderRepo,
                            const ItemCostRepository &itemCostRepo,
+                           const MarketOrderProvider &orderProvider,
                            const AssetProvider &assetProvider,
                            const EveDataProvider &eveDataProvider,
                            const CacheTimerProvider &cacheTimerProvider,
+                           const ItemCostProvider &itemCostProvider,
                            QWidget *parent,
                            Qt::WindowFlags flags)
         : QMainWindow{parent, flags}
@@ -73,8 +75,10 @@ namespace Evernus
         , mWalletJournalRepository{walletJournalRepo}
         , mWalletTransactionRepository{walletTransactionRepo}
         , mMarketOrderRepository{orderRepo}
+        , mOrderProvider{orderProvider}
         , mItemCostRepository{itemCostRepo}
         , mAssetProvider{assetProvider}
+        , mItemCostProvider{itemCostProvider}
         , mEveDataProvider{eveDataProvider}
         , mCacheTimerProvider{cacheTimerProvider}
     {
@@ -118,7 +122,7 @@ namespace Evernus
     {
         if (mMarginToolDialog.isNull())
         {
-            mMarginToolDialog = new MarginToolDialog{mCharacterRepository, mItemCostRepository, mEveDataProvider};
+            mMarginToolDialog = new MarginToolDialog{mCharacterRepository, mItemCostProvider, mEveDataProvider};
             mMarginToolDialog->setCharacter(mCurrentCharacterId);
             connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, mMarginToolDialog, &MarginToolDialog::setCharacter);
             connect(mMarginToolDialog, &MarginToolDialog::hidden, this, [this]() {
@@ -136,7 +140,7 @@ namespace Evernus
     {
         QMessageBox::about(this,
                            tr("About Evernus"),
-                           tr("Evernus %1\nCreated by Pete Butcher\nAll donations are welcome :)")
+                           tr("Evernus %1\nCreated by Pete Butcher\nAll donations are welcome :)\nhttp://evernus.com")
                                .arg(QCoreApplication::applicationVersion()));
     }
 
@@ -337,7 +341,7 @@ namespace Evernus
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::itemPricesChanged, assetsTab, &AssetsWidget::updateData);
 
-        auto orderTab = new MarketOrderWidget{mMarketOrderRepository, mCacheTimerProvider, this};
+        auto orderTab = new MarketOrderWidget{mOrderProvider, mCacheTimerProvider, mEveDataProvider, mItemCostProvider, this};
         addTab(orderTab, tr("Orders"));
         connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importMarketOrders);
         connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
@@ -354,6 +358,7 @@ namespace Evernus
 
         auto itemCostTab = new ItemCostWidget{mItemCostRepository, mEveDataProvider, this};
         addTab(itemCostTab, tr("Item costs"));
+        connect(itemCostTab, &ItemCostWidget::costsChanged, this, &MainWindow::itemCostsChanged);
     }
 
     void MainWindow::createStatusBar()

@@ -17,7 +17,6 @@
 #include <QTabWidget>
 
 #include "MarketOrderViewWithTransactions.h"
-#include "MarketOrderRepository.h"
 #include "CacheTimerProvider.h"
 #include "ButtonWithTimer.h"
 
@@ -25,12 +24,14 @@
 
 namespace Evernus
 {
-    MarketOrderWidget::MarketOrderWidget(const MarketOrderRepository &orderRepo,
+    MarketOrderWidget::MarketOrderWidget(const MarketOrderProvider &orderProvider,
                                          const CacheTimerProvider &cacheTimerProvider,
+                                         const EveDataProvider &dataProvider,
+                                         const ItemCostProvider &itemCostProvider,
                                          QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::MarketOrders),
                                parent}
-        , mSellModel{orderRepo}
+        , mSellModel{orderProvider, dataProvider, itemCostProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -45,17 +46,19 @@ namespace Evernus
         mainLayout->addWidget(mainTabs);
 
         auto sellView = new MarketOrderViewWithTransactions{this};
-        mainTabs->addTab(sellView, tr("Sell"));
+        mainTabs->addTab(sellView, QIcon{":/images/arrow_out.png"}, tr("Sell"));
         sellView->setModel(&mSellModel);
     }
 
     void MarketOrderWidget::updateData()
     {
         refreshImportTimer();
+
+        mSellModel.reset();
     }
 
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)
     {
-
+        mSellModel.setCharacter(id);
     }
 }

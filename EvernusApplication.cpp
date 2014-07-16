@@ -38,6 +38,7 @@ namespace Evernus
         , AssetProvider{}
         , CacheTimerProvider{}
         , MarketOrderProvider{}
+        , ItemCostProvider{}
         , mMainDb{QSqlDatabase::addDatabase("QSQLITE", "main")}
         , mEveDb{QSqlDatabase::addDatabase("QSQLITE", "eve")}
         , mAPIManager{*this}
@@ -71,52 +72,87 @@ namespace Evernus
 
     QString EvernusApplication::getTypeName(EveType::IdType id) const
     {
-        const auto it = mTypeNameCache.find(id);
-        if (it != std::end(mTypeNameCache))
-            return it->second;
+        const auto it = mTypeCache.find(id);
+        if (it != std::end(mTypeCache))
+            return it->second.getName();
 
-        QString result;
+        EveType result;
 
         try
         {
-            result = mEveTypeRepository->find(id).getName();
+            result = mEveTypeRepository->find(id);
         }
         catch (const EveTypeRepository::NotFoundException &)
         {
         }
 
-        mTypeNameCache.emplace(id, result);
+        mTypeCache.emplace(id, result);
+        return result.getName();
+    }
+
+    QString EvernusApplication::getTypeMarketGroupName(EveType::IdType id) const
+    {
+        const auto it = mTypeMarketGroupNameCache.find(id);
+        if (it != std::end(mTypeMarketGroupNameCache))
+            return it->second;
+
+        EveType type;
+
+        try
+        {
+            type = mEveTypeRepository->find(id);
+        }
+        catch (const EveTypeRepository::NotFoundException &)
+        {
+        }
+
+        mTypeCache.emplace(id, type);
+
+        QString result;
+
+        const auto marketGroupId = type.getMarketGroupId();
+        if (marketGroupId)
+        {
+            try
+            {
+                result = mMarketGroupRepository->findParent(*marketGroupId).getName();
+            }
+            catch (const MarketGroupRepository::NotFoundException &)
+            {
+            }
+        }
+
+        mTypeMarketGroupNameCache.emplace(id, result);
         return result;
     }
 
     const std::unordered_map<EveType::IdType, QString> &EvernusApplication::getAllTypeNames() const
     {
-        if (mCachedAllTypes)
+        if (!mTypeNameCache.empty())
             return mTypeNameCache;
 
         mTypeNameCache = mEveTypeRepository->fetchAllNames();
-        mCachedAllTypes = true;
         return mTypeNameCache;
     }
 
     double EvernusApplication::getTypeVolume(EveType::IdType id) const
     {
-        const auto it = mTypeVolumeCache.find(id);
-        if (it != std::end(mTypeVolumeCache))
-            return it->second;
+        const auto it = mTypeCache.find(id);
+        if (it != std::end(mTypeCache))
+            return it->second.getVolume();
 
-        auto result = 0.;
+        EveType result;
 
         try
         {
-            result = mEveTypeRepository->find(id).getVolume();
+            result = mEveTypeRepository->find(id);
         }
         catch (const EveTypeRepository::NotFoundException &)
         {
         }
 
-        mTypeVolumeCache.emplace(id, result);
-        return result;
+        mTypeCache.emplace(id, result);
+        return result.getVolume();
     }
 
     ItemPrice EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId) const
@@ -349,6 +385,26 @@ namespace Evernus
             it = mArchivedOrders.emplace(characterId, mMarketOrderRepository->fetchArchivedForCharacter(characterId)).first;
 
         return it->second;
+    }
+
+    ItemCost EvernusApplication::fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const
+    {
+        const auto it = mItemCostCache.find(std::make_pair(characterId, typeId));
+        if (it != std::end(mItemCostCache))
+            return it->second;
+
+        ItemCost cost;
+
+        try
+        {
+            cost = mItemCostRepository->fetchForCharacterAndType(characterId, typeId);
+        }
+        catch (const ItemCostRepository::NotFoundException &)
+        {
+        }
+
+        mItemCostCache.emplace(std::make_pair(characterId, typeId), cost);
+        return cost;
     }
 
     const KeyRepository &EvernusApplication::getKeyRepository() const noexcept
@@ -660,16 +716,18 @@ namespace Evernus
                     if (cIt != std::end(curStates))
                     {
                         it->setDelta(it->getVolumeRemaining() - cIt->second.mVolumeRemaining);
+                        it->setFirstSeen(cIt->second.mFirstSeen);
+
                         if (it->getState() != Evernus::MarketOrder::State::Active)
                         {
-                            if (cIt->second.mState == Evernus::MarketOrder::State::Archieved)
+                            if (cIt->second.mState == Evernus::MarketOrder::State::Archived)
                             {
                                 it = data.erase(it);
                             }
                             else
                             {
                                 if (cIt->second.mState != Evernus::MarketOrder::State::Active)
-                                    it->setState(Evernus::MarketOrder::State::Archieved);
+                                    it->setState(Evernus::MarketOrder::State::Archived);
                                 else
                                     addToCache(*it);
 
@@ -758,6 +816,11 @@ namespace Evernus
         computeAssetListSellValue(fetchAssetsForCharacter(id));
     }
 
+    void EvernusApplication::resetItemCostCache()
+    {
+        mItemCostCache.clear();
+    }
+
     void EvernusApplication::scheduleCharacterUpdate()
     {
         if (mCharacterUpdateScheduled)
@@ -834,6 +897,7 @@ namespace Evernus
         mItemCostRepository.reset(new ItemCostRepository{mMainDb});
         mMarketOrderValueSnapshotRepository.reset(new MarketOrderValueSnapshotRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
+        mMarketGroupRepository.reset(new MarketGroupRepository{mEveDb});
     }
 
     void EvernusApplication::createDbSchema()

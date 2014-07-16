@@ -16,6 +16,8 @@
 
 #include <unordered_map>
 
+#include <QDateTime>
+
 #include "EveType.h"
 
 namespace Evernus
@@ -29,6 +31,7 @@ namespace Evernus
         virtual ~EveDataProvider() = default;
 
         virtual QString getTypeName(EveType::IdType id) const = 0;
+        virtual QString getTypeMarketGroupName(EveType::IdType id) const = 0;
         virtual const std::unordered_map<EveType::IdType, QString> &getAllTypeNames() const = 0;
 
         virtual double getTypeVolume(EveType::IdType id) const = 0;
