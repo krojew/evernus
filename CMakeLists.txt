@@ -196,6 +196,7 @@ add_executable(
     MarketOrder.cpp
     MarketOrder.h
     MarketOrderModel.h
+    MarketOrderProvider.h
     MarketOrderRepository.cpp
     MarketOrderRepository.h
     MarketOrders.h

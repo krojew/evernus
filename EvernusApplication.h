@@ -33,6 +33,7 @@
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
 #include "ItemPriceRepository.h"
+#include "MarketOrderProvider.h"
 #include "ItemCostRepository.h"
 #include "CacheTimerProvider.h"
 #include "ItemPriceImporter.h"
@@ -57,6 +58,7 @@ namespace Evernus
         , public ItemPriceImporterRegistry
         , public AssetProvider
         , public CacheTimerProvider
+        , public MarketOrderProvider
     {
         Q_OBJECT
 
@@ -89,6 +91,10 @@ namespace Evernus
 
         virtual QDateTime getLocalCacheTimer(Character::IdType id, TimerType type) const override;
         virtual void setUtcCacheTimer(Character::IdType id, TimerType type, const QDateTime &dt) override;
+
+        virtual std::vector<MarketOrder> getSellOrders(Character::IdType characterId) const override;
+        virtual std::vector<MarketOrder> getBuyOrders(Character::IdType characterId) const override;
+        virtual std::vector<MarketOrder> getArchivedOrders(Character::IdType characterId) const override;
 
         const KeyRepository &getKeyRepository() const noexcept;
         const CharacterRepository &getCharacterRepository() const noexcept;
@@ -139,6 +145,7 @@ namespace Evernus
     private:
         typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
         typedef std::unordered_map<Character::IdType, QDateTime> CacheTimerMap;
+        typedef std::unordered_map<Character::IdType, std::vector<MarketOrder>> MarketOrderMap;
 
         static const QString versionKey;
 
@@ -185,6 +192,10 @@ namespace Evernus
         CacheTimerMap mWalletJournalLocalCacheTimes;
         CacheTimerMap mWalletTransactionsLocalCacheTimes;
         CacheTimerMap mMarketOrdersLocalCacheTimes;
+
+        mutable MarketOrderMap mSellOrders;
+        mutable MarketOrderMap mBuyOrders;
+        mutable MarketOrderMap mArchivedOrders;
 
         void createDb();
         void createDbSchema();

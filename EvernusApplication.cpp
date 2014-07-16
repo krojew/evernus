@@ -37,6 +37,7 @@ namespace Evernus
         , ItemPriceImporterRegistry{}
         , AssetProvider{}
         , CacheTimerProvider{}
+        , MarketOrderProvider{}
         , mMainDb{QSqlDatabase::addDatabase("QSQLITE", "main")}
         , mEveDb{QSqlDatabase::addDatabase("QSQLITE", "eve")}
         , mAPIManager{*this}
@@ -321,6 +322,33 @@ namespace Evernus
         timer.setCacheUntil(dt);
 
         mCacheTimerRepository->store(timer);
+    }
+
+    std::vector<MarketOrder> EvernusApplication::getSellOrders(Character::IdType characterId) const
+    {
+        auto it = mSellOrders.find(characterId);
+        if (it == std::end(mSellOrders))
+            it = mSellOrders.emplace(characterId, mMarketOrderRepository->fetchForCharacter(characterId, MarketOrder::Type::Sell)).first;
+
+        return it->second;
+    }
+
+    std::vector<MarketOrder> EvernusApplication::getBuyOrders(Character::IdType characterId) const
+    {
+        auto it = mBuyOrders.find(characterId);
+        if (it == std::end(mBuyOrders))
+            it = mBuyOrders.emplace(characterId, mMarketOrderRepository->fetchForCharacter(characterId, MarketOrder::Type::Buy)).first;
+
+        return it->second;
+    }
+
+    std::vector<MarketOrder> EvernusApplication::getArchivedOrders(Character::IdType characterId) const
+    {
+        auto it = mArchivedOrders.find(characterId);
+        if (it == std::end(mArchivedOrders))
+            it = mArchivedOrders.emplace(characterId, mMarketOrderRepository->fetchArchivedForCharacter(characterId)).first;
+
+        return it->second;
     }
 
     const KeyRepository &EvernusApplication::getKeyRepository() const noexcept
@@ -613,6 +641,17 @@ namespace Evernus
                 for (const auto &cur : curStates)
                     idsToArchive.emplace(cur.first);
 
+                mSellOrders.clear();
+                mBuyOrders.clear();
+                mArchivedOrders.clear();
+
+                const auto addToCache = [id, this](const auto &order) {
+                    if (order.getType() == Evernus::MarketOrder::Type::Buy)
+                        mBuyOrders[id].emplace_back(order);
+                    else
+                        mSellOrders[id].emplace_back(order);
+                };
+
                 for (auto it = std::begin(data); it != std::end(data);)
                 {
                     idsToArchive.erase(it->getId());
@@ -631,17 +670,21 @@ namespace Evernus
                             {
                                 if (cIt->second.mState != Evernus::MarketOrder::State::Active)
                                     it->setState(Evernus::MarketOrder::State::Archieved);
+                                else
+                                    addToCache(*it);
 
                                 ++it;
                             }
                         }
                         else
                         {
+                            addToCache(*it);
                             ++it;
                         }
                     }
                     else
                     {
+                        addToCache(*it);
                         ++it;
                     }
                 }
