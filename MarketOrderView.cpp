@@ -41,7 +41,6 @@ namespace Evernus
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
         mView->setSortingEnabled(true);
-        mView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
         auto infoLayout = new QHBoxLayout{};
         mainLayout->addLayout(infoLayout);
@@ -103,5 +102,7 @@ namespace Evernus
             .arg(curLocale.toString(volRemaining * 100. / volEntered, 'f', 1)));
         mTotalISKLabel->setText(curLocale.toCurrencyString(mSource->getTotalISK(), "ISK"));
         mTotalSizeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(mSource->getTotalSize(), 'f', 2)));
+
+        mView->header()->resizeSections(QHeaderView::ResizeToContents);
     }
 }

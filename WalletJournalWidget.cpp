@@ -54,12 +54,11 @@ namespace Evernus
         mFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
         mFilterModel->setSourceModel(&mModel);
 
-        auto journalView = new QTreeView{this};
-        mainLayout->addWidget(journalView, 1);
-        journalView->setModel(mFilterModel);
-        journalView->setSortingEnabled(true);
-        journalView->sortByColumn(1, Qt::DescendingOrder);
-        journalView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        mView = new QTreeView{this};
+        mainLayout->addWidget(mView, 1);
+        mView->setModel(mFilterModel);
+        mView->setSortingEnabled(true);
+        mView->sortByColumn(1, Qt::DescendingOrder);
     }
 
     void WalletJournalWidget::updateData()
@@ -86,5 +85,7 @@ namespace Evernus
         mFilter->blockSignals(false);
 
         mModel.setFilter(id, fromDate, tillDate, EntryType::All);
+
+        mView->header()->resizeSections(QHeaderView::ResizeToContents);
     }
 }

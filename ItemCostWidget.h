@@ -24,6 +24,7 @@ class QSortFilterProxyModel;
 class QItemSelection;
 class QPushButton;
 class QLineEdit;
+class QTreeView;
 
 namespace Evernus
 {
@@ -67,6 +68,8 @@ namespace Evernus
         QPushButton *mRemoveBtn = nullptr;
 
         QLineEdit *mFilterEdit = nullptr;
+
+        QTreeView *mView = nullptr;
 
         ItemCostModel mModel;
         QSortFilterProxyModel mProxy;

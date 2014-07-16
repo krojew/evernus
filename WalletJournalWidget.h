@@ -18,6 +18,7 @@
 #include "WalletJournalModel.h"
 
 class QSortFilterProxyModel;
+class QTreeView;
 
 namespace Evernus
 {
@@ -50,6 +51,8 @@ namespace Evernus
         QSortFilterProxyModel *mFilterModel = nullptr;
 
         WalletEntryFilterWidget *mFilter = nullptr;
+
+        QTreeView *mView = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
     };

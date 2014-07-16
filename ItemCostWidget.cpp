@@ -67,12 +67,11 @@ namespace Evernus
         mProxy.setSourceModel(&mModel);
         mProxy.setFilterCaseSensitivity(Qt::CaseInsensitive);
 
-        auto view = new QTreeView{this};
-        mainLayout->addWidget(view, 1);
-        view->setModel(&mProxy);
-        view->setSortingEnabled(true);
-        view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
-        connect(view->selectionModel(), &QItemSelectionModel::selectionChanged,
+        mView = new QTreeView{this};
+        mainLayout->addWidget(mView, 1);
+        mView->setModel(&mProxy);
+        mView->setSortingEnabled(true);
+        connect(mView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &ItemCostWidget::selectCost);
     }
 
@@ -80,6 +79,8 @@ namespace Evernus
     {
         mCharacterId = id;
         mModel.setCharacter(mCharacterId);
+
+        mView->header()->resizeSections(QHeaderView::ResizeToContents);
 
         mAddBtn->setDisabled(mCharacterId == Character::invalidId);
     }
