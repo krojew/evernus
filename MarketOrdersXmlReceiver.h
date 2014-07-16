@@ -20,7 +20,7 @@
 namespace Evernus
 {
     template<>
-    void APIXmlReceiver<MarketOrders::value_type>::startElement(const QXmlName &name);
+    void APIXmlReceiver<MarketOrders::value_type>::endElement();
     template<>
     void APIXmlReceiver<MarketOrders::value_type>::attribute(const QXmlName &name, const QStringRef &value);
 }

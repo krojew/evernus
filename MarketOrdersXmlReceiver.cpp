@@ -19,12 +19,10 @@
 namespace Evernus
 {
     template<>
-    void APIXmlReceiver<MarketOrders::value_type>::startElement(const QXmlName &name)
+    void APIXmlReceiver<MarketOrders::value_type>::endElement()
     {
-        Q_UNUSED(name);
-
-        mCurrentElement.reset(new MarketOrders::value_type{});
-        mCurrentElement->setFirstSeen(QDateTime::currentDateTimeUtc());
+        mCurrentElement->setFirstSeen(mCurrentElement->getIssued());
+        mContainer.emplace_back(std::move(*mCurrentElement));
     }
 
     template<>
