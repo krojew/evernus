@@ -78,6 +78,12 @@ namespace Evernus
 
         std::vector<MarketOrder> mData;
 
+        size_t mTotalOrders = 0;
+        quint64 mVolumeRemaining = 0;
+        quint64 mVolumeEntered = 0;
+        double mTotalISK = 0.;
+        double mTotalSize = 0.;
+
         Character::IdType mCharacterId = Character::invalidId;
     };
 }

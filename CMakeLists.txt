@@ -45,6 +45,7 @@ qt5_wrap_cpp(
     MarginToolDialog.h
     MarketLogItemPriceImporter.h
     MarketLogItemPriceImporterThread.h
+    MarketOrderView.h
     MarketOrderWidget.h
     MenuBarWidget.h
     NetworkPreferencesWidget.h

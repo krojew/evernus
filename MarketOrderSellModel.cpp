@@ -357,27 +357,27 @@ namespace Evernus
 
     size_t MarketOrderSellModel::getOrderCount() const
     {
-        return mData.size();
+        return mTotalOrders;
     }
 
     quint64 MarketOrderSellModel::getVolumeRemaining() const
     {
-        return 0;
+        return mVolumeRemaining;
     }
 
     quint64 MarketOrderSellModel::getVolumeEntered() const
     {
-        return 0;
+        return mVolumeEntered;
     }
 
     double MarketOrderSellModel::getTotalISK() const
     {
-        return 0.;
+        return mTotalISK;
     }
 
     double MarketOrderSellModel::getTotalSize() const
     {
-        return 0.;
+        return mTotalSize;
     }
 
     void MarketOrderSellModel::setCharacter(Character::IdType id)
@@ -389,7 +389,27 @@ namespace Evernus
     void MarketOrderSellModel::reset()
     {
         beginResetModel();
+
         mData = mOrderProvider.getSellOrders(mCharacterId);
+
+        mVolumeRemaining = 0;
+        mVolumeEntered = 0;
+        mTotalISK = 0.;
+        mTotalSize = 0.;
+
+        for (const auto &order : mData)
+        {
+            if (order.getState() != MarketOrder::State::Active)
+                continue;
+
+            mVolumeRemaining += order.getVolumeRemaining();
+            mVolumeEntered += order.getVolumeEntered();
+            mTotalISK += order.getPrice() * order.getVolumeRemaining();
+            mTotalSize += mDataProvider.getTypeVolume(order.getTypeId()) * order.getVolumeRemaining();
+
+            ++mTotalOrders;
+        }
+
         endResetModel();
     }
 }

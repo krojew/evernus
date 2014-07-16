@@ -18,6 +18,7 @@
 #include <QWidget>
 
 class QTreeView;
+class QLabel;
 
 namespace Evernus
 {
@@ -26,15 +27,26 @@ namespace Evernus
     class MarketOrderView
         : public QWidget
     {
+        Q_OBJECT
+
     public:
         explicit MarketOrderView(QWidget *parent = nullptr);
         virtual ~MarketOrderView() = default;
 
         void setModel(MarketOrderModel *model);
 
+    public slots:
+        void updateInfo();
+
     private:
         QTreeView *mView = nullptr;
 
+        QLabel *mTotalOrdersLabel = nullptr;
+        QLabel *mVolumeLabel = nullptr;
+        QLabel *mTotalISKLabel = nullptr;
+        QLabel *mTotalSizeLabel = nullptr;
+
+        MarketOrderModel *mSource = nullptr;
         QSortFilterProxyModel mProxy;
     };
 }

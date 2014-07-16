@@ -13,8 +13,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QHeaderView>
 #include <QTreeView>
+#include <QLabel>
+#include <QFont>
 
 #include "MarketOrderModel.h"
 
@@ -25,6 +28,9 @@ namespace Evernus
     MarketOrderView::MarketOrderView(QWidget *parent)
         : QWidget{parent}
     {
+        QFont font;
+        font.setBold(true);
+
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
@@ -36,11 +42,66 @@ namespace Evernus
         mView->setModel(&mProxy);
         mView->setSortingEnabled(true);
         mView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+        auto infoLayout = new QHBoxLayout{};
+        mainLayout->addLayout(infoLayout);
+
+        infoLayout->addWidget(new QLabel{tr("Orders:"), this});
+
+        mTotalOrdersLabel = new QLabel{this};
+        infoLayout->addWidget(mTotalOrdersLabel);
+        mTotalOrdersLabel->setFont(font);
+
+        infoLayout->addWidget(new QLabel{tr("Total volume:"), this});
+
+        mVolumeLabel = new QLabel{this};
+        infoLayout->addWidget(mVolumeLabel);
+        mVolumeLabel->setFont(font);
+
+        infoLayout->addWidget(new QLabel{tr("Total ISK in orders:"), this});
+
+        mTotalISKLabel = new QLabel{this};
+        infoLayout->addWidget(mTotalISKLabel);
+        mTotalISKLabel->setFont(font);
+
+        infoLayout->addWidget(new QLabel{tr("Total size:"), this});
+
+        mTotalSizeLabel = new QLabel{this};
+        infoLayout->addWidget(mTotalSizeLabel);
+        mTotalSizeLabel->setFont(font);
+
+        infoLayout->addStretch();
     }
 
     void MarketOrderView::setModel(MarketOrderModel *model)
     {
-        mProxy.setSourceModel(model);
+        mSource = model;
+
+        auto curModel = mProxy.sourceModel();
+        if (curModel != nullptr)
+            curModel->disconnect(this, SLOT(updateInfo()));
+
+        mProxy.setSourceModel(mSource);
         mProxy.sort(0);
+
+        connect(mSource, &MarketOrderModel::modelReset, this, &MarketOrderView::updateInfo);
+
+        updateInfo();
+    }
+
+    void MarketOrderView::updateInfo()
+    {
+        const auto volRemaining = mSource->getVolumeRemaining();
+        const auto volEntered = mSource->getVolumeEntered();
+
+        const auto curLocale = locale();
+
+        mTotalOrdersLabel->setText(curLocale.toString(mSource->getOrderCount()));
+        mVolumeLabel->setText(QString{"%1/%2 (%3%)"}
+            .arg(curLocale.toString(volRemaining))
+            .arg(curLocale.toString(volEntered))
+            .arg(curLocale.toString(volRemaining * 100. / volEntered, 'f', 1)));
+        mTotalISKLabel->setText(curLocale.toCurrencyString(mSource->getTotalISK(), "ISK"));
+        mTotalSizeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(mSource->getTotalSize(), 'f', 2)));
     }
 }
