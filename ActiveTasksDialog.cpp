@@ -19,6 +19,9 @@
 #include <QVBoxLayout>
 #include <QCheckBox>
 #include <QSettings>
+#include <QLabel>
+#include <QMovie>
+#include <QFont>
 
 #ifdef Q_OS_WIN
 #   include <QWinTaskbarProgress>
@@ -42,6 +45,24 @@ namespace Evernus
 
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
+
+        auto throbberMovie = new QMovie{":/images/loader.gif", QByteArray{}, this};
+
+        QFont font;
+        font.setPixelSize(31);
+
+        auto throbberLayout = new QHBoxLayout{};
+        mainLayout->addLayout(throbberLayout);
+
+        auto throbber = new QLabel{this};
+        throbberLayout->addWidget(throbber);
+        throbber->setMovie(throbberMovie);
+
+        throbberMovie->start();
+
+        auto throbberText = new QLabel{tr("Please wait..."), this};
+        throbberLayout->addWidget(throbberText, 1, Qt::AlignLeft);
+        throbberText->setFont(font);
 
         mTaskWidget = new QTreeWidget{this};
         mainLayout->addWidget(mTaskWidget, 1);
