@@ -15,6 +15,7 @@
 #include <QSettings>
 #include <QLocale>
 #include <QColor>
+#include <QIcon>
 #include <QFont>
 
 #include "MarketOrderProvider.h"
@@ -74,6 +75,51 @@ namespace Evernus
         };
 
         switch (role) {
+        case Qt::ToolTipRole:
+            if (column == priceColumn)
+            {
+                const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+                if (price.isNew())
+                    return tr("No price data. Please import prices from Assets tab or by using Margin tool.");
+
+                QLocale locale;
+
+                if (price.getValue() < data.getPrice())
+                {
+                    return tr("You have been undercut. Current price is %1 (%2 different from yours).\nClick the icon for details.")
+                        .arg(locale.toCurrencyString(price.getValue(), "ISK"))
+                        .arg(locale.toCurrencyString(price.getValue() - data.getPrice(), "ISK"));
+                }
+
+                QSettings settings;
+                const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
+                if (price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
+                {
+                    return tr("Price data is too old (valid on %1).\nPlease import prices from Assets tab or by using Margin tool.")
+                        .arg(locale.toString(price.getUpdateTime().toLocalTime()));
+                }
+
+                return tr("Your price is/was best on %1").arg(locale.toString(price.getUpdateTime().toLocalTime()));
+            }
+            break;
+        case Qt::DecorationRole:
+            if (column == priceColumn)
+            {
+                const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+                if (price.isNew())
+                    return QIcon{":/images/error.png"};
+
+                if (price.getValue() < data.getPrice())
+                    return QIcon{":/images/exclamation.png"};
+
+                QSettings settings;
+                const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
+                if (price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
+                    return QIcon{":/images/error.png"};
+
+                return QIcon{":/images/accept.png"};
+            }
+            break;
         case Qt::UserRole:
             switch (column) {
             case nameColumn:
@@ -250,7 +296,7 @@ namespace Evernus
                 const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
                 if (!price.isNew())
                 {
-                    if (price.getValue() > data.getPrice())
+                    if (price.getValue() < data.getPrice())
                         return QColor{255, 192, 192};
 
                     QSettings settings;
