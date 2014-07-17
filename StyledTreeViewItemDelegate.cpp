@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QPainter>
+#include <QPalette>
 
 #include "StyledTreeViewItemDelegate.h"
 
@@ -24,7 +25,7 @@ namespace Evernus
 
         if (option.state & QStyle::State_HasFocus)
         {
-            painter->setPen(QPen{Qt::red, 0., Qt::DashLine});
+            painter->setPen(QPen{QPalette{}.color(QPalette::Text), 0., Qt::DashLine});
             painter->drawRect(option.rect.adjusted(0, 0, -1, -1));
         }
         else
