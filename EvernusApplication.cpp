@@ -160,6 +160,11 @@ namespace Evernus
         return getTypeSellPrice(id, stationId, true);
     }
 
+    ItemPrice EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId) const
+    {
+        return getTypeBuyPrice(id, stationId, true);
+    }
+
     void EvernusApplication::setTypeSellPrice(quint64 stationId,
                                               EveType::IdType typeId,
                                               const QDateTime &priceTime,
@@ -173,7 +178,7 @@ namespace Evernus
                                              const QDateTime &priceTime,
                                              double price) const
     {
-        saveTypePrice(ItemPrice::Type::Buy, stationId, typeId, priceTime, price);
+        mBuyPrices[std::make_pair(typeId, stationId)] = saveTypePrice(ItemPrice::Type::Buy, stationId, typeId, priceTime, price);
     }
 
     QString EvernusApplication::getLocationName(quint64 id) const
@@ -1129,6 +1134,29 @@ namespace Evernus
         }
 
         mSellPrices.emplace(key, result);
+        return result;
+    }
+
+    ItemPrice EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
+    {
+        const auto key = std::make_pair(id, stationId);
+        const auto it = mBuyPrices.find(key);
+        if (it != std::end(mBuyPrices))
+            return it->second;
+
+        ItemPrice result;
+
+        try
+        {
+            result = mItemPriceRepository->findBuyByTypeAndLocation(id, stationId);
+        }
+        catch (const ItemPriceRepository::NotFoundException &)
+        {
+            if (!dontThrow)
+                throw;
+        }
+
+        mBuyPrices.emplace(key, result);
         return result;
     }
 

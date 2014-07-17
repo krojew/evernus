@@ -75,6 +75,7 @@ namespace Evernus
 
         virtual double getTypeVolume(EveType::IdType id) const override;
         virtual ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
+        virtual ItemPrice getTypeBuyPrice(EveType::IdType id, quint64 stationId) const override;
 
         virtual void setTypeSellPrice(quint64 stationId,
                                       EveType::IdType typeId,
@@ -191,6 +192,7 @@ namespace Evernus
         mutable std::unordered_map<EveType::IdType, QString> mTypeMarketGroupNameCache;
         mutable std::unordered_map<quint64, QString> mLocationNameCache;
         mutable std::unordered_map<TypeLocationPair, ItemPrice, boost::hash<TypeLocationPair>> mSellPrices;
+        mutable std::unordered_map<TypeLocationPair, ItemPrice, boost::hash<TypeLocationPair>> mBuyPrices;
 
         std::unordered_map<std::string, ImporterPtr> mItemPriceImporters;
 
@@ -228,6 +230,7 @@ namespace Evernus
         void finishItemPriceImportTask(const QString &info);
 
         ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
+        ItemPrice getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
         void computeAssetListSellValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;
 

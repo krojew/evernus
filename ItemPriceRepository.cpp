@@ -62,17 +62,12 @@ namespace Evernus
 
     ItemPrice ItemPriceRepository::findSellByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ?"}
-            .arg(getTableName()));
-        query.addBindValue(static_cast<int>(ItemPrice::Type::Sell));
-        query.addBindValue(typeId);
-        query.addBindValue(locationId);
+        return findByTypeAndLocation(typeId, locationId, ItemPrice::Type::Sell);
+    }
 
-        DatabaseUtils::execQuery(query);
-        if (!query.next())
-            throw NotFoundException{};
-
-        return populate(query.record());
+    ItemPrice ItemPriceRepository::findBuyByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const
+    {
+        return findByTypeAndLocation(typeId, locationId, ItemPrice::Type::Buy);
     }
 
     QStringList ItemPriceRepository::getColumns() const
@@ -108,5 +103,21 @@ namespace Evernus
         query.addBindValue(entity.getLocationId());
         query.addBindValue(entity.getUpdateTime());
         query.addBindValue(entity.getValue());
+    }
+
+    ItemPrice ItemPriceRepository
+    ::findByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId, ItemPrice::Type priceType) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ?"}
+            .arg(getTableName()));
+        query.addBindValue(static_cast<int>(priceType));
+        query.addBindValue(typeId);
+        query.addBindValue(locationId);
+
+        DatabaseUtils::execQuery(query);
+        if (!query.next())
+            throw NotFoundException{};
+
+        return populate(query.record());
     }
 }

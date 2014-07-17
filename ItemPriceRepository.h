@@ -36,10 +36,13 @@ namespace Evernus
         void create() const;
 
         ItemPrice findSellByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const;
+        ItemPrice findBuyByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const;
 
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const ItemPrice &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const ItemPrice &entity, QSqlQuery &query) const override;
+
+        ItemPrice findByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId, ItemPrice::Type priceType) const;
     };
 }
