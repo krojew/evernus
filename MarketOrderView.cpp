@@ -15,9 +15,11 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
+#include <QCursor>
 #include <QLabel>
 #include <QFont>
 
+#include "MarketOrderInfoWidget.h"
 #include "MarketOrderModel.h"
 #include "StyledTreeView.h"
 
@@ -40,6 +42,7 @@ namespace Evernus
         mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
+        connect(mView, &StyledTreeView::clicked, this, &MarketOrderView::showPriceInfo);
 
         auto infoLayout = new QHBoxLayout{};
         mainLayout->addLayout(infoLayout);
@@ -104,6 +107,8 @@ namespace Evernus
 
         const auto curLocale = locale();
 
+        emit closeOrderInfo();
+
         mTotalOrdersLabel->setText(curLocale.toString(mSource->getOrderCount()));
         mVolumeLabel->setText(QString{"%1/%2 (%3%)"}
             .arg(curLocale.toString(volRemaining))
@@ -113,5 +118,18 @@ namespace Evernus
         mTotalSizeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(mSource->getTotalSize(), 'f', 2)));
 
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
+    }
+
+    void MarketOrderView::showPriceInfo(const QModelIndex &index)
+    {
+        emit closeOrderInfo();
+
+        if (!mSource->shouldShowPriceInfo(index))
+            return;
+
+        auto infoWidget = new MarketOrderInfoWidget{this};
+        infoWidget->move(QCursor::pos());
+        infoWidget->show();
+        connect(this, &MarketOrderView::closeOrderInfo, infoWidget, &MarketOrderInfoWidget::deleteLater);
     }
 }

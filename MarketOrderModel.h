@@ -41,5 +41,7 @@ namespace Evernus
         virtual Range getOrderRange(const QModelIndex &index) const = 0;
         virtual EveType::IdType getOrderTypeId(const QModelIndex &index) const = 0;
         virtual WalletTransactionsModel::EntryType getOrderTypeFilter() const = 0;
+
+        virtual bool shouldShowPriceInfo(const QModelIndex &index) const = 0;
     };
 }

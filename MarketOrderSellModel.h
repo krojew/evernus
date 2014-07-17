@@ -53,6 +53,8 @@ namespace Evernus
         virtual EveType::IdType getOrderTypeId(const QModelIndex &index) const override;
         virtual WalletTransactionsModel::EntryType getOrderTypeFilter() const override;
 
+        virtual bool shouldShowPriceInfo(const QModelIndex &index) const override;
+
         void setCharacter(Character::IdType id);
 
         void reset();

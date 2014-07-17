@@ -14,11 +14,25 @@
  */
 #pragma once
 
+#include <QFrame>
+
 namespace Evernus
 {
-    namespace UISettings
+    class MarketOrderInfoWidget
+        : public QFrame
     {
-        const auto autoCloseTasksKey = "ui/tasks/autoClose";
-        const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
-    }
+        Q_OBJECT
+
+    public:
+        explicit MarketOrderInfoWidget(QWidget *parent = nullptr);
+        virtual ~MarketOrderInfoWidget() = default;
+
+    private slots:
+        void setAutoCopy(int state);
+
+        void copyPrice();
+
+    protected:
+        virtual bool event(QEvent *event) override;
+    };
 }

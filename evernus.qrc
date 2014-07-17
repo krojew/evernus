@@ -8,6 +8,7 @@
         <file>images/arrow_out.png</file>
         <file>images/arrow_refresh.png</file>
         <file>images/delete.png</file>
+        <file>images/cross.png</file>
         <file>images/error.png</file>
         <file>images/exclamation.png</file>
         <file>images/generic-portrait.jpg</file>
@@ -16,6 +17,7 @@
         <file>images/loader.gif</file>
         <file>images/main-icon.png</file>
         <file>images/page_refresh.png</file>
+        <file>images/page_copy.png</file>
         <file>images/pencil.png</file>
         <file>images/splash.png</file>
         <file>images/world.png</file>

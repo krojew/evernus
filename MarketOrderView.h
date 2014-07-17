@@ -39,8 +39,14 @@ namespace Evernus
 
         void setModel(MarketOrderModel *model);
 
+    signals:
+        void closeOrderInfo();
+
     public slots:
         void updateInfo();
+
+    private slots:
+        void showPriceInfo(const QModelIndex &index);
 
     private:
         StyledTreeView *mView = nullptr;

@@ -446,6 +446,11 @@ namespace Evernus
         return WalletTransactionsModel::EntryType::Sell;
     }
 
+    bool MarketOrderSellModel::shouldShowPriceInfo(const QModelIndex &index) const
+    {
+        return index.column() == priceColumn;
+    }
+
     void MarketOrderSellModel::setCharacter(Character::IdType id)
     {
         mCharacterId = id;
