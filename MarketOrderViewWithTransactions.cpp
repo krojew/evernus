@@ -15,10 +15,10 @@
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QGroupBox>
-#include <QTreeView>
 
 #include "MarketOrderModel.h"
 #include "MarketOrderView.h"
+#include "StyledTreeView.h"
 
 #include "MarketOrderViewWithTransactions.h"
 
@@ -45,10 +45,9 @@ namespace Evernus
         mTransactionProxyModel.setSortRole(Qt::UserRole);
         mTransactionProxyModel.setSourceModel(&mTransactionModel);
 
-        auto transactionView = new QTreeView{this};
+        auto transactionView = new StyledTreeView{this};
         groupLayout->addWidget(transactionView);
         transactionView->setModel(&mTransactionProxyModel);
-        transactionView->setSortingEnabled(true);
         transactionView->sortByColumn(1, Qt::DescendingOrder);
         transactionView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
         connect(mOrderView->getSelectionModel(), &QItemSelectionModel::selectionChanged,

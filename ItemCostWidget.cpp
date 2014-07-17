@@ -16,11 +16,11 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QTreeView>
 #include <QLineEdit>
 
 #include "ItemCostEditDialog.h"
 #include "ItemCostRepository.h"
+#include "StyledTreeView.h"
 
 #include "ItemCostWidget.h"
 
@@ -67,11 +67,9 @@ namespace Evernus
         mProxy.setSourceModel(&mModel);
         mProxy.setFilterCaseSensitivity(Qt::CaseInsensitive);
 
-        mView = new QTreeView{this};
+        mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
-        mView->setSortingEnabled(true);
-        mView->header()->resizeSections(QHeaderView::Stretch);
         connect(mView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &ItemCostWidget::selectCost);
     }

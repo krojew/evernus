@@ -18,7 +18,6 @@
 #include "ItemPriceImporter.h"
 #include "AssetModel.h"
 
-class QTreeView;
 class QLineEdit;
 class QLabel;
 
@@ -27,6 +26,7 @@ namespace Evernus
     class LeafFilterProxyModel;
     class CacheTimerProvider;
     class EveDataProvider;
+    class StyledTreeView;
     class AssetProvider;
     class AssetList;
 
@@ -59,7 +59,7 @@ namespace Evernus
         const AssetProvider &mAssetProvider;
 
         QLineEdit *mFilterEdit = nullptr;
-        QTreeView *mAssetView = nullptr;
+        StyledTreeView *mAssetView = nullptr;
         QLabel *mInfoLabel = nullptr;
 
         AssetModel mModel;

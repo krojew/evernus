@@ -24,12 +24,12 @@ class QSortFilterProxyModel;
 class QItemSelection;
 class QPushButton;
 class QLineEdit;
-class QTreeView;
 
 namespace Evernus
 {
     class ItemCostRepository;
     class EveDataProvider;
+    class StyledTreeView;
     class ItemCost;
     class EveType;
 
@@ -69,7 +69,7 @@ namespace Evernus
 
         QLineEdit *mFilterEdit = nullptr;
 
-        QTreeView *mView = nullptr;
+        StyledTreeView *mView = nullptr;
 
         ItemCostModel mModel;
         QSortFilterProxyModel mProxy;

@@ -15,12 +15,12 @@
 #include <QSortFilterProxyModel>
 #include <QHeaderView>
 #include <QVBoxLayout>
-#include <QTreeView>
 #include <QDebug>
 
 #include "WalletEntryFilterWidget.h"
 #include "CacheTimerProvider.h"
 #include "ButtonWithTimer.h"
+#include "StyledTreeView.h"
 
 #include "WalletJournalWidget.h"
 
@@ -54,10 +54,9 @@ namespace Evernus
         mFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
         mFilterModel->setSourceModel(&mModel);
 
-        mView = new QTreeView{this};
+        mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(mFilterModel);
-        mView->setSortingEnabled(true);
         mView->sortByColumn(1, Qt::DescendingOrder);
     }
 

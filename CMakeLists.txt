@@ -245,6 +245,10 @@ add_executable(
     SimpleCrypt.h
     StatisticsWidget.cpp
     StatisticsWidget.h
+    StyledTreeView.cpp
+    StyledTreeView.h
+    StyledTreeViewItemDelegate.cpp
+    StyledTreeViewItemDelegate.h
     TaskConstants.h
     UISettings.h
     WalletEntryFilterWidget.cpp

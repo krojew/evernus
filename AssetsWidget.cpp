@@ -16,7 +16,6 @@
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QTreeView>
 #include <QLineEdit>
 #include <QLocale>
 #include <QLabel>
@@ -25,6 +24,7 @@
 #include "LeafFilterProxyModel.h"
 #include "CacheTimerProvider.h"
 #include "ButtonWithTimer.h"
+#include "StyledTreeView.h"
 #include "AssetProvider.h"
 #include "AssetList.h"
 
@@ -71,11 +71,9 @@ namespace Evernus
         mModelProxy->setSortRole(Qt::UserRole);
         mModelProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
-        mAssetView = new QTreeView{this};
+        mAssetView = new StyledTreeView{this};
         mainLayout->addWidget(mAssetView);
         mAssetView->setModel(mModelProxy);
-        mAssetView->setSortingEnabled(true);
-        mAssetView->header()->setSectionResizeMode(QHeaderView::Stretch);
 
         mInfoLabel = new QLabel{this};
         mainLayout->addWidget(mInfoLabel);
@@ -111,6 +109,7 @@ namespace Evernus
 
         mModel.setCharacter(id);
         mAssetView->expandAll();
+        mAssetView->header()->resizeSections(QHeaderView::ResizeToContents);
 
         setNewInfo();
     }

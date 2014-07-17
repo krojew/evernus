@@ -18,12 +18,12 @@
 #include <QWidget>
 
 class QItemSelectionModel;
-class QTreeView;
 class QLabel;
 
 namespace Evernus
 {
     class MarketOrderModel;
+    class StyledTreeView;
 
     class MarketOrderView
         : public QWidget
@@ -43,7 +43,7 @@ namespace Evernus
         void updateInfo();
 
     private:
-        QTreeView *mView = nullptr;
+        StyledTreeView *mView = nullptr;
 
         QLabel *mTotalOrdersLabel = nullptr;
         QLabel *mVolumeLabel = nullptr;

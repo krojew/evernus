@@ -15,11 +15,11 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
-#include <QTreeView>
 #include <QLabel>
 #include <QFont>
 
 #include "MarketOrderModel.h"
+#include "StyledTreeView.h"
 
 #include "MarketOrderView.h"
 
@@ -37,10 +37,9 @@ namespace Evernus
         mProxy.setSortRole(Qt::UserRole);
         mProxy.setFilterCaseSensitivity(Qt::CaseInsensitive);
 
-        mView = new QTreeView{this};
+        mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
-        mView->setSortingEnabled(true);
 
         auto infoLayout = new QHBoxLayout{};
         mainLayout->addLayout(infoLayout);

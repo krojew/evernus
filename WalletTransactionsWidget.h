@@ -18,7 +18,6 @@
 #include "CharacterBoundWidget.h"
 
 class QSortFilterProxyModel;
-class QTreeView;
 
 namespace Evernus
 {
@@ -26,6 +25,7 @@ namespace Evernus
     class WalletEntryFilterWidget;
     class CacheTimerProvider;
     class EveDataProvider;
+    class StyledTreeView;
 
     class WalletTransactionsWidget
         : public CharacterBoundWidget
@@ -52,7 +52,7 @@ namespace Evernus
 
         WalletEntryFilterWidget *mFilter = nullptr;
 
-        QTreeView *mView = nullptr;
+        StyledTreeView *mView = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
     };
