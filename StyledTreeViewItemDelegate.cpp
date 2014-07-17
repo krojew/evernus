@@ -22,8 +22,15 @@ namespace Evernus
     {
         QStyledItemDelegate::paint(painter, option, index);
 
-        painter->setPen(QPen{Qt::lightGray, 0., Qt::DotLine});
-        painter->drawLine(option.rect.topLeft(), option.rect.bottomLeft());
-        painter->drawLine(option.rect.topRight(), option.rect.bottomRight());
+        if (option.state & QStyle::State_HasFocus)
+        {
+            painter->setPen(QPen{Qt::red, 0., Qt::DashLine});
+            painter->drawRect(option.rect.adjusted(0, 0, -1, -1));
+        }
+        else
+        {
+            painter->setPen(QPen{Qt::lightGray, 0., Qt::DotLine});
+            painter->drawLine(option.rect.topRight(), option.rect.bottomRight());
+        }
     }
 }
