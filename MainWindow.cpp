@@ -40,6 +40,7 @@
 #include "ImportSettings.h"
 #include "MenuBarWidget.h"
 #include "AssetsWidget.h"
+#include "AboutDialog.h"
 #include "Repository.h"
 
 #include "MainWindow.h"
@@ -138,10 +139,8 @@ namespace Evernus
 
     void MainWindow::showAbout()
     {
-        QMessageBox::about(this,
-                           tr("About Evernus"),
-                           tr("Evernus %1\nCreated by Pete Butcher\nAll donations are welcome :)\nhttp://evernus.com")
-                               .arg(QCoreApplication::applicationVersion()));
+        AboutDialog dlg{this};
+        dlg.exec();
     }
 
     void MainWindow::showError(const QString &info)

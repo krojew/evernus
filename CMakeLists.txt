@@ -72,6 +72,8 @@ include_directories(${Boost_INCLUDE_DIRS})
 add_executable(
     ${PROJECT_NAME}
     WIN32
+    AboutDialog.cpp
+    AboutDialog.h
     ActiveTasksDialog.cpp
     ActiveTasksDialog.h
     APIDomParser.h
