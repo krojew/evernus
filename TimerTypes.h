@@ -14,27 +14,14 @@
  */
 #pragma once
 
-#include <QFrame>
-
-#include "MarketOrderModel.h"
-
 namespace Evernus
 {
-    class MarketOrderInfoWidget
-        : public QFrame
+    enum class TimerType
     {
-        Q_OBJECT
-
-    public:
-        explicit MarketOrderInfoWidget(const MarketOrderModel::OrderInfo &info, QWidget *parent = nullptr);
-        virtual ~MarketOrderInfoWidget() = default;
-
-    private slots:
-        void setAutoCopy(int state);
-
-        void copyPrice();
-
-    protected:
-        virtual bool event(QEvent *event) override;
+        Character,
+        AssetList,
+        WalletJournal,
+        WalletTransactions,
+        MarketOrders
     };
 }

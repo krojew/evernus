@@ -297,32 +297,32 @@ namespace Evernus
 
     QDateTime EvernusApplication::getLocalCacheTimer(Character::IdType id, TimerType type) const
     {
-        CacheTimerMap::const_iterator it;
+        CharacterTimerMap::const_iterator it;
 
         switch (type) {
         case TimerType::Character:
-            it = mCharacterLocalCacheTimes.find(id);
-            if (it == std::end(mCharacterLocalCacheTimes))
+            it = mCharacterUtcCacheTimes.find(id);
+            if (it == std::end(mCharacterUtcCacheTimes))
                 return QDateTime::currentDateTime();
             break;
         case TimerType::AssetList:
-            it = mAssetsLocalCacheTimes.find(id);
-            if (it == std::end(mAssetsLocalCacheTimes))
+            it = mAssetsUtcCacheTimes.find(id);
+            if (it == std::end(mAssetsUtcCacheTimes))
                 return QDateTime::currentDateTime();
             break;
         case TimerType::WalletJournal:
-            it = mWalletJournalLocalCacheTimes.find(id);
-            if (it == std::end(mWalletJournalLocalCacheTimes))
+            it = mWalletJournalUtcCacheTimes.find(id);
+            if (it == std::end(mWalletJournalUtcCacheTimes))
                 return QDateTime::currentDateTime();
             break;
         case TimerType::WalletTransactions:
-            it = mWalletTransactionsLocalCacheTimes.find(id);
-            if (it == std::end(mWalletTransactionsLocalCacheTimes))
+            it = mWalletTransactionsUtcCacheTimes.find(id);
+            if (it == std::end(mWalletTransactionsUtcCacheTimes))
                 return QDateTime::currentDateTime();
             break;
         case TimerType::MarketOrders:
-            it = mMarketOrdersLocalCacheTimes.find(id);
-            if (it == std::end(mMarketOrdersLocalCacheTimes))
+            it = mMarketOrdersUtcCacheTimes.find(id);
+            if (it == std::end(mMarketOrdersUtcCacheTimes))
                 return QDateTime::currentDateTime();
             break;
         default:
@@ -339,19 +339,19 @@ namespace Evernus
 
         switch (type) {
         case TimerType::Character:
-            mCharacterLocalCacheTimes[id] = dt;
+            mCharacterUtcCacheTimes[id] = dt;
             break;
         case TimerType::AssetList:
-            mAssetsLocalCacheTimes[id] = dt;
+            mAssetsUtcCacheTimes[id] = dt;
             break;
         case TimerType::WalletJournal:
-            mWalletJournalLocalCacheTimes[id] = dt;
+            mWalletJournalUtcCacheTimes[id] = dt;
             break;
         case TimerType::WalletTransactions:
-            mWalletTransactionsLocalCacheTimes[id] = dt;
+            mWalletTransactionsUtcCacheTimes[id] = dt;
             break;
         case TimerType::MarketOrders:
-            mMarketOrdersLocalCacheTimes[id] = dt;
+            mMarketOrdersUtcCacheTimes[id] = dt;
             break;
         default:
             throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
@@ -363,6 +363,43 @@ namespace Evernus
         timer.setCacheUntil(dt);
 
         mCacheTimerRepository->store(timer);
+    }
+
+    QDateTime EvernusApplication::getLocalUpdateTimer(Character::IdType id, TimerType type) const
+    {
+        CharacterTimerMap::const_iterator it;
+
+        switch (type) {
+        case TimerType::Character:
+            it = mCharacterUtcUpdateTimes.find(id);
+            if (it == std::end(mCharacterUtcUpdateTimes))
+                return QDateTime{};
+            break;
+        case TimerType::AssetList:
+            it = mAssetsUtcUpdateTimes.find(id);
+            if (it == std::end(mAssetsUtcUpdateTimes))
+                return QDateTime{};
+            break;
+        case TimerType::WalletJournal:
+            it = mWalletJournalUtcUpdateTimes.find(id);
+            if (it == std::end(mWalletJournalUtcUpdateTimes))
+                return QDateTime{};
+            break;
+        case TimerType::WalletTransactions:
+            it = mWalletTransactionsUtcUpdateTimes.find(id);
+            if (it == std::end(mWalletTransactionsUtcUpdateTimes))
+                return QDateTime{};
+            break;
+        case TimerType::MarketOrders:
+            it = mMarketOrdersUtcUpdateTimes.find(id);
+            if (it == std::end(mMarketOrdersUtcUpdateTimes))
+                return QDateTime{};
+            break;
+        default:
+            throw std::logic_error{tr("Unknown update timer type: %1").arg(static_cast<int>(type)).toStdString()};
+        }
+
+        return it->second.toLocalTime();
     }
 
     std::vector<MarketOrder> EvernusApplication::getSellOrders(Character::IdType characterId) const
@@ -583,6 +620,8 @@ namespace Evernus
                 if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, true).toBool())
                     computeAssetListSellValue(data);
 
+                saveUpdateTimer(Evernus::TimerType::AssetList, mAssetsUtcUpdateTimes, id);
+
                 emit assetsChanged();
                 emit taskEnded(assetSubtask, error);
             });
@@ -613,7 +652,7 @@ namespace Evernus
                 emit taskInfoChanged(task, tr("Fetching wallet journal for character %1 (this may take a while)...").arg(id));
 
             mAPIManager.fetchWalletJournal(key, id, WalletJournalEntry::invalidId, maxId,
-                                           [task, this](const auto &data, const auto &error) {
+                                           [task, id, this](const auto &data, const auto &error) {
                 std::vector<Evernus::WalletSnapshot> snapshots;
                 snapshots.reserve(data.size());
 
@@ -637,6 +676,8 @@ namespace Evernus
 
                 mWalletJournalEntryRepository->batchStore(data, true);
                 mWalletSnapshotRepository->batchStore(snapshots, false);
+
+                saveUpdateTimer(Evernus::TimerType::WalletJournal, mWalletJournalUtcUpdateTimes, id);
 
                 emit walletJournalChanged();
                 emit taskEnded(task, error);
@@ -668,8 +709,10 @@ namespace Evernus
                 emit taskInfoChanged(task, tr("Fetching wallet transactions for character %1 (this may take a while)...").arg(id));
 
             mAPIManager.fetchWalletTransactions(key, id, WalletTransaction::invalidId, maxId,
-                                                [task, this](const auto &data, const auto &error) {
+                                                [task, id, this](const auto &data, const auto &error) {
                 mWalletTransactionRepository->batchStore(data, true);
+
+                saveUpdateTimer(Evernus::TimerType::WalletTransactions, mWalletTransactionsUtcUpdateTimes, id);
 
                 emit walletTransactionsChanged();
                 emit taskEnded(task, error);
@@ -780,6 +823,8 @@ namespace Evernus
 
                 mMarketOrderValueSnapshotRepository->store(snapshot);
                 mMarketOrderRepository->batchStore(data, true);
+
+                saveUpdateTimer(Evernus::TimerType::MarketOrders, mMarketOrdersUtcUpdateTimes, id);
 
                 emit marketOrdersChanged();
                 emit taskEnded(task, error);
@@ -902,6 +947,7 @@ namespace Evernus
         mWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{mMainDb});
         mRefTypeRepository.reset(new RefTypeRepository{mMainDb});
         mCacheTimerRepository.reset(new CacheTimerRepository{mMainDb});
+        mUpdateTimerRepository.reset(new UpdateTimerRepository{mMainDb});
         mWalletTransactionRepository.reset(new WalletTransactionRepository{mMainDb});
         mMarketOrderRepository.reset(new MarketOrderRepository{mMainDb});
         mItemCostRepository.reset(new ItemCostRepository{mMainDb});
@@ -922,6 +968,7 @@ namespace Evernus
         mWalletJournalEntryRepository->create(*mCharacterRepository);
         mItemPriceRepository->create();
         mCacheTimerRepository->create(*mCharacterRepository);
+        mUpdateTimerRepository->create(*mCharacterRepository);
         mWalletTransactionRepository->create(*mCharacterRepository);
         mMarketOrderRepository->create(*mCharacterRepository);
         mItemCostRepository->create(*mCharacterRepository);
@@ -966,19 +1013,19 @@ namespace Evernus
         {
             switch (timer.getType()) {
             case TimerType::Character:
-                mCharacterLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                mCharacterUtcCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
                 break;
             case TimerType::AssetList:
-                mAssetsLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                mAssetsUtcCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
                 break;
             case TimerType::WalletJournal:
-                mWalletJournalLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                mWalletJournalUtcCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
                 break;
             case TimerType::WalletTransactions:
-                mWalletTransactionsLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                mWalletTransactionsUtcCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
                 break;
             case TimerType::MarketOrders:
-                mMarketOrdersLocalCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                mMarketOrdersUtcCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
             }
         }
     }
@@ -1020,7 +1067,7 @@ namespace Evernus
     void EvernusApplication::importCharacter(Character::IdType id, uint parentTask, const Key &key)
     {
         const auto charSubtask = startTask(parentTask, tr("Fetching character %1...").arg(id));
-        mAPIManager.fetchCharacter(key, id, [charSubtask, this](auto data, const auto &error) {
+        mAPIManager.fetchCharacter(key, id, [charSubtask, id, this](auto data, const auto &error) {
             if (error.isEmpty())
             {
                 try
@@ -1051,6 +1098,8 @@ namespace Evernus
                 snapshot.setBalance(data.getISK());
                 snapshot.setCharacterId(data.getId());
                 mWalletSnapshotRepository->store(snapshot);
+
+                saveUpdateTimer(Evernus::TimerType::Character, mCharacterUtcUpdateTimes, id);
 
                 QMetaObject::invokeMethod(this, "scheduleCharacterUpdate", Qt::QueuedConnection);
             }
@@ -1211,6 +1260,20 @@ namespace Evernus
         mItemPriceRepository->store(item);
 
         return item;
+    }
+
+    void EvernusApplication::saveUpdateTimer(TimerType timer, CharacterTimerMap &map, Character::IdType characterId) const
+    {
+        const auto time = QDateTime::currentDateTimeUtc();
+
+        map[characterId] = time;
+
+        UpdateTimer storedTimer;
+        storedTimer.setCharacterId(characterId);
+        storedTimer.setType(timer);
+        storedTimer.setUpdateTime(time);
+
+        mUpdateTimerRepository->store(storedTimer);
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)

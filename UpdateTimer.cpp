@@ -12,37 +12,37 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "CacheTimer.h"
+#include "UpdateTimer.h"
 
 namespace Evernus
 {
-    Character::IdType CacheTimer::getCharacterId() const noexcept
+    Character::IdType UpdateTimer::getCharacterId() const noexcept
     {
         return mCharacterId;
     }
 
-    void CacheTimer::setCharacterId(Character::IdType id) noexcept
+    void UpdateTimer::setCharacterId(Character::IdType id) noexcept
     {
         mCharacterId = id;
     }
 
-    TimerType CacheTimer::getType() const noexcept
+    TimerType UpdateTimer::getType() const noexcept
     {
         return mType;
     }
 
-    void CacheTimer::setType(TimerType type) noexcept
+    void UpdateTimer::setType(TimerType type) noexcept
     {
         mType = type;
     }
 
-    QDateTime CacheTimer::getCacheUntil() const
+    QDateTime UpdateTimer::getUpdateTime() const
     {
-        return mCacheUntil;
+        return mUpdateTime;
     }
 
-    void CacheTimer::setCacheUntil(const QDateTime &dt)
+    void UpdateTimer::setUpdateTime(const QDateTime &dt)
     {
-        mCacheUntil = dt;
+        mUpdateTime = dt;
     }
 }

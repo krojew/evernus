@@ -25,7 +25,7 @@
 
 namespace Evernus
 {
-    MarketOrderInfoWidget::MarketOrderInfoWidget(QWidget *parent)
+    MarketOrderInfoWidget::MarketOrderInfoWidget(const MarketOrderModel::OrderInfo &info, QWidget *parent)
         : QFrame{parent, Qt::Tool | Qt::FramelessWindowHint}
     {
         auto mainLayout = new QVBoxLayout{};

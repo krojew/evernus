@@ -127,7 +127,7 @@ namespace Evernus
         if (!mSource->shouldShowPriceInfo(index))
             return;
 
-        auto infoWidget = new MarketOrderInfoWidget{this};
+        auto infoWidget = new MarketOrderInfoWidget{mSource->getOrderInfo(index), this};
         infoWidget->move(QCursor::pos());
         infoWidget->show();
         connect(this, &MarketOrderView::closeOrderInfo, infoWidget, &MarketOrderInfoWidget::deleteLater);

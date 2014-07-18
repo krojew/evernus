@@ -30,9 +30,9 @@ namespace Evernus
                                          const ItemCostProvider &itemCostProvider,
                                          const WalletTransactionRepository &transactionsRepo,
                                          QWidget *parent)
-        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::MarketOrders),
+        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
                                parent}
-        , mSellModel{orderProvider, dataProvider, itemCostProvider}
+        , mSellModel{orderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

@@ -49,7 +49,7 @@ namespace Evernus
                                      const MarketOrderRepository &marketOrderRepository,
                                      const CacheTimerProvider &cacheTimerProvider,
                                      QWidget *parent)
-        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::Character),
+        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::Character),
                                parent}
         , mCharacterRepository{characterRepository}
         , mMarketOrderRepository{marketOrderRepository}

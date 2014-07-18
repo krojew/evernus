@@ -255,7 +255,12 @@ add_executable(
     StyledTreeViewItemDelegate.cpp
     StyledTreeViewItemDelegate.h
     TaskConstants.h
+    TimerTypes.h
     UISettings.h
+    UpdateTimer.cpp
+    UpdateTimer.h
+    UpdateTimerRepository.cpp
+    UpdateTimerRepository.h
     WalletEntryFilterWidget.cpp
     WalletEntryFilterWidget.h
     WalletJournal.h

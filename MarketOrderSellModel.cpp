@@ -19,6 +19,7 @@
 #include <QFont>
 
 #include "MarketOrderProvider.h"
+#include "CacheTimerProvider.h"
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
@@ -32,11 +33,13 @@ namespace Evernus
     MarketOrderSellModel::MarketOrderSellModel(const MarketOrderProvider &orderProvider,
                                                const EveDataProvider &dataProvider,
                                                const ItemCostProvider &itemCostProvider,
+                                               const CacheTimerProvider &cacheTimerProvider,
                                                QObject *parent)
         : MarketOrderModel{parent}
         , mOrderProvider{orderProvider}
         , mDataProvider{dataProvider}
         , mItemCostProvider{itemCostProvider}
+        , mCacheTimerProvider{cacheTimerProvider}
     {
     }
 
@@ -434,6 +437,20 @@ namespace Evernus
         range.mTo = mData[index.row()].getLastSeen();
 
         return range;
+    }
+
+    MarketOrderModel::OrderInfo MarketOrderSellModel::getOrderInfo(const QModelIndex &index) const
+    {
+        const auto &data = mData[index.row()];
+        const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+
+        OrderInfo info;
+        info.mOrderPrice = data.getPrice();
+        info.mMarketPrice = price.getValue();
+        info.mOrderLocalTimestamp = mCacheTimerProvider.getLocalUpdateTimer(mCharacterId, TimerType::MarketOrders);
+        info.mMarketLocalTimestamp = price.getUpdateTime();
+
+        return info;
     }
 
     EveType::IdType MarketOrderSellModel::getOrderTypeId(const QModelIndex &index) const

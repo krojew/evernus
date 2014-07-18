@@ -23,16 +23,16 @@
 
 namespace Evernus
 {
-    class CacheTimer
+    class UpdateTimer
         : public Entity<uint>
     {
     public:
         using Entity::Entity;
 
-        CacheTimer() = default;
-        CacheTimer(const CacheTimer &) = default;
-        CacheTimer(CacheTimer &&) = default;
-        virtual ~CacheTimer() = default;
+        UpdateTimer() = default;
+        UpdateTimer(const UpdateTimer &) = default;
+        UpdateTimer(UpdateTimer &&) = default;
+        virtual ~UpdateTimer() = default;
 
         Character::IdType getCharacterId() const noexcept;
         void setCharacterId(Character::IdType id) noexcept;
@@ -40,15 +40,15 @@ namespace Evernus
         TimerType getType() const noexcept;
         void setType(TimerType type) noexcept;
 
-        QDateTime getCacheUntil() const;
-        void setCacheUntil(const QDateTime &dt);
+        QDateTime getUpdateTime() const;
+        void setUpdateTime(const QDateTime &dt);
 
-        CacheTimer &operator =(const CacheTimer &) = default;
-        CacheTimer &operator =(CacheTimer &&) = default;
+        UpdateTimer &operator =(const UpdateTimer &) = default;
+        UpdateTimer &operator =(UpdateTimer &&) = default;
 
     private:
         Character::IdType mCharacterId = Character::invalidId;
         TimerType mType = TimerType::Character;
-        QDateTime mCacheUntil;
+        QDateTime mUpdateTime;
     };
 }

@@ -15,72 +15,72 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 
-#include "CacheTimerRepository.h"
+#include "UpdateTimerRepository.h"
 
 namespace Evernus
 {
-    QString CacheTimerRepository::getTableName() const
+    QString UpdateTimerRepository::getTableName() const
     {
-        return "cache_timers";
+        return "update_timers";
     }
 
-    QString CacheTimerRepository::getIdColumn() const
+    QString UpdateTimerRepository::getIdColumn() const
     {
         return "id";
     }
 
-    CacheTimer CacheTimerRepository::populate(const QSqlRecord &record) const
+    UpdateTimer UpdateTimerRepository::populate(const QSqlRecord &record) const
     {
-        auto dt = record.value("cache_until").toDateTime();
+        auto dt = record.value("update_time").toDateTime();
         dt.setTimeSpec(Qt::UTC);
 
-        CacheTimer cacheTimer{record.value("id").value<CacheTimer::IdType>()};
-        cacheTimer.setCharacterId(record.value("character_id").value<Character::IdType>());
-        cacheTimer.setType(static_cast<TimerType>(record.value("type").toInt()));
-        cacheTimer.setCacheUntil(dt);
-        cacheTimer.setNew(false);
+        UpdateTimer updateTimer{record.value("id").value<UpdateTimer::IdType>()};
+        updateTimer.setCharacterId(record.value("character_id").value<Character::IdType>());
+        updateTimer.setType(static_cast<TimerType>(record.value("type").toInt()));
+        updateTimer.setUpdateTime(dt);
+        updateTimer.setNew(false);
 
-        return cacheTimer;
+        return updateTimer;
     }
 
-    void CacheTimerRepository::create(const Repository<Character> &characterRepo) const
+    void UpdateTimerRepository::create(const Repository<Character> &characterRepo) const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id INTEGER PRIMARY KEY ASC,
             character_id BIGINT NOT NULL REFERENCES %2(%3),
             type TINYINT NOT NULL,
-            cache_until DATETIME NOT NULL
+            update_time DATETIME NOT NULL
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
     }
 
-    QStringList CacheTimerRepository::getColumns() const
+    QStringList UpdateTimerRepository::getColumns() const
     {
         return QStringList{}
             << "id"
             << "character_id"
             << "type"
-            << "cache_until";
+            << "update_time";
     }
 
-    void CacheTimerRepository::bindValues(const CacheTimer &entity, QSqlQuery &query) const
+    void UpdateTimerRepository::bindValues(const UpdateTimer &entity, QSqlQuery &query) const
     {
-        if (entity.getId() != CacheTimer::invalidId)
+        if (entity.getId() != UpdateTimer::invalidId)
             query.bindValue(":id", entity.getId());
 
         query.bindValue(":character_id", entity.getCharacterId());
         query.bindValue(":type", static_cast<int>(entity.getType()));
-        query.bindValue(":cache_until", entity.getCacheUntil());
+        query.bindValue(":update_time", entity.getUpdateTime());
     }
 
-    void CacheTimerRepository::bindPositionalValues(const CacheTimer &entity, QSqlQuery &query) const
+    void UpdateTimerRepository::bindPositionalValues(const UpdateTimer &entity, QSqlQuery &query) const
     {
-        if (entity.getId() != CacheTimer::invalidId)
+        if (entity.getId() != UpdateTimer::invalidId)
             query.addBindValue(entity.getId());
 
         query.addBindValue(entity.getCharacterId());
         query.addBindValue(static_cast<int>(entity.getType()));
-        query.addBindValue(entity.getCacheUntil());
+        query.addBindValue(entity.getUpdateTime());
     }
 }

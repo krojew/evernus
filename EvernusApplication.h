@@ -30,6 +30,7 @@
 #include "WalletSnapshotRepository.h"
 #include "MarketOrderRepository.h"
 #include "MarketGroupRepository.h"
+#include "UpdateTimerRepository.h"
 #include "CacheTimerRepository.h"
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
@@ -97,6 +98,8 @@ namespace Evernus
         virtual QDateTime getLocalCacheTimer(Character::IdType id, TimerType type) const override;
         virtual void setUtcCacheTimer(Character::IdType id, TimerType type, const QDateTime &dt) override;
 
+        virtual QDateTime getLocalUpdateTimer(Character::IdType id, TimerType type) const override;
+
         virtual std::vector<MarketOrder> getSellOrders(Character::IdType characterId) const override;
         virtual std::vector<MarketOrder> getBuyOrders(Character::IdType characterId) const override;
         virtual std::vector<MarketOrder> getArchivedOrders(Character::IdType characterId) const override;
@@ -155,7 +158,7 @@ namespace Evernus
         typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
         typedef std::pair<Character::IdType, EveType::IdType> CharacterTypePair;
 
-        typedef std::unordered_map<Character::IdType, QDateTime> CacheTimerMap;
+        typedef std::unordered_map<Character::IdType, QDateTime> CharacterTimerMap;
         typedef std::unordered_map<Character::IdType, std::vector<MarketOrder>> MarketOrderMap;
 
         static const QString versionKey;
@@ -173,6 +176,7 @@ namespace Evernus
         std::unique_ptr<WalletJournalEntryRepository> mWalletJournalEntryRepository;
         std::unique_ptr<RefTypeRepository> mRefTypeRepository;
         std::unique_ptr<CacheTimerRepository> mCacheTimerRepository;
+        std::unique_ptr<UpdateTimerRepository> mUpdateTimerRepository;
         std::unique_ptr<WalletTransactionRepository> mWalletTransactionRepository;
         std::unique_ptr<MarketOrderRepository> mMarketOrderRepository;
         std::unique_ptr<ItemCostRepository> mItemCostRepository;
@@ -200,11 +204,17 @@ namespace Evernus
 
         mutable std::unordered_map<Character::IdType, std::unique_ptr<AssetList>> mCharacterAssets;
 
-        CacheTimerMap mCharacterLocalCacheTimes;
-        CacheTimerMap mAssetsLocalCacheTimes;
-        CacheTimerMap mWalletJournalLocalCacheTimes;
-        CacheTimerMap mWalletTransactionsLocalCacheTimes;
-        CacheTimerMap mMarketOrdersLocalCacheTimes;
+        CharacterTimerMap mCharacterUtcCacheTimes;
+        CharacterTimerMap mAssetsUtcCacheTimes;
+        CharacterTimerMap mWalletJournalUtcCacheTimes;
+        CharacterTimerMap mWalletTransactionsUtcCacheTimes;
+        CharacterTimerMap mMarketOrdersUtcCacheTimes;
+
+        CharacterTimerMap mCharacterUtcUpdateTimes;
+        CharacterTimerMap mAssetsUtcUpdateTimes;
+        CharacterTimerMap mWalletJournalUtcUpdateTimes;
+        CharacterTimerMap mWalletTransactionsUtcUpdateTimes;
+        CharacterTimerMap mMarketOrdersUtcUpdateTimes;
 
         mutable MarketOrderMap mSellOrders;
         mutable MarketOrderMap mBuyOrders;
@@ -239,6 +249,8 @@ namespace Evernus
                                 EveType::IdType typeId,
                                 const QDateTime &priceTime,
                                 double price) const;
+
+        void saveUpdateTimer(TimerType timer, CharacterTimerMap &map, Character::IdType characterId) const;
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };

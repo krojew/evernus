@@ -14,27 +14,28 @@
  */
 #pragma once
 
-#include <QFrame>
-
-#include "MarketOrderModel.h"
+#include "UpdateTimer.h"
+#include "Repository.h"
 
 namespace Evernus
 {
-    class MarketOrderInfoWidget
-        : public QFrame
+    class UpdateTimerRepository
+        : public Repository<UpdateTimer>
     {
-        Q_OBJECT
-
     public:
-        explicit MarketOrderInfoWidget(const MarketOrderModel::OrderInfo &info, QWidget *parent = nullptr);
-        virtual ~MarketOrderInfoWidget() = default;
+        using Repository::Repository;
+        virtual ~UpdateTimerRepository() = default;
 
-    private slots:
-        void setAutoCopy(int state);
+        virtual QString getTableName() const override;
+        virtual QString getIdColumn() const override;
 
-        void copyPrice();
+        virtual UpdateTimer populate(const QSqlRecord &record) const override;
 
-    protected:
-        virtual bool event(QEvent *event) override;
+        void create(const Repository<Character> &characterRepo) const;
+
+    private:
+        virtual QStringList getColumns() const override;
+        virtual void bindValues(const UpdateTimer &entity, QSqlQuery &query) const override;
+        virtual void bindPositionalValues(const UpdateTimer &entity, QSqlQuery &query) const override;
     };
 }

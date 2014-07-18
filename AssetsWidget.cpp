@@ -36,7 +36,7 @@ namespace Evernus
                                const EveDataProvider &nameProvider,
                                const CacheTimerProvider &cacheTimerProvider,
                                QWidget *parent)
-        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::AssetList),
+        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::AssetList),
                                parent}
         , mAssetProvider{assetProvider}
         , mModel{mAssetProvider, nameProvider}

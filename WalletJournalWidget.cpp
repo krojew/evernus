@@ -30,7 +30,7 @@ namespace Evernus
                                              const CacheTimerProvider &cacheTimerProvider,
                                              const EveDataProvider &dataProvider,
                                              QWidget *parent)
-        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, CacheTimerProvider::TimerType::WalletJournal), parent}
+        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::WalletJournal), parent}
         , mModel{journalRepo, dataProvider}
     {
         auto mainLayout = new QVBoxLayout{};

@@ -108,7 +108,7 @@ namespace Evernus
                 character.setKeyId(key.getId());
 
                 mCacheTimerProvider.setUtcCacheTimer(characterId,
-                                                     CacheTimerProvider::TimerType::Character,
+                                                     TimerType::Character,
                                                      APIUtils::getCachedUntil(response));
 
                 callback(character, QString{});
@@ -138,7 +138,7 @@ namespace Evernus
                 assets.setCharacterId(characterId);
 
                 mCacheTimerProvider.setUtcCacheTimer(characterId,
-                                                     CacheTimerProvider::TimerType::AssetList,
+                                                     TimerType::AssetList,
                                                      APIUtils::getCachedUntil(response));
 
                 callback(assets, QString{});
@@ -221,7 +221,7 @@ namespace Evernus
                 handlePotentialError(response, error);
 
                 mCacheTimerProvider.setUtcCacheTimer(characterId,
-                                                     CacheTimerProvider::TimerType::MarketOrders,
+                                                     TimerType::MarketOrders,
                                                      APIUtils::getCachedUntil(response));
 
                 callback(parseResults<MarketOrders::value_type, APIXmlReceiver<MarketOrders::value_type>::CurElemType>(response, "orders"), QString{});
@@ -272,7 +272,7 @@ namespace Evernus
                 if (reachedEnd)
                 {
                     mCacheTimerProvider.setUtcCacheTimer(characterId,
-                                                         CacheTimerProvider::TimerType::WalletJournal,
+                                                         TimerType::WalletJournal,
                                                          APIUtils::getCachedUntil(response));
 
                     callback(*journal, QString{});
@@ -328,7 +328,7 @@ namespace Evernus
                 if (reachedEnd)
                 {
                     mCacheTimerProvider.setUtcCacheTimer(characterId,
-                                                         CacheTimerProvider::TimerType::WalletTransactions,
+                                                         TimerType::WalletTransactions,
                                                          APIUtils::getCachedUntil(response));
 
                     callback(*transactions, QString{});

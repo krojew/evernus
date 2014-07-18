@@ -14,19 +14,20 @@
  */
 #pragma once
 
-#include "CacheTimer.h"
+#include "TimerTypes.h"
+#include "Character.h"
 
 namespace Evernus
 {
     class CacheTimerProvider
     {
     public:
-        typedef CacheTimer::TimerType TimerType;
-
         CacheTimerProvider() = default;
         virtual ~CacheTimerProvider() = default;
 
         virtual QDateTime getLocalCacheTimer(Character::IdType id, TimerType type) const = 0;
         virtual void setUtcCacheTimer(Character::IdType id, TimerType type, const QDateTime &dt) = 0;
+
+        virtual QDateTime getLocalUpdateTimer(Character::IdType id, TimerType type) const = 0;
     };
 }

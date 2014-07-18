@@ -30,6 +30,14 @@ namespace Evernus
             QDateTime mFrom, mTo;
         };
 
+        struct OrderInfo
+        {
+            double mOrderPrice = 0.;
+            double mMarketPrice = 0.;
+            QDateTime mOrderLocalTimestamp;
+            QDateTime mMarketLocalTimestamp;
+        };
+
         using QAbstractItemModel::QAbstractItemModel;
         virtual ~MarketOrderModel() = default;
 
@@ -39,6 +47,7 @@ namespace Evernus
         virtual double getTotalISK() const = 0;
         virtual double getTotalSize() const = 0;
         virtual Range getOrderRange(const QModelIndex &index) const = 0;
+        virtual OrderInfo getOrderInfo(const QModelIndex &index) const = 0;
         virtual EveType::IdType getOrderTypeId(const QModelIndex &index) const = 0;
         virtual WalletTransactionsModel::EntryType getOrderTypeFilter() const = 0;
 

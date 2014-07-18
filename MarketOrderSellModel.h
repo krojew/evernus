@@ -23,6 +23,7 @@
 namespace Evernus
 {
     class MarketOrderProvider;
+    class CacheTimerProvider;
     class ItemCostProvider;
     class EveDataProvider;
     class MarketOrder;
@@ -31,10 +32,11 @@ namespace Evernus
         : public MarketOrderModel
     {
     public:
-        explicit MarketOrderSellModel(const MarketOrderProvider &orderProvider,
-                                      const EveDataProvider &dataProvider,
-                                      const ItemCostProvider &itemCostProvider,
-                                      QObject *parent = nullptr);
+        MarketOrderSellModel(const MarketOrderProvider &orderProvider,
+                             const EveDataProvider &dataProvider,
+                             const ItemCostProvider &itemCostProvider,
+                             const CacheTimerProvider &cacheTimerProvider,
+                             QObject *parent = nullptr);
         virtual ~MarketOrderSellModel() = default;
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
@@ -50,6 +52,7 @@ namespace Evernus
         virtual double getTotalISK() const override;
         virtual double getTotalSize() const override;
         virtual Range getOrderRange(const QModelIndex &index) const override;
+        virtual OrderInfo getOrderInfo(const QModelIndex &index) const override;
         virtual EveType::IdType getOrderTypeId(const QModelIndex &index) const override;
         virtual WalletTransactionsModel::EntryType getOrderTypeFilter() const override;
 
@@ -80,6 +83,7 @@ namespace Evernus
         const MarketOrderProvider &mOrderProvider;
         const EveDataProvider &mDataProvider;
         const ItemCostProvider &mItemCostProvider;
+        const CacheTimerProvider &mCacheTimerProvider;
 
         std::vector<MarketOrder> mData;
 
