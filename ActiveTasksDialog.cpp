@@ -49,7 +49,7 @@ namespace Evernus
         auto throbberMovie = new QMovie{":/images/loader.gif", QByteArray{}, this};
 
         QFont font;
-        font.setPixelSize(31);
+        font.setPixelSize(16);
 
         auto throbberLayout = new QHBoxLayout{};
         mainLayout->addLayout(throbberLayout);
