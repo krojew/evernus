@@ -22,7 +22,7 @@
 
 namespace Evernus
 {
-    const QString APIInterface::rowLimit = "1500";
+    const QString APIInterface::rowLimit = "2560";
 
     APIInterface::APIInterface(QObject *parent)
         : QObject{parent}
