@@ -149,7 +149,7 @@ namespace Evernus
                     return 2;
                 }
             case volumeColumn:
-                return data.getVolumeRemaining();
+                return QVariantList{} << data.getVolumeRemaining() << data.getVolumeEntered();
             case totalColumn:
                 return data.getVolumeRemaining() * data.getPrice();
             case deltaColumn:
@@ -324,8 +324,9 @@ namespace Evernus
                     return QColor{Qt::red};
                 case MarketOrder::State::Fulfilled:
                     return QColor{0, 64, 0};
+                default:
+                    break;
                 }
-                break;
             case priceStatusColumn:
                 return QColor{Qt::darkRed};
             case profitColumn:

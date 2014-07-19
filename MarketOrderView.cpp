@@ -19,6 +19,7 @@
 #include <QLabel>
 #include <QFont>
 
+#include "MarketOrderVolumeItemDelegate.h"
 #include "MarketOrderInfoWidget.h"
 #include "MarketOrderModel.h"
 #include "StyledTreeView.h"
@@ -42,6 +43,7 @@ namespace Evernus
         mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
+        mView->setItemDelegateForColumn(6, new MarketOrderVolumeItemDelegate{this});
         connect(mView, &StyledTreeView::clicked, this, &MarketOrderView::showPriceInfo);
 
         auto infoLayout = new QHBoxLayout{};

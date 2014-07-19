@@ -220,6 +220,8 @@ add_executable(
     MarketOrderView.h
     MarketOrderViewWithTransactions.cpp
     MarketOrderViewWithTransactions.h
+    MarketOrderVolumeItemDelegate.cpp
+    MarketOrderVolumeItemDelegate.h
     MarketOrderWidget.cpp
     MarketOrderWidget.h
     MenuBarWidget.cpp
