@@ -780,7 +780,7 @@ namespace Evernus
                                 }
                                 else
                                 {
-                                    it->setLastSeen(QDateTime::currentDateTimeUtc());
+                                    it->setLastSeen(std::min(QDateTime::currentDateTimeUtc(), it->getIssued().addDays(it->getDuration())));
                                     addToCache(*it);
                                 }
 
