@@ -34,6 +34,7 @@ namespace Evernus
         {
             double mOrderPrice = 0.;
             double mMarketPrice = 0.;
+            double mTargetPrice = 0.;
             QDateTime mOrderLocalTimestamp;
             QDateTime mMarketLocalTimestamp;
         };

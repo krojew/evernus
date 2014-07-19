@@ -124,10 +124,12 @@ namespace Evernus
     {
         emit closeOrderInfo();
 
-        if (!mSource->shouldShowPriceInfo(index))
+        const auto source = mProxy.mapToSource(index);
+
+        if (!mSource->shouldShowPriceInfo(source))
             return;
 
-        auto infoWidget = new MarketOrderInfoWidget{mSource->getOrderInfo(index), this};
+        auto infoWidget = new MarketOrderInfoWidget{mSource->getOrderInfo(source), this};
         infoWidget->move(QCursor::pos());
         infoWidget->show();
         connect(this, &MarketOrderView::closeOrderInfo, infoWidget, &MarketOrderInfoWidget::deleteLater);

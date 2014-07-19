@@ -102,7 +102,7 @@ namespace Evernus
                         .arg(locale.toString(price.getUpdateTime().toLocalTime()));
                 }
 
-                return tr("Your price is/was best on %1").arg(locale.toString(price.getUpdateTime().toLocalTime()));
+                return tr("Your price was best on %1").arg(locale.toString(price.getUpdateTime().toLocalTime()));
             }
             break;
         case Qt::DecorationRole:
@@ -441,12 +441,16 @@ namespace Evernus
 
     MarketOrderModel::OrderInfo MarketOrderSellModel::getOrderInfo(const QModelIndex &index) const
     {
+        QSettings settings;
+
         const auto &data = mData[index.row()];
         const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+        const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
         OrderInfo info;
         info.mOrderPrice = data.getPrice();
         info.mMarketPrice = price.getValue();
+        info.mTargetPrice = (info.mMarketPrice < info.mOrderPrice) ? (info.mMarketPrice - priceDelta) : (info.mOrderPrice);
         info.mOrderLocalTimestamp = mCacheTimerProvider.getLocalUpdateTimer(mCharacterId, TimerType::MarketOrders);
         info.mMarketLocalTimestamp = price.getUpdateTime();
 

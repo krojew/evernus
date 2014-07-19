@@ -12,12 +12,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QApplication>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QGridLayout>
 #include <QPushButton>
+#include <QClipboard>
 #include <QCheckBox>
 #include <QSettings>
 #include <QEvent>
+#include <QLabel>
 
 #include "UISettings.h"
 
@@ -27,6 +31,7 @@ namespace Evernus
 {
     MarketOrderInfoWidget::MarketOrderInfoWidget(const MarketOrderModel::OrderInfo &info, QWidget *parent)
         : QFrame{parent, Qt::Tool | Qt::FramelessWindowHint}
+        , mTargetPrice{QString::number(info.mTargetPrice, 'f', 2)}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -47,14 +52,41 @@ namespace Evernus
 
         QSettings settings;
 
+        const auto autoCopy = settings.value(UISettings::autoCopyPriceFromInfoKey, true).toBool();
+
         auto copyCheck = new QCheckBox{tr("Copy new price on open"), this};
         btnLayout->addWidget(copyCheck);
-        copyCheck->setChecked(settings.value(UISettings::autoCopyPriceFromInfoKey, true).toBool());
+        copyCheck->setChecked(autoCopy);
         connect(copyCheck, &QCheckBox::stateChanged, this, &MarketOrderInfoWidget::setAutoCopy);
 
         btnLayout->addStretch();
 
+        auto infoLayout = new QGridLayout{};
+        mainLayout->addLayout(infoLayout);
+
+        const auto curLocale = locale();
+
+        infoLayout->addWidget(new QLabel{tr("<span style='color: blue'>Your price:</span>"), this}, 0, 0);
+        infoLayout->addWidget(new QLabel{tr("<span style='color: blue'>%1</span>")
+            .arg(curLocale.toCurrencyString(info.mOrderPrice, "ISK")), this}, 0, 1);
+        infoLayout->addWidget(new QLabel{tr("Valid on:"), this}, 0, 2);
+        infoLayout->addWidget(new QLabel{(info.mOrderLocalTimestamp.isValid()) ? (curLocale.toString(info.mOrderLocalTimestamp)) : ("-"), this}, 0, 3);
+
+        infoLayout->addWidget(new QLabel{tr("<span style='color: red'>Market price:</span>"), this}, 1, 0);
+        infoLayout->addWidget(new QLabel{tr("<span style='color: red'>%1</span>")
+            .arg(curLocale.toCurrencyString(info.mMarketPrice, "ISK")), this}, 1, 1);
+        infoLayout->addWidget(new QLabel{tr("Valid on:"), this}, 1, 2);
+        infoLayout->addWidget(new QLabel{(info.mMarketLocalTimestamp.isValid()) ? (curLocale.toString(info.mMarketLocalTimestamp)) : ("-"), this}, 1, 3);
+
+        infoLayout->addWidget(new QLabel{tr("Difference:"), this}, 2, 0);
+        infoLayout->addWidget(new QLabel{curLocale.toCurrencyString(info.mOrderPrice - info.mMarketPrice, "ISK"), this}, 2, 1);
+        infoLayout->addWidget(new QLabel{tr("New price:"), this}, 2, 2);
+        infoLayout->addWidget(new QLabel{QString{"<strong>%1</strong>"}.arg(curLocale.toCurrencyString(info.mTargetPrice, "ISK")), this}, 2, 3);
+
         setFrameStyle(QFrame::StyledPanel);
+
+        if (autoCopy)
+            QApplication::clipboard()->setText(mTargetPrice);
     }
 
     void MarketOrderInfoWidget::setAutoCopy(int state)
@@ -65,7 +97,7 @@ namespace Evernus
 
     void MarketOrderInfoWidget::copyPrice()
     {
-
+        QApplication::clipboard()->setText(mTargetPrice);
     }
 
     bool MarketOrderInfoWidget::event(QEvent *event)

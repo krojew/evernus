@@ -36,5 +36,8 @@ namespace Evernus
 
     protected:
         virtual bool event(QEvent *event) override;
+
+    private:
+        QString mTargetPrice;
     };
 }
