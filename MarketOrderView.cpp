@@ -109,7 +109,7 @@ namespace Evernus
 
         emit closeOrderInfo();
 
-        mTotalOrdersLabel->setText(curLocale.toString(mSource->getOrderCount()));
+        mTotalOrdersLabel->setText(curLocale.toString(static_cast<qulonglong>(mSource->getOrderCount())));
         mVolumeLabel->setText(QString{"%1/%2 (%3%)"}
             .arg(curLocale.toString(volRemaining))
             .arg(curLocale.toString(volEntered))
