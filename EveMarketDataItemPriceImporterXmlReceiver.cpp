@@ -31,7 +31,7 @@ namespace Evernus
 
     void EveMarketDataItemPriceImporterXmlReceiver::attribute(const QXmlName &name, const QStringRef &value)
     {
-        auto &current = mResult.back();
+        auto &current = *mCurrentElement;
 
         if (name.localName(mNamePool) == "buysell")
             current.setType((value == "s") ? (ItemPrice::Type::Sell) : (ItemPrice::Type::Buy));
@@ -41,11 +41,6 @@ namespace Evernus
             current.setLocationId(value.toULongLong());
         else if (name.localName(mNamePool) == "price")
             current.setValue(value.toDouble());
-        else if (name.localName(mNamePool) == "updated")
-        {
-            const auto dt = QDateTime::fromString(value.toString(), "yyyy-MM-dd HH:mm:ss");
-            current.setUpdateTime(dt);
-        }
     }
 
     void EveMarketDataItemPriceImporterXmlReceiver::characters(const QStringRef &value)
@@ -64,26 +59,37 @@ namespace Evernus
 
     void EveMarketDataItemPriceImporterXmlReceiver::endElement()
     {
-        const auto &current = mResult.back();
+        const auto &current = *mCurrentElement;
         const auto key = std::make_pair(current.getTypeId(), current.getLocationId());
 
-        if (mDesired.find(key) == std::end(mDesired))
+        if (mDesired.find(key) != std::end(mDesired))
         {
-            mResult.pop_back();
-        }
-        else if (current.getType() == ItemPrice::Type::Buy)
-        {
-            if (mProcessedBuy.find(key) != std::end(mProcessedBuy))
-                mResult.pop_back();
+            if (current.getType() == ItemPrice::Type::Buy)
+            {
+                const auto it = mProcessedBuy.find(key);
+                if (it == std::end(mProcessedBuy))
+                {
+                    mResult.emplace_back(std::move(current));
+                    mProcessedBuy.emplace(key, &mResult.back());
+                }
+                else if (it->second->getValue() < current.getValue())
+                {
+                    *it->second = std::move(current);
+                }
+            }
             else
-                mProcessedBuy.emplace(key);
-        }
-        else
-        {
-            if (mProcessedSell.find(key) != std::end(mProcessedSell))
-                mResult.pop_back();
-            else
-                mProcessedSell.emplace(key);
+            {
+                const auto it = mProcessedSell.find(key);
+                if (it == std::end(mProcessedSell))
+                {
+                    mResult.emplace_back(std::move(current));
+                    mProcessedSell.emplace(key, &mResult.back());
+                }
+                else if (it->second->getValue() > current.getValue())
+                {
+                    *it->second = std::move(current);
+                }
+            }
         }
     }
 
@@ -109,7 +115,8 @@ namespace Evernus
     void EveMarketDataItemPriceImporterXmlReceiver::startElement(const QXmlName &name)
     {
         Q_UNUSED(name);
-        mResult.emplace_back();
+        mCurrentElement = std::make_unique<ItemPrice>();
+        mCurrentElement->setUpdateTime(QDateTime::currentDateTimeUtc());
     }
 
     void EveMarketDataItemPriceImporterXmlReceiver::startOfSequence()

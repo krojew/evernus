@@ -73,7 +73,7 @@ namespace Evernus
         query.addQueryItem("type_ids", typeIds.join(','));
         query.addQueryItem("station_ids", stationIds.join(','));
 
-        QUrl url{"http://api.eve-marketdata.com/api/item_prices2.xml"};
+        QUrl url{"http://api.eve-marketdata.com/api/item_orders2.xml"};
         url.setQuery(query);
 
         auto reply = mNetworkManager.get(QNetworkRequest{url});
@@ -99,7 +99,7 @@ namespace Evernus
         QXmlQuery query;
         query.setMessageHandler(&handler);
         query.setFocus(reply->readAll());
-        query.setQuery("//rowset[@name='item_prices']/row");
+        query.setQuery("//rowset[@name='orders']/row");
 
         EveMarketDataItemPriceImporterXmlReceiver recevier{target, query.namePool()};
         query.evaluateTo(&recevier);

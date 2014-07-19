@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <unordered_map>
 #include <vector>
 
 #include <QAbstractXmlReceiver>
@@ -52,7 +53,10 @@ namespace Evernus
         const QXmlNamePool &mNamePool;
 
         Result mResult;
+        std::unique_ptr<ItemPrice> mCurrentElement;
 
-        ItemPriceImporter::TypeLocationPairs mProcessedSell, mProcessedBuy, mDesired;
+        ItemPriceImporter::TypeLocationPairs mDesired;
+        std::unordered_map<ItemPriceImporter::TypeLocationPair, ItemPrice *, boost::hash<ItemPriceImporter::TypeLocationPair>>
+        mProcessedSell, mProcessedBuy;
     };
 }
