@@ -42,10 +42,8 @@ namespace Evernus
         auto &importBtn = getAPIImportButton();
         toolBarLayout->addWidget(&importBtn);
 
-        toolBarLayout->addStretch();
-
         mFilter = new WalletEntryFilterWidget{QStringList{} << tr("all") << tr("incoming") << tr("outgoing"), this};
-        mainLayout->addWidget(mFilter);
+        toolBarLayout->addWidget(mFilter, 1);
         connect(mFilter, &WalletEntryFilterWidget::filterChanged, this, &WalletJournalWidget::updateFilter);
 
         mFilterModel = new QSortFilterProxyModel{this};
