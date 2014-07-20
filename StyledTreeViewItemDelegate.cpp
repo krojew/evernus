@@ -23,6 +23,8 @@ namespace Evernus
     {
         QStyledItemDelegate::paint(painter, option, index);
 
+        painter->save();
+
         if (option.state & QStyle::State_HasFocus)
         {
             painter->setPen(QPen{QPalette{}.color(QPalette::Text), 0., Qt::DashLine});
@@ -33,5 +35,7 @@ namespace Evernus
             painter->setPen(QPen{Qt::lightGray, 0., Qt::DotLine});
             painter->drawLine(option.rect.topRight(), option.rect.bottomRight());
         }
+
+        painter->restore();
     }
 }

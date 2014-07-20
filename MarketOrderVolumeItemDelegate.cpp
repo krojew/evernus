@@ -32,6 +32,8 @@ namespace Evernus
             const QColor brightColor{192, 255, 192};
             const QColor darkColor{128, 255, 128};
 
+            painter->save();
+
             painter->setPen(brightColor);
             painter->setBrush(brightColor);
             painter->drawRect(QRectF{static_cast<qreal>(option.rect.left()),
@@ -45,6 +47,8 @@ namespace Evernus
                                      static_cast<qreal>(option.rect.top()),
                                      option.rect.width() * alpha,
                                      static_cast<qreal>(option.rect.height())});
+
+            painter->restore();
         }
 
         QStyledItemDelegate::paint(painter, option, index);
