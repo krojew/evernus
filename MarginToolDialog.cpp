@@ -56,6 +56,8 @@
 
 namespace Evernus
 {
+    const QString MarginToolDialog::settingsPosKey = "marginTool/pos";
+
     MarginToolDialog::MarginToolDialog(const Repository<Character> &characterRepository,
                                        const ItemCostProvider &itemCostProvider,
                                        const EveDataProvider &dataProvider,
@@ -220,7 +222,7 @@ namespace Evernus
 
         auto buttons = new QDialogButtonBox{QDialogButtonBox::Close, this};
         mainLayout->addWidget(buttons);
-        connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::reject);
+        connect(buttons, &QDialogButtonBox::rejected, this, &MarginToolDialog::close);
 
         const auto logPath = PathUtils::getMarketLogsPath();
         if (logPath.isEmpty())
@@ -245,6 +247,8 @@ namespace Evernus
         setWindowTitle(tr("Margin tool"));
         setAttribute(Qt::WA_DeleteOnClose);
         setNewWindowFlags(alwaysOnTop);
+
+        move(settings.value(settingsPosKey).toPoint());
     }
 
     void MarginToolDialog::setCharacter(Character::IdType id)
@@ -544,6 +548,14 @@ namespace Evernus
             settings.setValue(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::CopyMode::CopyBuy));
     }
 
+    void MarginToolDialog::closeEvent(QCloseEvent *event)
+    {
+        QSettings settings;
+        settings.setValue(settingsPosKey, pos());
+
+        QDialog::closeEvent(event);
+    }
+
     void MarginToolDialog::hideEvent(QHideEvent *event)
     {
         emit hidden();
@@ -567,8 +579,8 @@ namespace Evernus
             flags &= ~Qt::WindowStaysOnTopHint;
 
         setWindowFlags(flags);
-        show();
 #endif
+        show();
     }
 
     MarginToolDialog::Taxes MarginToolDialog::calculateTaxes() const

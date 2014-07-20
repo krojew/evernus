@@ -133,7 +133,6 @@ namespace Evernus
 
         showMinimized();
 
-        mMarginToolDialog->show();
         mMarginToolDialog->activateWindow();
     }
 

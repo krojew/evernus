@@ -58,6 +58,7 @@ namespace Evernus
         void saveCopyMode();
 
     protected:
+        virtual void closeEvent(QCloseEvent *event) override;
         virtual void hideEvent(QHideEvent *event) override;
 
     private:
@@ -70,6 +71,8 @@ namespace Evernus
         };
 
         static const auto samples = 100000000;
+
+        static const QString settingsPosKey;
 
         const Repository<Character> &mCharacterRepository;
         const ItemCostProvider &mItemCostProvider;
