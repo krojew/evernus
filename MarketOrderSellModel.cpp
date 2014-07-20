@@ -327,6 +327,7 @@ namespace Evernus
                 default:
                     break;
                 }
+                break;
             case priceStatusColumn:
                 return QColor{Qt::darkRed};
             case profitColumn:
