@@ -14,8 +14,9 @@
  */
 #pragma once
 
-#include <QSortFilterProxyModel>
 #include <QWidget>
+
+#include "LeafFilterProxyModel.h"
 
 class QItemSelectionModel;
 class QLabel;
@@ -59,6 +60,6 @@ namespace Evernus
         QLabel *mTotalSizeLabel = nullptr;
 
         MarketOrderModel *mSource = nullptr;
-        QSortFilterProxyModel mProxy;
+        LeafFilterProxyModel mProxy;
     };
 }
