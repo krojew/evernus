@@ -127,58 +127,58 @@ namespace Evernus
         if (!index.isValid())
              return QVariant{};
 
-         auto item = static_cast<const TreeItem *>(index.internalPointer());
+        auto item = static_cast<const TreeItem *>(index.internalPointer());
 
-         const auto column = index.column();
+        const auto column = index.column();
 
-         QLocale locale;
+        QLocale locale;
 
-         switch (role) {
-         case Qt::UserRole:
-             return item->data(column);
-         case Qt::DisplayRole:
-             switch (column) {
-             case quantityColumn:
-                 return locale.toString(item->data(quantityColumn).toUInt());
-             case unitVolumeColumn:
-                 if (item->parent() != &mRootItem)
-                     return QString{"%1m³"}.arg(locale.toString(item->data(unitVolumeColumn).toDouble(), 'f', 2));
-                 break;
-             case totalVolumeColumn:
-                 return QString{"%1m³"}.arg(locale.toString(item->data(totalVolumeColumn).toDouble(), 'f', 2));
-             case unitPriceColumn:
-                 if (item->parent() != &mRootItem)
-                     return locale.toCurrencyString(item->data(unitPriceColumn).toDouble(), "ISK");
-                 break;
-             case totalPriceColumn:
-                 return locale.toCurrencyString(item->data(totalPriceColumn).toDouble(), "ISK");
-             }
-             return item->data(column);
-         case Qt::FontRole:
-             if (item->parent() == &mRootItem)
-             {
-                 QFont font;
-                 font.setBold(true);
+        switch (role) {
+        case Qt::UserRole:
+            return item->data(column);
+        case Qt::DisplayRole:
+            switch (column) {
+            case quantityColumn:
+                return locale.toString(item->data(quantityColumn).toUInt());
+            case unitVolumeColumn:
+                if (item->parent() != &mRootItem)
+                    return QString{"%1m³"}.arg(locale.toString(item->data(unitVolumeColumn).toDouble(), 'f', 2));
+                break;
+            case totalVolumeColumn:
+                return QString{"%1m³"}.arg(locale.toString(item->data(totalVolumeColumn).toDouble(), 'f', 2));
+            case unitPriceColumn:
+                if (item->parent() != &mRootItem)
+                    return locale.toCurrencyString(item->data(unitPriceColumn).toDouble(), "ISK");
+                break;
+            case totalPriceColumn:
+                return locale.toCurrencyString(item->data(totalPriceColumn).toDouble(), "ISK");
+            }
+            return item->data(column);
+        case Qt::FontRole:
+            if (item->parent() == &mRootItem)
+            {
+                QFont font;
+                font.setBold(true);
 
-                 return font;
-             }
+                return font;
+            }
 
-             return QFont{};
-         case Qt::BackgroundRole:
-             if ((column == unitPriceColumn || column == totalPriceColumn) && item->parent() != &mRootItem)
-             {
-                 QSettings settings;
-                 const auto maxPriceAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
-                 if (item->priceTimestamp() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxPriceAge))
-                     return QColor{255, 255, 192};
-             }
-             break;
-         case Qt::ToolTipRole:
-             if ((column == unitPriceColumn || column == totalPriceColumn) && item->parent() != &mRootItem)
-                 return tr("Price update time: %1").arg(item->priceTimestamp().toLocalTime().toString());
-         }
+            return QFont{};
+        case Qt::BackgroundRole:
+            if ((column == unitPriceColumn || column == totalPriceColumn) && item->parent() != &mRootItem)
+            {
+                QSettings settings;
+                const auto maxPriceAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
+                if (item->priceTimestamp() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxPriceAge))
+                    return QColor{255, 255, 192};
+            }
+            break;
+        case Qt::ToolTipRole:
+            if ((column == unitPriceColumn || column == totalPriceColumn) && item->parent() != &mRootItem)
+                return tr("Price update time: %1").arg(item->priceTimestamp().toLocalTime().toString());
+        }
 
-         return QVariant{};
+        return QVariant{};
     }
 
     QVariant AssetModel::headerData(int section, Qt::Orientation orientation, int role) const
