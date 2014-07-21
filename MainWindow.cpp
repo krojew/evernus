@@ -76,8 +76,8 @@ namespace Evernus
         , mWalletJournalRepository{walletJournalRepo}
         , mWalletTransactionRepository{walletTransactionRepo}
         , mMarketOrderRepository{orderRepo}
-        , mOrderProvider{orderProvider}
         , mItemCostRepository{itemCostRepo}
+        , mOrderProvider{orderProvider}        
         , mAssetProvider{assetProvider}
         , mItemCostProvider{itemCostProvider}
         , mEveDataProvider{eveDataProvider}

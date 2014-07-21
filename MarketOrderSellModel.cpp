@@ -665,9 +665,9 @@ namespace Evernus
             return order.getLocationId();
         case Grouping::Type:
             return order.getTypeId();
+        default:
+            return 0;
         }
-
-        return 0;
     }
 
     QString MarketOrderSellModel::getGroupingData(const MarketOrder &order) const
@@ -679,8 +679,8 @@ namespace Evernus
             return mDataProvider.getLocationName(order.getLocationId());
         case Grouping::Type:
             return mDataProvider.getTypeName(order.getTypeId());
+        default:
+            return QString{};
         }
-
-        return QString{};
     }
 }
