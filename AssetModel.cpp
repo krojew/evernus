@@ -106,12 +106,12 @@ namespace Evernus
         , mDataProvider{nameProvider}
     {
         mRootItem.setData(QVariantList{}
-            << "Name"
-            << "Quantity"
-            << "Unit volume"
-            << "Total volume"
-            << "Local unit sell price"
-            << "Local total sell price");
+            << tr("Name")
+            << tr("Quantity")
+            << tr("Unit volume")
+            << tr("Total volume")
+            << tr("Local unit sell price")
+            << tr("Local total sell price"));
     }
 
     int AssetModel::columnCount(const QModelIndex &parent) const
