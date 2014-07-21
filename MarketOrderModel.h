@@ -39,6 +39,14 @@ namespace Evernus
             QDateTime mMarketLocalTimestamp;
         };
 
+        enum class Grouping
+        {
+            None,
+            Type,
+            Group,
+            Station
+        };
+
         using QAbstractItemModel::QAbstractItemModel;
         virtual ~MarketOrderModel() = default;
 

@@ -15,6 +15,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "MarketOrderModel.h"
 #include "MarketOrder.h"
@@ -59,10 +60,42 @@ namespace Evernus
         virtual bool shouldShowPriceInfo(const QModelIndex &index) const override;
 
         void setCharacter(Character::IdType id);
+        void setGrouping(Grouping grouping);
 
         void reset();
 
     private:
+        class TreeItem
+        {
+        public:
+            TreeItem() = default;
+            ~TreeItem() = default;
+
+            void appendChild(std::unique_ptr<TreeItem> &&child);
+            void clearChildren();
+
+            TreeItem *child(int row) const;
+
+            int childCount() const;
+
+            const MarketOrder *getOrder() const noexcept;
+            void setOrder(const MarketOrder *order) noexcept;
+
+            QString getGroupName() const;
+            void setGroupName(const QString &name);
+            void setGroupName(QString &&name);
+
+            int row() const;
+
+            TreeItem *parent() const;
+
+        private:
+            std::vector<std::unique_ptr<TreeItem>> mChildItems;
+            TreeItem *mParentItem = nullptr;
+            const MarketOrder *mOrder = nullptr;
+            QString mGroupName;
+        };
+
         static const auto nameColumn = 0;
         static const auto groupColumn = 1;
         static const auto statusColumn = 2;
@@ -94,5 +127,11 @@ namespace Evernus
         double mTotalSize = 0.;
 
         Character::IdType mCharacterId = Character::invalidId;
+        Grouping mGrouping = Grouping::None;
+
+        TreeItem mRootItem;
+
+        quintptr getGroupingId(const MarketOrder &order) const;
+        QString getGroupingData(const MarketOrder &order) const;
     };
 }

@@ -17,8 +17,11 @@
 #include "MarketOrderSellModel.h"
 #include "CharacterBoundWidget.h"
 
+class QComboBox;
+
 namespace Evernus
 {
+    class MarketOrderViewWithTransactions;
     class WalletTransactionRepository;
     class MarketOrderProvider;
     class CacheTimerProvider;
@@ -45,8 +48,15 @@ namespace Evernus
     public slots:
         void updateData();
 
+    private slots:
+        void changeGrouping();
+
     private:
+        MarketOrderViewWithTransactions *mSellView = nullptr;
+
         MarketOrderSellModel mSellModel;
+
+        QComboBox *mGroupingCombo = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
     };

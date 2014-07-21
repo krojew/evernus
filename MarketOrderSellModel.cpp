@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_map>
+
 #include <QSettings>
 #include <QLocale>
 #include <QColor>
@@ -30,6 +32,74 @@
 
 namespace Evernus
 {
+    void MarketOrderSellModel::TreeItem::appendChild(std::unique_ptr<TreeItem> &&child)
+    {
+        child->mParentItem = this;
+        mChildItems.emplace_back(std::move(child));
+    }
+
+    void MarketOrderSellModel::TreeItem::clearChildren()
+    {
+        mChildItems.clear();
+    }
+
+    MarketOrderSellModel::TreeItem *MarketOrderSellModel::TreeItem::child(int row) const
+    {
+        return (row >= mChildItems.size()) ? (nullptr) : (mChildItems[row].get());
+    }
+
+    int MarketOrderSellModel::TreeItem::childCount() const
+    {
+        return static_cast<int>(mChildItems.size());
+    }
+
+    const MarketOrder *MarketOrderSellModel::TreeItem::getOrder() const noexcept
+    {
+        return mOrder;
+    }
+
+    void MarketOrderSellModel::TreeItem::setOrder(const MarketOrder *order) noexcept
+    {
+        mOrder = order;
+    }
+
+    QString MarketOrderSellModel::TreeItem::getGroupName() const
+    {
+        return mGroupName;
+    }
+
+    void MarketOrderSellModel::TreeItem::setGroupName(const QString &name)
+    {
+        mGroupName = name;
+    }
+
+    void MarketOrderSellModel::TreeItem::setGroupName(QString &&name)
+    {
+        mGroupName = std::move(name);
+    }
+
+    int MarketOrderSellModel::TreeItem::row() const
+    {
+        if (mParentItem != nullptr)
+        {
+            auto row = 0;
+            for (const auto &child : mParentItem->mChildItems)
+            {
+                if (child.get() == this)
+                    return row;
+
+                ++row;
+            }
+        }
+
+        return 0;
+    }
+
+    MarketOrderSellModel::TreeItem *MarketOrderSellModel::TreeItem::parent() const
+    {
+        return mParentItem;
+    }
+
     MarketOrderSellModel::MarketOrderSellModel(const MarketOrderProvider &orderProvider,
                                                const EveDataProvider &dataProvider,
                                                const ItemCostProvider &itemCostProvider,
@@ -53,9 +123,21 @@ namespace Evernus
         if (!index.isValid())
             return QVariant{};
 
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
         const auto column = index.column();
-        const auto row = index.row();
-        const auto &data = mData[row];
+
+        if (mGrouping != Grouping::None)
+        {
+            if (item->parent() == &mRootItem)
+            {
+                if (role == Qt::UserRole || (role == Qt::DisplayRole && column == nameColumn))
+                    return item->getGroupName();
+
+                return QVariant{};
+            }
+        }
+
+        const auto data = item->getOrder();
 
         const auto secondsToString = [this](auto duration) {
             QString res;
@@ -81,17 +163,17 @@ namespace Evernus
         case Qt::ToolTipRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+                const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getLocationId());
                 if (price.isNew())
-                    return tr("No price data. Please import prices from Assets tab or by using Margin tool.");
+                    return tr("No price data-> Please import prices from Assets tab or by using Margin tool.");
 
                 QLocale locale;
 
-                if (price.getValue() < data.getPrice())
+                if (price.getValue() < data->getPrice())
                 {
                     return tr("You have been undercut. Current price is %1 (%2 different from yours).\nClick the icon for details.")
                         .arg(locale.toCurrencyString(price.getValue(), "ISK"))
-                        .arg(locale.toCurrencyString(price.getValue() - data.getPrice(), "ISK"));
+                        .arg(locale.toCurrencyString(price.getValue() - data->getPrice(), "ISK"));
                 }
 
                 QSettings settings;
@@ -108,11 +190,11 @@ namespace Evernus
         case Qt::DecorationRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+                const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getLocationId());
                 if (price.isNew())
                     return QIcon{":/images/error.png"};
 
-                if (price.getValue() < data.getPrice())
+                if (price.getValue() < data->getPrice())
                     return QIcon{":/images/exclamation.png"};
 
                 QSettings settings;
@@ -126,18 +208,18 @@ namespace Evernus
         case Qt::UserRole:
             switch (column) {
             case nameColumn:
-                return mDataProvider.getTypeName(data.getTypeId());
+                return mDataProvider.getTypeName(data->getTypeId());
             case groupColumn:
-                return mDataProvider.getTypeMarketGroupName(data.getTypeId());
+                return mDataProvider.getTypeMarketGroupParentName(data->getTypeId());
             case statusColumn:
-                return static_cast<int>(data.getState());
+                return static_cast<int>(data->getState());
             case customCostColumn:
-                return mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId()).getCost();
+                return mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId()).getCost();
             case priceColumn:
-                return data.getPrice();
+                return data->getPrice();
             case priceStatusColumn:
                 {
-                    const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+                    const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getLocationId());
                     if (price.isNew())
                         return 0;
 
@@ -149,29 +231,29 @@ namespace Evernus
                     return 2;
                 }
             case volumeColumn:
-                return QVariantList{} << data.getVolumeRemaining() << data.getVolumeEntered();
+                return QVariantList{} << data->getVolumeRemaining() << data->getVolumeEntered();
             case totalColumn:
-                return data.getVolumeRemaining() * data.getPrice();
+                return data->getVolumeRemaining() * data->getPrice();
             case deltaColumn:
-                return data.getDelta();
+                return data->getDelta();
             case profitColumn:
                 {
-                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
-                    return data.getVolumeRemaining() * (data.getPrice() - cost.getCost());
+                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                    return data->getVolumeRemaining() * (data->getPrice() - cost.getCost());
                 }
             case totalProfitColumn:
                 {
-                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
-                    return data.getVolumeEntered() * (data.getPrice() - cost.getCost());
+                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                    return data->getVolumeEntered() * (data->getPrice() - cost.getCost());
                 }
             case profitPerItemColumn:
                 {
-                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
-                    return data.getPrice() - cost.getCost();
+                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                    return data->getPrice() - cost.getCost();
                 }
             case timeLeftColumn:
                 {
-                    const auto timeEnd = data.getIssued().addDays(data.getDuration()).toMSecsSinceEpoch() / 1000;
+                    const auto timeEnd = data->getIssued().addDays(data->getDuration()).toMSecsSinceEpoch() / 1000;
                     const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
 
                     if (timeEnd > timeCur)
@@ -180,7 +262,7 @@ namespace Evernus
                 break;
             case orderAgeColumn:
                 {
-                    const auto timeStart = data.getIssued().toMSecsSinceEpoch() / 1000;
+                    const auto timeStart = data->getIssued().toMSecsSinceEpoch() / 1000;
                     const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
 
                     if (timeCur > timeStart)
@@ -188,9 +270,9 @@ namespace Evernus
                 }
                 break;
             case firstSeenColumn:
-                return data.getFirstSeen();
+                return data->getFirstSeen();
             case stationColumn:
-                return mDataProvider.getLocationName(data.getLocationId());
+                return mDataProvider.getLocationName(data->getLocationId());
             }
             break;
         case Qt::DisplayRole:
@@ -201,32 +283,32 @@ namespace Evernus
 
                 switch (column) {
                 case nameColumn:
-                    return mDataProvider.getTypeName(data.getTypeId());
+                    return mDataProvider.getTypeName(data->getTypeId());
                 case groupColumn:
-                    return mDataProvider.getTypeMarketGroupName(data.getTypeId());
+                    return mDataProvider.getTypeMarketGroupParentName(data->getTypeId());
                 case statusColumn:
                     {
-                        const auto prefix = (data.getDelta() != 0) ? ("*") : ("");
+                        const auto prefix = (data->getDelta() != 0) ? ("*") : ("");
 
-                        if ((data.getState() >= MarketOrder::State::Active && data.getState() <= MarketOrder::State::CharacterDeleted))
-                            return prefix + tr(stateNames[static_cast<size_t>(data.getState())]);
+                        if ((data->getState() >= MarketOrder::State::Active && data->getState() <= MarketOrder::State::CharacterDeleted))
+                            return prefix + tr(stateNames[static_cast<size_t>(data->getState())]);
 
-                        if (data.getState() == MarketOrder::State::Archived)
+                        if (data->getState() == MarketOrder::State::Archived)
                             return tr("Archived");
                     }
                     break;
                 case customCostColumn:
                     {
-                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
                         if (!cost.isNew())
                             return locale.toCurrencyString(cost.getCost(), "ISK");
                     }
                     break;
                 case priceColumn:
-                    return locale.toCurrencyString(data.getPrice(), "ISK");
+                    return locale.toCurrencyString(data->getPrice(), "ISK");
                 case priceStatusColumn:
                     {
-                        const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+                        const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getLocationId());
                         if (price.isNew())
                             return tr("No price data");
 
@@ -237,31 +319,31 @@ namespace Evernus
                     }
                     break;
                 case volumeColumn:
-                    return QString{"%1/%2"}.arg(locale.toString(data.getVolumeRemaining())).arg(locale.toString(data.getVolumeEntered()));
+                    return QString{"%1/%2"}.arg(locale.toString(data->getVolumeRemaining())).arg(locale.toString(data->getVolumeEntered()));
                 case totalColumn:
-                    return locale.toCurrencyString(data.getVolumeRemaining() * data.getPrice(), "ISK");
+                    return locale.toCurrencyString(data->getVolumeRemaining() * data->getPrice(), "ISK");
                 case deltaColumn:
-                    if (data.getDelta() != 0)
-                        return locale.toString(data.getDelta());
+                    if (data->getDelta() != 0)
+                        return locale.toString(data->getDelta());
                     break;
                 case profitColumn:
                     {
-                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
-                        return locale.toCurrencyString(data.getVolumeRemaining() * (data.getPrice() - cost.getCost()), "ISK");
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                        return locale.toCurrencyString(data->getVolumeRemaining() * (data->getPrice() - cost.getCost()), "ISK");
                     }
                 case totalProfitColumn:
                     {
-                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
-                        return locale.toCurrencyString(data.getVolumeEntered() * (data.getPrice() - cost.getCost()), "ISK");
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                        return locale.toCurrencyString(data->getVolumeEntered() * (data->getPrice() - cost.getCost()), "ISK");
                     }
                 case profitPerItemColumn:
                     {
-                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data.getTypeId());
-                        return locale.toCurrencyString(data.getPrice() - cost.getCost(), "ISK");
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                        return locale.toCurrencyString(data->getPrice() - cost.getCost(), "ISK");
                     }
                 case timeLeftColumn:
                     {
-                        const auto timeEnd = data.getIssued().addDays(data.getDuration()).toMSecsSinceEpoch() / 1000;
+                        const auto timeEnd = data->getIssued().addDays(data->getDuration()).toMSecsSinceEpoch() / 1000;
                         const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
 
                         if (timeEnd > timeCur)
@@ -270,7 +352,7 @@ namespace Evernus
                     break;
                 case orderAgeColumn:
                     {
-                        const auto timeStart = data.getIssued().toMSecsSinceEpoch() / 1000;
+                        const auto timeStart = data->getIssued().toMSecsSinceEpoch() / 1000;
                         const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
 
                         if (timeCur > timeStart)
@@ -278,14 +360,14 @@ namespace Evernus
                     }
                     break;
                 case firstSeenColumn:
-                    return locale.toString(data.getFirstSeen().toLocalTime());
+                    return locale.toString(data->getFirstSeen().toLocalTime());
                 case stationColumn:
-                    return mDataProvider.getLocationName(data.getLocationId());
+                    return mDataProvider.getLocationName(data->getLocationId());
                 }
             }
             break;
         case Qt::FontRole:
-            if ((column == statusColumn && data.getDelta() != 0) || (column == statusColumn && data.getState() == MarketOrder::State::Fulfilled))
+            if ((column == statusColumn && data->getDelta() != 0) || (column == statusColumn && data->getState() == MarketOrder::State::Fulfilled))
             {
                 QFont font;
                 font.setBold(true);
@@ -296,10 +378,10 @@ namespace Evernus
         case Qt::BackgroundRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+                const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getLocationId());
                 if (!price.isNew())
                 {
-                    if (price.getValue() < data.getPrice())
+                    if (price.getValue() < data->getPrice())
                         return QColor{255, 192, 192};
 
                     QSettings settings;
@@ -312,7 +394,7 @@ namespace Evernus
         case Qt::ForegroundRole:
             switch (column) {
             case statusColumn:
-                switch (data.getState()) {
+                switch (data->getState()) {
                 case MarketOrder::State::Active:
                     return QColor{Qt::darkGreen};
                 case MarketOrder::State::Closed:
@@ -391,20 +473,49 @@ namespace Evernus
 
     QModelIndex MarketOrderSellModel::index(int row, int column, const QModelIndex &parent) const
     {
-        return (hasIndex(row, column, parent)) ? (createIndex(row, column)) : (QModelIndex{});
+        if (!hasIndex(row, column, parent))
+             return QModelIndex();
+
+         const TreeItem *parentItem = nullptr;
+
+         if (!parent.isValid())
+             parentItem = &mRootItem;
+         else
+             parentItem = static_cast<const TreeItem *>(parent.internalPointer());
+
+         auto childItem = parentItem->child(row);
+         if (childItem)
+             return createIndex(row, column, childItem);
+
+         return QModelIndex{};
     }
 
     QModelIndex MarketOrderSellModel::parent(const QModelIndex &index) const
     {
-        return QModelIndex{};
+        if (!index.isValid())
+             return QModelIndex{};
+
+         auto childItem = static_cast<const TreeItem *>(index.internalPointer());
+         auto parentItem = childItem->parent();
+
+         if (parentItem == &mRootItem)
+             return QModelIndex{};
+
+         return createIndex(parentItem->row(), 0, parentItem);
     }
 
     int MarketOrderSellModel::rowCount(const QModelIndex &parent) const
     {
-        if (parent.isValid())
-            return 0;
+        const TreeItem *parentItem = nullptr;
+         if (parent.column() > 0)
+             return 0;
 
-        return static_cast<int>(mData.size());
+         if (!parent.isValid())
+             parentItem = &mRootItem;
+         else
+             parentItem = static_cast<const TreeItem *>(parent.internalPointer());
+
+         return parentItem->childCount();
     }
 
     size_t MarketOrderSellModel::getOrderCount() const
@@ -461,7 +572,9 @@ namespace Evernus
 
     EveType::IdType MarketOrderSellModel::getOrderTypeId(const QModelIndex &index) const
     {
-        return mData[index.row()].getTypeId();
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
+        const auto order = item->getOrder();
+        return (order != nullptr) ? (order->getTypeId()) : (EveType::invalidId);
     }
 
     WalletTransactionsModel::EntryType MarketOrderSellModel::getOrderTypeFilter() const
@@ -471,7 +584,8 @@ namespace Evernus
 
     bool MarketOrderSellModel::shouldShowPriceInfo(const QModelIndex &index) const
     {
-        return index.column() == priceColumn;
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
+        return index.column() == priceColumn && item->getOrder() != nullptr;
     }
 
     void MarketOrderSellModel::setCharacter(Character::IdType id)
@@ -480,19 +594,54 @@ namespace Evernus
         reset();
     }
 
+    void MarketOrderSellModel::setGrouping(Grouping grouping)
+    {
+        mGrouping = grouping;
+        reset();
+    }
+
     void MarketOrderSellModel::reset()
     {
         beginResetModel();
 
         mData = mOrderProvider.getSellOrders(mCharacterId);
+        mRootItem.clearChildren();
 
         mVolumeRemaining = 0;
         mVolumeEntered = 0;
         mTotalISK = 0.;
         mTotalSize = 0.;
 
+        std::unordered_map<quintptr, TreeItem *> groupItems;
+
         for (const auto &order : mData)
         {
+            auto item = std::make_unique<TreeItem>();
+            item->setOrder(&order);
+
+            if (mGrouping != Grouping::None)
+            {
+                const auto id = getGroupingId(order);
+                auto it = groupItems.find(id);
+
+                if (it == std::end(groupItems))
+                {
+                    auto item = std::make_unique<TreeItem>();
+                    item->setGroupName(getGroupingData(order));
+
+                    auto itemPtr = item.get();
+                    mRootItem.appendChild(std::move(item));
+
+                    it = groupItems.emplace(id, itemPtr).first;
+                }
+
+                it->second->appendChild(std::move(item));
+            }
+            else
+            {
+                mRootItem.appendChild(std::move(item));
+            }
+
             if (order.getState() != MarketOrder::State::Active)
                 continue;
 
@@ -505,5 +654,33 @@ namespace Evernus
         }
 
         endResetModel();
+    }
+
+    quintptr MarketOrderSellModel::getGroupingId(const MarketOrder &order) const
+    {
+        switch (mGrouping) {
+        case Grouping::Group:
+            return mDataProvider.getTypeMarketGroupParentId(order.getTypeId());
+        case Grouping::Station:
+            return order.getLocationId();
+        case Grouping::Type:
+            return order.getTypeId();
+        }
+
+        return 0;
+    }
+
+    QString MarketOrderSellModel::getGroupingData(const MarketOrder &order) const
+    {
+        switch (mGrouping) {
+        case Grouping::Group:
+            return mDataProvider.getTypeMarketGroupParentName(order.getTypeId());
+        case Grouping::Station:
+            return mDataProvider.getLocationName(order.getLocationId());
+        case Grouping::Type:
+            return mDataProvider.getTypeName(order.getTypeId());
+        }
+
+        return QString{};
     }
 }

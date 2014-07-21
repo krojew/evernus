@@ -72,58 +72,21 @@ namespace Evernus
 
     QString EvernusApplication::getTypeName(EveType::IdType id) const
     {
-        const auto it = mTypeCache.find(id);
-        if (it != std::end(mTypeCache))
-            return it->second.getName();
-
-        EveType result;
-
-        try
-        {
-            result = mEveTypeRepository->find(id);
-        }
-        catch (const EveTypeRepository::NotFoundException &)
-        {
-        }
-
-        mTypeCache.emplace(id, result);
-        return result.getName();
+        return getEveType(id).getName();
     }
 
-    QString EvernusApplication::getTypeMarketGroupName(EveType::IdType id) const
+    QString EvernusApplication::getTypeMarketGroupParentName(EveType::IdType id) const
     {
-        const auto it = mTypeMarketGroupNameCache.find(id);
-        if (it != std::end(mTypeMarketGroupNameCache))
-            return it->second;
-
-        EveType type;
-
-        try
-        {
-            type = mEveTypeRepository->find(id);
-        }
-        catch (const EveTypeRepository::NotFoundException &)
-        {
-        }
-
-        mTypeCache.emplace(id, type);
-
-        QString result;
-
+        const auto &type = getEveType(id);
         const auto marketGroupId = type.getMarketGroupId();
-        if (marketGroupId)
-        {
-            try
-            {
-                result = mMarketGroupRepository->findParent(*marketGroupId).getName();
-            }
-            catch (const MarketGroupRepository::NotFoundException &)
-            {
-            }
-        }
+        return (marketGroupId) ? (getMarketGroupParent(*marketGroupId).getName()) : (QString{});
+    }
 
-        mTypeMarketGroupNameCache.emplace(id, result);
-        return result;
+    MarketGroup::IdType EvernusApplication::getTypeMarketGroupParentId(EveType::IdType id) const
+    {
+        const auto &type = getEveType(id);
+        const auto marketGroupId = type.getMarketGroupId();
+        return (marketGroupId) ? (getMarketGroupParent(*marketGroupId).getId()) : (MarketGroup::invalidId);
     }
 
     const std::unordered_map<EveType::IdType, QString> &EvernusApplication::getAllTypeNames() const
@@ -1274,6 +1237,44 @@ namespace Evernus
         storedTimer.setUpdateTime(time);
 
         mUpdateTimerRepository->store(storedTimer);
+    }
+
+    const EveType &EvernusApplication::getEveType(EveType::IdType id) const
+    {
+        const auto it = mTypeCache.find(id);
+        if (it != std::end(mTypeCache))
+            return it->second;
+
+        EveType type;
+
+        try
+        {
+            type = mEveTypeRepository->find(id);
+        }
+        catch (const EveTypeRepository::NotFoundException &)
+        {
+        }
+
+        return mTypeCache.emplace(id, type).first->second;
+    }
+
+    const MarketGroup &EvernusApplication::getMarketGroupParent(MarketGroup::IdType id) const
+    {
+        const auto it = mTypeMarketGroupParentCache.find(id);
+        if (it != std::end(mTypeMarketGroupParentCache))
+            return it->second;
+
+        MarketGroup result;
+
+        try
+        {
+            result = mMarketGroupRepository->findParent(id);
+        }
+        catch (const MarketGroupRepository::NotFoundException &)
+        {
+        }
+
+        return mTypeMarketGroupParentCache.emplace(id, result).first->second;
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)

@@ -42,6 +42,8 @@ namespace Evernus
         void setModel(MarketOrderModel *model);
         void setCharacter(Character::IdType id);
 
+        void expandAll();
+
     private slots:
         void selectOrder(const QItemSelection &selected, const QItemSelection &deselected);
 

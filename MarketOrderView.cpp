@@ -102,6 +102,12 @@ namespace Evernus
         updateInfo();
     }
 
+    void MarketOrderView::expandAll()
+    {
+        mView->expandAll();
+        mView->header()->resizeSections(QHeaderView::ResizeToContents);
+    }
+
     void MarketOrderView::updateInfo()
     {
         const auto volRemaining = mSource->getVolumeRemaining();

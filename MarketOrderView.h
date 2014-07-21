@@ -39,6 +39,8 @@ namespace Evernus
 
         void setModel(MarketOrderModel *model);
 
+        void expandAll();
+
     signals:
         void closeOrderInfo();
 

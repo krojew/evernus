@@ -66,6 +66,11 @@ namespace Evernus
         mTransactionModel.clear();
     }
 
+    void MarketOrderViewWithTransactions::expandAll()
+    {
+        mOrderView->expandAll();
+    }
+
     void MarketOrderViewWithTransactions::selectOrder(const QItemSelection &selected, const QItemSelection &deselected)
     {
         Q_UNUSED(deselected);
@@ -74,12 +79,20 @@ namespace Evernus
         {
             const auto index = mOrderView->getProxyModel().mapToSource(selected.indexes().first());
             const auto typeId = mOrderModel->getOrderTypeId(index);
-            auto range = mOrderModel->getOrderRange(index);
 
-            if (!range.mTo.isValid())
-                range.mTo = QDateTime::currentDateTimeUtc();
+            if (typeId == EveType::invalidId)
+            {
+                mTransactionModel.clear();
+            }
+            else
+            {
+                auto range = mOrderModel->getOrderRange(index);
 
-            mTransactionModel.setFilter(mCharacterId, range.mFrom.date(), range.mTo.date(), mOrderModel->getOrderTypeFilter(), typeId);
+                if (!range.mTo.isValid())
+                    range.mTo = QDateTime::currentDateTimeUtc();
+
+                mTransactionModel.setFilter(mCharacterId, range.mFrom.date(), range.mTo.date(), mOrderModel->getOrderTypeFilter(), typeId);
+            }
         }
     }
 }
