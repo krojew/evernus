@@ -464,6 +464,9 @@ namespace Evernus
                         mCostOfSalesLabel->setText(curLocale.toCurrencyString(getCoS(buyPrice, taxes), "ISK"));
 
                         mDataProvider.setTypeBuyPrice(locationId, typeId, priceTime, buy);
+
+                        if (mCopyBuyBtn->isChecked())
+                            QApplication::clipboard()->setText(QString::number(buyPrice, 'f', 2));
                     }
 
                     if (sell < 0.)
@@ -479,6 +482,9 @@ namespace Evernus
                         mRevenueLabel->setText(curLocale.toCurrencyString(getRevenue(sellPrice, taxes), "ISK"));
 
                         mDataProvider.setTypeSellPrice(locationId, typeId, priceTime, sell);
+
+                        if (mCopySellBtn->isChecked())
+                            QApplication::clipboard()->setText(QString::number(sellPrice, 'f', 2));
                     }
 
                     mProfitLabel->setText("-");
