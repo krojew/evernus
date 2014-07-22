@@ -26,8 +26,10 @@ namespace Evernus
                 return QIcon{":/images/meta_tech2.png"};
             else if (metaName == "Tech III")
                 return QIcon{":/images/meta_tech3.png"};
-            else if (metaName == "Storyline" || metaName == "Faction")
+            else if (metaName == "Faction")
                 return QIcon{":/images/meta_faction.png"};
+            else if (metaName == "Storyline")
+                return QIcon{":/images/meta_storyline.png"};
             else if (metaName == "Officer")
                 return QIcon{":/images/meta_officer.png"};
             else if (metaName == "Deadspace")
