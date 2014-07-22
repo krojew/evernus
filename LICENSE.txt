@@ -15,6 +15,16 @@ Evernus:
 
 3rd party licenses:
 
+Silk icon set:
+
+Mark James
+http://www.famfamfam.com/lab/icons/silk/
+_________________________________________
+
+This work is licensed under a
+Creative Commons Attribution 2.5 License.
+[ http://creativecommons.org/licenses/by/2.5/ ]
+
 QCustomPlot:
 
     This program is free software: you can redistribute it and/or modify
