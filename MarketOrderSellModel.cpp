@@ -297,6 +297,9 @@ namespace Evernus
                     {
                         const auto prefix = (data->getDelta() != 0) ? ("*") : ("");
 
+                        if (data->getState() == MarketOrder::State::Fulfilled && data->getVolumeRemaining() > 0)
+                            return tr("Expired");
+
                         if ((data->getState() >= MarketOrder::State::Active && data->getState() <= MarketOrder::State::CharacterDeleted))
                             return prefix + tr(stateNames[static_cast<size_t>(data->getState())]);
 
@@ -419,7 +422,9 @@ namespace Evernus
                 case MarketOrder::State::CharacterDeleted:
                     return QColor{Qt::red};
                 case MarketOrder::State::Fulfilled:
-                    return QColor{0, 64, 0};
+                    return (data->getState() == MarketOrder::State::Fulfilled && data->getVolumeRemaining() > 0) ?
+                           (QColor{Qt::red}) :
+                           (QColor{0, 64, 0});
                 default:
                     break;
                 }
