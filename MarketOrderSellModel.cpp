@@ -596,6 +596,15 @@ namespace Evernus
         return (order != nullptr) ? (order->getTypeId()) : (EveType::invalidId);
     }
 
+    const MarketOrder *MarketOrderSellModel::getOrder(const QModelIndex &index) const
+    {
+        if (!index.isValid())
+            return nullptr;
+
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
+        return item->getOrder();
+    }
+
     WalletTransactionsModel::EntryType MarketOrderSellModel::getOrderTypeFilter() const
     {
         return WalletTransactionsModel::EntryType::Sell;

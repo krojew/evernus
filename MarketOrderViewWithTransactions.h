@@ -17,6 +17,7 @@
 #include <QSortFilterProxyModel>
 #include <QWidget>
 
+#include "MarketOrderFilterProxyModel.h"
 #include "WalletTransactionsModel.h"
 
 class QItemSelection;
@@ -43,6 +44,9 @@ namespace Evernus
         void setCharacter(Character::IdType id);
 
         void expandAll();
+
+    signals:
+        void statusFilterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);
 
     private slots:
         void selectOrder(const QItemSelection &selected, const QItemSelection &deselected);

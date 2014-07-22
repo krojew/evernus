@@ -39,6 +39,7 @@ namespace Evernus
 
         mProxy.setSortRole(Qt::UserRole);
         mProxy.setFilterCaseSensitivity(Qt::CaseInsensitive);
+        connect(this, &MarketOrderView::statusFilterChanged, &mProxy, &MarketOrderFilterProxyModel::setStatusFilter);
 
         mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);

@@ -55,6 +55,7 @@ namespace Evernus
         virtual Range getOrderRange(const QModelIndex &index) const override;
         virtual OrderInfo getOrderInfo(const QModelIndex &index) const override;
         virtual EveType::IdType getOrderTypeId(const QModelIndex &index) const override;
+        virtual const MarketOrder *getOrder(const QModelIndex &index) const override;
         virtual WalletTransactionsModel::EntryType getOrderTypeFilter() const override;
 
         virtual bool shouldShowPriceInfo(const QModelIndex &index) const override;

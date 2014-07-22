@@ -21,6 +21,8 @@
 
 namespace Evernus
 {
+    class MarketOrder;
+
     class MarketOrderModel
         : public QAbstractItemModel
     {
@@ -58,6 +60,7 @@ namespace Evernus
         virtual Range getOrderRange(const QModelIndex &index) const = 0;
         virtual OrderInfo getOrderInfo(const QModelIndex &index) const = 0;
         virtual EveType::IdType getOrderTypeId(const QModelIndex &index) const = 0;
+        virtual const MarketOrder *getOrder(const QModelIndex &index) const = 0;
         virtual WalletTransactionsModel::EntryType getOrderTypeFilter() const = 0;
 
         virtual bool shouldShowPriceInfo(const QModelIndex &index) const = 0;

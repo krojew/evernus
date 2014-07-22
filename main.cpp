@@ -18,6 +18,7 @@
 
 #include "MarketLogItemPriceImporterThread.h"
 #include "EveMarketDataItemPriceImporter.h"
+#include "MarketOrderFilterProxyModel.h"
 #include "MarketLogItemPriceImporter.h"
 #include "ItemPriceImporterNames.h"
 #include "EvernusApplication.h"
@@ -34,6 +35,8 @@ int main(int argc, char *argv[])
 
         qRegisterMetaType<Evernus::MarketLogItemPriceImporterThread::ItemPriceList>("ItemPriceList");
         qRegisterMetaType<Evernus::Character::IdType>("Character::IdType");
+        qRegisterMetaType<Evernus::MarketOrderFilterProxyModel::StatusFilters>("MarketOrderFilterProxyModel::StatusFilters");
+        qRegisterMetaType<Evernus::MarketOrderFilterProxyModel::StatusFilters>("StatusFilters");
 
         Evernus::EvernusApplication app{argc, argv};
 

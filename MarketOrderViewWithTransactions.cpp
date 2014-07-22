@@ -35,6 +35,7 @@ namespace Evernus
 
         mOrderView = new MarketOrderView{this};
         mainLayout->addWidget(mOrderView, 1);
+        connect(this, &MarketOrderViewWithTransactions::statusFilterChanged, mOrderView, &MarketOrderView::statusFilterChanged);
 
         auto transactionGroup = new QGroupBox{tr("Transactions"), this};
         mainLayout->addWidget(transactionGroup);

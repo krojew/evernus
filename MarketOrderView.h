@@ -16,7 +16,7 @@
 
 #include <QWidget>
 
-#include "LeafFilterProxyModel.h"
+#include "MarketOrderFilterProxyModel.h"
 
 class QItemSelectionModel;
 class QLabel;
@@ -45,6 +45,8 @@ namespace Evernus
     signals:
         void closeOrderInfo();
 
+        void statusFilterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);
+
     public slots:
         void updateInfo();
 
@@ -60,6 +62,6 @@ namespace Evernus
         QLabel *mTotalSizeLabel = nullptr;
 
         MarketOrderModel *mSource = nullptr;
-        LeafFilterProxyModel mProxy;
+        MarketOrderFilterProxyModel mProxy;
     };
 }
