@@ -23,6 +23,7 @@
 #include "PriceSettings.h"
 #include "AssetList.h"
 #include "ItemPrice.h"
+#include "IconUtils.h"
 
 #include "AssetModel.h"
 
@@ -359,7 +360,7 @@ namespace Evernus
         const auto volume = mDataProvider.getTypeVolume(typeId);
         const auto quantity = item.getQuantity();
         const auto sellPrice = mDataProvider.getTypeSellPrice(typeId, locationId);
-        const auto metaName = mDataProvider.getTypeMetaGroupName(typeId);
+        const auto metaIcon = IconUtils::getIconForMetaGroup(mDataProvider.getTypeMetaGroupName(typeId));
 
         auto treeItem = std::make_unique<TreeItem>();
         treeItem->setData(QVariantList{}
@@ -372,16 +373,8 @@ namespace Evernus
         );
         treeItem->setPriceTimestamp(sellPrice.getUpdateTime());
 
-        if (metaName == "Tech II")
-            treeItem->setDecoration(QIcon{":/images/meta_tech2.png"});
-        else if (metaName == "Tech III")
-            treeItem->setDecoration(QIcon{":/images/meta_tech3.png"});
-        else if (metaName == "Storyline" || metaName == "Faction")
-            treeItem->setDecoration(QIcon{":/images/meta_faction.png"});
-        else if (metaName == "Officer")
-            treeItem->setDecoration(QIcon{":/images/meta_officer.png"});
-        else if (metaName == "Deadspace")
-            treeItem->setDecoration(QIcon{":/images/meta_deadspace.png"});
+        if (!metaIcon.isNull())
+            treeItem->setDecoration(metaIcon);
 
         return treeItem;
     }

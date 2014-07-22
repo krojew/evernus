@@ -153,6 +153,8 @@ add_executable(
     EveTypeRepository.h
     FileDownload.cpp
     FileDownload.h
+    IconUtils.cpp
+    IconUtils.h
     ImportSettings.h
     Item.cpp
     Item.h

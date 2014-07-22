@@ -26,6 +26,7 @@
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "ItemPrice.h"
+#include "IconUtils.h"
 #include "ItemCost.h"
 
 #include "MarketOrderSellModel.h"
@@ -203,6 +204,12 @@ namespace Evernus
                     return QIcon{":/images/error.png"};
 
                 return QIcon{":/images/accept.png"};
+            }
+            else if (column == nameColumn)
+            {
+                const auto metaIcon = IconUtils::getIconForMetaGroup(mDataProvider.getTypeMetaGroupName(data->getTypeId()));
+                if (!metaIcon.isNull())
+                    return metaIcon;
             }
             break;
         case Qt::UserRole:
