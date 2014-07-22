@@ -41,7 +41,7 @@ namespace Evernus
 
     private slots:
         void changeEntryType();
-        void applyKeywords();
+        void applyWildcard();
 
         void fromChanged(const QDate &date);
         void toChanged(const QDate &date);

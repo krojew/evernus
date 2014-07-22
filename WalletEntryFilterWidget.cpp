@@ -54,9 +54,9 @@ namespace Evernus
 
         mFilterEdit = new QLineEdit{this};
         mainLayout->addWidget(mFilterEdit);
-        mFilterEdit->setPlaceholderText(tr("type in keywords and press Enter"));
+        mFilterEdit->setPlaceholderText(tr("type in wildcard and press Enter"));
         mFilterEdit->setClearButtonEnabled(true);
-        connect(mFilterEdit, &QLineEdit::returnPressed, this, &WalletEntryFilterWidget::applyKeywords);
+        connect(mFilterEdit, &QLineEdit::returnPressed, this, &WalletEntryFilterWidget::applyWildcard);
     }
 
     void WalletEntryFilterWidget::setFilter(const QDate &from, const QDate &to, const QString &filter, int type)
@@ -83,7 +83,7 @@ namespace Evernus
         emit filterChanged(mFromEdit->date(), mToEdit->date(), mFilterEdit->text(), mCurrentType);
     }
 
-    void WalletEntryFilterWidget::applyKeywords()
+    void WalletEntryFilterWidget::applyWildcard()
     {
         emit filterChanged(mFromEdit->date(), mToEdit->date(), mFilterEdit->text(), mCurrentType);
     }

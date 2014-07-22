@@ -62,9 +62,9 @@ namespace Evernus
 
         mFilterEdit = new QLineEdit{this};
         toolBarLayout->addWidget(mFilterEdit, 1);
-        mFilterEdit->setPlaceholderText(tr("type in keywords and press Enter"));
+        mFilterEdit->setPlaceholderText(tr("type in wildcard and press Enter"));
         mFilterEdit->setClearButtonEnabled(true);
-        connect(mFilterEdit, &QLineEdit::returnPressed, this, &AssetsWidget::applyKeywords);
+        connect(mFilterEdit, &QLineEdit::returnPressed, this, &AssetsWidget::applyWildcard);
 
         mModelProxy = new LeafFilterProxyModel{this};
         mModelProxy->setSourceModel(&mModel);
@@ -98,9 +98,9 @@ namespace Evernus
         emit importPricesFromFile(getImportTarget());
     }
 
-    void AssetsWidget::applyKeywords()
+    void AssetsWidget::applyWildcard()
     {
-        mModelProxy->setFilterFixedString(mFilterEdit->text());
+        mModelProxy->setFilterWildcard(mFilterEdit->text());
     }
 
     void AssetsWidget::handleNewCharacter(Character::IdType id)

@@ -53,7 +53,7 @@ namespace Evernus
         void prepareItemImportFromWeb();
         void prepareItemImportFromFile();
 
-        void applyKeywords();
+        void applyWildcard();
 
     private:
         const AssetProvider &mAssetProvider;

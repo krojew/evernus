@@ -57,7 +57,7 @@ namespace Evernus
 
         void selectCost(const QItemSelection &selected, const QItemSelection &deselected);
 
-        void applyKeywords();
+        void applyWildcard();
 
     private:
         const ItemCostRepository &mItemCostRepo;

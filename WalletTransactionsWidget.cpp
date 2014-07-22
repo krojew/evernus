@@ -67,7 +67,7 @@ namespace Evernus
     void WalletTransactionsWidget::updateFilter(const QDate &from, const QDate &to, const QString &filter, int type)
     {
         mModel.setFilter(getCharacterId(), from, to.addDays(1), static_cast<EntryType>(type));
-        mFilterModel->setFilterFixedString(filter);
+        mFilterModel->setFilterWildcard(filter);
     }
 
     void WalletTransactionsWidget::handleNewCharacter(Character::IdType id)

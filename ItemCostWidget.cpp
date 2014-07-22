@@ -59,9 +59,9 @@ namespace Evernus
 
         mFilterEdit = new QLineEdit{this};
         toolBarLayout->addWidget(mFilterEdit, 1);
-        mFilterEdit->setPlaceholderText(tr("type in keywords and press Enter"));
+        mFilterEdit->setPlaceholderText(tr("type in wildcard and press Enter"));
         mFilterEdit->setClearButtonEnabled(true);
-        connect(mFilterEdit, &QLineEdit::returnPressed, this, &ItemCostWidget::applyKeywords);
+        connect(mFilterEdit, &QLineEdit::returnPressed, this, &ItemCostWidget::applyWildcard);
 
         mProxy.setSortRole(Qt::UserRole);
         mProxy.setSourceModel(&mModel);
@@ -135,9 +135,9 @@ namespace Evernus
         mSelectedCosts = selected.indexes();
     }
 
-    void ItemCostWidget::applyKeywords()
+    void ItemCostWidget::applyWildcard()
     {
-        mProxy.setFilterFixedString(mFilterEdit->text());
+        mProxy.setFilterWildcard(mFilterEdit->text());
     }
 
     void ItemCostWidget::showCostEditDialog(ItemCost &cost)
