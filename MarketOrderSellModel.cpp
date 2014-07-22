@@ -397,6 +397,13 @@ namespace Evernus
                         return QColor{255, 255, 192};
                 }
             }
+            else if (column == firstSeenColumn)
+            {
+                QSettings settings;
+                const auto maxAge = settings.value(PriceSettings::marketOrderMaxAgeKey, PriceSettings::marketOrderMaxAgeDefault).toInt();
+                if (data->getFirstSeen() < QDateTime::currentDateTimeUtc().addDays(-maxAge))
+                    return QColor{255, 255, 192};
+            }
             break;
         case Qt::ForegroundRole:
             switch (column) {

@@ -30,6 +30,7 @@ namespace Evernus
         const auto priceDeltaDefault = 0.01;
         const auto priceMaxAgeDefault = 1;
         const auto importLogWaitTimeDefault = 1000;
+        const auto marketOrderMaxAgeDefault = 7;
 
         const auto minMarginKey = "prices/margin/min";
         const auto preferredMarginKey = "prices/margin/preferred";
@@ -37,7 +38,8 @@ namespace Evernus
         const auto priceDeltaKey = "prices/delta";
         const auto priceAltImportKey = "prices/import/alt";
         const auto priceMaxAgeKey = "prices/maxAge";
-        const auto importLogWaitTimeKey = "price/import/logWaitTime";
-        const auto preferCustomItemCostKey = "price/preferCustomItemCost";
+        const auto importLogWaitTimeKey = "prices/import/logWaitTime";
+        const auto preferCustomItemCostKey = "prices/preferCustomItemCost";
+        const auto marketOrderMaxAgeKey = "prices/orders/maxAge";
     }
 }
