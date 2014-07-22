@@ -34,6 +34,7 @@
 #include "CacheTimerRepository.h"
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
+#include "MetaGroupRepository.h"
 #include "ItemPriceRepository.h"
 #include "MarketOrderProvider.h"
 #include "ItemCostRepository.h"
@@ -74,6 +75,7 @@ namespace Evernus
         virtual QString getTypeMarketGroupParentName(EveType::IdType id) const override;
         virtual MarketGroup::IdType getTypeMarketGroupParentId(EveType::IdType id) const override;
         virtual const std::unordered_map<EveType::IdType, QString> &getAllTypeNames() const override;
+        virtual QString getTypeMetaGroupName(EveType::IdType id) const override;
 
         virtual double getTypeVolume(EveType::IdType id) const override;
         virtual ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
@@ -184,6 +186,7 @@ namespace Evernus
         std::unique_ptr<MarketOrderValueSnapshotRepository> mMarketOrderValueSnapshotRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
         std::unique_ptr<MarketGroupRepository> mMarketGroupRepository;
+        std::unique_ptr<MetaGroupRepository> mMetaGroupRepository;
 
         APIManager mAPIManager;
 
@@ -195,6 +198,7 @@ namespace Evernus
         mutable std::unordered_map<EveType::IdType, EveType> mTypeCache;
         mutable std::unordered_map<EveType::IdType, QString> mTypeNameCache;
         mutable std::unordered_map<EveType::IdType, MarketGroup> mTypeMarketGroupParentCache;
+        mutable std::unordered_map<EveType::IdType, MetaGroup> mTypeMetaGroupCache;
         mutable std::unordered_map<quint64, QString> mLocationNameCache;
         mutable std::unordered_map<TypeLocationPair, ItemPrice, boost::hash<TypeLocationPair>> mSellPrices;
         mutable std::unordered_map<TypeLocationPair, ItemPrice, boost::hash<TypeLocationPair>> mBuyPrices;

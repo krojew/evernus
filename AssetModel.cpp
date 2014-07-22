@@ -16,6 +16,7 @@
 #include <QLocale>
 #include <QColor>
 #include <QFont>
+#include <QIcon>
 
 #include "EveDataProvider.h"
 #include "AssetProvider.h"
@@ -78,6 +79,16 @@ namespace Evernus
         mPriceTimestamp = dt;
     }
 
+    QVariant AssetModel::TreeItem::decoration() const
+    {
+        return mDecoration;
+    }
+
+    void AssetModel::TreeItem::setDecoration(const QVariant &data)
+    {
+        mDecoration = data;
+    }
+
     int AssetModel::TreeItem::row() const
     {
         if (mParentItem != nullptr)
@@ -134,6 +145,10 @@ namespace Evernus
         QLocale locale;
 
         switch (role) {
+        case Qt::DecorationRole:
+            if (column == typeColumn)
+                return item->decoration();
+            break;
         case Qt::UserRole:
             return item->data(column);
         case Qt::DisplayRole:
@@ -344,6 +359,7 @@ namespace Evernus
         const auto volume = mDataProvider.getTypeVolume(typeId);
         const auto quantity = item.getQuantity();
         const auto sellPrice = mDataProvider.getTypeSellPrice(typeId, locationId);
+        const auto metaName = mDataProvider.getTypeMetaGroupName(typeId);
 
         auto treeItem = std::make_unique<TreeItem>();
         treeItem->setData(QVariantList{}
@@ -355,6 +371,17 @@ namespace Evernus
             << (sellPrice.getValue() * quantity)
         );
         treeItem->setPriceTimestamp(sellPrice.getUpdateTime());
+
+        if (metaName == "Tech II")
+            treeItem->setDecoration(QIcon{":/images/meta_tech2.png"});
+        else if (metaName == "Tech III")
+            treeItem->setDecoration(QIcon{":/images/meta_tech3.png"});
+        else if (metaName == "Storyline" || metaName == "Faction")
+            treeItem->setDecoration(QIcon{":/images/meta_faction.png"});
+        else if (metaName == "Officer")
+            treeItem->setDecoration(QIcon{":/images/meta_officer.png"});
+        else if (metaName == "Deadspace")
+            treeItem->setDecoration(QIcon{":/images/meta_deadspace.png"});
 
         return treeItem;
     }

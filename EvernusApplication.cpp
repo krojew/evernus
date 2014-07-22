@@ -98,6 +98,26 @@ namespace Evernus
         return mTypeNameCache;
     }
 
+    QString EvernusApplication::getTypeMetaGroupName(EveType::IdType id) const
+    {
+        const auto it = mTypeMetaGroupCache.find(id);
+        if (it != std::end(mTypeMetaGroupCache))
+            return it->second.getName();
+
+        MetaGroup result;
+
+        try
+        {
+            result = mMetaGroupRepository->fetchForType(id);
+        }
+        catch (const MetaGroupRepository::NotFoundException &)
+        {
+        }
+
+        mTypeMetaGroupCache.emplace(id, result);
+        return result.getName();
+    }
+
     double EvernusApplication::getTypeVolume(EveType::IdType id) const
     {
         const auto it = mTypeCache.find(id);
@@ -917,6 +937,7 @@ namespace Evernus
         mMarketOrderValueSnapshotRepository.reset(new MarketOrderValueSnapshotRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
         mMarketGroupRepository.reset(new MarketGroupRepository{mEveDb});
+        mMetaGroupRepository.reset(new MetaGroupRepository{mEveDb});
     }
 
     void EvernusApplication::createDbSchema()

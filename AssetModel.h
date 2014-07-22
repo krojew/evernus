@@ -72,6 +72,9 @@ namespace Evernus
             QDateTime priceTimestamp() const;
             void setPriceTimestamp(const QDateTime &dt);
 
+            QVariant decoration() const;
+            void setDecoration(const QVariant &data);
+
             int row() const;
 
             TreeItem *parent() const;
@@ -80,9 +83,11 @@ namespace Evernus
             std::vector<std::unique_ptr<TreeItem>> mChildItems;
             QVariantList mItemData;
             QDateTime mPriceTimestamp;
+            QVariant mDecoration;
             TreeItem *mParentItem = nullptr;
         };
 
+        static const auto typeColumn = 0;
         static const auto quantityColumn = 1;
         static const auto unitVolumeColumn = 2;
         static const auto totalVolumeColumn = 3;
