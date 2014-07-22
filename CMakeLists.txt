@@ -226,6 +226,10 @@ add_executable(
     MarketOrderWidget.h
     MenuBarWidget.cpp
     MenuBarWidget.h
+    MetaGroup.cpp
+    MetaGroup.h
+    MetaGroupRepository.cpp
+    MetaGroupRepository.h
     NetworkPreferencesWidget.cpp
     NetworkPreferencesWidget.h
     NetworkSettings.h
