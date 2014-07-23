@@ -79,7 +79,7 @@ namespace Evernus
         infoLayout->addWidget(new QLabel{(info.mMarketLocalTimestamp.isValid()) ? (curLocale.toString(info.mMarketLocalTimestamp)) : ("-"), this}, 1, 3);
 
         infoLayout->addWidget(new QLabel{tr("Difference:"), this}, 2, 0);
-        infoLayout->addWidget(new QLabel{curLocale.toCurrencyString(info.mOrderPrice - info.mMarketPrice, "ISK"), this}, 2, 1);
+        infoLayout->addWidget(new QLabel{curLocale.toCurrencyString(info.mMarketPrice - info.mOrderPrice, "ISK"), this}, 2, 1);
         infoLayout->addWidget(new QLabel{tr("New price:"), this}, 2, 2);
         infoLayout->addWidget(new QLabel{QString{"<strong>%1</strong>"}.arg(curLocale.toCurrencyString(info.mTargetPrice, "ISK")), this}, 2, 3);
 
