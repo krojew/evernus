@@ -67,7 +67,7 @@ namespace Evernus
         const auto order = static_cast<MarketOrderModel *>(sourceModel())->getOrder(index);
 
         if (order == nullptr)
-            return true;
+            return hasAcceptedChildren(sourceRow, sourceParent);
 
         return acceptsStatus(*order) && acceptsPriceStatus(*order);
     }

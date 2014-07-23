@@ -28,8 +28,9 @@ namespace Evernus
     protected:
         virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
+        bool hasAcceptedChildren(int sourceRow, const QModelIndex &sourceParent) const;
+
     private:
         bool filterAcceptsRowItself(int sourceRow, const QModelIndex &sourceParent) const;
-        bool hasAcceptedChildren(int sourceRow, const QModelIndex &sourceParent) const;
     };
 }

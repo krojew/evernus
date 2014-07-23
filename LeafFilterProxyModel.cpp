@@ -33,11 +33,6 @@ namespace Evernus
         return hasAcceptedChildren(sourceRow, sourceParent);
     }
 
-    bool LeafFilterProxyModel::filterAcceptsRowItself(int sourceRow, const QModelIndex &sourceParent) const
-    {
-        return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
-    }
-
     bool LeafFilterProxyModel::hasAcceptedChildren(int sourceRow, const QModelIndex &sourceParent) const
     {
         const auto item = sourceModel()->index(sourceRow, 0, sourceParent);
@@ -55,5 +50,10 @@ namespace Evernus
         }
 
         return false;
+    }
+
+    bool LeafFilterProxyModel::filterAcceptsRowItself(int sourceRow, const QModelIndex &sourceParent) const
+    {
+        return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
     }
 }
