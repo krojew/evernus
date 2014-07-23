@@ -15,20 +15,28 @@
 #include <QSettings>
 
 #include "MarketOrderModel.h"
+#include "EveDataProvider.h"
+#include "PriceSettings.h"
 #include "MarketOrder.h"
 #include "UISettings.h"
+#include "ItemPrice.h"
 
 #include "MarketOrderFilterProxyModel.h"
 
 namespace Evernus
 {
-    const MarketOrderFilterProxyModel::StatusFilters MarketOrderFilterProxyModel::defaultFilter = Changed | Active;
+    const MarketOrderFilterProxyModel::StatusFilters MarketOrderFilterProxyModel::defaultStatusFilter = Changed | Active;
+    const MarketOrderFilterProxyModel::PriceStatusFilters MarketOrderFilterProxyModel::defaultPriceStatusFilter = EveryPriceStatus;
 
-    MarketOrderFilterProxyModel::MarketOrderFilterProxyModel(QObject *parent)
+    MarketOrderFilterProxyModel::MarketOrderFilterProxyModel(const EveDataProvider &dataProvider, QObject *parent)
         : LeafFilterProxyModel{parent}
+        , mDataProvider{dataProvider}
     {
         QSettings settings;
-        mStatusFilter = static_cast<StatusFilters>(settings.value(UISettings::marketOrderStateFilterKey, static_cast<int>(defaultFilter)).toInt());
+        mStatusFilter = static_cast<StatusFilters>(
+            settings.value(UISettings::marketOrderStateFilterKey, static_cast<int>(defaultStatusFilter)).toInt());
+        mPriceStatusFilter = static_cast<PriceStatusFilters>(
+            settings.value(UISettings::marketOrderPriceStatusFilterKey, static_cast<int>(defaultPriceStatusFilter)).toInt());
     }
 
     void MarketOrderFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
@@ -40,6 +48,12 @@ namespace Evernus
     void MarketOrderFilterProxyModel::setStatusFilter(const StatusFilters &filter)
     {
         mStatusFilter = filter;
+        invalidateFilter();
+    }
+
+    void MarketOrderFilterProxyModel::setPriceStatusFilter(const PriceStatusFilters &filter)
+    {
+        mPriceStatusFilter = filter;
         invalidateFilter();
     }
 
@@ -55,19 +69,45 @@ namespace Evernus
         if (order == nullptr)
             return true;
 
-        if ((mStatusFilter & Changed) && (order->getDelta() != 0))
+        return acceptsStatus(*order) && acceptsPriceStatus(*order);
+    }
+
+    bool MarketOrderFilterProxyModel::acceptsStatus(const MarketOrder &order) const
+    {
+        if ((mStatusFilter & Changed) && (order.getDelta() != 0))
             return true;
-        if ((mStatusFilter & Active) && (order->getState() == MarketOrder::State::Active))
+        if ((mStatusFilter & Active) && (order.getState() == MarketOrder::State::Active))
             return true;
-        if ((mStatusFilter & Fulfilled) && (order->getState() == MarketOrder::State::Fulfilled) && (order->getVolumeRemaining() == 0))
+        if ((mStatusFilter & Fulfilled) && (order.getState() == MarketOrder::State::Fulfilled) && (order.getVolumeRemaining() == 0))
             return true;
-        if ((mStatusFilter & Cancelled) && (order->getState() == MarketOrder::State::Cancelled))
+        if ((mStatusFilter & Cancelled) && (order.getState() == MarketOrder::State::Cancelled))
             return true;
-        if ((mStatusFilter & Pending) && (order->getState() == MarketOrder::State::Pending))
+        if ((mStatusFilter & Pending) && (order.getState() == MarketOrder::State::Pending))
             return true;
-        if ((mStatusFilter & CharacterDeleted) && (order->getState() == MarketOrder::State::CharacterDeleted))
+        if ((mStatusFilter & CharacterDeleted) && (order.getState() == MarketOrder::State::CharacterDeleted))
             return true;
-        if ((mStatusFilter & Expired) && (order->getState() == MarketOrder::State::Fulfilled) && (order->getVolumeRemaining() != 0))
+        if ((mStatusFilter & Expired) && (order.getState() == MarketOrder::State::Fulfilled) && (order.getVolumeRemaining() != 0))
+            return true;
+
+        return false;
+    }
+
+    bool MarketOrderFilterProxyModel::acceptsPriceStatus(const MarketOrder &order) const
+    {
+        if (mPriceStatusFilter == EveryPriceStatus)
+            return true;
+
+        const auto price = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getLocationId());
+        if (price.isNew())
+            return mPriceStatusFilter & NoData;
+
+        QSettings settings;
+        const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
+        const auto tooOld = price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge);
+
+        if ((mPriceStatusFilter & DataTooOld) && (tooOld))
+            return true;
+        if ((mPriceStatusFilter & Ok) && (!tooOld) && (!price.isNew()))
             return true;
 
         return false;

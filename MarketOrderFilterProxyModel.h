@@ -18,6 +18,9 @@
 
 namespace Evernus
 {
+    class EveDataProvider;
+    class MarketOrder;
+
     class MarketOrderFilterProxyModel
         : public LeafFilterProxyModel
     {
@@ -34,26 +37,45 @@ namespace Evernus
             CharacterDeleted    = 0x20,
             Expired             = 0x40,
 
-            All                 = Changed | Active | Fulfilled | Cancelled | Pending | CharacterDeleted | Expired
+            EveryStatus         = Changed | Active | Fulfilled | Cancelled | Pending | CharacterDeleted | Expired
         };
         Q_DECLARE_FLAGS(StatusFilters, StatusFilter)
 
-        static const StatusFilters defaultFilter;
+        enum PriceStatusFilter
+        {
+            Ok                  = 0x1,
+            NoData              = 0x2,
+            DataTooOld          = 0x4,
 
-        explicit MarketOrderFilterProxyModel(QObject *parent = nullptr);
+            EveryPriceStatus    = Ok | NoData | DataTooOld
+        };
+        Q_DECLARE_FLAGS(PriceStatusFilters, PriceStatusFilter)
+
+        static const StatusFilters defaultStatusFilter;
+        static const PriceStatusFilters defaultPriceStatusFilter;
+
+        explicit MarketOrderFilterProxyModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~MarketOrderFilterProxyModel() = default;
 
         virtual void setSourceModel(QAbstractItemModel *sourceModel) override;
 
     public slots:
         void setStatusFilter(const StatusFilters &filter);
+        void setPriceStatusFilter(const PriceStatusFilters &filter);
 
     protected:
         virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
     private:
-        StatusFilters mStatusFilter = defaultFilter;
+        const EveDataProvider &mDataProvider;
+
+        StatusFilters mStatusFilter = defaultStatusFilter;
+        PriceStatusFilters mPriceStatusFilter = defaultPriceStatusFilter;
+
+        bool acceptsStatus(const MarketOrder &order) const;
+        bool acceptsPriceStatus(const MarketOrder &order) const;
     };
 }
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Evernus::MarketOrderFilterProxyModel::StatusFilters)
+Q_DECLARE_OPERATORS_FOR_FLAGS(Evernus::MarketOrderFilterProxyModel::PriceStatusFilters)

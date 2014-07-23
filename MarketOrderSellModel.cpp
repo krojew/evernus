@@ -228,14 +228,14 @@ namespace Evernus
                 {
                     const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getLocationId());
                     if (price.isNew())
-                        return 0;
+                        return static_cast<int>(PriceStatus::NoData);
 
                     QSettings settings;
                     const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
                     if (price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
-                        return 1;
+                        return static_cast<int>(PriceStatus::DataTooOld);
 
-                    return 2;
+                    return static_cast<int>(PriceStatus::Ok);
                 }
             case volumeColumn:
                 return QVariantList{} << data->getVolumeRemaining() << data->getVolumeEntered();

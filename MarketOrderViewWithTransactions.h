@@ -47,6 +47,7 @@ namespace Evernus
 
     signals:
         void statusFilterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);
+        void priceStatusFilterChanged(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
 
     private slots:
         void selectOrder(const QItemSelection &selected, const QItemSelection &deselected);

@@ -46,8 +46,9 @@ qt5_wrap_cpp(
     MarketLogItemPriceImporter.h
     MarketLogItemPriceImporterThread.h
     MarketOrderFilterProxyModel.h
+    MarketOrderFilterWidget.h
     MarketOrderInfoWidget.h
-    MarketOrderStateFilterWidget.h
+    MarketOrderPriceStatusesWidget.h
     MarketOrderStatesWidget.h
     MarketOrderView.h
     MarketOrderViewWithTransactions.h
@@ -208,17 +209,19 @@ add_executable(
     MarketOrder.h
     MarketOrderFilterProxyModel.cpp
     MarketOrderFilterProxyModel.h
+    MarketOrderFilterWidget.cpp
+    MarketOrderFilterWidget.h
     MarketOrderInfoWidget.cpp
     MarketOrderInfoWidget.h
     MarketOrderModel.h
+    MarketOrderPriceStatusesWidget.cpp
+    MarketOrderPriceStatusesWidget.h
     MarketOrderProvider.h
     MarketOrderRepository.cpp
     MarketOrderRepository.h
     MarketOrders.h
     MarketOrderSellModel.cpp
     MarketOrderSellModel.h
-    MarketOrderStateFilterWidget.cpp
-    MarketOrderStateFilterWidget.h
     MarketOrderStatesWidget.cpp
     MarketOrderStatesWidget.h
     MarketOrdersXmlReceiver.cpp

@@ -22,32 +22,31 @@ class QCheckBox;
 
 namespace Evernus
 {
-    class MarketOrderStatesWidget
+    class MarketOrderPriceStatusesWidget
         : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit MarketOrderStatesWidget(QWidget *parent = nullptr);
-        virtual ~MarketOrderStatesWidget() = default;
+        explicit MarketOrderPriceStatusesWidget(QWidget *parent = nullptr);
+        virtual ~MarketOrderPriceStatusesWidget() = default;
 
-        MarketOrderFilterProxyModel::StatusFilters getStatusFilter() const noexcept;
+        MarketOrderFilterProxyModel::PriceStatusFilters getStatusFilter() const noexcept;
 
     signals:
-        void filterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);
+        void filterChanged(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
 
     private slots:
         void changeFilter(int state);
 
         void checkAll();
-        void reset();
 
     private:
         static const char * const filterPropertyName;
 
-        MarketOrderFilterProxyModel::StatusFilters mCurrentFilter = MarketOrderFilterProxyModel::defaultStatusFilter;
+        MarketOrderFilterProxyModel::PriceStatusFilters mCurrentFilter = MarketOrderFilterProxyModel::defaultPriceStatusFilter;
 
-        QCheckBox *createCheckBox(MarketOrderFilterProxyModel::StatusFilter filter, const QString &label);
-        void setNewFilter(const MarketOrderFilterProxyModel::StatusFilters &filter);
+        QCheckBox *createCheckBox(MarketOrderFilterProxyModel::PriceStatusFilter filter, const QString &label);
+        void setNewFilter(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
     };
 }

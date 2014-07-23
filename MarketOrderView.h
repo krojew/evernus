@@ -23,6 +23,7 @@ class QLabel;
 
 namespace Evernus
 {
+    class EveDataProvider;
     class MarketOrderModel;
     class StyledTreeView;
 
@@ -32,7 +33,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit MarketOrderView(QWidget *parent = nullptr);
+        explicit MarketOrderView(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
         virtual ~MarketOrderView() = default;
 
         QItemSelectionModel *getSelectionModel() const;
@@ -46,6 +47,7 @@ namespace Evernus
         void closeOrderInfo();
 
         void statusFilterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);
+        void priceStatusFilterChanged(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
 
     public slots:
         void updateInfo();

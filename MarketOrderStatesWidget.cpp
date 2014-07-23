@@ -31,7 +31,7 @@ namespace Evernus
     {
         QSettings settings;
         mCurrentFilter = static_cast<MarketOrderFilterProxyModel::StatusFilters>(
-            settings.value(UISettings::marketOrderStateFilterKey, static_cast<int>(MarketOrderFilterProxyModel::defaultFilter)).toInt());
+            settings.value(UISettings::marketOrderStateFilterKey, static_cast<int>(MarketOrderFilterProxyModel::defaultStatusFilter)).toInt());
 
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -86,7 +86,7 @@ namespace Evernus
             box->blockSignals(false);
         }
 
-        setNewFilter(MarketOrderFilterProxyModel::All);
+        setNewFilter(MarketOrderFilterProxyModel::EveryStatus);
     }
 
     void MarketOrderStatesWidget::reset()
@@ -97,11 +97,11 @@ namespace Evernus
             const auto flag = static_cast<MarketOrderFilterProxyModel::StatusFilter>(box->property(filterPropertyName).toInt());
 
             box->blockSignals(true);
-            box->setChecked(MarketOrderFilterProxyModel::defaultFilter & flag);
+            box->setChecked(MarketOrderFilterProxyModel::defaultStatusFilter & flag);
             box->blockSignals(false);
         }
 
-        setNewFilter(MarketOrderFilterProxyModel::defaultFilter);
+        setNewFilter(MarketOrderFilterProxyModel::defaultStatusFilter);
     }
 
     QCheckBox *MarketOrderStatesWidget::createCheckBox(MarketOrderFilterProxyModel::StatusFilter filter, const QString &label)

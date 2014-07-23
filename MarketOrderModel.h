@@ -49,6 +49,13 @@ namespace Evernus
             Station
         };
 
+        enum class PriceStatus
+        {
+            Ok,
+            NoData,
+            DataTooOld,
+        };
+
         using QAbstractItemModel::QAbstractItemModel;
         virtual ~MarketOrderModel() = default;
 

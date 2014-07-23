@@ -22,24 +22,28 @@ class QPushButton;
 
 namespace Evernus
 {
-    class MarketOrderStateFilterWidget
+    class MarketOrderFilterWidget
         : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit MarketOrderStateFilterWidget(QWidget *parent = nullptr);
-        virtual ~MarketOrderStateFilterWidget() = default;
+        explicit MarketOrderFilterWidget(QWidget *parent = nullptr);
+        virtual ~MarketOrderFilterWidget() = default;
 
     signals:
-        void filterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);
+        void statusFilterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);
+        void priceStatusFilterChanged(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
 
     private slots:
-        void setFilter(const MarketOrderFilterProxyModel::StatusFilters &filter);
+        void setStatusFilter(const MarketOrderFilterProxyModel::StatusFilters &filter);
+        void setPriceStatusFilter(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
 
     private:
-        QPushButton *mFilterBtn = nullptr;
+        QPushButton *mStateFilterBtn = nullptr;
+        QPushButton *mPriceStatusFilterBtn = nullptr;
 
-        QString getFilterButtonText(const MarketOrderFilterProxyModel::StatusFilters &filter) const;
+        static QString getStateFilterButtonText(const MarketOrderFilterProxyModel::StatusFilters &filter);
+        static QString getPriceStatusFilterButtonText(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
     };
 }

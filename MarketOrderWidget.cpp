@@ -19,7 +19,7 @@
 #include <QLabel>
 
 #include "MarketOrderViewWithTransactions.h"
-#include "MarketOrderStateFilterWidget.h"
+#include "MarketOrderFilterWidget.h"
 #include "CacheTimerProvider.h"
 #include "ButtonWithTimer.h"
 
@@ -46,7 +46,7 @@ namespace Evernus
         auto &importBtn = getAPIImportButton();
         toolBarLayout->addWidget(&importBtn);
 
-        auto stateFilter = new MarketOrderStateFilterWidget{this};
+        auto stateFilter = new MarketOrderFilterWidget{this};
         toolBarLayout->addWidget(stateFilter);
 
         toolBarLayout->addWidget(new QLabel{tr("Group by:"), this});
@@ -66,7 +66,8 @@ namespace Evernus
         mainTabs->addTab(mSellView, QIcon{":/images/arrow_out.png"}, tr("Sell"));
         mSellView->setModel(&mSellModel);
         connect(this, &MarketOrderWidget::characterChanged, mSellView, &MarketOrderViewWithTransactions::setCharacter);
-        connect(stateFilter, &MarketOrderStateFilterWidget::filterChanged, mSellView, &MarketOrderViewWithTransactions::statusFilterChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mSellView, &MarketOrderViewWithTransactions::statusFilterChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mSellView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
 
         connect(this, &MarketOrderWidget::characterChanged, &mSellModel, &MarketOrderSellModel::setCharacter);
     }

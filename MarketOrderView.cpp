@@ -28,8 +28,9 @@
 
 namespace Evernus
 {
-    MarketOrderView::MarketOrderView(QWidget *parent)
+    MarketOrderView::MarketOrderView(const EveDataProvider &dataProvider, QWidget *parent)
         : QWidget{parent}
+        , mProxy{dataProvider}
     {
         QFont font;
         font.setBold(true);
@@ -40,6 +41,7 @@ namespace Evernus
         mProxy.setSortRole(Qt::UserRole);
         mProxy.setFilterCaseSensitivity(Qt::CaseInsensitive);
         connect(this, &MarketOrderView::statusFilterChanged, &mProxy, &MarketOrderFilterProxyModel::setStatusFilter);
+        connect(this, &MarketOrderView::priceStatusFilterChanged, &mProxy, &MarketOrderFilterProxyModel::setPriceStatusFilter);
 
         mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);
