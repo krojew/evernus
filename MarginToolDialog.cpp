@@ -27,6 +27,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGridLayout>
+#include <QPushButton>
 #include <QClipboard>
 #include <QDateTime>
 #include <QSettings>
@@ -222,7 +223,10 @@ namespace Evernus
 
         auto buttons = new QDialogButtonBox{QDialogButtonBox::Close, this};
         mainLayout->addWidget(buttons);
+        auto quitBtn = buttons->addButton(tr("Quit application"), QDialogButtonBox::DestructiveRole);
+        buttons->button(QDialogButtonBox::Close)->setDefault(true);
         connect(buttons, &QDialogButtonBox::rejected, this, &MarginToolDialog::close);
+        connect(quitBtn, &QPushButton::clicked, qApp, &QApplication::quit);
 
         const auto logPath = PathUtils::getMarketLogsPath();
         if (logPath.isEmpty())
