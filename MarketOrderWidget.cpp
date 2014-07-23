@@ -36,6 +36,7 @@ namespace Evernus
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
                                parent}
         , mSellModel{orderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
+        , mBuyModel{orderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -70,19 +71,31 @@ namespace Evernus
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mSellView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mSellView, &MarketOrderViewWithTransactions::wildcardChanged);
 
+        mBuyView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, this};
+        mainTabs->addTab(mBuyView, QIcon{":/images/arrow_in.png"}, tr("Buy"));
+        mBuyView->setModel(&mBuyModel);
+        connect(this, &MarketOrderWidget::characterChanged, mBuyView, &MarketOrderViewWithTransactions::setCharacter);
+        connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mBuyView, &MarketOrderViewWithTransactions::statusFilterChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mBuyView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mBuyView, &MarketOrderViewWithTransactions::wildcardChanged);
+
         connect(this, &MarketOrderWidget::characterChanged, &mSellModel, &MarketOrderSellModel::setCharacter);
+        connect(this, &MarketOrderWidget::characterChanged, &mBuyModel, &MarketOrderBuyModel::setCharacter);
     }
 
     void MarketOrderWidget::updateData()
     {
         refreshImportTimer();
         mSellModel.reset();
+        mBuyModel.reset();
     }
 
     void MarketOrderWidget::changeGrouping()
     {
         mSellModel.setGrouping(static_cast<MarketOrderModel::Grouping>(mGroupingCombo->currentData().toInt()));
         mSellView->expandAll();
+        mBuyModel.setGrouping(static_cast<MarketOrderModel::Grouping>(mGroupingCombo->currentData().toInt()));
+        mBuyView->expandAll();
     }
 
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)

@@ -16,6 +16,7 @@
 
 #include "MarketOrderSellModel.h"
 #include "CharacterBoundWidget.h"
+#include "MarketOrderBuyModel.h"
 
 class QComboBox;
 
@@ -53,8 +54,10 @@ namespace Evernus
 
     private:
         MarketOrderViewWithTransactions *mSellView = nullptr;
+        MarketOrderViewWithTransactions *mBuyView = nullptr;
 
         MarketOrderSellModel mSellModel;
+        MarketOrderBuyModel mBuyModel;
 
         QComboBox *mGroupingCombo = nullptr;
 
