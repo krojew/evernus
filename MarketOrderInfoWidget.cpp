@@ -102,7 +102,8 @@ namespace Evernus
 
     bool MarketOrderInfoWidget::event(QEvent *event)
     {
-        if (event->type() == QEvent::WindowDeactivate)
+        const auto type = event->type();
+        if (type == QEvent::WindowDeactivate || type == QEvent::FocusOut)
         {
             event->accept();
             deleteLater();

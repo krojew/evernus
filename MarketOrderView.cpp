@@ -144,6 +144,7 @@ namespace Evernus
         auto infoWidget = new MarketOrderInfoWidget{mSource->getOrderInfo(source), this};
         infoWidget->move(QCursor::pos());
         infoWidget->show();
+        infoWidget->activateWindow();
         connect(this, &MarketOrderView::closeOrderInfo, infoWidget, &MarketOrderInfoWidget::deleteLater);
     }
 }
