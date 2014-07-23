@@ -493,48 +493,48 @@ namespace Evernus
     QModelIndex MarketOrderSellModel::index(int row, int column, const QModelIndex &parent) const
     {
         if (!hasIndex(row, column, parent))
-             return QModelIndex();
+            return QModelIndex();
 
-         const TreeItem *parentItem = nullptr;
+        const TreeItem *parentItem = nullptr;
 
-         if (!parent.isValid())
-             parentItem = &mRootItem;
-         else
-             parentItem = static_cast<const TreeItem *>(parent.internalPointer());
+        if (!parent.isValid())
+            parentItem = &mRootItem;
+        else
+            parentItem = static_cast<const TreeItem *>(parent.internalPointer());
 
-         auto childItem = parentItem->child(row);
-         if (childItem)
-             return createIndex(row, column, childItem);
+        auto childItem = parentItem->child(row);
+        if (childItem)
+            return createIndex(row, column, childItem);
 
-         return QModelIndex{};
+        return QModelIndex{};
     }
 
     QModelIndex MarketOrderSellModel::parent(const QModelIndex &index) const
     {
         if (!index.isValid())
-             return QModelIndex{};
+            return QModelIndex{};
 
-         auto childItem = static_cast<const TreeItem *>(index.internalPointer());
-         auto parentItem = childItem->parent();
+        auto childItem = static_cast<const TreeItem *>(index.internalPointer());
+        auto parentItem = childItem->parent();
 
-         if (parentItem == &mRootItem)
-             return QModelIndex{};
+        if (parentItem == &mRootItem)
+            return QModelIndex{};
 
-         return createIndex(parentItem->row(), 0, parentItem);
+        return createIndex(parentItem->row(), 0, parentItem);
     }
 
     int MarketOrderSellModel::rowCount(const QModelIndex &parent) const
     {
         const TreeItem *parentItem = nullptr;
-         if (parent.column() > 0)
-             return 0;
+        if (parent.column() > 0)
+            return 0;
 
-         if (!parent.isValid())
-             parentItem = &mRootItem;
-         else
-             parentItem = static_cast<const TreeItem *>(parent.internalPointer());
+        if (!parent.isValid())
+            parentItem = &mRootItem;
+        else
+            parentItem = static_cast<const TreeItem *>(parent.internalPointer());
 
-         return parentItem->childCount();
+        return parentItem->childCount();
     }
 
     size_t MarketOrderSellModel::getOrderCount() const
@@ -564,23 +564,32 @@ namespace Evernus
 
     MarketOrderModel::Range MarketOrderSellModel::getOrderRange(const QModelIndex &index) const
     {
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
+        const auto order = item->getOrder();
+        if (order == nullptr)
+            return Range{};
+
         Range range;
-        range.mFrom = mData[index.row()].getFirstSeen();
-        range.mTo = mData[index.row()].getLastSeen();
+        range.mFrom = order->getFirstSeen();
+        range.mTo = order->getLastSeen();
 
         return range;
     }
 
     MarketOrderModel::OrderInfo MarketOrderSellModel::getOrderInfo(const QModelIndex &index) const
     {
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
+        const auto order = item->getOrder();
+        if (order == nullptr)
+            return OrderInfo{};
+
         QSettings settings;
 
-        const auto &data = mData[index.row()];
-        const auto price = mDataProvider.getTypeSellPrice(data.getTypeId(), data.getLocationId());
+        const auto price = mDataProvider.getTypeSellPrice(order->getTypeId(), order->getLocationId());
         const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
         OrderInfo info;
-        info.mOrderPrice = data.getPrice();
+        info.mOrderPrice = order->getPrice();
         info.mMarketPrice = price.getValue();
         info.mTargetPrice = (info.mMarketPrice < info.mOrderPrice) ? (info.mMarketPrice - priceDelta) : (info.mOrderPrice);
         info.mOrderLocalTimestamp = mCacheTimerProvider.getLocalUpdateTimer(mCharacterId, TimerType::MarketOrders);
