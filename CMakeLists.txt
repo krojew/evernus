@@ -207,6 +207,8 @@ add_executable(
     MarketLogItemPriceImporterThread.h
     MarketOrder.cpp
     MarketOrder.h
+    MarketOrderBuyModel.cpp
+    MarketOrderBuyModel.h
     MarketOrderFilterProxyModel.cpp
     MarketOrderFilterProxyModel.h
     MarketOrderFilterWidget.cpp
