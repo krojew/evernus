@@ -778,6 +778,7 @@ namespace Evernus
                     }
                     else
                     {
+                        it->setDelta(it->getVolumeRemaining() - it->getVolumeEntered());
                         addToCache(*it);
                         ++it;
                     }
