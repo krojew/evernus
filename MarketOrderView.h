@@ -49,6 +49,8 @@ namespace Evernus
         void statusFilterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);
         void priceStatusFilterChanged(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
 
+        void wildcardChanged(const QString &text);
+
     public slots:
         void updateInfo();
 

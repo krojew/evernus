@@ -15,6 +15,7 @@
 #include <QWidgetAction>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QLineEdit>
 #include <QMenu>
 
 #include "MarketOrderPriceStatusesWidget.h"
@@ -58,6 +59,12 @@ namespace Evernus
         mainLayout->addWidget(mPriceStatusFilterBtn);
         mPriceStatusFilterBtn->setFlat(true);
         mPriceStatusFilterBtn->setMenu(filterPriceStatusMenu);
+
+        mFilterEdit = new QLineEdit{this};
+        mainLayout->addWidget(mFilterEdit, 1);
+        mFilterEdit->setPlaceholderText(tr("type in wildcard and press Enter"));
+        mFilterEdit->setClearButtonEnabled(true);
+        connect(mFilterEdit, &QLineEdit::returnPressed, this, &MarketOrderFilterWidget::applyWildcard);
     }
 
     void MarketOrderFilterWidget::setStatusFilter(const MarketOrderFilterProxyModel::StatusFilters &filter)
@@ -70,6 +77,11 @@ namespace Evernus
     {
         mPriceStatusFilterBtn->setText(getPriceStatusFilterButtonText(filter));
         emit priceStatusFilterChanged(filter);
+    }
+
+    void MarketOrderFilterWidget::applyWildcard()
+    {
+        emit wildcardChanged(mFilterEdit->text());
     }
 
     QString MarketOrderFilterWidget::getStateFilterButtonText(const MarketOrderFilterProxyModel::StatusFilters &filter)
