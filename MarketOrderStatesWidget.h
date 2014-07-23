@@ -44,10 +44,10 @@ namespace Evernus
 
     private:
         static const char * const filterPropertyName;
-        static const MarketOrderFilterProxyModel::StatusFilters defaultFilter;
 
-        MarketOrderFilterProxyModel::StatusFilters mCurrentFilter = defaultFilter;
+        MarketOrderFilterProxyModel::StatusFilters mCurrentFilter = MarketOrderFilterProxyModel::defaultFilter;
 
         QCheckBox *createCheckBox(MarketOrderFilterProxyModel::StatusFilter filter, const QString &label);
+        void setNewFilter(const MarketOrderFilterProxyModel::StatusFilters &filter);
     };
 }

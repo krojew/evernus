@@ -38,7 +38,9 @@ namespace Evernus
         };
         Q_DECLARE_FLAGS(StatusFilters, StatusFilter)
 
-        using LeafFilterProxyModel::LeafFilterProxyModel;
+        static const StatusFilters defaultFilter;
+
+        explicit MarketOrderFilterProxyModel(QObject *parent = nullptr);
         virtual ~MarketOrderFilterProxyModel() = default;
 
         virtual void setSourceModel(QAbstractItemModel *sourceModel) override;
@@ -50,7 +52,7 @@ namespace Evernus
         virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
     private:
-        StatusFilters mStatusFilter = Changed | Active;
+        StatusFilters mStatusFilter = defaultFilter;
     };
 }
 

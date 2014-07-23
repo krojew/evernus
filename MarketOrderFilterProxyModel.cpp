@@ -12,13 +12,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QSettings>
+
 #include "MarketOrderModel.h"
 #include "MarketOrder.h"
+#include "UISettings.h"
 
 #include "MarketOrderFilterProxyModel.h"
 
 namespace Evernus
 {
+    const MarketOrderFilterProxyModel::StatusFilters MarketOrderFilterProxyModel::defaultFilter = Changed | Active;
+
+    MarketOrderFilterProxyModel::MarketOrderFilterProxyModel(QObject *parent)
+        : LeafFilterProxyModel{parent}
+    {
+        QSettings settings;
+        mStatusFilter = static_cast<StatusFilters>(settings.value(UISettings::marketOrderStateFilterKey, static_cast<int>(defaultFilter)).toInt());
+    }
+
     void MarketOrderFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     {
         Q_ASSERT(dynamic_cast<MarketOrderModel *>(sourceModel) != nullptr);

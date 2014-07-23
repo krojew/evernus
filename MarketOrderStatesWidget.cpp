@@ -15,19 +15,24 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QCheckBox>
+#include <QSettings>
 #include <QFont>
+
+#include "UISettings.h"
 
 #include "MarketOrderStatesWidget.h"
 
 namespace Evernus
 {
     const char * const MarketOrderStatesWidget::filterPropertyName = "filter";
-    const MarketOrderFilterProxyModel::StatusFilters MarketOrderStatesWidget::defaultFilter
-        = MarketOrderFilterProxyModel::Changed | MarketOrderFilterProxyModel::Active;
 
     MarketOrderStatesWidget::MarketOrderStatesWidget(QWidget *parent)
         : QWidget{parent}
     {
+        QSettings settings;
+        mCurrentFilter = static_cast<MarketOrderFilterProxyModel::StatusFilters>(
+            settings.value(UISettings::marketOrderStateFilterKey, static_cast<int>(MarketOrderFilterProxyModel::defaultFilter)).toInt());
+
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
@@ -36,13 +41,9 @@ namespace Evernus
 
         auto checkBtn = createCheckBox(MarketOrderFilterProxyModel::Changed, tr("Changed"));
         mainLayout->addWidget(checkBtn);
-        checkBtn->setChecked(true);
         checkBtn->setFont(font);
 
-        checkBtn = createCheckBox(MarketOrderFilterProxyModel::Active, tr("Active"));
-        mainLayout->addWidget(checkBtn);
-        checkBtn->setChecked(true);
-
+        mainLayout->addWidget(createCheckBox(MarketOrderFilterProxyModel::Active, tr("Active")));
         mainLayout->addWidget(createCheckBox(MarketOrderFilterProxyModel::Fulfilled, tr("Fulfilled")));
         mainLayout->addWidget(createCheckBox(MarketOrderFilterProxyModel::Cancelled, tr("Cancelled")));
         mainLayout->addWidget(createCheckBox(MarketOrderFilterProxyModel::Pending, tr("Pending")));
@@ -72,7 +73,7 @@ namespace Evernus
         else
             mCurrentFilter &= ~flag;
 
-        emit filterChanged(mCurrentFilter);
+        setNewFilter(mCurrentFilter);
     }
 
     void MarketOrderStatesWidget::checkAll()
@@ -85,8 +86,7 @@ namespace Evernus
             box->blockSignals(false);
         }
 
-        mCurrentFilter = MarketOrderFilterProxyModel::All;
-        emit filterChanged(mCurrentFilter);
+        setNewFilter(MarketOrderFilterProxyModel::All);
     }
 
     void MarketOrderStatesWidget::reset()
@@ -97,20 +97,30 @@ namespace Evernus
             const auto flag = static_cast<MarketOrderFilterProxyModel::StatusFilter>(box->property(filterPropertyName).toInt());
 
             box->blockSignals(true);
-            box->setChecked((defaultFilter & flag) != 0);
+            box->setChecked(MarketOrderFilterProxyModel::defaultFilter & flag);
             box->blockSignals(false);
         }
 
-        mCurrentFilter = defaultFilter;
-        emit filterChanged(mCurrentFilter);
+        setNewFilter(MarketOrderFilterProxyModel::defaultFilter);
     }
 
     QCheckBox *MarketOrderStatesWidget::createCheckBox(MarketOrderFilterProxyModel::StatusFilter filter, const QString &label)
     {
         auto checkBtn = new QCheckBox{label, this};
         checkBtn->setProperty(filterPropertyName, filter);
+        checkBtn->setChecked(mCurrentFilter & filter);
         connect(checkBtn, &QCheckBox::stateChanged, this, &MarketOrderStatesWidget::changeFilter);
 
         return checkBtn;
+    }
+
+    void MarketOrderStatesWidget::setNewFilter(const MarketOrderFilterProxyModel::StatusFilters &filter)
+    {
+        mCurrentFilter = filter;
+
+        QSettings settings;
+        settings.setValue(UISettings::marketOrderStateFilterKey, static_cast<int>(mCurrentFilter));
+
+        emit filterChanged(mCurrentFilter);
     }
 }

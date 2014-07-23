@@ -20,5 +20,6 @@ namespace Evernus
     {
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
+        const auto marketOrderStateFilterKey = "ui/orders/stateFilter";
     }
 }
