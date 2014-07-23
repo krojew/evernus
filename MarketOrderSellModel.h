@@ -60,6 +60,8 @@ namespace Evernus
 
         virtual bool shouldShowPriceInfo(const QModelIndex &index) const override;
 
+        virtual int getVolumeColumn() const override;
+
         void setCharacter(Character::IdType id);
         void setGrouping(Grouping grouping);
 

@@ -47,7 +47,6 @@ namespace Evernus
         mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
-        mView->setItemDelegateForColumn(6, new MarketOrderVolumeItemDelegate{this});
         connect(mView, &StyledTreeView::clicked, this, &MarketOrderView::showPriceInfo);
 
         auto infoLayout = new QHBoxLayout{};
@@ -100,6 +99,8 @@ namespace Evernus
 
         mProxy.setSourceModel(mSource);
         mProxy.sort(0);
+
+        mView->setItemDelegateForColumn(model->getVolumeColumn(), new MarketOrderVolumeItemDelegate{this});
 
         connect(mSource, &MarketOrderModel::modelReset, this, &MarketOrderView::updateInfo);
 

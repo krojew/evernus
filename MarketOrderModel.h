@@ -71,5 +71,7 @@ namespace Evernus
         virtual WalletTransactionsModel::EntryType getOrderTypeFilter() const = 0;
 
         virtual bool shouldShowPriceInfo(const QModelIndex &index) const = 0;
+
+        virtual int getVolumeColumn() const = 0;
     };
 }

@@ -625,6 +625,11 @@ namespace Evernus
         return index.column() == priceColumn && item->getOrder() != nullptr;
     }
 
+    int MarketOrderSellModel::getVolumeColumn() const
+    {
+        return volumeColumn;
+    }
+
     void MarketOrderSellModel::setCharacter(Character::IdType id)
     {
         mCharacterId = id;
