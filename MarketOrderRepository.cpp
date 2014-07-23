@@ -50,7 +50,7 @@ namespace Evernus
         marketOrder.setDelta(record.value("delta").toInt());
         marketOrder.setState(static_cast<MarketOrder::State>(record.value("state").toInt()));
         marketOrder.setTypeId(record.value("type_id").value<EveType::IdType>());
-        marketOrder.setRange(record.value("delta").value<short>());
+        marketOrder.setRange(record.value("range").value<short>());
         marketOrder.setAccountKey(record.value("account_key").value<short>());
         marketOrder.setDuration(record.value("duration").value<short>());
         marketOrder.setEscrow(record.value("escrow").toDouble());
