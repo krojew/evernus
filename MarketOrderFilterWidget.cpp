@@ -30,6 +30,7 @@ namespace Evernus
     {
         auto mainLayout = new QHBoxLayout{};
         setLayout(mainLayout);
+        mainLayout->setContentsMargins(QMargins{});
 
         auto statesWidget = new MarketOrderStatesWidget{this};
         connect(statesWidget, &MarketOrderStatesWidget::filterChanged, this, &MarketOrderFilterWidget::setStatusFilter);
@@ -102,7 +103,7 @@ namespace Evernus
         if (filter & MarketOrderFilterProxyModel::Expired)
             filters << tr("E");
 
-        return (filters.isEmpty()) ? (tr("Status filter")) : (tr("Status filter [%1]").arg(filters.join(", ")));
+        return (filters.isEmpty()) ? (tr("Status filter")) : (tr("Status filter [%1]  ").arg(filters.join(", ")));
     }
 
     QString MarketOrderFilterWidget::getPriceStatusFilterButtonText(const MarketOrderFilterProxyModel::PriceStatusFilters &filter)
@@ -115,6 +116,6 @@ namespace Evernus
         if (filter & MarketOrderFilterProxyModel::DataTooOld)
             filters << tr("O");
 
-        return (filters.isEmpty()) ? (tr("Price status filter")) : (tr("Price status filter [%1]").arg(filters.join(", ")));
+        return (filters.isEmpty()) ? (tr("Price status filter")) : (tr("Price status filter [%1]  ").arg(filters.join(", ")));
     }
 }
