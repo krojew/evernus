@@ -622,6 +622,7 @@ namespace Evernus
         mData = mOrderProvider.getBuyOrders(mCharacterId);
         mRootItem.clearChildren();
 
+        mTotalOrders = 0;
         mVolumeRemaining = 0;
         mVolumeEntered = 0;
         mTotalISK = 0.;
