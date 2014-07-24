@@ -185,4 +185,9 @@ namespace Evernus
     {
         mLastSeen = dt;
     }
+
+    bool MarketOrder::isArchived() const
+    {
+        return !mLastSeen.isNull();
+    }
 }

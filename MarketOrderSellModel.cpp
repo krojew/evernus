@@ -233,9 +233,6 @@ namespace Evernus
 
                         if ((data->getState() >= MarketOrder::State::Active && data->getState() <= MarketOrder::State::CharacterDeleted))
                             return prefix + tr(stateNames[static_cast<size_t>(data->getState())]);
-
-                        if (data->getState() == MarketOrder::State::Archived)
-                            return tr("Archived");
                     }
                     break;
                 case customCostColumn:

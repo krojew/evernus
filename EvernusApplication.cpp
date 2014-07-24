@@ -1145,10 +1145,6 @@ namespace Evernus
     {
         const auto curStates = mMarketOrderRepository->getOrderStatesAndVolumes(id);
 
-        MarketOrderRepository::OrderIdList idsToArchive;
-        for (const auto &cur : curStates)
-            idsToArchive.emplace(cur.first);
-
         mSellOrders.clear();
         mBuyOrders.clear();
         mArchivedOrders.clear();
@@ -1162,8 +1158,6 @@ namespace Evernus
 
         for (auto it = std::begin(orders); it != std::end(orders);)
         {
-            idsToArchive.erase(it->getId());
-
             const auto cIt = curStates.find(it->getId());
             if (cIt != std::end(curStates))
             {
@@ -1172,22 +1166,14 @@ namespace Evernus
 
                 if (it->getState() != MarketOrder::State::Active)
                 {
-                    if (cIt->second.mState == MarketOrder::State::Archived)
+                    if (cIt->second.mIsArchived)
                     {
                         it = orders.erase(it);
                     }
                     else
                     {
-                        if (cIt->second.mState != MarketOrder::State::Active)
-                        {
-                            it->setState(MarketOrder::State::Archived);
-                        }
-                        else
-                        {
-                            it->setLastSeen(std::min(QDateTime::currentDateTimeUtc(), it->getIssued().addDays(it->getDuration())));
-                            addToCache(*it);
-                        }
-
+                        it->setLastSeen(std::min(QDateTime::currentDateTimeUtc(), it->getIssued().addDays(it->getDuration())));
+                        addToCache(*it);
                         ++it;
                     }
                 }
@@ -1204,8 +1190,6 @@ namespace Evernus
                 ++it;
             }
         }
-
-        mMarketOrderRepository->archive(idsToArchive);
 
         MarketOrderValueSnapshot snapshot;
         snapshot.setTimestamp(QDateTime::currentDateTimeUtc());

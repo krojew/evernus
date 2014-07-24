@@ -40,9 +40,10 @@ namespace Evernus
 
         struct OrderState
         {
-            MarketOrder::State mState = MarketOrder::State::Archived;
+            MarketOrder::State mState = MarketOrder::State::Active;
             uint mVolumeRemaining = 0;
             QDateTime mFirstSeen;
+            bool mIsArchived = false;
         };
 
         typedef std::unordered_map<MarketOrder::IdType, OrderState> OrderStateMap;
@@ -61,8 +62,6 @@ namespace Evernus
 
         AggrData getAggregatedData(Character::IdType characterId) const;
         OrderStateMap getOrderStatesAndVolumes(Character::IdType characterId) const;
-
-        void archive(const OrderIdList &list) const;
 
         OrderList fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const;
         OrderList fetchArchivedForCharacter(Character::IdType characterId) const;

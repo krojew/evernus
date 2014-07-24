@@ -34,8 +34,6 @@ namespace Evernus
             Cancelled,
             Pending,
             CharacterDeleted,
-
-            Archived = 100
         };
 
         enum class Type
@@ -103,6 +101,8 @@ namespace Evernus
 
         QDateTime getLastSeen() const;
         void setLastSeen(const QDateTime &dt);
+
+        bool isArchived() const;
 
         MarketOrder &operator =(const MarketOrder &) = default;
         MarketOrder &operator =(MarketOrder &&) = default;
