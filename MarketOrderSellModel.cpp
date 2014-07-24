@@ -33,82 +33,13 @@
 
 namespace Evernus
 {
-    void MarketOrderSellModel::TreeItem::appendChild(std::unique_ptr<TreeItem> &&child)
-    {
-        child->mParentItem = this;
-        mChildItems.emplace_back(std::move(child));
-    }
-
-    void MarketOrderSellModel::TreeItem::clearChildren()
-    {
-        mChildItems.clear();
-    }
-
-    MarketOrderSellModel::TreeItem *MarketOrderSellModel::TreeItem::child(int row) const
-    {
-        return (row >= mChildItems.size()) ? (nullptr) : (mChildItems[row].get());
-    }
-
-    int MarketOrderSellModel::TreeItem::childCount() const
-    {
-        return static_cast<int>(mChildItems.size());
-    }
-
-    const MarketOrder *MarketOrderSellModel::TreeItem::getOrder() const noexcept
-    {
-        return mOrder;
-    }
-
-    void MarketOrderSellModel::TreeItem::setOrder(const MarketOrder *order) noexcept
-    {
-        mOrder = order;
-    }
-
-    QString MarketOrderSellModel::TreeItem::getGroupName() const
-    {
-        return mGroupName;
-    }
-
-    void MarketOrderSellModel::TreeItem::setGroupName(const QString &name)
-    {
-        mGroupName = name;
-    }
-
-    void MarketOrderSellModel::TreeItem::setGroupName(QString &&name)
-    {
-        mGroupName = std::move(name);
-    }
-
-    int MarketOrderSellModel::TreeItem::row() const
-    {
-        if (mParentItem != nullptr)
-        {
-            auto row = 0;
-            for (const auto &child : mParentItem->mChildItems)
-            {
-                if (child.get() == this)
-                    return row;
-
-                ++row;
-            }
-        }
-
-        return 0;
-    }
-
-    MarketOrderSellModel::TreeItem *MarketOrderSellModel::TreeItem::parent() const
-    {
-        return mParentItem;
-    }
-
     MarketOrderSellModel::MarketOrderSellModel(const MarketOrderProvider &orderProvider,
                                                const EveDataProvider &dataProvider,
                                                const ItemCostProvider &itemCostProvider,
                                                const CacheTimerProvider &cacheTimerProvider,
                                                QObject *parent)
-        : MarketOrderModel{parent}
+        : MarketOrderTreeModel{dataProvider, parent}
         , mOrderProvider{orderProvider}
-        , mDataProvider{dataProvider}
         , mItemCostProvider{itemCostProvider}
         , mCacheTimerProvider{cacheTimerProvider}
     {
@@ -490,92 +421,6 @@ namespace Evernus
         return QVariant{};
     }
 
-    QModelIndex MarketOrderSellModel::index(int row, int column, const QModelIndex &parent) const
-    {
-        if (!hasIndex(row, column, parent))
-            return QModelIndex();
-
-        const TreeItem *parentItem = nullptr;
-
-        if (!parent.isValid())
-            parentItem = &mRootItem;
-        else
-            parentItem = static_cast<const TreeItem *>(parent.internalPointer());
-
-        auto childItem = parentItem->child(row);
-        if (childItem)
-            return createIndex(row, column, childItem);
-
-        return QModelIndex{};
-    }
-
-    QModelIndex MarketOrderSellModel::parent(const QModelIndex &index) const
-    {
-        if (!index.isValid())
-            return QModelIndex{};
-
-        auto childItem = static_cast<const TreeItem *>(index.internalPointer());
-        auto parentItem = childItem->parent();
-
-        if (parentItem == &mRootItem)
-            return QModelIndex{};
-
-        return createIndex(parentItem->row(), 0, parentItem);
-    }
-
-    int MarketOrderSellModel::rowCount(const QModelIndex &parent) const
-    {
-        const TreeItem *parentItem = nullptr;
-        if (parent.column() > 0)
-            return 0;
-
-        if (!parent.isValid())
-            parentItem = &mRootItem;
-        else
-            parentItem = static_cast<const TreeItem *>(parent.internalPointer());
-
-        return parentItem->childCount();
-    }
-
-    size_t MarketOrderSellModel::getOrderCount() const
-    {
-        return mTotalOrders;
-    }
-
-    quint64 MarketOrderSellModel::getVolumeRemaining() const
-    {
-        return mVolumeRemaining;
-    }
-
-    quint64 MarketOrderSellModel::getVolumeEntered() const
-    {
-        return mVolumeEntered;
-    }
-
-    double MarketOrderSellModel::getTotalISK() const
-    {
-        return mTotalISK;
-    }
-
-    double MarketOrderSellModel::getTotalSize() const
-    {
-        return mTotalSize;
-    }
-
-    MarketOrderModel::Range MarketOrderSellModel::getOrderRange(const QModelIndex &index) const
-    {
-        const auto item = static_cast<const TreeItem *>(index.internalPointer());
-        const auto order = item->getOrder();
-        if (order == nullptr)
-            return Range{};
-
-        Range range;
-        range.mFrom = order->getFirstSeen();
-        range.mTo = order->getLastSeen();
-
-        return range;
-    }
-
     MarketOrderModel::OrderInfo MarketOrderSellModel::getOrderInfo(const QModelIndex &index) const
     {
         const auto item = static_cast<const TreeItem *>(index.internalPointer());
@@ -598,22 +443,6 @@ namespace Evernus
         return info;
     }
 
-    EveType::IdType MarketOrderSellModel::getOrderTypeId(const QModelIndex &index) const
-    {
-        const auto item = static_cast<const TreeItem *>(index.internalPointer());
-        const auto order = item->getOrder();
-        return (order != nullptr) ? (order->getTypeId()) : (EveType::invalidId);
-    }
-
-    const MarketOrder *MarketOrderSellModel::getOrder(const QModelIndex &index) const
-    {
-        if (!index.isValid())
-            return nullptr;
-
-        const auto item = static_cast<const TreeItem *>(index.internalPointer());
-        return item->getOrder();
-    }
-
     WalletTransactionsModel::EntryType MarketOrderSellModel::getOrderTypeFilter() const
     {
         return WalletTransactionsModel::EntryType::Sell;
@@ -630,100 +459,8 @@ namespace Evernus
         return volumeColumn;
     }
 
-    void MarketOrderSellModel::setCharacter(Character::IdType id)
+    std::vector<MarketOrder> MarketOrderSellModel::getOrders() const
     {
-        mCharacterId = id;
-        reset();
-    }
-
-    void MarketOrderSellModel::setGrouping(Grouping grouping)
-    {
-        mGrouping = grouping;
-        reset();
-    }
-
-    void MarketOrderSellModel::reset()
-    {
-        beginResetModel();
-
-        mData = mOrderProvider.getSellOrders(mCharacterId);
-        mRootItem.clearChildren();
-
-        mTotalOrders = 0;
-        mVolumeRemaining = 0;
-        mVolumeEntered = 0;
-        mTotalISK = 0.;
-        mTotalSize = 0.;
-
-        std::unordered_map<quintptr, TreeItem *> groupItems;
-
-        for (const auto &order : mData)
-        {
-            auto item = std::make_unique<TreeItem>();
-            item->setOrder(&order);
-
-            if (mGrouping != Grouping::None)
-            {
-                const auto id = getGroupingId(order);
-                auto it = groupItems.find(id);
-
-                if (it == std::end(groupItems))
-                {
-                    auto item = std::make_unique<TreeItem>();
-                    item->setGroupName(getGroupingData(order));
-
-                    auto itemPtr = item.get();
-                    mRootItem.appendChild(std::move(item));
-
-                    it = groupItems.emplace(id, itemPtr).first;
-                }
-
-                it->second->appendChild(std::move(item));
-            }
-            else
-            {
-                mRootItem.appendChild(std::move(item));
-            }
-
-            if (order.getState() != MarketOrder::State::Active)
-                continue;
-
-            mVolumeRemaining += order.getVolumeRemaining();
-            mVolumeEntered += order.getVolumeEntered();
-            mTotalISK += order.getPrice() * order.getVolumeRemaining();
-            mTotalSize += mDataProvider.getTypeVolume(order.getTypeId()) * order.getVolumeRemaining();
-
-            ++mTotalOrders;
-        }
-
-        endResetModel();
-    }
-
-    quintptr MarketOrderSellModel::getGroupingId(const MarketOrder &order) const
-    {
-        switch (mGrouping) {
-        case Grouping::Group:
-            return mDataProvider.getTypeMarketGroupParentId(order.getTypeId());
-        case Grouping::Station:
-            return order.getLocationId();
-        case Grouping::Type:
-            return order.getTypeId();
-        default:
-            return 0;
-        }
-    }
-
-    QString MarketOrderSellModel::getGroupingData(const MarketOrder &order) const
-    {
-        switch (mGrouping) {
-        case Grouping::Group:
-            return mDataProvider.getTypeMarketGroupParentName(order.getTypeId());
-        case Grouping::Station:
-            return mDataProvider.getLocationName(order.getLocationId());
-        case Grouping::Type:
-            return mDataProvider.getTypeName(order.getTypeId());
-        default:
-            return QString{};
-        }
+        return mOrderProvider.getSellOrders(mCharacterId);
     }
 }

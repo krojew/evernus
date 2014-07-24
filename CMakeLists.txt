@@ -228,6 +228,8 @@ add_executable(
     MarketOrderStatesWidget.h
     MarketOrdersXmlReceiver.cpp
     MarketOrdersXmlReceiver.h
+    MarketOrderTreeModel.cpp
+    MarketOrderTreeModel.h
     MarketOrderValueSnapshot.cpp
     MarketOrderValueSnapshot.h
     MarketOrderValueSnapshotRepository.cpp
