@@ -141,7 +141,8 @@ namespace Evernus
         void refreshAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
-        void refreshMarketOrders(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshMarketOrdersFromLogs(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshConquerableStations();
         void refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
         void refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
@@ -239,6 +240,7 @@ namespace Evernus
 
         void importCharacter(Character::IdType id, uint parentTask, const Key &key);
         void importItemPrices(const std::string &importerName, const ItemPriceImporter::TypeLocationPairs &target);
+        void importMarketLogs(Character::IdType id, MarketOrders &orders);
 
         Key getCharacterKey(Character::IdType id) const;
 

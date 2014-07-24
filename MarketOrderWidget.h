@@ -18,6 +18,7 @@
 #include "CharacterBoundWidget.h"
 #include "MarketOrderBuyModel.h"
 
+class QPushButton;
 class QComboBox;
 
 namespace Evernus
@@ -46,6 +47,8 @@ namespace Evernus
     signals:
         void characterChanged(Character::IdType id);
 
+        void importFromLogs(Character::IdType id);
+
     public slots:
         void updateData();
 
@@ -59,6 +62,7 @@ namespace Evernus
         MarketOrderSellModel mSellModel;
         MarketOrderBuyModel mBuyModel;
 
+        QPushButton *mLogImportBtn = nullptr;
         QComboBox *mGroupingCombo = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;

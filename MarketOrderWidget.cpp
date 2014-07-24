@@ -47,6 +47,14 @@ namespace Evernus
         auto &importBtn = getAPIImportButton();
         toolBarLayout->addWidget(&importBtn);
 
+        mLogImportBtn = new QPushButton{QIcon{":/images/page_refresh.png"}, tr("File import"), this};
+        toolBarLayout->addWidget(mLogImportBtn);
+        mLogImportBtn->setEnabled(false);
+        mLogImportBtn->setFlat(true);
+        connect(mLogImportBtn, &QPushButton::clicked, this, [this]() {
+            emit importFromLogs(getCharacterId());
+        });
+
         auto stateFilter = new MarketOrderFilterWidget{this};
         toolBarLayout->addWidget(stateFilter);
 
@@ -100,6 +108,7 @@ namespace Evernus
 
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)
     {
+        mLogImportBtn->setEnabled(id != Character::invalidId);
         emit characterChanged(id);
     }
 }

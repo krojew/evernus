@@ -218,10 +218,16 @@ namespace Evernus
             emit importWalletTransactions(mCurrentCharacterId);
     }
 
-    void MainWindow::refreshMarketOrders()
+    void MainWindow::refreshMarketOrdersFromAPI()
     {
         if (mCurrentCharacterId != Character::invalidId)
-            emit importMarketOrders(mCurrentCharacterId);
+            emit importMarketOrdersFromAPI(mCurrentCharacterId);
+    }
+
+    void MainWindow::refreshMarketOrdersFromLogs()
+    {
+        if (mCurrentCharacterId != Character::invalidId)
+            emit importMarketOrdersFromLogs(mCurrentCharacterId);
     }
 
     void MainWindow::refreshAll()
@@ -231,7 +237,7 @@ namespace Evernus
 
         refreshWalletJournal();
         refreshWalletTransactions();
-        refreshMarketOrders();
+        refreshMarketOrdersFromAPI();
 
         QSettings settings;
         if (settings.value(ImportSettings::importAssetsKey, true).toBool())
@@ -346,7 +352,8 @@ namespace Evernus
                                               mWalletTransactionRepository,
                                               this};
         addTab(orderTab, tr("Orders"));
-        connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importMarketOrders);
+        connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importMarketOrdersFromAPI);
+        connect(orderTab, &MarketOrderWidget::importFromLogs, this, &MainWindow::importMarketOrdersFromLogs);
         connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
 
         auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mCacheTimerProvider, mEveDataProvider, this};

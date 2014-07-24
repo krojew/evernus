@@ -24,6 +24,8 @@
 #include "ImportSettings.h"
 #include "WalletSettings.h"
 #include "DatabaseUtils.h"
+#include "PathSettings.h"
+#include "PathUtils.h"
 
 #include "EvernusApplication.h"
 
@@ -586,26 +588,30 @@ namespace Evernus
             const auto key = getCharacterKey(id);
 
             mAPIManager.fetchAssets(key, id, [assetSubtask, id, this](auto data, const auto &error) {
-                auto query = mAssetListRepository->prepare(QString{"DELETE FROM %1 WHERE character_id = ?"}
-                    .arg(mAssetListRepository->getTableName()));
-                query.bindValue(0, id);
+                if (error.isEmpty())
+                {
+                    auto query = mAssetListRepository->prepare(QString{"DELETE FROM %1 WHERE character_id = ?"}
+                        .arg(mAssetListRepository->getTableName()));
+                    query.bindValue(0, id);
 
-                Evernus::DatabaseUtils::execQuery(query);
+                    Evernus::DatabaseUtils::execQuery(query);
 
-                const auto it = mCharacterAssets.find(id);
-                if (it != std::end(mCharacterAssets))
-                    *it->second = data;
+                    const auto it = mCharacterAssets.find(id);
+                    if (it != std::end(mCharacterAssets))
+                        *it->second = data;
 
-                mAssetListRepository->store(data);
+                    mAssetListRepository->store(data);
 
-                QSettings settings;
+                    QSettings settings;
 
-                if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, true).toBool())
-                    computeAssetListSellValue(data);
+                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, true).toBool())
+                        computeAssetListSellValue(data);
 
-                saveUpdateTimer(Evernus::TimerType::AssetList, mAssetsUtcUpdateTimes, id);
+                    saveUpdateTimer(Evernus::TimerType::AssetList, mAssetsUtcUpdateTimes, id);
 
-                emit assetsChanged();
+                    emit assetsChanged();
+                }
+
                 emit taskEnded(assetSubtask, error);
             });
         }
@@ -636,33 +642,37 @@ namespace Evernus
 
             mAPIManager.fetchWalletJournal(key, id, WalletJournalEntry::invalidId, maxId,
                                            [task, id, this](const auto &data, const auto &error) {
-                std::vector<Evernus::WalletSnapshot> snapshots;
-                snapshots.reserve(data.size());
-
-                QSet<QDateTime> usedSnapshots;
-
-                for (auto &entry : data)
+                if (error.isEmpty())
                 {
-                    const auto timestamp = entry.getTimestamp();
+                    std::vector<Evernus::WalletSnapshot> snapshots;
+                    snapshots.reserve(data.size());
 
-                    if (!usedSnapshots.contains(timestamp))
+                    QSet<QDateTime> usedSnapshots;
+
+                    for (auto &entry : data)
                     {
-                        Evernus::WalletSnapshot snapshot;
-                        snapshot.setTimestamp(timestamp);
-                        snapshot.setBalance(entry.getBalance());
-                        snapshot.setCharacterId(entry.getCharacterId());
+                        const auto timestamp = entry.getTimestamp();
 
-                        snapshots.emplace_back(std::move(snapshot));
-                        usedSnapshots << timestamp;
+                        if (!usedSnapshots.contains(timestamp))
+                        {
+                            Evernus::WalletSnapshot snapshot;
+                            snapshot.setTimestamp(timestamp);
+                            snapshot.setBalance(entry.getBalance());
+                            snapshot.setCharacterId(entry.getCharacterId());
+
+                            snapshots.emplace_back(std::move(snapshot));
+                            usedSnapshots << timestamp;
+                        }
                     }
+
+                    mWalletJournalEntryRepository->batchStore(data, true);
+                    mWalletSnapshotRepository->batchStore(snapshots, false);
+
+                    saveUpdateTimer(Evernus::TimerType::WalletJournal, mWalletJournalUtcUpdateTimes, id);
+
+                    emit walletJournalChanged();
                 }
 
-                mWalletJournalEntryRepository->batchStore(data, true);
-                mWalletSnapshotRepository->batchStore(snapshots, false);
-
-                saveUpdateTimer(Evernus::TimerType::WalletJournal, mWalletJournalUtcUpdateTimes, id);
-
-                emit walletJournalChanged();
                 emit taskEnded(task, error);
             });
         }
@@ -693,11 +703,14 @@ namespace Evernus
 
             mAPIManager.fetchWalletTransactions(key, id, WalletTransaction::invalidId, maxId,
                                                 [task, id, this](const auto &data, const auto &error) {
-                mWalletTransactionRepository->batchStore(data, true);
+                if (error.isEmpty())
+                {
+                    mWalletTransactionRepository->batchStore(data, true);
+                    saveUpdateTimer(Evernus::TimerType::WalletTransactions, mWalletTransactionsUtcUpdateTimes, id);
 
-                saveUpdateTimer(Evernus::TimerType::WalletTransactions, mWalletTransactionsUtcUpdateTimes, id);
+                    emit walletTransactionsChanged();
+                }
 
-                emit walletTransactionsChanged();
                 emit taskEnded(task, error);
             });
         }
@@ -711,9 +724,9 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::refreshMarketOrders(Character::IdType id, uint parentTask)
+    void EvernusApplication::refreshMarketOrdersFromAPI(Character::IdType id, uint parentTask)
     {
-        qDebug() << "Refreshing market orders: " << id;
+        qDebug() << "Refreshing market orders from API: " << id;
 
         const auto task = startTask(tr("Fetching market orders for character %1...").arg(id));
         processEvents();
@@ -722,95 +735,12 @@ namespace Evernus
         {
             const auto key = getCharacterKey(id);
             mAPIManager.fetchMarketOrders(key, id, [task, id, this](auto data, const auto &error) {
-                const auto curStates = mMarketOrderRepository->getOrderStatesAndVolumes(id);
-
-                Evernus::MarketOrderRepository::OrderIdList idsToArchive;
-                for (const auto &cur : curStates)
-                    idsToArchive.emplace(cur.first);
-
-                mSellOrders.clear();
-                mBuyOrders.clear();
-                mArchivedOrders.clear();
-
-                const auto addToCache = [id, this](const auto &order) {
-                    if (order.getType() == Evernus::MarketOrder::Type::Buy)
-                        mBuyOrders[id].emplace_back(order);
-                    else
-                        mSellOrders[id].emplace_back(order);
-                };
-
-                for (auto it = std::begin(data); it != std::end(data);)
+                if (error.isEmpty())
                 {
-                    idsToArchive.erase(it->getId());
-
-                    const auto cIt = curStates.find(it->getId());
-                    if (cIt != std::end(curStates))
-                    {
-                        it->setDelta(it->getVolumeRemaining() - cIt->second.mVolumeRemaining);
-                        it->setFirstSeen(cIt->second.mFirstSeen);
-
-                        if (it->getState() != Evernus::MarketOrder::State::Active)
-                        {
-                            if (cIt->second.mState == Evernus::MarketOrder::State::Archived)
-                            {
-                                it = data.erase(it);
-                            }
-                            else
-                            {
-                                if (cIt->second.mState != Evernus::MarketOrder::State::Active)
-                                {
-                                    it->setState(Evernus::MarketOrder::State::Archived);
-                                }
-                                else
-                                {
-                                    it->setLastSeen(std::min(QDateTime::currentDateTimeUtc(), it->getIssued().addDays(it->getDuration())));
-                                    addToCache(*it);
-                                }
-
-                                ++it;
-                            }
-                        }
-                        else
-                        {
-                            addToCache(*it);
-                            ++it;
-                        }
-                    }
-                    else
-                    {
-                        it->setDelta(it->getVolumeRemaining() - it->getVolumeEntered());
-                        addToCache(*it);
-                        ++it;
-                    }
+                    importMarketLogs(id, data);
+                    emit marketOrdersChanged();
                 }
 
-                mMarketOrderRepository->archive(idsToArchive);
-
-                Evernus::MarketOrderValueSnapshot snapshot;
-                snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
-                snapshot.setCharacterId(id);
-
-                double buy = 0., sell = 0.;
-                for (const auto &order : data)
-                {
-                    if (order.getState() != Evernus::MarketOrder::State::Active)
-                        continue;
-
-                    if (order.getType() == Evernus::MarketOrder::Type::Buy)
-                        buy += order.getPrice() * order.getVolumeRemaining();
-                    else
-                        sell += order.getPrice() * order.getVolumeRemaining();
-                }
-
-                snapshot.setBuyValue(buy);
-                snapshot.setSellValue(sell);
-
-                mMarketOrderValueSnapshotRepository->store(snapshot);
-                mMarketOrderRepository->batchStore(data, true);
-
-                saveUpdateTimer(Evernus::TimerType::MarketOrders, mMarketOrdersUtcUpdateTimes, id);
-
-                emit marketOrdersChanged();
                 emit taskEnded(task, error);
             });
         }
@@ -822,6 +752,104 @@ namespace Evernus
         {
             emit taskEnded(task, tr("Character not found!"));
         }
+    }
+
+    void EvernusApplication::refreshMarketOrdersFromLogs(Character::IdType id, uint parentTask)
+    {
+        qDebug() << "Refreshing market orders from logs: " << id;
+
+        const auto task = startTask(tr("Fetching market orders for character %1...").arg(id));
+        processEvents();
+
+        const auto logPath = PathUtils::getMarketLogsPath();
+        if (logPath.isEmpty())
+        {
+            emit taskEnded(task, tr("Cannot determine market logs path!"));
+            return;
+        }
+
+        const QDir logDir{logPath};
+        const auto logs = logDir.entryList(QStringList{"My Orders*.txt"}, QDir::Files | QDir::Readable, QDir::Time);
+        if (logs.isEmpty())
+        {
+            emit taskEnded(task, tr("No market logs found!"));
+            return;
+        }
+
+        for (const auto &log : logs)
+        {
+            qDebug() << "Parsing" << log;
+
+            QFile file{logDir.filePath(log)};
+            if (!file.open(QIODevice::ReadOnly))
+            {
+                emit taskEnded(task, tr("Could not open market log file!"));
+                return;
+            }
+
+            file.readLine();
+
+            auto characterFound = false;
+
+            MarketOrders orders;
+            while (!file.atEnd())
+            {
+                const QString line = file.readLine();
+                const auto values = line.split(',');
+
+                if (values.size() >= 22)
+                {
+                    if (!characterFound)
+                    {
+                        const auto characterId = values[2].toULongLong();
+                        if (characterId != id)
+                        {
+                            file.close();
+                            continue;
+                        }
+
+                        characterFound = true;
+                    }
+
+                    MarketOrder order{values[0].toULongLong()};
+                    order.setCharacterId(id);
+                    order.setLocationId(values[6].toULongLong());
+                    order.setVolumeEntered(values[11].toUInt());
+                    order.setVolumeRemaining(static_cast<uint>(values[12].toDouble()));
+                    order.setMinVolume(values[15].toUInt());
+                    order.setDelta(order.getVolumeRemaining() - order.getVolumeEntered());
+                    order.setState(static_cast<MarketOrder::State>(values[14].toInt()));
+                    order.setTypeId(values[1].toUInt());
+                    order.setRange(values[8].toShort());
+                    order.setDuration(values[17].toShort());
+                    order.setEscrow(values[21].toDouble());
+                    order.setPrice(values[10].toDouble());
+                    order.setType((values[9] == "True") ? (MarketOrder::Type::Buy) : (MarketOrder::Type::Sell));
+
+                    auto issued = QDateTime::fromString(values[13], "yyyy-MM-dd HH:mm:ss.zzz");
+                    issued.setTimeSpec(Qt::UTC);
+
+                    order.setIssued(issued);
+                    order.setFirstSeen(issued);
+
+                    orders.emplace_back(std::move(order));
+                }
+            }
+
+            if (characterFound)
+            {
+                QSettings settings;
+                if (settings.value(PathSettings::deleteLogsKey, true).toBool())
+                    file.remove();
+
+                importMarketLogs(id, orders);
+
+                emit marketOrdersChanged();
+                break;
+            }
+        }
+
+        emit taskEnded(task, QString{});
     }
 
     void EvernusApplication::refreshConquerableStations()
@@ -832,10 +860,14 @@ namespace Evernus
         processEvents();
 
         mAPIManager.fetchConquerableStationList([task, this](const auto &list, const auto &error) {
-            mConquerableStationRepository->exec(QString{"DELETE FROM %1"}.arg(mConquerableStationRepository->getTableName()));
-            mConquerableStationRepository->batchStore(list, true);
+            if (error.isEmpty())
+            {
+                mConquerableStationRepository->exec(QString{"DELETE FROM %1"}.arg(mConquerableStationRepository->getTableName()));
+                mConquerableStationRepository->batchStore(list, true);
 
-            emit conquerableStationsChanged();
+                emit conquerableStationsChanged();
+            }
+
             emit taskEnded(task, error);
         });
     }
@@ -1107,6 +1139,97 @@ namespace Evernus
         processEvents();
 
         it->second->fetchItemPrices(target);
+    }
+
+    void EvernusApplication::importMarketLogs(Character::IdType id, MarketOrders &orders)
+    {
+        const auto curStates = mMarketOrderRepository->getOrderStatesAndVolumes(id);
+
+        MarketOrderRepository::OrderIdList idsToArchive;
+        for (const auto &cur : curStates)
+            idsToArchive.emplace(cur.first);
+
+        mSellOrders.clear();
+        mBuyOrders.clear();
+        mArchivedOrders.clear();
+
+        const auto addToCache = [id, this](const auto &order) {
+            if (order.getType() == Evernus::MarketOrder::Type::Buy)
+                mBuyOrders[id].emplace_back(order);
+            else
+                mSellOrders[id].emplace_back(order);
+        };
+
+        for (auto it = std::begin(orders); it != std::end(orders);)
+        {
+            idsToArchive.erase(it->getId());
+
+            const auto cIt = curStates.find(it->getId());
+            if (cIt != std::end(curStates))
+            {
+                it->setDelta(it->getVolumeRemaining() - cIt->second.mVolumeRemaining);
+                it->setFirstSeen(cIt->second.mFirstSeen);
+
+                if (it->getState() != MarketOrder::State::Active)
+                {
+                    if (cIt->second.mState == MarketOrder::State::Archived)
+                    {
+                        it = orders.erase(it);
+                    }
+                    else
+                    {
+                        if (cIt->second.mState != MarketOrder::State::Active)
+                        {
+                            it->setState(MarketOrder::State::Archived);
+                        }
+                        else
+                        {
+                            it->setLastSeen(std::min(QDateTime::currentDateTimeUtc(), it->getIssued().addDays(it->getDuration())));
+                            addToCache(*it);
+                        }
+
+                        ++it;
+                    }
+                }
+                else
+                {
+                    addToCache(*it);
+                    ++it;
+                }
+            }
+            else
+            {
+                it->setDelta(it->getVolumeRemaining() - it->getVolumeEntered());
+                addToCache(*it);
+                ++it;
+            }
+        }
+
+        mMarketOrderRepository->archive(idsToArchive);
+
+        MarketOrderValueSnapshot snapshot;
+        snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
+        snapshot.setCharacterId(id);
+
+        double buy = 0., sell = 0.;
+        for (const auto &order : orders)
+        {
+            if (order.getState() != MarketOrder::State::Active)
+                continue;
+
+            if (order.getType() == MarketOrder::Type::Buy)
+                buy += order.getPrice() * order.getVolumeRemaining();
+            else
+                sell += order.getPrice() * order.getVolumeRemaining();
+        }
+
+        snapshot.setBuyValue(buy);
+        snapshot.setSellValue(sell);
+
+        mMarketOrderValueSnapshotRepository->store(snapshot);
+        mMarketOrderRepository->batchStore(orders, true);
+
+        saveUpdateTimer(TimerType::MarketOrders, mMarketOrdersUtcUpdateTimes, id);
     }
 
     Key EvernusApplication::getCharacterKey(Character::IdType id) const

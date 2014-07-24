@@ -102,7 +102,8 @@ namespace Evernus
         void importAssets(Character::IdType id);
         void importWalletJournal(Character::IdType id);
         void importWalletTransactions(Character::IdType id);
-        void importMarketOrders(Character::IdType id);
+        void importMarketOrdersFromAPI(Character::IdType id);
+        void importMarketOrdersFromLogs(Character::IdType id);
 
         void importItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
         void importItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
@@ -123,7 +124,8 @@ namespace Evernus
         void refreshAssets();
         void refreshWalletJournal();
         void refreshWalletTransactions();
-        void refreshMarketOrders();
+        void refreshMarketOrdersFromAPI();
+        void refreshMarketOrdersFromLogs();
         void refreshAll();
 
     private slots:
