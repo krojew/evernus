@@ -16,6 +16,7 @@
 #include <QHBoxLayout>
 #include <QTabWidget>
 #include <QComboBox>
+#include <QSettings>
 #include <QLabel>
 
 #include "MarketOrderViewWithTransactions.h"
@@ -27,6 +28,8 @@
 
 namespace Evernus
 {
+    const QString MarketOrderWidget::settingsLastTabkey = "ui/orders/lastTab";
+
     MarketOrderWidget::MarketOrderWidget(const MarketOrderProvider &orderProvider,
                                          const CacheTimerProvider &cacheTimerProvider,
                                          const EveDataProvider &dataProvider,
@@ -87,6 +90,10 @@ namespace Evernus
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mBuyView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mBuyView, &MarketOrderViewWithTransactions::wildcardChanged);
 
+        QSettings settings;
+        mainTabs->setCurrentIndex(settings.value(settingsLastTabkey).toInt());
+        connect(mainTabs, &QTabWidget::currentChanged, this, &MarketOrderWidget::saveChosenTab);
+
         connect(this, &MarketOrderWidget::characterChanged, &mSellModel, &MarketOrderSellModel::setCharacter);
         connect(this, &MarketOrderWidget::characterChanged, &mBuyModel, &MarketOrderBuyModel::setCharacter);
     }
@@ -104,6 +111,12 @@ namespace Evernus
         mSellView->expandAll();
         mBuyModel.setGrouping(static_cast<MarketOrderModel::Grouping>(mGroupingCombo->currentData().toInt()));
         mBuyView->expandAll();
+    }
+
+    void MarketOrderWidget::saveChosenTab(int index)
+    {
+        QSettings settings;
+        settings.setValue(settingsLastTabkey, index);
     }
 
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)

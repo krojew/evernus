@@ -54,8 +54,11 @@ namespace Evernus
 
     private slots:
         void changeGrouping();
+        void saveChosenTab(int index);
 
     private:
+        static const QString settingsLastTabkey;
+
         MarketOrderViewWithTransactions *mSellView = nullptr;
         MarketOrderViewWithTransactions *mBuyView = nullptr;
 
