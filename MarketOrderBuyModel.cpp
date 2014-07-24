@@ -102,14 +102,12 @@ namespace Evernus
     }
 
     MarketOrderBuyModel::MarketOrderBuyModel(const MarketOrderProvider &orderProvider,
-                                               const EveDataProvider &dataProvider,
-                                               const ItemCostProvider &itemCostProvider,
-                                               const CacheTimerProvider &cacheTimerProvider,
-                                               QObject *parent)
+                                             const EveDataProvider &dataProvider,
+                                             const CacheTimerProvider &cacheTimerProvider,
+                                             QObject *parent)
         : MarketOrderModel{parent}
         , mOrderProvider{orderProvider}
         , mDataProvider{dataProvider}
-        , mItemCostProvider{itemCostProvider}
         , mCacheTimerProvider{cacheTimerProvider}
     {
     }

@@ -36,7 +36,7 @@ namespace Evernus
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
                                parent}
         , mSellModel{orderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
-        , mBuyModel{orderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
+        , mBuyModel{orderProvider, dataProvider, cacheTimerProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

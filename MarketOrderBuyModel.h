@@ -25,7 +25,6 @@ namespace Evernus
 {
     class MarketOrderProvider;
     class CacheTimerProvider;
-    class ItemCostProvider;
     class EveDataProvider;
     class MarketOrder;
 
@@ -35,7 +34,6 @@ namespace Evernus
     public:
         MarketOrderBuyModel(const MarketOrderProvider &orderProvider,
                              const EveDataProvider &dataProvider,
-                             const ItemCostProvider &itemCostProvider,
                              const CacheTimerProvider &cacheTimerProvider,
                              QObject *parent = nullptr);
         virtual ~MarketOrderBuyModel() = default;
@@ -116,7 +114,6 @@ namespace Evernus
 
         const MarketOrderProvider &mOrderProvider;
         const EveDataProvider &mDataProvider;
-        const ItemCostProvider &mItemCostProvider;
         const CacheTimerProvider &mCacheTimerProvider;
 
         std::vector<MarketOrder> mData;
