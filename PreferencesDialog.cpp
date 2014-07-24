@@ -12,7 +12,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <memory>
 #include <vector>
 
 #include <QDialogButtonBox>
@@ -25,6 +24,7 @@
 #include "AssetsImportPreferencesWidget.h"
 #include "NetworkPreferencesWidget.h"
 #include "WalletPreferencesWidget.h"
+#include "ImportPreferencesWidget.h"
 #include "PricePreferencesWidget.h"
 #include "PathPreferencesWidget.h"
 
@@ -50,11 +50,11 @@ namespace Evernus
         mPreferencesStack = new QStackedWidget{this};
         preferencesLayout->addWidget(mPreferencesStack, 1);
 
-        std::vector<std::pair<QString, std::unique_ptr<QWidget>>> categories;
-        categories.emplace_back(std::make_pair(tr("Paths"), std::unique_ptr<QWidget>{new PathPreferencesWidget{}}));
-        categories.emplace_back(std::make_pair(tr("Prices"), std::unique_ptr<QWidget>{new PricePreferencesWidget{}}));
-        categories.emplace_back(std::make_pair(tr("Network"), std::unique_ptr<QWidget>{new NetworkPreferencesWidget{}}));
-        categories.emplace_back(std::make_pair(tr("Wallet"), std::unique_ptr<QWidget>{new WalletPreferencesWidget{}}));
+        std::vector<std::pair<QString, QWidget *>> categories;
+        categories.emplace_back(std::make_pair(tr("Paths"), new PathPreferencesWidget{this}));
+        categories.emplace_back(std::make_pair(tr("Prices"), new PricePreferencesWidget{this}));
+        categories.emplace_back(std::make_pair(tr("Network"), new NetworkPreferencesWidget{this}));
+        categories.emplace_back(std::make_pair(tr("Wallet"), new WalletPreferencesWidget{this}));
 
         for (auto i = 0; i < categories.size(); ++i)
         {
@@ -67,17 +67,16 @@ namespace Evernus
 
         for (auto &category : categories)
         {
-            connect(this, SIGNAL(settingsInvalidated()), category.second.get(), SLOT(applySettings()));
-            mPreferencesStack->addWidget(category.second.release());
+            connect(this, SIGNAL(settingsInvalidated()), category.second, SLOT(applySettings()));
+            mPreferencesStack->addWidget(category.second);
         }
 
         auto importItem = new QTreeWidgetItem{categoryTree, QStringList{tr("Import")}};
-        importItem->setData(0, Qt::UserRole, -1);
         importItem->setExpanded(true);
 
-        std::vector<std::pair<QString, std::unique_ptr<QWidget>>> importCategories;
-        importCategories.emplace_back(std::make_pair(tr("Character"), std::unique_ptr<QWidget>{new CharacterImportPreferencesWidget{}}));
-        importCategories.emplace_back(std::make_pair(tr("Assets"), std::unique_ptr<QWidget>{new AssetsImportPreferencesWidget{}}));
+        std::vector<std::pair<QString, QWidget *>> importCategories;
+        importCategories.emplace_back(std::make_pair(tr("Character"), new CharacterImportPreferencesWidget{this}));
+        importCategories.emplace_back(std::make_pair(tr("Assets"), new AssetsImportPreferencesWidget{this}));
 
         for (auto i = 0; i < importCategories.size(); ++i)
         {
@@ -87,9 +86,15 @@ namespace Evernus
 
         for (auto &category : importCategories)
         {
-            connect(this, SIGNAL(settingsInvalidated()), category.second.get(), SLOT(applySettings()));
-            mPreferencesStack->addWidget(category.second.release());
+            connect(this, SIGNAL(settingsInvalidated()), category.second, SLOT(applySettings()));
+            mPreferencesStack->addWidget(category.second);
         }
+
+        auto importPreferencesWidget = new ImportPreferencesWidget{this};
+        connect(this, &PreferencesDialog::settingsInvalidated, importPreferencesWidget, &ImportPreferencesWidget::applySettings);
+
+        mPreferencesStack->addWidget(importPreferencesWidget);
+        importItem->setData(0, Qt::UserRole, static_cast<int>(categories.size() + importCategories.size()));
 
         auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);
@@ -109,19 +114,8 @@ namespace Evernus
     void PreferencesDialog::setCurrentPage(QTreeWidgetItem *current, QTreeWidgetItem *previous)
     {
         if (current == nullptr)
-        {
             mPreferencesStack->setCurrentIndex(-1);
-        }
         else
-        {
-            auto index = current->data(0, Qt::UserRole).toInt();
-            if (index == -1)
-            {
-                Q_ASSERT(current->childCount() > 0);
-                index = current->child(0)->data(0, Qt::UserRole).toInt();
-            }
-
-            mPreferencesStack->setCurrentIndex(index);
-        }
+            mPreferencesStack->setCurrentIndex(current->data(0, Qt::UserRole).toInt());
     }
 }

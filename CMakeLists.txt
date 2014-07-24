@@ -39,6 +39,7 @@ qt5_wrap_cpp(
     DateFilteredPlotWidget.h
     EvernusApplication.h
     FileDownload.h
+    ImportPreferencesWidget.h
     ItemCostWidget.h
     ItemPriceImporter.h
     MainWindow.h
@@ -159,6 +160,8 @@ add_executable(
     FileDownload.h
     IconUtils.cpp
     IconUtils.h
+    ImportPreferencesWidget.cpp
+    ImportPreferencesWidget.h
     ImportSettings.h
     Item.cpp
     Item.h

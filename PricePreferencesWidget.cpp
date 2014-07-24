@@ -97,14 +97,14 @@ namespace Evernus
         mPriceDeltaEdit->setValue(settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble());
 
         mPriceMaxAgeEdit = new QSpinBox{this};
-        pricesLayout->addRow(tr("Max price age:"), mPriceMaxAgeEdit);
+        pricesLayout->addRow(tr("Max. price age:"), mPriceMaxAgeEdit);
         mPriceMaxAgeEdit->setMinimum(1);
         mPriceMaxAgeEdit->setMaximum(24 * 30);
         mPriceMaxAgeEdit->setSuffix("h");
         mPriceMaxAgeEdit->setValue(settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toUInt());
 
         mMarketOrderMaxAgeEdit = new QSpinBox{this};
-        pricesLayout->addRow(tr("Max market order age:"), mMarketOrderMaxAgeEdit);
+        pricesLayout->addRow(tr("Max. market order age:"), mMarketOrderMaxAgeEdit);
         mMarketOrderMaxAgeEdit->setMinimum(1);
         mMarketOrderMaxAgeEdit->setMaximum(365);
         mMarketOrderMaxAgeEdit->setSuffix(tr(" days"));

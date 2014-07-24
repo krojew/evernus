@@ -14,19 +14,30 @@
  */
 #pragma once
 
+#include <QWidget>
+
+class QSpinBox;
+
 namespace Evernus
 {
-    namespace ImportSettings
+    class ImportPreferencesWidget
+        : public QWidget
     {
-        const auto importTimerDefault = 60;
+        Q_OBJECT
 
-        const auto importSkillsKey = "import/character/importSkills";
-        const auto importPortraitKey = "import/character/importPortrait";
-        const auto importAssetsKey = "import/assets/import";
-        const auto autoUpdateAssetValueKey = "import/assets/autoUpdateValue";
-        const auto maxCharacterAgeKey = "import/character/maxAge";
-        const auto maxAssetListAgeKey = "import/assetList/maxAge";
-        const auto maxWalletAgeKey = "import/wallet/maxAge";
-        const auto maxMarketOrdersAgeKey = "import/marketOrders/maxAge";
-    }
+    public:
+        explicit ImportPreferencesWidget(QWidget *parent = nullptr);
+        virtual ~ImportPreferencesWidget() = default;
+
+    public slots:
+        void applySettings();
+
+    private:
+        QSpinBox *mCharacterTimer = nullptr;
+        QSpinBox *mAssetListTimer = nullptr;
+        QSpinBox *mWalletTimer = nullptr;
+        QSpinBox *mMarketOrdersTimer = nullptr;
+
+        QSpinBox *createTimerSpin(int value);
+    };
 }
