@@ -226,7 +226,10 @@ namespace Evernus
         auto quitBtn = buttons->addButton(tr("Quit application"), QDialogButtonBox::DestructiveRole);
         buttons->button(QDialogButtonBox::Close)->setDefault(true);
         connect(buttons, &QDialogButtonBox::rejected, this, &MarginToolDialog::close);
-        connect(quitBtn, &QPushButton::clicked, qApp, &QApplication::quit);
+        connect(quitBtn, &QPushButton::clicked, this, [this](){
+            savePosition();
+            qApp->quit();
+        });
 
         const auto logPath = PathUtils::getMarketLogsPath();
         if (logPath.isEmpty())
@@ -560,9 +563,7 @@ namespace Evernus
 
     void MarginToolDialog::closeEvent(QCloseEvent *event)
     {
-        QSettings settings;
-        settings.setValue(settingsPosKey, pos());
-
+        savePosition();
         QDialog::closeEvent(event);
     }
 
@@ -613,6 +614,12 @@ namespace Evernus
         table->verticalHeader()->hide();
 
         return table;
+    }
+
+    void MarginToolDialog::savePosition() const
+    {
+        QSettings settings;
+        settings.setValue(settingsPosKey, pos());
     }
 
     void MarginToolDialog::fillSampleData(QTableWidget &table, double revenue, double cos, int multiplier)

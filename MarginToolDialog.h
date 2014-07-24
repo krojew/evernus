@@ -107,10 +107,9 @@ namespace Evernus
         Character::IdType mCharacterId = Character::invalidId;
 
         void setNewWindowFlags(bool alwaysOnTop);
-
         Taxes calculateTaxes() const;
-
         QTableWidget *createSampleTable();
+        void savePosition() const;
 
         static void fillSampleData(QTableWidget &table, double revenue, double cos, int multiplier);
 
