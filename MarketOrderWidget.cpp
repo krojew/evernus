@@ -16,12 +16,14 @@
 #include <QHBoxLayout>
 #include <QTabWidget>
 #include <QComboBox>
+#include <QGroupBox>
 #include <QSettings>
 #include <QLabel>
 
 #include "MarketOrderViewWithTransactions.h"
 #include "MarketOrderFilterWidget.h"
 #include "CacheTimerProvider.h"
+#include "MarketOrderView.h"
 #include "ButtonWithTimer.h"
 
 #include "MarketOrderWidget.h"
@@ -89,6 +91,38 @@ namespace Evernus
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mBuyView, &MarketOrderViewWithTransactions::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mBuyView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mBuyView, &MarketOrderViewWithTransactions::wildcardChanged);
+
+        auto combinedWidget = new QWidget{this};
+        mainTabs->addTab(combinedWidget, QIcon{":/images/arrow_inout.png"}, tr("Sell && Buy"));
+
+        auto combinedLayout = new QVBoxLayout{};
+        combinedWidget->setLayout(combinedLayout);
+
+        auto sellGroup = new QGroupBox{tr("Sell orders"), this};
+        combinedLayout->addWidget(sellGroup);
+
+        auto sellGroupLayout = new QVBoxLayout{};
+        sellGroup->setLayout(sellGroupLayout);
+
+        mCombinedSellView = new MarketOrderView{dataProvider, this};
+        sellGroupLayout->addWidget(mCombinedSellView);
+        mCombinedSellView->setModel(&mSellModel);
+        connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mCombinedSellView, &MarketOrderView::statusFilterChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mCombinedSellView, &MarketOrderView::priceStatusFilterChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mCombinedSellView, &MarketOrderView::wildcardChanged);
+
+        auto buyGroup = new QGroupBox{tr("Buy orders"), this};
+        combinedLayout->addWidget(buyGroup);
+
+        auto buyGroupLayout = new QVBoxLayout{};
+        buyGroup->setLayout(buyGroupLayout);
+
+        mCombinedBuyView = new MarketOrderView{dataProvider, this};
+        buyGroupLayout->addWidget(mCombinedBuyView);
+        mCombinedBuyView->setModel(&mBuyModel);
+        connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mCombinedBuyView, &MarketOrderView::statusFilterChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mCombinedBuyView, &MarketOrderView::priceStatusFilterChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mCombinedBuyView, &MarketOrderView::wildcardChanged);
 
         QSettings settings;
         mainTabs->setCurrentIndex(settings.value(settingsLastTabkey).toInt());

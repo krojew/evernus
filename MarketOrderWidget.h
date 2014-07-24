@@ -29,6 +29,7 @@ namespace Evernus
     class CacheTimerProvider;
     class ItemCostProvider;
     class EveDataProvider;
+    class MarketOrderView;
 
     class MarketOrderWidget
         : public CharacterBoundWidget
@@ -61,6 +62,8 @@ namespace Evernus
 
         MarketOrderViewWithTransactions *mSellView = nullptr;
         MarketOrderViewWithTransactions *mBuyView = nullptr;
+        MarketOrderView *mCombinedSellView = nullptr;
+        MarketOrderView *mCombinedBuyView = nullptr;
 
         MarketOrderSellModel mSellModel;
         MarketOrderBuyModel mBuyModel;
