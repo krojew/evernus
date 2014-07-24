@@ -23,6 +23,7 @@
 #include <QSettings>
 #include <QGroupBox>
 #include <QSpinBox>
+#include <QAction>
 #include <QLabel>
 #include <QFont>
 #include <QFile>
@@ -71,9 +72,14 @@ namespace Evernus
         auto infoLayout = new QHBoxLayout{};
         infoGroup->setLayout(infoLayout);
 
+        auto downloadPortraitAction = new QAction{tr("Download portrait"), this};
+        connect(downloadPortraitAction, &QAction::triggered, this, &CharacterWidget::downloadPortrait);
+
         mPortrait = new QLabel{this};
         infoLayout->addWidget(mPortrait);
         mPortrait->setPixmap(defaultPortrait);
+        mPortrait->setContextMenuPolicy(Qt::ActionsContextMenu);
+        mPortrait->addAction(downloadPortraitAction);
 
         auto backgroundLayout = new QVBoxLayout{};
         infoLayout->addLayout(backgroundLayout, 1);
@@ -346,26 +352,9 @@ namespace Evernus
 
                     QFile portrait{portraitPath};
                     if (portrait.exists())
-                    {
                         mPortrait->setPixmap(portraitPath);
-                    }
-                    else if (mPortraitDownloads.find(id) == std::end(mPortraitDownloads))
-                    {
-                        try
-                        {
-                            auto download = new FileDownload{QUrl{QString{"https://image.eveonline.com/Character/%1_128.jpg"}.arg(id)},
-                                                             portraitPath,
-                                                             this};
-                            download->setProperty(downloadIdProperty, id);
-                            connect(download, &FileDownload::finished, this, &CharacterWidget::downloadFinished);
-
-                            mPortraitDownloads.emplace(id, download);
-                        }
-                        catch (const std::exception &e)
-                        {
-                            qWarning() << e.what();
-                        }
-                    }
+                    else
+                        downloadPortrait();
                 }
                 else
                 {
@@ -395,6 +384,28 @@ namespace Evernus
         mCorporationContractingSkillEdit->blockSignals(false);
     }
 
+    void CharacterWidget::downloadPortrait()
+    {
+        const auto id = getCharacterId();
+        if (mPortraitDownloads.find(id) == std::end(mPortraitDownloads))
+        {
+            try
+            {
+                auto download = new FileDownload{QUrl{QString{"https://image.eveonline.com/Character/%1_128.jpg"}.arg(id)},
+                                                 getPortraitPath(id),
+                                                 this};
+                download->setProperty(downloadIdProperty, id);
+                connect(download, &FileDownload::finished, this, &CharacterWidget::downloadFinished);
+
+                mPortraitDownloads.emplace(id, download);
+            }
+            catch (const std::exception &e)
+            {
+                qWarning() << e.what();
+            }
+        }
+    }
+
     void CharacterWidget::downloadFinished()
     {
         const auto id = sender()->property(downloadIdProperty).value<Character::IdType>();
@@ -402,7 +413,7 @@ namespace Evernus
         Q_ASSERT(it != std::end(mPortraitDownloads));
 
         QPixmap px{getPortraitPath(id)};
-        if (!px.isNull())
+        if (!px.isNull() && getCharacterId() == id)
             mPortrait->setPixmap(px);
 
         mPortraitDownloads.erase(it);

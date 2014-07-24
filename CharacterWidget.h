@@ -51,6 +51,7 @@ namespace Evernus
 
         void setSkillLevel(int level);
 
+        void downloadPortrait();
         void downloadFinished();
 
     private:
