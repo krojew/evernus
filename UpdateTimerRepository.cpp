@@ -49,7 +49,9 @@ namespace Evernus
             id INTEGER PRIMARY KEY ASC,
             character_id BIGINT NOT NULL REFERENCES %2(%3),
             type TINYINT NOT NULL,
-            update_time DATETIME NOT NULL
+            update_time DATETIME NOT NULL,
+
+            CONSTRAINT character_type UNIQUE (character_id, type)
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
