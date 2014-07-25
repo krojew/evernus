@@ -58,8 +58,9 @@ namespace Evernus
         showSplashMessage(tr("Precaching ref types..."), splash);
         precacheRefTypes();
 
-        showSplashMessage(tr("Precaching cache timers..."), splash);
+        showSplashMessage(tr("Precaching timers..."), splash);
         precacheCacheTimers();
+        precacheUpdateTimers();
 
         showSplashMessage(tr("Clearing old wallet entries..."), splash);
         deleteOldWalletEntries();
@@ -1043,6 +1044,30 @@ namespace Evernus
                 break;
             case TimerType::MarketOrders:
                 mMarketOrdersUtcCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+            }
+        }
+    }
+
+    void EvernusApplication::precacheUpdateTimers()
+    {
+        const auto timers = mUpdateTimerRepository->fetchAll();
+        for (const auto &timer : timers)
+        {
+            switch (timer.getType()) {
+            case TimerType::Character:
+                mCharacterUtcUpdateTimes[timer.getCharacterId()] = timer.getUpdateTime();
+                break;
+            case TimerType::AssetList:
+                mAssetsUtcUpdateTimes[timer.getCharacterId()] = timer.getUpdateTime();
+                break;
+            case TimerType::WalletJournal:
+                mWalletJournalUtcUpdateTimes[timer.getCharacterId()] = timer.getUpdateTime();
+                break;
+            case TimerType::WalletTransactions:
+                mWalletTransactionsUtcUpdateTimes[timer.getCharacterId()] = timer.getUpdateTime();
+                break;
+            case TimerType::MarketOrders:
+                mMarketOrdersUtcUpdateTimes[timer.getCharacterId()] = timer.getUpdateTime();
             }
         }
     }

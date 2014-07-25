@@ -233,6 +233,7 @@ namespace Evernus
         void precacheRefTypes();
         void precacheRefTypes(const RefTypeRepository::RefTypeList &refs);
         void precacheCacheTimers();
+        void precacheUpdateTimers();
         void deleteOldWalletEntries();
 
         uint startTask(const QString &description);
