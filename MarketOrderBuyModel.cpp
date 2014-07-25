@@ -377,7 +377,7 @@ namespace Evernus
 
         QSettings settings;
 
-        const auto price = mDataProvider.getTypeSellPrice(order->getTypeId(), order->getLocationId());
+        const auto price = mDataProvider.getTypeBuyPrice(order->getTypeId(), order->getLocationId());
         const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
         OrderInfo info;
