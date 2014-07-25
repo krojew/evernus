@@ -936,6 +936,7 @@ namespace Evernus
         }
 
         mSellPrices.clear();
+        mBuyPrices.clear();
 
         emit itemPricesChanged();
     }

@@ -17,6 +17,7 @@
 #include "MarketOrderSellModel.h"
 #include "CharacterBoundWidget.h"
 #include "MarketOrderBuyModel.h"
+#include "ItemPriceImporter.h"
 
 class QPushButton;
 class QComboBox;
@@ -50,6 +51,9 @@ namespace Evernus
 
         void importFromLogs(Character::IdType id);
 
+        void importPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
+        void importPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
+
     public slots:
         void updateData();
 
@@ -57,8 +61,13 @@ namespace Evernus
         void changeGrouping();
         void saveChosenTab(int index);
 
+        void prepareItemImportFromWeb();
+        void prepareItemImportFromFile();
+
     private:
         static const QString settingsLastTabkey;
+
+        const MarketOrderProvider &mOrderProvider;
 
         MarketOrderViewWithTransactions *mSellView = nullptr;
         MarketOrderViewWithTransactions *mBuyView = nullptr;
@@ -72,5 +81,7 @@ namespace Evernus
         QComboBox *mGroupingCombo = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
+
+        ItemPriceImporter::TypeLocationPairs getImportTarget() const;
     };
 }

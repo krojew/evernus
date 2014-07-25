@@ -22,6 +22,7 @@
 
 #include "MarketOrderViewWithTransactions.h"
 #include "MarketOrderFilterWidget.h"
+#include "MarketOrderProvider.h"
 #include "CacheTimerProvider.h"
 #include "WarningBarWidget.h"
 #include "MarketOrderView.h"
@@ -44,8 +45,9 @@ namespace Evernus
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
                                ImportSettings::maxMarketOrdersAgeKey,
                                parent}
-        , mSellModel{orderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
-        , mBuyModel{orderProvider, dataProvider, cacheTimerProvider}
+        , mOrderProvider{orderProvider}
+        , mSellModel{mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
+        , mBuyModel{mOrderProvider, dataProvider, cacheTimerProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -63,6 +65,16 @@ namespace Evernus
         connect(mLogImportBtn, &QPushButton::clicked, this, [this]() {
             emit importFromLogs(getCharacterId());
         });
+
+        auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import prices from Web"), this};
+        toolBarLayout->addWidget(importFromWeb);
+        importFromWeb->setFlat(true);
+        connect(importFromWeb, &QPushButton::clicked, this, &MarketOrderWidget::prepareItemImportFromWeb);
+
+        auto importFromFile = new QPushButton{QIcon{":/images/page_refresh.png"}, tr("Import prices from logs"), this};
+        toolBarLayout->addWidget(importFromFile);
+        importFromFile->setFlat(true);
+        connect(importFromFile, &QPushButton::clicked, this, &MarketOrderWidget::prepareItemImportFromFile);
 
         auto stateFilter = new MarketOrderFilterWidget{this};
         toolBarLayout->addWidget(stateFilter);
@@ -160,9 +172,34 @@ namespace Evernus
         settings.setValue(settingsLastTabkey, index);
     }
 
+    void MarketOrderWidget::prepareItemImportFromWeb()
+    {
+        emit importPricesFromWeb(getImportTarget());
+    }
+
+    void MarketOrderWidget::prepareItemImportFromFile()
+    {
+        emit importPricesFromFile(getImportTarget());
+    }
+
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)
     {
         mLogImportBtn->setEnabled(id != Character::invalidId);
         emit characterChanged(id);
+    }
+
+    ItemPriceImporter::TypeLocationPairs MarketOrderWidget::getImportTarget() const
+    {
+        ItemPriceImporter::TypeLocationPairs target;
+
+        const auto importer = [&target](const auto &orders) {
+            for (const auto &order : orders)
+                target.emplace(std::make_pair(order.getTypeId(), order.getLocationId()));
+        };
+
+        importer(mOrderProvider.getBuyOrders(getCharacterId()));
+        importer(mOrderProvider.getSellOrders(getCharacterId()));
+
+        return target;
     }
 }
