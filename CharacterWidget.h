@@ -20,6 +20,8 @@
 #include "FileDownload.h"
 
 class QDoubleSpinBox;
+class QListWidget;
+class QGroupBox;
 class QSpinBox;
 class QLabel;
 
@@ -42,6 +44,9 @@ namespace Evernus
                         QWidget *parent = nullptr);
         virtual ~CharacterWidget() = default;
 
+    signals:
+        void importAll();
+
     public slots:
         void updateData();
 
@@ -54,6 +59,8 @@ namespace Evernus
         void downloadPortrait();
         void downloadFinished();
 
+        void updateTimerList();
+
     private:
         static const char * const skillFieldProperty;
         static const char * const downloadIdProperty;
@@ -61,6 +68,7 @@ namespace Evernus
 
         const Repository<Character> &mCharacterRepository;
         const MarketOrderRepository &mMarketOrderRepository;
+        const CacheTimerProvider &mCacheTimerProvider;
 
         QLabel *mPortrait = nullptr;
 
@@ -92,7 +100,12 @@ namespace Evernus
         QSpinBox *mContractingSkillEdit = nullptr;
         QSpinBox *mCorporationContractingSkillEdit = nullptr;
 
+        QGroupBox *mUpdateTimersGroup = nullptr;
+        QListWidget *mUpdateTimersList = nullptr;
+
         std::unordered_map<Character::IdType, FileDownload *> mPortraitDownloads;
+
+        QTimer mUpdateTimer;
 
         virtual void handleNewCharacter(Character::IdType id) override;
 

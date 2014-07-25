@@ -20,6 +20,7 @@
 #include <QHBoxLayout>
 #include <QFormLayout>
 #include <QMessageBox>
+#include <QListWidget>
 #include <QSettings>
 #include <QGroupBox>
 #include <QSpinBox>
@@ -57,6 +58,7 @@ namespace Evernus
                                parent}
         , mCharacterRepository{characterRepository}
         , mMarketOrderRepository{marketOrderRepository}
+        , mCacheTimerProvider{cacheTimerProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -72,8 +74,11 @@ namespace Evernus
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);
 
+        auto characterLayout = new QHBoxLayout{};
+        mainLayout->addLayout(characterLayout);
+
         auto infoGroup = new QGroupBox{tr("Character info"), this};
-        mainLayout->addWidget(infoGroup);
+        characterLayout->addWidget(infoGroup, 1);
 
         auto infoLayout = new QHBoxLayout{};
         infoGroup->setLayout(infoLayout);
@@ -107,6 +112,20 @@ namespace Evernus
 
         mISKLabel = new QLabel{this};
         backgroundLayout->addWidget(mISKLabel);
+
+        mUpdateTimersGroup = new QGroupBox{tr("Data age"), this};
+        characterLayout->addWidget(mUpdateTimersGroup);
+        mUpdateTimersGroup->setVisible(false);
+
+        auto timersLayout = new QVBoxLayout{};
+        mUpdateTimersGroup->setLayout(timersLayout);
+
+        mUpdateTimersList = new QListWidget{this};
+        timersLayout->addWidget(mUpdateTimersList, 1);
+
+        auto importAllBtn = new QPushButton{QIcon{":/images/arrow_refresh.png"}, tr("Import all"), this};
+        timersLayout->addWidget(importAllBtn);
+        connect(importAllBtn, &QPushButton::clicked, this, &CharacterWidget::importAll);
 
         auto underInfoLayout = new QHBoxLayout{};
         mainLayout->addLayout(underInfoLayout);
@@ -206,6 +225,10 @@ namespace Evernus
                                   createSkillEdit(mCorporationContractingSkillEdit, "corporation_contracting_skill"));
 
         mainLayout->addStretch();
+
+        connect(&mUpdateTimer, &QTimer::timeout, this, &CharacterWidget::updateTimerList);
+
+        mUpdateTimer.start(1000 * 60);
     }
 
     void CharacterWidget::updateData()
@@ -373,6 +396,8 @@ namespace Evernus
             }
         }
 
+        updateTimerList();
+
         mCorpStandingEdit->blockSignals(false);
         mFactionStandingEdit->blockSignals(false);
         mTradeSkillEdit->blockSignals(false);
@@ -423,6 +448,43 @@ namespace Evernus
             mPortrait->setPixmap(px);
 
         mPortraitDownloads.erase(it);
+    }
+
+    void CharacterWidget::updateTimerList()
+    {
+        const auto id = getCharacterId();
+        if (id == Character::invalidId)
+        {
+            mUpdateTimersGroup->hide();
+            return;
+        }
+
+        const auto curLocale = locale();
+        auto show = false;
+
+        QSettings settings;
+
+        mUpdateTimersList->clear();
+
+        const auto checker = [&, this](TimerType timer, const QString &settingsKey, const QString &text) {
+            const auto curTime
+                = QDateTime::currentDateTime().addSecs(-60 * settings.value(settingsKey, Evernus::ImportSettings::importTimerDefault).toInt());
+            const auto dt = mCacheTimerProvider.getLocalUpdateTimer(id, timer);
+
+            if (dt < curTime)
+            {
+                show = true;
+                new QListWidgetItem{QIcon{":/images/error.png"}, text.arg(curLocale.toString(dt)), mUpdateTimersList};
+            }
+        };
+
+        checker(TimerType::Character, ImportSettings::maxCharacterAgeKey, "Character sheet: %1");
+        checker(TimerType::AssetList, ImportSettings::maxAssetListAgeKey, "Asset list: %1");
+        checker(TimerType::MarketOrders, ImportSettings::maxMarketOrdersAgeKey, "Market orders: %1");
+        checker(TimerType::WalletJournal, ImportSettings::maxWalletAgeKey, "Wallet journal: %1");
+        checker(TimerType::WalletTransactions, ImportSettings::maxWalletAgeKey, "Wallet transactions: %1");
+
+        mUpdateTimersGroup->setVisible(show);
     }
 
     void CharacterWidget::updateStanding(const QString &type, double value) const

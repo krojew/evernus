@@ -352,6 +352,7 @@ namespace Evernus
         auto charTab = new CharacterWidget{mCharacterRepository, mMarketOrderRepository, mCacheTimerProvider, this};
         addTab(charTab, tr("Character"));
         connect(charTab, &CharacterWidget::importFromAPI, this, &MainWindow::importCharacter);
+        connect(charTab, &CharacterWidget::importAll, this, &MainWindow::refreshAll);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::updateData);
 
         auto statsTab = new StatisticsWidget{mAssetSnapshotRepository,
