@@ -54,7 +54,7 @@ namespace Evernus
 
         auto infoLayout = new QHBoxLayout{};
         mInfoWidget->setLayout(infoLayout);
-        infoLayout->setMargin(0);
+        infoLayout->setContentsMargins(QMargins{});
 
         infoLayout->addWidget(new QLabel{tr("Active orders:"), this});
 
