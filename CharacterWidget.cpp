@@ -121,7 +121,8 @@ namespace Evernus
         mUpdateTimersGroup->setLayout(timersLayout);
 
         mUpdateTimersList = new QListWidget{this};
-        timersLayout->addWidget(mUpdateTimersList, 1);
+        timersLayout->addWidget(mUpdateTimersList, 0, Qt::AlignTop | Qt::AlignHCenter);
+        mUpdateTimersList->setMaximumHeight(100);
 
         auto importAllBtn = new QPushButton{QIcon{":/images/arrow_refresh.png"}, tr("Import all"), this};
         timersLayout->addWidget(importAllBtn);
