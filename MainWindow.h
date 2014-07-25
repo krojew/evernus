@@ -43,6 +43,7 @@ namespace Evernus
     class CharacterManagerDialog;
     class MarketOrderRepository;
     class MarketOrderProvider;
+    class CharacterRepository;
     class ItemCostRepository;
     class WalletJournalEntry;
     class CacheTimerProvider;
@@ -60,7 +61,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MainWindow(const Repository<Character> &characterRepository,
+        MainWindow(const CharacterRepository &characterRepository,
                    const Repository<Key> &keyRepository,
                    const AssetValueSnapshotRepository &assetSnapshotRepo,
                    const WalletSnapshotRepository &walletSnapshotRepo,
@@ -144,7 +145,7 @@ namespace Evernus
         static const QString settingsPosKey;
         static const QString settingsSizeKey;
 
-        const Repository<Character> &mCharacterRepository;
+        const CharacterRepository &mCharacterRepository;
         const Repository<Key> &mKeyRepository;
         const AssetValueSnapshotRepository &mAssetSnapshotRepository;
         const WalletSnapshotRepository &mWalletSnapshotRepository;

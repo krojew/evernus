@@ -101,6 +101,14 @@ namespace Evernus
         return assets;
     }
 
+    void AssetListRepository::deleteForCharacter(Character::IdType id) const
+    {
+        auto query = prepare(QString{"DELETE FROM %1 WHERE character_id = ?"}.arg(getTableName()));
+        query.bindValue(0, id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     QStringList AssetListRepository::getColumns() const
     {
         return QStringList{}

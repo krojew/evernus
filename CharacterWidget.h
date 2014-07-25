@@ -27,9 +27,8 @@ class QLabel;
 
 namespace Evernus
 {
-    template<class T>
-    class Repository;
     class MarketOrderRepository;
+    class CharacterRepository;
     class CacheTimerProvider;
 
     class CharacterWidget
@@ -38,7 +37,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        CharacterWidget(const Repository<Character> &characterRepository,
+        CharacterWidget(const CharacterRepository &characterRepository,
                         const MarketOrderRepository &marketOrderRepository,
                         const CacheTimerProvider &cacheTimerProvider,
                         QWidget *parent = nullptr);
@@ -66,7 +65,7 @@ namespace Evernus
         static const char * const downloadIdProperty;
         static const QString defaultPortrait;
 
-        const Repository<Character> &mCharacterRepository;
+        const CharacterRepository &mCharacterRepository;
         const MarketOrderRepository &mMarketOrderRepository;
         const CacheTimerProvider &mCacheTimerProvider;
 

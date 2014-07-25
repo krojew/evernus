@@ -110,6 +110,57 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(key_id)"}.arg(getTableName()).arg(keyRepository.getTableName()));
     }
 
+    void CharacterRepository::updateSkill(Character::IdType id, const QString &skill, int level) const
+    {
+        auto query = prepare(QString{"UPDATE %1 SET %2 = ? WHERE %3 = ?"}
+            .arg(getTableName())
+            .arg(skill)
+            .arg(getIdColumn()));
+        query.bindValue(0, level);
+        query.bindValue(1, id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
+    void CharacterRepository::updateStanding(Character::IdType id, const QString &type, double value) const
+    {
+        auto query = prepare(QString{"UPDATE %1 SET %2 = ? WHERE %3 = ?"}
+            .arg(getTableName())
+            .arg(type)
+            .arg(getIdColumn()));
+        query.bindValue(0, value);
+        query.bindValue(1, id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
+    void CharacterRepository::disableByKey(Key::IdType id) const
+    {
+        auto query = prepare(QString{"UPDATE %1 SET key_id = NULL, enabled = 0 WHERE key_id = ?"}.arg(getTableName()));
+        query.bindValue(0, id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
+    void CharacterRepository::disableByKey(Key::IdType id, const std::vector<Character::IdType> &excluded) const
+    {
+        QStringList ids;
+        for (auto i = 0; i < excluded.size(); ++i)
+            ids << "?";
+
+        auto query = prepare(QString{"UPDATE %1 SET key_id = NULL, enabled = 0 WHERE key_id = ? AND %2 NOT IN (%3)"}
+            .arg(getTableName())
+            .arg(getIdColumn())
+            .arg(ids.join(", ")));
+
+        query.addBindValue(id);
+
+        for (const auto &character : excluded)
+            query.addBindValue(character);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     QStringList CharacterRepository::getColumns() const
     {
         return QStringList{}

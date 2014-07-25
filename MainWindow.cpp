@@ -30,6 +30,7 @@
 #include "WalletTransactionsWidget.h"
 #include "CharacterManagerDialog.h"
 #include "WalletJournalWidget.h"
+#include "CharacterRepository.h"
 #include "ActiveTasksDialog.h"
 #include "PreferencesDialog.h"
 #include "MarketOrderWidget.h"
@@ -41,7 +42,6 @@
 #include "MenuBarWidget.h"
 #include "AssetsWidget.h"
 #include "AboutDialog.h"
-#include "Repository.h"
 #include "UISettings.h"
 
 #include "MainWindow.h"
@@ -52,7 +52,7 @@ namespace Evernus
     const QString MainWindow::settingsPosKey = "mainWindow/pos";
     const QString MainWindow::settingsSizeKey = "mainWindow/size";
 
-    MainWindow::MainWindow(const Repository<Character> &characterRepository,
+    MainWindow::MainWindow(const CharacterRepository &characterRepository,
                            const Repository<Key> &keyRepository,
                            const AssetValueSnapshotRepository &assetSnapshotRepo,
                            const WalletSnapshotRepository &walletSnapshotRepo,

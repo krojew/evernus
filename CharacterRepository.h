@@ -35,6 +35,12 @@ namespace Evernus
 
         void create(const KeyRepository &keyRepository) const;
 
+        void updateSkill(Character::IdType id, const QString &skill, int level) const;
+        void updateStanding(Character::IdType id, const QString &type, double value) const;
+
+        void disableByKey(Key::IdType id) const;
+        void disableByKey(Key::IdType id, const std::vector<Character::IdType> &excluded) const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const Character &entity, QSqlQuery &query) const override;

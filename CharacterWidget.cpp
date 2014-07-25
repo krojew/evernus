@@ -32,12 +32,11 @@
 #include <QUrl>
 
 #include "MarketOrderRepository.h"
+#include "CharacterRepository.h"
 #include "CacheTimerProvider.h"
 #include "WarningBarWidget.h"
 #include "ButtonWithTimer.h"
 #include "ImportSettings.h"
-#include "DatabaseUtils.h"
-#include "Repository.h"
 
 #include "CharacterWidget.h"
 
@@ -48,7 +47,7 @@ namespace Evernus
 
     const QString CharacterWidget::defaultPortrait = ":/images/generic-portrait.jpg";
 
-    CharacterWidget::CharacterWidget(const Repository<Character> &characterRepository,
+    CharacterWidget::CharacterWidget(const CharacterRepository &characterRepository,
                                      const MarketOrderRepository &marketOrderRepository,
                                      const CacheTimerProvider &cacheTimerProvider,
                                      QWidget *parent)
@@ -255,14 +254,7 @@ namespace Evernus
         Q_ASSERT(id != Character::invalidId);
 
         const auto fieldName = sender()->property(skillFieldProperty).toString();
-
-        auto query = mCharacterRepository.prepare(QString{"UPDATE %1 SET %2 = :level WHERE %3 = :id"}
-            .arg(mCharacterRepository.getTableName())
-            .arg(fieldName)
-            .arg(mCharacterRepository.getIdColumn()));
-        query.bindValue(":level", level);
-        query.bindValue(":id", id);
-        DatabaseUtils::execQuery(query);
+        mCharacterRepository.updateSkill(id, fieldName, level);
     }
 
     void CharacterWidget::handleNewCharacter(Character::IdType id)
@@ -493,13 +485,7 @@ namespace Evernus
         const auto id = getCharacterId();
         Q_ASSERT(id != Character::invalidId);
 
-        auto query = mCharacterRepository.prepare(QString{"UPDATE %1 SET %2 = :standing WHERE %3 = :id"}
-            .arg(mCharacterRepository.getTableName())
-            .arg(type)
-            .arg(mCharacterRepository.getIdColumn()));
-        query.bindValue(":standing", value);
-        query.bindValue(":id", id);
-        DatabaseUtils::execQuery(query);
+        mCharacterRepository.updateStanding(id, type, value);
     }
 
     QSpinBox *CharacterWidget::createSkillEdit(QSpinBox *&target, const QString &skillField)

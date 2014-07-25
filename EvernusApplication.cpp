@@ -23,7 +23,6 @@
 #include "ItemPriceImporterNames.h"
 #include "ImportSettings.h"
 #include "WalletSettings.h"
-#include "DatabaseUtils.h"
 #include "PathSettings.h"
 #include "PathUtils.h"
 
@@ -511,30 +510,9 @@ namespace Evernus
                         try
                         {
                             if (characters.empty())
-                            {
-                                auto query = mCharacterRepository->prepare(
-                                    QString{"UPDATE %1 SET key_id = NULL, enabled = 0 WHERE key_id = ?"}.arg(mCharacterRepository->getTableName()));
-                                query.bindValue(0, key.getId());
-                                query.exec();
-                            }
+                                mCharacterRepository->disableByKey(key.getId());
                             else
-                            {
-                                QStringList ids;
-                                for (auto i = 0; i < characters.size(); ++i)
-                                    ids << "?";
-
-                                auto query = mCharacterRepository->prepare(QString{"UPDATE %1 SET key_id = NULL, enabled = 0 WHERE key_id = ? AND %2 NOT IN (%3)"}
-                                    .arg(mCharacterRepository->getTableName())
-                                    .arg(mCharacterRepository->getIdColumn())
-                                    .arg(ids.join(", ")));
-
-                                query.bindValue(0, key.getId());
-
-                                for (auto i = 0; i < characters.size(); ++i)
-                                    query.bindValue(i + 1, characters[i]);
-
-                                query.exec();
-                            }
+                                mCharacterRepository->disableByKey(key.getId(), characters);
                         }
                         catch (const std::exception &e)
                         {
@@ -598,11 +576,7 @@ namespace Evernus
             mAPIManager.fetchAssets(key, id, [assetSubtask, id, this](auto data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    auto query = mAssetListRepository->prepare(QString{"DELETE FROM %1 WHERE character_id = ?"}
-                        .arg(mAssetListRepository->getTableName()));
-                    query.bindValue(0, id);
-
-                    Evernus::DatabaseUtils::execQuery(query);
+                    mAssetListRepository->deleteForCharacter(id);
 
                     const auto it = mCharacterAssets.find(id);
                     if (it != std::end(mCharacterAssets))
