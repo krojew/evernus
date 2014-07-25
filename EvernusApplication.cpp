@@ -1175,7 +1175,7 @@ namespace Evernus
         mBuyOrders.erase(id);
         mArchivedOrders.erase(id);
 
-        for (auto it = std::begin(orders); it != std::end(orders);)
+        for (auto it = std::begin(orders); it != std::end(orders); ++it)
         {
             const auto cIt = curStates.find(it->getId());
             if (cIt != std::end(curStates))
@@ -1183,27 +1183,12 @@ namespace Evernus
                 it->setDelta(it->getVolumeRemaining() - cIt->second.mVolumeRemaining);
                 it->setFirstSeen(cIt->second.mFirstSeen);
 
-                if (it->getState() != MarketOrder::State::Active)
-                {
-                    if (cIt->second.mIsArchived)
-                    {
-                        it = orders.erase(it);
-                    }
-                    else
-                    {
-                        it->setLastSeen(std::min(QDateTime::currentDateTimeUtc(), it->getIssued().addDays(it->getDuration())));
-                        ++it;
-                    }
-                }
-                else
-                {
-                    ++it;
-                }
+                if (it->getState() != MarketOrder::State::Active && !cIt->second.mIsArchived)
+                    it->setLastSeen(std::min(QDateTime::currentDateTimeUtc(), it->getIssued().addDays(it->getDuration())));
             }
             else
             {
                 it->setDelta(it->getVolumeRemaining() - it->getVolumeEntered());
-                ++it;
             }
         }
 
