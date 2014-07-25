@@ -37,6 +37,7 @@ qt5_wrap_cpp(
     CharacterImportPreferencesWidget.h
     CharacterWidget.h
     DateFilteredPlotWidget.h
+    DateRangeWidget.h
     EvernusApplication.h
     FileDownload.h
     GeneralPreferencesWidget.h
@@ -145,6 +146,8 @@ add_executable(
     DatabaseUtils.h
     DateFilteredPlotWidget.cpp
     DateFilteredPlotWidget.h
+    DateRangeWidget.cpp
+    DateRangeWidget.h
     Entity.h
     EveDataProvider.h
     EveMarketDataItemPriceImporter.cpp

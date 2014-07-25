@@ -234,8 +234,16 @@ namespace Evernus
         return volumeColumn;
     }
 
+    void MarketOrderArchiveModel::setCharacterAndRange(Character::IdType id, const QDateTime &from, const QDateTime &to)
+    {
+        mFrom = from;
+        mTo = to;
+
+        setCharacter(id);
+    }
+
     std::vector<MarketOrder> MarketOrderArchiveModel::getOrders() const
     {
-        return mOrderProvider.getArchivedOrders(mCharacterId);
+        return mOrderProvider.getArchivedOrders(mCharacterId, mFrom, mTo);
     }
 }

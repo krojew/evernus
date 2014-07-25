@@ -19,6 +19,7 @@
 #include <QGroupBox>
 #include <QSettings>
 #include <QLabel>
+#include <QDebug>
 
 #include "MarketOrderViewWithTransactions.h"
 #include "MarketOrderFilterWidget.h"
@@ -26,6 +27,7 @@
 #include "CacheTimerProvider.h"
 #include "WarningBarWidget.h"
 #include "MarketOrderView.h"
+#include "DateRangeWidget.h"
 #include "ButtonWithTimer.h"
 #include "ImportSettings.h"
 
@@ -144,8 +146,23 @@ namespace Evernus
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mCombinedBuyView, &MarketOrderView::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mCombinedBuyView, &MarketOrderView::wildcardChanged);
 
+        auto archiveTab = new QWidget{this};
+        mainTabs->addTab(archiveTab, QIcon{":/images/hourglass.png"}, tr("History"));
+
+        auto archiveLayout = new QVBoxLayout{};
+        archiveTab->setLayout(archiveLayout);
+
+        auto rangeLayout = new QHBoxLayout{};
+        archiveLayout->addLayout(rangeLayout);
+
+        mArchiveRangeEdit = new DateRangeWidget{this};
+        rangeLayout->addWidget(mArchiveRangeEdit);
+        connect(mArchiveRangeEdit, &DateRangeWidget::rangeChanged, this, &MarketOrderWidget::setArchiveRange);
+
+        rangeLayout->addStretch();
+
         mArchiveView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, this};
-        mainTabs->addTab(mArchiveView, QIcon{":/images/hourglass.png"}, tr("History"));
+        archiveLayout->addWidget(mArchiveView);
         mArchiveView->setShowInfo(false);
         mArchiveView->statusFilterChanged(MarketOrderFilterProxyModel::EveryStatus);
         mArchiveView->priceStatusFilterChanged(MarketOrderFilterProxyModel::EveryPriceStatus);
@@ -159,7 +176,6 @@ namespace Evernus
 
         connect(this, &MarketOrderWidget::characterChanged, &mSellModel, &MarketOrderSellModel::setCharacter);
         connect(this, &MarketOrderWidget::characterChanged, &mBuyModel, &MarketOrderBuyModel::setCharacter);
-        connect(this, &MarketOrderWidget::characterChanged, &mArchiveModel, &MarketOrderBuyModel::setCharacter);
     }
 
     void MarketOrderWidget::updateData()
@@ -198,9 +214,25 @@ namespace Evernus
         emit importPricesFromFile(getImportTarget());
     }
 
+    void MarketOrderWidget::setArchiveRange(const QDate &from, const QDate &to)
+    {
+        mArchiveModel.setCharacterAndRange(getCharacterId(), QDateTime{from}.toUTC(), QDateTime{to}.toUTC());
+    }
+
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)
     {
+        qDebug() << "Switching market orders to" << id;
+
+        const auto tillDate = QDate::currentDate();
+        const auto fromDate = tillDate.addDays(-7);
+
+        mArchiveRangeEdit->blockSignals(true);
+        mArchiveRangeEdit->setRange(fromDate, tillDate);
+        mArchiveRangeEdit->blockSignals(false);
+
         mLogImportBtn->setEnabled(id != Character::invalidId);
+        mArchiveModel.setCharacterAndRange(id, QDateTime{fromDate}.toUTC(), QDateTime{tillDate}.toUTC());
+
         emit characterChanged(id);
     }
 

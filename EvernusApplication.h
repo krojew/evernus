@@ -106,7 +106,7 @@ namespace Evernus
 
         virtual std::vector<MarketOrder> getSellOrders(Character::IdType characterId) const override;
         virtual std::vector<MarketOrder> getBuyOrders(Character::IdType characterId) const override;
-        virtual std::vector<MarketOrder> getArchivedOrders(Character::IdType characterId) const override;
+        virtual std::vector<MarketOrder> getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const override;
 
         virtual ItemCost fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const override;
 

@@ -44,6 +44,8 @@ namespace Evernus
 
         virtual int getVolumeColumn() const override;
 
+        void setCharacterAndRange(Character::IdType id, const QDateTime &from, const QDateTime &to);
+
     private:
         static const auto lastSeenColumn = 0;
         static const auto typeColumn = 1;
@@ -59,6 +61,8 @@ namespace Evernus
         const MarketOrderProvider &mOrderProvider;
         const ItemCostProvider &mItemCostProvider;
         const CacheTimerProvider &mCacheTimerProvider;
+
+        QDateTime mFrom, mTo;
 
         virtual std::vector<MarketOrder> getOrders() const override;
     };

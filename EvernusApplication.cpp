@@ -412,13 +412,22 @@ namespace Evernus
         return it->second;
     }
 
-    std::vector<MarketOrder> EvernusApplication::getArchivedOrders(Character::IdType characterId) const
+    std::vector<MarketOrder> EvernusApplication::getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const
     {
         auto it = mArchivedOrders.find(characterId);
         if (it == std::end(mArchivedOrders))
             it = mArchivedOrders.emplace(characterId, mMarketOrderRepository->fetchArchivedForCharacter(characterId)).first;
 
-        return it->second;
+        std::vector<MarketOrder> result;
+        for (const auto &order : it->second)
+        {
+            const auto lastSeen = order.getLastSeen();
+
+            if (lastSeen >= from && lastSeen <= to)
+                result.emplace_back(order);
+        }
+
+        return result;
     }
 
     ItemCost EvernusApplication::fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const

@@ -14,22 +14,36 @@
  */
 #pragma once
 
-#include <vector>
+#include <QWidget>
 
-#include "Character.h"
+class QDateEdit;
+class QDate;
 
 namespace Evernus
 {
-    class MarketOrder;
-
-    class MarketOrderProvider
+    class DateRangeWidget
+        : public QWidget
     {
-    public:
-        MarketOrderProvider() = default;
-        virtual ~MarketOrderProvider() = default;
+        Q_OBJECT
 
-        virtual std::vector<MarketOrder> getSellOrders(Character::IdType characterId) const = 0;
-        virtual std::vector<MarketOrder> getBuyOrders(Character::IdType characterId) const = 0;
-        virtual std::vector<MarketOrder> getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const = 0;
+    public:
+        explicit DateRangeWidget(QWidget *parent = nullptr);
+        virtual ~DateRangeWidget() = default;
+
+        QDate getFrom() const;
+        QDate getTo() const;
+
+        void setRange(const QDate &from, const QDate &to);
+
+    signals:
+        void rangeChanged(const QDate &from, const QDate &to);
+
+    private slots:
+        void fromChanged(const QDate &date);
+        void toChanged(const QDate &date);
+
+    private:
+        QDateEdit *mFromEdit = nullptr;
+        QDateEdit *mToEdit = nullptr;
     };
 }

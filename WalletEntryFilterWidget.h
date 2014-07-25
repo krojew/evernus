@@ -18,12 +18,13 @@
 #include <QWidget>
 
 class QLineEdit;
-class QDateEdit;
 class QComboBox;
 class QDate;
 
 namespace Evernus
 {
+    class DateRangeWidget;
+
     class WalletEntryFilterWidget
         : public QWidget
     {
@@ -43,13 +44,11 @@ namespace Evernus
         void changeEntryType();
         void applyWildcard();
 
-        void fromChanged(const QDate &date);
-        void toChanged(const QDate &date);
+        void applyRange(const QDate &from, const QDate &to);
 
     private:
         QComboBox *mTypeCombo = nullptr;
-        QDateEdit *mFromEdit = nullptr;
-        QDateEdit *mToEdit = nullptr;
+        DateRangeWidget *mRangeEdit = nullptr;
         QLineEdit *mFilterEdit = nullptr;
 
         int mCurrentType = 0;

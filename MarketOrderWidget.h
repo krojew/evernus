@@ -31,6 +31,7 @@ namespace Evernus
     class CacheTimerProvider;
     class ItemCostProvider;
     class EveDataProvider;
+    class DateRangeWidget;
     class MarketOrderView;
 
     class MarketOrderWidget
@@ -65,6 +66,8 @@ namespace Evernus
         void prepareItemImportFromWeb();
         void prepareItemImportFromFile();
 
+        void setArchiveRange(const QDate &from, const QDate &to);
+
     private:
         static const QString settingsLastTabkey;
 
@@ -82,6 +85,7 @@ namespace Evernus
 
         QPushButton *mLogImportBtn = nullptr;
         QComboBox *mGroupingCombo = nullptr;
+        DateRangeWidget *mArchiveRangeEdit = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
 

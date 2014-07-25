@@ -15,8 +15,10 @@
 #include <QHBoxLayout>
 #include <QComboBox>
 #include <QLineEdit>
-#include <QDateEdit>
 #include <QLabel>
+#include <QDate>
+
+#include "DateRangeWidget.h"
 
 #include "WalletEntryFilterWidget.h"
 
@@ -38,19 +40,9 @@ namespace Evernus
 
         connect(mTypeCombo, SIGNAL(currentIndexChanged(int)), SLOT(changeEntryType()));
 
-        mainLayout->addWidget(new QLabel{tr("From:"), this});
-
-        mFromEdit = new QDateEdit{this};
-        mainLayout->addWidget(mFromEdit);
-        mFromEdit->setCalendarPopup(true);
-        connect(mFromEdit, &QDateEdit::dateChanged, this, &WalletEntryFilterWidget::fromChanged);
-
-        mainLayout->addWidget(new QLabel{tr("To:"), this});
-
-        mToEdit = new QDateEdit{this};
-        mainLayout->addWidget(mToEdit);
-        mToEdit->setCalendarPopup(true);
-        connect(mToEdit, &QDateEdit::dateChanged, this, &WalletEntryFilterWidget::toChanged);
+        mRangeEdit = new DateRangeWidget{this};
+        mainLayout->addWidget(mRangeEdit);
+        connect(mRangeEdit, &DateRangeWidget::rangeChanged, this, &WalletEntryFilterWidget::applyRange);
 
         mFilterEdit = new QLineEdit{this};
         mainLayout->addWidget(mFilterEdit);
@@ -61,18 +53,13 @@ namespace Evernus
 
     void WalletEntryFilterWidget::setFilter(const QDate &from, const QDate &to, const QString &filter, int type)
     {
-        mFromEdit->blockSignals(true);
-        mToEdit->blockSignals(true);
         mTypeCombo->blockSignals(true);
 
         mTypeCombo->setCurrentIndex(0);
-        mFromEdit->setDate(from);
-        mToEdit->setDate(to);
+        mRangeEdit->setRange(from, to);
         mFilterEdit->clear();
 
         mTypeCombo->blockSignals(false);
-        mFromEdit->blockSignals(false);
-        mToEdit->blockSignals(false);
 
         emit filterChanged(from, to, mFilterEdit->text(), mCurrentType);
     }
@@ -80,27 +67,16 @@ namespace Evernus
     void WalletEntryFilterWidget::changeEntryType()
     {
         mCurrentType = mTypeCombo->currentData().toInt();
-        emit filterChanged(mFromEdit->date(), mToEdit->date(), mFilterEdit->text(), mCurrentType);
+        emit filterChanged(mRangeEdit->getFrom(), mRangeEdit->getTo(), mFilterEdit->text(), mCurrentType);
     }
 
     void WalletEntryFilterWidget::applyWildcard()
     {
-        emit filterChanged(mFromEdit->date(), mToEdit->date(), mFilterEdit->text(), mCurrentType);
+        emit filterChanged(mRangeEdit->getFrom(), mRangeEdit->getTo(), mFilterEdit->text(), mCurrentType);
     }
 
-    void WalletEntryFilterWidget::fromChanged(const QDate &date)
+    void WalletEntryFilterWidget::applyRange(const QDate &from, const QDate &to)
     {
-        if (date > mToEdit->date())
-            mToEdit->setDate(date.addDays(1));
-        else
-            emit filterChanged(date, mToEdit->date(), mFilterEdit->text(), mCurrentType);
-    }
-
-    void WalletEntryFilterWidget::toChanged(const QDate &date)
-    {
-        if (date < mFromEdit->date())
-            mFromEdit->setDate(date.addDays(-1));
-        else
-            emit filterChanged(mFromEdit->date(), date, mFilterEdit->text(), mCurrentType);
+        emit filterChanged(from, to, mFilterEdit->text(), mCurrentType);
     }
 }
