@@ -1159,28 +1159,42 @@ namespace Evernus
 
     void EvernusApplication::importMarketOrders(Character::IdType id, MarketOrders &orders)
     {
-        const auto curStates = mMarketOrderRepository->getOrderStatesAndVolumes(id);
+        auto curStates = mMarketOrderRepository->getOrderStates(id);
 
         mSellOrders.erase(id);
         mBuyOrders.erase(id);
         mArchivedOrders.erase(id);
 
-        for (auto it = std::begin(orders); it != std::end(orders); ++it)
+        for (auto &order : orders)
         {
-            const auto cIt = curStates.find(it->getId());
+            const auto cIt = curStates.find(order.getId());
             if (cIt != std::end(curStates))
             {
-                it->setDelta(it->getVolumeRemaining() - cIt->second.mVolumeRemaining);
-                it->setFirstSeen(cIt->second.mFirstSeen);
+                order.setDelta(order.getVolumeRemaining() - cIt->second.mVolumeRemaining);
+                order.setFirstSeen(cIt->second.mFirstSeen);
 
-                if (it->getState() != MarketOrder::State::Active && !cIt->second.mIsArchived)
-                    it->setLastSeen(std::min(QDateTime::currentDateTimeUtc(), it->getIssued().addDays(it->getDuration())));
+                if (order.getState() != MarketOrder::State::Active && !cIt->second.mIsArchived)
+                    order.setLastSeen(std::min(QDateTime::currentDateTimeUtc(), order.getIssued().addDays(order.getDuration())));
+
+                curStates.erase(cIt);
             }
             else
             {
-                it->setDelta(it->getVolumeRemaining() - it->getVolumeEntered());
+                order.setDelta(order.getVolumeRemaining() - order.getVolumeEntered());
             }
         }
+
+        std::vector<MarketOrder::IdType> toArchive;
+        toArchive.reserve(curStates.size());
+
+        for (const auto &order : curStates)
+        {
+            if (!order.second.mIsArchived)
+                toArchive.emplace_back(order.first);
+        }
+
+        if (!toArchive.empty())
+            mMarketOrderRepository->archive(toArchive);
 
         MarketOrderValueSnapshot snapshot;
         snapshot.setTimestamp(QDateTime::currentDateTimeUtc());

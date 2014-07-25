@@ -61,10 +61,12 @@ namespace Evernus
         void create(const Repository<Character> &characterRepo) const;
 
         AggrData getAggregatedData(Character::IdType characterId) const;
-        OrderStateMap getOrderStatesAndVolumes(Character::IdType characterId) const;
+        OrderStateMap getOrderStates(Character::IdType characterId) const;
 
         OrderList fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const;
         OrderList fetchArchivedForCharacter(Character::IdType characterId) const;
+
+        void archive(const std::vector<MarketOrder::IdType> &ids) const;
 
     private:
         virtual QStringList getColumns() const override;

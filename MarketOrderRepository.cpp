@@ -127,7 +127,7 @@ namespace Evernus
         return data;
     }
 
-    MarketOrderRepository::OrderStateMap MarketOrderRepository::getOrderStatesAndVolumes(Character::IdType characterId) const
+    MarketOrderRepository::OrderStateMap MarketOrderRepository::getOrderStates(Character::IdType characterId) const
     {
         OrderStateMap result;
 
@@ -190,6 +190,26 @@ namespace Evernus
             result.emplace_back(populate(query.record()));
 
         return result;
+    }
+
+    void MarketOrderRepository::archive(const std::vector<MarketOrder::IdType> &ids) const
+    {
+        QStringList list;
+        for (auto i = 0; i < ids.size(); ++i)
+            list << "?";
+
+        auto query = prepare(QString{R"(UPDATE %1 SET 
+            last_seen = min(strftime('%Y-%m-%dT%H:%M:%f', first_seen, duration || ' days'), strftime('%Y-%m-%dT%H:%M:%f', 'now')),
+            state = ?
+            WHERE %2 IN (%3)
+        )"}.arg(getTableName()).arg(getIdColumn()).arg(list.join(", ")));
+
+        query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
+
+        for (const auto &id : ids)
+            query.addBindValue(id);
+
+        DatabaseUtils::execQuery(query);
     }
 
     QStringList MarketOrderRepository::getColumns() const
