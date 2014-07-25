@@ -89,8 +89,8 @@ namespace Evernus
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_state ON %1(character_id, state)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_last_seen ON %1(character_id, last_seen)"}.arg(getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_type_last_seen ON %1(character_id, type, last_seen)"}.arg(getTableName()));
     }
 
     MarketOrderRepository::AggrData MarketOrderRepository::getAggregatedData(Character::IdType characterId) const
@@ -155,7 +155,7 @@ namespace Evernus
 
     MarketOrderRepository::OrderList MarketOrderRepository::fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND type = ? AND last_seen IS NULL"}.arg(getTableName()));
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND type = ?"}.arg(getTableName()));
         query.bindValue(0, characterId);
         query.bindValue(1, static_cast<int>(type));
 
