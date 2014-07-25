@@ -17,11 +17,13 @@
 #include <functional>
 
 #include <QWidget>
+#include <QTimer>
 
 #include "Character.h"
 
 namespace Evernus
 {
+    class WarningBarWidget;
     class ButtonWithTimer;
 
     class CharacterBoundWidget
@@ -32,8 +34,10 @@ namespace Evernus
     public:
         typedef std::function<QDateTime (Character::IdType)> TimeGetter;
 
-        explicit CharacterBoundWidget(const TimeGetter &timeGetter,
-                                      QWidget *parent = nullptr);
+        CharacterBoundWidget(const TimeGetter &apiTimeGetter,
+                             const TimeGetter &updateTimeGetter,
+                             const QString &updateAgeSettingsKey,
+                             QWidget *parent = nullptr);
         virtual ~CharacterBoundWidget() = default;
 
     signals:
@@ -46,15 +50,21 @@ namespace Evernus
 
     private slots:
         void requestUpdate();
+        void updateTimerTick();
 
     protected:
         ButtonWithTimer &getAPIImportButton() const noexcept;
+        WarningBarWidget &getWarningBarWidget() const noexcept;
         Character::IdType getCharacterId() const noexcept;
 
     private:
-        TimeGetter mTimeGetter;
+        TimeGetter mAPITimeGetter, mUpdateTimeGetter;
+        QString mUpdateAgeSettingsKey;
+
+        QTimer mUpdateTimer;
 
         ButtonWithTimer *mImportBtn = nullptr;
+        WarningBarWidget *mWarningBarWidget = nullptr;
 
         Character::IdType mCharacterId = Character::invalidId;
 

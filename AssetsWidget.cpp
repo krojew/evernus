@@ -23,8 +23,10 @@
 
 #include "LeafFilterProxyModel.h"
 #include "CacheTimerProvider.h"
+#include "WarningBarWidget.h"
 #include "ButtonWithTimer.h"
 #include "StyledTreeView.h"
+#include "ImportSettings.h"
 #include "AssetProvider.h"
 #include "AssetList.h"
 
@@ -37,6 +39,8 @@ namespace Evernus
                                const CacheTimerProvider &cacheTimerProvider,
                                QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::AssetList),
+                               std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::AssetList),
+                               ImportSettings::maxAssetListAgeKey,
                                parent}
         , mAssetProvider{assetProvider}
         , mModel{mAssetProvider, nameProvider}
@@ -65,6 +69,9 @@ namespace Evernus
         mFilterEdit->setPlaceholderText(tr("type in wildcard and press Enter"));
         mFilterEdit->setClearButtonEnabled(true);
         connect(mFilterEdit, &QLineEdit::returnPressed, this, &AssetsWidget::applyWildcard);
+
+        auto &warningBar = getWarningBarWidget();
+        mainLayout->addWidget(&warningBar);
 
         mModelProxy = new LeafFilterProxyModel{this};
         mModelProxy->setSourceModel(&mModel);

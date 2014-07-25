@@ -19,8 +19,10 @@
 
 #include "WalletEntryFilterWidget.h"
 #include "CacheTimerProvider.h"
+#include "WarningBarWidget.h"
 #include "ButtonWithTimer.h"
 #include "StyledTreeView.h"
+#include "ImportSettings.h"
 
 #include "WalletTransactionsWidget.h"
 
@@ -30,7 +32,10 @@ namespace Evernus
                                                        const CacheTimerProvider &cacheTimerProvider,
                                                        const EveDataProvider &dataProvider,
                                                        QWidget *parent)
-        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::WalletTransactions), parent}
+        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::WalletTransactions),
+                               std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::WalletTransactions),
+                               ImportSettings::maxWalletAgeKey,
+                               parent}
         , mModel{walletRepo, dataProvider}
     {
         auto mainLayout = new QVBoxLayout{};
@@ -45,6 +50,9 @@ namespace Evernus
         mFilter = new WalletEntryFilterWidget{QStringList{} << tr("all") << tr("buy") << tr("sell"), this};
         toolBarLayout->addWidget(mFilter, 1);
         connect(mFilter, &WalletEntryFilterWidget::filterChanged, this, &WalletTransactionsWidget::updateFilter);
+
+        auto &warningBar = getWarningBarWidget();
+        mainLayout->addWidget(&warningBar);
 
         mFilterModel = new QSortFilterProxyModel{this};
         mFilterModel->setSortRole(Qt::UserRole);

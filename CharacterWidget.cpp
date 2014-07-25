@@ -32,6 +32,7 @@
 
 #include "MarketOrderRepository.h"
 #include "CacheTimerProvider.h"
+#include "WarningBarWidget.h"
 #include "ButtonWithTimer.h"
 #include "ImportSettings.h"
 #include "DatabaseUtils.h"
@@ -51,6 +52,8 @@ namespace Evernus
                                      const CacheTimerProvider &cacheTimerProvider,
                                      QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::Character),
+                               std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::Character),
+                               ImportSettings::maxCharacterAgeKey,
                                parent}
         , mCharacterRepository{characterRepository}
         , mMarketOrderRepository{marketOrderRepository}
@@ -65,6 +68,9 @@ namespace Evernus
         toolBarLayout->addWidget(&importBtn);
 
         toolBarLayout->addStretch();
+
+        auto &warningBar = getWarningBarWidget();
+        mainLayout->addWidget(&warningBar);
 
         auto infoGroup = new QGroupBox{tr("Character info"), this};
         mainLayout->addWidget(infoGroup);

@@ -320,6 +320,8 @@ add_executable(
     WalletTransactionsWidget.h
     WalletTransactionsXmlReceiver.cpp
     WalletTransactionsXmlReceiver.h
+    WarningBarWidget.cpp
+    WarningBarWidget.h
     ${MOC_FILES}
     ${RCC_FILES}
     ${ADDITIONAL_SRC}

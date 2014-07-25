@@ -23,8 +23,10 @@
 #include "MarketOrderViewWithTransactions.h"
 #include "MarketOrderFilterWidget.h"
 #include "CacheTimerProvider.h"
+#include "WarningBarWidget.h"
 #include "MarketOrderView.h"
 #include "ButtonWithTimer.h"
+#include "ImportSettings.h"
 
 #include "MarketOrderWidget.h"
 
@@ -39,6 +41,8 @@ namespace Evernus
                                          const WalletTransactionRepository &transactionsRepo,
                                          QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
+                               std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
+                               ImportSettings::maxMarketOrdersAgeKey,
                                parent}
         , mSellModel{orderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
         , mBuyModel{orderProvider, dataProvider, cacheTimerProvider}
@@ -72,6 +76,9 @@ namespace Evernus
         mGroupingCombo->addItem(tr("Group"), static_cast<int>(MarketOrderModel::Grouping::Group));
         mGroupingCombo->addItem(tr("Station"), static_cast<int>(MarketOrderModel::Grouping::Station));
         connect(mGroupingCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeGrouping()));
+
+        auto &warningBar = getWarningBarWidget();
+        mainLayout->addWidget(&warningBar);
 
         auto mainTabs = new QTabWidget{this};
         mainLayout->addWidget(mainTabs);
