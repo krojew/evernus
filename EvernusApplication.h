@@ -73,6 +73,7 @@ namespace Evernus
 
         virtual QString getTypeName(EveType::IdType id) const override;
         virtual QString getTypeMarketGroupParentName(EveType::IdType id) const override;
+        virtual QString getTypeMarketGroupName(EveType::IdType id) const override;
         virtual MarketGroup::IdType getTypeMarketGroupParentId(EveType::IdType id) const override;
         virtual const std::unordered_map<EveType::IdType, QString> &getAllTypeNames() const override;
         virtual QString getTypeMetaGroupName(EveType::IdType id) const override;
@@ -199,6 +200,7 @@ namespace Evernus
         mutable std::unordered_map<EveType::IdType, EveType> mTypeCache;
         mutable std::unordered_map<EveType::IdType, QString> mTypeNameCache;
         mutable std::unordered_map<EveType::IdType, MarketGroup> mTypeMarketGroupParentCache;
+        mutable std::unordered_map<EveType::IdType, MarketGroup> mTypeMarketGroupCache;
         mutable std::unordered_map<EveType::IdType, MetaGroup> mTypeMetaGroupCache;
         mutable std::unordered_map<quint64, QString> mLocationNameCache;
         mutable std::unordered_map<TypeLocationPair, ItemPrice, boost::hash<TypeLocationPair>> mSellPrices;
@@ -262,6 +264,7 @@ namespace Evernus
 
         const EveType &getEveType(EveType::IdType id) const;
         const MarketGroup &getMarketGroupParent(MarketGroup::IdType id) const;
+        const MarketGroup &getMarketGroup(MarketGroup::IdType id) const;
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };

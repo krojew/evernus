@@ -48,6 +48,7 @@ namespace Evernus
         , mOrderProvider{orderProvider}
         , mSellModel{mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
         , mBuyModel{mOrderProvider, dataProvider, cacheTimerProvider}
+        , mArchiveModel{mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -143,12 +144,22 @@ namespace Evernus
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mCombinedBuyView, &MarketOrderView::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mCombinedBuyView, &MarketOrderView::wildcardChanged);
 
+        mArchiveView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, this};
+        mainTabs->addTab(mArchiveView, QIcon{":/images/hourglass.png"}, tr("History"));
+        mArchiveView->setShowInfo(false);
+        mArchiveView->statusFilterChanged(MarketOrderFilterProxyModel::EveryStatus);
+        mArchiveView->priceStatusFilterChanged(MarketOrderFilterProxyModel::EveryPriceStatus);
+        mArchiveView->setModel(&mArchiveModel);
+        connect(this, &MarketOrderWidget::characterChanged, mArchiveView, &MarketOrderViewWithTransactions::setCharacter);
+        connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mArchiveView, &MarketOrderViewWithTransactions::wildcardChanged);
+
         QSettings settings;
         mainTabs->setCurrentIndex(settings.value(settingsLastTabkey).toInt());
         connect(mainTabs, &QTabWidget::currentChanged, this, &MarketOrderWidget::saveChosenTab);
 
         connect(this, &MarketOrderWidget::characterChanged, &mSellModel, &MarketOrderSellModel::setCharacter);
         connect(this, &MarketOrderWidget::characterChanged, &mBuyModel, &MarketOrderBuyModel::setCharacter);
+        connect(this, &MarketOrderWidget::characterChanged, &mArchiveModel, &MarketOrderBuyModel::setCharacter);
     }
 
     void MarketOrderWidget::updateData()
@@ -156,14 +167,19 @@ namespace Evernus
         refreshImportTimer();
         mSellModel.reset();
         mBuyModel.reset();
+        mArchiveModel.reset();
     }
 
     void MarketOrderWidget::changeGrouping()
     {
         mSellModel.setGrouping(static_cast<MarketOrderModel::Grouping>(mGroupingCombo->currentData().toInt()));
         mSellView->expandAll();
+        mCombinedSellView->expandAll();
         mBuyModel.setGrouping(static_cast<MarketOrderModel::Grouping>(mGroupingCombo->currentData().toInt()));
         mBuyView->expandAll();
+        mCombinedBuyView->expandAll();
+        mArchiveModel.setGrouping(static_cast<MarketOrderModel::Grouping>(mGroupingCombo->currentData().toInt()));
+        mArchiveView->expandAll();
     }
 
     void MarketOrderWidget::saveChosenTab(int index)

@@ -282,7 +282,7 @@ namespace Evernus
     {
         switch (mGrouping) {
         case Grouping::Group:
-            return mDataProvider.getTypeMarketGroupParentName(order.getTypeId());
+            return getGroupName(order.getTypeId());
         case Grouping::Station:
             return mDataProvider.getLocationName(order.getLocationId());
         case Grouping::Type:
@@ -290,5 +290,14 @@ namespace Evernus
         default:
             return QString{};
         }
+    }
+
+    QString MarketOrderTreeModel::getGroupName(EveType::IdType typeId) const
+    {
+        auto group = mDataProvider.getTypeMarketGroupParentName(typeId);
+        if (group.isEmpty())
+            group = mDataProvider.getTypeMarketGroupName(typeId);
+
+        return group;
     }
 }

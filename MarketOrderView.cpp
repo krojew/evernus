@@ -49,8 +49,12 @@ namespace Evernus
         mView->setModel(&mProxy);
         connect(mView, &StyledTreeView::clicked, this, &MarketOrderView::showPriceInfo);
 
+        mInfoWidget = new QWidget{this};
+        mainLayout->addWidget(mInfoWidget);
+
         auto infoLayout = new QHBoxLayout{};
-        mainLayout->addLayout(infoLayout);
+        mInfoWidget->setLayout(infoLayout);
+        infoLayout->setMargin(0);
 
         infoLayout->addWidget(new QLabel{tr("Active orders:"), this});
 
@@ -107,6 +111,11 @@ namespace Evernus
         updateInfo();
     }
 
+    void MarketOrderView::setShowInfo(bool flag)
+    {
+        mInfoWidget->setVisible(flag);
+    }
+
     void MarketOrderView::expandAll()
     {
         mView->expandAll();
@@ -126,7 +135,7 @@ namespace Evernus
         mVolumeLabel->setText(QString{"%1/%2 (%3%)"}
             .arg(curLocale.toString(volRemaining))
             .arg(curLocale.toString(volEntered))
-            .arg(curLocale.toString(volRemaining * 100. / volEntered, 'f', 1)));
+            .arg(curLocale.toString((volEntered > 0.) ? (volRemaining * 100. / volEntered) : (0.), 'f', 1)));
         mTotalISKLabel->setText(curLocale.toCurrencyString(mSource->getTotalISK(), "ISK"));
         mTotalSizeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(mSource->getTotalSize(), 'f', 2)));
 

@@ -41,6 +41,7 @@ namespace Evernus
         virtual ~MarketOrderViewWithTransactions() = default;
 
         void setModel(MarketOrderModel *model);
+        void setShowInfo(bool flag);
         void setCharacter(Character::IdType id);
 
         void expandAll();

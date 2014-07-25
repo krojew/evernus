@@ -82,6 +82,8 @@ namespace Evernus
             QString mGroupName;
         };
 
+        static const auto groupingColumn = 0;
+
         const EveDataProvider &mDataProvider;
 
         size_t mTotalOrders = 0;
@@ -96,6 +98,8 @@ namespace Evernus
         Grouping mGrouping = Grouping::None;
 
         TreeItem mRootItem;
+
+        QString getGroupName(EveType::IdType typeId) const;
 
     private:
         virtual std::vector<MarketOrder> getOrders() const = 0;

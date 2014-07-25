@@ -40,6 +40,7 @@ namespace Evernus
         const QAbstractProxyModel &getProxyModel() const;
 
         void setModel(MarketOrderModel *model);
+        void setShowInfo(bool flag);
 
         void expandAll();
 
@@ -64,6 +65,7 @@ namespace Evernus
         QLabel *mVolumeLabel = nullptr;
         QLabel *mTotalISKLabel = nullptr;
         QLabel *mTotalSizeLabel = nullptr;
+        QWidget *mInfoWidget = nullptr;
 
         MarketOrderModel *mSource = nullptr;
         MarketOrderFilterProxyModel mProxy;

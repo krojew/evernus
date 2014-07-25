@@ -12,8 +12,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <unordered_map>
-
 #include <QSettings>
 #include <QLocale>
 #include <QColor>
@@ -63,7 +61,7 @@ namespace Evernus
         {
             if (item->parent() == &mRootItem)
             {
-                if (role == Qt::UserRole || (role == Qt::DisplayRole && column == nameColumn))
+                if (role == Qt::UserRole || (role == Qt::DisplayRole && column == groupingColumn))
                     return item->getGroupName();
 
                 return QVariant{};
@@ -129,7 +127,7 @@ namespace Evernus
             case nameColumn:
                 return mDataProvider.getTypeName(data->getTypeId());
             case groupColumn:
-                return mDataProvider.getTypeMarketGroupParentName(data->getTypeId());
+                return getGroupName(data->getTypeId());
             case statusColumn:
                 return static_cast<int>(data->getState());
             case customCostColumn:
@@ -204,7 +202,7 @@ namespace Evernus
                 case nameColumn:
                     return mDataProvider.getTypeName(data->getTypeId());
                 case groupColumn:
-                    return mDataProvider.getTypeMarketGroupParentName(data->getTypeId());
+                    return getGroupName(data->getTypeId());
                 case statusColumn:
                     {
                         const auto prefix = (data->getDelta() != 0) ? ("*") : ("");

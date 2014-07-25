@@ -85,6 +85,13 @@ namespace Evernus
         return (marketGroupId) ? (getMarketGroupParent(*marketGroupId).getName()) : (QString{});
     }
 
+    QString EvernusApplication::getTypeMarketGroupName(EveType::IdType id) const
+    {
+        const auto &type = getEveType(id);
+        const auto marketGroupId = type.getMarketGroupId();
+        return (marketGroupId) ? (getMarketGroup(*marketGroupId).getName()) : (QString{});
+    }
+
     MarketGroup::IdType EvernusApplication::getTypeMarketGroupParentId(EveType::IdType id) const
     {
         const auto &type = getEveType(id);
@@ -1405,6 +1412,25 @@ namespace Evernus
         }
 
         return mTypeMarketGroupParentCache.emplace(id, result).first->second;
+    }
+
+    const MarketGroup &EvernusApplication::getMarketGroup(MarketGroup::IdType id) const
+    {
+        const auto it = mTypeMarketGroupCache.find(id);
+        if (it != std::end(mTypeMarketGroupCache))
+            return it->second;
+
+        MarketGroup result;
+
+        try
+        {
+            result = mMarketGroupRepository->find(id);
+        }
+        catch (const MarketGroupRepository::NotFoundException &)
+        {
+        }
+
+        return mTypeMarketGroupCache.emplace(id, result).first->second;
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)

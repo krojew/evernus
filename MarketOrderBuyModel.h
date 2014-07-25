@@ -20,7 +20,6 @@ namespace Evernus
 {
     class MarketOrderProvider;
     class CacheTimerProvider;
-    class MarketOrder;
 
     class MarketOrderBuyModel
         : public MarketOrderTreeModel

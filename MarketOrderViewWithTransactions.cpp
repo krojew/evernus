@@ -63,6 +63,11 @@ namespace Evernus
         mOrderView->setModel(mOrderModel);
     }
 
+    void MarketOrderViewWithTransactions::setShowInfo(bool flag)
+    {
+        mOrderView->setShowInfo(flag);
+    }
+
     void MarketOrderViewWithTransactions::setCharacter(Character::IdType id)
     {
         mCharacterId = id;

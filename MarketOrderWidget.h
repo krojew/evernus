@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include "MarketOrderArchiveModel.h"
 #include "MarketOrderSellModel.h"
 #include "CharacterBoundWidget.h"
 #include "MarketOrderBuyModel.h"
@@ -71,11 +72,13 @@ namespace Evernus
 
         MarketOrderViewWithTransactions *mSellView = nullptr;
         MarketOrderViewWithTransactions *mBuyView = nullptr;
+        MarketOrderViewWithTransactions *mArchiveView = nullptr;
         MarketOrderView *mCombinedSellView = nullptr;
         MarketOrderView *mCombinedBuyView = nullptr;
 
         MarketOrderSellModel mSellModel;
         MarketOrderBuyModel mBuyModel;
+        MarketOrderArchiveModel mArchiveModel;
 
         QPushButton *mLogImportBtn = nullptr;
         QComboBox *mGroupingCombo = nullptr;
