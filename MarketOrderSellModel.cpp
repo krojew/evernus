@@ -27,6 +27,7 @@
 #include "PriceSettings.h"
 #include "ItemPrice.h"
 #include "IconUtils.h"
+#include "TextUtils.h"
 #include "ItemCost.h"
 
 #include "MarketOrderSellModel.h"
@@ -70,26 +71,6 @@ namespace Evernus
         }
 
         const auto data = item->getOrder();
-
-        const auto secondsToString = [this](auto duration) {
-            QString res;
-
-            duration /= 60;
-
-            const auto minutes = duration % 60;
-            duration /= 60;
-
-            const auto hours = duration % 24;
-            const auto days = duration / 24;
-
-            if (hours == 0 && days == 0)
-                return res.sprintf(tr("%02dmin").toLatin1().data(), minutes);
-
-            if (days == 0)
-                return res.sprintf(tr("%02dh %02dmin").toLatin1().data(), hours, minutes);
-
-            return res.sprintf(tr("%dd %02dh").toLatin1().data(), days, hours);
-        };
 
         switch (role) {
         case Qt::ToolTipRole:
@@ -285,7 +266,7 @@ namespace Evernus
                         const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
 
                         if (timeEnd > timeCur)
-                            return secondsToString(timeEnd - timeCur);
+                            return TextUtils::secondsToString(timeEnd - timeCur);
                     }
                     break;
                 case orderAgeColumn:
@@ -294,7 +275,7 @@ namespace Evernus
                         const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
 
                         if (timeCur > timeStart)
-                            return secondsToString(timeCur - timeStart);
+                            return TextUtils::secondsToString(timeCur - timeStart);
                     }
                     break;
                 case firstSeenColumn:

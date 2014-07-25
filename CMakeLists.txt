@@ -282,6 +282,8 @@ add_executable(
     StyledTreeViewItemDelegate.cpp
     StyledTreeViewItemDelegate.h
     TaskConstants.h
+    TextUtils.cpp
+    TextUtils.h
     TimerTypes.h
     UISettings.h
     UpdateTimer.cpp

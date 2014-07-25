@@ -17,6 +17,7 @@
 #include "WarningBarWidget.h"
 #include "ButtonWithTimer.h"
 #include "ImportSettings.h"
+#include "TextUtils.h"
 
 #include "CharacterBoundWidget.h"
 
@@ -90,28 +91,8 @@ namespace Evernus
             }
             else
             {
-                const auto secondsToString = [this](auto duration) {
-                    QString res;
-
-                    duration /= 60;
-
-                    const auto minutes = duration % 60;
-                    duration /= 60;
-
-                    const auto hours = duration % 24;
-                    const auto days = duration / 24;
-
-                    if (hours == 0 && days == 0)
-                        return res.sprintf(tr("%02dmin").toLatin1().data(), minutes);
-
-                    if (days == 0)
-                        return res.sprintf(tr("%02dh %02dmin").toLatin1().data(), hours, minutes);
-
-                    return res.sprintf(tr("%dd %02dh").toLatin1().data(), days, hours);
-                };
-
                 mWarningBarWidget->setText(tr("<strong>Warning!</strong> This data is %1 old and may need an update.")
-                    .arg(secondsToString((curTime.toMSecsSinceEpoch() - lastUpdate.toMSecsSinceEpoch()) / 1000)));
+                    .arg(TextUtils::secondsToString((curTime.toMSecsSinceEpoch() - lastUpdate.toMSecsSinceEpoch()) / 1000)));
             }
         }
         else
