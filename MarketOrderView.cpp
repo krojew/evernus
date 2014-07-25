@@ -52,7 +52,7 @@ namespace Evernus
         auto infoLayout = new QHBoxLayout{};
         mainLayout->addLayout(infoLayout);
 
-        infoLayout->addWidget(new QLabel{tr("Orders:"), this});
+        infoLayout->addWidget(new QLabel{tr("Active orders:"), this});
 
         mTotalOrdersLabel = new QLabel{this};
         infoLayout->addWidget(mTotalOrdersLabel);

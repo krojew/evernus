@@ -305,7 +305,7 @@ namespace Evernus
             }
             break;
         case Qt::FontRole:
-            if ((column == statusColumn && data->getDelta() != 0) || (column == statusColumn && data->getState() == MarketOrder::State::Fulfilled))
+            if (column == statusColumn && data->getDelta() != 0)
             {
                 QFont font;
                 font.setBold(true);
