@@ -274,6 +274,20 @@ namespace Evernus
         mUpdateTimersGroup->setVisible(show);
     }
 
+    void CharacterWidget::updateMarketData()
+    {
+        try
+        {
+            const auto character = mCharacterRepository.find(getCharacterId());
+            updateCharacterMarketData(character.getOrderAmountSkills());
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+        }
+
+        updateTimerList();
+    }
+
     void CharacterWidget::setCorpStanding(double value)
     {
         updateStanding("corp_standing", value);
@@ -368,24 +382,7 @@ namespace Evernus
                 mCorporationLabel->setText(character.getCorporationName());
                 mISKLabel->setText(character.getISKPresentation());
 
-                const auto aggrData = mMarketOrderRepository.getAggregatedData(id);
-                const auto curLocale = locale();
-
-                const auto maxBuyOrders = orderAmountSkills.mTrade * 4 +
-                                          orderAmountSkills.mRetail * 8 +
-                                          orderAmountSkills.mWholesale * 16 +
-                                          orderAmountSkills.mTycoon * 32 + 5;
-
-                mBuyOrderCountLabel->setText(curLocale.toString(aggrData.mBuyData.mCount));
-                mSellOrderCountLabel->setText(curLocale.toString(aggrData.mSellData.mCount));
-                mTotalOrderCountLabel->setText(tr("<strong>%1 of %2</strong>")
-                    .arg(curLocale.toString(aggrData.mBuyData.mCount + aggrData.mSellData.mCount))
-                    .arg(curLocale.toString(maxBuyOrders)));
-
-                mBuyOrderValueLabel->setText(curLocale.toCurrencyString(aggrData.mBuyData.mPriceSum, "ISK"));
-                mSellOrderValueLabel->setText(curLocale.toCurrencyString(aggrData.mSellData.mPriceSum, "ISK"));
-                mTotalOrderValueLabel->setText(tr("<strong>%1</strong>")
-                    .arg(curLocale.toCurrencyString(aggrData.mBuyData.mPriceSum + aggrData.mSellData.mPriceSum, "ISK")));
+                updateCharacterMarketData(orderAmountSkills);
 
                 mCorpStandingEdit->setValue(character.getCorpStanding());
                 mFactionStandingEdit->setValue(character.getFactionStanding());
@@ -486,6 +483,28 @@ namespace Evernus
         Q_ASSERT(id != Character::invalidId);
 
         mCharacterRepository.updateStanding(id, type, value);
+    }
+
+    void CharacterWidget::updateCharacterMarketData(const CharacterData::OrderAmountSkills &orderAmountSkills)
+    {
+        const auto aggrData = mMarketOrderRepository.getAggregatedData(getCharacterId());
+        const auto curLocale = locale();
+
+        const auto maxBuyOrders = orderAmountSkills.mTrade * 4 +
+                                  orderAmountSkills.mRetail * 8 +
+                                  orderAmountSkills.mWholesale * 16 +
+                                  orderAmountSkills.mTycoon * 32 + 5;
+
+        mBuyOrderCountLabel->setText(curLocale.toString(aggrData.mBuyData.mCount));
+        mSellOrderCountLabel->setText(curLocale.toString(aggrData.mSellData.mCount));
+        mTotalOrderCountLabel->setText(tr("<strong>%1 of %2</strong>")
+            .arg(curLocale.toString(aggrData.mBuyData.mCount + aggrData.mSellData.mCount))
+            .arg(curLocale.toString(maxBuyOrders)));
+
+        mBuyOrderValueLabel->setText(curLocale.toCurrencyString(aggrData.mBuyData.mPriceSum, "ISK"));
+        mSellOrderValueLabel->setText(curLocale.toCurrencyString(aggrData.mSellData.mPriceSum, "ISK"));
+        mTotalOrderValueLabel->setText(tr("<strong>%1</strong>")
+            .arg(curLocale.toCurrencyString(aggrData.mBuyData.mPriceSum + aggrData.mSellData.mPriceSum, "ISK")));
     }
 
     QSpinBox *CharacterWidget::createSkillEdit(QSpinBox *&target, const QString &skillField)

@@ -49,6 +49,7 @@ namespace Evernus
     public slots:
         void updateData();
         void updateTimerList();
+        void updateMarketData();
 
     private slots:
         void setCorpStanding(double value);
@@ -108,6 +109,7 @@ namespace Evernus
         virtual void handleNewCharacter(Character::IdType id) override;
 
         void updateStanding(const QString &type, double value) const;
+        void updateCharacterMarketData(const CharacterData::OrderAmountSkills &orderAmountSkills);
 
         QSpinBox *createSkillEdit(QSpinBox *&target, const QString &skillField);
 
