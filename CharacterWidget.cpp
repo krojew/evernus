@@ -237,6 +237,43 @@ namespace Evernus
         handleNewCharacter(getCharacterId());
     }
 
+    void CharacterWidget::updateTimerList()
+    {
+        const auto id = getCharacterId();
+        if (id == Character::invalidId)
+        {
+            mUpdateTimersGroup->hide();
+            return;
+        }
+
+        const auto curLocale = locale();
+        auto show = false;
+
+        QSettings settings;
+
+        mUpdateTimersList->clear();
+
+        const auto checker = [&, this](TimerType timer, const QString &settingsKey, const QString &text) {
+            const auto curTime
+                = QDateTime::currentDateTime().addSecs(-60 * settings.value(settingsKey, Evernus::ImportSettings::importTimerDefault).toInt());
+            const auto dt = mCacheTimerProvider.getLocalUpdateTimer(id, timer);
+
+            if (dt < curTime)
+            {
+                show = true;
+                new QListWidgetItem{QIcon{":/images/error.png"}, text.arg(curLocale.toString(dt)), mUpdateTimersList};
+            }
+        };
+
+        checker(TimerType::Character, ImportSettings::maxCharacterAgeKey, "Character sheet: %1");
+        checker(TimerType::AssetList, ImportSettings::maxAssetListAgeKey, "Asset list: %1");
+        checker(TimerType::MarketOrders, ImportSettings::maxMarketOrdersAgeKey, "Market orders: %1");
+        checker(TimerType::WalletJournal, ImportSettings::maxWalletAgeKey, "Wallet journal: %1");
+        checker(TimerType::WalletTransactions, ImportSettings::maxWalletAgeKey, "Wallet transactions: %1");
+
+        mUpdateTimersGroup->setVisible(show);
+    }
+
     void CharacterWidget::setCorpStanding(double value)
     {
         updateStanding("corp_standing", value);
@@ -441,43 +478,6 @@ namespace Evernus
             mPortrait->setPixmap(px);
 
         mPortraitDownloads.erase(it);
-    }
-
-    void CharacterWidget::updateTimerList()
-    {
-        const auto id = getCharacterId();
-        if (id == Character::invalidId)
-        {
-            mUpdateTimersGroup->hide();
-            return;
-        }
-
-        const auto curLocale = locale();
-        auto show = false;
-
-        QSettings settings;
-
-        mUpdateTimersList->clear();
-
-        const auto checker = [&, this](TimerType timer, const QString &settingsKey, const QString &text) {
-            const auto curTime
-                = QDateTime::currentDateTime().addSecs(-60 * settings.value(settingsKey, Evernus::ImportSettings::importTimerDefault).toInt());
-            const auto dt = mCacheTimerProvider.getLocalUpdateTimer(id, timer);
-
-            if (dt < curTime)
-            {
-                show = true;
-                new QListWidgetItem{QIcon{":/images/error.png"}, text.arg(curLocale.toString(dt)), mUpdateTimersList};
-            }
-        };
-
-        checker(TimerType::Character, ImportSettings::maxCharacterAgeKey, "Character sheet: %1");
-        checker(TimerType::AssetList, ImportSettings::maxAssetListAgeKey, "Asset list: %1");
-        checker(TimerType::MarketOrders, ImportSettings::maxMarketOrdersAgeKey, "Market orders: %1");
-        checker(TimerType::WalletJournal, ImportSettings::maxWalletAgeKey, "Wallet journal: %1");
-        checker(TimerType::WalletTransactions, ImportSettings::maxWalletAgeKey, "Wallet transactions: %1");
-
-        mUpdateTimersGroup->setVisible(show);
     }
 
     void CharacterWidget::updateStanding(const QString &type, double value) const

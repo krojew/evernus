@@ -354,6 +354,10 @@ namespace Evernus
         connect(charTab, &CharacterWidget::importFromAPI, this, &MainWindow::importCharacter);
         connect(charTab, &CharacterWidget::importAll, this, &MainWindow::refreshAll);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::updateData);
+        connect(this, &MainWindow::assetsChanged, charTab, &CharacterWidget::updateTimerList);
+        connect(this, &MainWindow::walletJournalChanged, charTab, &CharacterWidget::updateTimerList);
+        connect(this, &MainWindow::walletTransactionsChanged, charTab, &CharacterWidget::updateTimerList);
+        connect(this, &MainWindow::marketOrdersChanged, charTab, &CharacterWidget::updateTimerList);
 
         auto statsTab = new StatisticsWidget{mAssetSnapshotRepository,
                                              mWalletSnapshotRepository,

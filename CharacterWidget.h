@@ -48,6 +48,7 @@ namespace Evernus
 
     public slots:
         void updateData();
+        void updateTimerList();
 
     private slots:
         void setCorpStanding(double value);
@@ -57,8 +58,6 @@ namespace Evernus
 
         void downloadPortrait();
         void downloadFinished();
-
-        void updateTimerList();
 
     private:
         static const char * const skillFieldProperty;
