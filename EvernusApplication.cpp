@@ -738,7 +738,7 @@ namespace Evernus
             mAPIManager.fetchMarketOrders(key, id, [task, id, this](auto data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    importMarketLogs(id, data);
+                    importMarketOrders(id, data);
                     emit marketOrdersChanged();
                 }
 
@@ -843,7 +843,7 @@ namespace Evernus
                 if (settings.value(PathSettings::deleteLogsKey, true).toBool())
                     file.remove();
 
-                importMarketLogs(id, orders);
+                importMarketOrders(id, orders);
 
                 emit marketOrdersChanged();
                 break;
@@ -1166,20 +1166,13 @@ namespace Evernus
         it->second->fetchItemPrices(target);
     }
 
-    void EvernusApplication::importMarketLogs(Character::IdType id, MarketOrders &orders)
+    void EvernusApplication::importMarketOrders(Character::IdType id, MarketOrders &orders)
     {
         const auto curStates = mMarketOrderRepository->getOrderStatesAndVolumes(id);
 
-        mSellOrders.clear();
-        mBuyOrders.clear();
-        mArchivedOrders.clear();
-
-        const auto addToCache = [id, this](const auto &order) {
-            if (order.getType() == Evernus::MarketOrder::Type::Buy)
-                mBuyOrders[id].emplace_back(order);
-            else
-                mSellOrders[id].emplace_back(order);
-        };
+        mSellOrders.erase(id);
+        mBuyOrders.erase(id);
+        mArchivedOrders.erase(id);
 
         for (auto it = std::begin(orders); it != std::end(orders);)
         {
@@ -1198,20 +1191,17 @@ namespace Evernus
                     else
                     {
                         it->setLastSeen(std::min(QDateTime::currentDateTimeUtc(), it->getIssued().addDays(it->getDuration())));
-                        addToCache(*it);
                         ++it;
                     }
                 }
                 else
                 {
-                    addToCache(*it);
                     ++it;
                 }
             }
             else
             {
                 it->setDelta(it->getVolumeRemaining() - it->getVolumeEntered());
-                addToCache(*it);
                 ++it;
             }
         }

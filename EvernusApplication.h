@@ -241,7 +241,7 @@ namespace Evernus
 
         void importCharacter(Character::IdType id, uint parentTask, const Key &key);
         void importItemPrices(const std::string &importerName, const ItemPriceImporter::TypeLocationPairs &target);
-        void importMarketLogs(Character::IdType id, MarketOrders &orders);
+        void importMarketOrders(Character::IdType id, MarketOrders &orders);
 
         Key getCharacterKey(Character::IdType id) const;
 
