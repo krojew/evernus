@@ -23,6 +23,7 @@
 #include "CharacterImportPreferencesWidget.h"
 #include "AssetsImportPreferencesWidget.h"
 #include "NetworkPreferencesWidget.h"
+#include "GeneralPreferencesWidget.h"
 #include "WalletPreferencesWidget.h"
 #include "ImportPreferencesWidget.h"
 #include "PricePreferencesWidget.h"
@@ -51,6 +52,7 @@ namespace Evernus
         preferencesLayout->addWidget(mPreferencesStack, 1);
 
         std::vector<std::pair<QString, QWidget *>> categories;
+        categories.emplace_back(std::make_pair(tr("General"), new GeneralPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Paths"), new PathPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Prices"), new PricePreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Network"), new NetworkPreferencesWidget{this}));

@@ -39,6 +39,7 @@ qt5_wrap_cpp(
     DateFilteredPlotWidget.h
     EvernusApplication.h
     FileDownload.h
+    GeneralPreferencesWidget.h
     ImportPreferencesWidget.h
     ItemCostWidget.h
     ItemPriceImporter.h
@@ -158,6 +159,8 @@ add_executable(
     EveTypeRepository.h
     FileDownload.cpp
     FileDownload.h
+    GeneralPreferencesWidget.cpp
+    GeneralPreferencesWidget.h
     IconUtils.cpp
     IconUtils.h
     ImportPreferencesWidget.cpp

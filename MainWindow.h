@@ -16,12 +16,14 @@
 
 #include <unordered_map>
 
+#include <QSystemTrayIcon>
 #include <QMainWindow>
 #include <QPointer>
 
 #include "ItemPriceImporter.h"
 #include "Character.h"
 
+class QSystemTrayIcon;
 class QTabWidget;
 class QLabel;
 
@@ -131,7 +133,10 @@ namespace Evernus
     private slots:
         void updateCurrentTab(int index);
 
+        void activateTrayIcon(QSystemTrayIcon::ActivationReason reason);
+
     protected:
+        virtual void changeEvent(QEvent *event) override;
         virtual void closeEvent(QCloseEvent *event) override;
 
     private:
@@ -162,6 +167,7 @@ namespace Evernus
 
         MenuBarWidget *mMenuWidget = nullptr;
         QTabWidget *mMainTabs = nullptr;
+        QSystemTrayIcon *mTrayIcon = nullptr;
 
         bool mShowMaximized = false;
 

@@ -42,6 +42,7 @@
 #include "AssetsWidget.h"
 #include "AboutDialog.h"
 #include "Repository.h"
+#include "UISettings.h"
 
 #include "MainWindow.h"
 
@@ -82,11 +83,14 @@ namespace Evernus
         , mItemCostProvider{itemCostProvider}
         , mEveDataProvider{eveDataProvider}
         , mCacheTimerProvider{cacheTimerProvider}
+        , mTrayIcon{new QSystemTrayIcon{QIcon{":/images/main-icon.png"}, this}}
     {
         readSettings();
         createMenu();
         createMainView();
         createStatusBar();
+
+        connect(mTrayIcon, &QSystemTrayIcon::activated, this, &MainWindow::activateTrayIcon);
 
         setWindowIcon(QIcon{":/images/main-icon.png"});
     }
@@ -253,6 +257,34 @@ namespace Evernus
             {
                 mTabCharacterIds[index] = mCurrentCharacterId;
                 QMetaObject::invokeMethod(mTabWidgets[index], "setCharacter", Qt::AutoConnection, Q_ARG(Character::IdType, mCurrentCharacterId));
+            }
+        }
+    }
+
+    void MainWindow::activateTrayIcon(QSystemTrayIcon::ActivationReason reason)
+    {
+        if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::DoubleClick)
+        {
+            mTrayIcon->hide();
+            showMaximized();
+            activateWindow();
+        }
+    }
+
+    void MainWindow::changeEvent(QEvent *event)
+    {
+        QSettings settings;
+        if ((event->type() == QEvent::WindowStateChange) &&
+            settings.value(UISettings::minimizeToTrayKey, false).toBool())
+        {
+            if (isMinimized())
+            {
+                mTrayIcon->show();
+                QMetaObject::invokeMethod(this, "hide", Qt::QueuedConnection);
+            }
+            else
+            {
+                mTrayIcon->hide();
             }
         }
     }
