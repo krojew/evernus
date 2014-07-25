@@ -101,6 +101,7 @@ namespace Evernus
         mSellView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, this};
         mainTabs->addTab(mSellView, QIcon{":/images/arrow_out.png"}, tr("Sell"));
         mSellView->setModel(&mSellModel);
+        mSellView->sortByColumn(0, Qt::AscendingOrder);
         connect(this, &MarketOrderWidget::characterChanged, mSellView, &MarketOrderViewWithTransactions::setCharacter);
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mSellView, &MarketOrderViewWithTransactions::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mSellView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
@@ -109,6 +110,7 @@ namespace Evernus
         mBuyView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, this};
         mainTabs->addTab(mBuyView, QIcon{":/images/arrow_in.png"}, tr("Buy"));
         mBuyView->setModel(&mBuyModel);
+        mBuyView->sortByColumn(0, Qt::AscendingOrder);
         connect(this, &MarketOrderWidget::characterChanged, mBuyView, &MarketOrderViewWithTransactions::setCharacter);
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mBuyView, &MarketOrderViewWithTransactions::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mBuyView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
@@ -129,6 +131,7 @@ namespace Evernus
         mCombinedSellView = new MarketOrderView{dataProvider, this};
         sellGroupLayout->addWidget(mCombinedSellView);
         mCombinedSellView->setModel(&mSellModel);
+        mCombinedSellView->sortByColumn(0, Qt::AscendingOrder);
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mCombinedSellView, &MarketOrderView::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mCombinedSellView, &MarketOrderView::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mCombinedSellView, &MarketOrderView::wildcardChanged);
@@ -142,6 +145,7 @@ namespace Evernus
         mCombinedBuyView = new MarketOrderView{dataProvider, this};
         buyGroupLayout->addWidget(mCombinedBuyView);
         mCombinedBuyView->setModel(&mBuyModel);
+        mCombinedBuyView->sortByColumn(0, Qt::AscendingOrder);
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mCombinedBuyView, &MarketOrderView::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mCombinedBuyView, &MarketOrderView::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mCombinedBuyView, &MarketOrderView::wildcardChanged);
@@ -167,6 +171,7 @@ namespace Evernus
         mArchiveView->statusFilterChanged(MarketOrderFilterProxyModel::EveryStatus);
         mArchiveView->priceStatusFilterChanged(MarketOrderFilterProxyModel::EveryPriceStatus);
         mArchiveView->setModel(&mArchiveModel);
+        mArchiveView->sortByColumn(0, Qt::DescendingOrder);
         connect(this, &MarketOrderWidget::characterChanged, mArchiveView, &MarketOrderViewWithTransactions::setCharacter);
         connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mArchiveView, &MarketOrderViewWithTransactions::wildcardChanged);
 

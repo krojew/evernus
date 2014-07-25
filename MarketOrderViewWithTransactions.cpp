@@ -79,6 +79,11 @@ namespace Evernus
         mOrderView->expandAll();
     }
 
+    void MarketOrderViewWithTransactions::sortByColumn(int column, Qt::SortOrder order)
+    {
+        mOrderView->sortByColumn(column, order);
+    }
+
     void MarketOrderViewWithTransactions::selectOrder(const QItemSelection &selected, const QItemSelection &deselected)
     {
         Q_UNUSED(deselected);

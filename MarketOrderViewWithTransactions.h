@@ -46,6 +46,8 @@ namespace Evernus
 
         void expandAll();
 
+        void sortByColumn(int column, Qt::SortOrder order);
+
     signals:
         void statusFilterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);
         void priceStatusFilterChanged(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);

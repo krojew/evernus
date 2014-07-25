@@ -102,7 +102,6 @@ namespace Evernus
             curModel->disconnect(this, SLOT(updateInfo()));
 
         mProxy.setSourceModel(mSource);
-        mProxy.sort(0);
 
         mView->setItemDelegateForColumn(model->getVolumeColumn(), new MarketOrderVolumeItemDelegate{this});
 
@@ -120,6 +119,11 @@ namespace Evernus
     {
         mView->expandAll();
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
+    }
+
+    void MarketOrderView::sortByColumn(int column, Qt::SortOrder order)
+    {
+        mView->sortByColumn(column, order);
     }
 
     void MarketOrderView::updateInfo()

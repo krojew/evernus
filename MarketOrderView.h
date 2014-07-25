@@ -44,6 +44,8 @@ namespace Evernus
 
         void expandAll();
 
+        void sortByColumn(int column, Qt::SortOrder order);
+
     signals:
         void closeOrderInfo();
 
