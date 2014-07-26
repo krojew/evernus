@@ -29,10 +29,10 @@ namespace Evernus
         return "id";
     }
 
-    RefType RefTypeRepository::populate(const QSqlRecord &record) const
+    RefTypeRepository::EntityPtr RefTypeRepository::populate(const QSqlRecord &record) const
     {
-        RefType refType{record.value("id").value<RefType::IdType>(), record.value("name").toString()};
-        refType.setNew(false);
+        auto refType = std::make_shared<RefType>(record.value("id").value<RefType::IdType>(), record.value("name").toString());
+        refType->setNew(false);
 
         return refType;
     }

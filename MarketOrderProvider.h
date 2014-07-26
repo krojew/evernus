@@ -15,6 +15,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "Character.h"
 
@@ -28,8 +29,8 @@ namespace Evernus
         MarketOrderProvider() = default;
         virtual ~MarketOrderProvider() = default;
 
-        virtual std::vector<MarketOrder> getSellOrders(Character::IdType characterId) const = 0;
-        virtual std::vector<MarketOrder> getBuyOrders(Character::IdType characterId) const = 0;
-        virtual std::vector<MarketOrder> getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const = 0;
+        virtual std::vector<std::shared_ptr<MarketOrder>> getSellOrders(Character::IdType characterId) const = 0;
+        virtual std::vector<std::shared_ptr<MarketOrder>> getBuyOrders(Character::IdType characterId) const = 0;
+        virtual std::vector<std::shared_ptr<MarketOrder>> getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const = 0;
     };
 }

@@ -29,17 +29,17 @@ namespace Evernus
         return "id";
     }
 
-    MarketOrderValueSnapshot MarketOrderValueSnapshotRepository::populate(const QSqlRecord &record) const
+    MarketOrderValueSnapshotRepository::EntityPtr MarketOrderValueSnapshotRepository::populate(const QSqlRecord &record) const
     {
         auto dt = record.value("timestamp").toDateTime();
         dt.setTimeSpec(Qt::UTC);
 
-        MarketOrderValueSnapshot marketOrderValueSnapshot{record.value("id").value<MarketOrderValueSnapshot::IdType>()};
-        marketOrderValueSnapshot.setTimestamp(dt);
-        marketOrderValueSnapshot.setCharacterId(record.value("character_id").value<Character::IdType>());
-        marketOrderValueSnapshot.setBuyValue(record.value("buy_value").toDouble());
-        marketOrderValueSnapshot.setSellValue(record.value("sell_value").toDouble());
-        marketOrderValueSnapshot.setNew(false);
+        auto marketOrderValueSnapshot = std::make_shared<MarketOrderValueSnapshot>(record.value("id").value<MarketOrderValueSnapshot::IdType>());
+        marketOrderValueSnapshot->setTimestamp(dt);
+        marketOrderValueSnapshot->setCharacterId(record.value("character_id").value<Character::IdType>());
+        marketOrderValueSnapshot->setBuyValue(record.value("buy_value").toDouble());
+        marketOrderValueSnapshot->setSellValue(record.value("sell_value").toDouble());
+        marketOrderValueSnapshot->setNew(false);
 
         return marketOrderValueSnapshot;
     }
@@ -58,7 +58,7 @@ namespace Evernus
         exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_character_timestamp ON %1(character_id, timestamp)"}.arg(getTableName()));
     }
 
-    MarketOrderValueSnapshotRepository::SnapshotList MarketOrderValueSnapshotRepository
+    MarketOrderValueSnapshotRepository::EntityList MarketOrderValueSnapshotRepository
     ::fetchRange(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ? ORDER BY timestamp ASC"}
@@ -70,7 +70,7 @@ namespace Evernus
 
         DatabaseUtils::execQuery(query);
 
-        SnapshotList result;
+        EntityList result;
 
         const auto size = query.size();
         if (size > 0)

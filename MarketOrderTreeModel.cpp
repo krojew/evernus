@@ -41,10 +41,10 @@ namespace Evernus
 
     const MarketOrder *MarketOrderTreeModel::TreeItem::getOrder() const noexcept
     {
-        return mOrder;
+        return mOrder.get();
     }
 
-    void MarketOrderTreeModel::TreeItem::setOrder(const MarketOrder *order) noexcept
+    void MarketOrderTreeModel::TreeItem::setOrder(const std::shared_ptr<MarketOrder> &order) noexcept
     {
         mOrder = order;
     }
@@ -211,7 +211,8 @@ namespace Evernus
     {
         beginResetModel();
 
-        mData = getOrders();
+        const auto data = getOrders();
+
         mRootItem.clearChildren();
 
         mTotalOrders = 0;
@@ -222,20 +223,20 @@ namespace Evernus
 
         std::unordered_map<quintptr, TreeItem *> groupItems;
 
-        for (const auto &order : mData)
+        for (const auto &order : data)
         {
             auto item = std::make_unique<TreeItem>();
-            item->setOrder(&order);
+            item->setOrder(order);
 
             if (mGrouping != Grouping::None)
             {
-                const auto id = getGroupingId(order);
+                const auto id = getGroupingId(*order);
                 auto it = groupItems.find(id);
 
                 if (it == std::end(groupItems))
                 {
                     auto item = std::make_unique<TreeItem>();
-                    item->setGroupName(getGroupingData(order));
+                    item->setGroupName(getGroupingData(*order));
 
                     auto itemPtr = item.get();
                     mRootItem.appendChild(std::move(item));
@@ -250,13 +251,13 @@ namespace Evernus
                 mRootItem.appendChild(std::move(item));
             }
 
-            if (order.getState() != MarketOrder::State::Active)
+            if (order->getState() != MarketOrder::State::Active)
                 continue;
 
-            mVolumeRemaining += order.getVolumeRemaining();
-            mVolumeEntered += order.getVolumeEntered();
-            mTotalISK += order.getPrice() * order.getVolumeRemaining();
-            mTotalSize += mDataProvider.getTypeVolume(order.getTypeId()) * order.getVolumeRemaining();
+            mVolumeRemaining += order->getVolumeRemaining();
+            mVolumeEntered += order->getVolumeEntered();
+            mTotalISK += order->getPrice() * order->getVolumeRemaining();
+            mTotalSize += mDataProvider.getTypeVolume(order->getTypeId()) * order->getVolumeRemaining();
 
             ++mTotalOrders;
         }

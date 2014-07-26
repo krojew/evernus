@@ -79,8 +79,8 @@ namespace Evernus
         virtual QString getTypeMetaGroupName(EveType::IdType id) const override;
 
         virtual double getTypeVolume(EveType::IdType id) const override;
-        virtual ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
-        virtual ItemPrice getTypeBuyPrice(EveType::IdType id, quint64 stationId) const override;
+        virtual std::shared_ptr<ItemPrice> getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
+        virtual std::shared_ptr<ItemPrice> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const override;
 
         virtual void setTypeSellPrice(quint64 stationId,
                                       EveType::IdType typeId,
@@ -97,18 +97,18 @@ namespace Evernus
 
         virtual void registerImporter(const std::string &name, std::unique_ptr<ItemPriceImporter> &&importer) override;
 
-        virtual const AssetList &fetchAssetsForCharacter(Character::IdType id) const override;
+        virtual std::shared_ptr<AssetList> fetchAssetsForCharacter(Character::IdType id) const override;
 
         virtual QDateTime getLocalCacheTimer(Character::IdType id, TimerType type) const override;
         virtual void setUtcCacheTimer(Character::IdType id, TimerType type, const QDateTime &dt) override;
 
         virtual QDateTime getLocalUpdateTimer(Character::IdType id, TimerType type) const override;
 
-        virtual std::vector<MarketOrder> getSellOrders(Character::IdType characterId) const override;
-        virtual std::vector<MarketOrder> getBuyOrders(Character::IdType characterId) const override;
-        virtual std::vector<MarketOrder> getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const override;
+        virtual std::vector<std::shared_ptr<MarketOrder>> getSellOrders(Character::IdType characterId) const override;
+        virtual std::vector<std::shared_ptr<MarketOrder>> getBuyOrders(Character::IdType characterId) const override;
+        virtual std::vector<std::shared_ptr<MarketOrder>> getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const override;
 
-        virtual ItemCost fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const override;
+        virtual std::shared_ptr<ItemCost> fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const override;
 
         const KeyRepository &getKeyRepository() const noexcept;
         const CharacterRepository &getCharacterRepository() const noexcept;
@@ -164,7 +164,7 @@ namespace Evernus
         typedef std::pair<Character::IdType, EveType::IdType> CharacterTypePair;
 
         typedef std::unordered_map<Character::IdType, QDateTime> CharacterTimerMap;
-        typedef std::unordered_map<Character::IdType, std::vector<MarketOrder>> MarketOrderMap;
+        typedef std::unordered_map<Character::IdType, MarketOrderRepository::EntityList> MarketOrderMap;
 
         static const QString versionKey;
 
@@ -197,20 +197,20 @@ namespace Evernus
 
         bool mCharacterUpdateScheduled = false;
 
-        mutable std::unordered_map<EveType::IdType, EveType> mTypeCache;
+        mutable std::unordered_map<EveType::IdType, EveTypeRepository::EntityPtr> mTypeCache;
         mutable std::unordered_map<EveType::IdType, QString> mTypeNameCache;
-        mutable std::unordered_map<EveType::IdType, MarketGroup> mTypeMarketGroupParentCache;
-        mutable std::unordered_map<EveType::IdType, MarketGroup> mTypeMarketGroupCache;
-        mutable std::unordered_map<EveType::IdType, MetaGroup> mTypeMetaGroupCache;
+        mutable std::unordered_map<EveType::IdType, MarketGroupRepository::EntityPtr> mTypeMarketGroupParentCache;
+        mutable std::unordered_map<EveType::IdType, MarketGroupRepository::EntityPtr> mTypeMarketGroupCache;
+        mutable std::unordered_map<EveType::IdType, MetaGroupRepository::EntityPtr> mTypeMetaGroupCache;
         mutable std::unordered_map<quint64, QString> mLocationNameCache;
-        mutable std::unordered_map<TypeLocationPair, ItemPrice, boost::hash<TypeLocationPair>> mSellPrices;
-        mutable std::unordered_map<TypeLocationPair, ItemPrice, boost::hash<TypeLocationPair>> mBuyPrices;
+        mutable std::unordered_map<TypeLocationPair, ItemPriceRepository::EntityPtr, boost::hash<TypeLocationPair>> mSellPrices;
+        mutable std::unordered_map<TypeLocationPair, ItemPriceRepository::EntityPtr, boost::hash<TypeLocationPair>> mBuyPrices;
 
         std::unordered_map<std::string, ImporterPtr> mItemPriceImporters;
 
         std::unordered_map<RefType::IdType, QString> mRefTypeNames;
 
-        mutable std::unordered_map<Character::IdType, std::unique_ptr<AssetList>> mCharacterAssets;
+        mutable std::unordered_map<Character::IdType, AssetListRepository::EntityPtr> mCharacterAssets;
 
         CharacterTimerMap mCharacterUtcCacheTimes;
         CharacterTimerMap mAssetsUtcCacheTimes;
@@ -228,12 +228,11 @@ namespace Evernus
         mutable MarketOrderMap mBuyOrders;
         mutable MarketOrderMap mArchivedOrders;
 
-        mutable std::unordered_map<CharacterTypePair, ItemCost, boost::hash<CharacterTypePair>> mItemCostCache;
+        mutable std::unordered_map<CharacterTypePair, ItemCostRepository::EntityPtr, boost::hash<CharacterTypePair>> mItemCostCache;
 
         void createDb();
         void createDbSchema();
         void precacheRefTypes();
-        void precacheRefTypes(const RefTypeRepository::RefTypeList &refs);
         void precacheCacheTimers();
         void precacheUpdateTimers();
         void deleteOldWalletEntries();
@@ -245,26 +244,26 @@ namespace Evernus
         void importItemPrices(const std::string &importerName, const ItemPriceImporter::TypeLocationPairs &target);
         void importMarketOrders(Character::IdType id, MarketOrders &orders);
 
-        Key getCharacterKey(Character::IdType id) const;
+        KeyRepository::EntityPtr getCharacterKey(Character::IdType id) const;
 
         void finishItemPriceImportTask(const QString &info);
 
-        ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
-        ItemPrice getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
+        std::shared_ptr<ItemPrice> getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
+        std::shared_ptr<ItemPrice> getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
         void computeAssetListSellValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;
 
-        ItemPrice saveTypePrice(ItemPrice::Type type,
-                                quint64 stationId,
-                                EveType::IdType typeId,
-                                const QDateTime &priceTime,
-                                double price) const;
+        std::shared_ptr<ItemPrice> saveTypePrice(ItemPrice::Type type,
+                                                 quint64 stationId,
+                                                 EveType::IdType typeId,
+                                                 const QDateTime &priceTime,
+                                                 double price) const;
 
         void saveUpdateTimer(TimerType timer, CharacterTimerMap &map, Character::IdType characterId) const;
 
-        const EveType &getEveType(EveType::IdType id) const;
-        const MarketGroup &getMarketGroupParent(MarketGroup::IdType id) const;
-        const MarketGroup &getMarketGroup(MarketGroup::IdType id) const;
+        EveTypeRepository::EntityPtr getEveType(EveType::IdType id) const;
+        MarketGroupRepository::EntityPtr getMarketGroupParent(MarketGroup::IdType id) const;
+        MarketGroupRepository::EntityPtr getMarketGroup(MarketGroup::IdType id) const;
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };

@@ -29,24 +29,24 @@ namespace Evernus
         return "id";
     }
 
-    WalletTransaction WalletTransactionRepository::populate(const QSqlRecord &record) const
+    WalletTransactionRepository::EntityPtr WalletTransactionRepository::populate(const QSqlRecord &record) const
     {
         auto timestamp = record.value("timestamp").toDateTime();
         timestamp.setTimeSpec(Qt::UTC);
 
-        WalletTransaction walletTransaction{record.value("id").value<WalletTransaction::IdType>()};
-        walletTransaction.setCharacterId(record.value("character_id").value<Character::IdType>());
-        walletTransaction.setTimestamp(timestamp);
-        walletTransaction.setQuantity(record.value("quantity").toUInt());
-        walletTransaction.setTypeId(record.value("type_id").value<EveType::IdType>());
-        walletTransaction.setPrice(record.value("price").toDouble());
-        walletTransaction.setClientId(record.value("client_id").toULongLong());
-        walletTransaction.setClientName(record.value("client_name").toString());
-        walletTransaction.setLocationId(record.value("location_id").toULongLong());
-        walletTransaction.setType(static_cast<WalletTransaction::Type>(record.value("type").toInt()));
-        walletTransaction.setJournalId(record.value("journal_id").value<WalletJournalEntry::IdType>());
-        walletTransaction.setIgnored(record.value("ignored").toBool());
-        walletTransaction.setNew(false);
+        auto walletTransaction = std::make_shared<WalletTransaction>(record.value("id").value<WalletTransaction::IdType>());
+        walletTransaction->setCharacterId(record.value("character_id").value<Character::IdType>());
+        walletTransaction->setTimestamp(timestamp);
+        walletTransaction->setQuantity(record.value("quantity").toUInt());
+        walletTransaction->setTypeId(record.value("type_id").value<EveType::IdType>());
+        walletTransaction->setPrice(record.value("price").toDouble());
+        walletTransaction->setClientId(record.value("client_id").toULongLong());
+        walletTransaction->setClientName(record.value("client_name").toString());
+        walletTransaction->setLocationId(record.value("location_id").toULongLong());
+        walletTransaction->setType(static_cast<WalletTransaction::Type>(record.value("type").toInt()));
+        walletTransaction->setJournalId(record.value("journal_id").value<WalletJournalEntry::IdType>());
+        walletTransaction->setIgnored(record.value("ignored").toBool());
+        walletTransaction->setNew(false);
 
         return walletTransaction;
     }
@@ -101,11 +101,12 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
-    std::vector<WalletTransaction> WalletTransactionRepository::fetchForCharacterInRange(Character::IdType characterId,
-                                                                                         const QDateTime &from,
-                                                                                         const QDateTime &till,
-                                                                                         EntryType type,
-                                                                                         EveType::IdType typeId) const
+    WalletTransactionRepository::EntityList WalletTransactionRepository
+    ::fetchForCharacterInRange(Character::IdType characterId,
+                               const QDateTime &from,
+                               const QDateTime &till,
+                               EntryType type,
+                               EveType::IdType typeId) const
     {
         QString queryStr;
         if (type == EntryType::All)
@@ -131,7 +132,7 @@ namespace Evernus
 
         const auto size = query.size();
 
-        std::vector<WalletTransaction> result;
+        EntityList result;
         if (size > 0)
             result.reserve(size);
 

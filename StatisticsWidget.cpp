@@ -144,8 +144,8 @@ namespace Evernus
         const auto dataInserter = [](auto &values, const auto &range) {
             for (const auto &shot : range)
             {
-                const auto secs = shot.getTimestamp().toMSecsSinceEpoch() / 1000.;
-                values->insert(secs, QCPData{secs, shot.getBalance()});
+                const auto secs = shot->getTimestamp().toMSecsSinceEpoch() / 1000.;
+                values->insert(secs, QCPData{secs, shot->getBalance()});
             }
         };
 
@@ -154,12 +154,12 @@ namespace Evernus
 
         for (const auto &order : orderShots)
         {
-            const auto secs = order.getTimestamp().toMSecsSinceEpoch() / 1000.;
+            const auto secs = order->getTimestamp().toMSecsSinceEpoch() / 1000.;
 
-            buyValues->insert(secs, QCPData{secs, order.getBuyValue()});
-            sellValues->insert(secs, QCPData{secs, order.getSellValue()});
+            buyValues->insert(secs, QCPData{secs, order->getBuyValue()});
+            sellValues->insert(secs, QCPData{secs, order->getSellValue()});
 
-            buyAndSellValues.insert(secs, QCPData{secs, order.getBuyValue() + order.getSellValue()});
+            buyAndSellValues.insert(secs, QCPData{secs, order->getBuyValue() + order->getSellValue()});
         }
 
         auto sumData = std::make_unique<QCPDataMap>();
@@ -292,12 +292,12 @@ namespace Evernus
         QHash<QDate, std::pair<double, double>> values;
         for (const auto &entry : entries)
         {
-            if (entry.isIgnored())
+            if (entry->isIgnored())
                 continue;
 
-            auto &value = values[entry.getTimestamp().toLocalTime().date()];
+            auto &value = values[entry->getTimestamp().toLocalTime().date()];
 
-            const auto amount = entry.getAmount();
+            const auto amount = entry->getAmount();
             if (amount < 0.)
                 value.first -= amount;
             else
@@ -341,13 +341,13 @@ namespace Evernus
         QHash<QDate, std::pair<double, double>> values;
         for (const auto &entry : entries)
         {
-            if (entry.isIgnored())
+            if (entry->isIgnored())
                 continue;
 
-            auto &value = values[entry.getTimestamp().toLocalTime().date()];
+            auto &value = values[entry->getTimestamp().toLocalTime().date()];
 
-            const auto amount = entry.getPrice();
-            if (entry.getType() == WalletTransaction::Type::Buy)
+            const auto amount = entry->getPrice();
+            if (entry->getType() == WalletTransaction::Type::Buy)
                 value.first += amount;
             else
                 value.second += amount;

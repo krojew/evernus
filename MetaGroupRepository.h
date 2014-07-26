@@ -30,9 +30,9 @@ namespace Evernus
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
 
-        virtual MetaGroup populate(const QSqlRecord &record) const override;
+        virtual EntityPtr populate(const QSqlRecord &record) const override;
 
-        MetaGroup fetchForType(EveType::IdType id) const;
+        EntityPtr fetchForType(EveType::IdType id) const;
 
     private:
         virtual QStringList getColumns() const override;

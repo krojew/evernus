@@ -35,7 +35,7 @@ namespace Evernus
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
 
-        virtual Item populate(const QSqlRecord &record) const override;
+        virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         void create(const Repository<AssetList> &assetRepo) const;
         void batchStore(const PropertyMap &map) const;

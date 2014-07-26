@@ -66,19 +66,19 @@ namespace Evernus
             const auto &character = mData[index.row()];
             switch (index.column()) {
             case 0:
-                return character.getId();
+                return character->getId();
             case 1:
-                return character.getName();
+                return character->getName();
             case 2:
                 {
-                    const auto key = character.getKeyId();;
+                    const auto key = character->getKeyId();;
                     return (key) ? (QString::number(*key)) : (QString{"none"});
                 }
             }
         }
         else if (role == Qt::CheckStateRole && index.column() == 0)
         {
-            return (mData[index.row()].isEnabled()) ? (Qt::Checked) : (Qt::Unchecked);
+            return (mData[index.row()]->isEnabled()) ? (Qt::Checked) : (Qt::Unchecked);
         }
 
         return QVariant{};
@@ -88,8 +88,8 @@ namespace Evernus
     {
         if (role == Qt::CheckStateRole && index.isValid() && index.column() == 0)
         {
-            mData[index.row()].setEnabled(value.toInt() == Qt::Checked);
-            mCharacterRepository.store(mData[index.row()]);
+            mData[index.row()]->setEnabled(value.toInt() == Qt::Checked);
+            mCharacterRepository.store(*mData[index.row()]);
 
             emit dataChanged(index, index, QVector<int>{1, Qt::CheckStateRole});
             return true;
@@ -103,7 +103,7 @@ namespace Evernus
         beginRemoveRows(parent, row, row + count);
 
         for (auto i = row; i < row + count; ++i)
-            mCharacterRepository.remove(mData[i].getId());
+            mCharacterRepository.remove(mData[i]->getId());
 
         mData.erase(std::next(std::begin(mData), row), std::next(std::begin(mData), row + count));
 

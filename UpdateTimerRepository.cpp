@@ -29,16 +29,16 @@ namespace Evernus
         return "id";
     }
 
-    UpdateTimer UpdateTimerRepository::populate(const QSqlRecord &record) const
+    UpdateTimerRepository::EntityPtr UpdateTimerRepository::populate(const QSqlRecord &record) const
     {
         auto dt = record.value("update_time").toDateTime();
         dt.setTimeSpec(Qt::UTC);
 
-        UpdateTimer updateTimer{record.value("id").value<UpdateTimer::IdType>()};
-        updateTimer.setCharacterId(record.value("character_id").value<Character::IdType>());
-        updateTimer.setType(static_cast<TimerType>(record.value("type").toInt()));
-        updateTimer.setUpdateTime(dt);
-        updateTimer.setNew(false);
+        auto updateTimer = std::make_shared<UpdateTimer>(record.value("id").value<UpdateTimer::IdType>());
+        updateTimer->setCharacterId(record.value("character_id").value<Character::IdType>());
+        updateTimer->setType(static_cast<TimerType>(record.value("type").toInt()));
+        updateTimer->setUpdateTime(dt);
+        updateTimer->setNew(false);
 
         return updateTimer;
     }

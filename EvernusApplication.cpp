@@ -74,28 +74,28 @@ namespace Evernus
 
     QString EvernusApplication::getTypeName(EveType::IdType id) const
     {
-        return getEveType(id).getName();
+        return getEveType(id)->getName();
     }
 
     QString EvernusApplication::getTypeMarketGroupParentName(EveType::IdType id) const
     {
-        const auto &type = getEveType(id);
-        const auto marketGroupId = type.getMarketGroupId();
-        return (marketGroupId) ? (getMarketGroupParent(*marketGroupId).getName()) : (QString{});
+        const auto type = getEveType(id);
+        const auto marketGroupId = type->getMarketGroupId();
+        return (marketGroupId) ? (getMarketGroupParent(*marketGroupId)->getName()) : (QString{});
     }
 
     QString EvernusApplication::getTypeMarketGroupName(EveType::IdType id) const
     {
-        const auto &type = getEveType(id);
-        const auto marketGroupId = type.getMarketGroupId();
-        return (marketGroupId) ? (getMarketGroup(*marketGroupId).getName()) : (QString{});
+        const auto type = getEveType(id);
+        const auto marketGroupId = type->getMarketGroupId();
+        return (marketGroupId) ? (getMarketGroup(*marketGroupId)->getName()) : (QString{});
     }
 
     MarketGroup::IdType EvernusApplication::getTypeMarketGroupParentId(EveType::IdType id) const
     {
-        const auto &type = getEveType(id);
-        const auto marketGroupId = type.getMarketGroupId();
-        return (marketGroupId) ? (getMarketGroupParent(*marketGroupId).getId()) : (MarketGroup::invalidId);
+        const auto type = getEveType(id);
+        const auto marketGroupId = type->getMarketGroupId();
+        return (marketGroupId) ? (getMarketGroupParent(*marketGroupId)->getId()) : (MarketGroup::invalidId);
     }
 
     const std::unordered_map<EveType::IdType, QString> &EvernusApplication::getAllTypeNames() const
@@ -111,9 +111,9 @@ namespace Evernus
     {
         const auto it = mTypeMetaGroupCache.find(id);
         if (it != std::end(mTypeMetaGroupCache))
-            return it->second.getName();
+            return it->second->getName();
 
-        MetaGroup result;
+        MetaGroupRepository::EntityPtr result;
 
         try
         {
@@ -121,19 +121,20 @@ namespace Evernus
         }
         catch (const MetaGroupRepository::NotFoundException &)
         {
+            result = std::make_shared<MetaGroup>();
         }
 
         mTypeMetaGroupCache.emplace(id, result);
-        return result.getName();
+        return result->getName();
     }
 
     double EvernusApplication::getTypeVolume(EveType::IdType id) const
     {
         const auto it = mTypeCache.find(id);
         if (it != std::end(mTypeCache))
-            return it->second.getVolume();
+            return it->second->getVolume();
 
-        EveType result;
+        EveTypeRepository::EntityPtr result;
 
         try
         {
@@ -141,18 +142,19 @@ namespace Evernus
         }
         catch (const EveTypeRepository::NotFoundException &)
         {
+            result = std::make_shared<EveType>();
         }
 
         mTypeCache.emplace(id, result);
-        return result.getVolume();
+        return result->getVolume();
     }
 
-    ItemPrice EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId) const
+    std::shared_ptr<ItemPrice> EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId) const
     {
         return getTypeSellPrice(id, stationId, true);
     }
 
-    ItemPrice EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId) const
+    std::shared_ptr<ItemPrice> EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId) const
     {
         return getTypeBuyPrice(id, stationId, true);
     }
@@ -195,7 +197,7 @@ namespace Evernus
             try
             {
                 auto station = mConquerableStationRepository->find(id - 6000000);
-                result = station.getName();
+                result = station->getName();
             }
             catch (const ConquerableStationRepository::NotFoundException &)
             {
@@ -206,7 +208,7 @@ namespace Evernus
             try
             {
                 auto station = mConquerableStationRepository->find(id);
-                result = station.getName();
+                result = station->getName();
             }
             catch (const ConquerableStationRepository::NotFoundException &)
             {
@@ -227,7 +229,7 @@ namespace Evernus
             try
             {
                 auto station = mConquerableStationRepository->find(id);
-                result = station.getName();
+                result = station->getName();
             }
             catch (const ConquerableStationRepository::NotFoundException &)
             {
@@ -263,28 +265,26 @@ namespace Evernus
         mItemPriceImporters.emplace(name, std::move(importer));
     }
 
-    const AssetList &EvernusApplication::fetchAssetsForCharacter(Character::IdType id) const
+    std::shared_ptr<AssetList> EvernusApplication::fetchAssetsForCharacter(Character::IdType id) const
     {
         const auto it = mCharacterAssets.find(id);
         if (it != std::end(mCharacterAssets))
-            return *it->second;
+            return it->second;
 
-        std::unique_ptr<AssetList> assets;
+        AssetListRepository::EntityPtr assets;
 
         try
         {
-            assets = std::make_unique<AssetList>(mAssetListRepository->fetchForCharacter(id));
+            assets = mAssetListRepository->fetchForCharacter(id);
         }
-        catch (const AssetListRepository &)
+        catch (const AssetListRepository::NotFoundException &)
         {
-            assets = std::make_unique<AssetList>();
+            assets = std::make_shared<AssetList>();
             assets->setCharacterId(id);
         }
 
-        const auto assetPtr = assets.get();
-
-        mCharacterAssets.emplace(id, std::move(assets));
-        return *assetPtr;
+        mCharacterAssets.emplace(id, assets);
+        return assets;
     }
 
     QDateTime EvernusApplication::getLocalCacheTimer(Character::IdType id, TimerType type) const
@@ -394,7 +394,7 @@ namespace Evernus
         return it->second.toLocalTime();
     }
 
-    std::vector<MarketOrder> EvernusApplication::getSellOrders(Character::IdType characterId) const
+    std::vector<std::shared_ptr<MarketOrder>> EvernusApplication::getSellOrders(Character::IdType characterId) const
     {
         auto it = mSellOrders.find(characterId);
         if (it == std::end(mSellOrders))
@@ -403,7 +403,7 @@ namespace Evernus
         return it->second;
     }
 
-    std::vector<MarketOrder> EvernusApplication::getBuyOrders(Character::IdType characterId) const
+    std::vector<std::shared_ptr<MarketOrder>> EvernusApplication::getBuyOrders(Character::IdType characterId) const
     {
         auto it = mBuyOrders.find(characterId);
         if (it == std::end(mBuyOrders))
@@ -412,16 +412,16 @@ namespace Evernus
         return it->second;
     }
 
-    std::vector<MarketOrder> EvernusApplication::getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const
+    std::vector<std::shared_ptr<MarketOrder>> EvernusApplication::getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const
     {
         auto it = mArchivedOrders.find(characterId);
         if (it == std::end(mArchivedOrders))
             it = mArchivedOrders.emplace(characterId, mMarketOrderRepository->fetchArchivedForCharacter(characterId)).first;
 
-        std::vector<MarketOrder> result;
+        std::vector<std::shared_ptr<MarketOrder>> result;
         for (const auto &order : it->second)
         {
-            const auto lastSeen = order.getLastSeen();
+            const auto lastSeen = order->getLastSeen();
 
             if (lastSeen >= from && lastSeen <= to)
                 result.emplace_back(order);
@@ -430,13 +430,13 @@ namespace Evernus
         return result;
     }
 
-    ItemCost EvernusApplication::fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const
+    std::shared_ptr<ItemCost> EvernusApplication::fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const
     {
         const auto it = mItemCostCache.find(std::make_pair(characterId, typeId));
         if (it != std::end(mItemCostCache))
             return it->second;
 
-        ItemCost cost;
+        ItemCostRepository::EntityPtr cost;
 
         try
         {
@@ -444,6 +444,7 @@ namespace Evernus
         }
         catch (const ItemCostRepository::NotFoundException &)
         {
+            cost = std::make_shared<ItemCost>();
         }
 
         mItemCostCache.emplace(std::make_pair(characterId, typeId), cost);
@@ -512,16 +513,16 @@ namespace Evernus
         {
             for (const auto &key : keys)
             {
-                const auto charListSubtask = startTask(task, tr("Fetching characters for key %1...").arg(key.getId()));
-                mAPIManager.fetchCharacterList(key, [key, charListSubtask, this](const auto &characters, const auto &error) {
+                const auto charListSubtask = startTask(task, tr("Fetching characters for key %1...").arg(key->getId()));
+                mAPIManager.fetchCharacterList(*key, [key, charListSubtask, this](const auto &characters, const auto &error) {
                     if (error.isEmpty())
                     {
                         try
                         {
                             if (characters.empty())
-                                mCharacterRepository->disableByKey(key.getId());
+                                mCharacterRepository->disableByKey(key->getId());
                             else
-                                mCharacterRepository->disableByKey(key.getId(), characters);
+                                mCharacterRepository->disableByKey(key->getId(), characters);
                         }
                         catch (const std::exception &e)
                         {
@@ -543,7 +544,7 @@ namespace Evernus
                         else
                         {
                             for (const auto id : characters)
-                                importCharacter(id, charListSubtask, key);
+                                importCharacter(id, charListSubtask, *key);
                         }
                     }
                     else
@@ -561,7 +562,7 @@ namespace Evernus
 
         try
         {
-            importCharacter(id, parentTask, getCharacterKey(id));
+            importCharacter(id, parentTask, *getCharacterKey(id));
         }
         catch (const KeyRepository::NotFoundException &)
         {
@@ -581,8 +582,7 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-
-            mAPIManager.fetchAssets(key, id, [assetSubtask, id, this](auto data, const auto &error) {
+            mAPIManager.fetchAssets(*key, id, [assetSubtask, id, this](auto data, const auto &error) {
                 if (error.isEmpty())
                 {
                     mAssetListRepository->deleteForCharacter(id);
@@ -631,7 +631,7 @@ namespace Evernus
             if (maxId == WalletJournalEntry::invalidId)
                 emit taskInfoChanged(task, tr("Fetching wallet journal for character %1 (this may take a while)...").arg(id));
 
-            mAPIManager.fetchWalletJournal(key, id, WalletJournalEntry::invalidId, maxId,
+            mAPIManager.fetchWalletJournal(*key, id, WalletJournalEntry::invalidId, maxId,
                                            [task, id, this](const auto &data, const auto &error) {
                 if (error.isEmpty())
                 {
@@ -692,7 +692,7 @@ namespace Evernus
             if (maxId == WalletTransaction::invalidId)
                 emit taskInfoChanged(task, tr("Fetching wallet transactions for character %1 (this may take a while)...").arg(id));
 
-            mAPIManager.fetchWalletTransactions(key, id, WalletTransaction::invalidId, maxId,
+            mAPIManager.fetchWalletTransactions(*key, id, WalletTransaction::invalidId, maxId,
                                                 [task, id, this](const auto &data, const auto &error) {
                 if (error.isEmpty())
                 {
@@ -725,7 +725,7 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            mAPIManager.fetchMarketOrders(key, id, [task, id, this](auto data, const auto &error) {
+            mAPIManager.fetchMarketOrders(*key, id, [task, id, this](auto data, const auto &error) {
                 if (error.isEmpty())
                 {
                     importMarketOrders(id, data);
@@ -875,7 +875,7 @@ namespace Evernus
 
     void EvernusApplication::updateAssetsValue(Character::IdType id)
     {
-        computeAssetListSellValue(fetchAssetsForCharacter(id));
+        computeAssetListSellValue(*fetchAssetsForCharacter(id));
     }
 
     void EvernusApplication::resetItemCostCache()
@@ -995,7 +995,8 @@ namespace Evernus
                 if (error.isEmpty())
                 {
                     mRefTypeRepository->batchStore(refs, true);
-                    precacheRefTypes(refs);
+                    for (const auto &ref : refs)
+                        mRefTypeNames.emplace(ref.getId(), std::move(ref).getName());
                 }
                 else
                 {
@@ -1005,14 +1006,9 @@ namespace Evernus
         }
         else
         {
-            precacheRefTypes(refs);
+            for (const auto &ref : refs)
+                mRefTypeNames.emplace(ref->getId(), std::move(*ref).getName());
         }
-    }
-
-    void EvernusApplication::precacheRefTypes(const RefTypeRepository::RefTypeList &refs)
-    {
-        for (const auto &ref : refs)
-            mRefTypeNames.emplace(ref.getId(), std::move(ref).getName());
     }
 
     void EvernusApplication::precacheCacheTimers()
@@ -1020,21 +1016,21 @@ namespace Evernus
         const auto timers = mCacheTimerRepository->fetchAll();
         for (const auto &timer : timers)
         {
-            switch (timer.getType()) {
+            switch (timer->getType()) {
             case TimerType::Character:
-                mCharacterUtcCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                mCharacterUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
                 break;
             case TimerType::AssetList:
-                mAssetsUtcCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                mAssetsUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
                 break;
             case TimerType::WalletJournal:
-                mWalletJournalUtcCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                mWalletJournalUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
                 break;
             case TimerType::WalletTransactions:
-                mWalletTransactionsUtcCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                mWalletTransactionsUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
                 break;
             case TimerType::MarketOrders:
-                mMarketOrdersUtcCacheTimes[timer.getCharacterId()] = timer.getCacheUntil();
+                mMarketOrdersUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
             }
         }
     }
@@ -1044,21 +1040,21 @@ namespace Evernus
         const auto timers = mUpdateTimerRepository->fetchAll();
         for (const auto &timer : timers)
         {
-            switch (timer.getType()) {
+            switch (timer->getType()) {
             case TimerType::Character:
-                mCharacterUtcUpdateTimes[timer.getCharacterId()] = timer.getUpdateTime();
+                mCharacterUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
                 break;
             case TimerType::AssetList:
-                mAssetsUtcUpdateTimes[timer.getCharacterId()] = timer.getUpdateTime();
+                mAssetsUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
                 break;
             case TimerType::WalletJournal:
-                mWalletJournalUtcUpdateTimes[timer.getCharacterId()] = timer.getUpdateTime();
+                mWalletJournalUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
                 break;
             case TimerType::WalletTransactions:
-                mWalletTransactionsUtcUpdateTimes[timer.getCharacterId()] = timer.getUpdateTime();
+                mWalletTransactionsUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
                 break;
             case TimerType::MarketOrders:
-                mMarketOrdersUtcUpdateTimes[timer.getCharacterId()] = timer.getUpdateTime();
+                mMarketOrdersUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
             }
         }
     }
@@ -1110,13 +1106,13 @@ namespace Evernus
                     QSettings settings;
                     if (!settings.value(Evernus::ImportSettings::importSkillsKey, true).toBool())
                     {
-                        data.setOrderAmountSkills(prevData.getOrderAmountSkills());
-                        data.setTradeRangeSkills(prevData.getTradeRangeSkills());
-                        data.setFeeSkills(prevData.getFeeSkills());
-                        data.setContractSkills(prevData.getContractSkills());
+                        data.setOrderAmountSkills(prevData->getOrderAmountSkills());
+                        data.setTradeRangeSkills(prevData->getTradeRangeSkills());
+                        data.setFeeSkills(prevData->getFeeSkills());
+                        data.setContractSkills(prevData->getContractSkills());
                     }
 
-                    data.setEnabled(prevData.isEnabled());
+                    data.setEnabled(prevData->isEnabled());
                 }
                 catch (const Evernus::CharacterRepository::NotFoundException &)
                 {
@@ -1221,12 +1217,12 @@ namespace Evernus
         saveUpdateTimer(TimerType::MarketOrders, mMarketOrdersUtcUpdateTimes, id);
     }
 
-    Key EvernusApplication::getCharacterKey(Character::IdType id) const
+    KeyRepository::EntityPtr EvernusApplication::getCharacterKey(Character::IdType id) const
     {
         try
         {
             const auto character = mCharacterRepository->find(id);
-            const auto keyId = character.getKeyId();
+            const auto keyId = character->getKeyId();
 
             if (keyId)
             {
@@ -1260,14 +1256,14 @@ namespace Evernus
         emit taskEnded(task, info);
     }
 
-    ItemPrice EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
+    std::shared_ptr<ItemPrice> EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
     {
         const auto key = std::make_pair(id, stationId);
         const auto it = mSellPrices.find(key);
         if (it != std::end(mSellPrices))
             return it->second;
 
-        ItemPrice result;
+        std::shared_ptr<ItemPrice> result;
 
         try
         {
@@ -1277,20 +1273,22 @@ namespace Evernus
         {
             if (!dontThrow)
                 throw;
+
+            result = std::make_shared<ItemPrice>();
         }
 
         mSellPrices.emplace(key, result);
         return result;
     }
 
-    ItemPrice EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
+    std::shared_ptr<ItemPrice> EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
     {
         const auto key = std::make_pair(id, stationId);
         const auto it = mBuyPrices.find(key);
         if (it != std::end(mBuyPrices))
             return it->second;
 
-        ItemPrice result;
+        std::shared_ptr<ItemPrice> result;
 
         try
         {
@@ -1300,6 +1298,8 @@ namespace Evernus
         {
             if (!dontThrow)
                 throw;
+
+            result = std::make_shared<ItemPrice>();
         }
 
         mBuyPrices.emplace(key, result);
@@ -1334,27 +1334,27 @@ namespace Evernus
 
     double EvernusApplication::getTotalItemSellValue(const Item &item, quint64 locationId) const
     {
-        auto price = getTypeSellPrice(item.getTypeId(), locationId, false).getValue() * item.getQuantity();
+        auto price = getTypeSellPrice(item.getTypeId(), locationId, false)->getValue() * item.getQuantity();
         for (const auto &child : item)
             price += getTotalItemSellValue(*child, locationId);
 
         return price;
     }
 
-    ItemPrice EvernusApplication::saveTypePrice(ItemPrice::Type type,
-                                                quint64 stationId,
-                                                EveType::IdType typeId,
-                                                const QDateTime &priceTime,
-                                                double price) const
+    std::shared_ptr<ItemPrice> EvernusApplication::saveTypePrice(ItemPrice::Type type,
+                                                                 quint64 stationId,
+                                                                 EveType::IdType typeId,
+                                                                 const QDateTime &priceTime,
+                                                                 double price) const
     {
-        ItemPrice item;
-        item.setType(type);
-        item.setLocationId(stationId);
-        item.setTypeId(typeId);
-        item.setUpdateTime(priceTime);
-        item.setValue(price);
+        auto item = std::make_shared<ItemPrice>();
+        item->setType(type);
+        item->setLocationId(stationId);
+        item->setTypeId(typeId);
+        item->setUpdateTime(priceTime);
+        item->setValue(price);
 
-        mItemPriceRepository->store(item);
+        mItemPriceRepository->store(*item);
 
         return item;
     }
@@ -1373,13 +1373,13 @@ namespace Evernus
         mUpdateTimerRepository->store(storedTimer);
     }
 
-    const EveType &EvernusApplication::getEveType(EveType::IdType id) const
+    EveTypeRepository::EntityPtr EvernusApplication::getEveType(EveType::IdType id) const
     {
         const auto it = mTypeCache.find(id);
         if (it != std::end(mTypeCache))
             return it->second;
 
-        EveType type;
+        EveTypeRepository::EntityPtr type;
 
         try
         {
@@ -1387,18 +1387,19 @@ namespace Evernus
         }
         catch (const EveTypeRepository::NotFoundException &)
         {
+            type = std::make_shared<EveType>();
         }
 
         return mTypeCache.emplace(id, type).first->second;
     }
 
-    const MarketGroup &EvernusApplication::getMarketGroupParent(MarketGroup::IdType id) const
+    MarketGroupRepository::EntityPtr EvernusApplication::getMarketGroupParent(MarketGroup::IdType id) const
     {
         const auto it = mTypeMarketGroupParentCache.find(id);
         if (it != std::end(mTypeMarketGroupParentCache))
             return it->second;
 
-        MarketGroup result;
+        MarketGroupRepository::EntityPtr result;
 
         try
         {
@@ -1406,18 +1407,19 @@ namespace Evernus
         }
         catch (const MarketGroupRepository::NotFoundException &)
         {
+            result = std::make_shared<MarketGroup>();
         }
 
         return mTypeMarketGroupParentCache.emplace(id, result).first->second;
     }
 
-    const MarketGroup &EvernusApplication::getMarketGroup(MarketGroup::IdType id) const
+    MarketGroupRepository::EntityPtr EvernusApplication::getMarketGroup(MarketGroup::IdType id) const
     {
         const auto it = mTypeMarketGroupCache.find(id);
         if (it != std::end(mTypeMarketGroupCache))
             return it->second;
 
-        MarketGroup result;
+        MarketGroupRepository::EntityPtr result;
 
         try
         {
@@ -1425,6 +1427,7 @@ namespace Evernus
         }
         catch (const MarketGroupRepository::NotFoundException &)
         {
+            result = std::make_shared<MarketGroup>();
         }
 
         return mTypeMarketGroupCache.emplace(id, result).first->second;

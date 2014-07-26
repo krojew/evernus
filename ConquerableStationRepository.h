@@ -29,7 +29,7 @@ namespace Evernus
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
 
-        virtual ConquerableStation populate(const QSqlRecord &record) const override;
+        virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         void create() const;
 

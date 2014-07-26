@@ -29,13 +29,13 @@ namespace Evernus
         return "id";
     }
 
-    ItemCost ItemCostRepository::populate(const QSqlRecord &record) const
+    ItemCostRepository::EntityPtr ItemCostRepository::populate(const QSqlRecord &record) const
     {
-        ItemCost itemCost{record.value("id").value<ItemCost::IdType>()};
-        itemCost.setCharacterId(record.value("character_id").value<Character::IdType>());
-        itemCost.setTypeId(record.value("type_id").value<EveType::IdType>());
-        itemCost.setCost(record.value("cost").toDouble());
-        itemCost.setNew(false);
+        auto itemCost = std::make_shared<ItemCost>(record.value("id").value<ItemCost::IdType>());
+        itemCost->setCharacterId(record.value("character_id").value<Character::IdType>());
+        itemCost->setTypeId(record.value("type_id").value<EveType::IdType>());
+        itemCost->setCost(record.value("cost").toDouble());
+        itemCost->setNew(false);
 
         return itemCost;
     }
@@ -53,14 +53,14 @@ namespace Evernus
         exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type_id)"}.arg(getTableName()));
     }
 
-    std::vector<ItemCost> ItemCostRepository::fetchForCharacter(Character::IdType id) const
+    ItemCostRepository::EntityList ItemCostRepository::fetchForCharacter(Character::IdType id) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ?"}.arg(getTableName()));
         query.bindValue(0, id);
 
         DatabaseUtils::execQuery(query);
 
-        std::vector<ItemCost> result;
+        EntityList result;
 
         const auto size = query.size();
         if (size > 0)
@@ -72,7 +72,7 @@ namespace Evernus
         return result;
     }
 
-    ItemCost ItemCostRepository::fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const
+    ItemCostRepository::EntityPtr ItemCostRepository::fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND type_id = ?"}.arg(getTableName()));
         query.bindValue(0, characterId);

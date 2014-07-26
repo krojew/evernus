@@ -31,18 +31,18 @@ namespace Evernus
         return "id";
     }
 
-    Item ItemRepository::populate(const QSqlRecord &record) const
+    ItemRepository::EntityPtr ItemRepository::populate(const QSqlRecord &record) const
     {
         const auto locationId = record.value("location_id");
         const auto parentId = record.value("parent_id");
 
-        Item item{record.value("id").value<Item::IdType>()};
-        item.setListId(record.value("asset_list_id").value<AssetList::IdType>());
-        item.setParentId((parentId.isNull()) ? (Item::ParentIdType{}) : (parentId.value<Item::IdType>()));
-        item.setTypeId(record.value("type_id").toUInt());
-        item.setLocationId((locationId.isNull()) ? (ItemData::LocationIdType{}) : (locationId.value<ItemData::LocationIdType::value_type>()));
-        item.setQuantity(record.value("quantity").toUInt());
-        item.setNew(false);
+        auto item = std::make_shared<Item>(record.value("id").value<Item::IdType>());
+        item->setListId(record.value("asset_list_id").value<AssetList::IdType>());
+        item->setParentId((parentId.isNull()) ? (Item::ParentIdType{}) : (parentId.value<Item::IdType>()));
+        item->setTypeId(record.value("type_id").toUInt());
+        item->setLocationId((locationId.isNull()) ? (ItemData::LocationIdType{}) : (locationId.value<ItemData::LocationIdType::value_type>()));
+        item->setQuantity(record.value("quantity").toUInt());
+        item->setNew(false);
 
         return item;
     }

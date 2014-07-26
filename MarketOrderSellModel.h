@@ -66,6 +66,6 @@ namespace Evernus
         const ItemCostProvider &mItemCostProvider;
         const CacheTimerProvider &mCacheTimerProvider;
 
-        virtual std::vector<MarketOrder> getOrders() const override;
+        virtual OrderList getOrders() const override;
     };
 }

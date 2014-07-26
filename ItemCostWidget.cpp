@@ -102,7 +102,7 @@ namespace Evernus
         try
         {
             auto cost = mItemCostRepo.find(id);
-            showCostEditDialog(cost);
+            showCostEditDialog(*cost);
         }
         catch (const ItemCostRepository::NotFoundException &)
         {

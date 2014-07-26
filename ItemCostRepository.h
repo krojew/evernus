@@ -29,12 +29,12 @@ namespace Evernus
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
 
-        virtual ItemCost populate(const QSqlRecord &record) const override;
+        virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         void create(const Repository<Character> &characterRepo) const;
 
-        std::vector<ItemCost> fetchForCharacter(Character::IdType id) const;
-        ItemCost fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const;
+        EntityList fetchForCharacter(Character::IdType id) const;
+        EntityPtr fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const;
 
     private:
         virtual QStringList getColumns() const override;

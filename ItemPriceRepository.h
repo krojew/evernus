@@ -31,18 +31,18 @@ namespace Evernus
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
 
-        virtual ItemPrice populate(const QSqlRecord &record) const override;
+        virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         void create() const;
 
-        ItemPrice findSellByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const;
-        ItemPrice findBuyByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const;
+        EntityPtr findSellByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const;
+        EntityPtr findBuyByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const;
 
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const ItemPrice &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const ItemPrice &entity, QSqlQuery &query) const override;
 
-        ItemPrice findByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId, ItemPrice::Type priceType) const;
+        EntityPtr findByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId, ItemPrice::Type priceType) const;
     };
 }

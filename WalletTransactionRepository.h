@@ -36,7 +36,7 @@ namespace Evernus
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
 
-        virtual WalletTransaction populate(const QSqlRecord &record) const override;
+        virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         void create(const Repository<Character> &characterRepo) const;
 
@@ -45,11 +45,11 @@ namespace Evernus
         void setIgnored(WalletTransaction::IdType id, bool ignored) const;
         void deleteOldEntires(const QDateTime &from) const;
 
-        std::vector<WalletTransaction> fetchForCharacterInRange(Character::IdType characterId,
-                                                                const QDateTime &from,
-                                                                const QDateTime &till,
-                                                                EntryType type,
-                                                                EveType::IdType typeId = EveType::invalidId) const;
+        EntityList fetchForCharacterInRange(Character::IdType characterId,
+                                            const QDateTime &from,
+                                            const QDateTime &till,
+                                            EntryType type,
+                                            EveType::IdType typeId = EveType::invalidId) const;
 
     private:
         virtual QStringList getColumns() const override;

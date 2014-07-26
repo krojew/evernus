@@ -18,6 +18,7 @@
 #include <unordered_set>
 #include <functional>
 #include <vector>
+#include <memory>
 
 #include "ConquerableStationList.h"
 #include "WalletTransactions.h"

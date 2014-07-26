@@ -25,15 +25,13 @@ namespace Evernus
         : public Repository<RefType>
     {
     public:
-        typedef std::vector<RefType> RefTypeList;
-
         using Repository::Repository;
         virtual ~RefTypeRepository() = default;
 
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
 
-        virtual RefType populate(const QSqlRecord &record) const override;
+        virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         void create() const;
 

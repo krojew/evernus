@@ -30,7 +30,7 @@ namespace Evernus
         return "id";
     }
 
-    MarketOrder MarketOrderRepository::populate(const QSqlRecord &record) const
+    MarketOrderRepository::EntityPtr MarketOrderRepository::populate(const QSqlRecord &record) const
     {
         auto issued = record.value("issued").toDateTime();
         issued.setTimeSpec(Qt::UTC);
@@ -41,25 +41,25 @@ namespace Evernus
         auto lastSeen = record.value("last_seen").toDateTime();
         lastSeen.setTimeSpec(Qt::UTC);
 
-        MarketOrder marketOrder{record.value("id").value<MarketOrder::IdType>()};
-        marketOrder.setCharacterId(record.value("character_id").value<Character::IdType>());
-        marketOrder.setLocationId(record.value("location_id").toULongLong());
-        marketOrder.setVolumeEntered(record.value("volume_entered").toUInt());
-        marketOrder.setVolumeRemaining(record.value("volume_remaining").toUInt());
-        marketOrder.setMinVolume(record.value("min_volume").toUInt());
-        marketOrder.setDelta(record.value("delta").toInt());
-        marketOrder.setState(static_cast<MarketOrder::State>(record.value("state").toInt()));
-        marketOrder.setTypeId(record.value("type_id").value<EveType::IdType>());
-        marketOrder.setRange(record.value("range").value<short>());
-        marketOrder.setAccountKey(record.value("account_key").value<short>());
-        marketOrder.setDuration(record.value("duration").value<short>());
-        marketOrder.setEscrow(record.value("escrow").toDouble());
-        marketOrder.setPrice(record.value("price").toDouble());
-        marketOrder.setType(static_cast<MarketOrder::Type>(record.value("type").toInt()));
-        marketOrder.setIssued(issued);
-        marketOrder.setFirstSeen(firstSeen);
-        marketOrder.setLastSeen(lastSeen);
-        marketOrder.setNew(false);
+        auto marketOrder = std::make_shared<MarketOrder>(record.value("id").value<MarketOrder::IdType>());
+        marketOrder->setCharacterId(record.value("character_id").value<Character::IdType>());
+        marketOrder->setLocationId(record.value("location_id").toULongLong());
+        marketOrder->setVolumeEntered(record.value("volume_entered").toUInt());
+        marketOrder->setVolumeRemaining(record.value("volume_remaining").toUInt());
+        marketOrder->setMinVolume(record.value("min_volume").toUInt());
+        marketOrder->setDelta(record.value("delta").toInt());
+        marketOrder->setState(static_cast<MarketOrder::State>(record.value("state").toInt()));
+        marketOrder->setTypeId(record.value("type_id").value<EveType::IdType>());
+        marketOrder->setRange(record.value("range").value<short>());
+        marketOrder->setAccountKey(record.value("account_key").value<short>());
+        marketOrder->setDuration(record.value("duration").value<short>());
+        marketOrder->setEscrow(record.value("escrow").toDouble());
+        marketOrder->setPrice(record.value("price").toDouble());
+        marketOrder->setType(static_cast<MarketOrder::Type>(record.value("type").toInt()));
+        marketOrder->setIssued(issued);
+        marketOrder->setFirstSeen(firstSeen);
+        marketOrder->setLastSeen(lastSeen);
+        marketOrder->setNew(false);
 
         return marketOrder;
     }
@@ -153,7 +153,7 @@ namespace Evernus
         return result;
     }
 
-    MarketOrderRepository::OrderList MarketOrderRepository::fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const
+    MarketOrderRepository::EntityList MarketOrderRepository::fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND type = ?"}.arg(getTableName()));
         query.bindValue(0, characterId);
@@ -161,7 +161,7 @@ namespace Evernus
 
         DatabaseUtils::execQuery(query);
 
-        OrderList result;
+        EntityList result;
 
         const auto size = query.size();
         if (size > 0)
@@ -173,14 +173,14 @@ namespace Evernus
         return result;
     }
 
-    MarketOrderRepository::OrderList MarketOrderRepository::fetchArchivedForCharacter(Character::IdType characterId) const
+    MarketOrderRepository::EntityList MarketOrderRepository::fetchArchivedForCharacter(Character::IdType characterId) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND last_seen IS NOT NULL"}.arg(getTableName()));
         query.bindValue(0, characterId);
 
         DatabaseUtils::execQuery(query);
 
-        OrderList result;
+        EntityList result;
 
         const auto size = query.size();
         if (size > 0)

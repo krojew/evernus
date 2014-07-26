@@ -27,19 +27,17 @@ namespace Evernus
         : public Repository<AssetValueSnapshot>
     {
     public:
-        typedef std::vector<AssetValueSnapshot> SnapshotList;
-
         using Repository::Repository;
         virtual ~AssetValueSnapshotRepository() = default;
 
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
 
-        virtual AssetValueSnapshot populate(const QSqlRecord &record) const override;
+        virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         void create(const Repository<Character> &characterRepo) const;
 
-        SnapshotList fetchRange(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const;
+        EntityList fetchRange(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const;
 
     private:
         virtual QStringList getColumns() const override;

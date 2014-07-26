@@ -78,7 +78,7 @@ namespace Evernus
         Q_ASSERT(mSelectedKeys.count() > 0);
 
         auto key = mKeyRepository.populate(mKeyModel.record(mSelectedKeys.first().row()));
-        showEditKeyDialog(key);
+        showEditKeyDialog(*key);
     }
 
     void CharacterManagerDialog::removeKey()

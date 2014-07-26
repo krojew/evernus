@@ -54,7 +54,7 @@ namespace Evernus
         {
             if (!query.exec())
             {
-                auto error = query.lastError().text();
+                const auto error = QString{"%1: %2"}.arg(query.lastError().text()).arg(query.lastQuery());
 
                 qCritical() << error;
                 throw std::runtime_error{error.toStdString()};

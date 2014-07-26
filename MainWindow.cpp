@@ -189,7 +189,7 @@ namespace Evernus
         {
             const auto character = mCharacterRepository.find(mCurrentCharacterId);
             mStatusWalletLabel->setText(tr("Wallet: <strong>%1</strong>")
-                .arg(character.getISKPresentation()));
+                .arg(character->getISKPresentation()));
         }
         else
         {

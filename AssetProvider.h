@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <memory>
+
 #include "Character.h"
 
 namespace Evernus
@@ -26,6 +28,6 @@ namespace Evernus
         AssetProvider() = default;
         virtual ~AssetProvider() = default;
 
-        virtual const AssetList &fetchAssetsForCharacter(Character::IdType id) const = 0;
+        virtual std::shared_ptr<AssetList> fetchAssetsForCharacter(Character::IdType id) const = 0;
     };
 }

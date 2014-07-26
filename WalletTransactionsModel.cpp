@@ -170,15 +170,15 @@ namespace Evernus
                 auto &data = mData.back();
 
                 data
-                    << entry.isIgnored()
-                    << entry.getTimestamp()
-                    << static_cast<int>(entry.getType())
-                    << entry.getQuantity()
-                    << mDataProvider.getTypeName(entry.getTypeId())
-                    << entry.getPrice()
-                    << entry.getClientName()
-                    << mDataProvider.getLocationName(entry.getLocationId())
-                    << entry.getId();
+                    << entry->isIgnored()
+                    << entry->getTimestamp()
+                    << static_cast<int>(entry->getType())
+                    << entry->getQuantity()
+                    << mDataProvider.getTypeName(entry->getTypeId())
+                    << entry->getPrice()
+                    << entry->getClientName()
+                    << mDataProvider.getLocationName(entry->getLocationId())
+                    << entry->getId();
             }
         }
 

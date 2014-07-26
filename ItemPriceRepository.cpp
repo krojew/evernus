@@ -29,18 +29,18 @@ namespace Evernus
         return "id";
     }
 
-    ItemPrice ItemPriceRepository::populate(const QSqlRecord &record) const
+    ItemPriceRepository::EntityPtr ItemPriceRepository::populate(const QSqlRecord &record) const
     {
         auto dt = record.value("update_time").toDateTime();
         dt.setTimeSpec(Qt::UTC);
 
-        ItemPrice itemPrice{record.value("id").value<ItemPrice::IdType>()};
-        itemPrice.setType(static_cast<ItemPrice::Type>(record.value("type").toInt()));
-        itemPrice.setTypeId(record.value("type_id").value<ItemPrice::TypeIdType>());
-        itemPrice.setLocationId(record.value("location_id").value<ItemPrice::LocationIdType>());
-        itemPrice.setUpdateTime(dt);
-        itemPrice.setValue(record.value("value").toDouble());
-        itemPrice.setNew(false);
+        auto itemPrice = std::make_shared<ItemPrice>(record.value("id").value<ItemPrice::IdType>());
+        itemPrice->setType(static_cast<ItemPrice::Type>(record.value("type").toInt()));
+        itemPrice->setTypeId(record.value("type_id").value<ItemPrice::TypeIdType>());
+        itemPrice->setLocationId(record.value("location_id").value<ItemPrice::LocationIdType>());
+        itemPrice->setUpdateTime(dt);
+        itemPrice->setValue(record.value("value").toDouble());
+        itemPrice->setNew(false);
 
         return itemPrice;
     }
@@ -60,12 +60,12 @@ namespace Evernus
             .arg(getTableName()));
     }
 
-    ItemPrice ItemPriceRepository::findSellByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const
+    ItemPriceRepository::EntityPtr ItemPriceRepository::findSellByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const
     {
         return findByTypeAndLocation(typeId, locationId, ItemPrice::Type::Sell);
     }
 
-    ItemPrice ItemPriceRepository::findBuyByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const
+    ItemPriceRepository::EntityPtr ItemPriceRepository::findBuyByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const
     {
         return findByTypeAndLocation(typeId, locationId, ItemPrice::Type::Buy);
     }
@@ -105,7 +105,7 @@ namespace Evernus
         query.addBindValue(entity.getValue());
     }
 
-    ItemPrice ItemPriceRepository
+    ItemPriceRepository::EntityPtr ItemPriceRepository
     ::findByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId, ItemPrice::Type priceType) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ?"}

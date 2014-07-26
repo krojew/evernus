@@ -29,26 +29,26 @@ namespace Evernus
         return "typeID";
     }
 
-    EveType EveTypeRepository::populate(const QSqlRecord &record) const
+    EveTypeRepository::EntityPtr EveTypeRepository::populate(const QSqlRecord &record) const
     {
         const auto marketGroupId = record.value("marketGroupID");
         const auto description = record.value("description");
         const auto raceId = record.value("raceID");
 
-        EveType type{record.value("typeID").value<EveType::IdType>()};
-        type.setGroupId(record.value("groupID").toUInt());
-        type.setName(record.value("typeName").toString());
-        type.setDescription((description.isNull()) ? (EveType::DescriptionType{}) : (description.toString()));
-        type.setMass(record.value("mass").toDouble());
-        type.setVolume(record.value("volume").toDouble());
-        type.setCapacity(record.value("capacity").toDouble());
-        type.setPortionSize(record.value("portionSize").toInt());
-        type.setRaceId((raceId.isNull()) ? (EveType::RaceIdType{}) : (raceId.value<EveType::RaceIdType::value_type>()));
-        type.setBasePrice(record.value("basePrice").toDouble());
-        type.setPublished(record.value("published").toInt() != 0);
-        type.setMarketGroupId((marketGroupId.isNull()) ? (EveType::MarketGroupIdType{}) : (marketGroupId.value<MarketGroup::IdType>()));
-        type.setChanceOfDuplicating(record.value("chanceOfDuplicating").toDouble());
-        type.setNew(false);
+        auto type = std::make_shared<EveType>(record.value("typeID").value<EveType::IdType>());
+        type->setGroupId(record.value("groupID").toUInt());
+        type->setName(record.value("typeName").toString());
+        type->setDescription((description.isNull()) ? (EveType::DescriptionType{}) : (description.toString()));
+        type->setMass(record.value("mass").toDouble());
+        type->setVolume(record.value("volume").toDouble());
+        type->setCapacity(record.value("capacity").toDouble());
+        type->setPortionSize(record.value("portionSize").toInt());
+        type->setRaceId((raceId.isNull()) ? (EveType::RaceIdType{}) : (raceId.value<EveType::RaceIdType::value_type>()));
+        type->setBasePrice(record.value("basePrice").toDouble());
+        type->setPublished(record.value("published").toInt() != 0);
+        type->setMarketGroupId((marketGroupId.isNull()) ? (EveType::MarketGroupIdType{}) : (marketGroupId.value<MarketGroup::IdType>()));
+        type->setChanceOfDuplicating(record.value("chanceOfDuplicating").toDouble());
+        type->setNew(false);
 
         return type;
     }

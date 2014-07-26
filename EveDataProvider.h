@@ -15,6 +15,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <memory>
 
 #include <QDateTime>
 
@@ -40,8 +41,8 @@ namespace Evernus
         virtual QString getTypeMetaGroupName(EveType::IdType id) const = 0;
 
         virtual double getTypeVolume(EveType::IdType id) const = 0;
-        virtual ItemPrice getTypeSellPrice(EveType::IdType id, quint64 stationId) const = 0;
-        virtual ItemPrice getTypeBuyPrice(EveType::IdType id, quint64 stationId) const = 0;
+        virtual std::shared_ptr<ItemPrice> getTypeSellPrice(EveType::IdType id, quint64 stationId) const = 0;
+        virtual std::shared_ptr<ItemPrice> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const = 0;
 
         virtual void setTypeSellPrice(quint64 stationId,
                                       EveType::IdType typeId,

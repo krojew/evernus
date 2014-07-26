@@ -14,6 +14,9 @@
  */
 #pragma once
 
+#include <vector>
+#include <memory>
+
 #include <QAbstractTableModel>
 
 #include "Character.h"
@@ -46,6 +49,6 @@ namespace Evernus
     private:
         const Repository<Character> &mCharacterRepository;
 
-        std::vector<Character> mData;
+        std::vector<std::shared_ptr<Character>> mData;
     };
 }

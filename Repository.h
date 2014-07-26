@@ -15,6 +15,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include <QSqlDatabase>
 
@@ -26,13 +27,16 @@ namespace Evernus
     public:
         struct NotFoundException : std::exception { };
 
+        typedef std::shared_ptr<T> EntityPtr;
+        typedef std::vector<EntityPtr> EntityList;
+
         Repository(const QSqlDatabase &db);
         virtual ~Repository() = default;
 
         virtual QString getTableName() const = 0;
         virtual QString getIdColumn() const = 0;
 
-        virtual T populate(const QSqlRecord &record) const = 0;
+        virtual EntityPtr populate(const QSqlRecord &record) const = 0;
 
         QSqlQuery exec(const QString &query) const;
         QSqlQuery prepare(const QString &queryStr) const;
@@ -44,10 +48,10 @@ namespace Evernus
         template<class Id>
         void remove(Id &&id) const;
 
-        std::vector<T> fetchAll() const;
+        EntityList fetchAll() const;
 
         template<class Id>
-        T find(Id &&id) const;
+        EntityPtr find(Id &&id) const;
 
         QSqlDatabase getDatabase() const;
 

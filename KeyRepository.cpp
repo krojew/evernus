@@ -29,10 +29,10 @@ namespace Evernus
         return "id";
     }
 
-    Key KeyRepository::populate(const QSqlRecord &record) const
+    KeyRepository::EntityPtr KeyRepository::populate(const QSqlRecord &record) const
     {
-        Key key{record.value("id").value<Key::IdType>(), record.value("code").toString()};
-        key.setNew(false);
+        auto key = std::make_shared<Key>(record.value("id").value<Key::IdType>(), record.value("code").toString());
+        key->setNew(false);
 
         return key;
     }

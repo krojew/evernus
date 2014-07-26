@@ -29,16 +29,16 @@ namespace Evernus
         return "id";
     }
 
-    CacheTimer CacheTimerRepository::populate(const QSqlRecord &record) const
+    CacheTimerRepository::EntityPtr CacheTimerRepository::populate(const QSqlRecord &record) const
     {
         auto dt = record.value("cache_until").toDateTime();
         dt.setTimeSpec(Qt::UTC);
 
-        CacheTimer cacheTimer{record.value("id").value<CacheTimer::IdType>()};
-        cacheTimer.setCharacterId(record.value("character_id").value<Character::IdType>());
-        cacheTimer.setType(static_cast<TimerType>(record.value("type").toInt()));
-        cacheTimer.setCacheUntil(dt);
-        cacheTimer.setNew(false);
+        auto cacheTimer = std::make_shared<CacheTimer>(record.value("id").value<CacheTimer::IdType>());
+        cacheTimer->setCharacterId(record.value("character_id").value<Character::IdType>());
+        cacheTimer->setType(static_cast<TimerType>(record.value("type").toInt()));
+        cacheTimer->setCacheUntil(dt);
+        cacheTimer->setNew(false);
 
         return cacheTimer;
     }

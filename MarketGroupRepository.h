@@ -29,9 +29,9 @@ namespace Evernus
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
 
-        virtual MarketGroup populate(const QSqlRecord &record) const override;
+        virtual EntityPtr populate(const QSqlRecord &record) const override;
 
-        MarketGroup findParent(MarketGroup::IdType id) const;
+        EntityPtr findParent(MarketGroup::IdType id) const;
 
     private:
         virtual QStringList getColumns() const override;

@@ -134,8 +134,8 @@ namespace Evernus
     {
         ItemPriceImporter::TypeLocationPairs target;
 
-        const auto &assets = mAssetProvider.fetchAssetsForCharacter(getCharacterId());
-        for (const auto &item : assets)
+        const auto assets = mAssetProvider.fetchAssetsForCharacter(getCharacterId());
+        for (const auto &item : *assets)
         {
             const auto locationId = item->getLocationId();
             if (!locationId)

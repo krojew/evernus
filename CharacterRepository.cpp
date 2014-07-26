@@ -30,22 +30,22 @@ namespace Evernus
         return "id";
     }
 
-    Character CharacterRepository::populate(const QSqlRecord &record) const
+    CharacterRepository::EntityPtr CharacterRepository::populate(const QSqlRecord &record) const
     {
         const auto keyId = record.value("key_id");
 
-        Character character{record.value("id").value<Character::IdType>()};
-        character.setKeyId((keyId.isNull()) ? (Character::KeyIdType{}) : (keyId.value<Key::IdType>()));
-        character.setName(record.value("name").toString());
-        character.setCorporationName(record.value("corporation_name").toString());
-        character.setRace(record.value("race").toString());
-        character.setBloodline(record.value("bloodline").toString());
-        character.setAncestry(record.value("ancestry").toString());
-        character.setGender(record.value("gender").toString());
-        character.setISK(record.value("isk").value<CharacterData::ISKType>());
-        character.setCorpStanding(record.value("corp_standing").toFloat());
-        character.setFactionStanding(record.value("faction_standing").toFloat());
-        character.setEnabled(record.value("enabled").toBool());
+        auto character = std::make_shared<Character>(record.value("id").value<Character::IdType>());
+        character->setKeyId((keyId.isNull()) ? (Character::KeyIdType{}) : (keyId.value<Key::IdType>()));
+        character->setName(record.value("name").toString());
+        character->setCorporationName(record.value("corporation_name").toString());
+        character->setRace(record.value("race").toString());
+        character->setBloodline(record.value("bloodline").toString());
+        character->setAncestry(record.value("ancestry").toString());
+        character->setGender(record.value("gender").toString());
+        character->setISK(record.value("isk").value<CharacterData::ISKType>());
+        character->setCorpStanding(record.value("corp_standing").toFloat());
+        character->setFactionStanding(record.value("faction_standing").toFloat());
+        character->setEnabled(record.value("enabled").toBool());
 
         CharacterData::OrderAmountSkills orderAmountSkills;
         orderAmountSkills.mTrade = record.value("trade_skill").toInt();
@@ -68,11 +68,11 @@ namespace Evernus
         contractSkills.mContracting = record.value("contracting_skill").toInt();
         contractSkills.mCorporationContracting = record.value("corporation_contracting_skill").toInt();
 
-        character.setOrderAmountSkills(std::move(orderAmountSkills));
-        character.setTradeRangeSkills(std::move(tradeRangeSkills));
-        character.setFeeSkills(std::move(feeSkills));
-        character.setContractSkills(std::move(contractSkills));
-        character.setNew(false);
+        character->setOrderAmountSkills(std::move(orderAmountSkills));
+        character->setTradeRangeSkills(std::move(tradeRangeSkills));
+        character->setFeeSkills(std::move(feeSkills));
+        character->setContractSkills(std::move(contractSkills));
+        character->setNew(false);
 
         return character;
     }

@@ -279,7 +279,7 @@ namespace Evernus
         try
         {
             const auto character = mCharacterRepository.find(getCharacterId());
-            updateCharacterMarketData(character.getOrderAmountSkills());
+            updateCharacterMarketData(character->getOrderAmountSkills());
         }
         catch (const CharacterRepository::NotFoundException &)
         {
@@ -368,24 +368,24 @@ namespace Evernus
             {
                 const auto character = mCharacterRepository.find(id);
 
-                const auto orderAmountSkills = character.getOrderAmountSkills();
-                const auto tradeRangeSkills = character.getTradeRangeSkills();
-                const auto feeSkills = character.getFeeSkills();
-                const auto contractSkills = character.getContractSkills();
+                const auto orderAmountSkills = character->getOrderAmountSkills();
+                const auto tradeRangeSkills = character->getTradeRangeSkills();
+                const auto feeSkills = character->getFeeSkills();
+                const auto contractSkills = character->getContractSkills();
 
-                mNameLabel->setText(character.getName());
+                mNameLabel->setText(character->getName());
                 mBackgroundLabel->setText(QString{"%1 %2, %3, %4"}
-                    .arg(character.getGender())
-                    .arg(character.getRace())
-                    .arg(character.getBloodline())
-                    .arg(character.getAncestry()));
-                mCorporationLabel->setText(character.getCorporationName());
-                mISKLabel->setText(character.getISKPresentation());
+                    .arg(character->getGender())
+                    .arg(character->getRace())
+                    .arg(character->getBloodline())
+                    .arg(character->getAncestry()));
+                mCorporationLabel->setText(character->getCorporationName());
+                mISKLabel->setText(character->getISKPresentation());
 
                 updateCharacterMarketData(orderAmountSkills);
 
-                mCorpStandingEdit->setValue(character.getCorpStanding());
-                mFactionStandingEdit->setValue(character.getFactionStanding());
+                mCorpStandingEdit->setValue(character->getCorpStanding());
+                mFactionStandingEdit->setValue(character->getFactionStanding());
 
                 mTradeSkillEdit->setValue(orderAmountSkills.mTrade);
                 mRetailSkillEdit->setValue(orderAmountSkills.mRetail);

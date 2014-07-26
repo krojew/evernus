@@ -29,15 +29,16 @@ namespace Evernus
         return "id";
     }
 
-    WalletSnapshot WalletSnapshotRepository::populate(const QSqlRecord &record) const
+    WalletSnapshotRepository::EntityPtr WalletSnapshotRepository::populate(const QSqlRecord &record) const
     {
         auto dt = record.value("timestamp").toDateTime();
         dt.setTimeSpec(Qt::UTC);
 
-        WalletSnapshot walletSnapshot{record.value("id").value<WalletSnapshot::IdType>(), record.value("balance").toDouble()};
-        walletSnapshot.setTimestamp(dt);
-        walletSnapshot.setCharacterId(record.value("character_id").value<Character::IdType>());
-        walletSnapshot.setNew(false);
+        auto walletSnapshot
+            = std::make_shared<WalletSnapshot>(record.value("id").value<WalletSnapshot::IdType>(), record.value("balance").toDouble());
+        walletSnapshot->setTimestamp(dt);
+        walletSnapshot->setCharacterId(record.value("character_id").value<Character::IdType>());
+        walletSnapshot->setNew(false);
 
         return walletSnapshot;
     }
@@ -55,7 +56,7 @@ namespace Evernus
         exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_character_timestamp ON %1(character_id, timestamp)"}.arg(getTableName()));
     }
 
-    WalletSnapshotRepository::SnapshotList WalletSnapshotRepository
+    WalletSnapshotRepository::EntityList WalletSnapshotRepository
     ::fetchRange(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ? ORDER BY timestamp ASC"}
@@ -67,7 +68,7 @@ namespace Evernus
 
         DatabaseUtils::execQuery(query);
 
-        SnapshotList result;
+        EntityList result;
 
         const auto size = query.size();
         if (size > 0)

@@ -39,11 +39,11 @@ namespace Evernus
         return "id";
     }
 
-    AssetList AssetListRepository::populate(const QSqlRecord &record) const
+    AssetListRepository::EntityPtr AssetListRepository::populate(const QSqlRecord &record) const
     {
-        AssetList assetList{record.value("id").value<AssetList::IdType>()};
-        assetList.setCharacterId(record.value("character_id").value<Character::IdType>());
-        assetList.setNew(false);
+        EntityPtr assetList = std::make_shared<AssetList>(record.value("id").value<AssetList::IdType>());
+        assetList->setCharacterId(record.value("character_id").value<Character::IdType>());
+        assetList->setNew(false);
 
         return assetList;
     }
@@ -58,7 +58,7 @@ namespace Evernus
         exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
     }
 
-    AssetList AssetListRepository::fetchForCharacter(Character::IdType id) const
+    AssetListRepository::EntityPtr AssetListRepository::fetchForCharacter(Character::IdType id) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ?"}.arg(getTableName()));
         query.bindValue(0, id);
@@ -69,7 +69,7 @@ namespace Evernus
         auto assets = populate(query.record());
 
         query = mItemRepository.prepare(QString{"SELECT * FROM %1 WHERE asset_list_id = ?"}.arg(mItemRepository.getTableName()));
-        query.bindValue(0, assets.getId());
+        query.bindValue(0, assets->getId());
 
         DatabaseUtils::execQuery(query);
 
@@ -79,9 +79,9 @@ namespace Evernus
         while (query.next())
         {
             auto item = mItemRepository.populate(query.record());
-            auto itemPtr = std::make_unique<Item>(std::move(item));
+            auto itemPtr = std::make_unique<Item>(std::move(*item));
 
-            itemMap[item.getId()] = itemPtr.get();
+            itemMap[itemPtr->getId()] = itemPtr.get();
             items.emplace_back(std::move(itemPtr));
         }
 
@@ -95,7 +95,7 @@ namespace Evernus
         for (auto &item : items)
         {
             if (item)
-                assets.addItem(std::move(item));
+                assets->addItem(std::move(item));
         }
 
         return assets;

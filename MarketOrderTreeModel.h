@@ -65,7 +65,7 @@ namespace Evernus
             int childCount() const;
 
             const MarketOrder *getOrder() const noexcept;
-            void setOrder(const MarketOrder *order) noexcept;
+            void setOrder(const std::shared_ptr<MarketOrder> &order) noexcept;
 
             QString getGroupName() const;
             void setGroupName(const QString &name);
@@ -78,9 +78,11 @@ namespace Evernus
         private:
             std::vector<std::unique_ptr<TreeItem>> mChildItems;
             TreeItem *mParentItem = nullptr;
-            const MarketOrder *mOrder = nullptr;
+            std::shared_ptr<MarketOrder> mOrder;
             QString mGroupName;
         };
+
+        typedef std::vector<std::shared_ptr<MarketOrder>> OrderList;
 
         static const auto groupingColumn = 0;
 
@@ -92,8 +94,6 @@ namespace Evernus
         double mTotalISK = 0.;
         double mTotalSize = 0.;
 
-        std::vector<MarketOrder> mData;
-
         Character::IdType mCharacterId = Character::invalidId;
         Grouping mGrouping = Grouping::None;
 
@@ -102,7 +102,7 @@ namespace Evernus
         QString getGroupName(EveType::IdType typeId) const;
 
     private:
-        virtual std::vector<MarketOrder> getOrders() const = 0;
+        virtual OrderList getOrders() const = 0;
 
         quintptr getGroupingId(const MarketOrder &order) const;
         QString getGroupingData(const MarketOrder &order) const;

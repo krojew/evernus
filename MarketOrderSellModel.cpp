@@ -75,42 +75,42 @@ namespace Evernus
             if (column == priceColumn)
             {
                 const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getLocationId());
-                if (price.isNew())
+                if (price->isNew())
                     return tr("No price data-> Please import prices from Assets tab or by using Margin tool.");
 
                 QLocale locale;
 
-                if (price.getValue() < data->getPrice())
+                if (price->getValue() < data->getPrice())
                 {
                     return tr("You have been undercut. Current price is %1 (%2 different from yours).\nClick the icon for details.")
-                        .arg(locale.toCurrencyString(price.getValue(), "ISK"))
-                        .arg(locale.toCurrencyString(price.getValue() - data->getPrice(), "ISK"));
+                        .arg(locale.toCurrencyString(price->getValue(), "ISK"))
+                        .arg(locale.toCurrencyString(price->getValue() - data->getPrice(), "ISK"));
                 }
 
                 QSettings settings;
                 const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
-                if (price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
+                if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                 {
                     return tr("Price data is too old (valid on %1).\nPlease import prices from Assets tab or by using Margin tool.")
-                        .arg(locale.toString(price.getUpdateTime().toLocalTime()));
+                        .arg(locale.toString(price->getUpdateTime().toLocalTime()));
                 }
 
-                return tr("Your price was best on %1").arg(locale.toString(price.getUpdateTime().toLocalTime()));
+                return tr("Your price was best on %1").arg(locale.toString(price->getUpdateTime().toLocalTime()));
             }
             break;
         case Qt::DecorationRole:
             if (column == priceColumn)
             {
                 const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getLocationId());
-                if (price.isNew())
+                if (price->isNew())
                     return QIcon{":/images/error.png"};
 
-                if (price.getValue() < data->getPrice())
+                if (price->getValue() < data->getPrice())
                     return QIcon{":/images/exclamation.png"};
 
                 QSettings settings;
                 const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
-                if (price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
+                if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                     return QIcon{":/images/error.png"};
 
                 return QIcon{":/images/accept.png"};
@@ -131,18 +131,18 @@ namespace Evernus
             case statusColumn:
                 return static_cast<int>(data->getState());
             case customCostColumn:
-                return mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId()).getCost();
+                return mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId())->getCost();
             case priceColumn:
                 return data->getPrice();
             case priceStatusColumn:
                 {
                     const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getLocationId());
-                    if (price.isNew())
+                    if (price->isNew())
                         return static_cast<int>(PriceStatus::NoData);
 
                     QSettings settings;
                     const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
-                    if (price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
+                    if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                         return static_cast<int>(PriceStatus::DataTooOld);
 
                     return static_cast<int>(PriceStatus::Ok);
@@ -156,17 +156,17 @@ namespace Evernus
             case profitColumn:
                 {
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    return data->getVolumeRemaining() * (data->getPrice() - cost.getCost());
+                    return data->getVolumeRemaining() * (data->getPrice() - cost->getCost());
                 }
             case totalProfitColumn:
                 {
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    return data->getVolumeEntered() * (data->getPrice() - cost.getCost());
+                    return data->getVolumeEntered() * (data->getPrice() - cost->getCost());
                 }
             case profitPerItemColumn:
                 {
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    return data->getPrice() - cost.getCost();
+                    return data->getPrice() - cost->getCost();
                 }
             case timeLeftColumn:
                 {
@@ -217,8 +217,8 @@ namespace Evernus
                 case customCostColumn:
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        if (!cost.isNew())
-                            return locale.toCurrencyString(cost.getCost(), "ISK");
+                        if (!cost->isNew())
+                            return locale.toCurrencyString(cost->getCost(), "ISK");
                     }
                     break;
                 case priceColumn:
@@ -226,12 +226,12 @@ namespace Evernus
                 case priceStatusColumn:
                     {
                         const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getLocationId());
-                        if (price.isNew())
+                        if (price->isNew())
                             return tr("No price data");
 
                         QSettings settings;
                         const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
-                        if (price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
+                        if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                             return tr("Data too old");
                     }
                     break;
@@ -246,17 +246,17 @@ namespace Evernus
                 case profitColumn:
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        return locale.toCurrencyString(data->getVolumeRemaining() * (data->getPrice() - cost.getCost()), "ISK");
+                        return locale.toCurrencyString(data->getVolumeRemaining() * (data->getPrice() - cost->getCost()), "ISK");
                     }
                 case totalProfitColumn:
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        return locale.toCurrencyString(data->getVolumeEntered() * (data->getPrice() - cost.getCost()), "ISK");
+                        return locale.toCurrencyString(data->getVolumeEntered() * (data->getPrice() - cost->getCost()), "ISK");
                     }
                 case profitPerItemColumn:
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        return locale.toCurrencyString(data->getPrice() - cost.getCost(), "ISK");
+                        return locale.toCurrencyString(data->getPrice() - cost->getCost(), "ISK");
                     }
                 case timeLeftColumn:
                     {
@@ -296,14 +296,14 @@ namespace Evernus
             if (column == priceColumn)
             {
                 const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getLocationId());
-                if (!price.isNew())
+                if (!price->isNew())
                 {
-                    if (price.getValue() < data->getPrice())
+                    if (price->getValue() < data->getPrice())
                         return QColor{255, 192, 192};
 
                     QSettings settings;
                     const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
-                    if (price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
+                    if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                         return QColor{255, 255, 192};
                 }
             }
@@ -411,10 +411,10 @@ namespace Evernus
 
         OrderInfo info;
         info.mOrderPrice = order->getPrice();
-        info.mMarketPrice = price.getValue();
+        info.mMarketPrice = price->getValue();
         info.mTargetPrice = (info.mMarketPrice < info.mOrderPrice) ? (info.mMarketPrice - priceDelta) : (info.mOrderPrice);
         info.mOrderLocalTimestamp = mCacheTimerProvider.getLocalUpdateTimer(mCharacterId, TimerType::MarketOrders);
-        info.mMarketLocalTimestamp = price.getUpdateTime();
+        info.mMarketLocalTimestamp = price->getUpdateTime();
 
         return info;
     }
@@ -435,7 +435,7 @@ namespace Evernus
         return volumeColumn;
     }
 
-    std::vector<MarketOrder> MarketOrderSellModel::getOrders() const
+    MarketOrderTreeModel::OrderList MarketOrderSellModel::getOrders() const
     {
         return mOrderProvider.getSellOrders(mCharacterId);
     }

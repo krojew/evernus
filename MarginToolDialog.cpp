@@ -439,8 +439,8 @@ namespace Evernus
             if (settings.value(PriceSettings::preferCustomItemCostKey, true).toBool())
             {
                 const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, typeId);
-                if (!cost.isNew())
-                    buy = cost.getCost() - priceDelta;
+                if (!cost->isNew())
+                    buy = cost->getCost() - priceDelta;
             }
 
             if (settings.value(PathSettings::deleteLogsKey, true).toBool())
@@ -597,9 +597,9 @@ namespace Evernus
     MarginToolDialog::Taxes MarginToolDialog::calculateTaxes() const
     {
         const auto character = mCharacterRepository.find(mCharacterId);
-        const auto feeSkills = character.getFeeSkills();
+        const auto feeSkills = character->getFeeSkills();
         const auto brokerFee = (0.01 - 0.0005 * feeSkills.mBrokerRelations) /
-                               std::exp(0.1 * character.getFactionStanding() + 0.04 * character.getCorpStanding());
+                               std::exp(0.1 * character->getFactionStanding() + 0.04 * character->getCorpStanding());
         const auto salesTax = 0.015 * (1. - feeSkills.mAccounting * 0.1);
 
         return Taxes{brokerFee, salesTax};

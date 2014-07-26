@@ -14,7 +14,6 @@
  */
 #include <QLocale>
 
-#include "ItemCostRepository.h"
 #include "EveDataProvider.h"
 
 #include "ItemCostModel.h"
@@ -60,9 +59,9 @@ namespace Evernus
             const auto &cost = mData[index.row()];
             switch (index.column()) {
             case 0:
-                return mDataProvider.getTypeName(cost.getTypeId());
+                return mDataProvider.getTypeName(cost->getTypeId());
             case 1:
-                return QLocale{}.toCurrencyString(cost.getCost(), "ISK");
+                return QLocale{}.toCurrencyString(cost->getCost(), "ISK");
             }
         }
         else if (role == Qt::UserRole)
@@ -70,9 +69,9 @@ namespace Evernus
             const auto &cost = mData[index.row()];
             switch (index.column()) {
             case 0:
-                return mDataProvider.getTypeName(cost.getTypeId());
+                return mDataProvider.getTypeName(cost->getTypeId());
             case 1:
-                return cost.getCost();
+                return cost->getCost();
             }
         }
 
@@ -109,6 +108,6 @@ namespace Evernus
 
     ItemCost::IdType ItemCostModel::getId(int row) const
     {
-        return mData[row].getId();
+        return mData[row]->getId();
     }
 }

@@ -25,19 +25,17 @@ namespace Evernus
         : public Repository<MarketOrderValueSnapshot>
     {
     public:
-        typedef std::vector<MarketOrderValueSnapshot> SnapshotList;
-
         using Repository::Repository;
         virtual ~MarketOrderValueSnapshotRepository() = default;
 
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
 
-        virtual MarketOrderValueSnapshot populate(const QSqlRecord &record) const override;
+        virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         void create(const Repository<Character> &characterRepo) const;
 
-        SnapshotList fetchRange(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const;
+        EntityList fetchRange(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const;
 
     private:
         virtual QStringList getColumns() const override;

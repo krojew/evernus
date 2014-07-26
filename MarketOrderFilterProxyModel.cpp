@@ -98,16 +98,16 @@ namespace Evernus
             return true;
 
         const auto price = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getLocationId());
-        if (price.isNew())
+        if (price->isNew())
             return mPriceStatusFilter & NoData;
 
         QSettings settings;
         const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
-        const auto tooOld = price.getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge);
+        const auto tooOld = price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge);
 
         if ((mPriceStatusFilter & DataTooOld) && (tooOld))
             return true;
-        if ((mPriceStatusFilter & Ok) && (!tooOld) && (!price.isNew()))
+        if ((mPriceStatusFilter & Ok) && (!tooOld) && (!price->isNew()))
             return true;
 
         return false;

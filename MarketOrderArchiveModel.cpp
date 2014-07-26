@@ -79,7 +79,7 @@ namespace Evernus
             case statusColumn:
                 return static_cast<int>(data->getState());
             case customCostColumn:
-                return mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId()).getCost();
+                return mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId())->getCost();
             case priceColumn:
                 return data->getPrice();
             case volumeColumn:
@@ -87,7 +87,7 @@ namespace Evernus
             case profitColumn:
                 {
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    return data->getVolumeRemaining() * (data->getPrice() - cost.getCost());
+                    return data->getVolumeRemaining() * (data->getPrice() - cost->getCost());
                 }
             case stationColumn:
                 return mDataProvider.getLocationName(data->getLocationId());
@@ -122,8 +122,8 @@ namespace Evernus
                 case customCostColumn:
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        if (!cost.isNew())
-                            return locale.toCurrencyString(cost.getCost(), "ISK");
+                        if (!cost->isNew())
+                            return locale.toCurrencyString(cost->getCost(), "ISK");
                     }
                     break;
                 case priceColumn:
@@ -240,7 +240,7 @@ namespace Evernus
         setCharacter(id);
     }
 
-    std::vector<MarketOrder> MarketOrderArchiveModel::getOrders() const
+    MarketOrderTreeModel::OrderList MarketOrderArchiveModel::getOrders() const
     {
         return mOrderProvider.getArchivedOrders(mCharacterId, mFrom, mTo);
     }

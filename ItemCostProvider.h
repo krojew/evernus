@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <memory>
+
 #include "Character.h"
 #include "EveType.h"
 
@@ -27,6 +29,6 @@ namespace Evernus
         ItemCostProvider() = default;
         virtual ~ItemCostProvider() = default;
 
-        virtual ItemCost fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const = 0;
+        virtual std::shared_ptr<ItemCost> fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const = 0;
     };
 }

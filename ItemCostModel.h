@@ -18,12 +18,12 @@
 
 #include <QAbstractTableModel>
 
+#include "ItemCostRepository.h"
 #include "Character.h"
 #include "ItemCost.h"
 
 namespace Evernus
 {
-    class ItemCostRepository;
     class EveDataProvider;
 
     class ItemCostModel
@@ -53,6 +53,6 @@ namespace Evernus
 
         Character::IdType mCharacterId = Character::invalidId;
 
-        std::vector<ItemCost> mData;
+        ItemCostRepository::EntityList mData;
     };
 }

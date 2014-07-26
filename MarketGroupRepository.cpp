@@ -29,24 +29,24 @@ namespace Evernus
         return "marketGroupID";
     }
 
-    MarketGroup MarketGroupRepository::populate(const QSqlRecord &record) const
+    MarketGroupRepository::EntityPtr MarketGroupRepository::populate(const QSqlRecord &record) const
     {
         const auto description = record.value("description");
         const auto parentId = record.value("parentGroupID");
         const auto iconId = record.value("iconID");
 
-        MarketGroup group{record.value("marketGroupID").value<MarketGroup::IdType>()};
-        group.setParentId((parentId.isNull()) ? (MarketGroup::ParentIdType{}) : (parentId.value<MarketGroup::IdType>()));
-        group.setName(record.value("marketGroupName").toString());
-        group.setDescription((description.isNull()) ? (MarketGroup::DescriptionType{}) : (description.toString()));
-        group.setIconId((iconId.isNull()) ? (MarketGroup::IconIdType{}) : (iconId.value<MarketGroup::IconIdType::value_type>()));
-        group.setHasTypes(record.value("hasTypes").toBool());
-        group.setNew(false);
+        auto group = std::make_shared<MarketGroup>(record.value("marketGroupID").value<MarketGroup::IdType>());
+        group->setParentId((parentId.isNull()) ? (MarketGroup::ParentIdType{}) : (parentId.value<MarketGroup::IdType>()));
+        group->setName(record.value("marketGroupName").toString());
+        group->setDescription((description.isNull()) ? (MarketGroup::DescriptionType{}) : (description.toString()));
+        group->setIconId((iconId.isNull()) ? (MarketGroup::IconIdType{}) : (iconId.value<MarketGroup::IconIdType::value_type>()));
+        group->setHasTypes(record.value("hasTypes").toBool());
+        group->setNew(false);
 
         return group;
     }
 
-    MarketGroup MarketGroupRepository::findParent(MarketGroup::IdType id) const
+    MarketGroupRepository::EntityPtr MarketGroupRepository::findParent(MarketGroup::IdType id) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE %2 = (SELECT parentGroupID FROM %1 WHERE %2 = ?)"}
             .arg(getTableName())

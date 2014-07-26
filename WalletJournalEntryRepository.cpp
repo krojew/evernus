@@ -29,7 +29,7 @@ namespace Evernus
         return "id";
     }
 
-    WalletJournalEntry WalletJournalEntryRepository::populate(const QSqlRecord &record) const
+    WalletJournalEntryRepository::EntityPtr WalletJournalEntryRepository::populate(const QSqlRecord &record) const
     {
         const auto argName = record.value("arg_name");
         const auto reason = record.value("reason");
@@ -39,23 +39,23 @@ namespace Evernus
         auto timestamp = record.value("timestamp").toDateTime();
         timestamp.setTimeSpec(Qt::UTC);
 
-        WalletJournalEntry walletJournalEntry{record.value("id").value<WalletJournalEntry::IdType>()};
-        walletJournalEntry.setCharacterId(record.value("character_id").value<Character::IdType>());
-        walletJournalEntry.setTimestamp(timestamp);
-        walletJournalEntry.setRefTypeId(record.value("ref_type_id").toUInt());
-        walletJournalEntry.setOwnerName1(record.value("owner_name_1").toString());
-        walletJournalEntry.setOwnerId1(record.value("owner_id_1").toULongLong());
-        walletJournalEntry.setOwnerName2(record.value("owner_name_2").toString());
-        walletJournalEntry.setOwnerId2(record.value("owner_id_2").toULongLong());
-        walletJournalEntry.setArgName((argName.isNull()) ? (WalletJournalEntry::ArgType{}) : (argName.toString()));
-        walletJournalEntry.setArgId(record.value("arg_id").toULongLong());
-        walletJournalEntry.setAmount(record.value("amount").toDouble());
-        walletJournalEntry.setBalance(record.value("balance").toDouble());
-        walletJournalEntry.setReason((reason.isNull()) ? (WalletJournalEntry::ReasonType{}) : (reason.toString()));
-        walletJournalEntry.setTaxReceiverId((taxReceiverId.isNull()) ? (WalletJournalEntry::TaxReceiverType{}) : (taxReceiverId.toULongLong()));
-        walletJournalEntry.setTaxAmount((taxAmount.isNull()) ? (WalletJournalEntry::TaxAmountType{}) : (taxAmount.toDouble()));
-        walletJournalEntry.setIgnored(record.value("ignored").toBool());
-        walletJournalEntry.setNew(false);
+        auto walletJournalEntry = std::make_shared<WalletJournalEntry>(record.value("id").value<WalletJournalEntry::IdType>());
+        walletJournalEntry->setCharacterId(record.value("character_id").value<Character::IdType>());
+        walletJournalEntry->setTimestamp(timestamp);
+        walletJournalEntry->setRefTypeId(record.value("ref_type_id").toUInt());
+        walletJournalEntry->setOwnerName1(record.value("owner_name_1").toString());
+        walletJournalEntry->setOwnerId1(record.value("owner_id_1").toULongLong());
+        walletJournalEntry->setOwnerName2(record.value("owner_name_2").toString());
+        walletJournalEntry->setOwnerId2(record.value("owner_id_2").toULongLong());
+        walletJournalEntry->setArgName((argName.isNull()) ? (WalletJournalEntry::ArgType{}) : (argName.toString()));
+        walletJournalEntry->setArgId(record.value("arg_id").toULongLong());
+        walletJournalEntry->setAmount(record.value("amount").toDouble());
+        walletJournalEntry->setBalance(record.value("balance").toDouble());
+        walletJournalEntry->setReason((reason.isNull()) ? (WalletJournalEntry::ReasonType{}) : (reason.toString()));
+        walletJournalEntry->setTaxReceiverId((taxReceiverId.isNull()) ? (WalletJournalEntry::TaxReceiverType{}) : (taxReceiverId.toULongLong()));
+        walletJournalEntry->setTaxAmount((taxAmount.isNull()) ? (WalletJournalEntry::TaxAmountType{}) : (taxAmount.toDouble()));
+        walletJournalEntry->setIgnored(record.value("ignored").toBool());
+        walletJournalEntry->setNew(false);
 
         return walletJournalEntry;
     }
@@ -114,7 +114,7 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
-    std::vector<WalletJournalEntry> WalletJournalEntryRepository
+    WalletJournalEntryRepository::EntityList WalletJournalEntryRepository
     ::fetchForCharacterInRange(Character::IdType characterId, const QDateTime &from, const QDateTime &till, EntryType type) const
     {
         QString queryStr;
@@ -138,7 +138,7 @@ namespace Evernus
 
         const auto size = query.size();
 
-        std::vector<WalletJournalEntry> result;
+        EntityList result;
         if (size > 0)
             result.reserve(size);
 

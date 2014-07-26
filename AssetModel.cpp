@@ -270,8 +270,8 @@ namespace Evernus
 
         if (mCharacterId != Character::invalidId)
         {
-            const auto &assets = mAssetProvider.fetchAssetsForCharacter(mCharacterId);
-            for (const auto &item : assets)
+            const auto assets = mAssetProvider.fetchAssetsForCharacter(mCharacterId);
+            for (const auto &item : *assets)
             {
                 auto id = item->getLocationId();
                 if (!id)
@@ -342,7 +342,7 @@ namespace Evernus
 
         mTotalAssets += quantity;
         mTotalVolume += mDataProvider.getTypeVolume(typeId) * quantity;
-        mTotalSellPrice += mDataProvider.getTypeSellPrice(typeId, locationId).getValue() * quantity;
+        mTotalSellPrice += mDataProvider.getTypeSellPrice(typeId, locationId)->getValue() * quantity;
 
         for (const auto &child : item)
         {
@@ -368,10 +368,10 @@ namespace Evernus
             << quantity
             << volume
             << (volume * quantity)
-            << sellPrice.getValue()
-            << (sellPrice.getValue() * quantity)
+            << sellPrice->getValue()
+            << (sellPrice->getValue() * quantity)
         );
-        treeItem->setPriceTimestamp(sellPrice.getUpdateTime());
+        treeItem->setPriceTimestamp(sellPrice->getUpdateTime());
 
         if (!metaIcon.isNull())
             treeItem->setDecoration(metaIcon);

@@ -160,23 +160,23 @@ namespace Evernus
 
             for (const auto &entry : entries)
             {
-                const auto argName = entry.getArgName();
-                auto reason = entry.getReason();
+                const auto argName = entry->getArgName();
+                auto reason = entry->getReason();
 
                 mData.emplace_back();
                 auto &data = mData.back();
 
                 data
-                    << entry.isIgnored()
-                    << entry.getTimestamp()
-                    << mDataProvider.getRefTypeName(entry.getRefTypeId())
-                    << entry.getOwnerName1()
-                    << entry.getOwnerName2()
+                    << entry->isIgnored()
+                    << entry->getTimestamp()
+                    << mDataProvider.getRefTypeName(entry->getRefTypeId())
+                    << entry->getOwnerName1()
+                    << entry->getOwnerName2()
                     << ((argName) ? (*argName) : (QVariant{}))
-                    << entry.getAmount()
-                    << entry.getBalance()
+                    << entry->getAmount()
+                    << entry->getBalance()
                     << ((reason) ? (reason->remove(re)) : (QVariant{}))
-                    << entry.getId();
+                    << entry->getId();
             }
         }
 

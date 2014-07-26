@@ -29,19 +29,19 @@ namespace Evernus
         return "metaGroupID";
     }
 
-    MetaGroup MetaGroupRepository::populate(const QSqlRecord &record) const
+    MetaGroupRepository::EntityPtr MetaGroupRepository::populate(const QSqlRecord &record) const
     {
         const auto description = record.value("description");
 
-        MetaGroup group{record.value("metaGroupID").value<MetaGroup::IdType>()};
-        group.setName(record.value("metaGroupName").toString());
-        group.setDescription((description.isNull()) ? (MetaGroup::DescriptionType{}) : (description.toString()));
-        group.setNew(false);
+        auto group = std::make_shared<MetaGroup>(record.value("metaGroupID").value<MetaGroup::IdType>());
+        group->setName(record.value("metaGroupName").toString());
+        group->setDescription((description.isNull()) ? (MetaGroup::DescriptionType{}) : (description.toString()));
+        group->setNew(false);
 
         return group;
     }
 
-    MetaGroup MetaGroupRepository::fetchForType(EveType::IdType id) const
+    MetaGroupRepository::EntityPtr MetaGroupRepository::fetchForType(EveType::IdType id) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE %2 = (SELECT metaGroupID FROM invMetaTypes WHERE typeID = ?)"}
             .arg(getTableName())

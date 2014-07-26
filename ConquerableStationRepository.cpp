@@ -26,12 +26,11 @@ namespace Evernus
         return "id";
     }
 
-    ConquerableStation ConquerableStationRepository::populate(const QSqlRecord &record) const
+    ConquerableStationRepository::EntityPtr ConquerableStationRepository::populate(const QSqlRecord &record) const
     {
-        ConquerableStation station;
-        station.setId(record.value("id").value<ConquerableStation::IdType>());
-        station.setName(record.value("name").toString());
-        station.setNew(false);
+        auto station = std::make_shared<ConquerableStation>(record.value("id").value<ConquerableStation::IdType>());
+        station->setName(record.value("name").toString());
+        station->setNew(false);
 
         return station;
     }

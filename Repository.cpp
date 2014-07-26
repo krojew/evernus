@@ -37,8 +37,10 @@ namespace Evernus
 
         if (error.isValid())
         {
-            qCritical() << error.text();
-            throw std::runtime_error{error.text().toStdString()};
+            const auto errorText = QString{"%1: %2"}.arg(error.text()).arg(query);
+
+            qCritical() << errorText;
+            throw std::runtime_error{errorText.toStdString()};
         }
 
         return result;
@@ -121,17 +123,21 @@ namespace Evernus
             DatabaseUtils::execQuery(query);
         }
 
-        QStringList restBindings;
-        for (auto i = 0; i < totalRows % maxRowsPerInsert; ++i)
-            restBindings << bindingStr;
+        const auto reminder = totalRows % maxRowsPerInsert;
+        if (reminder > 0)
+        {
+            QStringList restBindings;
+            for (auto i = 0; i < reminder; ++i)
+                restBindings << bindingStr;
 
-        const auto restQueryStr = baseQueryStr.arg(restBindings.join(", "));
-        auto query = prepare(restQueryStr);
+            const auto restQueryStr = baseQueryStr.arg(restBindings.join(", "));
+            auto query = prepare(restQueryStr);
 
-        for (auto row = std::next(std::begin(entities), batches * maxRowsPerInsert); row != std::end(entities); ++row)
-            bindPositionalValues(*row, query);
+            for (auto row = std::next(std::begin(entities), batches * maxRowsPerInsert); row != std::end(entities); ++row)
+                bindPositionalValues(*row, query);
 
-        DatabaseUtils::execQuery(query);
+            DatabaseUtils::execQuery(query);
+        }
     }
 
     template<class T>
@@ -144,9 +150,9 @@ namespace Evernus
     }
 
     template<class T>
-    std::vector<T> Repository<T>::fetchAll() const
+    typename Repository<T>::EntityList Repository<T>::fetchAll() const
     {
-        std::vector<T> out;
+        EntityList out;
 
         auto result = exec(QString{"SELECT * FROM %1"}.arg(getTableName()));
         const auto size = result.size();
@@ -161,7 +167,7 @@ namespace Evernus
 
     template<class T>
     template<class Id>
-    T Repository<T>::find(Id &&id) const
+    typename Repository<T>::EntityPtr Repository<T>::find(Id &&id) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE %2 = :id"}.arg(getTableName()).arg(getIdColumn()));
         query.bindValue(":id", id);
