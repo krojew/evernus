@@ -145,7 +145,8 @@ namespace Evernus
             state.mVolumeRemaining = query.value(2).toUInt();
             state.mFirstSeen = query.value(3).toDateTime();
             state.mFirstSeen.setTimeSpec(Qt::UTC);
-            state.mIsArchived = !query.value(4).isNull();
+            state.mLastSeen = query.value(4).toDateTime();
+            state.mLastSeen.setTimeSpec(Qt::UTC);
 
             result.emplace(query.value(0).value<MarketOrder::IdType>(), std::move(state));
         }

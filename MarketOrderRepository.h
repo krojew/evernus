@@ -42,8 +42,7 @@ namespace Evernus
         {
             MarketOrder::State mState = MarketOrder::State::Active;
             uint mVolumeRemaining = 0;
-            QDateTime mFirstSeen;
-            bool mIsArchived = false;
+            QDateTime mFirstSeen, mLastSeen;
         };
 
         typedef std::unordered_map<MarketOrder::IdType, OrderState> OrderStateMap;

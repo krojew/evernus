@@ -1169,8 +1169,13 @@ namespace Evernus
                 order.setDelta(order.getVolumeRemaining() - cIt->second.mVolumeRemaining);
                 order.setFirstSeen(cIt->second.mFirstSeen);
 
-                if (order.getState() != MarketOrder::State::Active && !cIt->second.mIsArchived)
-                    order.setLastSeen(std::min(QDateTime::currentDateTimeUtc(), order.getIssued().addDays(order.getDuration())));
+                if (order.getState() != MarketOrder::State::Active)
+                {
+                    if (!cIt->second.mLastSeen.isNull())
+                        order.setLastSeen(cIt->second.mLastSeen);
+                    else
+                        order.setLastSeen(std::min(QDateTime::currentDateTimeUtc(), order.getIssued().addDays(order.getDuration())));
+                }
 
                 curStates.erase(cIt);
             }
@@ -1185,7 +1190,7 @@ namespace Evernus
 
         for (const auto &order : curStates)
         {
-            if (!order.second.mIsArchived)
+            if (order.second.mLastSeen.isNull())
                 toArchive.emplace_back(order.first);
         }
 
