@@ -120,7 +120,7 @@ namespace Evernus
         auto query = prepare(queryStr.arg(getTableName()));
         query.addBindValue(characterId);
         query.addBindValue(from);
-        query.addBindValue(till.addDays(1));
+        query.addBindValue(till);
 
         if (type != EntryType::All)
             query.addBindValue(static_cast<int>((type == EntryType::Buy) ? (WalletTransaction::Type::Buy) : (WalletTransaction::Type::Sell)));

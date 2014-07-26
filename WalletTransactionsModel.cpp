@@ -161,7 +161,8 @@ namespace Evernus
         mData.clear();
         if (mCharacterId != Character::invalidId)
         {
-            const auto entries = mTransactionsRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}.toUTC(), QDateTime{mTill}.toUTC(), mType, mTypeId);
+            const auto entries
+                = mTransactionsRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}.toUTC(), QDateTime{mTill}.addDays(1).toUTC(), mType, mTypeId);
             mData.reserve(entries.size());
 
             for (const auto &entry : entries)

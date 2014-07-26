@@ -153,7 +153,8 @@ namespace Evernus
         mData.clear();
         if (mCharacterId != Character::invalidId)
         {
-            const auto entries = mJournalRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}.toUTC(), QDateTime{mTill}.toUTC(), mType);
+            const auto entries
+                = mJournalRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}.toUTC(), QDateTime{mTill}.addDays(1).toUTC(), mType);
             mData.reserve(entries.size());
 
             QRegularExpression re{"^DESC: "};

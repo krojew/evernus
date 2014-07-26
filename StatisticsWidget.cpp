@@ -120,11 +120,11 @@ namespace Evernus
     void StatisticsWidget::updateBalanceData()
     {
         const QDateTime from{mBalancePlot->getFrom()};
-        const QDateTime to{mBalancePlot->getTo()};
+        const QDateTime to{mBalancePlot->getTo().addDays(1)};
 
-        const auto assetShots = mAssetSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC().addDays(1));
-        const auto walletShots = mWalletSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC().addDays(1));
-        const auto orderShots = mMarketOrderSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC().addDays(1));
+        const auto assetShots = mAssetSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC());
+        const auto walletShots = mWalletSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC());
+        const auto orderShots = mMarketOrderSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC());
 
         auto assetGraph = mBalancePlot->getPlot().graph(assetValueGraph);
         auto walletGraph = mBalancePlot->getPlot().graph(walletBalanceGraph);
@@ -286,7 +286,7 @@ namespace Evernus
     {
         const auto entries = mJournalRepo.fetchForCharacterInRange(mCharacterId,
                                                                    QDateTime{mJournalPlot->getFrom()},
-                                                                   QDateTime{mJournalPlot->getTo()},
+                                                                   QDateTime{mJournalPlot->getTo().addDays(1)},
                                                                    WalletJournalEntryRepository::EntryType::All);
 
         QHash<QDate, std::pair<double, double>> values;
@@ -335,7 +335,7 @@ namespace Evernus
     {
         const auto entries = mTransactionRepo.fetchForCharacterInRange(mCharacterId,
                                                                        QDateTime{mTransactionPlot->getFrom()},
-                                                                       QDateTime{mTransactionPlot->getTo()},
+                                                                       QDateTime{mTransactionPlot->getTo().addDays(1)},
                                                                        WalletTransactionRepository::EntryType::All);
 
         QHash<QDate, std::pair<double, double>> values;

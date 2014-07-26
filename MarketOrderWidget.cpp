@@ -221,7 +221,7 @@ namespace Evernus
 
     void MarketOrderWidget::setArchiveRange(const QDate &from, const QDate &to)
     {
-        mArchiveModel.setCharacterAndRange(getCharacterId(), QDateTime{from}.toUTC(), QDateTime{to}.toUTC());
+        mArchiveModel.setCharacterAndRange(getCharacterId(), QDateTime{from}.toUTC(), QDateTime{to}.addDays(1).toUTC());
     }
 
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)
@@ -236,7 +236,7 @@ namespace Evernus
         mArchiveRangeEdit->blockSignals(false);
 
         mLogImportBtn->setEnabled(id != Character::invalidId);
-        mArchiveModel.setCharacterAndRange(id, QDateTime{fromDate}.toUTC(), QDateTime{tillDate}.toUTC());
+        mArchiveModel.setCharacterAndRange(id, QDateTime{fromDate}.toUTC(), QDateTime{tillDate}.addDays(1).toUTC());
 
         emit characterChanged(id);
     }
