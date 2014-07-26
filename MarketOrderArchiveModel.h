@@ -29,7 +29,6 @@ namespace Evernus
         MarketOrderArchiveModel(const MarketOrderProvider &orderProvider,
                                 const EveDataProvider &dataProvider,
                                 const ItemCostProvider &itemCostProvider,
-                                const CacheTimerProvider &cacheTimerProvider,
                                 QObject *parent = nullptr);
         virtual ~MarketOrderArchiveModel() = default;
 
@@ -60,7 +59,6 @@ namespace Evernus
 
         const MarketOrderProvider &mOrderProvider;
         const ItemCostProvider &mItemCostProvider;
-        const CacheTimerProvider &mCacheTimerProvider;
 
         QDateTime mFrom, mTo;
 

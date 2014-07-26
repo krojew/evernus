@@ -50,7 +50,7 @@ namespace Evernus
         , mOrderProvider{orderProvider}
         , mSellModel{mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
         , mBuyModel{mOrderProvider, dataProvider, cacheTimerProvider}
-        , mArchiveModel{mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
+        , mArchiveModel{mOrderProvider, dataProvider, itemCostProvider}
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

@@ -32,12 +32,10 @@ namespace Evernus
     MarketOrderArchiveModel::MarketOrderArchiveModel(const MarketOrderProvider &orderProvider,
                                                      const EveDataProvider &dataProvider,
                                                      const ItemCostProvider &itemCostProvider,
-                                                     const CacheTimerProvider &cacheTimerProvider,
                                                      QObject *parent)
         : MarketOrderTreeModel{dataProvider, parent}
         , mOrderProvider{orderProvider}
         , mItemCostProvider{itemCostProvider}
-        , mCacheTimerProvider{cacheTimerProvider}
     {
     }
 
