@@ -265,11 +265,11 @@ namespace Evernus
             }
         };
 
-        checker(TimerType::Character, ImportSettings::maxCharacterAgeKey, "Character sheet: %1");
-        checker(TimerType::AssetList, ImportSettings::maxAssetListAgeKey, "Asset list: %1");
-        checker(TimerType::MarketOrders, ImportSettings::maxMarketOrdersAgeKey, "Market orders: %1");
-        checker(TimerType::WalletJournal, ImportSettings::maxWalletAgeKey, "Wallet journal: %1");
-        checker(TimerType::WalletTransactions, ImportSettings::maxWalletAgeKey, "Wallet transactions: %1");
+        checker(TimerType::Character, ImportSettings::maxCharacterAgeKey, tr("Character sheet: %1"));
+        checker(TimerType::AssetList, ImportSettings::maxAssetListAgeKey, tr("Asset list: %1"));
+        checker(TimerType::MarketOrders, ImportSettings::maxMarketOrdersAgeKey, tr("Market orders: %1"));
+        checker(TimerType::WalletJournal, ImportSettings::maxWalletAgeKey, tr("Wallet journal: %1"));
+        checker(TimerType::WalletTransactions, ImportSettings::maxWalletAgeKey, tr("Wallet transactions: %1"));
 
         mUpdateTimersGroup->setVisible(show);
     }
