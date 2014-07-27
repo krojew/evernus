@@ -20,8 +20,11 @@
 namespace Evernus
 {
     class FilterTextRepository
-        : public Repository<FilterText>
+        : public QObject
+        , public Repository<FilterText>
     {
+        Q_OBJECT
+
     public:
         using Repository::Repository;
         virtual ~FilterTextRepository() = default;
@@ -38,9 +41,14 @@ namespace Evernus
 
         QStringList fetchRecentlyUsed() const;
 
+    signals:
+        void filtersChanged() const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const FilterText &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const FilterText &entity, QSqlQuery &query) const override;
+
+        virtual void postStore(FilterText &entity) const override;
     };
 }

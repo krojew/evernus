@@ -33,6 +33,8 @@ namespace Evernus
         edit->setPlaceholderText(tr("type in wildcard and press Enter"));
         edit->setClearButtonEnabled(true);
         connect(edit, &QLineEdit::returnPressed, this, &TextFilterWidget::applyCurrentFilter);
+
+        connect(&mFilterRepo, &FilterTextRepository::filtersChanged, this, &TextFilterWidget::refreshHistory);
     }
 
     void TextFilterWidget::applyCurrentFilter()
@@ -52,5 +54,14 @@ namespace Evernus
         }
 
         emit filterEntered(text);
+    }
+
+    void TextFilterWidget::refreshHistory()
+    {
+        const auto text = currentText();
+
+        clear();
+        addItems(mFilterRepo.fetchRecentlyUsed());
+        setCurrentText(text);
     }
 }

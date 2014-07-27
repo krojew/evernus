@@ -34,6 +34,7 @@ namespace Evernus
 
     private slots:
         void applyCurrentFilter();
+        void refreshHistory();
 
     private:
         const FilterTextRepository &mFilterRepo;

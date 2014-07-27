@@ -44,6 +44,8 @@ namespace Evernus
         query.bindValue(0, text);
 
         DatabaseUtils::execQuery(query);
+
+        emit filtersChanged();
     }
 
     void FilterTextRepository::create() const
@@ -86,5 +88,10 @@ namespace Evernus
             query.addBindValue(entity.getId());
 
         query.addBindValue(entity.getText());
+    }
+
+    void FilterTextRepository::postStore(FilterText &entity) const
+    {
+        emit filtersChanged();
     }
 }

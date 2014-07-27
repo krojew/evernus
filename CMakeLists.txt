@@ -40,6 +40,7 @@ qt5_wrap_cpp(
     DateRangeWidget.h
     EvernusApplication.h
     FileDownload.h
+    FilterTextRepository.h
     GeneralPreferencesWidget.h
     ImportPreferencesWidget.h
     ItemCostWidget.h
