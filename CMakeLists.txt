@@ -63,6 +63,7 @@ qt5_wrap_cpp(
     PricePreferencesWidget.h
     qcustomplot.h
     StatisticsWidget.h
+    TextFilterWidget.h
     WalletEntryFilterWidget.h
     WalletJournalWidget.h
     WalletPreferencesWidget.h
@@ -162,6 +163,10 @@ add_executable(
     EveTypeRepository.h
     FileDownload.cpp
     FileDownload.h
+    FilterText.cpp
+    FilterText.h
+    FilterTextRepository.cpp
+    FilterTextRepository.h
     GeneralPreferencesWidget.cpp
     GeneralPreferencesWidget.h
     IconUtils.cpp
@@ -290,6 +295,8 @@ add_executable(
     StyledTreeViewItemDelegate.cpp
     StyledTreeViewItemDelegate.h
     TaskConstants.h
+    TextFilterWidget.cpp
+    TextFilterWidget.h
     TextUtils.cpp
     TextUtils.h
     TimerTypes.h
