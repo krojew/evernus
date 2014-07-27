@@ -201,7 +201,8 @@ namespace Evernus
 
         auto query = prepare(QString{R"(UPDATE %1 SET 
             last_seen = min(strftime('%Y-%m-%dT%H:%M:%f', first_seen, duration || ' days'), strftime('%Y-%m-%dT%H:%M:%f', 'now')),
-            state = ?
+            state = ?,
+            delta 0
             WHERE %2 IN (%3)
         )"}.arg(getTableName()).arg(getIdColumn()).arg(list.join(", ")));
 
