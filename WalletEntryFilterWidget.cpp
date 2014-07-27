@@ -14,17 +14,17 @@
  */
 #include <QHBoxLayout>
 #include <QComboBox>
-#include <QLineEdit>
 #include <QLabel>
 #include <QDate>
 
+#include "TextFilterWidget.h"
 #include "DateRangeWidget.h"
 
 #include "WalletEntryFilterWidget.h"
 
 namespace Evernus
 {
-    WalletEntryFilterWidget::WalletEntryFilterWidget(const QStringList &typeFilters, QWidget *parent)
+    WalletEntryFilterWidget::WalletEntryFilterWidget(const QStringList &typeFilters, const FilterTextRepository &filterRepo, QWidget *parent)
         : QWidget{parent}
     {
         auto mainLayout = new QHBoxLayout{};
@@ -44,11 +44,9 @@ namespace Evernus
         mainLayout->addWidget(mRangeEdit);
         connect(mRangeEdit, &DateRangeWidget::rangeChanged, this, &WalletEntryFilterWidget::applyRange);
 
-        mFilterEdit = new QLineEdit{this};
-        mainLayout->addWidget(mFilterEdit);
-        mFilterEdit->setPlaceholderText(tr("type in wildcard and press Enter"));
-        mFilterEdit->setClearButtonEnabled(true);
-        connect(mFilterEdit, &QLineEdit::returnPressed, this, &WalletEntryFilterWidget::applyWildcard);
+        mFilterEdit = new TextFilterWidget{filterRepo, this};
+        mainLayout->addWidget(mFilterEdit, 1);
+        connect(mFilterEdit, &TextFilterWidget::filterEntered, this, &WalletEntryFilterWidget::applyWildcard);
     }
 
     void WalletEntryFilterWidget::setFilter(const QDate &from, const QDate &to, const QString &filter, int type)
@@ -61,22 +59,22 @@ namespace Evernus
 
         mTypeCombo->blockSignals(false);
 
-        emit filterChanged(from, to, mFilterEdit->text(), mCurrentType);
+        emit filterChanged(from, to, mFilterEdit->currentText(), mCurrentType);
     }
 
     void WalletEntryFilterWidget::changeEntryType()
     {
         mCurrentType = mTypeCombo->currentData().toInt();
-        emit filterChanged(mRangeEdit->getFrom(), mRangeEdit->getTo(), mFilterEdit->text(), mCurrentType);
+        emit filterChanged(mRangeEdit->getFrom(), mRangeEdit->getTo(), mFilterEdit->currentText(), mCurrentType);
     }
 
-    void WalletEntryFilterWidget::applyWildcard()
+    void WalletEntryFilterWidget::applyWildcard(const QString &text)
     {
-        emit filterChanged(mRangeEdit->getFrom(), mRangeEdit->getTo(), mFilterEdit->text(), mCurrentType);
+        emit filterChanged(mRangeEdit->getFrom(), mRangeEdit->getTo(), text, mCurrentType);
     }
 
     void WalletEntryFilterWidget::applyRange(const QDate &from, const QDate &to)
     {
-        emit filterChanged(from, to, mFilterEdit->text(), mCurrentType);
+        emit filterChanged(from, to, mFilterEdit->currentText(), mCurrentType);
     }
 }

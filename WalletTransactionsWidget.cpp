@@ -29,6 +29,7 @@
 namespace Evernus
 {
     WalletTransactionsWidget::WalletTransactionsWidget(const WalletTransactionRepository &walletRepo,
+                                                       const FilterTextRepository &filterRepo,
                                                        const CacheTimerProvider &cacheTimerProvider,
                                                        const EveDataProvider &dataProvider,
                                                        QWidget *parent)
@@ -47,7 +48,7 @@ namespace Evernus
         auto &importBtn = getAPIImportButton();
         toolBarLayout->addWidget(&importBtn);
 
-        mFilter = new WalletEntryFilterWidget{QStringList{} << tr("all") << tr("buy") << tr("sell"), this};
+        mFilter = new WalletEntryFilterWidget{QStringList{} << tr("all") << tr("buy") << tr("sell"), filterRepo, this};
         toolBarLayout->addWidget(mFilter, 1);
         connect(mFilter, &WalletEntryFilterWidget::filterChanged, this, &WalletTransactionsWidget::updateFilter);
 

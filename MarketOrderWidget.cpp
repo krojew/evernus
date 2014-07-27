@@ -42,6 +42,7 @@ namespace Evernus
                                          const EveDataProvider &dataProvider,
                                          const ItemCostProvider &itemCostProvider,
                                          const WalletTransactionRepository &transactionsRepo,
+                                         const FilterTextRepository &filterRepo,
                                          QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
@@ -79,7 +80,7 @@ namespace Evernus
         importFromFile->setFlat(true);
         connect(importFromFile, &QPushButton::clicked, this, &MarketOrderWidget::prepareItemImportFromFile);
 
-        auto stateFilter = new MarketOrderFilterWidget{this};
+        auto stateFilter = new MarketOrderFilterWidget{filterRepo, this};
         toolBarLayout->addWidget(stateFilter);
 
         toolBarLayout->addWidget(new QLabel{tr("Group by:"), this});

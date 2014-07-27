@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
                                         app.getWalletTransactionRepository(),
                                         app.getMarketOrderRepository(),
                                         app.getItemCostRepository(),
+                                        app.getFilterTextRepository(),
                                         app,
                                         app,
                                         app,

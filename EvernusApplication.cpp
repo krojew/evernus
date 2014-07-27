@@ -496,6 +496,11 @@ namespace Evernus
         return *mMarketOrderValueSnapshotRepository;
     }
 
+    const FilterTextRepository &EvernusApplication::getFilterTextRepository() const noexcept
+    {
+        return *mFilterTextRepository;
+    }
+
     void EvernusApplication::refreshCharacters()
     {
         qDebug() << "Refreshing characters...";
@@ -960,6 +965,7 @@ namespace Evernus
         mMarketOrderRepository.reset(new MarketOrderRepository{mMainDb});
         mItemCostRepository.reset(new ItemCostRepository{mMainDb});
         mMarketOrderValueSnapshotRepository.reset(new MarketOrderValueSnapshotRepository{mMainDb});
+        mFilterTextRepository.reset(new FilterTextRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
         mMarketGroupRepository.reset(new MarketGroupRepository{mEveDb});
         mMetaGroupRepository.reset(new MetaGroupRepository{mEveDb});
@@ -982,6 +988,7 @@ namespace Evernus
         mMarketOrderRepository->create(*mCharacterRepository);
         mItemCostRepository->create(*mCharacterRepository);
         mMarketOrderValueSnapshotRepository->create(*mCharacterRepository);
+        mFilterTextRepository->create();
         mRefTypeRepository->create();
     }
 

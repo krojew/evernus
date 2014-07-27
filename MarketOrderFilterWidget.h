@@ -19,17 +19,18 @@
 #include "MarketOrderFilterProxyModel.h"
 
 class QPushButton;
-class QLineEdit;
 
 namespace Evernus
 {
+    class FilterTextRepository;
+
     class MarketOrderFilterWidget
         : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit MarketOrderFilterWidget(QWidget *parent = nullptr);
+        explicit MarketOrderFilterWidget(const FilterTextRepository &filterRepo, QWidget *parent = nullptr);
         virtual ~MarketOrderFilterWidget() = default;
 
     signals:
@@ -42,12 +43,11 @@ namespace Evernus
         void setStatusFilter(const MarketOrderFilterProxyModel::StatusFilters &filter);
         void setPriceStatusFilter(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
 
-        void applyWildcard();
+        void applyWildcard(const QString &text);
 
     private:
         QPushButton *mStateFilterBtn = nullptr;
         QPushButton *mPriceStatusFilterBtn = nullptr;
-        QLineEdit *mFilterEdit = nullptr;
 
         static QString getStateFilterButtonText(const MarketOrderFilterProxyModel::StatusFilters &filter);
         static QString getPriceStatusFilterButtonText(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);

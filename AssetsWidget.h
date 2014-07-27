@@ -18,11 +18,11 @@
 #include "ItemPriceImporter.h"
 #include "AssetModel.h"
 
-class QLineEdit;
 class QLabel;
 
 namespace Evernus
 {
+    class FilterTextRepository;
     class LeafFilterProxyModel;
     class CacheTimerProvider;
     class EveDataProvider;
@@ -39,6 +39,7 @@ namespace Evernus
         AssetsWidget(const AssetProvider &assetProvider,
                      const EveDataProvider &nameProvider,
                      const CacheTimerProvider &cacheTimerProvider,
+                     const FilterTextRepository &filterRepo,
                      QWidget *parent = nullptr);
         virtual ~AssetsWidget() = default;
 
@@ -53,12 +54,11 @@ namespace Evernus
         void prepareItemImportFromWeb();
         void prepareItemImportFromFile();
 
-        void applyWildcard();
+        void applyWildcard(const QString &text);
 
     private:
         const AssetProvider &mAssetProvider;
 
-        QLineEdit *mFilterEdit = nullptr;
         StyledTreeView *mAssetView = nullptr;
         QLabel *mInfoLabel = nullptr;
 

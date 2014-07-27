@@ -27,6 +27,7 @@ namespace Evernus
 {
     class MarketOrderViewWithTransactions;
     class WalletTransactionRepository;
+    class FilterTextRepository;
     class MarketOrderProvider;
     class CacheTimerProvider;
     class ItemCostProvider;
@@ -45,6 +46,7 @@ namespace Evernus
                           const EveDataProvider &dataProvider,
                           const ItemCostProvider &itemCostProvider,
                           const WalletTransactionRepository &transactionsRepo,
+                          const FilterTextRepository &filterRepo,
                           QWidget *parent = nullptr);
         virtual ~MarketOrderWidget() = default;
 

@@ -17,12 +17,13 @@
 #include <QStringList>
 #include <QWidget>
 
-class QLineEdit;
 class QComboBox;
 class QDate;
 
 namespace Evernus
 {
+    class FilterTextRepository;
+    class TextFilterWidget;
     class DateRangeWidget;
 
     class WalletEntryFilterWidget
@@ -31,7 +32,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit WalletEntryFilterWidget(const QStringList &typeFilters, QWidget *parent = nullptr);
+        WalletEntryFilterWidget(const QStringList &typeFilters, const FilterTextRepository &filterRepo, QWidget *parent = nullptr);
         virtual ~WalletEntryFilterWidget() = default;
 
     signals:
@@ -42,14 +43,14 @@ namespace Evernus
 
     private slots:
         void changeEntryType();
-        void applyWildcard();
+        void applyWildcard(const QString &text);
 
         void applyRange(const QDate &from, const QDate &to);
 
     private:
         QComboBox *mTypeCombo = nullptr;
         DateRangeWidget *mRangeEdit = nullptr;
-        QLineEdit *mFilterEdit = nullptr;
+        TextFilterWidget *mFilterEdit = nullptr;
 
         int mCurrentType = 0;
     };

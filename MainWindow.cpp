@@ -61,6 +61,7 @@ namespace Evernus
                            const WalletTransactionRepository &walletTransactionRepo,
                            const MarketOrderRepository &orderRepo,
                            const ItemCostRepository &itemCostRepo,
+                           const FilterTextRepository &filterRepo,
                            const MarketOrderProvider &orderProvider,
                            const AssetProvider &assetProvider,
                            const EveDataProvider &eveDataProvider,
@@ -78,6 +79,7 @@ namespace Evernus
         , mWalletTransactionRepository{walletTransactionRepo}
         , mMarketOrderRepository{orderRepo}
         , mItemCostRepository{itemCostRepo}
+        , mFilterRepository{filterRepo}
         , mOrderProvider{orderProvider}        
         , mAssetProvider{assetProvider}
         , mItemCostProvider{itemCostProvider}
@@ -372,7 +374,7 @@ namespace Evernus
         connect(this, &MainWindow::walletJournalChanged, statsTab, &StatisticsWidget::updateJournalData);
         connect(this, &MainWindow::walletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
 
-        auto assetsTab = new AssetsWidget{mAssetProvider, mEveDataProvider, mCacheTimerProvider, this};
+        auto assetsTab = new AssetsWidget{mAssetProvider, mEveDataProvider, mCacheTimerProvider, mFilterRepository, this};
         addTab(assetsTab, tr("Assets"));
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importItemPricesFromWeb);
@@ -387,6 +389,7 @@ namespace Evernus
                                               mEveDataProvider,
                                               mItemCostProvider,
                                               mWalletTransactionRepository,
+                                              mFilterRepository,
                                               this};
         addTab(orderTab, tr("Orders"));
         connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importMarketOrdersFromAPI);
@@ -395,12 +398,13 @@ namespace Evernus
         connect(orderTab, &MarketOrderWidget::importPricesFromFile, this, &MainWindow::importItemPricesFromFile);
         connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
 
-        auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mCacheTimerProvider, mEveDataProvider, this};
+        auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mFilterRepository, mCacheTimerProvider, mEveDataProvider, this};
         addTab(journalTab, tr("Journal"));
         connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
         connect(this, &MainWindow::walletJournalChanged, journalTab, &WalletJournalWidget::updateData);
 
-        auto transactionsTab = new WalletTransactionsWidget{mWalletTransactionRepository, mCacheTimerProvider, mEveDataProvider, this};
+        auto transactionsTab
+            = new WalletTransactionsWidget{mWalletTransactionRepository, mFilterRepository, mCacheTimerProvider, mEveDataProvider, this};
         addTab(transactionsTab, tr("Transactions"));
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);

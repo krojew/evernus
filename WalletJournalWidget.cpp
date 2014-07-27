@@ -29,6 +29,7 @@
 namespace Evernus
 {
     WalletJournalWidget::WalletJournalWidget(const WalletJournalEntryRepository &journalRepo,
+                                             const FilterTextRepository &filterRepo,
                                              const CacheTimerProvider &cacheTimerProvider,
                                              const EveDataProvider &dataProvider,
                                              QWidget *parent)
@@ -47,7 +48,7 @@ namespace Evernus
         auto &importBtn = getAPIImportButton();
         toolBarLayout->addWidget(&importBtn);
 
-        mFilter = new WalletEntryFilterWidget{QStringList{} << tr("all") << tr("incoming") << tr("outgoing"), this};
+        mFilter = new WalletEntryFilterWidget{QStringList{} << tr("all") << tr("incoming") << tr("outgoing"), filterRepo, this};
         toolBarLayout->addWidget(mFilter, 1);
         connect(mFilter, &WalletEntryFilterWidget::filterChanged, this, &WalletJournalWidget::updateFilter);
 

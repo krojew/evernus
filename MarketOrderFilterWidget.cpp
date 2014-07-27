@@ -20,12 +20,13 @@
 
 #include "MarketOrderPriceStatusesWidget.h"
 #include "MarketOrderStatesWidget.h"
+#include "TextFilterWidget.h"
 
 #include "MarketOrderFilterWidget.h"
 
 namespace Evernus
 {
-    MarketOrderFilterWidget::MarketOrderFilterWidget(QWidget *parent)
+    MarketOrderFilterWidget::MarketOrderFilterWidget(const FilterTextRepository &filterRepo, QWidget *parent)
         : QWidget{parent}
     {
         auto mainLayout = new QHBoxLayout{};
@@ -61,11 +62,9 @@ namespace Evernus
         mPriceStatusFilterBtn->setFlat(true);
         mPriceStatusFilterBtn->setMenu(filterPriceStatusMenu);
 
-        mFilterEdit = new QLineEdit{this};
-        mainLayout->addWidget(mFilterEdit, 1);
-        mFilterEdit->setPlaceholderText(tr("type in wildcard and press Enter"));
-        mFilterEdit->setClearButtonEnabled(true);
-        connect(mFilterEdit, &QLineEdit::returnPressed, this, &MarketOrderFilterWidget::applyWildcard);
+        auto filterEdit = new TextFilterWidget{filterRepo, this};
+        mainLayout->addWidget(filterEdit, 1);
+        connect(filterEdit, &TextFilterWidget::filterEntered, this, &MarketOrderFilterWidget::applyWildcard);
     }
 
     void MarketOrderFilterWidget::setStatusFilter(const MarketOrderFilterProxyModel::StatusFilters &filter)
@@ -80,9 +79,9 @@ namespace Evernus
         emit priceStatusFilterChanged(filter);
     }
 
-    void MarketOrderFilterWidget::applyWildcard()
+    void MarketOrderFilterWidget::applyWildcard(const QString &text)
     {
-        emit wildcardChanged(mFilterEdit->text());
+        emit wildcardChanged(text);
     }
 
     QString MarketOrderFilterWidget::getStateFilterButtonText(const MarketOrderFilterProxyModel::StatusFilters &filter)

@@ -16,7 +16,6 @@
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QLineEdit>
 #include <QLocale>
 #include <QLabel>
 #include <QDebug>
@@ -24,6 +23,7 @@
 #include "LeafFilterProxyModel.h"
 #include "CacheTimerProvider.h"
 #include "WarningBarWidget.h"
+#include "TextFilterWidget.h"
 #include "ButtonWithTimer.h"
 #include "StyledTreeView.h"
 #include "ImportSettings.h"
@@ -37,6 +37,7 @@ namespace Evernus
     AssetsWidget::AssetsWidget(const AssetProvider &assetProvider,
                                const EveDataProvider &nameProvider,
                                const CacheTimerProvider &cacheTimerProvider,
+                               const FilterTextRepository &filterRepo,
                                QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::AssetList),
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::AssetList),
@@ -64,11 +65,9 @@ namespace Evernus
         importFromFile->setFlat(true);
         connect(importFromFile, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromFile);
 
-        mFilterEdit = new QLineEdit{this};
-        toolBarLayout->addWidget(mFilterEdit, 1);
-        mFilterEdit->setPlaceholderText(tr("type in wildcard and press Enter"));
-        mFilterEdit->setClearButtonEnabled(true);
-        connect(mFilterEdit, &QLineEdit::returnPressed, this, &AssetsWidget::applyWildcard);
+        auto filterEdit = new TextFilterWidget{filterRepo, this};
+        toolBarLayout->addWidget(filterEdit, 1);
+        connect(filterEdit, &TextFilterWidget::filterEntered, this, &AssetsWidget::applyWildcard);
 
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);
@@ -105,9 +104,10 @@ namespace Evernus
         emit importPricesFromFile(getImportTarget());
     }
 
-    void AssetsWidget::applyWildcard()
+    void AssetsWidget::applyWildcard(const QString &text)
     {
-        mModelProxy->setFilterWildcard(mFilterEdit->text());
+        mModelProxy->setFilterWildcard(text);
+        mAssetView->expandAll();
     }
 
     void AssetsWidget::handleNewCharacter(Character::IdType id)

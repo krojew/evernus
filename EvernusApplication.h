@@ -32,6 +32,7 @@
 #include "MarketGroupRepository.h"
 #include "UpdateTimerRepository.h"
 #include "CacheTimerRepository.h"
+#include "FilterTextRepository.h"
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
 #include "MetaGroupRepository.h"
@@ -119,6 +120,7 @@ namespace Evernus
         const MarketOrderRepository &getMarketOrderRepository() const noexcept;
         const ItemCostRepository &getItemCostRepository() const noexcept;
         const MarketOrderValueSnapshotRepository &getMarketOrderValueSnapshotRepository() const noexcept;
+        const FilterTextRepository &getFilterTextRepository() const noexcept;
 
     signals:
         void taskStarted(uint taskId, const QString &description);
@@ -186,6 +188,7 @@ namespace Evernus
         std::unique_ptr<MarketOrderRepository> mMarketOrderRepository;
         std::unique_ptr<ItemCostRepository> mItemCostRepository;
         std::unique_ptr<MarketOrderValueSnapshotRepository> mMarketOrderValueSnapshotRepository;
+        std::unique_ptr<FilterTextRepository> mFilterTextRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
         std::unique_ptr<MarketGroupRepository> mMarketGroupRepository;
         std::unique_ptr<MetaGroupRepository> mMetaGroupRepository;

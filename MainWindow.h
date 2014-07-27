@@ -42,6 +42,7 @@ namespace Evernus
     class WalletSnapshotRepository;
     class CharacterManagerDialog;
     class MarketOrderRepository;
+    class FilterTextRepository;
     class MarketOrderProvider;
     class CharacterRepository;
     class ItemCostRepository;
@@ -70,6 +71,7 @@ namespace Evernus
                    const WalletTransactionRepository &walletTransactionRepo,
                    const MarketOrderRepository &orderRepo,
                    const ItemCostRepository &itemCostRepo,
+                   const FilterTextRepository &filterRepo,
                    const MarketOrderProvider &orderProvider,
                    const AssetProvider &assetProvider,
                    const EveDataProvider &eveDataProvider,
@@ -154,6 +156,7 @@ namespace Evernus
         const WalletTransactionRepository &mWalletTransactionRepository;
         const MarketOrderRepository &mMarketOrderRepository;
         const ItemCostRepository &mItemCostRepository;
+        const FilterTextRepository &mFilterRepository;
         const MarketOrderProvider &mOrderProvider;
         const AssetProvider &mAssetProvider;
         const ItemCostProvider &mItemCostProvider;
