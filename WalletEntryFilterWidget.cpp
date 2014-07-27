@@ -55,7 +55,7 @@ namespace Evernus
 
         mTypeCombo->setCurrentIndex(0);
         mRangeEdit->setRange(from, to);
-        mFilterEdit->clear();
+        mFilterEdit->setCurrentText(filter);
 
         mTypeCombo->blockSignals(false);
 
