@@ -1447,7 +1447,7 @@ namespace Evernus
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)
     {
-        splash.showMessage(message, Qt::AlignBottom | Qt::AlignHCenter, Qt::white);
+        splash.showMessage(message, Qt::AlignBottom | Qt::AlignRight, Qt::white);
         processEvents();
     }
 }
