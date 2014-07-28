@@ -12,9 +12,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <unordered_map>
-#include <stdexcept>
-
 #include <QStringBuilder>
 #include <QFileInfo>
 #include <QSettings>
@@ -61,9 +58,6 @@ namespace Evernus
 
     void MarketLogExternalOrderImporterThread::getExternalOrder(const QString &logPath, ExternalOrderList &orders, bool deleteLog)
     {
-        std::unordered_map<ExternalOrder::LocationIdType, ExternalOrder> buy;
-        std::unordered_map<ExternalOrder::LocationIdType, ExternalOrder> sell;
-
         QFile file{logPath};
         if (!file.open(QIODevice::ReadOnly))
             return;
@@ -74,11 +68,11 @@ namespace Evernus
         const auto priceTime = info.created().toUTC();
 
         const auto logColumns = 14;
-        const auto rangeStation = -1;
 
         const auto priceColumn = 0;
         const auto typeColumn = 2;
         const auto rangeColumn = 3;
+        const auto idColumn = 4;
         const auto bidColumn = 7;
         const auto stationColumn = 10;
         const auto regionColumn = 11;
@@ -91,69 +85,20 @@ namespace Evernus
 
             if (values.count() >= logColumns)
             {
-                const auto curValue = values[priceColumn].toDouble();
-                const auto curLoc = values[stationColumn].toULongLong();
+                ExternalOrder price;
+                price.setId(values[idColumn].toUInt());
+                price.setUpdateTime(priceTime);
+                price.setLocationId(values[stationColumn].toULongLong());
+                price.setSolarSystemId(values[systemColumn].toUInt());
+                price.setRegionId(values[regionColumn].toUInt());
+                price.setRange(values[rangeColumn].toShort());
+                price.setType((values[bidColumn] == "True") ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
+                price.setTypeId(values[typeColumn].toULongLong());
+                price.setValue(values[priceColumn].toDouble());
 
-                if (values[bidColumn] == "True")
-                {
-                    const auto curRange = values[rangeColumn].toShort();
-                    if (curRange != rangeStation)
-                    {
-                        ExternalOrder price;
-                        price.setUpdateTime(priceTime);
-                        price.setLocationId(curLoc);
-                        price.setSolarSystemId(values[systemColumn].toUInt());
-                        price.setRegionId(values[regionColumn].toUInt());
-                        price.setRange(curRange);
-                        price.setType(ExternalOrder::Type::Buy);
-                        price.setTypeId(values[typeColumn].toULongLong());
-
-                        orders.emplace_back(std::move(price));
-                    }
-                    else
-                    {
-                        auto it = buy.find(curLoc);
-                        if (it == std::end(buy))
-                        {
-                            it = buy.emplace(curLoc, ExternalOrder::invalidId).first;
-                            it->second.setUpdateTime(priceTime);
-                            it->second.setLocationId(curLoc);
-                            it->second.setSolarSystemId(values[systemColumn].toUInt());
-                            it->second.setRegionId(values[regionColumn].toUInt());
-                            it->second.setRange(rangeStation);
-                            it->second.setType(ExternalOrder::Type::Buy);
-                            it->second.setTypeId(values[typeColumn].toULongLong());
-                        }
-
-                        if (curValue > it->second.getValue())
-                            it->second.setValue(curValue);
-                    }
-                }
-                else
-                {
-                    auto it = sell.find(curLoc);
-                    if (it == std::end(sell))
-                    {
-                        it = sell.emplace(curLoc, ExternalOrder::invalidId).first;
-                        it->second.setUpdateTime(priceTime);
-                        it->second.setLocationId(curLoc);
-                        it->second.setSolarSystemId(values[systemColumn].toUInt());
-                        it->second.setRegionId(values[regionColumn].toUInt());
-                        it->second.setType(ExternalOrder::Type::Sell);
-                        it->second.setTypeId(values[typeColumn].toULongLong());
-                        it->second.setValue(std::numeric_limits<double>::max());
-                    }
-
-                    if (curValue < it->second.getValue())
-                        it->second.setValue(curValue);
-                }
+                orders.emplace_back(std::move(price));
             }
         }
-
-        for (auto &price : buy)
-            orders.emplace_back(std::move(price.second));
-        for (auto &price : sell)
-            orders.emplace_back(std::move(price.second));
 
         if (deleteLog)
             file.remove();
