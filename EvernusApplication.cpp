@@ -164,7 +164,8 @@ namespace Evernus
                                               const QDateTime &priceTime,
                                               double price) const
     {
-        mSellPrices[std::make_pair(typeId, stationId)] = saveTypePrice(ItemPrice::Type::Sell, stationId, typeId, priceTime, price);
+        mSellPrices[std::make_pair(typeId, stationId)]
+            = saveTypePrice(ItemPrice::Type::Sell, stationId, typeId, priceTime, price);
     }
 
     void EvernusApplication::setTypeBuyPrice(quint64 stationId,
@@ -172,7 +173,8 @@ namespace Evernus
                                              const QDateTime &priceTime,
                                              double price) const
     {
-        mBuyPrices[std::make_pair(typeId, stationId)] = saveTypePrice(ItemPrice::Type::Buy, stationId, typeId, priceTime, price);
+        mBuyPrices[std::make_pair(typeId, stationId)]
+            = saveTypePrice(ItemPrice::Type::Buy, stationId, typeId, priceTime, price);
     }
 
     QString EvernusApplication::getLocationName(quint64 id) const
