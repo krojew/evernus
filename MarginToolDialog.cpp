@@ -380,45 +380,57 @@ namespace Evernus
             auto typeId = EveType::invalidId;
             auto locationId = 0u;
 
+            const auto logColumns = 14;
+            const auto rangeStation = -1;
+
+            const auto priceColumn = 0;
+            const auto volRemainingColumn = 1;
+            const auto typeColumn = 2;
+            const auto rangeColumn = 3;
+            const auto volEnteredColumn = 5;
+            const auto bidColumn = 7;
+            const auto stationColumn = 10;
+            const auto jumpsColumn = 13;
+
             while (!file.atEnd())
             {
                 const QString line = file.readLine();
                 const auto values = line.split(',');
 
-                if (values.count() >= 14)
+                if (values.count() >= logColumns)
                 {
                     if (typeId == EveType::invalidId)
                     {
                         auto ok = false;
-                        typeId = values[2].toULong(&ok);
+                        typeId = values[typeColumn].toULong(&ok);
 
                         if (ok)
                             name = mDataProvider.getTypeName(typeId);
                     }
                     if (locationId == 0)
-                        locationId = values[10].toULongLong();
+                        locationId = values[stationColumn].toULongLong();
 
-                    const auto curValue = values[0].toDouble();
-                    const auto jumps = values[13].toInt();
+                    const auto curValue = values[priceColumn].toDouble();
+                    const auto jumps = values[jumpsColumn].toInt();
 
-                    if (values[7] == "True")
+                    if (values[bidColumn] == "True")
                     {
                         if (jumps != 0)
                         {
-                            const auto range = values[3].toInt();
-                            if (range == -1 || jumps - range > 0)
+                            const auto range = values[rangeColumn].toInt();
+                            if (range == rangeStation || jumps - range > 0)
                                 continue;
                         }
 
                         if (curValue > buy)
                             buy = curValue;
 
-                        buyVol += static_cast<uint>(values[1].toDouble());
-                        buyInit += static_cast<uint>(values[5].toDouble());
+                        buyVol += static_cast<uint>(values[volRemainingColumn].toDouble());
+                        buyInit += static_cast<uint>(values[volEnteredColumn].toDouble());
 
                         ++buyCount;
                     }
-                    else if (values[7] == "False")
+                    else if (values[bidColumn] == "False")
                     {
                         if (jumps != 0)
                             continue;
@@ -426,8 +438,8 @@ namespace Evernus
                         if (curValue < sell || sell < 0.)
                             sell = curValue;
 
-                        sellVol += static_cast<uint>(values[1].toDouble());
-                        sellInit += static_cast<uint>(values[5].toDouble());
+                        sellVol += static_cast<uint>(values[volRemainingColumn].toDouble());
+                        sellInit += static_cast<uint>(values[volEnteredColumn].toDouble());
 
                         ++sellCount;
                     }
