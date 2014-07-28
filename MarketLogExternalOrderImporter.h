@@ -17,31 +17,31 @@
 #include <memory>
 #include <list>
 
-#include "MarketLogItemPriceImporterThread.h"
-#include "ItemPriceImporter.h"
+#include "MarketLogExternalOrderImporterThread.h"
+#include "ExternalOrderImporter.h"
 
 namespace Evernus
 {
-    class MarketLogItemPriceImporter
-        : public ItemPriceImporter
+    class MarketLogExternalOrderImporter
+        : public ExternalOrderImporter
     {
         Q_OBJECT
 
     public:
-        typedef MarketLogItemPriceImporterThread::ItemPriceList ItemPriceList;
+        typedef MarketLogExternalOrderImporterThread::ExternalOrderList ExternalOrderList;
 
-        using ItemPriceImporter::ItemPriceImporter;
-        virtual ~MarketLogItemPriceImporter();
+        using ExternalOrderImporter::ExternalOrderImporter;
+        virtual ~MarketLogExternalOrderImporter();
 
-        virtual void fetchItemPrices(const TypeLocationPairs &target) const override;
+        virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
 
     private slots:
-        void threadFinished(const ItemPriceList &prices);
+        void threadFinished(const ExternalOrderList &orders);
         void threadError(const QString &info);
 
     private:
-        mutable std::list<std::unique_ptr<MarketLogItemPriceImporterThread>> mScanningThreads;
+        mutable std::list<std::unique_ptr<MarketLogExternalOrderImporterThread>> mScanningThreads;
 
-        void deleteThread(MarketLogItemPriceImporterThread *thread);
+        void deleteThread(MarketLogExternalOrderImporterThread *thread);
     };
 }

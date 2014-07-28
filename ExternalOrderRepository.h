@@ -17,16 +17,16 @@
 #include <vector>
 
 #include "Repository.h"
-#include "ItemPrice.h"
+#include "ExternalOrder.h"
 
 namespace Evernus
 {
-    class ItemPriceRepository
-        : public Repository<ItemPrice>
+    class ExternalOrderRepository
+        : public Repository<ExternalOrder>
     {
     public:
         using Repository::Repository;
-        virtual ~ItemPriceRepository() = default;
+        virtual ~ExternalOrderRepository() = default;
 
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
@@ -35,14 +35,14 @@ namespace Evernus
 
         void create() const;
 
-        EntityPtr findSellByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const;
-        EntityPtr findBuyByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const;
+        EntityPtr findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const;
+        EntityPtr findBuyByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const;
 
     private:
         virtual QStringList getColumns() const override;
-        virtual void bindValues(const ItemPrice &entity, QSqlQuery &query) const override;
-        virtual void bindPositionalValues(const ItemPrice &entity, QSqlQuery &query) const override;
+        virtual void bindValues(const ExternalOrder &entity, QSqlQuery &query) const override;
+        virtual void bindPositionalValues(const ExternalOrder &entity, QSqlQuery &query) const override;
 
-        EntityPtr findByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId, ItemPrice::Type priceType) const;
+        EntityPtr findByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId, ExternalOrder::Type priceType) const;
     };
 }

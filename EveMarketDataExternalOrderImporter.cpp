@@ -19,25 +19,25 @@
 #include <QUrlQuery>
 #include <QXmlQuery>
 
-#include "EveMarketDataItemPriceImporterXmlReceiver.h"
+#include "EveMarketDataExternalOrderImporterXmlReceiver.h"
 
-#include "EveMarketDataItemPriceImporter.h"
+#include "EveMarketDataExternalOrderImporter.h"
 
 namespace Evernus
 {
     namespace
     {
-        class EveMarketDataItemPriceImporterXmlMessageHandler
+        class EveMarketDataExternalOrderImporterXmlMessageHandler
             : public QAbstractMessageHandler
         {
         public:
-            explicit EveMarketDataItemPriceImporterXmlMessageHandler(QString &error)
+            explicit EveMarketDataExternalOrderImporterXmlMessageHandler(QString &error)
                 : QAbstractMessageHandler{}
                 , mError{error}
             {
             }
 
-            virtual ~EveMarketDataItemPriceImporterXmlMessageHandler() = default;
+            virtual ~EveMarketDataExternalOrderImporterXmlMessageHandler() = default;
 
         protected:
             virtual void handleMessage(QtMsgType type, const QString &description, const QUrl &identifier, const QSourceLocation &sourceLocation) override
@@ -51,11 +51,11 @@ namespace Evernus
         };
     }
 
-    void EveMarketDataItemPriceImporter::fetchItemPrices(const TypeLocationPairs &target) const
+    void EveMarketDataExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
     {
         if (target.empty())
         {
-            emit itemPricesChanged(std::vector<ItemPrice>{});
+            emit externalOrdersChanged(std::vector<ExternalOrder>{});
             return;
         }
         
@@ -82,7 +82,7 @@ namespace Evernus
         });
     }
 
-    void EveMarketDataItemPriceImporter::processReply(const TypeLocationPairs &target) const
+    void EveMarketDataExternalOrderImporter::processReply(const TypeLocationPairs &target) const
     {
         auto reply = static_cast<QNetworkReply *>(sender());
         reply->deleteLater();
@@ -94,18 +94,18 @@ namespace Evernus
         }
 
         QString errorMsg;
-        EveMarketDataItemPriceImporterXmlMessageHandler handler{errorMsg};
+        EveMarketDataExternalOrderImporterXmlMessageHandler handler{errorMsg};
 
         QXmlQuery query;
         query.setMessageHandler(&handler);
         query.setFocus(reply->readAll());
         query.setQuery("//rowset[@name='orders']/row");
 
-        EveMarketDataItemPriceImporterXmlReceiver recevier{target, query.namePool()};
+        EveMarketDataExternalOrderImporterXmlReceiver recevier{target, query.namePool()};
         query.evaluateTo(&recevier);
 
         if (errorMsg.isEmpty())
-            emit itemPricesChanged(std::move(recevier).getResult());
+            emit externalOrdersChanged(std::move(recevier).getResult());
         else
             emit error(errorMsg);
     }

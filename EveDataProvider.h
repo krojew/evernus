@@ -25,7 +25,7 @@
 
 namespace Evernus
 {
-    class ItemPrice;
+    class ExternalOrder;
 
     class EveDataProvider
     {
@@ -41,8 +41,8 @@ namespace Evernus
         virtual QString getTypeMetaGroupName(EveType::IdType id) const = 0;
 
         virtual double getTypeVolume(EveType::IdType id) const = 0;
-        virtual std::shared_ptr<ItemPrice> getTypeSellPrice(EveType::IdType id, quint64 stationId) const = 0;
-        virtual std::shared_ptr<ItemPrice> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const = 0;
+        virtual std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId) const = 0;
+        virtual std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const = 0;
 
         virtual void setTypeSellPrice(quint64 stationId,
                                       EveType::IdType typeId,

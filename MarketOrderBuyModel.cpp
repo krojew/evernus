@@ -23,7 +23,7 @@
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
-#include "ItemPrice.h"
+#include "ExternalOrder.h"
 #include "IconUtils.h"
 #include "TextUtils.h"
 #include "ItemCost.h"

@@ -18,7 +18,7 @@
 #include "MarketOrderSellModel.h"
 #include "CharacterBoundWidget.h"
 #include "MarketOrderBuyModel.h"
-#include "ItemPriceImporter.h"
+#include "ExternalOrderImporter.h"
 
 class QPushButton;
 class QComboBox;
@@ -55,8 +55,8 @@ namespace Evernus
 
         void importFromLogs(Character::IdType id);
 
-        void importPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
-        void importPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
+        void importPricesFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
 
     public slots:
         void updateData();
@@ -91,6 +91,6 @@ namespace Evernus
 
         virtual void handleNewCharacter(Character::IdType id) override;
 
-        ItemPriceImporter::TypeLocationPairs getImportTarget() const;
+        ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
     };
 }

@@ -26,8 +26,10 @@
 #include "AssetValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
 #include "WalletTransactionRepository.h"
-#include "ItemPriceImporterRegistry.h"
+#include "ExternalOrderImporterRegistry.h"
 #include "WalletSnapshotRepository.h"
+#include "ExternalOrderRepository.h"
+#include "ExternalOrderImporter.h"
 #include "MarketOrderRepository.h"
 #include "MarketGroupRepository.h"
 #include "UpdateTimerRepository.h"
@@ -36,11 +38,9 @@
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
 #include "MetaGroupRepository.h"
-#include "ItemPriceRepository.h"
 #include "MarketOrderProvider.h"
 #include "ItemCostRepository.h"
 #include "CacheTimerProvider.h"
-#include "ItemPriceImporter.h"
 #include "EveTypeRepository.h"
 #include "RefTypeRepository.h"
 #include "ItemCostProvider.h"
@@ -60,7 +60,7 @@ namespace Evernus
     class EvernusApplication
         : public QApplication
         , public EveDataProvider
-        , public ItemPriceImporterRegistry
+        , public ExternalOrderImporterRegistry
         , public AssetProvider
         , public CacheTimerProvider
         , public MarketOrderProvider
@@ -80,8 +80,8 @@ namespace Evernus
         virtual QString getTypeMetaGroupName(EveType::IdType id) const override;
 
         virtual double getTypeVolume(EveType::IdType id) const override;
-        virtual std::shared_ptr<ItemPrice> getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
-        virtual std::shared_ptr<ItemPrice> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const override;
+        virtual std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
+        virtual std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const override;
 
         virtual void setTypeSellPrice(quint64 stationId,
                                       EveType::IdType typeId,
@@ -96,7 +96,7 @@ namespace Evernus
 
         virtual QString getRefTypeName(uint id) const override;
 
-        virtual void registerImporter(const std::string &name, std::unique_ptr<ItemPriceImporter> &&importer) override;
+        virtual void registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer) override;
 
         virtual std::shared_ptr<AssetList> fetchAssetsForCharacter(Character::IdType id) const override;
 
@@ -133,7 +133,7 @@ namespace Evernus
         void conquerableStationsChanged();
         void charactersChanged();
         void assetsChanged();
-        void itemPricesChanged();
+        void externalOrdersChanged();
         void walletJournalChanged();
         void walletTransactionsChanged();
         void marketOrdersChanged();
@@ -147,8 +147,8 @@ namespace Evernus
         void refreshMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshMarketOrdersFromLogs(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshConquerableStations();
-        void refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
-        void refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
+        void refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
+        void refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
 
         void updateAssetsValue(Character::IdType id);
 
@@ -159,7 +159,7 @@ namespace Evernus
         void updateCharacters();
 
         void showPriceImportError(const QString &info);
-        void updateItemPrices(const std::vector<ItemPrice> &prices);
+        void updateExternalOrders(const std::vector<ExternalOrder> &orders);
 
     private:
         typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
@@ -178,7 +178,7 @@ namespace Evernus
         std::unique_ptr<AssetListRepository> mAssetListRepository;
         std::unique_ptr<ConquerableStationRepository> mConquerableStationRepository;
         std::unique_ptr<WalletSnapshotRepository> mWalletSnapshotRepository;
-        std::unique_ptr<ItemPriceRepository> mItemPriceRepository;
+        std::unique_ptr<ExternalOrderRepository> mExternalOrderRepository;
         std::unique_ptr<AssetValueSnapshotRepository> mAssetValueSnapshotRepository;
         std::unique_ptr<WalletJournalEntryRepository> mWalletJournalEntryRepository;
         std::unique_ptr<RefTypeRepository> mRefTypeRepository;
@@ -196,7 +196,7 @@ namespace Evernus
         APIManager mAPIManager;
 
         uint mTaskId = TaskConstants::invalidTask + 1;
-        uint mCurrentItemPriceImportTask = TaskConstants::invalidTask;
+        uint mCurrentExternalOrderImportTask = TaskConstants::invalidTask;
 
         bool mCharacterUpdateScheduled = false;
 
@@ -206,10 +206,10 @@ namespace Evernus
         mutable std::unordered_map<EveType::IdType, MarketGroupRepository::EntityPtr> mTypeMarketGroupCache;
         mutable std::unordered_map<EveType::IdType, MetaGroupRepository::EntityPtr> mTypeMetaGroupCache;
         mutable std::unordered_map<quint64, QString> mLocationNameCache;
-        mutable std::unordered_map<TypeLocationPair, ItemPriceRepository::EntityPtr, boost::hash<TypeLocationPair>> mSellPrices;
-        mutable std::unordered_map<TypeLocationPair, ItemPriceRepository::EntityPtr, boost::hash<TypeLocationPair>> mBuyPrices;
+        mutable std::unordered_map<TypeLocationPair, ExternalOrderRepository::EntityPtr, boost::hash<TypeLocationPair>> mSellPrices;
+        mutable std::unordered_map<TypeLocationPair, ExternalOrderRepository::EntityPtr, boost::hash<TypeLocationPair>> mBuyPrices;
 
-        std::unordered_map<std::string, ImporterPtr> mItemPriceImporters;
+        std::unordered_map<std::string, ImporterPtr> mExternalOrderImporters;
 
         std::unordered_map<RefType::IdType, QString> mRefTypeNames;
 
@@ -244,19 +244,19 @@ namespace Evernus
         uint startTask(uint parentTask, const QString &description);
 
         void importCharacter(Character::IdType id, uint parentTask, const Key &key);
-        void importItemPrices(const std::string &importerName, const ItemPriceImporter::TypeLocationPairs &target);
+        void importExternalOrders(const std::string &importerName, const ExternalOrderImporter::TypeLocationPairs &target);
         void importMarketOrders(Character::IdType id, MarketOrders &orders);
 
         KeyRepository::EntityPtr getCharacterKey(Character::IdType id) const;
 
-        void finishItemPriceImportTask(const QString &info);
+        void finishExternalOrderImportTask(const QString &info);
 
-        std::shared_ptr<ItemPrice> getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
-        std::shared_ptr<ItemPrice> getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
+        std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
+        std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
         void computeAssetListSellValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;
 
-        std::shared_ptr<ItemPrice> saveTypePrice(ItemPrice::Type type,
+        std::shared_ptr<ExternalOrder> saveTypePrice(ExternalOrder::Type type,
                                                  quint64 stationId,
                                                  EveType::IdType typeId,
                                                  const QDateTime &priceTime,

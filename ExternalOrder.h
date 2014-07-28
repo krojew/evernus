@@ -21,7 +21,7 @@
 
 namespace Evernus
 {
-    class ItemPrice
+    class ExternalOrder
         : public Entity<uint>
     {
     public:
@@ -36,10 +36,10 @@ namespace Evernus
 
         using Entity::Entity;
 
-        ItemPrice() = default;
-        ItemPrice(const ItemPrice &) = default;
-        ItemPrice(ItemPrice &&) = default;
-        virtual ~ItemPrice() = default;
+        ExternalOrder() = default;
+        ExternalOrder(const ExternalOrder &) = default;
+        ExternalOrder(ExternalOrder &&) = default;
+        virtual ~ExternalOrder() = default;
 
         Type getType() const noexcept;
         void setType(Type type) noexcept;
@@ -65,8 +65,8 @@ namespace Evernus
         double getValue() const noexcept;
         void setValue(double value) noexcept;
 
-        ItemPrice &operator =(const ItemPrice &) = default;
-        ItemPrice &operator =(ItemPrice &&) = default;
+        ExternalOrder &operator =(const ExternalOrder &) = default;
+        ExternalOrder &operator =(ExternalOrder &&) = default;
 
     private:
         Type mType = Type::Buy;

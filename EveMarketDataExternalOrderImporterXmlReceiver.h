@@ -19,19 +19,19 @@
 
 #include <QAbstractXmlReceiver>
 
-#include "ItemPriceImporter.h"
-#include "ItemPrice.h"
+#include "ExternalOrderImporter.h"
+#include "ExternalOrder.h"
 
 namespace Evernus
 {
-    class EveMarketDataItemPriceImporterXmlReceiver
+    class EveMarketDataExternalOrderImporterXmlReceiver
         : public QAbstractXmlReceiver
     {
     public:
-        typedef std::vector<ItemPrice> Result;
+        typedef std::vector<ExternalOrder> Result;
 
-        EveMarketDataItemPriceImporterXmlReceiver(const ItemPriceImporter::TypeLocationPairs &target, const QXmlNamePool &namePool);
-        virtual ~EveMarketDataItemPriceImporterXmlReceiver() = default;
+        EveMarketDataExternalOrderImporterXmlReceiver(const ExternalOrderImporter::TypeLocationPairs &target, const QXmlNamePool &namePool);
+        virtual ~EveMarketDataExternalOrderImporterXmlReceiver() = default;
 
         virtual void atomicValue(const QVariant &value) override;
         virtual void attribute(const QXmlName &name, const QStringRef &value) override;
@@ -53,10 +53,10 @@ namespace Evernus
         const QXmlNamePool &mNamePool;
 
         Result mResult;
-        std::unique_ptr<ItemPrice> mCurrentElement;
+        std::unique_ptr<ExternalOrder> mCurrentElement;
 
-        ItemPriceImporter::TypeLocationPairs mDesired;
-        std::unordered_map<ItemPriceImporter::TypeLocationPair, ItemPrice *, boost::hash<ItemPriceImporter::TypeLocationPair>>
+        ExternalOrderImporter::TypeLocationPairs mDesired;
+        std::unordered_map<ExternalOrderImporter::TypeLocationPair, ExternalOrder *, boost::hash<ExternalOrderImporter::TypeLocationPair>>
         mProcessedSell, mProcessedBuy;
     };
 }

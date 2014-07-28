@@ -22,7 +22,7 @@
 #include "AssetProvider.h"
 #include "PriceSettings.h"
 #include "AssetList.h"
-#include "ItemPrice.h"
+#include "ExternalOrder.h"
 #include "IconUtils.h"
 
 #include "AssetModel.h"

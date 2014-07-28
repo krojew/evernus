@@ -20,7 +20,7 @@
 #include <QDebug>
 #include <QSet>
 
-#include "ItemPriceImporterNames.h"
+#include "ExternalOrderImporterNames.h"
 #include "ImportSettings.h"
 #include "WalletSettings.h"
 #include "PathSettings.h"
@@ -35,7 +35,7 @@ namespace Evernus
     EvernusApplication::EvernusApplication(int &argc, char *argv[])
         : QApplication{argc, argv}
         , EveDataProvider{}
-        , ItemPriceImporterRegistry{}
+        , ExternalOrderImporterRegistry{}
         , AssetProvider{}
         , CacheTimerProvider{}
         , MarketOrderProvider{}
@@ -149,12 +149,12 @@ namespace Evernus
         return result->getVolume();
     }
 
-    std::shared_ptr<ItemPrice> EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId) const
+    std::shared_ptr<ExternalOrder> EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId) const
     {
         return getTypeSellPrice(id, stationId, true);
     }
 
-    std::shared_ptr<ItemPrice> EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId) const
+    std::shared_ptr<ExternalOrder> EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId) const
     {
         return getTypeBuyPrice(id, stationId, true);
     }
@@ -165,7 +165,7 @@ namespace Evernus
                                               double price) const
     {
         mSellPrices[std::make_pair(typeId, stationId)]
-            = saveTypePrice(ItemPrice::Type::Sell, stationId, typeId, priceTime, price);
+            = saveTypePrice(ExternalOrder::Type::Sell, stationId, typeId, priceTime, price);
     }
 
     void EvernusApplication::setTypeBuyPrice(quint64 stationId,
@@ -174,7 +174,7 @@ namespace Evernus
                                              double price) const
     {
         mBuyPrices[std::make_pair(typeId, stationId)]
-            = saveTypePrice(ItemPrice::Type::Buy, stationId, typeId, priceTime, price);
+            = saveTypePrice(ExternalOrder::Type::Buy, stationId, typeId, priceTime, price);
     }
 
     QString EvernusApplication::getLocationName(quint64 id) const
@@ -261,13 +261,13 @@ namespace Evernus
         return (it != std::end(mRefTypeNames)) ? (it->second) : (QString{});
     }
 
-    void EvernusApplication::registerImporter(const std::string &name, std::unique_ptr<ItemPriceImporter> &&importer)
+    void EvernusApplication::registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer)
     {
-        Q_ASSERT(mItemPriceImporters.find(name) == std::end(mItemPriceImporters));
+        Q_ASSERT(mExternalOrderImporters.find(name) == std::end(mExternalOrderImporters));
 
-        connect(importer.get(), &ItemPriceImporter::error, this, &EvernusApplication::showPriceImportError);
-        connect(importer.get(), &ItemPriceImporter::itemPricesChanged, this, &EvernusApplication::updateItemPrices);
-        mItemPriceImporters.emplace(name, std::move(importer));
+        connect(importer.get(), &ExternalOrderImporter::error, this, &EvernusApplication::showPriceImportError);
+        connect(importer.get(), &ExternalOrderImporter::externalOrdersChanged, this, &EvernusApplication::updateExternalOrders);
+        mExternalOrderImporters.emplace(name, std::move(importer));
     }
 
     std::shared_ptr<AssetList> EvernusApplication::fetchAssetsForCharacter(Character::IdType id) const
@@ -876,14 +876,14 @@ namespace Evernus
         });
     }
 
-    void EvernusApplication::refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target)
+    void EvernusApplication::refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &target)
     {
-        importItemPrices(ItemPriceImporterNames::webImporter, target);
+        importExternalOrders(ExternalOrderImporterNames::webImporter, target);
     }
 
-    void EvernusApplication::refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target)
+    void EvernusApplication::refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &target)
     {
-        importItemPrices(ItemPriceImporterNames::logImporter, target);
+        importExternalOrders(ExternalOrderImporterNames::logImporter, target);
     }
 
     void EvernusApplication::updateAssetsValue(Character::IdType id)
@@ -914,15 +914,15 @@ namespace Evernus
 
     void EvernusApplication::showPriceImportError(const QString &info)
     {
-        Q_ASSERT(mCurrentItemPriceImportTask != TaskConstants::invalidTask);
-        finishItemPriceImportTask(info);
+        Q_ASSERT(mCurrentExternalOrderImportTask != TaskConstants::invalidTask);
+        finishExternalOrderImportTask(info);
     }
 
-    void EvernusApplication::updateItemPrices(const std::vector<ItemPrice> &prices)
+    void EvernusApplication::updateExternalOrders(const std::vector<ExternalOrder> &orders)
     {
         try
         {
-            mItemPriceRepository->batchStore(prices, false);
+            mExternalOrderRepository->batchStore(orders, false);
 
             QSettings settings;
             if (settings.value(ImportSettings::autoUpdateAssetValueKey, true).toBool())
@@ -931,17 +931,17 @@ namespace Evernus
                     computeAssetListSellValue(*list.second);
             }
 
-            finishItemPriceImportTask(QString{});
+            finishExternalOrderImportTask(QString{});
         }
         catch (const std::exception &e)
         {
-            finishItemPriceImportTask(e.what());
+            finishExternalOrderImportTask(e.what());
         }
 
         mSellPrices.clear();
         mBuyPrices.clear();
 
-        emit itemPricesChanged();
+        emit externalOrdersChanged();
     }
 
     void EvernusApplication::createDb()
@@ -963,7 +963,7 @@ namespace Evernus
         mAssetListRepository.reset(new AssetListRepository{mMainDb, *mItemRepository});
         mConquerableStationRepository.reset(new ConquerableStationRepository{mMainDb});
         mWalletSnapshotRepository.reset(new WalletSnapshotRepository{mMainDb});
-        mItemPriceRepository.reset(new ItemPriceRepository{mMainDb});
+        mExternalOrderRepository.reset(new ExternalOrderRepository{mMainDb});
         mAssetValueSnapshotRepository.reset(new AssetValueSnapshotRepository{mMainDb});
         mWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{mMainDb});
         mRefTypeRepository.reset(new RefTypeRepository{mMainDb});
@@ -989,7 +989,7 @@ namespace Evernus
         mWalletSnapshotRepository->create(*mCharacterRepository);
         mAssetValueSnapshotRepository->create(*mCharacterRepository);
         mWalletJournalEntryRepository->create(*mCharacterRepository);
-        mItemPriceRepository->create();
+        mExternalOrderRepository->create();
         mCacheTimerRepository->create(*mCharacterRepository);
         mUpdateTimerRepository->create(*mCharacterRepository);
         mWalletTransactionRepository->create(*mCharacterRepository);
@@ -1140,9 +1140,9 @@ namespace Evernus
                 const auto cacheTimer = mCharacterUtcCacheTimes[id];
                 if (cacheTimer.isValid())
                 {
-                    CacheTimer timer;
+                    Evernus::CacheTimer timer;
                     timer.setCharacterId(id);
-                    timer.setType(TimerType::Character);
+                    timer.setType(Evernus::TimerType::Character);
                     timer.setCacheUntil(cacheTimer);
 
                     mCacheTimerRepository->store(timer);
@@ -1163,20 +1163,20 @@ namespace Evernus
         });
     }
 
-    void EvernusApplication::importItemPrices(const std::string &importerName, const ItemPriceImporter::TypeLocationPairs &target)
+    void EvernusApplication::importExternalOrders(const std::string &importerName, const ExternalOrderImporter::TypeLocationPairs &target)
     {
-        if (mCurrentItemPriceImportTask != TaskConstants::invalidTask)
+        if (mCurrentExternalOrderImportTask != TaskConstants::invalidTask)
             return;
 
         qDebug() << "Refreshing item prices using importer:" << importerName.c_str();
 
-        const auto it = mItemPriceImporters.find(importerName);
-        Q_ASSERT(it != std::end(mItemPriceImporters));
+        const auto it = mExternalOrderImporters.find(importerName);
+        Q_ASSERT(it != std::end(mExternalOrderImporters));
 
-        mCurrentItemPriceImportTask = startTask(tr("Importing item prices..."));
+        mCurrentExternalOrderImportTask = startTask(tr("Importing item prices..."));
         processEvents();
 
-        it->second->fetchItemPrices(target);
+        it->second->fetchExternalOrders(target);
     }
 
     void EvernusApplication::importMarketOrders(Character::IdType id, MarketOrders &orders)
@@ -1279,58 +1279,58 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::finishItemPriceImportTask(const QString &info)
+    void EvernusApplication::finishExternalOrderImportTask(const QString &info)
     {
-        const auto task = mCurrentItemPriceImportTask;
-        mCurrentItemPriceImportTask = TaskConstants::invalidTask;
+        const auto task = mCurrentExternalOrderImportTask;
+        mCurrentExternalOrderImportTask = TaskConstants::invalidTask;
 
         emit taskEnded(task, info);
     }
 
-    std::shared_ptr<ItemPrice> EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
+    std::shared_ptr<ExternalOrder> EvernusApplication::getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
     {
         const auto key = std::make_pair(id, stationId);
         const auto it = mSellPrices.find(key);
         if (it != std::end(mSellPrices))
             return it->second;
 
-        std::shared_ptr<ItemPrice> result;
+        std::shared_ptr<ExternalOrder> result;
 
         try
         {
-            result = mItemPriceRepository->findSellByTypeAndLocation(id, stationId);
+            result = mExternalOrderRepository->findSellByTypeAndLocation(id, stationId);
         }
-        catch (const ItemPriceRepository::NotFoundException &)
+        catch (const ExternalOrderRepository::NotFoundException &)
         {
             if (!dontThrow)
                 throw;
 
-            result = std::make_shared<ItemPrice>();
+            result = std::make_shared<ExternalOrder>();
         }
 
         mSellPrices.emplace(key, result);
         return result;
     }
 
-    std::shared_ptr<ItemPrice> EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
+    std::shared_ptr<ExternalOrder> EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
     {
         const auto key = std::make_pair(id, stationId);
         const auto it = mBuyPrices.find(key);
         if (it != std::end(mBuyPrices))
             return it->second;
 
-        std::shared_ptr<ItemPrice> result;
+        std::shared_ptr<ExternalOrder> result;
 
         try
         {
-            result = mItemPriceRepository->findBuyByTypeAndLocation(id, stationId);
+            result = mExternalOrderRepository->findBuyByTypeAndLocation(id, stationId);
         }
-        catch (const ItemPriceRepository::NotFoundException &)
+        catch (const ExternalOrderRepository::NotFoundException &)
         {
             if (!dontThrow)
                 throw;
 
-            result = std::make_shared<ItemPrice>();
+            result = std::make_shared<ExternalOrder>();
         }
 
         mBuyPrices.emplace(key, result);
@@ -1358,7 +1358,7 @@ namespace Evernus
 
             mAssetValueSnapshotRepository->store(snapshot);
         }
-        catch (const ItemPriceRepository::NotFoundException &)
+        catch (const ExternalOrderRepository::NotFoundException &)
         {
         }
     }
@@ -1372,20 +1372,20 @@ namespace Evernus
         return price;
     }
 
-    std::shared_ptr<ItemPrice> EvernusApplication::saveTypePrice(ItemPrice::Type type,
+    std::shared_ptr<ExternalOrder> EvernusApplication::saveTypePrice(ExternalOrder::Type type,
                                                                  quint64 stationId,
                                                                  EveType::IdType typeId,
                                                                  const QDateTime &priceTime,
                                                                  double price) const
     {
-        auto item = std::make_shared<ItemPrice>();
+        auto item = std::make_shared<ExternalOrder>();
         item->setType(type);
         item->setLocationId(stationId);
         item->setTypeId(typeId);
         item->setUpdateTime(priceTime);
         item->setValue(price);
 
-        mItemPriceRepository->store(*item);
+        mExternalOrderRepository->store(*item);
 
         return item;
     }

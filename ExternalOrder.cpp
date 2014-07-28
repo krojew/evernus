@@ -12,86 +12,86 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ItemPrice.h"
+#include "ExternalOrder.h"
 
 namespace Evernus
 {
-    ItemPrice::Type ItemPrice::getType() const noexcept
+    ExternalOrder::Type ExternalOrder::getType() const noexcept
     {
         return mType;
     }
 
-    void ItemPrice::setType(Type type) noexcept
+    void ExternalOrder::setType(Type type) noexcept
     {
         mType = type;
     }
 
-    ItemPrice::TypeIdType ItemPrice::getTypeId() const noexcept
+    ExternalOrder::TypeIdType ExternalOrder::getTypeId() const noexcept
     {
         return mTypeId;
     }
 
-    void ItemPrice::setTypeId(TypeIdType id) noexcept
+    void ExternalOrder::setTypeId(TypeIdType id) noexcept
     {
         mTypeId = id;
     }
 
-    ItemPrice::LocationIdType ItemPrice::getLocationId() const noexcept
+    ExternalOrder::LocationIdType ExternalOrder::getLocationId() const noexcept
     {
         return mLocationId;
     }
 
-    void ItemPrice::setLocationId(LocationIdType id) noexcept
+    void ExternalOrder::setLocationId(LocationIdType id) noexcept
     {
         mLocationId = id;
     }
 
-    uint ItemPrice::getSolarSystemId() const noexcept
+    uint ExternalOrder::getSolarSystemId() const noexcept
     {
         return mSolarSystemId;
     }
 
-    void ItemPrice::setSolarSystemId(uint id) noexcept
+    void ExternalOrder::setSolarSystemId(uint id) noexcept
     {
         mSolarSystemId = id;
     }
 
-    uint ItemPrice::getRegionId() const noexcept
+    uint ExternalOrder::getRegionId() const noexcept
     {
         return mRegionId;
     }
 
-    void ItemPrice::setRegionId(uint id) noexcept
+    void ExternalOrder::setRegionId(uint id) noexcept
     {
         mRegionId = id;
     }
 
-    short ItemPrice::getRange() const noexcept
+    short ExternalOrder::getRange() const noexcept
     {
         return mRange;
     }
 
-    void ItemPrice::setRange(short value) noexcept
+    void ExternalOrder::setRange(short value) noexcept
     {
         mRange = value;
     }
 
-    QDateTime ItemPrice::getUpdateTime() const
+    QDateTime ExternalOrder::getUpdateTime() const
     {
         return mUpdateTime;
     }
 
-    void ItemPrice::setUpdateTime(const QDateTime &dt)
+    void ExternalOrder::setUpdateTime(const QDateTime &dt)
     {
         mUpdateTime = dt;
     }
 
-    double ItemPrice::getValue() const noexcept
+    double ExternalOrder::getValue() const noexcept
     {
         return mValue;
     }
 
-    void ItemPrice::setValue(double value) noexcept
+    void ExternalOrder::setValue(double value) noexcept
     {
         mValue = value;
     }

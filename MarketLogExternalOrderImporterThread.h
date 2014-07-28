@@ -18,33 +18,33 @@
 
 #include <QThread>
 
-#include "ItemPrice.h"
+#include "ExternalOrder.h"
 
 namespace Evernus
 {
-    class ItemPrice;
+    class ExternalOrder;
 
-    class MarketLogItemPriceImporterThread
+    class MarketLogExternalOrderImporterThread
         : public QThread
     {
         Q_OBJECT
 
     public:
-        typedef std::vector<ItemPrice> ItemPriceList;
+        typedef std::vector<ExternalOrder> ExternalOrderList;
 
         using QThread::QThread;
-        virtual ~MarketLogItemPriceImporterThread() = default;
+        virtual ~MarketLogExternalOrderImporterThread() = default;
 
     signals:
-        void finished(const ItemPriceList &prices);
+        void finished(const ExternalOrderList &orders);
         void error(const QString &info);
 
     protected:
         virtual void run() override;
 
     private:
-        static void getItemPrice(const QString &logPath, ItemPriceList &prices, bool deleteLog);
+        static void getExternalOrder(const QString &logPath, ExternalOrderList &prices, bool deleteLog);
     };
 }
 
-Q_DECLARE_METATYPE(Evernus::MarketLogItemPriceImporterThread::ItemPriceList);
+Q_DECLARE_METATYPE(Evernus::MarketLogExternalOrderImporterThread::ExternalOrderList);

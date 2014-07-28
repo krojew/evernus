@@ -24,11 +24,11 @@
 #include "PathSettings.h"
 #include "PathUtils.h"
 
-#include "MarketLogItemPriceImporterThread.h"
+#include "MarketLogExternalOrderImporterThread.h"
 
 namespace Evernus
 {
-    void MarketLogItemPriceImporterThread::run()
+    void MarketLogExternalOrderImporterThread::run()
     {
         const auto logPath = PathUtils::getMarketLogsPath();
         if (logPath.isEmpty())
@@ -40,7 +40,7 @@ namespace Evernus
         const QDir basePath{logPath};
         const auto files = basePath.entryList(QStringList{"*.txt"}, QDir::Files | QDir::Readable);
 
-        ItemPriceList result;
+        ExternalOrderList result;
 
         QSettings settings;
         const auto deleteLogs = settings.value(PathSettings::deleteLogsKey, true).toBool();
@@ -53,16 +53,16 @@ namespace Evernus
             if (file.startsWith("My Orders"))
                 continue;
 
-            getItemPrice(logPath % "/" % file, result, deleteLogs);
+            getExternalOrder(logPath % "/" % file, result, deleteLogs);
         }
 
         emit finished(result);
     }
 
-    void MarketLogItemPriceImporterThread::getItemPrice(const QString &logPath, ItemPriceList &prices, bool deleteLog)
+    void MarketLogExternalOrderImporterThread::getExternalOrder(const QString &logPath, ExternalOrderList &orders, bool deleteLog)
     {
-        std::unordered_map<ItemPrice::LocationIdType, ItemPrice> buy;
-        std::unordered_map<ItemPrice::LocationIdType, ItemPrice> sell;
+        std::unordered_map<ExternalOrder::LocationIdType, ExternalOrder> buy;
+        std::unordered_map<ExternalOrder::LocationIdType, ExternalOrder> sell;
 
         QFile file{logPath};
         if (!file.open(QIODevice::ReadOnly))
@@ -99,29 +99,29 @@ namespace Evernus
                     const auto curRange = values[rangeColumn].toShort();
                     if (curRange != rangeStation)
                     {
-                        ItemPrice price;
+                        ExternalOrder price;
                         price.setUpdateTime(priceTime);
                         price.setLocationId(curLoc);
                         price.setSolarSystemId(values[systemColumn].toUInt());
                         price.setRegionId(values[regionColumn].toUInt());
                         price.setRange(curRange);
-                        price.setType(ItemPrice::Type::Buy);
+                        price.setType(ExternalOrder::Type::Buy);
                         price.setTypeId(values[typeColumn].toULongLong());
 
-                        prices.emplace_back(std::move(price));
+                        orders.emplace_back(std::move(price));
                     }
                     else
                     {
                         auto it = buy.find(curLoc);
                         if (it == std::end(buy))
                         {
-                            it = buy.emplace(curLoc, ItemPrice::invalidId).first;
+                            it = buy.emplace(curLoc, ExternalOrder::invalidId).first;
                             it->second.setUpdateTime(priceTime);
                             it->second.setLocationId(curLoc);
                             it->second.setSolarSystemId(values[systemColumn].toUInt());
                             it->second.setRegionId(values[regionColumn].toUInt());
                             it->second.setRange(rangeStation);
-                            it->second.setType(ItemPrice::Type::Buy);
+                            it->second.setType(ExternalOrder::Type::Buy);
                             it->second.setTypeId(values[typeColumn].toULongLong());
                         }
 
@@ -134,12 +134,12 @@ namespace Evernus
                     auto it = sell.find(curLoc);
                     if (it == std::end(sell))
                     {
-                        it = sell.emplace(curLoc, ItemPrice::invalidId).first;
+                        it = sell.emplace(curLoc, ExternalOrder::invalidId).first;
                         it->second.setUpdateTime(priceTime);
                         it->second.setLocationId(curLoc);
                         it->second.setSolarSystemId(values[systemColumn].toUInt());
                         it->second.setRegionId(values[regionColumn].toUInt());
-                        it->second.setType(ItemPrice::Type::Sell);
+                        it->second.setType(ExternalOrder::Type::Sell);
                         it->second.setTypeId(values[typeColumn].toULongLong());
                         it->second.setValue(std::numeric_limits<double>::max());
                     }
@@ -151,9 +151,9 @@ namespace Evernus
         }
 
         for (auto &price : buy)
-            prices.emplace_back(std::move(price.second));
+            orders.emplace_back(std::move(price.second));
         for (auto &price : sell)
-            prices.emplace_back(std::move(price.second));
+            orders.emplace_back(std::move(price.second));
 
         if (deleteLog)
             file.remove();

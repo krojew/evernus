@@ -12,13 +12,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ItemPrice.h"
+#include "ExternalOrder.h"
 
-#include "MarketLogItemPriceImporter.h"
+#include "MarketLogExternalOrderImporter.h"
 
 namespace Evernus
 {
-    MarketLogItemPriceImporter::~MarketLogItemPriceImporter()
+    MarketLogExternalOrderImporter::~MarketLogExternalOrderImporter()
     {
         try
         {
@@ -36,35 +36,35 @@ namespace Evernus
         }
     }
 
-    void MarketLogItemPriceImporter::fetchItemPrices(const TypeLocationPairs &target) const
+    void MarketLogExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
     {
         if (target.empty())
         {
-            emit itemPricesChanged(std::vector<ItemPrice>{});
+            emit externalOrdersChanged(std::vector<ExternalOrder>{});
             return;
         }
 
-        auto thread = std::make_unique<MarketLogItemPriceImporterThread>();
-        connect(thread.get(), &MarketLogItemPriceImporterThread::finished, this, &MarketLogItemPriceImporter::threadFinished);
-        connect(thread.get(), &MarketLogItemPriceImporterThread::error, this, &MarketLogItemPriceImporter::threadError);
+        auto thread = std::make_unique<MarketLogExternalOrderImporterThread>();
+        connect(thread.get(), &MarketLogExternalOrderImporterThread::finished, this, &MarketLogExternalOrderImporter::threadFinished);
+        connect(thread.get(), &MarketLogExternalOrderImporterThread::error, this, &MarketLogExternalOrderImporter::threadError);
         thread->start();
 
         mScanningThreads.emplace_back(std::move(thread));
     }
 
-    void MarketLogItemPriceImporter::threadFinished(const ItemPriceList &prices)
+    void MarketLogExternalOrderImporter::threadFinished(const ExternalOrderList &orders)
     {
-        deleteThread(static_cast<MarketLogItemPriceImporterThread *>(sender()));
-        emit itemPricesChanged(prices);
+        deleteThread(static_cast<MarketLogExternalOrderImporterThread *>(sender()));
+        emit externalOrdersChanged(orders);
     }
 
-    void MarketLogItemPriceImporter::threadError(const QString &info)
+    void MarketLogExternalOrderImporter::threadError(const QString &info)
     {
-        deleteThread(static_cast<MarketLogItemPriceImporterThread *>(sender()));
+        deleteThread(static_cast<MarketLogExternalOrderImporterThread *>(sender()));
         emit error(info);
     }
 
-    void MarketLogItemPriceImporter::deleteThread(MarketLogItemPriceImporterThread *thread)
+    void MarketLogExternalOrderImporter::deleteThread(MarketLogExternalOrderImporterThread *thread)
     {
         thread->deleteLater();
 

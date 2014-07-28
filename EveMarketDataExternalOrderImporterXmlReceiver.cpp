@@ -12,29 +12,29 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "EveMarketDataItemPriceImporterXmlReceiver.h"
+#include "EveMarketDataExternalOrderImporterXmlReceiver.h"
 
 namespace Evernus
 {
-    EveMarketDataItemPriceImporterXmlReceiver
-    ::EveMarketDataItemPriceImporterXmlReceiver(const ItemPriceImporter::TypeLocationPairs &target, const QXmlNamePool &namePool)
+    EveMarketDataExternalOrderImporterXmlReceiver
+    ::EveMarketDataExternalOrderImporterXmlReceiver(const ExternalOrderImporter::TypeLocationPairs &target, const QXmlNamePool &namePool)
         : QAbstractXmlReceiver{}
         , mNamePool{namePool}
         , mDesired{target}
     {
     }
 
-    void EveMarketDataItemPriceImporterXmlReceiver::atomicValue(const QVariant &value)
+    void EveMarketDataExternalOrderImporterXmlReceiver::atomicValue(const QVariant &value)
     {
         Q_UNUSED(value);
     }
 
-    void EveMarketDataItemPriceImporterXmlReceiver::attribute(const QXmlName &name, const QStringRef &value)
+    void EveMarketDataExternalOrderImporterXmlReceiver::attribute(const QXmlName &name, const QStringRef &value)
     {
         auto &current = *mCurrentElement;
 
         if (name.localName(mNamePool) == "buysell")
-            current.setType((value == "s") ? (ItemPrice::Type::Sell) : (ItemPrice::Type::Buy));
+            current.setType((value == "s") ? (ExternalOrder::Type::Sell) : (ExternalOrder::Type::Buy));
         else if (name.localName(mNamePool) == "typeID")
             current.setTypeId(value.toUInt());
         else if (name.localName(mNamePool) == "stationID")
@@ -49,27 +49,27 @@ namespace Evernus
             current.setRange(value.toShort());
     }
 
-    void EveMarketDataItemPriceImporterXmlReceiver::characters(const QStringRef &value)
+    void EveMarketDataExternalOrderImporterXmlReceiver::characters(const QStringRef &value)
     {
         Q_UNUSED(value);
     }
 
-    void EveMarketDataItemPriceImporterXmlReceiver::comment(const QString &value)
+    void EveMarketDataExternalOrderImporterXmlReceiver::comment(const QString &value)
     {
         Q_UNUSED(value);
     }
 
-    void EveMarketDataItemPriceImporterXmlReceiver::endDocument()
+    void EveMarketDataExternalOrderImporterXmlReceiver::endDocument()
     {
     }
 
-    void EveMarketDataItemPriceImporterXmlReceiver::endElement()
+    void EveMarketDataExternalOrderImporterXmlReceiver::endElement()
     {
         const auto rangeStation = -1;
 
         const auto &current = *mCurrentElement;
 
-        if (current.getType() == ItemPrice::Type::Buy && current.getRange() != rangeStation)
+        if (current.getType() == ExternalOrder::Type::Buy && current.getRange() != rangeStation)
         {
             mResult.emplace_back(std::move(current));
         }
@@ -78,7 +78,7 @@ namespace Evernus
             const auto key = std::make_pair(current.getTypeId(), current.getLocationId());
             if (mDesired.find(key) != std::end(mDesired))
             {
-                if (current.getType() == ItemPrice::Type::Buy)
+                if (current.getType() == ExternalOrder::Type::Buy)
                 {
                     const auto it = mProcessedBuy.find(key);
                     if (it == std::end(mProcessedBuy))
@@ -108,42 +108,42 @@ namespace Evernus
         }
     }
 
-    void EveMarketDataItemPriceImporterXmlReceiver::endOfSequence()
+    void EveMarketDataExternalOrderImporterXmlReceiver::endOfSequence()
     {
     }
 
-    void EveMarketDataItemPriceImporterXmlReceiver::namespaceBinding(const QXmlName &name)
+    void EveMarketDataExternalOrderImporterXmlReceiver::namespaceBinding(const QXmlName &name)
     {
         Q_UNUSED(name);
     }
 
-    void EveMarketDataItemPriceImporterXmlReceiver::processingInstruction(const QXmlName &target, const QString &value)
+    void EveMarketDataExternalOrderImporterXmlReceiver::processingInstruction(const QXmlName &target, const QString &value)
     {
         Q_UNUSED(target);
         Q_UNUSED(value);
     }
 
-    void EveMarketDataItemPriceImporterXmlReceiver::startDocument()
+    void EveMarketDataExternalOrderImporterXmlReceiver::startDocument()
     {
     }
 
-    void EveMarketDataItemPriceImporterXmlReceiver::startElement(const QXmlName &name)
+    void EveMarketDataExternalOrderImporterXmlReceiver::startElement(const QXmlName &name)
     {
         Q_UNUSED(name);
-        mCurrentElement = std::make_unique<ItemPrice>();
+        mCurrentElement = std::make_unique<ExternalOrder>();
         mCurrentElement->setUpdateTime(QDateTime::currentDateTimeUtc());
     }
 
-    void EveMarketDataItemPriceImporterXmlReceiver::startOfSequence()
+    void EveMarketDataExternalOrderImporterXmlReceiver::startOfSequence()
     {
     }
 
-    EveMarketDataItemPriceImporterXmlReceiver::Result EveMarketDataItemPriceImporterXmlReceiver::getResult() const &
+    EveMarketDataExternalOrderImporterXmlReceiver::Result EveMarketDataExternalOrderImporterXmlReceiver::getResult() const &
     {
         return mResult;
     }
 
-    EveMarketDataItemPriceImporterXmlReceiver::Result &&EveMarketDataItemPriceImporterXmlReceiver::getResult() && noexcept
+    EveMarketDataExternalOrderImporterXmlReceiver::Result &&EveMarketDataExternalOrderImporterXmlReceiver::getResult() && noexcept
     {
         return std::move(mResult);
     }

@@ -15,7 +15,7 @@
 #pragma once
 
 #include "CharacterBoundWidget.h"
-#include "ItemPriceImporter.h"
+#include "ExternalOrderImporter.h"
 #include "AssetModel.h"
 
 class QLabel;
@@ -44,8 +44,8 @@ namespace Evernus
         virtual ~AssetsWidget() = default;
 
     signals:
-        void importPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
-        void importPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
+        void importPricesFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
 
     public slots:
         void updateData();
@@ -69,8 +69,8 @@ namespace Evernus
 
         void setNewInfo();
 
-        ItemPriceImporter::TypeLocationPairs getImportTarget() const;
+        ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
 
-        static void buildImportTarget(ItemPriceImporter::TypeLocationPairs &target, const Item &item, quint64 locationId);
+        static void buildImportTarget(ExternalOrderImporter::TypeLocationPairs &target, const Item &item, quint64 locationId);
     };
 }

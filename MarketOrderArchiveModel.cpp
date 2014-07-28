@@ -22,7 +22,7 @@
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "IconUtils.h"
-#include "ItemPrice.h"
+#include "ExternalOrder.h"
 #include "ItemCost.h"
 
 #include "MarketOrderArchiveModel.h"

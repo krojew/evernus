@@ -15,40 +15,40 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 
-#include "ItemPriceRepository.h"
+#include "ExternalOrderRepository.h"
 
 namespace Evernus
 {
-    QString ItemPriceRepository::getTableName() const
+    QString ExternalOrderRepository::getTableName() const
     {
-        return "item_prices";
+        return "external_orders";
     }
 
-    QString ItemPriceRepository::getIdColumn() const
+    QString ExternalOrderRepository::getIdColumn() const
     {
         return "id";
     }
 
-    ItemPriceRepository::EntityPtr ItemPriceRepository::populate(const QSqlRecord &record) const
+    ExternalOrderRepository::EntityPtr ExternalOrderRepository::populate(const QSqlRecord &record) const
     {
         auto dt = record.value("update_time").toDateTime();
         dt.setTimeSpec(Qt::UTC);
 
-        auto itemPrice = std::make_shared<ItemPrice>(record.value("id").value<ItemPrice::IdType>());
-        itemPrice->setType(static_cast<ItemPrice::Type>(record.value("type").toInt()));
-        itemPrice->setTypeId(record.value("type_id").value<ItemPrice::TypeIdType>());
-        itemPrice->setLocationId(record.value("location_id").value<ItemPrice::LocationIdType>());
-        itemPrice->setSolarSystemId(record.value("solar_system_id").toUInt());
-        itemPrice->setRegionId(record.value("region_id").toUInt());
-        itemPrice->setRange(record.value("range").toInt());
-        itemPrice->setUpdateTime(dt);
-        itemPrice->setValue(record.value("value").toDouble());
-        itemPrice->setNew(false);
+        auto externalOrder = std::make_shared<ExternalOrder>(record.value("id").value<ExternalOrder::IdType>());
+        externalOrder->setType(static_cast<ExternalOrder::Type>(record.value("type").toInt()));
+        externalOrder->setTypeId(record.value("type_id").value<ExternalOrder::TypeIdType>());
+        externalOrder->setLocationId(record.value("location_id").value<ExternalOrder::LocationIdType>());
+        externalOrder->setSolarSystemId(record.value("solar_system_id").toUInt());
+        externalOrder->setRegionId(record.value("region_id").toUInt());
+        externalOrder->setRange(record.value("range").toInt());
+        externalOrder->setUpdateTime(dt);
+        externalOrder->setValue(record.value("value").toDouble());
+        externalOrder->setNew(false);
 
-        return itemPrice;
+        return externalOrder;
     }
 
-    void ItemPriceRepository::create() const
+    void ExternalOrderRepository::create() const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id INTEGER PRIMARY KEY ASC,
@@ -66,17 +66,17 @@ namespace Evernus
             .arg(getTableName()));
     }
 
-    ItemPriceRepository::EntityPtr ItemPriceRepository::findSellByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const
+    ExternalOrderRepository::EntityPtr ExternalOrderRepository::findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const
     {
-        return findByTypeAndLocation(typeId, locationId, ItemPrice::Type::Sell);
+        return findByTypeAndLocation(typeId, locationId, ExternalOrder::Type::Sell);
     }
 
-    ItemPriceRepository::EntityPtr ItemPriceRepository::findBuyByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId) const
+    ExternalOrderRepository::EntityPtr ExternalOrderRepository::findBuyByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const
     {
-        return findByTypeAndLocation(typeId, locationId, ItemPrice::Type::Buy);
+        return findByTypeAndLocation(typeId, locationId, ExternalOrder::Type::Buy);
     }
 
-    QStringList ItemPriceRepository::getColumns() const
+    QStringList ExternalOrderRepository::getColumns() const
     {
         return QStringList{}
             << "id"
@@ -90,9 +90,9 @@ namespace Evernus
             << "value";
     }
 
-    void ItemPriceRepository::bindValues(const ItemPrice &entity, QSqlQuery &query) const
+    void ExternalOrderRepository::bindValues(const ExternalOrder &entity, QSqlQuery &query) const
     {
-        if (entity.getId() != ItemPrice::invalidId)
+        if (entity.getId() != ExternalOrder::invalidId)
             query.bindValue(":id", entity.getId());
 
         query.bindValue(":type", static_cast<int>(entity.getType()));
@@ -105,9 +105,9 @@ namespace Evernus
         query.bindValue(":value", entity.getValue());
     }
 
-    void ItemPriceRepository::bindPositionalValues(const ItemPrice &entity, QSqlQuery &query) const
+    void ExternalOrderRepository::bindPositionalValues(const ExternalOrder &entity, QSqlQuery &query) const
     {
-        if (entity.getId() != ItemPrice::invalidId)
+        if (entity.getId() != ExternalOrder::invalidId)
             query.addBindValue(entity.getId());
 
         query.addBindValue(static_cast<int>(entity.getType()));
@@ -120,8 +120,8 @@ namespace Evernus
         query.addBindValue(entity.getValue());
     }
 
-    ItemPriceRepository::EntityPtr ItemPriceRepository
-    ::findByTypeAndLocation(ItemPrice::TypeIdType typeId, ItemPrice::LocationIdType locationId, ItemPrice::Type priceType) const
+    ExternalOrderRepository::EntityPtr ExternalOrderRepository
+    ::findByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId, ExternalOrder::Type priceType) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ?"}
             .arg(getTableName()));

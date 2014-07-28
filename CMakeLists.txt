@@ -39,16 +39,16 @@ qt5_wrap_cpp(
     DateFilteredPlotWidget.h
     DateRangeWidget.h
     EvernusApplication.h
+    ExternalOrderImporter.h
     FileDownload.h
     FilterTextRepository.h
     GeneralPreferencesWidget.h
     ImportPreferencesWidget.h
     ItemCostWidget.h
-    ItemPriceImporter.h
     MainWindow.h
     MarginToolDialog.h
-    MarketLogItemPriceImporter.h
-    MarketLogItemPriceImporterThread.h
+    MarketLogExternalOrderImporter.h
+    MarketLogExternalOrderImporterThread.h
     MarketOrderFilterProxyModel.h
     MarketOrderFilterWidget.h
     MarketOrderInfoWidget.h
@@ -152,16 +152,23 @@ add_executable(
     DateRangeWidget.h
     Entity.h
     EveDataProvider.h
-    EveMarketDataItemPriceImporter.cpp
-    EveMarketDataItemPriceImporter.h
-    EveMarketDataItemPriceImporterXmlReceiver.cpp
-    EveMarketDataItemPriceImporterXmlReceiver.h
+    EveMarketDataExternalOrderImporter.cpp
+    EveMarketDataExternalOrderImporter.h
+    EveMarketDataExternalOrderImporterXmlReceiver.cpp
+    EveMarketDataExternalOrderImporterXmlReceiver.h
     EvernusApplication.cpp
     EvernusApplication.h
     EveType.cpp
     EveType.h
     EveTypeRepository.cpp
     EveTypeRepository.h
+    ExternalOrder.cpp
+    ExternalOrder.h
+    ExternalOrderImporter.h
+    ExternalOrderImporterNames.h
+    ExternalOrderImporterRegistry.h
+    ExternalOrderRepository.cpp
+    ExternalOrderRepository.h
     FileDownload.cpp
     FileDownload.h
     FilterText.cpp
@@ -189,13 +196,6 @@ add_executable(
     ItemCostWidget.cpp
     ItemCostWidget.h
     ItemData.h
-    ItemPrice.cpp
-    ItemPrice.h
-    ItemPriceImporter.h
-    ItemPriceImporterNames.h
-    ItemPriceImporterRegistry.h
-    ItemPriceRepository.cpp
-    ItemPriceRepository.h
     ItemRepository.cpp
     ItemRepository.h
     Key.cpp
@@ -216,10 +216,10 @@ add_executable(
     MarketGroup.h
     MarketGroupRepository.cpp
     MarketGroupRepository.h
-    MarketLogItemPriceImporter.cpp
-    MarketLogItemPriceImporter.h
-    MarketLogItemPriceImporterThread.cpp
-    MarketLogItemPriceImporterThread.h
+    MarketLogExternalOrderImporter.cpp
+    MarketLogExternalOrderImporter.h
+    MarketLogExternalOrderImporterThread.cpp
+    MarketLogExternalOrderImporterThread.h
     MarketOrder.cpp
     MarketOrder.h
     MarketOrderArchiveModel.cpp

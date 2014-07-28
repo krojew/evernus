@@ -16,11 +16,11 @@
 #include <QMessageBox>
 #include <QDebug>
 
-#include "MarketLogItemPriceImporterThread.h"
-#include "EveMarketDataItemPriceImporter.h"
+#include "MarketLogExternalOrderImporterThread.h"
+#include "EveMarketDataExternalOrderImporter.h"
 #include "MarketOrderFilterProxyModel.h"
-#include "MarketLogItemPriceImporter.h"
-#include "ItemPriceImporterNames.h"
+#include "MarketLogExternalOrderImporter.h"
+#include "ExternalOrderImporterNames.h"
 #include "EvernusApplication.h"
 #include "MainWindow.h"
 
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
         QCoreApplication::setOrganizationDomain("evernus.com");
         QCoreApplication::setOrganizationName("evernus.com");
 
-        qRegisterMetaType<Evernus::MarketLogItemPriceImporterThread::ItemPriceList>("ItemPriceList");
+        qRegisterMetaType<Evernus::MarketLogExternalOrderImporterThread::ExternalOrderList>("ExternalOrderList");
         qRegisterMetaType<Evernus::Character::IdType>("Character::IdType");
         qRegisterMetaType<Evernus::MarketOrderFilterProxyModel::StatusFilters>("MarketOrderFilterProxyModel::StatusFilters");
         qRegisterMetaType<Evernus::MarketOrderFilterProxyModel::StatusFilters>("StatusFilters");
@@ -42,10 +42,10 @@ int main(int argc, char *argv[])
 
         Evernus::EvernusApplication app{argc, argv};
 
-        app.registerImporter(Evernus::ItemPriceImporterNames::webImporter,
-                             std::make_unique<Evernus::EveMarketDataItemPriceImporter>());
-        app.registerImporter(Evernus::ItemPriceImporterNames::logImporter,
-                             std::make_unique<Evernus::MarketLogItemPriceImporter>());
+        app.registerImporter(Evernus::ExternalOrderImporterNames::webImporter,
+                             std::make_unique<Evernus::EveMarketDataExternalOrderImporter>());
+        app.registerImporter(Evernus::ExternalOrderImporterNames::logImporter,
+                             std::make_unique<Evernus::MarketLogExternalOrderImporter>());
 
         try
         {
@@ -73,8 +73,8 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(importWalletTransactions(Character::IdType)), SLOT(refreshWalletTransactions(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importMarketOrdersFromAPI(Character::IdType)), SLOT(refreshMarketOrdersFromAPI(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importMarketOrdersFromLogs(Character::IdType)), SLOT(refreshMarketOrdersFromLogs(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &)), SLOT(refreshItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &)));
-            app.connect(&mainWnd, SIGNAL(importItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &)), SLOT(refreshItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &)));
+            app.connect(&mainWnd, SIGNAL(importExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &)));
+            app.connect(&mainWnd, SIGNAL(importExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(marginToolHidden(Character::IdType)), SLOT(updateAssetsValue(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(itemCostsChanged()), SLOT(resetItemCostCache()));
             mainWnd.connect(&app, SIGNAL(taskStarted(uint, const QString &)), SLOT(addNewTaskInfo(uint, const QString &)));
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(conquerableStationsChanged()), SIGNAL(conquerableStationsChanged()));
             mainWnd.connect(&app, SIGNAL(charactersChanged()), SIGNAL(charactersChanged()));
             mainWnd.connect(&app, SIGNAL(assetsChanged()), SIGNAL(assetsChanged()));
-            mainWnd.connect(&app, SIGNAL(itemPricesChanged()), SIGNAL(itemPricesChanged()));
+            mainWnd.connect(&app, SIGNAL(externalOrdersChanged()), SIGNAL(externalOrdersChanged()));
             mainWnd.connect(&app, SIGNAL(walletJournalChanged()), SIGNAL(walletJournalChanged()));
             mainWnd.connect(&app, SIGNAL(walletTransactionsChanged()), SIGNAL(walletTransactionsChanged()));
             mainWnd.connect(&app, SIGNAL(marketOrdersChanged()), SIGNAL(marketOrdersChanged()));

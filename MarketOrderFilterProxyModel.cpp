@@ -17,9 +17,9 @@
 #include "MarketOrderModel.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
+#include "ExternalOrder.h"
 #include "MarketOrder.h"
 #include "UISettings.h"
-#include "ItemPrice.h"
 
 #include "MarketOrderFilterProxyModel.h"
 

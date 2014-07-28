@@ -14,35 +14,24 @@
  */
 #pragma once
 
-#include <unordered_set>
-#include <vector>
+#include <QNetworkAccessManager>
 
-#include <boost/functional/hash.hpp>
-
-#include <QObject>
-
-#include "EveType.h"
+#include "ExternalOrderImporter.h"
 
 namespace Evernus
 {
-    class ItemPrice;
-
-    class ItemPriceImporter
-        : public QObject
+    class EveMarketDataExternalOrderImporter
+        : public ExternalOrderImporter
     {
-        Q_OBJECT
-
     public:
-        typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
-        typedef std::unordered_set<TypeLocationPair, boost::hash<TypeLocationPair>> TypeLocationPairs;
+        using ExternalOrderImporter::ExternalOrderImporter;
+        virtual ~EveMarketDataExternalOrderImporter() = default;
 
-        using QObject::QObject;
-        virtual ~ItemPriceImporter() = default;
+        virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
 
-        virtual void fetchItemPrices(const TypeLocationPairs &target) const = 0;
+    private:
+        mutable QNetworkAccessManager mNetworkManager;
 
-    signals:
-        void itemPricesChanged(const std::vector<ItemPrice> &prices) const;
-        void error(const QString &info) const;
+        void processReply(const TypeLocationPairs &target) const;
     };
 }

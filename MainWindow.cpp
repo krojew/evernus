@@ -369,7 +369,7 @@ namespace Evernus
                                              this};
         addTab(statsTab, tr("Statistics"));
         connect(this, &MainWindow::charactersChanged, statsTab, &StatisticsWidget::updateBalanceData);
-        connect(this, &MainWindow::itemPricesChanged, statsTab, &StatisticsWidget::updateBalanceData);
+        connect(this, &MainWindow::externalOrdersChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::assetsChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::walletJournalChanged, statsTab, &StatisticsWidget::updateJournalData);
         connect(this, &MainWindow::walletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
@@ -377,12 +377,12 @@ namespace Evernus
         auto assetsTab = new AssetsWidget{mAssetProvider, mEveDataProvider, mCacheTimerProvider, mFilterRepository, this};
         addTab(assetsTab, tr("Assets"));
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
-        connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importItemPricesFromWeb);
-        connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importItemPricesFromFile);
+        connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
+        connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::marginToolHidden, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
-        connect(this, &MainWindow::itemPricesChanged, assetsTab, &AssetsWidget::updateData);
+        connect(this, &MainWindow::externalOrdersChanged, assetsTab, &AssetsWidget::updateData);
 
         auto orderTab = new MarketOrderWidget{mOrderProvider,
                                               mCacheTimerProvider,
@@ -394,8 +394,8 @@ namespace Evernus
         addTab(orderTab, tr("Orders"));
         connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importMarketOrdersFromAPI);
         connect(orderTab, &MarketOrderWidget::importFromLogs, this, &MainWindow::importMarketOrdersFromLogs);
-        connect(orderTab, &MarketOrderWidget::importPricesFromWeb, this, &MainWindow::importItemPricesFromWeb);
-        connect(orderTab, &MarketOrderWidget::importPricesFromFile, this, &MainWindow::importItemPricesFromFile);
+        connect(orderTab, &MarketOrderWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
+        connect(orderTab, &MarketOrderWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::marginToolHidden, orderTab, &MarketOrderWidget::updateData);
 

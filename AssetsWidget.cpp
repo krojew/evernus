@@ -130,9 +130,9 @@ namespace Evernus
             .arg(locale.toCurrencyString(mModel.getTotalSellPrice(), "ISK")));
     }
 
-    ItemPriceImporter::TypeLocationPairs AssetsWidget::getImportTarget() const
+    ExternalOrderImporter::TypeLocationPairs AssetsWidget::getImportTarget() const
     {
-        ItemPriceImporter::TypeLocationPairs target;
+        ExternalOrderImporter::TypeLocationPairs target;
 
         const auto assets = mAssetProvider.fetchAssetsForCharacter(getCharacterId());
         for (const auto &item : *assets)
@@ -147,7 +147,7 @@ namespace Evernus
         return target;
     }
 
-    void AssetsWidget::buildImportTarget(ItemPriceImporter::TypeLocationPairs &target, const Item &item, quint64 locationId)
+    void AssetsWidget::buildImportTarget(ExternalOrderImporter::TypeLocationPairs &target, const Item &item, quint64 locationId)
     {
         target.emplace(std::make_pair(item.getTypeId(), locationId));
         for (const auto &child : item)

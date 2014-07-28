@@ -242,9 +242,9 @@ namespace Evernus
         emit characterChanged(id);
     }
 
-    ItemPriceImporter::TypeLocationPairs MarketOrderWidget::getImportTarget() const
+    ExternalOrderImporter::TypeLocationPairs MarketOrderWidget::getImportTarget() const
     {
-        ItemPriceImporter::TypeLocationPairs target;
+        ExternalOrderImporter::TypeLocationPairs target;
 
         const auto importer = [&target](const auto &orders) {
             for (const auto &order : orders)

@@ -20,7 +20,7 @@
 #include <QMainWindow>
 #include <QPointer>
 
-#include "ItemPriceImporter.h"
+#include "ExternalOrderImporter.h"
 #include "Character.h"
 
 class QSystemTrayIcon;
@@ -90,7 +90,7 @@ namespace Evernus
         void conquerableStationsChanged();
         void charactersChanged();
         void assetsChanged();
-        void itemPricesChanged();
+        void externalOrdersChanged();
         void walletJournalChanged();
         void walletTransactionsChanged();
         void marketOrdersChanged();
@@ -110,8 +110,8 @@ namespace Evernus
         void importMarketOrdersFromAPI(Character::IdType id);
         void importMarketOrdersFromLogs(Character::IdType id);
 
-        void importItemPricesFromWeb(const ItemPriceImporter::TypeLocationPairs &target);
-        void importItemPricesFromFile(const ItemPriceImporter::TypeLocationPairs &target);
+        void importExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
+        void importExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
 
     public slots:
         void showCharacterManagement();

@@ -14,24 +14,21 @@
  */
 #pragma once
 
-#include <QNetworkAccessManager>
-
-#include "ItemPriceImporter.h"
+#include <memory>
+#include <string>
 
 namespace Evernus
 {
-    class EveMarketDataItemPriceImporter
-        : public ItemPriceImporter
+    class ExternalOrderImporter;
+
+    class ExternalOrderImporterRegistry
     {
     public:
-        using ItemPriceImporter::ItemPriceImporter;
-        virtual ~EveMarketDataItemPriceImporter() = default;
+        typedef std::unique_ptr<ExternalOrderImporter> ImporterPtr;
 
-        virtual void fetchItemPrices(const TypeLocationPairs &target) const override;
+        ExternalOrderImporterRegistry() = default;
+        virtual ~ExternalOrderImporterRegistry() = default;
 
-    private:
-        mutable QNetworkAccessManager mNetworkManager;
-
-        void processReply(const TypeLocationPairs &target) const;
+        virtual void registerImporter(const std::string &name, ImporterPtr &&importer) = 0;
     };
 }
