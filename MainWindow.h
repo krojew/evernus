@@ -97,6 +97,7 @@ namespace Evernus
         void itemCostsChanged();
 
         void marginToolHidden(Character::IdType id);
+        void marginToolParsedData();
 
         void newTaskInfoAdded(uint taskId, const QString &description);
         void newSubTaskInfoAdded(uint taskId, uint parentTask, const QString &description);

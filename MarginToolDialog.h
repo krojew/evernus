@@ -47,6 +47,8 @@ namespace Evernus
     signals:
         void hidden();
 
+        void parsedData();
+
     public slots:
         void setCharacter(Character::IdType id);
 

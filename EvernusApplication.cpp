@@ -159,24 +159,6 @@ namespace Evernus
         return getTypeBuyPrice(id, stationId, true);
     }
 
-    void EvernusApplication::setTypeSellPrice(quint64 stationId,
-                                              EveType::IdType typeId,
-                                              const QDateTime &priceTime,
-                                              double price) const
-    {
-        mSellPrices[std::make_pair(typeId, stationId)]
-            = saveTypePrice(ExternalOrder::Type::Sell, stationId, typeId, priceTime, price);
-    }
-
-    void EvernusApplication::setTypeBuyPrice(quint64 stationId,
-                                             EveType::IdType typeId,
-                                             const QDateTime &priceTime,
-                                             double price) const
-    {
-        mBuyPrices[std::make_pair(typeId, stationId)]
-            = saveTypePrice(ExternalOrder::Type::Buy, stationId, typeId, priceTime, price);
-    }
-
     QString EvernusApplication::getLocationName(quint64 id) const
     {
         const auto it = mLocationNameCache.find(id);
@@ -896,6 +878,12 @@ namespace Evernus
         mItemCostCache.clear();
     }
 
+    void EvernusApplication::resetItemPriceCache()
+    {
+        mSellPrices.clear();
+        mBuyPrices.clear();
+    }
+
     void EvernusApplication::scheduleCharacterUpdate()
     {
         if (mCharacterUpdateScheduled)
@@ -938,8 +926,7 @@ namespace Evernus
             finishExternalOrderImportTask(e.what());
         }
 
-        mSellPrices.clear();
-        mBuyPrices.clear();
+        resetItemPriceCache();
 
         emit externalOrdersChanged();
     }
@@ -1370,24 +1357,6 @@ namespace Evernus
             price += getTotalItemSellValue(*child, locationId);
 
         return price;
-    }
-
-    std::shared_ptr<ExternalOrder> EvernusApplication::saveTypePrice(ExternalOrder::Type type,
-                                                                 quint64 stationId,
-                                                                 EveType::IdType typeId,
-                                                                 const QDateTime &priceTime,
-                                                                 double price) const
-    {
-        auto item = std::make_shared<ExternalOrder>();
-        item->setType(type);
-        item->setLocationId(stationId);
-        item->setTypeId(typeId);
-        item->setUpdateTime(priceTime);
-        item->setValue(price);
-
-        mExternalOrderRepository->store(*item);
-
-        return item;
     }
 
     void EvernusApplication::saveUpdateTimer(TimerType timer, CharacterTimerMap &map, Character::IdType characterId) const

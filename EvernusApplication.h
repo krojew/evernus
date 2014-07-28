@@ -83,15 +83,6 @@ namespace Evernus
         virtual std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
         virtual std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const override;
 
-        virtual void setTypeSellPrice(quint64 stationId,
-                                      EveType::IdType typeId,
-                                      const QDateTime &priceTime,
-                                      double price) const override;
-        virtual void setTypeBuyPrice(quint64 stationId,
-                                     EveType::IdType typeId,
-                                     const QDateTime &priceTime,
-                                     double price) const override;
-
         virtual QString getLocationName(quint64 id) const override;
 
         virtual QString getRefTypeName(uint id) const override;
@@ -153,6 +144,7 @@ namespace Evernus
         void updateAssetsValue(Character::IdType id);
 
         void resetItemCostCache();
+        void resetItemPriceCache();
 
     private slots:
         void scheduleCharacterUpdate();
@@ -255,12 +247,6 @@ namespace Evernus
         std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
         void computeAssetListSellValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;
-
-        std::shared_ptr<ExternalOrder> saveTypePrice(ExternalOrder::Type type,
-                                                 quint64 stationId,
-                                                 EveType::IdType typeId,
-                                                 const QDateTime &priceTime,
-                                                 double price) const;
 
         void saveUpdateTimer(TimerType timer, CharacterTimerMap &map, Character::IdType characterId) const;
 

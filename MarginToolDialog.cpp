@@ -446,6 +446,8 @@ namespace Evernus
                 }
             }
 
+            emit parsedData();
+
             const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
             if (settings.value(PriceSettings::preferCustomItemCostKey, true).toBool())
@@ -482,8 +484,6 @@ namespace Evernus
                         mBestBuyLabel->setText(curLocale.toCurrencyString(buyPrice, "ISK"));
                         mCostOfSalesLabel->setText(curLocale.toCurrencyString(getCoS(buyPrice, taxes), "ISK"));
 
-                        mDataProvider.setTypeBuyPrice(locationId, typeId, priceTime, buy);
-
                         if (mCopyBuyBtn->isChecked())
                             QApplication::clipboard()->setText(QString::number(buyPrice, 'f', 2));
                     }
@@ -499,8 +499,6 @@ namespace Evernus
 
                         mBestSellLabel->setText(curLocale.toCurrencyString(sellPrice, "ISK"));
                         mRevenueLabel->setText(curLocale.toCurrencyString(getRevenue(sellPrice, taxes), "ISK"));
-
-                        mDataProvider.setTypeSellPrice(locationId, typeId, priceTime, sell);
 
                         if (mCopySellBtn->isChecked())
                             QApplication::clipboard()->setText(QString::number(sellPrice, 'f', 2));
@@ -550,9 +548,6 @@ namespace Evernus
 
                         fillSampleData(*m1SampleDataTable, revenue, cos, 1);
                         fillSampleData(*m5SampleDataTable, revenue, cos, 5);
-
-                        mDataProvider.setTypeBuyPrice(locationId, typeId, priceTime, buy);
-                        mDataProvider.setTypeSellPrice(locationId, typeId, priceTime, sell);
                 }
             }
             catch (const Repository<Character>::NotFoundException &)

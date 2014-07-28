@@ -44,15 +44,6 @@ namespace Evernus
         virtual std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId) const = 0;
         virtual std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const = 0;
 
-        virtual void setTypeSellPrice(quint64 stationId,
-                                      EveType::IdType typeId,
-                                      const QDateTime &priceTime,
-                                      double price) const = 0;
-        virtual void setTypeBuyPrice(quint64 stationId,
-                                     EveType::IdType typeId,
-                                     const QDateTime &priceTime,
-                                     double price) const = 0;
-
         virtual QString getLocationName(quint64 id) const = 0;
 
         virtual QString getRefTypeName(uint id) const = 0;
