@@ -217,9 +217,16 @@ namespace Evernus
         return OrderInfo{};
     }
 
-    WalletTransactionsModel::EntryType MarketOrderArchiveModel::getOrderTypeFilter() const
+    WalletTransactionsModel::EntryType MarketOrderArchiveModel::getOrderTypeFilter(const QModelIndex &index) const
     {
-        return WalletTransactionsModel::EntryType::All;
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
+        const auto order = item->getOrder();
+        if (order == nullptr)
+            return WalletTransactionsModel::EntryType::All;
+
+        return (order->getType() == MarketOrder::Type::Buy) ?
+               (WalletTransactionsModel::EntryType::Buy) :
+               (WalletTransactionsModel::EntryType::Sell);
     }
 
     bool MarketOrderArchiveModel::shouldShowPriceInfo(const QModelIndex &index) const

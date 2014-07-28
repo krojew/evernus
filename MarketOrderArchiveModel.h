@@ -37,7 +37,7 @@ namespace Evernus
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
         virtual OrderInfo getOrderInfo(const QModelIndex &index) const override;
-        virtual WalletTransactionsModel::EntryType getOrderTypeFilter() const override;
+        virtual WalletTransactionsModel::EntryType getOrderTypeFilter(const QModelIndex &index) const override;
 
         virtual bool shouldShowPriceInfo(const QModelIndex &index) const override;
 

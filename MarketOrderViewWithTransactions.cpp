@@ -104,7 +104,8 @@ namespace Evernus
                 if (!range.mTo.isValid())
                     range.mTo = QDateTime::currentDateTimeUtc();
 
-                mTransactionModel.setFilter(mCharacterId, range.mFrom.date(), range.mTo.date(), mOrderModel->getOrderTypeFilter(), typeId);
+                mTransactionModel.setFilter(
+                    mCharacterId, range.mFrom.date(), range.mTo.date(), mOrderModel->getOrderTypeFilter(index), typeId);
             }
         }
     }

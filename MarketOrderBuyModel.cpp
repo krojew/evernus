@@ -390,8 +390,9 @@ namespace Evernus
         return info;
     }
 
-    WalletTransactionsModel::EntryType MarketOrderBuyModel::getOrderTypeFilter() const
+    WalletTransactionsModel::EntryType MarketOrderBuyModel::getOrderTypeFilter(const QModelIndex &index) const
     {
+        Q_UNUSED(index);
         return WalletTransactionsModel::EntryType::Buy;
     }
 
