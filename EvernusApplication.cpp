@@ -184,7 +184,8 @@ namespace Evernus
         QString result;
         if (id >= 66000000 && id <= 66014933)
         {
-            QSqlQuery query{"SELECT stationName FROM staStations WHERE stationID = ?", mEveDb};
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT stationName FROM staStations WHERE stationID = ?");
             query.bindValue(0, id - 6000001);
 
             DatabaseUtils::execQuery(query);
@@ -216,7 +217,8 @@ namespace Evernus
         }
         else if (id > 60000000 && id <= 61000000)
         {
-            QSqlQuery query{"SELECT stationName FROM staStations WHERE stationID = ?", mEveDb};
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT stationName FROM staStations WHERE stationID = ?");
             query.bindValue(0, id);
 
             DatabaseUtils::execQuery(query);
@@ -237,7 +239,8 @@ namespace Evernus
         }
         else
         {
-            QSqlQuery query{"SELECT itemName FROM staStations WHERE itemID = ?", mEveDb};
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT itemName FROM staStations WHERE itemID = ?");
             query.bindValue(0, id);
 
             DatabaseUtils::execQuery(query);
