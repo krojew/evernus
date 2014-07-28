@@ -61,9 +61,6 @@ namespace Evernus
             update_time DATETIME NOT NULL,
             value DOUBLE NOT NULL
         ))"}.arg(getTableName()));
-
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_region ON %1(type, type_id, region_id)"}
-            .arg(getTableName()));
     }
 
     ExternalOrderRepository::EntityPtr ExternalOrderRepository::findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const
