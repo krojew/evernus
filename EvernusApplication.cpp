@@ -922,7 +922,7 @@ namespace Evernus
     {
         try
         {
-            mExternalOrderRepository->batchStore(orders, false);
+            mExternalOrderRepository->batchStore(orders, true);
 
             QSettings settings;
             if (settings.value(ImportSettings::autoUpdateAssetValueKey, true).toBool())

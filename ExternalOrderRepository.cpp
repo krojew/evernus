@@ -51,7 +51,7 @@ namespace Evernus
     void ExternalOrderRepository::create() const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY ASC,
+            id INTEGER PRIMARY KEY,
             type TINYINT NOT NULL,
             type_id INTEGER NOT NULL,
             location_id BIGINT NOT NULL,

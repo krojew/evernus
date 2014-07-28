@@ -38,6 +38,7 @@ qt5_wrap_cpp(
     CharacterWidget.h
     DateFilteredPlotWidget.h
     DateRangeWidget.h
+    EveMarketDataExternalOrderImporter.h
     EvernusApplication.h
     ExternalOrderImporter.h
     FileDownload.h

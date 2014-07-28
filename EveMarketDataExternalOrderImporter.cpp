@@ -77,12 +77,10 @@ namespace Evernus
         url.setQuery(query);
 
         auto reply = mNetworkManager.get(QNetworkRequest{url});
-        connect(reply, &QNetworkReply::finished, this, [target, this]{
-            processReply(target);
-        });
+        connect(reply, &QNetworkReply::finished, this, &EveMarketDataExternalOrderImporter::processReply);
     }
 
-    void EveMarketDataExternalOrderImporter::processReply(const TypeLocationPairs &target) const
+    void EveMarketDataExternalOrderImporter::processReply() const
     {
         auto reply = static_cast<QNetworkReply *>(sender());
         reply->deleteLater();
@@ -101,7 +99,7 @@ namespace Evernus
         query.setFocus(reply->readAll());
         query.setQuery("//rowset[@name='orders']/row");
 
-        EveMarketDataExternalOrderImporterXmlReceiver recevier{target, query.namePool()};
+        EveMarketDataExternalOrderImporterXmlReceiver recevier{query.namePool()};
         query.evaluateTo(&recevier);
 
         if (errorMsg.isEmpty())

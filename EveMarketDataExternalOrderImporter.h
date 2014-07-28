@@ -23,15 +23,18 @@ namespace Evernus
     class EveMarketDataExternalOrderImporter
         : public ExternalOrderImporter
     {
+        Q_OBJECT
+
     public:
         using ExternalOrderImporter::ExternalOrderImporter;
         virtual ~EveMarketDataExternalOrderImporter() = default;
 
         virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
 
+    private slots:
+        void processReply() const;
+
     private:
         mutable QNetworkAccessManager mNetworkManager;
-
-        void processReply(const TypeLocationPairs &target) const;
     };
 }

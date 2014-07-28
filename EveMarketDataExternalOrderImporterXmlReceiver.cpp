@@ -16,11 +16,9 @@
 
 namespace Evernus
 {
-    EveMarketDataExternalOrderImporterXmlReceiver
-    ::EveMarketDataExternalOrderImporterXmlReceiver(const ExternalOrderImporter::TypeLocationPairs &target, const QXmlNamePool &namePool)
+    EveMarketDataExternalOrderImporterXmlReceiver::EveMarketDataExternalOrderImporterXmlReceiver(const QXmlNamePool &namePool)
         : QAbstractXmlReceiver{}
         , mNamePool{namePool}
-        , mDesired{target}
     {
     }
 
@@ -35,6 +33,8 @@ namespace Evernus
 
         if (name.localName(mNamePool) == "buysell")
             current.setType((value == "s") ? (ExternalOrder::Type::Sell) : (ExternalOrder::Type::Buy));
+        else if (name.localName(mNamePool) == "orderID")
+            current.setId(value.toUInt());
         else if (name.localName(mNamePool) == "typeID")
             current.setTypeId(value.toUInt());
         else if (name.localName(mNamePool) == "stationID")
@@ -65,47 +65,7 @@ namespace Evernus
 
     void EveMarketDataExternalOrderImporterXmlReceiver::endElement()
     {
-        const auto rangeStation = -1;
-
-        const auto &current = *mCurrentElement;
-
-        if (current.getType() == ExternalOrder::Type::Buy && current.getRange() != rangeStation)
-        {
-            mResult.emplace_back(std::move(current));
-        }
-        else
-        {
-            const auto key = std::make_pair(current.getTypeId(), current.getLocationId());
-            if (mDesired.find(key) != std::end(mDesired))
-            {
-                if (current.getType() == ExternalOrder::Type::Buy)
-                {
-                    const auto it = mProcessedBuy.find(key);
-                    if (it == std::end(mProcessedBuy))
-                    {
-                        mResult.emplace_back(std::move(current));
-                        mProcessedBuy.emplace(key, &mResult.back());
-                    }
-                    else if (it->second->getValue() < current.getValue())
-                    {
-                        *it->second = std::move(current);
-                    }
-                }
-                else
-                {
-                    const auto it = mProcessedSell.find(key);
-                    if (it == std::end(mProcessedSell))
-                    {
-                        mResult.emplace_back(std::move(current));
-                        mProcessedSell.emplace(key, &mResult.back());
-                    }
-                    else if (it->second->getValue() > current.getValue())
-                    {
-                        *it->second = std::move(current);
-                    }
-                }
-            }
-        }
+        mResult.emplace_back(std::move(*mCurrentElement));
     }
 
     void EveMarketDataExternalOrderImporterXmlReceiver::endOfSequence()

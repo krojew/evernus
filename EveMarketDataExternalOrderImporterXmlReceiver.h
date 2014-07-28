@@ -14,12 +14,11 @@
  */
 #pragma once
 
-#include <unordered_map>
 #include <vector>
+#include <memory>
 
 #include <QAbstractXmlReceiver>
 
-#include "ExternalOrderImporter.h"
 #include "ExternalOrder.h"
 
 namespace Evernus
@@ -30,7 +29,7 @@ namespace Evernus
     public:
         typedef std::vector<ExternalOrder> Result;
 
-        EveMarketDataExternalOrderImporterXmlReceiver(const ExternalOrderImporter::TypeLocationPairs &target, const QXmlNamePool &namePool);
+        explicit EveMarketDataExternalOrderImporterXmlReceiver(const QXmlNamePool &namePool);
         virtual ~EveMarketDataExternalOrderImporterXmlReceiver() = default;
 
         virtual void atomicValue(const QVariant &value) override;
@@ -54,9 +53,5 @@ namespace Evernus
 
         Result mResult;
         std::unique_ptr<ExternalOrder> mCurrentElement;
-
-        ExternalOrderImporter::TypeLocationPairs mDesired;
-        std::unordered_map<ExternalOrderImporter::TypeLocationPair, ExternalOrder *, boost::hash<ExternalOrderImporter::TypeLocationPair>>
-        mProcessedSell, mProcessedBuy;
     };
 }
