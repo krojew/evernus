@@ -349,12 +349,15 @@ namespace Evernus
             throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
         }
 
-        CacheTimer timer;
-        timer.setCharacterId(id);
-        timer.setType(type);
-        timer.setCacheUntil(dt);
+        if (type != TimerType::Character)
+        {
+            CacheTimer timer;
+            timer.setCharacterId(id);
+            timer.setType(type);
+            timer.setCacheUntil(dt);
 
-        mCacheTimerRepository->store(timer);
+            mCacheTimerRepository->store(timer);
+        }
     }
 
     QDateTime EvernusApplication::getLocalUpdateTimer(Character::IdType id, TimerType type) const
@@ -1128,6 +1131,17 @@ namespace Evernus
                 mMainDb.exec("PRAGMA foreign_keys = OFF;");
                 mCharacterRepository->store(data);
                 mMainDb.exec("PRAGMA foreign_keys = ON;");
+
+                const auto cacheTimer = mCharacterUtcCacheTimes[id];
+                if (cacheTimer.isValid())
+                {
+                    CacheTimer timer;
+                    timer.setCharacterId(id);
+                    timer.setType(TimerType::Character);
+                    timer.setCacheUntil(cacheTimer);
+
+                    mCacheTimerRepository->store(timer);
+                }
 
                 Evernus::WalletSnapshot snapshot;
                 snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
