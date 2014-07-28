@@ -38,6 +38,9 @@ namespace Evernus
         itemPrice->setType(static_cast<ItemPrice::Type>(record.value("type").toInt()));
         itemPrice->setTypeId(record.value("type_id").value<ItemPrice::TypeIdType>());
         itemPrice->setLocationId(record.value("location_id").value<ItemPrice::LocationIdType>());
+        itemPrice->setSolarSystemId(record.value("solar_system_id").toUInt());
+        itemPrice->setRegionId(record.value("region_id").toUInt());
+        itemPrice->setRange(record.value("range").toInt());
         itemPrice->setUpdateTime(dt);
         itemPrice->setValue(record.value("value").toDouble());
         itemPrice->setNew(false);
@@ -52,11 +55,14 @@ namespace Evernus
             type TINYINT NOT NULL,
             type_id INTEGER NOT NULL,
             location_id BIGINT NOT NULL,
+            solar_system_id INTEGER NOT NULL,
+            region_id INTEGER NOT NULL,
+            range INTEGER NOT NULL,
             update_time DATETIME NOT NULL,
             value DOUBLE NOT NULL
         ))"}.arg(getTableName()));
 
-        exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_type_id_location_index ON %1(type, type_id, location_id)"}
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_region ON %1(type, type_id, region_id)"}
             .arg(getTableName()));
     }
 
@@ -77,6 +83,9 @@ namespace Evernus
             << "type"
             << "type_id"
             << "location_id"
+            << "solar_system_id"
+            << "region_id"
+            << "range"
             << "update_time"
             << "value";
     }
@@ -89,6 +98,9 @@ namespace Evernus
         query.bindValue(":type", static_cast<int>(entity.getType()));
         query.bindValue(":type_id", entity.getTypeId());
         query.bindValue(":location_id", entity.getLocationId());
+        query.bindValue(":solar_system_id", entity.getSolarSystemId());
+        query.bindValue(":region_id", entity.getRegionId());
+        query.bindValue(":range", entity.getRange());
         query.bindValue(":update_time", entity.getUpdateTime());
         query.bindValue(":value", entity.getValue());
     }
@@ -101,6 +113,9 @@ namespace Evernus
         query.addBindValue(static_cast<int>(entity.getType()));
         query.addBindValue(entity.getTypeId());
         query.addBindValue(entity.getLocationId());
+        query.addBindValue(entity.getSolarSystemId());
+        query.addBindValue(entity.getRegionId());
+        query.addBindValue(entity.getRange());
         query.addBindValue(entity.getUpdateTime());
         query.addBindValue(entity.getValue());
     }

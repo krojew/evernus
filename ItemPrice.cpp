@@ -46,6 +46,36 @@ namespace Evernus
         mLocationId = id;
     }
 
+    uint ItemPrice::getSolarSystemId() const noexcept
+    {
+        return mSolarSystemId;
+    }
+
+    void ItemPrice::setSolarSystemId(uint id) noexcept
+    {
+        mSolarSystemId = id;
+    }
+
+    uint ItemPrice::getRegionId() const noexcept
+    {
+        return mRegionId;
+    }
+
+    void ItemPrice::setRegionId(uint id) noexcept
+    {
+        mRegionId = id;
+    }
+
+    short ItemPrice::getRange() const noexcept
+    {
+        return mRange;
+    }
+
+    void ItemPrice::setRange(short value) noexcept
+    {
+        mRange = value;
+    }
+
     QDateTime ItemPrice::getUpdateTime() const
     {
         return mUpdateTime;

@@ -41,6 +41,12 @@ namespace Evernus
             current.setLocationId(value.toULongLong());
         else if (name.localName(mNamePool) == "price")
             current.setValue(value.toDouble());
+        else if (name.localName(mNamePool) == "solarsystemID")
+            current.setSolarSystemId(value.toUInt());
+        else if (name.localName(mNamePool) == "regionID")
+            current.setRegionId(value.toUInt());
+        else if (name.localName(mNamePool) == "range")
+            current.setRange(value.toShort());
     }
 
     void EveMarketDataItemPriceImporterXmlReceiver::characters(const QStringRef &value)
@@ -59,35 +65,44 @@ namespace Evernus
 
     void EveMarketDataItemPriceImporterXmlReceiver::endElement()
     {
-        const auto &current = *mCurrentElement;
-        const auto key = std::make_pair(current.getTypeId(), current.getLocationId());
+        const auto rangeStation = -1;
 
-        if (mDesired.find(key) != std::end(mDesired))
+        const auto &current = *mCurrentElement;
+
+        if (current.getType() == ItemPrice::Type::Buy && current.getRange() != rangeStation)
         {
-            if (current.getType() == ItemPrice::Type::Buy)
+            mResult.emplace_back(std::move(current));
+        }
+        else
+        {
+            const auto key = std::make_pair(current.getTypeId(), current.getLocationId());
+            if (mDesired.find(key) != std::end(mDesired))
             {
-                const auto it = mProcessedBuy.find(key);
-                if (it == std::end(mProcessedBuy))
+                if (current.getType() == ItemPrice::Type::Buy)
                 {
-                    mResult.emplace_back(std::move(current));
-                    mProcessedBuy.emplace(key, &mResult.back());
+                    const auto it = mProcessedBuy.find(key);
+                    if (it == std::end(mProcessedBuy))
+                    {
+                        mResult.emplace_back(std::move(current));
+                        mProcessedBuy.emplace(key, &mResult.back());
+                    }
+                    else if (it->second->getValue() < current.getValue())
+                    {
+                        *it->second = std::move(current);
+                    }
                 }
-                else if (it->second->getValue() < current.getValue())
+                else
                 {
-                    *it->second = std::move(current);
-                }
-            }
-            else
-            {
-                const auto it = mProcessedSell.find(key);
-                if (it == std::end(mProcessedSell))
-                {
-                    mResult.emplace_back(std::move(current));
-                    mProcessedSell.emplace(key, &mResult.back());
-                }
-                else if (it->second->getValue() > current.getValue())
-                {
-                    *it->second = std::move(current);
+                    const auto it = mProcessedSell.find(key);
+                    if (it == std::end(mProcessedSell))
+                    {
+                        mResult.emplace_back(std::move(current));
+                        mProcessedSell.emplace(key, &mResult.back());
+                    }
+                    else if (it->second->getValue() > current.getValue())
+                    {
+                        *it->second = std::move(current);
+                    }
                 }
             }
         }

@@ -16,6 +16,7 @@
 #include <stdexcept>
 
 #include <QStringBuilder>
+#include <QFileInfo>
 #include <QSettings>
 #include <QFile>
 #include <QDir>
@@ -69,30 +70,64 @@ namespace Evernus
 
         file.readLine();
 
+        QFileInfo info{file};
+        const auto priceTime = info.created().toUTC();
+
+        const auto logColumns = 14;
+        const auto rangeStation = -1;
+
+        const auto priceColumn = 0;
+        const auto typeColumn = 2;
+        const auto rangeColumn = 3;
+        const auto bidColumn = 7;
+        const auto stationColumn = 10;
+        const auto regionColumn = 11;
+        const auto systemColumn = 12;
+
         while (!file.atEnd())
         {
             const QString line = file.readLine();
             const auto values = line.split(',');
 
-            if (values.count() >= 14)
+            if (values.count() >= logColumns)
             {
-                const auto curValue = values[0].toDouble();
-                const auto curLoc = values[10].toULongLong();
+                const auto curValue = values[priceColumn].toDouble();
+                const auto curLoc = values[stationColumn].toULongLong();
 
-                if (values[7] == "True")
+                if (values[bidColumn] == "True")
                 {
-                    auto it = buy.find(curLoc);
-                    if (it == std::end(buy))
+                    const auto curRange = values[rangeColumn].toShort();
+                    if (curRange != rangeStation)
                     {
-                        it = buy.emplace(curLoc, ItemPrice::invalidId).first;
-                        it->second.setUpdateTime(QDateTime::currentDateTimeUtc());
-                        it->second.setLocationId(curLoc);
-                        it->second.setType(ItemPrice::Type::Buy);
-                        it->second.setTypeId(values[2].toULongLong());
-                    }
+                        ItemPrice price;
+                        price.setUpdateTime(priceTime);
+                        price.setLocationId(curLoc);
+                        price.setSolarSystemId(values[systemColumn].toUInt());
+                        price.setRegionId(values[regionColumn].toUInt());
+                        price.setRange(curRange);
+                        price.setType(ItemPrice::Type::Buy);
+                        price.setTypeId(values[typeColumn].toULongLong());
 
-                    if (curValue > it->second.getValue())
-                        it->second.setValue(curValue);
+                        prices.emplace_back(std::move(price));
+                    }
+                    else
+                    {
+                        auto it = buy.find(curLoc);
+                        if (it == std::end(buy))
+                        {
+                            it = buy.emplace(curLoc, ItemPrice::invalidId).first;
+                            it->second.setUpdateTime(priceTime);
+                            it->second.setLocationId(curLoc);
+                            it->second.setSolarSystemId(values[systemColumn].toUInt());
+                            it->second.setRegionId(values[regionColumn].toUInt());
+                            it->second.setRange(rangeStation);
+                            it->second.setType(ItemPrice::Type::Buy);
+                            it->second.setTypeId(values[typeColumn].toULongLong());
+                        }
+
+                        if (curValue > it->second.getValue())
+                            it->second.setValue(curValue);
+                    }
                 }
                 else
                 {
@@ -100,10 +135,12 @@ namespace Evernus
                     if (it == std::end(sell))
                     {
                         it = sell.emplace(curLoc, ItemPrice::invalidId).first;
-                        it->second.setUpdateTime(QDateTime::currentDateTimeUtc());
+                        it->second.setUpdateTime(priceTime);
                         it->second.setLocationId(curLoc);
+                        it->second.setSolarSystemId(values[systemColumn].toUInt());
+                        it->second.setRegionId(values[regionColumn].toUInt());
                         it->second.setType(ItemPrice::Type::Sell);
-                        it->second.setTypeId(values[2].toULongLong());
+                        it->second.setTypeId(values[typeColumn].toULongLong());
                         it->second.setValue(std::numeric_limits<double>::max());
                     }
 

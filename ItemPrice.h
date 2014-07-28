@@ -50,6 +50,15 @@ namespace Evernus
         LocationIdType getLocationId() const noexcept;
         void setLocationId(LocationIdType id) noexcept;
 
+        uint getSolarSystemId() const noexcept;
+        void setSolarSystemId(uint id) noexcept;
+
+        uint getRegionId() const noexcept;
+        void setRegionId(uint id) noexcept;
+
+        short getRange() const noexcept;
+        void setRange(short value) noexcept;
+
         QDateTime getUpdateTime() const;
         void setUpdateTime(const QDateTime &dt);
 
@@ -63,6 +72,9 @@ namespace Evernus
         Type mType = Type::Buy;
         TypeIdType mTypeId = TypeIdType{};
         LocationIdType mLocationId = LocationIdType{};
+        uint mSolarSystemId = 0;
+        uint mRegionId = 0;
+        short mRange = 32767;
         QDateTime mUpdateTime;
         double mValue = 0.;
     };
