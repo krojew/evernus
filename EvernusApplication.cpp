@@ -61,6 +61,9 @@ namespace Evernus
         precacheCacheTimers();
         precacheUpdateTimers();
 
+        showSplashMessage(tr("Precaching jump map..."), splash);
+        precacheJumpMap();
+
         showSplashMessage(tr("Clearing old wallet entries..."), splash);
         deleteOldWalletEntries();
 
@@ -1069,6 +1072,13 @@ namespace Evernus
                 mMarketOrdersUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
             }
         }
+    }
+
+    void EvernusApplication::precacheJumpMap()
+    {
+        auto query = mEveDb.exec("SELECT fromSolarSystemID, toSolarSystemID FROM mapSolarSystemJumps");
+        while (query.next())
+            mSystemJumpMap[query.value(0).value<quint64>()] = query.value(1).value<quint64>();
     }
 
     void EvernusApplication::deleteOldWalletEntries()

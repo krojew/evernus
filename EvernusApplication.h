@@ -224,11 +224,14 @@ namespace Evernus
 
         mutable std::unordered_map<CharacterTypePair, ItemCostRepository::EntityPtr, boost::hash<CharacterTypePair>> mItemCostCache;
 
+        std::unordered_map<quint64, quint64> mSystemJumpMap;
+
         void createDb();
         void createDbSchema();
         void precacheRefTypes();
         void precacheCacheTimers();
         void precacheUpdateTimers();
+        void precacheJumpMap();
         void deleteOldWalletEntries();
 
         uint startTask(const QString &description);
