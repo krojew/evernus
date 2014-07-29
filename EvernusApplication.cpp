@@ -159,7 +159,39 @@ namespace Evernus
 
     std::shared_ptr<ExternalOrder> EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId) const
     {
-        return std::make_shared<ExternalOrder>();
+        const auto key = std::make_pair(id, stationId);
+        const auto it = mBuyPrices.find(key);
+        if (it != std::end(mBuyPrices))
+            return it->second;
+
+        auto result = std::make_shared<ExternalOrder>();
+        mBuyPrices.emplace(key, result);
+
+        const auto solarSystemId = getStationSolarSystemId(stationId);
+        if (solarSystemId == 0)
+            return result;
+
+        const auto regionId = getSolarSystemRegionId(solarSystemId);
+        if (regionId == 0)
+            return result;
+
+        const auto jIt = mSystemJumpMap.find(regionId);
+        if (jIt == std::end(mSystemJumpMap))
+            return result;
+
+        const auto &jumpMap = jIt->second;
+        const auto isReachable = [stationId, solarSystemId, &jumpMap, this](const auto &order) {
+            return false;
+        };
+
+        const auto &orders = getExternalOrders(id, regionId);
+        for (const auto &order : orders)
+        {
+            if (!isReachable(order))
+                continue;
+        }
+
+        return result;
     }
 
     QString EvernusApplication::getLocationName(quint64 id) const
@@ -1076,9 +1108,9 @@ namespace Evernus
 
     void EvernusApplication::precacheJumpMap()
     {
-        auto query = mEveDb.exec("SELECT fromSolarSystemID, toSolarSystemID FROM mapSolarSystemJumps");
+        auto query = mEveDb.exec("SELECT fromRegionID, fromSolarSystemID, toSolarSystemID FROM mapSolarSystemJumps WHERE fromRegionID = toRegionID");
         while (query.next())
-            mSystemJumpMap[query.value(0).value<quint64>()] = query.value(1).value<quint64>();
+            mSystemJumpMap[query.value(0).toUInt()].emplace(query.value(1).toUInt(), query.value(2).toUInt());
     }
 
     void EvernusApplication::deleteOldWalletEntries()
@@ -1426,6 +1458,113 @@ namespace Evernus
         }
 
         return mTypeMarketGroupCache.emplace(id, result).first->second;
+    }
+
+    uint EvernusApplication::getSolarSystemRegionId(uint systemId) const
+    {
+        const auto it = mSolarSystemRegionCache.find(systemId);
+        if (it != std::end(mSolarSystemRegionCache))
+            return it->second;
+
+        QSqlQuery query{mEveDb};
+        query.prepare("SELECT regionID FROM mapSolarSystems WHERE solarSystemID = ?");
+        query.bindValue(0, systemId);
+
+        DatabaseUtils::execQuery(query);
+        query.next();
+
+        const auto regionId = query.value(0).toUInt();
+
+        mSolarSystemRegionCache.emplace(systemId, regionId);
+        return regionId;
+    }
+
+    uint EvernusApplication::getStationSolarSystemId(quint64 stationId) const
+    {
+        const auto it = mLocationSolarSystemCache.find(stationId);
+        if (it != std::end(mLocationSolarSystemCache))
+            return it->second;
+
+        uint systemId = 0;
+        if (stationId >= 66000000 && stationId <= 66014933)
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT solarSystemID FROM staStations WHERE stationID = ?");
+            query.bindValue(0, stationId - 6000001);
+
+            DatabaseUtils::execQuery(query);
+            query.next();
+
+            systemId = query.value(0).toUInt();
+        }
+        else if (stationId >= 66014934 && stationId <= 67999999)
+        {
+            try
+            {
+                auto station = mConquerableStationRepository->find(stationId - 6000000);
+                systemId = station->getSolarSystemId();
+            }
+            catch (const ConquerableStationRepository::NotFoundException &)
+            {
+            }
+        }
+        else if (stationId >= 60014861 && stationId <= 60014928)
+        {
+            try
+            {
+                auto station = mConquerableStationRepository->find(stationId);
+                systemId = station->getSolarSystemId();
+            }
+            catch (const ConquerableStationRepository::NotFoundException &)
+            {
+            }
+        }
+        else if (stationId > 60000000 && stationId <= 61000000)
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT solarSystemID FROM staStations WHERE stationID = ?");
+            query.bindValue(0, stationId);
+
+            DatabaseUtils::execQuery(query);
+            query.next();
+
+            systemId = query.value(0).toUInt();
+        }
+        else if (stationId > 61000000)
+        {
+            try
+            {
+                auto station = mConquerableStationRepository->find(stationId);
+                systemId = station->getSolarSystemId();
+            }
+            catch (const ConquerableStationRepository::NotFoundException &)
+            {
+            }
+        }
+        else
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT solarSystemID FROM mapDenormalize WHERE itemID = ?");
+            query.bindValue(0, stationId);
+
+            DatabaseUtils::execQuery(query);
+            query.next();
+
+            systemId = query.value(0).toUInt();
+        }
+
+        mLocationSolarSystemCache.emplace(stationId, systemId);
+        return systemId;
+    }
+
+    const ExternalOrderRepository::EntityList &EvernusApplication::getExternalOrders(EveType::IdType typeId, uint regionId) const
+    {
+        const auto key = std::make_pair(typeId, regionId);
+        const auto it = mTypeRegionOrderCache.find(key);
+        if (it != std::end(mTypeRegionOrderCache))
+            return it->second;
+
+        return mTypeRegionOrderCache.emplace(key, mExternalOrderRepository->findBuyByTypeAndRegion(typeId, regionId)).first->second;
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)

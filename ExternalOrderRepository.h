@@ -36,6 +36,7 @@ namespace Evernus
         void create() const;
 
         EntityPtr findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const;
+        EntityList findBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId, uint regionId) const;
 
         void removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const;
 

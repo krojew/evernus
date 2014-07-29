@@ -64,6 +64,7 @@ namespace Evernus
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id_location ON %1(type_id, location_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_location ON %1(type, type_id, location_id)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_region ON %1(type, type_id, region_id)"}.arg(getTableName()));
     }
 
     ExternalOrderRepository::EntityPtr ExternalOrderRepository::findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const
@@ -79,6 +80,27 @@ namespace Evernus
             throw NotFoundException{};
 
         return populate(query.record());
+    }
+
+    ExternalOrderRepository::EntityList ExternalOrderRepository::findBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId, uint regionId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND region_id = ?"}.arg(getTableName()));
+        query.addBindValue(static_cast<int>(ExternalOrder::Type::Buy));
+        query.addBindValue(typeId);
+        query.addBindValue(regionId);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
     }
 
     void ExternalOrderRepository::removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const

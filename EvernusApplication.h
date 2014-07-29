@@ -155,6 +155,7 @@ namespace Evernus
     private:
         typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
         typedef std::pair<Character::IdType, EveType::IdType> CharacterTypePair;
+        typedef std::pair<EveType::IdType, uint> TypeRegionPair;
 
         typedef std::unordered_map<Character::IdType, QDateTime> CharacterTimerMap;
         typedef std::unordered_map<Character::IdType, MarketOrderRepository::EntityList> MarketOrderMap;
@@ -197,8 +198,13 @@ namespace Evernus
         mutable std::unordered_map<EveType::IdType, MarketGroupRepository::EntityPtr> mTypeMarketGroupCache;
         mutable std::unordered_map<EveType::IdType, MetaGroupRepository::EntityPtr> mTypeMetaGroupCache;
         mutable std::unordered_map<quint64, QString> mLocationNameCache;
-        mutable std::unordered_map<TypeLocationPair, ExternalOrderRepository::EntityPtr, boost::hash<TypeLocationPair>> mSellPrices;
-        mutable std::unordered_map<TypeLocationPair, ExternalOrderRepository::EntityPtr, boost::hash<TypeLocationPair>> mBuyPrices;
+        mutable std::unordered_map<uint, uint> mSolarSystemRegionCache;
+        mutable std::unordered_map<quint64, uint> mLocationSolarSystemCache;
+
+        mutable std::unordered_map<TypeLocationPair, ExternalOrderRepository::EntityPtr, boost::hash<TypeLocationPair>>
+        mSellPrices;
+        mutable std::unordered_map<TypeLocationPair, ExternalOrderRepository::EntityPtr, boost::hash<TypeLocationPair>>
+        mBuyPrices;
 
         std::unordered_map<std::string, ImporterPtr> mExternalOrderImporters;
 
@@ -222,9 +228,13 @@ namespace Evernus
         mutable MarketOrderMap mBuyOrders;
         mutable MarketOrderMap mArchivedOrders;
 
-        mutable std::unordered_map<CharacterTypePair, ItemCostRepository::EntityPtr, boost::hash<CharacterTypePair>> mItemCostCache;
+        mutable std::unordered_map<CharacterTypePair, ItemCostRepository::EntityPtr, boost::hash<CharacterTypePair>>
+        mItemCostCache;
 
-        std::unordered_map<quint64, quint64> mSystemJumpMap;
+        std::unordered_map<uint, std::unordered_map<uint, uint>> mSystemJumpMap;
+
+        mutable std::unordered_map<TypeRegionPair, ExternalOrderRepository::EntityList, boost::hash<TypeRegionPair>>
+        mTypeRegionOrderCache;
 
         void createDb();
         void createDbSchema();
@@ -254,6 +264,11 @@ namespace Evernus
         EveTypeRepository::EntityPtr getEveType(EveType::IdType id) const;
         MarketGroupRepository::EntityPtr getMarketGroupParent(MarketGroup::IdType id) const;
         MarketGroupRepository::EntityPtr getMarketGroup(MarketGroup::IdType id) const;
+
+        uint getSolarSystemRegionId(uint stationId) const;
+        uint getStationSolarSystemId(quint64 stationId) const;
+
+        const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };
