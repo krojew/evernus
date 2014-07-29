@@ -65,18 +65,9 @@ namespace Evernus
         file.readLine();
 
         QFileInfo info{file};
+
         const auto priceTime = info.created().toUTC();
-
         const auto logColumns = 14;
-
-        const auto priceColumn = 0;
-        const auto typeColumn = 2;
-        const auto rangeColumn = 3;
-        const auto idColumn = 4;
-        const auto bidColumn = 7;
-        const auto stationColumn = 10;
-        const auto regionColumn = 11;
-        const auto systemColumn = 12;
 
         while (!file.atEnd())
         {
@@ -85,18 +76,10 @@ namespace Evernus
 
             if (values.count() >= logColumns)
             {
-                ExternalOrder price;
-                price.setId(values[idColumn].toUInt());
-                price.setUpdateTime(priceTime);
-                price.setLocationId(values[stationColumn].toULongLong());
-                price.setSolarSystemId(values[systemColumn].toUInt());
-                price.setRegionId(values[regionColumn].toUInt());
-                price.setRange(values[rangeColumn].toShort());
-                price.setType((values[bidColumn] == "True") ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
-                price.setTypeId(values[typeColumn].toULongLong());
-                price.setValue(values[priceColumn].toDouble());
+                auto order = ExternalOrder::parseLogLine(values);
+                order.setUpdateTime(priceTime);
 
-                orders.emplace_back(std::move(price));
+                orders.emplace_back(std::move(order));
             }
         }
 

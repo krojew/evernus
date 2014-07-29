@@ -48,6 +48,7 @@
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
+#include "ExternalOrder.h"
 #include "PathSettings.h"
 #include "Repository.h"
 #include "PathUtils.h"
@@ -365,6 +366,8 @@ namespace Evernus
             }
 #endif
 
+            file.readLine();
+
             auto buy = -1.;
             auto sell = -1.;
 
@@ -378,19 +381,15 @@ namespace Evernus
             const auto priceTime = info.created();
 
             auto typeId = EveType::invalidId;
-            auto locationId = 0u;
 
             const auto logColumns = 14;
             const auto rangeStation = -1;
 
-            const auto priceColumn = 0;
             const auto volRemainingColumn = 1;
-            const auto typeColumn = 2;
-            const auto rangeColumn = 3;
             const auto volEnteredColumn = 5;
-            const auto bidColumn = 7;
-            const auto stationColumn = 10;
             const auto jumpsColumn = 13;
+
+            std::vector<ExternalOrder> orders;
 
             while (!file.atEnd())
             {
@@ -399,54 +398,53 @@ namespace Evernus
 
                 if (values.count() >= logColumns)
                 {
+                    ExternalOrder order = ExternalOrder::parseLogLine(values);
+                    order.setUpdateTime(priceTime);
+
                     if (typeId == EveType::invalidId)
                     {
-                        auto ok = false;
-                        typeId = values[typeColumn].toULong(&ok);
-
-                        if (ok)
-                            name = mDataProvider.getTypeName(typeId);
+                        typeId = order.getTypeId();
+                        name = mDataProvider.getTypeName(typeId);
                     }
-                    if (locationId == 0)
-                        locationId = values[stationColumn].toULongLong();
 
-                    const auto curValue = values[priceColumn].toDouble();
                     const auto jumps = values[jumpsColumn].toInt();
 
-                    if (values[bidColumn] == "True")
+                    if (order.getType() == ExternalOrder::Type::Buy)
                     {
                         if (jumps != 0)
                         {
-                            const auto range = values[rangeColumn].toInt();
+                            const auto range = order.getRange();
                             if (range == rangeStation || jumps - range > 0)
                                 continue;
                         }
 
-                        if (curValue > buy)
-                            buy = curValue;
+                        if (order.getValue() > buy)
+                            buy = order.getValue();
 
                         buyVol += static_cast<uint>(values[volRemainingColumn].toDouble());
                         buyInit += static_cast<uint>(values[volEnteredColumn].toDouble());
 
                         ++buyCount;
                     }
-                    else if (values[bidColumn] == "False")
+                    else
                     {
                         if (jumps != 0)
                             continue;
 
-                        if (curValue < sell || sell < 0.)
-                            sell = curValue;
+                        if (order.getValue() < sell || sell < 0.)
+                            sell = order.getValue();
 
                         sellVol += static_cast<uint>(values[volRemainingColumn].toDouble());
                         sellInit += static_cast<uint>(values[volEnteredColumn].toDouble());
 
                         ++sellCount;
                     }
+
+                    orders.emplace_back(std::move(order));
                 }
             }
 
-            emit parsedData();
+            emit parsedData(orders);
 
             const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 

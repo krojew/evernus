@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <QFileSystemWatcher>
 #include <QDateTime>
 #include <QDialog>
@@ -31,6 +33,7 @@ namespace Evernus
     class Repository;
     class ItemCostProvider;
     class EveDataProvider;
+    class ExternalOrder;
 
     class MarginToolDialog
         : public QDialog
@@ -47,7 +50,7 @@ namespace Evernus
     signals:
         void hidden();
 
-        void parsedData();
+        void parsedData(const std::vector<ExternalOrder> &orders);
 
     public slots:
         void setCharacter(Character::IdType id);

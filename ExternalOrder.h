@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <QStringList>
 #include <QDateTime>
 
 #include "ItemData.h"
@@ -67,6 +68,8 @@ namespace Evernus
 
         ExternalOrder &operator =(const ExternalOrder &) = default;
         ExternalOrder &operator =(ExternalOrder &&) = default;
+
+        static ExternalOrder parseLogLine(const QStringList &values);
 
     private:
         Type mType = Type::Buy;

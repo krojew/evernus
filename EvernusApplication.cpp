@@ -873,15 +873,35 @@ namespace Evernus
         computeAssetListSellValue(*fetchAssetsForCharacter(id));
     }
 
+    void EvernusApplication::updateExternalOrders(const std::vector<ExternalOrder> &orders)
+    {
+        try
+        {
+            mExternalOrderRepository->batchStore(orders, true);
+
+            QSettings settings;
+            if (settings.value(ImportSettings::autoUpdateAssetValueKey, true).toBool())
+            {
+                for (const auto &list : mCharacterAssets)
+                    computeAssetListSellValue(*list.second);
+            }
+
+            finishExternalOrderImportTask(QString{});
+        }
+        catch (const std::exception &e)
+        {
+            finishExternalOrderImportTask(e.what());
+        }
+
+        mSellPrices.clear();
+        mBuyPrices.clear();
+
+        emit externalOrdersChanged();
+    }
+
     void EvernusApplication::resetItemCostCache()
     {
         mItemCostCache.clear();
-    }
-
-    void EvernusApplication::resetItemPriceCache()
-    {
-        mSellPrices.clear();
-        mBuyPrices.clear();
     }
 
     void EvernusApplication::scheduleCharacterUpdate()
@@ -904,31 +924,6 @@ namespace Evernus
     {
         Q_ASSERT(mCurrentExternalOrderImportTask != TaskConstants::invalidTask);
         finishExternalOrderImportTask(info);
-    }
-
-    void EvernusApplication::updateExternalOrders(const std::vector<ExternalOrder> &orders)
-    {
-        try
-        {
-            mExternalOrderRepository->batchStore(orders, true);
-
-            QSettings settings;
-            if (settings.value(ImportSettings::autoUpdateAssetValueKey, true).toBool())
-            {
-                for (const auto &list : mCharacterAssets)
-                    computeAssetListSellValue(*list.second);
-            }
-
-            finishExternalOrderImportTask(QString{});
-        }
-        catch (const std::exception &e)
-        {
-            finishExternalOrderImportTask(e.what());
-        }
-
-        resetItemPriceCache();
-
-        emit externalOrdersChanged();
     }
 
     void EvernusApplication::createDb()

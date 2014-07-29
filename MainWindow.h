@@ -97,7 +97,7 @@ namespace Evernus
         void itemCostsChanged();
 
         void marginToolHidden(Character::IdType id);
-        void marginToolParsedData();
+        void marginToolParsedData(const std::vector<ExternalOrder> &orders);
 
         void newTaskInfoAdded(uint taskId, const QString &description);
         void newSubTaskInfoAdded(uint taskId, uint parentTask, const QString &description);

@@ -142,16 +142,15 @@ namespace Evernus
         void refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
 
         void updateAssetsValue(Character::IdType id);
+        void updateExternalOrders(const std::vector<ExternalOrder> &orders);
 
         void resetItemCostCache();
-        void resetItemPriceCache();
 
     private slots:
         void scheduleCharacterUpdate();
         void updateCharacters();
 
         void showPriceImportError(const QString &info);
-        void updateExternalOrders(const std::vector<ExternalOrder> &orders);
 
     private:
         typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
