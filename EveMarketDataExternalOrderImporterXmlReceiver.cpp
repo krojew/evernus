@@ -34,7 +34,7 @@ namespace Evernus
         if (name.localName(mNamePool) == "buysell")
             current.setType((value == "s") ? (ExternalOrder::Type::Sell) : (ExternalOrder::Type::Buy));
         else if (name.localName(mNamePool) == "orderID")
-            current.setId(value.toUInt());
+            current.setId(value.toULongLong());
         else if (name.localName(mNamePool) == "typeID")
             current.setTypeId(value.toUInt());
         else if (name.localName(mNamePool) == "stationID")

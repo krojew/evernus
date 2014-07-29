@@ -107,8 +107,7 @@ namespace Evernus
         const auto regionColumn = 11;
         const auto systemColumn = 12;
 
-        ExternalOrder order;
-        order.setId(values[idColumn].toUInt());
+        ExternalOrder order{values[idColumn].toULongLong()};
         order.setLocationId(values[stationColumn].toULongLong());
         order.setSolarSystemId(values[systemColumn].toUInt());
         order.setRegionId(values[regionColumn].toUInt());

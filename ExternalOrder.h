@@ -23,7 +23,7 @@
 namespace Evernus
 {
     class ExternalOrder
-        : public Entity<uint>
+        : public Entity<quint64>
     {
     public:
         typedef ItemData::TypeIdType TypeIdType;
