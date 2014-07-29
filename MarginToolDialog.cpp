@@ -48,7 +48,6 @@
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
-#include "ExternalOrder.h"
 #include "PathSettings.h"
 #include "Repository.h"
 #include "PathUtils.h"
@@ -295,6 +294,9 @@ namespace Evernus
     {
         QString targetFile;
 
+        mParsedOrders.clear();
+        mParsedOrderIds.clear();
+
         auto curLocale = locale();
         auto newFiles = getKnownFiles(path);
 
@@ -389,8 +391,6 @@ namespace Evernus
             const auto volEnteredColumn = 5;
             const auto jumpsColumn = 13;
 
-            std::vector<ExternalOrder> orders;
-
             while (!file.atEnd())
             {
                 const QString line = file.readLine();
@@ -440,11 +440,13 @@ namespace Evernus
                         ++sellCount;
                     }
 
-                    orders.emplace_back(std::move(order));
+                    if (mParsedOrderIds.find(order.getId()) == std::end(mParsedOrderIds))
+                    {
+                        mParsedOrderIds.emplace(order.getId());
+                        mParsedOrders.emplace_back(std::move(order));
+                    }
                 }
             }
-
-            emit parsedData(orders);
 
             const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
@@ -574,6 +576,7 @@ namespace Evernus
 
     void MarginToolDialog::hideEvent(QHideEvent *event)
     {
+        emit parsedData(mParsedOrders);
         emit hidden();
 
         QDialog::hideEvent(event);

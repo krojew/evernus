@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <unordered_set>
 #include <vector>
 
 #include <QFileSystemWatcher>
@@ -21,6 +22,7 @@
 #include <QDialog>
 #include <QHash>
 
+#include "ExternalOrder.h"
 #include "Character.h"
 
 class QTableWidget;
@@ -110,6 +112,9 @@ namespace Evernus
         FileModificationMap mKnownFiles;
 
         Character::IdType mCharacterId = Character::invalidId;
+
+        std::vector<ExternalOrder> mParsedOrders;
+        std::unordered_set<ExternalOrder::IdType> mParsedOrderIds;
 
         void setNewWindowFlags(bool alwaysOnTop);
         Taxes calculateTaxes() const;
