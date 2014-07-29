@@ -1312,18 +1312,6 @@ namespace Evernus
 
         std::shared_ptr<ExternalOrder> result;
 
-        try
-        {
-            result = mExternalOrderRepository->findBuyByTypeAndLocation(id, stationId);
-        }
-        catch (const ExternalOrderRepository::NotFoundException &)
-        {
-            if (!dontThrow)
-                throw;
-
-            result = std::make_shared<ExternalOrder>();
-        }
-
         mBuyPrices.emplace(key, result);
         return result;
     }

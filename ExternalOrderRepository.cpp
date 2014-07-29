@@ -61,16 +61,23 @@ namespace Evernus
             update_time DATETIME NOT NULL,
             value DOUBLE NOT NULL
         ))"}.arg(getTableName()));
+
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_location ON %1(type, type_id, location_id)"}.arg(getTableName()));
     }
 
     ExternalOrderRepository::EntityPtr ExternalOrderRepository::findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const
     {
-        return findByTypeAndLocation(typeId, locationId, ExternalOrder::Type::Sell);
-    }
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ? ORDER BY value ASC LIMIT 1"}
+            .arg(getTableName()));
+        query.addBindValue(static_cast<int>(ExternalOrder::Type::Sell));
+        query.addBindValue(typeId);
+        query.addBindValue(locationId);
 
-    ExternalOrderRepository::EntityPtr ExternalOrderRepository::findBuyByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const
-    {
-        return findByTypeAndLocation(typeId, locationId, ExternalOrder::Type::Buy);
+        DatabaseUtils::execQuery(query);
+        if (!query.next())
+            throw NotFoundException{};
+
+        return populate(query.record());
     }
 
     QStringList ExternalOrderRepository::getColumns() const
@@ -115,21 +122,5 @@ namespace Evernus
         query.addBindValue(entity.getRange());
         query.addBindValue(entity.getUpdateTime());
         query.addBindValue(entity.getValue());
-    }
-
-    ExternalOrderRepository::EntityPtr ExternalOrderRepository
-    ::findByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId, ExternalOrder::Type priceType) const
-    {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ?"}
-            .arg(getTableName()));
-        query.addBindValue(static_cast<int>(priceType));
-        query.addBindValue(typeId);
-        query.addBindValue(locationId);
-
-        DatabaseUtils::execQuery(query);
-        if (!query.next())
-            throw NotFoundException{};
-
-        return populate(query.record());
     }
 }

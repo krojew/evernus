@@ -36,13 +36,10 @@ namespace Evernus
         void create() const;
 
         EntityPtr findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const;
-        EntityPtr findBuyByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const;
 
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const ExternalOrder &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const ExternalOrder &entity, QSqlQuery &query) const override;
-
-        EntityPtr findByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId, ExternalOrder::Type priceType) const;
     };
 }
