@@ -209,7 +209,7 @@ namespace Evernus
                         return false;
                 }
 
-                if (order->getSolarSystemId() == solarSystemId)
+                if (order->getSolarSystemId() == current)
                     return true;
 
                 const auto children = jumpMap.equal_range(current);
@@ -243,8 +243,11 @@ namespace Evernus
         const auto &orders = getExternalOrders(id, regionId);
         for (const auto &order : orders)
         {
-            if (!isReachable(order))
+            if (order->getValue() <= result->getValue() || !isReachable(order))
                 continue;
+
+            result = order;
+            mBuyPrices[key] = result;
         }
 
         return result;
@@ -1001,6 +1004,7 @@ namespace Evernus
 
         mSellPrices.clear();
         mBuyPrices.clear();
+        mTypeRegionOrderCache.clear();
 
         emit externalOrdersChanged();
     }
