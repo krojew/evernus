@@ -399,6 +399,7 @@ namespace Evernus
         connect(orderTab, &MarketOrderWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::marginToolHidden, orderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::externalOrdersChanged, orderTab, &MarketOrderWidget::updateData);
 
         auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mFilterRepository, mCacheTimerProvider, mEveDataProvider, this};
         addTab(journalTab, tr("Journal"));
