@@ -66,6 +66,8 @@ namespace Evernus
 
         void archive(const std::vector<MarketOrder::IdType> &ids) const;
 
+        OrderIdList getActiveIds() const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const MarketOrder &entity, QSqlQuery &query) const override;

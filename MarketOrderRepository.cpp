@@ -88,6 +88,7 @@ namespace Evernus
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_state ON %1(state)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_state ON %1(character_id, state)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_last_seen ON %1(character_id, last_seen)"}.arg(getTableName()));
@@ -212,6 +213,20 @@ namespace Evernus
             query.addBindValue(id);
 
         DatabaseUtils::execQuery(query);
+    }
+
+    MarketOrderRepository::OrderIdList MarketOrderRepository::getActiveIds() const
+    {
+        auto query = prepare(QString{"SELECT %1 FROM %2 WHERE state = ?"}.arg(getIdColumn()).arg(getTableName()));
+        query.bindValue(0, static_cast<int>(MarketOrder::State::Active));
+
+        DatabaseUtils::execQuery(query);
+
+        OrderIdList result;
+        while (query.next())
+            result.emplace(query.value(0).value<OrderIdList::value_type>());
+
+        return result;
     }
 
     QStringList MarketOrderRepository::getColumns() const

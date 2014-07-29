@@ -877,7 +877,16 @@ namespace Evernus
     {
         try
         {
-            mExternalOrderRepository->batchStore(orders, true);
+            const auto ownOrders = mMarketOrderRepository->getActiveIds();
+
+            std::vector<std::reference_wrapper<const ExternalOrder>> toStore;
+            for (const auto &order : orders)
+            {
+                if (ownOrders.find(order.getId()) == std::end(ownOrders))
+                    toStore.emplace_back(std::cref(order));
+            }
+
+            mExternalOrderRepository->batchStore(toStore, true);
 
             QSettings settings;
             if (settings.value(ImportSettings::autoUpdateAssetValueKey, true).toBool())
