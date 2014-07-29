@@ -227,7 +227,7 @@ namespace Evernus
         else
         {
             QSqlQuery query{mEveDb};
-            query.prepare("SELECT itemName FROM staStations WHERE itemID = ?");
+            query.prepare("SELECT itemName FROM mapDenormalize WHERE itemID = ?");
             query.bindValue(0, id);
 
             DatabaseUtils::execQuery(query);
