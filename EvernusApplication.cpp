@@ -12,7 +12,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_set>
 #include <stdexcept>
+#include <queue>
 
 #include <QSplashScreen>
 #include <QMessageBox>
@@ -181,6 +183,60 @@ namespace Evernus
 
         const auto &jumpMap = jIt->second;
         const auto isReachable = [stationId, solarSystemId, &jumpMap, this](const auto &order) {
+            const auto range = order->getRange();
+            if (range == -1)
+                return stationId == order->getLocationId();
+
+            std::unordered_set<uint> visited;
+            std::queue<uint> candidates;
+
+            visited.emplace(solarSystemId);
+            candidates.emplace(solarSystemId);
+
+            auto depth = 0;
+
+            auto incrementNode = 0u, lastParentNode = solarSystemId;
+
+            while (!candidates.empty())
+            {
+                const auto current = candidates.front();
+                candidates.pop();
+
+                if (current == incrementNode)
+                {
+                    ++depth;
+                    if (depth > range)
+                        return false;
+                }
+
+                if (order->getSolarSystemId() == solarSystemId)
+                    return true;
+
+                const auto children = jumpMap.equal_range(current);
+
+                if (current == lastParentNode)
+                {
+                    if (children.first == children.second)
+                    {
+                        if (!candidates.empty())
+                            lastParentNode = candidates.front();
+                    }
+                    else
+                    {
+                        lastParentNode = incrementNode = children.first->second;
+                    }
+                }
+
+                for (auto it = children.first; it != children.second; ++it)
+                {
+                    if (visited.find(it->second) == std::end(visited))
+                    {
+                        visited.emplace(it->second);
+                        candidates.emplace(it->second);
+                    }
+                }
+            }
+
             return false;
         };
 
