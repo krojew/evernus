@@ -47,4 +47,14 @@ namespace Evernus
     {
         mName = std::move(name);
     }
+
+    uint ConquerableStation::getSolarSystemId() const noexcept
+    {
+        return mSolarSystemId;
+    }
+
+    void ConquerableStation::setSolarSystemId(uint id) noexcept
+    {
+        mSolarSystemId = id;
+    }
 }

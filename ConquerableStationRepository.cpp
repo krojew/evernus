@@ -30,6 +30,7 @@ namespace Evernus
     {
         auto station = std::make_shared<ConquerableStation>(record.value("id").value<ConquerableStation::IdType>());
         station->setName(record.value("name").toString());
+        station->setSolarSystemId(record.value("solar_system_id").toULongLong());
         station->setNew(false);
 
         return station;
@@ -39,7 +40,8 @@ namespace Evernus
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL
+            name TEXT NOT NULL,
+            solar_system_id INTEGER NOT NULL
         ))"}.arg(getTableName()));
     }
 
@@ -47,7 +49,8 @@ namespace Evernus
     {
         return QStringList{}
             << "id"
-            << "name";
+            << "name"
+            << "solar_system_id";
     }
 
     void ConquerableStationRepository::bindValues(const ConquerableStation &entity, QSqlQuery &query) const
@@ -56,6 +59,7 @@ namespace Evernus
             query.bindValue(":id", entity.getId());
 
         query.bindValue(":name", entity.getName());
+        query.bindValue(":solar_system_id", entity.getSolarSystemId());
     }
 
     void ConquerableStationRepository::bindPositionalValues(const ConquerableStation &entity, QSqlQuery &query) const
@@ -64,5 +68,6 @@ namespace Evernus
             query.addBindValue(entity.getId());
 
         query.addBindValue(entity.getName());
+        query.addBindValue(entity.getSolarSystemId());
     }
 }

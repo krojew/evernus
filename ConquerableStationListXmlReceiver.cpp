@@ -24,5 +24,7 @@ namespace Evernus
             mCurrentElement->setId(convert<uint>(value.toString()));
         else if (localName == "stationName")
             mCurrentElement->setName(value.toString());
+        else if (localName == "solarSystemID")
+            mCurrentElement->setSolarSystemId(convert<uint>(value.toString()));
     }
 }

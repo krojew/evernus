@@ -38,10 +38,14 @@ namespace Evernus
         void setName(const QString &name);
         void setName(QString &&name);
 
+        uint getSolarSystemId() const noexcept;
+        void setSolarSystemId(uint id) noexcept;
+
         ConquerableStation &operator =(const ConquerableStation &) = default;
         ConquerableStation &operator =(ConquerableStation &&) = default;
 
     private:
         QString mName;
+        uint mSolarSystemId = 0;
     };
 }
