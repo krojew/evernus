@@ -62,6 +62,7 @@ namespace Evernus
             value DOUBLE NOT NULL
         ))"}.arg(getTableName()));
 
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id_location ON %1(type_id, location_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_location ON %1(type, type_id, location_id)"}.arg(getTableName()));
     }
 
@@ -78,6 +79,62 @@ namespace Evernus
             throw NotFoundException{};
 
         return populate(query.record());
+    }
+
+    void ExternalOrderRepository::removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const
+    {
+        if (set.empty())
+            return;
+
+        const auto baseQuery = QString{"DELETE FROM %1 WHERE %2"}.arg(getTableName());
+        const QString baseWhere{"(type_id = ? AND location_id = ?)"};
+
+        const auto batchSize = 500;
+        const auto batches = set.size() / batchSize;
+
+        auto it = std::begin(set);
+
+        QStringList batchWhere;
+        for (auto i = 0; i < batchSize; ++i)
+            batchWhere << baseWhere;
+
+        const auto batchQuery = baseQuery.arg(batchWhere.join(" OR "));
+
+        for (auto i = 0u; i < batches; ++i)
+        {
+            auto query = prepare(batchQuery);
+
+            for (auto j = 0; j < batchSize; ++j)
+            {
+                query.addBindValue(it->first);
+                query.addBindValue(it->second);
+
+                ++it;
+            }
+
+            DatabaseUtils::execQuery(query);
+        }
+
+        const auto reminder = set.size() % batchSize;
+        if (reminder == 0)
+            return;
+
+        QStringList reminderWhere;
+        for (auto i = 0; i < reminder; ++i)
+            reminderWhere << baseWhere;
+
+        const auto reminderQuery = baseQuery.arg(reminderWhere.join(" OR "));
+        auto query = prepare(reminderQuery);
+
+        for (auto i = 0u; i < reminder; ++i)
+        {
+            query.addBindValue(it->first);
+            query.addBindValue(it->second);
+
+            ++it;
+        }
+
+        DatabaseUtils::execQuery(query);
     }
 
     QStringList ExternalOrderRepository::getColumns() const

@@ -14,10 +14,9 @@
  */
 #pragma once
 
-#include <vector>
-
-#include "Repository.h"
+#include "ExternalOrderImporter.h"
 #include "ExternalOrder.h"
+#include "Repository.h"
 
 namespace Evernus
 {
@@ -25,6 +24,7 @@ namespace Evernus
         : public Repository<ExternalOrder>
     {
     public:
+
         using Repository::Repository;
         virtual ~ExternalOrderRepository() = default;
 
@@ -36,6 +36,8 @@ namespace Evernus
         void create() const;
 
         EntityPtr findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const;
+
+        void removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const;
 
     private:
         virtual QStringList getColumns() const override;

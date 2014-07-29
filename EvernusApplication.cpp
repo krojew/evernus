@@ -879,13 +879,19 @@ namespace Evernus
         {
             const auto ownOrders = mMarketOrderRepository->getActiveIds();
 
+            ExternalOrderImporter::TypeLocationPairs affectedOrders;
+
             std::vector<std::reference_wrapper<const ExternalOrder>> toStore;
             for (const auto &order : orders)
             {
                 if (ownOrders.find(order.getId()) == std::end(ownOrders))
+                {
                     toStore.emplace_back(std::cref(order));
+                    affectedOrders.emplace(std::make_pair(order.getTypeId(), order.getLocationId()));
+                }
             }
 
+            mExternalOrderRepository->removeObsolete(affectedOrders);
             mExternalOrderRepository->batchStore(toStore, true);
 
             QSettings settings;
