@@ -1078,14 +1078,14 @@ namespace Evernus
         if (settings.value(WalletSettings::deleteOldJournalKey, true).toBool())
         {
             const auto journalDt = QDateTime::currentDateTimeUtc().addDays(
-                 -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
+                -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
             mWalletJournalEntryRepository->deleteOldEntires(journalDt);
         }
 
         if (settings.value(WalletSettings::deleteOldTransactionsKey, true).toBool())
         {
             const auto transactionDt = QDateTime::currentDateTimeUtc().addDays(
-                 -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
+                -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
             mWalletTransactionRepository->deleteOldEntires(transactionDt);
         }
     }
