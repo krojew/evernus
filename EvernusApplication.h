@@ -243,7 +243,6 @@ namespace Evernus
         void finishExternalOrderImportTask(const QString &info);
 
         std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
-        std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
         void computeAssetListSellValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;
 

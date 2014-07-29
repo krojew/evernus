@@ -156,7 +156,7 @@ namespace Evernus
 
     std::shared_ptr<ExternalOrder> EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId) const
     {
-        return getTypeBuyPrice(id, stationId, true);
+        return std::make_shared<ExternalOrder>();
     }
 
     QString EvernusApplication::getLocationName(quint64 id) const
@@ -1306,19 +1306,6 @@ namespace Evernus
         }
 
         mSellPrices.emplace(key, result);
-        return result;
-    }
-
-    std::shared_ptr<ExternalOrder> EvernusApplication::getTypeBuyPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
-    {
-        const auto key = std::make_pair(id, stationId);
-        const auto it = mBuyPrices.find(key);
-        if (it != std::end(mBuyPrices))
-            return it->second;
-
-        std::shared_ptr<ExternalOrder> result;
-
-        mBuyPrices.emplace(key, result);
         return result;
     }
 
