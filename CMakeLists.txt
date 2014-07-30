@@ -53,16 +53,20 @@ qt5_wrap_cpp(
     GeneralPreferencesWidget.h
     ImportPreferencesWidget.h
     ItemCostEditDialog.h
+    ItemCostModel.h
     ItemCostWidget.h
     KeyEditDialog.h
     MainWindow.h
     MarginToolDialog.h
     MarketLogExternalOrderImporter.h
     MarketLogExternalOrderImporterThread.h
+    MarketOrderArchiveModel.h
+    MarketOrderBuyModel.h
     MarketOrderFilterProxyModel.h
     MarketOrderFilterWidget.h
     MarketOrderInfoWidget.h
     MarketOrderPriceStatusesWidget.h
+    MarketOrderSellModel.h
     MarketOrderStatesWidget.h
     MarketOrderView.h
     MarketOrderViewWithTransactions.h

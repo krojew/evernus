@@ -29,6 +29,8 @@ namespace Evernus
     class ItemCostModel
         : public QAbstractTableModel
     {
+        Q_OBJECT
+
     public:
         ItemCostModel(const ItemCostRepository &itemRepo,
                       const EveDataProvider &dataProvider,

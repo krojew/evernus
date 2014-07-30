@@ -24,6 +24,8 @@ namespace Evernus
     class MarketOrderBuyModel
         : public MarketOrderTreeModel
     {
+        Q_OBJECT
+
     public:
         MarketOrderBuyModel(const MarketOrderProvider &orderProvider,
                             const EveDataProvider &dataProvider,
