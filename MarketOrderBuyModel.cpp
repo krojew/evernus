@@ -74,7 +74,7 @@ namespace Evernus
             {
                 const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getLocationId());
                 if (price->isNew())
-                    return tr("No price data-> Please import prices from Assets tab or by using Margin tool.");
+                    return tr("No price data -> Please import prices from Orders/Assets tab or by using Margin tool.");
 
                 QLocale locale;
 
@@ -89,7 +89,7 @@ namespace Evernus
                 const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
                 if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                 {
-                    return tr("Price data is too old (valid on %1).\nPlease import prices from Assets tab or by using Margin tool.")
+                    return tr("Price data is too old (valid on %1).\nPlease import prices from Orders/Assets tab or by using Margin tool.")
                         .arg(locale.toString(price->getUpdateTime().toLocalTime()));
                 }
 

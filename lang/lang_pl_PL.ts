@@ -6,7 +6,7 @@
     <message>
         <location filename="../APIXmlReceiver.cpp" line="105"/>
         <source>Couldn&apos;t convert %1 to %2!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można skonwertować %1 w %2!</translation>
     </message>
 </context>
 <context>
@@ -14,17 +14,17 @@
     <message>
         <location filename="../DatabaseUtils.cpp" line="35"/>
         <source>Error crating DB object!</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd tworzenia obiektu bazy danych!</translation>
     </message>
     <message>
         <location filename="../DatabaseUtils.cpp" line="44"/>
         <source>Error creating DB path!</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd tworzenia katalogu bazy danych!</translation>
     </message>
     <message>
         <location filename="../DatabaseUtils.cpp" line="48"/>
         <source>Error opening DB!</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd przy otwieraniu bazy danych!</translation>
     </message>
 </context>
 <context>
@@ -34,7 +34,9 @@
         <source>Encountered SSL errors:
 
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpiły błędy SSL:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -42,12 +44,12 @@
     <message>
         <location filename="../APIManager.cpp" line="375"/>
         <source>Invalid XML document received!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowy dokument XML!</translation>
     </message>
     <message>
         <location filename="../APIManager.cpp" line="398"/>
         <source>No XML document received!</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak dokumentu XML!</translation>
     </message>
 </context>
 <context>
@@ -55,7 +57,7 @@
     <message>
         <location filename="../APIResponseCache.cpp" line="52"/>
         <source>Cannot create cache path.</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd tworzenia katalogu cache.</translation>
     </message>
 </context>
 <context>
@@ -63,7 +65,7 @@
     <message>
         <location filename="../AboutDialog.cpp" line="52"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>O programie</translation>
     </message>
 </context>
 <context>
@@ -71,17 +73,17 @@
     <message>
         <location filename="../ActiveTasksDialog.cpp" line="63"/>
         <source>Please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../ActiveTasksDialog.cpp" line="75"/>
         <source>Close automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Zamknij automatycznie</translation>
     </message>
     <message>
         <location filename="../ActiveTasksDialog.cpp" line="94"/>
         <source>Active Tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywne zadania</translation>
     </message>
 </context>
 <context>
@@ -89,37 +91,37 @@
     <message>
         <location filename="../AssetModel.cpp" line="121"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
     <message>
         <location filename="../AssetModel.cpp" line="122"/>
         <source>Quantity</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość</translation>
     </message>
     <message>
         <location filename="../AssetModel.cpp" line="123"/>
         <source>Unit volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Objętość jednostkowa</translation>
     </message>
     <message>
         <location filename="../AssetModel.cpp" line="124"/>
         <source>Total volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Całkowita objętość</translation>
     </message>
     <message>
         <location filename="../AssetModel.cpp" line="125"/>
         <source>Local unit sell price</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokalna jednostkowa cena kupna</translation>
     </message>
     <message>
         <location filename="../AssetModel.cpp" line="126"/>
         <source>Local total sell price</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokalna całkowita cena kupna</translation>
     </message>
     <message>
         <location filename="../AssetModel.cpp" line="194"/>
         <source>Price update time: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Czas akutalizacji ceny: %1</translation>
     </message>
 </context>
 <context>
@@ -127,22 +129,22 @@
     <message>
         <location filename="../AssetsImportPreferencesWidget.cpp" line="35"/>
         <source>Assets import</source>
-        <translation type="unfinished"></translation>
+        <translation>Importowanie aktywów</translation>
     </message>
     <message>
         <location filename="../AssetsImportPreferencesWidget.cpp" line="41"/>
         <source>Import assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj aktywa</translation>
     </message>
     <message>
         <location filename="../AssetsImportPreferencesWidget.cpp" line="45"/>
         <source>Store total asset value on import/price import*</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisz całkowitą wartość aktywów przy imporcie/imporcie cen</translation>
     </message>
     <message>
         <location filename="../AssetsImportPreferencesWidget.cpp" line="49"/>
-        <source>* Requires full price data to be present. If you don&apos;t see stored value, try importing prices.</source>
-        <translation type="unfinished"></translation>
+        <source>* Requires full price data to be present. If there is no stored value, try importing prices.</source>
+        <translation>* Wymaga danych o wszystkich cenach. Jeśli wartość nie została zapisana, należy zaimportować ceny ręcznie.</translation>
     </message>
 </context>
 <context>
@@ -150,12 +152,12 @@
     <message>
         <location filename="../AssetsWidget.cpp" line="58"/>
         <source>Import prices from Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj ceny z sieci</translation>
     </message>
     <message>
         <location filename="../AssetsWidget.cpp" line="63"/>
         <source>Import prices from logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj ceny z logów</translation>
     </message>
 </context>
 <context>
@@ -163,17 +165,17 @@
     <message>
         <location filename="../CharacterBoundWidget.cpp" line="34"/>
         <source>API import</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj z API</translation>
     </message>
     <message>
         <location filename="../CharacterBoundWidget.cpp" line="90"/>
         <source>&lt;strong&gt;Warning!&lt;/strong&gt; No data has been imported.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;Uwaga!&lt;/strong&gt; Dane nie zostały zaimportowane.</translation>
     </message>
     <message>
         <location filename="../CharacterBoundWidget.cpp" line="94"/>
         <source>&lt;strong&gt;Warning!&lt;/strong&gt; This data is %1 old and may need an update.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;Uwaga!&lt;/strong&gt; Dane są stare (%1) i wymagają zakutalizacji.</translation>
     </message>
 </context>
 <context>
@@ -181,17 +183,17 @@
     <message>
         <location filename="../CharacterImportPreferencesWidget.cpp" line="34"/>
         <source>Character import</source>
-        <translation type="unfinished"></translation>
+        <translation>Importowanie postaci</translation>
     </message>
     <message>
         <location filename="../CharacterImportPreferencesWidget.cpp" line="40"/>
         <source>Import skills</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj umiejętności</translation>
     </message>
     <message>
         <location filename="../CharacterImportPreferencesWidget.cpp" line="44"/>
         <source>Import portrait</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj zdjęcie</translation>
     </message>
 </context>
 <context>
@@ -199,58 +201,58 @@
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="50"/>
         <source>Characters</source>
-        <translation type="unfinished"></translation>
+        <translation>Postacie</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="51"/>
         <source>Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucze</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="60"/>
         <source>Character Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Zarządzanie postaciami</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="123"/>
         <source>Key ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Key ID</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="124"/>
         <source>Verification code</source>
-        <translation type="unfinished"></translation>
+        <translation>Verification code</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="149"/>
         <source>Added keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodane klucze</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="164"/>
         <source>Add...</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj...</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="168"/>
         <source>Edit...</source>
-        <translation type="unfinished"></translation>
+        <translation>Edytuj...</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="173"/>
         <location filename="../CharacterManagerDialog.cpp" line="212"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="188"/>
         <source>Available characters</source>
-        <translation type="unfinished"></translation>
+        <translation>Dostępne postacie</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="208"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Odśwież</translation>
     </message>
 </context>
 <context>
@@ -258,17 +260,17 @@
     <message>
         <location filename="../CharacterModel.cpp" line="43"/>
         <source>Id</source>
-        <translation type="unfinished"></translation>
+        <translation>Identyfikator</translation>
     </message>
     <message>
         <location filename="../CharacterModel.cpp" line="45"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Imię</translation>
     </message>
     <message>
         <location filename="../CharacterModel.cpp" line="47"/>
         <source>Key id</source>
-        <translation type="unfinished"></translation>
+        <translation>Key ID</translation>
     </message>
 </context>
 <context>
@@ -276,192 +278,192 @@
     <message>
         <location filename="../CharacterWidget.cpp" line="79"/>
         <source>Character info</source>
-        <translation type="unfinished"></translation>
+        <translation>Informacje</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="85"/>
         <source>Download portrait</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobierze zdjęcie</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="115"/>
         <source>Data age</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiek danych</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="126"/>
         <source>Import all</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj wszystko</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="133"/>
         <source>Orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="139"/>
         <source>Buy orders:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia kupna:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="147"/>
         <source>Sell orders:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia sprzedaży:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="155"/>
         <source>Total:</source>
-        <translation type="unfinished"></translation>
+        <translation>Suma:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="163"/>
         <source>Station owner standings</source>
-        <translation type="unfinished"></translation>
+        <translation>Reputacja u właściciela stacji</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="170"/>
         <source>Corporation standing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Reputacja u korporacji:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="175"/>
         <source>Faction standing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Reputacja u frakcji:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="179"/>
         <source>Trade skills</source>
-        <translation type="unfinished"></translation>
+        <translation>Umiejętności handlu</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="185"/>
         <source>Order amount skills</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość zleceń</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="191"/>
         <source>Trade:</source>
-        <translation type="unfinished"></translation>
+        <translation>Trade:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="192"/>
         <source>Retail:</source>
-        <translation type="unfinished"></translation>
+        <translation>Retail:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="193"/>
         <source>Wholesale:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wholesale:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="194"/>
         <source>Tycoon:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tycoon:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="196"/>
         <source>Trade range skills</source>
-        <translation type="unfinished"></translation>
+        <translation>Zasięg</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="202"/>
         <source>Marketing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Marketing:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="203"/>
         <source>Procurement:</source>
-        <translation type="unfinished"></translation>
+        <translation>Procurement:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="204"/>
         <source>Daytrading:</source>
-        <translation type="unfinished"></translation>
+        <translation>Daytrading:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="205"/>
         <source>Visibility:</source>
-        <translation type="unfinished"></translation>
+        <translation>Visibility:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="207"/>
         <source>Fee skills</source>
-        <translation type="unfinished"></translation>
+        <translation>Podatki</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="213"/>
         <source>Accounting:</source>
-        <translation type="unfinished"></translation>
+        <translation>Accounting:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="214"/>
         <source>Broker relations:</source>
-        <translation type="unfinished"></translation>
+        <translation>Broker relations:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="215"/>
         <source>Margin trading:</source>
-        <translation type="unfinished"></translation>
+        <translation>Margin trading:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="217"/>
         <source>Contracting skills</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrakty</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="223"/>
         <source>Contracting:</source>
-        <translation type="unfinished"></translation>
+        <translation>Contracting:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="224"/>
         <source>Corporation contracting:</source>
-        <translation type="unfinished"></translation>
+        <translation>Corporation contracting:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="268"/>
         <source>Character sheet: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Karta postaci: %1</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="269"/>
         <source>Asset list: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywa: %1</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="270"/>
         <source>Market orders: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia: %1</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="271"/>
         <source>Wallet journal: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Dziennik: %1</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="272"/>
         <source>Wallet transactions: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Transakcje: %1</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="422"/>
         <source>Character error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd postaci</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="422"/>
         <source>Character not found in DB. Refresh characters.</source>
-        <translation type="unfinished"></translation>
+        <translation>Postać nie została znaleziona w bazie danych. Odśwież postacie.</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="500"/>
         <source>&lt;strong&gt;%1 of %2&lt;/strong&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;%1 z %2&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="506"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>
 </context>
 <context>
@@ -469,37 +471,37 @@
     <message>
         <location filename="../DateFilteredPlotWidget.cpp" line="40"/>
         <source>From:</source>
-        <translation type="unfinished"></translation>
+        <translation>Od:</translation>
     </message>
     <message>
         <location filename="../DateFilteredPlotWidget.cpp" line="47"/>
         <source>To:</source>
-        <translation type="unfinished"></translation>
+        <translation>Do:</translation>
     </message>
     <message>
         <location filename="../DateFilteredPlotWidget.cpp" line="54"/>
         <source>Show time labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż etykiety czasu</translation>
     </message>
     <message>
         <location filename="../DateFilteredPlotWidget.cpp" line="59"/>
         <source>Save...</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisz...</translation>
     </message>
     <message>
         <location filename="../DateFilteredPlotWidget.cpp" line="105"/>
         <source>Save plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisz wykres</translation>
     </message>
     <message>
         <location filename="../DateFilteredPlotWidget.cpp" line="110"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <location filename="../DateFilteredPlotWidget.cpp" line="110"/>
         <source>Error saving image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd zapisu obrazka.</translation>
     </message>
 </context>
 <context>
@@ -507,12 +509,12 @@
     <message>
         <location filename="../DateRangeWidget.cpp" line="30"/>
         <source>From:</source>
-        <translation type="unfinished"></translation>
+        <translation>Od:</translation>
     </message>
     <message>
         <location filename="../DateRangeWidget.cpp" line="37"/>
         <source>To:</source>
-        <translation type="unfinished"></translation>
+        <translation>Do:</translation>
     </message>
 </context>
 <context>
@@ -521,79 +523,79 @@
         <location filename="../EvernusApplication.cpp" line="54"/>
         <location filename="../EvernusApplication.cpp" line="75"/>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ładowanie...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="56"/>
         <source>Creating databases...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tworzenie baz danych...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="59"/>
         <source>Creating schemas...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tworzenie modelu danych...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="62"/>
         <source>Precaching ref types...</source>
-        <translation type="unfinished"></translation>
+        <translation>Odczyt typów...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="65"/>
         <source>Precaching timers...</source>
-        <translation type="unfinished"></translation>
+        <translation>Odczyt czasów...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="69"/>
         <source>Precaching jump map...</source>
-        <translation type="unfinished"></translation>
+        <translation>Odczyt mapy skoków...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="72"/>
         <source>Clearing old wallet entries...</source>
-        <translation type="unfinished"></translation>
+        <translation>Czyszczenie starych wpisów portfela...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="405"/>
         <location filename="../EvernusApplication.cpp" line="433"/>
         <source>Unknown cache timer type: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieznany typ czasu cache: %1</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="478"/>
         <source>Unknown update timer type: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieznany typ czasu aktualizacji: %1</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="595"/>
         <source>Fetching characters...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie postaci...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="608"/>
         <source>Fetching characters for key %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie postaci dla klucza %1...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="621"/>
         <location filename="../EvernusApplication.cpp" line="627"/>
         <source>Evernus</source>
-        <translation type="unfinished"></translation>
+        <translation>Evernus</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="621"/>
         <source>An error occurred while updating character key information: %1. Data sync should work, but character tab will display incorrect information.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpił błąd aktualizacji informacji o kluczu postaci: %1 Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="627"/>
         <source>An error occurred while updating character key information. Data sync should work, but character tab will display incorrect information.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpił błąd aktualizacji informacji o kluczu postaci Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="671"/>
         <source>Fetching assets for character %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie aktywów dla postaci: %1...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="703"/>
@@ -601,7 +603,7 @@
         <location filename="../EvernusApplication.cpp" line="802"/>
         <location filename="../EvernusApplication.cpp" line="832"/>
         <source>Key not found!</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucz nie znaleziony!</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="707"/>
@@ -609,63 +611,63 @@
         <location filename="../EvernusApplication.cpp" line="806"/>
         <location filename="../EvernusApplication.cpp" line="836"/>
         <source>Character not found!</source>
-        <translation type="unfinished"></translation>
+        <translation>Postać nie znaleziona!</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="715"/>
         <source>Fetching wallet journal for character %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie dziennika dla postaci %1...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="724"/>
         <source>Fetching wallet journal for character %1 (this may take a while)...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie dziennika dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="776"/>
         <source>Fetching wallet transactions for character %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie transakcji dla postaci %1...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="785"/>
         <source>Fetching wallet transactions for character %1 (this may take a while)...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie transakcji dla postaci %1 (może zajać sporo czasu)...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="814"/>
         <location filename="../EvernusApplication.cpp" line="844"/>
         <source>Fetching market orders for character %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie zleceń dla postaci %1...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="850"/>
         <source>Cannot determine market logs path!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="858"/>
         <source>No market logs found!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="869"/>
         <source>Could not open market log file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="942"/>
         <source>Fetching conquerable stations...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie stacji graczy...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="1236"/>
         <source>Fetching character %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="1299"/>
         <source>Importing item prices...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importowanie cen...</translation>
     </message>
 </context>
 <context>
@@ -673,7 +675,7 @@
     <message>
         <location filename="../FileDownload.cpp" line="33"/>
         <source>Error creating file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd tworzenia pliku: %1</translation>
     </message>
 </context>
 <context>
@@ -681,17 +683,17 @@
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="45"/>
         <source>Language:</source>
-        <translation type="unfinished"></translation>
+        <translation>Język:</translation>
     </message>
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="52"/>
         <source>Language changes require application restart.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmiany jęzka wymagają ponownego uruchomienia aplikacji.</translation>
     </message>
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="62"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimalizuj do zasobnika systemowego</translation>
     </message>
 </context>
 <context>
@@ -699,32 +701,32 @@
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="35"/>
         <source>Data age</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiek danych</translation>
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="42"/>
         <source>Max. character update age:</source>
-        <translation type="unfinished"></translation>
+        <translation>Maks. czas aktualizacji postaci:</translation>
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="45"/>
         <source>Max. asset list update age:</source>
-        <translation type="unfinished"></translation>
+        <translation>Maks. czas aktualizacji aktywów:</translation>
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="48"/>
         <source>Max. wallet update age:</source>
-        <translation type="unfinished"></translation>
+        <translation>Maks. czas akutalizacji portfela:</translation>
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="51"/>
         <source>Max. market orders update age:</source>
-        <translation type="unfinished"></translation>
+        <translation>Maks. czas aktualizacji zleceń:</translation>
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="69"/>
         <source>min</source>
-        <translation type="unfinished"></translation>
+        <translation>min</translation>
     </message>
 </context>
 <context>
@@ -732,12 +734,12 @@
     <message>
         <location filename="../ItemCostEditDialog.cpp" line="56"/>
         <source>Cost:</source>
-        <translation type="unfinished"></translation>
+        <translation>Koszt:</translation>
     </message>
     <message>
         <location filename="../ItemCostEditDialog.cpp" line="71"/>
         <source>Item Cost Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Edycja kosztu</translation>
     </message>
 </context>
 <context>
@@ -745,12 +747,12 @@
     <message>
         <location filename="../ItemCostModel.cpp" line="38"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../ItemCostModel.cpp" line="40"/>
         <source>Cost</source>
-        <translation type="unfinished"></translation>
+        <translation>Koszt</translation>
     </message>
 </context>
 <context>
@@ -758,22 +760,22 @@
     <message>
         <location filename="../ItemCostWidget.cpp" line="43"/>
         <source>Add...</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj...</translation>
     </message>
     <message>
         <location filename="../ItemCostWidget.cpp" line="48"/>
         <source>Edit...</source>
-        <translation type="unfinished"></translation>
+        <translation>Edytuj...</translation>
     </message>
     <message>
         <location filename="../ItemCostWidget.cpp" line="54"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <location filename="../ItemCostWidget.cpp" line="62"/>
         <source>type in wildcard and press Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>wpisz wzór i naciśnij Enter</translation>
     </message>
 </context>
 <context>
@@ -781,22 +783,22 @@
     <message>
         <location filename="../KeyEditDialog.cpp" line="44"/>
         <source>Key ID:</source>
-        <translation type="unfinished"></translation>
+        <translation>Key ID:</translation>
     </message>
     <message>
         <location filename="../KeyEditDialog.cpp" line="48"/>
         <source>Verification Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>Verification Code:</translation>
     </message>
     <message>
         <location filename="../KeyEditDialog.cpp" line="50"/>
         <source>To create a predefined key, use the following link:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aby otworzyć klucz z predefiniowanymi uprawnieniami, kliknij w poniższy link:</translation>
     </message>
     <message>
         <location filename="../KeyEditDialog.cpp" line="61"/>
         <source>Key Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Edycja klucza</translation>
     </message>
 </context>
 <context>
@@ -804,92 +806,92 @@
     <message>
         <location filename="../MainWindow.cpp" line="157"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="196"/>
         <source>Wallet: &lt;strong&gt;%1&lt;/strong&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Portfel: &lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="331"/>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Plik</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="332"/>
         <source>&amp;Manage characters...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zarządzaj postaciami...</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="333"/>
         <source>&amp;Preferences...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ustawienia...</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="335"/>
         <source>E&amp;xit</source>
-        <translation type="unfinished"></translation>
+        <translation>Za&amp;kończ</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="337"/>
         <source>&amp;Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Narzędzia</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="338"/>
         <source>Import conquerable stations</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj stacje graczy</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="339"/>
         <source>Ma&amp;rgin tool...</source>
-        <translation type="unfinished"></translation>
+        <translation>Narzędzie &amp;marży...</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="341"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Pomo&amp;c</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="342"/>
         <source>&amp;About...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;O programie...</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="358"/>
         <source>Character</source>
-        <translation type="unfinished"></translation>
+        <translation>Postać</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="373"/>
         <source>Statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Statystyki</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="381"/>
         <source>Assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywa</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="397"/>
         <source>Orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="407"/>
         <source>Journal</source>
-        <translation type="unfinished"></translation>
+        <translation>Dziennik</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="413"/>
         <source>Transactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Transakcje</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="418"/>
         <source>Item costs</source>
-        <translation type="unfinished"></translation>
+        <translation>Koszty</translation>
     </message>
 </context>
 <context>
@@ -897,128 +899,128 @@
     <message>
         <location filename="../MarginToolDialog.cpp" line="85"/>
         <source>export market logs in game</source>
-        <translation type="unfinished"></translation>
+        <translation>wyeksportuj logi z gry</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="95"/>
         <source>Sell:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sprzedaż:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="96"/>
         <source>Buy:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kupno:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="97"/>
         <source>Profit:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zysk:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="98"/>
         <source>Revenue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dochód:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="99"/>
         <source>Cost of sales:</source>
-        <translation type="unfinished"></translation>
+        <translation>Koszt sprzedaży:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="123"/>
         <source>Buy orders:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia kupna:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="128"/>
         <source>Sell orders:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia sprzedaży:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="133"/>
         <source>Buy volume/movement:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wolumen kupna:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="138"/>
         <source>Sell volume/movement:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wolumen sprzedaży:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="152"/>
         <source>Margin:</source>
-        <translation type="unfinished"></translation>
+        <translation>Marża:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="158"/>
         <source>Markup:</source>
-        <translation type="unfinished"></translation>
+        <translation>Narzut:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="163"/>
         <source>Autocopy</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto. kopiowanie</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="172"/>
         <source>Nothing</source>
-        <translation type="unfinished"></translation>
+        <translation>Nic</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="177"/>
         <source>Sell price</source>
-        <translation type="unfinished"></translation>
+        <translation>Cena sprzedaży</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="182"/>
         <source>Buy price</source>
-        <translation type="unfinished"></translation>
+        <translation>Cena kupna</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="197"/>
         <source>Broker fee:</source>
-        <translation type="unfinished"></translation>
+        <translation>Broker fee:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="202"/>
         <source>Sales tax:</source>
-        <translation type="unfinished"></translation>
+        <translation>Podatek od sprzedaży:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="207"/>
         <source>Sample data</source>
-        <translation type="unfinished"></translation>
+        <translation>Przykładowe dane</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="219"/>
         <source>Always on top</source>
-        <translation type="unfinished"></translation>
+        <translation>Zawsze na wierzchu</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="226"/>
         <source>Quit application</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyjdź z aplikacji</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="238"/>
         <location filename="../MarginToolDialog.cpp" line="244"/>
         <source>Margin tool error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd narzędzia</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="239"/>
         <source>Could not determine market log path. Please enter log path in settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się znaleźć ścieżki logów handlu. Wpisz ścieżkę ręcznie w ustawieniach.</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="245"/>
         <source>Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się rozpocząć obserwacji katalogu z logami. Upewnij się, że katalog istnieje (np. wyeksportuj logi) i spróbuj ponownie.</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="254"/>
         <source>Margin tool</source>
-        <translation type="unfinished"></translation>
+        <translation>Narzędzie marży</translation>
     </message>
 </context>
 <context>
@@ -1026,7 +1028,7 @@
     <message>
         <location filename="../MarketLogExternalOrderImporterThread.cpp" line="33"/>
         <source>Could not determine market log path!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
 </context>
 <context>
@@ -1034,193 +1036,195 @@
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="106"/>
         <source>Buy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kupno</translation>
     </message>
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="106"/>
         <source>Sell</source>
-        <translation type="unfinished"></translation>
+        <translation>Sprzedaż</translation>
     </message>
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="116"/>
         <source>Expired</source>
-        <translation type="unfinished"></translation>
+        <translation>Wygasła</translation>
     </message>
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="190"/>
         <source>Completed</source>
-        <translation type="unfinished"></translation>
+        <translation>Zakończony</translation>
     </message>
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="192"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="194"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="196"/>
         <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Grupa</translation>
     </message>
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="198"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Stan</translation>
     </message>
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="200"/>
         <source>Custom cost</source>
-        <translation type="unfinished"></translation>
+        <translation>Koszt własny</translation>
     </message>
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="202"/>
         <source>Price</source>
-        <translation type="unfinished"></translation>
+        <translation>Cena</translation>
     </message>
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="204"/>
         <source>Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Wolumen</translation>
     </message>
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="206"/>
         <source>Profit</source>
-        <translation type="unfinished"></translation>
+        <translation>Zysk</translation>
     </message>
     <message>
         <location filename="../MarketOrderArchiveModel.cpp" line="208"/>
         <source>Station</source>
-        <translation type="unfinished"></translation>
+        <translation>Stacja</translation>
     </message>
 </context>
 <context>
     <name>Evernus::MarketOrderBuyModel</name>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="77"/>
-        <source>No price data-&gt; Please import prices from Assets tab or by using Margin tool.</source>
-        <translation type="unfinished"></translation>
+        <source>No price data -&gt; Please import prices from Orders/Assets tab or by using Margin tool.</source>
+        <translation>Brak danych o cenach -&gt; Zaimporuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży.</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="83"/>
         <source>You have been overbid. Current price is %1 (%2 different from yours).
 Click the icon for details.</source>
-        <translation type="unfinished"></translation>
+        <translation>Twoja cena została przebita. Aktualna cena to %1 (różnica: %2).
+Kliknij na ikonę, aby zobaczyć więcej.</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="92"/>
         <source>Price data is too old (valid on %1).
-Please import prices from Assets tab or by using Margin tool.</source>
-        <translation type="unfinished"></translation>
+Please import prices from Orders/Assets tab or by using Margin tool.</source>
+        <translation>Dane o cenie są za stare (akutalizacja: %1).
+Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży.</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="96"/>
         <source>Your price was best on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Twoja cena była najlepsza: %1</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="196"/>
         <source>Expired</source>
-        <translation type="unfinished"></translation>
+        <translation>Wygasłe</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="208"/>
         <source>No price data</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak danych o cenie</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="213"/>
         <source>Data too old</source>
-        <translation type="unfinished"></translation>
+        <translation>Dane za stare</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="229"/>
         <location filename="../MarketOrderBuyModel.cpp" line="364"/>
         <source>Station</source>
-        <translation type="unfinished"></translation>
+        <translation>Stacja</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="231"/>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>System</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="233"/>
         <source>Region</source>
-        <translation type="unfinished"></translation>
+        <translation>Region</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="235"/>
         <source>%1 jumps</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 skoków</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="338"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="340"/>
         <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Grupa</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="342"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Stan</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="344"/>
         <source>Price</source>
-        <translation type="unfinished"></translation>
+        <translation>Cena</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="346"/>
         <source>Price status</source>
-        <translation type="unfinished"></translation>
+        <translation>Stan ceny</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="348"/>
         <source>Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Wolumen</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="350"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Suma</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="352"/>
         <source>Delta</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmiana</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="354"/>
         <source>Range</source>
-        <translation type="unfinished"></translation>
+        <translation>Zasięg</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="356"/>
         <source>Min. quantity</source>
-        <translation type="unfinished"></translation>
+        <translation>Min. ilość</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="358"/>
         <source>Time left</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozostały czas</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="360"/>
         <source>Order age</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiek zlecenia</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="362"/>
         <source>First issued</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystawiono</translation>
     </message>
 </context>
 <context>
@@ -1228,72 +1232,72 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="91"/>
         <source>Ch</source>
-        <translation type="unfinished"></translation>
+        <translation>Zm</translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="93"/>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>Ak</translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="95"/>
         <source>F</source>
-        <translation type="unfinished"></translation>
+        <translation>Z</translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="97"/>
         <source>C</source>
-        <translation type="unfinished"></translation>
+        <translation>An</translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="99"/>
         <source>P</source>
-        <translation type="unfinished"></translation>
+        <translation>O</translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="101"/>
         <source>D</source>
-        <translation type="unfinished"></translation>
+        <translation>U</translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="103"/>
         <source>E</source>
-        <translation type="unfinished"></translation>
+        <translation>W</translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="105"/>
         <source>Status filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtr stanu</translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="105"/>
         <source>Status filter [%1]  </source>
-        <translation type="unfinished"></translation>
+        <translation>Filtr stanu [%1]  </translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="112"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="114"/>
         <source>N</source>
-        <translation type="unfinished"></translation>
+        <translation>B</translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="116"/>
         <source>O</source>
-        <translation type="unfinished"></translation>
+        <translation>S</translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="118"/>
         <source>Price status filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtr stanu ceny</translation>
     </message>
     <message>
         <location filename="../MarketOrderFilterWidget.cpp" line="118"/>
         <source>Price status filter [%1]  </source>
-        <translation type="unfinished"></translation>
+        <translation>Filtr stanu ceny [%1]  </translation>
     </message>
 </context>
 <context>
@@ -1301,53 +1305,53 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../MarketOrderInfoWidget.cpp" line="43"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Zamknij</translation>
     </message>
     <message>
         <location filename="../MarketOrderInfoWidget.cpp" line="48"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Skopiuj</translation>
     </message>
     <message>
         <location filename="../MarketOrderInfoWidget.cpp" line="57"/>
         <source>Copy new price on open</source>
-        <translation type="unfinished"></translation>
+        <translation>Skopiuj przy otwarciu</translation>
     </message>
     <message>
         <location filename="../MarketOrderInfoWidget.cpp" line="69"/>
         <source>&lt;span style=&apos;color: blue&apos;&gt;Your price:&lt;/span&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;span style=&apos;color: blue&apos;&gt;Twoja cena:&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../MarketOrderInfoWidget.cpp" line="70"/>
         <source>&lt;span style=&apos;color: blue&apos;&gt;%1&lt;/span&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;span style=&apos;color: blue&apos;&gt;%1&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../MarketOrderInfoWidget.cpp" line="72"/>
         <location filename="../MarketOrderInfoWidget.cpp" line="78"/>
         <source>Valid on:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ważne:</translation>
     </message>
     <message>
         <location filename="../MarketOrderInfoWidget.cpp" line="75"/>
         <source>&lt;span style=&apos;color: red&apos;&gt;Market price:&lt;/span&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;span style=&apos;color: red&apos;&gt;Cena na rynku:&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../MarketOrderInfoWidget.cpp" line="76"/>
         <source>&lt;span style=&apos;color: red&apos;&gt;%1&lt;/span&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;span style=&apos;color: red&apos;&gt;%1&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../MarketOrderInfoWidget.cpp" line="81"/>
         <source>Difference:</source>
-        <translation type="unfinished"></translation>
+        <translation>Różnica:</translation>
     </message>
     <message>
         <location filename="../MarketOrderInfoWidget.cpp" line="83"/>
         <source>New price:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nowa cena:</translation>
     </message>
 </context>
 <context>
@@ -1355,142 +1359,144 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../MarketOrderPriceStatusesWidget.cpp" line="38"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="../MarketOrderPriceStatusesWidget.cpp" line="39"/>
         <source>No data</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak danych</translation>
     </message>
     <message>
         <location filename="../MarketOrderPriceStatusesWidget.cpp" line="40"/>
         <source>Data too old</source>
-        <translation type="unfinished"></translation>
+        <translation>Dane za stare</translation>
     </message>
     <message>
         <location filename="../MarketOrderPriceStatusesWidget.cpp" line="42"/>
         <source>Check all</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaznacz wszystko</translation>
     </message>
 </context>
 <context>
     <name>Evernus::MarketOrderSellModel</name>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="79"/>
-        <source>No price data-&gt; Please import prices from Assets tab or by using Margin tool.</source>
-        <translation type="unfinished"></translation>
+        <source>No price data -&gt; Please import prices from Orders/Assets tab or by using Margin tool.</source>
+        <translation>Brak danych o cenach -&gt; Zaimporuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży.</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="85"/>
         <source>You have been undercut. Current price is %1 (%2 different from yours).
 Click the icon for details.</source>
-        <translation type="unfinished"></translation>
+        <translation>Twoja cena została podcięta. Aktualna cena to %1 (różnica: %2).
+Kliknij na ikonę, aby zobaczyć więcej.</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="94"/>
         <source>Price data is too old (valid on %1).
-Please import prices from Assets tab or by using Margin tool.</source>
-        <translation type="unfinished"></translation>
+Please import prices from Orders/Assets tab or by using Margin tool.</source>
+        <translation>Dane o cenie są za stare (akutalizacja: %1).
+Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży.</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="98"/>
         <source>Your price was best on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Twoja cena była najlepsza: %1</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="211"/>
         <source>Expired</source>
-        <translation type="unfinished"></translation>
+        <translation>Wygasłe</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="230"/>
         <source>No price data</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak danych o cenie</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="235"/>
         <source>Data too old</source>
-        <translation type="unfinished"></translation>
+        <translation>Dane za stare</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="363"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="365"/>
         <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Grupa</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="367"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Stan</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="369"/>
         <source>Custom cost</source>
-        <translation type="unfinished"></translation>
+        <translation>Koszt własny</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="371"/>
         <source>Price</source>
-        <translation type="unfinished"></translation>
+        <translation>Cena</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="373"/>
         <source>Price status</source>
-        <translation type="unfinished"></translation>
+        <translation>Stan ceny</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="375"/>
         <source>Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Wolumen</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="377"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Suma</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="379"/>
         <source>Delta</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmiana</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="381"/>
         <source>Profit</source>
-        <translation type="unfinished"></translation>
+        <translation>Zysk</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="383"/>
         <source>Total profit</source>
-        <translation type="unfinished"></translation>
+        <translation>Całkowity zysk</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="385"/>
         <source>Profit per item</source>
-        <translation type="unfinished"></translation>
+        <translation>Zysk jednostkowy</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="387"/>
         <source>Time left</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozostały czas</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="389"/>
         <source>Order age</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiek zlecenia</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="391"/>
         <source>First issued</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystawiono</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="393"/>
         <source>Station</source>
-        <translation type="unfinished"></translation>
+        <translation>Stacja</translation>
     </message>
 </context>
 <context>
@@ -1498,47 +1504,47 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../MarketOrderStatesWidget.cpp" line="42"/>
         <source>Changed</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmienione</translation>
     </message>
     <message>
         <location filename="../MarketOrderStatesWidget.cpp" line="46"/>
         <source>Active</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywne</translation>
     </message>
     <message>
         <location filename="../MarketOrderStatesWidget.cpp" line="47"/>
         <source>Fulfilled</source>
-        <translation type="unfinished"></translation>
+        <translation>Zakończone</translation>
     </message>
     <message>
         <location filename="../MarketOrderStatesWidget.cpp" line="48"/>
         <source>Cancelled</source>
-        <translation type="unfinished"></translation>
+        <translation>Anulowane</translation>
     </message>
     <message>
         <location filename="../MarketOrderStatesWidget.cpp" line="49"/>
         <source>Pending</source>
-        <translation type="unfinished"></translation>
+        <translation>Oczekujące</translation>
     </message>
     <message>
         <location filename="../MarketOrderStatesWidget.cpp" line="50"/>
         <source>Deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Usunięte</translation>
     </message>
     <message>
         <location filename="../MarketOrderStatesWidget.cpp" line="51"/>
         <source>Expired</source>
-        <translation type="unfinished"></translation>
+        <translation>Wygasłe</translation>
     </message>
     <message>
         <location filename="../MarketOrderStatesWidget.cpp" line="53"/>
         <source>Check all</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaznacz wszystko</translation>
     </message>
     <message>
         <location filename="../MarketOrderStatesWidget.cpp" line="57"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Resetuj</translation>
     </message>
 </context>
 <context>
@@ -1546,22 +1552,22 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../MarketOrderView.cpp" line="59"/>
         <source>Active orders:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywne zlecenia:</translation>
     </message>
     <message>
         <location filename="../MarketOrderView.cpp" line="65"/>
         <source>Total volume:</source>
-        <translation type="unfinished"></translation>
+        <translation>Całkowity wolumen:</translation>
     </message>
     <message>
         <location filename="../MarketOrderView.cpp" line="71"/>
         <source>Total ISK in orders:</source>
-        <translation type="unfinished"></translation>
+        <translation>Całkowita inwestycja:</translation>
     </message>
     <message>
         <location filename="../MarketOrderView.cpp" line="77"/>
         <source>Total size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Całkowita objętość:</translation>
     </message>
 </context>
 <context>
@@ -1569,7 +1575,7 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../MarketOrderViewWithTransactions.cpp" line="42"/>
         <source>Transactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Transakcje</translation>
     </message>
 </context>
 <context>
@@ -1577,72 +1583,72 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="65"/>
         <source>File import</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj z pliku</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="73"/>
         <source>Import prices from Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj ceny z sieci</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="78"/>
         <source>Import prices from logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj ceny z logów</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="86"/>
         <source>Group by:</source>
-        <translation type="unfinished"></translation>
+        <translation>Grupuj po:</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="90"/>
         <source>- none -</source>
-        <translation type="unfinished"></translation>
+        <translation>- brak -</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="91"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="92"/>
         <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Grupa</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="93"/>
         <source>Station</source>
-        <translation type="unfinished"></translation>
+        <translation>Stacja</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="103"/>
         <source>Sell</source>
-        <translation type="unfinished"></translation>
+        <translation>Sprzedaż</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="112"/>
         <source>Buy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kupno</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="121"/>
         <source>Sell &amp;&amp; Buy</source>
-        <translation type="unfinished"></translation>
+        <translation>Sprzedaż i kupno</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="126"/>
         <source>Sell orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="140"/>
         <source>Buy orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia kupna</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="155"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation>Historia</translation>
     </message>
 </context>
 <context>
@@ -1650,7 +1656,7 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../MenuBarWidget.cpp" line="34"/>
         <source>Import all</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj wszystko</translation>
     </message>
 </context>
 <context>
@@ -1658,72 +1664,72 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="51"/>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="57"/>
         <source>No proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak proxy</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="60"/>
         <source>Custom proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Własne proxy</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="71"/>
         <source>Type:</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ:</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="72"/>
         <source>SOCKS5</source>
-        <translation type="unfinished"></translation>
+        <translation>SOCKS5</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
         <source>HTTP</source>
-        <translation type="unfinished"></translation>
+        <translation>HTTP</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="76"/>
         <source>Host:</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer:</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="82"/>
         <source>Port:</source>
-        <translation type="unfinished"></translation>
+        <translation>Port:</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="86"/>
         <source>User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Użytkownik:</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="89"/>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hasło:</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="92"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
-        <translation type="unfinished"></translation>
+        <translation>Uwaga: hasło jest zapisywane ze słąbym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="94"/>
         <source>API provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Dostawca API</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="100"/>
         <source>Use default provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Domyślny</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="105"/>
         <source>Use custom provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Własny</translation>
     </message>
 </context>
 <context>
@@ -1731,22 +1737,22 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="39"/>
         <source>Market logs path</source>
-        <translation type="unfinished"></translation>
+        <translation>Ścieżka logów handlu</translation>
     </message>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="45"/>
         <source>You can specify custom market logs path or leave empty to use the default one. Custom path is required on *nix systems.</source>
-        <translation type="unfinished"></translation>
+        <translation>Możesz ustawić własną ścieżkę do logów handlu, lub zostawić puste, aby użyć domyślnej. Własna ścieżka jest wymagana w systemach *nix.</translation>
     </message>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="57"/>
         <source>Browse...</source>
-        <translation type="unfinished"></translation>
+        <translation>Przeglądaj...</translation>
     </message>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="61"/>
         <source>Delete parsed logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń przetworzone logi</translation>
     </message>
 </context>
 <context>
@@ -1754,47 +1760,47 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../PreferencesDialog.cpp" line="55"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogólne</translation>
     </message>
     <message>
         <location filename="../PreferencesDialog.cpp" line="56"/>
         <source>Paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Ścieżki</translation>
     </message>
     <message>
         <location filename="../PreferencesDialog.cpp" line="57"/>
         <source>Prices</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceny</translation>
     </message>
     <message>
         <location filename="../PreferencesDialog.cpp" line="58"/>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation>Sieć</translation>
     </message>
     <message>
         <location filename="../PreferencesDialog.cpp" line="59"/>
         <source>Wallet</source>
-        <translation type="unfinished"></translation>
+        <translation>Portfel</translation>
     </message>
     <message>
         <location filename="../PreferencesDialog.cpp" line="76"/>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation>Import</translation>
     </message>
     <message>
         <location filename="../PreferencesDialog.cpp" line="80"/>
         <source>Character</source>
-        <translation type="unfinished"></translation>
+        <translation>Postać</translation>
     </message>
     <message>
         <location filename="../PreferencesDialog.cpp" line="81"/>
         <source>Assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywa</translation>
     </message>
     <message>
         <location filename="../PreferencesDialog.cpp" line="106"/>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustawienia</translation>
     </message>
 </context>
 <context>
@@ -1802,57 +1808,57 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="40"/>
         <source>Margins</source>
-        <translation type="unfinished"></translation>
+        <translation>Marże</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="49"/>
         <source>Minimum:</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimum:</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="56"/>
         <source>Preferred:</source>
-        <translation type="unfinished"></translation>
+        <translation>Preferowana:</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="63"/>
         <source>Prefer custom item costs over current prices</source>
-        <translation type="unfinished"></translation>
+        <translation>Preferuj własne koszty nad aktualnymi</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="67"/>
         <source>Import log wait timer:</source>
-        <translation type="unfinished"></translation>
+        <translation>Czas oczekiwania na import logu handlu:</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="76"/>
         <source>Use alternative margin import method*</source>
-        <translation type="unfinished"></translation>
+        <translation>Użyj alternatywnej metody impotu*</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="80"/>
         <source>* Gives faster results, but can sometimes be incorrect. If the price fluctuates after a few imports, turn it off.</source>
-        <translation type="unfinished"></translation>
+        <translation>* Wyniki otrzymywane są szybciej, lecz czasem mogą być nieprawidłowe. Jeśli podczas importu cena się wacha, wyłącz alternatywny import.</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="92"/>
         <source>Price delta:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmiana ceny:</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="100"/>
         <source>Max. price age:</source>
-        <translation type="unfinished"></translation>
+        <translation>Maks. wiek cen:</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="107"/>
         <source>Max. market order age:</source>
-        <translation type="unfinished"></translation>
+        <translation>Maks. wiek zleceń:</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="110"/>
         <source> days</source>
-        <translation type="unfinished"></translation>
+        <translation>dni</translation>
     </message>
 </context>
 <context>
@@ -1860,62 +1866,62 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../StatisticsWidget.cpp" line="50"/>
         <source>Balance</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilans</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="60"/>
         <source>Wallet journal</source>
-        <translation type="unfinished"></translation>
+        <translation>Dziennik</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="70"/>
         <source>Wallet transactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Transakcje</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="386"/>
         <source>Asset value</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywa</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="390"/>
         <source>Wallet balance</source>
-        <translation type="unfinished"></translation>
+        <translation>Portfel</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="394"/>
         <source>Buy order value</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia kupna</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="398"/>
         <source>Sell order value</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="402"/>
         <source>Total value</source>
-        <translation type="unfinished"></translation>
+        <translation>Suma</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="407"/>
         <source>Incoming</source>
-        <translation type="unfinished"></translation>
+        <translation>Przychód</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="408"/>
         <source>Outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Koszt</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="410"/>
         <source>Sell</source>
-        <translation type="unfinished"></translation>
+        <translation>Sprzedaż</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="411"/>
         <source>Buy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kupno</translation>
     </message>
 </context>
 <context>
@@ -1923,7 +1929,7 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../TextFilterWidget.cpp" line="33"/>
         <source>type in wildcard and press Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>wpisz wzór i naciśnij Enter</translation>
     </message>
 </context>
 <context>
@@ -1931,7 +1937,7 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../WalletEntryFilterWidget.cpp" line="33"/>
         <source>Show:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż:</translation>
     </message>
 </context>
 <context>
@@ -1939,47 +1945,47 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../WalletJournalModel.cpp" line="33"/>
         <source>Ignored</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorowane</translation>
     </message>
     <message>
         <location filename="../WalletJournalModel.cpp" line="34"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Data</translation>
     </message>
     <message>
         <location filename="../WalletJournalModel.cpp" line="35"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../WalletJournalModel.cpp" line="36"/>
         <source>First party</source>
-        <translation type="unfinished"></translation>
+        <translation>Pierwsza strona</translation>
     </message>
     <message>
         <location filename="../WalletJournalModel.cpp" line="37"/>
         <source>Second party</source>
-        <translation type="unfinished"></translation>
+        <translation>Druga strona</translation>
     </message>
     <message>
         <location filename="../WalletJournalModel.cpp" line="38"/>
         <source>Additional data</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodatkowe dane</translation>
     </message>
     <message>
         <location filename="../WalletJournalModel.cpp" line="39"/>
         <source>Amount</source>
-        <translation type="unfinished"></translation>
+        <translation>Wartość</translation>
     </message>
     <message>
         <location filename="../WalletJournalModel.cpp" line="40"/>
         <source>Balance after</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilans po</translation>
     </message>
     <message>
         <location filename="../WalletJournalModel.cpp" line="41"/>
         <source>Reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Powód</translation>
     </message>
 </context>
 <context>
@@ -1987,17 +1993,17 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../WalletJournalWidget.cpp" line="51"/>
         <source>all</source>
-        <translation type="unfinished"></translation>
+        <translation>wszystko</translation>
     </message>
     <message>
         <location filename="../WalletJournalWidget.cpp" line="51"/>
         <source>incoming</source>
-        <translation type="unfinished"></translation>
+        <translation>przychód</translation>
     </message>
     <message>
         <location filename="../WalletJournalWidget.cpp" line="51"/>
         <source>outgoing</source>
-        <translation type="unfinished"></translation>
+        <translation>koszt</translation>
     </message>
 </context>
 <context>
@@ -2005,30 +2011,30 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../WalletPreferencesWidget.cpp" line="37"/>
         <source>Journal</source>
-        <translation type="unfinished"></translation>
+        <translation>Dziennik</translation>
     </message>
     <message>
         <location filename="../WalletPreferencesWidget.cpp" line="43"/>
         <location filename="../WalletPreferencesWidget.cpp" line="70"/>
         <source>Delete old entries</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń stare wpisy</translation>
     </message>
     <message>
         <location filename="../WalletPreferencesWidget.cpp" line="50"/>
         <location filename="../WalletPreferencesWidget.cpp" line="77"/>
         <source>Delete older than:</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń starsze niż:</translation>
     </message>
     <message>
         <location filename="../WalletPreferencesWidget.cpp" line="55"/>
         <location filename="../WalletPreferencesWidget.cpp" line="82"/>
         <source> days</source>
-        <translation type="unfinished"></translation>
+        <translation>dni</translation>
     </message>
     <message>
         <location filename="../WalletPreferencesWidget.cpp" line="64"/>
         <source>Transactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Transakcje</translation>
     </message>
 </context>
 <context>
@@ -2036,42 +2042,42 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../WalletTransactionsModel.cpp" line="32"/>
         <source>Ignored</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorowane</translation>
     </message>
     <message>
         <location filename="../WalletTransactionsModel.cpp" line="33"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Data</translation>
     </message>
     <message>
         <location filename="../WalletTransactionsModel.cpp" line="34"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../WalletTransactionsModel.cpp" line="35"/>
         <source>Quantity</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość</translation>
     </message>
     <message>
         <location filename="../WalletTransactionsModel.cpp" line="36"/>
         <source>Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Przedmiot</translation>
     </message>
     <message>
         <location filename="../WalletTransactionsModel.cpp" line="37"/>
         <source>Price</source>
-        <translation type="unfinished"></translation>
+        <translation>Cena</translation>
     </message>
     <message>
         <location filename="../WalletTransactionsModel.cpp" line="38"/>
         <source>Client</source>
-        <translation type="unfinished"></translation>
+        <translation>Klient</translation>
     </message>
     <message>
         <location filename="../WalletTransactionsModel.cpp" line="39"/>
         <source>Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokacja</translation>
     </message>
 </context>
 <context>
@@ -2079,17 +2085,17 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../WalletTransactionsWidget.cpp" line="51"/>
         <source>all</source>
-        <translation type="unfinished"></translation>
+        <translation>wszystko</translation>
     </message>
     <message>
         <location filename="../WalletTransactionsWidget.cpp" line="51"/>
         <source>buy</source>
-        <translation type="unfinished"></translation>
+        <translation>kupno</translation>
     </message>
     <message>
         <location filename="../WalletTransactionsWidget.cpp" line="51"/>
         <source>sell</source>
-        <translation type="unfinished"></translation>
+        <translation>sprzedaż</translation>
     </message>
 </context>
 <context>
@@ -2097,17 +2103,17 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../TextUtils.cpp" line="36"/>
         <source>%02dmin</source>
-        <translation type="unfinished"></translation>
+        <translation>%02dmin</translation>
     </message>
     <message>
         <location filename="../TextUtils.cpp" line="39"/>
         <source>%02dh %02dmin</source>
-        <translation type="unfinished"></translation>
+        <translation>%02dh %02dmin</translation>
     </message>
     <message>
         <location filename="../TextUtils.cpp" line="41"/>
         <source>%dd %02dh</source>
-        <translation type="unfinished"></translation>
+        <translation>%dd %02dh</translation>
     </message>
 </context>
 <context>
@@ -2115,12 +2121,12 @@ Please import prices from Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../main.cpp" line="104"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="113"/>
         <source>Initialization error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd inicjalizacji</translation>
     </message>
 </context>
 </TS>

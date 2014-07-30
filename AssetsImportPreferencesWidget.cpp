@@ -46,7 +46,7 @@ namespace Evernus
         importBoxLayout->addWidget(mAutoUpdateValueBox);
         mAutoUpdateValueBox->setChecked(settings.value(ImportSettings::autoUpdateAssetValueKey, true).toBool());
 
-        auto autoUpdateLabel = new QLabel{tr("* Requires full price data to be present. If you don't see stored value, try importing prices."), this};
+        auto autoUpdateLabel = new QLabel{tr("* Requires full price data to be present. If there is no stored value, try importing prices."), this};
         importBoxLayout->addWidget(autoUpdateLabel);
         autoUpdateLabel->setWordWrap(true);
 
