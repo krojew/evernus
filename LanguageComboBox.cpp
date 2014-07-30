@@ -27,7 +27,7 @@ namespace Evernus
     {
         const QLocale defaultLocale{"en_US"};
 
-        addItem(QIcon{":/images/flags/en_US.png"}, QLocale::languageToString(defaultLocale.language()), defaultLocale.name());
+        addItem(QIcon{":/images/flags/en_US.png"}, defaultLocale.nativeLanguageName(), defaultLocale.name());
 
         const QDir transDir{QCoreApplication::applicationDirPath() + UISettings::translationPath};
         const auto translations = transDir.entryList(QStringList{"lang_*.qm"}, QDir::Files | QDir::Readable, QDir::Name);
@@ -41,7 +41,7 @@ namespace Evernus
             lang.remove(0, lang.indexOf('_') + 1);
 
             addItem(QIcon{QString{":/images/flags/%1.png"}.arg(lang)},
-                    QLocale::languageToString(QLocale{lang}.language()),
+                    QLocale{lang}.nativeLanguageName(),
                     lang);
 
             if (lang == curLocale)
