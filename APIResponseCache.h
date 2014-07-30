@@ -20,6 +20,7 @@
 #include <list>
 
 #include <QAbstractNetworkCache>
+#include <QDateTime>
 #include <QDir>
 
 namespace Evernus
@@ -27,6 +28,8 @@ namespace Evernus
     class APIResponseCache
         : public QAbstractNetworkCache
     {
+        Q_OBJECT
+
     public:
         explicit APIResponseCache(QObject *parent = nullptr);
         virtual ~APIResponseCache() = default;

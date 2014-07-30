@@ -27,8 +27,8 @@
 namespace Evernus
 {
     ItemCostEditDialog::ItemCostEditDialog(ItemCost &cost, const EveDataProvider &dataProvider, QWidget *parent)
-        : QDialog{parent}
-        , mCost{cost}
+        : QDialog(parent)
+        , mCost(cost)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

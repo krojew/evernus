@@ -26,8 +26,8 @@
 namespace Evernus
 {
     KeyEditDialog::KeyEditDialog(Key &key, QWidget *parent)
-        : QDialog{parent}
-        , mKey{key}
+        : QDialog(parent)
+        , mKey(key)
     {
         const auto keyLink = "https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=6295562";
 

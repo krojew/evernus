@@ -24,8 +24,8 @@
 namespace Evernus
 {
     MenuBarWidget::MenuBarWidget(const Repository<Character> &characterRepository, QWidget *parent)
-        : QWidget{parent}
-        , mCharacterRepository{characterRepository}
+        : QWidget(parent)
+        , mCharacterRepository(characterRepository)
     {
         auto mainLayout = new QHBoxLayout{};
         setLayout(mainLayout);

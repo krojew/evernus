@@ -113,9 +113,9 @@ namespace Evernus
     }
 
     AssetModel::AssetModel(const AssetProvider &assetProvider, const EveDataProvider &nameProvider, QObject *parent)
-        : QAbstractItemModel{parent}
-        , mAssetProvider{assetProvider}
-        , mDataProvider{nameProvider}
+        : QAbstractItemModel(parent)
+        , mAssetProvider(assetProvider)
+        , mDataProvider(nameProvider)
     {
         mRootItem.setData(QVariantList{}
             << tr("Name")

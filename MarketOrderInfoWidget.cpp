@@ -30,8 +30,8 @@
 namespace Evernus
 {
     MarketOrderInfoWidget::MarketOrderInfoWidget(const MarketOrderModel::OrderInfo &info, QWidget *parent)
-        : QFrame{parent, Qt::Tool | Qt::FramelessWindowHint}
-        , mTargetPrice{QString::number(info.mTargetPrice, 'f', 2)}
+        : QFrame(parent, Qt::Tool | Qt::FramelessWindowHint)
+        , mTargetPrice(QString::number(info.mTargetPrice, 'f', 2))
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

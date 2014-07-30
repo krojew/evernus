@@ -37,12 +37,12 @@ namespace Evernus
                                        const WalletJournalEntryRepository &journalRepo,
                                        const WalletTransactionRepository &transactionRepo,
                                        QWidget *parent)
-        : QWidget{parent}
-        , mAssetSnapshotRepository{assetSnapshotRepo}
-        , mWalletSnapshotRepository{walletSnapshotRepo}
-        , mMarketOrderSnapshotRepository{marketOrderSnapshotRepo}
-        , mJournalRepo{journalRepo}
-        , mTransactionRepo{transactionRepo}
+        : QWidget(parent)
+        , mAssetSnapshotRepository(assetSnapshotRepo)
+        , mWalletSnapshotRepository(walletSnapshotRepo)
+        , mMarketOrderSnapshotRepository(marketOrderSnapshotRepo)
+        , mJournalRepo(journalRepo)
+        , mTransactionRepo(transactionRepo)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

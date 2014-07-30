@@ -22,7 +22,7 @@
 namespace Evernus
 {
     AboutDialog::AboutDialog(QWidget *parent)
-        : QDialog{parent}
+        : QDialog(parent)
     {
         auto mainLayout = new QHBoxLayout{};
         setLayout(mainLayout);

@@ -51,13 +51,13 @@ namespace Evernus
                                      const MarketOrderRepository &marketOrderRepository,
                                      const CacheTimerProvider &cacheTimerProvider,
                                      QWidget *parent)
-        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::Character),
+        : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::Character),
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::Character),
                                ImportSettings::maxCharacterAgeKey,
-                               parent}
-        , mCharacterRepository{characterRepository}
-        , mMarketOrderRepository{marketOrderRepository}
-        , mCacheTimerProvider{cacheTimerProvider}
+                               parent)
+        , mCharacterRepository(characterRepository)
+        , mMarketOrderRepository(marketOrderRepository)
+        , mCacheTimerProvider(cacheTimerProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

@@ -27,7 +27,7 @@ namespace Evernus
     const char * const MarketOrderStatesWidget::filterPropertyName = "filter";
 
     MarketOrderStatesWidget::MarketOrderStatesWidget(QWidget *parent)
-        : QWidget{parent}
+        : QWidget(parent)
     {
         QSettings settings;
         mCurrentFilter = static_cast<MarketOrderFilterProxyModel::StatusFilters>(

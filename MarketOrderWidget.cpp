@@ -44,14 +44,14 @@ namespace Evernus
                                          const WalletTransactionRepository &transactionsRepo,
                                          const FilterTextRepository &filterRepo,
                                          QWidget *parent)
-        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
+        : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
                                ImportSettings::maxMarketOrdersAgeKey,
-                               parent}
-        , mOrderProvider{orderProvider}
-        , mSellModel{mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider}
-        , mBuyModel{mOrderProvider, dataProvider, cacheTimerProvider}
-        , mArchiveModel{mOrderProvider, dataProvider, itemCostProvider}
+                               parent)
+        , mOrderProvider(orderProvider)
+        , mSellModel(mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider)
+        , mBuyModel(mOrderProvider, dataProvider, cacheTimerProvider)
+        , mArchiveModel(mOrderProvider, dataProvider, itemCostProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

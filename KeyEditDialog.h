@@ -25,6 +25,8 @@ namespace Evernus
     class KeyEditDialog
         : public QDialog
     {
+        Q_OBJECT
+
     public:
         explicit KeyEditDialog(Key &key, QWidget *parent = nullptr);
         virtual ~KeyEditDialog() = default;

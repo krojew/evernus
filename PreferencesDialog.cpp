@@ -34,7 +34,7 @@
 namespace Evernus
 {
     PreferencesDialog::PreferencesDialog(QWidget *parent)
-        : QDialog{parent}
+        : QDialog(parent)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

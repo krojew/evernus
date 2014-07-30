@@ -21,7 +21,7 @@
 namespace Evernus
 {
     DateRangeWidget::DateRangeWidget(QWidget *parent)
-        : QWidget{parent}
+        : QWidget(parent)
     {
         auto mainLayout = new QHBoxLayout{};
         setLayout(mainLayout);

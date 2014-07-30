@@ -25,7 +25,7 @@
 namespace Evernus
 {
     AssetsImportPreferencesWidget::AssetsImportPreferencesWidget(QWidget *parent)
-        : QWidget{parent}
+        : QWidget(parent)
     {
         QSettings settings;
 

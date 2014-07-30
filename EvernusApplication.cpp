@@ -36,16 +36,16 @@ namespace Evernus
     const QString EvernusApplication::versionKey = "version";
 
     EvernusApplication::EvernusApplication(int &argc, char *argv[])
-        : QApplication{argc, argv}
-        , EveDataProvider{}
-        , ExternalOrderImporterRegistry{}
-        , AssetProvider{}
-        , CacheTimerProvider{}
-        , MarketOrderProvider{}
-        , ItemCostProvider{}
-        , mMainDb{QSqlDatabase::addDatabase("QSQLITE", "main")}
-        , mEveDb{QSqlDatabase::addDatabase("QSQLITE", "eve")}
-        , mAPIManager{*this}
+        : QApplication(argc, argv)
+        , EveDataProvider()
+        , ExternalOrderImporterRegistry()
+        , AssetProvider()
+        , CacheTimerProvider()
+        , MarketOrderProvider()
+        , ItemCostProvider()
+        , mMainDb(QSqlDatabase::addDatabase("QSQLITE", "main"))
+        , mEveDb(QSqlDatabase::addDatabase("QSQLITE", "eve"))
+        , mAPIManager(*this)
     {
         updateTranslator();
 

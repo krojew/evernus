@@ -30,8 +30,8 @@
 namespace Evernus
 {
     NetworkPreferencesWidget::NetworkPreferencesWidget(QWidget *parent)
-        : QWidget{parent}
-        , mCrypt{Q_UINT64_C(0x468c4a0e33a6fe01)}
+        : QWidget(parent)
+        , mCrypt(Q_UINT64_C(0x468c4a0e33a6fe01))
     {
         QSettings settings;
 

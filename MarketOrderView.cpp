@@ -29,8 +29,8 @@
 namespace Evernus
 {
     MarketOrderView::MarketOrderView(const EveDataProvider &dataProvider, QWidget *parent)
-        : QWidget{parent}
-        , mProxy{dataProvider}
+        : QWidget(parent)
+        , mProxy(dataProvider)
     {
         QFont font;
         font.setBold(true);

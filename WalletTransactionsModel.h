@@ -29,6 +29,8 @@ namespace Evernus
     class WalletTransactionsModel
         : public QAbstractTableModel
     {
+        Q_OBJECT
+
     public:
         typedef WalletTransactionRepository::EntryType EntryType;
 

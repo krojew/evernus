@@ -23,8 +23,8 @@
 namespace Evernus
 {
     FileDownload::FileDownload(const QUrl &addr, const QString &dest, QObject *parent)
-        : QObject{parent}
-        , mOutput{dest}
+        : QObject(parent)
+        , mOutput(dest)
     {
         QFileInfo info{dest};
         QDir{}.mkpath(info.dir().path());

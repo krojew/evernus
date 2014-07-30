@@ -27,7 +27,7 @@
 namespace Evernus
 {
     WalletPreferencesWidget::WalletPreferencesWidget(QWidget *parent)
-        : QWidget{parent}
+        : QWidget(parent)
     {
         QSettings settings;
 

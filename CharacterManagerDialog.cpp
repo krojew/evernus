@@ -37,10 +37,10 @@ namespace Evernus
     CharacterManagerDialog::CharacterManagerDialog(const Repository<Character> &characterRepository,
                                                    const Repository<Key> &keyRepository,
                                                    QWidget *parent)
-        : QDialog{parent}
-        , mCharacterRepository{characterRepository}
-        , mKeyRepository{keyRepository}
-        , mCharacterModel{mCharacterRepository}
+        : QDialog(parent)
+        , mCharacterRepository(characterRepository)
+        , mKeyRepository(keyRepository)
+        , mCharacterModel(mCharacterRepository)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

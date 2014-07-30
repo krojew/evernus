@@ -36,7 +36,7 @@ namespace Evernus
     }
 
     APIResponseCache::APIResponseCache(QObject *parent)
-        : QAbstractNetworkCache{parent}
+        : QAbstractNetworkCache(parent)
     {
         qDebug() << "Creating response cache path.";
 

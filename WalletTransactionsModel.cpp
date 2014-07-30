@@ -24,9 +24,9 @@ namespace Evernus
 {
     WalletTransactionsModel
     ::WalletTransactionsModel(const WalletTransactionRepository &transactionsRepo, const EveDataProvider &dataProvider, QObject *parent)
-        : QAbstractTableModel{parent}
-        , mTransactionsRepository{transactionsRepo}
-        , mDataProvider{dataProvider}
+        : QAbstractTableModel(parent)
+        , mTransactionsRepository(transactionsRepo)
+        , mDataProvider(dataProvider)
     {
         mColumns
             << tr("Ignored")

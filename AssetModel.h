@@ -31,6 +31,8 @@ namespace Evernus
     class AssetModel
         : public QAbstractItemModel
     {
+        Q_OBJECT
+
     public:
         AssetModel(const AssetProvider &assetProvider, const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~AssetModel() = default;

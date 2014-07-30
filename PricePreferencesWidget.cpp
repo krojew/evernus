@@ -30,7 +30,7 @@
 namespace Evernus
 {
     PricePreferencesWidget::PricePreferencesWidget(QWidget *parent)
-        : QWidget{parent}
+        : QWidget(parent)
     {
         QSettings settings;
 

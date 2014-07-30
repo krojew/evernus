@@ -25,9 +25,9 @@ namespace Evernus
 {
     WalletJournalModel
     ::WalletJournalModel(const WalletJournalEntryRepository &journalRepo, const EveDataProvider &dataProvider, QObject *parent)
-        : QAbstractTableModel{parent}
-        , mJournalRepository{journalRepo}
-        , mDataProvider{dataProvider}
+        : QAbstractTableModel(parent)
+        , mJournalRepository(journalRepo)
+        , mDataProvider(dataProvider)
     {
         mColumns
             << tr("Ignored")

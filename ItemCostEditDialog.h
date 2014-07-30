@@ -27,6 +27,8 @@ namespace Evernus
     class ItemCostEditDialog
         : public QDialog
     {
+        Q_OBJECT
+
     public:
         ItemCostEditDialog(ItemCost &cost, const EveDataProvider &dataProvider, QWidget *parent = nullptr);
         virtual ~ItemCostEditDialog() = default;

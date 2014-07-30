@@ -27,8 +27,8 @@ namespace Evernus
     MarketOrderViewWithTransactions::MarketOrderViewWithTransactions(const WalletTransactionRepository &transactionsRepo,
                                                                      const EveDataProvider &dataProvider,
                                                                      QWidget *parent)
-        : QWidget{parent}
-        , mTransactionModel{transactionsRepo, dataProvider}
+        : QWidget(parent)
+        , mTransactionModel(transactionsRepo, dataProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

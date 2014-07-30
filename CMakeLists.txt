@@ -29,9 +29,12 @@ set_source_files_properties(${TRANSLATIONS} PROPERTIES OUTPUT_LOCATION "${CMAKE_
 
 qt5_wrap_cpp(
     MOC_FILES
+    AboutDialog.h
     ActiveTasksDialog.h
     APIInterface.h
     APIManager.h
+    APIResponseCache.h
+    AssetModel.h
     AssetsImportPreferencesWidget.h
     AssetsWidget.h
     ButtonWithTimer.h
@@ -49,7 +52,9 @@ qt5_wrap_cpp(
     FilterTextRepository.h
     GeneralPreferencesWidget.h
     ImportPreferencesWidget.h
+    ItemCostEditDialog.h
     ItemCostWidget.h
+    KeyEditDialog.h
     MainWindow.h
     MarginToolDialog.h
     MarketLogExternalOrderImporter.h
@@ -71,8 +76,10 @@ qt5_wrap_cpp(
     StatisticsWidget.h
     TextFilterWidget.h
     WalletEntryFilterWidget.h
+    WalletJournalModel.h
     WalletJournalWidget.h
     WalletPreferencesWidget.h
+    WalletTransactionsModel.h
     WalletTransactionsWidget.h
 )
 

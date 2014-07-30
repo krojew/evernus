@@ -63,10 +63,10 @@ namespace Evernus
                                        const ItemCostProvider &itemCostProvider,
                                        const EveDataProvider &dataProvider,
                                        QWidget *parent)
-        : QDialog{parent}
-        , mCharacterRepository{characterRepository}
-        , mItemCostProvider{itemCostProvider}
-        , mDataProvider{dataProvider}
+        : QDialog(parent)
+        , mCharacterRepository(characterRepository)
+        , mItemCostProvider(itemCostProvider)
+        , mDataProvider(dataProvider)
     {
         QSettings settings;
 

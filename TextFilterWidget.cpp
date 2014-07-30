@@ -21,8 +21,8 @@
 namespace Evernus
 {
     TextFilterWidget::TextFilterWidget(const FilterTextRepository &filterRepo, QWidget *parent)
-        : QComboBox{parent}
-        , mFilterRepo{filterRepo}
+        : QComboBox(parent)
+        , mFilterRepo(filterRepo)
     {
         addItems(mFilterRepo.fetchRecentlyUsed());
         setEditable(true);

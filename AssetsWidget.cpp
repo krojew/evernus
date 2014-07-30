@@ -39,12 +39,12 @@ namespace Evernus
                                const CacheTimerProvider &cacheTimerProvider,
                                const FilterTextRepository &filterRepo,
                                QWidget *parent)
-        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::AssetList),
+        : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::AssetList),
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::AssetList),
                                ImportSettings::maxAssetListAgeKey,
-                               parent}
-        , mAssetProvider{assetProvider}
-        , mModel{mAssetProvider, nameProvider}
+                               parent)
+        , mAssetProvider(assetProvider)
+        , mModel(mAssetProvider, nameProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

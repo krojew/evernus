@@ -29,7 +29,7 @@
 namespace Evernus
 {
     DateFilteredPlotWidget::DateFilteredPlotWidget(QWidget *parent)
-        : QWidget{parent}
+        : QWidget(parent)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

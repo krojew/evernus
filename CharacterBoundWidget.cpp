@@ -27,12 +27,12 @@ namespace Evernus
                                                const TimeGetter &updateTimeGetter,
                                                const QString &updateAgeSettingsKey,
                                                QWidget *parent)
-        : QWidget{parent}
-        , mAPITimeGetter{apiTimeGetter}
-        , mUpdateTimeGetter{updateTimeGetter}
-        , mUpdateAgeSettingsKey{updateAgeSettingsKey}
-        , mImportBtn{new ButtonWithTimer{tr("API import"), this}}
-        , mWarningBarWidget{new WarningBarWidget{this}}
+        : QWidget(parent)
+        , mAPITimeGetter(apiTimeGetter)
+        , mUpdateTimeGetter(updateTimeGetter)
+        , mUpdateAgeSettingsKey(updateAgeSettingsKey)
+        , mImportBtn(new ButtonWithTimer{tr("API import"), this})
+        , mWarningBarWidget(new WarningBarWidget{this})
     {
         connect(&mUpdateTimer, &QTimer::timeout, this, &CharacterBoundWidget::updateTimerTick);
         connect(mImportBtn, &QPushButton::clicked, this, &CharacterBoundWidget::requestUpdate);

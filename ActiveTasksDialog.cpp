@@ -39,7 +39,7 @@ namespace Evernus
 #else
     ActiveTasksDialog::ActiveTasksDialog(QWidget *parent)
 #endif
-        : QDialog{parent}
+        : QDialog(parent)
     {
         QSettings settings;
 
