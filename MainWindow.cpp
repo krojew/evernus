@@ -123,6 +123,8 @@ namespace Evernus
     {
         PreferencesDialog dlg{this};
         dlg.exec();
+
+        emit preferencesChanged();
     }
 
     void MainWindow::showMarginTool()

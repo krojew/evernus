@@ -80,6 +80,7 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(marginToolHidden(Character::IdType)), SLOT(updateAssetsValue(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(marginToolParsedData(const std::vector<ExternalOrder> &)), SLOT(updateExternalOrders(const std::vector<ExternalOrder> &)));
             app.connect(&mainWnd, SIGNAL(itemCostsChanged()), SLOT(resetItemCostCache()));
+            app.connect(&mainWnd, SIGNAL(preferencesChanged()), SLOT(handleNewPreferences()));
             mainWnd.connect(&app, SIGNAL(taskStarted(uint, const QString &)), SLOT(addNewTaskInfo(uint, const QString &)));
             mainWnd.connect(&app, SIGNAL(taskStarted(uint, uint, const QString &)), SIGNAL(newSubTaskInfoAdded(uint, uint, const QString &)));
             mainWnd.connect(&app, SIGNAL(taskInfoChanged(uint, const QString &)), SIGNAL(taskInfoChanged(uint, const QString &)));

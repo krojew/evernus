@@ -30,5 +30,8 @@
         <file>images/pencil.png</file>
         <file>images/splash.png</file>
         <file>images/world.png</file>
+        
+        <file>images/flags/en_US.png</file>
+        <file>images/flags/pl_PL.png</file>
     </qresource>
 </RCC>

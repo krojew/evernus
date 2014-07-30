@@ -96,6 +96,8 @@ namespace Evernus
         void marketOrdersChanged();
         void itemCostsChanged();
 
+        void preferencesChanged();
+
         void marginToolHidden(Character::IdType id);
         void marginToolParsedData(const std::vector<ExternalOrder> &orders);
 

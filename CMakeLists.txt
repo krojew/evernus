@@ -5,13 +5,14 @@ project(Evernus)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_NAME "evernus")
 
+find_package(Boost REQUIRED)
+find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
 find_package(Qt5Widgets REQUIRED)
-find_package(Boost REQUIRED)
 
 if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -stdlib=libc++ -g")
@@ -22,6 +23,9 @@ elseif(WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
     set(ADDITIONAL_LIBS Qt5::WinExtras)
 endif()
+
+set(TRANSLATIONS lang/lang_pl_PL.ts)
+set_source_files_properties(${TRANSLATIONS} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/trans")
 
 qt5_wrap_cpp(
     MOC_FILES
@@ -76,6 +80,8 @@ qt5_add_resources(
     RCC_FILES
     evernus.qrc
 )
+
+qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TRANSLATIONS})
 
 include_directories(${Boost_INCLUDE_DIRS})
 
@@ -205,6 +211,8 @@ add_executable(
     KeyEditDialog.h
     KeyRepository.cpp
     KeyRepository.h
+    LanguageComboBox.cpp
+    LanguageComboBox.h
     LeafFilterProxyModel.cpp
     LeafFilterProxyModel.h
     main.cpp
@@ -343,6 +351,7 @@ add_executable(
     WarningBarWidget.h
     ${MOC_FILES}
     ${RCC_FILES}
+    ${QM_FILES}
     ${ADDITIONAL_SRC}
 )
 

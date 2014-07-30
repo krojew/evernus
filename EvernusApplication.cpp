@@ -26,6 +26,7 @@
 #include "ImportSettings.h"
 #include "WalletSettings.h"
 #include "PathSettings.h"
+#include "UISettings.h"
 #include "PathUtils.h"
 
 #include "EvernusApplication.h"
@@ -46,6 +47,8 @@ namespace Evernus
         , mEveDb{QSqlDatabase::addDatabase("QSQLITE", "eve")}
         , mAPIManager{*this}
     {
+        updateTranslator();
+
         QSplashScreen splash{QPixmap{":/images/splash.png"}};
         splash.show();
         showSplashMessage(tr("Loading..."), splash);
@@ -1014,6 +1017,11 @@ namespace Evernus
         mItemCostCache.clear();
     }
 
+    void EvernusApplication::handleNewPreferences()
+    {
+        updateTranslator();
+    }
+
     void EvernusApplication::scheduleCharacterUpdate()
     {
         if (mCharacterUpdateScheduled)
@@ -1034,6 +1042,22 @@ namespace Evernus
     {
         Q_ASSERT(mCurrentExternalOrderImportTask != TaskConstants::invalidTask);
         finishExternalOrderImportTask(info);
+    }
+
+    void EvernusApplication::updateTranslator()
+    {
+        QSettings settings;
+
+        const auto lang = settings.value(UISettings::languageKey).toString();
+
+        qDebug() << "Switching language to" << lang;
+
+        const QLocale locale{lang};
+        QLocale::setDefault(locale);
+
+        removeTranslator(&mTranslator);
+        mTranslator.load(locale, "lang", "_", applicationDirPath() + UISettings::translationPath);
+        installTranslator(&mTranslator);
     }
 
     void EvernusApplication::createDb()

@@ -20,6 +20,7 @@
 
 #include <QApplication>
 #include <QSqlDatabase>
+#include <QTranslator>
 
 #include "MarketOrderValueSnapshotRepository.h"
 #include "ConquerableStationRepository.h"
@@ -146,6 +147,8 @@ namespace Evernus
 
         void resetItemCostCache();
 
+        void handleNewPreferences();
+
     private slots:
         void scheduleCharacterUpdate();
         void updateCharacters();
@@ -235,6 +238,10 @@ namespace Evernus
 
         mutable std::unordered_map<TypeRegionPair, ExternalOrderRepository::EntityList, boost::hash<TypeRegionPair>>
         mTypeRegionOrderCache;
+
+        QTranslator mTranslator;
+
+        void updateTranslator();
 
         void createDb();
         void createDbSchema();

@@ -14,28 +14,15 @@
  */
 #pragma once
 
-#include <QWidget>
-
-class QCheckBox;
+#include <QComboBox>
 
 namespace Evernus
 {
-    class LanguageComboBox;
-
-    class GeneralPreferencesWidget
-        : public QWidget
+    class LanguageComboBox
+        : public QComboBox
     {
-        Q_OBJECT
-
     public:
-        explicit GeneralPreferencesWidget(QWidget *parent = nullptr);
-        virtual ~GeneralPreferencesWidget() = default;
-
-    public slots:
-        void applySettings();
-
-    private:
-        QCheckBox *mMinimizeToTrayBtn = nullptr;
-        LanguageComboBox *mLanguageEdit = nullptr;
+        explicit LanguageComboBox(QWidget *parent = nullptr);
+        virtual ~LanguageComboBox() = default;
     };
 }

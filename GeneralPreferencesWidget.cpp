@@ -18,6 +18,7 @@
 #include <QSettings>
 #include <QLabel>
 
+#include "LanguageComboBox.h"
 #include "UISettings.h"
 
 #include "GeneralPreferencesWidget.h"
@@ -31,6 +32,26 @@ namespace Evernus
 
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
+
+        auto languageGroup = new QGroupBox{this};
+        mainLayout->addWidget(languageGroup);
+
+        auto languageGroupLayout = new QVBoxLayout{};
+        languageGroup->setLayout(languageGroupLayout);
+
+        auto languageEditLayout = new QHBoxLayout{};
+        languageGroupLayout->addLayout(languageEditLayout);
+
+        languageEditLayout->addWidget(new QLabel{tr("Language:"), this});
+
+        mLanguageEdit = new LanguageComboBox{this};
+        languageEditLayout->addWidget(mLanguageEdit);
+
+        languageEditLayout->addStretch();
+
+        auto languageInfoLabel = new QLabel{tr("Language changes require application restart."), this};
+        languageGroupLayout->addWidget(languageInfoLabel);
+        languageInfoLabel->setWordWrap(true);
 
         auto generalGroup = new QGroupBox{this};
         mainLayout->addWidget(generalGroup);
@@ -49,5 +70,6 @@ namespace Evernus
     {
         QSettings settings;
         settings.setValue(UISettings::minimizeToTrayKey, mMinimizeToTrayBtn->isChecked());
+        settings.setValue(UISettings::languageKey, mLanguageEdit->currentData(Qt::UserRole));
     }
 }

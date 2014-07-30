@@ -18,10 +18,13 @@ namespace Evernus
 {
     namespace UISettings
     {
+        const auto translationPath =  "/trans";
+
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
         const auto marketOrderStateFilterKey = "ui/orders/stateFilter";
         const auto marketOrderPriceStatusFilterKey = "ui/orders/priceStatusFilter";
         const auto minimizeToTrayKey = "ui/mainWindow/minimizeToTray";
+        const auto languageKey = "ui/global/language";
     }
 }
