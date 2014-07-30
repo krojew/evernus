@@ -56,6 +56,7 @@ qt5_wrap_cpp(
     ItemCostModel.h
     ItemCostWidget.h
     KeyEditDialog.h
+    LanguageSelectDialog.h
     MainWindow.h
     MarginToolDialog.h
     MarketLogExternalOrderImporter.h
@@ -224,6 +225,8 @@ add_executable(
     KeyRepository.h
     LanguageComboBox.cpp
     LanguageComboBox.h
+    LanguageSelectDialog.cpp
+    LanguageSelectDialog.h
     LeafFilterProxyModel.cpp
     LeafFilterProxyModel.h
     main.cpp

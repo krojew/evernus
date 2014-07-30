@@ -23,6 +23,7 @@
 #include <QSet>
 
 #include "ExternalOrderImporterNames.h"
+#include "LanguageSelectDialog.h"
 #include "ImportSettings.h"
 #include "WalletSettings.h"
 #include "PathSettings.h"
@@ -47,6 +48,15 @@ namespace Evernus
         , mEveDb(QSqlDatabase::addDatabase("QSQLITE", "eve"))
         , mAPIManager(*this)
     {
+        QSettings settings;
+
+        if (!settings.contains(UISettings::languageKey))
+        {
+            LanguageSelectDialog dlg;
+            if (dlg.exec() == QDialog::Accepted)
+                settings.setValue(UISettings::languageKey, dlg.getSelectedLanguage());
+        }
+
         updateTranslator();
 
         QSplashScreen splash{QPixmap{":/images/splash.png"}};
@@ -74,7 +84,6 @@ namespace Evernus
 
         showSplashMessage(tr("Loading..."), splash);
 
-        QSettings settings;
         settings.setValue(versionKey, applicationVersion());
 
         connect(&mAPIManager, &APIManager::generalError, this, &EvernusApplication::apiError);
