@@ -241,7 +241,7 @@ namespace Evernus
 
         QTranslator mTranslator;
 
-        void updateTranslator();
+        void updateTranslator(const QString &lang);
 
         void createDb();
         void createDbSchema();

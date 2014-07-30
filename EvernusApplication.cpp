@@ -50,14 +50,22 @@ namespace Evernus
     {
         QSettings settings;
 
-        if (!settings.contains(UISettings::languageKey))
+        const auto lang = settings.value(UISettings::languageKey).toString();
+        if (lang.isEmpty())
         {
+            const auto lang = QLocale{}.name();
+            updateTranslator(lang);
+
             LanguageSelectDialog dlg;
             if (dlg.exec() == QDialog::Accepted)
                 settings.setValue(UISettings::languageKey, dlg.getSelectedLanguage());
+            else
+                settings.setValue(UISettings::languageKey, lang);
         }
-
-        updateTranslator();
+        else
+        {
+            updateTranslator(lang);
+        }
 
         QSplashScreen splash{QPixmap{":/images/splash.png"}};
         splash.show();
@@ -1028,7 +1036,8 @@ namespace Evernus
 
     void EvernusApplication::handleNewPreferences()
     {
-        updateTranslator();
+        QSettings settings;
+        updateTranslator(settings.value(UISettings::languageKey).toString());
     }
 
     void EvernusApplication::scheduleCharacterUpdate()
@@ -1053,12 +1062,8 @@ namespace Evernus
         finishExternalOrderImportTask(info);
     }
 
-    void EvernusApplication::updateTranslator()
+    void EvernusApplication::updateTranslator(const QString &lang)
     {
-        QSettings settings;
-
-        const auto lang = settings.value(UISettings::languageKey).toString();
-
         qDebug() << "Switching language to" << lang;
 
         const QLocale locale{lang};
