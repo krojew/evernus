@@ -89,7 +89,6 @@ qt5_wrap_cpp(
     qxtboundfunction.h
     qxtfifo.h
     qxthttpsessionmanager.h
-    qxtmetaobject.h
     qxtsslserver.h
     qxtwebcontent.h
     qxtwebslotservice.h
