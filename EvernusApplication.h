@@ -239,7 +239,7 @@ namespace Evernus
         mutable std::unordered_map<TypeRegionPair, ExternalOrderRepository::EntityList, boost::hash<TypeRegionPair>>
         mTypeRegionOrderCache;
 
-        QTranslator mTranslator;
+        QTranslator mTranslator, mQtTranslator;
 
         void updateTranslator(const QString &lang);
 

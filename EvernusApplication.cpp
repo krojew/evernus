@@ -1070,7 +1070,12 @@ namespace Evernus
         QLocale::setDefault(locale);
 
         removeTranslator(&mTranslator);
+        removeTranslator(&mQtTranslator);
+
         mTranslator.load(locale, "lang", "_", applicationDirPath() + UISettings::translationPath);
+        mQtTranslator.load(locale, "qt", "_", applicationDirPath() + UISettings::translationPath);
+
+        installTranslator(&mQtTranslator);
         installTranslator(&mTranslator);
     }
 

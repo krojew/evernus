@@ -25,4 +25,4 @@ moc_*
 evernus.qrc.depends
 qrc_evernus.cpp
 Release/*
-trans/*
+trans/lang_*
