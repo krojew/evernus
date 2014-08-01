@@ -140,6 +140,7 @@ namespace Evernus
         void updateCurrentTab(int index);
 
         void activateTrayIcon(QSystemTrayIcon::ActivationReason reason);
+        void copyIGBLink();
 
     protected:
         virtual void changeEvent(QEvent *event) override;

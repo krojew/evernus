@@ -12,10 +12,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QCoreApplication>
+#include <QApplication>
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QScrollArea>
+#include <QClipboard>
 #include <QStatusBar>
 #include <QTabWidget>
 #include <QSettings>
@@ -42,6 +43,7 @@
 #include "MenuBarWidget.h"
 #include "AssetsWidget.h"
 #include "AboutDialog.h"
+#include "IGBSettings.h"
 #include "UISettings.h"
 
 #include "MainWindow.h"
@@ -276,6 +278,15 @@ namespace Evernus
         }
     }
 
+    void MainWindow::copyIGBLink()
+    {
+        QSettings settings;
+        QApplication::clipboard()->setText(QString{"http://localhost:%1"}
+            .arg(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>()));
+
+        QMessageBox::information(this, tr("Evernus"), tr("IGB link was copied to the clipboard."));
+    }
+
     void MainWindow::changeEvent(QEvent *event)
     {
         QSettings settings;
@@ -337,6 +348,8 @@ namespace Evernus
         auto toolsMenu = bar->addMenu(tr("&Tools"));
         toolsMenu->addAction(tr("Import conquerable stations"), this, SIGNAL(refreshConquerableStations()));
         toolsMenu->addAction(tr("Ma&rgin tool..."), this, SLOT(showMarginTool()), Qt::CTRL + Qt::Key_M);
+        toolsMenu->addSeparator();
+        toolsMenu->addAction(tr("Copy IGB link"), this, SLOT(copyIGBLink()));
 
         auto helpMenu = bar->addMenu(tr("&Help"));
         helpMenu->addAction(tr("&About..."), this, SLOT(showAbout()));

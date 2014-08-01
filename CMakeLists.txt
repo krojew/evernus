@@ -27,6 +27,8 @@ endif()
 set(TRANSLATIONS lang/lang_pl_PL.ts)
 set_source_files_properties(${TRANSLATIONS} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/trans")
 
+add_definitions("-DQXT_STATIC")
+
 qt5_wrap_cpp(
     MOC_FILES
     AboutDialog.h
@@ -51,6 +53,8 @@ qt5_wrap_cpp(
     FileDownload.h
     FilterTextRepository.h
     GeneralPreferencesWidget.h
+    IGBPreferencesWidget.h
+    IGBService.h
     ImportPreferencesWidget.h
     ItemCostEditDialog.h
     ItemCostModel.h
@@ -78,6 +82,17 @@ qt5_wrap_cpp(
     PreferencesDialog.h
     PricePreferencesWidget.h
     qcustomplot.h
+    qxtabstracthttpconnector.h
+    qxtabstractwebservice.h
+    qxtabstractwebsessionmanager.h
+    qxtabstractwebsessionmanager_p.h
+    qxtboundfunction.h
+    qxtfifo.h
+    qxthttpsessionmanager.h
+    qxtmetaobject.h
+    qxtsslserver.h
+    qxtwebcontent.h
+    qxtwebslotservice.h
     StatisticsWidget.h
     StyledTreeView.h
     TextFilterWidget.h
@@ -199,6 +214,11 @@ add_executable(
     GeneralPreferencesWidget.h
     IconUtils.cpp
     IconUtils.h
+    IGBPreferencesWidget.cpp
+    IGBPreferencesWidget.h
+    IGBService.cpp
+    IGBService.h
+    IGBSettings.h
     ImportPreferencesWidget.cpp
     ImportPreferencesWidget.h
     ImportSettings.h
@@ -304,6 +324,42 @@ add_executable(
     PriceSettings.h
     qcustomplot.cpp
     qcustomplot.h
+    qhttpheader.cpp
+    qhttpheader.h
+    qxtabstracthttpconnector.cpp
+    qxtabstracthttpconnector.h
+    qxtabstractwebservice.cpp
+    qxtabstractwebservice.h
+    qxtabstractwebsessionmanager_p.h
+    qxtabstractwebsessionmanager.cpp
+    qxtabstractwebsessionmanager.h
+    qxtboundcfunction.h
+    qxtboundfunction.h
+    qxtboundfunctionbase.h
+    qxtfifo.cpp
+    qxtfifo.h
+    qxtglobal.cpp
+    qxtglobal.h
+    qxthtmltemplate.cpp
+    qxthtmltemplate.h
+    qxthttpserverconnector.cpp
+    qxthttpsessionmanager.cpp
+    qxthttpsessionmanager.h
+    qxtmetaobject.cpp
+    qxtmetaobject.h
+    qxtmetatype.h
+    qxtnull.cpp
+    qxtnull.h
+    qxtnullable.h
+    qxtscgiserverconnector.cpp
+    qxtsslserver.cpp
+    qxtsslserver.h
+    qxtwebcontent.cpp
+    qxtwebcontent.h
+    qxtwebevent.cpp
+    qxtwebevent.h
+    qxtwebslotservice.cpp
+    qxtwebslotservice.h
     RefType.cpp
     RefType.h
     RefTypeRepository.cpp

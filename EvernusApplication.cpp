@@ -27,6 +27,8 @@
 #include "ImportSettings.h"
 #include "WalletSettings.h"
 #include "PathSettings.h"
+#include "IGBSettings.h"
+#include "IGBService.h"
 #include "UISettings.h"
 #include "PathUtils.h"
 
@@ -89,6 +91,18 @@ namespace Evernus
 
         showSplashMessage(tr("Clearing old wallet entries..."), splash);
         deleteOldWalletEntries();
+
+        showSplashMessage(tr("Setting up IGB service..."), splash);
+        auto service = new IGBService{*this, *this, &mHttpSessionManager, this};
+        connect(service, SIGNAL(openMarginTool()), this, SIGNAL(openMarginTool()));
+
+        mHttpSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
+        mHttpSessionManager.setListenInterface(QHostAddress::LocalHost);
+        mHttpSessionManager.setStaticContentService(service);
+        mHttpSessionManager.setConnector(QxtHttpSessionManager::HttpServer);
+
+        if (settings.value(IGBSettings::enabledKey, true).toBool())
+            mHttpSessionManager.start();
 
         showSplashMessage(tr("Loading..."), splash);
 
@@ -1038,6 +1052,12 @@ namespace Evernus
     {
         QSettings settings;
         updateTranslator(settings.value(UISettings::languageKey).toString());
+
+        mHttpSessionManager.shutdown();
+        mHttpSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
+
+        if (settings.value(IGBSettings::enabledKey, true).toBool())
+            mHttpSessionManager.start();
     }
 
     void EvernusApplication::scheduleCharacterUpdate()

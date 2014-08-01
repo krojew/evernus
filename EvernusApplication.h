@@ -34,6 +34,7 @@
 #include "MarketOrderRepository.h"
 #include "MarketGroupRepository.h"
 #include "UpdateTimerRepository.h"
+#include "qxthttpsessionmanager.h"
 #include "CacheTimerRepository.h"
 #include "FilterTextRepository.h"
 #include "CharacterRepository.h"
@@ -129,6 +130,8 @@ namespace Evernus
         void walletJournalChanged();
         void walletTransactionsChanged();
         void marketOrdersChanged();
+
+        void openMarginTool();
 
     public slots:
         void refreshCharacters();
@@ -240,6 +243,8 @@ namespace Evernus
         mTypeRegionOrderCache;
 
         QTranslator mTranslator, mQtTranslator;
+
+        QxtHttpSessionManager mHttpSessionManager;
 
         void updateTranslator(const QString &lang);
 

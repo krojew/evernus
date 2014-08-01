@@ -14,25 +14,13 @@
  */
 #pragma once
 
-#include <vector>
-#include <memory>
-
-#include "Character.h"
-
-class QDateTime;
-
 namespace Evernus
 {
-    class MarketOrder;
-
-    class MarketOrderProvider
+    namespace IGBSettings
     {
-    public:
-        MarketOrderProvider() = default;
-        virtual ~MarketOrderProvider() = default;
+        const auto portDefault = 4632;
 
-        virtual std::vector<std::shared_ptr<MarketOrder>> getSellOrders(Character::IdType characterId) const = 0;
-        virtual std::vector<std::shared_ptr<MarketOrder>> getBuyOrders(Character::IdType characterId) const = 0;
-        virtual std::vector<std::shared_ptr<MarketOrder>> getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const = 0;
-    };
+        const auto enabledKey = "igb/enabled";
+        const auto portKey = "igb/port";
+    }
 }

@@ -94,6 +94,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(walletTransactionsChanged()), SIGNAL(walletTransactionsChanged()));
             mainWnd.connect(&app, SIGNAL(marketOrdersChanged()), SIGNAL(marketOrdersChanged()));
             mainWnd.connect(&app, SIGNAL(charactersChanged()), SLOT(updateIskData()));
+            mainWnd.connect(&app, SIGNAL(openMarginTool()), SLOT(showMarginTool()));
             mainWnd.showAsSaved();
 
             return app.exec();

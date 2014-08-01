@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Evernus</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        
+        <style>
+            body {
+                background: #000; 
+                color: #77ddc9
+            }
+            
+            a {
+                color: #77ddc9
+            }
+            
+            a:hover {
+                text-decoration: none;
+            }
+            
+            #menu a {
+                color: #fff;
+            }
+            
+            .selected-order {
+                background: #555;
+            }
+        </style>
+        
+        <script>
+            function openMarginTool() {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/openMarginTool", true);
+                xhr.send();
+            }
+        </script>
+    </head>
+        <body onload="CCPEVE.requestTrust('http://localhost:<?=port?>');">
+        <h1 style="text-align: center">Evernus</h1>
+        <p style="text-align: center"><a href="http://evernus.com">http://evernus.com</a></p>
+        
+        <p id="menu">
+            <a href="/active"><?=active-link-text?></a> |
+            <a href="/fulfilled"><?=fulfilled-link-text?></a> |
+            <a href="#" onclick="openMarginTool();"><?=open-margin-tool-link-text?></a>
+        </p>
+        
+        <hr />
+        
+        <?=content?>
+    </body>
+</html>

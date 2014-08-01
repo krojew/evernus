@@ -1,0 +1,47 @@
+<script>
+    var orders = [ <?=order-ids?> ];
+    var items = [ <?=type-ids?> ];
+    var lastAdvance = new Date();
+    
+    function showType(typeId) {
+        CCPEVE.showMarketDetails(typeId);
+    }
+    
+    function advanceOrder(delta) {
+        if (orders.length == 0)
+            return;
+            
+        var curTime = new Date();
+        if (curTime - lastAdvance < 1000)
+            return;
+            
+        var currentOrder = Math.max(0, parseInt(document.getElementById("current-order").value)) - 1 + delta;
+        currentOrder %= orders.length;
+        document.getElementById("current-order").value = currentOrder + 1;
+            
+        var selected = document.getElementsByClassName("selected-order");
+        for (var i = 0; i < selected.length; ++i)
+            selected[i].className = selected[i].className.replace(" selected-order", "");
+            
+        document.getElementById("order-" + orders[currentOrder]).className += " selected-order";
+        showType(items[currentOrder]);
+        
+        lastAdvance = curTime;
+    }
+</script>
+
+<p>
+    <?=current-order-text?> <input id="current-order" type="number" value="0" />
+    <input type="button" value="<?=prev-order-text?>" onclick="advanceOrder(-1);" />
+    <input type="button" value="<?=next-order-text?>" onclick="advanceOrder(1);" />
+</p>
+
+<p><?=sell-orders-text?></p>
+<ol>
+    <?=sell-orders?>
+</ol>
+
+<p><?=buy-orders-text?></p>
+<ol start="<?=buy-orders-start?>">
+    <?=buy-orders?>
+</ol>
