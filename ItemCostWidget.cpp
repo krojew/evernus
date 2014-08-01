@@ -69,6 +69,7 @@ namespace Evernus
 
         mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);
+        mView->setSelectionMode(QAbstractItemView::SingleSelection);
         mView->setModel(&mProxy);
         connect(mView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &ItemCostWidget::selectCost);
@@ -147,6 +148,8 @@ namespace Evernus
         {
             mItemCostRepo.store(cost);
             mModel.reset();
+
+            mView->header()->resizeSections(QHeaderView::ResizeToContents);
 
             emit costsChanged();
         }
