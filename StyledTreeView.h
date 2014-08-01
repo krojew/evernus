@@ -21,8 +21,18 @@ namespace Evernus
     class StyledTreeView
         : public QTreeView
     {
+        Q_OBJECT
+
     public:
         explicit StyledTreeView(QWidget *parent = nullptr);
         virtual ~StyledTreeView() = default;
+
+    private slots:
+        void copy();
+        void copyRows();
+        void copyRawData();
+
+    private:
+        void copyRowsWithRole(int role) const;
     };
 }

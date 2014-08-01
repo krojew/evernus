@@ -79,6 +79,7 @@ qt5_wrap_cpp(
     PricePreferencesWidget.h
     qcustomplot.h
     StatisticsWidget.h
+    StyledTreeView.h
     TextFilterWidget.h
     WalletEntryFilterWidget.h
     WalletJournalModel.h
