@@ -175,7 +175,7 @@
     <message>
         <location filename="../CharacterBoundWidget.cpp" line="94"/>
         <source>&lt;strong&gt;Warning!&lt;/strong&gt; This data is %1 old and may need an update.</source>
-        <translation>&lt;strong&gt;Uwaga!&lt;/strong&gt; Dane są stare (%1) i wymagają zakutalizacji.</translation>
+        <translation>&lt;strong&gt;Uwaga!&lt;/strong&gt; Dane są stare (%1) i wymagają akutalizacji.</translation>
     </message>
 </context>
 <context>
