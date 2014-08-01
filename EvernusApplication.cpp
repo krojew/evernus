@@ -52,17 +52,23 @@ namespace Evernus
     {
         QSettings settings;
 
-        const auto lang = settings.value(UISettings::languageKey).toString();
+        auto lang = settings.value(UISettings::languageKey).toString();
         if (lang.isEmpty())
         {
-            const auto lang = QLocale{}.name();
+            lang = QLocale{}.name();
             updateTranslator(lang);
 
             LanguageSelectDialog dlg;
             if (dlg.exec() == QDialog::Accepted)
-                settings.setValue(UISettings::languageKey, dlg.getSelectedLanguage());
-            else
+            {
+                lang = dlg.getSelectedLanguage();
                 settings.setValue(UISettings::languageKey, lang);
+                updateTranslator(lang);
+            }
+            else
+            {
+                settings.setValue(UISettings::languageKey, lang);
+            }
         }
         else
         {
