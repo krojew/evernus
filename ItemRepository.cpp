@@ -97,20 +97,23 @@ namespace Evernus
             DatabaseUtils::execQuery(query);
         }
 
-        QStringList restBindings;
-        for (auto i = 0; i < totalRows % maxRowsPerInsert; ++i)
-            restBindings << bindings;
-
-        const auto restQueryStr = baseQueryStr.arg(restBindings.join(", "));
-        auto query = prepare(restQueryStr);
-
-        for (auto row = batches * maxRowsPerInsert; row < totalRows; ++row)
+        if ((totalRows % maxRowsPerInsert) != 0)
         {
-            for (const auto &column : columns)
-                query.addBindValue(map[column][row]);
-        }
+            QStringList restBindings;
+            for (auto i = 0; i < totalRows % maxRowsPerInsert; ++i)
+                restBindings << bindings;
 
-        DatabaseUtils::execQuery(query);
+            const auto restQueryStr = baseQueryStr.arg(restBindings.join(", "));
+            auto query = prepare(restQueryStr);
+
+            for (auto row = batches * maxRowsPerInsert; row < totalRows; ++row)
+            {
+                for (const auto &column : columns)
+                    query.addBindValue(map[column][row]);
+            }
+
+            DatabaseUtils::execQuery(query);
+        }
     }
 
     void ItemRepository::fillProperties(const Item &entity, PropertyMap &map)
