@@ -60,6 +60,9 @@ namespace Evernus
     private slots:
         void showPriceInfo(const QModelIndex &index);
 
+        void lookupOnEveMarketdata();
+        void lookupOnEveCentral();
+
     private:
         StyledTreeView *mView = nullptr;
 
@@ -71,5 +74,7 @@ namespace Evernus
 
         MarketOrderModel *mSource = nullptr;
         MarketOrderFilterProxyModel mProxy;
+
+        void lookupOnWeb(const QString &baseUrl) const;
     };
 }

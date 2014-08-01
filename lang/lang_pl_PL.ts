@@ -1600,6 +1600,14 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <source>Total size:</source>
         <translation>Całkowita objętość:</translation>
     </message>
+    <message>
+        <source>Lookup item on eve-marketdata.com</source>
+        <translation>Sprawdź cenę na eve-marketdata.com</translation>
+    </message>
+    <message>
+        <source>Lookup item on eve-central.com</source>
+        <translation>Sprawdź cenę na eve-central.com</translation>
+    </message>
 </context>
 <context>
     <name>Evernus::MarketOrderViewWithTransactions</name>

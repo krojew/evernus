@@ -12,12 +12,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QDesktopServices>
+#include <QActionGroup>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QCursor>
 #include <QLabel>
 #include <QFont>
+#include <QUrl>
 
 #include "MarketOrderVolumeItemDelegate.h"
 #include "MarketOrderInfoWidget.h"
@@ -81,6 +84,20 @@ namespace Evernus
         mTotalSizeLabel->setFont(font);
 
         infoLayout->addStretch();
+
+        auto actionGroup = new QActionGroup{this};
+
+        auto action = actionGroup->addAction(tr("Lookup item on eve-marketdata.com"));
+        connect(action, &QAction::triggered, this, &MarketOrderView::lookupOnEveMarketdata);
+
+        action = actionGroup->addAction(tr("Lookup item on eve-central.com"));
+        connect(action, &QAction::triggered, this, &MarketOrderView::lookupOnEveCentral);
+
+        action = new QAction{this};
+        action->setSeparator(true);
+
+        mView->addAction(action);
+        mView->addActions(actionGroup->actions());
     }
 
     QItemSelectionModel *MarketOrderView::getSelectionModel() const
@@ -160,5 +177,25 @@ namespace Evernus
         infoWidget->show();
         infoWidget->activateWindow();
         connect(this, &MarketOrderView::closeOrderInfo, infoWidget, &MarketOrderInfoWidget::deleteLater);
+    }
+
+    void MarketOrderView::lookupOnEveMarketdata()
+    {
+        lookupOnWeb("http://eve-marketdata.com/price_check.php?type_id=%1");
+    }
+
+    void MarketOrderView::lookupOnEveCentral()
+    {
+        lookupOnWeb("https://eve-central.com/home/quicklook.html?typeid=%1");
+    }
+
+    void MarketOrderView::lookupOnWeb(const QString &baseUrl) const
+    {
+        if (mSource == nullptr)
+            return;
+
+        const auto typeId = mSource->getOrderTypeId(mProxy.mapToSource(mView->currentIndex()));
+        if (typeId != EveType::invalidId)
+            QDesktopServices::openUrl(baseUrl.arg(typeId));
     }
 }
