@@ -421,6 +421,7 @@ add_executable(
     WarningBarWidget.h
     ${MOC_FILES}
     ${RCC_FILES}
+    ${TRANSLATIONS}
     ${QM_FILES}
     ${ADDITIONAL_SRC}
 )

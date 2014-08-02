@@ -152,6 +152,8 @@ namespace Evernus
 
         void handleNewPreferences();
 
+        void importFromMentat();
+
     private slots:
         void scheduleCharacterUpdate();
         void updateCharacters();

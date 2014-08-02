@@ -18,6 +18,7 @@
 
 #include <QSplashScreen>
 #include <QMessageBox>
+#include <QFileDialog>
 #include <QSettings>
 #include <QDebug>
 #include <QSet>
@@ -1064,6 +1065,89 @@ namespace Evernus
 
         if (settings.value(IGBSettings::enabledKey, true).toBool())
             mHttpSessionManager.start();
+    }
+
+    void EvernusApplication::importFromMentat()
+    {
+        const auto path = QFileDialog::getExistingDirectory(activeWindow(), tr("Select Mentat directory"));
+        if (path.isEmpty())
+            return;
+
+        auto db = QSqlDatabase::addDatabase("QSQLITE", "mentat");
+        db.setDatabaseName(path + "/Storage/EVEMentat.dynamic.database");
+        db.setConnectOptions("QSQLITE_OPEN_READONLY");
+
+        if (!db.open())
+        {
+            QMessageBox::warning(activeWindow(), tr("Error"), tr("Error opening %1").arg(path + "/Storage/EVEMentat.dynamic.database"));
+            return;
+        }
+
+        const auto task = startTask(tr("Importing order history..."));
+        const auto charIds = mCharacterRepository->fetchAllIds();
+
+        auto query = db.exec(
+            "SELECT * FROM mentatOrders o INNER JOIN mentatOrdersHistory h ON h.orderID = o.orderID WHERE o.orderState != 0 AND o.isCorp = 0");
+
+        std::vector<MarketOrder> orders;
+        if (query.size() > 0)
+            orders.reserve(query.size());
+
+        while (query.next())
+        {
+            const auto charId = query.value("charID").value<Character::IdType>();
+            if (charIds.find(charId) == std::end(charIds))
+                continue;
+
+            auto issued = query.value("issued").toDateTime();
+            issued.setTimeSpec(Qt::UTC);
+
+            auto lastSeen = query.value("referenceTime").toDateTime();
+            lastSeen.setTimeSpec(Qt::UTC);
+
+            auto intState = query.value("orderState").toInt();
+            if (intState < static_cast<int>(MarketOrder::State::Active) || intState > static_cast<int>(MarketOrder::State::CharacterDeleted))
+                intState = static_cast<int>(MarketOrder::State::Fulfilled);
+
+            MarketOrder order{query.value("orderID").value<MarketOrder::IdType>()};
+            order.setAccountKey(query.value("accountID").value<short>());
+            order.setCharacterId(charId);
+            order.setDuration(query.value("duration").value<short>());
+            order.setEscrow(query.value("escrow").toDouble() / 100.);
+            order.setFirstSeen(issued);
+            order.setIssued(issued);
+            order.setLastSeen(lastSeen);
+            order.setLocationId(query.value("stationID").toULongLong());
+            order.setMinVolume(query.value("minVolume").toUInt());
+            order.setPrice(query.value("price").toDouble() / 100.);
+            order.setRange(query.value("range").value<short>());
+            order.setState(static_cast<MarketOrder::State>(intState));
+            order.setType((query.value("bid").toBool()) ? (MarketOrder::Type::Buy) : (MarketOrder::Type::Sell));
+            order.setTypeId(query.value("typeID").value<EveType::IdType>());
+            order.setVolumeEntered(query.value("volEntered").toUInt());
+            order.setVolumeRemaining(query.value("volRemaining").toUInt());
+
+            orders.emplace_back(std::move(order));
+
+            emit taskInfoChanged(task, tr("Importing order history: %1 processed").arg(orders.size()));
+
+            processEvents();
+        }
+
+        emit taskInfoChanged(task, tr("Importing order history: storing %1 orders (this may take a while)").arg(orders.size()));
+
+        try
+        {
+            mMarketOrderRepository->batchStore(orders, true);
+            emit taskEnded(task, QString{});
+        }
+        catch (const std::exception &e)
+        {
+            emit taskEnded(task, e.what());
+        }
+
+        mArchivedOrders.clear();
+        emit marketOrdersChanged();
     }
 
     void EvernusApplication::scheduleCharacterUpdate()

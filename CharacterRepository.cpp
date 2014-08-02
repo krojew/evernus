@@ -169,6 +169,17 @@ namespace Evernus
         return query.value(0).toUInt() != 0;
     }
 
+    std::unordered_set<Character::IdType> CharacterRepository::fetchAllIds() const
+    {
+        std::unordered_set<Character::IdType> result;
+
+        auto query = exec(QString{"SELECT id FROM %1"}.arg(getTableName()));
+        while (query.next())
+            result.emplace(query.value(0).value<Character::IdType>());
+
+        return result;
+    }
+
     QStringList CharacterRepository::getColumns() const
     {
         return QStringList{}

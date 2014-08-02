@@ -352,6 +352,8 @@ namespace Evernus
         fileMenu->addAction(QIcon{":/images/user.png"}, tr("&Manage characters..."), this, SLOT(showCharacterManagement()));
         fileMenu->addAction(QIcon{":/images/wrench.png"}, tr("&Preferences..."), this, SLOT(showPreferences()), Qt::CTRL + Qt::Key_O);
         fileMenu->addSeparator();
+        fileMenu->addAction(tr("Import EVE Mentat order history..."), this, SIGNAL(importFromMentat()));
+        fileMenu->addSeparator();
         fileMenu->addAction(tr("E&xit"), this, SLOT(close()));
 
         auto toolsMenu = bar->addMenu(tr("&Tools"));

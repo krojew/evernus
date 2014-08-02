@@ -116,6 +116,8 @@ namespace Evernus
         void importExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void importExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
 
+        void importFromMentat();
+
     public slots:
         void showCharacterManagement();
         void showPreferences();

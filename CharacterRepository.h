@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <unordered_set>
+
 #include "Repository.h"
 #include "Character.h"
 
@@ -42,6 +44,8 @@ namespace Evernus
         void disableByKey(Key::IdType id, const std::vector<Character::IdType> &excluded) const;
 
         bool hasCharacters() const;
+
+        std::unordered_set<Character::IdType> fetchAllIds() const;
 
     private:
         virtual QStringList getColumns() const override;
