@@ -161,6 +161,14 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    bool CharacterRepository::hasCharacters() const
+    {
+        auto query = exec(QString{"SELECT COUNT(*) FROM %1"}.arg(getTableName()));
+        query.next();
+
+        return query.value(0).toUInt() != 0;
+    }
+
     QStringList CharacterRepository::getColumns() const
     {
         return QStringList{}

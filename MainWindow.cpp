@@ -98,6 +98,9 @@ namespace Evernus
         connect(mTrayIcon, &QSystemTrayIcon::activated, this, &MainWindow::activateTrayIcon);
 
         setWindowIcon(QIcon{":/images/main-icon.png"});
+
+        if (!mCharacterRepository.hasCharacters())
+            QMetaObject::invokeMethod(this, "showCharacterManagement", Qt::QueuedConnection);
     }
 
     void MainWindow::showAsSaved()

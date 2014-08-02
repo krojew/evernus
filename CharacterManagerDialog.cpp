@@ -24,6 +24,7 @@
 #include <QTabWidget>
 #include <QGroupBox>
 #include <QTreeView>
+#include <QLabel>
 
 #include "KeyEditDialog.h"
 #include "Repository.h"
@@ -201,6 +202,8 @@ namespace Evernus
         characterView->setSortingEnabled(true);
         connect(characterView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &CharacterManagerDialog::selectCharacter);
+
+        pageLayout->addWidget(new QLabel{tr("In order to manage characters, add keys first in the Keys tab."), this});
 
         auto btnLayout = new QHBoxLayout{};
         pageLayout->addLayout(btnLayout);

@@ -204,6 +204,10 @@
         <translation>Postacie</translation>
     </message>
     <message>
+        <source>In order to manage characters, add keys first in the Keys tab.</source>
+        <translation>Aby zarządzać postaciami, musisz najpierw dodać klucz w zakładce Klucze.</translation>
+    </message>
+    <message>
         <location filename="../CharacterManagerDialog.cpp" line="51"/>
         <source>Keys</source>
         <translation>Klucze</translation>

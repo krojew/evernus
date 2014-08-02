@@ -41,6 +41,8 @@ namespace Evernus
         void disableByKey(Key::IdType id) const;
         void disableByKey(Key::IdType id, const std::vector<Character::IdType> &excluded) const;
 
+        bool hasCharacters() const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const Character &entity, QSqlQuery &query) const override;
