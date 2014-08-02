@@ -431,47 +431,52 @@
         <translation>Corporation contracting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="268"/>
+        <location filename="../CharacterWidget.cpp" line="265"/>
+        <source>never imported</source>
+        <translation>nigdy nie zaimportowane</translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="270"/>
         <source>Character sheet: %1</source>
         <translation>Karta postaci: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="269"/>
+        <location filename="../CharacterWidget.cpp" line="271"/>
         <source>Asset list: %1</source>
         <translation>Aktywa: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="270"/>
+        <location filename="../CharacterWidget.cpp" line="272"/>
         <source>Market orders: %1</source>
         <translation>Zlecenia: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="271"/>
+        <location filename="../CharacterWidget.cpp" line="273"/>
         <source>Wallet journal: %1</source>
         <translation>Dziennik: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="272"/>
+        <location filename="../CharacterWidget.cpp" line="274"/>
         <source>Wallet transactions: %1</source>
         <translation>Transakcje: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="422"/>
+        <location filename="../CharacterWidget.cpp" line="424"/>
         <source>Character error</source>
         <translation>Błąd postaci</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="422"/>
+        <location filename="../CharacterWidget.cpp" line="424"/>
         <source>Character not found in DB. Refresh characters.</source>
         <translation>Postać nie została znaleziona w bazie danych. Odśwież postacie.</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="500"/>
+        <location filename="../CharacterWidget.cpp" line="502"/>
         <source>&lt;strong&gt;%1 of %2&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1 z %2&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="506"/>
+        <location filename="../CharacterWidget.cpp" line="508"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>
