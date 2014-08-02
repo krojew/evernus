@@ -194,7 +194,14 @@ namespace Evernus
             break;
         case Qt::DisplayRole:
             {
-                const char * const stateNames[] = { "Active", "Closed", "Fulfilled", "Cancelled", "Pending", "Character Deleted" };
+                const char * const stateNames[] = {
+                    QT_TR_NOOP("Active"),
+                    QT_TR_NOOP("Closed"),
+                    QT_TR_NOOP("Fulfilled"),
+                    QT_TR_NOOP("Cancelled"),
+                    QT_TR_NOOP("Pending"),
+                    QT_TR_NOOP("Character Deleted")
+                };
 
                 QLocale locale;
 

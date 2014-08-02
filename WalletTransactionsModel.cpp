@@ -83,8 +83,8 @@ namespace Evernus
                 return QLocale{}.toString(mData[row][timestampColumn].toDateTime().toLocalTime());
             case typeColumn:
                 return (static_cast<WalletTransaction::Type>(mData[row][typeColumn].toInt()) == WalletTransaction::Type::Buy) ?
-                       ("Buy") :
-                       ("Sell");
+                       (tr("Buy")) :
+                       (tr("Sell"));
             case quantityColumn:
                 return QLocale{}.toString(mData[row][quantityColumn].toUInt());
             case priceColumn:

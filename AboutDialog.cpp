@@ -35,12 +35,10 @@ namespace Evernus
 
         const auto link = "http://evernus.com";
 
-        auto aboutLabel = new QLabel{tr(R"(
-<strong>%1</strong><br />
-%2<br /><br />
-Created by <strong><a href='http://evewho.com/pilot/Pete+Butcher'>Pete Butcher</a></strong><br />
-All donations are welcome :)<br />
-<a href='%3'>%3</a>)")
+        auto aboutLabel = new QLabel{tr(
+            "<strong>%1</strong><br />%2<br /><br />"
+            "Created by <strong><a href='http://evewho.com/pilot/Pete+Butcher'>Pete Butcher</a></strong><br />"
+            "All donations are welcome :)<br /><a href='%3'>%3</a>")
                 .arg(QCoreApplication::applicationName())
                 .arg(QCoreApplication::applicationVersion())
                 .arg(link),
