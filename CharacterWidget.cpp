@@ -261,7 +261,9 @@ namespace Evernus
             if (dt < curTime)
             {
                 show = true;
-                new QListWidgetItem{QIcon{":/images/error.png"}, text.arg(curLocale.toString(dt)), mUpdateTimersList};
+                new QListWidgetItem{QIcon{":/images/error.png"},
+                                    text.arg((dt.isValid()) ? (curLocale.toString(dt)) : (tr("never imported"))),
+                                    mUpdateTimersList};
             }
         };
 
