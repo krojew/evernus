@@ -114,8 +114,8 @@ namespace Evernus
             idContainer << QString::number(order->getId());
             typeIdContainer << QString::number(order->getTypeId());
 
-            result.append(QString{"<li><a class='order' id='order-%3' href='#' onclick='showType(%1);'>%2</a></li>"}
-                .arg(order->getTypeId())
+            result.append(QString{"<li><a class='order' id='order-%3' href='#' onclick='showOrder(%1);'>%2</a></li>"}
+                .arg(order->getId())
                 .arg(mDataProvider.getTypeName(order->getTypeId()))
                 .arg(order->getId()));
         }

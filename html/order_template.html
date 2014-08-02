@@ -3,8 +3,34 @@
     var items = [ <?=type-ids?> ];
     var lastAdvance = new Date();
     
+    function unselectOrders() {
+        var selected = document.getElementsByClassName("selected-order");
+        for (var i = 0; i < selected.length; ++i)
+            selected[i].className = selected[i].className.replace(" selected-order", "");
+    }
+    
+    function selectOrder(orderId) {
+        document.getElementById("order-" + orderId).className += " selected-order";
+    }
+    
     function showType(typeId) {
         CCPEVE.showMarketDetails(typeId);
+    }
+    
+    function showOrder(orderId) {
+        var curTime = new Date();
+        if (curTime - lastAdvance < 1000)
+            return;
+            
+        unselectOrders();
+        selectOrder(orderId);
+            
+        var orderNo = orders.indexOf(orderId);
+        document.getElementById("current-order").value = orderNo + 1;
+        
+        showType(items[orderNo]);
+        
+        lastAdvance = curTime;
     }
     
     function advanceOrder(delta) {
@@ -17,13 +43,14 @@
             
         var currentOrder = Math.max(0, parseInt(document.getElementById("current-order").value)) - 1 + delta;
         currentOrder %= orders.length;
+        if (currentOrder < 0)
+            currentOrder = orders.length + currentOrder;
+            
         document.getElementById("current-order").value = currentOrder + 1;
             
-        var selected = document.getElementsByClassName("selected-order");
-        for (var i = 0; i < selected.length; ++i)
-            selected[i].className = selected[i].className.replace(" selected-order", "");
-            
-        document.getElementById("order-" + orders[currentOrder]).className += " selected-order";
+        unselectOrders();
+        selectOrder(orders[currentOrder]);
+        
         showType(items[currentOrder]);
         
         lastAdvance = curTime;
