@@ -14,6 +14,7 @@
         <file>images/flag_green.png</file>
         <file>images/flag_yellow.png</file>
         <file>images/generic-portrait.jpg</file>
+        <file>images/help.png</file>
         <file>images/hourglass.png</file>
         <file>images/image.png</file>
         <file>images/information.png</file>
@@ -29,7 +30,9 @@
         <file>images/page_copy.png</file>
         <file>images/pencil.png</file>
         <file>images/splash.png</file>
+        <file>images/user.png</file>
         <file>images/world.png</file>
+        <file>images/wrench.png</file>
         
         <file>images/flags/en_US.png</file>
         <file>images/flags/pl_PL.png</file>

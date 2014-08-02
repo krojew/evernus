@@ -122,6 +122,7 @@ namespace Evernus
         void showMarginTool();
         void showAbout();
         void showError(const QString &info);
+        void openHelp();
 
         void addNewTaskInfo(uint taskId, const QString &description);
 

@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QDesktopServices>
 #include <QApplication>
 #include <QCloseEvent>
 #include <QMessageBox>
@@ -157,6 +158,11 @@ namespace Evernus
     {
         qCritical() << info;
         QMessageBox::warning(this, tr("Error"), info);
+    }
+
+    void MainWindow::openHelp()
+    {
+        QDesktopServices::openUrl(QUrl{"http://evernus.com/help"});
     }
 
     void MainWindow::addNewTaskInfo(uint taskId, const QString &description)
@@ -340,8 +346,8 @@ namespace Evernus
         auto bar = menuBar();
 
         auto fileMenu = bar->addMenu(tr("&File"));
-        fileMenu->addAction(tr("&Manage characters..."), this, SLOT(showCharacterManagement()));
-        fileMenu->addAction(tr("&Preferences..."), this, SLOT(showPreferences()), Qt::CTRL + Qt::Key_O);
+        fileMenu->addAction(QIcon{":/images/user.png"}, tr("&Manage characters..."), this, SLOT(showCharacterManagement()));
+        fileMenu->addAction(QIcon{":/images/wrench.png"}, tr("&Preferences..."), this, SLOT(showPreferences()), Qt::CTRL + Qt::Key_O);
         fileMenu->addSeparator();
         fileMenu->addAction(tr("E&xit"), this, SLOT(close()));
 
@@ -352,6 +358,8 @@ namespace Evernus
         toolsMenu->addAction(tr("Copy IGB link"), this, SLOT(copyIGBLink()));
 
         auto helpMenu = bar->addMenu(tr("&Help"));
+        helpMenu->addAction(QIcon{":/images/help.png"}, tr("&Online help..."), this, SLOT(openHelp()));
+        helpMenu->addSeparator();
         helpMenu->addAction(tr("&About..."), this, SLOT(showAbout()));
 
         mMenuWidget = new MenuBarWidget{mCharacterRepository, this};
