@@ -88,7 +88,7 @@ namespace Evernus
     {
         Q_UNUSED(deselected);
 
-        if (mOrderModel != nullptr)
+        if (mOrderModel != nullptr && !selected.isEmpty())
         {
             const auto index = mOrderView->getProxyModel().mapToSource(selected.indexes().first());
             const auto typeId = mOrderModel->getOrderTypeId(index);
