@@ -102,7 +102,7 @@ namespace Evernus
 
     void DateFilteredPlotWidget::saveBalancePlot()
     {
-        const auto file = QFileDialog::getSaveFileName(this, tr("Save plot"), QString{}, "Images (*.png *.jpg *.jpeg *.bmp *.ppm *.xbm *.xpm)");
+        const auto file = QFileDialog::getSaveFileName(this, tr("Save plot"), QString{}, tr("Images (*.png *.jpg *.jpeg *.bmp *.ppm *.xbm *.xpm)"));
         if (file.isEmpty())
             return;
 

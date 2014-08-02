@@ -518,6 +518,10 @@
         <source>Error saving image.</source>
         <translation>Błąd zapisu obrazka.</translation>
     </message>
+    <message>
+        <source>Images (*.png *.jpg *.jpeg *.bmp *.ppm *.xbm *.xpm)</source>
+        <translation>Obrazy (*.png *.jpg *.jpeg *.bmp *.ppm *.xbm *.xpm)</translation>
+    </message>
 </context>
 <context>
     <name>Evernus::DateRangeWidget</name>
