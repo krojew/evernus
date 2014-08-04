@@ -68,7 +68,7 @@ namespace Evernus
         if (!doc.setContent(reply, false, &docError))
         {
             if (!quiet)
-                QMessageBox::warning(nullptr, tr("Error"), tr("Parsing response from the update server: %1").arg(docError));
+                QMessageBox::warning(nullptr, tr("Error"), tr("Error parsing response from the update server: %1").arg(docError));
 
             return;
         }
