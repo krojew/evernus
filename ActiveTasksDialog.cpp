@@ -74,7 +74,7 @@ namespace Evernus
 
         mAutoCloseBtn = new QCheckBox{tr("Close automatically"), this};
         progressLayout->addWidget(mAutoCloseBtn);
-        mAutoCloseBtn->setChecked(settings.value(UISettings::autoCloseTasksKey).toBool());
+        mAutoCloseBtn->setChecked(settings.value(UISettings::autoCloseTasksKey, true).toBool());
         connect(mAutoCloseBtn, &QCheckBox::toggled, this, &ActiveTasksDialog::autoCloseSave);
 
         mTotalProgressWidget = new QProgressBar{this};
