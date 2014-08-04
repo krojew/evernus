@@ -111,7 +111,7 @@ namespace Evernus
         const auto baseQuery = QString{"DELETE FROM %1 WHERE %2"}.arg(getTableName());
         const QString baseWhere{"(type_id = ? AND location_id = ?)"};
 
-        const auto batchSize = 500;
+        const auto batchSize = 300;
         const auto batches = set.size() / batchSize;
 
         auto it = std::begin(set);
