@@ -96,8 +96,9 @@ namespace Evernus
 
     MarketOrderRepository::AggrData MarketOrderRepository::getAggregatedData(Character::IdType characterId) const
     {
-        auto query = prepare(QString{"SELECT type, COUNT(*), SUM(price) FROM %1 WHERE character_id = ? AND state = ? GROUP BY type"}
-            .arg(getTableName()));
+        auto query = prepare(QString{
+            "SELECT type, COUNT(*), SUM(price), SUM(volume_remaining) FROM %1 WHERE character_id = ? AND state = ? GROUP BY type"}
+                .arg(getTableName()));
         query.bindValue(0, characterId);
         query.bindValue(1, static_cast<int>(MarketOrder::State::Active));
 
@@ -121,11 +122,92 @@ namespace Evernus
                 {
                     singleData->mCount = query.value(1).toUInt();
                     singleData->mPriceSum = query.value(2).toDouble();
+                    singleData->mVolume = query.value(3).toUInt();
                 }
             }
         }
 
         return data;
+    }
+
+    MarketOrderRepository::CustomAggregatedData MarketOrderRepository::getCustomAggregatedData(Character::IdType characterId,
+                                                                                               AggregateColumn groupingColumn,
+                                                                                               AggregateOrderColumn orderColumn,
+                                                                                               int limit,
+                                                                                               bool includeActive,
+                                                                                               bool includeNotFulfilled) const
+    {
+        CustomAggregatedData result;
+
+        QString queryStr{R"(
+            SELECT %1, COUNT(*), SUM(price), SUM(volume_entered) 
+            FROM %2 
+            WHERE character_id = ? %3 
+            GROUP BY %1
+            ORDER BY %4 DESC
+            LIMIT %5)"};
+
+        switch (groupingColumn) {
+        case AggregateColumn::TypeId:
+            queryStr = queryStr.arg("type_id");
+            break;
+        case AggregateColumn::LocationId:
+            queryStr = queryStr.arg("location_id");
+            break;
+        default:
+            return result;
+        }
+
+        queryStr = queryStr.arg(getTableName());
+
+        if (includeActive && includeNotFulfilled)
+            queryStr = queryStr.arg(QString{});
+        else if (includeActive)
+            queryStr = queryStr.arg("AND state IN (?, ?)");
+        else if (includeNotFulfilled)
+            queryStr = queryStr.arg("AND state != ?");
+        else
+            queryStr = queryStr.arg("AND state = ?");
+
+        queryStr = queryStr.arg(static_cast<int>(orderColumn) + 1);
+
+        auto query = prepare(queryStr.arg(limit));
+        query.addBindValue(characterId);
+
+        if (!includeActive || !includeNotFulfilled)
+        {
+            if (includeActive)
+            {
+                query.addBindValue(static_cast<int>(MarketOrder::State::Active));
+                query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
+            }
+            else if (includeNotFulfilled)
+            {
+                query.addBindValue(static_cast<int>(MarketOrder::State::Active));
+            }
+            else
+            {
+                query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
+            }
+        }
+
+        DatabaseUtils::execQuery(query);
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+        {
+            SingleAggrData data;
+            data.mCount = query.value(1).toUInt();
+            data.mPriceSum = query.value(2).toDouble();
+            data.mVolume = query.value(3).toUInt();
+
+            result.emplace_back(std::make_pair(query.value(0).value<quint64>(), std::move(data)));
+        }
+
+        return result;
     }
 
     MarketOrderRepository::OrderStateMap MarketOrderRepository::getOrderStates(Character::IdType characterId) const

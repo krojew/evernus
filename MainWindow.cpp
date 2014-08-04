@@ -395,6 +395,8 @@ namespace Evernus
                                              mMarketOrderSnapshotRepository,
                                              mWalletJournalRepository,
                                              mWalletTransactionRepository,
+                                             mMarketOrderRepository,
+                                             mEveDataProvider,
                                              this};
         addTab(statsTab, tr("Statistics"));
         connect(this, &MainWindow::charactersChanged, statsTab, &StatisticsWidget::updateBalanceData);

@@ -81,6 +81,9 @@ namespace Evernus
         QLabel *mBuyOrderValueLabel = nullptr;
         QLabel *mSellOrderValueLabel = nullptr;
         QLabel *mTotalOrderValueLabel = nullptr;
+        QLabel *mBuyOrderVolumeLabel = nullptr;
+        QLabel *mSellOrderVolumeLabel = nullptr;
+        QLabel *mTotalOrderVolumeLabel = nullptr;
 
         QDoubleSpinBox *mCorpStandingEdit = nullptr;
         QDoubleSpinBox *mFactionStandingEdit = nullptr;

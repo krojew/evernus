@@ -15,8 +15,17 @@
 #include <unordered_map>
 #include <memory>
 
+#include <QApplication>
 #include <QVBoxLayout>
+#include <QPushButton>
+#include <QHeaderView>
+#include <QClipboard>
+#include <QTabWidget>
+#include <QTableView>
+#include <QComboBox>
 #include <QGroupBox>
+#include <QSpinBox>
+#include <QAction>
 #include <QHash>
 
 #include "MarketOrderValueSnapshotRepository.h"
@@ -25,6 +34,7 @@
 #include "WalletTransactionRepository.h"
 #include "WalletSnapshotRepository.h"
 #include "DateFilteredPlotWidget.h"
+
 #include "qcustomplot.h"
 
 #include "StatisticsWidget.h"
@@ -36,6 +46,8 @@ namespace Evernus
                                        const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
                                        const WalletJournalEntryRepository &journalRepo,
                                        const WalletTransactionRepository &transactionRepo,
+                                       const MarketOrderRepository &orderRepo,
+                                       const EveDataProvider &dataProvider,
                                        QWidget *parent)
         : QWidget(parent)
         , mAssetSnapshotRepository(assetSnapshotRepo)
@@ -43,41 +55,16 @@ namespace Evernus
         , mMarketOrderSnapshotRepository(marketOrderSnapshotRepo)
         , mJournalRepo(journalRepo)
         , mTransactionRepo(transactionRepo)
+        , mAggrModel(orderRepo, dataProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
-        auto balanceGroup = new QGroupBox{tr("Balance"), this};
-        mainLayout->addWidget(balanceGroup);
+        auto tabs = new QTabWidget{this};
+        mainLayout->addWidget(tabs);
 
-        auto balanceLayout = new QVBoxLayout{};
-        balanceGroup->setLayout(balanceLayout);
-
-        mBalancePlot = createPlot();
-        balanceLayout->addWidget(mBalancePlot);
-        connect(mBalancePlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateBalanceData);
-
-        auto journalGroup = new QGroupBox{tr("Wallet journal"), this};
-        mainLayout->addWidget(journalGroup);
-
-        auto journalLayout = new QVBoxLayout{};
-        journalGroup->setLayout(journalLayout);
-
-        mJournalPlot = createPlot();
-        journalLayout->addWidget(mJournalPlot);
-        connect(mJournalPlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateJournalData);
-
-        auto transactionGroup = new QGroupBox{tr("Wallet transactions"), this};
-        mainLayout->addWidget(transactionGroup);
-
-        auto transactionLayout = new QVBoxLayout{};
-        transactionGroup->setLayout(transactionLayout);
-
-        mTransactionPlot = createPlot();
-        transactionLayout->addWidget(mTransactionPlot);
-        connect(mTransactionPlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateTransactionData);
-
-        mainLayout->addStretch();
+        tabs->addTab(createBasicStatisticsWidget(), tr("Basic"));
+        tabs->addTab(createAdvancedStatisticsWidget(), tr("Advanced"));
 
         updateGraphAndLegend();
     }
@@ -88,6 +75,7 @@ namespace Evernus
 
         if (mCharacterId == Character::invalidId)
         {
+            mAggrApplyBtn->setDisabled(true);
             mBalancePlot->getPlot().clearPlottables();
             mJournalPlot->getPlot().clearPlottables();
             updateGraphAndLegend();
@@ -97,6 +85,8 @@ namespace Evernus
             mBalancePlot->blockSignals(true);
             mJournalPlot->blockSignals(true);
             mTransactionPlot->blockSignals(true);
+
+            mAggrApplyBtn->setDisabled(false);
 
             const auto date = QDate::currentDate();
 
@@ -115,6 +105,8 @@ namespace Evernus
             mJournalPlot->blockSignals(false);
             mBalancePlot->blockSignals(false);
         }
+
+        mAggrModel.clear();
     }
 
     void StatisticsWidget::updateBalanceData()
@@ -380,6 +372,41 @@ namespace Evernus
         mTransactionPlot->getPlot().replot();
     }
 
+    void StatisticsWidget::applyAggrFilter()
+    {
+        const auto limit = mAggrLimitEdit->value();
+        mAggrModel.reset(mCharacterId,
+                         static_cast<MarketOrderRepository::AggregateColumn>(mAggrGroupingColumnCombo->currentData().toInt()),
+                         static_cast<MarketOrderRepository::AggregateOrderColumn>(mAggrOrderColumnCombo->currentData().toInt()),
+                         (limit == 0) ? (-1) : (limit),
+                         mAggrIncludeActiveBtn->isChecked(),
+                         mAggrIncludeNotFulfilledBtn->isChecked());
+    }
+
+    void StatisticsWidget::copyAggrData()
+    {
+        const auto indexes = mAggrView->selectionModel()->selectedIndexes();
+        if (indexes.isEmpty())
+            return;
+
+        QString result;
+
+        auto prevRow = indexes.first().row();
+        for (const auto &index : indexes)
+        {
+            if (prevRow != index.row())
+            {
+                prevRow = index.row();
+                result.append('\n');
+            }
+
+            result.append(mAggrModel.data(index).toString());
+            result.append('\t');
+        }
+
+        QApplication::clipboard()->setText(result);
+    }
+
     void StatisticsWidget::updateGraphAndLegend()
     {
         auto assetGraph = mBalancePlot->getPlot().addGraph();
@@ -412,6 +439,113 @@ namespace Evernus
 
         mJournalPlot->getPlot().legend->setVisible(true);
         mTransactionPlot->getPlot().legend->setVisible(true);
+    }
+
+    QWidget *StatisticsWidget::createBasicStatisticsWidget()
+    {
+        auto widget = new QWidget{this};
+
+        auto mainLayout = new QVBoxLayout{};
+        widget->setLayout(mainLayout);
+
+        auto balanceGroup = new QGroupBox{tr("Balance"), this};
+        mainLayout->addWidget(balanceGroup);
+
+        auto balanceLayout = new QVBoxLayout{};
+        balanceGroup->setLayout(balanceLayout);
+
+        mBalancePlot = createPlot();
+        balanceLayout->addWidget(mBalancePlot);
+        connect(mBalancePlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateBalanceData);
+
+        auto journalGroup = new QGroupBox{tr("Wallet journal"), this};
+        mainLayout->addWidget(journalGroup);
+
+        auto journalLayout = new QVBoxLayout{};
+        journalGroup->setLayout(journalLayout);
+
+        mJournalPlot = createPlot();
+        journalLayout->addWidget(mJournalPlot);
+        connect(mJournalPlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateJournalData);
+
+        auto transactionGroup = new QGroupBox{tr("Wallet transactions"), this};
+        mainLayout->addWidget(transactionGroup);
+
+        auto transactionLayout = new QVBoxLayout{};
+        transactionGroup->setLayout(transactionLayout);
+
+        mTransactionPlot = createPlot();
+        transactionLayout->addWidget(mTransactionPlot);
+        connect(mTransactionPlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateTransactionData);
+
+        mainLayout->addStretch();
+
+        return widget;
+    }
+
+    QWidget *StatisticsWidget::createAdvancedStatisticsWidget()
+    {
+        auto widget = new QWidget{this};
+
+        auto mainLayout = new QVBoxLayout{};
+        widget->setLayout(mainLayout);
+
+        mainLayout->addWidget(new QLabel{tr(
+            "This tab allows you to create custom reports aggregating historic market order data."), this});
+
+        auto configGroup = new QGroupBox{this};
+        mainLayout->addWidget(configGroup);
+
+        auto configLayout = new QHBoxLayout{};
+        configGroup->setLayout(configLayout);
+
+        configLayout->addWidget(new QLabel{tr("Group by:"), this});
+
+        mAggrGroupingColumnCombo = new QComboBox{this};
+        configLayout->addWidget(mAggrGroupingColumnCombo);
+        mAggrGroupingColumnCombo->addItem(tr("Type"), static_cast<int>(MarketOrderRepository::AggregateColumn::TypeId));
+        mAggrGroupingColumnCombo->addItem(tr("Location"), static_cast<int>(MarketOrderRepository::AggregateColumn::LocationId));
+
+        configLayout->addWidget(new QLabel{tr("Order by:"), this});
+
+        mAggrOrderColumnCombo = new QComboBox{this};
+        configLayout->addWidget(mAggrOrderColumnCombo);
+        mAggrOrderColumnCombo->addItem(tr("Id"), static_cast<int>(MarketOrderRepository::AggregateOrderColumn::Id));
+        mAggrOrderColumnCombo->addItem(tr("Count"), static_cast<int>(MarketOrderRepository::AggregateOrderColumn::Count));
+        mAggrOrderColumnCombo->addItem(tr("Price"), static_cast<int>(MarketOrderRepository::AggregateOrderColumn::Price));
+        mAggrOrderColumnCombo->addItem(tr("Volume"), static_cast<int>(MarketOrderRepository::AggregateOrderColumn::Volume));
+
+        configLayout->addWidget(new QLabel{tr("Limit:"), this});
+
+        mAggrLimitEdit = new QSpinBox{this};
+        configLayout->addWidget(mAggrLimitEdit);
+        mAggrLimitEdit->setValue(10);
+        mAggrLimitEdit->setSpecialValueText(tr("none"));
+
+        mAggrIncludeActiveBtn = new QCheckBox{tr("Include active"), this};
+        configLayout->addWidget(mAggrIncludeActiveBtn);
+
+        mAggrIncludeNotFulfilledBtn = new QCheckBox{tr("Include expired/cancelled"), this};
+        configLayout->addWidget(mAggrIncludeNotFulfilledBtn);
+
+        mAggrApplyBtn = new QPushButton{tr("Apply"), this};
+        configLayout->addWidget(mAggrApplyBtn);
+        mAggrApplyBtn->setDisabled(true);
+        connect(mAggrApplyBtn, &QPushButton::clicked, this, &StatisticsWidget::applyAggrFilter);
+
+        configLayout->addStretch();
+
+        auto copyAct = new QAction{this};
+        copyAct->setShortcuts(QKeySequence::Copy);
+        connect(copyAct, &QAction::triggered, this, &StatisticsWidget::copyAggrData);
+
+        mAggrView = new QTableView{this};
+        mainLayout->addWidget(mAggrView);
+        mAggrView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        mAggrView->setModel(&mAggrModel);
+        mAggrView->addAction(copyAct);
+
+        return widget;
     }
 
     DateFilteredPlotWidget *StatisticsWidget::createPlot()

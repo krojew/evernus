@@ -29,6 +29,7 @@ namespace Evernus
         struct SingleAggrData
         {
             uint mCount = 0;
+            uint mVolume = 0;
             double mPriceSum = 0.;
         };
 
@@ -45,8 +46,24 @@ namespace Evernus
             QDateTime mFirstSeen, mLastSeen;
         };
 
+        enum class AggregateColumn
+        {
+            TypeId,
+            LocationId
+        };
+
+        enum class AggregateOrderColumn
+        {
+            Id,
+            Count,
+            Price,
+            Volume
+        };
+
         typedef std::unordered_map<MarketOrder::IdType, OrderState> OrderStateMap;
         typedef std::unordered_set<MarketOrder::IdType> OrderIdList;
+
+        typedef std::vector<std::pair<quint64, SingleAggrData>> CustomAggregatedData;
 
         using Repository::Repository;
         virtual ~MarketOrderRepository() = default;
@@ -59,6 +76,12 @@ namespace Evernus
         void create(const Repository<Character> &characterRepo) const;
 
         AggrData getAggregatedData(Character::IdType characterId) const;
+        CustomAggregatedData getCustomAggregatedData(Character::IdType characterId,
+                                                     AggregateColumn groupingColumn,
+                                                     AggregateOrderColumn orderColumn,
+                                                     int limit,
+                                                     bool includeActive,
+                                                     bool includeNotFulfilled) const;
         OrderStateMap getOrderStates(Character::IdType characterId) const;
 
         EntityList fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const;

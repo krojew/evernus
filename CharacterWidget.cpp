@@ -136,29 +136,44 @@ namespace Evernus
         auto addInfoLayout = new QGridLayout{};
         addInfoGroup->setLayout(addInfoLayout);
 
-        addInfoLayout->addWidget(new QLabel{tr("Buy orders:"), this}, 0, 0);
+        addInfoLayout->addWidget(new QLabel{tr("Buy orders:"), this}, 0, 0, Qt::AlignRight);
 
         mBuyOrderCountLabel = new QLabel{this};
-        addInfoLayout->addWidget(mBuyOrderCountLabel, 0, 1);
+        addInfoLayout->addWidget(mBuyOrderCountLabel, 0, 1, Qt::AlignLeft);
+
+        addInfoLayout->addWidget(new QLabel{tr("Volume:"), this}, 0, 2, Qt::AlignRight);
+
+        mBuyOrderVolumeLabel = new QLabel{this};
+        addInfoLayout->addWidget(mBuyOrderVolumeLabel, 0, 3, Qt::AlignLeft);
 
         mBuyOrderValueLabel = new QLabel{this};
-        addInfoLayout->addWidget(mBuyOrderValueLabel, 0, 2);
+        addInfoLayout->addWidget(mBuyOrderValueLabel, 0, 4);
 
-        addInfoLayout->addWidget(new QLabel{tr("Sell orders:"), this}, 1, 0);
+        addInfoLayout->addWidget(new QLabel{tr("Sell orders:"), this}, 1, 0, Qt::AlignRight);
 
         mSellOrderCountLabel = new QLabel{this};
-        addInfoLayout->addWidget(mSellOrderCountLabel, 1, 1);
+        addInfoLayout->addWidget(mSellOrderCountLabel, 1, 1, Qt::AlignLeft);
+
+        addInfoLayout->addWidget(new QLabel{tr("Volume:"), this}, 1, 2, Qt::AlignRight);
+
+        mSellOrderVolumeLabel = new QLabel{this};
+        addInfoLayout->addWidget(mSellOrderVolumeLabel, 1, 3, Qt::AlignLeft);
 
         mSellOrderValueLabel = new QLabel{this};
-        addInfoLayout->addWidget(mSellOrderValueLabel, 1, 2);
+        addInfoLayout->addWidget(mSellOrderValueLabel, 1, 4);
 
-        addInfoLayout->addWidget(new QLabel{tr("Total:"), this}, 2, 0);
+        addInfoLayout->addWidget(new QLabel{tr("Total:"), this}, 2, 0, Qt::AlignRight);
 
         mTotalOrderCountLabel = new QLabel{this};
-        addInfoLayout->addWidget(mTotalOrderCountLabel, 2, 1);
+        addInfoLayout->addWidget(mTotalOrderCountLabel, 2, 1, Qt::AlignLeft);
+
+        addInfoLayout->addWidget(new QLabel{tr("Volume:"), this}, 2, 2, Qt::AlignRight);
+
+        mTotalOrderVolumeLabel = new QLabel{this};
+        addInfoLayout->addWidget(mTotalOrderVolumeLabel, 2, 3, Qt::AlignLeft);
 
         mTotalOrderValueLabel = new QLabel{this};
-        addInfoLayout->addWidget(mTotalOrderValueLabel, 2, 2);
+        addInfoLayout->addWidget(mTotalOrderValueLabel, 2, 4);
 
         auto standingsGroup = new QGroupBox{tr("Station owner standings"), this};
         underInfoLayout->addWidget(standingsGroup);
@@ -345,6 +360,10 @@ namespace Evernus
             mSellOrderValueLabel->clear();
             mTotalOrderValueLabel->clear();
 
+            mBuyOrderVolumeLabel->clear();
+            mSellOrderVolumeLabel->clear();
+            mTotalOrderVolumeLabel->clear();
+
             mCorpStandingEdit->setValue(0.);
             mFactionStandingEdit->setValue(0.);
 
@@ -502,6 +521,10 @@ namespace Evernus
         mTotalOrderCountLabel->setText(tr("<strong>%1 of %2</strong>")
             .arg(curLocale.toString(aggrData.mBuyData.mCount + aggrData.mSellData.mCount))
             .arg(curLocale.toString(maxBuyOrders)));
+
+        mBuyOrderVolumeLabel->setText(curLocale.toString(aggrData.mBuyData.mVolume));
+        mSellOrderVolumeLabel->setText(curLocale.toString(aggrData.mSellData.mVolume));
+        mTotalOrderVolumeLabel->setText(curLocale.toString(aggrData.mBuyData.mVolume + aggrData.mSellData.mVolume));
 
         mBuyOrderValueLabel->setText(curLocale.toCurrencyString(aggrData.mBuyData.mPriceSum, "ISK"));
         mSellOrderValueLabel->setText(curLocale.toCurrencyString(aggrData.mSellData.mPriceSum, "ISK"));

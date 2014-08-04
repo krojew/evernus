@@ -92,6 +92,29 @@
     </message>
 </context>
 <context>
+    <name>Evernus::AggregatedStatisticsModel</name>
+    <message>
+        <location filename="../AggregatedStatisticsModel.cpp" line="86"/>
+        <source>Id</source>
+        <translation>Identyfikator</translation>
+    </message>
+    <message>
+        <location filename="../AggregatedStatisticsModel.cpp" line="88"/>
+        <source>Count</source>
+        <translation>Ilość</translation>
+    </message>
+    <message>
+        <location filename="../AggregatedStatisticsModel.cpp" line="90"/>
+        <source>Price sum</source>
+        <translation>Suma cen</translation>
+    </message>
+    <message>
+        <location filename="../AggregatedStatisticsModel.cpp" line="92"/>
+        <source>Volume</source>
+        <translation>Wolumen</translation>
+    </message>
+</context>
+<context>
     <name>Evernus::AssetModel</name>
     <message>
         <location filename="../AssetModel.cpp" line="121"/>
@@ -316,167 +339,174 @@
         <translation>Zlecenia kupna:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="147"/>
+        <location filename="../CharacterWidget.cpp" line="144"/>
+        <location filename="../CharacterWidget.cpp" line="157"/>
+        <location filename="../CharacterWidget.cpp" line="170"/>
+        <source>Volume:</source>
+        <translation>Wolumen:</translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="152"/>
         <source>Sell orders:</source>
         <translation>Zlecenia sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="155"/>
+        <location filename="../CharacterWidget.cpp" line="165"/>
         <source>Total:</source>
         <translation>Suma:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="163"/>
+        <location filename="../CharacterWidget.cpp" line="178"/>
         <source>Station owner standings</source>
         <translation>Reputacja u właściciela stacji</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="170"/>
+        <location filename="../CharacterWidget.cpp" line="185"/>
         <source>Corporation standing:</source>
         <translation>Reputacja u korporacji:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="175"/>
+        <location filename="../CharacterWidget.cpp" line="190"/>
         <source>Faction standing:</source>
         <translation>Reputacja u frakcji:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="179"/>
+        <location filename="../CharacterWidget.cpp" line="194"/>
         <source>Trade skills</source>
         <translation>Umiejętności handlu</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="185"/>
+        <location filename="../CharacterWidget.cpp" line="200"/>
         <source>Order amount skills</source>
         <translation>Ilość zleceń</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="191"/>
+        <location filename="../CharacterWidget.cpp" line="206"/>
         <source>Trade:</source>
         <translation>Trade:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="192"/>
+        <location filename="../CharacterWidget.cpp" line="207"/>
         <source>Retail:</source>
         <translation>Retail:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="193"/>
+        <location filename="../CharacterWidget.cpp" line="208"/>
         <source>Wholesale:</source>
         <translation>Wholesale:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="194"/>
+        <location filename="../CharacterWidget.cpp" line="209"/>
         <source>Tycoon:</source>
         <translation>Tycoon:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="196"/>
+        <location filename="../CharacterWidget.cpp" line="211"/>
         <source>Trade range skills</source>
         <translation>Zasięg</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="202"/>
+        <location filename="../CharacterWidget.cpp" line="217"/>
         <source>Marketing:</source>
         <translation>Marketing:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="203"/>
+        <location filename="../CharacterWidget.cpp" line="218"/>
         <source>Procurement:</source>
         <translation>Procurement:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="204"/>
+        <location filename="../CharacterWidget.cpp" line="219"/>
         <source>Daytrading:</source>
         <translation>Daytrading:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="205"/>
+        <location filename="../CharacterWidget.cpp" line="220"/>
         <source>Visibility:</source>
         <translation>Visibility:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="207"/>
+        <location filename="../CharacterWidget.cpp" line="222"/>
         <source>Fee skills</source>
         <translation>Podatki</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="213"/>
+        <location filename="../CharacterWidget.cpp" line="228"/>
         <source>Accounting:</source>
         <translation>Accounting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="214"/>
+        <location filename="../CharacterWidget.cpp" line="229"/>
         <source>Broker relations:</source>
         <translation>Broker relations:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="215"/>
+        <location filename="../CharacterWidget.cpp" line="230"/>
         <source>Margin trading:</source>
         <translation>Margin trading:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="217"/>
+        <location filename="../CharacterWidget.cpp" line="232"/>
         <source>Contracting skills</source>
         <translation>Kontrakty</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="223"/>
+        <location filename="../CharacterWidget.cpp" line="238"/>
         <source>Contracting:</source>
         <translation>Contracting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="224"/>
+        <location filename="../CharacterWidget.cpp" line="239"/>
         <source>Corporation contracting:</source>
         <translation>Corporation contracting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="265"/>
+        <location filename="../CharacterWidget.cpp" line="280"/>
         <source>never imported</source>
         <translation>nigdy nie zaimportowane</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="270"/>
+        <location filename="../CharacterWidget.cpp" line="285"/>
         <source>Character sheet: %1</source>
         <translation>Karta postaci: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="271"/>
+        <location filename="../CharacterWidget.cpp" line="286"/>
         <source>Asset list: %1</source>
         <translation>Aktywa: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="272"/>
+        <location filename="../CharacterWidget.cpp" line="287"/>
         <source>Market orders: %1</source>
         <translation>Zlecenia: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="273"/>
+        <location filename="../CharacterWidget.cpp" line="288"/>
         <source>Wallet journal: %1</source>
         <translation>Dziennik: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="274"/>
+        <location filename="../CharacterWidget.cpp" line="289"/>
         <source>Wallet transactions: %1</source>
         <translation>Transakcje: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="424"/>
+        <location filename="../CharacterWidget.cpp" line="443"/>
         <source>Character error</source>
         <translation>Błąd postaci</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="424"/>
+        <location filename="../CharacterWidget.cpp" line="443"/>
         <source>Character not found in DB. Refresh characters.</source>
         <translation>Postać nie została znaleziona w bazie danych. Odśwież postacie.</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="502"/>
+        <location filename="../CharacterWidget.cpp" line="521"/>
         <source>&lt;strong&gt;%1 of %2&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1 z %2&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="508"/>
+        <location filename="../CharacterWidget.cpp" line="531"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>
@@ -1023,32 +1053,32 @@
         <translation>Postać</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="399"/>
+        <location filename="../MainWindow.cpp" line="401"/>
         <source>Statistics</source>
         <translation>Statystyki</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="407"/>
+        <location filename="../MainWindow.cpp" line="409"/>
         <source>Assets</source>
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="423"/>
+        <location filename="../MainWindow.cpp" line="425"/>
         <source>Orders</source>
         <translation>Zlecenia</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="433"/>
+        <location filename="../MainWindow.cpp" line="435"/>
         <source>Journal</source>
         <translation>Dziennik</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="439"/>
+        <location filename="../MainWindow.cpp" line="441"/>
         <source>Transactions</source>
         <translation>Transakcje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="444"/>
+        <location filename="../MainWindow.cpp" line="446"/>
         <source>Item costs</source>
         <translation>Koszty</translation>
     </message>
@@ -2098,64 +2128,144 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::StatisticsWidget</name>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="50"/>
+        <location filename="../StatisticsWidget.cpp" line="451"/>
         <source>Balance</source>
         <translation>Bilans</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="60"/>
+        <location filename="../StatisticsWidget.cpp" line="461"/>
         <source>Wallet journal</source>
         <translation>Dziennik</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="70"/>
+        <location filename="../StatisticsWidget.cpp" line="471"/>
         <source>Wallet transactions</source>
         <translation>Transakcje</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="386"/>
+        <location filename="../StatisticsWidget.cpp" line="413"/>
         <source>Asset value</source>
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="390"/>
+        <location filename="../StatisticsWidget.cpp" line="66"/>
+        <source>Basic</source>
+        <translation>Podstawowe</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="67"/>
+        <source>Advanced</source>
+        <translation>Zaawansowane</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="417"/>
         <source>Wallet balance</source>
         <translation>Portfel</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="394"/>
+        <location filename="../StatisticsWidget.cpp" line="421"/>
         <source>Buy order value</source>
         <translation>Zlecenia kupna</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="398"/>
+        <location filename="../StatisticsWidget.cpp" line="425"/>
         <source>Sell order value</source>
         <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="402"/>
+        <location filename="../StatisticsWidget.cpp" line="429"/>
         <source>Total value</source>
         <translation>Suma</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="407"/>
+        <location filename="../StatisticsWidget.cpp" line="434"/>
         <source>Incoming</source>
         <translation>Przychód</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="408"/>
+        <location filename="../StatisticsWidget.cpp" line="435"/>
         <source>Outgoing</source>
         <translation>Koszt</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="410"/>
+        <location filename="../StatisticsWidget.cpp" line="437"/>
         <source>Sell</source>
         <translation>Sprzedaż</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="411"/>
+        <location filename="../StatisticsWidget.cpp" line="438"/>
         <source>Buy</source>
         <translation>Kupno</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="493"/>
+        <source>This tab allows you to create custom reports aggregating historic market order data.</source>
+        <translation>Ta zakładka pozwala na tworzenie własnych raportów agregujących historyczne dane zleceń.</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="502"/>
+        <source>Group by:</source>
+        <translation>Grupuj po:</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="506"/>
+        <source>Type</source>
+        <translation>Typ</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="507"/>
+        <source>Location</source>
+        <translation>Lokacja</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="509"/>
+        <source>Order by:</source>
+        <translation>Sortuj po:</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="513"/>
+        <source>Id</source>
+        <translation>Identyfikator</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="514"/>
+        <source>Count</source>
+        <translation>Ilość</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="515"/>
+        <source>Price</source>
+        <translation>Cena</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="516"/>
+        <source>Volume</source>
+        <translation>Wolumen</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="518"/>
+        <source>Limit:</source>
+        <translation>Limit:</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="523"/>
+        <source>none</source>
+        <translation>brak</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="525"/>
+        <source>Include active</source>
+        <translation>Uwzględnij aktywne</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="528"/>
+        <source>Include expired/cancelled</source>
+        <translation>Uwzględnij wygasłe/anulowane</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="531"/>
+        <source>Apply</source>
+        <translation>Zastosuj</translation>
     </message>
 </context>
 <context>

@@ -16,8 +16,13 @@
 
 #include <QWidget>
 
-#include "Character.h"
+#include "AggregatedStatisticsModel.h"
 
+class QPushButton;
+class QTableView;
+class QComboBox;
+class QCheckBox;
+class QSpinBox;
 class QCPBars;
 
 namespace Evernus
@@ -40,6 +45,8 @@ namespace Evernus
                          const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
                          const WalletJournalEntryRepository &journalRepo,
                          const WalletTransactionRepository &transactionRepo,
+                         const MarketOrderRepository &orderRepo,
+                         const EveDataProvider &dataProvider,
                          QWidget *parent = nullptr);
         virtual ~StatisticsWidget() = default;
 
@@ -48,6 +55,11 @@ namespace Evernus
         void updateBalanceData();
         void updateJournalData();
         void updateTransactionData();
+
+    private slots:
+        void applyAggrFilter();
+
+        void copyAggrData();
 
     private:
         static constexpr auto assetValueGraph = 0;
@@ -72,9 +84,22 @@ namespace Evernus
         QCPBars *mBuyPlot = nullptr;
         QCPBars *mSellPlot = nullptr;
 
+        QPushButton *mAggrApplyBtn = nullptr;
+        QComboBox *mAggrGroupingColumnCombo = nullptr;
+        QComboBox *mAggrOrderColumnCombo = nullptr;
+        QSpinBox *mAggrLimitEdit = nullptr;
+        QCheckBox *mAggrIncludeActiveBtn = nullptr;
+        QCheckBox *mAggrIncludeNotFulfilledBtn = nullptr;
+        QTableView *mAggrView = nullptr;
+
         Character::IdType mCharacterId = Character::invalidId;
 
+        AggregatedStatisticsModel mAggrModel;
+
         void updateGraphAndLegend();
+
+        QWidget *createBasicStatisticsWidget();
+        QWidget *createAdvancedStatisticsWidget();
 
         DateFilteredPlotWidget *createPlot();
 
