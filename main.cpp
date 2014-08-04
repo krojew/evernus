@@ -33,8 +33,6 @@ int main(int argc, char *argv[])
         QCoreApplication::setOrganizationDomain("evernus.com");
         QCoreApplication::setOrganizationName("evernus.com");
 
-        QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
-
         qRegisterMetaType<Evernus::MarketLogExternalOrderImporterThread::ExternalOrderList>("ExternalOrderList");
         qRegisterMetaType<Evernus::Character::IdType>("Character::IdType");
         qRegisterMetaType<Evernus::MarketOrderFilterProxyModel::StatusFilters>("MarketOrderFilterProxyModel::StatusFilters");
