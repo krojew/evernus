@@ -1031,6 +1031,10 @@ namespace Evernus
                 }
             }
 
+            mSellPrices.clear();
+            mBuyPrices.clear();
+            mTypeRegionOrderCache.clear();
+
             mExternalOrderRepository->removeObsolete(affectedOrders);
             mExternalOrderRepository->batchStore(toStore, true);
 
@@ -1047,10 +1051,6 @@ namespace Evernus
         {
             finishExternalOrderImportTask(e.what());
         }
-
-        mSellPrices.clear();
-        mBuyPrices.clear();
-        mTypeRegionOrderCache.clear();
 
         emit externalOrdersChanged();
     }
