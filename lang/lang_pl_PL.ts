@@ -1151,33 +1151,33 @@
         <translation>Przykładowe dane</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="219"/>
+        <location filename="../MarginToolDialog.cpp" line="222"/>
         <source>Always on top</source>
         <translation>Zawsze na wierzchu</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="226"/>
+        <location filename="../MarginToolDialog.cpp" line="229"/>
         <source>Quit application</source>
         <translation>Wyjdź z aplikacji</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="238"/>
-        <location filename="../MarginToolDialog.cpp" line="244"/>
+        <location filename="../MarginToolDialog.cpp" line="241"/>
+        <location filename="../MarginToolDialog.cpp" line="247"/>
         <source>Margin tool error</source>
         <translation>Błąd narzędzia</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="239"/>
+        <location filename="../MarginToolDialog.cpp" line="242"/>
         <source>Could not determine market log path. Please enter log path in settings.</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu. Wpisz ścieżkę ręcznie w ustawieniach.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="245"/>
+        <location filename="../MarginToolDialog.cpp" line="248"/>
         <source>Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again.</source>
         <translation>Nie udało się rozpocząć obserwacji katalogu z logami. Upewnij się, że katalog istnieje (np. wyeksportuj logi) i spróbuj ponownie.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="254"/>
+        <location filename="../MarginToolDialog.cpp" line="257"/>
         <source>Margin tool</source>
         <translation>Narzędzie marży</translation>
     </message>

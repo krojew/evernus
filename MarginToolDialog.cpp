@@ -216,13 +216,16 @@ namespace Evernus
         m5SampleDataTable = createSampleTable();
         sampleLayout->addWidget(m5SampleDataTable);
 
+        auto buttonLayout = new QHBoxLayout{};
+        mainLayout->addLayout(buttonLayout);
+
         auto alwaysOnTopBtn = new QCheckBox{tr("Always on top"), this};
-        mainLayout->addWidget(alwaysOnTopBtn);
+        buttonLayout->addWidget(alwaysOnTopBtn);
         alwaysOnTopBtn->setChecked(alwaysOnTop);
         connect(alwaysOnTopBtn, &QCheckBox::stateChanged, this, &MarginToolDialog::toggleAlwaysOnTop);
 
         auto buttons = new QDialogButtonBox{QDialogButtonBox::Close, this};
-        mainLayout->addWidget(buttons);
+        buttonLayout->addWidget(buttons, 1);
         auto quitBtn = buttons->addButton(tr("Quit application"), QDialogButtonBox::DestructiveRole);
         buttons->button(QDialogButtonBox::Close)->setDefault(true);
         connect(buttons, &QDialogButtonBox::rejected, this, &MarginToolDialog::close);
