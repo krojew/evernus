@@ -54,7 +54,7 @@ namespace Evernus
         if (curModel != nullptr)
         {
             const auto data = curModel->data(currentIndex(), Qt::DisplayRole);
-            if (data.type() == QMetaType::QString)
+            if (static_cast<QMetaType::Type>(data.type()) == QMetaType::QString)
                 QApplication::clipboard()->setText(data.toString());
         }
     }
@@ -90,7 +90,7 @@ namespace Evernus
                 }
 
                 const auto data = curModel->data(index, role);
-                if (data.type() == QMetaType::QVariantList)
+                if (static_cast<QMetaType::Type>(data.type()) == QMetaType::QVariantList)
                     result.append(data.toList().first().toString());
                 else
                     result.append(data.toString());

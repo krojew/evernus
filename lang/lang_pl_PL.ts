@@ -519,6 +519,7 @@
         <translation>Błąd zapisu obrazka.</translation>
     </message>
     <message>
+        <location filename="../DateFilteredPlotWidget.cpp" line="105"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp *.ppm *.xbm *.xpm)</source>
         <translation>Obrazy (*.png *.jpg *.jpeg *.bmp *.ppm *.xbm *.xpm)</translation>
     </message>
