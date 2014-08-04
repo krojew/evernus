@@ -19,6 +19,7 @@
 #include <QLabel>
 
 #include "LanguageComboBox.h"
+#include "UpdaterSettings.h"
 #include "UISettings.h"
 
 #include "GeneralPreferencesWidget.h"
@@ -63,13 +64,18 @@ namespace Evernus
         generalGroupLayout->addWidget(mMinimizeToTrayBtn);
         mMinimizeToTrayBtn->setChecked(settings.value(UISettings::minimizeToTrayKey, false).toBool());
 
+        mAutoUpdateBtn = new QCheckBox{tr("Check for updates on startup"), this};
+        generalGroupLayout->addWidget(mAutoUpdateBtn);
+        mAutoUpdateBtn->setChecked(settings.value(UpdaterSettings::autoUpdateKey, true).toBool());
+
         mainLayout->addStretch();
     }
 
     void GeneralPreferencesWidget::applySettings()
     {
         QSettings settings;
-        settings.setValue(UISettings::minimizeToTrayKey, mMinimizeToTrayBtn->isChecked());
         settings.setValue(UISettings::languageKey, mLanguageEdit->currentData(Qt::UserRole));
+        settings.setValue(UISettings::minimizeToTrayKey, mMinimizeToTrayBtn->isChecked());
+        settings.setValue(UpdaterSettings::autoUpdateKey, mAutoUpdateBtn->isChecked());
     }
 }

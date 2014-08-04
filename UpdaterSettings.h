@@ -14,29 +14,10 @@
  */
 #pragma once
 
-#include <QWidget>
-
-class QCheckBox;
-
 namespace Evernus
 {
-    class LanguageComboBox;
-
-    class GeneralPreferencesWidget
-        : public QWidget
+    namespace UpdaterSettings
     {
-        Q_OBJECT
-
-    public:
-        explicit GeneralPreferencesWidget(QWidget *parent = nullptr);
-        virtual ~GeneralPreferencesWidget() = default;
-
-    public slots:
-        void applySettings();
-
-    private:
-        QCheckBox *mMinimizeToTrayBtn = nullptr;
-        QCheckBox *mAutoUpdateBtn = nullptr;
-        LanguageComboBox *mLanguageEdit = nullptr;
-    };
+        const auto autoUpdateKey = "updater/autoUpdate";
+    }
 }

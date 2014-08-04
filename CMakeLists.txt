@@ -96,6 +96,7 @@ qt5_wrap_cpp(
     StatisticsWidget.h
     StyledTreeView.h
     TextFilterWidget.h
+    Updater.h
     WalletEntryFilterWidget.h
     WalletJournalModel.h
     WalletJournalWidget.h
@@ -384,6 +385,9 @@ add_executable(
     TextUtils.h
     TimerTypes.h
     UISettings.h
+    Updater.cpp
+    Updater.h
+    UpdaterSettings.h
     UpdateTimer.cpp
     UpdateTimer.h
     UpdateTimerRepository.cpp

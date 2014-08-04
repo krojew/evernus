@@ -14,29 +14,29 @@
  */
 #pragma once
 
-#include <QWidget>
-
-class QCheckBox;
+#include <QNetworkAccessManager>
 
 namespace Evernus
 {
-    class LanguageComboBox;
-
-    class GeneralPreferencesWidget
-        : public QWidget
+    class Updater
+        : public QObject
     {
         Q_OBJECT
 
     public:
-        explicit GeneralPreferencesWidget(QWidget *parent = nullptr);
-        virtual ~GeneralPreferencesWidget() = default;
+        static Updater &getInstance();
 
     public slots:
-        void applySettings();
+        void checkForUpdates(bool quiet) const;
 
     private:
-        QCheckBox *mMinimizeToTrayBtn = nullptr;
-        QCheckBox *mAutoUpdateBtn = nullptr;
-        LanguageComboBox *mLanguageEdit = nullptr;
+        mutable QNetworkAccessManager mAccessManager;
+
+        mutable bool mCheckingForUpdates = false;
+
+        Updater() = default;
+        virtual ~Updater() = default;
+
+        void finishCheck(bool quiet) const;
     };
 }

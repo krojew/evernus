@@ -46,6 +46,7 @@
 #include "AboutDialog.h"
 #include "IGBSettings.h"
 #include "UISettings.h"
+#include "Updater.h"
 
 #include "MainWindow.h"
 
@@ -166,6 +167,11 @@ namespace Evernus
     void MainWindow::openHelp()
     {
         QDesktopServices::openUrl(QUrl{"http://evernus.com/help"});
+    }
+
+    void MainWindow::checkForUpdates()
+    {
+        Updater::getInstance().checkForUpdates(false);
     }
 
     void MainWindow::addNewTaskInfo(uint taskId, const QString &description)
@@ -364,6 +370,7 @@ namespace Evernus
 
         auto helpMenu = bar->addMenu(tr("&Help"));
         helpMenu->addAction(QIcon{":/images/help.png"}, tr("&Online help..."), this, SLOT(openHelp()));
+        helpMenu->addAction(tr("Check for &updates"), this, SLOT(checkForUpdates()));
         helpMenu->addSeparator();
         helpMenu->addAction(tr("&About..."), this, SLOT(showAbout()));
 

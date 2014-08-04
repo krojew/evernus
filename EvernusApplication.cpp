@@ -25,6 +25,7 @@
 
 #include "ExternalOrderImporterNames.h"
 #include "LanguageSelectDialog.h"
+#include "UpdaterSettings.h"
 #include "ImportSettings.h"
 #include "WalletSettings.h"
 #include "PathSettings.h"
@@ -32,6 +33,7 @@
 #include "IGBService.h"
 #include "UISettings.h"
 #include "PathUtils.h"
+#include "Updater.h"
 
 #include "EvernusApplication.h"
 
@@ -116,6 +118,9 @@ namespace Evernus
         settings.setValue(versionKey, applicationVersion());
 
         connect(&mAPIManager, &APIManager::generalError, this, &EvernusApplication::apiError);
+
+        if (settings.value(UpdaterSettings::autoUpdateKey, true).toBool())
+            Updater::getInstance().checkForUpdates(true);
     }
 
     QString EvernusApplication::getTypeName(EveType::IdType id) const
