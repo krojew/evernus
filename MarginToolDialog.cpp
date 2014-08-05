@@ -15,7 +15,6 @@
 #include <functional>
 #include <memory>
 #include <thread>
-#include <cmath>
 
 #include <QDialogButtonBox>
 #include <QStringBuilder>
@@ -50,6 +49,7 @@
 #include "PriceSettings.h"
 #include "PathSettings.h"
 #include "Repository.h"
+#include "PriceUtils.h"
 #include "PathUtils.h"
 #include "ItemCost.h"
 
@@ -267,7 +267,7 @@ namespace Evernus
 
         try
         {
-            const auto taxes = calculateTaxes();
+            const auto taxes = PriceUtils::calculateTaxes(*mCharacterRepository.find(mCharacterId));
 
             mBrokerFeeLabel->setText(QString{"%1%"}.arg(taxes.mBrokerFee * 100., 0, 'f', 2));
             mSalesTaxLabel->setText(QString{"%1%"}.arg(taxes.mSalesTax * 100., 0, 'f', 2));
@@ -471,7 +471,8 @@ namespace Evernus
 
             try
             {
-                const auto taxes = calculateTaxes();
+                const auto character = mCharacterRepository.find(mCharacterId);
+                const auto taxes = PriceUtils::calculateTaxes(*character);
 
                 if (buy < 0. || sell < 0.)
                 {
@@ -485,7 +486,7 @@ namespace Evernus
                         const auto buyPrice = buy + priceDelta;
 
                         mBestBuyLabel->setText(curLocale.toCurrencyString(buyPrice, "ISK"));
-                        mCostOfSalesLabel->setText(curLocale.toCurrencyString(getCoS(buyPrice, taxes), "ISK"));
+                        mCostOfSalesLabel->setText(curLocale.toCurrencyString(PriceUtils::getCoS(buyPrice, taxes), "ISK"));
 
                         if (mCopyBuyBtn->isChecked())
                             QApplication::clipboard()->setText(QString::number(buyPrice, 'f', 2));
@@ -501,7 +502,7 @@ namespace Evernus
                         const auto sellPrice = sell - priceDelta;
 
                         mBestSellLabel->setText(curLocale.toCurrencyString(sellPrice, "ISK"));
-                        mRevenueLabel->setText(curLocale.toCurrencyString(getRevenue(sellPrice, taxes), "ISK"));
+                        mRevenueLabel->setText(curLocale.toCurrencyString(PriceUtils::getRevenue(sellPrice, taxes), "ISK"));
 
                         if (mCopySellBtn->isChecked())
                             QApplication::clipboard()->setText(QString::number(sellPrice, 'f', 2));
@@ -520,8 +521,8 @@ namespace Evernus
                         const auto bestSell = sell;
                         const auto sellPrice = bestSell - priceDelta;
                         const auto buyPrice = bestBuy + priceDelta;
-                        const auto revenue = getRevenue(sellPrice, taxes);
-                        const auto cos = getCoS(buyPrice, taxes);
+                        const auto revenue = PriceUtils::getRevenue(sellPrice, taxes);
+                        const auto cos = PriceUtils::getCoS(buyPrice, taxes);
                         const auto margin = 100. * (revenue - cos) / revenue;
                         const auto markup = 100. * (revenue - cos) / cos;
 
@@ -605,17 +606,6 @@ namespace Evernus
         show();
     }
 
-    MarginToolDialog::Taxes MarginToolDialog::calculateTaxes() const
-    {
-        const auto character = mCharacterRepository.find(mCharacterId);
-        const auto feeSkills = character->getFeeSkills();
-        const auto brokerFee = (0.01 - 0.0005 * feeSkills.mBrokerRelations) /
-                               std::exp(0.1 * character->getFactionStanding() + 0.04 * character->getCorpStanding());
-        const auto salesTax = 0.015 * (1. - feeSkills.mAccounting * 0.1);
-
-        return Taxes{brokerFee, salesTax};
-    }
-
     QTableWidget *MarginToolDialog::createSampleTable()
     {
         auto table = new QTableWidget{this};
@@ -672,15 +662,5 @@ namespace Evernus
         }
 
         return out;
-    }
-
-    double MarginToolDialog::getCoS(double buyPrice, const Taxes &taxes)
-    {
-        return buyPrice + buyPrice * taxes.mBrokerFee;
-    }
-
-    double MarginToolDialog::getRevenue(double sellPrice, const Taxes &taxes)
-    {
-        return sellPrice - sellPrice * taxes.mSalesTax - sellPrice * taxes.mBrokerFee;
     }
 }

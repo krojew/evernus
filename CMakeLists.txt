@@ -325,6 +325,8 @@ add_executable(
     PricePreferencesWidget.cpp
     PricePreferencesWidget.h
     PriceSettings.h
+    PriceUtils.cpp
+    PriceUtils.h
     qcustomplot.cpp
     qcustomplot.h
     qhttpheader.cpp

@@ -71,12 +71,6 @@ namespace Evernus
     private:
         typedef QHash<QString, QDateTime> FileModificationMap;
 
-        struct Taxes
-        {
-            double mBrokerFee;
-            double mSalesTax;
-        };
-
         static const auto samples = 100000000;
 
         static const QString settingsPosKey;
@@ -117,15 +111,11 @@ namespace Evernus
         std::unordered_set<ExternalOrder::IdType> mParsedOrderIds;
 
         void setNewWindowFlags(bool alwaysOnTop);
-        Taxes calculateTaxes() const;
         QTableWidget *createSampleTable();
         void savePosition() const;
 
         static void fillSampleData(QTableWidget &table, double revenue, double cos, int multiplier);
 
         static FileModificationMap getKnownFiles(const QString &path);
-
-        static double getCoS(double buyPrice, const Taxes &taxes);
-        static double getRevenue(double sellPrice, const Taxes &taxes);
     };
 }
