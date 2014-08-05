@@ -21,9 +21,10 @@
 #include "EveDataProvider.h"
 #include "AssetProvider.h"
 #include "PriceSettings.h"
-#include "AssetList.h"
 #include "ExternalOrder.h"
+#include "AssetList.h"
 #include "IconUtils.h"
+#include "TextUtils.h"
 
 #include "AssetModel.h"
 
@@ -191,7 +192,7 @@ namespace Evernus
             break;
         case Qt::ToolTipRole:
             if ((column == unitPriceColumn || column == totalPriceColumn) && item->parent() != &mRootItem)
-                return tr("Price update time: %1").arg(item->priceTimestamp().toLocalTime().toString());
+                return tr("Price update time: %1").arg(TextUtils::dateTimeToString(item->priceTimestamp().toLocalTime(), locale));
         }
 
         return QVariant{};

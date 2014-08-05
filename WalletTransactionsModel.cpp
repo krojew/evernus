@@ -17,6 +17,7 @@
 #include <QFont>
 
 #include "EveDataProvider.h"
+#include "TextUtils.h"
 
 #include "WalletTransactionsModel.h"
 
@@ -83,7 +84,7 @@ namespace Evernus
             case ignoredColumn:
                 return QVariant{};
             case timestampColumn:
-                return QLocale{}.toString(mData[row][timestampColumn].toDateTime().toLocalTime());
+                return TextUtils::dateTimeToString(mData[row][timestampColumn].toDateTime().toLocalTime(), QLocale{});
             case typeColumn:
                 return (static_cast<WalletTransaction::Type>(mData[row][typeColumn].toInt()) == WalletTransaction::Type::Buy) ?
                        (tr("Buy")) :

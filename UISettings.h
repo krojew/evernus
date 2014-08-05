@@ -26,5 +26,6 @@ namespace Evernus
         const auto marketOrderPriceStatusFilterKey = "ui/orders/priceStatusFilter";
         const auto minimizeToTrayKey = "ui/mainWindow/minimizeToTray";
         const auto languageKey = "ui/global/language";
+        const auto dateTimeFormatKey = "ui/global/dateTimeFormat";
     }
 }

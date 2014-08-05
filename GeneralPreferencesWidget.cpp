@@ -13,6 +13,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLineEdit>
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QSettings>
@@ -68,6 +70,15 @@ namespace Evernus
         generalGroupLayout->addWidget(mAutoUpdateBtn);
         mAutoUpdateBtn->setChecked(settings.value(UpdaterSettings::autoUpdateKey, true).toBool());
 
+        auto dtFormatLayout = new QHBoxLayout{};
+        generalGroupLayout->addLayout(dtFormatLayout);
+
+        dtFormatLayout->addWidget(new QLabel{tr("Date/time format:"), this});
+
+        mDateFormEdit
+            = new QLineEdit{settings.value(UISettings::dateTimeFormatKey, locale().dateTimeFormat(QLocale::ShortFormat)).toString(), this};
+        dtFormatLayout->addWidget(mDateFormEdit, 1);
+
         mainLayout->addStretch();
     }
 
@@ -77,5 +88,6 @@ namespace Evernus
         settings.setValue(UISettings::languageKey, mLanguageEdit->currentData(Qt::UserRole));
         settings.setValue(UISettings::minimizeToTrayKey, mMinimizeToTrayBtn->isChecked());
         settings.setValue(UpdaterSettings::autoUpdateKey, mAutoUpdateBtn->isChecked());
+        settings.setValue(UISettings::dateTimeFormatKey, mDateFormEdit->text());
     }
 }

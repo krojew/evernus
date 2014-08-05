@@ -16,10 +16,14 @@
 
 #include <QString>
 
+class QDateTime;
+class QLocale;
+
 namespace Evernus
 {
     namespace TextUtils
     {
         QString secondsToString(uint duration);
+        QString dateTimeToString(const QDateTime &dt, const QLocale &locale);
     }
 }

@@ -18,6 +18,7 @@
 #include <QFont>
 
 #include "EveDataProvider.h"
+#include "TextUtils.h"
 
 #include "WalletJournalModel.h"
 
@@ -82,7 +83,7 @@ namespace Evernus
             case ignoredColumn:
                 return QVariant{};
             case timestampColumn:
-                return QLocale{}.toString(mData[row][timestampColumn].toDateTime().toLocalTime());
+                return TextUtils::dateTimeToString(mData[row][timestampColumn].toDateTime().toLocalTime(), QLocale{});
             case amountColumn:
             case balanceColumn:
                 return QLocale{}.toCurrencyString(mData[row][column].toDouble(), "ISK");

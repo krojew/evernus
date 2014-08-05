@@ -21,8 +21,9 @@
 #include "CacheTimerProvider.h"
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
-#include "IconUtils.h"
 #include "ExternalOrder.h"
+#include "IconUtils.h"
+#include "TextUtils.h"
 #include "ItemCost.h"
 
 #include "MarketOrderArchiveModel.h"
@@ -101,7 +102,7 @@ namespace Evernus
 
                 switch (column) {
                 case lastSeenColumn:
-                    return locale.toString(data->getLastSeen().toLocalTime());
+                    return TextUtils::dateTimeToString(data->getLastSeen().toLocalTime(), locale);
                 case typeColumn:
                     return (data->getType() == MarketOrder::Type::Buy) ? (tr("Buy")) : (tr("Sell"));
                 case nameColumn:

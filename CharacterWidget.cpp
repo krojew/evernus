@@ -37,6 +37,7 @@
 #include "WarningBarWidget.h"
 #include "ButtonWithTimer.h"
 #include "ImportSettings.h"
+#include "TextUtils.h"
 
 #include "CharacterWidget.h"
 
@@ -277,7 +278,7 @@ namespace Evernus
             {
                 show = true;
                 new QListWidgetItem{QIcon{":/images/error.png"},
-                                    text.arg((dt.isValid()) ? (curLocale.toString(dt)) : (tr("never imported"))),
+                                    text.arg((dt.isValid()) ? (TextUtils::dateTimeToString(dt, curLocale)) : (tr("never imported"))),
                                     mUpdateTimersList};
             }
         };

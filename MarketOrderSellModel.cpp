@@ -94,10 +94,10 @@ namespace Evernus
                 if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                 {
                     return tr("Price data is too old (valid on %1).\nPlease import prices from Orders/Assets tab or by using Margin tool.")
-                        .arg(locale.toString(price->getUpdateTime().toLocalTime()));
+                        .arg(TextUtils::dateTimeToString(price->getUpdateTime().toLocalTime(), locale));
                 }
 
-                return tr("Your price was best on %1").arg(locale.toString(price->getUpdateTime().toLocalTime()));
+                return tr("Your price was best on %1").arg(TextUtils::dateTimeToString(price->getUpdateTime().toLocalTime(), locale));
             }
             break;
         case Qt::DecorationRole:
@@ -320,7 +320,7 @@ namespace Evernus
                     }
                     break;
                 case firstSeenColumn:
-                    return locale.toString(data->getFirstSeen().toLocalTime());
+                    return TextUtils::dateTimeToString(data->getFirstSeen().toLocalTime(), locale);
                 case stationColumn:
                     return mDataProvider.getLocationName(data->getLocationId());
                 }

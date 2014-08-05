@@ -13,6 +13,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QCoreApplication>
+#include <QSettings>
+#include <QLocale>
+
+#include "UISettings.h"
 
 #include "TextUtils.h"
 
@@ -39,6 +43,12 @@ namespace Evernus
                 return res.sprintf(QCoreApplication::translate("TextUtils", "%02dh %02dmin").toLatin1().data(), hours, minutes);
 
             return res.sprintf(QCoreApplication::translate("TextUtils", "%dd %02dh").toLatin1().data(), days, hours);
+        }
+
+        QString dateTimeToString(const QDateTime &dt, const QLocale &locale)
+        {
+            QSettings settings;
+            return locale.toString(dt, settings.value(UISettings::dateTimeFormatKey, locale.dateTimeFormat(QLocale::ShortFormat)).toString());
         }
     }
 }

@@ -17,6 +17,7 @@
 #include <QWidget>
 
 class QCheckBox;
+class QLineEdit;
 
 namespace Evernus
 {
@@ -35,8 +36,9 @@ namespace Evernus
         void applySettings();
 
     private:
+        LanguageComboBox *mLanguageEdit = nullptr;
         QCheckBox *mMinimizeToTrayBtn = nullptr;
         QCheckBox *mAutoUpdateBtn = nullptr;
-        LanguageComboBox *mLanguageEdit = nullptr;
+        QLineEdit *mDateFormEdit = nullptr;
     };
 }
