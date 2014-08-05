@@ -12,10 +12,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_map>
+
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QGroupBox>
+#include <QAction>
 
+#include "ItemCostProvider.h"
 #include "MarketOrderModel.h"
 #include "MarketOrderView.h"
 #include "StyledTreeView.h"
@@ -26,8 +30,10 @@ namespace Evernus
 {
     MarketOrderViewWithTransactions::MarketOrderViewWithTransactions(const WalletTransactionRepository &transactionsRepo,
                                                                      const EveDataProvider &dataProvider,
+                                                                     ItemCostProvider &costProvider,
                                                                      QWidget *parent)
         : QWidget(parent)
+        , mCostProvider(costProvider)
         , mTransactionModel(transactionsRepo, dataProvider)
     {
         auto mainLayout = new QVBoxLayout{};
@@ -38,6 +44,8 @@ namespace Evernus
         connect(this, &MarketOrderViewWithTransactions::statusFilterChanged, mOrderView, &MarketOrderView::statusFilterChanged);
         connect(this, &MarketOrderViewWithTransactions::priceStatusFilterChanged, mOrderView, &MarketOrderView::priceStatusFilterChanged);
         connect(this, &MarketOrderViewWithTransactions::wildcardChanged, mOrderView, &MarketOrderView::wildcardChanged);
+        connect(mOrderView->getSelectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &MarketOrderViewWithTransactions::selectOrder);
 
         auto transactionGroup = new QGroupBox{tr("Transactions"), this};
         mainLayout->addWidget(transactionGroup);
@@ -48,13 +56,15 @@ namespace Evernus
         mTransactionProxyModel.setSortRole(Qt::UserRole);
         mTransactionProxyModel.setSourceModel(&mTransactionModel);
 
-        auto transactionView = new StyledTreeView{this};
-        groupLayout->addWidget(transactionView);
-        transactionView->setModel(&mTransactionProxyModel);
-        transactionView->sortByColumn(1, Qt::DescendingOrder);
-        transactionView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
-        connect(mOrderView->getSelectionModel(), &QItemSelectionModel::selectionChanged,
-                this, &MarketOrderViewWithTransactions::selectOrder);
+        auto addCostAct = new QAction{tr("Add to item costs"), this};
+        connect(addCostAct, &QAction::triggered, this, &MarketOrderViewWithTransactions::addItemCost);
+
+        mTransactionsView = new StyledTreeView{this};
+        groupLayout->addWidget(mTransactionsView);
+        mTransactionsView->setModel(&mTransactionProxyModel);
+        mTransactionsView->sortByColumn(1, Qt::DescendingOrder);
+        mTransactionsView->addAction(addCostAct);
+        mTransactionsView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     }
 
     void MarketOrderViewWithTransactions::setModel(MarketOrderModel *model)
@@ -108,5 +118,36 @@ namespace Evernus
                     mCharacterId, range.mFrom.date(), range.mTo.date(), mOrderModel->getOrderTypeFilter(index), typeId);
             }
         }
+    }
+
+    void MarketOrderViewWithTransactions::addItemCost()
+    {
+        const auto selection = mTransactionsView->selectionModel()->selectedIndexes();
+
+        struct ItemData
+        {
+            uint mQuantity;
+            double mPrice;
+        };
+
+        std::unordered_map<EveType::IdType, ItemData> aggrData;
+        for (const auto &index : selection)
+        {
+            if (index.column() != 0)
+                continue;
+
+            const auto mappedIndex = mTransactionProxyModel.mapToSource(index);
+            const auto row = mappedIndex.row();
+
+            auto &data = aggrData[mTransactionModel.getTypeId(row)];
+
+            const auto quantity = mTransactionModel.getQuantity(row);
+
+            data.mQuantity += quantity;
+            data.mPrice += quantity * mTransactionModel.getPrice(row);
+        }
+
+        for (const auto &data : aggrData)
+            mCostProvider.setForCharacterAndType(mCharacterId, data.first, data.second.mPrice / data.second.mQuantity);
     }
 }

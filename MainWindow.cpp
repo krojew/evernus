@@ -70,7 +70,7 @@ namespace Evernus
                            const AssetProvider &assetProvider,
                            const EveDataProvider &eveDataProvider,
                            const CacheTimerProvider &cacheTimerProvider,
-                           const ItemCostProvider &itemCostProvider,
+                           ItemCostProvider &itemCostProvider,
                            QWidget *parent,
                            Qt::WindowFlags flags)
         : QMainWindow{parent, flags}
@@ -438,21 +438,27 @@ namespace Evernus
         connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::marginToolHidden, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, orderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::conquerableStationsChanged, orderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::itemCostsChanged, orderTab, &MarketOrderWidget::updateData);
 
         auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mFilterRepository, mCacheTimerProvider, mEveDataProvider, this};
         addTab(journalTab, tr("Journal"));
         connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
         connect(this, &MainWindow::walletJournalChanged, journalTab, &WalletJournalWidget::updateData);
 
-        auto transactionsTab
-            = new WalletTransactionsWidget{mWalletTransactionRepository, mFilterRepository, mCacheTimerProvider, mEveDataProvider, this};
+        auto transactionsTab = new WalletTransactionsWidget{mWalletTransactionRepository,
+                                                            mFilterRepository,
+                                                            mCacheTimerProvider,
+                                                            mEveDataProvider,
+                                                            mItemCostProvider,
+                                                            this};
         addTab(transactionsTab, tr("Transactions"));
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
 
-        auto itemCostTab = new ItemCostWidget{mItemCostRepository, mEveDataProvider, this};
+        auto itemCostTab = new ItemCostWidget{mItemCostProvider, mEveDataProvider, this};
         addTab(itemCostTab, tr("Item costs"));
-        connect(itemCostTab, &ItemCostWidget::costsChanged, this, &MainWindow::itemCostsChanged);
+        connect(this, &MainWindow::itemCostsChanged, itemCostTab, &ItemCostWidget::updateData);
     }
 
     void MainWindow::createStatusBar()

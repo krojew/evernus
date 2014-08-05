@@ -581,6 +581,46 @@ namespace Evernus
         return cost;
     }
 
+    ItemCostProvider::CostList EvernusApplication::fetchForCharacter(Character::IdType characterId) const
+    {
+        return mItemCostRepository->fetchForCharacter(characterId);
+    }
+
+    void EvernusApplication::setForCharacterAndType(Character::IdType characterId, EveType::IdType typeId, double value)
+    {
+        auto cost = std::make_shared<ItemCost>();
+        cost->setCharacterId(characterId);
+        cost->setTypeId(typeId);
+        cost->setCost(value);
+
+        mItemCostRepository->store(*cost);
+
+        mItemCostCache[std::make_pair(characterId, typeId)] = cost;
+
+        emit itemCostsChanged();
+    }
+
+    std::shared_ptr<ItemCost> EvernusApplication::findItemCost(ItemCost::IdType id) const
+    {
+        return mItemCostRepository->find(id);
+    }
+
+    void EvernusApplication::removeItemCost(ItemCost::IdType id) const
+    {
+        mItemCostRepository->remove(id);
+        mItemCostCache.clear();
+
+        emit itemCostsChanged();
+    }
+
+    void EvernusApplication::storeItemCost(ItemCost &cost) const
+    {
+        mItemCostRepository->store(cost);
+        mItemCostCache[std::make_pair(cost.getCharacterId(), cost.getTypeId())] = std::make_shared<ItemCost>(cost);
+
+        emit itemCostsChanged();
+    }
+
     const KeyRepository &EvernusApplication::getKeyRepository() const noexcept
     {
         return *mKeyRepository;
@@ -1053,11 +1093,6 @@ namespace Evernus
         }
 
         emit externalOrdersChanged();
-    }
-
-    void EvernusApplication::resetItemCostCache()
-    {
-        mItemCostCache.clear();
     }
 
     void EvernusApplication::handleNewPreferences()

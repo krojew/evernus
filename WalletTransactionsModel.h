@@ -46,6 +46,10 @@ namespace Evernus
         virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
+        EveType::IdType getTypeId(int row) const;
+        uint getQuantity(int row) const;
+        double getPrice(int row) const;
+
         void setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, EveType::IdType typeId = EveType::invalidId);
 
         void reset();
@@ -56,6 +60,7 @@ namespace Evernus
         static const auto timestampColumn = 1;
         static const auto typeColumn = 2;
         static const auto quantityColumn = 3;
+        static const auto typeIdColumn = 4;
         static const auto priceColumn = 5;
         static const auto idColumn = 8;
 

@@ -25,9 +25,11 @@ class QItemSelection;
 namespace Evernus
 {
     class WalletTransactionRepository;
+    class ItemCostProvider;
     class MarketOrderModel;
     class EveDataProvider;
     class MarketOrderView;
+    class StyledTreeView;
 
     class MarketOrderViewWithTransactions
         : public QWidget
@@ -37,6 +39,7 @@ namespace Evernus
     public:
         MarketOrderViewWithTransactions(const WalletTransactionRepository &transactionsRepo,
                                         const EveDataProvider &dataProvider,
+                                        ItemCostProvider &costProvider,
                                         QWidget *parent = nullptr);
         virtual ~MarketOrderViewWithTransactions() = default;
 
@@ -57,8 +60,13 @@ namespace Evernus
     private slots:
         void selectOrder(const QItemSelection &selected, const QItemSelection &deselected);
 
+        void addItemCost();
+
     private:
+        ItemCostProvider &mCostProvider;
+
         MarketOrderView *mOrderView = nullptr;
+        StyledTreeView *mTransactionsView = nullptr;
 
         MarketOrderModel *mOrderModel = nullptr;
         WalletTransactionsModel mTransactionModel;

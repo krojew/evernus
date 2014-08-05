@@ -27,7 +27,6 @@
 #include "PriceUtils.h"
 #include "IconUtils.h"
 #include "TextUtils.h"
-#include "ItemCost.h"
 
 #include "MarketOrderSellModel.h"
 
@@ -49,7 +48,7 @@ namespace Evernus
 
     int MarketOrderSellModel::columnCount(const QModelIndex &parent) const
     {
-        return 16;
+        return 17;
     }
 
     QVariant MarketOrderSellModel::data(const QModelIndex &index, int role) const
@@ -156,6 +155,14 @@ namespace Evernus
                 return data->getVolumeRemaining() * data->getPrice();
             case deltaColumn:
                 return data->getDelta();
+            case marginColumn:
+                {
+                    const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                    const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
+                    const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
+                    return 100. * (realPrice - realCost) / realPrice;
+                }
             case profitColumn:
                 {
                     const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
@@ -262,6 +269,14 @@ namespace Evernus
                     if (data->getDelta() != 0)
                         return locale.toString(data->getDelta());
                     break;
+                case marginColumn:
+                    {
+                        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                        const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
+                        const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
+                        return QString{"%1%2"}.arg(locale.toString(100. * (realPrice - realCost) / realPrice, 'f', 2)).arg(locale.percent());
+                    }
                 case profitColumn:
                     {
                         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
@@ -367,6 +382,22 @@ namespace Evernus
             case customCostColumn:
             case priceStatusColumn:
                 return QColor{Qt::darkRed};
+            case marginColumn:
+                {
+                    const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                    const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
+                    const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
+                    const auto margin = 100. * (realPrice - realCost) / realPrice;
+
+                    QSettings settings;
+                    if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
+                        return QColor{Qt::red};
+                    if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
+                        return QColor{0xff, 0xa5, 0x00};
+
+                    return QColor{Qt::green};
+                }
             case profitColumn:
             case totalProfitColumn:
             case profitPerItemColumn:
@@ -406,6 +437,8 @@ namespace Evernus
                 return tr("Total");
             case deltaColumn:
                 return tr("Delta");
+            case marginColumn:
+                return tr("Margin");
             case profitColumn:
                 return tr("Profit");
             case totalProfitColumn:

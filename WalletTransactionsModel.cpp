@@ -74,6 +74,9 @@ namespace Evernus
 
         switch (role) {
         case Qt::UserRole:
+            if (column == typeIdColumn)
+                return mDataProvider.getTypeName(mData[row][typeIdColumn].value<EveType::IdType>());
+
             return mData[row][column];
         case Qt::DisplayRole:
             switch (column) {
@@ -87,6 +90,8 @@ namespace Evernus
                        (tr("Sell"));
             case quantityColumn:
                 return QLocale{}.toString(mData[row][quantityColumn].toUInt());
+            case typeIdColumn:
+                return mDataProvider.getTypeName(mData[row][typeIdColumn].value<EveType::IdType>());
             case priceColumn:
                 {
                     auto price = mData[row][priceColumn].toDouble();
@@ -149,6 +154,21 @@ namespace Evernus
         return 0;
     }
 
+    EveType::IdType WalletTransactionsModel::getTypeId(int row) const
+    {
+        return mData[row][typeIdColumn].value<EveType::IdType>();
+    }
+
+    uint WalletTransactionsModel::getQuantity(int row) const
+    {
+        return mData[row][quantityColumn].toUInt();
+    }
+
+    double WalletTransactionsModel::getPrice(int row) const
+    {
+        return mData[row][priceColumn].toDouble();
+    }
+
     void WalletTransactionsModel::setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, EveType::IdType typeId)
     {
         mCharacterId = id;
@@ -181,7 +201,7 @@ namespace Evernus
                     << entry->getTimestamp()
                     << static_cast<int>(entry->getType())
                     << entry->getQuantity()
-                    << mDataProvider.getTypeName(entry->getTypeId())
+                    << entry->getTypeId()
                     << entry->getPrice()
                     << entry->getClientName()
                     << mDataProvider.getLocationName(entry->getLocationId())

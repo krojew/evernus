@@ -26,7 +26,6 @@
 #include "ExternalOrder.h"
 #include "IconUtils.h"
 #include "TextUtils.h"
-#include "ItemCost.h"
 
 #include "MarketOrderBuyModel.h"
 

@@ -20,11 +20,11 @@
 
 namespace Evernus
 {
-    ItemCostModel::ItemCostModel(const ItemCostRepository &itemRepo,
+    ItemCostModel::ItemCostModel(const ItemCostProvider &costProvider,
                                  const EveDataProvider &dataProvider,
                                  QObject *parent)
         : QAbstractTableModel{parent}
-        , mItemRepo{itemRepo}
+        , mCostProvider{costProvider}
         , mDataProvider{dataProvider}
     {
     }
@@ -101,7 +101,7 @@ namespace Evernus
         if (mCharacterId == Character::invalidId)
             mData.clear();
         else
-            mData = mItemRepo.fetchForCharacter(mCharacterId);
+            mData = mCostProvider.fetchForCharacter(mCharacterId);
 
         endResetModel();
     }

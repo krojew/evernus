@@ -79,7 +79,6 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(importExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(marginToolHidden(Character::IdType)), SLOT(updateAssetsValue(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(marginToolParsedData(const std::vector<ExternalOrder> &)), SLOT(updateExternalOrders(const std::vector<ExternalOrder> &)));
-            app.connect(&mainWnd, SIGNAL(itemCostsChanged()), SLOT(resetItemCostCache()));
             app.connect(&mainWnd, SIGNAL(preferencesChanged()), SLOT(handleNewPreferences()));
             app.connect(&mainWnd, SIGNAL(importFromMentat()), SLOT(importFromMentat()));
             mainWnd.connect(&app, SIGNAL(taskStarted(uint, const QString &)), SLOT(addNewTaskInfo(uint, const QString &)));
@@ -94,6 +93,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(walletJournalChanged()), SIGNAL(walletJournalChanged()));
             mainWnd.connect(&app, SIGNAL(walletTransactionsChanged()), SIGNAL(walletTransactionsChanged()));
             mainWnd.connect(&app, SIGNAL(marketOrdersChanged()), SIGNAL(marketOrdersChanged()));
+            mainWnd.connect(&app, SIGNAL(itemCostsChanged()), SIGNAL(itemCostsChanged()));
             mainWnd.connect(&app, SIGNAL(charactersChanged()), SLOT(updateIskData()));
             mainWnd.connect(&app, SIGNAL(openMarginTool()), SLOT(showMarginTool()));
             mainWnd.showAsSaved();

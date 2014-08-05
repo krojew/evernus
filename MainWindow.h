@@ -76,7 +76,7 @@ namespace Evernus
                    const AssetProvider &assetProvider,
                    const EveDataProvider &eveDataProvider,
                    const CacheTimerProvider &cacheTimerProvider,
-                   const ItemCostProvider &itemCostProvider,
+                   ItemCostProvider &itemCostProvider,
                    QWidget *parent = nullptr,
                    Qt::WindowFlags flags = 0);
         virtual ~MainWindow() = default;
@@ -167,7 +167,7 @@ namespace Evernus
         const FilterTextRepository &mFilterRepository;
         const MarketOrderProvider &mOrderProvider;
         const AssetProvider &mAssetProvider;
-        const ItemCostProvider &mItemCostProvider;
+        ItemCostProvider &mItemCostProvider;
 
         const EveDataProvider &mEveDataProvider;
 

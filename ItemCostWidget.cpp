@@ -19,20 +19,20 @@
 #include <QLineEdit>
 
 #include "ItemCostEditDialog.h"
-#include "ItemCostRepository.h"
+#include "ItemCostProvider.h"
 #include "StyledTreeView.h"
 
 #include "ItemCostWidget.h"
 
 namespace Evernus
 {
-    ItemCostWidget::ItemCostWidget(const ItemCostRepository &itemCostRepo,
+    ItemCostWidget::ItemCostWidget(const ItemCostProvider &costProvider,
                                    const EveDataProvider &eveDataProvider,
                                    QWidget *parent)
         : QWidget(parent)
-        , mItemCostRepo(itemCostRepo)
+        , mCostProvider(costProvider)
         , mEveDataProvider(eveDataProvider)
-        , mModel(mItemCostRepo, mEveDataProvider)
+        , mModel(mCostProvider, mEveDataProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -69,7 +69,6 @@ namespace Evernus
 
         mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);
-        mView->setSelectionMode(QAbstractItemView::SingleSelection);
         mView->setModel(&mProxy);
         connect(mView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &ItemCostWidget::selectCost);
@@ -85,6 +84,18 @@ namespace Evernus
         mAddBtn->setDisabled(mCharacterId == Character::invalidId);
     }
 
+    void ItemCostWidget::updateData()
+    {
+        if (mBlockUpdate)
+            return;
+
+        mModel.reset();
+        mView->header()->resizeSections(QHeaderView::ResizeToContents);
+
+        mEditBtn->setDisabled(true);
+        mRemoveBtn->setDisabled(true);
+    }
+
     void ItemCostWidget::addCost()
     {
         ItemCost cost;
@@ -97,15 +108,15 @@ namespace Evernus
     {
         Q_ASSERT(mSelectedCosts.count() > 0);
 
-        const auto index = mSelectedCosts.first();
+        const auto index = mProxy.mapToSource(mSelectedCosts.first());
         const auto id = mModel.getId(index.row());
 
         try
         {
-            auto cost = mItemCostRepo.find(id);
+            auto cost = mCostProvider.findItemCost(id);
             showCostEditDialog(*cost);
         }
-        catch (const ItemCostRepository::NotFoundException &)
+        catch (const ItemCostProvider::NotFoundException &)
         {
         }
     }
@@ -114,26 +125,41 @@ namespace Evernus
     {
         Q_ASSERT(mSelectedCosts.count() > 0);
 
-        const auto index = mSelectedCosts.first();
-        const auto id = mModel.getId(index.row());
+        mBlockUpdate = true;
 
-        mItemCostRepo.remove(id);
-        mModel.reset();
+        try
+        {
+            for (const auto &index : mSelectedCosts)
+            {
+                const auto realIndex = mProxy.mapToSource(index);
+                if (realIndex.column() != 0)
+                    continue;
 
-        emit costsChanged();
+                const auto id = mModel.getId(realIndex.row());
+                mCostProvider.removeItemCost(id);
+            }
+        }
+        catch (...)
+        {
+            mBlockUpdate = false;
+            updateData();
 
-        mEditBtn->setDisabled(true);
-        mRemoveBtn->setDisabled(true);
+            throw;
+        }
+
+        mBlockUpdate = false;
+        updateData();
     }
 
     void ItemCostWidget::selectCost(const QItemSelection &selected, const QItemSelection &deselected)
     {
+        Q_UNUSED(selected);
         Q_UNUSED(deselected);
 
-        mEditBtn->setEnabled(true);
-        mRemoveBtn->setEnabled(true);
+        mEditBtn->setDisabled(selected.isEmpty());
+        mRemoveBtn->setDisabled(selected.isEmpty());
 
-        mSelectedCosts = selected.indexes();
+        mSelectedCosts = mView->selectionModel()->selectedIndexes();
     }
 
     void ItemCostWidget::applyWildcard()
@@ -145,13 +171,6 @@ namespace Evernus
     {
         ItemCostEditDialog dlg{cost, mEveDataProvider, this};
         if (dlg.exec() == QDialog::Accepted)
-        {
-            mItemCostRepo.store(cost);
-            mModel.reset();
-
-            mView->header()->resizeSections(QHeaderView::ResizeToContents);
-
-            emit costsChanged();
-        }
+            mCostProvider.storeItemCost(cost);
     }
 }

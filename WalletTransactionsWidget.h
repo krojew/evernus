@@ -25,6 +25,7 @@ namespace Evernus
     class WalletEntryFilterWidget;
     class FilterTextRepository;
     class CacheTimerProvider;
+    class ItemCostProvider;
     class EveDataProvider;
     class StyledTreeView;
 
@@ -40,6 +41,7 @@ namespace Evernus
                                  const FilterTextRepository &filterRepo,
                                  const CacheTimerProvider &cacheTimerProvider,
                                  const EveDataProvider &dataProvider,
+                                 ItemCostProvider &itemCostProvider,
                                  QWidget *parent = nullptr);
         virtual ~WalletTransactionsWidget() = default;
 
@@ -48,7 +50,12 @@ namespace Evernus
 
         void updateFilter(const QDate &from, const QDate &to, const QString &filter, int type);
 
+    private slots:
+        void addItemCost();
+
     private:
+        ItemCostProvider &mItemCostProvider;
+
         WalletTransactionsModel mModel;
         QSortFilterProxyModel *mFilterModel = nullptr;
 

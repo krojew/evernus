@@ -27,7 +27,7 @@ class QLineEdit;
 
 namespace Evernus
 {
-    class ItemCostRepository;
+    class ItemCostProvider;
     class EveDataProvider;
     class StyledTreeView;
     class ItemCost;
@@ -39,16 +39,15 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        ItemCostWidget(const ItemCostRepository &itemCostRepo,
+        ItemCostWidget(const ItemCostProvider &costProvider,
                        const EveDataProvider &eveDataProvider,
                        QWidget *parent = nullptr);
         virtual ~ItemCostWidget() = default;
 
-    signals:
-        void costsChanged();
-
     public slots:
         void setCharacter(Character::IdType id);
+
+        void updateData();
 
     private slots:
         void addCost();
@@ -60,7 +59,7 @@ namespace Evernus
         void applyWildcard();
 
     private:
-        const ItemCostRepository &mItemCostRepo;
+        const ItemCostProvider &mCostProvider;
         const EveDataProvider &mEveDataProvider;
 
         QPushButton *mAddBtn = nullptr;
@@ -77,6 +76,8 @@ namespace Evernus
         Character::IdType mCharacterId = Character::invalidId;
 
         QModelIndexList mSelectedCosts;
+
+        bool mBlockUpdate = false;
 
         void showCostEditDialog(ItemCost &cost);
     };

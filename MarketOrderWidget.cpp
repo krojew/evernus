@@ -40,7 +40,7 @@ namespace Evernus
     MarketOrderWidget::MarketOrderWidget(const MarketOrderProvider &orderProvider,
                                          const CacheTimerProvider &cacheTimerProvider,
                                          const EveDataProvider &dataProvider,
-                                         const ItemCostProvider &itemCostProvider,
+                                         ItemCostProvider &itemCostProvider,
                                          const WalletTransactionRepository &transactionsRepo,
                                          const Repository<Character> &characterRepository,
                                          const FilterTextRepository &filterRepo,
@@ -100,7 +100,7 @@ namespace Evernus
         auto mainTabs = new QTabWidget{this};
         mainLayout->addWidget(mainTabs);
 
-        mSellView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, this};
+        mSellView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, itemCostProvider, this};
         mainTabs->addTab(mSellView, QIcon{":/images/arrow_out.png"}, tr("Sell"));
         mSellView->setModel(&mSellModel);
         mSellView->sortByColumn(0, Qt::AscendingOrder);
@@ -109,7 +109,7 @@ namespace Evernus
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mSellView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mSellView, &MarketOrderViewWithTransactions::wildcardChanged);
 
-        mBuyView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, this};
+        mBuyView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, itemCostProvider, this};
         mainTabs->addTab(mBuyView, QIcon{":/images/arrow_in.png"}, tr("Buy"));
         mBuyView->setModel(&mBuyModel);
         mBuyView->sortByColumn(0, Qt::AscendingOrder);
@@ -167,7 +167,7 @@ namespace Evernus
 
         rangeLayout->addStretch();
 
-        mArchiveView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, this};
+        mArchiveView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, itemCostProvider, this};
         archiveLayout->addWidget(mArchiveView);
         mArchiveView->setShowInfo(false);
         mArchiveView->statusFilterChanged(MarketOrderFilterProxyModel::EveryStatus);

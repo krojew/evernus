@@ -44,7 +44,7 @@ namespace Evernus
         MarketOrderWidget(const MarketOrderProvider &orderProvider,
                           const CacheTimerProvider &cacheTimerProvider,
                           const EveDataProvider &dataProvider,
-                          const ItemCostProvider &itemCostProvider,
+                          ItemCostProvider &itemCostProvider,
                           const WalletTransactionRepository &transactionsRepo,
                           const Repository<Character> &characterRepository,
                           const FilterTextRepository &filterRepo,

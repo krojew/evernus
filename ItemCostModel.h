@@ -14,13 +14,9 @@
  */
 #pragma once
 
-#include <vector>
-
 #include <QAbstractTableModel>
 
-#include "ItemCostRepository.h"
-#include "Character.h"
-#include "ItemCost.h"
+#include "ItemCostProvider.h"
 
 namespace Evernus
 {
@@ -32,7 +28,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        ItemCostModel(const ItemCostRepository &itemRepo,
+        ItemCostModel(const ItemCostProvider &costProvider,
                       const EveDataProvider &dataProvider,
                       QObject *parent = nullptr);
         virtual ~ItemCostModel() = default;
@@ -50,11 +46,11 @@ namespace Evernus
         ItemCost::IdType getId(int row) const;
 
     private:
-        const ItemCostRepository &mItemRepo;
+        const ItemCostProvider &mCostProvider;
         const EveDataProvider &mDataProvider;
 
         Character::IdType mCharacterId = Character::invalidId;
 
-        ItemCostRepository::EntityList mData;
+        ItemCostProvider::CostList mData;
     };
 }

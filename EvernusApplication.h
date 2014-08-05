@@ -103,6 +103,12 @@ namespace Evernus
         virtual std::vector<std::shared_ptr<MarketOrder>> getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const override;
 
         virtual std::shared_ptr<ItemCost> fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const override;
+        virtual CostList fetchForCharacter(Character::IdType characterId) const override;
+        virtual void setForCharacterAndType(Character::IdType characterId, EveType::IdType typeId, double value) override;
+
+        virtual std::shared_ptr<ItemCost> findItemCost(ItemCost::IdType id) const override;
+        virtual void removeItemCost(ItemCost::IdType id) const override;
+        virtual void storeItemCost(ItemCost &cost) const override;
 
         const KeyRepository &getKeyRepository() const noexcept;
         const CharacterRepository &getCharacterRepository() const noexcept;
@@ -130,6 +136,7 @@ namespace Evernus
         void walletJournalChanged();
         void walletTransactionsChanged();
         void marketOrdersChanged();
+        void itemCostsChanged() const;
 
         void openMarginTool();
 
@@ -147,8 +154,6 @@ namespace Evernus
 
         void updateAssetsValue(Character::IdType id);
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
-
-        void resetItemCostCache();
 
         void handleNewPreferences();
 

@@ -14,21 +14,29 @@
  */
 #pragma once
 
+#include <vector>
 #include <memory>
 
-#include "Character.h"
-#include "EveType.h"
+#include "ItemCost.h"
 
 namespace Evernus
 {
-    class ItemCost;
-
     class ItemCostProvider
     {
     public:
+        typedef std::vector<std::shared_ptr<ItemCost>> CostList;
+
+        struct NotFoundException : std::exception { };
+
         ItemCostProvider() = default;
         virtual ~ItemCostProvider() = default;
 
         virtual std::shared_ptr<ItemCost> fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const = 0;
+        virtual CostList fetchForCharacter(Character::IdType characterId) const = 0;
+        virtual void setForCharacterAndType(Character::IdType characterId, EveType::IdType typeId, double value) = 0;
+
+        virtual std::shared_ptr<ItemCost> findItemCost(ItemCost::IdType id) const = 0;
+        virtual void removeItemCost(ItemCost::IdType id) const = 0;
+        virtual void storeItemCost(ItemCost &cost) const = 0;
     };
 }
