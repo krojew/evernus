@@ -427,6 +427,7 @@ namespace Evernus
                                               mEveDataProvider,
                                               mItemCostProvider,
                                               mWalletTransactionRepository,
+                                              mCharacterRepository,
                                               mFilterRepository,
                                               this};
         addTab(orderTab, tr("Orders"));

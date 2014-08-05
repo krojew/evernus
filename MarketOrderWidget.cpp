@@ -42,6 +42,7 @@ namespace Evernus
                                          const EveDataProvider &dataProvider,
                                          const ItemCostProvider &itemCostProvider,
                                          const WalletTransactionRepository &transactionsRepo,
+                                         const Repository<Character> &characterRepository,
                                          const FilterTextRepository &filterRepo,
                                          QWidget *parent)
         : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
@@ -49,7 +50,7 @@ namespace Evernus
                                ImportSettings::maxMarketOrdersAgeKey,
                                parent)
         , mOrderProvider(orderProvider)
-        , mSellModel(mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider)
+        , mSellModel(mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider, characterRepository)
         , mBuyModel(mOrderProvider, dataProvider, cacheTimerProvider)
         , mArchiveModel(mOrderProvider, dataProvider, itemCostProvider)
     {

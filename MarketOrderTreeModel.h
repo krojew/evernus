@@ -104,6 +104,8 @@ namespace Evernus
     private:
         virtual OrderList getOrders() const = 0;
 
+        virtual void handleNewCharacter();
+
         quintptr getGroupingId(const MarketOrder &order) const;
         QString getGroupingData(const MarketOrder &order) const;
     };

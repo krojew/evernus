@@ -198,6 +198,8 @@ namespace Evernus
     void MarketOrderTreeModel::setCharacter(Character::IdType id)
     {
         mCharacterId = id;
+
+        handleNewCharacter();
         reset();
     }
 
@@ -265,6 +267,19 @@ namespace Evernus
         endResetModel();
     }
 
+    QString MarketOrderTreeModel::getGroupName(EveType::IdType typeId) const
+    {
+        auto group = mDataProvider.getTypeMarketGroupParentName(typeId);
+        if (group.isEmpty())
+            group = mDataProvider.getTypeMarketGroupName(typeId);
+
+        return group;
+    }
+
+    void MarketOrderTreeModel::handleNewCharacter()
+    {
+    }
+
     quintptr MarketOrderTreeModel::getGroupingId(const MarketOrder &order) const
     {
         switch (mGrouping) {
@@ -291,14 +306,5 @@ namespace Evernus
         default:
             return QString{};
         }
-    }
-
-    QString MarketOrderTreeModel::getGroupName(EveType::IdType typeId) const
-    {
-        auto group = mDataProvider.getTypeMarketGroupParentName(typeId);
-        if (group.isEmpty())
-            group = mDataProvider.getTypeMarketGroupName(typeId);
-
-        return group;
     }
 }

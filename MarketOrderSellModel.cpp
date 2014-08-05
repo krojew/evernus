@@ -24,6 +24,7 @@
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "ExternalOrder.h"
+#include "PriceUtils.h"
 #include "IconUtils.h"
 #include "TextUtils.h"
 #include "ItemCost.h"
@@ -36,11 +37,13 @@ namespace Evernus
                                                const EveDataProvider &dataProvider,
                                                const ItemCostProvider &itemCostProvider,
                                                const CacheTimerProvider &cacheTimerProvider,
+                                               const Repository<Character> &characterRepository,
                                                QObject *parent)
         : MarketOrderTreeModel{dataProvider, parent}
         , mOrderProvider{orderProvider}
         , mItemCostProvider{itemCostProvider}
         , mCacheTimerProvider{cacheTimerProvider}
+        , mCharacterRepository{characterRepository}
     {
     }
 
@@ -155,18 +158,27 @@ namespace Evernus
                 return data->getDelta();
             case profitColumn:
                 {
+                    const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    return data->getVolumeRemaining() * (data->getPrice() - cost->getCost());
+                    const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
+                    const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
+                    return data->getVolumeRemaining() * (realPrice - realCost);
                 }
             case totalProfitColumn:
                 {
+                    const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    return data->getVolumeEntered() * (data->getPrice() - cost->getCost());
+                    const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
+                    const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
+                    return data->getVolumeEntered() * (realPrice - realCost);
                 }
             case profitPerItemColumn:
                 {
+                    const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    return data->getPrice() - cost->getCost();
+                    const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
+                    const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
+                    return realPrice - realCost;
                 }
             case timeLeftColumn:
                 {
@@ -252,18 +264,27 @@ namespace Evernus
                     break;
                 case profitColumn:
                     {
+                        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        return locale.toCurrencyString(data->getVolumeRemaining() * (data->getPrice() - cost->getCost()), "ISK");
+                        const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
+                        const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
+                        return locale.toCurrencyString(data->getVolumeRemaining() * (realPrice - realCost), "ISK");
                     }
                 case totalProfitColumn:
                     {
+                        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        return locale.toCurrencyString(data->getVolumeEntered() * (data->getPrice() - cost->getCost()), "ISK");
+                        const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
+                        const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
+                        return locale.toCurrencyString(data->getVolumeEntered() * (realPrice - realCost), "ISK");
                     }
                 case profitPerItemColumn:
                     {
+                        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        return locale.toCurrencyString(data->getPrice() - cost->getCost(), "ISK");
+                        const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
+                        const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
+                        return locale.toCurrencyString(realPrice - realCost, "ISK");
                     }
                 case timeLeftColumn:
                     {
@@ -343,6 +364,7 @@ namespace Evernus
                     break;
                 }
                 break;
+            case customCostColumn:
             case priceStatusColumn:
                 return QColor{Qt::darkRed};
             case profitColumn:
@@ -446,5 +468,10 @@ namespace Evernus
     MarketOrderTreeModel::OrderList MarketOrderSellModel::getOrders() const
     {
         return mOrderProvider.getSellOrders(mCharacterId);
+    }
+
+    void MarketOrderSellModel::handleNewCharacter()
+    {
+        mCharacter = mCharacterRepository.find(mCharacterId);
     }
 }

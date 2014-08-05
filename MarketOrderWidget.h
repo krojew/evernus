@@ -46,6 +46,7 @@ namespace Evernus
                           const EveDataProvider &dataProvider,
                           const ItemCostProvider &itemCostProvider,
                           const WalletTransactionRepository &transactionsRepo,
+                          const Repository<Character> &characterRepository,
                           const FilterTextRepository &filterRepo,
                           QWidget *parent = nullptr);
         virtual ~MarketOrderWidget() = default;

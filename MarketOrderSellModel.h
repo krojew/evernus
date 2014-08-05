@@ -15,6 +15,7 @@
 #pragma once
 
 #include "MarketOrderTreeModel.h"
+#include "Repository.h"
 
 namespace Evernus
 {
@@ -32,6 +33,7 @@ namespace Evernus
                              const EveDataProvider &dataProvider,
                              const ItemCostProvider &itemCostProvider,
                              const CacheTimerProvider &cacheTimerProvider,
+                             const Repository<Character> &characterRepository,
                              QObject *parent = nullptr);
         virtual ~MarketOrderSellModel() = default;
 
@@ -67,7 +69,11 @@ namespace Evernus
         const MarketOrderProvider &mOrderProvider;
         const ItemCostProvider &mItemCostProvider;
         const CacheTimerProvider &mCacheTimerProvider;
+        const Repository<Character> &mCharacterRepository;
+
+        Repository<Character>::EntityPtr mCharacter;
 
         virtual OrderList getOrders() const override;
+        virtual void handleNewCharacter() override;
     };
 }
