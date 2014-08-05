@@ -71,6 +71,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        static const QString versionKey;
+
         EvernusApplication(int &argc, char *argv[]);
         virtual ~EvernusApplication() = default;
 
@@ -109,6 +111,7 @@ namespace Evernus
         virtual std::shared_ptr<ItemCost> findItemCost(ItemCost::IdType id) const override;
         virtual void removeItemCost(ItemCost::IdType id) const override;
         virtual void storeItemCost(ItemCost &cost) const override;
+        virtual void removeAllItemCosts(Character::IdType characterId) const override;
 
         const KeyRepository &getKeyRepository() const noexcept;
         const CharacterRepository &getCharacterRepository() const noexcept;
@@ -172,8 +175,6 @@ namespace Evernus
 
         typedef std::unordered_map<Character::IdType, QDateTime> CharacterTimerMap;
         typedef std::unordered_map<Character::IdType, MarketOrderRepository::EntityList> MarketOrderMap;
-
-        static const QString versionKey;
 
         QSqlDatabase mMainDb, mEveDb;
 

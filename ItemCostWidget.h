@@ -53,6 +53,7 @@ namespace Evernus
         void addCost();
         void editCost();
         void deleteCost();
+        void deleteAllCost();
 
         void selectCost(const QItemSelection &selected, const QItemSelection &deselected);
 

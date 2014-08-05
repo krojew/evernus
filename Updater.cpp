@@ -18,13 +18,33 @@
 #include <QNetworkReply>
 #include <QDomDocument>
 #include <QMessageBox>
+#include <QSettings>
 #include <QDebug>
 #include <QUrl>
+
+#include "EvernusApplication.h"
+#include "PriceSettings.h"
 
 #include "Updater.h"
 
 namespace Evernus
 {
+    void Updater::performVersionMigration() const
+    {
+        QSettings settings;
+
+        const auto curVersion
+            = settings.value(EvernusApplication::versionKey, QCoreApplication::applicationVersion()).toString().split('.');
+        if (curVersion.size() != 2)
+            return;
+
+        const auto majorVersion = curVersion[0].toUInt();
+        const auto minorVersion = curVersion[1].toUInt();
+
+        if (majorVersion == 0 && minorVersion < 3)
+            settings.setValue(PriceSettings::autoAddCustomItemCostKey, false);
+    }
+
     Updater &Updater::getInstance()
     {
         static Updater updater;

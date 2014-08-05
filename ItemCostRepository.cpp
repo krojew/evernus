@@ -86,6 +86,14 @@ namespace Evernus
         return populate(query.record());
     }
 
+    void ItemCostRepository::removeForCharacter(Character::IdType characterId) const
+    {
+        auto query = prepare(QString{"DELETE FROM %1 WHERE character_id = ?"}.arg(getTableName()));
+        query.bindValue(0, characterId);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     QStringList ItemCostRepository::getColumns() const
     {
         return QStringList{}

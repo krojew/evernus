@@ -95,8 +95,8 @@ namespace Evernus
 
         struct ItemData
         {
-            uint mQuantity;
-            double mPrice;
+            uint mQuantity = 0;
+            double mPrice = 0.;
         };
 
         std::unordered_map<EveType::IdType, ItemData> aggrData;

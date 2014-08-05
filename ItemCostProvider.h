@@ -38,5 +38,6 @@ namespace Evernus
         virtual std::shared_ptr<ItemCost> findItemCost(ItemCost::IdType id) const = 0;
         virtual void removeItemCost(ItemCost::IdType id) const = 0;
         virtual void storeItemCost(ItemCost &cost) const = 0;
+        virtual void removeAllItemCosts(Character::IdType characterId) const = 0;
     };
 }

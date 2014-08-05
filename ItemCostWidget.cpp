@@ -57,6 +57,11 @@ namespace Evernus
         mRemoveBtn->setDisabled(true);
         connect(mRemoveBtn, &QPushButton::clicked, this, &ItemCostWidget::deleteCost);
 
+        auto deleteAllBtn = new QPushButton{QIcon{":/images/cross.png"}, tr("Remove all"), this};
+        toolBarLayout->addWidget(deleteAllBtn);
+        deleteAllBtn->setFlat(true);
+        connect(deleteAllBtn, &QPushButton::clicked, this, &ItemCostWidget::deleteAllCost);
+
         mFilterEdit = new QLineEdit{this};
         toolBarLayout->addWidget(mFilterEdit, 1);
         mFilterEdit->setPlaceholderText(tr("type in wildcard and press Enter"));
@@ -149,6 +154,11 @@ namespace Evernus
 
         mBlockUpdate = false;
         updateData();
+    }
+
+    void ItemCostWidget::deleteAllCost()
+    {
+        mCostProvider.removeAllItemCosts(mCharacterId);
     }
 
     void ItemCostWidget::selectCost(const QItemSelection &selected, const QItemSelection &deselected)

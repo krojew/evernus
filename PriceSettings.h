@@ -41,5 +41,6 @@ namespace Evernus
         const auto importLogWaitTimeKey = "prices/import/logWaitTime";
         const auto preferCustomItemCostKey = "prices/preferCustomItemCost";
         const auto marketOrderMaxAgeKey = "prices/orders/maxAge";
+        const auto autoAddCustomItemCostKey = "prices/orders/autoAddCustomItemCost";
     }
 }

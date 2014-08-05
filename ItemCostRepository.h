@@ -36,6 +36,8 @@ namespace Evernus
         EntityList fetchForCharacter(Character::IdType id) const;
         EntityPtr fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const;
 
+        void removeForCharacter(Character::IdType characterId) const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const ItemCost &entity, QSqlQuery &query) const override;

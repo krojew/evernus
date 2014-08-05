@@ -24,6 +24,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        void performVersionMigration() const;
+
         static Updater &getInstance();
 
     public slots:

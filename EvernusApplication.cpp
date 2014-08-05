@@ -28,6 +28,7 @@
 #include "UpdaterSettings.h"
 #include "ImportSettings.h"
 #include "WalletSettings.h"
+#include "PriceSettings.h"
 #include "PathSettings.h"
 #include "IGBSettings.h"
 #include "IGBService.h"
@@ -115,6 +116,7 @@ namespace Evernus
 
         showSplashMessage(tr("Loading..."), splash);
 
+        Updater::getInstance().performVersionMigration();
         settings.setValue(versionKey, applicationVersion());
 
         connect(&mAPIManager, &APIManager::generalError, this, &EvernusApplication::apiError);
@@ -617,6 +619,14 @@ namespace Evernus
     {
         mItemCostRepository->store(cost);
         mItemCostCache[std::make_pair(cost.getCharacterId(), cost.getTypeId())] = std::make_shared<ItemCost>(cost);
+
+        emit itemCostsChanged();
+    }
+
+    void EvernusApplication::removeAllItemCosts(Character::IdType characterId) const
+    {
+        mItemCostRepository->removeForCharacter(characterId);
+        mItemCostCache.clear();
 
         emit itemCostsChanged();
     }
@@ -1479,6 +1489,17 @@ namespace Evernus
         mBuyOrders.erase(id);
         mArchivedOrders.erase(id);
 
+        QSettings settings;
+        const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, true).toBool();
+
+        struct ItemCostData
+        {
+            uint mQuantity = 0;
+            double mPrice = 0.;
+        };
+
+        std::unordered_map<EveType::IdType, ItemCostData> newItemCosts;
+
         for (auto &order : orders)
         {
             const auto cIt = curStates.find(order.getId());
@@ -1501,6 +1522,30 @@ namespace Evernus
             {
                 order.setDelta(order.getVolumeRemaining() - order.getVolumeEntered());
             }
+
+            if (autoSetCosts && order.getType() == MarketOrder::Type::Buy && order.getDelta() != 0 && order.getState() == MarketOrder::State::Fulfilled)
+            {
+                const auto lastSeen = std::min(QDateTime::currentDateTimeUtc(), order.getIssued().addDays(order.getDuration()));
+                const auto transactions
+                    = mWalletTransactionRepository->fetchForCharacterInRange(id,
+                                                                             order.getFirstSeen(),
+                                                                             lastSeen,
+                                                                             WalletTransactionRepository::EntryType::Buy,
+                                                                             order.getTypeId());
+
+                auto &cost = newItemCosts[order.getTypeId()];
+                for (const auto &transaction : transactions)
+                {
+                    cost.mQuantity += transaction->getQuantity();
+                    cost.mPrice += transaction->getQuantity() * transaction->getPrice();
+                }
+            }
+        }
+
+        if (autoSetCosts)
+        {
+            for (const auto &cost : newItemCosts)
+                setForCharacterAndType(id, cost.first, cost.second.mPrice / cost.second.mQuantity);
         }
 
         std::vector<MarketOrder::IdType> toArchive;

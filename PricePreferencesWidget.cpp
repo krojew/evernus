@@ -64,10 +64,14 @@ namespace Evernus
         marginControlsLayout->addWidget(mPreferCustomCostBtn, 1, 0, 1, 4);
         mPreferCustomCostBtn->setChecked(settings.value(PriceSettings::preferCustomItemCostKey, true).toBool());
 
-        marginControlsLayout->addWidget(new QLabel{tr("Import log wait timer:"), this}, 2, 0, Qt::AlignRight);
+        mAutoAddCustomCostBtn = new QCheckBox{tr("Auto add custom item costs on fulfilled buy order"), this};
+        marginControlsLayout->addWidget(mAutoAddCustomCostBtn, 2, 0, 1, 4);
+        mAutoAddCustomCostBtn->setChecked(settings.value(PriceSettings::autoAddCustomItemCostKey, true).toBool());
+
+        marginControlsLayout->addWidget(new QLabel{tr("Import log wait timer:"), this}, 3, 0, Qt::AlignRight);
 
         mImportLogWaitTimeEdit = new QSpinBox{this};
-        marginControlsLayout->addWidget(mImportLogWaitTimeEdit, 2, 1);
+        marginControlsLayout->addWidget(mImportLogWaitTimeEdit, 3, 1);
         mImportLogWaitTimeEdit->setMaximum(10000);
         mImportLogWaitTimeEdit->setSuffix("ms");
         mImportLogWaitTimeEdit->setValue(settings.value(PriceSettings::importLogWaitTimeKey, PriceSettings::importLogWaitTimeDefault).toUInt());
@@ -120,6 +124,7 @@ namespace Evernus
         settings.setValue(PriceSettings::preferredMarginKey, mPreferredMarginEdit->value());
         settings.setValue(PriceSettings::priceDeltaKey, mPriceDeltaEdit->value());
         settings.setValue(PriceSettings::preferCustomItemCostKey, mPreferCustomCostBtn->isChecked());
+        settings.setValue(PriceSettings::autoAddCustomItemCostKey, mAutoAddCustomCostBtn->isChecked());
 #ifdef Q_OS_WIN
         settings.setValue(PriceSettings::priceAltImportKey, mAltImportBtn->isChecked());
 #endif
