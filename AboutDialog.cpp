@@ -34,14 +34,19 @@ namespace Evernus
         iconLabel->setPixmap(icon.pixmap(icon.actualSize(QSize{64, 64})));
 
         const auto link = "http://evernus.com";
+        const auto forum = "https://forums.eveonline.com/default.aspx?g=posts&t=362779";
 
         auto aboutLabel = new QLabel{tr(
             "<strong>%1</strong><br />%2<br /><br />"
             "Created by <strong><a href='http://evewho.com/pilot/Pete+Butcher'>Pete Butcher</a></strong><br />"
-            "All donations are welcome :)<br /><a href='%3'>%3</a>")
+            "All donations are welcome :)<br /><br />"
+            "<a href='%3'>%3</a><br />"
+            "Twitter: <a href='http://twitter.com/evernusproject'>@evernusproject</a><br />"
+            "Forum topic: <a href='%4'>%4</a>")
                 .arg(QCoreApplication::applicationName())
                 .arg(QCoreApplication::applicationVersion())
-                .arg(link),
+                .arg(link)
+                .arg(forum),
             this};
         mainLayout->addWidget(aboutLabel);
         aboutLabel->setTextFormat(Qt::RichText);
