@@ -88,7 +88,13 @@ namespace Evernus
             case quantityColumn:
                 return QLocale{}.toString(mData[row][quantityColumn].toUInt());
             case priceColumn:
-                return QLocale{}.toCurrencyString(mData[row][priceColumn].toDouble(), "ISK");
+                {
+                    auto price = mData[row][priceColumn].toDouble();
+                    if (static_cast<WalletTransaction::Type>(mData[row][typeColumn].toInt()) == WalletTransaction::Type::Buy)
+                        price = -price;
+
+                    return QLocale{}.toCurrencyString(price, "ISK");
+                }
             }
 
             return mData[row][column];
