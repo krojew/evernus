@@ -1494,8 +1494,8 @@ namespace Evernus
 
         struct ItemCostData
         {
-            uint mQuantity = 0;
-            double mPrice = 0.;
+            uint mQuantity;
+            double mPrice;
         };
 
         std::unordered_map<EveType::IdType, ItemCostData> newItemCosts;
