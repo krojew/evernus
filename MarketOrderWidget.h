@@ -59,6 +59,8 @@ namespace Evernus
         void importPricesFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
 
+        void openMarginTool();
+
     public slots:
         void updateData();
 

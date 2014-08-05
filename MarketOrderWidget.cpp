@@ -81,6 +81,11 @@ namespace Evernus
         importFromFile->setFlat(true);
         connect(importFromFile, &QPushButton::clicked, this, &MarketOrderWidget::prepareItemImportFromFile);
 
+        auto openMarginTool = new QPushButton{QIcon{":/images/report.png"}, tr("Open margin tool"), this};
+        toolBarLayout->addWidget(openMarginTool);
+        openMarginTool->setFlat(true);
+        connect(openMarginTool, &QPushButton::clicked, this, &MarketOrderWidget::openMarginTool);
+
         auto stateFilter = new MarketOrderFilterWidget{filterRepo, this};
         toolBarLayout->addWidget(stateFilter);
 

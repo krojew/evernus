@@ -364,7 +364,7 @@ namespace Evernus
 
         auto toolsMenu = bar->addMenu(tr("&Tools"));
         toolsMenu->addAction(tr("Import conquerable stations"), this, SIGNAL(refreshConquerableStations()));
-        toolsMenu->addAction(tr("Ma&rgin tool..."), this, SLOT(showMarginTool()), Qt::CTRL + Qt::Key_M);
+        toolsMenu->addAction(QIcon{":/images/report.png"}, tr("Ma&rgin tool..."), this, SLOT(showMarginTool()), Qt::CTRL + Qt::Key_M);
         toolsMenu->addSeparator();
         toolsMenu->addAction(tr("Copy IGB link"), this, SLOT(copyIGBLink()));
 
@@ -435,6 +435,7 @@ namespace Evernus
         connect(orderTab, &MarketOrderWidget::importFromLogs, this, &MainWindow::importMarketOrdersFromLogs);
         connect(orderTab, &MarketOrderWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(orderTab, &MarketOrderWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
+        connect(orderTab, &MarketOrderWidget::openMarginTool, this, &MainWindow::showMarginTool);
         connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::marginToolHidden, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, orderTab, &MarketOrderWidget::updateData);
