@@ -140,7 +140,13 @@ namespace Evernus
             return QModelIndex{};
 
         if (!parent.isValid())
+        {
+            // https://bugreports.qt-project.org/browse/QTBUG-40624
+            if (mRegions.empty())
+                return QModelIndex{};
+
             return createIndex(row, column, &mRegions[row]);
+        }
 
         const auto node = static_cast<const LocationNode *>(parent.internalPointer());
         switch (node->mType) {
