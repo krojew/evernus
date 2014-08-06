@@ -35,5 +35,6 @@ namespace Evernus
     private:
         QCheckBox *mImportAssetsBox = nullptr;
         QCheckBox *mAutoUpdateValueBox = nullptr;
+        QCheckBox *mUpdateOnlyFullValueBox = nullptr;
     };
 }

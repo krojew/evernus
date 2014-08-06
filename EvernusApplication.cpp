@@ -1777,7 +1777,10 @@ namespace Evernus
 
     double EvernusApplication::getTotalItemSellValue(const Item &item, quint64 locationId) const
     {
-        auto price = getTypeSellPrice(item.getTypeId(), locationId, false)->getValue() * item.getQuantity();
+        QSettings settings;
+        const auto throwOnUnavailable = settings.value(ImportSettings::updateOnlyFullAssetValueKey, false).toBool();
+
+        auto price = getTypeSellPrice(item.getTypeId(), locationId, !throwOnUnavailable)->getValue() * item.getQuantity();
         for (const auto &child : item)
             price += getTotalItemSellValue(*child, locationId);
 

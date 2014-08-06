@@ -24,6 +24,7 @@ namespace Evernus
         const auto importPortraitKey = "import/character/importPortrait";
         const auto importAssetsKey = "import/assets/import";
         const auto autoUpdateAssetValueKey = "import/assets/autoUpdateValue";
+        const auto updateOnlyFullAssetValueKey = "import/assets/updateOnlyFullAssetValue";
         const auto maxCharacterAgeKey = "import/character/maxAge";
         const auto maxAssetListAgeKey = "import/assetList/maxAge";
         const auto maxWalletAgeKey = "import/wallet/maxAge";
