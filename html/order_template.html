@@ -41,6 +41,9 @@
         if (curTime - lastAdvance < 1000)
             return;
             
+        document.getElementById("prev-button").disabled = true;
+        document.getElementById("next-button").disabled = true;
+            
         var currentOrder = Math.max(0, parseInt(document.getElementById("current-order").value)) - 1 + delta;
         currentOrder %= orders.length;
         if (currentOrder < 0)
@@ -52,6 +55,10 @@
         selectOrder(orders[currentOrder]);
         
         showType(items[currentOrder]);
+        setTimeout(function() {
+            document.getElementById("prev-button").disabled = false;
+            document.getElementById("next-button").disabled = false;
+        }, 1000);
         
         lastAdvance = curTime;
     }
@@ -59,8 +66,8 @@
 
 <p>
     <?=current-order-text?> <input id="current-order" type="number" value="0" />
-    <input type="button" value="<?=prev-order-text?>" onclick="advanceOrder(-1);" />
-    <input type="button" value="<?=next-order-text?>" onclick="advanceOrder(1);" />
+    <input id="prev-button" type="button" value="<?=prev-order-text?>" onclick="advanceOrder(-1);" />
+    <input id="next-button" type="button" value="<?=next-order-text?>" onclick="advanceOrder(1);" />
 </p>
 
 <p><?=sell-orders-text?></p>
