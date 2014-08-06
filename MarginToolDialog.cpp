@@ -655,6 +655,10 @@ namespace Evernus
         m5SampleDataTable = createSampleTable();
         sampleLayout->addWidget(m5SampleDataTable);
 
+        auto helpLabel = new QLabel{tr("If you experience problems with importing orders, adjust margin tool settings in the Preferences."), this};
+        mainLayout->addWidget(helpLabel);
+        helpLabel->setWordWrap(true);
+
         return tabWidget;
     }
 
