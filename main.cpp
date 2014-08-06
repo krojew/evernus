@@ -18,8 +18,8 @@
 
 #include "MarketLogExternalOrderImporterThread.h"
 #include "EveMarketDataExternalOrderImporter.h"
-#include "MarketOrderFilterProxyModel.h"
 #include "MarketLogExternalOrderImporter.h"
+#include "MarketOrderFilterProxyModel.h"
 #include "ExternalOrderImporterNames.h"
 #include "EvernusApplication.h"
 #include "MainWindow.h"
@@ -77,7 +77,6 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(importMarketOrdersFromLogs(Character::IdType)), SLOT(refreshMarketOrdersFromLogs(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(importExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)));
-            app.connect(&mainWnd, SIGNAL(marginToolHidden(Character::IdType)), SLOT(updateAssetsValue(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(marginToolParsedData(const std::vector<ExternalOrder> &)), SLOT(updateExternalOrders(const std::vector<ExternalOrder> &)));
             app.connect(&mainWnd, SIGNAL(preferencesChanged()), SLOT(handleNewPreferences()));
             app.connect(&mainWnd, SIGNAL(importFromMentat()), SLOT(importFromMentat()));

@@ -1058,11 +1058,6 @@ namespace Evernus
         importExternalOrders(ExternalOrderImporterNames::logImporter, target);
     }
 
-    void EvernusApplication::updateAssetsValue(Character::IdType id)
-    {
-        computeAssetListSellValue(*fetchAssetsForCharacter(id));
-    }
-
     void EvernusApplication::updateExternalOrders(const std::vector<ExternalOrder> &orders)
     {
         try

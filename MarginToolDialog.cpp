@@ -296,9 +296,6 @@ namespace Evernus
     {
         QString targetFile;
 
-        mParsedOrders.clear();
-        mParsedOrderIds.clear();
-
         auto curLocale = locale();
         auto newFiles = getKnownFiles(path);
 
@@ -393,6 +390,8 @@ namespace Evernus
             const auto volEnteredColumn = 5;
             const auto jumpsColumn = 13;
 
+            std::vector<ExternalOrder> parsedOrders;
+
             while (!file.atEnd())
             {
                 const QString line = file.readLine();
@@ -442,11 +441,7 @@ namespace Evernus
                         ++sellCount;
                     }
 
-                    if (mParsedOrderIds.find(order.getId()) == std::end(mParsedOrderIds))
-                    {
-                        mParsedOrderIds.emplace(order.getId());
-                        mParsedOrders.emplace_back(std::move(order));
-                    }
+                    parsedOrders.emplace_back(std::move(order));
                 }
             }
 
@@ -556,6 +551,8 @@ namespace Evernus
             catch (const Repository<Character>::NotFoundException &)
             {
             }
+
+            emit parsedData(parsedOrders);
         }
     }
 
@@ -575,14 +572,6 @@ namespace Evernus
     {
         savePosition();
         QDialog::closeEvent(event);
-    }
-
-    void MarginToolDialog::hideEvent(QHideEvent *event)
-    {
-        emit parsedData(mParsedOrders);
-        emit hidden();
-
-        QDialog::hideEvent(event);
     }
 
     void MarginToolDialog::setNewWindowFlags(bool alwaysOnTop)

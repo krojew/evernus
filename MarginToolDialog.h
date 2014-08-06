@@ -50,8 +50,6 @@ namespace Evernus
         virtual ~MarginToolDialog() = default;
 
     signals:
-        void hidden();
-
         void parsedData(const std::vector<ExternalOrder> &orders);
 
     public slots:
@@ -66,7 +64,6 @@ namespace Evernus
 
     protected:
         virtual void closeEvent(QCloseEvent *event) override;
-        virtual void hideEvent(QHideEvent *event) override;
 
     private:
         typedef QHash<QString, QDateTime> FileModificationMap;
@@ -106,9 +103,6 @@ namespace Evernus
         FileModificationMap mKnownFiles;
 
         Character::IdType mCharacterId = Character::invalidId;
-
-        std::vector<ExternalOrder> mParsedOrders;
-        std::unordered_set<ExternalOrder::IdType> mParsedOrderIds;
 
         void setNewWindowFlags(bool alwaysOnTop);
         QTableWidget *createSampleTable();
