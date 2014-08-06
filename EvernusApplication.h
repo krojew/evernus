@@ -174,6 +174,8 @@ namespace Evernus
 
         void showPriceImportError(const QString &info);
 
+        void emitNewItemCosts();
+
     private:
         typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
         typedef std::pair<Character::IdType, EveType::IdType> CharacterTypePair;
@@ -211,6 +213,7 @@ namespace Evernus
         uint mCurrentExternalOrderImportTask = TaskConstants::invalidTask;
 
         bool mCharacterUpdateScheduled = false;
+        bool mItemCostUpdateScheduled = false;
 
         mutable std::unordered_map<EveType::IdType, EveTypeRepository::EntityPtr> mTypeCache;
         mutable std::unordered_map<EveType::IdType, QString> mTypeNameCache;

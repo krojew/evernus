@@ -721,7 +721,11 @@ namespace Evernus
 
         mItemCostCache[std::make_pair(characterId, typeId)] = cost;
 
-        emit itemCostsChanged();
+        if (!mItemCostUpdateScheduled)
+        {
+            mItemCostUpdateScheduled = true;
+            QMetaObject::invokeMethod(this, "emitNewItemCosts", Qt::QueuedConnection);
+        }
     }
 
     std::shared_ptr<ItemCost> EvernusApplication::findItemCost(ItemCost::IdType id) const
@@ -1320,6 +1324,12 @@ namespace Evernus
     {
         Q_ASSERT(mCurrentExternalOrderImportTask != TaskConstants::invalidTask);
         finishExternalOrderImportTask(info);
+    }
+
+    void EvernusApplication::emitNewItemCosts()
+    {
+        mItemCostUpdateScheduled = false;
+        emit itemCostsChanged();
     }
 
     void EvernusApplication::updateTranslator(const QString &lang)
