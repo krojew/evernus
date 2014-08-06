@@ -170,13 +170,21 @@
     </message>
     <message>
         <location filename="../AssetsImportPreferencesWidget.cpp" line="45"/>
-        <source>Store total asset value on import/price import*</source>
+        <source>Store total asset value on import/price import</source>
         <translation>Zapisz całkowitą wartość aktywów przy imporcie/imporcie cen</translation>
     </message>
     <message>
         <location filename="../AssetsImportPreferencesWidget.cpp" line="49"/>
+        <source>Store total asset value only when all prices are available</source>
+        <translation>Zapisz całkowitą wartość aktywów tylko, gdy wszystkie ceny są dostępne</translation>
+    </message>
+    <message>
+        <source>Store total asset value on import/price import*</source>
+        <translation type="vanished">Zapisz całkowitą wartość aktywów przy imporcie/imporcie cen</translation>
+    </message>
+    <message>
         <source>* Requires full price data to be present. If there is no stored value, try importing prices.</source>
-        <translation>* Wymaga danych o wszystkich cenach. Jeśli wartość nie została zapisana, należy zaimportować ceny ręcznie.</translation>
+        <translation type="vanished">* Wymaga danych o wszystkich cenach. Jeśli wartość nie została zapisana, należy zaimportować ceny ręcznie.</translation>
     </message>
 </context>
 <context>
@@ -1205,27 +1213,32 @@
         <translation>Przykładowe dane</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="668"/>
+        <location filename="../MarginToolDialog.cpp" line="658"/>
+        <source>If you experience problems with importing orders, adjust margin tool settings in the Preferences.</source>
+        <translation>Jeśli naptokasz problem z importem zleceń, dostosuj ustawienia narzędzia marży.</translation>
+    </message>
+    <message>
+        <location filename="../MarginToolDialog.cpp" line="672"/>
         <source>Preferred source</source>
         <translation>Preferowane źródło</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="679"/>
+        <location filename="../MarginToolDialog.cpp" line="683"/>
         <source>Orders only</source>
         <translation>Tylko zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="683"/>
+        <location filename="../MarginToolDialog.cpp" line="687"/>
         <source>Prefer custom item costs (if available)</source>
         <translation>Własne koszty (jeśli dostępne)</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="687"/>
+        <location filename="../MarginToolDialog.cpp" line="691"/>
         <source>Custom station</source>
         <translation>Wybrana stacja</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="691"/>
+        <location filename="../MarginToolDialog.cpp" line="695"/>
         <source>Source station</source>
         <translation>Stacja źródłowa</translation>
     </message>
