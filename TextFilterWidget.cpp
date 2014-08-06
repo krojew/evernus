@@ -31,7 +31,6 @@ namespace Evernus
 
         auto edit = lineEdit();
         edit->setPlaceholderText(tr("type in wildcard and press Enter"));
-        edit->setClearButtonEnabled(true);
         connect(edit, &QLineEdit::returnPressed, this, &TextFilterWidget::applyCurrentFilter);
 
         connect(&mFilterRepo, &FilterTextRepository::filtersChanged, this, &TextFilterWidget::refreshHistory);
