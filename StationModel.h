@@ -62,6 +62,8 @@ namespace Evernus
             size_t mRow = 0;
             QString mName;
             Type mType = Type::Region;
+
+            LocationNode(quint64 id, LocationNode *parent, size_t row, const QString &name, Type type);
         };
 
         const EveDataProvider &mDataProvider;

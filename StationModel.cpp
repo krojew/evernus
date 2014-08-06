@@ -18,6 +18,15 @@
 
 namespace Evernus
 {
+    StationModel::LocationNode::LocationNode(quint64 id, LocationNode *parent, size_t row, const QString &name, Type type)
+        : mId{id}
+        , mParent{parent}
+        , mRow{row}
+        , mName{name}
+        , mType{type}
+    {
+    }
+
     StationModel::StationModel(const EveDataProvider &dataProvider, QObject *parent)
         : QAbstractItemModel{parent}
         , mDataProvider{dataProvider}
@@ -172,11 +181,11 @@ namespace Evernus
         const auto node = static_cast<const LocationNode *>(parent.internalPointer());
         switch (node->mType) {
         case LocationNode::Type::Region:
-            return mConstellations[node->mId].size();
+            return static_cast<int>(mConstellations[node->mId].size());
         case LocationNode::Type::Constellation:
-            return mSolarSystems[node->mId].size();
+            return static_cast<int>(mSolarSystems[node->mId].size());
         case LocationNode::Type::SolarSystem:
-            return mStations[node->mId].size();
+            return static_cast<int>(mStations[node->mId].size());
         default:
             return 0;
         }
