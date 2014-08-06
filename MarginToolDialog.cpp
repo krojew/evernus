@@ -27,7 +27,9 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QPushButton>
+#include <QColumnView>
 #include <QClipboard>
+#include <QTabWidget>
 #include <QDateTime>
 #include <QSettings>
 #include <QCheckBox>
@@ -60,160 +62,25 @@ namespace Evernus
 
     MarginToolDialog::MarginToolDialog(const Repository<Character> &characterRepository,
                                        const ItemCostProvider &itemCostProvider,
-                                       const EveDataProvider &dataProvider,
+                                       EveDataProvider &dataProvider,
                                        QWidget *parent)
         : QDialog(parent)
         , mCharacterRepository(characterRepository)
         , mItemCostProvider(itemCostProvider)
         , mDataProvider(dataProvider)
+        , mStationModel(dataProvider)
     {
         QSettings settings;
-
-        QFont bigFont;
-        bigFont.setBold(true);
-        bigFont.setPointSize(bigFont.pointSize() + 3);
-
-        QFont boldFont;
-        boldFont.setBold(true);
 
         const auto alwaysOnTop = settings.value(MarginToolSettings::alwaysOnTopKey, true).toBool();
 
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
-        mNameLabel = new QLabel{tr("export market logs in game"), this};
-        mainLayout->addWidget(mNameLabel);
-        mNameLabel->setFont(bigFont);
-
-        auto priceGroup = new QGroupBox{this};
-        mainLayout->addWidget(priceGroup);
-
-        auto priceLayout = new QGridLayout{};
-        priceGroup->setLayout(priceLayout);
-
-        priceLayout->addWidget(new QLabel{tr("Sell:")}, 0, 0);
-        priceLayout->addWidget(new QLabel{tr("Buy:")}, 1, 0);
-        priceLayout->addWidget(new QLabel{tr("Profit:")}, 2, 0);
-        priceLayout->addWidget(new QLabel{tr("Revenue:")}, 0, 2);
-        priceLayout->addWidget(new QLabel{tr("Cost of sales:")}, 1, 2);
-
-        mBestSellLabel = new QLabel{"-", this};
-        priceLayout->addWidget(mBestSellLabel, 0, 1);
-
-        mBestBuyLabel = new QLabel{"-", this};
-        priceLayout->addWidget(mBestBuyLabel, 1, 1);
-
-        mProfitLabel = new QLabel{"-", this};
-        priceLayout->addWidget(mProfitLabel, 2, 1);
-        mProfitLabel->setFont(boldFont);
-
-        mRevenueLabel = new QLabel{"-", this};
-        priceLayout->addWidget(mRevenueLabel, 0, 3);
-
-        mCostOfSalesLabel = new QLabel{"-", this};
-        priceLayout->addWidget(mCostOfSalesLabel, 1, 3);
-
-        auto orderGroup = new QGroupBox{this};
-        mainLayout->addWidget(orderGroup);
-
-        auto orderLayout = new QGridLayout{};
-        orderGroup->setLayout(orderLayout);
-
-        orderLayout->addWidget(new QLabel{tr("Buy orders:")}, 0, 0);
-
-        mBuyOrdersLabel = new QLabel{"-", this};
-        orderLayout->addWidget(mBuyOrdersLabel, 0, 1);
-
-        orderLayout->addWidget(new QLabel{tr("Sell orders:")}, 1, 0);
-
-        mSellOrdersLabel = new QLabel{"-", this};
-        orderLayout->addWidget(mSellOrdersLabel, 1, 1);
-
-        orderLayout->addWidget(new QLabel{tr("Buy volume/movement:")}, 0, 2);
-
-        mBuyVolLabel = new QLabel{"-", this};
-        orderLayout->addWidget(mBuyVolLabel, 0, 3);
-
-        orderLayout->addWidget(new QLabel{tr("Sell volume/movement:")}, 1, 2);
-
-        mSellVolLabel = new QLabel{"-", this};
-        orderLayout->addWidget(mSellVolLabel, 1, 3);
-
-        auto infoLayout = new QHBoxLayout{};
-        mainLayout->addLayout(infoLayout);
-
-        auto marginGroup = new QGroupBox{this};
-        infoLayout->addWidget(marginGroup);
-
-        auto marginLayout = new QGridLayout{};
-        marginGroup->setLayout(marginLayout);
-
-        marginLayout->addWidget(new QLabel{tr("Margin:")}, 0, 0);
-
-        mMarginLabel = new QLabel{"-", this};
-        marginLayout->addWidget(mMarginLabel, 0, 1);
-        mMarginLabel->setFont(bigFont);
-
-        marginLayout->addWidget(new QLabel{tr("Markup:")}, 1, 0);
-
-        mMarkupLabel = new QLabel{"-", this};
-        marginLayout->addWidget(mMarkupLabel, 1, 1);
-
-        auto copyGroup = new QGroupBox{tr("Autocopy"), this};
-        infoLayout->addWidget(copyGroup);
-
-        auto copyLayout = new QVBoxLayout{};
-        copyGroup->setLayout(copyLayout);
-
-        const auto copyMode = static_cast<const PriceSettings::CopyMode>(
-            settings.value(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::CopyMode::DontCopy)).toInt());
-
-        mDontCopyBtn = new QRadioButton{tr("Nothing"), this};
-        copyLayout->addWidget(mDontCopyBtn);
-        if (copyMode == PriceSettings::CopyMode::DontCopy)
-            mDontCopyBtn->setChecked(true);
-
-        mCopySellBtn = new QRadioButton{tr("Sell price"), this};
-        copyLayout->addWidget(mCopySellBtn);
-        if (copyMode == PriceSettings::CopyMode::CopySell)
-            mCopySellBtn->setChecked(true);
-
-        mCopyBuyBtn = new QRadioButton{tr("Buy price"), this};
-        copyLayout->addWidget(mCopyBuyBtn);
-        if (copyMode == PriceSettings::CopyMode::CopyBuy)
-            mCopyBuyBtn->setChecked(true);
-
-        connect(mDontCopyBtn, &QRadioButton::toggled, this, &MarginToolDialog::saveCopyMode);
-        connect(mCopySellBtn, &QRadioButton::toggled, this, &MarginToolDialog::saveCopyMode);
-        connect(mCopyBuyBtn, &QRadioButton::toggled, this, &MarginToolDialog::saveCopyMode);
-
-        auto taxesGroup = new QGroupBox{this};
-        mainLayout->addWidget(taxesGroup);
-
-        auto taxesLayout = new QHBoxLayout{};
-        taxesGroup->setLayout(taxesLayout);
-
-        taxesLayout->addWidget(new QLabel{tr("Broker fee:"), this});
-
-        mBrokerFeeLabel = new QLabel{"-", this};
-        taxesLayout->addWidget(mBrokerFeeLabel);
-
-        taxesLayout->addWidget(new QLabel{tr("Sales tax:"), this});
-
-        mSalesTaxLabel = new QLabel{"-", this};
-        taxesLayout->addWidget(mSalesTaxLabel);
-
-        auto sampleGroup = new QGroupBox{tr("Sample data"), this};
-        mainLayout->addWidget(sampleGroup);
-
-        auto sampleLayout = new QHBoxLayout{};
-        sampleGroup->setLayout(sampleLayout);
-
-        m1SampleDataTable = createSampleTable();
-        sampleLayout->addWidget(m1SampleDataTable);
-
-        m5SampleDataTable = createSampleTable();
-        sampleLayout->addWidget(m5SampleDataTable);
+        auto tabs = new QTabWidget{this};
+        mainLayout->addWidget(tabs);
+        tabs->addTab(createMarginDataTab(), tr("Margin data"));
+        tabs->addTab(createDataSourceTab(), tr("Data source"));
 
         auto buttonLayout = new QHBoxLayout{};
         mainLayout->addLayout(buttonLayout);
@@ -255,6 +122,7 @@ namespace Evernus
 
         setWindowTitle(tr("Margin tool"));
         setAttribute(Qt::WA_DeleteOnClose);
+        setMaximumWidth(510);
         setNewWindowFlags(alwaysOnTop);
 
         move(settings.value(settingsPosKey).toPoint());
@@ -445,17 +313,27 @@ namespace Evernus
                 }
             }
 
+            mDataProvider.updateExternalOrders(parsedOrders);
+
             const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
-            if (settings.value(PriceSettings::preferCustomItemCostKey, true).toBool())
+            if (settings.value(PathSettings::deleteLogsKey, true).toBool())
+                file.remove();
+
+            if (mItemCostSourceBtn->isChecked())
             {
                 const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, typeId);
                 if (!cost->isNew())
                     buy = cost->getCost() - priceDelta;
             }
-
-            if (settings.value(PathSettings::deleteLogsKey, true).toBool())
-                file.remove();
+            else if (mStationSourceBtn->isChecked())
+            {
+                const auto selection = mStationView->selectionModel()->selectedIndexes();
+                if (selection.isEmpty())
+                    buy = 0.;
+                else
+                    buy = mDataProvider.getTypeBuyPrice(typeId, mStationModel.getStationId(selection.first()))->getValue() - priceDelta;
+            }
 
             mNameLabel->setText(name);
             mBuyOrdersLabel->setText(QString::number(buyCount));
@@ -551,8 +429,6 @@ namespace Evernus
             catch (const Repository<Character>::NotFoundException &)
             {
             }
-
-            emit parsedData(parsedOrders);
         }
     }
 
@@ -566,6 +442,24 @@ namespace Evernus
             settings.setValue(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::CopyMode::CopySell));
         else if (mCopyBuyBtn->isChecked())
             settings.setValue(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::CopyMode::CopyBuy));
+    }
+
+    void MarginToolDialog::saveSelectedStation(const QModelIndex &index)
+    {
+        if (mStationModel.getStationId(index) != 0)
+        {
+            QVariantList path;
+
+            auto current = index;
+            while (current.isValid())
+            {
+                path.prepend(mStationModel.getGenericId(current));
+                current = mStationModel.parent(current);
+            }
+
+            QSettings settings;
+            settings.setValue(PriceSettings::costSourceStationKey, path);
+        }
     }
 
     void MarginToolDialog::closeEvent(QCloseEvent *event)
@@ -609,6 +503,240 @@ namespace Evernus
     {
         QSettings settings;
         settings.setValue(settingsPosKey, pos());
+    }
+
+    QWidget *MarginToolDialog::createMarginDataTab()
+    {
+        QFont bigFont;
+        bigFont.setBold(true);
+        bigFont.setPointSize(bigFont.pointSize() + 3);
+
+        QFont boldFont;
+        boldFont.setBold(true);
+
+        auto tabWidget = new QWidget{this};
+
+        auto mainLayout = new QVBoxLayout{};
+        tabWidget->setLayout(mainLayout);
+
+        mNameLabel = new QLabel{tr("export market logs in game"), this};
+        mainLayout->addWidget(mNameLabel);
+        mNameLabel->setFont(bigFont);
+
+        auto priceGroup = new QGroupBox{this};
+        mainLayout->addWidget(priceGroup);
+
+        auto priceLayout = new QGridLayout{};
+        priceGroup->setLayout(priceLayout);
+
+        priceLayout->addWidget(new QLabel{tr("Sell:")}, 0, 0);
+        priceLayout->addWidget(new QLabel{tr("Buy:")}, 1, 0);
+        priceLayout->addWidget(new QLabel{tr("Profit:")}, 2, 0);
+        priceLayout->addWidget(new QLabel{tr("Revenue:")}, 0, 2);
+        priceLayout->addWidget(new QLabel{tr("Cost of sales:")}, 1, 2);
+
+        mBestSellLabel = new QLabel{"-", this};
+        priceLayout->addWidget(mBestSellLabel, 0, 1);
+
+        mBestBuyLabel = new QLabel{"-", this};
+        priceLayout->addWidget(mBestBuyLabel, 1, 1);
+
+        mProfitLabel = new QLabel{"-", this};
+        priceLayout->addWidget(mProfitLabel, 2, 1);
+        mProfitLabel->setFont(boldFont);
+
+        mRevenueLabel = new QLabel{"-", this};
+        priceLayout->addWidget(mRevenueLabel, 0, 3);
+
+        mCostOfSalesLabel = new QLabel{"-", this};
+        priceLayout->addWidget(mCostOfSalesLabel, 1, 3);
+
+        auto orderGroup = new QGroupBox{this};
+        mainLayout->addWidget(orderGroup);
+
+        auto orderLayout = new QGridLayout{};
+        orderGroup->setLayout(orderLayout);
+
+        orderLayout->addWidget(new QLabel{tr("Buy orders:")}, 0, 0);
+
+        mBuyOrdersLabel = new QLabel{"-", this};
+        orderLayout->addWidget(mBuyOrdersLabel, 0, 1);
+
+        orderLayout->addWidget(new QLabel{tr("Sell orders:")}, 1, 0);
+
+        mSellOrdersLabel = new QLabel{"-", this};
+        orderLayout->addWidget(mSellOrdersLabel, 1, 1);
+
+        orderLayout->addWidget(new QLabel{tr("Buy volume/movement:")}, 0, 2);
+
+        mBuyVolLabel = new QLabel{"-", this};
+        orderLayout->addWidget(mBuyVolLabel, 0, 3);
+
+        orderLayout->addWidget(new QLabel{tr("Sell volume/movement:")}, 1, 2);
+
+        mSellVolLabel = new QLabel{"-", this};
+        orderLayout->addWidget(mSellVolLabel, 1, 3);
+
+        auto infoLayout = new QHBoxLayout{};
+        mainLayout->addLayout(infoLayout);
+
+        auto marginGroup = new QGroupBox{this};
+        infoLayout->addWidget(marginGroup);
+
+        auto marginLayout = new QGridLayout{};
+        marginGroup->setLayout(marginLayout);
+
+        marginLayout->addWidget(new QLabel{tr("Margin:")}, 0, 0);
+
+        mMarginLabel = new QLabel{"-", this};
+        marginLayout->addWidget(mMarginLabel, 0, 1);
+        mMarginLabel->setFont(bigFont);
+
+        marginLayout->addWidget(new QLabel{tr("Markup:")}, 1, 0);
+
+        mMarkupLabel = new QLabel{"-", this};
+        marginLayout->addWidget(mMarkupLabel, 1, 1);
+
+        auto copyGroup = new QGroupBox{tr("Autocopy"), this};
+        infoLayout->addWidget(copyGroup);
+
+        auto copyLayout = new QVBoxLayout{};
+        copyGroup->setLayout(copyLayout);
+
+        QSettings settings;
+
+        const auto copyMode = static_cast<const PriceSettings::CopyMode>(
+            settings.value(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::CopyMode::DontCopy)).toInt());
+
+        mDontCopyBtn = new QRadioButton{tr("Nothing"), this};
+        copyLayout->addWidget(mDontCopyBtn);
+        if (copyMode == PriceSettings::CopyMode::DontCopy)
+            mDontCopyBtn->setChecked(true);
+
+        mCopySellBtn = new QRadioButton{tr("Sell price"), this};
+        copyLayout->addWidget(mCopySellBtn);
+        if (copyMode == PriceSettings::CopyMode::CopySell)
+            mCopySellBtn->setChecked(true);
+
+        mCopyBuyBtn = new QRadioButton{tr("Buy price"), this};
+        copyLayout->addWidget(mCopyBuyBtn);
+        if (copyMode == PriceSettings::CopyMode::CopyBuy)
+            mCopyBuyBtn->setChecked(true);
+
+        connect(mDontCopyBtn, &QRadioButton::toggled, this, &MarginToolDialog::saveCopyMode);
+        connect(mCopySellBtn, &QRadioButton::toggled, this, &MarginToolDialog::saveCopyMode);
+        connect(mCopyBuyBtn, &QRadioButton::toggled, this, &MarginToolDialog::saveCopyMode);
+
+        auto taxesGroup = new QGroupBox{this};
+        mainLayout->addWidget(taxesGroup);
+
+        auto taxesLayout = new QHBoxLayout{};
+        taxesGroup->setLayout(taxesLayout);
+
+        taxesLayout->addWidget(new QLabel{tr("Broker fee:"), this});
+
+        mBrokerFeeLabel = new QLabel{"-", this};
+        taxesLayout->addWidget(mBrokerFeeLabel);
+
+        taxesLayout->addWidget(new QLabel{tr("Sales tax:"), this});
+
+        mSalesTaxLabel = new QLabel{"-", this};
+        taxesLayout->addWidget(mSalesTaxLabel);
+
+        auto sampleGroup = new QGroupBox{tr("Sample data"), this};
+        mainLayout->addWidget(sampleGroup);
+
+        auto sampleLayout = new QHBoxLayout{};
+        sampleGroup->setLayout(sampleLayout);
+
+        m1SampleDataTable = createSampleTable();
+        sampleLayout->addWidget(m1SampleDataTable);
+
+        m5SampleDataTable = createSampleTable();
+        sampleLayout->addWidget(m5SampleDataTable);
+
+        return tabWidget;
+    }
+
+    QWidget *MarginToolDialog::createDataSourceTab()
+    {
+        auto tabWidget = new QWidget{this};
+
+        auto mainLayout = new QVBoxLayout{};
+        tabWidget->setLayout(mainLayout);
+
+        auto sourceGroup = new QGroupBox{tr("Preferred source"), this};
+        mainLayout->addWidget(sourceGroup);
+
+        auto sourceLayout = new QHBoxLayout{};
+        sourceGroup->setLayout(sourceLayout);
+
+        QSettings settings;
+
+        const auto dataSource = static_cast<PriceSettings::DataSource>(
+            settings.value(PriceSettings::costDataSourceKey, static_cast<int>(PriceSettings::DataSource::ItemCost)).toInt());
+
+        mOrderSourceBtn = new QRadioButton{tr("Orders only"), this};
+        sourceLayout->addWidget(mOrderSourceBtn);
+        mOrderSourceBtn->setChecked(dataSource == PriceSettings::DataSource::Orders);
+
+        mItemCostSourceBtn = new QRadioButton{tr("Prefer custom item costs (if available)"), this};
+        sourceLayout->addWidget(mItemCostSourceBtn);
+        mItemCostSourceBtn->setChecked(dataSource == PriceSettings::DataSource::ItemCost);
+
+        mStationSourceBtn = new QRadioButton{tr("Custom station"), this};
+        sourceLayout->addWidget(mStationSourceBtn);
+        mStationSourceBtn->setChecked(dataSource == PriceSettings::DataSource::Station);
+
+        auto stationGroup = new QGroupBox{tr("Source station"), this};
+        mainLayout->addWidget(stationGroup, 1);
+        stationGroup->setEnabled(dataSource == PriceSettings::DataSource::Station);
+
+        auto stationLayout = new QVBoxLayout{};
+        stationGroup->setLayout(stationLayout);
+
+        mStationView = new QColumnView{this};
+        stationLayout->addWidget(mStationView);
+        mStationView->setModel(&mStationModel);
+
+        const auto path = settings.value(PriceSettings::costSourceStationKey).toList();
+        if (path.size() == 4)
+        {
+            QModelIndex index;
+            for (const auto &element : path)
+                index = mStationModel.index(element.value<quint64>(), index);
+
+            mStationView->setCurrentIndex(index);
+        }
+
+        connect(mStationView->selectionModel(), &QItemSelectionModel::currentChanged,
+                this, &MarginToolDialog::saveSelectedStation);
+
+        connect(mOrderSourceBtn, &QRadioButton::toggled, [](bool checked) {
+            if (checked)
+            {
+                QSettings settings;
+                settings.setValue(PriceSettings::costDataSourceKey, static_cast<int>(PriceSettings::DataSource::Orders));
+            }
+        });
+        connect(mItemCostSourceBtn, &QRadioButton::toggled, [](bool checked) {
+            if (checked)
+            {
+                QSettings settings;
+                settings.setValue(PriceSettings::costDataSourceKey, static_cast<int>(PriceSettings::DataSource::ItemCost));
+            }
+        });
+        connect(mStationSourceBtn, &QRadioButton::toggled, [stationGroup](bool checked) {
+            stationGroup->setEnabled(checked);
+
+            if (checked)
+            {
+                QSettings settings;
+                settings.setValue(PriceSettings::costDataSourceKey, static_cast<int>(PriceSettings::DataSource::Station));
+            }
+        });
+
+        return tabWidget;
     }
 
     void MarginToolDialog::fillSampleData(QTableWidget &table, double revenue, double cos, int multiplier)

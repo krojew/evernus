@@ -15,6 +15,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <vector>
 #include <memory>
 
 #include <QDateTime>
@@ -30,6 +31,9 @@ namespace Evernus
     class EveDataProvider
     {
     public:
+        typedef std::pair<uint, QString> MapLocation;
+        typedef std::pair<quint64, QString> Station;
+
         EveDataProvider() = default;
         virtual ~EveDataProvider() = default;
 
@@ -44,8 +48,15 @@ namespace Evernus
         virtual std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId) const = 0;
         virtual std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const = 0;
 
+        virtual void updateExternalOrders(const std::vector<ExternalOrder> &orders) = 0;
+
         virtual QString getLocationName(quint64 id) const = 0;
 
         virtual QString getRefTypeName(uint id) const = 0;
+
+        virtual const std::vector<MapLocation> &getRegions() const = 0;
+        virtual const std::vector<MapLocation> &getConstellations(uint regionId) const = 0;
+        virtual const std::vector<MapLocation> &getSolarSystems(uint constellationId) const = 0;
+        virtual const std::vector<Station> &getStations(uint solarSystemId) const = 0;
     };
 }

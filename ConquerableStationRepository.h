@@ -33,6 +33,8 @@ namespace Evernus
 
         void create() const;
 
+        EntityList fetchForSolarSystem(uint solarSystemId) const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const ConquerableStation &entity, QSqlQuery &query) const override;

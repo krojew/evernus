@@ -93,6 +93,7 @@ qt5_wrap_cpp(
     qxtsslserver.h
     qxtwebcontent.h
     qxtwebslotservice.h
+    StationModel.h
     StatisticsWidget.h
     StyledTreeView.h
     TextFilterWidget.h
@@ -374,6 +375,8 @@ add_executable(
     Repository.h
     SimpleCrypt.cpp
     SimpleCrypt.h
+    StationModel.cpp
+    StationModel.h
     StatisticsWidget.cpp
     StatisticsWidget.h
     StyledTreeView.cpp

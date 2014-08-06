@@ -25,6 +25,13 @@ namespace Evernus
             CopyBuy
         };
 
+        enum class DataSource
+        {
+            Orders,
+            ItemCost,
+            Station
+        };
+
         const auto minMarginDefault = 10.;
         const auto preferredMarginDefault = 30.;
         const auto priceDeltaDefault = 0.01;
@@ -39,8 +46,9 @@ namespace Evernus
         const auto priceAltImportKey = "prices/import/alt";
         const auto priceMaxAgeKey = "prices/maxAge";
         const auto importLogWaitTimeKey = "prices/import/logWaitTime";
-        const auto preferCustomItemCostKey = "prices/preferCustomItemCost";
         const auto marketOrderMaxAgeKey = "prices/orders/maxAge";
         const auto autoAddCustomItemCostKey = "prices/orders/autoAddCustomItemCost";
+        const auto costDataSourceKey = "prices/dataSource";
+        const auto costSourceStationKey = "prices/costSourceStation";
     }
 }

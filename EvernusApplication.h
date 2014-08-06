@@ -87,9 +87,16 @@ namespace Evernus
         virtual std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
         virtual std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const override;
 
+        virtual void updateExternalOrders(const std::vector<ExternalOrder> &orders) override;
+
         virtual QString getLocationName(quint64 id) const override;
 
         virtual QString getRefTypeName(uint id) const override;
+
+        virtual const std::vector<MapLocation> &getRegions() const override;
+        virtual const std::vector<MapLocation> &getConstellations(uint regionId) const override;
+        virtual const std::vector<MapLocation> &getSolarSystems(uint constellationId) const override;
+        virtual const std::vector<Station> &getStations(uint solarSystemId) const override;
 
         virtual void registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer) override;
 
@@ -155,7 +162,7 @@ namespace Evernus
         void refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
 
-        void updateExternalOrders(const std::vector<ExternalOrder> &orders);
+        void updateExternalOrdersAndAssetValue(const std::vector<ExternalOrder> &orders);
 
         void handleNewPreferences();
 
@@ -252,6 +259,10 @@ namespace Evernus
         QTranslator mTranslator, mQtTranslator;
 
         QxtHttpSessionManager mHttpSessionManager;
+
+        mutable std::vector<MapLocation> mRegionCache;
+        mutable std::unordered_map<uint, std::vector<MapLocation>> mConstellationCache, mSolarSystemCache;
+        mutable std::unordered_map<uint, std::vector<Station>> mStationCache;
 
         void updateTranslator(const QString &lang);
 

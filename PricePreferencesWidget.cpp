@@ -60,10 +60,6 @@ namespace Evernus
         mPreferredMarginEdit->setSuffix(locale().percent());
         mPreferredMarginEdit->setValue(settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble());
 
-        mPreferCustomCostBtn = new QCheckBox{tr("Prefer custom item costs over current prices"), this};
-        marginControlsLayout->addWidget(mPreferCustomCostBtn, 1, 0, 1, 4);
-        mPreferCustomCostBtn->setChecked(settings.value(PriceSettings::preferCustomItemCostKey, true).toBool());
-
         mAutoAddCustomCostBtn = new QCheckBox{tr("Auto add custom item costs on fulfilled buy order"), this};
         marginControlsLayout->addWidget(mAutoAddCustomCostBtn, 2, 0, 1, 4);
         mAutoAddCustomCostBtn->setChecked(settings.value(PriceSettings::autoAddCustomItemCostKey, true).toBool());
@@ -123,7 +119,6 @@ namespace Evernus
         settings.setValue(PriceSettings::minMarginKey, mMinMarginEdit->value());
         settings.setValue(PriceSettings::preferredMarginKey, mPreferredMarginEdit->value());
         settings.setValue(PriceSettings::priceDeltaKey, mPriceDeltaEdit->value());
-        settings.setValue(PriceSettings::preferCustomItemCostKey, mPreferCustomCostBtn->isChecked());
         settings.setValue(PriceSettings::autoAddCustomItemCostKey, mAutoAddCustomCostBtn->isChecked());
 #ifdef Q_OS_WIN
         settings.setValue(PriceSettings::priceAltImportKey, mAltImportBtn->isChecked());

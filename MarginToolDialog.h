@@ -23,10 +23,12 @@
 #include <QHash>
 
 #include "ExternalOrder.h"
+#include "StationModel.h"
 #include "Character.h"
 
 class QTableWidget;
 class QRadioButton;
+class QColumnView;
 class QLabel;
 
 namespace Evernus
@@ -45,12 +47,9 @@ namespace Evernus
     public:
         MarginToolDialog(const Repository<Character> &characterRepository,
                          const ItemCostProvider &itemCostProvider,
-                         const EveDataProvider &dataProvider,
+                         EveDataProvider &dataProvider,
                          QWidget *parent = nullptr);
         virtual ~MarginToolDialog() = default;
-
-    signals:
-        void parsedData(const std::vector<ExternalOrder> &orders);
 
     public slots:
         void setCharacter(Character::IdType id);
@@ -61,6 +60,8 @@ namespace Evernus
         void refreshData(const QString &path);
 
         void saveCopyMode();
+
+        void saveSelectedStation(const QModelIndex &index);
 
     protected:
         virtual void closeEvent(QCloseEvent *event) override;
@@ -74,7 +75,7 @@ namespace Evernus
 
         const Repository<Character> &mCharacterRepository;
         const ItemCostProvider &mItemCostProvider;
-        const EveDataProvider &mDataProvider;
+        EveDataProvider &mDataProvider;
 
         QFileSystemWatcher mWatcher;
 
@@ -100,13 +101,24 @@ namespace Evernus
         QTableWidget *m1SampleDataTable = nullptr;
         QTableWidget *m5SampleDataTable = nullptr;
 
+        QRadioButton *mOrderSourceBtn = nullptr;
+        QRadioButton *mItemCostSourceBtn = nullptr;
+        QRadioButton *mStationSourceBtn = nullptr;
+
+        QColumnView *mStationView = nullptr;
+
         FileModificationMap mKnownFiles;
 
         Character::IdType mCharacterId = Character::invalidId;
 
+        StationModel mStationModel;
+
         void setNewWindowFlags(bool alwaysOnTop);
         QTableWidget *createSampleTable();
         void savePosition() const;
+
+        QWidget *createMarginDataTab();
+        QWidget *createDataSourceTab();
 
         static void fillSampleData(QTableWidget &table, double revenue, double cos, int multiplier);
 

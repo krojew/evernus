@@ -301,6 +301,30 @@ namespace Evernus
         return result;
     }
 
+    void EvernusApplication::updateExternalOrders(const std::vector<ExternalOrder> &orders)
+    {
+        const auto ownOrders = mMarketOrderRepository->getActiveIds();
+
+        ExternalOrderImporter::TypeLocationPairs affectedOrders;
+
+        std::vector<std::reference_wrapper<const ExternalOrder>> toStore;
+        for (const auto &order : orders)
+        {
+            if (ownOrders.find(order.getId()) == std::end(ownOrders))
+            {
+                toStore.emplace_back(std::cref(order));
+                affectedOrders.emplace(std::make_pair(order.getTypeId(), order.getLocationId()));
+            }
+        }
+
+        mSellPrices.clear();
+        mBuyPrices.clear();
+        mTypeRegionOrderCache.clear();
+
+        mExternalOrderRepository->removeObsolete(affectedOrders);
+        mExternalOrderRepository->batchStore(toStore, true);
+    }
+
     QString EvernusApplication::getLocationName(quint64 id) const
     {
         const auto it = mLocationNameCache.find(id);
@@ -385,12 +409,110 @@ namespace Evernus
         return (it != std::end(mRefTypeNames)) ? (it->second) : (QString{});
     }
 
+    const std::vector<EveDataProvider::MapLocation> &EvernusApplication::getRegions() const
+    {
+        if (mRegionCache.empty())
+        {
+            auto query = mEveDb.exec("SELECT regionID, regionName FROM mapRegions ORDER BY regionName");
+
+            const auto size = query.size();
+            if (size > 0)
+                mRegionCache.reserve(size);
+
+            while (query.next())
+                mRegionCache.emplace_back(std::make_pair(query.value(0).toUInt(), query.value(1).toString()));
+        }
+
+        return mRegionCache;
+    }
+
+    const std::vector<EveDataProvider::MapLocation> &EvernusApplication::getConstellations(uint regionId) const
+    {
+        if (mConstellationCache.find(regionId) == std::end(mConstellationCache))
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT constellationID, constellationName FROM mapConstellations WHERE regionID = ? ORDER BY constellationName");
+            query.bindValue(0, regionId);
+
+            DatabaseUtils::execQuery(query);
+
+            auto &constellations = mConstellationCache[regionId];
+
+            const auto size = query.size();
+            if (size > 0)
+                constellations.reserve(size);
+
+            while (query.next())
+                constellations.emplace_back(std::make_pair(query.value(0).toUInt(), query.value(1).toString()));
+        }
+
+        return mConstellationCache[regionId];
+    }
+
+    const std::vector<EveDataProvider::MapLocation> &EvernusApplication::getSolarSystems(uint constellationId) const
+    {
+        if (mSolarSystemCache.find(constellationId) == std::end(mSolarSystemCache))
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT solarSystemID, solarSystemName FROM mapSolarSystems WHERE constellationID = ? ORDER BY solarSystemName");
+            query.bindValue(0, constellationId);
+
+            DatabaseUtils::execQuery(query);
+
+            auto &systems = mSolarSystemCache[constellationId];
+
+            const auto size = query.size();
+            if (size > 0)
+                systems.reserve(size);
+
+            while (query.next())
+                systems.emplace_back(std::make_pair(query.value(0).toUInt(), query.value(1).toString()));
+        }
+
+        return mSolarSystemCache[constellationId];
+    }
+
+    const std::vector<EveDataProvider::Station> &EvernusApplication::getStations(uint solarSystemId) const
+    {
+        if (mStationCache.find(solarSystemId) == std::end(mStationCache))
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare(
+                "SELECT stationID id, stationName name FROM staStations WHERE solarSystemID = ? "
+                "UNION "
+                "SELECT itemID id, itemName name FROM mapDenormalize WHERE solarSystemID = ?");
+            query.bindValue(0, solarSystemId);
+            query.bindValue(1, solarSystemId);
+
+            DatabaseUtils::execQuery(query);
+
+            auto &stations = mStationCache[solarSystemId];
+
+            const auto size = query.size();
+            if (size > 0)
+                stations.reserve(size);
+
+            while (query.next())
+                stations.emplace_back(std::make_pair(query.value(0).toUInt(), query.value(1).toString()));
+
+            const auto conqStations = mConquerableStationRepository->fetchForSolarSystem(solarSystemId);
+            for (const auto &station : conqStations)
+                stations.emplace_back(std::make_pair(station->getId(), station->getName()));
+
+            std::sort(std::begin(stations), std::end(stations), [](const auto &a, const auto &b) {
+                return a.second < b.second;
+            });
+        }
+
+        return mStationCache[solarSystemId];
+    }
+
     void EvernusApplication::registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer)
     {
         Q_ASSERT(mExternalOrderImporters.find(name) == std::end(mExternalOrderImporters));
 
         connect(importer.get(), &ExternalOrderImporter::error, this, &EvernusApplication::showPriceImportError);
-        connect(importer.get(), &ExternalOrderImporter::externalOrdersChanged, this, &EvernusApplication::updateExternalOrders);
+        connect(importer.get(), &ExternalOrderImporter::externalOrdersChanged, this, &EvernusApplication::updateExternalOrdersAndAssetValue);
         mExternalOrderImporters.emplace(name, std::move(importer));
     }
 
@@ -1038,6 +1160,8 @@ namespace Evernus
         mAPIManager.fetchConquerableStationList([task, this](const auto &list, const auto &error) {
             if (error.isEmpty())
             {
+                mSolarSystemCache.clear();
+
                 mConquerableStationRepository->exec(QString{"DELETE FROM %1"}.arg(mConquerableStationRepository->getTableName()));
                 mConquerableStationRepository->batchStore(list, true);
 
@@ -1058,30 +1182,11 @@ namespace Evernus
         importExternalOrders(ExternalOrderImporterNames::logImporter, target);
     }
 
-    void EvernusApplication::updateExternalOrders(const std::vector<ExternalOrder> &orders)
+    void EvernusApplication::updateExternalOrdersAndAssetValue(const std::vector<ExternalOrder> &orders)
     {
         try
         {
-            const auto ownOrders = mMarketOrderRepository->getActiveIds();
-
-            ExternalOrderImporter::TypeLocationPairs affectedOrders;
-
-            std::vector<std::reference_wrapper<const ExternalOrder>> toStore;
-            for (const auto &order : orders)
-            {
-                if (ownOrders.find(order.getId()) == std::end(ownOrders))
-                {
-                    toStore.emplace_back(std::cref(order));
-                    affectedOrders.emplace(std::make_pair(order.getTypeId(), order.getLocationId()));
-                }
-            }
-
-            mSellPrices.clear();
-            mBuyPrices.clear();
-            mTypeRegionOrderCache.clear();
-
-            mExternalOrderRepository->removeObsolete(affectedOrders);
-            mExternalOrderRepository->batchStore(toStore, true);
+            updateExternalOrders(orders);
 
             QSettings settings;
             if (settings.value(ImportSettings::autoUpdateAssetValueKey, true).toBool())

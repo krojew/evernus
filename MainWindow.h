@@ -74,7 +74,7 @@ namespace Evernus
                    const FilterTextRepository &filterRepo,
                    const MarketOrderProvider &orderProvider,
                    const AssetProvider &assetProvider,
-                   const EveDataProvider &eveDataProvider,
+                   EveDataProvider &eveDataProvider,
                    const CacheTimerProvider &cacheTimerProvider,
                    ItemCostProvider &itemCostProvider,
                    QWidget *parent = nullptr,
@@ -99,7 +99,6 @@ namespace Evernus
         void preferencesChanged();
 
         void marginToolHidden(Character::IdType id);
-        void marginToolParsedData(const std::vector<ExternalOrder> &orders);
 
         void newTaskInfoAdded(uint taskId, const QString &description);
         void newSubTaskInfoAdded(uint taskId, uint parentTask, const QString &description);
@@ -169,7 +168,7 @@ namespace Evernus
         const AssetProvider &mAssetProvider;
         ItemCostProvider &mItemCostProvider;
 
-        const EveDataProvider &mEveDataProvider;
+        EveDataProvider &mEveDataProvider;
 
         const CacheTimerProvider &mCacheTimerProvider;
 

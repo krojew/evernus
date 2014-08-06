@@ -68,7 +68,7 @@ namespace Evernus
                            const FilterTextRepository &filterRepo,
                            const MarketOrderProvider &orderProvider,
                            const AssetProvider &assetProvider,
-                           const EveDataProvider &eveDataProvider,
+                           EveDataProvider &eveDataProvider,
                            const CacheTimerProvider &cacheTimerProvider,
                            ItemCostProvider &itemCostProvider,
                            QWidget *parent,
@@ -141,7 +141,6 @@ namespace Evernus
             mMarginToolDialog = new MarginToolDialog{mCharacterRepository, mItemCostProvider, mEveDataProvider};
             mMarginToolDialog->setCharacter(mCurrentCharacterId);
             connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, mMarginToolDialog, &MarginToolDialog::setCharacter);
-            connect(mMarginToolDialog, &MarginToolDialog::parsedData, this, &MainWindow::marginToolParsedData);
         }
 
         showMinimized();

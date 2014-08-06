@@ -43,6 +43,27 @@ namespace Evernus
             name TEXT NOT NULL,
             solar_system_id INTEGER NOT NULL
         ))"}.arg(getTableName()));
+
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_solar_system ON %1(solar_system_id)"}.arg(getTableName()));
+    }
+
+    ConquerableStationRepository::EntityList ConquerableStationRepository::fetchForSolarSystem(uint solarSystemId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE solar_system_id = ?"}.arg(getTableName()));
+        query.bindValue(0, solarSystemId);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
     }
 
     QStringList ConquerableStationRepository::getColumns() const
