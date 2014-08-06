@@ -678,7 +678,7 @@ namespace Evernus
         QSettings settings;
 
         const auto dataSource = static_cast<PriceSettings::DataSource>(
-            settings.value(PriceSettings::costDataSourceKey, static_cast<int>(PriceSettings::DataSource::ItemCost)).toInt());
+            settings.value(PriceSettings::costDataSourceKey, static_cast<int>(PriceSettings::DataSource::Orders)).toInt());
 
         mOrderSourceBtn = new QRadioButton{tr("Orders only"), this};
         sourceLayout->addWidget(mOrderSourceBtn);
