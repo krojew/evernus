@@ -252,7 +252,8 @@ namespace Evernus
         mutable MarketOrderMap mArchivedOrders;
 
         mutable std::unordered_map<CharacterTypePair, ItemCostRepository::EntityPtr, boost::hash<CharacterTypePair>>
-        mItemCostCache;
+        mCharacterItemCostCache;
+        mutable std::unordered_map<EveType::IdType, ItemCostRepository::EntityPtr> mTypeItemCostCache;
 
         std::unordered_map<uint, std::unordered_multimap<uint, uint>> mSystemJumpMap;
 

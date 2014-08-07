@@ -686,8 +686,8 @@ namespace Evernus
 
     std::shared_ptr<ItemCost> EvernusApplication::fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const
     {
-        const auto it = mItemCostCache.find(std::make_pair(characterId, typeId));
-        if (it != std::end(mItemCostCache))
+        const auto it = mCharacterItemCostCache.find(std::make_pair(characterId, typeId));
+        if (it != std::end(mCharacterItemCostCache))
             return it->second;
 
         ItemCostRepository::EntityPtr cost;
@@ -698,10 +698,34 @@ namespace Evernus
         }
         catch (const ItemCostRepository::NotFoundException &)
         {
-            cost = std::make_shared<ItemCost>();
+            QSettings settings;
+            if (settings.value(PriceSettings::shareCostsKey, false).toBool())
+            {
+                const auto it = mTypeItemCostCache.find(typeId);
+                if (it != std::end(mTypeItemCostCache))
+                {
+                    mCharacterItemCostCache.emplace(std::make_pair(characterId, typeId), it->second);
+                    return it->second;
+                }
+
+                try
+                {
+                    cost = mItemCostRepository->fetchLatestForType(typeId);
+                }
+                catch (const ItemCostRepository::NotFoundException &)
+                {
+                    cost = std::make_shared<ItemCost>();
+                }
+
+                mTypeItemCostCache.emplace(typeId, cost);
+            }
+            else
+            {
+                cost = std::make_shared<ItemCost>();
+            }
         }
 
-        mItemCostCache.emplace(std::make_pair(characterId, typeId), cost);
+        mCharacterItemCostCache.emplace(std::make_pair(characterId, typeId), cost);
         return cost;
     }
 
@@ -719,7 +743,8 @@ namespace Evernus
 
         mItemCostRepository->store(*cost);
 
-        mItemCostCache[std::make_pair(characterId, typeId)] = cost;
+        mCharacterItemCostCache[std::make_pair(characterId, typeId)] = cost;
+        mTypeItemCostCache[typeId] = cost;
 
         if (!mItemCostUpdateScheduled)
         {
@@ -736,7 +761,8 @@ namespace Evernus
     void EvernusApplication::removeItemCost(ItemCost::IdType id) const
     {
         mItemCostRepository->remove(id);
-        mItemCostCache.clear();
+        mCharacterItemCostCache.clear();
+        mTypeItemCostCache.clear();
 
         emit itemCostsChanged();
     }
@@ -744,7 +770,11 @@ namespace Evernus
     void EvernusApplication::storeItemCost(ItemCost &cost) const
     {
         mItemCostRepository->store(cost);
-        mItemCostCache[std::make_pair(cost.getCharacterId(), cost.getTypeId())] = std::make_shared<ItemCost>(cost);
+
+        auto sharedCost = std::make_shared<ItemCost>(cost);
+
+        mCharacterItemCostCache[std::make_pair(cost.getCharacterId(), cost.getTypeId())] = sharedCost;
+        mTypeItemCostCache[cost.getTypeId()] = sharedCost;
 
         emit itemCostsChanged();
     }
@@ -752,7 +782,8 @@ namespace Evernus
     void EvernusApplication::removeAllItemCosts(Character::IdType characterId) const
     {
         mItemCostRepository->removeForCharacter(characterId);
-        mItemCostCache.clear();
+        mCharacterItemCostCache.clear();
+        mTypeItemCostCache.clear();
 
         emit itemCostsChanged();
     }
@@ -1219,6 +1250,10 @@ namespace Evernus
 
         if (settings.value(IGBSettings::enabledKey, true).toBool())
             mHttpSessionManager.start();
+
+        mCharacterItemCostCache.clear();
+
+        emit itemCostsChanged();
     }
 
     void EvernusApplication::importFromMentat()
@@ -1600,7 +1635,7 @@ namespace Evernus
         mArchivedOrders.erase(id);
 
         QSettings settings;
-        const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, true).toBool();
+        const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, false).toBool();
 
         struct ItemCostData
         {

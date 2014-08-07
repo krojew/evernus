@@ -35,6 +35,7 @@ namespace Evernus
 
         EntityList fetchForCharacter(Character::IdType id) const;
         EntityPtr fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const;
+        EntityPtr fetchLatestForType(EveType::IdType typeId) const;
 
         void removeForCharacter(Character::IdType characterId) const;
 

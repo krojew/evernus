@@ -50,5 +50,6 @@ namespace Evernus
         const auto autoAddCustomItemCostKey = "prices/orders/autoAddCustomItemCost";
         const auto costDataSourceKey = "prices/dataSource";
         const auto costSourceStationKey = "prices/costSourceStation";
+        const auto shareCostsKey = "prices/shareCosts";
     }
 }

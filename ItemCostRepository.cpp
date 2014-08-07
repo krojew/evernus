@@ -50,6 +50,7 @@ namespace Evernus
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_type ON %1(type_id)"}.arg(getTableName()));
         exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type_id)"}.arg(getTableName()));
     }
 
@@ -77,6 +78,19 @@ namespace Evernus
         auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND type_id = ?"}.arg(getTableName()));
         query.bindValue(0, characterId);
         query.bindValue(1, typeId);
+
+        DatabaseUtils::execQuery(query);
+
+        if (!query.next())
+            throw NotFoundException{};
+
+        return populate(query.record());
+    }
+
+    ItemCostRepository::EntityPtr ItemCostRepository::fetchLatestForType(EveType::IdType typeId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE type_id = ? ORDER BY id DESC LIMIT 1"}.arg(getTableName()));
+        query.bindValue(0, typeId);
 
         DatabaseUtils::execQuery(query);
 
