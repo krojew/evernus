@@ -22,6 +22,7 @@
 
 #include "CharacterImportPreferencesWidget.h"
 #include "AssetsImportPreferencesWidget.h"
+#include "CorpImportPreferencesWidget.h"
 #include "NetworkPreferencesWidget.h"
 #include "GeneralPreferencesWidget.h"
 #include "WalletPreferencesWidget.h"
@@ -81,6 +82,7 @@ namespace Evernus
         std::vector<std::pair<QString, QWidget *>> importCategories;
         importCategories.emplace_back(std::make_pair(tr("Character"), new CharacterImportPreferencesWidget{this}));
         importCategories.emplace_back(std::make_pair(tr("Assets"), new AssetsImportPreferencesWidget{this}));
+        importCategories.emplace_back(std::make_pair(tr("Corporation"), new CorpImportPreferencesWidget{this}));
 
         for (auto i = 0; i < importCategories.size(); ++i)
         {

@@ -239,25 +239,49 @@ namespace Evernus
     void MainWindow::refreshWalletJournal()
     {
         if (mCurrentCharacterId != Character::invalidId)
+        {
+            QSettings settings;
+            if (settings.value(ImportSettings::updateCorpDataKey).toBool())
+                emit importCorpWalletJournal(mCurrentCharacterId);
+
             emit importWalletJournal(mCurrentCharacterId);
+        }
     }
 
     void MainWindow::refreshWalletTransactions()
     {
         if (mCurrentCharacterId != Character::invalidId)
+        {
+            QSettings settings;
+            if (settings.value(ImportSettings::updateCorpDataKey).toBool())
+                emit importCorpWalletTransactions(mCurrentCharacterId);
+
             emit importWalletTransactions(mCurrentCharacterId);
+        }
     }
 
     void MainWindow::refreshMarketOrdersFromAPI()
     {
         if (mCurrentCharacterId != Character::invalidId)
+        {
+            QSettings settings;
+            if (settings.value(ImportSettings::updateCorpDataKey).toBool())
+                emit importCorpMarketOrdersFromAPI(mCurrentCharacterId);
+
             emit importMarketOrdersFromAPI(mCurrentCharacterId);
+        }
     }
 
     void MainWindow::refreshMarketOrdersFromLogs()
     {
         if (mCurrentCharacterId != Character::invalidId)
+        {
+            QSettings settings;
+            if (settings.value(ImportSettings::updateCorpDataKey).toBool())
+                emit importCorpMarketOrdersFromLogs(mCurrentCharacterId);
+
             emit importMarketOrdersFromLogs(mCurrentCharacterId);
+        }
     }
 
     void MainWindow::refreshAll()

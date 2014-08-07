@@ -29,5 +29,7 @@ namespace Evernus
         const auto maxAssetListAgeKey = "import/assetList/maxAge";
         const auto maxWalletAgeKey = "import/wallet/maxAge";
         const auto maxMarketOrdersAgeKey = "import/marketOrders/maxAge";
+        const auto updateCorpDataKey = "import/corp/update";
+        const auto makeCorpSnapshotsKey = "import/corp/makeSnapshots";
     }
 }
