@@ -1077,7 +1077,7 @@ namespace Evernus
                     saveUpdateTimer(Evernus::TimerType::WalletTransactions, mWalletTransactionsUtcUpdateTimes, id);
 
                     QSettings settings;
-                    if (settings.value(PriceSettings::autoAddCustomItemCostKey, false).toBool() && !mPendingAutoCostOrders.empty())
+                    if (settings.value(Evernus::PriceSettings::autoAddCustomItemCostKey, false).toBool() && !mPendingAutoCostOrders.empty())
                     {
                         struct ItemCostData
                         {
@@ -1085,7 +1085,7 @@ namespace Evernus
                             double mPrice;
                         };
 
-                        std::unordered_map<EveType::IdType, ItemCostData> newItemCosts;
+                        std::unordered_map<Evernus::EveType::IdType, ItemCostData> newItemCosts;
 
                         const auto orders = mCharacterOrderProvider->getBuyOrders(id);
                         for (const auto &order : orders)
@@ -1098,7 +1098,7 @@ namespace Evernus
                                 = mWalletTransactionRepository->fetchForCharacterInRange(id,
                                                                                          order->getFirstSeen(),
                                                                                          lastSeen,
-                                                                                         WalletTransactionRepository::EntryType::Buy,
+                                                                                         Evernus::WalletTransactionRepository::EntryType::Buy,
                                                                                          order->getTypeId());
 
                             auto &cost = newItemCosts[order->getTypeId()];
@@ -1284,7 +1284,7 @@ namespace Evernus
                     mCorpWalletJournalEntryRepository->batchStore(data, true);
 
                     QSettings settings;
-                    if (settings.value(ImportSettings::makeCorpSnapshotsKey).toBool())
+                    if (settings.value(Evernus::ImportSettings::makeCorpSnapshotsKey).toBool())
                     {
                         std::vector<Evernus::WalletSnapshot> snapshots;
                         snapshots.reserve(data.size());
