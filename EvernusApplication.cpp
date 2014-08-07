@@ -1041,6 +1041,48 @@ namespace Evernus
                     mWalletTransactionRepository->batchStore(data, true);
                     saveUpdateTimer(Evernus::TimerType::WalletTransactions, mWalletTransactionsUtcUpdateTimes, id);
 
+                    QSettings settings;
+                    if (settings.value(PriceSettings::autoAddCustomItemCostKey, false).toBool() && !mPendingAutoCostOrders.empty())
+                    {
+                        struct ItemCostData
+                        {
+                            uint mQuantity;
+                            double mPrice;
+                        };
+
+                        std::unordered_map<EveType::IdType, ItemCostData> newItemCosts;
+
+                        const auto orders = getBuyOrders(id);
+                        for (const auto &order : orders)
+                        {
+                            if (mPendingAutoCostOrders.find(order->getId()) == std::end(mPendingAutoCostOrders))
+                                continue;
+
+                            const auto lastSeen = std::min(QDateTime::currentDateTimeUtc(), order->getIssued().addDays(order->getDuration()));
+                            const auto transactions
+                                = mWalletTransactionRepository->fetchForCharacterInRange(id,
+                                                                                         order->getFirstSeen(),
+                                                                                         lastSeen,
+                                                                                         WalletTransactionRepository::EntryType::Buy,
+                                                                                         order->getTypeId());
+
+                            auto &cost = newItemCosts[order->getTypeId()];
+                            for (const auto &transaction : transactions)
+                            {
+                                cost.mQuantity += transaction->getQuantity();
+                                cost.mPrice += transaction->getQuantity() * transaction->getPrice();
+                            }
+                        }
+
+                        mPendingAutoCostOrders.clear();
+
+                        for (const auto &cost : newItemCosts)
+                        {
+                            if (cost.second.mQuantity > 0)
+                                setForCharacterAndType(id, cost.first, cost.second.mPrice / cost.second.mQuantity);
+                        }
+                    }
+
                     emit walletTransactionsChanged();
                 }
 
@@ -1634,16 +1676,10 @@ namespace Evernus
         mBuyOrders.erase(id);
         mArchivedOrders.erase(id);
 
+        mPendingAutoCostOrders.clear();
+
         QSettings settings;
         const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, false).toBool();
-
-        struct ItemCostData
-        {
-            uint mQuantity;
-            double mPrice;
-        };
-
-        std::unordered_map<EveType::IdType, ItemCostData> newItemCosts;
 
         for (auto &order : orders)
         {
@@ -1669,28 +1705,7 @@ namespace Evernus
             }
 
             if (autoSetCosts && order.getType() == MarketOrder::Type::Buy && order.getDelta() != 0 && order.getState() == MarketOrder::State::Fulfilled)
-            {
-                const auto lastSeen = std::min(QDateTime::currentDateTimeUtc(), order.getIssued().addDays(order.getDuration()));
-                const auto transactions
-                    = mWalletTransactionRepository->fetchForCharacterInRange(id,
-                                                                             order.getFirstSeen(),
-                                                                             lastSeen,
-                                                                             WalletTransactionRepository::EntryType::Buy,
-                                                                             order.getTypeId());
-
-                auto &cost = newItemCosts[order.getTypeId()];
-                for (const auto &transaction : transactions)
-                {
-                    cost.mQuantity += transaction->getQuantity();
-                    cost.mPrice += transaction->getQuantity() * transaction->getPrice();
-                }
-            }
-        }
-
-        if (autoSetCosts)
-        {
-            for (const auto &cost : newItemCosts)
-                setForCharacterAndType(id, cost.first, cost.second.mPrice / cost.second.mQuantity);
+                mPendingAutoCostOrders.emplace(order.getId());
         }
 
         std::vector<MarketOrder::IdType> toArchive;
@@ -1728,6 +1743,9 @@ namespace Evernus
         mMarketOrderRepository->batchStore(orders, true);
 
         saveUpdateTimer(TimerType::MarketOrders, mMarketOrdersUtcUpdateTimes, id);
+
+        if (autoSetCosts)
+            refreshWalletTransactions(id);
     }
 
     KeyRepository::EntityPtr EvernusApplication::getCharacterKey(Character::IdType id) const

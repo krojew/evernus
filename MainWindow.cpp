@@ -258,10 +258,13 @@ namespace Evernus
         emit refreshConquerableStations();
 
         refreshWalletJournal();
-        refreshWalletTransactions();
         refreshMarketOrdersFromAPI();
 
         QSettings settings;
+
+        if (!settings.value(ImportSettings::autoUpdateAssetValueKey, false).toBool())
+            refreshWalletTransactions();
+
         if (settings.value(ImportSettings::importAssetsKey, true).toBool())
             refreshAssets();
     }

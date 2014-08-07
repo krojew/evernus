@@ -268,6 +268,8 @@ namespace Evernus
         mutable std::unordered_map<uint, std::vector<MapLocation>> mConstellationCache, mSolarSystemCache;
         mutable std::unordered_map<uint, std::vector<Station>> mStationCache;
 
+        std::unordered_set<MarketOrder::IdType> mPendingAutoCostOrders;
+
         void updateTranslator(const QString &lang);
 
         void createDb();
