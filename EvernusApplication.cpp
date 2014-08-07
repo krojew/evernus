@@ -118,7 +118,7 @@ namespace Evernus
 
         showSplashMessage(tr("Loading..."), splash);
 
-        Updater::getInstance().performVersionMigration();
+        Updater::getInstance().performVersionMigration(*mCacheTimerRepository, *mCharacterRepository);
         settings.setValue(versionKey, applicationVersion());
 
         connect(&mAPIManager, &APIManager::generalError, this, &EvernusApplication::apiError);

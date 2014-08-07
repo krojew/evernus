@@ -18,13 +18,19 @@
 
 namespace Evernus
 {
+    template<class T>
+    class Repository;
+    class CacheTimerRepository;
+    class Character;
+
     class Updater
         : public QObject
     {
         Q_OBJECT
 
     public:
-        void performVersionMigration() const;
+        void performVersionMigration(const CacheTimerRepository &cacheTimerRepo,
+                                     const Repository<Character> &characterRepo) const;
 
         static Updater &getInstance();
 

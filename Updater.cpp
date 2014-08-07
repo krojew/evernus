@@ -22,6 +22,7 @@
 #include <QDebug>
 #include <QUrl>
 
+#include "CacheTimerRepository.h"
 #include "EvernusApplication.h"
 #include "PriceSettings.h"
 
@@ -29,7 +30,8 @@
 
 namespace Evernus
 {
-    void Updater::performVersionMigration() const
+    void Updater::performVersionMigration(const CacheTimerRepository &cacheTimerRepo,
+                                          const Repository<Character> &characterRepo) const
     {
         QSettings settings;
 
@@ -41,8 +43,18 @@ namespace Evernus
         const auto majorVersion = curVersion[0].toUInt();
         const auto minorVersion = curVersion[1].toUInt();
 
-        if (majorVersion == 0 && minorVersion < 3)
-            settings.setValue(PriceSettings::autoAddCustomItemCostKey, false);
+        if (majorVersion == 0)
+        {
+            if (minorVersion < 3)
+            {
+                settings.setValue(PriceSettings::autoAddCustomItemCostKey, false);
+            }
+            else if (minorVersion < 4)
+            {
+                cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
+                cacheTimerRepo.create(characterRepo);
+            }
+        }
     }
 
     Updater &Updater::getInstance()
