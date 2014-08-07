@@ -42,6 +42,7 @@ namespace Evernus
                                  const CacheTimerProvider &cacheTimerProvider,
                                  const EveDataProvider &dataProvider,
                                  ItemCostProvider &itemCostProvider,
+                                 bool corp,
                                  QWidget *parent = nullptr);
         virtual ~WalletTransactionsWidget() = default;
 

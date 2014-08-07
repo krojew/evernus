@@ -37,9 +37,10 @@ namespace Evernus
                                                        const CacheTimerProvider &cacheTimerProvider,
                                                        const EveDataProvider &dataProvider,
                                                        ItemCostProvider &itemCostProvider,
+                                                       bool corp,
                                                        QWidget *parent)
-        : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::WalletTransactions),
-                               std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::WalletTransactions),
+        : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, (corp) ? (TimerType::CorpWalletTransactions) : (TimerType::WalletTransactions)),
+                               std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, (corp) ? (TimerType::CorpWalletTransactions) : (TimerType::WalletTransactions)),
                                ImportSettings::maxWalletAgeKey,
                                parent)
         , mItemCostProvider(itemCostProvider)

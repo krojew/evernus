@@ -70,7 +70,9 @@ namespace Evernus
                    const WalletSnapshotRepository &walletSnapshotRepo,
                    const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
                    const WalletJournalEntryRepository &walletJournalRepo,
+                   const WalletJournalEntryRepository &corpWalletJournalRepo,
                    const WalletTransactionRepository &walletTransactionRepo,
+                   const WalletTransactionRepository &corpWalletTransactionRepo,
                    const MarketOrderRepository &orderRepo,
                    const ItemCostRepository &itemCostRepo,
                    const FilterTextRepository &filterRepo,
@@ -162,8 +164,8 @@ namespace Evernus
         const AssetValueSnapshotRepository &mAssetSnapshotRepository;
         const WalletSnapshotRepository &mWalletSnapshotRepository;
         const MarketOrderValueSnapshotRepository &mMarketOrderSnapshotRepository;
-        const WalletJournalEntryRepository &mWalletJournalRepository;
-        const WalletTransactionRepository &mWalletTransactionRepository;
+        const WalletJournalEntryRepository &mWalletJournalRepository, &mCorpWalletJournalRepository;
+        const WalletTransactionRepository &mWalletTransactionRepository, &mCorpWalletTransactionRepository;
         const MarketOrderRepository &mMarketOrderRepository;
         const ItemCostRepository &mItemCostRepository;
         const FilterTextRepository &mFilterRepository;

@@ -63,7 +63,9 @@ namespace Evernus
                            const WalletSnapshotRepository &walletSnapshotRepo,
                            const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
                            const WalletJournalEntryRepository &walletJournalRepo,
+                           const WalletJournalEntryRepository &corpWalletJournalRepo,
                            const WalletTransactionRepository &walletTransactionRepo,
+                           const WalletTransactionRepository &corpWalletTransactionRepo,
                            const MarketOrderRepository &orderRepo,
                            const ItemCostRepository &itemCostRepo,
                            const FilterTextRepository &filterRepo,
@@ -82,7 +84,9 @@ namespace Evernus
         , mWalletSnapshotRepository{walletSnapshotRepo}
         , mMarketOrderSnapshotRepository{marketOrderSnapshotRepo}
         , mWalletJournalRepository{walletJournalRepo}
+        , mCorpWalletJournalRepository{corpWalletJournalRepo}
         , mWalletTransactionRepository{walletTransactionRepo}
+        , mCorpWalletTransactionRepository{corpWalletTransactionRepo}
         , mMarketOrderRepository{orderRepo}
         , mItemCostRepository{itemCostRepo}
         , mFilterRepository{filterRepo}
@@ -431,7 +435,7 @@ namespace Evernus
                                               mCharacterRepository,
                                               mFilterRepository,
                                               this};
-        addTab(orderTab, tr("Orders"));
+        addTab(orderTab, tr("Character orders"));
         connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importMarketOrdersFromAPI);
         connect(orderTab, &MarketOrderWidget::importFromLogs, this, &MainWindow::importMarketOrdersFromLogs);
         connect(orderTab, &MarketOrderWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
@@ -443,20 +447,43 @@ namespace Evernus
         connect(this, &MainWindow::conquerableStationsChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, orderTab, &MarketOrderWidget::updateData);
 
-        auto journalTab = new WalletJournalWidget{mWalletJournalRepository, mFilterRepository, mCacheTimerProvider, mEveDataProvider, this};
-        addTab(journalTab, tr("Journal"));
+        auto journalTab = new WalletJournalWidget{mWalletJournalRepository,
+                                                  mFilterRepository,
+                                                  mCacheTimerProvider,
+                                                  mEveDataProvider,
+                                                  false,
+                                                  this};
+        addTab(journalTab, tr("Character journal"));
         connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
         connect(this, &MainWindow::walletJournalChanged, journalTab, &WalletJournalWidget::updateData);
+
+        auto corpJournalTab = new WalletJournalWidget{mCorpWalletJournalRepository,
+                                                      mFilterRepository,
+                                                      mCacheTimerProvider,
+                                                      mEveDataProvider,
+                                                      true,
+                                                      this};
+        addTab(corpJournalTab, tr("Corporation journal"));
 
         auto transactionsTab = new WalletTransactionsWidget{mWalletTransactionRepository,
                                                             mFilterRepository,
                                                             mCacheTimerProvider,
                                                             mEveDataProvider,
                                                             mItemCostProvider,
+                                                            false,
                                                             this};
-        addTab(transactionsTab, tr("Transactions"));
+        addTab(transactionsTab, tr("Character transactions"));
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
+
+        auto corpTransactionsTab = new WalletTransactionsWidget{mCorpWalletTransactionRepository,
+                                                                mFilterRepository,
+                                                                mCacheTimerProvider,
+                                                                mEveDataProvider,
+                                                                mItemCostProvider,
+                                                                true,
+                                                                this};
+        addTab(corpTransactionsTab, tr("Corporation transactions"));
 
         auto itemCostTab = new ItemCostWidget{mItemCostProvider, mEveDataProvider, this};
         addTab(itemCostTab, tr("Item costs"));

@@ -22,6 +22,9 @@ namespace Evernus
         AssetList,
         WalletJournal,
         WalletTransactions,
-        MarketOrders
+        MarketOrders,
+        CorpWalletJournal,
+        CorpWalletTransactions,
+        CorpMarketOrders
     };
 }

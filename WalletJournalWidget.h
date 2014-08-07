@@ -40,6 +40,7 @@ namespace Evernus
                             const FilterTextRepository &filterRepo,
                             const CacheTimerProvider &cacheTimerProvider,
                             const EveDataProvider &dataProvider,
+                            bool corp,
                             QWidget *parent = nullptr);
         virtual ~WalletJournalWidget() = default;
 

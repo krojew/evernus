@@ -568,6 +568,21 @@ namespace Evernus
             if (it == std::end(mMarketOrdersUtcCacheTimes))
                 return QDateTime::currentDateTime();
             break;
+        case TimerType::CorpWalletJournal:
+            it = mCorpWalletJournalUtcCacheTimes.find(id);
+            if (it == std::end(mCorpWalletJournalUtcCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
+        case TimerType::CorpWalletTransactions:
+            it = mCorpWalletTransactionsUtcCacheTimes.find(id);
+            if (it == std::end(mCorpWalletTransactionsUtcCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
+        case TimerType::CorpMarketOrders:
+            it = mCorpMarketOrdersUtcCacheTimes.find(id);
+            if (it == std::end(mCorpMarketOrdersUtcCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
         default:
             throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
         }
@@ -595,6 +610,15 @@ namespace Evernus
             break;
         case TimerType::MarketOrders:
             mMarketOrdersUtcCacheTimes[id] = dt;
+            break;
+        case TimerType::CorpWalletJournal:
+            mCorpWalletJournalUtcCacheTimes[id] = dt;
+            break;
+        case TimerType::CorpWalletTransactions:
+            mCorpWalletTransactionsUtcCacheTimes[id] = dt;
+            break;
+        case TimerType::CorpMarketOrders:
+            mCorpMarketOrdersUtcCacheTimes[id] = dt;
             break;
         default:
             throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
@@ -639,6 +663,21 @@ namespace Evernus
         case TimerType::MarketOrders:
             it = mMarketOrdersUtcUpdateTimes.find(id);
             if (it == std::end(mMarketOrdersUtcUpdateTimes))
+                return QDateTime{};
+            break;
+        case TimerType::CorpWalletJournal:
+            it = mCorpWalletJournalUtcUpdateTimes.find(id);
+            if (it == std::end(mCorpWalletJournalUtcUpdateTimes))
+                return QDateTime{};
+            break;
+        case TimerType::CorpWalletTransactions:
+            it = mCorpWalletTransactionsUtcUpdateTimes.find(id);
+            if (it == std::end(mCorpWalletTransactionsUtcUpdateTimes))
+                return QDateTime{};
+            break;
+        case TimerType::CorpMarketOrders:
+            it = mCorpMarketOrdersUtcUpdateTimes.find(id);
+            if (it == std::end(mCorpMarketOrdersUtcUpdateTimes))
                 return QDateTime{};
             break;
         default:
@@ -1556,6 +1595,15 @@ namespace Evernus
                 break;
             case TimerType::MarketOrders:
                 mMarketOrdersUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
+                break;
+            case TimerType::CorpWalletJournal:
+                mCorpWalletJournalUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
+                break;
+            case TimerType::CorpWalletTransactions:
+                mCorpWalletTransactionsUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
+                break;
+            case TimerType::CorpMarketOrders:
+                mCorpMarketOrdersUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
             }
         }
     }
@@ -1580,6 +1628,15 @@ namespace Evernus
                 break;
             case TimerType::MarketOrders:
                 mMarketOrdersUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
+                break;
+            case TimerType::CorpWalletJournal:
+                mCorpWalletJournalUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
+                break;
+            case TimerType::CorpWalletTransactions:
+                mCorpWalletTransactionsUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
+                break;
+            case TimerType::CorpMarketOrders:
+                mCorpMarketOrdersUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
             }
         }
     }
