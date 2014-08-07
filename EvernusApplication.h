@@ -320,6 +320,8 @@ namespace Evernus
 
         const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
 
+        void computeAutoCosts(Character::IdType characterId, const WalletTransactionRepository &transactionRepo);
+
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };
 }
