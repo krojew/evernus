@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
         {
             Evernus::MainWindow mainWnd{app.getCharacterRepository(),
                                         app.getKeyRepository(),
+                                        app.getCorpKeyRepository(),
                                         app.getAssetValueSnapshotRepository(),
                                         app.getWalletSnapshotRepository(),
                                         app.getMarketOrderValueSnapshotRepository(),

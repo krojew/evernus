@@ -48,6 +48,7 @@ namespace Evernus
     class ItemCostRepository;
     class WalletJournalEntry;
     class CacheTimerProvider;
+    class CorpKeyRepository;
     class ActiveTasksDialog;
     class MarginToolDialog;
     class ItemCostProvider;
@@ -64,6 +65,7 @@ namespace Evernus
     public:
         MainWindow(const CharacterRepository &characterRepository,
                    const Repository<Key> &keyRepository,
+                   const CorpKeyRepository &corpKeyRepository,
                    const AssetValueSnapshotRepository &assetSnapshotRepo,
                    const WalletSnapshotRepository &walletSnapshotRepo,
                    const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
@@ -156,6 +158,7 @@ namespace Evernus
 
         const CharacterRepository &mCharacterRepository;
         const Repository<Key> &mKeyRepository;
+        const CorpKeyRepository &mCorpKeyRepository;
         const AssetValueSnapshotRepository &mAssetSnapshotRepository;
         const WalletSnapshotRepository &mWalletSnapshotRepository;
         const MarketOrderValueSnapshotRepository &mMarketOrderSnapshotRepository;

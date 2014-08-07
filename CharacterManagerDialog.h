@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <QSqlQueryModel>
+#include <QSqlRelationalTableModel>
 #include <QModelIndex>
 #include <QDialog>
 
@@ -28,7 +28,10 @@ namespace Evernus
 {
     template<class T>
     class Repository;
+    class CharacterRepository;
+    class CorpKeyRepository;
     class Character;
+    class CorpKey;
     class Key;
 
     class CharacterManagerDialog
@@ -37,8 +40,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        CharacterManagerDialog(const Repository<Character> &characterRepository,
+        CharacterManagerDialog(const CharacterRepository &characterRepository,
                                const Repository<Key> &keyRepository,
+                               const CorpKeyRepository &corpKeyRepository,
                                QWidget *parent = nullptr);
         virtual ~CharacterManagerDialog() = default;
 
@@ -54,30 +58,42 @@ namespace Evernus
         void editKey();
         void removeKey();
 
-        void selectKey(const QItemSelection &selected, const QItemSelection &deselected);
+        void addCorpKey();
+        void editCorpKey();
+        void removeCorpKey();
+
+        void selectKey(const QItemSelection &selected);
+        void selectCorpKey(const QItemSelection &selected);
 
         void removeCharacter();
 
-        void selectCharacter(const QItemSelection &selected, const QItemSelection &deselected);
+        void selectCharacter(const QItemSelection &selected);
 
     private:
-        const Repository<Character> &mCharacterRepository;
+        const CharacterRepository &mCharacterRepository;
         const Repository<Key> &mKeyRepository;
+        const CorpKeyRepository &mCorpKeyRepository;
 
         QSqlQueryModel mKeyModel;
+        QSqlRelationalTableModel mCorpKeyModel;
         CharacterModel mCharacterModel;
         QSortFilterProxyModel *mCharacterModelProxy = nullptr;
 
         QPushButton *mEditKeyBtn = nullptr;
         QPushButton *mRemoveKeyBtn = nullptr;
+        QPushButton *mEditCorpKeyBtn = nullptr;
+        QPushButton *mRemoveCorpKeyBtn = nullptr;
         QPushButton *mRemoveCharacterBtn = nullptr;
 
-        QModelIndexList mSelectedKeys, mSelectedCharacters;
+        QModelIndexList mSelectedKeys, mSelectedCorpKeys, mSelectedCharacters;
 
         void refreshKeys();
+        void refreshCorpKeys();
         void showEditKeyDialog(Key &key);
+        void showEditCorpKeyDialog(CorpKey &key);
 
         QWidget *createKeyTab();
+        QWidget *createCorpKeyTab();
         QWidget *createCharacterTab();
     };
 }

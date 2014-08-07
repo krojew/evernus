@@ -180,6 +180,11 @@ namespace Evernus
         return result;
     }
 
+    QString CharacterRepository::getNameColumn() const
+    {
+        return "name";
+    }
+
     QStringList CharacterRepository::getColumns() const
     {
         return QStringList{}

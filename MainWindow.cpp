@@ -58,6 +58,7 @@ namespace Evernus
 
     MainWindow::MainWindow(const CharacterRepository &characterRepository,
                            const Repository<Key> &keyRepository,
+                           const CorpKeyRepository &corpKeyRepository,
                            const AssetValueSnapshotRepository &assetSnapshotRepo,
                            const WalletSnapshotRepository &walletSnapshotRepo,
                            const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
@@ -76,6 +77,7 @@ namespace Evernus
         : QMainWindow{parent, flags}
         , mCharacterRepository{characterRepository}
         , mKeyRepository{keyRepository}
+        , mCorpKeyRepository{corpKeyRepository}
         , mAssetSnapshotRepository{assetSnapshotRepo}
         , mWalletSnapshotRepository{walletSnapshotRepo}
         , mMarketOrderSnapshotRepository{marketOrderSnapshotRepo}
@@ -116,7 +118,7 @@ namespace Evernus
     {
         if (mCharacterManagerDialog == nullptr)
         {
-            mCharacterManagerDialog = new CharacterManagerDialog{mCharacterRepository, mKeyRepository, this};
+            mCharacterManagerDialog = new CharacterManagerDialog{mCharacterRepository, mKeyRepository, mCorpKeyRepository, this};
             connect(mCharacterManagerDialog, &CharacterManagerDialog::refreshCharacters, this, &MainWindow::refreshCharacters);
             connect(this, &MainWindow::charactersChanged, mCharacterManagerDialog, &CharacterManagerDialog::updateCharacters);
             connect(mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged,

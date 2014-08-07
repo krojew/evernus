@@ -26,6 +26,9 @@
 #include <QTreeView>
 #include <QLabel>
 
+#include "CharacterRepository.h"
+#include "CorpKeyRepository.h"
+#include "CorpKeyEditDialog.h"
 #include "KeyEditDialog.h"
 #include "Repository.h"
 #include "APIManager.h"
@@ -35,12 +38,15 @@
 
 namespace Evernus
 {
-    CharacterManagerDialog::CharacterManagerDialog(const Repository<Character> &characterRepository,
+    CharacterManagerDialog::CharacterManagerDialog(const CharacterRepository &characterRepository,
                                                    const Repository<Key> &keyRepository,
+                                                   const CorpKeyRepository &corpKeyRepository,
                                                    QWidget *parent)
         : QDialog(parent)
         , mCharacterRepository(characterRepository)
         , mKeyRepository(keyRepository)
+        , mCorpKeyRepository(corpKeyRepository)
+        , mCorpKeyModel(nullptr, mCorpKeyRepository.getDatabase())
         , mCharacterModel(mCharacterRepository)
     {
         auto mainLayout = new QVBoxLayout{};
@@ -48,8 +54,9 @@ namespace Evernus
 
         auto tabs = new QTabWidget{this};
         mainLayout->addWidget(tabs);
+        tabs->addTab(createKeyTab(), tr("Character keys"));
+        tabs->addTab(createCorpKeyTab(), tr("Corporation keys"));
         tabs->addTab(createCharacterTab(), tr("Characters"));
-        tabs->addTab(createKeyTab(), tr("Keys"));
 
         auto btnBox = new QDialogButtonBox{QDialogButtonBox::Close, this};
         mainLayout->addWidget(btnBox);
@@ -58,9 +65,17 @@ namespace Evernus
         connect(&mCharacterModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
                 SIGNAL(charactersChanged()));
 
+        mCorpKeyModel.setTable(mCorpKeyRepository.getTableName());
+        mCorpKeyModel.setRelation(
+            1, QSqlRelation{mCharacterRepository.getTableName(), mCharacterRepository.getIdColumn(), mCharacterRepository.getNameColumn()});
+        mCorpKeyModel.setHeaderData(0, Qt::Horizontal, tr("Key ID"));
+        mCorpKeyModel.setHeaderData(1, Qt::Horizontal, tr("Character"));
+        mCorpKeyModel.setHeaderData(2, Qt::Horizontal, tr("Verification code"));
+
         setWindowTitle(tr("Character Manager"));
 
         refreshKeys();
+        refreshCorpKeys();
     }
 
     void CharacterManagerDialog::updateCharacters()
@@ -91,14 +106,44 @@ namespace Evernus
         refreshKeys();
     }
 
-    void CharacterManagerDialog::selectKey(const QItemSelection &selected, const QItemSelection &deselected)
+    void CharacterManagerDialog::addCorpKey()
     {
-        Q_UNUSED(deselected);
+        CorpKey newKey;
+        showEditCorpKeyDialog(newKey);
+    }
 
-        mEditKeyBtn->setEnabled(true);
-        mRemoveKeyBtn->setEnabled(true);
+    void CharacterManagerDialog::editCorpKey()
+    {
+        Q_ASSERT(mSelectedCorpKeys.count() > 0);
 
+        auto key = mCorpKeyRepository.find(
+            mCorpKeyModel.record(mSelectedCorpKeys.first().row()).value(mCorpKeyRepository.getIdColumn()).value<CorpKey::IdType>());
+        showEditCorpKeyDialog(*key);
+    }
+
+    void CharacterManagerDialog::removeCorpKey()
+    {
+        const auto index = mSelectedCorpKeys.first();
+        const auto id = mCorpKeyModel.data(mCorpKeyModel.index(index.row(), 0)).value<Key::IdType>();
+
+        mCorpKeyRepository.remove(id);
+        refreshCorpKeys();
+    }
+
+    void CharacterManagerDialog::selectKey(const QItemSelection &selected)
+    {
         mSelectedKeys = selected.indexes();
+
+        mEditKeyBtn->setDisabled(mSelectedKeys.isEmpty());
+        mRemoveKeyBtn->setDisabled(mSelectedKeys.isEmpty());
+    }
+
+    void CharacterManagerDialog::selectCorpKey(const QItemSelection &selected)
+    {
+        mSelectedCorpKeys = selected.indexes();
+
+        mEditCorpKeyBtn->setDisabled(mSelectedCorpKeys.isEmpty());
+        mRemoveCorpKeyBtn->setDisabled(mSelectedCorpKeys.isEmpty());
     }
 
     void CharacterManagerDialog::removeCharacter()
@@ -109,10 +154,8 @@ namespace Evernus
         emit charactersChanged();
     }
 
-    void CharacterManagerDialog::selectCharacter(const QItemSelection &selected, const QItemSelection &deselected)
+    void CharacterManagerDialog::selectCharacter(const QItemSelection &selected)
     {
-        Q_UNUSED(deselected);
-
         mRemoveCharacterBtn->setEnabled(true);
         mSelectedCharacters = selected.indexes();
     }
@@ -128,6 +171,14 @@ namespace Evernus
         mRemoveKeyBtn->setDisabled(true);
     }
 
+    void CharacterManagerDialog::refreshCorpKeys()
+    {
+        mCorpKeyModel.select();
+
+        mEditCorpKeyBtn->setDisabled(true);
+        mRemoveCorpKeyBtn->setDisabled(true);
+    }
+
     void CharacterManagerDialog::showEditKeyDialog(Key &key)
     {
         KeyEditDialog dlg{key, this};
@@ -140,9 +191,19 @@ namespace Evernus
         }
     }
 
+    void CharacterManagerDialog::showEditCorpKeyDialog(CorpKey &key)
+    {
+        CorpKeyEditDialog dlg{mCharacterRepository, key, this};
+        if (dlg.exec() == QDialog::Accepted)
+        {
+            mCorpKeyRepository.store(key);
+            refreshCorpKeys();
+        }
+    }
+
     QWidget *CharacterManagerDialog::createKeyTab()
     {
-        std::unique_ptr<QWidget> page{new QWidget{}};
+        auto page = new QWidget{this};
 
         auto pageLayout = new QVBoxLayout{};
         page->setLayout(pageLayout);
@@ -176,12 +237,51 @@ namespace Evernus
         mRemoveKeyBtn->setDisabled(true);
         connect(mRemoveKeyBtn, &QPushButton::clicked, this, &CharacterManagerDialog::removeKey);
 
-        return page.release();
+        return page;
+    }
+
+    QWidget *CharacterManagerDialog::createCorpKeyTab()
+    {
+        auto page = new QWidget{this};
+
+        auto pageLayout = new QVBoxLayout{};
+        page->setLayout(pageLayout);
+
+        auto keyGroup = new QGroupBox{tr("Added keys"), this};
+        pageLayout->addWidget(keyGroup);
+
+        auto groupLayout = new QVBoxLayout{};
+        keyGroup->setLayout(groupLayout);
+
+        auto keyView = new QTreeView{this};
+        groupLayout->addWidget(keyView);
+        keyView->setModel(&mCorpKeyModel);
+        connect(keyView->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &CharacterManagerDialog::selectCorpKey);
+
+        auto btnLayout = new QHBoxLayout{};
+        pageLayout->addLayout(btnLayout);
+
+        auto addBtn = new QPushButton{QIcon{":/images/add.png"}, tr("Add..."), this};
+        btnLayout->addWidget(addBtn);
+        connect(addBtn, &QPushButton::clicked, this, &CharacterManagerDialog::addCorpKey);
+
+        mEditCorpKeyBtn = new QPushButton{QIcon{":/images/pencil.png"}, tr("Edit..."), this};
+        btnLayout->addWidget(mEditCorpKeyBtn);
+        mEditCorpKeyBtn->setDisabled(true);
+        connect(mEditCorpKeyBtn, &QPushButton::clicked, this, &CharacterManagerDialog::editCorpKey);
+
+        mRemoveCorpKeyBtn = new QPushButton{QIcon{":/images/delete.png"}, tr("Remove"), this};
+        btnLayout->addWidget(mRemoveCorpKeyBtn);
+        mRemoveCorpKeyBtn->setDisabled(true);
+        connect(mRemoveCorpKeyBtn, &QPushButton::clicked, this, &CharacterManagerDialog::removeCorpKey);
+
+        return page;
     }
 
     QWidget *CharacterManagerDialog::createCharacterTab()
     {
-        std::unique_ptr<QWidget> page{new QWidget{}};
+        auto page = new QWidget{this};
 
         auto pageLayout = new QVBoxLayout{};
         page->setLayout(pageLayout);
@@ -217,6 +317,6 @@ namespace Evernus
         mRemoveCharacterBtn->setDisabled(true);
         connect(mRemoveCharacterBtn, &QPushButton::clicked, this, &CharacterManagerDialog::removeCharacter);
 
-        return page.release();
+        return page;
     }
 }

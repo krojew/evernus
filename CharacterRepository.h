@@ -47,6 +47,8 @@ namespace Evernus
 
         std::unordered_set<Character::IdType> fetchAllIds() const;
 
+        QString getNameColumn() const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const Character &entity, QSqlQuery &query) const override;

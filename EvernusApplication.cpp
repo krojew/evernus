@@ -793,6 +793,11 @@ namespace Evernus
         return *mKeyRepository;
     }
 
+    const CorpKeyRepository &EvernusApplication::getCorpKeyRepository() const noexcept
+    {
+        return *mCorpKeyRepository;
+    }
+
     const CharacterRepository &EvernusApplication::getCharacterRepository() const noexcept
     {
         return *mCharacterRepository;
@@ -1440,6 +1445,7 @@ namespace Evernus
             throw std::runtime_error{"Error opening Eve DB!"};
 
         mKeyRepository.reset(new KeyRepository{mMainDb});
+        mCorpKeyRepository.reset(new CorpKeyRepository{mMainDb});
         mCharacterRepository.reset(new CharacterRepository{mMainDb});
         mItemRepository.reset(new ItemRepository{mMainDb});
         mAssetListRepository.reset(new AssetListRepository{mMainDb, *mItemRepository});
@@ -1465,6 +1471,7 @@ namespace Evernus
     {
         mKeyRepository->create();
         mCharacterRepository->create(*mKeyRepository);
+        mCorpKeyRepository->create(*mCharacterRepository);
         mAssetListRepository->create(*mCharacterRepository);
         mItemRepository->create(*mAssetListRepository);
         mConquerableStationRepository->create();

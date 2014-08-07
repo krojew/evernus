@@ -45,6 +45,7 @@
 #include "CacheTimerProvider.h"
 #include "EveTypeRepository.h"
 #include "RefTypeRepository.h"
+#include "CorpKeyRepository.h"
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "ItemRepository.h"
@@ -121,6 +122,7 @@ namespace Evernus
         virtual void removeAllItemCosts(Character::IdType characterId) const override;
 
         const KeyRepository &getKeyRepository() const noexcept;
+        const CorpKeyRepository &getCorpKeyRepository() const noexcept;
         const CharacterRepository &getCharacterRepository() const noexcept;
         const WalletSnapshotRepository &getWalletSnapshotRepository() const noexcept;
         const AssetValueSnapshotRepository &getAssetValueSnapshotRepository() const noexcept;
@@ -187,6 +189,7 @@ namespace Evernus
         QSqlDatabase mMainDb, mEveDb;
 
         std::unique_ptr<KeyRepository> mKeyRepository;
+        std::unique_ptr<CorpKeyRepository> mCorpKeyRepository;
         std::unique_ptr<CharacterRepository> mCharacterRepository;
         std::unique_ptr<ItemRepository> mItemRepository;
         std::unique_ptr<AssetListRepository> mAssetListRepository;
