@@ -33,6 +33,8 @@ namespace Evernus
 
         void create(const Repository<Character> &characterRepo) const;
 
+        EntityPtr fetchForCharacter(Character::IdType characterId) const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const CorpKey &entity, QSqlQuery &query) const override;

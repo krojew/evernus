@@ -49,6 +49,19 @@ namespace Evernus
         exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
     }
 
+    CorpKeyRepository::EntityPtr CorpKeyRepository::fetchForCharacter(Character::IdType characterId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ?"}.arg(getTableName()));
+        query.bindValue(0, characterId);
+
+        DatabaseUtils::execQuery(query);
+
+        if (!query.next())
+            throw NotFoundException{};
+
+        return populate(query.record());
+    }
+
     QStringList CorpKeyRepository::getColumns() const
     {
         return QStringList{}

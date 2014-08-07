@@ -46,6 +46,7 @@ qt5_wrap_cpp(
     CharacterModel.h
     CharacterImportPreferencesWidget.h
     CharacterWidget.h
+    CorpImportPreferencesWidget.h
     CorpKeyEditDialog.h
     DateFilteredPlotWidget.h
     DateRangeWidget.h
@@ -186,6 +187,8 @@ add_executable(
     ConquerableStationListXmlReceiver.h
     ConquerableStationRepository.cpp
     ConquerableStationRepository.h
+    CorpImportPreferencesWidget.cpp
+    CorpImportPreferencesWidget.h
     CorpKey.cpp
     CorpKey.h
     CorpKeyEditDialog.cpp

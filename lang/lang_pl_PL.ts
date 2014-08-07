@@ -744,7 +744,6 @@
         <location filename="../EvernusApplication.cpp" line="1053"/>
         <location filename="../EvernusApplication.cpp" line="1133"/>
         <location filename="../EvernusApplication.cpp" line="1163"/>
-        <location filename="../EvernusApplication.cpp" line="1327"/>
         <source>Character not found!</source>
         <translation>Postać nie znaleziona!</translation>
     </message>
@@ -800,47 +799,47 @@
         <translation>Pobieranie dziennika korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1350"/>
+        <location filename="../EvernusApplication.cpp" line="1346"/>
         <source>Fetching conquerable stations...</source>
         <translation>Pobieranie stacji graczy...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1419"/>
+        <location filename="../EvernusApplication.cpp" line="1415"/>
         <source>Select Mentat directory</source>
         <translation>Wybierz katalog Mentat</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1429"/>
+        <location filename="../EvernusApplication.cpp" line="1425"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1429"/>
+        <location filename="../EvernusApplication.cpp" line="1425"/>
         <source>Error opening %1</source>
         <translation>Błąd otwierania %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1433"/>
+        <location filename="../EvernusApplication.cpp" line="1429"/>
         <source>Importing order history...</source>
         <translation>Importowanie historii zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1479"/>
+        <location filename="../EvernusApplication.cpp" line="1475"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importowanie historii zleceń: %1 przetworzonych</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1484"/>
+        <location filename="../EvernusApplication.cpp" line="1480"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1745"/>
+        <location filename="../EvernusApplication.cpp" line="1741"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1808"/>
+        <location filename="../EvernusApplication.cpp" line="1804"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>

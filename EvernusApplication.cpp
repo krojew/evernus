@@ -1262,6 +1262,83 @@ namespace Evernus
         emit taskEnded(task, QString{});
     }
 
+    void EvernusApplication::refreshCorpWalletJournal(Character::IdType id, uint parentTask)
+    {
+        qDebug() << "Refreshing corp wallet journal: " << id;
+
+        const auto task = startTask(tr("Fetching corporation wallet journal for character %1...").arg(id));
+        processEvents();
+
+        try
+        {
+            const auto key = getCorpKey(id);
+            const auto maxId = mCorpWalletJournalEntryRepository->getLatestEntryId(id);
+
+            if (maxId == WalletJournalEntry::invalidId)
+                emit taskInfoChanged(task, tr("Fetching corporation wallet journal for character %1 (this may take a while)...").arg(id));
+
+            mAPIManager.fetchWalletJournal(*key, id, WalletJournalEntry::invalidId, maxId,
+                                           [task, id, this](const auto &data, const auto &error) {
+                if (error.isEmpty())
+                {
+                    mCorpWalletJournalEntryRepository->batchStore(data, true);
+
+                    QSettings settings;
+                    if (settings.value(ImportSettings::makeCorpSnapshotsKey).toBool())
+                    {
+                        std::vector<Evernus::WalletSnapshot> snapshots;
+                        snapshots.reserve(data.size());
+
+                        QSet<QDateTime> usedSnapshots;
+
+                        for (auto &entry : data)
+                        {
+                            const auto timestamp = entry.getTimestamp();
+
+                            if (!usedSnapshots.contains(timestamp))
+                            {
+                                Evernus::WalletSnapshot snapshot;
+                                snapshot.setTimestamp(timestamp);
+                                snapshot.setBalance(entry.getBalance());
+                                snapshot.setCharacterId(entry.getCharacterId());
+
+                                snapshots.emplace_back(std::move(snapshot));
+                                usedSnapshots << timestamp;
+                            }
+                        }
+
+                        mWalletSnapshotRepository->batchStore(snapshots, false);
+                    }
+
+                    saveUpdateTimer(Evernus::TimerType::CorpWalletJournal, mCorpWalletJournalUtcUpdateTimes, id);
+
+                    emit corpWalletJournalChanged();
+                }
+
+                emit taskEnded(task, error);
+            });
+        }
+        catch (const CorpKeyRepository::NotFoundException &)
+        {
+            emit taskEnded(task, tr("Key not found!"));
+        }
+    }
+
+    void EvernusApplication::refreshCorpWalletTransactions(Character::IdType id, uint parentTask)
+    {
+
+    }
+
+    void EvernusApplication::refreshCorpMarketOrdersFromAPI(Character::IdType id, uint parentTask)
+    {
+
+    }
+
+    void EvernusApplication::refreshCorpMarketOrdersFromLogs(Character::IdType id, uint parentTask)
+    {
+
+    }
+
     void EvernusApplication::refreshConquerableStations()
     {
         qDebug() << "Refreshing conquerable stations...";
@@ -1836,6 +1913,11 @@ namespace Evernus
             qCritical() << "Attempted to refresh non-existent character!";
             throw;
         }
+    }
+
+    CorpKeyRepository::EntityPtr EvernusApplication::getCorpKey(Character::IdType id) const
+    {
+        return mCorpKeyRepository->fetchForCharacter(id);
     }
 
     void EvernusApplication::finishExternalOrderImportTask(const QString &info)
