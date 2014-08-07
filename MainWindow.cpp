@@ -460,6 +460,16 @@ namespace Evernus
                                                   true,
                                                   this};
         addTab(corpOrderTab, tr("Corporation orders"));
+        connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importCorpMarketOrdersFromAPI);
+        connect(orderTab, &MarketOrderWidget::importFromLogs, this, &MainWindow::importCorpMarketOrdersFromLogs);
+        connect(orderTab, &MarketOrderWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
+        connect(orderTab, &MarketOrderWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
+        connect(orderTab, &MarketOrderWidget::openMarginTool, this, &MainWindow::showMarginTool);
+        connect(this, &MainWindow::corpMarketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::marginToolHidden, orderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::externalOrdersChanged, orderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::conquerableStationsChanged, orderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::itemCostsChanged, orderTab, &MarketOrderWidget::updateData);
 
         auto journalTab = new WalletJournalWidget{mWalletJournalRepository,
                                                   mFilterRepository,
@@ -478,6 +488,8 @@ namespace Evernus
                                                       true,
                                                       this};
         addTab(corpJournalTab, tr("Corporation journal"));
+        connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importCorpWalletJournal);
+        connect(this, &MainWindow::corpWalletJournalChanged, journalTab, &WalletJournalWidget::updateData);
 
         auto transactionsTab = new WalletTransactionsWidget{mWalletTransactionRepository,
                                                             mFilterRepository,
@@ -498,6 +510,8 @@ namespace Evernus
                                                                 true,
                                                                 this};
         addTab(corpTransactionsTab, tr("Corporation transactions"));
+        connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importCorpWalletTransactions);
+        connect(this, &MainWindow::corpWalletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
 
         auto itemCostTab = new ItemCostWidget{mItemCostProvider, mEveDataProvider, this};
         addTab(itemCostTab, tr("Item costs"));
