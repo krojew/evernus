@@ -230,12 +230,12 @@ namespace Evernus
 
     void APIManager::fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const
     {
-        doFetchMarketOrders(key, characterId, callback);
+        doFetchMarketOrders(key, characterId, callback, TimerType::MarketOrders);
     }
 
     void APIManager::fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const
     {
-        doFetchMarketOrders(key, characterId, callback);
+        doFetchMarketOrders(key, characterId, callback, TimerType::CorpMarketOrders);
     }
 
     template<class Key>
@@ -356,19 +356,19 @@ namespace Evernus
     }
 
     template<class Key>
-    void APIManager::doFetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const
+    void APIManager::doFetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback, TimerType timerType) const
     {
 #ifdef Q_OS_WIN
-        mInterface.fetchMarketOrders(key, characterId, [callback, characterId, this](const QString &response, const QString &error) {
+        mInterface.fetchMarketOrders(key, characterId, [callback, characterId, timerType, this](const QString &response, const QString &error) {
 #else
-        mInterface.fetchMarketOrders(key, characterId, [callback = callback, characterId, this](const QString &response, const QString &error) {
+        mInterface.fetchMarketOrders(key, characterId, [callback = callback, characterId, timerType, this](const QString &response, const QString &error) {
 #endif
             try
             {
                 handlePotentialError(response, error);
 
                 mCacheTimerProvider.setUtcCacheTimer(characterId,
-                                                     TimerType::MarketOrders,
+                                                     timerType,
                                                      APIUtils::getCachedUntil(response));
 
                 callback(parseResults<MarketOrders::value_type, APIXmlReceiver<MarketOrders::value_type>::CurElemType>(response, "orders"), QString{});

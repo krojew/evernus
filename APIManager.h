@@ -110,7 +110,7 @@ namespace Evernus
                                      TimerType timerType) const;
 
         template<class Key>
-        void doFetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const;
+        void doFetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback, TimerType timerType) const;
 
         template<class T, class CurElem>
         static std::vector<T> parseResults(const QString &xml, const QString &rowsetName);

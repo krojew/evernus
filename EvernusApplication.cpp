@@ -1240,7 +1240,28 @@ namespace Evernus
 
     void EvernusApplication::refreshCorpMarketOrdersFromAPI(Character::IdType id, uint parentTask)
     {
+        qDebug() << "Refreshing corp market orders from API: " << id;
 
+        const auto task = startTask(tr("Fetching corporation market orders for character %1...").arg(id));
+        processEvents();
+
+        try
+        {
+            const auto key = getCorpKey(id);
+            mAPIManager.fetchMarketOrders(*key, id, [task, id, this](auto data, const auto &error) {
+                if (error.isEmpty())
+                {
+                    importMarketOrders(id, data, true);
+                    emit corpMarketOrdersChanged();
+                }
+
+                emit taskEnded(task, error);
+            });
+        }
+        catch (const CorpKeyRepository::NotFoundException &)
+        {
+            emit taskEnded(task, tr("Key not found!"));
+        }
     }
 
     void EvernusApplication::refreshCorpMarketOrdersFromLogs(Character::IdType id, uint parentTask)
