@@ -89,7 +89,9 @@ namespace Evernus
         proxySettingLayout->addRow(tr("Password:"), mProxyPasswordEdit);
         mProxyPasswordEdit->setEchoMode(QLineEdit::Password);
 
-        proxyLayout->addWidget(new QLabel{tr("Warning: password store uses weak encryption - do not use sensitive passwords."), this});
+        auto warningLabel = new QLabel{tr("Warning: password store uses weak encryption - do not use sensitive passwords."), this};
+        proxyLayout->addWidget(warningLabel);
+        warningLabel->setWordWrap(true);
 
         auto providerGroup = new QGroupBox{tr("API provider"), this};
         mainLayout->addWidget(providerGroup);

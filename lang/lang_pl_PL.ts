@@ -2063,17 +2063,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="94"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="96"/>
         <source>API provider</source>
         <translation>Dostawca API</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="100"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="102"/>
         <source>Use default provider</source>
         <translation>Domyślny</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="105"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="107"/>
         <source>Use custom provider</source>
         <translation>Własny</translation>
     </message>
