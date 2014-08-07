@@ -25,6 +25,7 @@
 #include "WalletJournal.h"
 #include "MarketOrders.h"
 #include "APIInterface.h"
+#include "TimerTypes.h"
 #include "AssetList.h"
 #include "Character.h"
 #include "RefType.h"
@@ -95,7 +96,9 @@ namespace Evernus
                                 WalletJournalEntry::IdType fromId,
                                 WalletJournalEntry::IdType tillId,
                                 std::shared_ptr<WalletJournal> &&journal,
-                                const Callback<WalletJournal> &callback) const;
+                                const Callback<WalletJournal> &callback,
+                                const QString &rowsetName,
+                                TimerType timerType) const;
 
         template<class Key>
         void fetchWalletTransactions(const Key &key,
@@ -103,7 +106,8 @@ namespace Evernus
                                      WalletTransaction::IdType fromId,
                                      WalletTransaction::IdType tillId,
                                      std::shared_ptr<WalletTransactions> &&transactions,
-                                     const Callback<WalletTransactions> &callback) const;
+                                     const Callback<WalletTransactions> &callback,
+                                     TimerType timerType) const;
 
         template<class Key>
         void doFetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const;
