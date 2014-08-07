@@ -474,6 +474,27 @@ namespace Evernus
         connect(this, &MainWindow::conquerableStationsChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, orderTab, &MarketOrderWidget::updateData);
 
+        auto journalTab = new WalletJournalWidget{mWalletJournalRepository,
+                                                  mFilterRepository,
+                                                  mCacheTimerProvider,
+                                                  mEveDataProvider,
+                                                  false,
+                                                  this};
+        addTab(journalTab, tr("Character journal"));
+        connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
+        connect(this, &MainWindow::walletJournalChanged, journalTab, &WalletJournalWidget::updateData);
+
+        auto transactionsTab = new WalletTransactionsWidget{mWalletTransactionRepository,
+                                                            mFilterRepository,
+                                                            mCacheTimerProvider,
+                                                            mEveDataProvider,
+                                                            mItemCostProvider,
+                                                            false,
+                                                            this};
+        addTab(transactionsTab, tr("Character transactions"));
+        connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
+        connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
+
         auto corpOrderTab = new MarketOrderWidget{mCorpOrderProvider,
                                                   mCacheTimerProvider,
                                                   mEveDataProvider,
@@ -495,16 +516,6 @@ namespace Evernus
         connect(this, &MainWindow::conquerableStationsChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, corpOrderTab, &MarketOrderWidget::updateData);
 
-        auto journalTab = new WalletJournalWidget{mWalletJournalRepository,
-                                                  mFilterRepository,
-                                                  mCacheTimerProvider,
-                                                  mEveDataProvider,
-                                                  false,
-                                                  this};
-        addTab(journalTab, tr("Character journal"));
-        connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
-        connect(this, &MainWindow::walletJournalChanged, journalTab, &WalletJournalWidget::updateData);
-
         auto corpJournalTab = new WalletJournalWidget{mCorpWalletJournalRepository,
                                                       mFilterRepository,
                                                       mCacheTimerProvider,
@@ -514,17 +525,6 @@ namespace Evernus
         addTab(corpJournalTab, tr("Corporation journal"));
         connect(corpJournalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importCorpWalletJournal);
         connect(this, &MainWindow::corpWalletJournalChanged, corpJournalTab, &WalletJournalWidget::updateData);
-
-        auto transactionsTab = new WalletTransactionsWidget{mWalletTransactionRepository,
-                                                            mFilterRepository,
-                                                            mCacheTimerProvider,
-                                                            mEveDataProvider,
-                                                            mItemCostProvider,
-                                                            false,
-                                                            this};
-        addTab(transactionsTab, tr("Character transactions"));
-        connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
-        connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
 
         auto corpTransactionsTab = new WalletTransactionsWidget{mCorpWalletTransactionRepository,
                                                                 mFilterRepository,
