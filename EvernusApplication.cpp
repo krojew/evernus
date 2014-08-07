@@ -48,7 +48,6 @@ namespace Evernus
         , ExternalOrderImporterRegistry()
         , AssetProvider()
         , CacheTimerProvider()
-        , MarketOrderProvider()
         , ItemCostProvider()
         , mMainDb(QSqlDatabase::addDatabase("QSQLITE", "main"))
         , mEveDb(QSqlDatabase::addDatabase("QSQLITE", "eve"))
@@ -89,6 +88,9 @@ namespace Evernus
         showSplashMessage(tr("Creating schemas..."), splash);
         createDbSchema();
 
+        mCharacterOrderProvider = std::make_unique<CachingMarketOrderProvider>(*mMarketOrderRepository);
+        mCorpOrderProvider = std::make_unique<CachingMarketOrderProvider>(*mCorpMarketOrderRepository);
+
         showSplashMessage(tr("Precaching ref types..."), splash);
         precacheRefTypes();
 
@@ -103,7 +105,7 @@ namespace Evernus
         deleteOldWalletEntries();
 
         showSplashMessage(tr("Setting up IGB service..."), splash);
-        auto service = new IGBService{*this, *this, &mHttpSessionManager, this};
+        auto service = new IGBService{*mCharacterOrderProvider, *this, &mHttpSessionManager, this};
         connect(service, SIGNAL(openMarginTool()), this, SIGNAL(openMarginTool()));
 
         mHttpSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
@@ -687,42 +689,6 @@ namespace Evernus
         return it->second.toLocalTime();
     }
 
-    std::vector<std::shared_ptr<MarketOrder>> EvernusApplication::getSellOrders(Character::IdType characterId) const
-    {
-        auto it = mSellOrders.find(characterId);
-        if (it == std::end(mSellOrders))
-            it = mSellOrders.emplace(characterId, mMarketOrderRepository->fetchForCharacter(characterId, MarketOrder::Type::Sell)).first;
-
-        return it->second;
-    }
-
-    std::vector<std::shared_ptr<MarketOrder>> EvernusApplication::getBuyOrders(Character::IdType characterId) const
-    {
-        auto it = mBuyOrders.find(characterId);
-        if (it == std::end(mBuyOrders))
-            it = mBuyOrders.emplace(characterId, mMarketOrderRepository->fetchForCharacter(characterId, MarketOrder::Type::Buy)).first;
-
-        return it->second;
-    }
-
-    std::vector<std::shared_ptr<MarketOrder>> EvernusApplication::getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const
-    {
-        auto it = mArchivedOrders.find(characterId);
-        if (it == std::end(mArchivedOrders))
-            it = mArchivedOrders.emplace(characterId, mMarketOrderRepository->fetchArchivedForCharacter(characterId)).first;
-
-        std::vector<std::shared_ptr<MarketOrder>> result;
-        for (const auto &order : it->second)
-        {
-            const auto lastSeen = order->getLastSeen();
-
-            if (lastSeen >= from && lastSeen <= to)
-                result.emplace_back(order);
-        }
-
-        return result;
-    }
-
     std::shared_ptr<ItemCost> EvernusApplication::fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const
     {
         const auto it = mCharacterItemCostCache.find(std::make_pair(characterId, typeId));
@@ -895,6 +861,16 @@ namespace Evernus
     const FilterTextRepository &EvernusApplication::getFilterTextRepository() const noexcept
     {
         return *mFilterTextRepository;
+    }
+
+    const MarketOrderProvider &EvernusApplication::getMarketOrderProvider() const noexcept
+    {
+        return *mCharacterOrderProvider;
+    }
+
+    const MarketOrderProvider &EvernusApplication::getCorpMarketOrderProvider() const noexcept
+    {
+        return *mCorpOrderProvider;
     }
 
     void EvernusApplication::refreshCharacters()
@@ -1111,7 +1087,7 @@ namespace Evernus
 
                         std::unordered_map<EveType::IdType, ItemCostData> newItemCosts;
 
-                        const auto orders = getBuyOrders(id);
+                        const auto orders = mCharacterOrderProvider->getBuyOrders(id);
                         for (const auto &order : orders)
                         {
                             if (mPendingAutoCostOrders.find(order->getId()) == std::end(mPendingAutoCostOrders))
@@ -1436,7 +1412,8 @@ namespace Evernus
             emit taskEnded(task, e.what());
         }
 
-        mArchivedOrders.clear();
+        mCharacterOrderProvider->clearArchived();
+
         emit marketOrdersChanged();
     }
 
@@ -1757,10 +1734,7 @@ namespace Evernus
     {
         auto curStates = mMarketOrderRepository->getOrderStates(id);
 
-        mSellOrders.erase(id);
-        mBuyOrders.erase(id);
-        mArchivedOrders.erase(id);
-
+        mCharacterOrderProvider->clearOrders(id);
         mPendingAutoCostOrders.clear();
 
         QSettings settings;

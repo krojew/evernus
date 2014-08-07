@@ -44,9 +44,10 @@ namespace Evernus
                                          const WalletTransactionRepository &transactionsRepo,
                                          const Repository<Character> &characterRepository,
                                          const FilterTextRepository &filterRepo,
+                                         bool corp,
                                          QWidget *parent)
-        : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
-                               std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MarketOrders),
+        : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, (corp) ? (TimerType::CorpMarketOrders) : (TimerType::MarketOrders)),
+                               std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, (corp) ? (TimerType::CorpMarketOrders) : (TimerType::MarketOrders)),
                                ImportSettings::maxMarketOrdersAgeKey,
                                parent)
         , mOrderProvider(orderProvider)

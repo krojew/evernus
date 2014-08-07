@@ -23,15 +23,15 @@
 #include <QTranslator>
 
 #include "MarketOrderValueSnapshotRepository.h"
+#include "ExternalOrderImporterRegistry.h"
 #include "ConquerableStationRepository.h"
 #include "AssetValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
 #include "WalletTransactionRepository.h"
-#include "ExternalOrderImporterRegistry.h"
+#include "CachingMarketOrderProvider.h"
 #include "WalletSnapshotRepository.h"
 #include "ExternalOrderRepository.h"
 #include "ExternalOrderImporter.h"
-#include "MarketOrderRepository.h"
 #include "MarketGroupRepository.h"
 #include "UpdateTimerRepository.h"
 #include "qxthttpsessionmanager.h"
@@ -40,7 +40,6 @@
 #include "CharacterRepository.h"
 #include "AssetListRepository.h"
 #include "MetaGroupRepository.h"
-#include "MarketOrderProvider.h"
 #include "ItemCostRepository.h"
 #include "CacheTimerProvider.h"
 #include "EveTypeRepository.h"
@@ -66,7 +65,6 @@ namespace Evernus
         , public ExternalOrderImporterRegistry
         , public AssetProvider
         , public CacheTimerProvider
-        , public MarketOrderProvider
         , public ItemCostProvider
     {
         Q_OBJECT
@@ -108,10 +106,6 @@ namespace Evernus
 
         virtual QDateTime getLocalUpdateTimer(Character::IdType id, TimerType type) const override;
 
-        virtual std::vector<std::shared_ptr<MarketOrder>> getSellOrders(Character::IdType characterId) const override;
-        virtual std::vector<std::shared_ptr<MarketOrder>> getBuyOrders(Character::IdType characterId) const override;
-        virtual std::vector<std::shared_ptr<MarketOrder>> getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const override;
-
         virtual std::shared_ptr<ItemCost> fetchForCharacterAndType(Character::IdType characterId, EveType::IdType typeId) const override;
         virtual CostList fetchForCharacter(Character::IdType characterId) const override;
         virtual void setForCharacterAndType(Character::IdType characterId, EveType::IdType typeId, double value) override;
@@ -135,6 +129,9 @@ namespace Evernus
         const ItemCostRepository &getItemCostRepository() const noexcept;
         const MarketOrderValueSnapshotRepository &getMarketOrderValueSnapshotRepository() const noexcept;
         const FilterTextRepository &getFilterTextRepository() const noexcept;
+
+        const MarketOrderProvider &getMarketOrderProvider() const noexcept;
+        const MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
 
     signals:
         void taskStarted(uint taskId, const QString &description);
@@ -187,7 +184,6 @@ namespace Evernus
         typedef std::pair<EveType::IdType, uint> TypeRegionPair;
 
         typedef std::unordered_map<Character::IdType, QDateTime> CharacterTimerMap;
-        typedef std::unordered_map<Character::IdType, MarketOrderRepository::EntityList> MarketOrderMap;
 
         QSqlDatabase mMainDb, mEveDb;
 
@@ -259,9 +255,7 @@ namespace Evernus
         CharacterTimerMap mCorpWalletTransactionsUtcUpdateTimes;
         CharacterTimerMap mCorpMarketOrdersUtcUpdateTimes;
 
-        mutable MarketOrderMap mSellOrders;
-        mutable MarketOrderMap mBuyOrders;
-        mutable MarketOrderMap mArchivedOrders;
+        std::unique_ptr<CachingMarketOrderProvider> mCharacterOrderProvider, mCorpOrderProvider;
 
         mutable std::unordered_map<CharacterTypePair, ItemCostRepository::EntityPtr, boost::hash<CharacterTypePair>>
         mCharacterItemCostCache;

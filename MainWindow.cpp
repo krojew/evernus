@@ -70,6 +70,7 @@ namespace Evernus
                            const ItemCostRepository &itemCostRepo,
                            const FilterTextRepository &filterRepo,
                            const MarketOrderProvider &orderProvider,
+                           const MarketOrderProvider &corpOrderProvider,
                            const AssetProvider &assetProvider,
                            EveDataProvider &eveDataProvider,
                            const CacheTimerProvider &cacheTimerProvider,
@@ -90,7 +91,8 @@ namespace Evernus
         , mMarketOrderRepository{orderRepo}
         , mItemCostRepository{itemCostRepo}
         , mFilterRepository{filterRepo}
-        , mOrderProvider{orderProvider}        
+        , mOrderProvider{orderProvider}
+        , mCorpOrderProvider{corpOrderProvider}
         , mAssetProvider{assetProvider}
         , mItemCostProvider{itemCostProvider}
         , mEveDataProvider{eveDataProvider}
@@ -434,6 +436,7 @@ namespace Evernus
                                               mWalletTransactionRepository,
                                               mCharacterRepository,
                                               mFilterRepository,
+                                              false,
                                               this};
         addTab(orderTab, tr("Character orders"));
         connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importMarketOrdersFromAPI);
@@ -446,6 +449,17 @@ namespace Evernus
         connect(this, &MainWindow::externalOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::conquerableStationsChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, orderTab, &MarketOrderWidget::updateData);
+
+        auto corpOrderTab = new MarketOrderWidget{mCorpOrderProvider,
+                                                  mCacheTimerProvider,
+                                                  mEveDataProvider,
+                                                  mItemCostProvider,
+                                                  mCorpWalletTransactionRepository,
+                                                  mCharacterRepository,
+                                                  mFilterRepository,
+                                                  true,
+                                                  this};
+        addTab(corpOrderTab, tr("Corporation orders"));
 
         auto journalTab = new WalletJournalWidget{mWalletJournalRepository,
                                                   mFilterRepository,

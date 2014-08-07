@@ -48,6 +48,7 @@ namespace Evernus
                           const WalletTransactionRepository &transactionsRepo,
                           const Repository<Character> &characterRepository,
                           const FilterTextRepository &filterRepo,
+                          bool corp,
                           QWidget *parent = nullptr);
         virtual ~MarketOrderWidget() = default;
 

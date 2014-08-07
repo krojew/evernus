@@ -77,6 +77,7 @@ namespace Evernus
                    const ItemCostRepository &itemCostRepo,
                    const FilterTextRepository &filterRepo,
                    const MarketOrderProvider &orderProvider,
+                   const MarketOrderProvider &corpOrderProvider,
                    const AssetProvider &assetProvider,
                    EveDataProvider &eveDataProvider,
                    const CacheTimerProvider &cacheTimerProvider,
@@ -169,7 +170,7 @@ namespace Evernus
         const MarketOrderRepository &mMarketOrderRepository;
         const ItemCostRepository &mItemCostRepository;
         const FilterTextRepository &mFilterRepository;
-        const MarketOrderProvider &mOrderProvider;
+        const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const AssetProvider &mAssetProvider;
         ItemCostProvider &mItemCostProvider;
 

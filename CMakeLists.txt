@@ -159,6 +159,8 @@ add_executable(
     CacheTimerProvider.h
     CacheTimerRepository.cpp
     CacheTimerRepository.h
+    CachingMarketOrderProvider.cpp
+    CachingMarketOrderProvider.h
     Character.cpp
     Character.h
     CharacterBoundWidget.cpp
