@@ -31,12 +31,18 @@ namespace Evernus
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
+        auto importBox = new QGroupBox{tr("Corporation data import"), this};
+        mainLayout->addWidget(importBox);
+
+        auto importBoxLayout = new QVBoxLayout{};
+        importBox->setLayout(importBoxLayout);
+
         mUpdateCorpDataBtn = new QCheckBox{tr("Import corporation data along with character"), this};
-        mainLayout->addWidget(mUpdateCorpDataBtn);
+        importBoxLayout->addWidget(mUpdateCorpDataBtn);
         mUpdateCorpDataBtn->setChecked(settings.value(ImportSettings::updateCorpDataKey).toBool());
 
         mMakeCorpSnapshotsBtn = new QCheckBox{tr("Make value snapshots form corporation data"), this};
-        mainLayout->addWidget(mMakeCorpSnapshotsBtn);
+        importBoxLayout->addWidget(mMakeCorpSnapshotsBtn);
         mMakeCorpSnapshotsBtn->setChecked(settings.value(ImportSettings::makeCorpSnapshotsKey).toBool());
 
         mainLayout->addStretch();
