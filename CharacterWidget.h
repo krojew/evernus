@@ -30,6 +30,7 @@ namespace Evernus
     class MarketOrderRepository;
     class CharacterRepository;
     class CacheTimerProvider;
+    class CorpKeyRepository;
 
     class CharacterWidget
         : public CharacterBoundWidget
@@ -39,6 +40,7 @@ namespace Evernus
     public:
         CharacterWidget(const CharacterRepository &characterRepository,
                         const MarketOrderRepository &marketOrderRepository,
+                        const CorpKeyRepository &corpKeyRepository,
                         const CacheTimerProvider &cacheTimerProvider,
                         QWidget *parent = nullptr);
         virtual ~CharacterWidget() = default;
@@ -67,6 +69,7 @@ namespace Evernus
 
         const CharacterRepository &mCharacterRepository;
         const MarketOrderRepository &mMarketOrderRepository;
+        const CorpKeyRepository &mCorpKeyRepository;
         const CacheTimerProvider &mCacheTimerProvider;
 
         QLabel *mPortrait = nullptr;

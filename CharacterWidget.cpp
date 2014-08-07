@@ -34,6 +34,7 @@
 #include "MarketOrderRepository.h"
 #include "CharacterRepository.h"
 #include "CacheTimerProvider.h"
+#include "CorpKeyRepository.h"
 #include "WarningBarWidget.h"
 #include "ButtonWithTimer.h"
 #include "ImportSettings.h"
@@ -50,6 +51,7 @@ namespace Evernus
 
     CharacterWidget::CharacterWidget(const CharacterRepository &characterRepository,
                                      const MarketOrderRepository &marketOrderRepository,
+                                     const CorpKeyRepository &corpKeyRepository,
                                      const CacheTimerProvider &cacheTimerProvider,
                                      QWidget *parent)
         : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::Character),
@@ -58,6 +60,7 @@ namespace Evernus
                                parent)
         , mCharacterRepository(characterRepository)
         , mMarketOrderRepository(marketOrderRepository)
+        , mCorpKeyRepository(corpKeyRepository)
         , mCacheTimerProvider(cacheTimerProvider)
     {
         auto mainLayout = new QVBoxLayout{};
@@ -288,6 +291,18 @@ namespace Evernus
         checker(TimerType::MarketOrders, ImportSettings::maxMarketOrdersAgeKey, tr("Market orders: %1"));
         checker(TimerType::WalletJournal, ImportSettings::maxWalletAgeKey, tr("Wallet journal: %1"));
         checker(TimerType::WalletTransactions, ImportSettings::maxWalletAgeKey, tr("Wallet transactions: %1"));
+
+        try
+        {
+            mCorpKeyRepository.fetchForCharacter(id);
+
+            checker(TimerType::CorpMarketOrders, ImportSettings::maxMarketOrdersAgeKey, tr("Corp. market orders: %1"));
+            checker(TimerType::CorpWalletJournal, ImportSettings::maxWalletAgeKey, tr("Corp. wallet journal: %1"));
+            checker(TimerType::CorpWalletTransactions, ImportSettings::maxWalletAgeKey, tr("Corp. wallet transactions: %1"));
+        }
+        catch (const CorpKeyRepository::NotFoundException &)
+        {
+        }
 
         mUpdateTimersGroup->setVisible(show);
     }
