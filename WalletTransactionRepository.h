@@ -30,7 +30,7 @@ namespace Evernus
             Sell
         };
 
-        using Repository::Repository;
+        WalletTransactionRepository(bool corp, const QSqlDatabase &db);
         virtual ~WalletTransactionRepository() = default;
 
         virtual QString getTableName() const override;
@@ -52,6 +52,8 @@ namespace Evernus
                                             EveType::IdType typeId = EveType::invalidId) const;
 
     private:
+        bool mCorp = false;
+
         virtual QStringList getColumns() const override;
         virtual void bindValues(const WalletTransaction &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const WalletTransaction &entity, QSqlQuery &query) const override;

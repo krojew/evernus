@@ -19,9 +19,15 @@
 
 namespace Evernus
 {
+    WalletTransactionRepository::WalletTransactionRepository(bool corp, const QSqlDatabase &db)
+        : Repository{db}
+        , mCorp{corp}
+    {
+    }
+
     QString WalletTransactionRepository::getTableName() const
     {
-        return "wallet_transactions";
+        return (mCorp) ? ("corp_wallet_transactions") : ("wallet_transactions");
     }
 
     QString WalletTransactionRepository::getIdColumn() const

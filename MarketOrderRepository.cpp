@@ -20,9 +20,15 @@
 
 namespace Evernus
 {
+    MarketOrderRepository::MarketOrderRepository(bool corp, const QSqlDatabase &db)
+        : Repository{db}
+        , mCorp{corp}
+    {
+    }
+
     QString MarketOrderRepository::getTableName() const
     {
-        return "market_orders";
+        return (mCorp) ? ("corp_market_orders") : ("market_orders");
     }
 
     QString MarketOrderRepository::getIdColumn() const

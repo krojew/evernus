@@ -65,7 +65,7 @@ namespace Evernus
 
         typedef std::vector<std::pair<quint64, SingleAggrData>> CustomAggregatedData;
 
-        using Repository::Repository;
+        MarketOrderRepository(bool corp, const QSqlDatabase &db);
         virtual ~MarketOrderRepository() = default;
 
         virtual QString getTableName() const override;
@@ -92,6 +92,8 @@ namespace Evernus
         OrderIdList getActiveIds() const;
 
     private:
+        bool mCorp = false;
+
         virtual QStringList getColumns() const override;
         virtual void bindValues(const MarketOrder &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const MarketOrder &entity, QSqlQuery &query) const override;

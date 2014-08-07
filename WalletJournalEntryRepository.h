@@ -32,7 +32,7 @@ namespace Evernus
             Outgoing
         };
 
-        using Repository::Repository;
+        WalletJournalEntryRepository(bool corp, const QSqlDatabase &db);
         virtual ~WalletJournalEntryRepository() = default;
 
         virtual QString getTableName() const override;
@@ -53,6 +53,8 @@ namespace Evernus
                                             EntryType type) const;
 
     private:
+        bool mCorp = false;
+
         virtual QStringList getColumns() const override;
         virtual void bindValues(const WalletJournalEntry &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const WalletJournalEntry &entity, QSqlQuery &query) const override;

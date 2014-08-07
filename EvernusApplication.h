@@ -129,6 +129,9 @@ namespace Evernus
         const WalletJournalEntryRepository &getWalletJournalEntryRepository() const noexcept;
         const WalletTransactionRepository &getWalletTransactionRepository() const noexcept;
         const MarketOrderRepository &getMarketOrderRepository() const noexcept;
+        const WalletJournalEntryRepository &getCorpWalletJournalEntryRepository() const noexcept;
+        const WalletTransactionRepository &getCorpWalletTransactionRepository() const noexcept;
+        const MarketOrderRepository &getCorpMarketOrderRepository() const noexcept;
         const ItemCostRepository &getItemCostRepository() const noexcept;
         const MarketOrderValueSnapshotRepository &getMarketOrderValueSnapshotRepository() const noexcept;
         const FilterTextRepository &getFilterTextRepository() const noexcept;
@@ -197,12 +200,12 @@ namespace Evernus
         std::unique_ptr<WalletSnapshotRepository> mWalletSnapshotRepository;
         std::unique_ptr<ExternalOrderRepository> mExternalOrderRepository;
         std::unique_ptr<AssetValueSnapshotRepository> mAssetValueSnapshotRepository;
-        std::unique_ptr<WalletJournalEntryRepository> mWalletJournalEntryRepository;
+        std::unique_ptr<WalletJournalEntryRepository> mWalletJournalEntryRepository, mCorpWalletJournalEntryRepository;
         std::unique_ptr<RefTypeRepository> mRefTypeRepository;
         std::unique_ptr<CacheTimerRepository> mCacheTimerRepository;
         std::unique_ptr<UpdateTimerRepository> mUpdateTimerRepository;
-        std::unique_ptr<WalletTransactionRepository> mWalletTransactionRepository;
-        std::unique_ptr<MarketOrderRepository> mMarketOrderRepository;
+        std::unique_ptr<WalletTransactionRepository> mWalletTransactionRepository, mCorpWalletTransactionRepository;
+        std::unique_ptr<MarketOrderRepository> mMarketOrderRepository, mCorpMarketOrderRepository;
         std::unique_ptr<ItemCostRepository> mItemCostRepository;
         std::unique_ptr<MarketOrderValueSnapshotRepository> mMarketOrderValueSnapshotRepository;
         std::unique_ptr<FilterTextRepository> mFilterTextRepository;

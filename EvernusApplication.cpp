@@ -828,6 +828,21 @@ namespace Evernus
         return *mMarketOrderRepository;
     }
 
+    const WalletJournalEntryRepository &EvernusApplication::getCorpWalletJournalEntryRepository() const noexcept
+    {
+        return *mCorpWalletJournalEntryRepository;
+    }
+
+    const WalletTransactionRepository &EvernusApplication::getCorpWalletTransactionRepository() const noexcept
+    {
+        return *mCorpWalletTransactionRepository;
+    }
+
+    const MarketOrderRepository &EvernusApplication::getCorpMarketOrderRepository() const noexcept
+    {
+        return *mCorpMarketOrderRepository;
+    }
+
     const ItemCostRepository &EvernusApplication::getItemCostRepository() const noexcept
     {
         return *mItemCostRepository;
@@ -1453,12 +1468,15 @@ namespace Evernus
         mWalletSnapshotRepository.reset(new WalletSnapshotRepository{mMainDb});
         mExternalOrderRepository.reset(new ExternalOrderRepository{mMainDb});
         mAssetValueSnapshotRepository.reset(new AssetValueSnapshotRepository{mMainDb});
-        mWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{mMainDb});
+        mWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{false, mMainDb});
+        mCorpWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{true, mMainDb});
         mRefTypeRepository.reset(new RefTypeRepository{mMainDb});
         mCacheTimerRepository.reset(new CacheTimerRepository{mMainDb});
         mUpdateTimerRepository.reset(new UpdateTimerRepository{mMainDb});
-        mWalletTransactionRepository.reset(new WalletTransactionRepository{mMainDb});
-        mMarketOrderRepository.reset(new MarketOrderRepository{mMainDb});
+        mWalletTransactionRepository.reset(new WalletTransactionRepository{false, mMainDb});
+        mCorpWalletTransactionRepository.reset(new WalletTransactionRepository{true, mMainDb});
+        mMarketOrderRepository.reset(new MarketOrderRepository{false, mMainDb});
+        mCorpMarketOrderRepository.reset(new MarketOrderRepository{true, mMainDb});
         mItemCostRepository.reset(new ItemCostRepository{mMainDb});
         mMarketOrderValueSnapshotRepository.reset(new MarketOrderValueSnapshotRepository{mMainDb});
         mFilterTextRepository.reset(new FilterTextRepository{mMainDb});
@@ -1478,11 +1496,14 @@ namespace Evernus
         mWalletSnapshotRepository->create(*mCharacterRepository);
         mAssetValueSnapshotRepository->create(*mCharacterRepository);
         mWalletJournalEntryRepository->create(*mCharacterRepository);
+        mCorpWalletJournalEntryRepository->create(*mCharacterRepository);
         mExternalOrderRepository->create();
         mCacheTimerRepository->create(*mCharacterRepository);
         mUpdateTimerRepository->create(*mCharacterRepository);
         mWalletTransactionRepository->create(*mCharacterRepository);
+        mCorpWalletTransactionRepository->create(*mCharacterRepository);
         mMarketOrderRepository->create(*mCharacterRepository);
+        mCorpMarketOrderRepository->create(*mCharacterRepository);
         mItemCostRepository->create(*mCharacterRepository);
         mMarketOrderValueSnapshotRepository->create(*mCharacterRepository);
         mFilterTextRepository->create();
