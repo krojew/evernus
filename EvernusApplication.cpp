@@ -1109,7 +1109,7 @@ namespace Evernus
             mAPIManager.fetchMarketOrders(*key, id, [task, id, this](auto data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    importMarketOrders(id, data);
+                    importMarketOrders(id, data, false);
                     emit marketOrdersChanged();
                 }
 
@@ -1133,93 +1133,7 @@ namespace Evernus
         const auto task = startTask(tr("Fetching market orders for character %1...").arg(id));
         processEvents();
 
-        const auto logPath = PathUtils::getMarketLogsPath();
-        if (logPath.isEmpty())
-        {
-            emit taskEnded(task, tr("Cannot determine market logs path!"));
-            return;
-        }
-
-        const QDir logDir{logPath};
-        const auto logs = logDir.entryList(QStringList{"My Orders*.txt"}, QDir::Files | QDir::Readable, QDir::Time);
-        if (logs.isEmpty())
-        {
-            emit taskEnded(task, tr("No market logs found!"));
-            return;
-        }
-
-        for (const auto &log : logs)
-        {
-            qDebug() << "Parsing" << log;
-
-            QFile file{logDir.filePath(log)};
-            if (!file.open(QIODevice::ReadOnly))
-            {
-                emit taskEnded(task, tr("Could not open market log file!"));
-                return;
-            }
-
-            file.readLine();
-
-            auto characterFound = false;
-
-            MarketOrders orders;
-            while (!file.atEnd())
-            {
-                const QString line = file.readLine();
-                const auto values = line.split(',');
-
-                if (values.size() >= 22)
-                {
-                    if (!characterFound)
-                    {
-                        const auto characterId = values[2].toULongLong();
-                        if (characterId != id)
-                        {
-                            file.close();
-                            continue;
-                        }
-
-                        characterFound = true;
-                    }
-
-                    MarketOrder order{values[0].toULongLong()};
-                    order.setCharacterId(id);
-                    order.setLocationId(values[6].toULongLong());
-                    order.setVolumeEntered(values[11].toUInt());
-                    order.setVolumeRemaining(static_cast<uint>(values[12].toDouble()));
-                    order.setMinVolume(values[15].toUInt());
-                    order.setDelta(order.getVolumeRemaining() - order.getVolumeEntered());
-                    order.setState(static_cast<MarketOrder::State>(values[14].toInt()));
-                    order.setTypeId(values[1].toUInt());
-                    order.setRange(values[8].toShort());
-                    order.setDuration(values[17].toShort());
-                    order.setEscrow(values[21].toDouble());
-                    order.setPrice(values[10].toDouble());
-                    order.setType((values[9] == "True") ? (MarketOrder::Type::Buy) : (MarketOrder::Type::Sell));
-
-                    auto issued = QDateTime::fromString(values[13], "yyyy-MM-dd HH:mm:ss.zzz");
-                    issued.setTimeSpec(Qt::UTC);
-
-                    order.setIssued(issued);
-                    order.setFirstSeen(issued);
-
-                    orders.emplace_back(std::move(order));
-                }
-            }
-
-            if (characterFound)
-            {
-                QSettings settings;
-                if (settings.value(PathSettings::deleteLogsKey, true).toBool())
-                    file.remove();
-
-                importMarketOrders(id, orders);
-
-                emit marketOrdersChanged();
-                break;
-            }
-        }
+        importMarketOrdersFromLogs(id, task, false);
 
         emit taskEnded(task, QString{});
     }
@@ -1331,7 +1245,14 @@ namespace Evernus
 
     void EvernusApplication::refreshCorpMarketOrdersFromLogs(Character::IdType id, uint parentTask)
     {
+        qDebug() << "Refreshing corp market orders from logs: " << id;
 
+        const auto task = startTask(tr("Fetching corporation market orders for character %1...").arg(id));
+        processEvents();
+
+        importMarketOrdersFromLogs(id, task, true);
+
+        emit taskEnded(task, QString{});
     }
 
     void EvernusApplication::refreshConquerableStations()
@@ -1802,15 +1723,134 @@ namespace Evernus
         it->second->fetchExternalOrders(target);
     }
 
-    void EvernusApplication::importMarketOrders(Character::IdType id, MarketOrders &orders)
+    void EvernusApplication::importMarketOrdersFromLogs(Character::IdType id, uint task, bool corp)
     {
-        auto curStates = mMarketOrderRepository->getOrderStates(id);
+        const auto logPath = PathUtils::getMarketLogsPath();
+        if (logPath.isEmpty())
+        {
+            emit taskEnded(task, tr("Cannot determine market logs path!"));
+            return;
+        }
 
-        mCharacterOrderProvider->clearOrders(id);
+        const QDir logDir{logPath};
+        const auto logs = logDir.entryList(QStringList{"My Orders*.txt"}, QDir::Files | QDir::Readable, QDir::Time);
+        if (logs.isEmpty())
+        {
+            emit taskEnded(task, tr("No market logs found!"));
+            return;
+        }
+
+        for (const auto &log : logs)
+        {
+            qDebug() << "Parsing" << log;
+
+            QFile file{logDir.filePath(log)};
+            if (!file.open(QIODevice::ReadOnly))
+            {
+                emit taskEnded(task, tr("Could not open market log file!"));
+                return;
+            }
+
+            file.readLine();
+
+            auto characterFound = false;
+
+            MarketOrders orders;
+            while (!file.atEnd())
+            {
+                const QString line = file.readLine();
+                const auto values = line.split(',');
+
+                if (values.size() >= 22)
+                {
+                    if (!characterFound)
+                    {
+                        const auto characterId = values[2].toULongLong();
+                        if (characterId != id)
+                        {
+                            file.close();
+                            continue;
+                        }
+
+                        characterFound = true;
+                    }
+
+                    const auto idColumn = 0;
+                    const auto typeIdColumn = 1;
+                    const auto stationIdColumn = 6;
+                    const auto rangeColumn = 8;
+                    const auto typeColumn = 9;
+                    const auto priceColumn = 10;
+                    const auto volumeEnteredColumn = 11;
+                    const auto volumeRemainingColumn = 12;
+                    const auto issuedColumn = 13;
+                    const auto stateColumn = 14;
+                    const auto minVolumeColumn = 15;
+                    const auto durationColumn = 17;
+                    const auto isCorpColumn = 18;
+                    const auto escrowColumn = 21;
+
+                    if ((corp && values[isCorpColumn] != "True") || (!corp && values[isCorpColumn] != "False"))
+                        continue;
+
+                    MarketOrder order{values[idColumn].toULongLong()};
+                    order.setCharacterId(id);
+                    order.setLocationId(values[stationIdColumn].toULongLong());
+                    order.setVolumeEntered(values[volumeEnteredColumn].toUInt());
+                    order.setVolumeRemaining(static_cast<uint>(values[volumeRemainingColumn].toDouble()));
+                    order.setMinVolume(values[minVolumeColumn].toUInt());
+                    order.setDelta(order.getVolumeRemaining() - order.getVolumeEntered());
+                    order.setState(static_cast<MarketOrder::State>(values[stateColumn].toInt()));
+                    order.setTypeId(values[typeIdColumn].toUInt());
+                    order.setRange(values[rangeColumn].toShort());
+                    order.setDuration(values[durationColumn].toShort());
+                    order.setEscrow(values[escrowColumn].toDouble());
+                    order.setPrice(values[priceColumn].toDouble());
+                    order.setType((values[typeColumn] == "True") ? (MarketOrder::Type::Buy) : (MarketOrder::Type::Sell));
+
+                    auto issued = QDateTime::fromString(values[issuedColumn], "yyyy-MM-dd HH:mm:ss.zzz");
+                    issued.setTimeSpec(Qt::UTC);
+
+                    order.setIssued(issued);
+                    order.setFirstSeen(issued);
+
+                    orders.emplace_back(std::move(order));
+                }
+            }
+
+            if (characterFound)
+            {
+                QSettings settings;
+                if (settings.value(PathSettings::deleteLogsKey, true).toBool())
+                    file.remove();
+
+                importMarketOrders(id, orders, corp);
+
+                if (corp)
+                    emit corpMarketOrdersChanged();
+                else
+                    emit marketOrdersChanged();
+
+                break;
+            }
+        }
+    }
+
+    void EvernusApplication::importMarketOrders(Character::IdType id, MarketOrders &orders, bool corp)
+    {
+        const auto &orderRepo = (corp) ? (*mCorpMarketOrderRepository) : (*mMarketOrderRepository);
+        auto curStates = orderRepo.getOrderStates(id);
+
+        if (corp)
+            mCorpOrderProvider->clearOrders(id);
+        else
+            mCharacterOrderProvider->clearOrders(id);
+
         mPendingAutoCostOrders.clear();
 
         QSettings settings;
         const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, false).toBool();
+        const auto makeCorpSnapshot = settings.value(ImportSettings::makeCorpSnapshotsKey).toBool();
 
         for (auto &order : orders)
         {
@@ -1849,31 +1889,59 @@ namespace Evernus
         }
 
         if (!toArchive.empty())
-            mMarketOrderRepository->archive(toArchive);
+            orderRepo.archive(toArchive);
 
-        MarketOrderValueSnapshot snapshot;
-        snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
-        snapshot.setCharacterId(id);
-
-        double buy = 0., sell = 0.;
-        for (const auto &order : orders)
+        if (!corp || makeCorpSnapshot)
         {
-            if (order.getState() != MarketOrder::State::Active)
-                continue;
+            MarketOrderValueSnapshot snapshot;
+            snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
+            snapshot.setCharacterId(id);
 
-            if (order.getType() == MarketOrder::Type::Buy)
-                buy += order.getPrice() * order.getVolumeRemaining();
-            else
-                sell += order.getPrice() * order.getVolumeRemaining();
+            double buy = 0., sell = 0.;
+            for (const auto &order : orders)
+            {
+                if (order.getState() != MarketOrder::State::Active)
+                    continue;
+
+                if (order.getType() == MarketOrder::Type::Buy)
+                    buy += order.getPrice() * order.getVolumeRemaining();
+                else
+                    sell += order.getPrice() * order.getVolumeRemaining();
+            }
+
+            const auto adder = [](auto &sum, const auto &orders) {
+                for (const auto &order : orders)
+                {
+                    if (order->getState() != Evernus::MarketOrder::State::Active)
+                        continue;
+
+                    sum += order->getPrice() * order->getVolumeRemaining();
+                }
+            };
+
+            if (corp)
+            {
+                adder(buy, mCharacterOrderProvider->getBuyOrders(id));
+                adder(sell, mCharacterOrderProvider->getSellOrders(id));
+            }
+            else if (makeCorpSnapshot)
+            {
+                adder(buy, mCorpOrderProvider->getBuyOrders(id));
+                adder(sell, mCorpOrderProvider->getSellOrders(id));
+            }
+
+            snapshot.setBuyValue(buy);
+            snapshot.setSellValue(sell);
+
+            mMarketOrderValueSnapshotRepository->store(snapshot);
         }
 
-        snapshot.setBuyValue(buy);
-        snapshot.setSellValue(sell);
+        orderRepo.batchStore(orders, true);
 
-        mMarketOrderValueSnapshotRepository->store(snapshot);
-        mMarketOrderRepository->batchStore(orders, true);
-
-        saveUpdateTimer(TimerType::MarketOrders, mMarketOrdersUtcUpdateTimes, id);
+        if (corp)
+            saveUpdateTimer(TimerType::CorpMarketOrders, mCorpMarketOrdersUtcUpdateTimes, id);
+        else
+            saveUpdateTimer(TimerType::MarketOrders, mMarketOrdersUtcUpdateTimes, id);
 
         if (autoSetCosts)
             refreshWalletTransactions(id);

@@ -298,7 +298,8 @@ namespace Evernus
 
         void importCharacter(Character::IdType id, uint parentTask, const Key &key);
         void importExternalOrders(const std::string &importerName, const ExternalOrderImporter::TypeLocationPairs &target);
-        void importMarketOrders(Character::IdType id, MarketOrders &orders);
+        void importMarketOrdersFromLogs(Character::IdType id, uint task, bool corp);
+        void importMarketOrders(Character::IdType id, MarketOrders &orders, bool corp);
 
         KeyRepository::EntityPtr getCharacterKey(Character::IdType id) const;
         CorpKeyRepository::EntityPtr getCorpKey(Character::IdType id) const;
