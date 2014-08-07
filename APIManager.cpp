@@ -27,6 +27,7 @@
 #include "CharacterDomParser.h"
 #include "CacheTimerProvider.h"
 #include "APIUtils.h"
+#include "CorpKey.h"
 #include "Item.h"
 
 #include "APIManager.h"
@@ -200,7 +201,25 @@ namespace Evernus
         fetchWalletJournal(key, characterId, fromId, tillId, std::make_shared<WalletJournal>(), callback);
     }
 
+    void APIManager::fetchWalletJournal(const CorpKey &key,
+                                        Character::IdType characterId,
+                                        WalletJournalEntry::IdType fromId,
+                                        WalletJournalEntry::IdType tillId,
+                                        const Callback<WalletJournal> &callback) const
+    {
+        fetchWalletJournal(key, characterId, fromId, tillId, std::make_shared<WalletJournal>(), callback);
+    }
+
     void APIManager::fetchWalletTransactions(const Key &key,
+                                             Character::IdType characterId,
+                                             WalletTransaction::IdType fromId,
+                                             WalletTransaction::IdType tillId,
+                                             const Callback<WalletTransactions> &callback) const
+    {
+        fetchWalletTransactions(key, characterId, fromId, tillId, std::make_shared<WalletTransactions>(), callback);
+    }
+
+    void APIManager::fetchWalletTransactions(const CorpKey &key,
                                              Character::IdType characterId,
                                              WalletTransaction::IdType fromId,
                                              WalletTransaction::IdType tillId,
@@ -211,28 +230,15 @@ namespace Evernus
 
     void APIManager::fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const
     {
-#ifdef Q_OS_WIN
-        mInterface.fetchMarketOrders(key, characterId, [callback, characterId, this](const QString &response, const QString &error) {
-#else
-        mInterface.fetchMarketOrders(key, characterId, [callback = callback, characterId, this](const QString &response, const QString &error) {
-#endif
-            try
-            {
-                handlePotentialError(response, error);
-
-                mCacheTimerProvider.setUtcCacheTimer(characterId,
-                                                     TimerType::MarketOrders,
-                                                     APIUtils::getCachedUntil(response));
-
-                callback(parseResults<MarketOrders::value_type, APIXmlReceiver<MarketOrders::value_type>::CurElemType>(response, "orders"), QString{});
-            }
-            catch (const std::exception &e)
-            {
-                callback(MarketOrders{}, e.what());
-            }
-        });
+        doFetchMarketOrders(key, characterId, callback);
     }
 
+    void APIManager::fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const
+    {
+        doFetchMarketOrders(key, characterId, callback);
+    }
+
+    template<class Key>
     void APIManager::fetchWalletJournal(const Key &key,
                                         Character::IdType characterId,
                                         WalletJournalEntry::IdType fromId,
@@ -289,6 +295,7 @@ namespace Evernus
         });
     }
 
+    template<class Key>
     void APIManager::fetchWalletTransactions(const Key &key,
                                              Character::IdType characterId,
                                              WalletTransaction::IdType fromId,
@@ -341,6 +348,31 @@ namespace Evernus
             catch (const std::exception &e)
             {
                 callback(WalletTransactions{}, e.what());
+            }
+        });
+    }
+
+    template<class Key>
+    void APIManager::doFetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const
+    {
+#ifdef Q_OS_WIN
+        mInterface.fetchMarketOrders(key, characterId, [callback, characterId, this](const QString &response, const QString &error) {
+#else
+        mInterface.fetchMarketOrders(key, characterId, [callback = callback, characterId, this](const QString &response, const QString &error) {
+#endif
+            try
+            {
+                handlePotentialError(response, error);
+
+                mCacheTimerProvider.setUtcCacheTimer(characterId,
+                                                     TimerType::MarketOrders,
+                                                     APIUtils::getCachedUntil(response));
+
+                callback(parseResults<MarketOrders::value_type, APIXmlReceiver<MarketOrders::value_type>::CurElemType>(response, "orders"), QString{});
+            }
+            catch (const std::exception &e)
+            {
+                callback(MarketOrders{}, e.what());
             }
         });
     }

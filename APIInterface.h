@@ -28,6 +28,7 @@
 
 namespace Evernus
 {
+    class CorpKey;
     class Key;
 
     class APIInterface
@@ -55,6 +56,15 @@ namespace Evernus
                                      WalletTransaction::IdType fromId,
                                      const Callback &callback) const;
         void fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback &callback) const;
+        void fetchWalletJournal(const CorpKey &key,
+                                Character::IdType characterId,
+                                WalletJournalEntry::IdType fromId,
+                                const Callback &callback) const;
+        void fetchWalletTransactions(const CorpKey &key,
+                                     Character::IdType characterId,
+                                     WalletTransaction::IdType fromId,
+                                     const Callback &callback) const;
+        void fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback &callback) const;
 
     signals:
         void generalError(const QString &info);
@@ -73,6 +83,7 @@ namespace Evernus
 
         mutable std::unordered_map<QNetworkReply *, Callback> mPendingCallbacks;
 
+        template<class Key>
         void makeRequest(const QString &endpoint,
                          const Key &key,
                          const Callback &callback,

@@ -16,6 +16,7 @@
 #include <QSettings>
 
 #include "NetworkSettings.h"
+#include "CorpKey.h"
 #include "Key.h"
 
 #include "APIInterface.h"
@@ -87,6 +88,37 @@ namespace Evernus
         makeRequest("/char/MarketOrders.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
     }
 
+    void APIInterface::fetchWalletJournal(const CorpKey &key,
+                                          Character::IdType characterId,
+                                          WalletJournalEntry::IdType fromId,
+                                          const Callback &callback) const
+    {
+        QueryParams params{std::make_pair("characterId", QString::number(characterId))};
+        params.emplace_back("rowCount", rowLimit);
+        if (fromId != WalletJournalEntry::invalidId)
+            params.emplace_back("fromID", QString::number(fromId));
+
+        makeRequest("/corp/WalletJournal.xml.aspx", key, callback, params);
+    }
+
+    void APIInterface::fetchWalletTransactions(const CorpKey &key,
+                                               Character::IdType characterId,
+                                               WalletTransaction::IdType fromId,
+                                               const Callback &callback) const
+    {
+        QueryParams params{std::make_pair("characterId", QString::number(characterId))};
+        params.emplace_back("rowCount", rowLimit);
+        if (fromId != WalletJournalEntry::invalidId)
+            params.emplace_back("fromID", QString::number(fromId));
+
+        makeRequest("/corp/WalletTransactions.xml.aspx", key, callback, params);
+    }
+
+    void APIInterface::fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback &callback) const
+    {
+        makeRequest("/corp/MarketOrders.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
+    }
+
     void APIInterface::processReply()
     {
         auto reply = qobject_cast<QNetworkReply *>(sender());
@@ -112,6 +144,7 @@ namespace Evernus
         emit generalError(tr("Encountered SSL errors:\n\n%1").arg(errorTexts.join("\n")));
     }
 
+    template<class Key>
     void APIInterface::makeRequest(const QString &endpoint, const Key &key, const Callback &callback, const QueryParams &additionalParams) const
     {
         QSettings settings;

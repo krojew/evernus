@@ -32,6 +32,7 @@
 namespace Evernus
 {
     class CacheTimerProvider;
+    class CorpKey;
 
     class APIManager
         : public QObject
@@ -58,12 +59,23 @@ namespace Evernus
                                 WalletJournalEntry::IdType fromId,
                                 WalletJournalEntry::IdType tillId,
                                 const Callback<WalletJournal> &callback) const;
+        void fetchWalletJournal(const CorpKey &key,
+                                Character::IdType characterId,
+                                WalletJournalEntry::IdType fromId,
+                                WalletJournalEntry::IdType tillId,
+                                const Callback<WalletJournal> &callback) const;
         void fetchWalletTransactions(const Key &key,
                                      Character::IdType characterId,
                                      WalletTransaction::IdType fromId,
                                      WalletTransaction::IdType tillId,
                                      const Callback<WalletTransactions> &callback) const;
+        void fetchWalletTransactions(const CorpKey &key,
+                                     Character::IdType characterId,
+                                     WalletTransaction::IdType fromId,
+                                     WalletTransaction::IdType tillId,
+                                     const Callback<WalletTransactions> &callback) const;
         void fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const;
+        void fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const;
 
     signals:
         void generalError(const QString &info);
@@ -77,6 +89,7 @@ namespace Evernus
         mutable std::unordered_set<Character::IdType> mPendingCharacterRequests;
         mutable std::unordered_set<Character::IdType> mPendingAssetsRequests;
 
+        template<class Key>
         void fetchWalletJournal(const Key &key,
                                 Character::IdType characterId,
                                 WalletJournalEntry::IdType fromId,
@@ -84,12 +97,16 @@ namespace Evernus
                                 std::shared_ptr<WalletJournal> &&journal,
                                 const Callback<WalletJournal> &callback) const;
 
+        template<class Key>
         void fetchWalletTransactions(const Key &key,
                                      Character::IdType characterId,
                                      WalletTransaction::IdType fromId,
                                      WalletTransaction::IdType tillId,
                                      std::shared_ptr<WalletTransactions> &&transactions,
                                      const Callback<WalletTransactions> &callback) const;
+
+        template<class Key>
+        void doFetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const;
 
         template<class T, class CurElem>
         static std::vector<T> parseResults(const QString &xml, const QString &rowsetName);
