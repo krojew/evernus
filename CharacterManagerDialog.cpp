@@ -256,6 +256,7 @@ namespace Evernus
         auto keyView = new QTreeView{this};
         groupLayout->addWidget(keyView);
         keyView->setModel(&mCorpKeyModel);
+        keyView->setEditTriggers(QAbstractItemView::NoEditTriggers);
         connect(keyView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &CharacterManagerDialog::selectCorpKey);
 

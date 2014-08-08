@@ -244,7 +244,7 @@
         <translation>Postacie</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="306"/>
+        <location filename="../CharacterManagerDialog.cpp" line="307"/>
         <source>In order to manage characters, add keys first in the Keys tab.</source>
         <translation>Aby zarządzać postaciami, musisz najpierw dodać klucz w zakładce Klucze.</translation>
     </message>
@@ -292,30 +292,30 @@
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="226"/>
-        <location filename="../CharacterManagerDialog.cpp" line="265"/>
+        <location filename="../CharacterManagerDialog.cpp" line="266"/>
         <source>Add...</source>
         <translation>Dodaj...</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="230"/>
-        <location filename="../CharacterManagerDialog.cpp" line="269"/>
+        <location filename="../CharacterManagerDialog.cpp" line="270"/>
         <source>Edit...</source>
         <translation>Edytuj...</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="235"/>
-        <location filename="../CharacterManagerDialog.cpp" line="274"/>
-        <location filename="../CharacterManagerDialog.cpp" line="315"/>
+        <location filename="../CharacterManagerDialog.cpp" line="275"/>
+        <location filename="../CharacterManagerDialog.cpp" line="316"/>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="289"/>
+        <location filename="../CharacterManagerDialog.cpp" line="290"/>
         <source>Available characters</source>
         <translation>Dostępne postacie</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="311"/>
+        <location filename="../CharacterManagerDialog.cpp" line="312"/>
         <source>Refresh</source>
         <translation>Odśwież</translation>
     </message>
