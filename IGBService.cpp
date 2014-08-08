@@ -28,11 +28,13 @@
 namespace Evernus
 {
     IGBService::IGBService(const MarketOrderProvider &orderProvider,
+                           const MarketOrderProvider &corpOrderProvider,
                            const EveDataProvider &dataProvider,
                            QxtHttpSessionManager *sm,
                            QObject *parent)
         : QxtWebSlotService(sm, parent)
         , mOrderProvider(orderProvider)
+        , mCorpOrderProvider(corpOrderProvider)
         , mDataProvider(dataProvider)
     {
         mMainTemplate.open(":/html/igb_template.html");
@@ -40,8 +42,10 @@ namespace Evernus
 
         QSettings settings;
 
-        mMainTemplate["active-link-text"] = tr("Active Orders");
-        mMainTemplate["fulfilled-link-text"] = tr("Fulfilled Orders");
+        mMainTemplate["active-link-text"] = tr("Character Active Orders");
+        mMainTemplate["fulfilled-link-text"] = tr("Character Fulfilled Orders");
+        mMainTemplate["corp-active-link-text"] = tr("Corporation Active Orders");
+        mMainTemplate["corp-fulfilled-link-text"] = tr("Corporation Fulfilled Orders");
         mMainTemplate["open-margin-tool-link-text"] = tr("Open Margin Tool");
         mMainTemplate["port"] = settings.value(IGBSettings::portKey, IGBSettings::portDefault).toString();
 
@@ -59,32 +63,22 @@ namespace Evernus
 
     void IGBService::active(QxtWebRequestEvent *event)
     {
-        QStringList idContainer, typeIdContainer;
-
-        mOrderTemplate["sell-orders"] = renderOrderList(
-            filterAndSort(mOrderProvider.getSellOrders(getCharacterId(event)), MarketOrder::State::Active, false), idContainer, typeIdContainer);
-        mOrderTemplate["buy-orders-start"] = QString::number(idContainer.size() + 1);
-        mOrderTemplate["buy-orders"] = renderOrderList(
-            filterAndSort(mOrderProvider.getBuyOrders(getCharacterId(event)), MarketOrder::State::Active, false), idContainer, typeIdContainer);
-        mOrderTemplate["order-ids"] = idContainer.join(", ");
-        mOrderTemplate["type-ids"] = typeIdContainer.join(", ");
-
-        renderContent(event, mOrderTemplate.render());
+        showOrders(event, mOrderProvider, MarketOrder::State::Active, false);
     }
 
     void IGBService::fulfilled(QxtWebRequestEvent *event)
     {
-        QStringList idContainer, typeIdContainer;
+        showOrders(event, mOrderProvider, MarketOrder::State::Fulfilled, true);
+    }
 
-        mOrderTemplate["sell-orders"] = renderOrderList(
-            filterAndSort(mOrderProvider.getSellOrders(getCharacterId(event)), MarketOrder::State::Fulfilled, true), idContainer, typeIdContainer);
-        mOrderTemplate["buy-orders-start"] = QString::number(idContainer.size() + 1);
-        mOrderTemplate["buy-orders"] = renderOrderList(
-            filterAndSort(mOrderProvider.getBuyOrders(getCharacterId(event)), MarketOrder::State::Fulfilled, true), idContainer, typeIdContainer);
-        mOrderTemplate["order-ids"] = idContainer.join(", ");
-        mOrderTemplate["type-ids"] = typeIdContainer.join(", ");
+    void IGBService::corpActive(QxtWebRequestEvent *event)
+    {
+        showOrders(event, mCorpOrderProvider, MarketOrder::State::Active, false);
+    }
 
-        renderContent(event, mOrderTemplate.render());
+    void IGBService::corpFulfilled(QxtWebRequestEvent *event)
+    {
+        showOrders(event, mCorpOrderProvider, MarketOrder::State::Fulfilled, true);
     }
 
     void IGBService::openMarginTool(QxtWebRequestEvent *event)
@@ -131,6 +125,21 @@ namespace Evernus
             return Character::invalidId;
 
         return event->headers.values(charIdHeader).first().toULongLong();
+    }
+
+    void IGBService::showOrders(QxtWebRequestEvent *event, const MarketOrderProvider &provider, MarketOrder::State state, bool needsDelta)
+    {
+        QStringList idContainer, typeIdContainer;
+
+        mOrderTemplate["sell-orders"] = renderOrderList(
+            filterAndSort(provider.getSellOrders(getCharacterId(event)), state, needsDelta), idContainer, typeIdContainer);
+        mOrderTemplate["buy-orders-start"] = QString::number(idContainer.size() + 1);
+        mOrderTemplate["buy-orders"] = renderOrderList(
+            filterAndSort(provider.getBuyOrders(getCharacterId(event)), state, needsDelta), idContainer, typeIdContainer);
+        mOrderTemplate["order-ids"] = idContainer.join(", ");
+        mOrderTemplate["type-ids"] = typeIdContainer.join(", ");
+
+        renderContent(event, mOrderTemplate.render());
     }
 
     std::vector<std::shared_ptr<MarketOrder>> IGBService

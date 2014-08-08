@@ -934,52 +934,70 @@
 <context>
     <name>Evernus::IGBService</name>
     <message>
-        <location filename="../IGBService.cpp" line="43"/>
         <source>Active Orders</source>
-        <translation>Aktywne zlecenia</translation>
+        <translation type="vanished">Aktywne zlecenia</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="45"/>
+        <location filename="../IGBService.cpp" line="49"/>
         <source>Open Margin Tool</source>
         <translation>Otwórz narzędzie marży</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="44"/>
         <source>Fulfilled Orders</source>
-        <translation>Zakończone zlecenia</translation>
+        <translation type="vanished">Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="50"/>
+        <location filename="../IGBService.cpp" line="54"/>
         <source>Show Previous Order</source>
         <translation>Poprzednie zlecenie</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="51"/>
+        <location filename="../IGBService.cpp" line="55"/>
         <source>Show Next Order</source>
         <translation>Następne zlecenie</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="52"/>
+        <location filename="../IGBService.cpp" line="56"/>
         <source>Current order:</source>
         <translation>Aktualne zlecenie:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="48"/>
+        <location filename="../IGBService.cpp" line="52"/>
         <source>Sell orders:</source>
         <translation>Zlecenia sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="49"/>
+        <location filename="../IGBService.cpp" line="45"/>
+        <source>Character Active Orders</source>
+        <translation>Aktywne zlecenia postaci</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="46"/>
+        <source>Character Fulfilled Orders</source>
+        <translation>Zakończone zlecenia postaci</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="47"/>
+        <source>Corporation Active Orders</source>
+        <translation>Aktywne zlecenia korporacji</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="48"/>
+        <source>Corporation Fulfilled Orders</source>
+        <translation>Zakończone zlecenia korporacji</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="53"/>
         <source>Buy orders:</source>
         <translation>Zlecenia kupna:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="57"/>
+        <location filename="../IGBService.cpp" line="61"/>
         <source>Please select a category from the menu.</source>
         <translation>Wybierz kategorię z menu.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="101"/>
+        <location filename="../IGBService.cpp" line="95"/>
         <source>Website trust is required. Please add it to Trusted Sites.</source>
         <translation>Wymagane jest zaufanie stronie. Dodaj stronę do zaufanych (Trusted Sites).</translation>
     </message>

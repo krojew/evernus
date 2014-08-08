@@ -38,6 +38,7 @@ namespace Evernus
 
     public:
         IGBService(const MarketOrderProvider &orderProvider,
+                   const MarketOrderProvider &corpOrderProvider,
                    const EveDataProvider &dataProvider,
                    QxtHttpSessionManager *sm,
                    QObject *parent = nullptr);
@@ -50,10 +51,12 @@ namespace Evernus
         void index(QxtWebRequestEvent *event);
         void active(QxtWebRequestEvent *event);
         void fulfilled(QxtWebRequestEvent *event);
+        void corpActive(QxtWebRequestEvent *event);
+        void corpFulfilled(QxtWebRequestEvent *event);
         void openMarginTool(QxtWebRequestEvent *event);
 
     private:
-        const MarketOrderProvider &mOrderProvider;
+        const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const EveDataProvider &mDataProvider;
 
         QxtHtmlTemplate mMainTemplate, mOrderTemplate;
@@ -63,6 +66,7 @@ namespace Evernus
                                 QStringList &idContainer,
                                 QStringList &typeIdContainer) const;
 
+        void showOrders(QxtWebRequestEvent *event, const MarketOrderProvider &provider, MarketOrder::State state, bool needsDelta);
         std::vector<std::shared_ptr<MarketOrder>> filterAndSort(const std::vector<std::shared_ptr<MarketOrder>> &orders,
                                                                 MarketOrder::State state,
                                                                 bool needsDelta) const;
