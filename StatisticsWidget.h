@@ -16,10 +16,13 @@
 
 #include <QWidget>
 
+#include "ScriptOrderProcessingModel.h"
 #include "AggregatedStatisticsModel.h"
 
+class QRadioButton;
 class QPushButton;
 class QTableView;
+class QTextEdit;
 class QComboBox;
 class QCheckBox;
 class QSpinBox;
@@ -33,6 +36,7 @@ namespace Evernus
     class WalletTransactionRepository;
     class WalletSnapshotRepository;
     class DateFilteredPlotWidget;
+    class OrderScriptRepository;
 
     class StatisticsWidget
         : public QWidget
@@ -46,6 +50,7 @@ namespace Evernus
                          const WalletJournalEntryRepository &journalRepo,
                          const WalletTransactionRepository &transactionRepo,
                          const MarketOrderRepository &orderRepo,
+                         const OrderScriptRepository &orderScriptRepo,
                          const EveDataProvider &dataProvider,
                          QWidget *parent = nullptr);
         virtual ~StatisticsWidget() = default;
@@ -59,8 +64,15 @@ namespace Evernus
 
     private slots:
         void applyAggrFilter();
+        void applyScript();
 
         void copyAggrData();
+
+        void showScriptError(const QString &message);
+
+        void saveScript();
+        void loadScript();
+        void deleteScript();
 
     private:
         static constexpr auto assetValueGraph = 0;
@@ -74,6 +86,8 @@ namespace Evernus
         const MarketOrderValueSnapshotRepository &mMarketOrderSnapshotRepository;
         const WalletJournalEntryRepository &mJournalRepo;
         const WalletTransactionRepository &mTransactionRepo;
+        const MarketOrderRepository &mMarketOrderRepository;
+        const OrderScriptRepository &mOrderScriptRepository;
 
         DateFilteredPlotWidget *mBalancePlot = nullptr;
         DateFilteredPlotWidget *mJournalPlot = nullptr;
@@ -87,16 +101,22 @@ namespace Evernus
 
         QCheckBox *mCombineStatsBtn = nullptr;
         QPushButton *mAggrApplyBtn = nullptr;
+        QPushButton *mScriptApplyBtn = nullptr;
         QComboBox *mAggrGroupingColumnCombo = nullptr;
         QComboBox *mAggrOrderColumnCombo = nullptr;
         QSpinBox *mAggrLimitEdit = nullptr;
         QCheckBox *mAggrIncludeActiveBtn = nullptr;
         QCheckBox *mAggrIncludeNotFulfilledBtn = nullptr;
+        QTextEdit *mAggrScriptEdit = nullptr;
+        QRadioButton *mScriptForEachModeBtn = nullptr;
         QTableView *mAggrView = nullptr;
 
         Character::IdType mCharacterId = Character::invalidId;
 
         AggregatedStatisticsModel mAggrModel;
+        ScriptOrderProcessingModel mScriptModel;
+
+        QString mLastLoadedScript;
 
         void updateGraphAndLegend();
 

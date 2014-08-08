@@ -9,6 +9,7 @@ find_package(Boost REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
+find_package(Qt5Script REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
@@ -95,6 +96,7 @@ qt5_wrap_cpp(
     qxtsslserver.h
     qxtwebcontent.h
     qxtwebslotservice.h
+    ScriptOrderProcessingModel.h
     StationModel.h
     StatisticsWidget.h
     StyledTreeView.h
@@ -328,6 +330,10 @@ add_executable(
     NetworkPreferencesWidget.cpp
     NetworkPreferencesWidget.h
     NetworkSettings.h
+    OrderScript.cpp
+    OrderScript.h
+    OrderScriptRepository.cpp
+    OrderScriptRepository.h
     PathPreferencesWidget.cpp
     PathPreferencesWidget.h
     PathSettings.h
@@ -344,6 +350,8 @@ add_executable(
     qcustomplot.h
     qhttpheader.cpp
     qhttpheader.h
+    QtScriptSyntaxHighlighter.cpp
+    QtScriptSyntaxHighlighter.h
     qxtabstracthttpconnector.cpp
     qxtabstracthttpconnector.h
     qxtabstractwebservice.cpp
@@ -385,6 +393,8 @@ add_executable(
     RefTypeXmlReceiver.cpp
     RefTypeXmlReceiver.h
     Repository.h
+    ScriptOrderProcessingModel.cpp
+    ScriptOrderProcessingModel.h
     SimpleCrypt.cpp
     SimpleCrypt.h
     StationModel.cpp
@@ -460,6 +470,7 @@ target_link_libraries(
     ${Boost_LIBRARIES}
     Qt5::Network
     Qt5::PrintSupport
+    Qt5::Script
     Qt5::Sql
     Qt5::Xml
     Qt5::XmlPatterns

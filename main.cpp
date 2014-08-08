@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
                                         app.getMarketOrderRepository(),
                                         app.getItemCostRepository(),
                                         app.getFilterTextRepository(),
+                                        app.getOrderScriptRepository(),
                                         app.getMarketOrderProvider(),
                                         app.getCorpMarketOrderProvider(),
                                         app,

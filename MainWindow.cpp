@@ -69,6 +69,7 @@ namespace Evernus
                            const MarketOrderRepository &orderRepo,
                            const ItemCostRepository &itemCostRepo,
                            const FilterTextRepository &filterRepo,
+                           const OrderScriptRepository &orderScriptRepo,
                            const MarketOrderProvider &orderProvider,
                            const MarketOrderProvider &corpOrderProvider,
                            const AssetProvider &assetProvider,
@@ -91,6 +92,7 @@ namespace Evernus
         , mMarketOrderRepository{orderRepo}
         , mItemCostRepository{itemCostRepo}
         , mFilterRepository{filterRepo}
+        , mOrderScriptRepository{orderScriptRepo}
         , mOrderProvider{orderProvider}
         , mCorpOrderProvider{corpOrderProvider}
         , mAssetProvider{assetProvider}
@@ -434,6 +436,7 @@ namespace Evernus
                                              mWalletJournalRepository,
                                              mWalletTransactionRepository,
                                              mMarketOrderRepository,
+                                             mOrderScriptRepository,
                                              mEveDataProvider,
                                              this};
         addTab(statsTab, tr("Statistics"));

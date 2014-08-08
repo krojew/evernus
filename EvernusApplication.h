@@ -34,6 +34,7 @@
 #include "ExternalOrderImporter.h"
 #include "MarketGroupRepository.h"
 #include "UpdateTimerRepository.h"
+#include "OrderScriptRepository.h"
 #include "qxthttpsessionmanager.h"
 #include "CacheTimerRepository.h"
 #include "FilterTextRepository.h"
@@ -129,6 +130,7 @@ namespace Evernus
         const ItemCostRepository &getItemCostRepository() const noexcept;
         const MarketOrderValueSnapshotRepository &getMarketOrderValueSnapshotRepository() const noexcept;
         const FilterTextRepository &getFilterTextRepository() const noexcept;
+        const OrderScriptRepository &getOrderScriptRepository() const noexcept;
 
         const MarketOrderProvider &getMarketOrderProvider() const noexcept;
         const MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
@@ -212,6 +214,7 @@ namespace Evernus
         std::unique_ptr<ItemCostRepository> mItemCostRepository;
         std::unique_ptr<MarketOrderValueSnapshotRepository> mMarketOrderValueSnapshotRepository;
         std::unique_ptr<FilterTextRepository> mFilterTextRepository;
+        std::unique_ptr<OrderScriptRepository> mOrderScriptRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
         std::unique_ptr<MarketGroupRepository> mMarketGroupRepository;
         std::unique_ptr<MetaGroupRepository> mMetaGroupRepository;

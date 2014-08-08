@@ -84,6 +84,7 @@ namespace Evernus
                                                      bool includeNotFulfilled) const;
         OrderStateMap getOrderStates(Character::IdType characterId) const;
 
+        EntityList fetchForCharacter(Character::IdType characterId) const;
         EntityList fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const;
         EntityList fetchArchivedForCharacter(Character::IdType characterId) const;
 

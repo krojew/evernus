@@ -16,24 +16,31 @@
 #include <memory>
 
 #include <QApplication>
+#include <QRadioButton>
+#include <QInputDialog>
+#include <QMessageBox>
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QHeaderView>
 #include <QClipboard>
 #include <QTabWidget>
 #include <QTableView>
+#include <QTextEdit>
 #include <QComboBox>
 #include <QGroupBox>
 #include <QSpinBox>
 #include <QAction>
 #include <QHash>
+#include <QFont>
 
 #include "MarketOrderValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
 #include "AssetValueSnapshotRepository.h"
 #include "WalletTransactionRepository.h"
+#include "QtScriptSyntaxHighlighter.h"
 #include "WalletSnapshotRepository.h"
 #include "DateFilteredPlotWidget.h"
+#include "OrderScriptRepository.h"
 
 #include "qcustomplot.h"
 
@@ -47,6 +54,7 @@ namespace Evernus
                                        const WalletJournalEntryRepository &journalRepo,
                                        const WalletTransactionRepository &transactionRepo,
                                        const MarketOrderRepository &orderRepo,
+                                       const OrderScriptRepository &orderScriptRepo,
                                        const EveDataProvider &dataProvider,
                                        QWidget *parent)
         : QWidget(parent)
@@ -55,7 +63,9 @@ namespace Evernus
         , mMarketOrderSnapshotRepository(marketOrderSnapshotRepo)
         , mJournalRepo(journalRepo)
         , mTransactionRepo(transactionRepo)
-        , mAggrModel(orderRepo, dataProvider)
+        , mMarketOrderRepository(orderRepo)
+        , mOrderScriptRepository(orderScriptRepo)
+        , mAggrModel(mMarketOrderRepository, dataProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -67,6 +77,8 @@ namespace Evernus
         tabs->addTab(createAdvancedStatisticsWidget(), tr("Advanced"));
 
         updateGraphAndLegend();
+
+        connect(&mScriptModel, &ScriptOrderProcessingModel::error, this, &StatisticsWidget::showScriptError);
     }
 
     void StatisticsWidget::setCharacter(Character::IdType id)
@@ -76,6 +88,7 @@ namespace Evernus
         if (mCharacterId == Character::invalidId)
         {
             mAggrApplyBtn->setDisabled(true);
+            mScriptApplyBtn->setDisabled(true);
             mBalancePlot->getPlot().clearPlottables();
             mJournalPlot->getPlot().clearPlottables();
             updateGraphAndLegend();
@@ -87,6 +100,7 @@ namespace Evernus
             mTransactionPlot->blockSignals(true);
 
             mAggrApplyBtn->setDisabled(false);
+            mScriptApplyBtn->setDisabled(false);
 
             const auto date = QDate::currentDate();
 
@@ -105,6 +119,7 @@ namespace Evernus
         }
 
         mAggrModel.clear();
+        mScriptModel.clear();
     }
 
     void StatisticsWidget::updateBalanceData()
@@ -401,6 +416,18 @@ namespace Evernus
                          (limit == 0) ? (-1) : (limit),
                          mAggrIncludeActiveBtn->isChecked(),
                          mAggrIncludeNotFulfilledBtn->isChecked());
+
+        mAggrView->setModel(&mAggrModel);
+    }
+
+    void StatisticsWidget::applyScript()
+    {
+        mScriptModel.reset(mMarketOrderRepository.fetchForCharacter(mCharacterId),
+                           mAggrScriptEdit->toPlainText(),
+                           (mScriptForEachModeBtn->isChecked()) ?
+                           (ScriptOrderProcessingModel::Mode::ForEach) :
+                           (ScriptOrderProcessingModel::Mode::Aggregate));
+        mAggrView->setModel(&mScriptModel);
     }
 
     void StatisticsWidget::copyAggrData()
@@ -425,6 +452,51 @@ namespace Evernus
         }
 
         QApplication::clipboard()->setText(result);
+    }
+
+    void StatisticsWidget::showScriptError(const QString &message)
+    {
+        QMessageBox::warning(this, tr("Script error"), message);
+    }
+
+    void StatisticsWidget::saveScript()
+    {
+        const auto name
+            = QInputDialog::getText(this, tr("Save script"), tr("Enter script name:"), QLineEdit::Normal, mLastLoadedScript);
+        if (!name.isEmpty())
+        {
+            mLastLoadedScript = name;
+
+            OrderScript script{name};
+            script.setCode(mAggrScriptEdit->toPlainText());
+
+            mOrderScriptRepository.store(script);
+        }
+    }
+
+    void StatisticsWidget::loadScript()
+    {
+        const auto name
+            = QInputDialog::getItem(this, tr("Load script"), tr("Select script:"), mOrderScriptRepository.getAllNames(), 0, false);
+        if (!name.isEmpty())
+        {
+            try
+            {
+                mAggrScriptEdit->setPlainText(mOrderScriptRepository.find(name)->getCode());
+                mLastLoadedScript = name;
+            }
+            catch (const OrderScriptRepository::NotFoundException &)
+            {
+            }
+        }
+    }
+
+    void StatisticsWidget::deleteScript()
+    {
+        const auto name
+            = QInputDialog::getItem(this, tr("Delete script"), tr("Select script:"), mOrderScriptRepository.getAllNames(), 0, false);
+        if (!name.isEmpty())
+            mOrderScriptRepository.remove(name);
     }
 
     void StatisticsWidget::updateGraphAndLegend()
@@ -520,53 +592,119 @@ namespace Evernus
         auto configGroup = new QGroupBox{this};
         mainLayout->addWidget(configGroup);
 
-        auto configLayout = new QHBoxLayout{};
+        auto configLayout = new QVBoxLayout{};
         configGroup->setLayout(configLayout);
 
-        configLayout->addWidget(new QLabel{tr("Group by:"), this});
+        auto simpleConfigBtn = new QRadioButton{tr("Simple aggregation"), this};
+        configLayout->addWidget(simpleConfigBtn);
+        simpleConfigBtn->setChecked(true);
+
+        auto simpleConfigWidget = new QWidget{this};
+        configLayout->addWidget(simpleConfigWidget);
+        connect(simpleConfigBtn, &QRadioButton::toggled, simpleConfigWidget, &QWidget::setVisible);
+
+        auto simgpleConfigLayout = new QHBoxLayout{};
+        simpleConfigWidget->setLayout(simgpleConfigLayout);
+
+        simgpleConfigLayout->addWidget(new QLabel{tr("Group by:"), this});
 
         mAggrGroupingColumnCombo = new QComboBox{this};
-        configLayout->addWidget(mAggrGroupingColumnCombo);
+        simgpleConfigLayout->addWidget(mAggrGroupingColumnCombo);
         mAggrGroupingColumnCombo->addItem(tr("Type"), static_cast<int>(MarketOrderRepository::AggregateColumn::TypeId));
         mAggrGroupingColumnCombo->addItem(tr("Location"), static_cast<int>(MarketOrderRepository::AggregateColumn::LocationId));
 
-        configLayout->addWidget(new QLabel{tr("Order by:"), this});
+        simgpleConfigLayout->addWidget(new QLabel{tr("Order by:"), this});
 
         mAggrOrderColumnCombo = new QComboBox{this};
-        configLayout->addWidget(mAggrOrderColumnCombo);
+        simgpleConfigLayout->addWidget(mAggrOrderColumnCombo);
         mAggrOrderColumnCombo->addItem(tr("Id"), static_cast<int>(MarketOrderRepository::AggregateOrderColumn::Id));
         mAggrOrderColumnCombo->addItem(tr("Count"), static_cast<int>(MarketOrderRepository::AggregateOrderColumn::Count));
         mAggrOrderColumnCombo->addItem(tr("Price"), static_cast<int>(MarketOrderRepository::AggregateOrderColumn::Price));
         mAggrOrderColumnCombo->addItem(tr("Volume"), static_cast<int>(MarketOrderRepository::AggregateOrderColumn::Volume));
 
-        configLayout->addWidget(new QLabel{tr("Limit:"), this});
+        simgpleConfigLayout->addWidget(new QLabel{tr("Limit:"), this});
 
         mAggrLimitEdit = new QSpinBox{this};
-        configLayout->addWidget(mAggrLimitEdit);
+        simgpleConfigLayout->addWidget(mAggrLimitEdit);
         mAggrLimitEdit->setValue(10);
         mAggrLimitEdit->setSpecialValueText(tr("none"));
 
         mAggrIncludeActiveBtn = new QCheckBox{tr("Include active"), this};
-        configLayout->addWidget(mAggrIncludeActiveBtn);
+        simgpleConfigLayout->addWidget(mAggrIncludeActiveBtn);
 
         mAggrIncludeNotFulfilledBtn = new QCheckBox{tr("Include expired/cancelled"), this};
-        configLayout->addWidget(mAggrIncludeNotFulfilledBtn);
+        simgpleConfigLayout->addWidget(mAggrIncludeNotFulfilledBtn);
 
         mAggrApplyBtn = new QPushButton{tr("Apply"), this};
-        configLayout->addWidget(mAggrApplyBtn);
+        simgpleConfigLayout->addWidget(mAggrApplyBtn);
         mAggrApplyBtn->setDisabled(true);
         connect(mAggrApplyBtn, &QPushButton::clicked, this, &StatisticsWidget::applyAggrFilter);
 
-        configLayout->addStretch();
+        simgpleConfigLayout->addStretch();
+
+        auto scriptConfigBtn = new QRadioButton{tr("Script processing"), this};
+        configLayout->addWidget(scriptConfigBtn);
+
+        auto scriptConfigWidget = new QWidget{this};
+        configLayout->addWidget(scriptConfigWidget);
+        scriptConfigWidget->setVisible(false);
+        connect(scriptConfigBtn, &QRadioButton::toggled, scriptConfigWidget, &QWidget::setVisible);
+
+        auto scriptConfigLayout = new QHBoxLayout{};
+        scriptConfigWidget->setLayout(scriptConfigLayout);
+
+        QFont scriptFont{""};
+        scriptFont.setFixedPitch(true);
+
+        mAggrScriptEdit = new QTextEdit{this};
+        scriptConfigLayout->addWidget(mAggrScriptEdit, 1);
+        mAggrScriptEdit->setPlaceholderText(tr("see the online help to learn how to use script processing"));
+        mAggrScriptEdit->document()->setDefaultFont(scriptFont);
+
+        new QtScriptSyntaxHighlighter{mAggrScriptEdit};
+
+        auto scriptControlsLayout = new QVBoxLayout{};
+        scriptConfigLayout->addLayout(scriptControlsLayout);
+
+        mScriptApplyBtn = new QPushButton{tr("Apply"), this};
+        scriptControlsLayout->addWidget(mScriptApplyBtn);
+        mScriptApplyBtn->setDisabled(true);
+        connect(mScriptApplyBtn, &QPushButton::clicked, this, &StatisticsWidget::applyScript);
+
+        auto saveScriptBtn = new QPushButton{tr("Save script..."), this};
+        scriptControlsLayout->addWidget(saveScriptBtn);
+        connect(saveScriptBtn, &QPushButton::clicked, this, &StatisticsWidget::saveScript);
+
+        auto loadScriptBtn = new QPushButton{tr("Load script..."), this};
+        scriptControlsLayout->addWidget(loadScriptBtn);
+        connect(loadScriptBtn, &QPushButton::clicked, this, &StatisticsWidget::loadScript);
+
+        auto deleteScriptBtn = new QPushButton{tr("Delete script..."), this};
+        scriptControlsLayout->addWidget(deleteScriptBtn);
+        connect(deleteScriptBtn, &QPushButton::clicked, this, &StatisticsWidget::deleteScript);
+
+        auto scriptModeGroup = new QGroupBox{tr("Mode"), this};
+        scriptControlsLayout->addWidget(scriptModeGroup);
+
+        auto scriptModeGroupLayout = new QVBoxLayout{};
+        scriptModeGroup->setLayout(scriptModeGroupLayout);
+
+        mScriptForEachModeBtn = new QRadioButton{tr("For each"), this};
+        scriptModeGroupLayout->addWidget(mScriptForEachModeBtn);
+        mScriptForEachModeBtn->setChecked(true);
+
+        auto scriptAggrgateModeBtn = new QRadioButton{tr("Aggregate"), this};
+        scriptModeGroupLayout->addWidget(scriptAggrgateModeBtn);
+
+        scriptControlsLayout->addStretch();
 
         auto copyAct = new QAction{this};
         copyAct->setShortcuts(QKeySequence::Copy);
         connect(copyAct, &QAction::triggered, this, &StatisticsWidget::copyAggrData);
 
         mAggrView = new QTableView{this};
-        mainLayout->addWidget(mAggrView);
+        mainLayout->addWidget(mAggrView, 1);
         mAggrView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-        mAggrView->setModel(&mAggrModel);
         mAggrView->addAction(copyAct);
 
         return widget;

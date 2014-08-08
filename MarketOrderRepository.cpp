@@ -243,6 +243,25 @@ namespace Evernus
         return result;
     }
 
+    MarketOrderRepository::EntityList MarketOrderRepository::fetchForCharacter(Character::IdType characterId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ?"}.arg(getTableName()));
+        query.bindValue(0, characterId);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
     MarketOrderRepository::EntityList MarketOrderRepository::fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND type = ?"}.arg(getTableName()));
