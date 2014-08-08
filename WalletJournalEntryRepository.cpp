@@ -121,6 +121,39 @@ namespace Evernus
     }
 
     WalletJournalEntryRepository::EntityList WalletJournalEntryRepository
+    ::fetchInRange(const QDateTime &from, const QDateTime &till, EntryType type) const
+    {
+        QString queryStr;
+        switch (type) {
+        case EntryType::Incomig:
+            queryStr = "SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ? AND amount >= 0";
+            break;
+        case EntryType::Outgoing:
+            queryStr = "SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ? AND amount < 0";
+            break;
+        default:
+            queryStr = "SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ?";
+        }
+
+        auto query = prepare(queryStr.arg(getTableName()));
+        query.addBindValue(from);
+        query.addBindValue(till);
+
+        DatabaseUtils::execQuery(query);
+
+        const auto size = query.size();
+
+        EntityList result;
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
+    WalletJournalEntryRepository::EntityList WalletJournalEntryRepository
     ::fetchForCharacterInRange(Character::IdType characterId, const QDateTime &from, const QDateTime &till, EntryType type) const
     {
         QString queryStr;

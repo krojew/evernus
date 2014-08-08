@@ -35,6 +35,7 @@ namespace Evernus
 
         void create(const Repository<Character> &characterRepo) const;
 
+        EntityList fetchRange(const QDateTime &from, const QDateTime &to) const;
         EntityList fetchRange(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const;
 
     private:

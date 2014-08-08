@@ -108,6 +108,45 @@ namespace Evernus
     }
 
     WalletTransactionRepository::EntityList WalletTransactionRepository
+    ::fetchInRange(const QDateTime &from,
+                   const QDateTime &till,
+                   EntryType type,
+                   EveType::IdType typeId) const
+    {
+        QString queryStr;
+        if (type == EntryType::All)
+            queryStr = "SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ?";
+        else
+            queryStr = "SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ? AND type = ?";
+
+        if (typeId != EveType::invalidId)
+            queryStr += " AND type_id = ?";
+
+        auto query = prepare(queryStr.arg(getTableName()));
+        query.addBindValue(from);
+        query.addBindValue(till);
+
+        if (type != EntryType::All)
+            query.addBindValue(static_cast<int>((type == EntryType::Buy) ? (WalletTransaction::Type::Buy) : (WalletTransaction::Type::Sell)));
+
+        if (typeId != EveType::invalidId)
+            query.addBindValue(typeId);
+
+        DatabaseUtils::execQuery(query);
+
+        const auto size = query.size();
+
+        EntityList result;
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
+    WalletTransactionRepository::EntityList WalletTransactionRepository
     ::fetchForCharacterInRange(Character::IdType characterId,
                                const QDateTime &from,
                                const QDateTime &till,

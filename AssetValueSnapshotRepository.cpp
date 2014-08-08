@@ -53,7 +53,31 @@ namespace Evernus
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)"}.arg(getTableName()));
         exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_character_timestamp ON %1(character_id, timestamp)"}.arg(getTableName()));
+    }
+
+    AssetValueSnapshotRepository::EntityList AssetValueSnapshotRepository
+    ::fetchRange(const QDateTime &from, const QDateTime &to) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp ASC"}
+            .arg(getTableName()));
+
+        query.addBindValue(from);
+        query.addBindValue(to);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
     }
 
     AssetValueSnapshotRepository::EntityList AssetValueSnapshotRepository

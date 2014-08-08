@@ -55,6 +55,7 @@ namespace Evernus
         void updateBalanceData();
         void updateJournalData();
         void updateTransactionData();
+        void updateData();
 
     private slots:
         void applyAggrFilter();
@@ -84,6 +85,7 @@ namespace Evernus
         QCPBars *mBuyPlot = nullptr;
         QCPBars *mSellPlot = nullptr;
 
+        QCheckBox *mCombineStatsBtn = nullptr;
         QPushButton *mAggrApplyBtn = nullptr;
         QComboBox *mAggrGroupingColumnCombo = nullptr;
         QComboBox *mAggrOrderColumnCombo = nullptr;

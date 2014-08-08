@@ -97,9 +97,7 @@ namespace Evernus
             mTransactionPlot->setFrom(date.addDays(-7));
             mTransactionPlot->setTo(date);
 
-            updateBalanceData();
-            updateJournalData();
-            updateTransactionData();
+            updateData();
 
             mTransactionPlot->blockSignals(false);
             mJournalPlot->blockSignals(false);
@@ -114,9 +112,16 @@ namespace Evernus
         const QDateTime from{mBalancePlot->getFrom()};
         const QDateTime to{mBalancePlot->getTo().addDays(1)};
 
-        const auto assetShots = mAssetSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC());
-        const auto walletShots = mWalletSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC());
-        const auto orderShots = mMarketOrderSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC());
+        const auto combineStats = mCombineStatsBtn->isChecked();
+        const auto assetShots = (combineStats) ?
+                                (mAssetSnapshotRepository.fetchRange(from.toUTC(), to.toUTC())) :
+                                (mAssetSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC()));
+        const auto walletShots = (combineStats) ?
+                                 (mWalletSnapshotRepository.fetchRange(from.toUTC(), to.toUTC())) :
+                                 (mWalletSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC()));
+        const auto orderShots = (combineStats) ?
+                                (mMarketOrderSnapshotRepository.fetchRange(from.toUTC(), to.toUTC())) :
+                                (mMarketOrderSnapshotRepository.fetchRange(mCharacterId, from.toUTC(), to.toUTC()));
 
         auto assetGraph = mBalancePlot->getPlot().graph(assetValueGraph);
         auto walletGraph = mBalancePlot->getPlot().graph(walletBalanceGraph);
@@ -276,10 +281,14 @@ namespace Evernus
 
     void StatisticsWidget::updateJournalData()
     {
-        const auto entries = mJournalRepo.fetchForCharacterInRange(mCharacterId,
-                                                                   QDateTime{mJournalPlot->getFrom()},
-                                                                   QDateTime{mJournalPlot->getTo().addDays(1)},
-                                                                   WalletJournalEntryRepository::EntryType::All);
+        const auto entries = (mCombineStatsBtn->isChecked()) ?
+                             (mJournalRepo.fetchInRange(QDateTime{mJournalPlot->getFrom()},
+                                                        QDateTime{mJournalPlot->getTo().addDays(1)},
+                                                        WalletJournalEntryRepository::EntryType::All)) :
+                             (mJournalRepo.fetchForCharacterInRange(mCharacterId,
+                                                                    QDateTime{mJournalPlot->getFrom()},
+                                                                    QDateTime{mJournalPlot->getTo().addDays(1)},
+                                                                    WalletJournalEntryRepository::EntryType::All));
 
         QHash<QDate, std::pair<double, double>> values;
         for (const auto &entry : entries)
@@ -325,10 +334,14 @@ namespace Evernus
 
     void StatisticsWidget::updateTransactionData()
     {
-        const auto entries = mTransactionRepo.fetchForCharacterInRange(mCharacterId,
+        const auto entries = (mCombineStatsBtn->isChecked()) ?
+                             (mTransactionRepo.fetchInRange(QDateTime{mTransactionPlot->getFrom()},
+                                                            QDateTime{mTransactionPlot->getTo().addDays(1)},
+                                                            WalletTransactionRepository::EntryType::All)) :
+                             (mTransactionRepo.fetchForCharacterInRange(mCharacterId,
                                                                        QDateTime{mTransactionPlot->getFrom()},
                                                                        QDateTime{mTransactionPlot->getTo().addDays(1)},
-                                                                       WalletTransactionRepository::EntryType::All);
+                                                                       WalletTransactionRepository::EntryType::All));
 
         QHash<QDate, std::pair<double, double>> values;
         for (const auto &entry : entries)
@@ -370,6 +383,13 @@ namespace Evernus
 
         mTransactionPlot->getPlot().rescaleAxes();
         mTransactionPlot->getPlot().replot();
+    }
+
+    void StatisticsWidget::updateData()
+    {
+        updateBalanceData();
+        updateJournalData();
+        updateTransactionData();
     }
 
     void StatisticsWidget::applyAggrFilter()
@@ -447,6 +467,10 @@ namespace Evernus
 
         auto mainLayout = new QVBoxLayout{};
         widget->setLayout(mainLayout);
+
+        mCombineStatsBtn = new QCheckBox{tr("Combine statistics for all characters"), this};
+        mainLayout->addWidget(mCombineStatsBtn);
+        connect(mCombineStatsBtn, &QCheckBox::toggled, this, &StatisticsWidget::updateData);
 
         auto balanceGroup = new QGroupBox{tr("Balance"), this};
         mainLayout->addWidget(balanceGroup);
