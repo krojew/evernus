@@ -45,12 +45,11 @@ namespace Evernus
 
         if (majorVersion == 0)
         {
-            if (minorVersion < 3)
+            if (minorVersion < 4)
             {
-                settings.setValue(PriceSettings::autoAddCustomItemCostKey, false);
-            }
-            else if (minorVersion < 4)
-            {
+                if (minorVersion < 3)
+                    settings.setValue(PriceSettings::autoAddCustomItemCostKey, false);
+
                 cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
                 cacheTimerRepo.create(characterRepo);
             }
