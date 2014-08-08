@@ -95,7 +95,7 @@ namespace Evernus
             for (const auto &order : orders)
             {
                 const auto value
-                    = processFunction.call(QScriptValue{}, QScriptValueList{makeOrderObject(order)}).toVariant().toList();
+                    = processFunction.call(QScriptValue{}, QScriptValueList{} << makeOrderObject(order)).toVariant().toList();
                 if (engine.hasUncaughtException())
                 {
                     endResetModel();
@@ -120,11 +120,11 @@ namespace Evernus
                 return;
             }
 
-            auto arguments = engine.newArray(orders.size());
+            auto arguments = engine.newArray(static_cast<uint>(orders.size()));
             for (auto i = 0u; i < orders.size(); ++i)
                 arguments.setProperty(i, makeOrderObject(orders[i]));
 
-            const auto value = processFunction.call(QScriptValue{}, QScriptValueList{arguments}).toVariant().toList();
+            const auto value = processFunction.call(QScriptValue{}, QScriptValueList{} << arguments).toVariant().toList();
             if (engine.hasUncaughtException())
             {
                 endResetModel();
