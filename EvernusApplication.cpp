@@ -1912,7 +1912,7 @@ namespace Evernus
 
         for (const auto &order : curStates)
         {
-            if (order.second.mLastSeen.isNull())
+            if (order.second.mLastSeen.isNull() || order.second.mDelta != 0)
                 toArchive.emplace_back(order.first);
         }
 

@@ -220,7 +220,7 @@ namespace Evernus
     {
         OrderStateMap result;
 
-        auto query = prepare(QString{"SELECT %1, state, volume_remaining, first_seen, last_seen FROM %2 WHERE character_id = ?"}
+        auto query = prepare(QString{"SELECT %1, state, volume_remaining, first_seen, last_seen, delta FROM %2 WHERE character_id = ?"}
             .arg(getIdColumn())
             .arg(getTableName()));
         query.bindValue(0, characterId);
@@ -236,6 +236,7 @@ namespace Evernus
             state.mFirstSeen.setTimeSpec(Qt::UTC);
             state.mLastSeen = query.value(4).toDateTime();
             state.mLastSeen.setTimeSpec(Qt::UTC);
+            state.mDelta = query.value(5).toInt();
 
             result.emplace(query.value(0).value<MarketOrder::IdType>(), std::move(state));
         }
