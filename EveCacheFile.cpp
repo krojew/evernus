@@ -14,19 +14,59 @@
  */
 #include <stdexcept>
 
+#include <QFile>
+
 #include "EveCacheFile.h"
 
 namespace Evernus
 {
+    EveCacheFile::EveCacheFile(const QString &fileName)
+        : QBuffer{}
+        , mFileName{fileName}
+    {
+    }
+
+    EveCacheFile::EveCacheFile(QString &&fileName)
+        : QBuffer{}
+        , mFileName{std::move(fileName)}
+    {
+    }
+
     void EveCacheFile::open()
     {
-        if (!QFile::open(QIODevice::ReadOnly))
+        QFile file{mFileName};
+        if (!file.open(QIODevice::ReadOnly))
             throw std::runtime_error{tr("Cannot open file.").toStdString()};
+
+        setData(file.readAll());
+
+        if (!QBuffer::open(QIODevice::ReadOnly))
+            throw std::runtime_error{tr("Cannot open file.").toStdString()};
+    }
+
+    bool EveCacheFile::seek(qint64 pos)
+    {
+        return QBuffer::seek(pos);
+    }
+
+    void EveCacheFile::setSize(qint64 size)
+    {
+        buffer().resize(size);
     }
 
     bool EveCacheFile::atEnd() const
     {
-        return QFile::atEnd();
+        return QBuffer::atEnd();
+    }
+
+    qint64 EveCacheFile::getPos() const
+    {
+        return QBuffer::pos();
+    }
+
+    qint64 EveCacheFile::getSize() const
+    {
+        return QBuffer::size();
     }
 
     unsigned char EveCacheFile::readChar()
@@ -37,5 +77,13 @@ namespace Evernus
             throw std::runtime_error{tr("Error reading file.").toStdString()};
 
         return out;
+    }
+
+    int EveCacheFile::readInt()
+    {
+        return readChar() |
+               (readChar() << 8) |
+               (readChar() << 16) |
+               (readChar() << 24);
     }
 }

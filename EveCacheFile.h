@@ -14,21 +14,30 @@
  */
 #pragma once
 
-#include <QFile>
+#include <QBuffer>
 
 namespace Evernus
 {
     class EveCacheFile
-        : private QFile
+        : private QBuffer
     {
     public:
-        using QFile::QFile;
+        explicit EveCacheFile(const QString &fileName);
+        explicit EveCacheFile(QString &&fileName);
         virtual ~EveCacheFile() = default;
 
         void open();
+        bool seek(qint64 pos);
+        void setSize(qint64 size);
 
         bool atEnd() const;
+        qint64 getPos() const;
+        qint64 getSize() const;
 
         unsigned char readChar();
+        int readInt();
+
+    private:
+        QString mFileName;
     };
 }
