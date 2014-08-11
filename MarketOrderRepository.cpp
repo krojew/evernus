@@ -65,6 +65,7 @@ namespace Evernus
         marketOrder->setIssued(issued);
         marketOrder->setFirstSeen(firstSeen);
         marketOrder->setLastSeen(lastSeen);
+        marketOrder->setCorporationId(record.value("corporation_id").toUInt());
         marketOrder->setNew(false);
 
         return marketOrder;
@@ -90,7 +91,8 @@ namespace Evernus
             type TINYINT NOT NULL,
             issued DATETIME NOT NULL,
             first_seen DATETIME NOT NULL,
-            last_seen DATETIME NULL
+            last_seen DATETIME NULL,
+            corporation_id INTEGER NOT NULL
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
@@ -357,7 +359,8 @@ namespace Evernus
             << "type"
             << "issued"
             << "first_seen"
-            << "last_seen";
+            << "last_seen"
+            << "corporation_id";
     }
 
     void MarketOrderRepository::bindValues(const MarketOrder &entity, QSqlQuery &query) const
@@ -382,6 +385,7 @@ namespace Evernus
         query.bindValue(":issued", entity.getIssued());
         query.bindValue(":first_seen", entity.getFirstSeen());
         query.bindValue(":last_seen", entity.getLastSeen());
+        query.bindValue(":corporation_id", entity.getCorporationId());
     }
 
     void MarketOrderRepository::bindPositionalValues(const MarketOrder &entity, QSqlQuery &query) const
@@ -406,10 +410,11 @@ namespace Evernus
         query.addBindValue(entity.getIssued());
         query.addBindValue(entity.getFirstSeen());
         query.addBindValue(entity.getLastSeen());
+        query.addBindValue(entity.getCorporationId());
     }
 
     size_t MarketOrderRepository::getMaxRowsPerInsert() const
     {
-        return 55;
+        return 52;
     }
 }

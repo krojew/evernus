@@ -138,7 +138,11 @@ namespace Evernus
 
         showSplashMessage(tr("Loading..."), splash);
 
-        Updater::getInstance().performVersionMigration(*mCacheTimerRepository, *mCharacterRepository);
+        Updater::getInstance().performVersionMigration(*mCacheTimerRepository,
+                                                       *mCharacterRepository,
+                                                       *mMarketOrderRepository,
+                                                       *mCorpMarketOrderRepository);
+
         settings.setValue(versionKey, applicationVersion());
 
         connect(&mSmtp, SIGNAL(authenticationFailed(const QByteArray &)), SLOT(showSmtpError(const QByteArray &)));

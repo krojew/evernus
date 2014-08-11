@@ -30,6 +30,10 @@ namespace Evernus
         typedef boost::optional<Key::IdType> KeyIdType;
 
         using Entity::Entity;
+
+        Character() = default;
+        Character(const Character &) = default;
+        Character(Character &&) = default;
         virtual ~Character() = default;
 
         KeyIdType getKeyId() const noexcept;
@@ -44,6 +48,9 @@ namespace Evernus
         QString &&getCorporationName() && noexcept;
         void setCorporationName(const QString &name);
         void setCorporationName(QString &&name);
+
+        uint getCorporationId() const noexcept;
+        void setCorporationId(uint id) noexcept;
 
         QString getRace() const &;
         QString &&getRace() && noexcept;
@@ -98,6 +105,9 @@ namespace Evernus
 
         bool isEnabled() const noexcept;
         void setEnabled(bool flag) noexcept;
+
+        Character &operator =(const Character &) = default;
+        Character &operator =(Character &&) = default;
 
     private:
         CharacterData mData;

@@ -186,6 +186,16 @@ namespace Evernus
         mLastSeen = dt;
     }
 
+    uint MarketOrder::getCorporationId() const noexcept
+    {
+        return mCorporationId;
+    }
+
+    void MarketOrder::setCorporationId(uint id) noexcept
+    {
+        mCorporationId = id;
+    }
+
     bool MarketOrder::isArchived() const
     {
         return !mLastSeen.isNull();

@@ -24,10 +24,10 @@ namespace Evernus
         template<>
         Character parse<Character>(const QDomElement &node)
         {
-            Character result;
-            result.setId(node.firstChildElement("characterID").text().toULongLong());
+            Character result{node.firstChildElement("characterID").text().toULongLong()};
             result.setName(node.firstChildElement("name").text());
             result.setCorporationName(node.firstChildElement("corporationName").text());
+            result.setCorporationId(node.firstChildElement("corporationID").text().toUInt());
             result.setRace(node.firstChildElement("race").text());
             result.setBloodline(node.firstChildElement("bloodLine").text());
             result.setAncestry(node.firstChildElement("ancestry").text());

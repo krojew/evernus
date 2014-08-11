@@ -53,6 +53,7 @@ namespace Evernus
 
         QString mName;
         QString mCorporationName;
+        uint mCorporationId = 0;
         QString mRace;
         QString mBloodline;
         QString mAncestry;

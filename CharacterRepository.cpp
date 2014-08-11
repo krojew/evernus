@@ -38,6 +38,7 @@ namespace Evernus
         character->setKeyId((keyId.isNull()) ? (Character::KeyIdType{}) : (keyId.value<Key::IdType>()));
         character->setName(record.value("name").toString());
         character->setCorporationName(record.value("corporation_name").toString());
+        character->setCorporationId(record.value("corporation_id").toUInt());
         character->setRace(record.value("race").toString());
         character->setBloodline(record.value("bloodline").toString());
         character->setAncestry(record.value("ancestry").toString());
@@ -84,6 +85,7 @@ namespace Evernus
             key_id INTEGER NULL REFERENCES %2(id) ON UPDATE SET NULL ON DELETE SET NULL,
             name TEXT NOT NULL,
             corporation_name TEXT NOT NULL,
+            corporation_id INTEGER NOT NULL,
             race TEXT NOT NULL,
             bloodline TEXT NOT NULL,
             ancestry TEXT NOT NULL,
@@ -192,6 +194,7 @@ namespace Evernus
             << "key_id"
             << "name"
             << "corporation_name"
+            << "corporation_id"
             << "race"
             << "bloodline"
             << "ancestry"
@@ -230,6 +233,7 @@ namespace Evernus
         query.bindValue(":key_id", (keyId) ? (*keyId) : (QVariant{QVariant::UInt}));
         query.bindValue(":name", entity.getName());
         query.bindValue(":corporation_name", entity.getCorporationName());
+        query.bindValue(":corporation_id", entity.getCorporationId());
         query.bindValue(":race", entity.getRace());
         query.bindValue(":bloodline", entity.getBloodline());
         query.bindValue(":ancestry", entity.getAncestry());
@@ -268,6 +272,7 @@ namespace Evernus
         query.addBindValue((keyId) ? (*keyId) : (QVariant{QVariant::UInt}));
         query.addBindValue(entity.getName());
         query.addBindValue(entity.getCorporationName());
+        query.addBindValue(entity.getCorporationId());
         query.addBindValue(entity.getRace());
         query.addBindValue(entity.getBloodline());
         query.addBindValue(entity.getAncestry());

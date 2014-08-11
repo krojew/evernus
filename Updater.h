@@ -21,6 +21,7 @@ namespace Evernus
     template<class T>
     class Repository;
     class CacheTimerRepository;
+    class MarketOrder;
     class Character;
 
     class Updater
@@ -30,7 +31,9 @@ namespace Evernus
 
     public:
         void performVersionMigration(const CacheTimerRepository &cacheTimerRepo,
-                                     const Repository<Character> &characterRepo) const;
+                                     const Repository<Character> &characterRepo,
+                                     const Repository<MarketOrder> &characterOrderRepo,
+                                     const Repository<MarketOrder> &corporationOrderRepo) const;
 
         static Updater &getInstance();
 
