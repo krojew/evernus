@@ -14,6 +14,7 @@
  */
 #include <stdexcept>
 
+#include "EveCacheNodes.h"
 #include "EveCacheFile.h"
 
 #include "EveCacheFileParser.h"
@@ -31,8 +32,40 @@ namespace Evernus
         {
             const auto check = mFile.readChar();
             if (static_cast<EveCacheNode::Base::StreamCode>(check) != EveCacheNode::Base::StreamCode::StreamStart)
-//                throw std::runtime_error{tr("Stream start not found!").toStdString()};
+//                throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheFileParser", "Stream start not found!")};
                 continue;
+
+            mStreams.emplace_back(std::make_unique<EveCacheNode::Base>(EveCacheNode::Base::StreamCode::StreamStart));
+            initShare();
+        }
+    }
+
+    void EveCacheFileParser::initShare()
+    {
+        uint shares = mFile.readInt();
+        if (shares >= 16384)
+            return;
+
+        if (shares != 0)
+        {
+            mShareMap.resize(shares);
+            mShareObjs.resize(shares);
+
+            const auto shareSkip = 4 * shares;
+            const auto pos = mFile.getPos();
+            const auto size = mFile.getSize();
+
+            mFile.seek(size - shareSkip);
+
+            for (auto i = 0u; i < shares; ++i)
+            {
+                mShareMap[i] = mFile.readInt();
+                if (mShareMap[i] > shares || mShareMap[i] < 1)
+                    throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheFileParser", "Invalid data in share map!")};
+            }
+
+            mFile.seek(pos);
+            mFile.setSize(size - shareSkip);
         }
     }
 }

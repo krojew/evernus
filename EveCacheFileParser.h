@@ -35,5 +35,9 @@ namespace Evernus
         EveCacheFile &mFile;
 
         std::vector<std::unique_ptr<EveCacheNode::Base>> mStreams;
+        std::vector<uint> mShareMap;
+        std::vector<EveCacheNode::Base *> mShareObjs;
+
+        void initShare();
     };
 }

@@ -75,21 +75,26 @@ namespace Evernus
 
         qDebug() << "Cache version:" << max;
 
-        const QString basePath = mMachoNetPath % "/" % QString::number(max);
+        const QString basePath = mMachoNetPath % "/" % QString::number(max) % "/";
 
-        QDirIterator fileIt{basePath, QStringList{"*.cache"}, QDir::Files | QDir::Readable};
         try
         {
-            while (fileIt.hasNext())
+            for (const auto &cacheFolder : mCacheFolderFilters)
             {
-                const QString file = basePath % "/" % fileIt.next();
-                qDebug() << "Parsing file:" << file;
+                const auto curPath = basePath + cacheFolder;
 
-                EveCacheFile cacheFile{file};
-                cacheFile.open();
+                QDirIterator fileIt{curPath, QStringList{"*.cache"}, QDir::Files | QDir::Readable};
+                while (fileIt.hasNext())
+                {
+                    const QString file = curPath % "/" % fileIt.next();
+                    qDebug() << "Parsing file:" << file;
 
-                EveCacheFileParser parser{cacheFile};
-                parser.parse();
+                    EveCacheFile cacheFile{file};
+                    cacheFile.open();
+
+                    EveCacheFileParser parser{cacheFile};
+                    parser.parse();
+                }
             }
         }
         catch (const std::exception &e)
