@@ -19,6 +19,7 @@
 #include <QSystemTrayIcon>
 #include <QMainWindow>
 #include <QPointer>
+#include <QTimer>
 
 #include "ExternalOrderImporter.h"
 #include "Character.h"
@@ -209,6 +210,8 @@ namespace Evernus
         std::unordered_map<int, Character::IdType> mTabCharacterIds;
         std::unordered_map<int, QWidget *> mTabWidgets;
 
+        QTimer mAutoImportTimer;
+
         void readSettings();
         void writeSettings();
 
@@ -218,5 +221,7 @@ namespace Evernus
 
         QWidget *createMainViewTab(QWidget *content);
         void addTab(QWidget *widget, const QString &label);
+
+        void setUpAutoImportTimer();
     };
 }

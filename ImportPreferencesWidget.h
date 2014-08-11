@@ -16,6 +16,7 @@
 
 #include <QWidget>
 
+class QCheckBox;
 class QSpinBox;
 
 namespace Evernus
@@ -33,10 +34,13 @@ namespace Evernus
         void applySettings();
 
     private:
-        QSpinBox *mCharacterTimer = nullptr;
-        QSpinBox *mAssetListTimer = nullptr;
-        QSpinBox *mWalletTimer = nullptr;
-        QSpinBox *mMarketOrdersTimer = nullptr;
+        QSpinBox *mCharacterTimerEdit = nullptr;
+        QSpinBox *mAssetListTimerEdit = nullptr;
+        QSpinBox *mWalletTimerEdit = nullptr;
+        QSpinBox *mMarketOrdersTimerEdit = nullptr;
+
+        QCheckBox *mAutoImportBtn = nullptr;
+        QSpinBox *mAutoImportTimeEdit = nullptr;
 
         QSpinBox *createTimerSpin(int value);
     };

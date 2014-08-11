@@ -19,6 +19,7 @@ namespace Evernus
     namespace ImportSettings
     {
         const auto importTimerDefault = 60;
+        const auto autoImportTimerDefault = 60;
 
         const auto importSkillsKey = "import/character/importSkills";
         const auto importPortraitKey = "import/character/importPortrait";
@@ -31,5 +32,7 @@ namespace Evernus
         const auto maxMarketOrdersAgeKey = "import/marketOrders/maxAge";
         const auto updateCorpDataKey = "import/corp/update";
         const auto makeCorpSnapshotsKey = "import/corp/makeSnapshots";
+        const auto autoImportEnabledKey = "import/autoImport/enabled";
+        const auto autoImportTimeKey = "import/autoImport/time";
     }
 }

@@ -15,6 +15,7 @@
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QGroupBox>
+#include <QCheckBox>
 #include <QSettings>
 #include <QSpinBox>
 
@@ -38,17 +39,34 @@ namespace Evernus
         auto timersBoxLayout = new QFormLayout{};
         timersBox->setLayout(timersBoxLayout);
 
-        mCharacterTimer = createTimerSpin(settings.value(ImportSettings::maxCharacterAgeKey, ImportSettings::importTimerDefault).toInt());
-        timersBoxLayout->addRow(tr("Max. character update age:"), mCharacterTimer);
+        mCharacterTimerEdit = createTimerSpin(settings.value(ImportSettings::maxCharacterAgeKey, ImportSettings::importTimerDefault).toInt());
+        timersBoxLayout->addRow(tr("Max. character update age:"), mCharacterTimerEdit);
 
-        mAssetListTimer = createTimerSpin(settings.value(ImportSettings::maxAssetListAgeKey, ImportSettings::importTimerDefault).toInt());
-        timersBoxLayout->addRow(tr("Max. asset list update age:"), mAssetListTimer);
+        mAssetListTimerEdit = createTimerSpin(settings.value(ImportSettings::maxAssetListAgeKey, ImportSettings::importTimerDefault).toInt());
+        timersBoxLayout->addRow(tr("Max. asset list update age:"), mAssetListTimerEdit);
 
-        mWalletTimer = createTimerSpin(settings.value(ImportSettings::maxWalletAgeKey, ImportSettings::importTimerDefault).toInt());
-        timersBoxLayout->addRow(tr("Max. wallet update age:"), mWalletTimer);
+        mWalletTimerEdit = createTimerSpin(settings.value(ImportSettings::maxWalletAgeKey, ImportSettings::importTimerDefault).toInt());
+        timersBoxLayout->addRow(tr("Max. wallet update age:"), mWalletTimerEdit);
 
-        mMarketOrdersTimer = createTimerSpin(settings.value(ImportSettings::maxMarketOrdersAgeKey, ImportSettings::importTimerDefault).toInt());
-        timersBoxLayout->addRow(tr("Max. market orders update age:"), mMarketOrdersTimer);
+        mMarketOrdersTimerEdit = createTimerSpin(settings.value(ImportSettings::maxMarketOrdersAgeKey, ImportSettings::importTimerDefault).toInt());
+        timersBoxLayout->addRow(tr("Max. market orders update age:"), mMarketOrdersTimerEdit);
+
+        auto autoImportBox = new QGroupBox{tr("Auto-import"), this};
+        mainLayout->addWidget(autoImportBox);
+
+        auto autoImportBoxLayout = new QFormLayout{};
+        autoImportBox->setLayout(autoImportBoxLayout);
+
+        mAutoImportBtn = new QCheckBox{tr("Enabled"), this};
+        autoImportBoxLayout->addRow(mAutoImportBtn);
+        mAutoImportBtn->setChecked(settings.value(ImportSettings::autoImportEnabledKey, false).toBool());
+
+        mAutoImportTimeEdit = new QSpinBox{this};
+        autoImportBoxLayout->addRow(tr("Auto-import time:"), mAutoImportTimeEdit);
+        mAutoImportTimeEdit->setMinimum(5);
+        mAutoImportTimeEdit->setMaximum(24 * 60);
+        mAutoImportTimeEdit->setSuffix(tr(" min"));
+        mAutoImportTimeEdit->setValue(settings.value(ImportSettings::autoImportTimeKey, ImportSettings::autoImportTimerDefault).toInt());
 
         mainLayout->addStretch();
     }
@@ -56,10 +74,12 @@ namespace Evernus
     void ImportPreferencesWidget::applySettings()
     {
         QSettings settings;
-        settings.setValue(ImportSettings::maxCharacterAgeKey, mCharacterTimer->value());
-        settings.setValue(ImportSettings::maxAssetListAgeKey, mAssetListTimer->value());
-        settings.setValue(ImportSettings::maxWalletAgeKey, mWalletTimer->value());
-        settings.setValue(ImportSettings::maxMarketOrdersAgeKey, mMarketOrdersTimer->value());
+        settings.setValue(ImportSettings::maxCharacterAgeKey, mCharacterTimerEdit->value());
+        settings.setValue(ImportSettings::maxAssetListAgeKey, mAssetListTimerEdit->value());
+        settings.setValue(ImportSettings::maxWalletAgeKey, mWalletTimerEdit->value());
+        settings.setValue(ImportSettings::maxMarketOrdersAgeKey, mMarketOrdersTimerEdit->value());
+        settings.setValue(ImportSettings::autoImportEnabledKey, mAutoImportBtn->isChecked());
+        settings.setValue(ImportSettings::autoImportTimeKey, mAutoImportTimeEdit->value());
     }
 
     QSpinBox *ImportPreferencesWidget::createTimerSpin(int value)

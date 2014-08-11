@@ -107,11 +107,14 @@ namespace Evernus
         createStatusBar();
 
         connect(mTrayIcon, &QSystemTrayIcon::activated, this, &MainWindow::activateTrayIcon);
+        connect(&mAutoImportTimer, &QTimer::timeout, this, &MainWindow::refreshAll);
 
         setWindowIcon(QIcon{":/images/main-icon.png"});
 
         if (!mCharacterRepository.hasCharacters())
             QMetaObject::invokeMethod(this, "showCharacterManagement", Qt::QueuedConnection);
+
+        setUpAutoImportTimer();
     }
 
     void MainWindow::showAsSaved()
@@ -140,6 +143,8 @@ namespace Evernus
     {
         PreferencesDialog dlg{this};
         dlg.exec();
+
+        setUpAutoImportTimer();
 
         emit preferencesChanged();
     }
@@ -564,5 +569,18 @@ namespace Evernus
     void MainWindow::addTab(QWidget *widget, const QString &label)
     {
         mTabWidgets[mMainTabs->addTab(createMainViewTab(widget), label)] = widget;
+    }
+
+    void MainWindow::setUpAutoImportTimer()
+    {
+        QSettings settings;
+
+        mAutoImportTimer.setInterval(
+            settings.value(ImportSettings::autoImportTimeKey, ImportSettings::autoImportTimerDefault).toInt() * 1000 * 60);
+
+        if (settings.value(ImportSettings::autoImportEnabledKey, false).toBool())
+            mAutoImportTimer.start();
+        else
+            mAutoImportTimer.stop();
     }
 }
