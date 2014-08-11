@@ -161,6 +161,8 @@ add_executable(
     AssetValueSnapshotRepository.h
     ButtonWithTimer.cpp
     ButtonWithTimer.h
+    CacheExternalOrderImporter.cpp
+    CacheExternalOrderImporter.h
     CacheTimer.cpp
     CacheTimer.h
     CacheTimerProvider.h
@@ -208,6 +210,14 @@ add_executable(
     DateRangeWidget.cpp
     DateRangeWidget.h
     Entity.h
+    EveCacheFile.cpp
+    EveCacheFile.h
+    EveCacheFileParser.cpp
+    EveCacheFileParser.h
+    EveCacheManager.cpp
+    EveCacheManager.h
+    EveCacheNodes.cpp
+    EveCacheNodes.h
     EveDataProvider.h
     EveMarketDataExternalOrderImporter.cpp
     EveMarketDataExternalOrderImporter.h

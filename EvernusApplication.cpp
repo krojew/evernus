@@ -1339,6 +1339,11 @@ namespace Evernus
         importExternalOrders(ExternalOrderImporterNames::logImporter, target);
     }
 
+    void EvernusApplication::refreshExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &target)
+    {
+        importExternalOrders(ExternalOrderImporterNames::cacheImporter, target);
+    }
+
     void EvernusApplication::updateExternalOrdersAndAssetValue(const std::vector<ExternalOrder> &orders)
     {
         try
