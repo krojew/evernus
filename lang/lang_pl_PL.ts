@@ -736,9 +736,7 @@
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="943"/>
-        <location filename="../EvernusApplication.cpp" line="949"/>
-        <location filename="../EvernusApplication.cpp" line="2083"/>
-        <location filename="../EvernusApplication.cpp" line="2113"/>
+        <location filename="../EvernusApplication.cpp" line="2060"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -819,43 +817,43 @@
         <translation>Pobieranie zleceń korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1509"/>
+        <location filename="../EvernusApplication.cpp" line="1503"/>
         <source>SMTP Error</source>
         <translation>Błąd SMTP</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1509"/>
-        <location filename="../EvernusApplication.cpp" line="1517"/>
+        <location filename="../EvernusApplication.cpp" line="1503"/>
+        <location filename="../EvernusApplication.cpp" line="1511"/>
         <source>Error sending email: %1</source>
         <translation>Błąd wysyłania maila: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1517"/>
+        <location filename="../EvernusApplication.cpp" line="1511"/>
         <source>Mail Error</source>
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1812"/>
+        <location filename="../EvernusApplication.cpp" line="1806"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1826"/>
+        <location filename="../EvernusApplication.cpp" line="1814"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1837"/>
+        <location filename="../EvernusApplication.cpp" line="1825"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2084"/>
+        <location filename="../EvernusApplication.cpp" line="2061"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2088"/>
+        <location filename="../EvernusApplication.cpp" line="2065"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -864,7 +862,7 @@
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2091"/>
+        <location filename="../EvernusApplication.cpp" line="2068"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
@@ -891,42 +889,42 @@
         <translation>Pobieranie stacji graczy...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1397"/>
+        <location filename="../EvernusApplication.cpp" line="1391"/>
         <source>Select Mentat directory</source>
         <translation>Wybierz katalog Mentat</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1407"/>
+        <location filename="../EvernusApplication.cpp" line="1401"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1407"/>
+        <location filename="../EvernusApplication.cpp" line="1401"/>
         <source>Error opening %1</source>
         <translation>Błąd otwierania %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1411"/>
+        <location filename="../EvernusApplication.cpp" line="1405"/>
         <source>Importing order history...</source>
         <translation>Importowanie historii zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1457"/>
+        <location filename="../EvernusApplication.cpp" line="1451"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importowanie historii zleceń: %1 przetworzonych</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1462"/>
+        <location filename="../EvernusApplication.cpp" line="1456"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1738"/>
+        <location filename="../EvernusApplication.cpp" line="1732"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1801"/>
+        <location filename="../EvernusApplication.cpp" line="1795"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>

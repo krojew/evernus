@@ -46,6 +46,7 @@ namespace Evernus
     signals:
         void importPricesFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromCache(const ExternalOrderImporter::TypeLocationPairs &target);
 
     public slots:
         void updateData();
@@ -53,6 +54,7 @@ namespace Evernus
     private slots:
         void prepareItemImportFromWeb();
         void prepareItemImportFromFile();
+        void prepareItemImportFromCache();
 
         void applyWildcard(const QString &text);
 
