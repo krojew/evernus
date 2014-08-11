@@ -56,7 +56,7 @@ namespace Evernus
 
         QStringList options;
         for (const auto &character : characters)
-            options << QString{"<option value='%1'>%2</option>"}.arg(character->getId()).arg(character->getName());
+            options << QString("<option value='%1'>%2</option>").arg(character->getId()).arg(character->getName());
 
         mIndexTemplate["characters"] = options.join("\n");
         renderContent(event, mIndexTemplate.render());

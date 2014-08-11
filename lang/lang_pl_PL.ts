@@ -996,17 +996,17 @@
         <translation type="obsolete">Wybierz kategorię z menu.</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="45"/>
+        <location filename="../HttpService.cpp" line="46"/>
         <source>Select Character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="47"/>
+        <location filename="../HttpService.cpp" line="48"/>
         <source>Select character:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="48"/>
+        <location filename="../HttpService.cpp" line="49"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
