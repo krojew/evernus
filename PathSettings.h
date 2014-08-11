@@ -22,5 +22,11 @@ namespace Evernus
     {
         const auto marketLogsPathKey = "path/marketLogs/path";
         const auto deleteLogsKey = "path/marketLogs/delete";
+
+#ifdef Q_OS_WIN
+        const auto evePathKey = "path/eve/path";
+#else
+        const auto eveCachePathKey = "path/eve/cache";
+#endif
     }
 }
