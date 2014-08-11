@@ -34,6 +34,7 @@
 #include <QSettings>
 #include <QCheckBox>
 #include <QGroupBox>
+#include <QRegExp>
 #include <QLabel>
 #include <QDebug>
 #include <QFont>
@@ -771,10 +772,21 @@ namespace Evernus
         const QDir basePath{path};
         const auto files = basePath.entryList(QStringList{"*.txt"}, QDir::Files | QDir::Readable);
 
+        QSettings settings;
+
+        const QRegExp charLogWildcard{
+            settings.value(PathSettings::characterLogWildcardKey, PathSettings::characterLogWildcardDefault).toString(),
+            Qt::CaseInsensitive,
+            QRegExp::Wildcard};
+        const QRegExp corpLogWildcard{
+            settings.value(PathSettings::corporationLogWildcardKey, PathSettings::corporationLogWildcardDefault).toString(),
+            Qt::CaseInsensitive,
+            QRegExp::Wildcard};
+
         FileModificationMap out;
         for (const auto &file : files)
         {
-            if (file.startsWith("My Orders"))
+            if (charLogWildcard.exactMatch(file) || corpLogWildcard.exactMatch(file))
                 continue;
 
             QFileInfo info{basePath.filePath(file)};

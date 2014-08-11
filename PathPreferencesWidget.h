@@ -39,5 +39,7 @@ namespace Evernus
     private:
         QLineEdit *mMarketLogPathEdit = nullptr;
         QCheckBox *mDeleteLogsBtn = nullptr;
+        QLineEdit *mCharacterLogWildcardEdit = nullptr;
+        QLineEdit *mCorporationLogWildcardEdit = nullptr;
     };
 }

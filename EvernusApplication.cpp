@@ -1807,8 +1807,14 @@ namespace Evernus
             return;
         }
 
+        QSettings settings;
+
+        const auto wildcard = (corp) ?
+                              (settings.value(PathSettings::corporationLogWildcardKey, PathSettings::corporationLogWildcardDefault).toString()) :
+                              (settings.value(PathSettings::characterLogWildcardKey, PathSettings::characterLogWildcardDefault).toString());
+
         const QDir logDir{logPath};
-        const auto logs = logDir.entryList(QStringList{"My Orders*.txt"}, QDir::Files | QDir::Readable, QDir::Time);
+        const auto logs = logDir.entryList(QStringList{wildcard}, QDir::Files | QDir::Readable, QDir::Time);
         if (logs.isEmpty())
         {
             emit taskEnded(task, tr("No market logs found!"));
@@ -1895,7 +1901,6 @@ namespace Evernus
 
             if (characterFound)
             {
-                QSettings settings;
                 if (settings.value(PathSettings::deleteLogsKey, true).toBool())
                     file.remove();
 

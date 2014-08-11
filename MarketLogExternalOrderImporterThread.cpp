@@ -15,6 +15,7 @@
 #include <QStringBuilder>
 #include <QFileInfo>
 #include <QSettings>
+#include <QRegExp>
 #include <QFile>
 #include <QDir>
 
@@ -42,12 +43,21 @@ namespace Evernus
         QSettings settings;
         const auto deleteLogs = settings.value(PathSettings::deleteLogsKey, true).toBool();
 
+        const QRegExp charLogWildcard{
+            settings.value(PathSettings::characterLogWildcardKey, PathSettings::characterLogWildcardDefault).toString(),
+            Qt::CaseInsensitive,
+            QRegExp::Wildcard};
+        const QRegExp corpLogWildcard{
+            settings.value(PathSettings::corporationLogWildcardKey, PathSettings::corporationLogWildcardDefault).toString(),
+            Qt::CaseInsensitive,
+            QRegExp::Wildcard};
+
         for (const auto &file : files)
         {
             if (isInterruptionRequested())
                 break;
 
-            if (file.startsWith("My Orders"))
+            if (charLogWildcard.exactMatch(file) || corpLogWildcard.exactMatch(file))
                 continue;
 
             getExternalOrder(logPath % "/" % file, result, deleteLogs);

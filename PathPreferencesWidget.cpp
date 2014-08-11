@@ -15,6 +15,7 @@
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QFormLayout>
 #include <QPushButton>
 #include <QSettings>
 #include <QGroupBox>
@@ -39,17 +40,17 @@ namespace Evernus
         auto marketLogGroup = new QGroupBox{tr("Market logs path"), this};
         mainLayout->addWidget(marketLogGroup);
 
-        auto marketLogGroupLayout = new QVBoxLayout{};
+        auto marketLogGroupLayout = new QFormLayout{};
         marketLogGroup->setLayout(marketLogGroupLayout);
 
         auto infoLabel = new QLabel{tr(
             "You can specify custom market logs path or leave empty to use the default one. Custom path is required on *nix systems."), this};
         infoLabel->setWordWrap(true);
 
-        marketLogGroupLayout->addWidget(infoLabel);
+        marketLogGroupLayout->addRow(infoLabel);
 
         auto inputLayout = new QHBoxLayout{};
-        marketLogGroupLayout->addLayout(inputLayout);
+        marketLogGroupLayout->addRow(inputLayout);
 
         mMarketLogPathEdit = new QLineEdit{settings.value(PathSettings::marketLogsPathKey).toString(), this};
         inputLayout->addWidget(mMarketLogPathEdit);
@@ -59,8 +60,16 @@ namespace Evernus
         connect(browseBtn, &QPushButton::clicked, this, &PathPreferencesWidget::browseForMarketLogsFolder);
 
         mDeleteLogsBtn = new QCheckBox{tr("Delete parsed logs"), this};
-        marketLogGroupLayout->addWidget(mDeleteLogsBtn);
+        marketLogGroupLayout->addRow(mDeleteLogsBtn);
         mDeleteLogsBtn->setChecked(settings.value(PathSettings::deleteLogsKey, true).toBool());
+
+        mCharacterLogWildcardEdit = new QLineEdit{
+            settings.value(PathSettings::characterLogWildcardKey, PathSettings::characterLogWildcardDefault).toString(), this};
+        marketLogGroupLayout->addRow(tr("Character log file name wildcard:"), mCharacterLogWildcardEdit);
+
+        mCorporationLogWildcardEdit = new QLineEdit{
+            settings.value(PathSettings::corporationLogWildcardKey, PathSettings::corporationLogWildcardDefault).toString(), this};
+        marketLogGroupLayout->addRow(tr("Corporation log file name wildcard:"), mCorporationLogWildcardEdit);
 
         mainLayout->addStretch();
     }
@@ -70,6 +79,8 @@ namespace Evernus
         QSettings settings;
         settings.setValue(PathSettings::marketLogsPathKey, mMarketLogPathEdit->text());
         settings.setValue(PathSettings::deleteLogsKey, mDeleteLogsBtn->isChecked());
+        settings.setValue(PathSettings::characterLogWildcardKey, mCharacterLogWildcardEdit->text());
+        settings.setValue(PathSettings::corporationLogWildcardKey, mCorporationLogWildcardEdit->text());
     }
 
     void PathPreferencesWidget::browseForMarketLogsFolder()

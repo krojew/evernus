@@ -20,7 +20,12 @@ namespace Evernus
 {
     namespace PathSettings
     {
+        const auto characterLogWildcardDefault = "My Orders-*.txt";
+        const auto corporationLogWildcardDefault = "Corporation Orders-*.txt";
+
         const auto marketLogsPathKey = "path/marketLogs/path";
         const auto deleteLogsKey = "path/marketLogs/delete";
+        const auto characterLogWildcardKey = "path/marketLogs/characterWildcard";
+        const auto corporationLogWildcardKey = "path/marketLogs/corporationWildcard";
     }
 }
