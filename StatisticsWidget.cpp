@@ -66,6 +66,7 @@ namespace Evernus
         , mMarketOrderRepository(orderRepo)
         , mOrderScriptRepository(orderScriptRepo)
         , mAggrModel(mMarketOrderRepository, dataProvider)
+        , mScriptModel(dataProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

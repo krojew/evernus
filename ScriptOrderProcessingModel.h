@@ -18,8 +18,14 @@
 
 #include "MarketOrderRepository.h"
 
+class QScriptContext;
+class QScriptEngine;
+class QScriptValue;
+
 namespace Evernus
 {
+    class EveDataProvider;
+
     class ScriptOrderProcessingModel
         : public QAbstractTableModel
     {
@@ -32,7 +38,7 @@ namespace Evernus
             Aggregate
         };
 
-        using QAbstractTableModel::QAbstractTableModel;
+        explicit ScriptOrderProcessingModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~ScriptOrderProcessingModel() = default;
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
@@ -46,7 +52,12 @@ namespace Evernus
         void error(const QString &message);
 
     private:
+        const EveDataProvider &mDataProvider;
+
         std::vector<QVariantList> mData;
         int mMaxColumns = 0;
+
+        static QScriptValue getTypeName(QScriptContext *context, QScriptEngine *engine, void *arg);
+        static QScriptValue getLocationName(QScriptContext *context, QScriptEngine *engine, void *arg);
     };
 }

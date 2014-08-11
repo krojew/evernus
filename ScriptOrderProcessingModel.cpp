@@ -14,10 +14,18 @@
  */
 #include <QScriptEngine>
 
+#include "EveDataProvider.h"
+
 #include "ScriptOrderProcessingModel.h"
 
 namespace Evernus
 {
+    ScriptOrderProcessingModel::ScriptOrderProcessingModel(const EveDataProvider &dataProvider, QObject *parent)
+        : QAbstractTableModel{parent}
+        , mDataProvider{dataProvider}
+    {
+    }
+
     int ScriptOrderProcessingModel::columnCount(const QModelIndex &parent) const
     {
         return (parent.isValid()) ? (0) : (mMaxColumns);
@@ -57,27 +65,31 @@ namespace Evernus
         mData.clear();
 
         QScriptEngine engine;
+        engine.globalObject().setProperty("getTypeName", engine.newFunction(
+            &ScriptOrderProcessingModel::getTypeName, const_cast<EveDataProvider *>(&mDataProvider)));
+        engine.globalObject().setProperty("getLocationName", engine.newFunction(
+            &ScriptOrderProcessingModel::getLocationName, const_cast<EveDataProvider *>(&mDataProvider)));
 
         const auto makeOrderObject = [&engine](const auto &order) {
             auto orderObject = engine.newObject();
-            orderObject.setProperty("id", QString::number(order->getId()), QScriptValue::ReadOnly);
-            orderObject.setProperty("characterId", QString::number(order->getCharacterId()), QScriptValue::ReadOnly);
-            orderObject.setProperty("stationId", QString::number(order->getLocationId()), QScriptValue::ReadOnly);
-            orderObject.setProperty("volumeEntered", order->getVolumeEntered(), QScriptValue::ReadOnly);
-            orderObject.setProperty("volumeRemaining", order->getVolumeRemaining(), QScriptValue::ReadOnly);
-            orderObject.setProperty("minVolume", order->getMinVolume(), QScriptValue::ReadOnly);
-            orderObject.setProperty("delta", order->getDelta(), QScriptValue::ReadOnly);
-            orderObject.setProperty("state", static_cast<int>(order->getState()), QScriptValue::ReadOnly);
-            orderObject.setProperty("typeId", order->getTypeId(), QScriptValue::ReadOnly);
-            orderObject.setProperty("range", order->getRange(), QScriptValue::ReadOnly);
-            orderObject.setProperty("accountKey", order->getAccountKey(), QScriptValue::ReadOnly);
-            orderObject.setProperty("duration", order->getDuration(), QScriptValue::ReadOnly);
-            orderObject.setProperty("escrow", order->getEscrow(), QScriptValue::ReadOnly);
-            orderObject.setProperty("price", order->getPrice(), QScriptValue::ReadOnly);
-            orderObject.setProperty("type", static_cast<int>(order->getType()), QScriptValue::ReadOnly);
-            orderObject.setProperty("issued", engine.newDate(order->getIssued()), QScriptValue::ReadOnly);
-            orderObject.setProperty("firstSeen", engine.newDate(order->getFirstSeen()), QScriptValue::ReadOnly);
-            orderObject.setProperty("lastSeen", engine.newDate(order->getLastSeen()), QScriptValue::ReadOnly);
+            orderObject.setProperty("id", QString::number(order->getId()));
+            orderObject.setProperty("characterId", QString::number(order->getCharacterId()));
+            orderObject.setProperty("stationId", static_cast<quint32>(order->getLocationId()));
+            orderObject.setProperty("volumeEntered", order->getVolumeEntered());
+            orderObject.setProperty("volumeRemaining", order->getVolumeRemaining());
+            orderObject.setProperty("minVolume", order->getMinVolume());
+            orderObject.setProperty("delta", order->getDelta());
+            orderObject.setProperty("state", static_cast<int>(order->getState()));
+            orderObject.setProperty("typeId", order->getTypeId());
+            orderObject.setProperty("range", order->getRange());
+            orderObject.setProperty("accountKey", order->getAccountKey());
+            orderObject.setProperty("duration", order->getDuration());
+            orderObject.setProperty("escrow", order->getEscrow());
+            orderObject.setProperty("price", order->getPrice());
+            orderObject.setProperty("type", static_cast<int>(order->getType()));
+            orderObject.setProperty("issued", engine.newDate(order->getIssued()));
+            orderObject.setProperty("firstSeen", engine.newDate(order->getFirstSeen()));
+            orderObject.setProperty("lastSeen", engine.newDate(order->getLastSeen()));
 
             return orderObject;
         };
@@ -137,5 +149,23 @@ namespace Evernus
         }
 
         endResetModel();
+    }
+
+    QScriptValue ScriptOrderProcessingModel::getTypeName(QScriptContext *context, QScriptEngine *engine, void *arg)
+    {
+        if (context->argumentCount() != 1)
+            return context->throwError("Missing argument.");
+
+        const auto dataProvider = static_cast<const EveDataProvider *>(arg);
+        return dataProvider->getTypeName(context->argument(0).toUInt32());
+    }
+
+    QScriptValue ScriptOrderProcessingModel::getLocationName(QScriptContext *context, QScriptEngine *engine, void *arg)
+    {
+        if (context->argumentCount() != 1)
+            return context->throwError("Missing argument.");
+
+        const auto dataProvider = static_cast<const EveDataProvider *>(arg);
+        return dataProvider->getLocationName(context->argument(0).toUInt32());
     }
 }
