@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QNetworkInterface>
 #include <QDesktopServices>
 #include <QApplication>
 #include <QCloseEvent>
@@ -42,6 +43,7 @@
 #include "ItemCostWidget.h"
 #include "ImportSettings.h"
 #include "MenuBarWidget.h"
+#include "HttpSettings.h"
 #include "AssetsWidget.h"
 #include "AboutDialog.h"
 #include "IGBSettings.h"
@@ -340,6 +342,28 @@ namespace Evernus
         QMessageBox::information(this, tr("Evernus"), tr("IGB link was copied to the clipboard."));
     }
 
+    void MainWindow::copyHTTPLink()
+    {
+        const auto addresses = QNetworkInterface::allAddresses();
+        QString curAddress = "localhost";
+
+        for (const auto &address : addresses)
+        {
+            if (!address.isLoopback())
+            {
+                curAddress = address.toString();
+                break;
+            }
+        }
+
+        QSettings settings;
+        QApplication::clipboard()->setText(QString{"http://%1:%2"}
+            .arg(curAddress)
+            .arg(settings.value(HttpSettings::portKey, HttpSettings::portDefault).value<quint16>()));
+
+        QMessageBox::information(this, tr("Evernus"), tr("HTTP link was copied to the clipboard."));
+    }
+
     void MainWindow::changeEvent(QEvent *event)
     {
         QSettings settings;
@@ -404,6 +428,7 @@ namespace Evernus
         toolsMenu->addAction(tr("Import conquerable stations"), this, SIGNAL(refreshConquerableStations()));
         toolsMenu->addAction(QIcon{":/images/report.png"}, tr("Ma&rgin tool..."), this, SLOT(showMarginTool()), Qt::CTRL + Qt::Key_M);
         toolsMenu->addSeparator();
+        toolsMenu->addAction(tr("Copy HTTP link"), this, SLOT(copyHTTPLink()));
         toolsMenu->addAction(tr("Copy IGB link"), this, SLOT(copyIGBLink()));
 
         auto helpMenu = bar->addMenu(tr("&Help"));

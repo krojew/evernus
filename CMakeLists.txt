@@ -57,6 +57,8 @@ qt5_wrap_cpp(
     FileDownload.h
     FilterTextRepository.h
     GeneralPreferencesWidget.h
+    HttpPreferencesWidget.h
+    HttpService.h
     IGBPreferencesWidget.h
     IGBService.h
     ImportPreferencesWidget.h
@@ -232,6 +234,11 @@ add_executable(
     FilterTextRepository.h
     GeneralPreferencesWidget.cpp
     GeneralPreferencesWidget.h
+    HttpPreferencesWidget.cpp
+    HttpPreferencesWidget.h
+    HttpService.cpp
+    HttpService.h
+    HttpSettings.h
     IconUtils.cpp
     IconUtils.h
     IGBPreferencesWidget.cpp

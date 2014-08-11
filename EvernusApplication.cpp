@@ -30,8 +30,10 @@
 #include "WalletSettings.h"
 #include "PriceSettings.h"
 #include "PathSettings.h"
+#include "HttpSettings.h"
 #include "IGBSettings.h"
 #include "SimpleCrypt.h"
+#include "HttpService.h"
 #include "IGBService.h"
 #include "UISettings.h"
 #include "PathUtils.h"
@@ -108,15 +110,25 @@ namespace Evernus
         deleteOldWalletEntries();
 
         showSplashMessage(tr("Setting up IGB service..."), splash);
-        auto service = new IGBService{*mCharacterOrderProvider, *mCorpOrderProvider, *this, &mHttpSessionManager, this};
-        connect(service, SIGNAL(openMarginTool()), this, SIGNAL(openMarginTool()));
+        auto igbService = new IGBService{*mCharacterOrderProvider, *mCorpOrderProvider, *this, &mIGBSessionManager, this};
+        connect(igbService, SIGNAL(openMarginTool()), this, SIGNAL(openMarginTool()));
 
-        mHttpSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
-        mHttpSessionManager.setListenInterface(QHostAddress::LocalHost);
-        mHttpSessionManager.setStaticContentService(service);
-        mHttpSessionManager.setConnector(QxtHttpSessionManager::HttpServer);
+        mIGBSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
+        mIGBSessionManager.setListenInterface(QHostAddress::LocalHost);
+        mIGBSessionManager.setStaticContentService(igbService);
+        mIGBSessionManager.setConnector(QxtHttpSessionManager::HttpServer);
 
         if (settings.value(IGBSettings::enabledKey, true).toBool())
+            mIGBSessionManager.start();
+
+        showSplashMessage(tr("Setting up HTTP service..."), splash);
+        auto httpService = new HttpService{*mCharacterOrderProvider, *mCorpOrderProvider, *this, &mHttpSessionManager, this};
+
+        mHttpSessionManager.setPort(settings.value(HttpSettings::portKey, HttpSettings::portDefault).value<quint16>());
+        mHttpSessionManager.setStaticContentService(httpService);
+        mHttpSessionManager.setConnector(QxtHttpSessionManager::HttpServer);
+
+        if (settings.value(HttpSettings::enabledKey, false).toBool())
             mHttpSessionManager.start();
 
         showSplashMessage(tr("Loading..."), splash);
@@ -1350,10 +1362,16 @@ namespace Evernus
         QSettings settings;
         updateTranslator(settings.value(UISettings::languageKey).toString());
 
-        mHttpSessionManager.shutdown();
-        mHttpSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
+        mIGBSessionManager.shutdown();
+        mIGBSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
 
         if (settings.value(IGBSettings::enabledKey, true).toBool())
+            mIGBSessionManager.start();
+
+        mHttpSessionManager.shutdown();
+        mHttpSessionManager.setPort(settings.value(HttpSettings::portKey, HttpSettings::portDefault).value<quint16>());
+
+        if (settings.value(HttpSettings::enabledKey, true).toBool())
             mHttpSessionManager.start();
 
         mCharacterItemCostCache.clear();

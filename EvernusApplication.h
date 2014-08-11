@@ -282,7 +282,7 @@ namespace Evernus
 
         QTranslator mTranslator, mQtTranslator;
 
-        QxtHttpSessionManager mHttpSessionManager;
+        QxtHttpSessionManager mIGBSessionManager, mHttpSessionManager;
         QxtSmtp mSmtp;
 
         mutable std::vector<MapLocation> mRegionCache;

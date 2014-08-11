@@ -159,6 +159,7 @@ namespace Evernus
 
         void activateTrayIcon(QSystemTrayIcon::ActivationReason reason);
         void copyIGBLink();
+        void copyHTTPLink();
 
     protected:
         virtual void changeEvent(QEvent *event) override;
