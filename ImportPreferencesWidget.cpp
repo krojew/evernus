@@ -102,6 +102,7 @@ namespace Evernus
 
         mSmtpPasswordEdit = new QLineEdit{mCrypt.decryptToString(settings.value(ImportSettings::smtpPasswordKey).toString()), this};
         autoImportBoxLayout->addRow(tr("SMTP password:"), mSmtpPasswordEdit);
+        mSmtpPasswordEdit->setEchoMode(QLineEdit::Password);
 
         auto warningLabel = new QLabel{tr("Warning: password store uses weak encryption - do not use sensitive passwords."), this};
         autoImportBoxLayout->addRow(warningLabel);
