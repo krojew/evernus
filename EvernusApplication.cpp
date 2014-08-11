@@ -2400,7 +2400,7 @@ namespace Evernus
         QSettings settings;
 
         mSmtp.setUsername(settings.value(ImportSettings::smtpUserKey).toByteArray());
-        mSmtp.setPassword(crypt.decryptToByteArray(settings.value(ImportSettings::smtpPasswordKey).toByteArray()));
+        mSmtp.setPassword(crypt.decryptToByteArray(settings.value(ImportSettings::smtpPasswordKey).toString()));
         mSmtp.setStartTlsDisabled(static_cast<ImportSettings::SmtpConnectionSecurity>(
             settings.value(ImportSettings::smtpConnectionSecurityKey).toInt()) != ImportSettings::SmtpConnectionSecurity::STARTTLS);
     }
