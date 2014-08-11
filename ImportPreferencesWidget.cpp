@@ -12,14 +12,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <limits>
+
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QSettings>
+#include <QLineEdit>
+#include <QComboBox>
 #include <QSpinBox>
-
-#include "ImportSettings.h"
+#include <QLabel>
 
 #include "ImportPreferencesWidget.h"
 
@@ -27,6 +30,7 @@ namespace Evernus
 {
     ImportPreferencesWidget::ImportPreferencesWidget(QWidget *parent)
         : QWidget(parent)
+        , mCrypt(ImportSettings::smtpCryptKey)
     {
         QSettings settings;
 
@@ -68,6 +72,41 @@ namespace Evernus
         mAutoImportTimeEdit->setSuffix(tr(" min"));
         mAutoImportTimeEdit->setValue(settings.value(ImportSettings::autoImportTimeKey, ImportSettings::autoImportTimerDefault).toInt());
 
+        mEmailNotificationBtn = new QCheckBox{tr("Enable email notifications"), this};
+        autoImportBoxLayout->addRow(mEmailNotificationBtn);
+        mEmailNotificationBtn->setChecked(settings.value(ImportSettings::emailNotificationsEnabledKey, true).toBool());
+
+        mEmailNotificationAddressEdit = new QLineEdit{settings.value(ImportSettings::emailNotificationAddressKey).toString(), this};
+        autoImportBoxLayout->addRow(tr("Destination address:"), mEmailNotificationAddressEdit);
+
+        const auto smtpConnectionSecurity = static_cast<ImportSettings::SmtpConnectionSecurity>(
+            settings.value(ImportSettings::smtpConnectionSecurityKey).toInt());
+
+        mSmtpConnectionSecurityEdit = new QComboBox{this};
+        autoImportBoxLayout->addRow(tr("SMTP security:"), mSmtpConnectionSecurityEdit);
+        addSmtpConnectionSecurityItem(tr("None"), ImportSettings::SmtpConnectionSecurity::None, smtpConnectionSecurity);
+        addSmtpConnectionSecurityItem(tr("STARTTLS"), ImportSettings::SmtpConnectionSecurity::STARTTLS, smtpConnectionSecurity);
+        addSmtpConnectionSecurityItem(tr("SSL/TLS"), ImportSettings::SmtpConnectionSecurity::TLS, smtpConnectionSecurity);
+
+        mSmtpHostEdit = new QLineEdit{settings.value(ImportSettings::smtpHostKey, ImportSettings::smtpHostDefault).toString(), this};
+        autoImportBoxLayout->addRow(tr("SMTP host:"), mSmtpHostEdit);
+
+        mSmtpPortEdit = new QSpinBox{this};
+        autoImportBoxLayout->addRow(tr("SMTP port:"), mSmtpPortEdit);
+        mSmtpPortEdit->setMinimum(1);
+        mSmtpPortEdit->setMaximum(std::numeric_limits<quint16>::max());
+        mSmtpPortEdit->setValue(settings.value(ImportSettings::smtpPortKey, ImportSettings::smtpPortDefault).toInt());
+
+        mSmtpUserEdit = new QLineEdit{settings.value(ImportSettings::smtpUserKey).toString(), this};
+        autoImportBoxLayout->addRow(tr("SMTP user:"), mSmtpUserEdit);
+
+        mSmtpPasswordEdit = new QLineEdit{mCrypt.decryptToString(settings.value(ImportSettings::smtpPasswordKey).toString()), this};
+        autoImportBoxLayout->addRow(tr("SMTP password:"), mSmtpPasswordEdit);
+
+        auto warningLabel = new QLabel{tr("Warning: password store uses weak encryption - do not use sensitive passwords."), this};
+        autoImportBoxLayout->addRow(warningLabel);
+        warningLabel->setWordWrap(true);
+
         mainLayout->addStretch();
     }
 
@@ -80,6 +119,13 @@ namespace Evernus
         settings.setValue(ImportSettings::maxMarketOrdersAgeKey, mMarketOrdersTimerEdit->value());
         settings.setValue(ImportSettings::autoImportEnabledKey, mAutoImportBtn->isChecked());
         settings.setValue(ImportSettings::autoImportTimeKey, mAutoImportTimeEdit->value());
+        settings.setValue(ImportSettings::emailNotificationsEnabledKey, mEmailNotificationBtn->isChecked());
+        settings.setValue(ImportSettings::emailNotificationAddressKey, mEmailNotificationAddressEdit->text());
+        settings.setValue(ImportSettings::smtpConnectionSecurityKey, mSmtpConnectionSecurityEdit->currentData().toInt());
+        settings.setValue(ImportSettings::smtpHostKey, mSmtpHostEdit->text());
+        settings.setValue(ImportSettings::smtpPortKey, mSmtpPortEdit->value());
+        settings.setValue(ImportSettings::smtpUserKey, mSmtpUserEdit->text());
+        settings.setValue(ImportSettings::smtpPasswordKey, mCrypt.encryptToString(mSmtpPasswordEdit->text()));
     }
 
     QSpinBox *ImportPreferencesWidget::createTimerSpin(int value)
@@ -90,5 +136,14 @@ namespace Evernus
         spin->setValue(value);
 
         return spin;
+    }
+
+    void ImportPreferencesWidget::addSmtpConnectionSecurityItem(const QString &label,
+                                                                ImportSettings::SmtpConnectionSecurity value,
+                                                                ImportSettings::SmtpConnectionSecurity curValue)
+    {
+        mSmtpConnectionSecurityEdit->addItem(label, static_cast<int>(value));
+        if (curValue == value)
+            mSmtpConnectionSecurityEdit->setCurrentIndex(mSmtpConnectionSecurityEdit->count() - 1);
     }
 }

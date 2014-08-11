@@ -107,6 +107,8 @@ namespace Evernus
         MarketOrder &operator =(const MarketOrder &) = default;
         MarketOrder &operator =(MarketOrder &&) = default;
 
+        static QString stateToString(State state);
+
     private:
         Character::IdType mCharacterId = Character::invalidId;
         quint64 mLocationId = 0;

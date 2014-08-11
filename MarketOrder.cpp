@@ -190,4 +190,24 @@ namespace Evernus
     {
         return !mLastSeen.isNull();
     }
+
+    QString MarketOrder::stateToString(State state)
+    {
+        switch (state) {
+        case State::Active:
+            return QT_TRANSLATE_NOOP("MarketOrder", "Active");
+        case State::Closed:
+            return QT_TRANSLATE_NOOP("MarketOrder", "Closed");
+        case State::Fulfilled:
+            return QT_TRANSLATE_NOOP("MarketOrder", "Fulfilled");
+        case State::Cancelled:
+            return QT_TRANSLATE_NOOP("MarketOrder", "Cancelled");
+        case State::Pending:
+            return QT_TRANSLATE_NOOP("MarketOrder", "Pending");
+        case State::CharacterDeleted:
+            return QT_TRANSLATE_NOOP("MarketOrder", "Deleted");
+        default:
+            return QT_TRANSLATE_NOOP("MarketOrder", "Unknown");
+        }
+    }
 }

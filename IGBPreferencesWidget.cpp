@@ -12,13 +12,14 @@
  *  You should have received a copy of the GNU IGB Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QIntValidator>
+#include <limits>
+
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QSettings>
-#include <QLineEdit>
+#include <QSpinBox>
 #include <QLabel>
 
 #include "IGBSettings.h"
@@ -50,12 +51,11 @@ namespace Evernus
 
         portLayout->addWidget(new QLabel{tr("Port:"), this});
 
-        auto portValidator = new QIntValidator{this};
-        portValidator->setBottom(0);
-
-        mPortEdit = new QLineEdit{settings.value(IGBSettings::portKey, IGBSettings::portDefault).toString(), this};
+        mPortEdit = new QSpinBox{this};
         portLayout->addWidget(mPortEdit);
-        mPortEdit->setValidator(portValidator);
+        mPortEdit->setMinimum(1);
+        mPortEdit->setMaximum(std::numeric_limits<quint16>::max());
+        mPortEdit->setValue(settings.value(IGBSettings::portKey, IGBSettings::portDefault).toInt());
 
         mainLayout->addStretch();
     }
@@ -64,6 +64,6 @@ namespace Evernus
     {
         QSettings settings;
         settings.setValue(IGBSettings::enabledKey, mEnabledBtn->isChecked());
-        settings.setValue(IGBSettings::portKey, mPortEdit->text().toUInt());
+        settings.setValue(IGBSettings::portKey, mPortEdit->value());
     }
 }

@@ -31,10 +31,13 @@
 #include "PriceSettings.h"
 #include "PathSettings.h"
 #include "IGBSettings.h"
+#include "SimpleCrypt.h"
 #include "IGBService.h"
 #include "UISettings.h"
 #include "PathUtils.h"
 #include "Updater.h"
+
+#include "qxtmailmessage.h"
 
 #include "EvernusApplication.h"
 
@@ -120,6 +123,12 @@ namespace Evernus
 
         Updater::getInstance().performVersionMigration(*mCacheTimerRepository, *mCharacterRepository);
         settings.setValue(versionKey, applicationVersion());
+
+        connect(&mSmtp, SIGNAL(authenticationFailed(const QByteArray &)), SLOT(showSmtpError(const QByteArray &)));
+        connect(&mSmtp, SIGNAL(connectionFailed(const QByteArray &)), SLOT(showSmtpError(const QByteArray &)));
+        connect(&mSmtp, SIGNAL(encryptionFailed(const QByteArray &)), SLOT(showSmtpError(const QByteArray &)));
+        connect(&mSmtp, &QxtSmtp::finished, &mSmtp, &QxtSmtp::disconnectFromHost);
+        setSmtpSettings();
 
         connect(&mAPIManager, &APIManager::generalError, this, &EvernusApplication::apiError);
 
@@ -1349,6 +1358,8 @@ namespace Evernus
 
         mCharacterItemCostCache.clear();
 
+        setSmtpSettings();
+
         emit itemCostsChanged();
     }
 
@@ -1462,6 +1473,19 @@ namespace Evernus
     {
         mItemCostUpdateScheduled = false;
         emit itemCostsChanged();
+    }
+
+    void EvernusApplication::showSmtpError(const QByteArray &message)
+    {
+        QMessageBox::warning(activeWindow(), tr("SMTP Error"), tr("Error sending email: %1").arg(QString{message}));
+    }
+
+    void EvernusApplication::showMailError(int mailID, int errorCode, const QByteArray &message)
+    {
+        Q_UNUSED(mailID);
+        Q_UNUSED(errorCode);
+
+        QMessageBox::warning(activeWindow(), tr("Mail Error"), tr("Error sending email: %1").arg(QString{message}));
     }
 
     void EvernusApplication::updateTranslator(const QString &lang)
@@ -1879,6 +1903,17 @@ namespace Evernus
         QSettings settings;
         const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, false).toBool();
         const auto makeCorpSnapshot = settings.value(ImportSettings::makeCorpSnapshotsKey).toBool();
+        const auto emailNotification = settings.value(ImportSettings::autoImportEnabledKey, false).toBool() &&
+                                       settings.value(ImportSettings::emailNotificationsEnabledKey, true).toBool();
+
+        struct EmailOrderInfo
+        {
+            EveType::IdType mTypeId;
+            uint mVolumeEntered;
+            MarketOrder::State mState;
+        };
+
+        std::vector<EmailOrderInfo> emailOrders;
 
         for (auto &order : orders)
         {
@@ -1891,9 +1926,23 @@ namespace Evernus
                 if (order.getState() != MarketOrder::State::Active)
                 {
                     if (!cIt->second.mLastSeen.isNull())
+                    {
                         order.setLastSeen(cIt->second.mLastSeen);
+                    }
                     else
+                    {
                         order.setLastSeen(std::min(QDateTime::currentDateTimeUtc(), order.getIssued().addDays(order.getDuration())));
+
+                        if (emailNotification)
+                        {
+                            EmailOrderInfo info;
+                            info.mTypeId = order.getTypeId();
+                            info.mVolumeEntered = order.getVolumeEntered();
+                            info.mState = order.getState();
+
+                            emailOrders.emplace_back(std::move(info));
+                        }
+                    }
                 }
 
                 curStates.erase(cIt);
@@ -1970,6 +2019,45 @@ namespace Evernus
             saveUpdateTimer(TimerType::CorpMarketOrders, mCorpMarketOrdersUtcUpdateTimes, id);
         else
             saveUpdateTimer(TimerType::MarketOrders, mMarketOrdersUtcUpdateTimes, id);
+
+        if (emailNotification && !emailOrders.empty())
+        {
+            try
+            {
+                if (static_cast<ImportSettings::SmtpConnectionSecurity>(settings.value(
+                    ImportSettings::smtpConnectionSecurityKey).toInt()) == ImportSettings::SmtpConnectionSecurity::TLS)
+                {
+                    mSmtp.connectToSecureHost(settings.value(ImportSettings::smtpHostKey, ImportSettings::smtpHostDefault).toString());
+                }
+                else
+                {
+                    mSmtp.connectToHost(settings.value(ImportSettings::smtpHostKey, ImportSettings::smtpHostDefault).toString());
+                }
+
+                QxtMailMessage message{tr("Evernus"), settings.value(ImportSettings::emailNotificationAddressKey).toString()};
+                message.setSubject(tr("[Evernus] Market orders fulfilled"));
+
+                QLocale locale;
+
+                QString body{tr("The following orders have changed their status:\n\n")};
+                for (const auto &order : emailOrders)
+                {
+                    body.append(tr("    %1 x%2 [%3]\n")
+                        .arg(getTypeName(order.mTypeId))
+                        .arg(locale.toString(order.mVolumeEntered))
+                        .arg(MarketOrder::stateToString(order.mState)));
+                }
+
+                message.setBody(body);
+
+                mSmtp.send(message);
+            }
+            catch (...)
+            {
+                mSmtp.disconnectFromHost();
+                throw;
+            }
+        }
 
         if (autoSetCosts)
             refreshWalletTransactions(id);
@@ -2304,6 +2392,17 @@ namespace Evernus
             if (cost.second.mQuantity > 0)
                 setForCharacterAndType(characterId, cost.first, cost.second.mPrice / cost.second.mQuantity);
         }
+    }
+
+    void EvernusApplication::setSmtpSettings()
+    {
+        SimpleCrypt crypt{ImportSettings::smtpCryptKey};
+        QSettings settings;
+
+        mSmtp.setUsername(settings.value(ImportSettings::smtpUserKey).toByteArray());
+        mSmtp.setPassword(crypt.decryptToByteArray(settings.value(ImportSettings::smtpPasswordKey).toByteArray()));
+        mSmtp.setStartTlsDisabled(static_cast<ImportSettings::SmtpConnectionSecurity>(
+            settings.value(ImportSettings::smtpConnectionSecurityKey).toInt()) != ImportSettings::SmtpConnectionSecurity::STARTTLS);
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)

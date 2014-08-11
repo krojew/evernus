@@ -12,8 +12,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <limits>
+
 #include <QNetworkProxy>
-#include <QIntValidator>
 #include <QRadioButton>
 #include <QVBoxLayout>
 #include <QFormLayout>
@@ -21,6 +22,7 @@
 #include <QComboBox>
 #include <QLineEdit>
 #include <QSettings>
+#include <QSpinBox>
 #include <QLabel>
 
 #include "NetworkSettings.h"
@@ -75,12 +77,11 @@ namespace Evernus
         mProxyHostEdit = new QLineEdit{proxyHost, this};
         proxySettingLayout->addRow(tr("Host:"), mProxyHostEdit);
 
-        auto portValidator = new QIntValidator{this};
-        portValidator->setBottom(0);
-
-        mProxyPortEdit = new QLineEdit{QString::number(proxyPort), this};
+        mProxyPortEdit = new QSpinBox{this};
         proxySettingLayout->addRow(tr("Port:"), mProxyPortEdit);
-        mProxyPortEdit->setValidator(portValidator);
+        mProxyPortEdit->setMinimum(1);
+        mProxyPortEdit->setMaximum(std::numeric_limits<quint16>::max());
+        mProxyPortEdit->setValue(proxyPort);
 
         mProxyUserEdit = new QLineEdit{proxyUser, this};
         proxySettingLayout->addRow(tr("User:"), mProxyUserEdit);
@@ -144,7 +145,7 @@ namespace Evernus
         const auto useProxy = !mNoProxyBtn->isChecked();
         const auto proxyType = mProxyTypeCombo->itemData(mProxyTypeCombo->currentIndex()).toInt();
         const auto proxyHost = mProxyHostEdit->text();
-        const quint16 proxyPort = mProxyPortEdit->text().toUInt();
+        const quint16 proxyPort = mProxyPortEdit->value();
         const auto proxyUser = mProxyUserEdit->text();
         const auto proxyPassword = mProxyPasswordEdit->text();
 

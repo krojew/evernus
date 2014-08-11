@@ -18,6 +18,7 @@
 
 class QCheckBox;
 class QLineEdit;
+class QSpinBox;
 
 namespace Evernus
 {
@@ -35,6 +36,6 @@ namespace Evernus
 
     private:
         QCheckBox *mEnabledBtn = nullptr;
-        QLineEdit *mPortEdit = nullptr;
+        QSpinBox *mPortEdit = nullptr;
     };
 }

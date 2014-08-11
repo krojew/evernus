@@ -93,6 +93,8 @@ qt5_wrap_cpp(
     qxtboundfunction.h
     qxtfifo.h
     qxthttpsessionmanager.h
+    qxtsmtp_p.h
+    qxtsmtp.h
     qxtsslserver.h
     qxtwebcontent.h
     qxtwebslotservice.h
@@ -366,11 +368,18 @@ add_executable(
     qxtfifo.h
     qxtglobal.cpp
     qxtglobal.h
+    qxthmac.cpp
+    qxthmac.h
     qxthtmltemplate.cpp
     qxthtmltemplate.h
     qxthttpserverconnector.cpp
     qxthttpsessionmanager.cpp
     qxthttpsessionmanager.h
+    qxtmail_p.h
+    qxtmailattachment.cpp
+    qxtmailattachment.h
+    qxtmailmessage.cpp
+    qxtmailmessage.h
     qxtmetaobject.cpp
     qxtmetaobject.h
     qxtmetatype.h
@@ -378,6 +387,9 @@ add_executable(
     qxtnull.h
     qxtnullable.h
     qxtscgiserverconnector.cpp
+    qxtsmtp_p.h
+    qxtsmtp.cpp
+    qxtsmtp.h
     qxtsslserver.cpp
     qxtsslserver.h
     qxtwebcontent.cpp

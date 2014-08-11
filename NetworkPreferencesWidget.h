@@ -21,6 +21,7 @@
 class QRadioButton;
 class QComboBox;
 class QLineEdit;
+class QSpinBox;
 
 namespace Evernus
 {
@@ -42,7 +43,7 @@ namespace Evernus
         QRadioButton *mNoProxyBtn = nullptr;
         QComboBox *mProxyTypeCombo = nullptr;
         QLineEdit *mProxyHostEdit = nullptr;
-        QLineEdit *mProxyPortEdit = nullptr;
+        QSpinBox *mProxyPortEdit = nullptr;
         QLineEdit *mProxyUserEdit = nullptr;
         QLineEdit *mProxyPasswordEdit = nullptr;
 

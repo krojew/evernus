@@ -14,12 +14,25 @@
  */
 #pragma once
 
+#include <QtGlobal>
+
 namespace Evernus
 {
     namespace ImportSettings
     {
+        enum class SmtpConnectionSecurity
+        {
+            None,
+            STARTTLS,
+            TLS
+        };
+
         const auto importTimerDefault = 60;
         const auto autoImportTimerDefault = 60;
+        const auto smtpHostDefault = "localhost";
+        const auto smtpPortDefault = 25;
+
+        const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
         const auto importSkillsKey = "import/character/importSkills";
         const auto importPortraitKey = "import/character/importPortrait";
@@ -34,5 +47,12 @@ namespace Evernus
         const auto makeCorpSnapshotsKey = "import/corp/makeSnapshots";
         const auto autoImportEnabledKey = "import/autoImport/enabled";
         const auto autoImportTimeKey = "import/autoImport/time";
+        const auto emailNotificationsEnabledKey = "import/email/enabled";
+        const auto emailNotificationAddressKey = "import/email/address";
+        const auto smtpConnectionSecurityKey = "import/email/connectionSecurity";
+        const auto smtpHostKey = "import/email/smtpHost";
+        const auto smtpPortKey = "import/email/smtpPort";
+        const auto smtpUserKey = "import/email/smtpUser";
+        const auto smtpPasswordKey = "import/email/smtpPassword";
     }
 }

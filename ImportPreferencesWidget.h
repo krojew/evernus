@@ -16,7 +16,12 @@
 
 #include <QWidget>
 
+#include "ImportSettings.h"
+#include "SimpleCrypt.h"
+
+class QComboBox;
 class QCheckBox;
+class QLineEdit;
 class QSpinBox;
 
 namespace Evernus
@@ -34,6 +39,8 @@ namespace Evernus
         void applySettings();
 
     private:
+        SimpleCrypt mCrypt;
+
         QSpinBox *mCharacterTimerEdit = nullptr;
         QSpinBox *mAssetListTimerEdit = nullptr;
         QSpinBox *mWalletTimerEdit = nullptr;
@@ -41,7 +48,18 @@ namespace Evernus
 
         QCheckBox *mAutoImportBtn = nullptr;
         QSpinBox *mAutoImportTimeEdit = nullptr;
+        QCheckBox *mEmailNotificationBtn = nullptr;
+        QLineEdit *mEmailNotificationAddressEdit = nullptr;
+        QComboBox *mSmtpConnectionSecurityEdit = nullptr;
+        QLineEdit *mSmtpHostEdit = nullptr;
+        QSpinBox *mSmtpPortEdit = nullptr;
+        QLineEdit *mSmtpUserEdit = nullptr;
+        QLineEdit *mSmtpPasswordEdit = nullptr;
 
         QSpinBox *createTimerSpin(int value);
+
+        void addSmtpConnectionSecurityItem(const QString &label,
+                                           ImportSettings::SmtpConnectionSecurity value,
+                                           ImportSettings::SmtpConnectionSecurity curValue);
     };
 }

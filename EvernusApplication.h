@@ -53,6 +53,7 @@
 #include "TaskConstants.h"
 #include "KeyRepository.h"
 #include "APIManager.h"
+#include "qxtsmtp.h"
 
 class QSplashScreen;
 
@@ -187,6 +188,9 @@ namespace Evernus
 
         void emitNewItemCosts();
 
+        void showSmtpError(const QByteArray &message);
+        void showMailError(int mailID, int errorCode, const QByteArray &message);
+
     private:
         typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
         typedef std::pair<Character::IdType, EveType::IdType> CharacterTypePair;
@@ -279,6 +283,7 @@ namespace Evernus
         QTranslator mTranslator, mQtTranslator;
 
         QxtHttpSessionManager mHttpSessionManager;
+        QxtSmtp mSmtp;
 
         mutable std::vector<MapLocation> mRegionCache;
         mutable std::unordered_map<uint, std::vector<MapLocation>> mConstellationCache, mSolarSystemCache;
@@ -325,6 +330,8 @@ namespace Evernus
         const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
 
         void computeAutoCosts(Character::IdType characterId, const WalletTransactionRepository &transactionRepo);
+
+        void setSmtpSettings();
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };
