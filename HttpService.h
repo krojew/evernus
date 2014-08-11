@@ -23,6 +23,7 @@ class QxtHttpSessionManager;
 
 namespace Evernus
 {
+    class CharacterRepository;
     class MarketOrderProvider;
     class EveDataProvider;
 
@@ -35,25 +36,32 @@ namespace Evernus
         HttpService(const MarketOrderProvider &orderProvider,
                     const MarketOrderProvider &corpOrderProvider,
                     const EveDataProvider &dataProvider,
+                    const CharacterRepository &characterRepo,
                     QxtHttpSessionManager *sm,
                     QObject *parent = nullptr);
         virtual ~HttpService() = default;
 
     public slots:
         void index(QxtWebRequestEvent *event);
+        void characterOrders(QxtWebRequestEvent *event);
 
     protected:
         virtual void pageRequestedEvent(QxtWebRequestEvent *event) override;
 
     private:
+        static const QString characterIdName;
+
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const EveDataProvider &mDataProvider;
+        const CharacterRepository &mCharacterRepo;
 
         SimpleCrypt mCrypt;
 
-        QxtHtmlTemplate mMainTemplate;
+        QxtHtmlTemplate mMainTemplate, mIndexTemplate;
 
         void renderContent(QxtWebRequestEvent *event, const QString &content);
         void postUnauthorized(QxtWebRequestEvent *event);
+
+        static bool isIndexAction(QxtWebRequestEvent *event);
     };
 }

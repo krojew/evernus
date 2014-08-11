@@ -122,7 +122,12 @@ namespace Evernus
             mIGBSessionManager.start();
 
         showSplashMessage(tr("Setting up HTTP service..."), splash);
-        auto httpService = new HttpService{*mCharacterOrderProvider, *mCorpOrderProvider, *this, &mHttpSessionManager, this};
+        auto httpService = new HttpService{*mCharacterOrderProvider,
+                                           *mCorpOrderProvider,
+                                           *this,
+                                           *mCharacterRepository,
+                                           &mHttpSessionManager,
+                                           this};
 
         mHttpSessionManager.setPort(settings.value(HttpSettings::portKey, HttpSettings::portDefault).value<quint16>());
         mHttpSessionManager.setStaticContentService(httpService);

@@ -38,7 +38,7 @@ namespace Evernus
         , mDataProvider(dataProvider)
     {
         mMainTemplate.open(":/html/igb_template.html");
-        mOrderTemplate.open(":/html/order_template.html");
+        mOrderTemplate.open(":/html/igb_order_template.html");
 
         QSettings settings;
 
