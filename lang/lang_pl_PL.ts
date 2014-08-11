@@ -2431,6 +2431,8 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="57"/>
+        <location filename="../PathPreferencesWidget.cpp" line="75"/>
+        <location filename="../PathPreferencesWidget.cpp" line="88"/>
         <source>Browse...</source>
         <translation>Przeglądaj...</translation>
     </message>
@@ -2438,6 +2440,16 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <location filename="../PathPreferencesWidget.cpp" line="61"/>
         <source>Delete parsed logs</source>
         <translation>Usuń przetworzone logi</translation>
+    </message>
+    <message>
+        <location filename="../PathPreferencesWidget.cpp" line="66"/>
+        <source>Eve path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PathPreferencesWidget.cpp" line="79"/>
+        <source>Eve cache path</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
