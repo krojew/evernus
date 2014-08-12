@@ -438,8 +438,15 @@ namespace Evernus
 
     MarketOrderTreeModel::OrderList MarketOrderBuyModel::getOrders() const
     {
-        return (mCorp) ?
-               (mOrderProvider.getBuyOrdersForCorporation(mCharacterRepository.getCorporationId(mCharacterId))) :
-               (mOrderProvider.getBuyOrders(mCharacterId));
+        try
+        {
+            return (mCorp) ?
+                   (mOrderProvider.getBuyOrdersForCorporation(mCharacterRepository.getCorporationId(mCharacterId))) :
+                   (mOrderProvider.getBuyOrders(mCharacterId));
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            return OrderList{};
+        }
     }
 }

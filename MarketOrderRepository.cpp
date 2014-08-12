@@ -98,11 +98,20 @@ namespace Evernus
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_state ON %1(state)"}.arg(getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_type ON %1(corporation_id, type)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_state ON %1(character_id, state)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_last_seen ON %1(character_id, last_seen)"}.arg(getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_last_seen ON %1(corporation_id, last_seen)"}.arg(getTableName()));
+
+        try
+        {
+            exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_type ON %1(corporation_id, type)"}.arg(getTableName()));
+            exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_last_seen ON %1(corporation_id, last_seen)"}.arg(getTableName()));
+        }
+        catch (const std::runtime_error &)
+        {
+            // ignore - versions < 0.5 do not have this column
+            qDebug() << "SQL errors ignored";
+        }
     }
 
     void MarketOrderRepository::dropIndexes(const Repository<Character> &characterRepo) const

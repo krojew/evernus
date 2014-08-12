@@ -45,6 +45,16 @@ namespace Evernus
         LeafFilterProxyModel::setSourceModel(sourceModel);
     }
 
+    MarketOrderFilterProxyModel::StatusFilters MarketOrderFilterProxyModel::getStatusFilter() const
+    {
+        return mStatusFilter;
+    }
+
+    MarketOrderFilterProxyModel::PriceStatusFilters MarketOrderFilterProxyModel::getPriceStatusFilter() const
+    {
+        return mPriceStatusFilter;
+    }
+
     void MarketOrderFilterProxyModel::setStatusFilter(const StatusFilters &filter)
     {
         mStatusFilter = filter;

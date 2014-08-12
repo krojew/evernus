@@ -1,0 +1,80 @@
+<script>
+    function getQueryStringValue(key) {  
+        return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
+    }
+    
+    $(function() {
+        $('#sell-orders, #buy-orders').dataTable({
+            language: {
+                url: '<?=dt-language-url?>'
+            }
+        });
+        
+        $('#apply-filters').click(function() {
+            var statusFilter = 0;
+            $('.status-filter:checked').each(function() {
+                statusFilter |= parseInt(this.value);
+            });
+            
+            var priceStatusFilter = 0;
+            $('.price-status-filter:checked').each(function() {
+                priceStatusFilter |= parseInt(this.value);
+            });
+            
+            window.location.href = window.location.origin + 
+                                   window.location.pathname + 
+                                   '?characterId=' + 
+                                   getQueryStringValue('characterId') +
+                                   '&statusFilter=' +
+                                   statusFilter +
+                                   '&priceStatusFilter=' +
+                                   priceStatusFilter;
+        });
+    });
+</script>
+
+<fieldset>
+    <legend><?=filters-text?></legend>
+    
+    <div>
+        <?=status-filter-text?>
+        <label><input type="checkbox" class="status-filter" value="<?=changed-filter-value?>" <?=changed-filter-checked?> /><?=changed-filter-text?></label>
+        <label><input type="checkbox" class="status-filter" value="<?=active-filter-value?>" <?=active-filter-checked?> /><?=active-filter-text?></label>
+        <label><input type="checkbox" class="status-filter" value="<?=fulfilled-filter-value?>" <?=fulfilled-filter-checked?> /><?=fulfilled-filter-text?></label>
+        <label><input type="checkbox" class="status-filter" value="<?=cancelled-filter-value?>" <?=cancelled-filter-checked?> /><?=cancelled-filter-text?></label>
+        <label><input type="checkbox" class="status-filter" value="<?=pending-filter-value?>" <?=pending-filter-checked?> /><?=pending-filter-text?></label>
+        <label><input type="checkbox" class="status-filter" value="<?=deleted-filter-value?>" <?=deleted-filter-checked?> /><?=deleted-filter-text?></label>
+        <label><input type="checkbox" class="status-filter" value="<?=expired-filter-value?>" <?=expired-filter-checked?> /><?=expired-filter-text?></label>
+    </div>
+    
+    <div>
+        <?=price-status-filter-text?>
+        <label><input type="checkbox" class="price-status-filter" value="<?=ok-filter-value?>" <?=ok-filter-checked?> /><?=ok-filter-text?></label>
+        <label><input type="checkbox" class="price-status-filter" value="<?=no-data-filter-value?>" <?=no-data-filter-checked?> /><?=no-data-filter-text?></label>
+        <label><input type="checkbox" class="price-status-filter" value="<?=data-too-old-filter-value?>" <?=data-too-old-filter-checked?> /><?=data-too-old-filter-text?></label>
+    </div>
+    
+    <input type="button" value="<?=apply-text?>" id="apply-filters" />
+</fieldset>
+
+<h3><?=sell-orders-text?></h3>
+
+<table id="sell-orders" class="dataTable display">
+    <thead>
+        <tr><?=sell-order-columns?></tr>
+    </thead>
+    <tbody>
+        <?=sell-orders?>
+    </tbody>
+</table>
+
+<h3><?=buy-orders-text?></h3>
+
+<table id="buy-orders" class="dataTable display">
+    <thead>
+        <tr><?=buy-order-columns?></tr>
+    </thead>
+    <tbody>
+        <?=buy-orders?>
+    </tbody>
+</table>

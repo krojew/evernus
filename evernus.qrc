@@ -38,9 +38,10 @@
         <file>images/flags/en_US.png</file>
         <file>images/flags/pl_PL.png</file>
         
-        <file>html/http_template.html</file>
         <file>html/http_index_template.html</file>
-        <file>html/igb_template.html</file>
+        <file>html/http_orders_template.html</file>
+        <file>html/http_template.html</file>
         <file>html/igb_order_template.html</file>
+        <file>html/igb_template.html</file>
     </qresource>
 </RCC>

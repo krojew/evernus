@@ -16,14 +16,13 @@
 #include <QPushButton>
 #include <QComboBox>
 
-#include "Repository.h"
-#include "Character.h"
+#include "CharacterRepository.h"
 
 #include "MenuBarWidget.h"
 
 namespace Evernus
 {
-    MenuBarWidget::MenuBarWidget(const Repository<Character> &characterRepository, QWidget *parent)
+    MenuBarWidget::MenuBarWidget(const CharacterRepository &characterRepository, QWidget *parent)
         : QWidget(parent)
         , mCharacterRepository(characterRepository)
     {
@@ -54,8 +53,7 @@ namespace Evernus
         mCharacterCombo->blockSignals(true);
         mCharacterCombo->clear();
 
-        auto characters = mCharacterRepository.exec(
-            QString{"SELECT id, name FROM %1 WHERE enabled != 0 AND key_id IS NOT NULL"}.arg(mCharacterRepository.getTableName()));
+        auto characters = mCharacterRepository.getEnabledQuery();
 
         while (characters.next())
         {

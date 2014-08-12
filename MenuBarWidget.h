@@ -22,9 +22,7 @@ class QComboBox;
 
 namespace Evernus
 {
-    template<class T>
-    class Repository;
-    class Character;
+    class CharacterRepository;
 
     class MenuBarWidget
         : public QWidget
@@ -32,7 +30,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit MenuBarWidget(const Repository<Character> &characterRepository, QWidget *parent = nullptr);
+        explicit MenuBarWidget(const CharacterRepository &characterRepository, QWidget *parent = nullptr);
         virtual ~MenuBarWidget() = default;
 
     public slots:
@@ -47,7 +45,7 @@ namespace Evernus
         void importAll();
 
     private:
-        const Repository<Character> &mCharacterRepository;
+        const CharacterRepository &mCharacterRepository;
 
         QComboBox *mCharacterCombo = nullptr;
     };

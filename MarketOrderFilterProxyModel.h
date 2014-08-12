@@ -59,6 +59,9 @@ namespace Evernus
 
         virtual void setSourceModel(QAbstractItemModel *sourceModel) override;
 
+        StatusFilters getStatusFilter() const;
+        PriceStatusFilters getPriceStatusFilter() const;
+
     public slots:
         void setStatusFilter(const StatusFilters &filter);
         void setPriceStatusFilter(const PriceStatusFilters &filter);

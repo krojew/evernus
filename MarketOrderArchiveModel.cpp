@@ -280,8 +280,15 @@ namespace Evernus
 
     MarketOrderTreeModel::OrderList MarketOrderArchiveModel::getOrders() const
     {
-        return (mCorp) ?
-               (mOrderProvider.getArchivedOrdersForCorporation(mCharacterRepository.getCorporationId(mCharacterId), mFrom, mTo)) :
-               (mOrderProvider.getArchivedOrders(mCharacterId, mFrom, mTo));
+        try
+        {
+            return (mCorp) ?
+                   (mOrderProvider.getArchivedOrdersForCorporation(mCharacterRepository.getCorporationId(mCharacterId), mFrom, mTo)) :
+                   (mOrderProvider.getArchivedOrders(mCharacterId, mFrom, mTo));
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            return OrderList{};
+        }
     }
 }

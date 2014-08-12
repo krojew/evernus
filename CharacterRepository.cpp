@@ -213,6 +213,11 @@ namespace Evernus
         return query.value(0).toString();
     }
 
+    QSqlQuery CharacterRepository::getEnabledQuery() const
+    {
+        return exec(QString{"SELECT %2, name FROM %1 WHERE enabled != 0 AND key_id IS NOT NULL"}.arg(getTableName()).arg(getIdColumn()));
+    }
+
     QStringList CharacterRepository::getColumns() const
     {
         return QStringList{}

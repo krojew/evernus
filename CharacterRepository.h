@@ -52,6 +52,8 @@ namespace Evernus
         uint getCorporationId(Character::IdType id) const;
         QString getCharacterName(Character::IdType id) const;
 
+        QSqlQuery getEnabledQuery() const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const Character &entity, QSqlQuery &query) const override;

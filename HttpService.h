@@ -14,6 +14,9 @@
  */
 #pragma once
 
+#include "MarketOrderFilterProxyModel.h"
+#include "MarketOrderSellModel.h"
+#include "MarketOrderBuyModel.h"
 #include "SimpleCrypt.h"
 
 #include "qxtwebslotservice.h"
@@ -25,6 +28,8 @@ namespace Evernus
 {
     class CharacterRepository;
     class MarketOrderProvider;
+    class CacheTimerProvider;
+    class ItemCostProvider;
     class EveDataProvider;
 
     class HttpService
@@ -37,6 +42,8 @@ namespace Evernus
                     const MarketOrderProvider &corpOrderProvider,
                     const EveDataProvider &dataProvider,
                     const CharacterRepository &characterRepo,
+                    const CacheTimerProvider &cacheTimerProvider,
+                    const ItemCostProvider &itemCostProvider,
                     QxtHttpSessionManager *sm,
                     QObject *parent = nullptr);
         virtual ~HttpService() = default;
@@ -44,24 +51,34 @@ namespace Evernus
     public slots:
         void index(QxtWebRequestEvent *event);
         void characterOrders(QxtWebRequestEvent *event);
+        void corporationOrders(QxtWebRequestEvent *event);
 
     protected:
         virtual void pageRequestedEvent(QxtWebRequestEvent *event) override;
 
     private:
+        typedef std::pair<MarketOrderFilterProxyModel::StatusFilters, MarketOrderFilterProxyModel::PriceStatusFilters> FilterPair;
+
         static const QString characterIdName;
 
-        const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
-        const EveDataProvider &mDataProvider;
         const CharacterRepository &mCharacterRepo;
 
         SimpleCrypt mCrypt;
 
-        QxtHtmlTemplate mMainTemplate, mIndexTemplate;
+        QxtHtmlTemplate mMainTemplate, mIndexTemplate, mOrdersTemplate;
+
+        MarketOrderSellModel mSellModel, mCorpSellModel;
+        MarketOrderBuyModel mBuyModel, mCorpBuyModel;
+
+        MarketOrderFilterProxyModel mSellModelProxy, mBuyModelProxy, mCorpSellModelProxy, mCorpBuyModelProxy;
+
+        void renderOrders(QxtWebRequestEvent *event, MarketOrderFilterProxyModel &buyModel, MarketOrderFilterProxyModel &sellModel);
 
         void renderContent(QxtWebRequestEvent *event, const QString &content);
         void postUnauthorized(QxtWebRequestEvent *event);
 
         static bool isIndexAction(QxtWebRequestEvent *event);
+        static Character::IdType getCharacterId(QxtWebRequestEvent *event);
+        static FilterPair getFilters(QxtWebRequestEvent *event);
     };
 }

@@ -47,6 +47,8 @@ namespace Evernus
         const auto majorVersion = curVersion[0].toUInt();
         const auto minorVersion = curVersion[1].toUInt();
 
+        qDebug() << "Update from" << majorVersion << "." << minorVersion;
+
         const auto dbName = characterRepo.getDatabase().databaseName();
         QFile::copy(dbName, dbName + ".bak");
 

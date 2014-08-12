@@ -126,6 +126,8 @@ namespace Evernus
                                            *mCorpOrderProvider,
                                            *this,
                                            *mCharacterRepository,
+                                           *this,
+                                           *this,
                                            &mHttpSessionManager,
                                            this};
 
