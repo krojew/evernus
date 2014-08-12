@@ -349,7 +349,7 @@ namespace Evernus
 
         for (const auto &address : addresses)
         {
-            if (!address.isLoopback())
+            if (!address.isLoopback() && address.protocol() == QAbstractSocket::IPv4Protocol)
             {
                 curAddress = address.toString();
                 break;
