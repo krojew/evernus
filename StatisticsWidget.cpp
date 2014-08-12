@@ -654,8 +654,9 @@ namespace Evernus
         auto scriptConfigLayout = new QHBoxLayout{};
         scriptConfigWidget->setLayout(scriptConfigLayout);
 
-        QFont scriptFont{""};
+        QFont scriptFont{"Monospace"};
         scriptFont.setFixedPitch(true);
+        scriptFont.setStyleHint(QFont::TypeWriter);
 
         mAggrScriptEdit = new QTextEdit{this};
         scriptConfigLayout->addWidget(mAggrScriptEdit, 1);
