@@ -270,6 +270,11 @@ namespace Evernus
         return volumeColumn;
     }
 
+    MarketOrderModel::Type MarketOrderArchiveModel::getType() const
+    {
+        return Type::Neither;
+    }
+
     void MarketOrderArchiveModel::setCharacterAndRange(Character::IdType id, const QDateTime &from, const QDateTime &to)
     {
         mFrom = from;

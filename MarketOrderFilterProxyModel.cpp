@@ -107,7 +107,10 @@ namespace Evernus
         if (mPriceStatusFilter == EveryPriceStatus)
             return true;
 
-        const auto price = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getLocationId());
+        const auto price = (static_cast<MarketOrderModel *>(sourceModel())->getType() == MarketOrderModel::Type::Buy) ?
+                           (mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getLocationId())) :
+                           (mDataProvider.getTypeSellPrice(order.getTypeId(), order.getLocationId()));
+
         if (price->isNew())
             return mPriceStatusFilter & NoData;
 

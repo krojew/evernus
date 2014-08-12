@@ -56,6 +56,13 @@ namespace Evernus
             DataTooOld,
         };
 
+        enum class Type
+        {
+            Neither,
+            Buy,
+            Sell,
+        };
+
         using QAbstractItemModel::QAbstractItemModel;
         virtual ~MarketOrderModel() = default;
 
@@ -73,5 +80,7 @@ namespace Evernus
         virtual bool shouldShowPriceInfo(const QModelIndex &index) const = 0;
 
         virtual int getVolumeColumn() const = 0;
+
+        virtual Type getType() const = 0;
     };
 }

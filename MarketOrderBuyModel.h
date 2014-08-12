@@ -47,6 +47,8 @@ namespace Evernus
 
         virtual int getVolumeColumn() const override;
 
+        virtual Type getType() const override;
+
     private:
         static const auto nameColumn = 0;
         static const auto groupColumn = 1;

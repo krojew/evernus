@@ -48,6 +48,8 @@ namespace Evernus
 
         virtual int getVolumeColumn() const override;
 
+        virtual Type getType() const override;
+
         void setCharacterAndRange(Character::IdType id, const QDateTime &from, const QDateTime &to);
 
     private:

@@ -436,6 +436,11 @@ namespace Evernus
         return volumeColumn;
     }
 
+    MarketOrderModel::Type MarketOrderBuyModel::getType() const
+    {
+        return Type::Buy;
+    }
+
     MarketOrderTreeModel::OrderList MarketOrderBuyModel::getOrders() const
     {
         try
