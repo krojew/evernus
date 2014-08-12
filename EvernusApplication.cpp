@@ -1922,177 +1922,188 @@ namespace Evernus
 
     void EvernusApplication::importMarketOrders(Character::IdType id, MarketOrders &orders, bool corp)
     {
-        const auto &orderRepo = (corp) ? (*mCorpMarketOrderRepository) : (*mMarketOrderRepository);
-        auto curStates = orderRepo.getOrderStates(id);
-
-        if (corp)
-            mCorpOrderProvider->clearOrders(id);
-        else
-            mCharacterOrderProvider->clearOrders(id);
-
-        mPendingAutoCostOrders.clear();
-
-        QSettings settings;
-        const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, false).toBool();
-        const auto makeCorpSnapshot = settings.value(ImportSettings::makeCorpSnapshotsKey).toBool();
-        const auto emailNotification = settings.value(ImportSettings::autoImportEnabledKey, false).toBool() &&
-                                       settings.value(ImportSettings::emailNotificationsEnabledKey, true).toBool();
-
-        struct EmailOrderInfo
+        try
         {
-            EveType::IdType mTypeId;
-            uint mVolumeEntered;
-            MarketOrder::State mState;
-        };
+            const auto corpId = mCharacterRepository->getCorporationId(id);
 
-        std::vector<EmailOrderInfo> emailOrders;
+            const auto &orderRepo = (corp) ? (*mCorpMarketOrderRepository) : (*mMarketOrderRepository);
+            auto curStates = orderRepo.getOrderStates(id);
 
-        for (auto &order : orders)
-        {
-            const auto cIt = curStates.find(order.getId());
-            if (cIt != std::end(curStates))
+            if (corp)
+                mCorpOrderProvider->clearOrders(id);
+            else
+                mCharacterOrderProvider->clearOrders(id);
+
+            mPendingAutoCostOrders.clear();
+
+            QSettings settings;
+            const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, false).toBool();
+            const auto makeCorpSnapshot = settings.value(ImportSettings::makeCorpSnapshotsKey).toBool();
+            const auto emailNotification = settings.value(ImportSettings::autoImportEnabledKey, false).toBool() &&
+                                           settings.value(ImportSettings::emailNotificationsEnabledKey, true).toBool();
+
+            struct EmailOrderInfo
             {
-                order.setDelta(order.getVolumeRemaining() - cIt->second.mVolumeRemaining);
-                order.setFirstSeen(cIt->second.mFirstSeen);
+                EveType::IdType mTypeId;
+                uint mVolumeEntered;
+                MarketOrder::State mState;
+            };
 
-                if (order.getState() != MarketOrder::State::Active)
+            std::vector<EmailOrderInfo> emailOrders;
+
+            for (auto &order : orders)
+            {
+                const auto cIt = curStates.find(order.getId());
+                if (cIt != std::end(curStates))
                 {
-                    if (!cIt->second.mLastSeen.isNull())
+                    order.setDelta(order.getVolumeRemaining() - cIt->second.mVolumeRemaining);
+                    order.setFirstSeen(cIt->second.mFirstSeen);
+
+                    if (order.getState() != MarketOrder::State::Active)
                     {
-                        order.setLastSeen(cIt->second.mLastSeen);
+                        if (!cIt->second.mLastSeen.isNull())
+                        {
+                            order.setLastSeen(cIt->second.mLastSeen);
+                        }
+                        else
+                        {
+                            order.setLastSeen(std::min(QDateTime::currentDateTimeUtc(), order.getIssued().addDays(order.getDuration())));
+
+                            if (emailNotification)
+                            {
+                                EmailOrderInfo info;
+                                info.mTypeId = order.getTypeId();
+                                info.mVolumeEntered = order.getVolumeEntered();
+                                info.mState = order.getState();
+
+                                emailOrders.emplace_back(std::move(info));
+                            }
+                        }
+                    }
+
+                    curStates.erase(cIt);
+                }
+                else
+                {
+                    order.setDelta(order.getVolumeRemaining() - order.getVolumeEntered());
+                }
+
+                order.setCorporationId(corpId); // TODO: move up after 0.5
+
+                if (autoSetCosts && order.getType() == MarketOrder::Type::Buy && order.getDelta() != 0 && order.getState() == MarketOrder::State::Fulfilled)
+                    mPendingAutoCostOrders.emplace(order.getId());
+            }
+
+            std::vector<MarketOrder::IdType> toArchive;
+            toArchive.reserve(curStates.size());
+
+            for (const auto &order : curStates)
+            {
+                if (order.second.mLastSeen.isNull() || order.second.mDelta != 0)
+                    toArchive.emplace_back(order.first);
+            }
+
+            if (!toArchive.empty())
+                orderRepo.archive(toArchive);
+
+            if (!corp || makeCorpSnapshot)
+            {
+                MarketOrderValueSnapshot snapshot;
+                snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
+                snapshot.setCharacterId(id);
+
+                double buy = 0., sell = 0.;
+                for (const auto &order : orders)
+                {
+                    if (order.getState() != MarketOrder::State::Active)
+                        continue;
+
+                    if (order.getType() == MarketOrder::Type::Buy)
+                        buy += order.getPrice() * order.getVolumeRemaining();
+                    else
+                        sell += order.getPrice() * order.getVolumeRemaining();
+                }
+
+                const auto adder = [](auto &sum, const auto &orders) {
+                    for (const auto &order : orders)
+                    {
+                        if (order->getState() != Evernus::MarketOrder::State::Active)
+                            continue;
+
+                        sum += order->getPrice() * order->getVolumeRemaining();
+                    }
+                };
+
+                if (corp)
+                {
+                    adder(buy, mCharacterOrderProvider->getBuyOrders(id));
+                    adder(sell, mCharacterOrderProvider->getSellOrders(id));
+                }
+                else if (makeCorpSnapshot)
+                {
+                    adder(buy, mCorpOrderProvider->getBuyOrders(id));
+                    adder(sell, mCorpOrderProvider->getSellOrders(id));
+                }
+
+                snapshot.setBuyValue(buy);
+                snapshot.setSellValue(sell);
+
+                mMarketOrderValueSnapshotRepository->store(snapshot);
+            }
+
+            orderRepo.batchStore(orders, true);
+
+            if (corp)
+                saveUpdateTimer(TimerType::CorpMarketOrders, mCorpMarketOrdersUtcUpdateTimes, id);
+            else
+                saveUpdateTimer(TimerType::MarketOrders, mMarketOrdersUtcUpdateTimes, id);
+
+            if (emailNotification && !emailOrders.empty())
+            {
+                try
+                {
+                    if (static_cast<ImportSettings::SmtpConnectionSecurity>(settings.value(
+                        ImportSettings::smtpConnectionSecurityKey).toInt()) == ImportSettings::SmtpConnectionSecurity::TLS)
+                    {
+                        mSmtp.connectToSecureHost(settings.value(ImportSettings::smtpHostKey, ImportSettings::smtpHostDefault).toString());
                     }
                     else
                     {
-                        order.setLastSeen(std::min(QDateTime::currentDateTimeUtc(), order.getIssued().addDays(order.getDuration())));
-
-                        if (emailNotification)
-                        {
-                            EmailOrderInfo info;
-                            info.mTypeId = order.getTypeId();
-                            info.mVolumeEntered = order.getVolumeEntered();
-                            info.mState = order.getState();
-
-                            emailOrders.emplace_back(std::move(info));
-                        }
+                        mSmtp.connectToHost(settings.value(ImportSettings::smtpHostKey, ImportSettings::smtpHostDefault).toString());
                     }
+
+                    QxtMailMessage message{tr("Evernus"), settings.value(ImportSettings::emailNotificationAddressKey).toString()};
+                    message.setSubject(tr("[Evernus] Market orders fulfilled"));
+
+                    QLocale locale;
+
+                    QString body{tr("The following orders have changed their status:\n\n")};
+                    for (const auto &order : emailOrders)
+                    {
+                        body.append(tr("    %1 x%2 [%3]\n")
+                            .arg(getTypeName(order.mTypeId))
+                            .arg(locale.toString(order.mVolumeEntered))
+                            .arg(MarketOrder::stateToString(order.mState)));
+                    }
+
+                    message.setBody(body);
+
+                    mSmtp.send(message);
                 }
-
-                curStates.erase(cIt);
+                catch (...)
+                {
+                    mSmtp.disconnectFromHost();
+                    throw;
+                }
             }
-            else
-            {
-                order.setDelta(order.getVolumeRemaining() - order.getVolumeEntered());
-            }
 
-            if (autoSetCosts && order.getType() == MarketOrder::Type::Buy && order.getDelta() != 0 && order.getState() == MarketOrder::State::Fulfilled)
-                mPendingAutoCostOrders.emplace(order.getId());
+            if (autoSetCosts)
+                refreshWalletTransactions(id);
         }
-
-        std::vector<MarketOrder::IdType> toArchive;
-        toArchive.reserve(curStates.size());
-
-        for (const auto &order : curStates)
+        catch (const CharacterRepository::NotFoundException &)
         {
-            if (order.second.mLastSeen.isNull() || order.second.mDelta != 0)
-                toArchive.emplace_back(order.first);
+            QMessageBox::warning(activeWindow(), tr("Evernus"), tr("Couldn't find character for order import!"));
         }
-
-        if (!toArchive.empty())
-            orderRepo.archive(toArchive);
-
-        if (!corp || makeCorpSnapshot)
-        {
-            MarketOrderValueSnapshot snapshot;
-            snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
-            snapshot.setCharacterId(id);
-
-            double buy = 0., sell = 0.;
-            for (const auto &order : orders)
-            {
-                if (order.getState() != MarketOrder::State::Active)
-                    continue;
-
-                if (order.getType() == MarketOrder::Type::Buy)
-                    buy += order.getPrice() * order.getVolumeRemaining();
-                else
-                    sell += order.getPrice() * order.getVolumeRemaining();
-            }
-
-            const auto adder = [](auto &sum, const auto &orders) {
-                for (const auto &order : orders)
-                {
-                    if (order->getState() != Evernus::MarketOrder::State::Active)
-                        continue;
-
-                    sum += order->getPrice() * order->getVolumeRemaining();
-                }
-            };
-
-            if (corp)
-            {
-                adder(buy, mCharacterOrderProvider->getBuyOrders(id));
-                adder(sell, mCharacterOrderProvider->getSellOrders(id));
-            }
-            else if (makeCorpSnapshot)
-            {
-                adder(buy, mCorpOrderProvider->getBuyOrders(id));
-                adder(sell, mCorpOrderProvider->getSellOrders(id));
-            }
-
-            snapshot.setBuyValue(buy);
-            snapshot.setSellValue(sell);
-
-            mMarketOrderValueSnapshotRepository->store(snapshot);
-        }
-
-        orderRepo.batchStore(orders, true);
-
-        if (corp)
-            saveUpdateTimer(TimerType::CorpMarketOrders, mCorpMarketOrdersUtcUpdateTimes, id);
-        else
-            saveUpdateTimer(TimerType::MarketOrders, mMarketOrdersUtcUpdateTimes, id);
-
-        if (emailNotification && !emailOrders.empty())
-        {
-            try
-            {
-                if (static_cast<ImportSettings::SmtpConnectionSecurity>(settings.value(
-                    ImportSettings::smtpConnectionSecurityKey).toInt()) == ImportSettings::SmtpConnectionSecurity::TLS)
-                {
-                    mSmtp.connectToSecureHost(settings.value(ImportSettings::smtpHostKey, ImportSettings::smtpHostDefault).toString());
-                }
-                else
-                {
-                    mSmtp.connectToHost(settings.value(ImportSettings::smtpHostKey, ImportSettings::smtpHostDefault).toString());
-                }
-
-                QxtMailMessage message{tr("Evernus"), settings.value(ImportSettings::emailNotificationAddressKey).toString()};
-                message.setSubject(tr("[Evernus] Market orders fulfilled"));
-
-                QLocale locale;
-
-                QString body{tr("The following orders have changed their status:\n\n")};
-                for (const auto &order : emailOrders)
-                {
-                    body.append(tr("    %1 x%2 [%3]\n")
-                        .arg(getTypeName(order.mTypeId))
-                        .arg(locale.toString(order.mVolumeEntered))
-                        .arg(MarketOrder::stateToString(order.mState)));
-                }
-
-                message.setBody(body);
-
-                mSmtp.send(message);
-            }
-            catch (...)
-            {
-                mSmtp.disconnectFromHost();
-                throw;
-            }
-        }
-
-        if (autoSetCosts)
-            refreshWalletTransactions(id);
     }
 
     KeyRepository::EntityPtr EvernusApplication::getCharacterKey(Character::IdType id) const

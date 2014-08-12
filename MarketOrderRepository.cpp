@@ -75,7 +75,7 @@ namespace Evernus
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id BIGINT PRIMARY KEY,
-            character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,
+            character_id BIGINT NOT NULL %2,
             location_id BIGINT NOT NULL,
             volume_entered INTEGER NOT NULL,
             volume_remaining INTEGER NOT NULL,
@@ -93,13 +93,34 @@ namespace Evernus
             first_seen DATETIME NOT NULL,
             last_seen DATETIME NULL,
             corporation_id INTEGER NOT NULL
-        ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
+        ))"}.arg(getTableName()).arg(
+            (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_state ON %1(state)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_state ON %1(character_id, state)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_last_seen ON %1(character_id, last_seen)"}.arg(getTableName()));
+    }
+
+    void MarketOrderRepository::dropIndexes(const Repository<Character> &characterRepo) const
+    {
+        exec(QString{"DROP INDEX IF EXISTS %1_%2_index"}.arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QString{"DROP INDEX IF EXISTS %1_state"}.arg(getTableName()));
+        exec(QString{"DROP INDEX IF EXISTS %1_character_state"}.arg(getTableName()));
+        exec(QString{"DROP INDEX IF EXISTS %1_character_type"}.arg(getTableName()));
+        exec(QString{"DROP INDEX IF EXISTS %1_character_last_seen"}.arg(getTableName()));
+    }
+
+    void MarketOrderRepository::copyDataWithoutCorporationIdFrom(const QString &table) const
+    {
+        exec(QString{R"(REPLACE INTO %1
+            (id, character_id, location_id, volume_entered, volume_remaining, min_volume, delta, state, type_id, range,
+             account_key, duration, escrow, price, type, issued, first_seen, last_seen, corporation_id)
+            SELECT id, character_id, location_id, volume_entered, volume_remaining, min_volume, delta, state, type_id, range,
+                   account_key, duration, escrow, price, type, issued, first_seen, last_seen, 0
+            FROM %2
+        )"}.arg(getTableName()).arg(table));
     }
 
     MarketOrderRepository::AggrData MarketOrderRepository::getAggregatedData(Character::IdType characterId) const

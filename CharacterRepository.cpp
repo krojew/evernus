@@ -187,6 +187,19 @@ namespace Evernus
         return "name";
     }
 
+    uint CharacterRepository::getCorporationId(Character::IdType id) const
+    {
+        auto query = prepare(QString{"SELECT corporation_id FROM %1 WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
+        query.bindValue(0, id);
+
+        DatabaseUtils::execQuery(query);
+
+        if (!query.next())
+            throw NotFoundException{};
+
+        return query.value(0).toUInt();
+    }
+
     QStringList CharacterRepository::getColumns() const
     {
         return QStringList{}

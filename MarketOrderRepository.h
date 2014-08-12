@@ -75,6 +75,8 @@ namespace Evernus
         virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         void create(const Repository<Character> &characterRepo) const;
+        void dropIndexes(const Repository<Character> &characterRepo) const;
+        void copyDataWithoutCorporationIdFrom(const QString &table) const;
 
         AggrData getAggregatedData(Character::IdType characterId) const;
         CustomAggregatedData getCustomAggregatedData(Character::IdType characterId,

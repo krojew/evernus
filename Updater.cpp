@@ -20,8 +20,10 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QDebug>
+#include <QFile>
 #include <QUrl>
 
+#include "MarketOrderRepository.h"
 #include "CacheTimerRepository.h"
 #include "EvernusApplication.h"
 #include "PriceSettings.h"
@@ -32,8 +34,8 @@ namespace Evernus
 {
     void Updater::performVersionMigration(const CacheTimerRepository &cacheTimerRepo,
                                           const Repository<Character> &characterRepo,
-                                          const Repository<MarketOrder> &characterOrderRepo,
-                                          const Repository<MarketOrder> &corporationOrderRepo) const
+                                          const MarketOrderRepository &characterOrderRepo,
+                                          const MarketOrderRepository &corporationOrderRepo) const
     {
         QSettings settings;
 
@@ -45,25 +47,46 @@ namespace Evernus
         const auto majorVersion = curVersion[0].toUInt();
         const auto minorVersion = curVersion[1].toUInt();
 
-        if (majorVersion == 0)
+        const auto dbName = characterRepo.getDatabase().databaseName();
+        QFile::copy(dbName, dbName + ".bak");
+
+        try
         {
-            if (minorVersion < 5)
+            if (majorVersion == 0)
             {
-                if (minorVersion < 4)
+                if (minorVersion < 5)
                 {
-                    if (minorVersion < 3)
-                        settings.setValue(PriceSettings::autoAddCustomItemCostKey, false);
+                    if (minorVersion < 4)
+                    {
+                        if (minorVersion < 3)
+                            settings.setValue(PriceSettings::autoAddCustomItemCostKey, false);
 
-                    cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
-                    cacheTimerRepo.create(characterRepo);
+                        cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
+                        cacheTimerRepo.create(characterRepo);
+                    }
+
+                    characterRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterRepo.getTableName()));
+                    characterOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterOrderRepo.getTableName()));
+                    corporationOrderRepo.exec(QString{"ALTER TABLE %1 RENAME TO %1_temp"}.arg(corporationOrderRepo.getTableName()));
+
+                    corporationOrderRepo.dropIndexes(characterRepo);
+                    corporationOrderRepo.create(characterRepo);
+                    corporationOrderRepo.copyDataWithoutCorporationIdFrom(QString{"%1_temp"}.arg(corporationOrderRepo.getTableName()));
+                    corporationOrderRepo.exec(QString{"DROP TABLE %1_temp"}.arg(corporationOrderRepo.getTableName()));
+
+                    QMessageBox::information(nullptr, tr("Update"), tr(
+                        "This update requires re-importing all data.\n"
+                        "Please click on \"Import all\" after the update.\n"));
                 }
-
-                characterRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterRepo.getTableName()));
-                characterOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterOrderRepo.getTableName()));
-                corporationOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(corporationOrderRepo.getTableName()));
-
-                QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all data.\nPlease click on \"Import all\" after the update."));
             }
+        }
+        catch (...)
+        {
+            QMessageBox::critical(nullptr, tr("Update"), tr(
+                "An error occurred during the update process.\n"
+                "Database backup was saved as %1. Please read online help how to deal with this situation.").arg(dbName + ".bak"));
+
+            throw;
         }
     }
 
