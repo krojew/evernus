@@ -67,8 +67,6 @@ namespace Evernus
             }
         }
 
-        mCharacterCombo->model()->sort(0);
-
         mCharacterCombo->blockSignals(false);
 
         if (!emitPrevious)

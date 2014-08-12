@@ -215,7 +215,9 @@ namespace Evernus
 
     QSqlQuery CharacterRepository::getEnabledQuery() const
     {
-        return exec(QString{"SELECT %2, name FROM %1 WHERE enabled != 0 AND key_id IS NOT NULL"}.arg(getTableName()).arg(getIdColumn()));
+        return exec(QString{"SELECT %2, name FROM %1 WHERE enabled != 0 AND key_id IS NOT NULL ORDER BY name"}
+            .arg(getTableName())
+            .arg(getIdColumn()));
     }
 
     QStringList CharacterRepository::getColumns() const
