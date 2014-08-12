@@ -1930,9 +1930,15 @@ namespace Evernus
             auto curStates = orderRepo.getOrderStates(id);
 
             if (corp)
-                mCorpOrderProvider->clearOrders(id);
+            {
+                mCorpOrderProvider->clearOrdersForCharacter(id);
+                mCorpOrderProvider->clearOrdersForCorporation(corpId);
+            }
             else
-                mCharacterOrderProvider->clearOrders(id);
+            {
+                mCharacterOrderProvider->clearOrdersForCharacter(id);
+                mCharacterOrderProvider->clearOrdersForCorporation(corpId);
+            }
 
             mPendingAutoCostOrders.clear();
 

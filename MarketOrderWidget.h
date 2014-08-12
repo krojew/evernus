@@ -29,6 +29,7 @@ namespace Evernus
     class WalletTransactionRepository;
     class FilterTextRepository;
     class MarketOrderProvider;
+    class CharacterRepository;
     class CacheTimerProvider;
     class ItemCostProvider;
     class EveDataProvider;
@@ -46,7 +47,7 @@ namespace Evernus
                           const EveDataProvider &dataProvider,
                           ItemCostProvider &itemCostProvider,
                           const WalletTransactionRepository &transactionsRepo,
-                          const Repository<Character> &characterRepository,
+                          const CharacterRepository &characterRepository,
                           const FilterTextRepository &filterRepo,
                           bool corp,
                           QWidget *parent = nullptr);

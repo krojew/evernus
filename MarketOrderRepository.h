@@ -89,7 +89,9 @@ namespace Evernus
 
         EntityList fetchForCharacter(Character::IdType characterId) const;
         EntityList fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const;
+        EntityList fetchForCorporation(uint corporationId, MarketOrder::Type type) const;
         EntityList fetchArchivedForCharacter(Character::IdType characterId) const;
+        EntityList fetchArchivedForCorporation(uint corporationId) const;
 
         void archive(const std::vector<MarketOrder::IdType> &ids) const;
 

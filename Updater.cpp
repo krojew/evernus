@@ -76,7 +76,7 @@ namespace Evernus
 
                     QMessageBox::information(nullptr, tr("Update"), tr(
                         "This update requires re-importing all data.\n"
-                        "Please click on \"Import all\" after the update.\n"));
+                        "Please click on \"Import all\" after the update."));
                 }
             }
         }

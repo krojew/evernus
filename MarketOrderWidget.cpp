@@ -42,7 +42,7 @@ namespace Evernus
                                          const EveDataProvider &dataProvider,
                                          ItemCostProvider &itemCostProvider,
                                          const WalletTransactionRepository &transactionsRepo,
-                                         const Repository<Character> &characterRepository,
+                                         const CharacterRepository &characterRepository,
                                          const FilterTextRepository &filterRepo,
                                          bool corp,
                                          QWidget *parent)
@@ -51,9 +51,9 @@ namespace Evernus
                                ImportSettings::maxMarketOrdersAgeKey,
                                parent)
         , mOrderProvider(orderProvider)
-        , mSellModel(mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider, characterRepository)
-        , mBuyModel(mOrderProvider, dataProvider, cacheTimerProvider)
-        , mArchiveModel(mOrderProvider, dataProvider, itemCostProvider)
+        , mSellModel(mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider, characterRepository, corp)
+        , mBuyModel(mOrderProvider, dataProvider, cacheTimerProvider, characterRepository, corp)
+        , mArchiveModel(mOrderProvider, dataProvider, itemCostProvider, characterRepository, corp)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

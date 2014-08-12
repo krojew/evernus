@@ -18,6 +18,7 @@
 
 namespace Evernus
 {
+    class CharacterRepository;
     class MarketOrderProvider;
     class CacheTimerProvider;
 
@@ -30,6 +31,8 @@ namespace Evernus
         MarketOrderBuyModel(const MarketOrderProvider &orderProvider,
                             const EveDataProvider &dataProvider,
                             const CacheTimerProvider &cacheTimerProvider,
+                            const CharacterRepository &characterRepository,
+                            bool corp,
                             QObject *parent = nullptr);
         virtual ~MarketOrderBuyModel() = default;
 
@@ -59,9 +62,13 @@ namespace Evernus
         static const auto orderAgeColumn = 11;
         static const auto firstSeenColumn = 12;
         static const auto stationColumn = 13;
+        static const auto ownerColumn = 14;
 
         const MarketOrderProvider &mOrderProvider;
         const CacheTimerProvider &mCacheTimerProvider;
+        const CharacterRepository &mCharacterRepository;
+
+        bool mCorp = false;
 
         virtual OrderList getOrders() const override;
     };

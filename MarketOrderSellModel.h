@@ -20,6 +20,7 @@
 namespace Evernus
 {
     class MarketOrderProvider;
+    class CharacterRepository;
     class CacheTimerProvider;
     class ItemCostProvider;
 
@@ -33,7 +34,8 @@ namespace Evernus
                              const EveDataProvider &dataProvider,
                              const ItemCostProvider &itemCostProvider,
                              const CacheTimerProvider &cacheTimerProvider,
-                             const Repository<Character> &characterRepository,
+                             const CharacterRepository &characterRepository,
+                             bool corp,
                              QObject *parent = nullptr);
         virtual ~MarketOrderSellModel() = default;
 
@@ -66,11 +68,14 @@ namespace Evernus
         static const auto orderAgeColumn = 14;
         static const auto firstSeenColumn = 15;
         static const auto stationColumn = 16;
+        static const auto ownerColumn = 17;
 
         const MarketOrderProvider &mOrderProvider;
         const ItemCostProvider &mItemCostProvider;
         const CacheTimerProvider &mCacheTimerProvider;
-        const Repository<Character> &mCharacterRepository;
+        const CharacterRepository &mCharacterRepository;
+
+        bool mCorp = false;
 
         Repository<Character>::EntityPtr mCharacter;
 

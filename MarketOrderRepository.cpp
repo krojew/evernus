@@ -98,18 +98,22 @@ namespace Evernus
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_state ON %1(state)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_type ON %1(corporation_id, type)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_state ON %1(character_id, state)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_last_seen ON %1(character_id, last_seen)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_last_seen ON %1(corporation_id, last_seen)"}.arg(getTableName()));
     }
 
     void MarketOrderRepository::dropIndexes(const Repository<Character> &characterRepo) const
     {
         exec(QString{"DROP INDEX IF EXISTS %1_%2_index"}.arg(getTableName()).arg(characterRepo.getTableName()));
         exec(QString{"DROP INDEX IF EXISTS %1_state"}.arg(getTableName()));
+        exec(QString{"DROP INDEX IF EXISTS %1_corporation_type"}.arg(getTableName()));
         exec(QString{"DROP INDEX IF EXISTS %1_character_state"}.arg(getTableName()));
         exec(QString{"DROP INDEX IF EXISTS %1_character_type"}.arg(getTableName()));
         exec(QString{"DROP INDEX IF EXISTS %1_character_last_seen"}.arg(getTableName()));
+        exec(QString{"DROP INDEX IF EXISTS %1_corporation_last_seen"}.arg(getTableName()));
     }
 
     void MarketOrderRepository::copyDataWithoutCorporationIdFrom(const QString &table) const
@@ -306,10 +310,49 @@ namespace Evernus
         return result;
     }
 
+    MarketOrderRepository::EntityList MarketOrderRepository::fetchForCorporation(uint corporationId, MarketOrder::Type type) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE corporation_id = ? AND type = ?"}.arg(getTableName()));
+        query.bindValue(0, corporationId);
+        query.bindValue(1, static_cast<int>(type));
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
     MarketOrderRepository::EntityList MarketOrderRepository::fetchArchivedForCharacter(Character::IdType characterId) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND last_seen IS NOT NULL"}.arg(getTableName()));
         query.bindValue(0, characterId);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
+    MarketOrderRepository::EntityList MarketOrderRepository::fetchArchivedForCorporation(uint corporationId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE corporation_id = ? AND last_seen IS NOT NULL"}.arg(getTableName()));
+        query.bindValue(0, corporationId);
 
         DatabaseUtils::execQuery(query);
 

@@ -18,6 +18,7 @@
 #include <QFont>
 
 #include "MarketOrderProvider.h"
+#include "CharacterRepository.h"
 #include "CacheTimerProvider.h"
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
@@ -33,16 +34,20 @@ namespace Evernus
     MarketOrderArchiveModel::MarketOrderArchiveModel(const MarketOrderProvider &orderProvider,
                                                      const EveDataProvider &dataProvider,
                                                      const ItemCostProvider &itemCostProvider,
+                                                     const CharacterRepository &characterRepository,
+                                                     bool corp,
                                                      QObject *parent)
         : MarketOrderTreeModel{dataProvider, parent}
         , mOrderProvider{orderProvider}
         , mItemCostProvider{itemCostProvider}
+        , mCharacterRepository{characterRepository}
+        , mCorp{corp}
     {
     }
 
     int MarketOrderArchiveModel::columnCount(const QModelIndex &parent) const
     {
-        return 10;
+        return (mCorp) ? (11) : (10);
     }
 
     QVariant MarketOrderArchiveModel::data(const QModelIndex &index, int role) const
@@ -92,11 +97,26 @@ namespace Evernus
                 }
             case stationColumn:
                 return mDataProvider.getLocationName(data->getLocationId());
+            case ownerColumn:
+                try
+                {
+                    return mCharacterRepository.getCharacterName(data->getCharacterId());
+                }
+                catch (const CharacterRepository::NotFoundException &)
+                {
+                }
             }
             break;
         case Qt::DisplayRole:
             {
-                const char * const stateNames[] = { "Active", "Closed", "Fulfilled", "Cancelled", "Pending", "Character Deleted" };
+                const char * const stateNames[] = {
+                    QT_TR_NOOP("Active"),
+                    QT_TR_NOOP("Closed"),
+                    QT_TR_NOOP("Fulfilled"),
+                    QT_TR_NOOP("Cancelled"),
+                    QT_TR_NOOP("Pending"),
+                    QT_TR_NOOP("Character Deleted")
+                };
 
                 QLocale locale;
 
@@ -133,6 +153,14 @@ namespace Evernus
                     return QString{"%1/%2"}.arg(locale.toString(data->getVolumeRemaining())).arg(locale.toString(data->getVolumeEntered()));
                 case stationColumn:
                     return mDataProvider.getLocationName(data->getLocationId());
+                case ownerColumn:
+                    try
+                    {
+                        return mCharacterRepository.getCharacterName(data->getCharacterId());
+                    }
+                    catch (const CharacterRepository::NotFoundException &)
+                    {
+                    }
                 }
             }
             break;
@@ -207,6 +235,8 @@ namespace Evernus
                 return tr("Profit");
             case stationColumn:
                 return tr("Station");
+            case ownerColumn:
+                return tr("Owner");
             }
         }
 
@@ -250,6 +280,8 @@ namespace Evernus
 
     MarketOrderTreeModel::OrderList MarketOrderArchiveModel::getOrders() const
     {
-        return mOrderProvider.getArchivedOrders(mCharacterId, mFrom, mTo);
+        return (mCorp) ?
+               (mOrderProvider.getArchivedOrdersForCorporation(mCharacterRepository.getCorporationId(mCharacterId), mFrom, mTo)) :
+               (mOrderProvider.getArchivedOrders(mCharacterId, mFrom, mTo));
     }
 }

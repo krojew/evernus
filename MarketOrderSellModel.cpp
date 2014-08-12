@@ -19,6 +19,7 @@
 #include <QFont>
 
 #include "MarketOrderProvider.h"
+#include "CharacterRepository.h"
 #include "CacheTimerProvider.h"
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
@@ -36,19 +37,21 @@ namespace Evernus
                                                const EveDataProvider &dataProvider,
                                                const ItemCostProvider &itemCostProvider,
                                                const CacheTimerProvider &cacheTimerProvider,
-                                               const Repository<Character> &characterRepository,
+                                               const CharacterRepository &characterRepository,
+                                               bool corp,
                                                QObject *parent)
         : MarketOrderTreeModel{dataProvider, parent}
         , mOrderProvider{orderProvider}
         , mItemCostProvider{itemCostProvider}
         , mCacheTimerProvider{cacheTimerProvider}
         , mCharacterRepository{characterRepository}
+        , mCorp{corp}
     {
     }
 
     int MarketOrderSellModel::columnCount(const QModelIndex &parent) const
     {
-        return 17;
+        return (mCorp) ? (18) : (17);
     }
 
     QVariant MarketOrderSellModel::data(const QModelIndex &index, int role) const
@@ -209,6 +212,14 @@ namespace Evernus
                 return data->getFirstSeen();
             case stationColumn:
                 return mDataProvider.getLocationName(data->getLocationId());
+            case ownerColumn:
+                try
+                {
+                    return mCharacterRepository.getCharacterName(data->getCharacterId());
+                }
+                catch (const CharacterRepository::NotFoundException &)
+                {
+                }
             }
             break;
         case Qt::DisplayRole:
@@ -323,6 +334,14 @@ namespace Evernus
                     return TextUtils::dateTimeToString(data->getFirstSeen().toLocalTime(), locale);
                 case stationColumn:
                     return mDataProvider.getLocationName(data->getLocationId());
+                case ownerColumn:
+                    try
+                    {
+                        return mCharacterRepository.getCharacterName(data->getCharacterId());
+                    }
+                    catch (const CharacterRepository::NotFoundException &)
+                    {
+                    }
                 }
             }
             break;
@@ -453,6 +472,8 @@ namespace Evernus
                 return tr("First issued");
             case stationColumn:
                 return tr("Station");
+            case ownerColumn:
+                return tr("Owner");
             }
         }
 
@@ -500,7 +521,9 @@ namespace Evernus
 
     MarketOrderTreeModel::OrderList MarketOrderSellModel::getOrders() const
     {
-        return mOrderProvider.getSellOrders(mCharacterId);
+        return (mCorp) ?
+               (mOrderProvider.getSellOrdersForCorporation(mCharacter->getCorporationId())) :
+               (mOrderProvider.getSellOrders(mCharacterId));
     }
 
     void MarketOrderSellModel::handleNewCharacter()

@@ -19,6 +19,7 @@
 namespace Evernus
 {
     class MarketOrderProvider;
+    class CharacterRepository;
     class CacheTimerProvider;
     class ItemCostProvider;
 
@@ -31,6 +32,8 @@ namespace Evernus
         MarketOrderArchiveModel(const MarketOrderProvider &orderProvider,
                                 const EveDataProvider &dataProvider,
                                 const ItemCostProvider &itemCostProvider,
+                                const CharacterRepository &characterRepository,
+                                bool corp,
                                 QObject *parent = nullptr);
         virtual ~MarketOrderArchiveModel() = default;
 
@@ -58,9 +61,13 @@ namespace Evernus
         static const auto volumeColumn = 7;
         static const auto profitColumn = 8;
         static const auto stationColumn = 9;
+        static const auto ownerColumn = 10;
 
         const MarketOrderProvider &mOrderProvider;
         const ItemCostProvider &mItemCostProvider;
+        const CharacterRepository &mCharacterRepository;
+
+        bool mCorp = false;
 
         QDateTime mFrom, mTo;
 

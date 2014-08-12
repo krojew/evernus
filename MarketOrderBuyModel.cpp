@@ -19,6 +19,7 @@
 #include <QFont>
 
 #include "MarketOrderProvider.h"
+#include "CharacterRepository.h"
 #include "CacheTimerProvider.h"
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
@@ -34,16 +35,20 @@ namespace Evernus
     MarketOrderBuyModel::MarketOrderBuyModel(const MarketOrderProvider &orderProvider,
                                              const EveDataProvider &dataProvider,
                                              const CacheTimerProvider &cacheTimerProvider,
+                                             const CharacterRepository &characterRepository,
+                                             bool corp,
                                              QObject *parent)
         : MarketOrderTreeModel{dataProvider, parent}
         , mOrderProvider{orderProvider}
         , mCacheTimerProvider{cacheTimerProvider}
+        , mCharacterRepository{characterRepository}
+        , mCorp{corp}
     {
     }
 
     int MarketOrderBuyModel::columnCount(const QModelIndex &parent) const
     {
-        return 14;
+        return (mCorp) ? (15) : (14);
     }
 
     QVariant MarketOrderBuyModel::data(const QModelIndex &index, int role) const
@@ -174,6 +179,14 @@ namespace Evernus
                 return data->getFirstSeen();
             case stationColumn:
                 return mDataProvider.getLocationName(data->getLocationId());
+            case ownerColumn:
+                try
+                {
+                    return mCharacterRepository.getCharacterName(data->getCharacterId());
+                }
+                catch (const CharacterRepository::NotFoundException &)
+                {
+                }
             }
             break;
         case Qt::DisplayRole:
@@ -265,6 +278,14 @@ namespace Evernus
                     return TextUtils::dateTimeToString(data->getFirstSeen().toLocalTime(), locale);
                 case stationColumn:
                     return mDataProvider.getLocationName(data->getLocationId());
+                case ownerColumn:
+                    try
+                    {
+                        return mCharacterRepository.getCharacterName(data->getCharacterId());
+                    }
+                    catch (const CharacterRepository::NotFoundException &)
+                    {
+                    }
                 }
             }
             break;
@@ -368,6 +389,8 @@ namespace Evernus
                 return tr("First issued");
             case stationColumn:
                 return tr("Station");
+            case ownerColumn:
+                return tr("Owner");
             }
         }
 
@@ -415,6 +438,8 @@ namespace Evernus
 
     MarketOrderTreeModel::OrderList MarketOrderBuyModel::getOrders() const
     {
-        return mOrderProvider.getBuyOrders(mCharacterId);
+        return (mCorp) ?
+               (mOrderProvider.getBuyOrdersForCorporation(mCharacterRepository.getCorporationId(mCharacterId))) :
+               (mOrderProvider.getBuyOrders(mCharacterId));
     }
 }

@@ -34,5 +34,9 @@ namespace Evernus
         virtual std::vector<std::shared_ptr<MarketOrder>> getSellOrders(Character::IdType characterId) const = 0;
         virtual std::vector<std::shared_ptr<MarketOrder>> getBuyOrders(Character::IdType characterId) const = 0;
         virtual std::vector<std::shared_ptr<MarketOrder>> getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const = 0;
+
+        virtual std::vector<std::shared_ptr<MarketOrder>> getSellOrdersForCorporation(uint corporationId) const = 0;
+        virtual std::vector<std::shared_ptr<MarketOrder>> getBuyOrdersForCorporation(uint corporationId) const = 0;
+        virtual std::vector<std::shared_ptr<MarketOrder>> getArchivedOrdersForCorporation(uint corporationId, const QDateTime &from, const QDateTime &to) const = 0;
     };
 }

@@ -32,16 +32,26 @@ namespace Evernus
         virtual std::vector<std::shared_ptr<MarketOrder>> getBuyOrders(Character::IdType characterId) const override;
         virtual std::vector<std::shared_ptr<MarketOrder>> getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const override;
 
-        void clearOrders(Character::IdType id) const;
+        virtual std::vector<std::shared_ptr<MarketOrder>> getSellOrdersForCorporation(uint corporationId) const override;
+        virtual std::vector<std::shared_ptr<MarketOrder>> getBuyOrdersForCorporation(uint corporationId) const override;
+        virtual std::vector<std::shared_ptr<MarketOrder>> getArchivedOrdersForCorporation(uint corporationId, const QDateTime &from, const QDateTime &to) const override;
+
+        void clearOrdersForCharacter(Character::IdType id) const;
+        void clearOrdersForCorporation(uint id) const;
         void clearArchived() const;
 
     private:
         typedef std::unordered_map<Character::IdType, MarketOrderRepository::EntityList> MarketOrderMap;
+        typedef std::unordered_map<uint, MarketOrderRepository::EntityList> CorpMarketOrderMap;
 
         const MarketOrderRepository &mOrderRepo;
 
         mutable MarketOrderMap mSellOrders;
         mutable MarketOrderMap mBuyOrders;
         mutable MarketOrderMap mArchivedOrders;
+
+        mutable CorpMarketOrderMap mCorpSellOrders;
+        mutable CorpMarketOrderMap mCorpBuyOrders;
+        mutable CorpMarketOrderMap mCorpArchivedOrders;
     };
 }

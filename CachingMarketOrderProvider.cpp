@@ -59,15 +59,60 @@ namespace Evernus
         return result;
     }
 
-    void CachingMarketOrderProvider::clearOrders(Character::IdType id) const
+    std::vector<std::shared_ptr<MarketOrder>> CachingMarketOrderProvider::getSellOrdersForCorporation(uint corporationId) const
+    {
+        auto it = mCorpSellOrders.find(corporationId);
+        if (it == std::end(mCorpSellOrders))
+            it = mCorpSellOrders.emplace(corporationId, mOrderRepo.fetchForCorporation(corporationId, MarketOrder::Type::Sell)).first;
+
+        return it->second;
+    }
+
+    std::vector<std::shared_ptr<MarketOrder>> CachingMarketOrderProvider::getBuyOrdersForCorporation(uint corporationId) const
+    {
+        auto it = mCorpBuyOrders.find(corporationId);
+        if (it == std::end(mCorpBuyOrders))
+            it = mCorpBuyOrders.emplace(corporationId, mOrderRepo.fetchForCorporation(corporationId, MarketOrder::Type::Buy)).first;
+
+        return it->second;
+    }
+
+    std::vector<std::shared_ptr<MarketOrder>> CachingMarketOrderProvider
+    ::getArchivedOrdersForCorporation(uint corporationId, const QDateTime &from, const QDateTime &to) const
+    {
+        auto it = mCorpArchivedOrders.find(corporationId);
+        if (it == std::end(mCorpArchivedOrders))
+            it = mCorpArchivedOrders.emplace(corporationId, mOrderRepo.fetchArchivedForCorporation(corporationId)).first;
+
+        std::vector<std::shared_ptr<MarketOrder>> result;
+        for (const auto &order : it->second)
+        {
+            const auto lastSeen = order->getLastSeen();
+
+            if (lastSeen >= from && lastSeen <= to)
+                result.emplace_back(order);
+        }
+
+        return result;
+    }
+
+    void CachingMarketOrderProvider::clearOrdersForCharacter(Character::IdType id) const
     {
         mSellOrders.erase(id);
         mBuyOrders.erase(id);
         mArchivedOrders.erase(id);
     }
 
+    void CachingMarketOrderProvider::clearOrdersForCorporation(uint id) const
+    {
+        mCorpSellOrders.erase(id);
+        mCorpBuyOrders.erase(id);
+        mCorpArchivedOrders.erase(id);
+    }
+
     void CachingMarketOrderProvider::clearArchived() const
     {
         mArchivedOrders.clear();
+        mCorpArchivedOrders.clear();
     }
 }

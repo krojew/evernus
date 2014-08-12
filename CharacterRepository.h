@@ -50,6 +50,7 @@ namespace Evernus
         QString getNameColumn() const;
 
         uint getCorporationId(Character::IdType id) const;
+        QString getCharacterName(Character::IdType id) const;
 
     private:
         virtual QStringList getColumns() const override;

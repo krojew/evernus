@@ -200,6 +200,19 @@ namespace Evernus
         return query.value(0).toUInt();
     }
 
+    QString CharacterRepository::getCharacterName(Character::IdType id) const
+    {
+        auto query = prepare(QString{"SELECT name FROM %1 WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
+        query.bindValue(0, id);
+
+        DatabaseUtils::execQuery(query);
+
+        if (!query.next())
+            throw NotFoundException{};
+
+        return query.value(0).toString();
+    }
+
     QStringList CharacterRepository::getColumns() const
     {
         return QStringList{}
