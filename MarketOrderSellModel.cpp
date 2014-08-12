@@ -521,6 +521,9 @@ namespace Evernus
 
     MarketOrderTreeModel::OrderList MarketOrderSellModel::getOrders() const
     {
+        if (!mCharacter)
+            return OrderList{};
+
         return (mCorp) ?
                (mOrderProvider.getSellOrdersForCorporation(mCharacter->getCorporationId())) :
                (mOrderProvider.getSellOrders(mCharacterId));
