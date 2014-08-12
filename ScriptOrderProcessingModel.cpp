@@ -90,6 +90,7 @@ namespace Evernus
             orderObject.setProperty("issued", engine.newDate(order->getIssued()));
             orderObject.setProperty("firstSeen", engine.newDate(order->getFirstSeen()));
             orderObject.setProperty("lastSeen", engine.newDate(order->getLastSeen()));
+            orderObject.setProperty("corporationId", order->getCorporationId());
 
             return orderObject;
         };
