@@ -58,14 +58,11 @@ namespace Evernus
             {
                 if (minorVersion < 5)
                 {
-                    if (minorVersion < 4)
-                    {
-                        if (minorVersion < 3)
-                            settings.setValue(PriceSettings::autoAddCustomItemCostKey, false);
+                    if (minorVersion < 3)
+                        settings.setValue(PriceSettings::autoAddCustomItemCostKey, false);
 
-                        cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
-                        cacheTimerRepo.create(characterRepo);
-                    }
+                    cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
+                    cacheTimerRepo.create(characterRepo);
 
                     characterRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterRepo.getTableName()));
                     characterOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterOrderRepo.getTableName()));
