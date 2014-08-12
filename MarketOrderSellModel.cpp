@@ -73,6 +73,8 @@ namespace Evernus
             }
         }
 
+        Q_ASSERT(mCharacter);
+
         const auto data = item->getOrder();
 
         switch (role) {
@@ -531,6 +533,13 @@ namespace Evernus
 
     void MarketOrderSellModel::handleNewCharacter()
     {
-        mCharacter = mCharacterRepository.find(mCharacterId);
+        try
+        {
+            mCharacter = mCharacterRepository.find(mCharacterId);
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            mCharacter.reset();
+        }
     }
 }
