@@ -1009,12 +1009,12 @@
     <message>
         <location filename="../HttpService.cpp" line="62"/>
         <source>Character Orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia postaci</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="63"/>
         <source>Corporation Orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia korporacji</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="65"/>
@@ -1029,82 +1029,82 @@
     <message>
         <location filename="../HttpService.cpp" line="85"/>
         <source>Filters</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtry</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="86"/>
         <source>Status filter:</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtr stanu:</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="88"/>
         <source>Changed</source>
-        <translation type="unfinished">Zmienione</translation>
+        <translation>Zmienione</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="90"/>
         <source>Active</source>
-        <translation type="unfinished">Aktywne</translation>
+        <translation>Aktywne</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="92"/>
         <source>Fulfilled</source>
-        <translation type="unfinished">Zakończone</translation>
+        <translation>Zakończone</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="94"/>
         <source>Cancelled</source>
-        <translation type="unfinished">Anulowane</translation>
+        <translation>Anulowane</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="96"/>
         <source>Pending</source>
-        <translation type="unfinished">Oczekujące</translation>
+        <translation>Oczekujące</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="98"/>
         <source>Deleted</source>
-        <translation type="unfinished">Usunięte</translation>
+        <translation>Usunięte</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="100"/>
         <source>Expired</source>
-        <translation type="unfinished"></translation>
+        <translation>Wygasłe</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="101"/>
         <source>Price status filter:</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtr stanu ceny:</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="103"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="105"/>
         <source>No data</source>
-        <translation type="unfinished">Brak danych</translation>
+        <translation>Brak danych</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="107"/>
         <source>Data too old</source>
-        <translation type="unfinished">Dane za stare</translation>
+        <translation>Dane za stare</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="108"/>
         <source>Apply</source>
-        <translation type="unfinished">Zastosuj</translation>
+        <translation>Zastosuj</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="109"/>
         <source>Sell Orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
         <location filename="../HttpService.cpp" line="110"/>
         <source>Buy Orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Zlecenia kupna</translation>
     </message>
 </context>
 <context>
