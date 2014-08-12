@@ -41,8 +41,8 @@ namespace Evernus
         , mCharacterRepo(characterRepo)
         , mCrypt(HttpSettings::cryptKey)
         , mSellModel(orderProvider, dataProvider, itemCostProvider, cacheTimerProvider, characterRepo, false)
-        , mCorpSellModel(corpOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider, characterRepo, false)
-        , mBuyModel(orderProvider, dataProvider, cacheTimerProvider, characterRepo, true)
+        , mCorpSellModel(corpOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider, characterRepo, true)
+        , mBuyModel(orderProvider, dataProvider, cacheTimerProvider, characterRepo, false)
         , mCorpBuyModel(corpOrderProvider, dataProvider, cacheTimerProvider, characterRepo, true)
         , mSellModelProxy(dataProvider)
         , mBuyModelProxy(dataProvider)
@@ -65,22 +65,6 @@ namespace Evernus
         mIndexTemplate["select-character-text"] = tr("Select character:");
         mIndexTemplate["ok-text"] = tr("OK");
         mIndexTemplate["character-id-name"] = characterIdName;
-
-        const auto sellColumns = mSellModel.columnCount(QModelIndex{});
-        QStringList columns;
-
-        for (auto i = 0; i < sellColumns; ++i)
-            columns << QString{"<th>%1</th>"}.arg(mSellModel.headerData(i, Qt::Horizontal).toString());
-
-        mOrdersTemplate["sell-order-columns"] = columns.join(QString{});
-        columns.clear();
-
-        const auto buyColumns = mBuyModel.columnCount(QModelIndex{});
-
-        for (auto i = 0; i < buyColumns; ++i)
-            columns << QString{"<th>%1</th>"}.arg(mBuyModel.headerData(i, Qt::Horizontal).toString());
-
-        mOrdersTemplate["buy-order-columns"] = columns.join(QString{});
 
         mOrdersTemplate["filters-text"] = tr("Filters");
         mOrdersTemplate["status-filter-text"] = tr("Status filter:");
@@ -117,6 +101,11 @@ namespace Evernus
         default:
             mOrdersTemplate["dt-language-url"] = "//cdn.datatables.net/plug-ins/725b2a2115b/i18n/English.json";
         }
+
+        mCorpOrdersTemplate = mOrdersTemplate;
+
+        fillTableTemplate(mOrdersTemplate, mSellModel, mBuyModel);
+        fillTableTemplate(mCorpOrdersTemplate, mCorpSellModel, mCorpBuyModel);
     }
 
     void HttpService::index(QxtWebRequestEvent *event)
@@ -142,7 +131,7 @@ namespace Evernus
         mSellModel.setCharacter(characterId);
         mBuyModel.setCharacter(characterId);
 
-        renderOrders(event, mBuyModelProxy, mSellModelProxy);
+        renderOrders(event, mBuyModelProxy, mSellModelProxy, mOrdersTemplate);
     }
 
     void HttpService::corporationOrders(QxtWebRequestEvent *event)
@@ -152,7 +141,7 @@ namespace Evernus
         mCorpSellModel.setCharacter(characterId);
         mCorpBuyModel.setCharacter(characterId);
 
-        renderOrders(event, mCorpBuyModelProxy, mCorpSellModelProxy);
+        renderOrders(event, mCorpBuyModelProxy, mCorpSellModelProxy, mCorpOrdersTemplate);
     }
 
     void HttpService::pageRequestedEvent(QxtWebRequestEvent *event)
@@ -199,7 +188,10 @@ namespace Evernus
         }
     }
 
-    void HttpService::renderOrders(QxtWebRequestEvent *event, MarketOrderFilterProxyModel &buyModel, MarketOrderFilterProxyModel &sellModel)
+    void HttpService::renderOrders(QxtWebRequestEvent *event,
+                                   MarketOrderFilterProxyModel &buyModel,
+                                   MarketOrderFilterProxyModel &sellModel,
+                                   QxtHtmlTemplate &htmlTemplate)
     {
         const auto filters = getFilters(event);
         sellModel.setStatusFilter(filters.first);
@@ -241,35 +233,35 @@ namespace Evernus
             return orders.join(QString{});
         };
 
-        mOrdersTemplate["sell-orders"] = renderer(sellModel);
-        mOrdersTemplate["buy-orders"] = renderer(buyModel);
+        htmlTemplate["sell-orders"] = renderer(sellModel);
+        htmlTemplate["buy-orders"] = renderer(buyModel);
 
         const auto statusFilter = sellModel.getStatusFilter();
         const auto priceStatusFilter = sellModel.getPriceStatusFilter();
 
-        mOrdersTemplate["changed-filter-checked"]
+        htmlTemplate["changed-filter-checked"]
             = (statusFilter & MarketOrderFilterProxyModel::Changed) ? ("checked") : (QString{});
-        mOrdersTemplate["active-filter-checked"]
+        htmlTemplate["active-filter-checked"]
             = (statusFilter & MarketOrderFilterProxyModel::Active) ? ("checked") : (QString{});
-        mOrdersTemplate["fulfilled-filter-checked"]
+        htmlTemplate["fulfilled-filter-checked"]
             = (statusFilter & MarketOrderFilterProxyModel::Fulfilled) ? ("checked") : (QString{});
-        mOrdersTemplate["cancelled-filter-checked"]
+        htmlTemplate["cancelled-filter-checked"]
             = (statusFilter & MarketOrderFilterProxyModel::Cancelled) ? ("checked") : (QString{});
-        mOrdersTemplate["pending-filter-checked"]
+        htmlTemplate["pending-filter-checked"]
             = (statusFilter & MarketOrderFilterProxyModel::Pending) ? ("checked") : (QString{});
-        mOrdersTemplate["deleted-filter-checked"]
+        htmlTemplate["deleted-filter-checked"]
             = (statusFilter & MarketOrderFilterProxyModel::CharacterDeleted) ? ("checked") : (QString{});
-        mOrdersTemplate["expired-filter-checked"]
+        htmlTemplate["expired-filter-checked"]
             = (statusFilter & MarketOrderFilterProxyModel::Expired) ? ("checked") : (QString{});
 
-        mOrdersTemplate["ok-filter-checked"]
+        htmlTemplate["ok-filter-checked"]
             = (priceStatusFilter & MarketOrderFilterProxyModel::Ok) ? ("checked") : (QString{});
-        mOrdersTemplate["no-data-filter-checked"]
+        htmlTemplate["no-data-filter-checked"]
             = (priceStatusFilter & MarketOrderFilterProxyModel::NoData) ? ("checked") : (QString{});
-        mOrdersTemplate["data-too-old-filter-checked"]
+        htmlTemplate["data-too-old-filter-checked"]
             = (priceStatusFilter & MarketOrderFilterProxyModel::DataTooOld) ? ("checked") : (QString{});
 
-        renderContent(event, mOrdersTemplate.render());
+        renderContent(event, htmlTemplate.render());
     }
 
     void HttpService::renderContent(QxtWebRequestEvent *event, const QString &content)
@@ -320,5 +312,25 @@ namespace Evernus
             result.second = static_cast<MarketOrderFilterProxyModel::PriceStatusFilters>(query.queryItemValue(priceStatusFilterName).toInt());
 
         return result;
+    }
+
+    void HttpService
+    ::fillTableTemplate(QxtHtmlTemplate &htmlTemplate, const MarketOrderSellModel &sellModel, const MarketOrderBuyModel &buyModel)
+    {
+        const auto sellColumns = sellModel.columnCount(QModelIndex{});
+        QStringList columns;
+
+        for (auto i = 0; i < sellColumns; ++i)
+            columns << QString{"<th>%1</th>"}.arg(sellModel.headerData(i, Qt::Horizontal).toString());
+
+        htmlTemplate["sell-order-columns"] = columns.join(QString{});
+        columns.clear();
+
+        const auto buyColumns = buyModel.columnCount(QModelIndex{});
+
+        for (auto i = 0; i < buyColumns; ++i)
+            columns << QString{"<th>%1</th>"}.arg(buyModel.headerData(i, Qt::Horizontal).toString());
+
+        htmlTemplate["buy-order-columns"] = columns.join(QString{});
     }
 }

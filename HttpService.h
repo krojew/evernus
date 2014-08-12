@@ -65,14 +65,17 @@ namespace Evernus
 
         SimpleCrypt mCrypt;
 
-        QxtHtmlTemplate mMainTemplate, mIndexTemplate, mOrdersTemplate;
+        QxtHtmlTemplate mMainTemplate, mIndexTemplate, mOrdersTemplate, mCorpOrdersTemplate;
 
         MarketOrderSellModel mSellModel, mCorpSellModel;
         MarketOrderBuyModel mBuyModel, mCorpBuyModel;
 
         MarketOrderFilterProxyModel mSellModelProxy, mBuyModelProxy, mCorpSellModelProxy, mCorpBuyModelProxy;
 
-        void renderOrders(QxtWebRequestEvent *event, MarketOrderFilterProxyModel &buyModel, MarketOrderFilterProxyModel &sellModel);
+        void renderOrders(QxtWebRequestEvent *event,
+                          MarketOrderFilterProxyModel &buyModel,
+                          MarketOrderFilterProxyModel &sellModel,
+                          QxtHtmlTemplate &htmlTemplate);
 
         void renderContent(QxtWebRequestEvent *event, const QString &content);
         void postUnauthorized(QxtWebRequestEvent *event);
@@ -80,5 +83,9 @@ namespace Evernus
         static bool isIndexAction(QxtWebRequestEvent *event);
         static Character::IdType getCharacterId(QxtWebRequestEvent *event);
         static FilterPair getFilters(QxtWebRequestEvent *event);
+
+        static void fillTableTemplate(QxtHtmlTemplate &htmlTemplate,
+                                      const MarketOrderSellModel &sellModel,
+                                      const MarketOrderBuyModel &buyModel);
     };
 }

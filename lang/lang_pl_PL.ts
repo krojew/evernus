@@ -1027,82 +1027,82 @@
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="85"/>
+        <location filename="../HttpService.cpp" line="69"/>
         <source>Filters</source>
         <translation>Filtry</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="86"/>
+        <location filename="../HttpService.cpp" line="70"/>
         <source>Status filter:</source>
         <translation>Filtr stanu:</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="88"/>
+        <location filename="../HttpService.cpp" line="72"/>
         <source>Changed</source>
         <translation>Zmienione</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="90"/>
+        <location filename="../HttpService.cpp" line="74"/>
         <source>Active</source>
         <translation>Aktywne</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="92"/>
+        <location filename="../HttpService.cpp" line="76"/>
         <source>Fulfilled</source>
         <translation>Zakończone</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="94"/>
+        <location filename="../HttpService.cpp" line="78"/>
         <source>Cancelled</source>
         <translation>Anulowane</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="96"/>
+        <location filename="../HttpService.cpp" line="80"/>
         <source>Pending</source>
         <translation>Oczekujące</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="98"/>
+        <location filename="../HttpService.cpp" line="82"/>
         <source>Deleted</source>
         <translation>Usunięte</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="100"/>
+        <location filename="../HttpService.cpp" line="84"/>
         <source>Expired</source>
         <translation>Wygasłe</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="101"/>
+        <location filename="../HttpService.cpp" line="85"/>
         <source>Price status filter:</source>
         <translation>Filtr stanu ceny:</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="103"/>
+        <location filename="../HttpService.cpp" line="87"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="105"/>
+        <location filename="../HttpService.cpp" line="89"/>
         <source>No data</source>
         <translation>Brak danych</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="107"/>
+        <location filename="../HttpService.cpp" line="91"/>
         <source>Data too old</source>
         <translation>Dane za stare</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="108"/>
+        <location filename="../HttpService.cpp" line="92"/>
         <source>Apply</source>
         <translation>Zastosuj</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="109"/>
+        <location filename="../HttpService.cpp" line="93"/>
         <source>Sell Orders</source>
         <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
-        <location filename="../HttpService.cpp" line="110"/>
+        <location filename="../HttpService.cpp" line="94"/>
         <source>Buy Orders</source>
         <translation>Zlecenia kupna</translation>
     </message>
