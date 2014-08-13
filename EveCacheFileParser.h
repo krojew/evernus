@@ -21,28 +21,38 @@
 
 namespace Evernus
 {
-    class EveCacheFile;
+    class EveCacheReader;
 
     class EveCacheFileParser
     {
     public:
-        explicit EveCacheFileParser(EveCacheFile &file);
+        explicit EveCacheFileParser(EveCacheReader &file);
         ~EveCacheFileParser() = default;
 
         void parse();
 
+        std::vector<EveCacheNode::NodePtr> &getStreams() &;
+        const std::vector<EveCacheNode::NodePtr> &getStreams() const &;
+        std::vector<EveCacheNode::NodePtr> &&getStreams() && noexcept;
+
     private:
-        EveCacheFile &mFile;
+        EveCacheReader &mReader;
 
         std::vector<EveCacheNode::NodePtr> mStreams;
         std::vector<uint> mShareMap;
         std::vector<EveCacheNode::Base *> mShareObjs;
+
+        size_t mShareCursor = 0;
 
         void initShare();
         void skipShare();
 
         void parse(EveCacheNode::Base &stream, uint limit);
         EveCacheNode::NodePtr parseNext();
+        EveCacheNode::NodePtr parseDBRow();
+
+        EveCacheNode::NodePtr getShare(size_t index) const;
+        void addShare(EveCacheNode::Base *node);
 
         uint parseLen();
     };

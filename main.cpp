@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(importCorpMarketOrdersFromLogs(Character::IdType)), SLOT(refreshCorpMarketOrdersFromLogs(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(importExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)));
-            app.connect(&mainWnd, SIGNAL(importExternalOrdersFromCache(const ItemPriceImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &)));
+            app.connect(&mainWnd, SIGNAL(importExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(preferencesChanged()), SLOT(handleNewPreferences()));
             app.connect(&mainWnd, SIGNAL(importFromMentat()), SLOT(importFromMentat()));
             mainWnd.connect(&app, SIGNAL(taskStarted(uint, const QString &)), SLOT(addNewTaskInfo(uint, const QString &)));

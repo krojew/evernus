@@ -28,18 +28,26 @@
     </message>
 </context>
 <context>
-    <name>EveCacheFile</name>
+    <name>EveCacheBuffer</name>
     <message>
-        <location filename="../EveCacheFile.cpp" line="37"/>
-        <location filename="../EveCacheFile.cpp" line="42"/>
-        <source>Cannot open file.</source>
+        <location filename="../EveCacheBuffer.cpp" line="54"/>
+        <location filename="../EveCacheBuffer.cpp" line="72"/>
+        <location filename="../EveCacheBuffer.cpp" line="95"/>
+        <location filename="../EveCacheBuffer.cpp" line="104"/>
+        <source>Error reading cache.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EveCacheFile.cpp" line="80"/>
-        <location filename="../EveCacheFile.cpp" line="98"/>
-        <location filename="../EveCacheFile.cpp" line="121"/>
-        <source>Error reading file.</source>
+        <location filename="../EveCacheBuffer.cpp" line="117"/>
+        <source>Cannot open buffer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EveCacheFile</name>
+    <message>
+        <location filename="../EveCacheFile.cpp" line="39"/>
+        <source>Cannot open file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

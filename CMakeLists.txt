@@ -210,6 +210,8 @@ add_executable(
     DateRangeWidget.cpp
     DateRangeWidget.h
     Entity.h
+    EveCacheBuffer.cpp
+    EveCacheBuffer.h
     EveCacheFile.cpp
     EveCacheFile.h
     EveCacheFileParser.cpp
@@ -218,6 +220,7 @@ add_executable(
     EveCacheManager.h
     EveCacheNodes.cpp
     EveCacheNodes.h
+    EveCacheReader.h
     EveDataProvider.h
     EveMarketDataExternalOrderImporter.cpp
     EveMarketDataExternalOrderImporter.h

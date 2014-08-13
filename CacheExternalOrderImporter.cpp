@@ -54,6 +54,7 @@ namespace Evernus
         try
         {
             manager.parseMachoNet();
+            emit externalOrdersChanged(std::vector<ExternalOrder>{});
         }
         catch (const std::exception &e)
         {

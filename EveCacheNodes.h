@@ -14,10 +14,11 @@
  */
 #pragma once
 
-#include <cstdint>
 #include <vector>
 #include <memory>
 #include <string>
+
+#include <QtGlobal>
 
 namespace Evernus
 {
@@ -29,6 +30,7 @@ namespace Evernus
 
         enum class StreamCode
         {
+            Invalid = 0,
             StreamStart = 0x7e,
             None = 0x01, // Python None type
             String = 0x2, // Another type of string, also ids
@@ -68,6 +70,7 @@ namespace Evernus
             CompressedRow = 0x2a, // the datatype from hell, a RLEish compressed row
             Substream = 0x2b, // substream - len bytes followed by 0x7e
             TuplePair = 0x2c, // a tuple of 2 objects
+            Mark = 0x2d, // marker (for the NEWOBJ/REDUCE iterators that follow them)
             String2 = 0x2e, // stringtastic
             SizedInt = 0x2f, // when you can't decide ahead of time how long to make the integer...
         };
@@ -76,13 +79,18 @@ namespace Evernus
         {
         public:
             Base() = default;
-            Base(const Base &) = delete;
-            Base(Base &&) = delete;
+            Base(const Base &other);
+            Base(Base &&) = default;
             virtual ~Base() = default;
 
             void addChild(NodePtr &&child);
 
-            Base &operator =(const Base &) = delete;
+            std::vector<NodePtr> &getChildren() noexcept;
+            const std::vector<NodePtr> &getChildren() const noexcept;
+
+            virtual NodePtr clone() const;
+
+            Base &operator =(const Base &other) = delete;
             Base &operator =(Base &&) = delete;
 
         private:
@@ -94,7 +102,11 @@ namespace Evernus
         {
         public:
             None() = default;
+            None(const None &) = default;
+            None(None &&) = default;
             virtual ~None() = default;
+
+            virtual NodePtr clone() const override;
         };
 
         class Real
@@ -102,7 +114,11 @@ namespace Evernus
         {
         public:
             Real(double value);
+            Real(const Real &) = default;
+            Real(Real &&) = default;
             virtual ~Real() = default;
+
+            virtual NodePtr clone() const override;
 
             double getValue() const noexcept;
 
@@ -114,13 +130,17 @@ namespace Evernus
             : public Base
         {
         public:
-            Int(int32_t value);
+            Int(qint32 value);
+            Int(const Int &) = default;
+            Int(Int &&) = default;
             virtual ~Int() = default;
 
-            int32_t getValue() const noexcept;
+            virtual NodePtr clone() const override;
+
+            qint32 getValue() const noexcept;
 
         private:
-            int32_t mValue = 0;
+            qint32 mValue = 0;
         };
 
         class Bool
@@ -128,7 +148,11 @@ namespace Evernus
         {
         public:
             Bool(bool value);
+            Bool(const Bool &) = default;
+            Bool(Bool &&) = default;
             virtual ~Bool() = default;
+
+            virtual NodePtr clone() const override;
 
             bool getValue() const noexcept;
 
@@ -140,13 +164,17 @@ namespace Evernus
             : public Base
         {
         public:
-            LongLong(int64_t value);
+            LongLong(qint64 value);
+            LongLong(const LongLong &) = default;
+            LongLong(LongLong &&) = default;
             virtual ~LongLong() = default;
 
-            int64_t getValue() const noexcept;
+            virtual NodePtr clone() const override;
+
+            qint64 getValue() const noexcept;
 
         private:
-            int64_t mValue = false;
+            qint64 mValue = false;
         };
 
         class Ident
@@ -155,7 +183,11 @@ namespace Evernus
         public:
             Ident(const std::string &name);
             Ident(std::string &&name);
+            Ident(const Ident &) = default;
+            Ident(Ident &&) = default;
             virtual ~Ident() = default;
+
+            virtual NodePtr clone() const override;
 
             std::string getName() const;
 
@@ -170,12 +202,101 @@ namespace Evernus
             String() = default;
             String(const std::string &value);
             String(std::string &&value);
+            String(const String &) = default;
+            String(String &&) = default;
             virtual ~String() = default;
+
+            virtual NodePtr clone() const override;
 
             std::string getValue() const;
 
         private:
             std::string mValue;
+        };
+
+        class Dictionary
+            : public Base
+        {
+        public:
+            Dictionary() = default;
+            Dictionary(const Dictionary &) = default;
+            Dictionary(Dictionary &&) = default;
+            virtual ~Dictionary() = default;
+
+            virtual NodePtr clone() const override;
+        };
+
+        class Tuple
+            : public Base
+        {
+        public:
+            Tuple() = default;
+            Tuple(const Tuple &) = default;
+            Tuple(Tuple &&) = default;
+            virtual ~Tuple() = default;
+
+            virtual NodePtr clone() const override;
+        };
+
+        class Substream
+            : public Base
+        {
+        public:
+            Substream() = default;
+            Substream(const Substream &) = default;
+            Substream(Substream &&) = default;
+            virtual ~Substream() = default;
+
+            virtual NodePtr clone() const override;
+        };
+
+        class Object
+            : public Base
+        {
+        public:
+            Object() = default;
+            Object(const Object &) = default;
+            Object(Object &&) = default;
+            virtual ~Object() = default;
+
+            virtual NodePtr clone() const override;
+
+            std::string getName() const;
+        };
+
+        class Marker
+            : public Base
+        {
+        public:
+            explicit Marker(uchar id);
+            Marker(const Marker &) = default;
+            Marker(Marker &&) = default;
+            virtual ~Marker() = default;
+
+            virtual NodePtr clone() const override;
+
+            uchar getId() const noexcept;
+
+        private:
+            uchar mId = 0;
+        };
+
+        class DBRow
+            : public Base
+        {
+        public:
+            DBRow(int id, const std::vector<uchar> &data);
+            DBRow(int id, std::vector<uchar> &&data);
+            DBRow(const DBRow &) = default;
+            DBRow(DBRow &&) = default;
+            virtual ~DBRow() = default;
+
+            virtual NodePtr clone() const override;
+
+        private:
+            int mId = 0;
+            bool mLast = false;
+            std::vector<uchar> mData;
         };
     }
 }

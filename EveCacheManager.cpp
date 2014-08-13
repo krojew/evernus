@@ -63,15 +63,17 @@ namespace Evernus
         QDirIterator dirIt{mMachoNetPath};
         while (dirIt.hasNext())
         {
+            dirIt.next();
+
             auto ok = false;
-            const auto cur = dirIt.next().toUInt(&ok);
+            const auto cur = dirIt.fileName().toUInt(&ok);
 
             if (ok && cur > max)
                 max = cur;
         }
 
         if (max == 0)
-            return;
+            throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheManager", "No cache files found!")};
 
         qDebug() << "Cache version:" << max;
 
@@ -86,14 +88,21 @@ namespace Evernus
                 QDirIterator fileIt{curPath, QStringList{"*.cache"}, QDir::Files | QDir::Readable};
                 while (fileIt.hasNext())
                 {
-                    const QString file = curPath % "/" % fileIt.next();
+                    const auto file = fileIt.next();
                     qDebug() << "Parsing file:" << file;
 
-                    EveCacheFile cacheFile{file};
-                    cacheFile.open();
+                    try
+                    {
+                        EveCacheFile cacheFile{file};
+                        cacheFile.open();
 
-                    EveCacheFileParser parser{cacheFile};
-                    parser.parse();
+                        EveCacheFileParser parser{cacheFile};
+                        parser.parse();
+                    }
+                    catch (const std::exception &e)
+                    {
+                        qDebug() << e.what();
+                    }
                 }
             }
         }

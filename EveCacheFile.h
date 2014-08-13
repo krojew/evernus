@@ -14,14 +14,12 @@
  */
 #pragma once
 
-#include <cstdint>
-#include <string>
-
-#include <QBuffer>
+#include "EveCacheBuffer.h"
 
 namespace Evernus
 {
     class EveCacheFile
+        : public EveCacheBuffer
     {
     public:
         explicit EveCacheFile(const QString &fileName);
@@ -30,25 +28,10 @@ namespace Evernus
         virtual ~EveCacheFile() = default;
 
         void open();
-        bool seek(qint64 pos);
-        void advance(qint64 offset);
-        void setSize(qint64 size);
-
-        bool atEnd() const;
-        qint64 getPos() const;
-        qint64 getSize() const;
-
-        unsigned char readChar();
-        int32_t readInt();
-        double readDouble();
-        int64_t readLongLong();
-        int16_t readShort();
-        std::string readString(uint len);
 
         EveCacheFile &operator =(const EveCacheFile &) = delete;
 
     private:
         QString mFileName;
-        QBuffer mBuffer;
     };
 }

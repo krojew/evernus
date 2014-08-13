@@ -18,9 +18,36 @@ namespace Evernus
 {
     namespace EveCacheNode
     {
+        Base::Base(const Base &other)
+        {
+            mChildren.reserve(other.mChildren.size());
+            for (const auto &child : other.mChildren)
+                mChildren.emplace_back(child->clone());
+        }
+
         void Base::addChild(NodePtr &&child)
         {
             mChildren.emplace_back(std::move(child));
+        }
+
+        std::vector<NodePtr> &Base::getChildren() noexcept
+        {
+            return mChildren;
+        }
+
+        const std::vector<NodePtr> &Base::getChildren() const noexcept
+        {
+            return mChildren;
+        }
+
+        NodePtr Base::clone() const
+        {
+            return std::make_unique<Base>(*this);
+        }
+
+        NodePtr None::clone() const
+        {
+            return std::make_unique<None>(*this);
         }
 
         Real::Real(double value)
@@ -29,18 +56,28 @@ namespace Evernus
         {
         }
 
+        NodePtr Real::clone() const
+        {
+            return std::make_unique<Real>(*this);
+        }
+
         double Real::getValue() const noexcept
         {
             return mValue;
         }
 
-        Int::Int(int32_t value)
+        Int::Int(qint32 value)
             : Base{}
             , mValue{value}
         {
         }
 
-        int32_t Int::getValue() const noexcept
+        NodePtr Int::clone() const
+        {
+            return std::make_unique<Int>(*this);
+        }
+
+        qint32 Int::getValue() const noexcept
         {
             return mValue;
         }
@@ -51,18 +88,28 @@ namespace Evernus
         {
         }
 
+        NodePtr Bool::clone() const
+        {
+            return std::make_unique<Bool>(*this);
+        }
+
         bool Bool::getValue() const noexcept
         {
             return mValue;
         }
 
-        LongLong::LongLong(int64_t value)
+        LongLong::LongLong(qint64 value)
             : Base{}
             , mValue{value}
         {
         }
 
-        int64_t LongLong::getValue() const noexcept
+        NodePtr LongLong::clone() const
+        {
+            return std::make_unique<LongLong>(*this);
+        }
+
+        qint64 LongLong::getValue() const noexcept
         {
             return mValue;
         }
@@ -77,6 +124,11 @@ namespace Evernus
             : Base{}
             , mName{std::move(name)}
         {
+        }
+
+        NodePtr Ident::clone() const
+        {
+            return std::make_unique<Ident>(*this);
         }
 
         std::string Ident::getName() const
@@ -96,9 +148,79 @@ namespace Evernus
         {
         }
 
+        NodePtr String::clone() const
+        {
+            return std::make_unique<String>(*this);
+        }
+
         std::string String::getValue() const
         {
             return mValue;
+        }
+
+        NodePtr Dictionary::clone() const
+        {
+            return std::make_unique<Dictionary>(*this);
+        }
+
+        NodePtr Tuple::clone() const
+        {
+            return std::make_unique<Tuple>(*this);
+        }
+
+        NodePtr Substream::clone() const
+        {
+            return std::make_unique<Substream>(*this);
+        }
+
+        NodePtr Object::clone() const
+        {
+            return std::make_unique<Object>(*this);
+        }
+
+        std::string Object::getName() const
+        {
+            const Base *current = this;
+            while (current->getChildren().size() != 0)
+                current = current->getChildren().front().get();
+
+            const auto string = dynamic_cast<const String *>(current);
+            return (string != nullptr) ? (string->getValue()) : (std::string{});
+        }
+
+        Marker::Marker(uchar id)
+            : Base{}
+            , mId{id}
+        {
+        }
+
+        NodePtr Marker::clone() const
+        {
+            return std::make_unique<Marker>(*this);
+        }
+
+        uchar Marker::getId() const noexcept
+        {
+            return mId;
+        }
+
+        DBRow::DBRow(int id, const std::vector<uchar> &data)
+            : Base{}
+            , mId{id}
+            , mData{data}
+        {
+        }
+
+        DBRow::DBRow(int id, std::vector<uchar> &&data)
+            : Base{}
+            , mId{id}
+            , mData{std::move(data)}
+        {
+        }
+
+        NodePtr DBRow::clone() const
+        {
+            return std::make_unique<DBRow>(*this);
         }
     }
 }
