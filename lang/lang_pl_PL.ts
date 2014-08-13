@@ -1857,138 +1857,163 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Twoja cena była najlepsza: %1</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="195"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="204"/>
         <source>Active</source>
         <translation>Aktywne</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="196"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="205"/>
         <source>Closed</source>
         <translation>Zamknięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="197"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="206"/>
         <source>Fulfilled</source>
         <translation>Zakończone</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="198"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="207"/>
         <source>Cancelled</source>
         <translation>Anulowane</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="199"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="208"/>
         <source>Pending</source>
         <translation>Oczekujące</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="200"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="209"/>
         <source>Character Deleted</source>
         <translation>Usunięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="215"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="224"/>
         <source>Expired</source>
         <translation>Wygasłe</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="227"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="236"/>
         <source>No price data</source>
         <translation>Brak danych o cenie</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="232"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="241"/>
         <source>Data too old</source>
         <translation>Dane za stare</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="248"/>
-        <location filename="../MarketOrderBuyModel.cpp" line="391"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="257"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="415"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="250"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="259"/>
         <source>System</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="252"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="261"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="254"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="263"/>
         <source>%1 jumps</source>
         <translation>%1 skoków</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="365"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="272"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="276"/>
+        <source>unknown</source>
+        <translation>nieznany</translation>
+    </message>
+    <message>
+        <location filename="../MarketOrderBuyModel.cpp" line="279"/>
+        <source>today</source>
+        <translation>dziś</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../MarketOrderBuyModel.cpp" line="279"/>
+        <source>%n day(s)</source>
+        <translation>
+            <numerusform>%n dzień</numerusform>
+            <numerusform>%n dni</numerusform>
+            <numerusform>%n dni</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../MarketOrderBuyModel.cpp" line="387"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="367"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="389"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="369"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="391"/>
         <source>Status</source>
         <translation>Stan</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="371"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="393"/>
         <source>Price</source>
         <translation>Cena</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="373"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="395"/>
         <source>Price status</source>
         <translation>Stan ceny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="375"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="397"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="377"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="399"/>
         <source>Total</source>
         <translation>Suma</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="379"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="401"/>
         <source>Delta</source>
         <translation>Zmiana</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="381"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="403"/>
         <source>Range</source>
         <translation>Zasięg</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="383"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="405"/>
         <source>Min. quantity</source>
         <translation>Min. ilość</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="385"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="407"/>
+        <source>ETA</source>
+        <translation>ETA</translation>
+    </message>
+    <message>
+        <location filename="../MarketOrderBuyModel.cpp" line="409"/>
         <source>Time left</source>
         <translation>Pozostały czas</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="387"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="411"/>
         <source>Order age</source>
         <translation>Wiek zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="389"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="413"/>
         <source>First issued</source>
         <translation>Wystawiono</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="393"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="417"/>
         <source>Owner</source>
         <translation>Właściciel</translation>
     </message>
@@ -2170,137 +2195,162 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Twoja cena była najlepsza: %1</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="230"/>
+        <location filename="../MarketOrderSellModel.cpp" line="239"/>
         <source>Active</source>
         <translation>Aktywne</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="231"/>
+        <location filename="../MarketOrderSellModel.cpp" line="240"/>
         <source>Closed</source>
         <translation>Zamknięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="232"/>
+        <location filename="../MarketOrderSellModel.cpp" line="241"/>
         <source>Fulfilled</source>
         <translation>Zakończone</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="233"/>
+        <location filename="../MarketOrderSellModel.cpp" line="242"/>
         <source>Cancelled</source>
         <translation>Anulowane</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="234"/>
+        <location filename="../MarketOrderSellModel.cpp" line="243"/>
         <source>Pending</source>
         <translation>Oczekujące</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="235"/>
+        <location filename="../MarketOrderSellModel.cpp" line="244"/>
         <source>Character Deleted</source>
         <translation>Usunięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="250"/>
+        <location filename="../MarketOrderSellModel.cpp" line="259"/>
         <source>Expired</source>
         <translation>Wygasłe</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="269"/>
+        <location filename="../MarketOrderSellModel.cpp" line="278"/>
         <source>No price data</source>
         <translation>Brak danych o cenie</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="274"/>
+        <location filename="../MarketOrderSellModel.cpp" line="283"/>
         <source>Data too old</source>
         <translation>Dane za stare</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="444"/>
+        <location filename="../MarketOrderSellModel.cpp" line="330"/>
+        <location filename="../MarketOrderSellModel.cpp" line="334"/>
+        <source>unknown</source>
+        <translation>nieznany</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../MarketOrderSellModel.cpp" line="337"/>
+        <source>%n day(s)</source>
+        <translation>
+            <numerusform>%n dzień</numerusform>
+            <numerusform>%n dni</numerusform>
+            <numerusform>%n dni</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../MarketOrderSellModel.cpp" line="337"/>
+        <source>today</source>
+        <translation>dziś</translation>
+    </message>
+    <message>
+        <location filename="../MarketOrderSellModel.cpp" line="466"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="446"/>
+        <location filename="../MarketOrderSellModel.cpp" line="468"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="448"/>
+        <location filename="../MarketOrderSellModel.cpp" line="470"/>
         <source>Status</source>
         <translation>Stan</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="450"/>
+        <location filename="../MarketOrderSellModel.cpp" line="472"/>
         <source>Custom cost</source>
         <translation>Koszt własny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="452"/>
+        <location filename="../MarketOrderSellModel.cpp" line="474"/>
         <source>Price</source>
         <translation>Cena</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="454"/>
+        <location filename="../MarketOrderSellModel.cpp" line="476"/>
         <source>Price status</source>
         <translation>Stan ceny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="456"/>
+        <location filename="../MarketOrderSellModel.cpp" line="478"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="458"/>
+        <location filename="../MarketOrderSellModel.cpp" line="480"/>
         <source>Total</source>
         <translation>Suma</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="460"/>
+        <location filename="../MarketOrderSellModel.cpp" line="482"/>
         <source>Delta</source>
         <translation>Zmiana</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="462"/>
+        <location filename="../MarketOrderSellModel.cpp" line="484"/>
         <source>Margin</source>
         <translation>Marża</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="464"/>
+        <location filename="../MarketOrderSellModel.cpp" line="486"/>
         <source>Profit</source>
         <translation>Zysk</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="466"/>
+        <location filename="../MarketOrderSellModel.cpp" line="488"/>
         <source>Total profit</source>
         <translation>Całkowity zysk</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="468"/>
+        <location filename="../MarketOrderSellModel.cpp" line="490"/>
         <source>Profit per item</source>
         <translation>Zysk jednostkowy</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="470"/>
+        <location filename="../MarketOrderSellModel.cpp" line="492"/>
+        <source>ETA</source>
+        <translation>ETA</translation>
+    </message>
+    <message>
+        <location filename="../MarketOrderSellModel.cpp" line="494"/>
         <source>Time left</source>
         <translation>Pozostały czas</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="472"/>
+        <location filename="../MarketOrderSellModel.cpp" line="496"/>
         <source>Order age</source>
         <translation>Wiek zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="474"/>
+        <location filename="../MarketOrderSellModel.cpp" line="498"/>
         <source>First issued</source>
         <translation>Wystawiono</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="476"/>
+        <location filename="../MarketOrderSellModel.cpp" line="500"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="478"/>
+        <location filename="../MarketOrderSellModel.cpp" line="502"/>
         <source>Owner</source>
         <translation>Właściciel</translation>
     </message>

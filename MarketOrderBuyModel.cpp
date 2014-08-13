@@ -48,7 +48,7 @@ namespace Evernus
 
     int MarketOrderBuyModel::columnCount(const QModelIndex &parent) const
     {
-        return (mCorp) ? (15) : (14);
+        return (mCorp) ? (16) : (15);
     }
 
     QVariant MarketOrderBuyModel::data(const QModelIndex &index, int role) const
@@ -157,6 +157,15 @@ namespace Evernus
                 return data->getRange();
             case minQuantityColumn:
                 return data->getMinVolume();
+            case etaColumn:
+                {
+                    const auto elapsed = data->getIssued().daysTo(QDateTime::currentDateTimeUtc());
+                    if (elapsed <= 0)
+                        return 0;
+
+                    const auto movement = (data->getVolumeEntered() - data->getVolumeRemaining()) / elapsed;
+                    return (movement > 0) ? (data->getVolumeRemaining() / movement) : (0);
+                }
             case timeLeftColumn:
                 {
                     const auto timeEnd = data->getIssued().addDays(data->getDuration()).toMSecsSinceEpoch() / 1000;
@@ -256,6 +265,19 @@ namespace Evernus
                     }
                 case minQuantityColumn:
                     return locale.toString(data->getMinVolume());
+                case etaColumn:
+                    {
+                        const auto elapsed = data->getIssued().daysTo(QDateTime::currentDateTimeUtc());
+                        if (elapsed <= 0)
+                            return tr("unknown");
+
+                        const auto movement = (data->getVolumeEntered() - data->getVolumeRemaining()) / elapsed;
+                        if (movement <= 0)
+                            return tr("unknown");
+
+                        const auto eta = data->getVolumeRemaining() / movement;
+                        return (eta > 0) ? (tr("%n day(s)", "", eta)) : (tr("today"));
+                    }
                 case timeLeftColumn:
                     {
                         const auto timeEnd = data->getIssued().addDays(data->getDuration()).toMSecsSinceEpoch() / 1000;
@@ -381,6 +403,8 @@ namespace Evernus
                 return tr("Range");
             case minQuantityColumn:
                 return tr("Min. quantity");
+            case etaColumn:
+                return tr("ETA");
             case timeLeftColumn:
                 return tr("Time left");
             case orderAgeColumn:

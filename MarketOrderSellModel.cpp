@@ -51,7 +51,7 @@ namespace Evernus
 
     int MarketOrderSellModel::columnCount(const QModelIndex &parent) const
     {
-        return (mCorp) ? (18) : (17);
+        return (mCorp) ? (19) : (18);
     }
 
     QVariant MarketOrderSellModel::data(const QModelIndex &index, int role) const
@@ -192,6 +192,15 @@ namespace Evernus
                     const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
                     return realPrice - realCost;
                 }
+            case etaColumn:
+                {
+                    const auto elapsed = data->getIssued().daysTo(QDateTime::currentDateTimeUtc());
+                    if (elapsed <= 0)
+                        return 0;
+
+                    const auto movement = (data->getVolumeEntered() - data->getVolumeRemaining()) / elapsed;
+                    return (movement > 0) ? (data->getVolumeRemaining() / movement) : (0);
+                }
             case timeLeftColumn:
                 {
                     const auto timeEnd = data->getIssued().addDays(data->getDuration()).toMSecsSinceEpoch() / 1000;
@@ -313,6 +322,19 @@ namespace Evernus
                         const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
                         const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
                         return locale.toCurrencyString(realPrice - realCost, "ISK");
+                    }
+                case etaColumn:
+                    {
+                        const auto elapsed = data->getIssued().daysTo(QDateTime::currentDateTimeUtc());
+                        if (elapsed <= 0)
+                            return tr("unknown");
+
+                        const auto movement = (data->getVolumeEntered() - data->getVolumeRemaining()) / elapsed;
+                        if (movement <= 0)
+                            return tr("unknown");
+
+                        const auto eta = data->getVolumeRemaining() / movement;
+                        return (eta > 0) ? (tr("%n day(s)", "", eta)) : (tr("today"));
                     }
                 case timeLeftColumn:
                     {
@@ -466,6 +488,8 @@ namespace Evernus
                 return tr("Total profit");
             case profitPerItemColumn:
                 return tr("Profit per item");
+            case etaColumn:
+                return tr("ETA");
             case timeLeftColumn:
                 return tr("Time left");
             case orderAgeColumn:

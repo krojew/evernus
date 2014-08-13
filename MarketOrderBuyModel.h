@@ -60,11 +60,12 @@ namespace Evernus
         static const auto deltaColumn = 7;
         static const auto rangeColumn = 8;
         static const auto minQuantityColumn = 9;
-        static const auto timeLeftColumn = 10;
-        static const auto orderAgeColumn = 11;
-        static const auto firstSeenColumn = 12;
-        static const auto stationColumn = 13;
-        static const auto ownerColumn = 14;
+        static const auto etaColumn = 10;
+        static const auto timeLeftColumn = 11;
+        static const auto orderAgeColumn = 12;
+        static const auto firstSeenColumn = 13;
+        static const auto stationColumn = 14;
+        static const auto ownerColumn = 15;
 
         const MarketOrderProvider &mOrderProvider;
         const CacheTimerProvider &mCacheTimerProvider;

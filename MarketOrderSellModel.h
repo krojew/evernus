@@ -66,11 +66,12 @@ namespace Evernus
         static const auto profitColumn = 10;
         static const auto totalProfitColumn = 11;
         static const auto profitPerItemColumn = 12;
-        static const auto timeLeftColumn = 13;
-        static const auto orderAgeColumn = 14;
-        static const auto firstSeenColumn = 15;
-        static const auto stationColumn = 16;
-        static const auto ownerColumn = 17;
+        static const auto etaColumn = 13;
+        static const auto timeLeftColumn = 14;
+        static const auto orderAgeColumn = 15;
+        static const auto firstSeenColumn = 16;
+        static const auto stationColumn = 17;
+        static const auto ownerColumn = 18;
 
         const MarketOrderProvider &mOrderProvider;
         const ItemCostProvider &mItemCostProvider;
