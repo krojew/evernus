@@ -45,6 +45,5 @@
         <file>html/http_template.html</file>
         <file>html/igb_order_template.html</file>
         <file>html/igb_template.html</file>
-        <file>html/igb_order_template.html</file>
     </qresource>
 </RCC>
