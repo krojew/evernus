@@ -414,6 +414,8 @@ add_executable(
     Repository.h
     ScriptOrderProcessingModel.cpp
     ScriptOrderProcessingModel.h
+    ScriptUtils.cpp
+    ScriptUtils.h
     SimpleCrypt.cpp
     SimpleCrypt.h
     StationModel.cpp

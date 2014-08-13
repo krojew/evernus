@@ -43,7 +43,8 @@ namespace Evernus
         mainLayout->addWidget(mOrderView, 1);
         connect(this, &MarketOrderViewWithTransactions::statusFilterChanged, mOrderView, &MarketOrderView::statusFilterChanged);
         connect(this, &MarketOrderViewWithTransactions::priceStatusFilterChanged, mOrderView, &MarketOrderView::priceStatusFilterChanged);
-        connect(this, &MarketOrderViewWithTransactions::wildcardChanged, mOrderView, &MarketOrderView::wildcardChanged);
+        connect(this, &MarketOrderViewWithTransactions::textFilterChanged, mOrderView, &MarketOrderView::textFilterChanged);
+        connect(mOrderView, &MarketOrderView::scriptError, this, &MarketOrderViewWithTransactions::scriptError);
         connect(mOrderView->getSelectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &MarketOrderViewWithTransactions::selectOrder);
 

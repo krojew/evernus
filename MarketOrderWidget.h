@@ -75,6 +75,8 @@ namespace Evernus
 
         void setArchiveRange(const QDate &from, const QDate &to);
 
+        void showScriptError(const QString &message);
+
     private:
         static const QString settingsLastTabkey;
 

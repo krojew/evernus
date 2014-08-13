@@ -15,6 +15,7 @@
 #include <QWidgetAction>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QCheckBox>
 #include <QLineEdit>
 #include <QMenu>
 
@@ -27,7 +28,7 @@
 namespace Evernus
 {
     MarketOrderFilterWidget::MarketOrderFilterWidget(const FilterTextRepository &filterRepo, QWidget *parent)
-        : QWidget{parent}
+        : QWidget(parent)
     {
         auto mainLayout = new QHBoxLayout{};
         setLayout(mainLayout);
@@ -62,9 +63,13 @@ namespace Evernus
         mPriceStatusFilterBtn->setFlat(true);
         mPriceStatusFilterBtn->setMenu(filterPriceStatusMenu);
 
-        auto filterEdit = new TextFilterWidget{filterRepo, this};
-        mainLayout->addWidget(filterEdit, 1);
-        connect(filterEdit, &TextFilterWidget::filterEntered, this, &MarketOrderFilterWidget::applyWildcard);
+        mFilterEdit = new TextFilterWidget{filterRepo, this};
+        mainLayout->addWidget(mFilterEdit, 1);
+        connect(mFilterEdit, &TextFilterWidget::filterEntered, this, &MarketOrderFilterWidget::applyTextFilter);
+
+        mScriptFilterBtn = new QCheckBox{tr("Script"), this};
+        mainLayout->addWidget(mScriptFilterBtn);
+        connect(mScriptFilterBtn, &QCheckBox::toggled, this, &MarketOrderFilterWidget::applyScriptChange);
     }
 
     void MarketOrderFilterWidget::setStatusFilter(const MarketOrderFilterProxyModel::StatusFilters &filter)
@@ -79,9 +84,18 @@ namespace Evernus
         emit priceStatusFilterChanged(filter);
     }
 
-    void MarketOrderFilterWidget::applyWildcard(const QString &text)
+    void MarketOrderFilterWidget::applyTextFilter(const QString &text)
     {
-        emit wildcardChanged(text);
+        emit textFilterChanged(text, mScriptFilterBtn->isChecked());
+    }
+
+    void MarketOrderFilterWidget::applyScriptChange(bool scriptChecked)
+    {
+        mFilterEdit->lineEdit()->setPlaceholderText((scriptChecked) ?
+                                                    (tr("type in script and press Enter")) :
+                                                    (TextFilterWidget::getDefaultPlaceholderText()));
+
+        emit textFilterChanged(mFilterEdit->currentText(), mScriptFilterBtn->isChecked());
     }
 
     QString MarketOrderFilterWidget::getStateFilterButtonText(const MarketOrderFilterProxyModel::StatusFilters &filter)

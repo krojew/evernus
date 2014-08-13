@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QMessageBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QTabWidget>
@@ -20,6 +21,7 @@
 #include <QSettings>
 #include <QLabel>
 #include <QDebug>
+#include <QMenu>
 
 #include "MarketOrderViewWithTransactions.h"
 #include "MarketOrderFilterWidget.h"
@@ -72,15 +74,15 @@ namespace Evernus
             emit importFromLogs(getCharacterId());
         });
 
-        auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import prices from Web"), this};
-        toolBarLayout->addWidget(importFromWeb);
-        importFromWeb->setFlat(true);
-        connect(importFromWeb, &QPushButton::clicked, this, &MarketOrderWidget::prepareItemImportFromWeb);
+        auto importMenu = new QMenu{this};
 
-        auto importFromFile = new QPushButton{QIcon{":/images/page_refresh.png"}, tr("Import prices from logs"), this};
-        toolBarLayout->addWidget(importFromFile);
-        importFromFile->setFlat(true);
-        connect(importFromFile, &QPushButton::clicked, this, &MarketOrderWidget::prepareItemImportFromFile);
+        importMenu->addAction(QIcon{":/images/world.png"}, tr("Import prices from Web"), this, SLOT(prepareItemImportFromWeb()));
+        importMenu->addAction(QIcon{":/images/page_refresh.png"}, tr("Import prices from logs"), this, SLOT(prepareItemImportFromFile()));
+
+        auto allImportBtn = new QPushButton{QIcon{"images/arrow_refresh_small.png"}, tr("Import prices"), this};
+        toolBarLayout->addWidget(allImportBtn);
+        allImportBtn->setFlat(true);
+        allImportBtn->setMenu(importMenu);
 
         auto openMarginTool = new QPushButton{QIcon{":/images/report.png"}, tr("Open margin tool"), this};
         toolBarLayout->addWidget(openMarginTool);
@@ -111,9 +113,10 @@ namespace Evernus
         mSellView->setModel(&mSellModel);
         mSellView->sortByColumn(0, Qt::AscendingOrder);
         connect(this, &MarketOrderWidget::characterChanged, mSellView, &MarketOrderViewWithTransactions::setCharacter);
+        connect(mSellView, &MarketOrderViewWithTransactions::scriptError, this, &MarketOrderWidget::showScriptError);
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mSellView, &MarketOrderViewWithTransactions::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mSellView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
-        connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mSellView, &MarketOrderViewWithTransactions::wildcardChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::textFilterChanged, mSellView, &MarketOrderViewWithTransactions::textFilterChanged);
 
         mBuyView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, itemCostProvider, this};
         mainTabs->addTab(mBuyView, QIcon{":/images/arrow_in.png"}, tr("Buy"));
@@ -122,7 +125,7 @@ namespace Evernus
         connect(this, &MarketOrderWidget::characterChanged, mBuyView, &MarketOrderViewWithTransactions::setCharacter);
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mBuyView, &MarketOrderViewWithTransactions::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mBuyView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
-        connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mBuyView, &MarketOrderViewWithTransactions::wildcardChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::textFilterChanged, mBuyView, &MarketOrderViewWithTransactions::textFilterChanged);
 
         auto combinedWidget = new QWidget{this};
         mainTabs->addTab(combinedWidget, QIcon{":/images/arrow_inout.png"}, tr("Sell && Buy"));
@@ -142,7 +145,7 @@ namespace Evernus
         mCombinedSellView->sortByColumn(0, Qt::AscendingOrder);
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mCombinedSellView, &MarketOrderView::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mCombinedSellView, &MarketOrderView::priceStatusFilterChanged);
-        connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mCombinedSellView, &MarketOrderView::wildcardChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::textFilterChanged, mCombinedSellView, &MarketOrderView::textFilterChanged);
 
         auto buyGroup = new QGroupBox{tr("Buy orders"), this};
         combinedLayout->addWidget(buyGroup);
@@ -156,7 +159,7 @@ namespace Evernus
         mCombinedBuyView->sortByColumn(0, Qt::AscendingOrder);
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mCombinedBuyView, &MarketOrderView::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mCombinedBuyView, &MarketOrderView::priceStatusFilterChanged);
-        connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mCombinedBuyView, &MarketOrderView::wildcardChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::textFilterChanged, mCombinedBuyView, &MarketOrderView::textFilterChanged);
 
         auto archiveTab = new QWidget{this};
         mainTabs->addTab(archiveTab, QIcon{":/images/hourglass.png"}, tr("History"));
@@ -181,7 +184,7 @@ namespace Evernus
         mArchiveView->setModel(&mArchiveModel);
         mArchiveView->sortByColumn(0, Qt::DescendingOrder);
         connect(this, &MarketOrderWidget::characterChanged, mArchiveView, &MarketOrderViewWithTransactions::setCharacter);
-        connect(stateFilter, &MarketOrderFilterWidget::wildcardChanged, mArchiveView, &MarketOrderViewWithTransactions::wildcardChanged);
+        connect(stateFilter, &MarketOrderFilterWidget::textFilterChanged, mArchiveView, &MarketOrderViewWithTransactions::textFilterChanged);
 
         QSettings settings;
         mainTabs->setCurrentIndex(settings.value(settingsLastTabkey).toInt());
@@ -230,6 +233,11 @@ namespace Evernus
     void MarketOrderWidget::setArchiveRange(const QDate &from, const QDate &to)
     {
         mArchiveModel.setCharacterAndRange(getCharacterId(), QDateTime{from}.toUTC(), QDateTime{to}.addDays(1).toUTC());
+    }
+
+    void MarketOrderWidget::showScriptError(const QString &message)
+    {
+        QMessageBox::warning(this, tr("Script error"), message);
     }
 
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)

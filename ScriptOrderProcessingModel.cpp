@@ -15,6 +15,7 @@
 #include <QScriptEngine>
 
 #include "EveDataProvider.h"
+#include "ScriptUtils.h"
 
 #include "ScriptOrderProcessingModel.h"
 
@@ -70,31 +71,6 @@ namespace Evernus
         engine.globalObject().setProperty("getLocationName", engine.newFunction(
             &ScriptOrderProcessingModel::getLocationName, const_cast<EveDataProvider *>(&mDataProvider)));
 
-        const auto makeOrderObject = [&engine](const auto &order) {
-            auto orderObject = engine.newObject();
-            orderObject.setProperty("id", QString::number(order->getId()));
-            orderObject.setProperty("characterId", QString::number(order->getCharacterId()));
-            orderObject.setProperty("stationId", static_cast<quint32>(order->getLocationId()));
-            orderObject.setProperty("volumeEntered", order->getVolumeEntered());
-            orderObject.setProperty("volumeRemaining", order->getVolumeRemaining());
-            orderObject.setProperty("minVolume", order->getMinVolume());
-            orderObject.setProperty("delta", order->getDelta());
-            orderObject.setProperty("state", static_cast<int>(order->getState()));
-            orderObject.setProperty("typeId", order->getTypeId());
-            orderObject.setProperty("range", order->getRange());
-            orderObject.setProperty("accountKey", order->getAccountKey());
-            orderObject.setProperty("duration", order->getDuration());
-            orderObject.setProperty("escrow", order->getEscrow());
-            orderObject.setProperty("price", order->getPrice());
-            orderObject.setProperty("type", static_cast<int>(order->getType()));
-            orderObject.setProperty("issued", engine.newDate(order->getIssued()));
-            orderObject.setProperty("firstSeen", engine.newDate(order->getFirstSeen()));
-            orderObject.setProperty("lastSeen", engine.newDate(order->getLastSeen()));
-            orderObject.setProperty("corporationId", order->getCorporationId());
-
-            return orderObject;
-        };
-
         if (mode == Mode::ForEach)
         {
             auto processFunction = engine.evaluate("(function process(order) {\n" + script + "\n})");
@@ -108,7 +84,7 @@ namespace Evernus
             for (const auto &order : orders)
             {
                 const auto value
-                    = processFunction.call(QScriptValue{}, QScriptValueList{} << makeOrderObject(order)).toVariant().toList();
+                    = processFunction.call(QScriptValue{}, QScriptValueList{} << ScriptUtils::wrapMarketOrder(engine, *order)).toVariant().toList();
                 if (engine.hasUncaughtException())
                 {
                     endResetModel();
@@ -135,7 +111,7 @@ namespace Evernus
 
             auto arguments = engine.newArray(static_cast<uint>(orders.size()));
             for (auto i = 0u; i < orders.size(); ++i)
-                arguments.setProperty(i, makeOrderObject(orders[i]));
+                arguments.setProperty(i, ScriptUtils::wrapMarketOrder(engine, *orders[i]));
 
             const auto value = processFunction.call(QScriptValue{}, QScriptValueList{} << arguments).toVariant().toList();
             if (engine.hasUncaughtException())

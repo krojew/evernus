@@ -47,7 +47,8 @@ namespace Evernus
         mProxy.setFilterCaseSensitivity(Qt::CaseInsensitive);
         connect(this, &MarketOrderView::statusFilterChanged, &mProxy, &MarketOrderFilterProxyModel::setStatusFilter);
         connect(this, &MarketOrderView::priceStatusFilterChanged, &mProxy, &MarketOrderFilterProxyModel::setPriceStatusFilter);
-        connect(this, &MarketOrderView::wildcardChanged, &mProxy, &MarketOrderFilterProxyModel::setFilterWildcard);
+        connect(this, &MarketOrderView::textFilterChanged, &mProxy, &MarketOrderFilterProxyModel::setTextFilter);
+        connect(&mProxy, &MarketOrderFilterProxyModel::scriptError, this, &MarketOrderView::scriptError);
 
         mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);

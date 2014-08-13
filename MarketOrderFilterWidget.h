@@ -19,10 +19,12 @@
 #include "MarketOrderFilterProxyModel.h"
 
 class QPushButton;
+class QCheckBox;
 
 namespace Evernus
 {
     class FilterTextRepository;
+    class TextFilterWidget;
 
     class MarketOrderFilterWidget
         : public QWidget
@@ -37,17 +39,20 @@ namespace Evernus
         void statusFilterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);
         void priceStatusFilterChanged(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
 
-        void wildcardChanged(const QString &text);
+        void textFilterChanged(const QString &text, bool script);
 
     private slots:
         void setStatusFilter(const MarketOrderFilterProxyModel::StatusFilters &filter);
         void setPriceStatusFilter(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
 
-        void applyWildcard(const QString &text);
+        void applyTextFilter(const QString &text);
+        void applyScriptChange(bool scriptChecked);
 
     private:
         QPushButton *mStateFilterBtn = nullptr;
         QPushButton *mPriceStatusFilterBtn = nullptr;
+        TextFilterWidget *mFilterEdit = nullptr;
+        QCheckBox *mScriptFilterBtn = nullptr;
 
         static QString getStateFilterButtonText(const MarketOrderFilterProxyModel::StatusFilters &filter);
         static QString getPriceStatusFilterButtonText(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);

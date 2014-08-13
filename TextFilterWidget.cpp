@@ -21,8 +21,8 @@
 namespace Evernus
 {
     TextFilterWidget::TextFilterWidget(const FilterTextRepository &filterRepo, QWidget *parent)
-        : QComboBox(parent)
-        , mFilterRepo(filterRepo)
+        : QComboBox{parent}
+        , mFilterRepo{filterRepo}
     {
         addItems(mFilterRepo.fetchRecentlyUsed());
         setEditable(true);
@@ -30,10 +30,15 @@ namespace Evernus
         setCurrentText(QString{});
 
         auto edit = lineEdit();
-        edit->setPlaceholderText(tr("type in wildcard and press Enter"));
+        edit->setPlaceholderText(getDefaultPlaceholderText());
         connect(edit, &QLineEdit::returnPressed, this, &TextFilterWidget::applyCurrentFilter);
 
         connect(&mFilterRepo, &FilterTextRepository::filtersChanged, this, &TextFilterWidget::refreshHistory);
+    }
+
+    QString TextFilterWidget::getDefaultPlaceholderText()
+    {
+        return tr("type in wildcard and press Enter");
     }
 
     void TextFilterWidget::applyCurrentFilter()

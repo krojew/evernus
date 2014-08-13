@@ -29,6 +29,8 @@ namespace Evernus
         explicit TextFilterWidget(const FilterTextRepository &filterRepo, QWidget *parent = nullptr);
         virtual ~TextFilterWidget() = default;
 
+        static QString getDefaultPlaceholderText();
+
     signals:
         void filterEntered(const QString &text);
 

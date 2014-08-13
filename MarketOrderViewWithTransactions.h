@@ -55,7 +55,9 @@ namespace Evernus
         void statusFilterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);
         void priceStatusFilterChanged(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
 
-        void wildcardChanged(const QString &text);
+        void textFilterChanged(const QString &text, bool script);
+
+        void scriptError(const QString &message);
 
     private slots:
         void selectOrder(const QItemSelection &selected, const QItemSelection &deselected);

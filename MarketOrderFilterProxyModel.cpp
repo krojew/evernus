@@ -13,12 +13,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QSettings>
+#include <QTimer>
 
 #include "MarketOrderModel.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "ExternalOrder.h"
 #include "MarketOrder.h"
+#include "ScriptUtils.h"
 #include "UISettings.h"
 
 #include "MarketOrderFilterProxyModel.h"
@@ -67,6 +69,33 @@ namespace Evernus
         invalidateFilter();
     }
 
+    void MarketOrderFilterProxyModel::setTextFilter(const QString &text, bool script)
+    {
+        if (script)
+        {
+            mEngine.clearExceptions();
+            mFilterFunction = mEngine.evaluate("(function process(order) {\nreturn " + text + ";\n})");
+
+            if (mEngine.hasUncaughtException())
+                emit scriptError(mEngine.uncaughtException().toString());
+
+            setFilterWildcard(QString{});
+        }
+        else
+        {
+            mFilterFunction = QScriptValue{};
+            setFilterWildcard(text);
+        }
+    }
+
+    void MarketOrderFilterProxyModel::unscheduleScriptError()
+    {
+        mScriptErrorScheduled = false;
+        mEngine.clearExceptions();
+
+        emit scriptError(mEngine.uncaughtException().toString());
+    }
+
     bool MarketOrderFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
     {
         const auto parentResult = LeafFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
@@ -79,7 +108,7 @@ namespace Evernus
         if (order == nullptr)
             return hasAcceptedChildren(sourceRow, sourceParent);
 
-        return acceptsStatus(*order) && acceptsPriceStatus(*order);
+        return acceptsStatus(*order) && acceptsPriceStatus(*order) && acceptsByScript(*order);
     }
 
     bool MarketOrderFilterProxyModel::acceptsStatus(const MarketOrder &order) const
@@ -128,5 +157,49 @@ namespace Evernus
             return true;
 
         return false;
+    }
+
+    bool MarketOrderFilterProxyModel::acceptsByScript(const MarketOrder &order) const
+    {
+        if (!mFilterFunction.isValid())
+            return true;
+
+        auto scriptOrder = ScriptUtils::wrapMarketOrder(mEngine, order);
+
+        std::shared_ptr<ExternalOrder> overbidOrder;
+
+        const auto type = static_cast<MarketOrderModel *>(sourceModel())->getType();
+        switch (type) {
+        case MarketOrderModel::Type::Buy:
+            overbidOrder = mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getLocationId());
+            break;
+        case MarketOrderModel::Type::Sell:
+            overbidOrder = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getLocationId());
+            break;
+        default:
+            break;
+        }
+
+        if (overbidOrder)
+        {
+            const auto diff = order.getPrice() - overbidOrder->getValue();
+            auto overbidObj = mEngine.newObject();
+
+            overbidObj.setPrototype(ScriptUtils::wrapExternalOrder(mEngine, *overbidOrder));
+            overbidObj.setProperty("diff", diff);
+            overbidObj.setProperty("diffRatio", diff / order.getPrice());
+
+            scriptOrder.setProperty("overbid", overbidObj);
+        }
+
+        auto result = mFilterFunction.call(QScriptValue{}, QScriptValueList{} << scriptOrder).toBool();
+
+        if (mEngine.hasUncaughtException() && !mScriptErrorScheduled)
+        {
+            mScriptErrorScheduled = true;
+            QTimer::singleShot(0, this, SLOT(unscheduleScriptError()));
+        }
+
+        return result;
     }
 }
