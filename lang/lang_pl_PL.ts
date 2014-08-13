@@ -2915,7 +2915,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="639"/>
-        <location filename="../StatisticsWidget.cpp" line="670"/>
+        <location filename="../StatisticsWidget.cpp" line="671"/>
         <source>Apply</source>
         <translation>Zastosuj</translation>
     </message>
@@ -2925,37 +2925,37 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Przetwarzanie skryptem</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="662"/>
+        <location filename="../StatisticsWidget.cpp" line="663"/>
         <source>see the online help to learn how to use script processing</source>
         <translation>zajrzyj do pomocy online, aby się dowiedzieć jak używać skryptów</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="675"/>
+        <location filename="../StatisticsWidget.cpp" line="676"/>
         <source>Save script...</source>
         <translation>Zapisz skrypt...</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="679"/>
+        <location filename="../StatisticsWidget.cpp" line="680"/>
         <source>Load script...</source>
         <translation>Załaduj skrypt...</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="683"/>
+        <location filename="../StatisticsWidget.cpp" line="684"/>
         <source>Delete script...</source>
         <translation>Usuń skrypt...</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="687"/>
+        <location filename="../StatisticsWidget.cpp" line="688"/>
         <source>Mode</source>
         <translation>Tryb</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="693"/>
+        <location filename="../StatisticsWidget.cpp" line="694"/>
         <source>For each</source>
         <translation>Dla każdego</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="697"/>
+        <location filename="../StatisticsWidget.cpp" line="698"/>
         <source>Aggregate</source>
         <translation>Agregacja</translation>
     </message>
@@ -2989,14 +2989,14 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="127"/>
-        <location filename="../Updater.cpp" line="138"/>
-        <location filename="../Updater.cpp" line="148"/>
+        <location filename="../Updater.cpp" line="124"/>
+        <location filename="../Updater.cpp" line="135"/>
+        <location filename="../Updater.cpp" line="145"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="127"/>
+        <location filename="../Updater.cpp" line="124"/>
         <source>Error contacting update server: %1</source>
         <translation>Błąd odpytywania serwera akutalizacji: %1</translation>
     </message>
@@ -3005,8 +3005,8 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="79"/>
-        <location filename="../Updater.cpp" line="87"/>
+        <location filename="../Updater.cpp" line="76"/>
+        <location filename="../Updater.cpp" line="84"/>
         <source>Update</source>
         <translation>Aktualizacja</translation>
     </message>
@@ -3018,46 +3018,46 @@ Please click on &quot;Import all&quot; after the update.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="79"/>
+        <location filename="../Updater.cpp" line="76"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania wszystkich danych.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="87"/>
+        <location filename="../Updater.cpp" line="84"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation>Wystąpił błąd podczas akutalizacji.
 Kopia zapasowa bazay danych została zapisana jako %1. Zajrzyj do pomocy online w celu uzyskania informacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="138"/>
+        <location filename="../Updater.cpp" line="135"/>
         <source>Error parsing response from the update server: %1</source>
         <translation>Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="148"/>
+        <location filename="../Updater.cpp" line="145"/>
         <source>Missing update version information!</source>
         <translation>Brak informacji o wersji!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="161"/>
+        <location filename="../Updater.cpp" line="158"/>
         <source>No update found</source>
         <translation>Brak aktualizacji</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="161"/>
+        <location filename="../Updater.cpp" line="158"/>
         <source>Your current version is up-to-date.</source>
         <translation>Twoja wersja jest najbardziej aktualna.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="167"/>
+        <location filename="../Updater.cpp" line="164"/>
         <source>Update found</source>
         <translation>Znaleziono aktualizację</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="167"/>
+        <location filename="../Updater.cpp" line="164"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation>Znaleziono nową wersję: %1
