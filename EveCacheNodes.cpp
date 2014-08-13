@@ -18,9 +18,87 @@ namespace Evernus
 {
     namespace EveCacheNode
     {
-        Base::Base(StreamCode code)
-            : mCode{code}
+        void Base::addChild(NodePtr &&child)
         {
+            mChildren.emplace_back(std::move(child));
+        }
+
+        Real::Real(double value)
+            : Base{}
+            , mValue{value}
+        {
+        }
+
+        double Real::getValue() const noexcept
+        {
+            return mValue;
+        }
+
+        Int::Int(int32_t value)
+            : Base{}
+            , mValue{value}
+        {
+        }
+
+        int32_t Int::getValue() const noexcept
+        {
+            return mValue;
+        }
+
+        Bool::Bool(bool value)
+            : Base{}
+            , mValue{value}
+        {
+        }
+
+        bool Bool::getValue() const noexcept
+        {
+            return mValue;
+        }
+
+        LongLong::LongLong(int64_t value)
+            : Base{}
+            , mValue{value}
+        {
+        }
+
+        int64_t LongLong::getValue() const noexcept
+        {
+            return mValue;
+        }
+
+        Ident::Ident(const std::string &name)
+            : Base{}
+            , mName{name}
+        {
+        }
+
+        Ident::Ident(std::string &&name)
+            : Base{}
+            , mName{std::move(name)}
+        {
+        }
+
+        std::string Ident::getName() const
+        {
+            return mName;
+        }
+
+        String::String(const std::string &value)
+            : Base{}
+            , mValue{value}
+        {
+        }
+
+        String::String(std::string &&value)
+            : Base{}
+            , mValue{std::move(value)}
+        {
+        }
+
+        std::string String::getValue() const
+        {
+            return mValue;
         }
     }
 }

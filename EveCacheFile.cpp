@@ -21,14 +21,12 @@
 namespace Evernus
 {
     EveCacheFile::EveCacheFile(const QString &fileName)
-        : QBuffer{}
-        , mFileName{fileName}
+        : mFileName{fileName}
     {
     }
 
     EveCacheFile::EveCacheFile(QString &&fileName)
-        : QBuffer{}
-        , mFileName{std::move(fileName)}
+        : mFileName{std::move(fileName)}
     {
     }
 
@@ -36,54 +34,92 @@ namespace Evernus
     {
         QFile file{mFileName};
         if (!file.open(QIODevice::ReadOnly))
-            throw std::runtime_error{tr("Cannot open file.").toStdString()};
+            throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheFile", "Cannot open file.")};
 
-        setData(file.readAll());
+        mBuffer.setData(file.readAll());
 
-        if (!QBuffer::open(QIODevice::ReadOnly))
-            throw std::runtime_error{tr("Cannot open file.").toStdString()};
+        if (!mBuffer.open(QIODevice::ReadOnly))
+            throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheFile", "Cannot open file.")};
     }
 
     bool EveCacheFile::seek(qint64 pos)
     {
-        return QBuffer::seek(pos);
+        return mBuffer.seek(pos);
+    }
+
+    void EveCacheFile::advance(qint64 offset)
+    {
+        mBuffer.seek(mBuffer.pos() + offset);
     }
 
     void EveCacheFile::setSize(qint64 size)
     {
-        buffer().resize(size);
+        mBuffer.buffer().resize(size);
     }
 
     bool EveCacheFile::atEnd() const
     {
-        return QBuffer::atEnd();
+        return mBuffer.atEnd();
     }
 
     qint64 EveCacheFile::getPos() const
     {
-        return QBuffer::pos();
+        return mBuffer.pos();
     }
 
     qint64 EveCacheFile::getSize() const
     {
-        return QBuffer::size();
+        return mBuffer.size();
     }
 
     unsigned char EveCacheFile::readChar()
     {
         unsigned char out;
 
-        if (read(reinterpret_cast<char *>(&out), sizeof(out)) < sizeof(out))
-            throw std::runtime_error{tr("Error reading file.").toStdString()};
+        if (mBuffer.read(reinterpret_cast<char *>(&out), sizeof(out)) < sizeof(out))
+            throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheFile", "Error reading file.")};
 
         return out;
     }
 
-    int EveCacheFile::readInt()
+    int32_t EveCacheFile::readInt()
     {
         return readChar() |
                (readChar() << 8) |
                (readChar() << 16) |
                (readChar() << 24);
+    }
+
+    double EveCacheFile::readDouble()
+    {
+        double out;
+
+        if (mBuffer.read(reinterpret_cast<char *>(&out), sizeof(out)) < sizeof(out))
+            throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheFile", "Error reading file.")};
+
+        return out;
+    }
+
+    int64_t EveCacheFile::readLongLong()
+    {
+        const int64_t a = readInt();
+        const int64_t b = readInt();
+
+        return a | (b << 32);
+    }
+
+    int16_t EveCacheFile::readShort()
+    {
+        return readChar() | (readChar() << 8);
+    }
+
+    std::string EveCacheFile::readString(uint len)
+    {
+        std::string out(len, 0);
+
+        if (mBuffer.read(&out.front(), len) < len)
+            throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheFile", "Error reading file.")};
+
+        return out;
     }
 }

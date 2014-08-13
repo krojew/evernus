@@ -34,10 +34,16 @@ namespace Evernus
     private:
         EveCacheFile &mFile;
 
-        std::vector<std::unique_ptr<EveCacheNode::Base>> mStreams;
+        std::vector<EveCacheNode::NodePtr> mStreams;
         std::vector<uint> mShareMap;
         std::vector<EveCacheNode::Base *> mShareObjs;
 
         void initShare();
+        void skipShare();
+
+        void parse(EveCacheNode::Base &stream, uint limit);
+        EveCacheNode::NodePtr parseNext();
+
+        uint parseLen();
     };
 }

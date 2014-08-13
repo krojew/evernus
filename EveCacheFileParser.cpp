@@ -31,12 +31,15 @@ namespace Evernus
         while (!mFile.atEnd())
         {
             const auto check = mFile.readChar();
-            if (static_cast<EveCacheNode::Base::StreamCode>(check) != EveCacheNode::Base::StreamCode::StreamStart)
+            if (static_cast<EveCacheNode::StreamCode>(check) != EveCacheNode::StreamCode::StreamStart)
 //                throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheFileParser", "Stream start not found!")};
                 continue;
 
-            mStreams.emplace_back(std::make_unique<EveCacheNode::Base>(EveCacheNode::Base::StreamCode::StreamStart));
+            mStreams.emplace_back(std::make_unique<EveCacheNode::Base>());
+
             initShare();
+            parse(*mStreams.back(), 1);
+            skipShare();
         }
     }
 
@@ -67,5 +70,123 @@ namespace Evernus
             mFile.seek(pos);
             mFile.setSize(size - shareSkip);
         }
+    }
+
+    void EveCacheFileParser::skipShare()
+    {
+        mFile.advance(mShareMap.size() * 4);
+    }
+
+    void EveCacheFileParser::parse(EveCacheNode::Base &stream, uint limit)
+    {
+        while (!mFile.atEnd() && limit != 0)
+        {
+            auto node = parseNext();
+            if (node)
+                stream.addChild(std::move(node));
+
+            --limit;
+        }
+    }
+
+    EveCacheNode::NodePtr EveCacheFileParser::parseNext()
+    {
+        auto type = mFile.readChar();
+        if (mFile.atEnd())
+            return EveCacheNode::NodePtr{};
+
+        const auto isShared = type & 0x40;
+        EveCacheNode::NodePtr result;
+
+        const auto realType = static_cast<EveCacheNode::StreamCode>(type & 0x3f);
+        switch (realType) {
+        case EveCacheNode::StreamCode::None:
+            result = std::make_unique<EveCacheNode::None>();
+            break;
+        case EveCacheNode::StreamCode::Real:
+            result = std::make_unique<EveCacheNode::Real>(mFile.readDouble());
+            break;
+        case EveCacheNode::StreamCode::Real0:
+            result = std::make_unique<EveCacheNode::Real>(0.);
+            break;
+        case EveCacheNode::StreamCode::BoolFalse:
+            result = std::make_unique<EveCacheNode::Bool>(false);
+            break;
+        case EveCacheNode::StreamCode::BoolTrue:
+            result = std::make_unique<EveCacheNode::Bool>(true);
+            break;
+        case EveCacheNode::StreamCode::Integer:
+            result = std::make_unique<EveCacheNode::Int>(mFile.readInt());
+            break;
+        case EveCacheNode::StreamCode::Integer0:
+            result = std::make_unique<EveCacheNode::Int>(0);
+            break;
+        case EveCacheNode::StreamCode::Integer1:
+            result = std::make_unique<EveCacheNode::Int>(1);
+            break;
+        case EveCacheNode::StreamCode::Neg1Integer:
+            result = std::make_unique<EveCacheNode::Int>(-1);
+            break;
+        case EveCacheNode::StreamCode::LongLong:
+            result = std::make_unique<EveCacheNode::LongLong>(mFile.readLongLong());
+            break;
+        case EveCacheNode::StreamCode::Short:
+            result = std::make_unique<EveCacheNode::Int>(mFile.readShort());
+            break;
+        case EveCacheNode::StreamCode::Byte:
+            result = std::make_unique<EveCacheNode::Int>(mFile.readChar());
+            break;
+        case EveCacheNode::StreamCode::SizedInt:
+            {
+                const auto size = mFile.readChar();
+                switch (size) {
+                case 8:
+                    result = std::make_unique<EveCacheNode::LongLong>(mFile.readLongLong());
+                    break;
+                case 4:
+                    result = std::make_unique<EveCacheNode::Int>(mFile.readInt());
+                    break;
+                case 2:
+                    result = std::make_unique<EveCacheNode::Int>(mFile.readShort());
+                    break;
+                case 3:
+                    result = std::make_unique<EveCacheNode::Int>(
+                        mFile.readChar() | (mFile.readChar() << 16) | (mFile.readChar() << 24));
+                }
+            }
+            break;
+        case EveCacheNode::StreamCode::Ident:
+            result = std::make_unique<EveCacheNode::Ident>(mFile.readString(parseLen()));
+            break;
+        case EveCacheNode::StreamCode::EmptyString:
+            result = std::make_unique<EveCacheNode::String>();
+            break;
+        case EveCacheNode::StreamCode::UnicodeString2:
+            result = std::make_unique<EveCacheNode::String>(mFile.readString(2));
+            break;
+        case EveCacheNode::StreamCode::String3:
+            result = std::make_unique<EveCacheNode::String>(mFile.readString(1));
+            break;
+        case EveCacheNode::StreamCode::String0:
+            result = std::make_unique<EveCacheNode::String>();
+            break;
+        case EveCacheNode::StreamCode::UnicodeString:
+        case EveCacheNode::StreamCode::String4:
+        case EveCacheNode::StreamCode::String2:
+        case EveCacheNode::StreamCode::String:
+            result = std::make_unique<EveCacheNode::String>(mFile.readString(mFile.readChar()));
+            break;
+        }
+
+        return result;
+    }
+
+    uint EveCacheFileParser::parseLen()
+    {
+        uint len = mFile.readChar();
+        if ((len & 0xff) == 0xff)
+            len = mFile.readInt();
+
+        return len;
     }
 }

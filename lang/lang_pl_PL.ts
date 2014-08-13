@@ -28,9 +28,25 @@
     </message>
 </context>
 <context>
+    <name>EveCacheFile</name>
+    <message>
+        <location filename="../EveCacheFile.cpp" line="37"/>
+        <location filename="../EveCacheFile.cpp" line="42"/>
+        <source>Cannot open file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFile.cpp" line="80"/>
+        <location filename="../EveCacheFile.cpp" line="98"/>
+        <location filename="../EveCacheFile.cpp" line="121"/>
+        <source>Error reading file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EveCacheFileParser</name>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="64"/>
+        <location filename="../EveCacheFileParser.cpp" line="67"/>
         <source>Invalid data in share map!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -689,20 +705,6 @@
         <location filename="../DateRangeWidget.cpp" line="37"/>
         <source>To:</source>
         <translation>Do:</translation>
-    </message>
-</context>
-<context>
-    <name>Evernus::EveCacheFile</name>
-    <message>
-        <location filename="../EveCacheFile.cpp" line="39"/>
-        <location filename="../EveCacheFile.cpp" line="44"/>
-        <source>Cannot open file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../EveCacheFile.cpp" line="77"/>
-        <source>Error reading file.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
