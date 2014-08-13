@@ -2406,32 +2406,32 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderView</name>
     <message>
-        <location filename="../MarketOrderView.cpp" line="62"/>
+        <location filename="../MarketOrderView.cpp" line="65"/>
         <source>Active orders:</source>
         <translation>Aktywne zlecenia:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="68"/>
+        <location filename="../MarketOrderView.cpp" line="71"/>
         <source>Total volume:</source>
         <translation>Całkowity wolumen:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="74"/>
+        <location filename="../MarketOrderView.cpp" line="77"/>
         <source>Total ISK in orders:</source>
         <translation>Całkowita inwestycja:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="80"/>
+        <location filename="../MarketOrderView.cpp" line="83"/>
         <source>Total size:</source>
         <translation>Całkowita objętość:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="90"/>
+        <location filename="../MarketOrderView.cpp" line="93"/>
         <source>Lookup item on eve-marketdata.com</source>
         <translation>Sprawdź cenę na eve-marketdata.com</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="93"/>
+        <location filename="../MarketOrderView.cpp" line="96"/>
         <source>Lookup item on eve-central.com</source>
         <translation>Sprawdź cenę na eve-central.com</translation>
     </message>

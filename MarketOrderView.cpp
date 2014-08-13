@@ -17,6 +17,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
+#include <QSettings>
 #include <QCursor>
 #include <QLabel>
 #include <QFont>
@@ -26,6 +27,7 @@
 #include "MarketOrderInfoWidget.h"
 #include "MarketOrderModel.h"
 #include "StyledTreeView.h"
+#include "UISettings.h"
 
 #include "MarketOrderView.h"
 
@@ -51,6 +53,7 @@ namespace Evernus
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
         connect(mView, &StyledTreeView::clicked, this, &MarketOrderView::showPriceInfo);
+        connect(mView->header(), &QHeaderView::sectionMoved, this, &MarketOrderView::saveHeaderState);
 
         mInfoWidget = new QWidget{this};
         mainLayout->addWidget(mInfoWidget);
@@ -112,6 +115,9 @@ namespace Evernus
 
     void MarketOrderView::setModel(MarketOrderModel *model)
     {
+        if (mSource == model)
+            return;
+
         mSource = model;
 
         auto curModel = mProxy.sourceModel();
@@ -122,7 +128,14 @@ namespace Evernus
 
         mView->setItemDelegateForColumn(model->getVolumeColumn(), new MarketOrderVolumeItemDelegate{this});
 
-        connect(mSource, &MarketOrderModel::modelReset, this, &MarketOrderView::updateInfo);
+        if (mSource != nullptr)
+        {
+            QSettings settings;
+            mView->header()->restoreState(
+                settings.value(QString{UISettings::orderViewHeaderStateKey}.arg(static_cast<int>(mSource->getType()))).toByteArray());
+
+            connect(mSource, &MarketOrderModel::modelReset, this, &MarketOrderView::updateInfo);
+        }
 
         updateInfo();
     }
@@ -187,6 +200,16 @@ namespace Evernus
     void MarketOrderView::lookupOnEveCentral()
     {
         lookupOnWeb("https://eve-central.com/home/quicklook.html?typeid=%1");
+    }
+
+    void MarketOrderView::saveHeaderState()
+    {
+        if (mSource != nullptr)
+        {
+            QSettings settings;
+            settings.setValue(QString{UISettings::orderViewHeaderStateKey}.arg(static_cast<int>(mSource->getType())),
+                              mView->header()->saveState());
+        }
     }
 
     void MarketOrderView::lookupOnWeb(const QString &baseUrl) const

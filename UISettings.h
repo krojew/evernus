@@ -27,5 +27,6 @@ namespace Evernus
         const auto minimizeToTrayKey = "ui/mainWindow/minimizeToTray";
         const auto languageKey = "ui/global/language";
         const auto dateTimeFormatKey = "ui/global/dateTimeFormat";
+        const auto orderViewHeaderStateKey = "ui/orderView/header/%1";
     }
 }

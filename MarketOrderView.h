@@ -63,6 +63,8 @@ namespace Evernus
         void lookupOnEveMarketdata();
         void lookupOnEveCentral();
 
+        void saveHeaderState();
+
     private:
         StyledTreeView *mView = nullptr;
 
