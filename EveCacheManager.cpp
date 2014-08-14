@@ -108,11 +108,11 @@ namespace Evernus
                         mStreams.reserve(mStreams.size() + streams.size());
                         for (auto &stream : streams)
                         {
-                            const auto &children = stream->getChildren();
+                            auto &children = stream->getChildren();
                             if (children.empty())
                                 continue;
 
-                            const auto base = children.front().get();
+                            auto &base = children.front();
                             const auto &baseChildren = base->getChildren();
                             if (baseChildren.empty() || baseChildren.front()->getChildren().size() < 2)
                                 continue;
@@ -121,7 +121,7 @@ namespace Evernus
                             if (id == nullptr || !mMethodFilters.contains(id->getName()))
                                 continue;
 
-                            mStreams.emplace_back(std::move(stream));
+                            mStreams.emplace_back(std::move(base));
                         }
 
                         ++counter;
@@ -141,5 +141,10 @@ namespace Evernus
             qDebug() << e.what();
             throw;
         }
+    }
+
+    const std::vector<EveCacheNode::NodePtr> &EveCacheManager::getStreams() const noexcept
+    {
+        return mStreams;
     }
 }

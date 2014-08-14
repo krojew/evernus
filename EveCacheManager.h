@@ -37,6 +37,8 @@ namespace Evernus
 
         void parseMachoNet();
 
+        const std::vector<EveCacheNode::NodePtr> &getStreams() const noexcept;
+
     private:
         const QString mMachoNetPath;
         QSet<QString> mCacheFolderFilters, mMethodFilters;

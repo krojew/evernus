@@ -163,6 +163,33 @@ namespace Evernus
             return std::make_unique<Dictionary>(*this);
         }
 
+        Base *Dictionary::getByName(const QString &name) const
+        {
+            if (mNodeMap.contains(name))
+                return mNodeMap[name];
+
+            const auto &children = getChildren();
+            const auto size = children.size();
+            if ((size < 2) || (size & 1))
+            {
+                mNodeMap[name] = nullptr;
+                return nullptr;
+            }
+
+            for (auto i = 1; i < size; i += 2)
+            {
+                const auto id = dynamic_cast<const Ident *>(children[i].get());
+                if (id != nullptr && id->getName() == name)
+                {
+                    mNodeMap[name] = children[i - 1].get();
+                    return children[i - 1].get();
+                }
+            }
+
+            mNodeMap[name] = nullptr;
+            return nullptr;
+        }
+
         NodePtr Tuple::clone() const
         {
             return std::make_unique<Tuple>(*this);

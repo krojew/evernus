@@ -14,10 +14,17 @@
  */
 #pragma once
 
+#include <QDateTime>
+
 #include "ExternalOrderImporter.h"
 
 namespace Evernus
 {
+    namespace EveCacheNode
+    {
+        class Base;
+    }
+
     class CacheExternalOrderImporter
         : public ExternalOrderImporter
     {
@@ -29,5 +36,8 @@ namespace Evernus
 
     private:
         static QString getEveCachePath();
+
+        static void fillOrders(const QDateTime &updated, std::vector<ExternalOrder> &orders, const EveCacheNode::Base &node);
+        static void parseDbRow(const QDateTime &updated, std::vector<ExternalOrder> &orders, const EveCacheNode::Base &node);
     };
 }

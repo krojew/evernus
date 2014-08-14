@@ -314,12 +314,12 @@
 <context>
     <name>Evernus::CacheExternalOrderImporter</name>
     <message>
-        <location filename="../CacheExternalOrderImporter.cpp" line="40"/>
+        <location filename="../CacheExternalOrderImporter.cpp" line="48"/>
         <source>Couldn&apos;t determine Eve cache path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CacheExternalOrderImporter.cpp" line="46"/>
+        <location filename="../CacheExternalOrderImporter.cpp" line="54"/>
         <source>Eve cache path doesn&apos;t exist.</source>
         <translation type="unfinished"></translation>
     </message>

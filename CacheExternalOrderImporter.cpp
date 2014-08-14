@@ -26,6 +26,14 @@
 
 namespace Evernus
 {
+    namespace
+    {
+        QDateTime convertTime(qint64 cacheTime)
+        {
+            return QDateTime::fromTime_t(cacheTime / 10000000ll - 11644473600ll, Qt::UTC);
+        }
+    }
+
     void CacheExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
     {
         if (target.empty())
@@ -54,7 +62,55 @@ namespace Evernus
         try
         {
             manager.parseMachoNet();
-            emit externalOrdersChanged(std::vector<ExternalOrder>{});
+
+            const auto &streams = manager.getStreams();
+
+            std::vector<ExternalOrder> orders;
+            orders.reserve(streams.size());
+
+            for (const auto &stream : streams)
+            {
+                const auto &children = stream->getChildren();
+                if (children.size() < 2)
+                {
+                    qDebug() << "Invalid order stream size!";
+                    continue;
+                }
+
+                const auto dict = dynamic_cast<const EveCacheNode::Dictionary *>(children[1].get());
+                if (dict == nullptr)
+                {
+                    qDebug() << "Cannot find order dictionary!";
+                    continue;
+                }
+
+                if (dict->getChildren().empty() ||
+                    dynamic_cast<const EveCacheNode::Object *>(dict->getChildren().front().get()) == nullptr)
+                {
+                    qDebug() << "Invalid order dictionary!";
+                    continue;
+                }
+
+                const auto timeContainer = dict->getByName("version");
+                if (timeContainer == nullptr || timeContainer->getChildren().empty())
+                {
+                    qDebug() << "Invalid time container!";
+                    continue;
+                }
+
+                const auto time = dynamic_cast<const EveCacheNode::LongLong *>(timeContainer->getChildren().front().get());
+                if (time == nullptr)
+                {
+                    qDebug() << "Missing timestamp!";
+                    continue;
+                }
+
+                fillOrders(convertTime(time->getValue()), orders, *dict->getChildren().front());
+            }
+
+            qDebug() << "Parsed" << orders.size() << "orders.";
+
+            emit externalOrdersChanged(orders);
         }
         catch (const std::exception &e)
         {
@@ -100,5 +156,137 @@ namespace Evernus
         basePath += "/";
 #endif
         return basePath % machoNetPathSegment % tranquilityIpPathSegment;
+    }
+
+    void CacheExternalOrderImporter
+    ::fillOrders(const QDateTime &updated, std::vector<ExternalOrder> &orders, const EveCacheNode::Base &node)
+    {
+        const auto &children = node.getChildren();
+        for (auto it = std::begin(children); it != std::end(children); ++it)
+        {
+            if (dynamic_cast<const EveCacheNode::DBRow *>(it->get()) != nullptr)
+            {
+                ++it;
+                if (it == std::end(children))
+                    return;
+
+                parseDbRow(updated, orders, **it);
+            }
+            else
+            {
+                fillOrders(updated, orders, **it);
+            }
+        }
+    }
+
+    void CacheExternalOrderImporter
+    ::parseDbRow(const QDateTime &updated, std::vector<ExternalOrder> &orders, const EveCacheNode::Base &node)
+    {
+        const auto &children = node.getChildren();
+        if (children.empty())
+            return;
+
+        ExternalOrder order;
+
+        for (auto it = std::begin(children); it != std::end(children); ++it)
+        {
+            const auto &value = *it;
+
+            ++it;
+            if (it == std::end(children))
+                return;
+
+            const auto key = dynamic_cast<const EveCacheNode::Marker *>(it->get());
+            const auto ident = dynamic_cast<const EveCacheNode::Ident *>(it->get());
+
+            auto typeKey = -1;
+            if (key != nullptr)
+            {
+                typeKey = key->getId();
+            }
+            else if (ident != nullptr)
+            {
+                if (ident->getName() == "issueDate")
+                    typeKey = 131;
+                else
+                    return;
+            }
+            else
+            {
+                return;
+            }
+
+            int intV = 0;
+            qint64 longV = 0;
+            double realV = 0.;
+
+            const auto intNode = dynamic_cast<const EveCacheNode::Int *>(value.get());
+            if (intNode != nullptr)
+            {
+                intV = intNode->getValue();
+            }
+            else
+            {
+                const auto longNode = dynamic_cast<const EveCacheNode::LongLong *>(value.get());
+                if (longNode != nullptr)
+                {
+                    longV = longNode->getValue();
+                }
+                else
+                {
+                    const auto realNode = dynamic_cast<const EveCacheNode::Real *>(value.get());
+                    if (realNode != nullptr)
+                        realV = realNode->getValue();
+                }
+            }
+            qDebug() << typeKey << intV << longV << realV;
+
+            switch (typeKey) {
+            case 139:
+                order.setValue(longV / 10000.);
+                break;
+            case 161:
+                // volume remaining
+                break;
+            case 131:
+                // issued
+                break;
+            case 138:
+                order.setId(longV);
+                break;
+            case 160:
+                // volume entered
+                break;
+            case 137:
+                // min volume
+                break;
+            case 155:
+                order.setLocationId(intV);
+                break;
+            case 141:
+                order.setRegionId(intV);
+                break;
+            case 150:
+                order.setSolarSystemId(intV);
+                break;
+            case 41:
+                // jumps
+                break;
+            case 74:
+                order.setTypeId(intV);
+                break;
+            case 140:
+                order.setRange(intV);
+                break;
+            case 126:
+                // duration
+                break;
+            case 116:
+                order.setType((intV == 0) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
+            }
+        }
+
+        if (order.getId() != ExternalOrder::invalidId)
+            orders.emplace_back(std::move(order));
     }
 }

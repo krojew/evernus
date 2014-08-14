@@ -18,6 +18,7 @@
 #include <memory>
 
 #include <QString>
+#include <QHash>
 
 namespace Evernus
 {
@@ -223,6 +224,11 @@ namespace Evernus
             virtual ~Dictionary() = default;
 
             virtual NodePtr clone() const override;
+
+            Base *getByName(const QString &name) const;
+
+        private:
+            mutable QHash<QString, Base *> mNodeMap;
         };
 
         class Tuple
