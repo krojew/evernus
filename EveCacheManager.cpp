@@ -15,6 +15,7 @@
 #include <stdexcept>
 
 #include <QStringBuilder>
+#include <QApplication>
 #include <QDirIterator>
 #include <QDebug>
 #include <QDir>
@@ -130,6 +131,8 @@ namespace Evernus
                     {
                         qDebug() << e.what();
                     }
+
+                    qApp->processEvents();
                 }
             }
 

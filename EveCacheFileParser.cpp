@@ -351,13 +351,19 @@ namespace Evernus
         auto fields = dynamic_cast<EveCacheNode::Tuple *>(head->getChildren().front()->getChildren()[1]->getChildren().front().get());
 
         const auto len = parseLen();
-        const auto compData = mReader.readString(len);
+        const auto compData = mReader.readBlob(len);
 
         std::vector<uchar> newData;
-        rleUnpack(reinterpret_cast<const uchar *>(compData.toStdString().c_str()), len, newData);
+        rleUnpack(reinterpret_cast<const uchar *>(compData.data()), len, newData);
+
+        QByteArray data{reinterpret_cast<const char *>(newData.data()), static_cast<int>(newData.size())};
+        data.resize(data.size() + 16);
+
+        for (auto i = static_cast<int>(newData.size()); i < data.size(); ++i)
+            data[i] = 0;
 
         EveCacheBuffer blob;
-        blob.openWithData(QByteArray{reinterpret_cast<const char *>(newData.data()), static_cast<int>(newData.size())});
+        blob.openWithData(data);
 
         auto body = std::make_unique<EveCacheNode::DBRow>(17, std::move(newData));
         auto dict = std::make_unique<EveCacheNode::Dictionary>();

@@ -86,8 +86,8 @@ namespace Evernus
 
     qint64 EveCacheBuffer::readLongLong()
     {
-        const qint64 a = readInt();
-        const qint64 b = readInt();
+        const qint64 a = static_cast<uint>(readInt());
+        const qint64 b = static_cast<uint>(readInt());
 
         return a | (b << 32);
     }
@@ -97,7 +97,16 @@ namespace Evernus
         return readChar() | (readChar() << 8);
     }
 
-    QString EveCacheBuffer::readString(uint len)
+    QString EveCacheBuffer::readString(int len)
+    {
+        const auto data = mBuffer.read(len);
+        if (data.size() < len)
+            throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheBuffer", "Error reading cache.")};
+
+        return data;
+    }
+
+    QByteArray EveCacheBuffer::readBlob(int len)
     {
         const auto data = mBuffer.read(len);
         if (data.size() < len)

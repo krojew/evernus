@@ -187,6 +187,7 @@ namespace Evernus
             return;
 
         ExternalOrder order;
+        order.setUpdateTime(updated);
 
         for (auto it = std::begin(children); it != std::end(children); ++it)
         {
@@ -219,6 +220,7 @@ namespace Evernus
             int intV = 0;
             qint64 longV = 0;
             double realV = 0.;
+            bool boolV = false;
 
             const auto intNode = dynamic_cast<const EveCacheNode::Int *>(value.get());
             if (intNode != nullptr)
@@ -236,10 +238,17 @@ namespace Evernus
                 {
                     const auto realNode = dynamic_cast<const EveCacheNode::Real *>(value.get());
                     if (realNode != nullptr)
+                    {
                         realV = realNode->getValue();
+                    }
+                    else
+                    {
+                        const auto boolNode = dynamic_cast<const EveCacheNode::Bool *>(value.get());
+                        if (boolNode != nullptr)
+                            boolV = boolNode->getValue();
+                    }
                 }
             }
-            qDebug() << typeKey << intV << longV << realV;
 
             switch (typeKey) {
             case 139:
@@ -282,7 +291,7 @@ namespace Evernus
                 // duration
                 break;
             case 116:
-                order.setType((intV == 0) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
+                order.setType((boolV) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
             }
         }
 
