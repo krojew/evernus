@@ -19,6 +19,7 @@ namespace Evernus
     namespace UISettings
     {
         const auto translationPath =  "/trans";
+        const auto plotNumberFormatDefault = "gbc";
 
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
@@ -28,5 +29,6 @@ namespace Evernus
         const auto languageKey = "ui/global/language";
         const auto dateTimeFormatKey = "ui/global/dateTimeFormat";
         const auto orderViewHeaderStateKey = "ui/orderView/header/%1";
+        const auto plotNumberFormatKey = "ui/plot/numberFormat";
     }
 }
