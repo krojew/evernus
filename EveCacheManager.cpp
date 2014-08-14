@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <stdexcept>
+
 #include <QStringBuilder>
 #include <QDirIterator>
 #include <QDebug>
@@ -54,7 +56,7 @@ namespace Evernus
         mMethodFilters << std::move(name);
     }
 
-    void EveCacheManager::parseMachoNet() const
+    void EveCacheManager::parseMachoNet()
     {
         auto max = 0u;
 
@@ -81,6 +83,8 @@ namespace Evernus
 
         try
         {
+            auto counter = 0;
+
             for (const auto &cacheFolder : mCacheFolderFilters)
             {
                 const auto curPath = basePath + cacheFolder;
@@ -98,6 +102,29 @@ namespace Evernus
 
                         EveCacheFileParser parser{cacheFile};
                         parser.parse();
+
+                        auto &streams = parser.getStreams();
+
+                        mStreams.reserve(mStreams.size() + streams.size());
+                        for (auto &stream : streams)
+                        {
+                            const auto &children = stream->getChildren();
+                            if (children.empty())
+                                continue;
+
+                            const auto base = children.front().get();
+                            const auto &baseChildren = base->getChildren();
+                            if (baseChildren.empty() || baseChildren.front()->getChildren().size() < 2)
+                                continue;
+
+                            const auto id = dynamic_cast<const EveCacheNode::Ident *>(baseChildren.front()->getChildren()[1].get());
+                            if (id == nullptr || !mMethodFilters.contains(id->getName()))
+                                continue;
+
+                            mStreams.emplace_back(std::move(stream));
+                        }
+
+                        ++counter;
                     }
                     catch (const std::exception &e)
                     {
@@ -105,6 +132,9 @@ namespace Evernus
                     }
                 }
             }
+
+            qDebug() << "Successfully parsed" << counter << "files.";
+            qDebug() << "Total streams:" << mStreams.size();
         }
         catch (const std::exception &e)
         {

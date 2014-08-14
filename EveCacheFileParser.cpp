@@ -355,7 +355,7 @@ namespace Evernus
         const auto compData = mReader.readString(len);
 
         std::vector<uchar> newData;
-        rleUnpack(reinterpret_cast<const uchar *>(compData.c_str()), len, newData);
+        rleUnpack(reinterpret_cast<const uchar *>(compData.toStdString().c_str()), len, newData);
 
         EveCacheBuffer blob;
         blob.openWithData(QByteArray{reinterpret_cast<const char *>(newData.data()), static_cast<int>(newData.size())});

@@ -41,7 +41,7 @@ namespace Evernus
         virtual float readFloat() override;
         virtual qint64 readLongLong() override;
         virtual qint16 readShort() override;
-        virtual std::string readString(uint len) override;
+        virtual QString readString(uint len) override;
 
         virtual std::unique_ptr<EveCacheReader> extract(qint64 size) override;
 

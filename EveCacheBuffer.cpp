@@ -97,14 +97,13 @@ namespace Evernus
         return readChar() | (readChar() << 8);
     }
 
-    std::string EveCacheBuffer::readString(uint len)
+    QString EveCacheBuffer::readString(uint len)
     {
-        std::string out(len, 0);
-
-        if (mBuffer.read(&out.front(), len) < len)
+        const auto data = mBuffer.read(len);
+        if (data.size() < len)
             throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheBuffer", "Error reading cache.")};
 
-        return out;
+        return data;
     }
 
     std::unique_ptr<EveCacheReader> EveCacheBuffer::extract(qint64 size)

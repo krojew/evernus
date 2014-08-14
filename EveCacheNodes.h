@@ -16,9 +16,8 @@
 
 #include <vector>
 #include <memory>
-#include <string>
 
-#include <QtGlobal>
+#include <QString>
 
 namespace Evernus
 {
@@ -181,18 +180,18 @@ namespace Evernus
             : public Base
         {
         public:
-            Ident(const std::string &name);
-            Ident(std::string &&name);
+            Ident(const QString &name);
+            Ident(QString &&name);
             Ident(const Ident &) = default;
             Ident(Ident &&) = default;
             virtual ~Ident() = default;
 
             virtual NodePtr clone() const override;
 
-            std::string getName() const;
+            QString getName() const;
 
         private:
-            std::string mName;
+            QString mName;
         };
 
         class String
@@ -200,18 +199,18 @@ namespace Evernus
         {
         public:
             String() = default;
-            String(const std::string &value);
-            String(std::string &&value);
+            String(const QString &value);
+            String(QString &&value);
             String(const String &) = default;
             String(String &&) = default;
             virtual ~String() = default;
 
             virtual NodePtr clone() const override;
 
-            std::string getValue() const;
+            QString getValue() const;
 
         private:
-            std::string mValue;
+            QString mValue;
         };
 
         class Dictionary
@@ -261,7 +260,7 @@ namespace Evernus
 
             virtual NodePtr clone() const override;
 
-            std::string getName() const;
+            QString getName() const;
         };
 
         class Marker

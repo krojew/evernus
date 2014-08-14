@@ -114,13 +114,13 @@ namespace Evernus
             return mValue;
         }
 
-        Ident::Ident(const std::string &name)
+        Ident::Ident(const QString &name)
             : Base{}
             , mName{name}
         {
         }
 
-        Ident::Ident(std::string &&name)
+        Ident::Ident(QString &&name)
             : Base{}
             , mName{std::move(name)}
         {
@@ -131,18 +131,18 @@ namespace Evernus
             return std::make_unique<Ident>(*this);
         }
 
-        std::string Ident::getName() const
+        QString Ident::getName() const
         {
             return mName;
         }
 
-        String::String(const std::string &value)
+        String::String(const QString &value)
             : Base{}
             , mValue{value}
         {
         }
 
-        String::String(std::string &&value)
+        String::String(QString &&value)
             : Base{}
             , mValue{std::move(value)}
         {
@@ -153,7 +153,7 @@ namespace Evernus
             return std::make_unique<String>(*this);
         }
 
-        std::string String::getValue() const
+        QString String::getValue() const
         {
             return mValue;
         }
@@ -178,14 +178,14 @@ namespace Evernus
             return std::make_unique<Object>(*this);
         }
 
-        std::string Object::getName() const
+        QString Object::getName() const
         {
             const Base *current = this;
             while (current->getChildren().size() != 0)
                 current = current->getChildren().front().get();
 
             const auto string = dynamic_cast<const String *>(current);
-            return (string != nullptr) ? (string->getValue()) : (std::string{});
+            return (string != nullptr) ? (string->getValue()) : (QString{});
         }
 
         Marker::Marker(uchar id)

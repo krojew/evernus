@@ -14,7 +14,11 @@
  */
 #pragma once
 
-#include <QStringList>
+#include <vector>
+
+#include <QSet>
+
+#include "EveCacheNodes.h"
 
 namespace Evernus
 {
@@ -31,10 +35,12 @@ namespace Evernus
         void addMethodFilter(const QString &name);
         void addMethodFilter(QString &&name);
 
-        void parseMachoNet() const;
+        void parseMachoNet();
 
     private:
         const QString mMachoNetPath;
-        QStringList mCacheFolderFilters, mMethodFilters;
+        QSet<QString> mCacheFolderFilters, mMethodFilters;
+
+        std::vector<EveCacheNode::NodePtr> mStreams;
     };
 }

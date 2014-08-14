@@ -14,10 +14,9 @@
  */
 #pragma once
 
-#include <string>
 #include <memory>
 
-#include <QtGlobal>
+#include <QString>
 
 namespace Evernus
 {
@@ -41,7 +40,7 @@ namespace Evernus
         virtual float readFloat() = 0;
         virtual qint64 readLongLong() = 0;
         virtual qint16 readShort() = 0;
-        virtual std::string readString(uint len) = 0;
+        virtual QString readString(uint len) = 0;
 
         virtual std::unique_ptr<EveCacheReader> extract(qint64 size) = 0;
     };

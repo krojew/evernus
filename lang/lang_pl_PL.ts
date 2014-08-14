@@ -32,13 +32,14 @@
     <message>
         <location filename="../EveCacheBuffer.cpp" line="54"/>
         <location filename="../EveCacheBuffer.cpp" line="72"/>
-        <location filename="../EveCacheBuffer.cpp" line="95"/>
+        <location filename="../EveCacheBuffer.cpp" line="82"/>
         <location filename="../EveCacheBuffer.cpp" line="104"/>
+        <location filename="../EveCacheBuffer.cpp" line="113"/>
         <source>Error reading cache.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EveCacheBuffer.cpp" line="117"/>
+        <location filename="../EveCacheBuffer.cpp" line="126"/>
         <source>Cannot open buffer.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -54,8 +55,81 @@
 <context>
     <name>EveCacheFileParser</name>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="67"/>
+        <location filename="../EveCacheFileParser.cpp" line="127"/>
         <source>Invalid data in share map!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="315"/>
+        <source>Didn&apos;t encounter a double 0x2d where should be one!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="321"/>
+        <source>Unknown stream type!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="325"/>
+        <source>Couldn&apos;t parse stream!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="339"/>
+        <source>DB row not found!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="342"/>
+        <source>Bad descriptor name!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="348"/>
+        <source>Invalid row size!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="372"/>
+        <source>Invalid row fields!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="378"/>
+        <source>Invalid row field type!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="436"/>
+        <source>Unknown ADO type!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="460"/>
+        <source>Share index out of range!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="463"/>
+        <source>No share at specified index found!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="471"/>
+        <source>Share cursor out of range!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="475"/>
+        <source>Share ID out of range!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EveCacheManager</name>
+    <message>
+        <location filename="../EveCacheManager.cpp" line="78"/>
+        <source>No cache files found!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
