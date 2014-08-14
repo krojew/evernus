@@ -314,8 +314,7 @@ namespace Evernus
             if (mReader.readChar() != 0x2d)
                 throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheFileParser", "Didn't encounter a double 0x2d where should be one!")};
 
-            result = std::make_unique<EveCacheNode::Base>();
-            break;
+            return EveCacheNode::NodePtr{};
         case EveCacheNode::StreamCode::Invalid:
             break;
         default:
