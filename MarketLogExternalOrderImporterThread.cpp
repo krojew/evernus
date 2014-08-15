@@ -52,6 +52,8 @@ namespace Evernus
             Qt::CaseInsensitive,
             QRegExp::Wildcard};
 
+        LogTimeMap timeMap;
+
         for (const auto &file : files)
         {
             if (isInterruptionRequested())
@@ -60,13 +62,13 @@ namespace Evernus
             if (charLogWildcard.exactMatch(file) || corpLogWildcard.exactMatch(file))
                 continue;
 
-            getExternalOrder(logPath % "/" % file, result, deleteLogs);
+            getExternalOrder(logPath % "/" % file, result, deleteLogs, timeMap);
         }
 
         emit finished(result);
     }
 
-    void MarketLogExternalOrderImporterThread::getExternalOrder(const QString &logPath, ExternalOrderList &orders, bool deleteLog)
+    void MarketLogExternalOrderImporterThread::getExternalOrder(const QString &logPath, ExternalOrderList &orders, bool deleteLog, LogTimeMap &timeMap)
     {
         QFile file{logPath};
         if (!file.open(QIODevice::ReadOnly))
@@ -87,6 +89,15 @@ namespace Evernus
             if (values.count() >= logColumns)
             {
                 auto order = ExternalOrder::parseLogLine(values);
+                if (order.getId() == ExternalOrder::invalidId)
+                    continue;
+
+                const auto it = timeMap.find(order.getTypeId());
+                if (it != std::end(timeMap) && priceTime < it->second)
+                    return;
+
+                timeMap[order.getTypeId()] = priceTime;
+
                 order.setUpdateTime(priceTime);
 
                 orders.emplace_back(std::move(order));
