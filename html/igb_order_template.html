@@ -3,6 +3,8 @@
     var items = [ <?=type-ids?> ];
     var lastAdvance = new Date();
     
+    var scanTimer = null;
+    
     function unselectOrders() {
         var selected = document.getElementsByClassName("selected-order");
         for (var i = 0; i < selected.length; ++i)
@@ -62,12 +64,34 @@
         
         lastAdvance = curTime;
     }
+    
+    function startScan() {
+        document.getElementById("start-scan-button").disabled = true;
+        document.getElementById("stop-scan-button").disabled = false;
+        
+        advanceOrder(1);
+        
+        scanTimer = setInterval(function() {
+            advanceOrder(1);
+        }, parseInt(document.getElementById("scan-delay").value) * 1000);
+    }
+    
+    function stopScan() {
+        document.getElementById("start-scan-button").disabled = false;
+        document.getElementById("stop-scan-button").disabled = true;
+        
+        clearInterval(scanTimer);
+    }
 </script>
 
 <p>
     <?=current-order-text?> <input id="current-order" type="number" value="0" />
     <input id="prev-button" type="button" value="<?=prev-order-text?>" onclick="advanceOrder(-1);" />
     <input id="next-button" type="button" value="<?=next-order-text?>" onclick="advanceOrder(1);" />
+    <br />
+    <?=scan-delay-text?> <input id="scan-delay" type="number" value="<?=scan-delay?>" />
+    <input id="start-scan-button" type="button" value="<?=start-scan-text?>" onclick="startScan();" />
+    <input id="stop-scan-button" type="button" value="<?=stop-scan-text?>" onclick="stopScan();" disabled />
 </p>
 
 <p><?=sell-orders-text?></p>

@@ -19,8 +19,10 @@ namespace Evernus
     namespace IGBSettings
     {
         const auto portDefault = 4632;
+        const auto scanDelayDefault = 3;
 
         const auto enabledKey = "igb/enabled";
         const auto portKey = "igb/port";
+        const auto scanDelayKey = "igb/scanDelay";
     }
 }
