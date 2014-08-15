@@ -45,7 +45,7 @@ namespace Evernus
         const auto cachePath = getEveCachePath();
         if (cachePath.isEmpty())
         {
-            emit error(tr("Couldn't determine Eve cache path."));
+            emit error(tr("Couldn't determine Eve cache path. Did you set it in the Preferences?"));
             return;
         }
 
