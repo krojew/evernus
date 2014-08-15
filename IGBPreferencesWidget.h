@@ -36,5 +36,6 @@ namespace Evernus
     private:
         QCheckBox *mEnabledBtn = nullptr;
         QSpinBox *mPortEdit = nullptr;
+        QSpinBox *mScanDelayEdit = nullptr;
     };
 }
