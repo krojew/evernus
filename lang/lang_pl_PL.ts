@@ -2650,8 +2650,8 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="83"/>
-        <source>Import prices</source>
-        <translation>Importuj ceny</translation>
+        <source>Import prices  </source>
+        <translation>Importuj ceny  </translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="88"/>
