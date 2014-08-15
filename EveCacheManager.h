@@ -16,6 +16,7 @@
 
 #include <vector>
 
+#include <QStringList>
 #include <QSet>
 
 #include "EveCacheNodes.h"
@@ -25,8 +26,8 @@ namespace Evernus
     class EveCacheManager
     {
     public:
-        explicit EveCacheManager(const QString &machoNetPath);
-        explicit EveCacheManager(QString &&machoNetPath);
+        explicit EveCacheManager(const QStringList &machoNetPaths);
+        explicit EveCacheManager(QStringList &&machoNetPaths);
         ~EveCacheManager() = default;
 
         void addCacheFolderFilter(const QString &name);
@@ -40,7 +41,7 @@ namespace Evernus
         const std::vector<EveCacheNode::NodePtr> &getStreams() const noexcept;
 
     private:
-        const QString mMachoNetPath;
+        const QStringList mMachoNetPaths;
         QSet<QString> mCacheFolderFilters, mMethodFilters;
 
         std::vector<EveCacheNode::NodePtr> mStreams;

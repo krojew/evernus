@@ -13,10 +13,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QStandardPaths>
-#include <QStringBuilder>
+#include <QDirIterator>
 #include <QSettings>
 #include <QDebug>
-#include <QDir>
 
 #include "EveCacheManager.h"
 #include "ExternalOrder.h"
@@ -42,20 +41,14 @@ namespace Evernus
             return;
         }
 
-        const auto cachePath = getEveCachePath();
-        if (cachePath.isEmpty())
+        const auto cachePaths = getEveCachePaths();
+        if (cachePaths.isEmpty())
         {
             emit error(tr("Couldn't determine Eve cache path. Did you set it in the Preferences?"));
             return;
         }
 
-        if (!QDir{cachePath}.exists())
-        {
-            emit error(tr("Eve cache path doesn't exist."));
-            return;
-        }
-
-        EveCacheManager manager{cachePath};
+        EveCacheManager manager{cachePaths};
         manager.addCacheFolderFilter("CachedMethodCalls");
         manager.addMethodFilter("GetOrders");
 
@@ -67,6 +60,8 @@ namespace Evernus
 
             std::vector<ExternalOrder> orders;
             orders.reserve(streams.size());
+
+            LogTimeMap timeMap;
 
             for (const auto &stream : streams)
             {
@@ -105,7 +100,7 @@ namespace Evernus
                     continue;
                 }
 
-                fillOrders(convertTime(time->getValue()), orders, *dict->getChildren().front());
+                fillOrders(convertTime(time->getValue()), orders, *dict->getChildren().front(), timeMap);
             }
 
             qDebug() << "Parsed" << orders.size() << "orders.";
@@ -118,48 +113,53 @@ namespace Evernus
         }
     }
 
-    QString CacheExternalOrderImporter::getEveCachePath()
+    QStringList CacheExternalOrderImporter::getEveCachePaths()
     {
         QSettings settings;
+        const auto basePath = settings.value(PathSettings::eveCachePathKey).toString();
+        if (!basePath.isEmpty())
+            return QStringList{basePath};
 
-        const auto machoNetPathSegment = "MachoNet/";
-        const auto tranquilityIpPathSegment = "87.237.38.200/";
+        const auto cachePathSegment = "/cache/MachoNet/87.237.38.200/";
+        const QDir appDataPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/CCP/EVE/";
 
-#ifdef Q_OS_WIN
-        qDebug() << "Looking for eve cache path...";
+        auto clientPaths = appDataPath.entryList(QStringList{"*_tranquility"}, QDir::Dirs | QDir::Readable, QDir::Time);
+        if (clientPaths.isEmpty())
+            clientPaths << QString{};
 
-        auto basePath = settings.value(PathSettings::evePathKey).toString();
-        qDebug() << "Eve path:" << basePath;
+        auto max = 0u;
 
-        if (basePath.isEmpty())
-            return QString{};
+        for (const auto &path : clientPaths)
+        {
+            QDirIterator dirIt{appDataPath.filePath(path + cachePathSegment)};
+            while (dirIt.hasNext())
+            {
+                dirIt.next();
 
-        const QString tranquilityPathSegment = "_tranquility";
-        const QString cachePathSegment = "cache";
+                auto ok = false;
+                const auto cur = dirIt.fileName().toUInt(&ok);
 
-        basePath.remove(":").replace("\\", "_").replace(" ", "_").replace("/", "_");
-        basePath += tranquilityPathSegment % "/" % cachePathSegment % "/";
+                if (ok && cur > max)
+                    max = cur;
+            }
+        }
 
-        qDebug() << "Combined base path:" << basePath;
+        if (max == 0)
+            return QStringList{};
 
-        const QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) % "/CCP/EVE/";
-        qDebug() << "App data path:" << appDataPath;
+        QStringList result;
+        for (const auto &path : clientPaths)
+        {
+            const auto combined = QString{"%1%2%3/"}.arg(path).arg(cachePathSegment).arg(max);
+            if (appDataPath.exists(combined))
+                result << appDataPath.filePath(combined);
+        }
 
-        basePath.prepend(appDataPath);
-#else
-        auto basePath = settings.value(PathSettings::eveCachePathKey).toString();
-        qDebug() << "Eve path:" << basePath;
-
-        if (basePath.isEmpty())
-            return QString{};
-
-        basePath += "/";
-#endif
-        return basePath % machoNetPathSegment % tranquilityIpPathSegment;
+        return result;
     }
 
     void CacheExternalOrderImporter
-    ::fillOrders(const QDateTime &updated, std::vector<ExternalOrder> &orders, const EveCacheNode::Base &node)
+    ::fillOrders(const QDateTime &updated, std::vector<ExternalOrder> &orders, const EveCacheNode::Base &node, LogTimeMap &timeMap)
     {
         const auto &children = node.getChildren();
         for (auto it = std::begin(children); it != std::end(children); ++it)
@@ -170,17 +170,17 @@ namespace Evernus
                 if (it == std::end(children))
                     return;
 
-                parseDbRow(updated, orders, **it);
+                parseDbRow(updated, orders, **it, timeMap);
             }
             else
             {
-                fillOrders(updated, orders, **it);
+                fillOrders(updated, orders, **it, timeMap);
             }
         }
     }
 
     void CacheExternalOrderImporter
-    ::parseDbRow(const QDateTime &updated, std::vector<ExternalOrder> &orders, const EveCacheNode::Base &node)
+    ::parseDbRow(const QDateTime &updated, std::vector<ExternalOrder> &orders, const EveCacheNode::Base &node, LogTimeMap &timeMap)
     {
         const auto &children = node.getChildren();
         if (children.empty())
@@ -261,7 +261,15 @@ namespace Evernus
                 // issued
                 break;
             case 138:
-                order.setId(longV);
+                {
+                    const auto it = timeMap.find(longV);
+                    if (it != std::end(timeMap) && it->second > updated)
+                        return;
+
+                    order.setId(longV);
+
+                    timeMap[longV] = updated;
+                }
                 break;
             case 160:
                 // volume entered

@@ -14,11 +14,9 @@
  */
 #include <stdexcept>
 
-#include <QStringBuilder>
 #include <QApplication>
 #include <QDirIterator>
 #include <QDebug>
-#include <QDir>
 
 #include "EveCacheFileParser.h"
 #include "EveCacheFile.h"
@@ -27,13 +25,13 @@
 
 namespace Evernus
 {
-    EveCacheManager::EveCacheManager(const QString &machoNetPath)
-        : mMachoNetPath{machoNetPath}
+    EveCacheManager::EveCacheManager(const QStringList &machoNetPaths)
+        : mMachoNetPaths{machoNetPaths}
     {
     }
 
-    EveCacheManager::EveCacheManager(QString &&machoNetPath)
-        : mMachoNetPath{std::move(machoNetPath)}
+    EveCacheManager::EveCacheManager(QStringList &&machoNetPaths)
+        : mMachoNetPaths{std::move(machoNetPaths)}
     {
     }
 
@@ -59,80 +57,63 @@ namespace Evernus
 
     void EveCacheManager::parseMachoNet()
     {
-        auto max = 0u;
 
-        qDebug() << "Searching path:" << mMachoNetPath;
-
-        QDirIterator dirIt{mMachoNetPath};
-        while (dirIt.hasNext())
-        {
-            dirIt.next();
-
-            auto ok = false;
-            const auto cur = dirIt.fileName().toUInt(&ok);
-
-            if (ok && cur > max)
-                max = cur;
-        }
-
-        if (max == 0)
-            throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheManager", "No cache files found!")};
-
-        qDebug() << "Cache version:" << max;
-
-        const QString basePath = mMachoNetPath % "/" % QString::number(max) % "/";
+        qDebug() << "Searching paths:" << mMachoNetPaths;
 
         try
         {
             auto counter = 0;
 
-            for (const auto &cacheFolder : mCacheFolderFilters)
+            for (const auto &machoPath : mMachoNetPaths)
             {
-                const auto curPath = basePath + cacheFolder;
-
-                QDirIterator fileIt{curPath, QStringList{"*.cache"}, QDir::Files | QDir::Readable};
-                while (fileIt.hasNext())
+                for (const auto &cacheFolder : mCacheFolderFilters)
                 {
-                    const auto file = fileIt.next();
-                    qDebug() << "Parsing file:" << file;
+                    const auto curPath = machoPath + cacheFolder;
 
-                    try
+                    QDirIterator fileIt{curPath, QStringList{"*.cache"}, QDir::Files | QDir::Readable};
+                    while (fileIt.hasNext())
                     {
-                        EveCacheFile cacheFile{file};
-                        cacheFile.open();
+                        const auto file = fileIt.next();
+                        qDebug() << "Parsing file:" << file;
 
-                        EveCacheFileParser parser{cacheFile};
-                        parser.parse();
-
-                        auto &streams = parser.getStreams();
-
-                        mStreams.reserve(mStreams.size() + streams.size());
-                        for (auto &stream : streams)
+                        try
                         {
-                            auto &children = stream->getChildren();
-                            if (children.empty())
-                                continue;
+                            EveCacheFile cacheFile{file};
+                            cacheFile.open();
 
-                            auto &base = children.front();
-                            const auto &baseChildren = base->getChildren();
-                            if (baseChildren.empty() || baseChildren.front()->getChildren().size() < 2)
-                                continue;
+                            EveCacheFileParser parser{cacheFile};
+                            parser.parse();
 
-                            const auto id = dynamic_cast<const EveCacheNode::Ident *>(baseChildren.front()->getChildren()[1].get());
-                            if (id == nullptr || !mMethodFilters.contains(id->getName()))
-                                continue;
+                            auto &streams = parser.getStreams();
 
-                            mStreams.emplace_back(std::move(base));
+                            mStreams.reserve(mStreams.size() + streams.size());
+                            for (auto &stream : streams)
+                            {
+                                auto &children = stream->getChildren();
+                                if (children.empty())
+                                    continue;
+
+                                auto &base = children.front();
+                                const auto &baseChildren = base->getChildren();
+                                if (baseChildren.empty() || baseChildren.front()->getChildren().size() < 2)
+                                    continue;
+
+                                const auto id = dynamic_cast<const EveCacheNode::Ident *>(baseChildren.front()->getChildren()[1].get());
+                                if (id == nullptr || !mMethodFilters.contains(id->getName()))
+                                    continue;
+
+                                mStreams.emplace_back(std::move(base));
+                            }
+
+                            ++counter;
+                        }
+                        catch (const std::exception &e)
+                        {
+                            qDebug() << e.what();
                         }
 
-                        ++counter;
+                        qApp->processEvents();
                     }
-                    catch (const std::exception &e)
-                    {
-                        qDebug() << e.what();
-                    }
-
-                    qApp->processEvents();
                 }
             }
 

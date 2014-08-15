@@ -14,6 +14,9 @@
  */
 #pragma once
 
+#include <unordered_map>
+
+#include <QStringList>
 #include <QDateTime>
 
 #include "ExternalOrderImporter.h"
@@ -35,9 +38,11 @@ namespace Evernus
         virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
 
     private:
-        static QString getEveCachePath();
+        typedef std::unordered_map<ExternalOrder::IdType, QDateTime> LogTimeMap;
 
-        static void fillOrders(const QDateTime &updated, std::vector<ExternalOrder> &orders, const EveCacheNode::Base &node);
-        static void parseDbRow(const QDateTime &updated, std::vector<ExternalOrder> &orders, const EveCacheNode::Base &node);
+        static QStringList getEveCachePaths();
+
+        static void fillOrders(const QDateTime &updated, std::vector<ExternalOrder> &orders, const EveCacheNode::Base &node, LogTimeMap &timeMap);
+        static void parseDbRow(const QDateTime &updated, std::vector<ExternalOrder> &orders, const EveCacheNode::Base &node, LogTimeMap &timeMap);
     };
 }

@@ -26,3 +26,4 @@ evernus.qrc.depends
 qrc_evernus.cpp
 Release/*
 trans/lang_*
+RelWithDebInfo/*

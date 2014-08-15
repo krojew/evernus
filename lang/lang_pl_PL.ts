@@ -31,16 +31,16 @@
     <name>EveCacheBuffer</name>
     <message>
         <location filename="../EveCacheBuffer.cpp" line="54"/>
-        <location filename="../EveCacheBuffer.cpp" line="72"/>
-        <location filename="../EveCacheBuffer.cpp" line="82"/>
-        <location filename="../EveCacheBuffer.cpp" line="104"/>
-        <location filename="../EveCacheBuffer.cpp" line="113"/>
-        <location filename="../EveCacheBuffer.cpp" line="122"/>
+        <location filename="../EveCacheBuffer.cpp" line="73"/>
+        <location filename="../EveCacheBuffer.cpp" line="83"/>
+        <location filename="../EveCacheBuffer.cpp" line="107"/>
+        <location filename="../EveCacheBuffer.cpp" line="116"/>
+        <location filename="../EveCacheBuffer.cpp" line="125"/>
         <source>Error reading cache.</source>
         <translation>Błąd odczytu cache.</translation>
     </message>
     <message>
-        <location filename="../EveCacheBuffer.cpp" line="135"/>
+        <location filename="../EveCacheBuffer.cpp" line="138"/>
         <source>Cannot open buffer.</source>
         <translation>Nie można otworzyć bufora.</translation>
     </message>
@@ -56,72 +56,72 @@
 <context>
     <name>EveCacheFileParser</name>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="127"/>
+        <location filename="../EveCacheFileParser.cpp" line="130"/>
         <source>Invalid data in share map!</source>
         <translation>Nieprawidłowe dane w mapie dzielenia!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="315"/>
+        <location filename="../EveCacheFileParser.cpp" line="318"/>
         <source>Didn&apos;t encounter a double 0x2d where should be one!</source>
         <translation>Nie znaleziono podwójnego 0x2d, gdzie powinien być!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="321"/>
+        <location filename="../EveCacheFileParser.cpp" line="324"/>
         <source>Unknown stream type!</source>
         <translation>Nieznany typ strumienia!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="325"/>
+        <location filename="../EveCacheFileParser.cpp" line="328"/>
         <source>Couldn&apos;t parse stream!</source>
         <translation>Nie udało się odczytać strumienia!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="339"/>
+        <location filename="../EveCacheFileParser.cpp" line="342"/>
         <source>DB row not found!</source>
         <translation>Nie znaleziono wiersza bazy danych!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="342"/>
+        <location filename="../EveCacheFileParser.cpp" line="345"/>
         <source>Bad descriptor name!</source>
         <translation>Nieprawidłowa nazwa deskryptora!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="348"/>
+        <location filename="../EveCacheFileParser.cpp" line="351"/>
         <source>Invalid row size!</source>
         <translation>Nieprawiłowy rozmiar wiersza!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="378"/>
+        <location filename="../EveCacheFileParser.cpp" line="381"/>
         <source>Invalid row fields!</source>
         <translation>Nieprawidłowe pola wiersza!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="384"/>
+        <location filename="../EveCacheFileParser.cpp" line="387"/>
         <source>Invalid row field type!</source>
         <translation>Nieprawidłowy typ pola!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="442"/>
+        <location filename="../EveCacheFileParser.cpp" line="445"/>
         <source>Unknown ADO type!</source>
         <translation>Nieznany typ ADO!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="466"/>
+        <location filename="../EveCacheFileParser.cpp" line="469"/>
         <source>Share index out of range!</source>
         <translation>Indeks dzielonego obiektu poza zakresem!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="469"/>
+        <location filename="../EveCacheFileParser.cpp" line="472"/>
         <source>No share at specified index found!</source>
         <translation>Brak dzielonego obiektu dla danego indeksu!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="477"/>
+        <location filename="../EveCacheFileParser.cpp" line="480"/>
         <source>Share cursor out of range!</source>
         <translation>Kursor dzielonych obiektów poza zakresem!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="481"/>
+        <location filename="../EveCacheFileParser.cpp" line="484"/>
         <source>Share ID out of range!</source>
         <translation>Identyfikator dzielonego obiektu poza zakresem!</translation>
     </message>
@@ -129,9 +129,8 @@
 <context>
     <name>EveCacheManager</name>
     <message>
-        <location filename="../EveCacheManager.cpp" line="79"/>
         <source>No cache files found!</source>
-        <translation>Nie znaleziono plików cache!</translation>
+        <translation type="vanished">Nie znaleziono plików cache!</translation>
     </message>
 </context>
 <context>
@@ -315,14 +314,17 @@
 <context>
     <name>Evernus::CacheExternalOrderImporter</name>
     <message>
-        <location filename="../CacheExternalOrderImporter.cpp" line="48"/>
         <source>Couldn&apos;t determine Eve cache path.</source>
-        <translation>Nie udało się odnaleźć ścieżki cache.</translation>
+        <translation type="vanished">Nie udało się odnaleźć ścieżki cache.</translation>
     </message>
     <message>
-        <location filename="../CacheExternalOrderImporter.cpp" line="54"/>
         <source>Eve cache path doesn&apos;t exist.</source>
-        <translation>Ścieżka cache nie istnieje.</translation>
+        <translation type="vanished">Ścieżka cache nie istnieje.</translation>
+    </message>
+    <message>
+        <location filename="../CacheExternalOrderImporter.cpp" line="47"/>
+        <source>Couldn&apos;t determine Eve cache path. Did you set it in the Preferences?</source>
+        <translation>Nie udało się znaleźć ścieżki cache. Wpisz ścieżkę ręcznie w ustawieniach.</translation>
     </message>
 </context>
 <context>
@@ -2814,8 +2816,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="58"/>
-        <location filename="../PathPreferencesWidget.cpp" line="84"/>
-        <location filename="../PathPreferencesWidget.cpp" line="97"/>
+        <location filename="../PathPreferencesWidget.cpp" line="90"/>
         <source>Browse...</source>
         <translation>Przeglądaj...</translation>
     </message>
@@ -2835,12 +2836,16 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Wzór nazwy logów zleceń korporacji:</translation>
     </message>
     <message>
-        <location filename="../PathPreferencesWidget.cpp" line="75"/>
-        <source>Eve path</source>
-        <translation>Ścieżka Eve</translation>
+        <location filename="../PathPreferencesWidget.cpp" line="86"/>
+        <source>Setting the cache path is optional. When left blank, Evernus will try to guess the path itself.</source>
+        <translation>Ustawienie ścieżki cache jest opcjonalne. Pusta ścieżka spowoduje próbę odgadnięcia.</translation>
     </message>
     <message>
-        <location filename="../PathPreferencesWidget.cpp" line="88"/>
+        <source>Eve path</source>
+        <translation type="vanished">Ścieżka Eve</translation>
+    </message>
+    <message>
+        <location filename="../PathPreferencesWidget.cpp" line="74"/>
         <source>Eve cache path</source>
         <translation>Ścieżka cache Eve</translation>
     </message>
