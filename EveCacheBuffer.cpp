@@ -58,10 +58,11 @@ namespace Evernus
 
     qint32 EveCacheBuffer::readInt()
     {
-        return readChar() |
-               (readChar() << 8) |
-               (readChar() << 16) |
-               (readChar() << 24);
+        const qint32 a = readChar();
+        const qint32 b = readChar();
+        const qint32 c = readChar();
+        const qint32 d = readChar();
+        return a | (b << 8) | (c << 16) | (d << 24);
     }
 
     double EveCacheBuffer::readDouble()
@@ -94,7 +95,9 @@ namespace Evernus
 
     qint16 EveCacheBuffer::readShort()
     {
-        return readChar() | (readChar() << 8);
+        const qint16 a = readChar();
+        const qint16 b = readChar();
+        return a | (b << 8);
     }
 
     QString EveCacheBuffer::readString(int len)
