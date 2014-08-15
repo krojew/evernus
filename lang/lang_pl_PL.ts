@@ -35,13 +35,14 @@
         <location filename="../EveCacheBuffer.cpp" line="82"/>
         <location filename="../EveCacheBuffer.cpp" line="104"/>
         <location filename="../EveCacheBuffer.cpp" line="113"/>
+        <location filename="../EveCacheBuffer.cpp" line="122"/>
         <source>Error reading cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd odczytu cache.</translation>
     </message>
     <message>
-        <location filename="../EveCacheBuffer.cpp" line="126"/>
+        <location filename="../EveCacheBuffer.cpp" line="135"/>
         <source>Cannot open buffer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można otworzyć bufora.</translation>
     </message>
 </context>
 <context>
@@ -49,7 +50,7 @@
     <message>
         <location filename="../EveCacheFile.cpp" line="39"/>
         <source>Cannot open file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można otworzyć pliku.</translation>
     </message>
 </context>
 <context>
@@ -57,80 +58,80 @@
     <message>
         <location filename="../EveCacheFileParser.cpp" line="127"/>
         <source>Invalid data in share map!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowe dane w mapie dzielenia!</translation>
     </message>
     <message>
         <location filename="../EveCacheFileParser.cpp" line="315"/>
         <source>Didn&apos;t encounter a double 0x2d where should be one!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie znaleziono podwójnego 0x2d, gdzie powinien być!</translation>
     </message>
     <message>
         <location filename="../EveCacheFileParser.cpp" line="321"/>
         <source>Unknown stream type!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieznany typ strumienia!</translation>
     </message>
     <message>
         <location filename="../EveCacheFileParser.cpp" line="325"/>
         <source>Couldn&apos;t parse stream!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się odczytać strumienia!</translation>
     </message>
     <message>
         <location filename="../EveCacheFileParser.cpp" line="339"/>
         <source>DB row not found!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie znaleziono wiersza bazy danych!</translation>
     </message>
     <message>
         <location filename="../EveCacheFileParser.cpp" line="342"/>
         <source>Bad descriptor name!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowa nazwa deskryptora!</translation>
     </message>
     <message>
         <location filename="../EveCacheFileParser.cpp" line="348"/>
         <source>Invalid row size!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../EveCacheFileParser.cpp" line="372"/>
-        <source>Invalid row fields!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawiłowy rozmiar wiersza!</translation>
     </message>
     <message>
         <location filename="../EveCacheFileParser.cpp" line="378"/>
+        <source>Invalid row fields!</source>
+        <translation>Nieprawidłowe pola wiersza!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="384"/>
         <source>Invalid row field type!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowy typ pola!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="436"/>
+        <location filename="../EveCacheFileParser.cpp" line="442"/>
         <source>Unknown ADO type!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieznany typ ADO!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="460"/>
+        <location filename="../EveCacheFileParser.cpp" line="466"/>
         <source>Share index out of range!</source>
-        <translation type="unfinished"></translation>
+        <translation>Indeks dzielonego obiektu poza zakresem!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="463"/>
+        <location filename="../EveCacheFileParser.cpp" line="469"/>
         <source>No share at specified index found!</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak dzielonego obiektu dla danego indeksu!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="471"/>
+        <location filename="../EveCacheFileParser.cpp" line="477"/>
         <source>Share cursor out of range!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kursor dzielonych obiektów poza zakresem!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="475"/>
+        <location filename="../EveCacheFileParser.cpp" line="481"/>
         <source>Share ID out of range!</source>
-        <translation type="unfinished"></translation>
+        <translation>Identyfikator dzielonego obiektu poza zakresem!</translation>
     </message>
 </context>
 <context>
     <name>EveCacheManager</name>
     <message>
-        <location filename="../EveCacheManager.cpp" line="78"/>
+        <location filename="../EveCacheManager.cpp" line="79"/>
         <source>No cache files found!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie znaleziono plików cache!</translation>
     </message>
 </context>
 <context>
@@ -308,7 +309,7 @@
     <message>
         <location filename="../AssetsWidget.cpp" line="68"/>
         <source>Import prices from cache</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj ceny z cache</translation>
     </message>
 </context>
 <context>
@@ -316,12 +317,12 @@
     <message>
         <location filename="../CacheExternalOrderImporter.cpp" line="48"/>
         <source>Couldn&apos;t determine Eve cache path.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się odnaleźć ścieżki cache.</translation>
     </message>
     <message>
         <location filename="../CacheExternalOrderImporter.cpp" line="54"/>
         <source>Eve cache path doesn&apos;t exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ścieżka cache nie istnieje.</translation>
     </message>
 </context>
 <context>
@@ -2607,7 +2608,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../MarketOrderWidget.cpp" line="81"/>
         <source>Import prices from cache</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj ceny z cache</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="83"/>
@@ -2798,12 +2799,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="75"/>
         <source>Eve path</source>
-        <translation type="unfinished"></translation>
+        <translation>Ścieżka Eve</translation>
     </message>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="88"/>
         <source>Eve cache path</source>
-        <translation type="unfinished"></translation>
+        <translation>Ścieżka cache Eve</translation>
     </message>
 </context>
 <context>
