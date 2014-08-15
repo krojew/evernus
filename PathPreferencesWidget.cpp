@@ -83,13 +83,13 @@ namespace Evernus
         mEveCachePathEdit = new QLineEdit{settings.value(PathSettings::eveCachePathKey).toString(), this};
         cacheLayout->addWidget(mEveCachePathEdit);
 
-        auto cacheLabel = new QLabel{tr("Setting the cache path is optional. When left blank, Evernus will try to guess the path itself."), this};
-        cacheLayout->addWidget(cacheLabel);
-        cacheLabel->setWordWrap(true);
-
         browseBtn = new QPushButton{tr("Browse..."), this};
-        eveLayout->addWidget(browseBtn);
+        cacheLayout->addWidget(browseBtn);
         connect(browseBtn, &QPushButton::clicked, this, &PathPreferencesWidget::browseForCacheFolder);
+
+        auto cacheLabel = new QLabel{tr("Setting the cache path is optional. When left blank, Evernus will try to guess the path itself."), this};
+        eveLayout->addWidget(cacheLabel);
+        cacheLabel->setWordWrap(true);
 
         mainLayout->addStretch();
     }
