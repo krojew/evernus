@@ -28,6 +28,113 @@
     </message>
 </context>
 <context>
+    <name>EveCacheBuffer</name>
+    <message>
+        <location filename="../EveCacheBuffer.cpp" line="54"/>
+        <location filename="../EveCacheBuffer.cpp" line="72"/>
+        <location filename="../EveCacheBuffer.cpp" line="82"/>
+        <location filename="../EveCacheBuffer.cpp" line="104"/>
+        <location filename="../EveCacheBuffer.cpp" line="113"/>
+        <location filename="../EveCacheBuffer.cpp" line="122"/>
+        <source>Error reading cache.</source>
+        <translation>Błąd odczytu cache.</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheBuffer.cpp" line="135"/>
+        <source>Cannot open buffer.</source>
+        <translation>Nie można otworzyć bufora.</translation>
+    </message>
+</context>
+<context>
+    <name>EveCacheFile</name>
+    <message>
+        <location filename="../EveCacheFile.cpp" line="39"/>
+        <source>Cannot open file.</source>
+        <translation>Nie można otworzyć pliku.</translation>
+    </message>
+</context>
+<context>
+    <name>EveCacheFileParser</name>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="127"/>
+        <source>Invalid data in share map!</source>
+        <translation>Nieprawidłowe dane w mapie dzielenia!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="315"/>
+        <source>Didn&apos;t encounter a double 0x2d where should be one!</source>
+        <translation>Nie znaleziono podwójnego 0x2d, gdzie powinien być!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="321"/>
+        <source>Unknown stream type!</source>
+        <translation>Nieznany typ strumienia!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="325"/>
+        <source>Couldn&apos;t parse stream!</source>
+        <translation>Nie udało się odczytać strumienia!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="339"/>
+        <source>DB row not found!</source>
+        <translation>Nie znaleziono wiersza bazy danych!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="342"/>
+        <source>Bad descriptor name!</source>
+        <translation>Nieprawidłowa nazwa deskryptora!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="348"/>
+        <source>Invalid row size!</source>
+        <translation>Nieprawiłowy rozmiar wiersza!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="378"/>
+        <source>Invalid row fields!</source>
+        <translation>Nieprawidłowe pola wiersza!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="384"/>
+        <source>Invalid row field type!</source>
+        <translation>Nieprawidłowy typ pola!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="442"/>
+        <source>Unknown ADO type!</source>
+        <translation>Nieznany typ ADO!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="466"/>
+        <source>Share index out of range!</source>
+        <translation>Indeks dzielonego obiektu poza zakresem!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="469"/>
+        <source>No share at specified index found!</source>
+        <translation>Brak dzielonego obiektu dla danego indeksu!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="477"/>
+        <source>Share cursor out of range!</source>
+        <translation>Kursor dzielonych obiektów poza zakresem!</translation>
+    </message>
+    <message>
+        <location filename="../EveCacheFileParser.cpp" line="481"/>
+        <source>Share ID out of range!</source>
+        <translation>Identyfikator dzielonego obiektu poza zakresem!</translation>
+    </message>
+</context>
+<context>
+    <name>EveCacheManager</name>
+    <message>
+        <location filename="../EveCacheManager.cpp" line="79"/>
+        <source>No cache files found!</source>
+        <translation>Nie znaleziono plików cache!</translation>
+    </message>
+</context>
+<context>
     <name>Evernus::APIInterface</name>
     <message>
         <location filename="../APIInterface.cpp" line="144"/>
@@ -198,6 +305,24 @@
         <location filename="../AssetsWidget.cpp" line="63"/>
         <source>Import prices from logs</source>
         <translation>Importuj ceny z logów</translation>
+    </message>
+    <message>
+        <location filename="../AssetsWidget.cpp" line="68"/>
+        <source>Import prices from cache</source>
+        <translation>Importuj ceny z cache</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::CacheExternalOrderImporter</name>
+    <message>
+        <location filename="../CacheExternalOrderImporter.cpp" line="48"/>
+        <source>Couldn&apos;t determine Eve cache path.</source>
+        <translation>Nie udało się odnaleźć ścieżki cache.</translation>
+    </message>
+    <message>
+        <location filename="../CacheExternalOrderImporter.cpp" line="54"/>
+        <source>Eve cache path doesn&apos;t exist.</source>
+        <translation>Ścieżka cache nie istnieje.</translation>
     </message>
 </context>
 <context>
@@ -737,8 +862,8 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="943"/>
         <location filename="../EvernusApplication.cpp" line="949"/>
-        <location filename="../EvernusApplication.cpp" line="2083"/>
-        <location filename="../EvernusApplication.cpp" line="2113"/>
+        <location filename="../EvernusApplication.cpp" line="2105"/>
+        <location filename="../EvernusApplication.cpp" line="2135"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -819,43 +944,61 @@
         <translation>Pobieranie zleceń korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1509"/>
+        <location filename="../EvernusApplication.cpp" line="1353"/>
+        <source>Cache import</source>
+        <translation>Import z cache</translation>
+    </message>
+    <message>
+        <location filename="../EvernusApplication.cpp" line="1353"/>
+        <source>Warning! Reading cache is considered a gray area. CPP on one hand considers this a violation of the EULA, but on the other has stated they will only penalize when used in conjunction with illegal activities, like botting.
+
+Do wish to continue?
+
+By choosing &apos;Yes&apos; you accept all responsibility of any action CCP may impose upon you, should they choose to changetheir policy.</source>
+        <translation>Uwaga! Odczyt cache jest uważany za szarą strefę. Z jednej strony CPP określiło, że łamie to zasady orkreślone w EULA; z drugiej stwierdzili, że będą karać graczy tylko, jeśli będzie to powiązane z niedozwolonymi czynnościami, np botami.
+
+Czy chcesz kontynuować?
+
+Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialność za jakąkolwiek karę CPP może na Ciebie nałożyć, jeśli zmienią swoją politykę.</translation>
+    </message>
+    <message>
+        <location filename="../EvernusApplication.cpp" line="1531"/>
         <source>SMTP Error</source>
         <translation>Błąd SMTP</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1509"/>
-        <location filename="../EvernusApplication.cpp" line="1517"/>
+        <location filename="../EvernusApplication.cpp" line="1531"/>
+        <location filename="../EvernusApplication.cpp" line="1539"/>
         <source>Error sending email: %1</source>
         <translation>Błąd wysyłania maila: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1517"/>
+        <location filename="../EvernusApplication.cpp" line="1539"/>
         <source>Mail Error</source>
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1812"/>
+        <location filename="../EvernusApplication.cpp" line="1834"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1826"/>
+        <location filename="../EvernusApplication.cpp" line="1848"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1837"/>
+        <location filename="../EvernusApplication.cpp" line="1859"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2084"/>
+        <location filename="../EvernusApplication.cpp" line="2106"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2088"/>
+        <location filename="../EvernusApplication.cpp" line="2110"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -864,14 +1007,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2091"/>
+        <location filename="../EvernusApplication.cpp" line="2113"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2113"/>
+        <location filename="../EvernusApplication.cpp" line="2135"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
@@ -891,42 +1034,42 @@
         <translation>Pobieranie stacji graczy...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1397"/>
+        <location filename="../EvernusApplication.cpp" line="1419"/>
         <source>Select Mentat directory</source>
         <translation>Wybierz katalog Mentat</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1407"/>
+        <location filename="../EvernusApplication.cpp" line="1429"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1407"/>
+        <location filename="../EvernusApplication.cpp" line="1429"/>
         <source>Error opening %1</source>
         <translation>Błąd otwierania %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1411"/>
+        <location filename="../EvernusApplication.cpp" line="1433"/>
         <source>Importing order history...</source>
         <translation>Importowanie historii zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1457"/>
+        <location filename="../EvernusApplication.cpp" line="1479"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importowanie historii zleceń: %1 przetworzonych</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1462"/>
+        <location filename="../EvernusApplication.cpp" line="1484"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1738"/>
+        <location filename="../EvernusApplication.cpp" line="1760"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1801"/>
+        <location filename="../EvernusApplication.cpp" line="1823"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>
@@ -1115,9 +1258,14 @@
         <translation>Włączone</translation>
     </message>
     <message>
-        <location filename="../IGBPreferencesWidget.cpp" line="52"/>
+        <location filename="../IGBPreferencesWidget.cpp" line="50"/>
         <source>Port:</source>
         <translation>Port:</translation>
+    </message>
+    <message>
+        <location filename="../IGBPreferencesWidget.cpp" line="56"/>
+        <source>Scan delay:</source>
+        <translation>Opóźnienie skanowania:</translation>
     </message>
 </context>
 <context>
@@ -1181,12 +1329,27 @@
         <translation>Zlecenia kupna:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="61"/>
+        <location filename="../IGBService.cpp" line="57"/>
+        <source>Scan delay:</source>
+        <translation>Opóźnienie skanowania:</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="58"/>
+        <source>Start Scan</source>
+        <translation>Rozpocznij skanowanie</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="59"/>
+        <source>Stop Scan</source>
+        <translation>Zakończ skanowanie</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="64"/>
         <source>Please select a category from the menu.</source>
         <translation>Wybierz kategorię z menu.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="95"/>
+        <location filename="../IGBService.cpp" line="98"/>
         <source>Website trust is required. Please add it to Trusted Sites.</source>
         <translation>Wymagane jest zaufanie stronie. Dodaj stronę do zaufanych (Trusted Sites).</translation>
     </message>
@@ -1508,27 +1671,27 @@
         <translation>Zlecenia postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="541"/>
+        <location filename="../MainWindow.cpp" line="542"/>
         <source>Corporation orders</source>
         <translation>Zlecenia korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="517"/>
+        <location filename="../MainWindow.cpp" line="518"/>
         <source>Character journal</source>
         <translation>Dziennik postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="559"/>
+        <location filename="../MainWindow.cpp" line="561"/>
         <source>Corporation journal</source>
         <translation>Dziennik korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="528"/>
+        <location filename="../MainWindow.cpp" line="529"/>
         <source>Character transactions</source>
         <translation>Transakcje postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="570"/>
+        <location filename="../MainWindow.cpp" line="572"/>
         <source>Corporation transactions</source>
         <translation>Transakcje korporacji</translation>
     </message>
@@ -1545,7 +1708,7 @@
         <translation type="vanished">Transakcje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="575"/>
+        <location filename="../MainWindow.cpp" line="577"/>
         <source>Item costs</source>
         <translation>Koszty</translation>
     </message>
@@ -2481,72 +2644,77 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="obsolete">Import</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="82"/>
-        <source>Import prices</source>
-        <translation>Importuj ceny</translation>
+        <location filename="../MarketOrderWidget.cpp" line="81"/>
+        <source>Import prices from cache</source>
+        <translation>Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="87"/>
+        <location filename="../MarketOrderWidget.cpp" line="83"/>
+        <source>Import prices  </source>
+        <translation>Importuj ceny  </translation>
+    </message>
+    <message>
+        <location filename="../MarketOrderWidget.cpp" line="88"/>
         <source>Open margin tool</source>
         <translation>Otwórz narzędzie marży</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="95"/>
+        <location filename="../MarketOrderWidget.cpp" line="96"/>
         <source>Group by:</source>
         <translation>Grupuj po:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="99"/>
+        <location filename="../MarketOrderWidget.cpp" line="100"/>
         <source>- none -</source>
         <translation>- brak -</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="100"/>
+        <location filename="../MarketOrderWidget.cpp" line="101"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="101"/>
+        <location filename="../MarketOrderWidget.cpp" line="102"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="102"/>
+        <location filename="../MarketOrderWidget.cpp" line="103"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="112"/>
+        <location filename="../MarketOrderWidget.cpp" line="113"/>
         <source>Sell</source>
         <translation>Sprzedaż</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="122"/>
+        <location filename="../MarketOrderWidget.cpp" line="123"/>
         <source>Buy</source>
         <translation>Kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="131"/>
+        <location filename="../MarketOrderWidget.cpp" line="132"/>
         <source>Sell &amp;&amp; Buy</source>
         <translation>Sprzedaż i kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="136"/>
+        <location filename="../MarketOrderWidget.cpp" line="137"/>
         <source>Sell orders</source>
         <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="150"/>
+        <location filename="../MarketOrderWidget.cpp" line="151"/>
         <source>Buy orders</source>
         <translation>Zlecenia kupna</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="165"/>
+        <location filename="../MarketOrderWidget.cpp" line="166"/>
         <source>History</source>
         <translation>Historia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="240"/>
+        <location filename="../MarketOrderWidget.cpp" line="246"/>
         <source>Script error</source>
         <translation>Błąd skryptu</translation>
     </message>
@@ -2646,6 +2814,8 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="58"/>
+        <location filename="../PathPreferencesWidget.cpp" line="84"/>
+        <location filename="../PathPreferencesWidget.cpp" line="97"/>
         <source>Browse...</source>
         <translation>Przeglądaj...</translation>
     </message>
@@ -2663,6 +2833,16 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <location filename="../PathPreferencesWidget.cpp" line="72"/>
         <source>Corporation log file name wildcard:</source>
         <translation>Wzór nazwy logów zleceń korporacji:</translation>
+    </message>
+    <message>
+        <location filename="../PathPreferencesWidget.cpp" line="75"/>
+        <source>Eve path</source>
+        <translation>Ścieżka Eve</translation>
+    </message>
+    <message>
+        <location filename="../PathPreferencesWidget.cpp" line="88"/>
+        <source>Eve cache path</source>
+        <translation>Ścieżka cache Eve</translation>
     </message>
 </context>
 <context>
@@ -3398,12 +3578,12 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="116"/>
+        <location filename="../main.cpp" line="120"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="125"/>
+        <location filename="../main.cpp" line="129"/>
         <source>Initialization error</source>
         <translation>Błąd inicjalizacji</translation>
     </message>

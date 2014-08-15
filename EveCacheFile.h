@@ -14,15 +14,24 @@
  */
 #pragma once
 
+#include "EveCacheBuffer.h"
+
 namespace Evernus
 {
-    namespace IGBSettings
+    class EveCacheFile
+        : public EveCacheBuffer
     {
-        const auto portDefault = 4632;
-        const auto scanDelayDefault = 3;
+    public:
+        explicit EveCacheFile(const QString &fileName);
+        explicit EveCacheFile(QString &&fileName);
+        EveCacheFile(const EveCacheFile &) = delete;
+        virtual ~EveCacheFile() = default;
 
-        const auto enabledKey = "igb/enabled";
-        const auto portKey = "igb/port";
-        const auto scanDelayKey = "igb/scanDelay";
-    }
+        void open();
+
+        EveCacheFile &operator =(const EveCacheFile &) = delete;
+
+    private:
+        QString mFileName;
+    };
 }

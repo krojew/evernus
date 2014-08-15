@@ -12,17 +12,32 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include <stdexcept>
+
+#include <QFile>
+
+#include "EveCacheFile.h"
 
 namespace Evernus
 {
-    namespace IGBSettings
+    EveCacheFile::EveCacheFile(const QString &fileName)
+        : EveCacheBuffer{}
+        , mFileName{fileName}
     {
-        const auto portDefault = 4632;
-        const auto scanDelayDefault = 3;
+    }
 
-        const auto enabledKey = "igb/enabled";
-        const auto portKey = "igb/port";
-        const auto scanDelayKey = "igb/scanDelay";
+    EveCacheFile::EveCacheFile(QString &&fileName)
+        : EveCacheBuffer{}
+        , mFileName{std::move(fileName)}
+    {
+    }
+
+    void EveCacheFile::open()
+    {
+        QFile file{mFileName};
+        if (!file.open(QIODevice::ReadOnly))
+            throw std::runtime_error{QT_TRANSLATE_NOOP("EveCacheFile", "Cannot open file.")};
+
+        EveCacheBuffer::openWithData(file.readAll());
     }
 }

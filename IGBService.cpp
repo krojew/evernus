@@ -54,6 +54,9 @@ namespace Evernus
         mOrderTemplate["prev-order-text"] = tr("Show Previous Order");
         mOrderTemplate["next-order-text"] = tr("Show Next Order");
         mOrderTemplate["current-order-text"] = tr("Current order:");
+        mOrderTemplate["scan-delay-text"] = tr("Scan delay:");
+        mOrderTemplate["start-scan-text"] = tr("Start Scan");
+        mOrderTemplate["stop-scan-text"] = tr("Stop Scan");
     }
 
     void IGBService::index(QxtWebRequestEvent *event)
@@ -130,6 +133,7 @@ namespace Evernus
     void IGBService::showOrders(QxtWebRequestEvent *event, const MarketOrderProvider &provider, MarketOrder::State state, bool needsDelta)
     {
         QStringList idContainer, typeIdContainer;
+        QSettings settings;
 
         mOrderTemplate["sell-orders"] = renderOrderList(
             filterAndSort(provider.getSellOrders(getCharacterId(event)), state, needsDelta), idContainer, typeIdContainer);
@@ -138,6 +142,7 @@ namespace Evernus
             filterAndSort(provider.getBuyOrders(getCharacterId(event)), state, needsDelta), idContainer, typeIdContainer);
         mOrderTemplate["order-ids"] = idContainer.join(", ");
         mOrderTemplate["type-ids"] = typeIdContainer.join(", ");
+        mOrderTemplate["scan-delay"] = settings.value(IGBSettings::scanDelayKey, IGBSettings::scanDelayDefault).toString();
 
         renderContent(event, mOrderTemplate.render());
     }

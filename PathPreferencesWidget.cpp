@@ -71,6 +71,34 @@ namespace Evernus
             settings.value(PathSettings::corporationLogWildcardKey, PathSettings::corporationLogWildcardDefault).toString(), this};
         marketLogGroupLayout->addRow(tr("Corporation log file name wildcard:"), mCorporationLogWildcardEdit);
 
+#ifdef Q_OS_WIN
+        auto eveGroup = new QGroupBox{tr("Eve path"), this};
+        mainLayout->addWidget(eveGroup);
+
+        auto eveLayout = new QHBoxLayout{};
+        eveGroup->setLayout(eveLayout);
+
+        mEvePathEdit = new QLineEdit{settings.value(PathSettings::evePathKey).toString(), this};
+        eveLayout->addWidget(mEvePathEdit);
+
+        browseBtn = new QPushButton{tr("Browse..."), this};
+        eveLayout->addWidget(browseBtn);
+        connect(browseBtn, &QPushButton::clicked, this, &PathPreferencesWidget::browseForEveFolder);
+#else
+        auto eveGroup = new QGroupBox{tr("Eve cache path"), this};
+        mainLayout->addWidget(eveGroup);
+
+        auto eveLayout = new QHBoxLayout{};
+        eveGroup->setLayout(eveLayout);
+
+        mEveCachePathEdit = new QLineEdit{settings.value(PathSettings::eveCachePathKey).toString(), this};
+        eveLayout->addWidget(mEveCachePathEdit);
+
+        browseBtn = new QPushButton{tr("Browse..."), this};
+        eveLayout->addWidget(browseBtn);
+        connect(browseBtn, &QPushButton::clicked, this, &PathPreferencesWidget::browseForEveFolder);
+#endif
+
         mainLayout->addStretch();
     }
 
@@ -81,6 +109,11 @@ namespace Evernus
         settings.setValue(PathSettings::deleteLogsKey, mDeleteLogsBtn->isChecked());
         settings.setValue(PathSettings::characterLogWildcardKey, mCharacterLogWildcardEdit->text());
         settings.setValue(PathSettings::corporationLogWildcardKey, mCorporationLogWildcardEdit->text());
+#ifdef Q_OS_WIN
+        settings.setValue(PathSettings::evePathKey, mEvePathEdit->text());
+#else
+        settings.setValue(PathSettings::eveCachePathKey, mEveCachePathEdit->text());
+#endif
     }
 
     void PathPreferencesWidget::browseForMarketLogsFolder()
@@ -88,5 +121,16 @@ namespace Evernus
         const auto path = QFileDialog::getExistingDirectory(this);
         if (!path.isEmpty())
             mMarketLogPathEdit->setText(path);
+    }
+
+    void PathPreferencesWidget::browseForEveFolder()
+    {
+        const auto path = QFileDialog::getExistingDirectory(this);
+        if (!path.isEmpty())
+#ifdef Q_OS_WIN
+            mEvePathEdit->setText(path);
+#else
+            mEveCachePathEdit->setText(path);
+#endif
     }
 }

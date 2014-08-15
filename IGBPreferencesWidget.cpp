@@ -14,8 +14,8 @@
  */
 #include <limits>
 
-#include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QFormLayout>
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QSettings>
@@ -39,23 +39,23 @@ namespace Evernus
         auto mainGroup = new QGroupBox{this};
         mainLayout->addWidget(mainGroup);
 
-        auto mainGroupLayout = new QVBoxLayout{};
+        auto mainGroupLayout = new QFormLayout{};
         mainGroup->setLayout(mainGroupLayout);
 
         mEnabledBtn = new QCheckBox{tr("Enabled"), this};
-        mainGroupLayout->addWidget(mEnabledBtn);
+        mainGroupLayout->addRow(mEnabledBtn);
         mEnabledBtn->setChecked(settings.value(IGBSettings::enabledKey, true).toBool());
 
-        auto portLayout = new QHBoxLayout{};
-        mainGroupLayout->addLayout(portLayout);
-
-        portLayout->addWidget(new QLabel{tr("Port:"), this});
-
         mPortEdit = new QSpinBox{this};
-        portLayout->addWidget(mPortEdit);
+        mainGroupLayout->addRow(tr("Port:"), mPortEdit);
         mPortEdit->setMinimum(1);
         mPortEdit->setMaximum(std::numeric_limits<quint16>::max());
         mPortEdit->setValue(settings.value(IGBSettings::portKey, IGBSettings::portDefault).toInt());
+
+        mScanDelayEdit = new QSpinBox{this};
+        mainGroupLayout->addRow(tr("Scan delay:"), mScanDelayEdit);
+        mScanDelayEdit->setMinimum(2);
+        mScanDelayEdit->setValue(settings.value(IGBSettings::scanDelayKey, IGBSettings::scanDelayDefault).toInt());
 
         mainLayout->addStretch();
     }
@@ -65,5 +65,6 @@ namespace Evernus
         QSettings settings;
         settings.setValue(IGBSettings::enabledKey, mEnabledBtn->isChecked());
         settings.setValue(IGBSettings::portKey, mPortEdit->value());
+        settings.setValue(IGBSettings::scanDelayKey, mScanDelayEdit->value());
     }
 }
