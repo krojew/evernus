@@ -1347,6 +1347,23 @@ namespace Evernus
 
     void EvernusApplication::refreshExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &target)
     {
+        QSettings settings;
+        if (!settings.value(UISettings::cacheImportApprovedKey, false).toBool())
+        {
+            if (QMessageBox::warning(activeWindow(), tr("Cache import"), tr(
+                "Warning! Reading cache is considered a gray area. CPP on one hand considers this a violation of the EULA, "
+                "but on the other has stated they will only penalize when used in conjunction with illegal activities, like botting.\n\n"
+                "Do wish to continue?\n\n"
+                "By choosing 'Yes' you accept all responsibility of any action CCP may impose upon you, should they choose to change"
+                "their policy."
+            ), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No)
+            {
+                return;
+            }
+
+            settings.setValue(UISettings::cacheImportApprovedKey, true);
+        }
+
         importExternalOrders(ExternalOrderImporterNames::cacheImporter, target);
     }
 

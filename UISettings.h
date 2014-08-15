@@ -28,5 +28,6 @@ namespace Evernus
         const auto languageKey = "ui/global/language";
         const auto dateTimeFormatKey = "ui/global/dateTimeFormat";
         const auto orderViewHeaderStateKey = "ui/orderView/header/%1";
+        const auto cacheImportApprovedKey = "ui/cacheImport/approved";
     }
 }

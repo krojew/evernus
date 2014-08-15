@@ -862,8 +862,8 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="943"/>
         <location filename="../EvernusApplication.cpp" line="949"/>
-        <location filename="../EvernusApplication.cpp" line="2088"/>
-        <location filename="../EvernusApplication.cpp" line="2118"/>
+        <location filename="../EvernusApplication.cpp" line="2105"/>
+        <location filename="../EvernusApplication.cpp" line="2135"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -944,43 +944,61 @@
         <translation>Pobieranie zleceń korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1514"/>
+        <location filename="../EvernusApplication.cpp" line="1353"/>
+        <source>Cache import</source>
+        <translation>Import z cache</translation>
+    </message>
+    <message>
+        <location filename="../EvernusApplication.cpp" line="1353"/>
+        <source>Warning! Reading cache is considered a gray area. CPP on one hand considers this a violation of the EULA, but on the other has stated they will only penalize when used in conjunction with illegal activities, like botting.
+
+Do wish to continue?
+
+By choosing &apos;Yes&apos; you accept all responsibility of any action CCP may impose upon you, should they choose to changetheir policy.</source>
+        <translation>Uwaga! Odczyt cache jest uważany za szarą strefę. Z jednej strony CPP określiło, że łamie to zasady orkreślone w EULA; z drugiej stwierdzili, że będą karać graczy tylko, jeśli będzie to powiązane z niedozwolonymi czynnościami, np botami.
+
+Czy chcesz kontynuować?
+
+Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialność za jakąkolwiek karę CPP może na Ciebie nałożyć, jeśli zmienią swoją politykę.</translation>
+    </message>
+    <message>
+        <location filename="../EvernusApplication.cpp" line="1531"/>
         <source>SMTP Error</source>
         <translation>Błąd SMTP</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1514"/>
-        <location filename="../EvernusApplication.cpp" line="1522"/>
+        <location filename="../EvernusApplication.cpp" line="1531"/>
+        <location filename="../EvernusApplication.cpp" line="1539"/>
         <source>Error sending email: %1</source>
         <translation>Błąd wysyłania maila: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1522"/>
+        <location filename="../EvernusApplication.cpp" line="1539"/>
         <source>Mail Error</source>
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1817"/>
+        <location filename="../EvernusApplication.cpp" line="1834"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1831"/>
+        <location filename="../EvernusApplication.cpp" line="1848"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1842"/>
+        <location filename="../EvernusApplication.cpp" line="1859"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2089"/>
+        <location filename="../EvernusApplication.cpp" line="2106"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2093"/>
+        <location filename="../EvernusApplication.cpp" line="2110"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -989,14 +1007,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2096"/>
+        <location filename="../EvernusApplication.cpp" line="2113"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2118"/>
+        <location filename="../EvernusApplication.cpp" line="2135"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
@@ -1016,42 +1034,42 @@
         <translation>Pobieranie stacji graczy...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1402"/>
+        <location filename="../EvernusApplication.cpp" line="1419"/>
         <source>Select Mentat directory</source>
         <translation>Wybierz katalog Mentat</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1412"/>
+        <location filename="../EvernusApplication.cpp" line="1429"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1412"/>
+        <location filename="../EvernusApplication.cpp" line="1429"/>
         <source>Error opening %1</source>
         <translation>Błąd otwierania %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1416"/>
+        <location filename="../EvernusApplication.cpp" line="1433"/>
         <source>Importing order history...</source>
         <translation>Importowanie historii zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1462"/>
+        <location filename="../EvernusApplication.cpp" line="1479"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importowanie historii zleceń: %1 przetworzonych</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1467"/>
+        <location filename="../EvernusApplication.cpp" line="1484"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1743"/>
+        <location filename="../EvernusApplication.cpp" line="1760"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1806"/>
+        <location filename="../EvernusApplication.cpp" line="1823"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>
@@ -1240,9 +1258,14 @@
         <translation>Włączone</translation>
     </message>
     <message>
-        <location filename="../IGBPreferencesWidget.cpp" line="52"/>
+        <location filename="../IGBPreferencesWidget.cpp" line="50"/>
         <source>Port:</source>
         <translation>Port:</translation>
+    </message>
+    <message>
+        <location filename="../IGBPreferencesWidget.cpp" line="56"/>
+        <source>Scan delay:</source>
+        <translation>Opóźnienie skanowania:</translation>
     </message>
 </context>
 <context>
@@ -1306,12 +1329,27 @@
         <translation>Zlecenia kupna:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="61"/>
+        <location filename="../IGBService.cpp" line="57"/>
+        <source>Scan delay:</source>
+        <translation>Opóźnienie skanowania:</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="58"/>
+        <source>Start Scan</source>
+        <translation>Rozpocznij skanowanie</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="59"/>
+        <source>Stop Scan</source>
+        <translation>Zakończ skanowanie</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="64"/>
         <source>Please select a category from the menu.</source>
         <translation>Wybierz kategorię z menu.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="95"/>
+        <location filename="../IGBService.cpp" line="98"/>
         <source>Website trust is required. Please add it to Trusted Sites.</source>
         <translation>Wymagane jest zaufanie stronie. Dodaj stronę do zaufanych (Trusted Sites).</translation>
     </message>
