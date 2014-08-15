@@ -1927,7 +1927,7 @@ namespace Evernus
                 }
             }
 
-            if (characterFound)
+            if (characterFound || corp)
             {
                 if (settings.value(PathSettings::deleteLogsKey, true).toBool())
                     file.remove();
