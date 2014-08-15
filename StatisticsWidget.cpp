@@ -41,6 +41,7 @@
 #include "WalletSnapshotRepository.h"
 #include "DateFilteredPlotWidget.h"
 #include "OrderScriptRepository.h"
+#include "UISettings.h"
 
 #include "qcustomplot.h"
 
@@ -408,6 +409,20 @@ namespace Evernus
         updateTransactionData();
     }
 
+    void StatisticsWidget::handleNewPreferences()
+    {
+        QSettings settings;
+        const auto format = settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString();
+
+        mBalancePlot->getPlot().yAxis->setNumberFormat(format);
+        mJournalPlot->getPlot().yAxis->setNumberFormat(format);
+        mTransactionPlot->getPlot().yAxis->setNumberFormat(format);
+
+        mBalancePlot->getPlot().replot();
+        mJournalPlot->getPlot().replot();
+        mTransactionPlot->getPlot().replot();
+    }
+
     void StatisticsWidget::applyAggrFilter()
     {
         const auto limit = mAggrLimitEdit->value();
@@ -716,9 +731,12 @@ namespace Evernus
     {
         auto plot = new DateFilteredPlotWidget{this};
         plot->getPlot().xAxis->grid()->setVisible(false);
-        plot->getPlot().yAxis->setNumberFormat("gbc");
         plot->getPlot().yAxis->setNumberPrecision(2);
         plot->getPlot().yAxis->setLabel("ISK");
+
+        QSettings settings;
+        plot->getPlot().yAxis->setNumberFormat(
+            settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString());
 
         return plot;
     }

@@ -61,6 +61,7 @@ namespace Evernus
         void updateJournalData();
         void updateTransactionData();
         void updateData();
+        void handleNewPreferences();
 
     private slots:
         void applyAggrFilter();

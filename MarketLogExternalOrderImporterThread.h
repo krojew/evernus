@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <unordered_map>
 #include <vector>
 
 #include <QThread>
@@ -43,7 +44,9 @@ namespace Evernus
         virtual void run() override;
 
     private:
-        static void getExternalOrder(const QString &logPath, ExternalOrderList &prices, bool deleteLog);
+        typedef std::unordered_map<EveType::IdType, QDateTime> LogTimeMap;
+
+        static void getExternalOrder(const QString &logPath, ExternalOrderList &prices, bool deleteLog, LogTimeMap &timeMap);
     };
 }
 

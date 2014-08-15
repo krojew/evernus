@@ -20,10 +20,12 @@
 #include <QSettings>
 #include <QGroupBox>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QSpinBox>
 #include <QLabel>
 
 #include "PriceSettings.h"
+#include "UISettings.h"
 
 #include "PricePreferencesWidget.h"
 
@@ -124,6 +126,14 @@ namespace Evernus
         mMarketOrderMaxAgeEdit->setSuffix(tr(" days"));
         mMarketOrderMaxAgeEdit->setValue(settings.value(PriceSettings::marketOrderMaxAgeKey, PriceSettings::marketOrderMaxAgeDefault).toUInt());
 
+        const auto plotNumberFormat = settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString();
+
+        mPlotNumberFormatEdit = new QComboBox{this};
+        pricesLayout->addRow(tr("Plot number format:"), mPlotNumberFormatEdit);
+        addPlotFormat(tr("beautified scientific"), "gbc", plotNumberFormat);
+        addPlotFormat(tr("scientific"), "g", plotNumberFormat);
+        addPlotFormat(tr("fixed"), "f", plotNumberFormat);
+
         mainLayout->addStretch();
     }
 
@@ -141,5 +151,13 @@ namespace Evernus
         settings.setValue(PriceSettings::importLogWaitTimeKey, mImportLogWaitTimeEdit->value());
         settings.setValue(PriceSettings::priceMaxAgeKey, mPriceMaxAgeEdit->value());
         settings.setValue(PriceSettings::marketOrderMaxAgeKey, mMarketOrderMaxAgeEdit->value());
+        settings.setValue(UISettings::plotNumberFormatKey, mPlotNumberFormatEdit->currentData());
+    }
+
+    void PricePreferencesWidget::addPlotFormat(const QString &text, const QString &value, const QString &curValue)
+    {
+        mPlotNumberFormatEdit->addItem(text, value);
+        if (curValue == value)
+            mPlotNumberFormatEdit->setCurrentIndex(mPlotNumberFormatEdit->count() - 1);
     }
 }
