@@ -148,6 +148,7 @@ namespace Evernus
         void charactersChanged();
         void assetsChanged();
         void externalOrdersChanged();
+        void externalOrdersChangedWithMarketOrders();
         void walletJournalChanged();
         void walletTransactionsChanged();
         void marketOrdersChanged();

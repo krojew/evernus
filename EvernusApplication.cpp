@@ -1141,6 +1141,7 @@ namespace Evernus
                 {
                     importMarketOrders(id, data, false);
                     emit marketOrdersChanged();
+                    emit externalOrdersChangedWithMarketOrders();
                 }
 
                 emit taskEnded(task, error);
@@ -1283,6 +1284,7 @@ namespace Evernus
                 {
                     importMarketOrders(id, data, true);
                     emit corpMarketOrdersChanged();
+                    emit externalOrdersChangedWithMarketOrders();
                 }
 
                 emit taskEnded(task, error);
@@ -1931,6 +1933,8 @@ namespace Evernus
                     emit corpMarketOrdersChanged();
                 else
                     emit marketOrdersChanged();
+
+                emit externalOrdersChangedWithMarketOrders();
 
                 break;
             }

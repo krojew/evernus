@@ -488,6 +488,7 @@ namespace Evernus
         connect(this, &MainWindow::marginToolHidden, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, assetsTab, &AssetsWidget::updateData);
+        connect(this, &MainWindow::externalOrdersChangedWithMarketOrders, assetsTab, &AssetsWidget::updateData);
 
         auto orderTab = new MarketOrderWidget{mOrderProvider,
                                               mCacheTimerProvider,
