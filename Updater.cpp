@@ -27,6 +27,7 @@
 #include "CacheTimerRepository.h"
 #include "EvernusApplication.h"
 #include "PriceSettings.h"
+#include "PathSettings.h"
 
 #include "Updater.h"
 
@@ -54,28 +55,39 @@ namespace Evernus
 
         try
         {
-            if (majorVersion == 0)
+            if (majorVersion < 2)
             {
-                if (minorVersion < 5)
+                if (majorVersion == 0)
                 {
-                    if (minorVersion < 3)
-                        settings.setValue(PriceSettings::autoAddCustomItemCostKey, false);
+                    if (minorVersion < 5)
+                    {
+                        if (minorVersion < 3)
+                            settings.setValue(PriceSettings::autoAddCustomItemCostKey, false);
 
-                    cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
-                    cacheTimerRepo.create(characterRepo);
+                        cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
+                        cacheTimerRepo.create(characterRepo);
 
-                    characterRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterRepo.getTableName()));
-                    characterOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterOrderRepo.getTableName()));
-                    corporationOrderRepo.exec(QString{"ALTER TABLE %1 RENAME TO %1_temp"}.arg(corporationOrderRepo.getTableName()));
+                        characterRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterRepo.getTableName()));
+                        characterOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterOrderRepo.getTableName()));
+                        corporationOrderRepo.exec(QString{"ALTER TABLE %1 RENAME TO %1_temp"}.arg(corporationOrderRepo.getTableName()));
 
-                    corporationOrderRepo.dropIndexes(characterRepo);
-                    corporationOrderRepo.create(characterRepo);
-                    corporationOrderRepo.copyDataWithoutCorporationIdFrom(QString{"%1_temp"}.arg(corporationOrderRepo.getTableName()));
-                    corporationOrderRepo.exec(QString{"DROP TABLE %1_temp"}.arg(corporationOrderRepo.getTableName()));
+                        corporationOrderRepo.dropIndexes(characterRepo);
+                        corporationOrderRepo.create(characterRepo);
+                        corporationOrderRepo.copyDataWithoutCorporationIdFrom(QString{"%1_temp"}.arg(corporationOrderRepo.getTableName()));
+                        corporationOrderRepo.exec(QString{"DROP TABLE %1_temp"}.arg(corporationOrderRepo.getTableName()));
 
-                    QMessageBox::information(nullptr, tr("Update"), tr(
-                        "This update requires re-importing all data.\n"
-                        "Please click on \"Import all\" after the update."));
+                        QMessageBox::information(nullptr, tr("Update"), tr(
+                            "This update requires re-importing all data.\n"
+                            "Please click on \"Import all\" after the update."));
+                    }
+                }
+
+                if (minorVersion < 8)
+                {
+                    const auto cachePath = settings.value(PathSettings::eveCachePathKey).toString();
+                    const auto index = cachePath.indexOf("MachoNet");
+                    if (index != -1)
+                        settings.setValue(PathSettings::eveCachePathKey, cachePath.left(index));
                 }
             }
         }

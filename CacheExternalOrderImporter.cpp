@@ -115,17 +115,32 @@ namespace Evernus
 
     QStringList CacheExternalOrderImporter::getEveCachePaths()
     {
+        const auto cachePathSegment = "MachoNet/87.237.38.200/";
+        QDir appDataPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/CCP/EVE/";
+
+        QStringList clientPaths;
+
         QSettings settings;
         const auto basePath = settings.value(PathSettings::eveCachePathKey).toString();
-        if (!basePath.isEmpty())
-            return QStringList{basePath};
+        if (basePath.isEmpty())
+        {
 
-        const auto cachePathSegment = "/cache/MachoNet/87.237.38.200/";
-        const QDir appDataPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/CCP/EVE/";
-
-        auto clientPaths = appDataPath.entryList(QStringList{"*_tranquility"}, QDir::Dirs | QDir::Readable, QDir::Time);
-        if (clientPaths.isEmpty())
+            clientPaths = appDataPath.entryList(QStringList{"*_tranquility"}, QDir::Dirs | QDir::Readable);
+            if (clientPaths.isEmpty())
+            {
+                clientPaths << QString{};
+            }
+            else
+            {
+                for (auto &path : clientPaths)
+                    path += "/cache/";
+            }
+        }
+        else
+        {
+            appDataPath = basePath;
             clientPaths << QString{};
+        }
 
         auto max = 0u;
 
