@@ -334,6 +334,8 @@ namespace Evernus
 
         void setSmtpSettings();
 
+        void clearExternalOrderCaches();
+
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };
 }

@@ -15,6 +15,8 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 
+#include "MarketOrder.h"
+
 #include "ExternalOrderRepository.h"
 
 namespace Evernus
@@ -67,13 +69,21 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_region ON %1(type, type_id, region_id)"}.arg(getTableName()));
     }
 
-    ExternalOrderRepository::EntityPtr ExternalOrderRepository::findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const
+    ExternalOrderRepository::EntityPtr ExternalOrderRepository::findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId,
+                                                                                          ExternalOrder::LocationIdType locationId,
+                                                                                          const Repository<MarketOrder> &orderRepo,
+                                                                                          const Repository<MarketOrder> &corpOrderRepo) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ? ORDER BY value ASC LIMIT 1"}
-            .arg(getTableName()));
+        auto query = prepare(QString{R"(
+            SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ? AND id NOT IN
+            (SELECT id FROM %2 WHERE state = ? UNION SELECT id FROM %3 WHERE state = ?)
+            ORDER BY value ASC LIMIT 1)"}
+            .arg(getTableName()).arg(orderRepo.getTableName()).arg(corpOrderRepo.getTableName()));
         query.addBindValue(static_cast<int>(ExternalOrder::Type::Sell));
         query.addBindValue(typeId);
         query.addBindValue(locationId);
+        query.addBindValue(static_cast<int>(MarketOrder::State::Active));
+        query.addBindValue(static_cast<int>(MarketOrder::State::Active));
 
         DatabaseUtils::execQuery(query);
         if (!query.next())
@@ -82,12 +92,20 @@ namespace Evernus
         return populate(query.record());
     }
 
-    ExternalOrderRepository::EntityList ExternalOrderRepository::findBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId, uint regionId) const
+    ExternalOrderRepository::EntityList ExternalOrderRepository::findBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId,
+                                                                                        uint regionId,
+                                                                                        const Repository<MarketOrder> &orderRepo,
+                                                                                        const Repository<MarketOrder> &corpOrderRepo) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND region_id = ?"}.arg(getTableName()));
+        auto query = prepare(QString{R"(
+            SELECT * FROM %1 WHERE type = ? AND type_id = ? AND region_id = ? AND id NOT IN
+            (SELECT id FROM %2 WHERE state = ? UNION SELECT id FROM %3 WHERE state = ?)
+        )"}.arg(getTableName()).arg(orderRepo.getTableName()).arg(corpOrderRepo.getTableName()));
         query.addBindValue(static_cast<int>(ExternalOrder::Type::Buy));
         query.addBindValue(typeId);
         query.addBindValue(regionId);
+        query.addBindValue(static_cast<int>(MarketOrder::State::Active));
+        query.addBindValue(static_cast<int>(MarketOrder::State::Active));
 
         DatabaseUtils::execQuery(query);
 

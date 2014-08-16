@@ -95,8 +95,6 @@ namespace Evernus
 
         void archive(const std::vector<MarketOrder::IdType> &ids) const;
 
-        OrderIdList getActiveIds() const;
-
     private:
         bool mCorp = false;
 

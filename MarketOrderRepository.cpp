@@ -398,20 +398,6 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
-    MarketOrderRepository::OrderIdList MarketOrderRepository::getActiveIds() const
-    {
-        auto query = prepare(QString{"SELECT %1 FROM %2 WHERE state = ?"}.arg(getIdColumn()).arg(getTableName()));
-        query.bindValue(0, static_cast<int>(MarketOrder::State::Active));
-
-        DatabaseUtils::execQuery(query);
-
-        OrderIdList result;
-        while (query.next())
-            result.emplace(query.value(0).value<OrderIdList::value_type>());
-
-        return result;
-    }
-
     QStringList MarketOrderRepository::getColumns() const
     {
         return QStringList{}

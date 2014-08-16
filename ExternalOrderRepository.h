@@ -20,6 +20,8 @@
 
 namespace Evernus
 {
+    class MarketOrder;
+
     class ExternalOrderRepository
         : public Repository<ExternalOrder>
     {
@@ -35,8 +37,14 @@ namespace Evernus
 
         void create() const;
 
-        EntityPtr findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId, ExternalOrder::LocationIdType locationId) const;
-        EntityList findBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId, uint regionId) const;
+        EntityPtr findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId,
+                                            ExternalOrder::LocationIdType locationId,
+                                            const Repository<MarketOrder> &orderRepo,
+                                            const Repository<MarketOrder> &corpOrderRepo) const;
+        EntityList findBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId,
+                                          uint regionId,
+                                          const Repository<MarketOrder> &orderRepo,
+                                          const Repository<MarketOrder> &corpOrderRepo) const;
 
         void removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const;
 

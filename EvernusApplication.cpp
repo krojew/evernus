@@ -337,23 +337,16 @@ namespace Evernus
 
     void EvernusApplication::updateExternalOrders(const std::vector<ExternalOrder> &orders)
     {
-        const auto ownOrders = mMarketOrderRepository->getActiveIds();
-
         ExternalOrderImporter::TypeLocationPairs affectedOrders;
 
         std::vector<std::reference_wrapper<const ExternalOrder>> toStore;
         for (const auto &order : orders)
         {
-            if (ownOrders.find(order.getId()) == std::end(ownOrders))
-            {
-                toStore.emplace_back(std::cref(order));
-                affectedOrders.emplace(std::make_pair(order.getTypeId(), order.getLocationId()));
-            }
+            toStore.emplace_back(std::cref(order));
+            affectedOrders.emplace(std::make_pair(order.getTypeId(), order.getLocationId()));
         }
 
-        mSellPrices.clear();
-        mBuyPrices.clear();
-        mTypeRegionOrderCache.clear();
+        clearExternalOrderCaches();
 
         mExternalOrderRepository->removeObsolete(affectedOrders);
         mExternalOrderRepository->batchStore(toStore, true);
@@ -2083,6 +2076,8 @@ namespace Evernus
 
             orderRepo.batchStore(orders, true);
 
+            clearExternalOrderCaches();
+
             if (corp)
                 saveUpdateTimer(TimerType::CorpMarketOrders, mCorpMarketOrdersUtcUpdateTimes, id);
             else
@@ -2191,7 +2186,7 @@ namespace Evernus
 
         try
         {
-            result = mExternalOrderRepository->findSellByTypeAndLocation(id, stationId);
+            result = mExternalOrderRepository->findSellByTypeAndLocation(id, stationId, *mMarketOrderRepository, *mCorpMarketOrderRepository);
         }
         catch (const ExternalOrderRepository::NotFoundException &)
         {
@@ -2421,7 +2416,9 @@ namespace Evernus
         if (it != std::end(mTypeRegionOrderCache))
             return it->second;
 
-        return mTypeRegionOrderCache.emplace(key, mExternalOrderRepository->findBuyByTypeAndRegion(typeId, regionId)).first->second;
+        return mTypeRegionOrderCache.emplace(
+            key, mExternalOrderRepository->findBuyByTypeAndRegion(typeId, regionId, *mMarketOrderRepository, *mCorpMarketOrderRepository))
+                .first->second;
     }
 
     void EvernusApplication::computeAutoCosts(Character::IdType characterId, const WalletTransactionRepository &transactionRepo)
@@ -2476,6 +2473,13 @@ namespace Evernus
         mSmtp.setPassword(crypt.decryptToByteArray(settings.value(ImportSettings::smtpPasswordKey).toString()));
         mSmtp.setStartTlsDisabled(static_cast<ImportSettings::SmtpConnectionSecurity>(
             settings.value(ImportSettings::smtpConnectionSecurityKey).toInt()) != ImportSettings::SmtpConnectionSecurity::STARTTLS);
+    }
+
+    void EvernusApplication::clearExternalOrderCaches()
+    {
+        mSellPrices.clear();
+        mBuyPrices.clear();
+        mTypeRegionOrderCache.clear();
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)
