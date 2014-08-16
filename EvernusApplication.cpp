@@ -1872,7 +1872,7 @@ namespace Evernus
 
                 if (values.size() >= 22)
                 {
-                    if (!characterFound)
+                    if (!characterFound && !corp)
                     {
                         const auto characterId = values[2].toULongLong();
                         if (characterId != id)
