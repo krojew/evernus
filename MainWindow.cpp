@@ -43,6 +43,7 @@
 #include "ItemCostWidget.h"
 #include "ImportSettings.h"
 #include "MenuBarWidget.h"
+#include "PriceSettings.h"
 #include "HttpSettings.h"
 #include "AssetsWidget.h"
 #include "AboutDialog.h"
@@ -303,7 +304,7 @@ namespace Evernus
 
         QSettings settings;
 
-        if (!settings.value(ImportSettings::autoUpdateAssetValueKey, false).toBool())
+        if (!settings.value(PriceSettings::autoAddCustomItemCostKey, false).toBool())
             refreshWalletTransactions();
 
         if (settings.value(ImportSettings::importAssetsKey, true).toBool())
