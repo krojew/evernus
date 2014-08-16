@@ -110,8 +110,6 @@ namespace Evernus
 
         void preferencesChanged();
 
-        void marginToolHidden(Character::IdType id);
-
         void newTaskInfoAdded(uint taskId, const QString &description);
         void newSubTaskInfoAdded(uint taskId, uint parentTask, const QString &description);
         void taskInfoChanged(uint taskId, const QString &text);

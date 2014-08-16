@@ -485,7 +485,6 @@ namespace Evernus
         connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(assetsTab, &AssetsWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
-        connect(this, &MainWindow::marginToolHidden, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChangedWithMarketOrders, assetsTab, &AssetsWidget::updateData);
@@ -507,7 +506,6 @@ namespace Evernus
         connect(orderTab, &MarketOrderWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
         connect(orderTab, &MarketOrderWidget::openMarginTool, this, &MainWindow::showMarginTool);
         connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
-        connect(this, &MainWindow::marginToolHidden, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::conquerableStationsChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, orderTab, &MarketOrderWidget::updateData);
@@ -550,7 +548,6 @@ namespace Evernus
         connect(corpOrderTab, &MarketOrderWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
         connect(corpOrderTab, &MarketOrderWidget::openMarginTool, this, &MainWindow::showMarginTool);
         connect(this, &MainWindow::corpMarketOrdersChanged, corpOrderTab, &MarketOrderWidget::updateData);
-        connect(this, &MainWindow::marginToolHidden, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::conquerableStationsChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, corpOrderTab, &MarketOrderWidget::updateData);
