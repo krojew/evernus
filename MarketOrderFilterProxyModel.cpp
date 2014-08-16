@@ -182,7 +182,7 @@ namespace Evernus
 
         if (overbidOrder)
         {
-            const auto diff = order.getPrice() - overbidOrder->getValue();
+            const auto diff = order.getPrice() - overbidOrder->getPrice();
             auto overbidObj = mEngine.newObject();
 
             overbidObj.setPrototype(ScriptUtils::wrapExternalOrder(mEngine, *overbidOrder));

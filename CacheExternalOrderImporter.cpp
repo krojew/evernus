@@ -267,7 +267,7 @@ namespace Evernus
 
             switch (typeKey) {
             case 139:
-                order.setValue(longV / 10000.);
+                order.setPrice(longV / 10000.);
                 break;
             case 161:
                 // volume remaining

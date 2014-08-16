@@ -87,11 +87,11 @@ namespace Evernus
 
                 QLocale locale;
 
-                if (price->getValue() < data->getPrice())
+                if (price->getPrice() < data->getPrice())
                 {
                     return tr("You have been undercut. Current price is %1 (%2 different from yours).\nClick the icon for details.")
-                        .arg(locale.toCurrencyString(price->getValue(), "ISK"))
-                        .arg(locale.toCurrencyString(price->getValue() - data->getPrice(), "ISK"));
+                        .arg(locale.toCurrencyString(price->getPrice(), "ISK"))
+                        .arg(locale.toCurrencyString(price->getPrice() - data->getPrice(), "ISK"));
                 }
 
                 QSettings settings;
@@ -112,7 +112,7 @@ namespace Evernus
                 if (price->isNew())
                     return QIcon{":/images/error.png"};
 
-                if (price->getValue() < data->getPrice())
+                if (price->getPrice() < data->getPrice())
                     return QIcon{":/images/exclamation.png"};
 
                 QSettings settings;
@@ -152,7 +152,7 @@ namespace Evernus
                     if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                         return 2;
 
-                    return (price->getValue() < data->getPrice()) ? (0) : (3);
+                    return (price->getPrice() < data->getPrice()) ? (0) : (3);
                 }
             case volumeColumn:
                 return QVariantList{} << data->getVolumeRemaining() << data->getVolumeEntered();
@@ -384,7 +384,7 @@ namespace Evernus
                 const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getLocationId());
                 if (!price->isNew())
                 {
-                    if (price->getValue() < data->getPrice())
+                    if (price->getPrice() < data->getPrice())
                         return QColor{255, 192, 192};
 
                     QSettings settings;
@@ -520,7 +520,7 @@ namespace Evernus
 
         OrderInfo info;
         info.mOrderPrice = order->getPrice();
-        info.mMarketPrice = price->getValue();
+        info.mMarketPrice = price->getPrice();
         info.mTargetPrice = (info.mMarketPrice < info.mOrderPrice) ? (info.mMarketPrice - priceDelta) : (info.mOrderPrice);
         info.mOrderLocalTimestamp = mCacheTimerProvider.getLocalUpdateTimer(mCharacterId, TimerType::MarketOrders);
         info.mMarketLocalTimestamp = price->getUpdateTime().toLocalTime();

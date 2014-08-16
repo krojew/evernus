@@ -86,14 +86,14 @@ namespace Evernus
         mUpdateTime = dt;
     }
 
-    double ExternalOrder::getValue() const noexcept
+    double ExternalOrder::getPrice() const noexcept
     {
-        return mValue;
+        return mPrice;
     }
 
-    void ExternalOrder::setValue(double value) noexcept
+    void ExternalOrder::setPrice(double value) noexcept
     {
-        mValue = value;
+        mPrice = value;
     }
 
     ExternalOrder ExternalOrder::parseLogLine(const QStringList &values)
@@ -114,7 +114,7 @@ namespace Evernus
         order.setRange(values[rangeColumn].toShort());
         order.setType((values[bidColumn] == "True") ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
         order.setTypeId(values[typeColumn].toULongLong());
-        order.setValue(values[priceColumn].toDouble());
+        order.setPrice(values[priceColumn].toDouble());
 
         return order;
     }

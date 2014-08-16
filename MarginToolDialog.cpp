@@ -288,8 +288,8 @@ namespace Evernus
                                 continue;
                         }
 
-                        if (order.getValue() > buy)
-                            buy = order.getValue();
+                        if (order.getPrice() > buy)
+                            buy = order.getPrice();
 
                         buyVol += static_cast<uint>(values[volRemainingColumn].toDouble());
                         buyInit += static_cast<uint>(values[volEnteredColumn].toDouble());
@@ -301,8 +301,8 @@ namespace Evernus
                         if (jumps != 0)
                             continue;
 
-                        if (order.getValue() < sell || sell < 0.)
-                            sell = order.getValue();
+                        if (order.getPrice() < sell || sell < 0.)
+                            sell = order.getPrice();
 
                         sellVol += static_cast<uint>(values[volRemainingColumn].toDouble());
                         sellInit += static_cast<uint>(values[volEnteredColumn].toDouble());
@@ -333,7 +333,7 @@ namespace Evernus
                 if (selection.isEmpty())
                     buy = 0.;
                 else
-                    buy = mDataProvider.getTypeBuyPrice(typeId, mStationModel.getStationId(selection.first()))->getValue() - priceDelta;
+                    buy = mDataProvider.getTypeBuyPrice(typeId, mStationModel.getStationId(selection.first()))->getPrice() - priceDelta;
             }
 
             mNameLabel->setText(name);

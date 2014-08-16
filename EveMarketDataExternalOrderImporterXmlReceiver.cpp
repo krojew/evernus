@@ -40,7 +40,7 @@ namespace Evernus
         else if (name.localName(mNamePool) == "stationID")
             current.setLocationId(value.toULongLong());
         else if (name.localName(mNamePool) == "price")
-            current.setValue(value.toDouble());
+            current.setPrice(value.toDouble());
         else if (name.localName(mNamePool) == "solarsystemID")
             current.setSolarSystemId(value.toUInt());
         else if (name.localName(mNamePool) == "regionID")

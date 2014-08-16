@@ -325,7 +325,7 @@ namespace Evernus
         const auto &orders = getExternalOrders(id, regionId);
         for (const auto &order : orders)
         {
-            if (order->getValue() <= result->getValue() || !isReachable(order))
+            if (order->getPrice() <= result->getPrice() || !isReachable(order))
                 continue;
 
             result = order;
@@ -2235,7 +2235,7 @@ namespace Evernus
         QSettings settings;
         const auto throwOnUnavailable = settings.value(ImportSettings::updateOnlyFullAssetValueKey, false).toBool();
 
-        auto price = getTypeSellPrice(item.getTypeId(), locationId, !throwOnUnavailable)->getValue() * item.getQuantity();
+        auto price = getTypeSellPrice(item.getTypeId(), locationId, !throwOnUnavailable)->getPrice() * item.getQuantity();
         for (const auto &child : item)
             price += getTotalItemSellValue(*child, locationId);
 

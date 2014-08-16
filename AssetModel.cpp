@@ -343,7 +343,7 @@ namespace Evernus
 
         mTotalAssets += quantity;
         mTotalVolume += mDataProvider.getTypeVolume(typeId) * quantity;
-        mTotalSellPrice += mDataProvider.getTypeSellPrice(typeId, locationId)->getValue() * quantity;
+        mTotalSellPrice += mDataProvider.getTypeSellPrice(typeId, locationId)->getPrice() * quantity;
 
         for (const auto &child : item)
         {
@@ -369,8 +369,8 @@ namespace Evernus
             << quantity
             << volume
             << (volume * quantity)
-            << sellPrice->getValue()
-            << (sellPrice->getValue() * quantity)
+            << sellPrice->getPrice()
+            << (sellPrice->getPrice() * quantity)
         );
         treeItem->setPriceTimestamp(sellPrice->getUpdateTime());
 

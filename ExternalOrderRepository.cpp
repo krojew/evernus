@@ -44,7 +44,7 @@ namespace Evernus
         externalOrder->setRegionId(record.value("region_id").toUInt());
         externalOrder->setRange(record.value("range").toInt());
         externalOrder->setUpdateTime(dt);
-        externalOrder->setValue(record.value("value").toDouble());
+        externalOrder->setPrice(record.value("value").toDouble());
         externalOrder->setNew(false);
 
         return externalOrder;
@@ -203,7 +203,7 @@ namespace Evernus
         query.bindValue(":region_id", entity.getRegionId());
         query.bindValue(":range", entity.getRange());
         query.bindValue(":update_time", entity.getUpdateTime());
-        query.bindValue(":value", entity.getValue());
+        query.bindValue(":value", entity.getPrice());
     }
 
     void ExternalOrderRepository::bindPositionalValues(const ExternalOrder &entity, QSqlQuery &query) const
@@ -218,6 +218,6 @@ namespace Evernus
         query.addBindValue(entity.getRegionId());
         query.addBindValue(entity.getRange());
         query.addBindValue(entity.getUpdateTime());
-        query.addBindValue(entity.getValue());
+        query.addBindValue(entity.getPrice());
     }
 }

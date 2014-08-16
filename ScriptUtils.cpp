@@ -60,7 +60,7 @@ namespace Evernus
             orderObject.setProperty("regionId", order.getRegionId());
             orderObject.setProperty("range", order.getRange());
             orderObject.setProperty("updateTime", engine.newDate(order.getUpdateTime()));
-            orderObject.setProperty("price", order.getValue());
+            orderObject.setProperty("price", order.getPrice());
 
             return orderObject;
         }

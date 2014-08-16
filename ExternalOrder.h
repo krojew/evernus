@@ -63,8 +63,8 @@ namespace Evernus
         QDateTime getUpdateTime() const;
         void setUpdateTime(const QDateTime &dt);
 
-        double getValue() const noexcept;
-        void setValue(double value) noexcept;
+        double getPrice() const noexcept;
+        void setPrice(double value) noexcept;
 
         ExternalOrder &operator =(const ExternalOrder &) = default;
         ExternalOrder &operator =(ExternalOrder &&) = default;
@@ -79,6 +79,6 @@ namespace Evernus
         uint mRegionId = 0;
         short mRange = 32767;
         QDateTime mUpdateTime;
-        double mValue = 0.;
+        double mPrice = 0.;
     };
 }
