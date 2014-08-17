@@ -17,6 +17,7 @@
 #include <QNetworkAccessManager>
 
 #include "ExternalOrderImporter.h"
+#include "ExternalOrder.h"
 
 namespace Evernus
 {
@@ -36,5 +37,8 @@ namespace Evernus
 
     private:
         mutable QNetworkAccessManager mNetworkManager;
+        mutable uint mRequestCount = 0;
+
+        mutable std::vector<ExternalOrder> mResult;
     };
 }

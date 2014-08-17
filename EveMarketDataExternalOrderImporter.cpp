@@ -16,8 +16,10 @@
 #include <QCoreApplication>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QMultiHash>
 #include <QUrlQuery>
 #include <QXmlQuery>
+#include <QDebug>
 
 #include "EveMarketDataExternalOrderImporterXmlReceiver.h"
 
@@ -58,26 +60,40 @@ namespace Evernus
             emit externalOrdersChanged(std::vector<ExternalOrder>{});
             return;
         }
-        
-        QUrlQuery query;
-        query.addQueryItem("buysell", "a");
-        query.addQueryItem("char_name", QCoreApplication::applicationName());
 
-        QStringList typeIds, stationIds;
+        QMultiHash<quint64, EveType::IdType> requests;
         for (const auto &pair : target)
+            requests.insert(pair.second, pair.first);
+
+        const auto locations = requests.uniqueKeys();
+        for (const auto &location : locations)
         {
-            typeIds << QString::number(pair.first);
-            stationIds << QString::number(pair.second);
+            qDebug() << "Sending request for location:" << location;
+
+            QUrlQuery query;
+            query.addQueryItem("buysell", "a");
+            query.addQueryItem("char_name", QCoreApplication::applicationName());
+
+            QStringList typeIds, stationIds;
+            for (auto it = requests.find(location); it != std::end(requests) && it.key() == location; ++it)
+            {
+                typeIds << QString::number(it.value());
+                stationIds << QString::number(location);
+            }
+
+            query.addQueryItem("type_ids", typeIds.join(','));
+            query.addQueryItem("station_ids", stationIds.join(','));
+
+            QUrl url{"http://api.eve-marketdata.com/api/item_orders2.xml"};
+            url.setQuery(query);
+
+            auto reply = mNetworkManager.get(QNetworkRequest{url});
+            connect(reply, &QNetworkReply::finished, this, &EveMarketDataExternalOrderImporter::processReply);
+
+            ++mRequestCount;
         }
 
-        query.addQueryItem("type_ids", typeIds.join(','));
-        query.addQueryItem("station_ids", stationIds.join(','));
-
-        QUrl url{"http://api.eve-marketdata.com/api/item_orders2.xml"};
-        url.setQuery(query);
-
-        auto reply = mNetworkManager.get(QNetworkRequest{url});
-        connect(reply, &QNetworkReply::finished, this, &EveMarketDataExternalOrderImporter::processReply);
+        qDebug() << "Total requests:" << mRequestCount;
     }
 
     void EveMarketDataExternalOrderImporter::processReply() const
@@ -85,8 +101,15 @@ namespace Evernus
         auto reply = static_cast<QNetworkReply *>(sender());
         reply->deleteLater();
 
+        --mRequestCount;
+
+        qDebug() << "Got reply," << mRequestCount << "remaining.";
+
         if (reply->error() != QNetworkReply::NoError)
         {
+            if (mRequestCount == 0)
+                mResult.clear();
+
             emit error(reply->errorString());
             return;
         }
@@ -103,8 +126,26 @@ namespace Evernus
         query.evaluateTo(&recevier);
 
         if (errorMsg.isEmpty())
-            emit externalOrdersChanged(std::move(recevier).getResult());
+        {
+            auto &&result = std::move(recevier).getResult();
+
+            mResult.reserve(mResult.size() + result.size());
+            mResult.insert(std::end(mResult),
+                           std::make_move_iterator(std::begin(result)),
+                           std::make_move_iterator(std::end(result)));
+
+            if (mRequestCount == 0)
+            {
+                emit externalOrdersChanged(mResult);
+                mResult.clear();
+            }
+        }
         else
+        {
+            if (mRequestCount == 0)
+                mResult.clear();
+
             emit error(errorMsg);
+        }
     }
 }
