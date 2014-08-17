@@ -90,10 +90,12 @@ namespace Evernus
 
     void MarketOrderFilterProxyModel::unscheduleScriptError()
     {
+        const auto error = mEngine.uncaughtException().toString();
+
         mScriptErrorScheduled = false;
         mEngine.clearExceptions();
 
-        emit scriptError(mEngine.uncaughtException().toString());
+        emit scriptError(error);
     }
 
     bool MarketOrderFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
