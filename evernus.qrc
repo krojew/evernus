@@ -30,16 +30,17 @@
         <file>images/meta_tech3.png</file>
         <file>images/page_refresh.png</file>
         <file>images/page_copy.png</file>
+        <file>images/paste_plain.png</file>
         <file>images/pencil.png</file>
         <file>images/report.png</file>
         <file>images/splash.png</file>
         <file>images/user.png</file>
         <file>images/world.png</file>
         <file>images/wrench.png</file>
-        
+
         <file>images/flags/en_US.png</file>
         <file>images/flags/pl_PL.png</file>
-        
+
         <file>html/http_index_template.html</file>
         <file>html/http_orders_template.html</file>
         <file>html/http_template.html</file>

@@ -54,6 +54,9 @@ namespace Evernus
     public slots:
         void setCharacter(Character::IdType id);
 
+        void copyBuyPrice();
+        void copySellPrice();
+
     private slots:
         void toggleAlwaysOnTop(int state);
 
@@ -112,6 +115,8 @@ namespace Evernus
         Character::IdType mCharacterId = Character::invalidId;
 
         StationModel mStationModel;
+
+        double mBuyPrice = 0., mSellPrice = 0.;
 
         void setNewWindowFlags(bool alwaysOnTop);
         QTableWidget *createSampleTable();

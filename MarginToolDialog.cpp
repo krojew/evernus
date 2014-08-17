@@ -151,6 +151,18 @@ namespace Evernus
         }
     }
 
+    void MarginToolDialog::copyBuyPrice()
+    {
+        auto clipboard = QApplication::clipboard();
+        clipboard->setText(QString::number(mBuyPrice, 'f', 2));
+    }
+
+    void MarginToolDialog::copySellPrice()
+    {
+        auto clipboard = QApplication::clipboard();
+        clipboard->setText(QString::number(mSellPrice, 'f', 2));
+    }
+
     void MarginToolDialog::toggleAlwaysOnTop(int state)
     {
         const auto alwaysOnTop = state == Qt::Checked;
@@ -353,32 +365,36 @@ namespace Evernus
                     {
                         mBestBuyLabel->setText("-");
                         mCostOfSalesLabel->setText("-");
+
+                        mBuyPrice = 0.;
                     }
                     else
                     {
-                        const auto buyPrice = buy + priceDelta;
+                        mBuyPrice = buy + priceDelta;
 
-                        mBestBuyLabel->setText(curLocale.toCurrencyString(buyPrice, "ISK"));
-                        mCostOfSalesLabel->setText(curLocale.toCurrencyString(PriceUtils::getCoS(buyPrice, taxes), "ISK"));
+                        mBestBuyLabel->setText(curLocale.toCurrencyString(mBuyPrice, "ISK"));
+                        mCostOfSalesLabel->setText(curLocale.toCurrencyString(PriceUtils::getCoS(mBuyPrice, taxes), "ISK"));
 
                         if (mCopyBuyBtn->isChecked())
-                            QApplication::clipboard()->setText(QString::number(buyPrice, 'f', 2));
+                            QApplication::clipboard()->setText(QString::number(mBuyPrice, 'f', 2));
                     }
 
                     if (sell < 0.)
                     {
                         mBestSellLabel->setText("-");
                         mRevenueLabel->setText("-");
+
+                        mSellPrice = 0.;
                     }
                     else
                     {
-                        const auto sellPrice = sell - priceDelta;
+                        mSellPrice = sell - priceDelta;
 
-                        mBestSellLabel->setText(curLocale.toCurrencyString(sellPrice, "ISK"));
-                        mRevenueLabel->setText(curLocale.toCurrencyString(PriceUtils::getRevenue(sellPrice, taxes), "ISK"));
+                        mBestSellLabel->setText(curLocale.toCurrencyString(mSellPrice, "ISK"));
+                        mRevenueLabel->setText(curLocale.toCurrencyString(PriceUtils::getRevenue(mSellPrice, taxes), "ISK"));
 
                         if (mCopySellBtn->isChecked())
-                            QApplication::clipboard()->setText(QString::number(sellPrice, 'f', 2));
+                            QApplication::clipboard()->setText(QString::number(mSellPrice, 'f', 2));
                     }
 
                     mProfitLabel->setText("-");
@@ -392,18 +408,20 @@ namespace Evernus
                 {
                         const auto bestBuy = buy;
                         const auto bestSell = sell;
-                        const auto sellPrice = bestSell - priceDelta;
-                        const auto buyPrice = bestBuy + priceDelta;
-                        const auto revenue = PriceUtils::getRevenue(sellPrice, taxes);
-                        const auto cos = PriceUtils::getCoS(buyPrice, taxes);
+
+                        mSellPrice = bestSell - priceDelta;
+                        mBuyPrice = bestBuy + priceDelta;
+
+                        const auto revenue = PriceUtils::getRevenue(mSellPrice, taxes);
+                        const auto cos = PriceUtils::getCoS(mBuyPrice, taxes);
                         const auto margin = 100. * (revenue - cos) / revenue;
                         const auto markup = 100. * (revenue - cos) / cos;
 
                         mMarginLabel->setText(QString{"%1%2"}.arg(curLocale.toString(margin, 'f', 2)).arg(curLocale.percent()));
                         mMarkupLabel->setText(QString{"%1%2"}.arg(curLocale.toString(markup, 'f', 2)).arg(curLocale.percent()));
 
-                        mBestBuyLabel->setText(curLocale.toCurrencyString(buyPrice, "ISK"));
-                        mBestSellLabel->setText(curLocale.toCurrencyString(sellPrice, "ISK"));
+                        mBestBuyLabel->setText(curLocale.toCurrencyString(mBuyPrice, "ISK"));
+                        mBestSellLabel->setText(curLocale.toCurrencyString(mSellPrice, "ISK"));
 
                         mProfitLabel->setText(curLocale.toCurrencyString(revenue - cos, "ISK"));
                         mRevenueLabel->setText(curLocale.toCurrencyString(revenue, "ISK"));
@@ -419,9 +437,9 @@ namespace Evernus
                         auto clipboard = QApplication::clipboard();
 
                         if (mCopySellBtn->isChecked())
-                            clipboard->setText(QString::number(sellPrice, 'f', 2));
+                            clipboard->setText(QString::number(mSellPrice, 'f', 2));
                         else if (mCopyBuyBtn->isChecked())
-                            clipboard->setText(QString::number(buyPrice, 'f', 2));
+                            clipboard->setText(QString::number(mBuyPrice, 'f', 2));
 
                         fillSampleData(*m1SampleDataTable, revenue, cos, 1);
                         fillSampleData(*m5SampleDataTable, revenue, cos, 5);
@@ -536,11 +554,29 @@ namespace Evernus
         priceLayout->addWidget(new QLabel{tr("Revenue:")}, 0, 2);
         priceLayout->addWidget(new QLabel{tr("Cost of sales:")}, 1, 2);
 
+        auto sellLayout = new QHBoxLayout{};
+        priceLayout->addLayout(sellLayout, 0, 1);
+
         mBestSellLabel = new QLabel{"-", this};
-        priceLayout->addWidget(mBestSellLabel, 0, 1);
+        sellLayout->addWidget(mBestSellLabel);
+
+        auto copySellBtn = new QPushButton{QIcon{":/images/paste_plain.png"}, QString{}, this};
+        sellLayout->addWidget(copySellBtn);
+        copySellBtn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        copySellBtn->setToolTip(tr("Copy to clipboard"));
+        connect(copySellBtn, &QPushButton::clicked, this, &MarginToolDialog::copySellPrice);
+
+        auto buyLayout = new QHBoxLayout{};
+        priceLayout->addLayout(buyLayout, 1, 1);
 
         mBestBuyLabel = new QLabel{"-", this};
-        priceLayout->addWidget(mBestBuyLabel, 1, 1);
+        buyLayout->addWidget(mBestBuyLabel);
+
+        auto copyBuyBtn = new QPushButton{QIcon{":/images/paste_plain.png"}, QString{}, this};
+        buyLayout->addWidget(copyBuyBtn);
+        copyBuyBtn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        copyBuyBtn->setToolTip(tr("Copy to clipboard"));
+        connect(copyBuyBtn, &QPushButton::clicked, this, &MarginToolDialog::copyBuyPrice);
 
         mProfitLabel = new QLabel{"-", this};
         priceLayout->addWidget(mProfitLabel, 2, 1);
