@@ -61,7 +61,7 @@ namespace Evernus
             size_t operator ()(const QUrl &url) const;
         };
 
-        QDir mPathDir;
+        QDir mCacheDir;
 
         std::unordered_map<QUrl, std::unique_ptr<CacheItem>, UrlHash> mData;
         std::unordered_map<QIODevice *, std::unique_ptr<CacheItem>> mInsertingDataMap;
@@ -69,7 +69,10 @@ namespace Evernus
 
         CacheItem *readFile(const QUrl &url);
         void writeFile(const CacheItem &item);
+        bool removeFile(const QUrl &url);
+        bool removeFileWithNonEmptyParent(const QString &file);
 
-        static QString getCacheFileName(const QUrl &url);
+        QString getExistingCacheFileName(const QUrl &url) const;
+        QString getNewCacheFileName(const QUrl &url) const;
     };
 }

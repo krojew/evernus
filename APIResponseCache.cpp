@@ -21,6 +21,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QHash>
+#include <QUuid>
 
 #include "APIUtils.h"
 
@@ -46,19 +47,23 @@ namespace Evernus
 
         qDebug() << "Cache path:" << path;
 
-        mPathDir.setPath(path);
+        mCacheDir.setPath(path);
 
-        if (!mPathDir.mkpath("."))
+        if (!mCacheDir.mkpath("."))
             throw std::runtime_error{tr("Cannot create cache path.").toStdString()};
     }
 
     qint64 APIResponseCache::cacheSize() const
     {
-        const auto files = mPathDir.entryInfoList(QDir::Files | QDir::Readable | QDir::Writable);
+        const auto dirs = mCacheDir.entryList(QDir::Dirs);
         qint64 out = 0;
 
-        for (const auto &file : files)
-            out += file.size();
+        for (const auto &dir : dirs)
+        {
+            const auto files = QDir{mCacheDir.filePath(dir)}.entryInfoList(QDir::Files | QDir::Readable);
+            for (const auto &file : files)
+                out += file.size();
+        }
 
         return out;
     }
@@ -79,7 +84,8 @@ namespace Evernus
             {
                 qDebug() << "Data too old.";
                 mData.erase(it);
-                mPathDir.remove(url.toString());
+
+                removeFile(url);
             }
             else
             {
@@ -134,17 +140,11 @@ namespace Evernus
 
         qDebug() << "Cache time:" << item->mCacheTime;
 
-        const auto urlStr = url.toString();
-
-        if (mPathDir.exists(urlStr))
+        if (!removeFile(url))
         {
-            qDebug() << "Removing old cache file.";
-            if (!mPathDir.remove(urlStr))
-            {
-                qWarning() << "Couldn't remove file.";
-                mData.erase(url);
-                return;
-            }
+            qWarning() << "Couldn't remove file.";
+            mData.erase(url);
+            return;
         }
 
         writeFile(*item);
@@ -207,7 +207,7 @@ namespace Evernus
             return true;
         }
 
-        mPathDir.remove(url.toString());
+        removeFile(url);
         mData.erase(url);
 
         return true;
@@ -223,15 +223,17 @@ namespace Evernus
             it->second->mMetaData.setExpirationDate(it->second->mCacheTime);
         }
 
-        const auto urlStr = url.toString();
-
-        if (mPathDir.exists(urlStr))
+        const auto fileName = getExistingCacheFileName(url);
+        if (!fileName.isEmpty())
         {
-            mPathDir.remove(urlStr);
+            mCacheDir.remove(fileName);
 
             try
             {
-                const auto item = readFile(url);
+                auto item = readFile(url);
+                item->mMetaData = metaData;
+                item->mMetaData.setExpirationDate(item->mCacheTime);
+
                 writeFile(*item);
             }
             catch (const ErrorReadingCacheException &)
@@ -244,19 +246,17 @@ namespace Evernus
     {
         qDebug() << "Clearing data.";
         mData.clear();
-
-        const auto files = mPathDir.entryList(QDir::Files | QDir::Readable | QDir::Writable);
-        for (const auto &file : files)
-            mPathDir.remove(file);
+        mCacheDir.removeRecursively();
+        mCacheDir.mkpath(".");
     }
 
     APIResponseCache::CacheItem *APIResponseCache::readFile(const QUrl &url)
     {
-        const auto fileName = getCacheFileName(url);
+        const auto fileName = getExistingCacheFileName(url);
 
         qDebug() << "Reading cache file:" << fileName;
 
-        QFile file{mPathDir.filePath(fileName)};
+        QFile file{mCacheDir.filePath(fileName)};
         if (!file.open(QIODevice::ReadOnly))
         {
             qDebug() << "Error opening file.";
@@ -274,7 +274,7 @@ namespace Evernus
 
         if (!item->mCacheTime.isValid() || item->mCacheTime < QDateTime::currentDateTimeUtc())
         {
-            file.remove();
+            removeFileWithNonEmptyParent(mCacheDir.filePath(fileName));
             throw ErrorReadingCacheException{};
         }
 
@@ -288,11 +288,11 @@ namespace Evernus
     void APIResponseCache::writeFile(const CacheItem &item)
     {
         const auto url = item.mMetaData.url();
-        const auto fileName = getCacheFileName(url);
+        const auto fileName = getNewCacheFileName(url);
 
         qDebug() << "Saving file:" << fileName;
 
-        QSaveFile file{mPathDir.filePath(fileName)};
+        QSaveFile file{mCacheDir.filePath(fileName)};
         if (!file.open(QIODevice::WriteOnly))
         {
             qWarning() << "Couldn't open save file.";
@@ -310,8 +310,68 @@ namespace Evernus
         }
     }
 
-    QString APIResponseCache::getCacheFileName(const QUrl &url)
+    bool APIResponseCache::removeFile(const QUrl &url)
     {
-        return QUrl::toPercentEncoding(url.toString());
+        const auto fileName = getExistingCacheFileName(url);
+        return removeFileWithNonEmptyParent(fileName);
+    }
+
+    bool APIResponseCache::removeFileWithNonEmptyParent(const QString &file)
+    {
+        if (file.isEmpty())
+            return true;
+
+        if (!mCacheDir.remove(file))
+            return false;
+
+        QDir dir{file};
+        dir.cdUp();
+
+        if (dir.count() == 0)
+            mCacheDir.rmdir(dir.dirName());
+
+        return true;
+    }
+
+    QString APIResponseCache::getExistingCacheFileName(const QUrl &url) const
+    {
+        const auto hash = qHash(url);
+
+        QDir hashDir{mCacheDir};
+        hashDir.cd(QString::number(hash));
+
+        const auto files = hashDir.entryList(QDir::Files | QDir::Readable);
+
+        qDebug() << "Looking for cache file in" << hashDir.absolutePath();
+
+        for (const auto &file : files)
+        {
+            QFile cacheFile{hashDir.filePath(file)};
+            if (!cacheFile.open(QIODevice::ReadOnly))
+                continue;
+
+            QDateTime tempDt;
+            QNetworkCacheMetaData tempMeta;
+
+            QDataStream stream{&cacheFile};
+            stream >> tempDt >> tempMeta;
+
+            if (tempMeta.url() == url)
+                return hashDir.dirName() % "/" % file;
+        }
+
+        return QString{};
+    }
+
+    QString APIResponseCache::getNewCacheFileName(const QUrl &url) const
+    {
+        const auto existing = getExistingCacheFileName(url);
+        if (!existing.isEmpty())
+            return existing;
+
+        const auto hash = QString::number(qHash(url));
+        mCacheDir.mkdir(hash);
+
+        return QString{"%1/%2"}.arg(hash).arg(QUuid::createUuid().toString());
     }
 }
