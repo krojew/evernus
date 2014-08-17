@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QCOmpleter>
 #include <QLineEdit>
 
 #include "FilterTextRepository.h"
@@ -28,6 +29,8 @@ namespace Evernus
         setEditable(true);
         setInsertPolicy(QComboBox::InsertAtTop);
         setCurrentText(QString{});
+
+        completer()->setCaseSensitivity(Qt::CaseSensitive);
 
         auto edit = lineEdit();
         edit->setPlaceholderText(getDefaultPlaceholderText());
