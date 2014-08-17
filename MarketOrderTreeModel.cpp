@@ -286,7 +286,7 @@ namespace Evernus
         case Grouping::Group:
             return mDataProvider.getTypeMarketGroupParentId(order.getTypeId());
         case Grouping::Station:
-            return order.getLocationId();
+            return order.getStationId();
         case Grouping::Type:
             return order.getTypeId();
         default:
@@ -300,7 +300,7 @@ namespace Evernus
         case Grouping::Group:
             return getGroupName(order.getTypeId());
         case Grouping::Station:
-            return mDataProvider.getLocationName(order.getLocationId());
+            return mDataProvider.getLocationName(order.getStationId());
         case Grouping::Type:
             return mDataProvider.getTypeName(order.getTypeId());
         default:

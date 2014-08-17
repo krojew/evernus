@@ -96,7 +96,7 @@ namespace Evernus
                     return data->getVolumeRemaining() * (data->getPrice() - cost->getCost());
                 }
             case stationColumn:
-                return mDataProvider.getLocationName(data->getLocationId());
+                return mDataProvider.getLocationName(data->getStationId());
             case ownerColumn:
                 try
                 {
@@ -152,7 +152,7 @@ namespace Evernus
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(data->getVolumeRemaining())).arg(locale.toString(data->getVolumeEntered()));
                 case stationColumn:
-                    return mDataProvider.getLocationName(data->getLocationId());
+                    return mDataProvider.getLocationName(data->getStationId());
                 case ownerColumn:
                     try
                     {

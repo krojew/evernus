@@ -54,8 +54,8 @@ namespace Evernus
         Character::IdType getCharacterId() const;
         void setCharacterId(Character::IdType id);
 
-        quint64 getLocationId() const noexcept;
-        void setLocationId(quint64 id) noexcept;
+        uint getStationId() const noexcept;
+        void setStationId(uint id) noexcept;
 
         uint getVolumeEntered() const noexcept;
         void setVolumeEntered(uint value) noexcept;
@@ -114,7 +114,7 @@ namespace Evernus
 
     private:
         Character::IdType mCharacterId = Character::invalidId;
-        quint64 mLocationId = 0;
+        uint mStationId = 0;
         uint mVolumeEntered = 0;
         uint mVolumeRemaining = 0;
         uint mMinVolume = 0;

@@ -49,7 +49,7 @@ namespace Evernus
 
         auto marketOrder = std::make_shared<MarketOrder>(record.value("id").value<MarketOrder::IdType>());
         marketOrder->setCharacterId(record.value("character_id").value<Character::IdType>());
-        marketOrder->setLocationId(record.value("location_id").toULongLong());
+        marketOrder->setStationId(record.value("location_id").toULongLong());
         marketOrder->setVolumeEntered(record.value("volume_entered").toUInt());
         marketOrder->setVolumeRemaining(record.value("volume_remaining").toUInt());
         marketOrder->setMinVolume(record.value("min_volume").toUInt());
@@ -76,7 +76,7 @@ namespace Evernus
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id BIGINT PRIMARY KEY,
             character_id BIGINT NOT NULL %2,
-            location_id BIGINT NOT NULL,
+            location_id INTEGER NOT NULL,
             volume_entered INTEGER NOT NULL,
             volume_remaining INTEGER NOT NULL,
             min_volume INTEGER NOT NULL,
@@ -428,7 +428,7 @@ namespace Evernus
             query.bindValue(":id", entity.getId());
 
         query.bindValue(":character_id", entity.getCharacterId());
-        query.bindValue(":location_id", entity.getLocationId());
+        query.bindValue(":location_id", entity.getStationId());
         query.bindValue(":volume_entered", entity.getVolumeEntered());
         query.bindValue(":volume_remaining", entity.getVolumeRemaining());
         query.bindValue(":min_volume", entity.getMinVolume());
@@ -453,7 +453,7 @@ namespace Evernus
             query.addBindValue(entity.getId());
 
         query.addBindValue(entity.getCharacterId());
-        query.addBindValue(entity.getLocationId());
+        query.addBindValue(entity.getStationId());
         query.addBindValue(entity.getVolumeEntered());
         query.addBindValue(entity.getVolumeRemaining());
         query.addBindValue(entity.getMinVolume());

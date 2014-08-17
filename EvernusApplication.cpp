@@ -1459,7 +1459,7 @@ namespace Evernus
             order.setFirstSeen(issued);
             order.setIssued(issued);
             order.setLastSeen(lastSeen);
-            order.setLocationId(query.value("stationID").toULongLong());
+            order.setStationId(query.value("stationID").toULongLong());
             order.setMinVolume(query.value("minVolume").toUInt());
             order.setPrice(query.value("price").toDouble() / 100.);
             order.setRange(query.value("range").value<short>());
@@ -1899,7 +1899,7 @@ namespace Evernus
 
                     MarketOrder order{values[idColumn].toULongLong()};
                     order.setCharacterId(id);
-                    order.setLocationId(values[stationIdColumn].toULongLong());
+                    order.setStationId(values[stationIdColumn].toULongLong());
                     order.setVolumeEntered(values[volumeEnteredColumn].toUInt());
                     order.setVolumeRemaining(static_cast<uint>(values[volumeRemainingColumn].toDouble()));
                     order.setMinVolume(values[minVolumeColumn].toUInt());

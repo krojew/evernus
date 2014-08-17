@@ -28,7 +28,7 @@ namespace Evernus
             auto orderObject = engine.newObject();
             orderObject.setProperty("id", QString::number(order.getId()));
             orderObject.setProperty("characterId", QString::number(order.getCharacterId()));
-            orderObject.setProperty("stationId", static_cast<quint32>(order.getLocationId()));
+            orderObject.setProperty("stationId", static_cast<quint32>(order.getStationId()));
             orderObject.setProperty("volumeEntered", order.getVolumeEntered());
             orderObject.setProperty("volumeRemaining", order.getVolumeRemaining());
             orderObject.setProperty("minVolume", order.getMinVolume());

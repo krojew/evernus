@@ -76,7 +76,7 @@ namespace Evernus
         case Qt::ToolTipRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getLocationId());
+                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId());
                 if (price->isNew())
                     return tr("No price data -> Please import prices from Orders/Assets tab or by using Margin tool.");
 
@@ -103,7 +103,7 @@ namespace Evernus
         case Qt::DecorationRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getLocationId());
+                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId());
                 if (price->isNew())
                     return QIcon{":/images/error.png"};
 
@@ -136,7 +136,7 @@ namespace Evernus
                 return data->getPrice();
             case priceStatusColumn:
                 {
-                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getLocationId());
+                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId());
                     if (price->isNew())
                         return 1;
 
@@ -187,7 +187,7 @@ namespace Evernus
             case firstSeenColumn:
                 return data->getFirstSeen();
             case stationColumn:
-                return mDataProvider.getLocationName(data->getLocationId());
+                return mDataProvider.getLocationName(data->getStationId());
             case ownerColumn:
                 try
                 {
@@ -231,7 +231,7 @@ namespace Evernus
                     return locale.toCurrencyString(data->getPrice(), "ISK");
                 case priceStatusColumn:
                     {
-                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getLocationId());
+                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId());
                         if (price->isNew())
                             return tr("No price data");
 
@@ -299,7 +299,7 @@ namespace Evernus
                 case firstSeenColumn:
                     return TextUtils::dateTimeToString(data->getFirstSeen().toLocalTime(), locale);
                 case stationColumn:
-                    return mDataProvider.getLocationName(data->getLocationId());
+                    return mDataProvider.getLocationName(data->getStationId());
                 case ownerColumn:
                     try
                     {
@@ -323,7 +323,7 @@ namespace Evernus
         case Qt::BackgroundRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getLocationId());
+                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId());
                 if (!price->isNew())
                 {
                     if (price->getPrice() > data->getPrice())
@@ -430,7 +430,7 @@ namespace Evernus
 
         QSettings settings;
 
-        const auto price = mDataProvider.getTypeBuyPrice(order->getTypeId(), order->getLocationId());
+        const auto price = mDataProvider.getTypeBuyPrice(order->getTypeId(), order->getStationId());
         const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
         OrderInfo info;

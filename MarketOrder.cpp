@@ -26,14 +26,14 @@ namespace Evernus
         mCharacterId = id;
     }
 
-    quint64 MarketOrder::getLocationId() const noexcept
+    uint MarketOrder::getStationId() const noexcept
     {
-        return mLocationId;
+        return mStationId;
     }
 
-    void MarketOrder::setLocationId(quint64 id) noexcept
+    void MarketOrder::setStationId(uint id) noexcept
     {
-        mLocationId = id;
+        mStationId = id;
     }
 
     uint MarketOrder::getVolumeEntered() const noexcept

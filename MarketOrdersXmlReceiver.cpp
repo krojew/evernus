@@ -41,7 +41,7 @@ namespace Evernus
         }
         else if (localName == "stationID")
         {
-            mCurrentElement->setLocationId(convert<quint64>(strValue));
+            mCurrentElement->setStationId(convert<quint64>(strValue));
         }
         else if (localName == "volEntered")
         {
