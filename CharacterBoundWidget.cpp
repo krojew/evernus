@@ -51,7 +51,8 @@ namespace Evernus
         {
             mImportBtn->setDisabled(true);
             mImportBtn->stopTimer();
-            mWarningBarWidget->hide();
+            mWarningBarWidget->setText(tr("<strong>Warning!</strong> No data has been imported."));
+            mWarningBarWidget->show();
         }
         else
         {
