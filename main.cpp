@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     try
     {
         QCoreApplication::setApplicationName("Evernus");
-        QCoreApplication::setApplicationVersion("1.7");
+        QCoreApplication::setApplicationVersion("1.8");
         QCoreApplication::setOrganizationDomain("evernus.com");
         QCoreApplication::setOrganizationName("evernus.com");
 
