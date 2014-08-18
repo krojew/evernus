@@ -18,7 +18,6 @@
 #include <QDebug>
 
 #include "EveCacheManager.h"
-#include "ExternalOrder.h"
 #include "PathSettings.h"
 
 #include "CacheExternalOrderImporter.h"

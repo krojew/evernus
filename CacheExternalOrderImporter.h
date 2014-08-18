@@ -20,6 +20,7 @@
 #include <QDateTime>
 
 #include "ExternalOrderImporter.h"
+#include "ExternalOrder.h"
 
 namespace Evernus
 {

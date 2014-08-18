@@ -322,7 +322,7 @@
         <translation type="vanished">Ścieżka cache nie istnieje.</translation>
     </message>
     <message>
-        <location filename="../CacheExternalOrderImporter.cpp" line="47"/>
+        <location filename="../CacheExternalOrderImporter.cpp" line="46"/>
         <source>Couldn&apos;t determine Eve cache path. Did you set it in the Preferences?</source>
         <translation>Nie udało się znaleźć ścieżki cache. Czy wpisałeś ścieżkę w ustawieniach?</translation>
     </message>
