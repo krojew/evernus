@@ -578,6 +578,9 @@ namespace Evernus
 
     std::shared_ptr<AssetList> EvernusApplication::fetchAssetsForCharacter(Character::IdType id) const
     {
+        if (id == Character::invalidId)
+            return std::make_shared<AssetList>();
+
         const auto it = mCharacterAssets.find(id);
         if (it != std::end(mCharacterAssets))
             return it->second;
