@@ -15,10 +15,10 @@
 #pragma once
 
 #include "MarketOrderArchiveModel.h"
+#include "ExternalOrderImporter.h"
 #include "MarketOrderSellModel.h"
 #include "CharacterBoundWidget.h"
 #include "MarketOrderBuyModel.h"
-#include "ExternalOrderImporter.h"
 
 class QPushButton;
 class QComboBox;

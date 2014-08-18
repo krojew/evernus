@@ -26,6 +26,7 @@ namespace Evernus
         : public Repository<ExternalOrder>
     {
     public:
+        typedef std::pair<ExternalOrder::TypeIdType, uint> TypeStationPair;
 
         using Repository::Repository;
         virtual ~ExternalOrderRepository() = default;
@@ -37,14 +38,19 @@ namespace Evernus
 
         void create() const;
 
-        EntityPtr findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId,
-                                            uint locationId,
-                                            const Repository<MarketOrder> &orderRepo,
-                                            const Repository<MarketOrder> &corpOrderRepo) const;
+        EntityPtr findSellByTypeAndStation(ExternalOrder::TypeIdType typeId,
+                                           uint stationId,
+                                           const Repository<MarketOrder> &orderRepo,
+                                           const Repository<MarketOrder> &corpOrderRepo) const;
         EntityList findBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId,
                                           uint regionId,
                                           const Repository<MarketOrder> &orderRepo,
                                           const Repository<MarketOrder> &corpOrderRepo) const;
+
+        EntityList findSellByType(ExternalOrder::TypeIdType typeId) const;
+
+        std::vector<TypeStationPair> fetchUniqueTypesAndStations() const;
+        std::vector<EveType::IdType> fetchUniqueTypes() const;
 
         void removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const;
 

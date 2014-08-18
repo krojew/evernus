@@ -78,12 +78,13 @@ namespace Evernus
         ))"}.arg(getTableName()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id_location ON %1(type_id, location_id)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id ON %1(type, type_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_location ON %1(type, type_id, location_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_region ON %1(type, type_id, region_id)"}.arg(getTableName()));
     }
 
-    ExternalOrderRepository::EntityPtr ExternalOrderRepository::findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId,
-                                                                                          uint locationId,
+    ExternalOrderRepository::EntityPtr ExternalOrderRepository::findSellByTypeAndStation(ExternalOrder::TypeIdType typeId,
+                                                                                          uint stationId,
                                                                                           const Repository<MarketOrder> &orderRepo,
                                                                                           const Repository<MarketOrder> &corpOrderRepo) const
     {
@@ -94,7 +95,7 @@ namespace Evernus
             .arg(getTableName()).arg(orderRepo.getTableName()).arg(corpOrderRepo.getTableName()));
         query.addBindValue(static_cast<int>(ExternalOrder::Type::Sell));
         query.addBindValue(typeId);
-        query.addBindValue(locationId);
+        query.addBindValue(stationId);
         query.addBindValue(static_cast<int>(MarketOrder::State::Active));
         query.addBindValue(static_cast<int>(MarketOrder::State::Active));
 
@@ -130,6 +131,58 @@ namespace Evernus
 
         while (query.next())
             result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
+    ExternalOrderRepository::EntityList ExternalOrderRepository::findSellByType(ExternalOrder::TypeIdType typeId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ?"}.arg(getTableName()));
+        query.addBindValue(static_cast<int>(ExternalOrder::Type::Sell));
+        query.addBindValue(typeId);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
+    std::vector<ExternalOrderRepository::TypeStationPair> ExternalOrderRepository::fetchUniqueTypesAndStations() const
+    {
+        std::vector<TypeStationPair> result;
+
+        auto query = exec(QString{"SELECT DISTINCT type_id, location_id FROM %1"}.arg(getTableName()));
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(std::make_pair(query.value(0).value<EveType::IdType>(), query.value(1).toUInt()));
+
+        return result;
+    }
+
+    std::vector<EveType::IdType> ExternalOrderRepository::fetchUniqueTypes() const
+    {
+        std::vector<EveType::IdType> result;
+
+        auto query = exec(QString{"SELECT DISTINCT type_id FROM %1"}.arg(getTableName()));
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(query.value(0).value<EveType::IdType>());
 
         return result;
     }

@@ -894,6 +894,11 @@ namespace Evernus
         return *mOrderScriptRepository;
     }
 
+    const ExternalOrderRepository &EvernusApplication::getExternalOrderRepository() const noexcept
+    {
+        return *mExternalOrderRepository;
+    }
+
     const MarketOrderProvider &EvernusApplication::getMarketOrderProvider() const noexcept
     {
         return *mCharacterOrderProvider;
@@ -2191,7 +2196,7 @@ namespace Evernus
 
         try
         {
-            result = mExternalOrderRepository->findSellByTypeAndLocation(id, stationId, *mMarketOrderRepository, *mCorpMarketOrderRepository);
+            result = mExternalOrderRepository->findSellByTypeAndStation(id, stationId, *mMarketOrderRepository, *mCorpMarketOrderRepository);
         }
         catch (const ExternalOrderRepository::NotFoundException &)
         {

@@ -55,6 +55,8 @@ qt5_wrap_cpp(
     EveMarketDataExternalOrderImporter.h
     EvernusApplication.h
     ExternalOrderImporter.h
+    ExternalOrderSellModel.h
+    ExternalOrderView.h
     FileDownload.h
     FilterTextRepository.h
     GeneralPreferencesWidget.h
@@ -66,10 +68,12 @@ qt5_wrap_cpp(
     ItemCostEditDialog.h
     ItemCostModel.h
     ItemCostWidget.h
+    ItemNameModel.h
     KeyEditDialog.h
     LanguageSelectDialog.h
     MainWindow.h
     MarginToolDialog.h
+    MarketBrowserWidget.h
     MarketLogExternalOrderImporter.h
     MarketLogExternalOrderImporterThread.h
     MarketOrderArchiveModel.h
@@ -238,8 +242,13 @@ add_executable(
     ExternalOrderImporter.h
     ExternalOrderImporterNames.h
     ExternalOrderImporterRegistry.h
+    ExternalOrderModel.h
     ExternalOrderRepository.cpp
     ExternalOrderRepository.h
+    ExternalOrderSellModel.cpp
+    ExternalOrderSellModel.h
+    ExternalOrderView.cpp
+    ExternalOrderView.h
     FileDownload.cpp
     FileDownload.h
     FilterText.cpp
@@ -277,6 +286,8 @@ add_executable(
     ItemCostWidget.cpp
     ItemCostWidget.h
     ItemData.h
+    ItemNameModel.cpp
+    ItemNameModel.h
     ItemRepository.cpp
     ItemRepository.h
     Key.cpp
@@ -297,6 +308,8 @@ add_executable(
     MarginToolDialog.cpp
     MarginToolDialog.h
     MarginToolSettings.h
+    MarketBrowserWidget.cpp
+    MarketBrowserWidget.h
     MarketGroup.cpp
     MarketGroup.h
     MarketGroupRepository.cpp

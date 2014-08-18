@@ -34,6 +34,7 @@
 #include "CharacterManagerDialog.h"
 #include "WalletJournalWidget.h"
 #include "CharacterRepository.h"
+#include "MarketBrowserWidget.h"
 #include "ActiveTasksDialog.h"
 #include "PreferencesDialog.h"
 #include "MarketOrderWidget.h"
@@ -70,9 +71,11 @@ namespace Evernus
                            const WalletTransactionRepository &walletTransactionRepo,
                            const WalletTransactionRepository &corpWalletTransactionRepo,
                            const MarketOrderRepository &orderRepo,
+                           const MarketOrderRepository &corpOrderRepo,
                            const ItemCostRepository &itemCostRepo,
                            const FilterTextRepository &filterRepo,
                            const OrderScriptRepository &orderScriptRepo,
+                           const ExternalOrderRepository &externalOrderRepo,
                            const MarketOrderProvider &orderProvider,
                            const MarketOrderProvider &corpOrderProvider,
                            const AssetProvider &assetProvider,
@@ -93,9 +96,11 @@ namespace Evernus
         , mWalletTransactionRepository{walletTransactionRepo}
         , mCorpWalletTransactionRepository{corpWalletTransactionRepo}
         , mMarketOrderRepository{orderRepo}
+        , mCorpMarketOrderRepository{corpOrderRepo}
         , mItemCostRepository{itemCostRepo}
         , mFilterRepository{filterRepo}
         , mOrderScriptRepository{orderScriptRepo}
+        , mExternalOrderRepo{externalOrderRepo}
         , mOrderProvider{orderProvider}
         , mCorpOrderProvider{corpOrderProvider}
         , mAssetProvider{assetProvider}
@@ -572,6 +577,22 @@ namespace Evernus
         addTab(corpTransactionsTab, tr("Corporation transactions"));
         connect(corpTransactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importCorpWalletTransactions);
         connect(this, &MainWindow::corpWalletTransactionsChanged, corpTransactionsTab, &WalletTransactionsWidget::updateData);
+
+        auto marketBrowserTab = new MarketBrowserWidget{mExternalOrderRepo,
+                                                        mMarketOrderRepository,
+                                                        mCorpMarketOrderRepository,
+                                                        mCharacterRepository,
+                                                        mOrderProvider,
+                                                        mCorpOrderProvider,
+                                                        mEveDataProvider,
+                                                        this};
+        addTab(marketBrowserTab, tr("Market browser"));
+        connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
+        connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
+        connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
+        connect(this, &MainWindow::marketOrdersChanged, marketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
+        connect(this, &MainWindow::corpMarketOrdersChanged, marketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
+        connect(this, &MainWindow::externalOrdersChanged, marketBrowserTab, &MarketBrowserWidget::updateData);
 
         auto itemCostTab = new ItemCostWidget{mItemCostProvider, mEveDataProvider, this};
         addTab(itemCostTab, tr("Item costs"));

@@ -132,6 +132,7 @@ namespace Evernus
         const MarketOrderValueSnapshotRepository &getMarketOrderValueSnapshotRepository() const noexcept;
         const FilterTextRepository &getFilterTextRepository() const noexcept;
         const OrderScriptRepository &getOrderScriptRepository() const noexcept;
+        const ExternalOrderRepository &getExternalOrderRepository() const noexcept;
 
         const MarketOrderProvider &getMarketOrderProvider() const noexcept;
         const MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
