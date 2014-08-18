@@ -34,6 +34,8 @@ namespace Evernus
         , mImportBtn(new ButtonWithTimer{tr("API import"), this})
         , mWarningBarWidget(new WarningBarWidget{this})
     {
+        mImportBtn->setDisabled(true);
+
         connect(&mUpdateTimer, &QTimer::timeout, this, &CharacterBoundWidget::updateTimerTick);
         connect(mImportBtn, &QPushButton::clicked, this, &CharacterBoundWidget::requestUpdate);
 
