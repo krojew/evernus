@@ -33,6 +33,7 @@ namespace Evernus
         mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
+        mView->setRootIsDecorated(false);
     }
 
     void ExternalOrderView::setModel(ExternalOrderModel *model)
