@@ -268,7 +268,7 @@ namespace Evernus
         const auto isReachable = [stationId, solarSystemId, &jumpMap, this](const auto &order) {
             const auto range = order->getRange();
             if (range == -1)
-                return stationId == order->getLocationId();
+                return stationId == order->getStationId();
 
             std::unordered_set<uint> visited;
             std::queue<uint> candidates;
@@ -344,7 +344,7 @@ namespace Evernus
         for (const auto &order : orders)
         {
             toStore.emplace_back(std::cref(order));
-            affectedOrders.emplace(std::make_pair(order.getTypeId(), order.getLocationId()));
+            affectedOrders.emplace(std::make_pair(order.getTypeId(), order.getStationId()));
         }
 
         clearExternalOrderCaches();

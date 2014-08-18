@@ -27,7 +27,6 @@ namespace Evernus
     {
     public:
         typedef ItemData::TypeIdType TypeIdType;
-        typedef ItemData::LocationIdType::value_type LocationIdType;
 
         enum class Type
         {
@@ -48,8 +47,8 @@ namespace Evernus
         TypeIdType getTypeId() const noexcept;
         void setTypeId(TypeIdType id) noexcept;
 
-        LocationIdType getLocationId() const noexcept;
-        void setLocationId(LocationIdType id) noexcept;
+        uint getStationId() const noexcept;
+        void setStationId(uint id) noexcept;
 
         uint getSolarSystemId() const noexcept;
         void setSolarSystemId(uint id) noexcept;
@@ -89,7 +88,7 @@ namespace Evernus
     private:
         Type mType = Type::Buy;
         TypeIdType mTypeId = TypeIdType{};
-        LocationIdType mLocationId = LocationIdType{};
+        uint mLocationId = 0;
         uint mSolarSystemId = 0;
         uint mRegionId = 0;
         short mRange = 32767;

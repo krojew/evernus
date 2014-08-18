@@ -36,12 +36,12 @@ namespace Evernus
         mTypeId = id;
     }
 
-    ExternalOrder::LocationIdType ExternalOrder::getLocationId() const noexcept
+    uint ExternalOrder::getStationId() const noexcept
     {
         return mLocationId;
     }
 
-    void ExternalOrder::setLocationId(LocationIdType id) noexcept
+    void ExternalOrder::setStationId(uint id) noexcept
     {
         mLocationId = id;
     }
@@ -164,7 +164,7 @@ namespace Evernus
         const auto systemColumn = 12;
 
         ExternalOrder order{values[idColumn].toULongLong()};
-        order.setLocationId(values[stationColumn].toULongLong());
+        order.setStationId(values[stationColumn].toULongLong());
         order.setSolarSystemId(values[systemColumn].toUInt());
         order.setRegionId(values[regionColumn].toUInt());
         order.setRange(values[rangeColumn].toShort());

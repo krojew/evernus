@@ -38,7 +38,7 @@ namespace Evernus
         void create() const;
 
         EntityPtr findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId,
-                                            ExternalOrder::LocationIdType locationId,
+                                            uint locationId,
                                             const Repository<MarketOrder> &orderRepo,
                                             const Repository<MarketOrder> &corpOrderRepo) const;
         EntityList findBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId,

@@ -55,7 +55,7 @@ namespace Evernus
             orderObject.setProperty("id", QString::number(order.getId()));
             orderObject.setProperty("type", static_cast<int>(order.getType()));
             orderObject.setProperty("typeId", order.getTypeId());
-            orderObject.setProperty("stationId", static_cast<quint32>(order.getLocationId()));
+            orderObject.setProperty("stationId", static_cast<quint32>(order.getStationId()));
             orderObject.setProperty("solarSystemId", order.getSolarSystemId());
             orderObject.setProperty("regionId", order.getRegionId());
             orderObject.setProperty("range", order.getRange());

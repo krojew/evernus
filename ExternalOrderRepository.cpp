@@ -42,7 +42,7 @@ namespace Evernus
         auto externalOrder = std::make_shared<ExternalOrder>(record.value("id").value<ExternalOrder::IdType>());
         externalOrder->setType(static_cast<ExternalOrder::Type>(record.value("type").toInt()));
         externalOrder->setTypeId(record.value("type_id").value<ExternalOrder::TypeIdType>());
-        externalOrder->setLocationId(record.value("location_id").value<ExternalOrder::LocationIdType>());
+        externalOrder->setStationId(record.value("location_id").toUInt());
         externalOrder->setSolarSystemId(record.value("solar_system_id").toUInt());
         externalOrder->setRegionId(record.value("region_id").toUInt());
         externalOrder->setRange(record.value("range").toInt());
@@ -83,7 +83,7 @@ namespace Evernus
     }
 
     ExternalOrderRepository::EntityPtr ExternalOrderRepository::findSellByTypeAndLocation(ExternalOrder::TypeIdType typeId,
-                                                                                          ExternalOrder::LocationIdType locationId,
+                                                                                          uint locationId,
                                                                                           const Repository<MarketOrder> &orderRepo,
                                                                                           const Repository<MarketOrder> &corpOrderRepo) const
     {
@@ -216,7 +216,7 @@ namespace Evernus
 
         query.bindValue(":type", static_cast<int>(entity.getType()));
         query.bindValue(":type_id", entity.getTypeId());
-        query.bindValue(":location_id", entity.getLocationId());
+        query.bindValue(":location_id", entity.getStationId());
         query.bindValue(":solar_system_id", entity.getSolarSystemId());
         query.bindValue(":region_id", entity.getRegionId());
         query.bindValue(":range", entity.getRange());
@@ -236,7 +236,7 @@ namespace Evernus
 
         query.addBindValue(static_cast<int>(entity.getType()));
         query.addBindValue(entity.getTypeId());
-        query.addBindValue(entity.getLocationId());
+        query.addBindValue(entity.getStationId());
         query.addBindValue(entity.getSolarSystemId());
         query.addBindValue(entity.getRegionId());
         query.addBindValue(entity.getRange());

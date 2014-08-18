@@ -45,7 +45,7 @@ namespace Evernus
         }
         else if (name.localName(mNamePool) == "stationID")
         {
-            current.setLocationId(value.toULongLong());
+            current.setStationId(value.toULongLong());
         }
         else if (name.localName(mNamePool) == "price")
         {

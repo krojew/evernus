@@ -292,7 +292,7 @@ namespace Evernus
                 order.setMinVolume(intV);
                 break;
             case 155:
-                order.setLocationId(intV);
+                order.setStationId(intV);
                 break;
             case 141:
                 order.setRegionId(intV);
