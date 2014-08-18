@@ -65,7 +65,6 @@ namespace Evernus
         void prepareItemImportFromCache();
 
         void selectRegion(QListWidgetItem *item);
-        void selectConstellation(QListWidgetItem *item);
         void selectSolarSystem(QListWidgetItem *item);
 
     private:
@@ -83,7 +82,6 @@ namespace Evernus
         QListView *mOrderItemList = nullptr;
 
         QListWidget *mRegionList = nullptr;
-        QListWidget *mConstellationList = nullptr;
         QListWidget *mSolarSystemList = nullptr;
         QListWidget *mStationList = nullptr;
 

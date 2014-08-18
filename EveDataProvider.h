@@ -51,6 +51,8 @@ namespace Evernus
         virtual void updateExternalOrders(const std::vector<ExternalOrder> &orders) = 0;
 
         virtual QString getLocationName(quint64 id) const = 0;
+        virtual QString getRegionName(uint id) const = 0;
+        virtual QString getSolarSystemName(uint id) const = 0;
 
         virtual QString getRefTypeName(uint id) const = 0;
 

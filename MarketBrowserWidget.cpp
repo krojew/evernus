@@ -101,26 +101,16 @@ namespace Evernus
 
         mRegionList = new QListWidget{this};
         navigatorGroupLayout->addWidget(mRegionList);
-        mRegionList->setCurrentItem(new QListWidgetItem{tr("(all)"), mRegionList});
         connect(mRegionList, &QListWidget::currentItemChanged, this, &MarketBrowserWidget::selectRegion);
 
-        const auto regions = dataProvider.getRegions();
+        const auto regions = mExternalOrderRepo.fetchUniqueRegions();
         for (const auto &region : regions)
         {
-            auto item = new QListWidgetItem{region.second, mRegionList};
-            item->setData(Qt::UserRole, region.first);
+            auto item = new QListWidgetItem{mDataProvider.getRegionName(region), mRegionList};
+            item->setData(Qt::UserRole, region);
         }
 
-        filterLabel = new QLabel{tr("Constellations [<a href='#'>all</a>]"), this};
-        navigatorGroupLayout->addWidget(filterLabel);
-        connect(filterLabel, &QLabel::linkActivated, this, [this] {
-            mConstellationList->setCurrentRow(0);
-        });
-
-        mConstellationList = new QListWidget{this};
-        navigatorGroupLayout->addWidget(mConstellationList);
-        mConstellationList->setCurrentItem(new QListWidgetItem{tr("(all)"), mConstellationList});
-        connect(mConstellationList, &QListWidget::currentItemChanged, this, &MarketBrowserWidget::selectConstellation);
+        mRegionList->sortItems();
 
         filterLabel = new QLabel{tr("Solar systems [<a href='#'>all</a>]"), this};
         navigatorGroupLayout->addWidget(filterLabel);
@@ -142,6 +132,10 @@ namespace Evernus
         mStationList = new QListWidget{this};
         navigatorGroupLayout->addWidget(mStationList);
         mStationList->setCurrentItem(new QListWidgetItem{tr("(all)"), mStationList});
+
+        auto allRegionsItem = new QListWidgetItem{tr("(all)")};
+        mRegionList->insertItem(0, allRegionsItem);
+        mRegionList->setCurrentItem(allRegionsItem);
 
         auto orderLayout = new QVBoxLayout{};
         mainViewLayout->addLayout(orderLayout, 1);
@@ -210,38 +204,25 @@ namespace Evernus
 
     void MarketBrowserWidget::selectRegion(QListWidgetItem *item)
     {
-        mConstellationList->blockSignals(true);
-        mConstellationList->clear();
-        mConstellationList->blockSignals(false);
-        mConstellationList->setCurrentItem(new QListWidgetItem{tr("(all)"), mConstellationList});
-
-        if (item != nullptr && item->data(Qt::UserRole).toUInt() != 0)
-        {
-            const auto constellations = mDataProvider.getConstellations(item->data(Qt::UserRole).toUInt());
-            for (const auto &constellation : constellations)
-            {
-                auto item = new QListWidgetItem{constellation.second, mConstellationList};
-                item->setData(Qt::UserRole, constellation.first);
-            }
-        }
-    }
-
-    void MarketBrowserWidget::selectConstellation(QListWidgetItem *item)
-    {
         mSolarSystemList->blockSignals(true);
         mSolarSystemList->clear();
         mSolarSystemList->blockSignals(false);
-        mSolarSystemList->setCurrentItem(new QListWidgetItem{tr("(all)"), mSolarSystemList});
 
-        if (item != nullptr && item->data(Qt::UserRole).toUInt() != 0)
+        if (item != nullptr)
         {
-            const auto solarSystems = mDataProvider.getSolarSystems(item->data(Qt::UserRole).toUInt());
+            const auto solarSystems = mExternalOrderRepo.fetchUniqueSolarSystems(item->data(Qt::UserRole).toUInt());
             for (const auto &solarSystem : solarSystems)
             {
-                auto item = new QListWidgetItem{solarSystem.second, mSolarSystemList};
-                item->setData(Qt::UserRole, solarSystem.first);
+                auto item = new QListWidgetItem{mDataProvider.getSolarSystemName(solarSystem), mSolarSystemList};
+                item->setData(Qt::UserRole, solarSystem);
             }
         }
+
+        mSolarSystemList->sortItems();
+
+        auto allItem = new QListWidgetItem{tr("(all)")};
+        mSolarSystemList->insertItem(0, allItem);
+        mSolarSystemList->setCurrentItem(allItem);
     }
 
     void MarketBrowserWidget::selectSolarSystem(QListWidgetItem *item)
@@ -249,17 +230,36 @@ namespace Evernus
         mStationList->blockSignals(true);
         mStationList->clear();
         mStationList->blockSignals(false);
-        mStationList->setCurrentItem(new QListWidgetItem{tr("(all)"), mStationList});
 
-        if (item != nullptr && item->data(Qt::UserRole).toUInt() != 0)
+        if (item != nullptr)
         {
-            const auto stations = mDataProvider.getStations(item->data(Qt::UserRole).toUInt());
+            std::vector<uint> stations;
+
+            if (item->data(Qt::UserRole).toUInt() == 0)
+            {
+                const auto regionItem = mRegionList->currentItem();
+                if (regionItem == nullptr || regionItem->data(Qt::UserRole).toUInt() == 0)
+                    stations = mExternalOrderRepo.fetchUniqueStations();
+                else
+                    stations = mExternalOrderRepo.fetchUniqueStationsByRegion(regionItem->data(Qt::UserRole).toUInt());
+            }
+            else
+            {
+                stations = mExternalOrderRepo.fetchUniqueStationsBySolarSystem(item->data(Qt::UserRole).toUInt());
+            }
+
             for (const auto &station : stations)
             {
-                auto item = new QListWidgetItem{station.second, mStationList};
-                item->setData(Qt::UserRole, station.first);
+                auto item = new QListWidgetItem{mDataProvider.getLocationName(station), mStationList};
+                item->setData(Qt::UserRole, station);
             }
         }
+
+        mStationList->sortItems();
+
+        auto allItem = new QListWidgetItem{tr("(all)")};
+        mStationList->insertItem(0, allItem);
+        mStationList->setCurrentItem(allItem);
     }
 
     ExternalOrderImporter::TypeLocationPairs MarketBrowserWidget::getImportTarget() const

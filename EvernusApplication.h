@@ -91,6 +91,8 @@ namespace Evernus
         virtual void updateExternalOrders(const std::vector<ExternalOrder> &orders) override;
 
         virtual QString getLocationName(quint64 id) const override;
+        virtual QString getRegionName(uint id) const override;
+        virtual QString getSolarSystemName(uint id) const override;
 
         virtual QString getRefTypeName(uint id) const override;
 
@@ -291,6 +293,9 @@ namespace Evernus
         mutable std::vector<MapLocation> mRegionCache;
         mutable std::unordered_map<uint, std::vector<MapLocation>> mConstellationCache, mSolarSystemCache;
         mutable std::unordered_map<uint, std::vector<Station>> mStationCache;
+
+        mutable std::unordered_map<uint, QString> mRegionNameCache;
+        mutable std::unordered_map<uint, QString> mSolarSystemNameCache;
 
         std::unordered_set<MarketOrder::IdType> mPendingAutoCostOrders;
 

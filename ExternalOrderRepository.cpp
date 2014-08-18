@@ -78,6 +78,8 @@ namespace Evernus
         ))"}.arg(getTableName()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id_location ON %1(type_id, location_id)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_solar_system ON %1(solar_system_id)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_region ON %1(region_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id ON %1(type, type_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_location ON %1(type, type_id, location_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_region ON %1(type, type_id, region_id)"}.arg(getTableName()));
@@ -173,16 +175,75 @@ namespace Evernus
 
     std::vector<EveType::IdType> ExternalOrderRepository::fetchUniqueTypes() const
     {
-        std::vector<EveType::IdType> result;
+        return fetchUniqueColumn<EveType::IdType>("type_id");
+    }
 
-        auto query = exec(QString{"SELECT DISTINCT type_id FROM %1"}.arg(getTableName()));
+    std::vector<uint> ExternalOrderRepository::fetchUniqueRegions() const
+    {
+        return fetchUniqueColumn<uint>("region_id");
+    }
+
+    std::vector<uint> ExternalOrderRepository::fetchUniqueSolarSystems(uint regionId) const
+    {
+        if (regionId == 0)
+            return fetchUniqueColumn<uint>("solar_system_id");
+
+        std::vector<uint> result;
+
+        auto query = prepare(QString{"SELECT DISTINCT solar_system_id FROM %1 WHERE region_id = ?"}.arg(getTableName()));
+        query.bindValue(0, regionId);
+
+        DatabaseUtils::execQuery(query);
 
         const auto size = query.size();
         if (size > 0)
             result.reserve(size);
 
         while (query.next())
-            result.emplace_back(query.value(0).value<EveType::IdType>());
+            result.emplace_back(query.value(0).toUInt());
+
+        return result;
+    }
+
+    std::vector<uint> ExternalOrderRepository::fetchUniqueStations() const
+    {
+        return fetchUniqueColumn<uint>("location_id");
+    }
+
+    std::vector<uint> ExternalOrderRepository::fetchUniqueStationsByRegion(uint regionId) const
+    {
+        std::vector<uint> result;
+
+        auto query = prepare(QString{"SELECT DISTINCT location_id FROM %1 WHERE region_id = ?"}.arg(getTableName()));
+        query.bindValue(0, regionId);
+
+        DatabaseUtils::execQuery(query);
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(query.value(0).toUInt());
+
+        return result;
+    }
+
+    std::vector<uint> ExternalOrderRepository::fetchUniqueStationsBySolarSystem(uint solarSystemId) const
+    {
+        std::vector<uint> result;
+
+        auto query = prepare(QString{"SELECT DISTINCT location_id FROM %1 WHERE solar_system_id = ?"}.arg(getTableName()));
+        query.bindValue(0, solarSystemId);
+
+        DatabaseUtils::execQuery(query);
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(query.value(0).toUInt());
 
         return result;
     }
@@ -305,5 +366,22 @@ namespace Evernus
     size_t ExternalOrderRepository::getMaxRowsPerInsert() const
     {
         return 71;
+    }
+
+    template<class T>
+    std::vector<T> ExternalOrderRepository::fetchUniqueColumn(const QString &column) const
+    {
+        std::vector<T> result;
+
+        auto query = exec(QString{"SELECT DISTINCT %1 FROM %2"}.arg(column).arg(getTableName()));
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(query.value(0).value<T>());
+
+        return result;
     }
 }

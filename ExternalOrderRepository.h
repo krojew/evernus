@@ -51,6 +51,11 @@ namespace Evernus
 
         std::vector<TypeStationPair> fetchUniqueTypesAndStations() const;
         std::vector<EveType::IdType> fetchUniqueTypes() const;
+        std::vector<uint> fetchUniqueRegions() const;
+        std::vector<uint> fetchUniqueSolarSystems(uint regionId = 0) const;
+        std::vector<uint> fetchUniqueStations() const;
+        std::vector<uint> fetchUniqueStationsByRegion(uint regionId) const;
+        std::vector<uint> fetchUniqueStationsBySolarSystem(uint solarSystemId) const;
 
         void removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const;
 
@@ -60,5 +65,8 @@ namespace Evernus
         virtual void bindPositionalValues(const ExternalOrder &entity, QSqlQuery &query) const override;
 
         virtual size_t getMaxRowsPerInsert() const override;
+
+        template<class T>
+        std::vector<T> fetchUniqueColumn(const QString &column) const;
     };
 }

@@ -431,6 +431,38 @@ namespace Evernus
         return result;
     }
 
+    QString EvernusApplication::getRegionName(uint id) const
+    {
+        const auto it = mRegionNameCache.find(id);
+        if (it != std::end(mRegionNameCache))
+            return it->second;
+
+        QSqlQuery query{mEveDb};
+        query.prepare("SELECT regionName FROM mapRegions WHERE regionID = ?");
+        query.bindValue(0, id);
+
+        DatabaseUtils::execQuery(query);
+        query.next();
+
+        return mRegionNameCache.emplace(id, query.value(0).toString()).first->second;
+    }
+
+    QString EvernusApplication::getSolarSystemName(uint id) const
+    {
+        const auto it = mSolarSystemNameCache.find(id);
+        if (it != std::end(mSolarSystemNameCache))
+            return it->second;
+
+        QSqlQuery query{mEveDb};
+        query.prepare("SELECT solarSystemName FROM mapSolarSystems WHERE solarSystemID = ?");
+        query.bindValue(0, id);
+
+        DatabaseUtils::execQuery(query);
+        query.next();
+
+        return mSolarSystemNameCache.emplace(id, query.value(0).toString()).first->second;
+    }
+
     QString EvernusApplication::getRefTypeName(uint id) const
     {
         const auto it = mRefTypeNames.find(id);
