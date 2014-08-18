@@ -49,7 +49,7 @@ namespace Evernus
         Result &&getResult() && noexcept;
 
     private:
-        static constexpr auto emdDateFormat = "yyyy-MM-dd HH:mm:ss";
+        static const char * const emdDateFormat;
 
         const QXmlNamePool &mNamePool;
 

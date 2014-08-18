@@ -16,6 +16,8 @@
 
 namespace Evernus
 {
+    const char * const EveMarketDataExternalOrderImporterXmlReceiver::emdDateFormat = "yyyy-MM-dd HH:mm:ss";
+
     EveMarketDataExternalOrderImporterXmlReceiver::EveMarketDataExternalOrderImporterXmlReceiver(const QXmlNamePool &namePool)
         : QAbstractXmlReceiver{}
         , mNamePool{namePool}
