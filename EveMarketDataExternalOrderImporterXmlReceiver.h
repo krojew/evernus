@@ -49,9 +49,12 @@ namespace Evernus
         Result &&getResult() && noexcept;
 
     private:
+        static constexpr auto emdDateFormat = "yyyy-MM-dd HH:mm:ss";
+
         const QXmlNamePool &mNamePool;
 
         Result mResult;
         std::unique_ptr<ExternalOrder> mCurrentElement;
+        QDateTime mCurrentExpires;
     };
 }

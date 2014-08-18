@@ -269,10 +269,10 @@ namespace Evernus
                 order.setPrice(longV / 10000.);
                 break;
             case 161:
-                // volume remaining
+                order.setVolumeRemaining(realV);
                 break;
             case 131:
-                // issued
+                order.setIssued(convertTime(longV));
                 break;
             case 138:
                 {
@@ -286,10 +286,10 @@ namespace Evernus
                 }
                 break;
             case 160:
-                // volume entered
+                order.setVolumeEntered(intV);
                 break;
             case 137:
-                // min volume
+                order.setMinVolume(intV);
                 break;
             case 155:
                 order.setLocationId(intV);
@@ -310,7 +310,7 @@ namespace Evernus
                 order.setRange(intV);
                 break;
             case 126:
-                // duration
+                order.setDuration(intV);
                 break;
             case 116:
                 order.setType((boolV) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));

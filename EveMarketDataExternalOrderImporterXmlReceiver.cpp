@@ -32,21 +32,67 @@ namespace Evernus
         auto &current = *mCurrentElement;
 
         if (name.localName(mNamePool) == "buysell")
+        {
             current.setType((value == "s") ? (ExternalOrder::Type::Sell) : (ExternalOrder::Type::Buy));
+        }
         else if (name.localName(mNamePool) == "orderID")
+        {
             current.setId(value.toULongLong());
+        }
         else if (name.localName(mNamePool) == "typeID")
+        {
             current.setTypeId(value.toUInt());
+        }
         else if (name.localName(mNamePool) == "stationID")
+        {
             current.setLocationId(value.toULongLong());
+        }
         else if (name.localName(mNamePool) == "price")
+        {
             current.setPrice(value.toDouble());
+        }
         else if (name.localName(mNamePool) == "solarsystemID")
+        {
             current.setSolarSystemId(value.toUInt());
+        }
         else if (name.localName(mNamePool) == "regionID")
+        {
             current.setRegionId(value.toUInt());
+        }
         else if (name.localName(mNamePool) == "range")
+        {
             current.setRange(value.toShort());
+        }
+        else if (name.localName(mNamePool) == "volEntered")
+        {
+            current.setVolumeEntered(value.toUInt());
+        }
+        else if (name.localName(mNamePool) == "volRemaining")
+        {
+            current.setVolumeRemaining(value.toUInt());
+        }
+        else if (name.localName(mNamePool) == "minVolume")
+        {
+            current.setMinVolume(value.toUInt());
+        }
+        else if (name.localName(mNamePool) == "issued")
+        {
+            auto dt = QDateTime::fromString(value.toString(), emdDateFormat);
+            dt.setTimeSpec(Qt::UTC);
+
+            current.setIssued(dt);
+
+            if (mCurrentExpires.isValid())
+                current.setDuration(dt.daysTo(mCurrentExpires));
+        }
+        else if (name.localName(mNamePool) == "expires")
+        {
+            mCurrentExpires = QDateTime::fromString(value.toString(), emdDateFormat);
+            mCurrentExpires.setTimeSpec(Qt::UTC);
+
+            if (current.getIssued().isValid())
+                current.setDuration(current.getIssued().daysTo(mCurrentExpires));
+        }
     }
 
     void EveMarketDataExternalOrderImporterXmlReceiver::characters(const QStringRef &value)
@@ -92,6 +138,7 @@ namespace Evernus
         Q_UNUSED(name);
         mCurrentElement = std::make_unique<ExternalOrder>();
         mCurrentElement->setUpdateTime(QDateTime::currentDateTimeUtc());
+        mCurrentExpires = QDateTime{};
     }
 
     void EveMarketDataExternalOrderImporterXmlReceiver::startOfSequence()

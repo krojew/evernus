@@ -96,13 +96,69 @@ namespace Evernus
         mPrice = value;
     }
 
+    uint ExternalOrder::getVolumeEntered() const noexcept
+    {
+        return mVolumeEntered;
+    }
+
+    void ExternalOrder::setVolumeEntered(uint value) noexcept
+    {
+        mVolumeEntered = value;
+    }
+
+    uint ExternalOrder::getVolumeRemaining() const noexcept
+    {
+        return mVolumeRemaining;
+    }
+
+    void ExternalOrder::setVolumeRemaining(uint value) noexcept
+    {
+        mVolumeRemaining = value;
+    }
+
+    uint ExternalOrder::getMinVolume() const noexcept
+    {
+        return mMinVolume;
+    }
+
+    void ExternalOrder::setMinVolume(uint value) noexcept
+    {
+        mMinVolume = value;
+    }
+
+    QDateTime ExternalOrder::getIssued() const
+    {
+        return mIssued;
+    }
+
+    void ExternalOrder::setIssued(const QDateTime &dt)
+    {
+        mIssued = dt;
+    }
+    short ExternalOrder::getDuration() const noexcept
+    {
+        return mDuration;
+    }
+
+    void ExternalOrder::setDuration(short value) noexcept
+    {
+        mDuration = value;
+    }
+
     ExternalOrder ExternalOrder::parseLogLine(const QStringList &values)
     {
+        const auto eveDateFormat = "yyyy-MM-dd HH:mm:ss.zzz";
+
         const auto priceColumn = 0;
+        const auto volRemainingColumn = 1;
         const auto typeColumn = 2;
         const auto rangeColumn = 3;
         const auto idColumn = 4;
+        const auto volEnteredColumn = 5;
+        const auto minVolColumn = 6;
         const auto bidColumn = 7;
+        const auto issuedColumn = 8;
+        const auto durationColumn = 9;
         const auto stationColumn = 10;
         const auto regionColumn = 11;
         const auto systemColumn = 12;
@@ -115,6 +171,15 @@ namespace Evernus
         order.setType((values[bidColumn] == "True") ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
         order.setTypeId(values[typeColumn].toULongLong());
         order.setPrice(values[priceColumn].toDouble());
+        order.setVolumeEntered(values[volEnteredColumn].toUInt());
+        order.setVolumeRemaining(values[volRemainingColumn].toDouble());
+        order.setMinVolume(values[minVolColumn].toUInt());
+        order.setDuration(values[durationColumn].toShort());
+
+        auto dt = QDateTime::fromString(values[issuedColumn], eveDateFormat);
+        dt.setTimeSpec(Qt::UTC);
+
+        order.setIssued(dt);
 
         return order;
     }

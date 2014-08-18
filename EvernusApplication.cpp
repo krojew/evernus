@@ -142,6 +142,7 @@ namespace Evernus
 
         Updater::getInstance().performVersionMigration(*mCacheTimerRepository,
                                                        *mCharacterRepository,
+                                                       *mExternalOrderRepository,
                                                        *mMarketOrderRepository,
                                                        *mCorpMarketOrderRepository);
 

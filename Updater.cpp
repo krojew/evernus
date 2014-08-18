@@ -35,6 +35,7 @@ namespace Evernus
 {
     void Updater::performVersionMigration(const CacheTimerRepository &cacheTimerRepo,
                                           const Repository<Character> &characterRepo,
+                                          const Repository<ExternalOrder> &externalOrderRepo,
                                           const MarketOrderRepository &characterOrderRepo,
                                           const MarketOrderRepository &corporationOrderRepo) const
     {
@@ -88,6 +89,12 @@ namespace Evernus
                     const auto index = cachePath.indexOf("MachoNet");
                     if (index != -1)
                         settings.setValue(PathSettings::eveCachePathKey, cachePath.left(index));
+
+                    externalOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN volume_entered INTEGER NOT NULL DEFAULT 0"}.arg(externalOrderRepo.getTableName()));
+                    externalOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN volume_remaining INTEGER NOT NULL DEFAULT 0"}.arg(externalOrderRepo.getTableName()));
+                    externalOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN min_volume INTEGER NOT NULL DEFAULT 0"}.arg(externalOrderRepo.getTableName()));
+                    externalOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN issued DATETIME NOT NULL DEFAULT ''"}.arg(externalOrderRepo.getTableName()));
+                    externalOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN duration INTEGER NOT NULL DEFAULT 0"}.arg(externalOrderRepo.getTableName()));
                 }
             }
         }

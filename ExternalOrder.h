@@ -66,6 +66,21 @@ namespace Evernus
         double getPrice() const noexcept;
         void setPrice(double value) noexcept;
 
+        uint getVolumeEntered() const noexcept;
+        void setVolumeEntered(uint value) noexcept;
+
+        uint getVolumeRemaining() const noexcept;
+        void setVolumeRemaining(uint value) noexcept;
+
+        uint getMinVolume() const noexcept;
+        void setMinVolume(uint value) noexcept;
+
+        QDateTime getIssued() const;
+        void setIssued(const QDateTime &dt);
+
+        short getDuration() const noexcept;
+        void setDuration(short value) noexcept;
+
         ExternalOrder &operator =(const ExternalOrder &) = default;
         ExternalOrder &operator =(ExternalOrder &&) = default;
 
@@ -80,5 +95,10 @@ namespace Evernus
         short mRange = 32767;
         QDateTime mUpdateTime;
         double mPrice = 0.;
+        uint mVolumeEntered = 0;
+        uint mVolumeRemaining = 0;
+        uint mMinVolume = 0;
+        QDateTime mIssued;
+        short mDuration = 0;
     };
 }

@@ -33,8 +33,11 @@ namespace Evernus
 
     ExternalOrderRepository::EntityPtr ExternalOrderRepository::populate(const QSqlRecord &record) const
     {
-        auto dt = record.value("update_time").toDateTime();
-        dt.setTimeSpec(Qt::UTC);
+        auto updateDt = record.value("update_time").toDateTime();
+        updateDt.setTimeSpec(Qt::UTC);
+
+        auto issuedDt = record.value("issued").toDateTime();
+        issuedDt.setTimeSpec(Qt::UTC);
 
         auto externalOrder = std::make_shared<ExternalOrder>(record.value("id").value<ExternalOrder::IdType>());
         externalOrder->setType(static_cast<ExternalOrder::Type>(record.value("type").toInt()));
@@ -43,8 +46,13 @@ namespace Evernus
         externalOrder->setSolarSystemId(record.value("solar_system_id").toUInt());
         externalOrder->setRegionId(record.value("region_id").toUInt());
         externalOrder->setRange(record.value("range").toInt());
-        externalOrder->setUpdateTime(dt);
+        externalOrder->setUpdateTime(updateDt);
         externalOrder->setPrice(record.value("value").toDouble());
+        externalOrder->setVolumeEntered(record.value("volume_entered").toUInt());
+        externalOrder->setVolumeRemaining(record.value("volume_remaining").toUInt());
+        externalOrder->setMinVolume(record.value("min_volume").toUInt());
+        externalOrder->setIssued(issuedDt);
+        externalOrder->setDuration(record.value("duration").value<short>());
         externalOrder->setNew(false);
 
         return externalOrder;
@@ -61,7 +69,12 @@ namespace Evernus
             region_id INTEGER NOT NULL,
             range INTEGER NOT NULL,
             update_time DATETIME NOT NULL,
-            value DOUBLE NOT NULL
+            value DOUBLE NOT NULL,
+            volume_entered INTEGER NOT NULL,
+            volume_remaining INTEGER NOT NULL,
+            min_volume INTEGER NOT NULL,
+            issued DATETIME NOT NULL,
+            duration INTEGER NOT NULL
         ))"}.arg(getTableName()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id_location ON %1(type_id, location_id)"}.arg(getTableName()));
@@ -188,7 +201,12 @@ namespace Evernus
             << "region_id"
             << "range"
             << "update_time"
-            << "value";
+            << "value"
+            << "volume_entered"
+            << "volume_remaining"
+            << "min_volume"
+            << "issued"
+            << "duration";
     }
 
     void ExternalOrderRepository::bindValues(const ExternalOrder &entity, QSqlQuery &query) const
@@ -204,6 +222,11 @@ namespace Evernus
         query.bindValue(":range", entity.getRange());
         query.bindValue(":update_time", entity.getUpdateTime());
         query.bindValue(":value", entity.getPrice());
+        query.bindValue(":volume_entered", entity.getVolumeEntered());
+        query.bindValue(":volume_remaining", entity.getVolumeRemaining());
+        query.bindValue(":min_volume", entity.getMinVolume());
+        query.bindValue(":issued", entity.getIssued());
+        query.bindValue(":duration", entity.getDuration());
     }
 
     void ExternalOrderRepository::bindPositionalValues(const ExternalOrder &entity, QSqlQuery &query) const
@@ -219,5 +242,15 @@ namespace Evernus
         query.addBindValue(entity.getRange());
         query.addBindValue(entity.getUpdateTime());
         query.addBindValue(entity.getPrice());
+        query.addBindValue(entity.getVolumeEntered());
+        query.addBindValue(entity.getVolumeRemaining());
+        query.addBindValue(entity.getMinVolume());
+        query.addBindValue(entity.getIssued());
+        query.addBindValue(entity.getDuration());
+    }
+
+    size_t ExternalOrderRepository::getMaxRowsPerInsert() const
+    {
+        return 71;
     }
 }

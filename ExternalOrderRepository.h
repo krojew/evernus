@@ -52,5 +52,7 @@ namespace Evernus
         virtual QStringList getColumns() const override;
         virtual void bindValues(const ExternalOrder &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const ExternalOrder &entity, QSqlQuery &query) const override;
+
+        virtual size_t getMaxRowsPerInsert() const override;
     };
 }

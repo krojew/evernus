@@ -22,6 +22,7 @@ namespace Evernus
     class Repository;
     class MarketOrderRepository;
     class CacheTimerRepository;
+    class ExternalOrder;
     class Character;
 
     class Updater
@@ -32,6 +33,7 @@ namespace Evernus
     public:
         void performVersionMigration(const CacheTimerRepository &cacheTimerRepo,
                                      const Repository<Character> &characterRepo,
+                                     const Repository<ExternalOrder> &externalOrderRepo,
                                      const MarketOrderRepository &characterOrderRepo,
                                      const MarketOrderRepository &corporationOrderRepo) const;
 
