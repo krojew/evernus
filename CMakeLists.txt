@@ -42,6 +42,7 @@ qt5_wrap_cpp(
     AssetsImportPreferencesWidget.h
     AssetsWidget.h
     ButtonWithTimer.h
+    CacheExternalOrderImporter.h
     CharacterBoundWidget.h
     CharacterManagerDialog.h
     CharacterModel.h

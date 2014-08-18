@@ -31,6 +31,8 @@ namespace Evernus
     class CacheExternalOrderImporter
         : public ExternalOrderImporter
     {
+        Q_OBJECT
+
     public:
         using ExternalOrderImporter::ExternalOrderImporter;
         virtual ~CacheExternalOrderImporter() = default;
