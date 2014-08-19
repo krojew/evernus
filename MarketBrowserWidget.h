@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <list>
+
 #include <QWidget>
 
 #include "ExternalOrderSellModel.h"
@@ -23,6 +25,7 @@
 class QListWidgetItem;
 class QListWidget;
 class QPushButton;
+class QTabWidget;
 class QListView;
 
 namespace Evernus
@@ -73,7 +76,23 @@ namespace Evernus
 
         void changeDeviationSource(ExternalOrderModel::DeviationSourceType type, double value);
 
+        void stepBack();
+        void stepForward();
+
     private:
+        struct NavigationState
+        {
+            EveType::IdType mTypeId = EveType::invalidId;
+            uint mRegionId = 0;
+            uint mSolarSystemId = 0;
+            uint mStationId = 0;
+        };
+
+        typedef std::list<NavigationState> NavigationStack;
+
+        static const auto knownItemsTab = 0;
+        static const auto orderItemsTab = 0;
+
         const ExternalOrderRepository &mExternalOrderRepo;
         const MarketOrderRepository &mOrderRepo;
         const MarketOrderRepository &mCorpOrderRepo;
@@ -86,6 +105,11 @@ namespace Evernus
 
         QPushButton *mDeviationBtn = nullptr;
 
+        QPushButton *mBackBtn = nullptr;
+        QPushButton *mForwardBtn = nullptr;
+
+        QTabWidget *mItemTabs = nullptr;
+
         QListView *mKnownItemList = nullptr;
         QListView *mOrderItemList = nullptr;
 
@@ -96,6 +120,10 @@ namespace Evernus
         ExternalOrderView *mSellView = nullptr;
         ExternalOrderView *mBuyView = nullptr;
 
+        NavigationStack mNavigationStack;
+        NavigationStack::const_iterator mNagivationPointer = std::begin(mNavigationStack);
+        bool mBlockNavigationChange = false;
+
         ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
 
         void fillRegions();
@@ -105,5 +133,11 @@ namespace Evernus
         QWidget *createItemNameListTab(ItemNameModel &model, QListView *&view);
 
         QString getDeviationButtonText(ExternalOrderModel::DeviationSourceType type) const;
+
+        void updateNavigationButtons();
+        void saveNavigationState();
+        void restoreNavigationState();
+
+        void setTypeId(EveType::IdType typeId);
     };
 }

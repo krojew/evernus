@@ -65,10 +65,12 @@ namespace Evernus
         virtual double getMinPrice() const override;
 
         void setCharacter(Character::IdType id);
-        void setType(EveType::IdType id);
         void setRegionId(uint id);
         void setSolarSystemId(uint id);
         void setStationId(uint id);
+
+        EveType::IdType getTypeId() const noexcept;
+        void setTypeId(EveType::IdType id) noexcept;
 
         void reset();
 

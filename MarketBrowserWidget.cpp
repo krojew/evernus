@@ -103,13 +103,28 @@ namespace Evernus
         auto navigatorGroupLayout = new QVBoxLayout{};
         navigatorGroup->setLayout(navigatorGroupLayout);
 
-        auto itemTabs = new QTabWidget{};
-        navigatorGroupLayout->addWidget(itemTabs);
+        auto navigationLayout = new QHBoxLayout{};
+        navigatorGroupLayout->addLayout(navigationLayout);
 
-        itemTabs->addTab(createItemNameListTab(mNameModel, mKnownItemList), tr("Name"));
+        mBackBtn = new QPushButton{QIcon{":/images/arrow_left.png"}, tr("Back"), this};
+        navigationLayout->addWidget(mBackBtn);
+        mBackBtn->setFlat(true);
+        mBackBtn->setDisabled(true);
+        connect(mBackBtn, &QPushButton::clicked, this, &MarketBrowserWidget::stepBack);
+
+        mForwardBtn = new QPushButton{QIcon{":/images/arrow_right.png"}, tr("Forward"), this};
+        navigationLayout->addWidget(mForwardBtn);
+        mForwardBtn->setFlat(true);
+        mForwardBtn->setDisabled(true);
+        connect(mForwardBtn, &QPushButton::clicked, this, &MarketBrowserWidget::stepForward);
+
+        mItemTabs = new QTabWidget{this};
+        navigatorGroupLayout->addWidget(mItemTabs);
+
+        mItemTabs->addTab(createItemNameListTab(mNameModel, mKnownItemList), tr("Name"));
         fillKnownItemNames();
 
-        itemTabs->addTab(createItemNameListTab(mOrderNameModel, mOrderItemList), tr("My orders"));
+        mItemTabs->addTab(createItemNameListTab(mOrderNameModel, mOrderItemList), tr("My orders"));
         fillOrderItemNames();
 
         auto filterLabel = new QLabel{tr("Regions [<a href='#'>all</a>]"), this};
@@ -168,6 +183,11 @@ namespace Evernus
     {
         fillRegions();
         fillKnownItemNames();
+
+        mNavigationStack.clear();
+        mNagivationPointer = std::begin(mNavigationStack);
+
+        updateNavigationButtons();
     }
 
     void MarketBrowserWidget::fillOrderItemNames()
@@ -279,6 +299,8 @@ namespace Evernus
             mExternalOrderSellModel.setStationId(item->data(Qt::UserRole).toUInt());
 
             mExternalOrderSellModel.reset();
+
+            saveNavigationState();
         }
     }
 
@@ -286,6 +308,26 @@ namespace Evernus
     {
         mDeviationBtn->setText(getDeviationButtonText(type));
         mExternalOrderSellModel.changeDeviationSource(type, value);
+    }
+
+    void MarketBrowserWidget::stepBack()
+    {
+        Q_ASSERT(mNagivationPointer != std::begin(mNavigationStack));
+
+        --mNagivationPointer;
+        restoreNavigationState();
+
+        updateNavigationButtons();
+    }
+
+    void MarketBrowserWidget::stepForward()
+    {
+        Q_ASSERT(mNagivationPointer != std::end(mNavigationStack));
+
+        ++mNagivationPointer;
+        restoreNavigationState();
+
+        updateNavigationButtons();
     }
 
     ExternalOrderImporter::TypeLocationPairs MarketBrowserWidget::getImportTarget() const
@@ -301,6 +343,8 @@ namespace Evernus
 
     void MarketBrowserWidget::fillRegions()
     {
+        mBlockNavigationChange = true;
+
         mRegionList->blockSignals(true);
         mRegionList->clear();
         mRegionList->blockSignals(false);
@@ -317,6 +361,8 @@ namespace Evernus
         auto allItem = new QListWidgetItem{tr("(all)")};
         mRegionList->insertItem(0, allItem);
         mRegionList->setCurrentItem(allItem);
+
+        mBlockNavigationChange = false;
     }
 
     void MarketBrowserWidget::fillKnownItemNames()
@@ -326,8 +372,13 @@ namespace Evernus
 
     void MarketBrowserWidget::showOrdersForType(EveType::IdType typeId)
     {
-        mExternalOrderSellModel.setType(typeId);
-        mSellView->setTypeId(typeId);
+        setTypeId(typeId);
+
+        if (!mBlockNavigationChange)
+        {
+            saveNavigationState();
+            mExternalOrderSellModel.reset();
+        }
     }
 
     QWidget *MarketBrowserWidget::createItemNameListTab(ItemNameModel &model, QListView *&view)
@@ -373,5 +424,115 @@ namespace Evernus
         default:
             return tr("Deviation");
         }
+    }
+
+    void MarketBrowserWidget::updateNavigationButtons()
+    {
+        mBackBtn->setDisabled(mNagivationPointer == std::begin(mNavigationStack));
+        mForwardBtn->setDisabled(mNagivationPointer == std::end(mNavigationStack) ||
+                                 std::next(mNagivationPointer) == std::end(mNavigationStack));
+    }
+
+    void MarketBrowserWidget::saveNavigationState()
+    {
+        if (mBlockNavigationChange)
+            return;
+
+        const auto typeId = mExternalOrderSellModel.getTypeId();
+        if (typeId == EveType::invalidId)
+            return;
+
+        if (mNagivationPointer != std::end(mNavigationStack))
+            mNavigationStack.erase(std::next(mNagivationPointer), std::end(mNavigationStack));
+
+        NavigationState state;
+        state.mTypeId = typeId;
+        state.mRegionId = mRegionList->currentItem()->data(Qt::UserRole).toUInt();
+        state.mSolarSystemId = mSolarSystemList->currentItem()->data(Qt::UserRole).toUInt();
+        state.mStationId = mStationList->currentItem()->data(Qt::UserRole).toUInt();
+
+        mNavigationStack.emplace_back(std::move(state));
+        mNagivationPointer = std::prev(std::end(mNavigationStack));
+
+        updateNavigationButtons();
+    }
+
+    void MarketBrowserWidget::restoreNavigationState()
+    {
+        Q_ASSERT(mNagivationPointer != std::end(mNavigationStack));
+
+        mBlockNavigationChange = true;
+
+        const auto itemSearcher = [](auto typeId, auto &list) {
+            const auto model = list.model();
+            const auto rows = model->rowCount();
+
+            auto selectionModel = list.selectionModel();
+            selectionModel->clearSelection();
+
+            for (auto i = 0; i < rows; ++i)
+            {
+                const auto index = model->index(i, 0);
+                if (model->data(index, Qt::UserRole).toUInt() == typeId)
+                {
+                    selectionModel->setCurrentIndex(index, QItemSelectionModel::Select);
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
+        auto found = false;
+        if (mItemTabs->currentIndex() == knownItemsTab)
+            found = itemSearcher(mNagivationPointer->mTypeId, *mKnownItemList);
+        else
+            found = itemSearcher(mNagivationPointer->mTypeId, *mOrderItemList);
+
+        if (!found)
+            setTypeId(mNagivationPointer->mTypeId);
+
+        const auto regions = mRegionList->count();
+        for (auto i = 0; i < regions; ++i)
+        {
+            if (mRegionList->item(i)->data(Qt::UserRole).toUInt() == mNagivationPointer->mRegionId)
+            {
+                mSolarSystemList->blockSignals(true);
+                mRegionList->setCurrentRow(i);
+                mSolarSystemList->blockSignals(false);
+                break;
+            }
+        }
+
+        const auto systems = mSolarSystemList->count();
+        for (auto i = 0; i < systems; ++i)
+        {
+            if (mSolarSystemList->item(i)->data(Qt::UserRole).toUInt() == mNagivationPointer->mSolarSystemId)
+            {
+                mStationList->blockSignals(true);
+                mSolarSystemList->setCurrentRow(i);
+                mStationList->blockSignals(false);
+                break;
+            }
+        }
+
+        const auto stations = mStationList->count();
+        for (auto i = 0; i < stations; ++i)
+        {
+            if (mStationList->item(i)->data(Qt::UserRole).toUInt() == mNagivationPointer->mStationId)
+            {
+
+                mStationList->setCurrentRow(i);
+                break;
+            }
+        }
+
+        mBlockNavigationChange = false;
+    }
+
+    void MarketBrowserWidget::setTypeId(EveType::IdType typeId)
+    {
+        mExternalOrderSellModel.setTypeId(typeId);
+        mSellView->setTypeId(typeId);
     }
 }

@@ -1108,27 +1108,32 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ExternalOrderSellModel</name>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="147"/>
-        <source>Station</source>
-        <translation type="unfinished">Stacja</translation>
-    </message>
-    <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="149"/>
-        <source>Deviation</source>
+        <location filename="../ExternalOrderSellModel.cpp" line="135"/>
+        <source>Your order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ExternalOrderSellModel.cpp" line="151"/>
+        <source>Station</source>
+        <translation type="unfinished">Stacja</translation>
+    </message>
+    <message>
+        <location filename="../ExternalOrderSellModel.cpp" line="153"/>
+        <source>Deviation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ExternalOrderSellModel.cpp" line="155"/>
         <source>Price</source>
         <translation type="unfinished">Cena</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="153"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="157"/>
         <source>Volume</source>
         <translation type="unfinished">Wolumen</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="155"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="159"/>
         <source>Total profit</source>
         <translation type="unfinished">Całkowity zysk</translation>
     </message>
@@ -1137,22 +1142,22 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="obsolete">Marża</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="157"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="161"/>
         <source>Total size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="159"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="163"/>
         <source>Issued</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="161"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="165"/>
         <source>Time left</source>
         <translation type="unfinished">Pozostały czas</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="163"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="167"/>
         <source>Imported</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2052,68 +2057,78 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="109"/>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketBrowserWidget.cpp" line="112"/>
-        <source>My orders</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketBrowserWidget.cpp" line="348"/>
-        <source>type in wildcard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketBrowserWidget.cpp" line="366"/>
-        <source>Deviation [median]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketBrowserWidget.cpp" line="368"/>
-        <source>Deviation [best price]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketBrowserWidget.cpp" line="370"/>
-        <source>Deviation [custom cost]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketBrowserWidget.cpp" line="372"/>
-        <source>Deviation [fixed]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketBrowserWidget.cpp" line="374"/>
-        <source>Deviation</source>
+        <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="115"/>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="124"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="127"/>
+        <source>My orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="399"/>
+        <source>type in wildcard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="417"/>
+        <source>Deviation [median]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="419"/>
+        <source>Deviation [best price]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="421"/>
+        <source>Deviation [custom cost]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="423"/>
+        <source>Deviation [fixed]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="425"/>
+        <source>Deviation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="130"/>
         <source>Regions [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="231"/>
-        <location filename="../MarketBrowserWidget.cpp" line="268"/>
-        <location filename="../MarketBrowserWidget.cpp" line="317"/>
+        <location filename="../MarketBrowserWidget.cpp" line="251"/>
+        <location filename="../MarketBrowserWidget.cpp" line="288"/>
+        <location filename="../MarketBrowserWidget.cpp" line="361"/>
         <source>(all)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="125"/>
+        <location filename="../MarketBrowserWidget.cpp" line="140"/>
         <source>Solar systems [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="135"/>
+        <location filename="../MarketBrowserWidget.cpp" line="150"/>
         <source>Stations [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="148"/>
+        <location filename="../MarketBrowserWidget.cpp" line="163"/>
         <source>Sell orders</source>
         <translation type="unfinished">Zlecenia sprzedaży</translation>
     </message>

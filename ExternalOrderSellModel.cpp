@@ -259,12 +259,6 @@ namespace Evernus
         endResetModel();
     }
 
-    void ExternalOrderSellModel::setType(EveType::IdType id)
-    {
-        mTypeId = id;
-        reset();
-    }
-
     void ExternalOrderSellModel::setRegionId(uint id)
     {
         mRegionId = id;
@@ -278,6 +272,16 @@ namespace Evernus
     void ExternalOrderSellModel::setStationId(uint id)
     {
         mStationId = id;
+    }
+
+    EveType::IdType ExternalOrderSellModel::getTypeId() const noexcept
+    {
+        return mTypeId;
+    }
+
+    void ExternalOrderSellModel::setTypeId(EveType::IdType id) noexcept
+    {
+        mTypeId = id;
     }
 
     void ExternalOrderSellModel::reset()
