@@ -25,6 +25,7 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QMenu>
+#include <QFont>
 
 #include "ExternalOrderRepository.h"
 #include "MarketOrderRepository.h"
@@ -159,6 +160,13 @@ namespace Evernus
 
         auto orderLayout = new QVBoxLayout{};
         mainViewLayout->addLayout(orderLayout, 1);
+
+        QFont font;
+        font.setBold(true);
+
+        mInfoLabel = new QLabel{tr("select an item"), this};
+        orderLayout->addWidget(mInfoLabel);
+        mInfoLabel->setFont(font);
 
         auto sellGroup = new QGroupBox{tr("Sell orders"), this};
         orderLayout->addWidget(sellGroup);
@@ -534,5 +542,10 @@ namespace Evernus
     {
         mExternalOrderSellModel.setTypeId(typeId);
         mSellView->setTypeId(typeId);
+
+        if (typeId != EveType::invalidId)
+            mInfoLabel->setText(tr("%1 (%2m³)").arg(mDataProvider.getTypeName(typeId)).arg(mDataProvider.getTypeVolume(typeId)));
+        else
+            mInfoLabel->setText(tr("select an item"));
     }
 }

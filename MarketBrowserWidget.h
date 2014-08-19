@@ -27,6 +27,7 @@ class QListWidget;
 class QPushButton;
 class QTabWidget;
 class QListView;
+class QLabel;
 
 namespace Evernus
 {
@@ -116,6 +117,8 @@ namespace Evernus
         QListWidget *mRegionList = nullptr;
         QListWidget *mSolarSystemList = nullptr;
         QListWidget *mStationList = nullptr;
+
+        QLabel *mInfoLabel = nullptr;
 
         ExternalOrderView *mSellView = nullptr;
         ExternalOrderView *mBuyView = nullptr;

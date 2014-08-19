@@ -2036,99 +2036,110 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarketBrowserWidget</name>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="65"/>
+        <location filename="../MarketBrowserWidget.cpp" line="66"/>
         <source>Import prices from Web</source>
         <translation type="unfinished">Importuj ceny z sieci</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="70"/>
+        <location filename="../MarketBrowserWidget.cpp" line="71"/>
         <source>Import prices from logs</source>
         <translation type="unfinished">Importuj ceny z logów</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="75"/>
+        <location filename="../MarketBrowserWidget.cpp" line="76"/>
         <source>Import prices from cache</source>
         <translation type="unfinished">Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="100"/>
+        <location filename="../MarketBrowserWidget.cpp" line="101"/>
         <source>Navigator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="109"/>
+        <location filename="../MarketBrowserWidget.cpp" line="110"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="115"/>
+        <location filename="../MarketBrowserWidget.cpp" line="116"/>
         <source>Forward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="124"/>
+        <location filename="../MarketBrowserWidget.cpp" line="125"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="127"/>
+        <location filename="../MarketBrowserWidget.cpp" line="128"/>
         <source>My orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="399"/>
+        <location filename="../MarketBrowserWidget.cpp" line="167"/>
+        <location filename="../MarketBrowserWidget.cpp" line="549"/>
+        <source>select an item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="407"/>
         <source>type in wildcard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="417"/>
+        <location filename="../MarketBrowserWidget.cpp" line="425"/>
         <source>Deviation [median]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="419"/>
+        <location filename="../MarketBrowserWidget.cpp" line="427"/>
         <source>Deviation [best price]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="421"/>
+        <location filename="../MarketBrowserWidget.cpp" line="429"/>
         <source>Deviation [custom cost]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="423"/>
+        <location filename="../MarketBrowserWidget.cpp" line="431"/>
         <source>Deviation [fixed]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="425"/>
+        <location filename="../MarketBrowserWidget.cpp" line="433"/>
         <source>Deviation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="130"/>
+        <location filename="../MarketBrowserWidget.cpp" line="547"/>
+        <source>%1 (%2m³)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="131"/>
         <source>Regions [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="251"/>
-        <location filename="../MarketBrowserWidget.cpp" line="288"/>
-        <location filename="../MarketBrowserWidget.cpp" line="361"/>
+        <location filename="../MarketBrowserWidget.cpp" line="259"/>
+        <location filename="../MarketBrowserWidget.cpp" line="296"/>
+        <location filename="../MarketBrowserWidget.cpp" line="369"/>
         <source>(all)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="140"/>
+        <location filename="../MarketBrowserWidget.cpp" line="141"/>
         <source>Solar systems [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="150"/>
+        <location filename="../MarketBrowserWidget.cpp" line="151"/>
         <source>Stations [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="163"/>
+        <location filename="../MarketBrowserWidget.cpp" line="171"/>
         <source>Sell orders</source>
         <translation type="unfinished">Zlecenia sprzedaży</translation>
     </message>
