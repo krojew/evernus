@@ -1657,6 +1657,14 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
 </context>
 <context>
+    <name>Evernus::ItemTypeSelectDialog</name>
+    <message>
+        <location filename="../ItemTypeSelectDialog.cpp" line="48"/>
+        <source>Select Item Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::KeyEditDialog</name>
     <message>
         <location filename="../KeyEditDialog.cpp" line="44"/>

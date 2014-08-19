@@ -70,6 +70,7 @@ qt5_wrap_cpp(
     ItemCostModel.h
     ItemCostWidget.h
     ItemNameModel.h
+    ItemTypeSelectDialog.h
     KeyEditDialog.h
     LanguageSelectDialog.h
     MainWindow.h
@@ -296,6 +297,8 @@ add_executable(
     ItemNameModel.h
     ItemRepository.cpp
     ItemRepository.h
+    ItemTypeSelectDialog.cpp
+    ItemTypeSelectDialog.h
     Key.cpp
     Key.h
     KeyEditDialog.cpp
