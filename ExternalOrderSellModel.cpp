@@ -123,6 +123,10 @@ namespace Evernus
         case Qt::BackgroundRole:
             if (mOwnOrders.find(order->getId()) != std::end(mOwnOrders))
                 return QColor{255, 255, 128};
+            break;
+        case Qt::TextAlignmentRole:
+            if (column == volumeColumn)
+                return Qt::AlignRight;
         }
 
         return QVariant{};
@@ -220,18 +224,33 @@ namespace Evernus
         reset();
     }
 
+    void ExternalOrderSellModel::setRegionId(uint id)
+    {
+        mRegionId = id;
+    }
+
+    void ExternalOrderSellModel::setSolarSystemId(uint id)
+    {
+        mSolarSystemId = id;
+    }
+
     void ExternalOrderSellModel::setStationId(uint id)
     {
         mStationId = id;
-        reset();
     }
 
     void ExternalOrderSellModel::reset()
     {
         beginResetModel();
 
-        if (mStationId == 0)
-            mOrders = mOrderRepo.findSellByType(mTypeId);
+        if (mStationId != 0)
+            mOrders = mOrderRepo.fetchSellByTypeAndStation(mTypeId, mStationId);
+        else if (mSolarSystemId != 0)
+            mOrders = mOrderRepo.fetchSellByTypeAndSolarSystem(mTypeId, mSolarSystemId);
+        else if (mRegionId != 0)
+            mOrders = mOrderRepo.fetchSellByTypeAndRegion(mTypeId, mRegionId);
+        else
+            mOrders = mOrderRepo.fetchSellByType(mTypeId);
 
         endResetModel();
     }

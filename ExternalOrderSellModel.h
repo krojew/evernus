@@ -57,6 +57,8 @@ namespace Evernus
 
         void setCharacter(Character::IdType id);
         void setType(EveType::IdType id);
+        void setRegionId(uint id);
+        void setSolarSystemId(uint id);
         void setStationId(uint id);
 
         void reset();
@@ -79,7 +81,7 @@ namespace Evernus
         const MarketOrderProvider &mCorpOrderProvider;
 
         EveType::IdType mTypeId = EveType::invalidId;
-        uint mStationId = 0;
+        uint mRegionId = 0, mSolarSystemId = 0, mStationId = 0;
 
         std::vector<std::shared_ptr<ExternalOrder>> mOrders;
 

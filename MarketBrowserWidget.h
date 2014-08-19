@@ -66,6 +66,7 @@ namespace Evernus
 
         void selectRegion(QListWidgetItem *item);
         void selectSolarSystem(QListWidgetItem *item);
+        void selectStation(QListWidgetItem *item);
 
     private:
         const ExternalOrderRepository &mExternalOrderRepo;
@@ -90,6 +91,7 @@ namespace Evernus
 
         ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
 
+        void fillRegions();
         void fillKnownItemNames();
         void showOrdersForType(EveType::IdType typeId);
 

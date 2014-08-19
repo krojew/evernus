@@ -103,15 +103,6 @@ namespace Evernus
         navigatorGroupLayout->addWidget(mRegionList);
         connect(mRegionList, &QListWidget::currentItemChanged, this, &MarketBrowserWidget::selectRegion);
 
-        const auto regions = mExternalOrderRepo.fetchUniqueRegions();
-        for (const auto &region : regions)
-        {
-            auto item = new QListWidgetItem{mDataProvider.getRegionName(region), mRegionList};
-            item->setData(Qt::UserRole, region);
-        }
-
-        mRegionList->sortItems();
-
         filterLabel = new QLabel{tr("Solar systems [<a href='#'>all</a>]"), this};
         navigatorGroupLayout->addWidget(filterLabel);
         connect(filterLabel, &QLabel::linkActivated, this, [this] {
@@ -120,7 +111,6 @@ namespace Evernus
 
         mSolarSystemList = new QListWidget{this};
         navigatorGroupLayout->addWidget(mSolarSystemList);
-        mSolarSystemList->setCurrentItem(new QListWidgetItem{tr("(all)"), mSolarSystemList});
         connect(mSolarSystemList, &QListWidget::currentItemChanged, this, &MarketBrowserWidget::selectSolarSystem);
 
         filterLabel = new QLabel{tr("Stations [<a href='#'>all</a>]"), this};
@@ -131,11 +121,7 @@ namespace Evernus
 
         mStationList = new QListWidget{this};
         navigatorGroupLayout->addWidget(mStationList);
-        mStationList->setCurrentItem(new QListWidgetItem{tr("(all)"), mStationList});
-
-        auto allRegionsItem = new QListWidgetItem{tr("(all)")};
-        mRegionList->insertItem(0, allRegionsItem);
-        mRegionList->setCurrentItem(allRegionsItem);
+        connect(mStationList, &QListWidget::currentItemChanged, this, &MarketBrowserWidget::selectStation);
 
         auto orderLayout = new QVBoxLayout{};
         mainViewLayout->addLayout(orderLayout, 1);
@@ -149,6 +135,8 @@ namespace Evernus
         mSellView = new ExternalOrderView{this};
         sellLayout->addWidget(mSellView);
         mSellView->setModel(&mExternalOrderSellModel);
+
+        fillRegions();
     }
 
     void MarketBrowserWidget::setCharacter(Character::IdType id)
@@ -158,8 +146,8 @@ namespace Evernus
 
     void MarketBrowserWidget::updateData()
     {
+        fillRegions();
         fillKnownItemNames();
-        mExternalOrderSellModel.reset();
     }
 
     void MarketBrowserWidget::fillOrderItemNames()
@@ -262,6 +250,19 @@ namespace Evernus
         mStationList->setCurrentItem(allItem);
     }
 
+    void MarketBrowserWidget::selectStation(QListWidgetItem *item)
+    {
+        if (item != nullptr)
+        {
+            mExternalOrderSellModel.setRegionId(mRegionList->currentItem()->data(Qt::UserRole).toUInt());
+            mExternalOrderSellModel.setSolarSystemId(mSolarSystemList->currentItem()->data(Qt::UserRole).toUInt());
+            mExternalOrderSellModel.setStationId(item->data(Qt::UserRole).toUInt());
+
+            mExternalOrderSellModel.reset();
+            mSellView->resizeSections(QHeaderView::ResizeToContents);
+        }
+    }
+
     ExternalOrderImporter::TypeLocationPairs MarketBrowserWidget::getImportTarget() const
     {
         ExternalOrderImporter::TypeLocationPairs result;
@@ -271,6 +272,26 @@ namespace Evernus
             result.emplace(std::make_pair(order.first, order.second));
 
         return result;
+    }
+
+    void MarketBrowserWidget::fillRegions()
+    {
+        mRegionList->blockSignals(true);
+        mRegionList->clear();
+        mRegionList->blockSignals(false);
+
+        const auto regions = mExternalOrderRepo.fetchUniqueRegions();
+        for (const auto &region : regions)
+        {
+            auto item = new QListWidgetItem{mDataProvider.getRegionName(region), mRegionList};
+            item->setData(Qt::UserRole, region);
+        }
+
+        mRegionList->sortItems();
+
+        auto allItem = new QListWidgetItem{tr("(all)")};
+        mRegionList->insertItem(0, allItem);
+        mRegionList->setCurrentItem(allItem);
     }
 
     void MarketBrowserWidget::fillKnownItemNames()

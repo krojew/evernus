@@ -47,7 +47,13 @@ namespace Evernus
                                           const Repository<MarketOrder> &orderRepo,
                                           const Repository<MarketOrder> &corpOrderRepo) const;
 
-        EntityList findSellByType(ExternalOrder::TypeIdType typeId) const;
+        EntityList fetchSellByType(ExternalOrder::TypeIdType typeId) const;
+        EntityList fetchSellByTypeAndStation(ExternalOrder::TypeIdType typeId,
+                                             uint stationId) const;
+        EntityList fetchSellByTypeAndSolarSystem(ExternalOrder::TypeIdType typeId,
+                                                 uint solarSystemId) const;
+        EntityList fetchSellByTypeAndRegion(ExternalOrder::TypeIdType typeId,
+                                            uint regionId) const;
 
         std::vector<TypeStationPair> fetchUniqueTypesAndStations() const;
         std::vector<EveType::IdType> fetchUniqueTypes() const;
