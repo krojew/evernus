@@ -20,14 +20,16 @@
 
 #include "MarketOrderVolumeItemDelegate.h"
 #include "ExternalOrderModel.h"
+#include "ItemCostProvider.h"
 #include "StyledTreeView.h"
 
 #include "ExternalOrderView.h"
 
 namespace Evernus
 {
-    ExternalOrderView::ExternalOrderView(QWidget *parent)
+    ExternalOrderView::ExternalOrderView(const ItemCostProvider &costProvider, QWidget *parent)
         : QWidget(parent)
+        , mCostProvider(costProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -82,6 +84,12 @@ namespace Evernus
         infoLayout->addWidget(mMaxPriceLabel);
         mMaxPriceLabel->setFont(font);
 
+        infoLayout->addWidget(new QLabel{tr("Custom cost:"), this});
+
+        mItemCostLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mItemCostLabel);
+        mItemCostLabel->setFont(font);
+
         infoLayout->addStretch();
     }
 
@@ -95,6 +103,18 @@ namespace Evernus
             mView->sortByColumn(mSource->getPriceColumn(), mSource->getPriceSortOrder());
             mView->setItemDelegateForColumn(mSource->getVolumeColumn(), new MarketOrderVolumeItemDelegate{this});
         }
+    }
+
+    void ExternalOrderView::setCharacterId(Character::IdType id)
+    {
+        mCharacterId = id;
+        setCustomCost();
+    }
+
+    void ExternalOrderView::setTypeId(EveType::IdType id)
+    {
+        mTypeId = id;
+        setCustomCost();
     }
 
     void ExternalOrderView::handleModelReset()
@@ -112,5 +132,21 @@ namespace Evernus
         }
 
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
+    }
+
+    void ExternalOrderView::setCustomCost()
+    {
+        if (mCharacterId == Character::invalidId || mTypeId == EveType::invalidId)
+        {
+            mItemCostLabel->setText(tr("N/A"));
+        }
+        else
+        {
+            const auto cost = mCostProvider.fetchForCharacterAndType(mCharacterId, mTypeId);
+            if (cost->isNew())
+                mItemCostLabel->setText(tr("N/A"));
+            else
+                mItemCostLabel->setText(locale().toCurrencyString(cost->getCost(), "ISK"));
+        }
     }
 }

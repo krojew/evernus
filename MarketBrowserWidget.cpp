@@ -151,7 +151,7 @@ namespace Evernus
         auto sellLayout = new QVBoxLayout{};
         sellGroup->setLayout(sellLayout);
 
-        mSellView = new ExternalOrderView{this};
+        mSellView = new ExternalOrderView{costProvider, this};
         sellLayout->addWidget(mSellView);
         mSellView->setModel(&mExternalOrderSellModel);
 
@@ -161,6 +161,7 @@ namespace Evernus
     void MarketBrowserWidget::setCharacter(Character::IdType id)
     {
         mExternalOrderSellModel.setCharacter(id);
+        mSellView->setCharacterId(id);
     }
 
     void MarketBrowserWidget::updateData()
@@ -326,6 +327,7 @@ namespace Evernus
     void MarketBrowserWidget::showOrdersForType(EveType::IdType typeId)
     {
         mExternalOrderSellModel.setType(typeId);
+        mSellView->setTypeId(typeId);
     }
 
     QWidget *MarketBrowserWidget::createItemNameListTab(ItemNameModel &model, QListView *&view)

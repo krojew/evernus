@@ -1160,33 +1160,44 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ExternalOrderView</name>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="49"/>
+        <location filename="../ExternalOrderView.cpp" line="51"/>
         <source>Total cost:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="55"/>
+        <location filename="../ExternalOrderView.cpp" line="57"/>
         <source>Total volume:</source>
         <translation type="unfinished">Całkowity wolumen:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="61"/>
+        <location filename="../ExternalOrderView.cpp" line="63"/>
         <source>Total size:</source>
         <translation type="unfinished">Całkowita objętość:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="67"/>
+        <location filename="../ExternalOrderView.cpp" line="69"/>
         <source>Min. price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="73"/>
+        <location filename="../ExternalOrderView.cpp" line="75"/>
         <source>Median price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="79"/>
+        <location filename="../ExternalOrderView.cpp" line="81"/>
         <source>Max. price:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ExternalOrderView.cpp" line="87"/>
+        <source>Custom cost:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ExternalOrderView.cpp" line="141"/>
+        <location filename="../ExternalOrderView.cpp" line="147"/>
+        <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2050,32 +2061,32 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="346"/>
+        <location filename="../MarketBrowserWidget.cpp" line="348"/>
         <source>type in wildcard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="364"/>
+        <location filename="../MarketBrowserWidget.cpp" line="366"/>
         <source>Deviation [median]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="366"/>
+        <location filename="../MarketBrowserWidget.cpp" line="368"/>
         <source>Deviation [best price]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="368"/>
+        <location filename="../MarketBrowserWidget.cpp" line="370"/>
         <source>Deviation [custom cost]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="370"/>
+        <location filename="../MarketBrowserWidget.cpp" line="372"/>
         <source>Deviation [fixed]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="372"/>
+        <location filename="../MarketBrowserWidget.cpp" line="374"/>
         <source>Deviation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2085,9 +2096,9 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="230"/>
-        <location filename="../MarketBrowserWidget.cpp" line="267"/>
-        <location filename="../MarketBrowserWidget.cpp" line="316"/>
+        <location filename="../MarketBrowserWidget.cpp" line="231"/>
+        <location filename="../MarketBrowserWidget.cpp" line="268"/>
+        <location filename="../MarketBrowserWidget.cpp" line="317"/>
         <source>(all)</source>
         <translation type="unfinished"></translation>
     </message>
