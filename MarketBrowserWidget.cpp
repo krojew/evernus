@@ -31,6 +31,7 @@
 #include "FavoriteItemRepository.h"
 #include "MarketOrderRepository.h"
 #include "DeviationSourceWidget.h"
+#include "ItemTypeSelectDialog.h"
 #include "ExternalOrderView.h"
 #include "MarketOrderView.h"
 #include "EveDataProvider.h"
@@ -54,9 +55,11 @@ namespace Evernus
         , mExternalOrderRepo(externalOrderRepo)
         , mOrderRepo(orderRepo)
         , mCorpOrderRepo(corpOrderRepo)
+        , mFavoriteItemRepo(favoriteItemRepo)
         , mDataProvider(dataProvider)
         , mNameModel(mDataProvider)
         , mOrderNameModel(mDataProvider)
+        , mFavoriteNameModel(mDataProvider)
         , mExternalOrderSellModel(mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider)
     {
         auto mainLayout = new QVBoxLayout{};
@@ -129,6 +132,24 @@ namespace Evernus
 
         mItemTabs->addTab(createItemNameListTab(mOrderNameModel, mOrderItemList), tr("My orders"));
         fillOrderItemNames();
+
+        auto favoriteToolbarLayout = new QHBoxLayout{};
+
+        mItemTabs->addTab(createItemNameListTab(mFavoriteNameModel, mFavoriteItemList, favoriteToolbarLayout), tr("Favorite"));
+        fillFavoriteItemNames();
+
+        auto addFavoriteBtn = new QPushButton{QIcon{":/images/add.png"}, tr("Add..."), this};
+        favoriteToolbarLayout->addWidget(addFavoriteBtn);
+        addFavoriteBtn->setFlat(true);
+        connect(addFavoriteBtn, &QPushButton::clicked, this, &MarketBrowserWidget::addFavoriteItem);
+
+        mRemoveFavoriteItemBtn = new QPushButton{QIcon{":/images/delete.png"}, tr("Remove"), this};
+        favoriteToolbarLayout->addWidget(mRemoveFavoriteItemBtn);
+        mRemoveFavoriteItemBtn->setFlat(true);
+        mRemoveFavoriteItemBtn->setDisabled(true);
+        connect(mRemoveFavoriteItemBtn, &QPushButton::clicked, this, &MarketBrowserWidget::removeFavoriteItem);
+
+        favoriteToolbarLayout->addStretch();
 
         auto filterLabel = new QLabel{tr("Regions [<a href='#'>all</a>]"), this};
         navigatorGroupLayout->addWidget(filterLabel);
@@ -340,6 +361,23 @@ namespace Evernus
         updateNavigationButtons();
     }
 
+    void MarketBrowserWidget::addFavoriteItem()
+    {
+        ItemTypeSelectDialog dlg{mDataProvider, this};
+        if (dlg.exec() == QDialog::Accepted)
+        {
+            FavoriteItem item{dlg.getSelectedType()};
+            mFavoriteItemRepo.store(item);
+
+            fillFavoriteItemNames();
+        }
+    }
+
+    void MarketBrowserWidget::removeFavoriteItem()
+    {
+
+    }
+
     ExternalOrderImporter::TypeLocationPairs MarketBrowserWidget::getImportTarget() const
     {
         ExternalOrderImporter::TypeLocationPairs result;
@@ -393,6 +431,19 @@ namespace Evernus
         mNameModel.setTypes(mExternalOrderRepo.fetchUniqueTypes());
     }
 
+    void MarketBrowserWidget::fillFavoriteItemNames()
+    {
+        ItemNameModel::TypeList types;
+
+        const auto items = mFavoriteItemRepo.fetchAll();
+        types.reserve(items.size());
+
+        for (const auto &item : items)
+            types.emplace_back(item->getId());
+
+        mFavoriteNameModel.setTypes(std::move(types));
+    }
+
     void MarketBrowserWidget::showOrdersForType(EveType::IdType typeId)
     {
         setTypeId(typeId);
@@ -404,12 +455,15 @@ namespace Evernus
         }
     }
 
-    QWidget *MarketBrowserWidget::createItemNameListTab(ItemNameModel &model, QListView *&view)
+    QWidget *MarketBrowserWidget::createItemNameListTab(ItemNameModel &model, QListView *&view, QLayout *toolbarLayout)
     {
         auto knownItemsTab = new QWidget{this};
 
         auto knownItemsLayout = new QVBoxLayout{};
         knownItemsTab->setLayout(knownItemsLayout);
+
+        if (toolbarLayout != nullptr)
+            knownItemsLayout->addLayout(toolbarLayout);
 
         auto knownItemsProxy = new QSortFilterProxyModel{this};
         knownItemsProxy->setSourceModel(&model);

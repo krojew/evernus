@@ -82,6 +82,9 @@ namespace Evernus
         void stepBack();
         void stepForward();
 
+        void addFavoriteItem();
+        void removeFavoriteItem();
+
     private:
         struct NavigationState
         {
@@ -94,15 +97,18 @@ namespace Evernus
         typedef std::list<NavigationState> NavigationStack;
 
         static const auto knownItemsTab = 0;
-        static const auto orderItemsTab = 0;
+        static const auto orderItemsTab = 1;
+        static const auto favoriteItemsTab = 2;
 
         const ExternalOrderRepository &mExternalOrderRepo;
         const MarketOrderRepository &mOrderRepo;
         const MarketOrderRepository &mCorpOrderRepo;
+        const FavoriteItemRepository &mFavoriteItemRepo;
         const EveDataProvider &mDataProvider;
 
         ItemNameModel mNameModel;
         ItemNameModel mOrderNameModel;
+        ItemNameModel mFavoriteNameModel;
 
         ExternalOrderSellModel mExternalOrderSellModel;
 
@@ -115,6 +121,9 @@ namespace Evernus
 
         QListView *mKnownItemList = nullptr;
         QListView *mOrderItemList = nullptr;
+        QListView *mFavoriteItemList = nullptr;
+
+        QPushButton *mRemoveFavoriteItemBtn = nullptr;
 
         QListWidget *mRegionList = nullptr;
         QListWidget *mSolarSystemList = nullptr;
@@ -133,9 +142,10 @@ namespace Evernus
 
         void fillRegions();
         void fillKnownItemNames();
+        void fillFavoriteItemNames();
         void showOrdersForType(EveType::IdType typeId);
 
-        QWidget *createItemNameListTab(ItemNameModel &model, QListView *&view);
+        QWidget *createItemNameListTab(ItemNameModel &model, QListView *&view, QLayout *toolbarLayout = nullptr);
 
         QString getDeviationButtonText(ExternalOrderModel::DeviationSourceType type) const;
 
