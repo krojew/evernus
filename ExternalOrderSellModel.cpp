@@ -12,12 +12,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
+#include <limits>
+
 #include <QLocale>
 #include <QColor>
 
 #include "ExternalOrderRepository.h"
 #include "CharacterRepository.h"
 #include "MarketOrderProvider.h"
+#include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "TextUtils.h"
 
@@ -30,6 +34,7 @@ namespace Evernus
                                                    const CharacterRepository &characterRepo,
                                                    const MarketOrderProvider &orderProvider,
                                                    const MarketOrderProvider &corpOrderProvider,
+                                                   const ItemCostProvider &costProvider,
                                                    QObject *parent)
         : ExternalOrderModel{parent}
         , mDataProvider{dataProvider}
@@ -37,6 +42,7 @@ namespace Evernus
         , mCharacterRepo{characterRepo}
         , mOrderProvider{orderProvider}
         , mCorpOrderProvider{corpOrderProvider}
+        , mCostProvider{costProvider}
     {
     }
 
@@ -62,7 +68,7 @@ namespace Evernus
                 case stationColumn:
                     return mDataProvider.getLocationName(order->getStationId());
                 case deviationColumn:
-                    return 0; // TODO: do
+                    return QString{"%1%2"}.arg(static_cast<int>(computeDeviation(*order) * 100.)).arg(locale.percent());
                 case priceColumn:
                     return locale.toCurrencyString(order->getPrice(), "ISK");
                 case volumeColumn:
@@ -92,7 +98,7 @@ namespace Evernus
             case stationColumn:
                 return mDataProvider.getLocationName(order->getStationId());
             case deviationColumn:
-                return 0; // TODO: do
+                return computeDeviation(*order);
             case priceColumn:
                 return order->getPrice();
             case volumeColumn:
@@ -194,19 +200,50 @@ namespace Evernus
         return volumeColumn;
     }
 
+    uint ExternalOrderSellModel::getTotalVolume() const
+    {
+        return mTotalVolume;
+    }
+
+    double ExternalOrderSellModel::getTotalSize() const
+    {
+        return mTotalSize;
+    }
+
+    double ExternalOrderSellModel::getTotalPrice() const
+    {
+        return mTotalPrice;
+    }
+
+    double ExternalOrderSellModel::getMedianPrice() const
+    {
+        return mMedianPrice;
+    }
+
+    double ExternalOrderSellModel::getMaxPrice() const
+    {
+        return mMaxPrice;
+    }
+
+    double ExternalOrderSellModel::getMinPrice() const
+    {
+        return mMinPrice;
+    }
+
     void ExternalOrderSellModel::setCharacter(Character::IdType id)
     {
         beginResetModel();
 
+        mCharacterId = id;
         mOwnOrders.clear();
 
-        const auto orders = mOrderProvider.getSellOrders(id);
+        const auto orders = mOrderProvider.getSellOrders(mCharacterId);
         for (const auto &order : orders)
             mOwnOrders.emplace(order->getId());
 
         try
         {
-            const auto character = mCharacterRepo.find(id);
+            const auto character = mCharacterRepo.find(mCharacterId);
             const auto corpOrders = mCorpOrderProvider.getSellOrdersForCorporation(character->getCorporationId());
             for (const auto &order : corpOrders)
                 mOwnOrders.emplace(order->getId());
@@ -243,6 +280,10 @@ namespace Evernus
     {
         beginResetModel();
 
+        mMinPrice = std::numeric_limits<double>::max();
+        mMedianPrice = mTotalPrice = mMaxPrice = mTotalSize = 0.;
+        mTotalVolume = 0;
+
         if (mStationId != 0)
             mOrders = mOrderRepo.fetchSellByTypeAndStation(mTypeId, mStationId);
         else if (mSolarSystemId != 0)
@@ -252,6 +293,64 @@ namespace Evernus
         else
             mOrders = mOrderRepo.fetchSellByType(mTypeId);
 
+        std::vector<double> prices;
+        prices.reserve(mOrders.size());
+
+        for (const auto &order : mOrders)
+        {
+            const auto price = order->getPrice();
+            if (price < mMinPrice)
+                mMinPrice = price;
+            if (price > mMaxPrice)
+                mMaxPrice = price;
+
+            prices.emplace_back(price);
+
+            const auto volume = order->getVolumeRemaining();
+
+            mTotalPrice += price;
+            mTotalSize += mDataProvider.getTypeVolume(order->getTypeId()) * volume;
+            mTotalVolume += volume;
+        }
+
+        if (!prices.empty())
+        {
+            std::nth_element(std::begin(prices), std::next(std::begin(prices), prices.size() / 2), std::end(prices));
+            mMedianPrice = prices[prices.size() / 2];
+        }
+
+        if (mMinPrice == std::numeric_limits<double>::max())
+            mMinPrice = 0.;
+
         endResetModel();
+    }
+
+    void ExternalOrderSellModel::changeDeviationSource(DeviationSourceType type, double value)
+    {
+        beginResetModel();
+
+        mDeviationType = type;
+        mDeviationValue = value;
+
+        endResetModel();
+    }
+
+    double ExternalOrderSellModel::computeDeviation(const ExternalOrder &order) const
+    {
+        switch (mDeviationType) {
+        case DeviationSourceType::Median:
+            return (mMedianPrice == 0.) ? (0.) : ((order.getPrice() - mMedianPrice) / mMedianPrice);
+        case DeviationSourceType::Best:
+            return (mMinPrice == 0.) ? (0.) : ((order.getPrice() - mMinPrice) / mMinPrice);
+        case DeviationSourceType::Cost:
+            {
+                const auto cost = mCostProvider.fetchForCharacterAndType(mCharacterId, order.getTypeId())->getCost();
+                return (cost == 0.) ? (0.) : ((order.getPrice() - cost) / cost);
+            }
+        case DeviationSourceType::Fixed:
+            return (mDeviationValue == 0.) ? (0.) : ((order.getPrice() - mDeviationValue) / mDeviationValue);
+        default:
+            return 0.;
+        }
     }
 }

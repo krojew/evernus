@@ -15,8 +15,9 @@
 #pragma once
 
 #include <QSortFilterProxyModel>
-#include <QHeaderView>
 #include <QWidget>
+
+class QLabel;
 
 namespace Evernus
 {
@@ -34,11 +35,19 @@ namespace Evernus
 
         void setModel(ExternalOrderModel *model);
 
-        void resizeSections(QHeaderView::ResizeMode mode);
+    private slots:
+        void handleModelReset();
 
     private:
         StyledTreeView *mView = nullptr;
+        QLabel *mTotalPriceLabel = nullptr;
+        QLabel *mTotalVolumeLabel = nullptr;
+        QLabel *mTotalSizeLabel = nullptr;
+        QLabel *mMinPriceLabel = nullptr;
+        QLabel *mMedianPriceLabel = nullptr;
+        QLabel *mMaxPriceLabel = nullptr;
 
         QSortFilterProxyModel mProxy;
+        ExternalOrderModel *mSource = nullptr;
     };
 }

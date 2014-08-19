@@ -28,6 +28,7 @@ namespace Evernus
     class ExternalOrderRepository;
     class CharacterRepository;
     class MarketOrderProvider;
+    class ItemCostProvider;
     class EveDataProvider;
 
     class ExternalOrderSellModel
@@ -41,6 +42,7 @@ namespace Evernus
                                const CharacterRepository &characterRepo,
                                const MarketOrderProvider &orderProvider,
                                const MarketOrderProvider &corpOrderProvider,
+                               const ItemCostProvider &costProvider,
                                QObject *parent = nullptr);
         virtual ~ExternalOrderSellModel() = default;
 
@@ -55,6 +57,13 @@ namespace Evernus
         virtual Qt::SortOrder getPriceSortOrder() const override;
         virtual int getVolumeColumn() const override;
 
+        virtual uint getTotalVolume() const override;
+        virtual double getTotalSize() const override;
+        virtual double getTotalPrice() const override;
+        virtual double getMedianPrice() const override;
+        virtual double getMaxPrice() const override;
+        virtual double getMinPrice() const override;
+
         void setCharacter(Character::IdType id);
         void setType(EveType::IdType id);
         void setRegionId(uint id);
@@ -62,6 +71,8 @@ namespace Evernus
         void setStationId(uint id);
 
         void reset();
+
+        void changeDeviationSource(DeviationSourceType type, double value);
 
     private:
         static const auto stationColumn = 0;
@@ -79,12 +90,24 @@ namespace Evernus
         const CharacterRepository &mCharacterRepo;
         const MarketOrderProvider &mOrderProvider;
         const MarketOrderProvider &mCorpOrderProvider;
+        const ItemCostProvider &mCostProvider;
+
+        Character::IdType mCharacterId = Character::invalidId;
 
         EveType::IdType mTypeId = EveType::invalidId;
         uint mRegionId = 0, mSolarSystemId = 0, mStationId = 0;
 
+        DeviationSourceType mDeviationType = DeviationSourceType::Median;
+        double mDeviationValue = 1.;
+
+        double mTotalPrice = 0., mMedianPrice = 0., mMinPrice = 0., mMaxPrice = 0.;
+        double mTotalSize = 0.;
+        uint mTotalVolume = 0;
+
         std::vector<std::shared_ptr<ExternalOrder>> mOrders;
 
         std::unordered_set<MarketOrder::IdType> mOwnOrders;
+
+        double computeDeviation(const ExternalOrder &order) const;
     };
 }

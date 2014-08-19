@@ -1,0 +1,89 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include <QDoubleSpinBox>
+#include <QRadioButton>
+#include <QVBoxLayout>
+#include <QLabel>
+
+#include "DeviationSourceWidget.h"
+
+namespace Evernus
+{
+    const char * const DeviationSourceWidget::typePropertyName = "type";
+
+    DeviationSourceWidget::DeviationSourceWidget(QWidget *parent)
+        : QWidget(parent)
+    {
+        auto mainLayout = new QVBoxLayout{};
+        setLayout(mainLayout);
+
+        mainLayout->addWidget(new QLabel{tr("Calculate deviation from:"), this});
+
+        auto radio = createTypeButton(tr("Median price"), ExternalOrderModel::DeviationSourceType::Median);
+        mainLayout->addWidget(radio);
+        radio->blockSignals(true);
+        radio->setChecked(true);
+        radio->blockSignals(false);
+
+        mainLayout->addWidget(createTypeButton(tr("Best buy/sell price"), ExternalOrderModel::DeviationSourceType::Best));
+        mainLayout->addWidget(createTypeButton(tr("Custom cost"), ExternalOrderModel::DeviationSourceType::Cost));
+
+        radio = createTypeButton(tr("Fixed price"), ExternalOrderModel::DeviationSourceType::Fixed);
+        mainLayout->addWidget(radio);
+
+        mPriceEdit = new QDoubleSpinBox{this};
+        mainLayout->addWidget(mPriceEdit);
+        mPriceEdit->setSuffix("ISK");
+        mPriceEdit->setMinimum(1.);
+        mPriceEdit->setMaximum(1000000000000.);
+        mPriceEdit->setEnabled(false);
+        connect(mPriceEdit, SIGNAL(valueChanged(double)), this, SLOT(valueChanged(double)));
+
+        connect(radio, &QRadioButton::toggled, mPriceEdit, &QDoubleSpinBox::setEnabled);
+    }
+
+    ExternalOrderModel::DeviationSourceType DeviationSourceWidget::getCurrentType() const noexcept
+    {
+        return mCurrentType;
+    }
+
+    double DeviationSourceWidget::getCurrentValue() const
+    {
+        return mPriceEdit->value();
+    }
+
+    void DeviationSourceWidget::typeChanged(bool checked)
+    {
+        if (checked)
+        {
+            mCurrentType = static_cast<ExternalOrderModel::DeviationSourceType>(sender()->property(typePropertyName).toInt());
+            emit sourceChanged(mCurrentType, mPriceEdit->value());
+        }
+    }
+
+    void DeviationSourceWidget::valueChanged(double value)
+    {
+        emit sourceChanged(mCurrentType, value);
+    }
+
+    QRadioButton *DeviationSourceWidget::createTypeButton(const QString &text, ExternalOrderModel::DeviationSourceType type)
+    {
+        auto radioBtn = new QRadioButton{text, this};
+        radioBtn->setProperty(typePropertyName, static_cast<int>(type));
+        connect(radioBtn, &QRadioButton::toggled, this, &DeviationSourceWidget::typeChanged);
+
+        return radioBtn;
+    }
+}

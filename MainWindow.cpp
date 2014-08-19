@@ -585,6 +585,7 @@ namespace Evernus
                                                         mOrderProvider,
                                                         mCorpOrderProvider,
                                                         mEveDataProvider,
+                                                        mItemCostProvider,
                                                         this};
         addTab(marketBrowserTab, tr("Market browser"));
         connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);

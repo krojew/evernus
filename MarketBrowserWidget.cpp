@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QSortFilterProxyModel>
+#include <QWidgetAction>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
@@ -23,9 +24,11 @@
 #include <QGroupBox>
 #include <QLineEdit>
 #include <QLabel>
+#include <QMenu>
 
 #include "ExternalOrderRepository.h"
 #include "MarketOrderRepository.h"
+#include "DeviationSourceWidget.h"
 #include "ExternalOrderView.h"
 #include "MarketOrderView.h"
 #include "EveDataProvider.h"
@@ -42,6 +45,7 @@ namespace Evernus
                                              const MarketOrderProvider &orderProvider,
                                              const MarketOrderProvider &corpOrderProvider,
                                              const EveDataProvider &dataProvider,
+                                             const ItemCostProvider &costProvider,
                                              QWidget *parent)
         : QWidget(parent)
         , mExternalOrderRepo(externalOrderRepo)
@@ -50,7 +54,7 @@ namespace Evernus
         , mDataProvider(dataProvider)
         , mNameModel(mDataProvider)
         , mOrderNameModel(mDataProvider)
-        , mExternalOrderSellModel(mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider)
+        , mExternalOrderSellModel(mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -72,6 +76,21 @@ namespace Evernus
         toolbarLayout->addWidget(importBtn);
         importBtn->setFlat(true);
         connect(importBtn, &QPushButton::clicked, this, &MarketBrowserWidget::prepareItemImportFromCache);
+
+        auto deviationWidget = new DeviationSourceWidget{this};
+        mExternalOrderSellModel.changeDeviationSource(deviationWidget->getCurrentType(), deviationWidget->getCurrentValue());
+        connect(deviationWidget, &DeviationSourceWidget::sourceChanged, this, &MarketBrowserWidget::changeDeviationSource);
+
+        auto deviationAction = new QWidgetAction{this};
+        deviationAction->setDefaultWidget(deviationWidget);
+
+        auto deviationMenu = new QMenu{this};
+        deviationMenu->addAction(deviationAction);
+
+        mDeviationBtn = new QPushButton{QIcon{":/images/tag.png"}, getDeviationButtonText(deviationWidget->getCurrentType()), this};
+        toolbarLayout->addWidget(mDeviationBtn);
+        mDeviationBtn->setFlat(true);
+        mDeviationBtn->setMenu(deviationMenu);
 
         toolbarLayout->addStretch();
 
@@ -259,8 +278,13 @@ namespace Evernus
             mExternalOrderSellModel.setStationId(item->data(Qt::UserRole).toUInt());
 
             mExternalOrderSellModel.reset();
-            mSellView->resizeSections(QHeaderView::ResizeToContents);
         }
+    }
+
+    void MarketBrowserWidget::changeDeviationSource(ExternalOrderModel::DeviationSourceType type, double value)
+    {
+        mDeviationBtn->setText(getDeviationButtonText(type));
+        mExternalOrderSellModel.changeDeviationSource(type, value);
     }
 
     ExternalOrderImporter::TypeLocationPairs MarketBrowserWidget::getImportTarget() const
@@ -302,7 +326,6 @@ namespace Evernus
     void MarketBrowserWidget::showOrdersForType(EveType::IdType typeId)
     {
         mExternalOrderSellModel.setType(typeId);
-        mSellView->resizeSections(QHeaderView::ResizeToContents);
     }
 
     QWidget *MarketBrowserWidget::createItemNameListTab(ItemNameModel &model, QListView *&view)
@@ -332,5 +355,21 @@ namespace Evernus
         });
 
         return knownItemsTab;
+    }
+
+    QString MarketBrowserWidget::getDeviationButtonText(ExternalOrderModel::DeviationSourceType type) const
+    {
+        switch (type) {
+        case ExternalOrderModel::DeviationSourceType::Median:
+            return tr("Deviation [median]");
+        case ExternalOrderModel::DeviationSourceType::Best:
+            return tr("Deviation [best price]");
+        case ExternalOrderModel::DeviationSourceType::Cost:
+            return tr("Deviation [custom cost]");
+        case ExternalOrderModel::DeviationSourceType::Fixed:
+            return tr("Deviation [fixed]");
+        default:
+            return tr("Deviation");
+        }
     }
 }

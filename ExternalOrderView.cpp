@@ -13,6 +13,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QHeaderView>
+#include <QLabel>
+#include <QFont>
 
 #include "MarketOrderVolumeItemDelegate.h"
 #include "ExternalOrderModel.h"
@@ -23,32 +27,90 @@
 namespace Evernus
 {
     ExternalOrderView::ExternalOrderView(QWidget *parent)
-        : QWidget{parent}
+        : QWidget(parent)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
         mProxy.setSortRole(Qt::UserRole);
+        connect(&mProxy, &QSortFilterProxyModel::modelReset, this, &ExternalOrderView::handleModelReset, Qt::QueuedConnection);
 
         mView = new StyledTreeView{this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
         mView->setRootIsDecorated(false);
+
+        auto infoLayout = new QHBoxLayout{};
+        mainLayout->addLayout(infoLayout);
+
+        QFont font;
+        font.setBold(true);
+
+        infoLayout->addWidget(new QLabel{tr("Total cost:"), this});
+
+        mTotalPriceLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mTotalPriceLabel);
+        mTotalPriceLabel->setFont(font);
+
+        infoLayout->addWidget(new QLabel{tr("Total volume:"), this});
+
+        mTotalVolumeLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mTotalVolumeLabel);
+        mTotalVolumeLabel->setFont(font);
+
+        infoLayout->addWidget(new QLabel{tr("Total size:"), this});
+
+        mTotalSizeLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mTotalSizeLabel);
+        mTotalSizeLabel->setFont(font);
+
+        infoLayout->addWidget(new QLabel{tr("Min. price:"), this});
+
+        mMinPriceLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mMinPriceLabel);
+        mMinPriceLabel->setFont(font);
+
+        infoLayout->addWidget(new QLabel{tr("Median price:"), this});
+
+        mMedianPriceLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mMedianPriceLabel);
+        mMedianPriceLabel->setFont(font);
+
+        infoLayout->addWidget(new QLabel{tr("Max. price:"), this});
+
+        mMaxPriceLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mMaxPriceLabel);
+        mMaxPriceLabel->setFont(font);
+
+        infoLayout->addStretch();
     }
 
     void ExternalOrderView::setModel(ExternalOrderModel *model)
     {
-        mProxy.setSourceModel(model);
+        mSource = model;
+        mProxy.setSourceModel(mSource);
 
-        if (model != nullptr)
+        if (mSource != nullptr)
         {
-            mView->sortByColumn(model->getPriceColumn(), model->getPriceSortOrder());
-            mView->setItemDelegateForColumn(model->getVolumeColumn(), new MarketOrderVolumeItemDelegate{this});
+            mView->sortByColumn(mSource->getPriceColumn(), mSource->getPriceSortOrder());
+            mView->setItemDelegateForColumn(mSource->getVolumeColumn(), new MarketOrderVolumeItemDelegate{this});
         }
     }
 
-    void ExternalOrderView::resizeSections(QHeaderView::ResizeMode mode)
+    void ExternalOrderView::handleModelReset()
     {
-        mView->header()->resizeSections(mode);
+        const auto curLocale = locale();
+
+        if (mSource != nullptr)
+        {
+            mTotalPriceLabel->setText(curLocale.toCurrencyString(mSource->getTotalPrice(), "ISK"));
+            mTotalVolumeLabel->setText(curLocale.toString(mSource->getTotalVolume()));
+            mTotalSizeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(mSource->getTotalSize(), 'f', 2)));
+            mMinPriceLabel->setText(curLocale.toCurrencyString(mSource->getMinPrice(), "ISK"));
+            mMedianPriceLabel->setText(curLocale.toCurrencyString(mSource->getMedianPrice(), "ISK"));
+            mMaxPriceLabel->setText(curLocale.toCurrencyString(mSource->getMaxPrice(), "ISK"));
+        }
+
+        mView->header()->resizeSections(QHeaderView::ResizeToContents);
     }
 }

@@ -52,6 +52,7 @@ qt5_wrap_cpp(
     CorpKeyEditDialog.h
     DateFilteredPlotWidget.h
     DateRangeWidget.h
+    DeviationSourceWidget.h
     EveMarketDataExternalOrderImporter.h
     EvernusApplication.h
     ExternalOrderImporter.h
@@ -214,6 +215,8 @@ add_executable(
     DateFilteredPlotWidget.h
     DateRangeWidget.cpp
     DateRangeWidget.h
+    DeviationSourceWidget.cpp
+    DeviationSourceWidget.h
     Entity.h
     EveCacheBuffer.cpp
     EveCacheBuffer.h

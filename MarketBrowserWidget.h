@@ -22,6 +22,7 @@
 
 class QListWidgetItem;
 class QListWidget;
+class QPushButton;
 class QListView;
 
 namespace Evernus
@@ -29,6 +30,7 @@ namespace Evernus
     class ExternalOrderRepository;
     class MarketOrderRepository;
     class ExternalOrderView;
+    class ItemCostProvider;
     class EveDataProvider;
 
     class MarketBrowserWidget
@@ -44,6 +46,7 @@ namespace Evernus
                             const MarketOrderProvider &orderProvider,
                             const MarketOrderProvider &corpOrderProvider,
                             const EveDataProvider &dataProvider,
+                            const ItemCostProvider &costProvider,
                             QWidget *parent = nullptr);
         virtual ~MarketBrowserWidget() = default;
 
@@ -68,6 +71,8 @@ namespace Evernus
         void selectSolarSystem(QListWidgetItem *item);
         void selectStation(QListWidgetItem *item);
 
+        void changeDeviationSource(ExternalOrderModel::DeviationSourceType type, double value);
+
     private:
         const ExternalOrderRepository &mExternalOrderRepo;
         const MarketOrderRepository &mOrderRepo;
@@ -78,6 +83,8 @@ namespace Evernus
         ItemNameModel mOrderNameModel;
 
         ExternalOrderSellModel mExternalOrderSellModel;
+
+        QPushButton *mDeviationBtn = nullptr;
 
         QListView *mKnownItemList = nullptr;
         QListView *mOrderItemList = nullptr;
@@ -96,5 +103,7 @@ namespace Evernus
         void showOrdersForType(EveType::IdType typeId);
 
         QWidget *createItemNameListTab(ItemNameModel &model, QListView *&view);
+
+        QString getDeviationButtonText(ExternalOrderModel::DeviationSourceType type) const;
     };
 }

@@ -22,11 +22,26 @@ namespace Evernus
         : public QAbstractItemModel
     {
     public:
+        enum class DeviationSourceType
+        {
+            Median,
+            Best,
+            Cost,
+            Fixed
+        };
+
         using QAbstractItemModel::QAbstractItemModel;
         virtual ~ExternalOrderModel() = default;
 
         virtual int getPriceColumn() const = 0;
         virtual Qt::SortOrder getPriceSortOrder() const = 0;
         virtual int getVolumeColumn() const = 0;
+
+        virtual uint getTotalVolume() const = 0;
+        virtual double getTotalSize() const = 0;
+        virtual double getTotalPrice() const = 0;
+        virtual double getMedianPrice() const = 0;
+        virtual double getMaxPrice() const = 0;
+        virtual double getMinPrice() const = 0;
     };
 }
