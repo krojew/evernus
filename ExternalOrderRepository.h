@@ -55,7 +55,6 @@ namespace Evernus
         EntityList fetchSellByTypeAndRegion(ExternalOrder::TypeIdType typeId,
                                             uint regionId) const;
 
-        std::vector<TypeStationPair> fetchUniqueTypesAndStations() const;
         std::vector<EveType::IdType> fetchUniqueTypes() const;
         std::vector<uint> fetchUniqueRegions() const;
         std::vector<uint> fetchUniqueSolarSystems(uint regionId = 0) const;

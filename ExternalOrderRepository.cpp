@@ -224,22 +224,6 @@ namespace Evernus
         return result;
     }
 
-    std::vector<ExternalOrderRepository::TypeStationPair> ExternalOrderRepository::fetchUniqueTypesAndStations() const
-    {
-        std::vector<TypeStationPair> result;
-
-        auto query = exec(QString{"SELECT DISTINCT type_id, location_id FROM %1"}.arg(getTableName()));
-
-        const auto size = query.size();
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-            result.emplace_back(std::make_pair(query.value(0).value<EveType::IdType>(), query.value(1).toUInt()));
-
-        return result;
-    }
-
     std::vector<EveType::IdType> ExternalOrderRepository::fetchUniqueTypes() const
     {
         return fetchUniqueColumn<EveType::IdType>("type_id");

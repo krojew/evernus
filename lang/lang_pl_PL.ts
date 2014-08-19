@@ -2077,42 +2077,42 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="169"/>
-        <location filename="../MarketBrowserWidget.cpp" line="551"/>
+        <location filename="../MarketBrowserWidget.cpp" line="564"/>
         <source>select an item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="409"/>
+        <location filename="../MarketBrowserWidget.cpp" line="422"/>
         <source>type in wildcard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="427"/>
+        <location filename="../MarketBrowserWidget.cpp" line="440"/>
         <source>Deviation [median]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="429"/>
+        <location filename="../MarketBrowserWidget.cpp" line="442"/>
         <source>Deviation [best price]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="431"/>
+        <location filename="../MarketBrowserWidget.cpp" line="444"/>
         <source>Deviation [custom cost]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="433"/>
+        <location filename="../MarketBrowserWidget.cpp" line="446"/>
         <source>Deviation [fixed]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="435"/>
+        <location filename="../MarketBrowserWidget.cpp" line="448"/>
         <source>Deviation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="549"/>
+        <location filename="../MarketBrowserWidget.cpp" line="562"/>
         <source>%1 (%2m³)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2124,7 +2124,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="261"/>
         <location filename="../MarketBrowserWidget.cpp" line="298"/>
-        <location filename="../MarketBrowserWidget.cpp" line="371"/>
+        <location filename="../MarketBrowserWidget.cpp" line="384"/>
         <source>(all)</source>
         <translation type="unfinished"></translation>
     </message>

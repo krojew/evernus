@@ -344,9 +344,22 @@ namespace Evernus
     {
         ExternalOrderImporter::TypeLocationPairs result;
 
-        const auto orders = mExternalOrderRepo.fetchUniqueTypesAndStations();
-        for (const auto &order : orders)
-            result.emplace(std::make_pair(order.first, order.second));
+        QSqlQuery query{QString{R"(SELECT DISTINCT ids.type_id, ids.location_id FROM (
+            SELECT type_id, location_id FROM %1 WHERE state = ?
+            UNION
+            SELECT type_id, location_id FROM %2 WHERE state = ?
+            UNION
+            SELECT type_id, location_id FROM %3
+        ) ids)"}.arg(mOrderRepo.getTableName()).arg(mCorpOrderRepo.getTableName()).arg(mExternalOrderRepo.getTableName()),
+            mOrderRepo.getDatabase()};
+
+        query.addBindValue(static_cast<int>(MarketOrder::State::Active));
+        query.addBindValue(static_cast<int>(MarketOrder::State::Active));
+
+        DatabaseUtils::execQuery(query);
+
+        while (query.next())
+            result.emplace(std::make_pair(query.value(0).value<EveType::IdType>(), query.value(1).toUInt()));
 
         return result;
     }
