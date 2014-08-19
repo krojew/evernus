@@ -349,9 +349,9 @@ namespace Evernus
         view = new QListView{this};
         knownItemsLayout->addWidget(view);
         view->setModel(knownItemsProxy);
-        connect(view->selectionModel(), &QItemSelectionModel::currentChanged, this, [&model, this](const auto &index) {
+        connect(view->selectionModel(), &QItemSelectionModel::currentChanged, this, [knownItemsProxy, &model, this](const auto &index) {
             if (index.isValid())
-                showOrdersForType(model.data(index, Qt::UserRole).template value<Evernus::EveType::IdType>());
+                showOrdersForType(model.data(knownItemsProxy->mapToSource(index), Qt::UserRole).template value<Evernus::EveType::IdType>());
         });
 
         return knownItemsTab;
