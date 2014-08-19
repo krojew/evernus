@@ -252,6 +252,9 @@ add_executable(
     ExternalOrderSellModel.h
     ExternalOrderView.cpp
     ExternalOrderView.h
+    FavoriteItem.h
+    FavoriteItemRepository.cpp
+    FavoriteItemRepository.h
     FileDownload.cpp
     FileDownload.h
     FilterText.cpp

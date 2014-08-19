@@ -75,6 +75,7 @@ namespace Evernus
                            const ItemCostRepository &itemCostRepo,
                            const FilterTextRepository &filterRepo,
                            const OrderScriptRepository &orderScriptRepo,
+                           const FavoriteItemRepository &favoriteItemRepo,
                            const ExternalOrderRepository &externalOrderRepo,
                            const MarketOrderProvider &orderProvider,
                            const MarketOrderProvider &corpOrderProvider,
@@ -100,6 +101,7 @@ namespace Evernus
         , mItemCostRepository{itemCostRepo}
         , mFilterRepository{filterRepo}
         , mOrderScriptRepository{orderScriptRepo}
+        , mFavoriteItemRepository{favoriteItemRepo}
         , mExternalOrderRepo{externalOrderRepo}
         , mOrderProvider{orderProvider}
         , mCorpOrderProvider{corpOrderProvider}
@@ -582,6 +584,7 @@ namespace Evernus
                                                         mMarketOrderRepository,
                                                         mCorpMarketOrderRepository,
                                                         mCharacterRepository,
+                                                        mFavoriteItemRepository,
                                                         mOrderProvider,
                                                         mCorpOrderProvider,
                                                         mEveDataProvider,

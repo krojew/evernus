@@ -32,6 +32,7 @@ class QLabel;
 namespace Evernus
 {
     class ExternalOrderRepository;
+    class FavoriteItemRepository;
     class MarketOrderRepository;
     class ExternalOrderView;
     class ItemCostProvider;
@@ -47,6 +48,7 @@ namespace Evernus
                             const MarketOrderRepository &orderRepo,
                             const MarketOrderRepository &corpOrderRepo,
                             const CharacterRepository &characterRepo,
+                            const FavoriteItemRepository &favoriteItemRepo,
                             const MarketOrderProvider &orderProvider,
                             const MarketOrderProvider &corpOrderProvider,
                             const EveDataProvider &dataProvider,

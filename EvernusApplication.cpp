@@ -929,6 +929,11 @@ namespace Evernus
         return *mOrderScriptRepository;
     }
 
+    const FavoriteItemRepository &EvernusApplication::getFavoriteItemRepository() const noexcept
+    {
+        return *mFavoriteItemRepository;
+    }
+
     const ExternalOrderRepository &EvernusApplication::getExternalOrderRepository() const noexcept
     {
         return *mExternalOrderRepository;
@@ -1627,6 +1632,7 @@ namespace Evernus
         mMarketOrderValueSnapshotRepository.reset(new MarketOrderValueSnapshotRepository{mMainDb});
         mFilterTextRepository.reset(new FilterTextRepository{mMainDb});
         mOrderScriptRepository.reset(new OrderScriptRepository{mMainDb});
+        mFavoriteItemRepository.reset(new FavoriteItemRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
         mMarketGroupRepository.reset(new MarketGroupRepository{mEveDb});
         mMetaGroupRepository.reset(new MetaGroupRepository{mEveDb});
@@ -1655,6 +1661,7 @@ namespace Evernus
         mMarketOrderValueSnapshotRepository->create(*mCharacterRepository);
         mFilterTextRepository->create();
         mOrderScriptRepository->create();
+        mFavoriteItemRepository->create();
         mRefTypeRepository->create();
     }
 

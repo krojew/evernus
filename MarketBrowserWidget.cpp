@@ -28,6 +28,7 @@
 #include <QFont>
 
 #include "ExternalOrderRepository.h"
+#include "FavoriteItemRepository.h"
 #include "MarketOrderRepository.h"
 #include "DeviationSourceWidget.h"
 #include "ExternalOrderView.h"
@@ -43,6 +44,7 @@ namespace Evernus
                                              const MarketOrderRepository &orderRepo,
                                              const MarketOrderRepository &corpOrderRepo,
                                              const CharacterRepository &characterRepo,
+                                             const FavoriteItemRepository &favoriteItemRepo,
                                              const MarketOrderProvider &orderProvider,
                                              const MarketOrderProvider &corpOrderProvider,
                                              const EveDataProvider &dataProvider,
