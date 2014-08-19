@@ -130,6 +130,10 @@ namespace Evernus
             if (mOwnOrders.find(order->getId()) != std::end(mOwnOrders))
                 return QColor{255, 255, 128};
             break;
+        case Qt::ToolTipRole:
+            if (mOwnOrders.find(order->getId()) != std::end(mOwnOrders))
+                return tr("Your order");
+            break;
         case Qt::TextAlignmentRole:
             if (column == volumeColumn)
                 return Qt::AlignRight;
