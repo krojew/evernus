@@ -70,6 +70,7 @@ namespace Evernus
         , mOrderNameModel(mDataProvider)
         , mFavoriteNameModel(mDataProvider)
         , mExternalOrderSellModel(mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider)
+        , mExternalOrderBuyModel(mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -99,6 +100,7 @@ namespace Evernus
 
         auto deviationWidget = new DeviationSourceWidget{this};
         mExternalOrderSellModel.changeDeviationSource(deviationWidget->getCurrentType(), deviationWidget->getCurrentValue());
+        mExternalOrderBuyModel.changeDeviationSource(deviationWidget->getCurrentType(), deviationWidget->getCurrentValue());
         connect(deviationWidget, &DeviationSourceWidget::sourceChanged, this, &MarketBrowserWidget::changeDeviationSource);
 
         auto deviationAction = new QWidgetAction{this};
@@ -335,13 +337,25 @@ namespace Evernus
         sellLayout->addWidget(mSellView);
         mSellView->setModel(&mExternalOrderSellModel);
 
+        auto buyGroup = new QGroupBox{tr("Buy orders"), this};
+        orderLayout->addWidget(buyGroup);
+
+        auto buyLayout = new QVBoxLayout{};
+        buyGroup->setLayout(buyLayout);
+
+        mBuyView = new ExternalOrderView{costProvider, mDataProvider, this};
+        buyLayout->addWidget(mBuyView);
+        mBuyView->setModel(&mExternalOrderBuyModel);
+
         fillRegions();
     }
 
     void MarketBrowserWidget::setCharacter(Character::IdType id)
     {
         mExternalOrderSellModel.setCharacter(id);
+        mExternalOrderBuyModel.setCharacter(id);
         mSellView->setCharacterId(id);
+        mBuyView->setCharacterId(id);
     }
 
     void MarketBrowserWidget::updateData()
@@ -459,11 +473,20 @@ namespace Evernus
     {
         if (item != nullptr)
         {
-            mExternalOrderSellModel.setRegionId(mRegionList->currentItem()->data(Qt::UserRole).toUInt());
-            mExternalOrderSellModel.setSolarSystemId(mSolarSystemList->currentItem()->data(Qt::UserRole).toUInt());
-            mExternalOrderSellModel.setStationId(item->data(Qt::UserRole).toUInt());
+            const auto region = mRegionList->currentItem()->data(Qt::UserRole).toUInt();
+            const auto solarSystem = mSolarSystemList->currentItem()->data(Qt::UserRole).toUInt();
+            const auto station = item->data(Qt::UserRole).toUInt();
+
+            mExternalOrderSellModel.setRegionId(region);
+            mExternalOrderSellModel.setSolarSystemId(solarSystem);
+            mExternalOrderSellModel.setStationId(station);
+
+            mExternalOrderBuyModel.setRegionId(region);
+            mExternalOrderBuyModel.setSolarSystemId(solarSystem);
+            mExternalOrderBuyModel.setStationId(station);
 
             mExternalOrderSellModel.reset();
+            mExternalOrderBuyModel.reset();
 
             saveNavigationState();
         }
@@ -473,6 +496,7 @@ namespace Evernus
     {
         mDeviationBtn->setText(getDeviationButtonText(type));
         mExternalOrderSellModel.changeDeviationSource(type, value);
+        mExternalOrderBuyModel.changeDeviationSource(type, value);
     }
 
     void MarketBrowserWidget::stepBack()
@@ -561,13 +585,13 @@ namespace Evernus
         if (mHighSecFilter->isChecked())
             security |= ExternalOrderFilterProxyModel::HighSec;
 
-        mSellView->setFilter(
-            mMinPriceFilter->value(),
-            mMaxPriceFilter->value(),
-            mMinVolumeFilter->value(),
-            mMaxVolumeFilter->value(),
-            security
-        );
+        const auto minPrice = mMinPriceFilter->value();
+        const auto maxPrice = mMaxPriceFilter->value();
+        const auto minVolume = mMinVolumeFilter->value();
+        const auto maxVolume = mMaxVolumeFilter->value();
+
+        mSellView->setFilter(minPrice, maxPrice, minVolume, maxVolume, security);
+        mBuyView->setFilter(minPrice, maxPrice, minVolume, maxVolume, security);
     }
 
     void MarketBrowserWidget::resetFilter()
@@ -709,6 +733,7 @@ namespace Evernus
         {
             saveNavigationState();
             mExternalOrderSellModel.reset();
+            mExternalOrderBuyModel.reset();
         }
     }
 
@@ -873,6 +898,7 @@ namespace Evernus
                 else
                 {
                     mExternalOrderSellModel.reset();
+                    mExternalOrderBuyModel.reset();
                 }
 
                 break;
@@ -883,7 +909,9 @@ namespace Evernus
     void MarketBrowserWidget::setTypeId(EveType::IdType typeId)
     {
         mExternalOrderSellModel.setTypeId(typeId);
+        mExternalOrderBuyModel.setTypeId(typeId);
         mSellView->setTypeId(typeId);
+        mBuyView->setTypeId(typeId);
 
         if (typeId != EveType::invalidId)
             mInfoLabel->setText(tr("%1 (%2m³)").arg(mDataProvider.getTypeName(typeId)).arg(mDataProvider.getTypeVolume(typeId)));
@@ -894,6 +922,8 @@ namespace Evernus
     void MarketBrowserWidget::setGrouping(ExternalOrderModel::Grouping grouping)
     {
         mExternalOrderSellModel.setGrouping(grouping);
+        mExternalOrderBuyModel.setGrouping(grouping);
         mSellView->sortByPrice();
+        mBuyView->sortByPrice();
     }
 }

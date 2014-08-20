@@ -25,11 +25,11 @@
 #include "EveDataProvider.h"
 #include "TextUtils.h"
 
-#include "ExternalOrderSellModel.h"
+#include "ExternalOrderBuyModel.h"
 
 namespace Evernus
 {
-    ExternalOrderSellModel::ExternalOrderSellModel(const EveDataProvider &dataProvider,
+    ExternalOrderBuyModel::ExternalOrderBuyModel(const EveDataProvider &dataProvider,
                                                    const ExternalOrderRepository &orderRepo,
                                                    const CharacterRepository &characterRepo,
                                                    const MarketOrderProvider &orderProvider,
@@ -46,12 +46,12 @@ namespace Evernus
     {
     }
 
-    int ExternalOrderSellModel::columnCount(const QModelIndex &parent) const
+    int ExternalOrderBuyModel::columnCount(const QModelIndex &parent) const
     {
-        return (mGrouping == Grouping::None) ? (9) : (8);
+        return (mGrouping == Grouping::None) ? (11) : (8);
     }
 
-    QVariant ExternalOrderSellModel::data(const QModelIndex &index, int role) const
+    QVariant ExternalOrderBuyModel::data(const QModelIndex &index, int role) const
     {
         if (!index.isValid())
             return QVariant{};
@@ -72,7 +72,7 @@ namespace Evernus
         return QVariant{};
     }
 
-    QVariant ExternalOrderSellModel::headerData(int section, Qt::Orientation orientation, int role) const
+    QVariant ExternalOrderBuyModel::headerData(int section, Qt::Orientation orientation, int role) const
     {
         if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
         {
@@ -87,7 +87,11 @@ namespace Evernus
                     return tr("Price");
                 case volumeColumn:
                     return tr("Volume");
-                case totalProfitColumn:
+                case rangeColumn:
+                    return tr("Range");
+                case minQunatityColumn:
+                    return tr("Min. quantity");
+                case totalCostColumn:
                     return tr("Total profit");
                 case totalSizeColumn:
                     return tr("Total size");
@@ -122,7 +126,7 @@ namespace Evernus
                     return tr("Highest price");
                 case volumeColumn:
                     return tr("Volume");
-                case groupedTotalProfitColumn:
+                case groupedTotalCostColumn:
                     return tr("Total profit");
                 case ordersColumn:
                     return tr("Orders");
@@ -135,7 +139,7 @@ namespace Evernus
         return QVariant{};
     }
 
-    QModelIndex ExternalOrderSellModel::index(int row, int column, const QModelIndex &parent) const
+    QModelIndex ExternalOrderBuyModel::index(int row, int column, const QModelIndex &parent) const
     {
         if (!parent.isValid())
             return createIndex(row, column);
@@ -143,12 +147,12 @@ namespace Evernus
         return QModelIndex{};
     }
 
-    QModelIndex ExternalOrderSellModel::parent(const QModelIndex &index) const
+    QModelIndex ExternalOrderBuyModel::parent(const QModelIndex &index) const
     {
         return QModelIndex{};
     }
 
-    int ExternalOrderSellModel::rowCount(const QModelIndex &parent) const
+    int ExternalOrderBuyModel::rowCount(const QModelIndex &parent) const
     {
         if (parent.isValid())
             return 0;
@@ -156,71 +160,71 @@ namespace Evernus
         return (mGrouping == Grouping::None) ? (static_cast<int>(mOrders.size())) : (static_cast<int>(mGroupedData.size()));
     }
 
-    int ExternalOrderSellModel::getPriceColumn() const
+    int ExternalOrderBuyModel::getPriceColumn() const
     {
-        return (mGrouping == Grouping::None) ? (priceColumn) : (lowestPriceColumn);
+        return (mGrouping == Grouping::None) ? (priceColumn) : (highestPriceColumn);
     }
 
-    Qt::SortOrder ExternalOrderSellModel::getPriceSortOrder() const
+    Qt::SortOrder ExternalOrderBuyModel::getPriceSortOrder() const
     {
-        return Qt::AscendingOrder;
+        return Qt::DescendingOrder;
     }
 
-    int ExternalOrderSellModel::getVolumeColumn() const
+    int ExternalOrderBuyModel::getVolumeColumn() const
     {
         return volumeColumn;
     }
 
-    uint ExternalOrderSellModel::getTotalVolume() const
+    uint ExternalOrderBuyModel::getTotalVolume() const
     {
         return mTotalVolume;
     }
 
-    double ExternalOrderSellModel::getTotalSize() const
+    double ExternalOrderBuyModel::getTotalSize() const
     {
         return mTotalSize;
     }
 
-    double ExternalOrderSellModel::getTotalPrice() const
+    double ExternalOrderBuyModel::getTotalPrice() const
     {
         return mTotalPrice;
     }
 
-    double ExternalOrderSellModel::getMedianPrice() const
+    double ExternalOrderBuyModel::getMedianPrice() const
     {
         return mMedianPrice;
     }
 
-    double ExternalOrderSellModel::getMaxPrice() const
+    double ExternalOrderBuyModel::getMaxPrice() const
     {
         return mMaxPrice;
     }
 
-    double ExternalOrderSellModel::getMinPrice() const
+    double ExternalOrderBuyModel::getMinPrice() const
     {
         return mMinPrice;
     }
 
-    const ExternalOrder &ExternalOrderSellModel::getOrder(size_t row) const
+    const ExternalOrder &ExternalOrderBuyModel::getOrder(size_t row) const
     {
         return *mOrders[row];
     }
 
-    void ExternalOrderSellModel::setCharacter(Character::IdType id)
+    void ExternalOrderBuyModel::setCharacter(Character::IdType id)
     {
         beginResetModel();
 
         mCharacterId = id;
         mOwnOrders.clear();
 
-        const auto orders = mOrderProvider.getSellOrders(mCharacterId);
+        const auto orders = mOrderProvider.getBuyOrders(mCharacterId);
         for (const auto &order : orders)
             mOwnOrders.emplace(order->getId());
 
         try
         {
             const auto character = mCharacterRepo.find(mCharacterId);
-            const auto corpOrders = mCorpOrderProvider.getSellOrdersForCorporation(character->getCorporationId());
+            const auto corpOrders = mCorpOrderProvider.getBuyOrdersForCorporation(character->getCorporationId());
             for (const auto &order : corpOrders)
                 mOwnOrders.emplace(order->getId());
         }
@@ -231,32 +235,32 @@ namespace Evernus
         endResetModel();
     }
 
-    void ExternalOrderSellModel::setRegionId(uint id)
+    void ExternalOrderBuyModel::setRegionId(uint id)
     {
         mRegionId = id;
     }
 
-    void ExternalOrderSellModel::setSolarSystemId(uint id)
+    void ExternalOrderBuyModel::setSolarSystemId(uint id)
     {
         mSolarSystemId = id;
     }
 
-    void ExternalOrderSellModel::setStationId(uint id)
+    void ExternalOrderBuyModel::setStationId(uint id)
     {
         mStationId = id;
     }
 
-    EveType::IdType ExternalOrderSellModel::getTypeId() const noexcept
+    EveType::IdType ExternalOrderBuyModel::getTypeId() const noexcept
     {
         return mTypeId;
     }
 
-    void ExternalOrderSellModel::setTypeId(EveType::IdType id) noexcept
+    void ExternalOrderBuyModel::setTypeId(EveType::IdType id) noexcept
     {
         mTypeId = id;
     }
 
-    void ExternalOrderSellModel::reset()
+    void ExternalOrderBuyModel::reset()
     {
         beginResetModel();
 
@@ -265,13 +269,13 @@ namespace Evernus
         mTotalVolume = 0;
 
         if (mStationId != 0)
-            mOrders = mOrderRepo.fetchSellByTypeAndStation(mTypeId, mStationId);
+            mOrders = mOrderRepo.fetchBuyByTypeAndStation(mTypeId, mStationId);
         else if (mSolarSystemId != 0)
-            mOrders = mOrderRepo.fetchSellByTypeAndSolarSystem(mTypeId, mSolarSystemId);
+            mOrders = mOrderRepo.fetchBuyByTypeAndSolarSystem(mTypeId, mSolarSystemId);
         else if (mRegionId != 0)
-            mOrders = mOrderRepo.fetchSellByTypeAndRegion(mTypeId, mRegionId);
+            mOrders = mOrderRepo.fetchBuyByTypeAndRegion(mTypeId, mRegionId);
         else
-            mOrders = mOrderRepo.fetchSellByType(mTypeId);
+            mOrders = mOrderRepo.fetchBuyByType(mTypeId);
 
         std::vector<double> prices;
         prices.reserve(mOrders.size());
@@ -308,7 +312,7 @@ namespace Evernus
         endResetModel();
     }
 
-    void ExternalOrderSellModel::changeDeviationSource(DeviationSourceType type, double value)
+    void ExternalOrderBuyModel::changeDeviationSource(DeviationSourceType type, double value)
     {
         beginResetModel();
 
@@ -318,7 +322,7 @@ namespace Evernus
         endResetModel();
     }
 
-    void ExternalOrderSellModel::setGrouping(Grouping grouping)
+    void ExternalOrderBuyModel::setGrouping(Grouping grouping)
     {
         beginResetModel();
 
@@ -328,7 +332,7 @@ namespace Evernus
         endResetModel();
     }
 
-    double ExternalOrderSellModel::computeDeviation(const ExternalOrder &order) const
+    double ExternalOrderBuyModel::computeDeviation(const ExternalOrder &order) const
     {
         switch (mDeviationType) {
         case DeviationSourceType::Median:
@@ -347,7 +351,7 @@ namespace Evernus
         }
     }
 
-    void ExternalOrderSellModel::refreshGroupedData()
+    void ExternalOrderBuyModel::refreshGroupedData()
     {
         switch (mGrouping) {
         case Grouping::Station:
@@ -364,7 +368,7 @@ namespace Evernus
         }
     }
 
-    QVariant ExternalOrderSellModel::getUngroupedData(int column, int role, const ExternalOrder &order) const
+    QVariant ExternalOrderBuyModel::getUngroupedData(int column, int role, const ExternalOrder &order) const
     {
         switch (role) {
         case Qt::DisplayRole:
@@ -380,7 +384,23 @@ namespace Evernus
                     return locale.toCurrencyString(order.getPrice(), "ISK");
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(order.getVolumeRemaining())).arg(locale.toString(order.getVolumeEntered()));
-                case totalProfitColumn:
+                case rangeColumn:
+                    {
+                        const auto range = order.getRange();
+                        switch (range) {
+                        case -1:
+                            return tr("Station");
+                        case 0:
+                            return tr("System");
+                        case 32767:
+                            return tr("Region");
+                        default:
+                            return tr("%1 jumps").arg(range);
+                        }
+                    }
+                case minQunatityColumn:
+                    return locale.toString(order.getMinVolume());
+                case totalCostColumn:
                     return locale.toCurrencyString(order.getVolumeRemaining() * order.getPrice(), "ISK");
                 case totalSizeColumn:
                     return QString{"%1m³"}.arg(locale.toString(order.getVolumeRemaining() * mDataProvider.getTypeVolume(order.getTypeId()), 'f', 2));
@@ -410,7 +430,11 @@ namespace Evernus
                 return order.getPrice();
             case volumeColumn:
                 return QVariantList{} << order.getVolumeRemaining() << order.getVolumeEntered();
-            case totalProfitColumn:
+            case rangeColumn:
+                return order.getRange();
+            case minQunatityColumn:
+                return order.getMinVolume();
+            case totalCostColumn:
                 return order.getVolumeRemaining() * order.getPrice();
             case totalSizeColumn:
                 return order.getVolumeRemaining() * mDataProvider.getTypeVolume(order.getTypeId());
@@ -430,7 +454,7 @@ namespace Evernus
             }
             break;
         case Qt::ForegroundRole:
-            if (column == totalProfitColumn)
+            if (column == totalCostColumn)
                 return QColor{Qt::darkGreen};
             break;
         case Qt::BackgroundRole:
@@ -449,7 +473,7 @@ namespace Evernus
         return QVariant{};
     }
 
-    QVariant ExternalOrderSellModel::getStationGroupedData(int column, int role, const GroupedData &data) const
+    QVariant ExternalOrderBuyModel::getStationGroupedData(int column, int role, const GroupedData &data) const
     {
         if (column == groupByColumn)
         {
@@ -465,7 +489,7 @@ namespace Evernus
         return getGenericGroupedData(column, role, data);
     }
 
-    QVariant ExternalOrderSellModel::getSystemGroupedData(int column, int role, const GroupedData &data) const
+    QVariant ExternalOrderBuyModel::getSystemGroupedData(int column, int role, const GroupedData &data) const
     {
         if (column == groupByColumn)
         {
@@ -481,7 +505,7 @@ namespace Evernus
         return getGenericGroupedData(column, role, data);
     }
 
-    QVariant ExternalOrderSellModel::getRegionGroupedData(int column, int role, const GroupedData &data) const
+    QVariant ExternalOrderBuyModel::getRegionGroupedData(int column, int role, const GroupedData &data) const
     {
         if (column == groupByColumn)
         {
@@ -497,7 +521,7 @@ namespace Evernus
         return getGenericGroupedData(column, role, data);
     }
 
-    QVariant ExternalOrderSellModel::getGenericGroupedData(int column, int role, const GroupedData &data) const
+    QVariant ExternalOrderBuyModel::getGenericGroupedData(int column, int role, const GroupedData &data) const
     {
         switch (role) {
         case Qt::DisplayRole:
@@ -513,8 +537,8 @@ namespace Evernus
                     return locale.toCurrencyString(data.mHighestPrice, "ISK");
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(data.mVolumeRemaining)).arg(locale.toString(data.mVolumeEntered));
-                case groupedTotalProfitColumn:
-                    return locale.toCurrencyString(data.mTotalProfit, "ISK");
+                case groupedTotalCostColumn:
+                    return locale.toCurrencyString(data.mTotalCost, "ISK");
                 case ordersColumn:
                     return locale.toString(data.mCount);
                 case groupedTotalSizeColumn:
@@ -532,8 +556,8 @@ namespace Evernus
                 return data.mHighestPrice;
             case volumeColumn:
                 return QVariantList{} << data.mVolumeRemaining << data.mVolumeEntered;
-            case groupedTotalProfitColumn:
-                return data.mTotalProfit;
+            case groupedTotalCostColumn:
+                return data.mTotalCost;
             case ordersColumn:
                 return data.mCount;
             case groupedTotalSizeColumn:
@@ -541,7 +565,7 @@ namespace Evernus
             }
             break;
         case Qt::ForegroundRole:
-            if (column == groupedTotalProfitColumn)
+            if (column == groupedTotalCostColumn)
                 return QColor{Qt::darkGreen};
             break;
         case Qt::TextAlignmentRole:
@@ -553,7 +577,7 @@ namespace Evernus
     }
 
     template<uint (ExternalOrder::* Func)() const>
-    void ExternalOrderSellModel::fillGroupedData()
+    void ExternalOrderBuyModel::fillGroupedData()
     {
         mGroupedData.clear();
 
@@ -576,7 +600,7 @@ namespace Evernus
 
             curData.mVolumeEntered += order->getVolumeEntered();
             curData.mVolumeRemaining += order->getVolumeRemaining();
-            curData.mTotalProfit += order->getVolumeRemaining() * price;
+            curData.mTotalCost += order->getVolumeRemaining() * price;
 
             ++curData.mCount;
 

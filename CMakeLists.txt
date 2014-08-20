@@ -55,6 +55,7 @@ qt5_wrap_cpp(
     DeviationSourceWidget.h
     EveMarketDataExternalOrderImporter.h
     EvernusApplication.h
+    ExternalOrderBuyModel.h
     ExternalOrderImporter.h
     ExternalOrderSellModel.h
     ExternalOrderView.h
@@ -244,6 +245,8 @@ add_executable(
     EveTypeRepository.h
     ExternalOrder.cpp
     ExternalOrder.h
+    ExternalOrderBuyModel.cpp
+    ExternalOrderBuyModel.h
     ExternalOrderFilterProxyModel.cpp
     ExternalOrderFilterProxyModel.h
     ExternalOrderImporter.h

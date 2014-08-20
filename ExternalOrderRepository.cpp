@@ -138,90 +138,50 @@ namespace Evernus
         return result;
     }
 
+    ExternalOrderRepository::EntityList ExternalOrderRepository::fetchBuyByType(ExternalOrder::TypeIdType typeId) const
+    {
+        return fetchByType(typeId, ExternalOrder::Type::Buy);
+    }
+
+    ExternalOrderRepository::EntityList ExternalOrderRepository::fetchBuyByTypeAndStation(ExternalOrder::TypeIdType typeId,
+                                                                                           uint stationId) const
+    {
+        return fetchByTypeAndStation(typeId, stationId, ExternalOrder::Type::Buy);
+    }
+
+    ExternalOrderRepository::EntityList ExternalOrderRepository::fetchBuyByTypeAndSolarSystem(ExternalOrder::TypeIdType typeId,
+                                                                                               uint solarSystemId) const
+    {
+        return fetchByTypeAndSolarSystem(typeId, solarSystemId, ExternalOrder::Type::Buy);
+    }
+
+    ExternalOrderRepository::EntityList ExternalOrderRepository::fetchBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId,
+                                                                                          uint regionId) const
+    {
+        return fetchByTypeAndRegion(typeId, regionId, ExternalOrder::Type::Buy);
+    }
+
     ExternalOrderRepository::EntityList ExternalOrderRepository::fetchSellByType(ExternalOrder::TypeIdType typeId) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ?"}.arg(getTableName()));
-        query.addBindValue(static_cast<int>(ExternalOrder::Type::Sell));
-        query.addBindValue(typeId);
-
-        DatabaseUtils::execQuery(query);
-
-        EntityList result;
-
-        const auto size = query.size();
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-            result.emplace_back(populate(query.record()));
-
-        return result;
+        return fetchByType(typeId, ExternalOrder::Type::Sell);
     }
 
     ExternalOrderRepository::EntityList ExternalOrderRepository::fetchSellByTypeAndStation(ExternalOrder::TypeIdType typeId,
                                                                                            uint stationId) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ?"}.arg(getTableName()));
-        query.addBindValue(static_cast<int>(ExternalOrder::Type::Sell));
-        query.addBindValue(typeId);
-        query.addBindValue(stationId);
-
-        DatabaseUtils::execQuery(query);
-
-        EntityList result;
-
-        const auto size = query.size();
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-            result.emplace_back(populate(query.record()));
-
-        return result;
+        return fetchByTypeAndStation(typeId, stationId, ExternalOrder::Type::Sell);
     }
 
     ExternalOrderRepository::EntityList ExternalOrderRepository::fetchSellByTypeAndSolarSystem(ExternalOrder::TypeIdType typeId,
-                                                                                          uint solarSystemId) const
+                                                                                               uint solarSystemId) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND solar_system_id = ?"}.arg(getTableName()));
-        query.addBindValue(static_cast<int>(ExternalOrder::Type::Sell));
-        query.addBindValue(typeId);
-        query.addBindValue(solarSystemId);
-
-        DatabaseUtils::execQuery(query);
-
-        EntityList result;
-
-        const auto size = query.size();
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-            result.emplace_back(populate(query.record()));
-
-        return result;
+        return fetchByTypeAndSolarSystem(typeId, solarSystemId, ExternalOrder::Type::Sell);
     }
 
     ExternalOrderRepository::EntityList ExternalOrderRepository::fetchSellByTypeAndRegion(ExternalOrder::TypeIdType typeId,
                                                                                           uint regionId) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND region_id = ?"}.arg(getTableName()));
-        query.addBindValue(static_cast<int>(ExternalOrder::Type::Sell));
-        query.addBindValue(typeId);
-        query.addBindValue(regionId);
-
-        DatabaseUtils::execQuery(query);
-
-        EntityList result;
-
-        const auto size = query.size();
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-            result.emplace_back(populate(query.record()));
-
-        return result;
+        return fetchByTypeAndRegion(typeId, regionId, ExternalOrder::Type::Sell);
     }
 
     std::vector<EveType::IdType> ExternalOrderRepository::fetchUniqueTypes() const
@@ -417,6 +377,96 @@ namespace Evernus
     size_t ExternalOrderRepository::getMaxRowsPerInsert() const
     {
         return 71;
+    }
+
+    ExternalOrderRepository::EntityList ExternalOrderRepository::fetchByType(ExternalOrder::TypeIdType typeId,
+                                                                             ExternalOrder::Type type) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ?"}.arg(getTableName()));
+        query.addBindValue(static_cast<int>(type));
+        query.addBindValue(typeId);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
+    ExternalOrderRepository::EntityList ExternalOrderRepository::fetchByTypeAndStation(ExternalOrder::TypeIdType typeId,
+                                                                                       uint stationId,
+                                                                                       ExternalOrder::Type type) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ?"}.arg(getTableName()));
+        query.addBindValue(static_cast<int>(type));
+        query.addBindValue(typeId);
+        query.addBindValue(stationId);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
+    ExternalOrderRepository::EntityList ExternalOrderRepository::fetchByTypeAndSolarSystem(ExternalOrder::TypeIdType typeId,
+                                                                                           uint solarSystemId,
+                                                                                           ExternalOrder::Type type) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND solar_system_id = ?"}.arg(getTableName()));
+        query.addBindValue(static_cast<int>(type));
+        query.addBindValue(typeId);
+        query.addBindValue(solarSystemId);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
+    ExternalOrderRepository::EntityList ExternalOrderRepository::fetchByTypeAndRegion(ExternalOrder::TypeIdType typeId,
+                                                                                      uint regionId,
+                                                                                      ExternalOrder::Type type) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND region_id = ?"}.arg(getTableName()));
+        query.addBindValue(static_cast<int>(type));
+        query.addBindValue(typeId);
+        query.addBindValue(regionId);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
     }
 
     template<class T>

@@ -47,6 +47,14 @@ namespace Evernus
                                           const Repository<MarketOrder> &orderRepo,
                                           const Repository<MarketOrder> &corpOrderRepo) const;
 
+        EntityList fetchBuyByType(ExternalOrder::TypeIdType typeId) const;
+        EntityList fetchBuyByTypeAndStation(ExternalOrder::TypeIdType typeId,
+                                            uint stationId) const;
+        EntityList fetchBuyByTypeAndSolarSystem(ExternalOrder::TypeIdType typeId,
+                                                uint solarSystemId) const;
+        EntityList fetchBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId,
+                                           uint regionId) const;
+
         EntityList fetchSellByType(ExternalOrder::TypeIdType typeId) const;
         EntityList fetchSellByTypeAndStation(ExternalOrder::TypeIdType typeId,
                                              uint stationId) const;
@@ -70,6 +78,17 @@ namespace Evernus
         virtual void bindPositionalValues(const ExternalOrder &entity, QSqlQuery &query) const override;
 
         virtual size_t getMaxRowsPerInsert() const override;
+
+        EntityList fetchByType(ExternalOrder::TypeIdType typeId, ExternalOrder::Type type) const;
+        EntityList fetchByTypeAndStation(ExternalOrder::TypeIdType typeId,
+                                             uint stationId,
+                                             ExternalOrder::Type type) const;
+        EntityList fetchByTypeAndSolarSystem(ExternalOrder::TypeIdType typeId,
+                                             uint solarSystemId,
+                                             ExternalOrder::Type type) const;
+        EntityList fetchByTypeAndRegion(ExternalOrder::TypeIdType typeId,
+                                        uint regionId,
+                                        ExternalOrder::Type type) const;
 
         template<class T>
         std::vector<T> fetchUniqueColumn(const QString &column) const;

@@ -19,6 +19,7 @@
 #include <QWidget>
 
 #include "ExternalOrderSellModel.h"
+#include "ExternalOrderBuyModel.h"
 #include "ExternalOrderImporter.h"
 #include "ItemNameModel.h"
 
@@ -130,6 +131,7 @@ namespace Evernus
         ItemNameModel mFavoriteNameModel;
 
         ExternalOrderSellModel mExternalOrderSellModel;
+        ExternalOrderBuyModel mExternalOrderBuyModel;
 
         QPushButton *mDeviationBtn = nullptr;
 
