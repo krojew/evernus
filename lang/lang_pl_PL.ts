@@ -2099,70 +2099,70 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="unfinished">Usuń</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="190"/>
-        <location filename="../MarketBrowserWidget.cpp" line="618"/>
+        <location filename="../MarketBrowserWidget.cpp" line="193"/>
+        <location filename="../MarketBrowserWidget.cpp" line="639"/>
         <source>select an item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="476"/>
+        <location filename="../MarketBrowserWidget.cpp" line="493"/>
         <source>type in wildcard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="494"/>
+        <location filename="../MarketBrowserWidget.cpp" line="511"/>
         <source>Deviation [median]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="496"/>
+        <location filename="../MarketBrowserWidget.cpp" line="513"/>
         <source>Deviation [best price]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="498"/>
+        <location filename="../MarketBrowserWidget.cpp" line="515"/>
         <source>Deviation [custom cost]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="500"/>
+        <location filename="../MarketBrowserWidget.cpp" line="517"/>
         <source>Deviation [fixed]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="502"/>
+        <location filename="../MarketBrowserWidget.cpp" line="519"/>
         <source>Deviation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="616"/>
+        <location filename="../MarketBrowserWidget.cpp" line="637"/>
         <source>%1 (%2m³)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="154"/>
+        <location filename="../MarketBrowserWidget.cpp" line="157"/>
         <source>Regions [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="282"/>
-        <location filename="../MarketBrowserWidget.cpp" line="319"/>
-        <location filename="../MarketBrowserWidget.cpp" line="422"/>
+        <location filename="../MarketBrowserWidget.cpp" line="285"/>
+        <location filename="../MarketBrowserWidget.cpp" line="322"/>
+        <location filename="../MarketBrowserWidget.cpp" line="439"/>
         <source>(all)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="164"/>
+        <location filename="../MarketBrowserWidget.cpp" line="167"/>
         <source>Solar systems [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="174"/>
+        <location filename="../MarketBrowserWidget.cpp" line="177"/>
         <source>Stations [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="194"/>
+        <location filename="../MarketBrowserWidget.cpp" line="197"/>
         <source>Sell orders</source>
         <translation type="unfinished">Zlecenia sprzedaży</translation>
     </message>

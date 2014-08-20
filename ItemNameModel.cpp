@@ -45,6 +45,18 @@ namespace Evernus
         return QVariant{};
     }
 
+    bool ItemNameModel::removeRows(int row, int count, const QModelIndex &parent)
+    {
+        if (parent.isValid())
+            return false;
+
+        beginRemoveRows(parent, row, row + count);
+        mData.erase(std::next(std::begin(mData), row), std::next(std::begin(mData), row + count));
+        endRemoveRows();
+
+        return true;
+    }
+
     int ItemNameModel::rowCount(const QModelIndex &parent) const
     {
         if (parent.isValid())

@@ -151,6 +151,9 @@ namespace Evernus
 
         favoriteToolbarLayout->addStretch();
 
+        connect(mFavoriteItemList->selectionModel(), &QItemSelectionModel::currentChanged,
+                this, &MarketBrowserWidget::selectFavoriteItem);
+
         auto filterLabel = new QLabel{tr("Regions [<a href='#'>all</a>]"), this};
         navigatorGroupLayout->addWidget(filterLabel);
         connect(filterLabel, &QLabel::linkActivated, this, [this] {
@@ -375,7 +378,21 @@ namespace Evernus
 
     void MarketBrowserWidget::removeFavoriteItem()
     {
+        auto selectionModel = mFavoriteItemList->selectionModel();
 
+        const auto index = selectionModel->currentIndex();
+        if (!index.isValid())
+            return;
+
+        auto model = mFavoriteItemList->model();
+
+        mFavoriteItemRepo.remove(model->data(index, Qt::UserRole).value<EveType::IdType>());
+        model->removeRow(index.row(), QModelIndex{});
+    }
+
+    void MarketBrowserWidget::selectFavoriteItem(const QModelIndex &index)
+    {
+        mRemoveFavoriteItemBtn->setEnabled(index.isValid());
     }
 
     ExternalOrderImporter::TypeLocationPairs MarketBrowserWidget::getImportTarget() const
@@ -479,9 +496,9 @@ namespace Evernus
         view = new QListView{this};
         knownItemsLayout->addWidget(view);
         view->setModel(knownItemsProxy);
-        connect(view->selectionModel(), &QItemSelectionModel::currentChanged, this, [knownItemsProxy, &model, this](const auto &index) {
+        connect(view->selectionModel(), &QItemSelectionModel::currentChanged, this, [knownItemsProxy, this](const auto &index) {
             if (index.isValid())
-                showOrdersForType(model.data(knownItemsProxy->mapToSource(index), Qt::UserRole).template value<Evernus::EveType::IdType>());
+                showOrdersForType(knownItemsProxy->data(index, Qt::UserRole).template value<Evernus::EveType::IdType>());
         });
 
         return knownItemsTab;
@@ -561,10 +578,14 @@ namespace Evernus
         };
 
         auto found = false;
-        if (mItemTabs->currentIndex() == knownItemsTab)
+
+        const auto curTab = mItemTabs->currentIndex();
+        if (curTab == knownItemsTab)
             found = itemSearcher(mNagivationPointer->mTypeId, *mKnownItemList);
-        else
+        else if (curTab == orderItemsTab)
             found = itemSearcher(mNagivationPointer->mTypeId, *mOrderItemList);
+        else
+            found = itemSearcher(mNagivationPointer->mTypeId, *mFavoriteItemList);
 
         if (!found)
             setTypeId(mNagivationPointer->mTypeId);
