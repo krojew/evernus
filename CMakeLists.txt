@@ -243,6 +243,8 @@ add_executable(
     EveTypeRepository.h
     ExternalOrder.cpp
     ExternalOrder.h
+    ExternalOrderFilterProxyModel.cpp
+    ExternalOrderFilterProxyModel.h
     ExternalOrderImporter.h
     ExternalOrderImporterNames.h
     ExternalOrderImporterRegistry.h

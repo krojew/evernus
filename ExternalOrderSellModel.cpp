@@ -234,6 +234,11 @@ namespace Evernus
         return mMinPrice;
     }
 
+    const ExternalOrder &ExternalOrderSellModel::getOrder(size_t row) const
+    {
+        return *mOrders[row];
+    }
+
     void ExternalOrderSellModel::setCharacter(Character::IdType id)
     {
         beginResetModel();

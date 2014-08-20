@@ -14,9 +14,9 @@
  */
 #pragma once
 
-#include <QSortFilterProxyModel>
 #include <QWidget>
 
+#include "ExternalOrderFilterProxyModel.h"
 #include "Character.h"
 #include "EveType.h"
 
@@ -24,8 +24,8 @@ class QLabel;
 
 namespace Evernus
 {
-    class ItemCostProvider;
     class ExternalOrderModel;
+    class ItemCostProvider;
     class StyledTreeView;
 
     class ExternalOrderView
@@ -34,12 +34,14 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit ExternalOrderView(const ItemCostProvider &costProvider, QWidget *parent = nullptr);
+        ExternalOrderView(const ItemCostProvider &costProvider, const EveDataProvider &dataProvider, QWidget *parent = nullptr);
         virtual ~ExternalOrderView() = default;
 
         void setModel(ExternalOrderModel *model);
         void setCharacterId(Character::IdType id);
         void setTypeId(EveType::IdType id);
+
+        void setFilter(double minPrice, double maxPrice, uint minVolume, uint maxVolume, ExternalOrderFilterProxyModel::SecurityStatuses security);
 
     private slots:
         void handleModelReset();
@@ -59,8 +61,8 @@ namespace Evernus
         QLabel *mMaxPriceLabel = nullptr;
         QLabel *mItemCostLabel = nullptr;
 
-        QSortFilterProxyModel mProxy;
         ExternalOrderModel *mSource = nullptr;
+        ExternalOrderFilterProxyModel mProxy;
 
         void setCustomCost();
     };

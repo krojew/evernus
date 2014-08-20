@@ -13,16 +13,20 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QSortFilterProxyModel>
+#include <QDoubleSpinBox>
 #include <QWidgetAction>
+#include <QGridLayout>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QListWidget>
 #include <QTabWidget>
+#include <QCheckBox>
 #include <QSqlQuery>
 #include <QListView>
 #include <QGroupBox>
 #include <QLineEdit>
+#include <QSpinBox>
 #include <QLabel>
 #include <QMenu>
 #include <QFont>
@@ -82,6 +86,11 @@ namespace Evernus
         toolbarLayout->addWidget(importBtn);
         importBtn->setFlat(true);
         connect(importBtn, &QPushButton::clicked, this, &MarketBrowserWidget::prepareItemImportFromCache);
+
+        auto filterBtn = new QPushButton{QIcon{":/images/flag_blue.png"}, tr("Filter"), this};
+        toolbarLayout->addWidget(filterBtn);
+        filterBtn->setFlat(true);
+        filterBtn->setCheckable(true);
 
         auto deviationWidget = new DeviationSourceWidget{this};
         mExternalOrderSellModel.changeDeviationSource(deviationWidget->getCurrentType(), deviationWidget->getCurrentValue());
@@ -193,6 +202,74 @@ namespace Evernus
         auto orderLayout = new QVBoxLayout{};
         mainViewLayout->addLayout(orderLayout, 1);
 
+        mFilterGroup = new QGroupBox{tr("Filter"), this};
+        orderLayout->addWidget(mFilterGroup);
+        mFilterGroup->setVisible(false);
+        connect(filterBtn, &QPushButton::toggled, mFilterGroup, &QGroupBox::setVisible);
+
+        auto filterLayout = new QGridLayout{};
+        mFilterGroup->setLayout(filterLayout);
+
+        filterLayout->addWidget(new QLabel{tr("Min. price:"), this}, 0, 0);
+
+        mMinPriceFilter = new QDoubleSpinBox{this};
+        filterLayout->addWidget(mMinPriceFilter, 0, 1);
+        mMinPriceFilter->setSpecialValueText(tr("any"));
+        mMinPriceFilter->setMaximum(1000000000000.);
+        mMinPriceFilter->setSuffix("ISK");
+
+        filterLayout->addWidget(new QLabel{tr("Max. price:"), this}, 1, 0);
+
+        mMaxPriceFilter = new QDoubleSpinBox{this};
+        filterLayout->addWidget(mMaxPriceFilter, 1, 1);
+        mMaxPriceFilter->setSpecialValueText(tr("any"));
+        mMaxPriceFilter->setMaximum(1000000000000.);
+        mMaxPriceFilter->setSuffix("ISK");
+
+        filterLayout->addWidget(new QLabel{tr("Min. volume:"), this}, 0, 2);
+
+        mMinVolumeFilter = new QSpinBox{this};
+        filterLayout->addWidget(mMinVolumeFilter, 0, 3);
+        mMinVolumeFilter->setSpecialValueText(tr("any"));
+        mMinVolumeFilter->setMaximum(1000000000);
+
+        filterLayout->addWidget(new QLabel{tr("Max. volume:"), this}, 1, 2);
+
+        mMaxVolumeFilter = new QSpinBox{this};
+        filterLayout->addWidget(mMaxVolumeFilter, 1, 3);
+        mMaxVolumeFilter->setSpecialValueText(tr("any"));
+        mMaxVolumeFilter->setMaximum(1000000000);
+
+        filterLayout->addWidget(new QLabel{tr("Security status:"), this}, 0, 4);
+
+        auto securityStatusFilterLayout = new QHBoxLayout{};
+        filterLayout->addLayout(securityStatusFilterLayout, 1, 4);
+
+        mNullSecFilter = new QCheckBox{tr("-1.0 - 0.0"), this};
+        securityStatusFilterLayout->addWidget(mNullSecFilter);
+        mNullSecFilter->setChecked(true);
+        mNullSecFilter->setStyleSheet("color: red;");
+
+        mLowSecFilter = new QCheckBox{tr("0.1 - 0.4"), this};
+        securityStatusFilterLayout->addWidget(mLowSecFilter);
+        mLowSecFilter->setChecked(true);
+        mLowSecFilter->setStyleSheet("color: darkOrange;");
+
+        mHighSecFilter = new QCheckBox{tr("0.5 - 1.0"), this};
+        securityStatusFilterLayout->addWidget(mHighSecFilter);
+        mHighSecFilter->setChecked(true);
+        mHighSecFilter->setStyleSheet("color: darkGreen;");
+
+        securityStatusFilterLayout->addStretch();
+
+        auto applyFilterBtn = new QPushButton{tr("Apply"), this};
+        filterLayout->addWidget(applyFilterBtn, 0, 5);
+        connect(applyFilterBtn, &QPushButton::clicked, this, &MarketBrowserWidget::applyFilter);
+
+        auto resetFilterBtn = new QPushButton{tr("Reset"), this};
+        filterLayout->addWidget(resetFilterBtn, 1, 5);
+        connect(resetFilterBtn, &QPushButton::clicked, this, &MarketBrowserWidget::resetFilter);
+
         QFont font;
         font.setBold(true);
 
@@ -206,7 +283,7 @@ namespace Evernus
         auto sellLayout = new QVBoxLayout{};
         sellGroup->setLayout(sellLayout);
 
-        mSellView = new ExternalOrderView{costProvider, this};
+        mSellView = new ExternalOrderView{costProvider, mDataProvider, this};
         sellLayout->addWidget(mSellView);
         mSellView->setModel(&mExternalOrderSellModel);
 
@@ -424,6 +501,38 @@ namespace Evernus
         action->setData(list->model()->data(index, Qt::UserRole));
 
         menu.exec(list->mapToGlobal(pos));
+    }
+
+    void MarketBrowserWidget::applyFilter()
+    {
+        ExternalOrderFilterProxyModel::SecurityStatuses security;
+        if (mNullSecFilter->isChecked())
+            security |= ExternalOrderFilterProxyModel::NullSec;
+        if (mLowSecFilter->isChecked())
+            security |= ExternalOrderFilterProxyModel::LowSec;
+        if (mHighSecFilter->isChecked())
+            security |= ExternalOrderFilterProxyModel::HighSec;
+
+        mSellView->setFilter(
+            mMinPriceFilter->value(),
+            mMaxPriceFilter->value(),
+            mMinVolumeFilter->value(),
+            mMaxVolumeFilter->value(),
+            security
+        );
+    }
+
+    void MarketBrowserWidget::resetFilter()
+    {
+        mMinPriceFilter->setValue(0.);
+        mMaxPriceFilter->setValue(0.);
+        mMinVolumeFilter->setValue(0);
+        mMaxVolumeFilter->setValue(0);
+        mNullSecFilter->setChecked(true);
+        mLowSecFilter->setChecked(true);
+        mHighSecFilter->setChecked(true);
+
+        applyFilter();
     }
 
     ExternalOrderImporter::TypeLocationPairs MarketBrowserWidget::getImportTarget() const

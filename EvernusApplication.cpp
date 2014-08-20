@@ -567,6 +567,23 @@ namespace Evernus
         return mStationCache[solarSystemId];
     }
 
+    double EvernusApplication::getSolarSystemSecurityStatus(uint solarSystemId) const
+    {
+        const auto it = mSecurityStatuses.find(solarSystemId);
+        if (it != std::end(mSecurityStatuses))
+            return it->second;
+
+        QSqlQuery query{mEveDb};
+        query.prepare("SELECT security FROM mapSolarSystems WHERE solarSystemID = ?");
+        query.bindValue(0, solarSystemId);
+
+        DatabaseUtils::execQuery(query);
+
+        query.next();
+
+        return mSecurityStatuses.emplace(solarSystemId, query.value(0).toDouble()).first->second;
+    }
+
     void EvernusApplication::registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer)
     {
         Q_ASSERT(mExternalOrderImporters.find(name) == std::end(mExternalOrderImporters));

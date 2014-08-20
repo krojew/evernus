@@ -64,6 +64,8 @@ namespace Evernus
         virtual double getMaxPrice() const override;
         virtual double getMinPrice() const override;
 
+        virtual const ExternalOrder &getOrder(size_t row) const override;
+
         void setCharacter(Character::IdType id);
         void setRegionId(uint id);
         void setSolarSystemId(uint id);

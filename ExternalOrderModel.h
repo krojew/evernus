@@ -18,6 +18,8 @@
 
 namespace Evernus
 {
+    class ExternalOrder;
+
     class ExternalOrderModel
         : public QAbstractItemModel
     {
@@ -43,5 +45,7 @@ namespace Evernus
         virtual double getMedianPrice() const = 0;
         virtual double getMaxPrice() const = 0;
         virtual double getMinPrice() const = 0;
+
+        virtual const ExternalOrder &getOrder(size_t row) const = 0;
     };
 }

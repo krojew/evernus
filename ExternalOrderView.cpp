@@ -27,9 +27,10 @@
 
 namespace Evernus
 {
-    ExternalOrderView::ExternalOrderView(const ItemCostProvider &costProvider, QWidget *parent)
+    ExternalOrderView::ExternalOrderView(const ItemCostProvider &costProvider, const EveDataProvider &dataProvider, QWidget *parent)
         : QWidget(parent)
         , mCostProvider(costProvider)
+        , mProxy(dataProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -115,6 +116,12 @@ namespace Evernus
     {
         mTypeId = id;
         setCustomCost();
+    }
+
+    void ExternalOrderView
+    ::setFilter(double minPrice, double maxPrice, uint minVolume, uint maxVolume, ExternalOrderFilterProxyModel::SecurityStatuses security)
+    {
+        mProxy.setFilter(minPrice, maxPrice, minVolume, maxVolume, security);
     }
 
     void ExternalOrderView::handleModelReset()

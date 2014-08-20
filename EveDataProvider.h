@@ -60,5 +60,7 @@ namespace Evernus
         virtual const std::vector<MapLocation> &getConstellations(uint regionId) const = 0;
         virtual const std::vector<MapLocation> &getSolarSystems(uint constellationId) const = 0;
         virtual const std::vector<Station> &getStations(uint solarSystemId) const = 0;
+
+        virtual double getSolarSystemSecurityStatus(uint solarSystemId) const = 0;
     };
 }

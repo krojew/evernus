@@ -102,6 +102,8 @@ namespace Evernus
         virtual const std::vector<MapLocation> &getSolarSystems(uint constellationId) const override;
         virtual const std::vector<Station> &getStations(uint solarSystemId) const override;
 
+        virtual double getSolarSystemSecurityStatus(uint solarSystemId) const override;
+
         virtual void registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer) override;
 
         virtual std::shared_ptr<AssetList> fetchAssetsForCharacter(Character::IdType id) const override;
@@ -301,6 +303,8 @@ namespace Evernus
         mutable std::unordered_map<uint, QString> mSolarSystemNameCache;
 
         std::unordered_set<MarketOrder::IdType> mPendingAutoCostOrders;
+
+        mutable std::unordered_map<uint, double> mSecurityStatuses;
 
         void updateTranslator(const QString &lang);
 

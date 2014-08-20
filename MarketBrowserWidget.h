@@ -23,10 +23,14 @@
 #include "ItemNameModel.h"
 
 class QListWidgetItem;
+class QDoubleSpinBox;
 class QListWidget;
 class QPushButton;
 class QTabWidget;
 class QListView;
+class QCheckBox;
+class QGroupBox;
+class QSpinBox;
 class QLabel;
 
 namespace Evernus
@@ -89,6 +93,9 @@ namespace Evernus
 
         void showItemContextMenu(const QPoint &pos);
 
+        void applyFilter();
+        void resetFilter();
+
     private:
         struct NavigationState
         {
@@ -132,6 +139,15 @@ namespace Evernus
         QListWidget *mRegionList = nullptr;
         QListWidget *mSolarSystemList = nullptr;
         QListWidget *mStationList = nullptr;
+
+        QGroupBox *mFilterGroup = nullptr;
+        QDoubleSpinBox *mMinPriceFilter = nullptr;
+        QDoubleSpinBox *mMaxPriceFilter = nullptr;
+        QSpinBox *mMinVolumeFilter = nullptr;
+        QSpinBox *mMaxVolumeFilter = nullptr;
+        QCheckBox *mNullSecFilter = nullptr;
+        QCheckBox *mLowSecFilter = nullptr;
+        QCheckBox *mHighSecFilter = nullptr;
 
         QLabel *mInfoLabel = nullptr;
 
