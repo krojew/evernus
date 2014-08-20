@@ -29,6 +29,7 @@
 #include "WalletJournalEntryRepository.h"
 #include "WalletTransactionRepository.h"
 #include "CachingMarketOrderProvider.h"
+#include "LocationBookmarkRepository.h"
 #include "WalletSnapshotRepository.h"
 #include "ExternalOrderRepository.h"
 #include "FavoriteItemRepository.h"
@@ -138,6 +139,7 @@ namespace Evernus
         const FilterTextRepository &getFilterTextRepository() const noexcept;
         const OrderScriptRepository &getOrderScriptRepository() const noexcept;
         const FavoriteItemRepository &getFavoriteItemRepository() const noexcept;
+        const LocationBookmarkRepository &getLocationBookmarkRepository() const noexcept;
         const ExternalOrderRepository &getExternalOrderRepository() const noexcept;
 
         const MarketOrderProvider &getMarketOrderProvider() const noexcept;
@@ -229,6 +231,7 @@ namespace Evernus
         std::unique_ptr<FilterTextRepository> mFilterTextRepository;
         std::unique_ptr<OrderScriptRepository> mOrderScriptRepository;
         std::unique_ptr<FavoriteItemRepository> mFavoriteItemRepository;
+        std::unique_ptr<LocationBookmarkRepository> mLocationBookmarkRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
         std::unique_ptr<MarketGroupRepository> mMarketGroupRepository;
         std::unique_ptr<MetaGroupRepository> mMetaGroupRepository;

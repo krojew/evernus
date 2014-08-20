@@ -14,17 +14,17 @@
  */
 #pragma once
 
-#include "FavoriteItem.h"
+#include "LocationBookmark.h"
 #include "Repository.h"
 
 namespace Evernus
 {
-    class FavoriteItemRepository
-        : public Repository<FavoriteItem>
+    class LocationBookmarkRepository
+        : public Repository<LocationBookmark>
     {
     public:
         using Repository::Repository;
-        virtual ~FavoriteItemRepository() = default;
+        virtual ~LocationBookmarkRepository() = default;
 
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
@@ -35,7 +35,7 @@ namespace Evernus
 
     private:
         virtual QStringList getColumns() const override;
-        virtual void bindValues(const FavoriteItem &entity, QSqlQuery &query) const override;
-        virtual void bindPositionalValues(const FavoriteItem &entity, QSqlQuery &query) const override;
+        virtual void bindValues(const LocationBookmark &entity, QSqlQuery &query) const override;
+        virtual void bindPositionalValues(const LocationBookmark &entity, QSqlQuery &query) const override;
     };
 }

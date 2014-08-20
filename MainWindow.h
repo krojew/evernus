@@ -40,6 +40,7 @@ namespace Evernus
     class AssetValueSnapshotRepository;
     class WalletJournalEntryRepository;
     class WalletTransactionRepository;
+    class LocationBookmarkRepository;
     class WalletSnapshotRepository;
     class ExternalOrderRepository;
     class FavoriteItemRepository;
@@ -83,6 +84,7 @@ namespace Evernus
                    const FilterTextRepository &filterRepo,
                    const OrderScriptRepository &orderScriptRepo,
                    const FavoriteItemRepository &favoriteItemRepo,
+                   const LocationBookmarkRepository &locationBookmarkRepo,
                    const ExternalOrderRepository &externalOrderRepo,
                    const MarketOrderProvider &orderProvider,
                    const MarketOrderProvider &corpOrderProvider,
@@ -188,6 +190,7 @@ namespace Evernus
         const FilterTextRepository &mFilterRepository;
         const OrderScriptRepository &mOrderScriptRepository;
         const FavoriteItemRepository &mFavoriteItemRepository;
+        const LocationBookmarkRepository &mLocationBookmarkRepository;
         const ExternalOrderRepository &mExternalOrderRepo;
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const AssetProvider &mAssetProvider;

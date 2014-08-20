@@ -31,6 +31,8 @@
 #include <QMenu>
 #include <QFont>
 
+#include "LocationBookmarkSelectDialog.h"
+#include "LocationBookmarkRepository.h"
 #include "ExternalOrderRepository.h"
 #include "FavoriteItemRepository.h"
 #include "MarketOrderRepository.h"
@@ -50,6 +52,7 @@ namespace Evernus
                                              const MarketOrderRepository &corpOrderRepo,
                                              const CharacterRepository &characterRepo,
                                              const FavoriteItemRepository &favoriteItemRepo,
+                                             const LocationBookmarkRepository &locationBookmarkRepo,
                                              const MarketOrderProvider &orderProvider,
                                              const MarketOrderProvider &corpOrderProvider,
                                              const EveDataProvider &dataProvider,
@@ -60,6 +63,7 @@ namespace Evernus
         , mOrderRepo(orderRepo)
         , mCorpOrderRepo(corpOrderRepo)
         , mFavoriteItemRepo(favoriteItemRepo)
+        , mLocationBookmarkRepo(locationBookmarkRepo)
         , mDataProvider(dataProvider)
         , mNameModel(mDataProvider)
         , mOrderNameModel(mDataProvider)
@@ -132,6 +136,14 @@ namespace Evernus
         mForwardBtn->setFlat(true);
         mForwardBtn->setDisabled(true);
         connect(mForwardBtn, &QPushButton::clicked, this, &MarketBrowserWidget::stepForward);
+
+        mBookmarksMenu = new QMenu{this};
+        fillBookmarksMenu();
+
+        auto bookmarksBtn = new QPushButton{QIcon{":/images/star.png"}, tr("Bookmarks"), this};
+        navigationLayout->addWidget(bookmarksBtn);
+        bookmarksBtn->setFlat(true);
+        bookmarksBtn->setMenu(mBookmarksMenu);
 
         mItemTabs = new QTabWidget{this};
         navigatorGroupLayout->addWidget(mItemTabs);
@@ -535,6 +547,42 @@ namespace Evernus
         applyFilter();
     }
 
+    void MarketBrowserWidget::addBookmark()
+    {
+        LocationBookmark bookmark;
+        bookmark.setRegionId(mRegionList->currentItem()->data(Qt::UserRole).toUInt());
+        bookmark.setSolarSystemId(mSolarSystemList->currentItem()->data(Qt::UserRole).toUInt());
+        bookmark.setStationId(mStationList->currentItem()->data(Qt::UserRole).toUInt());
+
+        mLocationBookmarkRepo.store(bookmark);
+
+        fillBookmarksMenu();
+    }
+
+    void MarketBrowserWidget::removeBookmark()
+    {
+        LocationBookmarkSelectDialog dlg{mDataProvider, mLocationBookmarkRepo, this};
+        if (dlg.exec() == QDialog::Accepted)
+        {
+            mLocationBookmarkRepo.remove(dlg.getSelectedBookmark());
+            fillBookmarksMenu();
+        }
+    }
+
+    void MarketBrowserWidget::selectBookmark()
+    {
+        const auto id = static_cast<const QAction *>(sender())->data().toUInt();
+
+        try
+        {
+            const auto bookmark = mLocationBookmarkRepo.find(id);
+            selectNagivationItems(bookmark->getRegionId(), bookmark->getSolarSystemId(), bookmark->getStationId());
+        }
+        catch (const LocationBookmarkRepository::NotFoundException &)
+        {
+        }
+    }
+
     ExternalOrderImporter::TypeLocationPairs MarketBrowserWidget::getImportTarget() const
     {
         ExternalOrderImporter::TypeLocationPairs result;
@@ -599,6 +647,22 @@ namespace Evernus
             types.emplace_back(item->getId());
 
         mFavoriteNameModel.setTypes(std::move(types));
+    }
+
+    void MarketBrowserWidget::fillBookmarksMenu()
+    {
+        mBookmarksMenu->clear();
+        mBookmarksMenu->addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
+        mBookmarksMenu->addAction(tr("Remove bookmark..."), this, SLOT(removeBookmark()));
+        mBookmarksMenu->addSeparator();
+
+        auto bookmarks = mLocationBookmarkRepo.fetchAll();
+        std::sort(std::begin(bookmarks), std::end(bookmarks), [this](const auto &a, const auto &b) {
+            return a->toString(mDataProvider) < b->toString(mDataProvider);
+        });
+
+        for (const auto &bookmark : bookmarks)
+            mBookmarksMenu->addAction(bookmark->toString(mDataProvider), this, SLOT(selectBookmark()))->setData(bookmark->getId());
     }
 
     void MarketBrowserWidget::showOrdersForType(EveType::IdType typeId)
@@ -730,10 +794,17 @@ namespace Evernus
         if (!found)
             setTypeId(mNagivationPointer->mTypeId);
 
+        selectNagivationItems(mNagivationPointer->mRegionId, mNagivationPointer->mSolarSystemId, mNagivationPointer->mStationId);
+
+        mBlockNavigationChange = false;
+    }
+
+    void MarketBrowserWidget::selectNagivationItems(uint regionId, uint solarSystemId, uint stationId)
+    {
         const auto regions = mRegionList->count();
         for (auto i = 0; i < regions; ++i)
         {
-            if (mRegionList->item(i)->data(Qt::UserRole).toUInt() == mNagivationPointer->mRegionId)
+            if (mRegionList->item(i)->data(Qt::UserRole).toUInt() == regionId)
             {
                 mSolarSystemList->blockSignals(true);
                 mRegionList->setCurrentRow(i);
@@ -745,7 +816,7 @@ namespace Evernus
         const auto systems = mSolarSystemList->count();
         for (auto i = 0; i < systems; ++i)
         {
-            if (mSolarSystemList->item(i)->data(Qt::UserRole).toUInt() == mNagivationPointer->mSolarSystemId)
+            if (mSolarSystemList->item(i)->data(Qt::UserRole).toUInt() == solarSystemId)
             {
                 mStationList->blockSignals(true);
                 mSolarSystemList->setCurrentRow(i);
@@ -757,15 +828,13 @@ namespace Evernus
         const auto stations = mStationList->count();
         for (auto i = 0; i < stations; ++i)
         {
-            if (mStationList->item(i)->data(Qt::UserRole).toUInt() == mNagivationPointer->mStationId)
+            if (mStationList->item(i)->data(Qt::UserRole).toUInt() == stationId)
             {
 
                 mStationList->setCurrentRow(i);
                 break;
             }
         }
-
-        mBlockNavigationChange = false;
     }
 
     void MarketBrowserWidget::setTypeId(EveType::IdType typeId)

@@ -32,9 +32,11 @@ class QCheckBox;
 class QGroupBox;
 class QSpinBox;
 class QLabel;
+class QMenu;
 
 namespace Evernus
 {
+    class LocationBookmarkRepository;
     class ExternalOrderRepository;
     class FavoriteItemRepository;
     class MarketOrderRepository;
@@ -53,6 +55,7 @@ namespace Evernus
                             const MarketOrderRepository &corpOrderRepo,
                             const CharacterRepository &characterRepo,
                             const FavoriteItemRepository &favoriteItemRepo,
+                            const LocationBookmarkRepository &locationBookmarkRepo,
                             const MarketOrderProvider &orderProvider,
                             const MarketOrderProvider &corpOrderProvider,
                             const EveDataProvider &dataProvider,
@@ -96,6 +99,10 @@ namespace Evernus
         void applyFilter();
         void resetFilter();
 
+        void addBookmark();
+        void removeBookmark();
+        void selectBookmark();
+
     private:
         struct NavigationState
         {
@@ -115,6 +122,7 @@ namespace Evernus
         const MarketOrderRepository &mOrderRepo;
         const MarketOrderRepository &mCorpOrderRepo;
         const FavoriteItemRepository &mFavoriteItemRepo;
+        const LocationBookmarkRepository &mLocationBookmarkRepo;
         const EveDataProvider &mDataProvider;
 
         ItemNameModel mNameModel;
@@ -127,6 +135,7 @@ namespace Evernus
 
         QPushButton *mBackBtn = nullptr;
         QPushButton *mForwardBtn = nullptr;
+        QMenu *mBookmarksMenu = nullptr;
 
         QTabWidget *mItemTabs = nullptr;
 
@@ -163,6 +172,7 @@ namespace Evernus
         void fillRegions();
         void fillKnownItemNames();
         void fillFavoriteItemNames();
+        void fillBookmarksMenu();
         void showOrdersForType(EveType::IdType typeId);
 
         QWidget *createItemNameListTab(ItemNameModel &model, QListView *&view, QLayout *toolbarLayout = nullptr);
@@ -172,6 +182,7 @@ namespace Evernus
         void updateNavigationButtons();
         void saveNavigationState();
         void restoreNavigationState();
+        void selectNagivationItems(uint regionId, uint solarSystemId, uint stationId);
 
         void setTypeId(EveType::IdType typeId);
     };

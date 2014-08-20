@@ -73,6 +73,7 @@ int main(int argc, char *argv[])
                                         app.getFilterTextRepository(),
                                         app.getOrderScriptRepository(),
                                         app.getFavoriteItemRepository(),
+                                        app.getLocationBookmarkRepository(),
                                         app.getExternalOrderRepository(),
                                         app.getMarketOrderProvider(),
                                         app.getCorpMarketOrderProvider(),

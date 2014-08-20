@@ -951,6 +951,11 @@ namespace Evernus
         return *mFavoriteItemRepository;
     }
 
+    const LocationBookmarkRepository &EvernusApplication::getLocationBookmarkRepository() const noexcept
+    {
+        return *mLocationBookmarkRepository;
+    }
+
     const ExternalOrderRepository &EvernusApplication::getExternalOrderRepository() const noexcept
     {
         return *mExternalOrderRepository;
@@ -1650,6 +1655,7 @@ namespace Evernus
         mFilterTextRepository.reset(new FilterTextRepository{mMainDb});
         mOrderScriptRepository.reset(new OrderScriptRepository{mMainDb});
         mFavoriteItemRepository.reset(new FavoriteItemRepository{mMainDb});
+        mLocationBookmarkRepository.reset(new LocationBookmarkRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
         mMarketGroupRepository.reset(new MarketGroupRepository{mEveDb});
         mMetaGroupRepository.reset(new MetaGroupRepository{mEveDb});
@@ -1679,6 +1685,7 @@ namespace Evernus
         mFilterTextRepository->create();
         mOrderScriptRepository->create();
         mFavoriteItemRepository->create();
+        mLocationBookmarkRepository->create();
         mRefTypeRepository->create();
     }
 
