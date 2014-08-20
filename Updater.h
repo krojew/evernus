@@ -20,6 +20,7 @@ namespace Evernus
 {
     template<class T>
     class Repository;
+    class ExternalOrderRepository;
     class MarketOrderRepository;
     class CacheTimerRepository;
     class ExternalOrder;
@@ -33,7 +34,7 @@ namespace Evernus
     public:
         void performVersionMigration(const CacheTimerRepository &cacheTimerRepo,
                                      const Repository<Character> &characterRepo,
-                                     const Repository<ExternalOrder> &externalOrderRepo,
+                                     const ExternalOrderRepository &externalOrderRepo,
                                      const MarketOrderRepository &characterOrderRepo,
                                      const MarketOrderRepository &corporationOrderRepo) const;
 

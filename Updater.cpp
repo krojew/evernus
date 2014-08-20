@@ -23,6 +23,7 @@
 #include <QFile>
 #include <QUrl>
 
+#include "ExternalOrderRepository.h"
 #include "MarketOrderRepository.h"
 #include "CacheTimerRepository.h"
 #include "EvernusApplication.h"
@@ -35,7 +36,7 @@ namespace Evernus
 {
     void Updater::performVersionMigration(const CacheTimerRepository &cacheTimerRepo,
                                           const Repository<Character> &characterRepo,
-                                          const Repository<ExternalOrder> &externalOrderRepo,
+                                          const ExternalOrderRepository &externalOrderRepo,
                                           const MarketOrderRepository &characterOrderRepo,
                                           const MarketOrderRepository &corporationOrderRepo) const
     {
@@ -90,11 +91,10 @@ namespace Evernus
                     if (index != -1)
                         settings.setValue(PathSettings::eveCachePathKey, cachePath.left(index));
 
-                    externalOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN volume_entered INTEGER NOT NULL DEFAULT 0"}.arg(externalOrderRepo.getTableName()));
-                    externalOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN volume_remaining INTEGER NOT NULL DEFAULT 0"}.arg(externalOrderRepo.getTableName()));
-                    externalOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN min_volume INTEGER NOT NULL DEFAULT 0"}.arg(externalOrderRepo.getTableName()));
-                    externalOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN issued DATETIME NOT NULL DEFAULT ''"}.arg(externalOrderRepo.getTableName()));
-                    externalOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN duration INTEGER NOT NULL DEFAULT 0"}.arg(externalOrderRepo.getTableName()));
+                    QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all item prices."));
+
+                    externalOrderRepo.exec(QString{"DROP TABLE %1"}.arg(externalOrderRepo.getTableName()));
+                    externalOrderRepo.create();
                 }
             }
         }
