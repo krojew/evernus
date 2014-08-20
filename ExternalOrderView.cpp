@@ -101,7 +101,7 @@ namespace Evernus
 
         if (mSource != nullptr)
         {
-            mView->sortByColumn(mSource->getPriceColumn(), mSource->getPriceSortOrder());
+            sortByPrice();
             mView->setItemDelegateForColumn(mSource->getVolumeColumn(), new MarketOrderVolumeItemDelegate{this});
         }
     }
@@ -122,6 +122,11 @@ namespace Evernus
     ::setFilter(double minPrice, double maxPrice, uint minVolume, uint maxVolume, ExternalOrderFilterProxyModel::SecurityStatuses security)
     {
         mProxy.setFilter(minPrice, maxPrice, minVolume, maxVolume, security);
+    }
+
+    void ExternalOrderView::sortByPrice()
+    {
+        mView->sortByColumn(mSource->getPriceColumn(), mSource->getPriceSortOrder());
     }
 
     void ExternalOrderView::handleModelReset()

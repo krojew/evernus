@@ -185,5 +185,7 @@ namespace Evernus
         void selectNagivationItems(uint regionId, uint solarSystemId, uint stationId);
 
         void setTypeId(EveType::IdType typeId);
+
+        void setGrouping(ExternalOrderModel::Grouping grouping);
     };
 }

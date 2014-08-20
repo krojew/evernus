@@ -12,8 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_map>
 #include <algorithm>
-#include <limits>
 
 #include <QLocale>
 #include <QColor>
@@ -48,7 +48,7 @@ namespace Evernus
 
     int ExternalOrderSellModel::columnCount(const QModelIndex &parent) const
     {
-        return 9;
+        return (mGrouping == Grouping::None) ? (9) : (8);
     }
 
     QVariant ExternalOrderSellModel::data(const QModelIndex &index, int role) const
@@ -57,86 +57,16 @@ namespace Evernus
             return QVariant{};
 
         const auto column = index.column();
-        const auto &order = mOrders[index.row()];
 
-        switch (role) {
-        case Qt::DisplayRole:
-            {
-                QLocale locale;
-
-                switch (column) {
-                case stationColumn:
-                    return mDataProvider.getLocationName(order->getStationId());
-                case deviationColumn:
-                    return QString{"%1%2"}.arg(static_cast<int>(computeDeviation(*order) * 100.)).arg(locale.percent());
-                case priceColumn:
-                    return locale.toCurrencyString(order->getPrice(), "ISK");
-                case volumeColumn:
-                    return QString{"%1/%2"}.arg(locale.toString(order->getVolumeRemaining())).arg(locale.toString(order->getVolumeEntered()));
-                case totalProfitColumn:
-                    return locale.toCurrencyString(order->getVolumeRemaining() * order->getPrice(), "ISK");
-                case totalSizeColumn:
-                    return QString{"%1m³"}.arg(locale.toString(order->getVolumeRemaining() * mDataProvider.getTypeVolume(order->getTypeId()), 'f', 2));
-                case issuedColumn:
-                    return TextUtils::dateTimeToString(order->getIssued().toLocalTime(), locale);
-                case durationColumn:
-                    {
-                        const auto timeEnd = order->getIssued().addDays(order->getDuration()).toMSecsSinceEpoch() / 1000;
-                        const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
-
-                        if (timeEnd > timeCur)
-                            return TextUtils::secondsToString(timeEnd - timeCur);
-                    }
-                    break;
-                case updatedColumn:
-                    return TextUtils::dateTimeToString(order->getUpdateTime().toLocalTime(), locale);
-                }
-            }
-            break;
-        case Qt::UserRole:
-            switch (column) {
-            case stationColumn:
-                return mDataProvider.getLocationName(order->getStationId());
-            case deviationColumn:
-                return computeDeviation(*order);
-            case priceColumn:
-                return order->getPrice();
-            case volumeColumn:
-                return QVariantList{} << order->getVolumeRemaining() << order->getVolumeEntered();
-            case totalProfitColumn:
-                return order->getVolumeRemaining() * order->getPrice();
-            case totalSizeColumn:
-                return order->getVolumeRemaining() * mDataProvider.getTypeVolume(order->getTypeId());
-            case issuedColumn:
-                return order->getIssued();
-            case durationColumn:
-                {
-                    const auto timeEnd = order->getIssued().addDays(order->getDuration()).toMSecsSinceEpoch() / 1000;
-                    const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
-
-                    if (timeEnd > timeCur)
-                        return timeEnd - timeCur;
-                }
-                break;
-            case updatedColumn:
-                return order->getUpdateTime();
-            }
-            break;
-        case Qt::ForegroundRole:
-            if (column == totalProfitColumn)
-                return QColor{Qt::darkGreen};
-            break;
-        case Qt::BackgroundRole:
-            if (mOwnOrders.find(order->getId()) != std::end(mOwnOrders))
-                return QColor{255, 255, 128};
-            break;
-        case Qt::ToolTipRole:
-            if (mOwnOrders.find(order->getId()) != std::end(mOwnOrders))
-                return tr("Your order");
-            break;
-        case Qt::TextAlignmentRole:
-            if (column == volumeColumn)
-                return Qt::AlignRight;
+        switch (mGrouping) {
+        case Grouping::None:
+            return getUngroupedData(column, role, *mOrders[index.row()]);
+        case Grouping::Station:
+            return getStationGroupedData(column, role, mGroupedData[index.row()]);
+        case Grouping::System:
+            return getSystemGroupedData(column, role, mGroupedData[index.row()]);
+        case Grouping::Region:
+            return getRegionGroupedData(column, role, mGroupedData[index.row()]);
         }
 
         return QVariant{};
@@ -146,25 +76,59 @@ namespace Evernus
     {
         if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
         {
-            switch (section) {
-            case stationColumn:
-                return tr("Station");
-            case deviationColumn:
-                return tr("Deviation");
-            case priceColumn:
-                return tr("Price");
-            case volumeColumn:
-                return tr("Volume");
-            case totalProfitColumn:
-                return tr("Total profit");
-            case totalSizeColumn:
-                return tr("Total size");
-            case issuedColumn:
-                return tr("Issued");
-            case durationColumn:
-                return tr("Time left");
-            case updatedColumn:
-                return tr("Imported");
+            if (mGrouping == Grouping::None)
+            {
+                switch (section) {
+                case stationColumn:
+                    return tr("Station");
+                case deviationColumn:
+                    return tr("Deviation");
+                case priceColumn:
+                    return tr("Price");
+                case volumeColumn:
+                    return tr("Volume");
+                case totalProfitColumn:
+                    return tr("Total profit");
+                case totalSizeColumn:
+                    return tr("Total size");
+                case issuedColumn:
+                    return tr("Issued");
+                case durationColumn:
+                    return tr("Time left");
+                case updatedColumn:
+                    return tr("Imported");
+                }
+            }
+            else
+            {
+                switch (section) {
+                case groupByColumn:
+                    switch (mGrouping) {
+                    case Grouping::Station:
+                        return tr("Station");
+                    case Grouping::System:
+                        return tr("Solar system");
+                    case Grouping::Region:
+                        return tr("Region");
+                    default:
+                        break;
+                    }
+                    break;
+                case lowestPriceColumn:
+                    return tr("Lowest price");
+                case medianPriceColumn:
+                    return tr("Median price");
+                case highestPriceColumn:
+                    return tr("Highest price");
+                case volumeColumn:
+                    return tr("Volume");
+                case groupedTotalProfitColumn:
+                    return tr("Total profit");
+                case ordersColumn:
+                    return tr("Orders");
+                case groupedTotalSizeColumn:
+                    return tr("Total size");
+                }
             }
         }
 
@@ -186,12 +150,15 @@ namespace Evernus
 
     int ExternalOrderSellModel::rowCount(const QModelIndex &parent) const
     {
-        return (parent.isValid()) ? (0) : (static_cast<int>(mOrders.size()));
+        if (parent.isValid())
+            return 0;
+
+        return (mGrouping == Grouping::None) ? (static_cast<int>(mOrders.size())) : (static_cast<int>(mGroupedData.size()));
     }
 
     int ExternalOrderSellModel::getPriceColumn() const
     {
-        return priceColumn;
+        return (mGrouping == Grouping::None) ? (priceColumn) : (lowestPriceColumn);
     }
 
     Qt::SortOrder ExternalOrderSellModel::getPriceSortOrder() const
@@ -348,6 +315,28 @@ namespace Evernus
         endResetModel();
     }
 
+    void ExternalOrderSellModel::setGrouping(Grouping grouping)
+    {
+        beginResetModel();
+
+        mGrouping = grouping;
+        switch (mGrouping) {
+        case Grouping::Station:
+            fillGroupedData<&ExternalOrder::getStationId>();
+            break;
+        case Grouping::System:
+            fillGroupedData<&ExternalOrder::getSolarSystemId>();
+            break;
+        case Grouping::Region:
+            fillGroupedData<&ExternalOrder::getRegionId>();
+            break;
+        default:
+            break;
+        }
+
+        endResetModel();
+    }
+
     double ExternalOrderSellModel::computeDeviation(const ExternalOrder &order) const
     {
         switch (mDeviationType) {
@@ -364,6 +353,230 @@ namespace Evernus
             return (mDeviationValue == 0.) ? (0.) : ((order.getPrice() - mDeviationValue) / mDeviationValue);
         default:
             return 0.;
+        }
+    }
+
+    QVariant ExternalOrderSellModel::getUngroupedData(int column, int role, const ExternalOrder &order) const
+    {
+        switch (role) {
+        case Qt::DisplayRole:
+            {
+                QLocale locale;
+
+                switch (column) {
+                case stationColumn:
+                    return mDataProvider.getLocationName(order.getStationId());
+                case deviationColumn:
+                    return QString{"%1%2"}.arg(static_cast<int>(computeDeviation(order) * 100.)).arg(locale.percent());
+                case priceColumn:
+                    return locale.toCurrencyString(order.getPrice(), "ISK");
+                case volumeColumn:
+                    return QString{"%1/%2"}.arg(locale.toString(order.getVolumeRemaining())).arg(locale.toString(order.getVolumeEntered()));
+                case totalProfitColumn:
+                    return locale.toCurrencyString(order.getVolumeRemaining() * order.getPrice(), "ISK");
+                case totalSizeColumn:
+                    return QString{"%1m³"}.arg(locale.toString(order.getVolumeRemaining() * mDataProvider.getTypeVolume(order.getTypeId()), 'f', 2));
+                case issuedColumn:
+                    return TextUtils::dateTimeToString(order.getIssued().toLocalTime(), locale);
+                case durationColumn:
+                    {
+                        const auto timeEnd = order.getIssued().addDays(order.getDuration()).toMSecsSinceEpoch() / 1000;
+                        const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
+
+                        if (timeEnd > timeCur)
+                            return TextUtils::secondsToString(timeEnd - timeCur);
+                    }
+                    break;
+                case updatedColumn:
+                    return TextUtils::dateTimeToString(order.getUpdateTime().toLocalTime(), locale);
+                }
+            }
+            break;
+        case Qt::UserRole:
+            switch (column) {
+            case stationColumn:
+                return mDataProvider.getLocationName(order.getStationId());
+            case deviationColumn:
+                return computeDeviation(order);
+            case priceColumn:
+                return order.getPrice();
+            case volumeColumn:
+                return QVariantList{} << order.getVolumeRemaining() << order.getVolumeEntered();
+            case totalProfitColumn:
+                return order.getVolumeRemaining() * order.getPrice();
+            case totalSizeColumn:
+                return order.getVolumeRemaining() * mDataProvider.getTypeVolume(order.getTypeId());
+            case issuedColumn:
+                return order.getIssued();
+            case durationColumn:
+                {
+                    const auto timeEnd = order.getIssued().addDays(order.getDuration()).toMSecsSinceEpoch() / 1000;
+                    const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
+
+                    if (timeEnd > timeCur)
+                        return timeEnd - timeCur;
+                }
+                break;
+            case updatedColumn:
+                return order.getUpdateTime();
+            }
+            break;
+        case Qt::ForegroundRole:
+            if (column == totalProfitColumn)
+                return QColor{Qt::darkGreen};
+            break;
+        case Qt::BackgroundRole:
+            if (mOwnOrders.find(order.getId()) != std::end(mOwnOrders))
+                return QColor{255, 255, 128};
+            break;
+        case Qt::ToolTipRole:
+            if (mOwnOrders.find(order.getId()) != std::end(mOwnOrders))
+                return tr("Your order");
+            break;
+        case Qt::TextAlignmentRole:
+            if (column == volumeColumn)
+                return Qt::AlignRight;
+        }
+
+        return QVariant{};
+    }
+
+    QVariant ExternalOrderSellModel::getStationGroupedData(int column, int role, const GroupedData &data) const
+    {
+        if (column == groupByColumn)
+        {
+            switch (role) {
+            case Qt::DisplayRole:
+            case Qt::UserRole:
+                return mDataProvider.getLocationName(data.mId);
+            }
+
+            return QVariant{};
+        }
+
+        return getGenericGroupedData(column, role, data);
+    }
+
+    QVariant ExternalOrderSellModel::getSystemGroupedData(int column, int role, const GroupedData &data) const
+    {
+        if (column == groupByColumn)
+        {
+            switch (role) {
+            case Qt::DisplayRole:
+            case Qt::UserRole:
+                return mDataProvider.getSolarSystemName(data.mId);
+            }
+
+            return QVariant{};
+        }
+
+        return getGenericGroupedData(column, role, data);
+    }
+
+    QVariant ExternalOrderSellModel::getRegionGroupedData(int column, int role, const GroupedData &data) const
+    {
+        if (column == groupByColumn)
+        {
+            switch (role) {
+            case Qt::DisplayRole:
+            case Qt::UserRole:
+                return mDataProvider.getRegionName(data.mId);
+            }
+
+            return QVariant{};
+        }
+
+        return getGenericGroupedData(column, role, data);
+    }
+
+    QVariant ExternalOrderSellModel::getGenericGroupedData(int column, int role, const GroupedData &data) const
+    {
+        switch (role) {
+        case Qt::DisplayRole:
+            {
+                QLocale locale;
+
+                switch (column) {
+                case lowestPriceColumn:
+                    return locale.toCurrencyString(data.mLowestPrice, "ISK");
+                case medianPriceColumn:
+                    return locale.toCurrencyString(data.mMedianPrice, "ISK");
+                case highestPriceColumn:
+                    return locale.toCurrencyString(data.mHighestPrice, "ISK");
+                case volumeColumn:
+                    return QString{"%1/%2"}.arg(locale.toString(data.mVolumeRemaining)).arg(locale.toString(data.mVolumeEntered));
+                case groupedTotalProfitColumn:
+                    return locale.toCurrencyString(data.mTotalProfit, "ISK");
+                case ordersColumn:
+                    return locale.toString(data.mCount);
+                case groupedTotalSizeColumn:
+                    return QString{"%1m³"}.arg(locale.toString(data.mVolumeRemaining * mDataProvider.getTypeVolume(mTypeId), 'f', 2));
+                }
+            }
+            break;
+        case Qt::UserRole:
+            switch (column) {
+            case lowestPriceColumn:
+                return data.mLowestPrice;
+            case medianPriceColumn:
+                return data.mMedianPrice;
+            case highestPriceColumn:
+                return data.mHighestPrice;
+            case volumeColumn:
+                return QVariantList{} << data.mVolumeRemaining << data.mVolumeEntered;
+            case groupedTotalProfitColumn:
+                return data.mTotalProfit;
+            case ordersColumn:
+                return data.mCount;
+            case groupedTotalSizeColumn:
+                return data.mVolumeRemaining * mDataProvider.getTypeVolume(mTypeId);
+            }
+        }
+
+        return QVariant{};
+    }
+
+    template<uint (ExternalOrder::* Func)() const>
+    void ExternalOrderSellModel::fillGroupedData()
+    {
+        mGroupedData.clear();
+
+        std::unordered_map<uint, GroupedData> data;
+        std::unordered_map<uint, std::vector<double>> prices;
+
+        for (const auto &order : mOrders)
+        {
+            const auto id = (order.get()->*Func)();
+            auto &curData = data[id];
+            curData.mId = id;
+
+            const auto price = order->getPrice();
+            if (curData.mLowestPrice > price)
+                curData.mLowestPrice = price;
+            if (curData.mHighestPrice < price)
+                curData.mHighestPrice = price;
+
+            prices[id].emplace_back(price);
+
+            curData.mVolumeEntered += order->getVolumeEntered();
+            curData.mVolumeRemaining += order->getVolumeRemaining();
+            curData.mTotalProfit += order->getVolumeRemaining() * price;
+
+            ++curData.mCount;
+
+            curData.mTotalSize += order->getVolumeRemaining() * mDataProvider.getTypeVolume(order->getTypeId());
+        }
+
+        mGroupedData.reserve(data.size());
+
+        for (auto &curData : data)
+        {
+            mGroupedData.emplace_back(std::move(curData.second));
+
+            auto &curPrices = prices[curData.first];
+            std::nth_element(std::begin(curPrices), std::next(std::begin(curPrices), curPrices.size() / 2), std::end(curPrices));
+
+            mGroupedData.back().mMedianPrice = curPrices[curPrices.size() / 2];
         }
     }
 }

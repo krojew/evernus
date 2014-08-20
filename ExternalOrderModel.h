@@ -32,6 +32,14 @@ namespace Evernus
             Fixed
         };
 
+        enum class Grouping
+        {
+            None,
+            Station,
+            System,
+            Region
+        };
+
         using QAbstractItemModel::QAbstractItemModel;
         virtual ~ExternalOrderModel() = default;
 

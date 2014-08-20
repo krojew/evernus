@@ -15,6 +15,7 @@
 #include <QSortFilterProxyModel>
 #include <QDoubleSpinBox>
 #include <QWidgetAction>
+#include <QRadioButton>
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -144,6 +145,41 @@ namespace Evernus
         navigationLayout->addWidget(bookmarksBtn);
         bookmarksBtn->setFlat(true);
         bookmarksBtn->setMenu(mBookmarksMenu);
+
+        auto groupingGroup = new QGroupBox{tr("Grouping"), this};
+        navigatorGroupLayout->addWidget(groupingGroup);
+
+        auto groupingLayout = new QHBoxLayout{};
+        groupingGroup->setLayout(groupingLayout);
+
+        auto groupingBtn = new QRadioButton{tr("None"), this};
+        groupingLayout->addWidget(groupingBtn);
+        groupingBtn->setChecked(true);
+        connect(groupingBtn, &QRadioButton::toggled, this, [this](bool checked) {
+            if (checked)
+                setGrouping(ExternalOrderModel::Grouping::None);
+        });
+
+        groupingBtn = new QRadioButton{tr("Station"), this};
+        groupingLayout->addWidget(groupingBtn);
+        connect(groupingBtn, &QRadioButton::toggled, this, [this](bool checked) {
+            if (checked)
+                setGrouping(ExternalOrderModel::Grouping::Station);
+        });
+
+        groupingBtn = new QRadioButton{tr("System"), this};
+        groupingLayout->addWidget(groupingBtn);
+        connect(groupingBtn, &QRadioButton::toggled, this, [this](bool checked) {
+            if (checked)
+                setGrouping(ExternalOrderModel::Grouping::System);
+        });
+
+        groupingBtn = new QRadioButton{tr("Region"), this};
+        groupingLayout->addWidget(groupingBtn);
+        connect(groupingBtn, &QRadioButton::toggled, this, [this](bool checked) {
+            if (checked)
+                setGrouping(ExternalOrderModel::Grouping::Region);
+        });
 
         mItemTabs = new QTabWidget{this};
         navigatorGroupLayout->addWidget(mItemTabs);
@@ -846,5 +882,11 @@ namespace Evernus
             mInfoLabel->setText(tr("%1 (%2m³)").arg(mDataProvider.getTypeName(typeId)).arg(mDataProvider.getTypeVolume(typeId)));
         else
             mInfoLabel->setText(tr("select an item"));
+    }
+
+    void MarketBrowserWidget::setGrouping(ExternalOrderModel::Grouping grouping)
+    {
+        mExternalOrderSellModel.setGrouping(grouping);
+        mSellView->sortByPrice();
     }
 }

@@ -43,6 +43,8 @@ namespace Evernus
 
         void setFilter(double minPrice, double maxPrice, uint minVolume, uint maxVolume, ExternalOrderFilterProxyModel::SecurityStatuses security);
 
+        void sortByPrice();
+
     private slots:
         void handleModelReset();
 

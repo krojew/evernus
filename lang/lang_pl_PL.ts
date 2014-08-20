@@ -1108,56 +1108,90 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ExternalOrderSellModel</name>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="135"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="434"/>
         <source>Your order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="151"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="83"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="108"/>
         <source>Station</source>
         <translation type="unfinished">Stacja</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="153"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="85"/>
         <source>Deviation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="155"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="87"/>
         <source>Price</source>
         <translation type="unfinished">Cena</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="157"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="89"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="124"/>
         <source>Volume</source>
         <translation type="unfinished">Wolumen</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="159"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="91"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="126"/>
         <source>Total profit</source>
         <translation type="unfinished">Całkowity zysk</translation>
+    </message>
+    <message>
+        <location filename="../ExternalOrderSellModel.cpp" line="110"/>
+        <source>Solar system</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ExternalOrderSellModel.cpp" line="112"/>
+        <source>Region</source>
+        <translation type="unfinished">Region</translation>
+    </message>
+    <message>
+        <location filename="../ExternalOrderSellModel.cpp" line="118"/>
+        <source>Lowest price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ExternalOrderSellModel.cpp" line="120"/>
+        <source>Median price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ExternalOrderSellModel.cpp" line="122"/>
+        <source>Highest price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ExternalOrderSellModel.cpp" line="128"/>
+        <source>Orders</source>
+        <translation type="unfinished">Zlecenia</translation>
     </message>
     <message>
         <source>Margin</source>
         <translation type="obsolete">Marża</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="161"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="93"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="130"/>
         <source>Total size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="163"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="95"/>
         <source>Issued</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="165"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="97"/>
         <source>Time left</source>
         <translation type="unfinished">Pozostały czas</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="167"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="99"/>
         <source>Imported</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1200,8 +1234,8 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="148"/>
-        <location filename="../ExternalOrderView.cpp" line="154"/>
+        <location filename="../ExternalOrderView.cpp" line="153"/>
+        <location filename="../ExternalOrderView.cpp" line="159"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2052,209 +2086,234 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarketBrowserWidget</name>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="79"/>
+        <location filename="../MarketBrowserWidget.cpp" line="80"/>
         <source>Import prices from Web</source>
         <translation type="unfinished">Importuj ceny z sieci</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="84"/>
+        <location filename="../MarketBrowserWidget.cpp" line="85"/>
         <source>Import prices from logs</source>
         <translation type="unfinished">Importuj ceny z logów</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="89"/>
+        <location filename="../MarketBrowserWidget.cpp" line="90"/>
         <source>Import prices from cache</source>
         <translation type="unfinished">Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="94"/>
-        <location filename="../MarketBrowserWidget.cpp" line="217"/>
+        <location filename="../MarketBrowserWidget.cpp" line="95"/>
+        <location filename="../MarketBrowserWidget.cpp" line="253"/>
         <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="119"/>
+        <location filename="../MarketBrowserWidget.cpp" line="120"/>
         <source>Navigator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="128"/>
+        <location filename="../MarketBrowserWidget.cpp" line="129"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="134"/>
+        <location filename="../MarketBrowserWidget.cpp" line="135"/>
         <source>Forward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="143"/>
+        <location filename="../MarketBrowserWidget.cpp" line="144"/>
         <source>Bookmarks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="151"/>
+        <location filename="../MarketBrowserWidget.cpp" line="149"/>
+        <source>Grouping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="155"/>
+        <source>None</source>
+        <translation type="unfinished">Brak</translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="163"/>
+        <source>Station</source>
+        <translation type="unfinished">Stacja</translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="170"/>
+        <source>System</source>
+        <translation type="unfinished">System</translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="177"/>
+        <source>Region</source>
+        <translation type="unfinished">Region</translation>
+    </message>
+    <message>
+        <location filename="../MarketBrowserWidget.cpp" line="187"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="157"/>
+        <location filename="../MarketBrowserWidget.cpp" line="193"/>
         <source>My orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="165"/>
+        <location filename="../MarketBrowserWidget.cpp" line="201"/>
         <source>Favorite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="168"/>
+        <location filename="../MarketBrowserWidget.cpp" line="204"/>
         <source>Add...</source>
         <translation type="unfinished">Dodaj...</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="173"/>
+        <location filename="../MarketBrowserWidget.cpp" line="209"/>
         <source>Remove</source>
         <translation type="unfinished">Usuń</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="225"/>
+        <location filename="../MarketBrowserWidget.cpp" line="261"/>
         <source>Min. price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="229"/>
-        <location filename="../MarketBrowserWidget.cpp" line="237"/>
-        <location filename="../MarketBrowserWidget.cpp" line="245"/>
-        <location filename="../MarketBrowserWidget.cpp" line="252"/>
+        <location filename="../MarketBrowserWidget.cpp" line="265"/>
+        <location filename="../MarketBrowserWidget.cpp" line="273"/>
+        <location filename="../MarketBrowserWidget.cpp" line="281"/>
+        <location filename="../MarketBrowserWidget.cpp" line="288"/>
         <source>any</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="233"/>
+        <location filename="../MarketBrowserWidget.cpp" line="269"/>
         <source>Max. price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="241"/>
+        <location filename="../MarketBrowserWidget.cpp" line="277"/>
         <source>Min. volume:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="248"/>
+        <location filename="../MarketBrowserWidget.cpp" line="284"/>
         <source>Max. volume:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="255"/>
+        <location filename="../MarketBrowserWidget.cpp" line="291"/>
         <source>Security status:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="260"/>
+        <location filename="../MarketBrowserWidget.cpp" line="296"/>
         <source>-1.0 - 0.0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="265"/>
+        <location filename="../MarketBrowserWidget.cpp" line="301"/>
         <source>0.1 - 0.4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="270"/>
+        <location filename="../MarketBrowserWidget.cpp" line="306"/>
         <source>0.5 - 1.0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="277"/>
+        <location filename="../MarketBrowserWidget.cpp" line="313"/>
         <source>Apply</source>
         <translation type="unfinished">Zastosuj</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="281"/>
+        <location filename="../MarketBrowserWidget.cpp" line="317"/>
         <source>Reset</source>
         <translation type="unfinished">Resetuj</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="288"/>
-        <location filename="../MarketBrowserWidget.cpp" line="848"/>
+        <location filename="../MarketBrowserWidget.cpp" line="324"/>
+        <location filename="../MarketBrowserWidget.cpp" line="884"/>
         <source>select an item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="512"/>
+        <location filename="../MarketBrowserWidget.cpp" line="548"/>
         <source>Add to favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="655"/>
+        <location filename="../MarketBrowserWidget.cpp" line="691"/>
         <source>Add bookmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="656"/>
+        <location filename="../MarketBrowserWidget.cpp" line="692"/>
         <source>Remove bookmark...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="697"/>
+        <location filename="../MarketBrowserWidget.cpp" line="733"/>
         <source>type in wildcard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="715"/>
+        <location filename="../MarketBrowserWidget.cpp" line="751"/>
         <source>Deviation [median]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="717"/>
+        <location filename="../MarketBrowserWidget.cpp" line="753"/>
         <source>Deviation [best price]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="719"/>
+        <location filename="../MarketBrowserWidget.cpp" line="755"/>
         <source>Deviation [custom cost]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="721"/>
+        <location filename="../MarketBrowserWidget.cpp" line="757"/>
         <source>Deviation [fixed]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="723"/>
+        <location filename="../MarketBrowserWidget.cpp" line="759"/>
         <source>Deviation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="846"/>
+        <location filename="../MarketBrowserWidget.cpp" line="882"/>
         <source>%1 (%2m³)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="184"/>
+        <location filename="../MarketBrowserWidget.cpp" line="220"/>
         <source>Regions [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="380"/>
-        <location filename="../MarketBrowserWidget.cpp" line="417"/>
-        <location filename="../MarketBrowserWidget.cpp" line="627"/>
+        <location filename="../MarketBrowserWidget.cpp" line="416"/>
+        <location filename="../MarketBrowserWidget.cpp" line="453"/>
+        <location filename="../MarketBrowserWidget.cpp" line="663"/>
         <source>(all)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="194"/>
+        <location filename="../MarketBrowserWidget.cpp" line="230"/>
         <source>Solar systems [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="204"/>
+        <location filename="../MarketBrowserWidget.cpp" line="240"/>
         <source>Stations [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="292"/>
+        <location filename="../MarketBrowserWidget.cpp" line="328"/>
         <source>Sell orders</source>
         <translation type="unfinished">Zlecenia sprzedaży</translation>
     </message>

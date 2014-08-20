@@ -17,6 +17,7 @@
 #include <unordered_set>
 #include <vector>
 #include <memory>
+#include <limits>
 
 #include "ExternalOrderModel.h"
 #include "ExternalOrder.h"
@@ -78,16 +79,39 @@ namespace Evernus
 
         void changeDeviationSource(DeviationSourceType type, double value);
 
+        void setGrouping(Grouping grouping);
+
     private:
         static const auto stationColumn = 0;
         static const auto deviationColumn = 1;
         static const auto priceColumn = 2;
-        static const auto volumeColumn = 3;
-        static const auto totalProfitColumn = 4;
+        static const auto totalProfitColumn = 3;
+        static const auto volumeColumn = 4;
         static const auto totalSizeColumn = 5;
         static const auto issuedColumn = 6;
         static const auto durationColumn = 7;
         static const auto updatedColumn = 8;
+
+        static const auto groupByColumn = 0;
+        static const auto lowestPriceColumn = 1;
+        static const auto medianPriceColumn = 2;
+        static const auto highestPriceColumn = 3;
+        static const auto groupedTotalProfitColumn = 5;
+        static const auto ordersColumn = 6;
+        static const auto groupedTotalSizeColumn = 7;
+
+        struct GroupedData
+        {
+            uint mId = 0;
+            double mLowestPrice = std::numeric_limits<double>::max();
+            double mMedianPrice = 0.;
+            double mHighestPrice = 0.;
+            uint mVolumeEntered = 0;
+            uint mVolumeRemaining = 0;
+            double mTotalProfit = 0.;
+            uint mCount = 0;
+            double mTotalSize = 0.;
+        };
 
         const EveDataProvider &mDataProvider;
         const ExternalOrderRepository &mOrderRepo;
@@ -109,9 +133,21 @@ namespace Evernus
         uint mTotalVolume = 0;
 
         std::vector<std::shared_ptr<ExternalOrder>> mOrders;
+        std::vector<GroupedData> mGroupedData;
 
         std::unordered_set<MarketOrder::IdType> mOwnOrders;
 
+        Grouping mGrouping = Grouping::None;
+
         double computeDeviation(const ExternalOrder &order) const;
+
+        QVariant getUngroupedData(int column, int role, const ExternalOrder &order) const;
+        QVariant getStationGroupedData(int column, int role, const GroupedData &data) const;
+        QVariant getSystemGroupedData(int column, int role, const GroupedData &data) const;
+        QVariant getRegionGroupedData(int column, int role, const GroupedData &data) const;
+        QVariant getGenericGroupedData(int column, int role, const GroupedData &data) const;
+
+        template<uint (ExternalOrder::* Func)() const>
+        void fillGroupedData();
     };
 }
