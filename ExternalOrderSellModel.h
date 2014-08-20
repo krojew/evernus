@@ -67,6 +67,8 @@ namespace Evernus
 
         virtual const ExternalOrder &getOrder(size_t row) const override;
 
+        double getPrice(const QModelIndex &index) const;
+
         void setCharacter(Character::IdType id);
         void setRegionId(uint id);
         void setSolarSystemId(uint id);

@@ -40,8 +40,8 @@ namespace Evernus
         mainLayout->addWidget(createTypeButton(tr("Best buy/sell price"), ExternalOrderModel::DeviationSourceType::Best));
         mainLayout->addWidget(createTypeButton(tr("Custom cost"), ExternalOrderModel::DeviationSourceType::Cost));
 
-        radio = createTypeButton(tr("Fixed price"), ExternalOrderModel::DeviationSourceType::Fixed);
-        mainLayout->addWidget(radio);
+        mFixedValueBtn = createTypeButton(tr("Fixed price"), ExternalOrderModel::DeviationSourceType::Fixed);
+        mainLayout->addWidget(mFixedValueBtn);
 
         mPriceEdit = new QDoubleSpinBox{this};
         mainLayout->addWidget(mPriceEdit);
@@ -51,7 +51,7 @@ namespace Evernus
         mPriceEdit->setEnabled(false);
         connect(mPriceEdit, SIGNAL(valueChanged(double)), this, SLOT(valueChanged(double)));
 
-        connect(radio, &QRadioButton::toggled, mPriceEdit, &QDoubleSpinBox::setEnabled);
+        connect(mFixedValueBtn, &QRadioButton::toggled, mPriceEdit, &QDoubleSpinBox::setEnabled);
     }
 
     ExternalOrderModel::DeviationSourceType DeviationSourceWidget::getCurrentType() const noexcept
@@ -62,6 +62,18 @@ namespace Evernus
     double DeviationSourceWidget::getCurrentValue() const
     {
         return mPriceEdit->value();
+    }
+
+    void DeviationSourceWidget::setDeviationValue(double value)
+    {
+        mPriceEdit->blockSignals(true);
+        mPriceEdit->setValue(value);
+        mPriceEdit->blockSignals(false);
+
+        if (mFixedValueBtn->isChecked())
+            emit sourceChanged(ExternalOrderModel::DeviationSourceType::Fixed, value);
+        else
+            mFixedValueBtn->setChecked(true);
     }
 
     void DeviationSourceWidget::typeChanged(bool checked)

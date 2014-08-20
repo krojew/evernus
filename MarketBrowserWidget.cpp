@@ -337,6 +337,14 @@ namespace Evernus
         sellLayout->addWidget(mSellView);
         mSellView->setModel(&mExternalOrderSellModel);
 
+        auto setSellDeviationValueAct = new QAction{QIcon{":/images/tag.png"}, tr("Set as deviation reference"), this};
+        connect(setSellDeviationValueAct, &QAction::triggered, [deviationWidget, this] {
+            const auto index = mSellView->currentIndex();
+            if (index.isValid())
+                deviationWidget->setDeviationValue(mExternalOrderSellModel.getPrice(index));
+        });
+        mSellView->addTreeViewAction(setSellDeviationValueAct);
+
         auto buyGroup = new QGroupBox{tr("Buy orders"), this};
         orderLayout->addWidget(buyGroup);
 
@@ -346,6 +354,14 @@ namespace Evernus
         mBuyView = new ExternalOrderView{costProvider, mDataProvider, this};
         buyLayout->addWidget(mBuyView);
         mBuyView->setModel(&mExternalOrderBuyModel);
+
+        auto setBuyDeviationValueAct = new QAction{QIcon{":/images/tag.png"}, tr("Set as deviation reference"), this};
+        connect(setBuyDeviationValueAct, &QAction::triggered, [deviationWidget, this] {
+            const auto index = mBuyView->currentIndex();
+            if (index.isValid())
+                deviationWidget->setDeviationValue(mExternalOrderBuyModel.getPrice(index));
+        });
+        mBuyView->addTreeViewAction(setBuyDeviationValueAct);
 
         fillRegions();
     }

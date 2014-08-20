@@ -45,6 +45,10 @@ namespace Evernus
 
         void sortByPrice();
 
+        void addTreeViewAction(QAction *action);
+
+        QModelIndex currentIndex() const;
+
     private slots:
         void handleModelReset();
 

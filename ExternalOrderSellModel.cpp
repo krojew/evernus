@@ -206,6 +206,23 @@ namespace Evernus
         return *mOrders[row];
     }
 
+    double ExternalOrderSellModel::getPrice(const QModelIndex &index) const
+    {
+        if (!index.isValid())
+            return 0.;
+
+        switch (mGrouping) {
+        case Grouping::None:
+            return mOrders[index.row()]->getPrice();
+        case Grouping::Station:
+        case Grouping::System:
+        case Grouping::Region:
+            return mGroupedData[index.row()].mLowestPrice;
+        }
+
+        return 0.;
+    }
+
     void ExternalOrderSellModel::setCharacter(Character::IdType id)
     {
         beginResetModel();

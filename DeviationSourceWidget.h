@@ -35,6 +35,8 @@ namespace Evernus
         ExternalOrderModel::DeviationSourceType getCurrentType() const noexcept;
         double getCurrentValue() const;
 
+        void setDeviationValue(double value);
+
     signals:
         void sourceChanged(ExternalOrderModel::DeviationSourceType type, double value);
 
@@ -45,6 +47,7 @@ namespace Evernus
     private:
         static const char * const typePropertyName;
 
+        QRadioButton *mFixedValueBtn = nullptr;
         QDoubleSpinBox *mPriceEdit = nullptr;
         ExternalOrderModel::DeviationSourceType mCurrentType = ExternalOrderModel::DeviationSourceType::Median;
 

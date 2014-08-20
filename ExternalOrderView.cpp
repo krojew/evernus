@@ -129,6 +129,16 @@ namespace Evernus
         mView->sortByColumn(mSource->getPriceColumn(), mSource->getPriceSortOrder());
     }
 
+    void ExternalOrderView::addTreeViewAction(QAction *action)
+    {
+        mView->addAction(action);
+    }
+
+    QModelIndex ExternalOrderView::currentIndex() const
+    {
+        return mProxy.mapToSource(mView->currentIndex());
+    }
+
     void ExternalOrderView::handleModelReset()
     {
         const auto curLocale = locale();
