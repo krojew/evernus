@@ -92,7 +92,7 @@ namespace Evernus
                 case minQunatityColumn:
                     return tr("Min. quantity");
                 case totalCostColumn:
-                    return tr("Total profit");
+                    return tr("Total cost");
                 case totalSizeColumn:
                     return tr("Total size");
                 case issuedColumn:
@@ -127,7 +127,7 @@ namespace Evernus
                 case volumeColumn:
                     return tr("Volume");
                 case groupedTotalCostColumn:
-                    return tr("Total profit");
+                    return tr("Total cost");
                 case ordersColumn:
                     return tr("Orders");
                 case groupedTotalSizeColumn:
@@ -472,7 +472,7 @@ namespace Evernus
             break;
         case Qt::ForegroundRole:
             if (column == totalCostColumn)
-                return QColor{Qt::darkGreen};
+                return QColor{Qt::darkRed};
             break;
         case Qt::BackgroundRole:
             if (mOwnOrders.find(order.getId()) != std::end(mOwnOrders))
@@ -583,7 +583,7 @@ namespace Evernus
             break;
         case Qt::ForegroundRole:
             if (column == groupedTotalCostColumn)
-                return QColor{Qt::darkGreen};
+                return QColor{Qt::darkRed};
             break;
         case Qt::TextAlignmentRole:
             if (column == volumeColumn)
