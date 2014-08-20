@@ -1108,7 +1108,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ExternalOrderSellModel</name>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="434"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="442"/>
         <source>Your order</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2236,7 +2236,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="324"/>
-        <location filename="../MarketBrowserWidget.cpp" line="884"/>
+        <location filename="../MarketBrowserWidget.cpp" line="891"/>
         <source>select an item</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2286,7 +2286,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="882"/>
+        <location filename="../MarketBrowserWidget.cpp" line="889"/>
         <source>%1 (%2m³)</source>
         <translation type="unfinished"></translation>
     </message>

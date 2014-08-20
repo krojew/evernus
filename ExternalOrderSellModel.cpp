@@ -302,6 +302,9 @@ namespace Evernus
         if (mMinPrice == std::numeric_limits<double>::max())
             mMinPrice = 0.;
 
+        if (mGrouping != Grouping::None)
+            refreshGroupedData();
+
         endResetModel();
     }
 
@@ -320,19 +323,7 @@ namespace Evernus
         beginResetModel();
 
         mGrouping = grouping;
-        switch (mGrouping) {
-        case Grouping::Station:
-            fillGroupedData<&ExternalOrder::getStationId>();
-            break;
-        case Grouping::System:
-            fillGroupedData<&ExternalOrder::getSolarSystemId>();
-            break;
-        case Grouping::Region:
-            fillGroupedData<&ExternalOrder::getRegionId>();
-            break;
-        default:
-            break;
-        }
+        refreshGroupedData();
 
         endResetModel();
     }
@@ -353,6 +344,23 @@ namespace Evernus
             return (mDeviationValue == 0.) ? (0.) : ((order.getPrice() - mDeviationValue) / mDeviationValue);
         default:
             return 0.;
+        }
+    }
+
+    void ExternalOrderSellModel::refreshGroupedData()
+    {
+        switch (mGrouping) {
+        case Grouping::Station:
+            fillGroupedData<&ExternalOrder::getStationId>();
+            break;
+        case Grouping::System:
+            fillGroupedData<&ExternalOrder::getSolarSystemId>();
+            break;
+        case Grouping::Region:
+            fillGroupedData<&ExternalOrder::getRegionId>();
+            break;
+        default:
+            break;
         }
     }
 

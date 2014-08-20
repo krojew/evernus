@@ -141,6 +141,8 @@ namespace Evernus
 
         double computeDeviation(const ExternalOrder &order) const;
 
+        void refreshGroupedData();
+
         QVariant getUngroupedData(int column, int role, const ExternalOrder &order) const;
         QVariant getStationGroupedData(int column, int role, const GroupedData &data) const;
         QVariant getSystemGroupedData(int column, int role, const GroupedData &data) const;

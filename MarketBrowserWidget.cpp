@@ -866,8 +866,15 @@ namespace Evernus
         {
             if (mStationList->item(i)->data(Qt::UserRole).toUInt() == stationId)
             {
+                if (mStationList->currentRow() != i)
+                {
+                    mStationList->setCurrentRow(i);
+                }
+                else
+                {
+                    mExternalOrderSellModel.reset();
+                }
 
-                mStationList->setCurrentRow(i);
                 break;
             }
         }
