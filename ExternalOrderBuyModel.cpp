@@ -355,7 +355,7 @@ namespace Evernus
         case DeviationSourceType::Median:
             return (mMedianPrice == 0.) ? (0.) : ((order.getPrice() - mMedianPrice) / mMedianPrice);
         case DeviationSourceType::Best:
-            return (mMinPrice == 0.) ? (0.) : ((order.getPrice() - mMinPrice) / mMinPrice);
+            return (mMaxPrice == 0.) ? (0.) : ((order.getPrice() - mMaxPrice) / mMaxPrice);
         case DeviationSourceType::Cost:
             {
                 const auto cost = mCostProvider.fetchForCharacterAndType(mCharacterId, order.getTypeId())->getCost();
