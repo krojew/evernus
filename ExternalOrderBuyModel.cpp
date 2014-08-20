@@ -483,7 +483,7 @@ namespace Evernus
                 return tr("Your order");
             break;
         case Qt::TextAlignmentRole:
-            if (column == volumeColumn)
+            if (column == volumeColumn || column == deviationColumn)
                 return Qt::AlignRight;
         }
 
