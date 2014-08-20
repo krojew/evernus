@@ -789,15 +789,15 @@ namespace Evernus
     {
         switch (type) {
         case ExternalOrderModel::DeviationSourceType::Median:
-            return tr("Deviation [median]");
+            return tr("Deviation [median]  ");
         case ExternalOrderModel::DeviationSourceType::Best:
-            return tr("Deviation [best price]");
+            return tr("Deviation [best price]  ");
         case ExternalOrderModel::DeviationSourceType::Cost:
-            return tr("Deviation [custom cost]");
+            return tr("Deviation [custom cost]  ");
         case ExternalOrderModel::DeviationSourceType::Fixed:
-            return tr("Deviation [fixed]");
+            return tr("Deviation [fixed]  ");
         default:
-            return tr("Deviation");
+            return tr("Deviation  ");
         }
     }
 
