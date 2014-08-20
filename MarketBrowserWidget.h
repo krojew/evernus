@@ -83,8 +83,11 @@ namespace Evernus
         void stepForward();
 
         void addFavoriteItem();
+        void addFavoriteItemFromAction();
         void removeFavoriteItem();
         void selectFavoriteItem(const QModelIndex &index);
+
+        void showItemContextMenu(const QPoint &pos);
 
     private:
         struct NavigationState

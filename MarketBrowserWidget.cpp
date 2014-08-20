@@ -130,8 +130,14 @@ namespace Evernus
         mItemTabs->addTab(createItemNameListTab(mNameModel, mKnownItemList), tr("Name"));
         fillKnownItemNames();
 
+        mKnownItemList->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(mKnownItemList, &QListView::customContextMenuRequested, this, &MarketBrowserWidget::showItemContextMenu);
+
         mItemTabs->addTab(createItemNameListTab(mOrderNameModel, mOrderItemList), tr("My orders"));
         fillOrderItemNames();
+
+        mOrderItemList->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(mOrderItemList, &QListView::customContextMenuRequested, this, &MarketBrowserWidget::showItemContextMenu);
 
         auto favoriteToolbarLayout = new QHBoxLayout{};
 
@@ -376,6 +382,16 @@ namespace Evernus
         }
     }
 
+    void MarketBrowserWidget::addFavoriteItemFromAction()
+    {
+        const auto action = static_cast<const QAction *>(sender());
+
+        FavoriteItem item{action->data().value<EveType::IdType>()};
+        mFavoriteItemRepo.store(item);
+
+        fillFavoriteItemNames();
+    }
+
     void MarketBrowserWidget::removeFavoriteItem()
     {
         auto selectionModel = mFavoriteItemList->selectionModel();
@@ -393,6 +409,21 @@ namespace Evernus
     void MarketBrowserWidget::selectFavoriteItem(const QModelIndex &index)
     {
         mRemoveFavoriteItemBtn->setEnabled(index.isValid());
+    }
+
+    void MarketBrowserWidget::showItemContextMenu(const QPoint &pos)
+    {
+        const auto list = static_cast<const QListView *>(sender());
+        const auto index = list->indexAt(pos);
+        if (!index.isValid())
+            return;
+
+        QMenu menu;
+
+        auto action = menu.addAction(tr("Add to favorites"), this, SLOT(addFavoriteItemFromAction()));
+        action->setData(list->model()->data(index, Qt::UserRole));
+
+        menu.exec(list->mapToGlobal(pos));
     }
 
     ExternalOrderImporter::TypeLocationPairs MarketBrowserWidget::getImportTarget() const
