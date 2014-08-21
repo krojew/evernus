@@ -77,8 +77,6 @@ namespace Evernus
         virtual void bindValues(const ExternalOrder &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const ExternalOrder &entity, QSqlQuery &query) const override;
 
-        virtual size_t getMaxRowsPerInsert() const override;
-
         EntityList fetchByType(ExternalOrder::TypeIdType typeId, ExternalOrder::Type type) const;
         EntityList fetchByTypeAndStation(ExternalOrder::TypeIdType typeId,
                                              uint stationId,

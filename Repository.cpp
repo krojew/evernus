@@ -259,6 +259,7 @@ namespace Evernus
     template<class T>
     size_t Repository<T>::getMaxRowsPerInsert() const
     {
-        return 100;
+        const auto maxSqliteBoundVariables = 1000;
+        return maxSqliteBoundVariables / getColumns().count();
     }
 }

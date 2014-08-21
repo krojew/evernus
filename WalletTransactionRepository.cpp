@@ -51,6 +51,7 @@ namespace Evernus
         walletTransaction->setLocationId(record.value("location_id").toULongLong());
         walletTransaction->setType(static_cast<WalletTransaction::Type>(record.value("type").toInt()));
         walletTransaction->setJournalId(record.value("journal_id").value<WalletJournalEntry::IdType>());
+        walletTransaction->setCorporationId(record.value("corporation_id").toUInt());
         walletTransaction->setIgnored(record.value("ignored").toBool());
         walletTransaction->setNew(false);
 
@@ -71,6 +72,7 @@ namespace Evernus
             location_id BIGINT NOT NULL,
             type TINYINT NOT NULL,
             journal_id BIGINT NOT NULL,
+            corporation_id INTEGER NOT NULL,
             ignored TINYINT NOT NULL
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
@@ -243,6 +245,7 @@ namespace Evernus
             << "location_id"
             << "type"
             << "journal_id"
+            << "corporation_id"
             << "ignored";
     }
 
@@ -261,6 +264,7 @@ namespace Evernus
         query.bindValue(":location_id", entity.getLocationId());
         query.bindValue(":type", static_cast<int>(entity.getType()));
         query.bindValue(":journal_id", entity.getJournalId());
+        query.bindValue(":corporation_id", entity.getCorporationId());
         query.bindValue(":ignored", entity.isIgnored());
     }
 
@@ -279,11 +283,7 @@ namespace Evernus
         query.addBindValue(entity.getLocationId());
         query.addBindValue(static_cast<int>(entity.getType()));
         query.addBindValue(entity.getJournalId());
+        query.addBindValue(entity.getCorporationId());
         query.addBindValue(entity.isIgnored());
-    }
-
-    size_t WalletTransactionRepository::getMaxRowsPerInsert() const
-    {
-        return 80;
     }
 }

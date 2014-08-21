@@ -82,7 +82,7 @@ namespace Evernus
                 handlePotentialError(response, error);
 
                 CharacterList list{parseResults<Character::IdType, APIXmlReceiver<Character::IdType>::CurElemType>(response, "characters")};
-                callback(list, QString{});
+                callback(std::move(list), QString{});
             }
             catch (const std::exception &e)
             {
@@ -112,7 +112,7 @@ namespace Evernus
                                                      TimerType::Character,
                                                      APIUtils::getCachedUntil(response));
 
-                callback(character, QString{});
+                callback(std::move(character), QString{});
             }
             catch (const std::exception &e)
             {
@@ -142,7 +142,7 @@ namespace Evernus
                                                      TimerType::AssetList,
                                                      APIUtils::getCachedUntil(response));
 
-                callback(assets, QString{});
+                callback(std::move(assets), QString{});
             }
             catch (const std::exception &e)
             {
@@ -163,7 +163,7 @@ namespace Evernus
                 handlePotentialError(response, error);
 
                 ConquerableStationList stations{parseResults<ConquerableStation, APIXmlReceiver<ConquerableStation>::CurElemType>(response, "outposts")};
-                callback(stations, QString{});
+                callback(std::move(stations), QString{});
             }
             catch (const std::exception &e)
             {
@@ -198,16 +198,17 @@ namespace Evernus
                                         WalletJournalEntry::IdType tillId,
                                         const Callback<WalletJournal> &callback) const
     {
-        fetchWalletJournal(key, characterId, fromId, tillId, std::make_shared<WalletJournal>(), callback, "transactions", TimerType::WalletJournal);
+        fetchWalletJournal(key, characterId, 0, fromId, tillId, std::make_shared<WalletJournal>(), callback, "transactions", TimerType::WalletJournal);
     }
 
     void APIManager::fetchWalletJournal(const CorpKey &key,
                                         Character::IdType characterId,
+                                        uint corpId,
                                         WalletJournalEntry::IdType fromId,
                                         WalletJournalEntry::IdType tillId,
                                         const Callback<WalletJournal> &callback) const
     {
-        fetchWalletJournal(key, characterId, fromId, tillId, std::make_shared<WalletJournal>(), callback, "entries", TimerType::CorpWalletJournal);
+        fetchWalletJournal(key, characterId, corpId, fromId, tillId, std::make_shared<WalletJournal>(), callback, "entries", TimerType::CorpWalletJournal);
     }
 
     void APIManager::fetchWalletTransactions(const Key &key,
@@ -216,16 +217,17 @@ namespace Evernus
                                              WalletTransaction::IdType tillId,
                                              const Callback<WalletTransactions> &callback) const
     {
-        fetchWalletTransactions(key, characterId, fromId, tillId, std::make_shared<WalletTransactions>(), callback, TimerType::WalletTransactions);
+        fetchWalletTransactions(key, characterId, 0, fromId, tillId, std::make_shared<WalletTransactions>(), callback, TimerType::WalletTransactions);
     }
 
     void APIManager::fetchWalletTransactions(const CorpKey &key,
                                              Character::IdType characterId,
+                                             uint corpId,
                                              WalletTransaction::IdType fromId,
                                              WalletTransaction::IdType tillId,
                                              const Callback<WalletTransactions> &callback) const
     {
-        fetchWalletTransactions(key, characterId, fromId, tillId, std::make_shared<WalletTransactions>(), callback, TimerType::CorpWalletTransactions);
+        fetchWalletTransactions(key, characterId, corpId, fromId, tillId, std::make_shared<WalletTransactions>(), callback, TimerType::CorpWalletTransactions);
     }
 
     void APIManager::fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const
@@ -241,6 +243,7 @@ namespace Evernus
     template<class Key>
     void APIManager::fetchWalletJournal(const Key &key,
                                         Character::IdType characterId,
+                                        uint corpId,
                                         WalletJournalEntry::IdType fromId,
                                         WalletJournalEntry::IdType tillId,
                                         std::shared_ptr<WalletJournal> &&journal,
@@ -266,6 +269,7 @@ namespace Evernus
                     if (id > tillId)
                     {
                         entry.setCharacterId(characterId);
+                        entry.setCorporationId(corpId);
                         journal->emplace(std::move(entry));
 
                         if (nextFromId > id)
@@ -283,11 +287,11 @@ namespace Evernus
                                                          timerType,
                                                          APIUtils::getCachedUntil(response));
 
-                    callback(*journal, QString{});
+                    callback(std::move(*journal), QString{});
                 }
                 else
                 {
-                    fetchWalletJournal(key, characterId, nextFromId, tillId, std::move(journal), callback, rowsetName, timerType);
+                    fetchWalletJournal(key, characterId, corpId, nextFromId, tillId, std::move(journal), callback, rowsetName, timerType);
                 }
             }
             catch (const std::exception &e)
@@ -300,6 +304,7 @@ namespace Evernus
     template<class Key>
     void APIManager::fetchWalletTransactions(const Key &key,
                                              Character::IdType characterId,
+                                             uint corpId,
                                              WalletTransaction::IdType fromId,
                                              WalletTransaction::IdType tillId,
                                              std::shared_ptr<WalletTransactions> &&transactions,
@@ -324,6 +329,7 @@ namespace Evernus
                     if (id > tillId)
                     {
                         entry.setCharacterId(characterId);
+                        entry.setCorporationId(corpId);
                         transactions->emplace(std::move(entry));
 
                         if (nextFromId > id)
@@ -341,11 +347,11 @@ namespace Evernus
                                                          timerType,
                                                          APIUtils::getCachedUntil(response));
 
-                    callback(*transactions, QString{});
+                    callback(std::move(*transactions), QString{});
                 }
                 else
                 {
-                    fetchWalletTransactions(key, characterId, nextFromId, tillId, std::move(transactions), callback, timerType);
+                    fetchWalletTransactions(key, characterId, corpId, nextFromId, tillId, std::move(transactions), callback, timerType);
                 }
             }
             catch (const std::exception &e)

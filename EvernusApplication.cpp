@@ -144,7 +144,11 @@ namespace Evernus
                                                        *mCharacterRepository,
                                                        *mExternalOrderRepository,
                                                        *mMarketOrderRepository,
-                                                       *mCorpMarketOrderRepository);
+                                                       *mCorpMarketOrderRepository,
+                                                       *mWalletJournalEntryRepository,
+                                                       *mCorpWalletJournalEntryRepository,
+                                                       *mWalletTransactionRepository,
+                                                       *mCorpWalletTransactionRepository);
 
         settings.setValue(versionKey, applicationVersion());
 
@@ -1057,7 +1061,7 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            mAPIManager.fetchAssets(*key, id, [assetSubtask, id, this](auto data, const auto &error) {
+            mAPIManager.fetchAssets(*key, id, [assetSubtask, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
                     mAssetListRepository->deleteForCharacter(id);
@@ -1204,7 +1208,7 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            mAPIManager.fetchMarketOrders(*key, id, [task, id, this](auto data, const auto &error) {
+            mAPIManager.fetchMarketOrders(*key, id, [task, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
                     importMarketOrders(id, data, false);
@@ -1252,8 +1256,8 @@ namespace Evernus
             if (maxId == WalletJournalEntry::invalidId)
                 emit taskInfoChanged(task, tr("Fetching corporation wallet journal for character %1 (this may take a while)...").arg(id));
 
-            mAPIManager.fetchWalletJournal(*key, id, WalletJournalEntry::invalidId, maxId,
-                                           [task, id, this](const auto &data, const auto &error) {
+            mAPIManager.fetchWalletJournal(*key, id, mCharacterRepository->getCorporationId(id), WalletJournalEntry::invalidId, maxId,
+                                           [task, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
                     mCorpWalletJournalEntryRepository->batchStore(data, true);
@@ -1297,6 +1301,10 @@ namespace Evernus
         {
             emit taskEnded(task, tr("Key not found!"));
         }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            emit taskEnded(task, tr("Character found!"));
+        }
     }
 
     void EvernusApplication::refreshCorpWalletTransactions(Character::IdType id, uint parentTask)
@@ -1314,8 +1322,8 @@ namespace Evernus
             if (maxId == WalletTransaction::invalidId)
                 emit taskInfoChanged(task, tr("Fetching corporation wallet transactions for character %1 (this may take a while)...").arg(id));
 
-            mAPIManager.fetchWalletTransactions(*key, id, WalletTransaction::invalidId, maxId,
-                                                [task, id, this](const auto &data, const auto &error) {
+            mAPIManager.fetchWalletTransactions(*key, id, mCharacterRepository->getCorporationId(id), WalletTransaction::invalidId, maxId,
+                                                [task, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
                     mCorpWalletTransactionRepository->batchStore(data, true);
@@ -1335,6 +1343,10 @@ namespace Evernus
         {
             emit taskEnded(task, tr("Key not found!"));
         }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            emit taskEnded(task, tr("Character found!"));
+        }
     }
 
     void EvernusApplication::refreshCorpMarketOrdersFromAPI(Character::IdType id, uint parentTask)
@@ -1347,7 +1359,7 @@ namespace Evernus
         try
         {
             const auto key = getCorpKey(id);
-            mAPIManager.fetchMarketOrders(*key, id, [task, id, this](auto data, const auto &error) {
+            mAPIManager.fetchMarketOrders(*key, id, [task, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
                     importMarketOrders(id, data, true);
@@ -1825,7 +1837,7 @@ namespace Evernus
     void EvernusApplication::importCharacter(Character::IdType id, uint parentTask, const Key &key)
     {
         const auto charSubtask = startTask(parentTask, tr("Fetching character %1...").arg(id));
-        mAPIManager.fetchCharacter(key, id, [charSubtask, id, this](auto data, const auto &error) {
+        mAPIManager.fetchCharacter(key, id, [charSubtask, id, this](auto &&data, const auto &error) {
             if (error.isEmpty())
             {
                 try

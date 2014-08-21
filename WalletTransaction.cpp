@@ -126,6 +126,16 @@ namespace Evernus
         mJournalId = id;
     }
 
+    uint WalletTransaction::getCorporationId() const noexcept
+    {
+        return mCorporationId;
+    }
+
+    void WalletTransaction::setCorporationId(uint id) noexcept
+    {
+        mCorporationId = id;
+    }
+
     bool WalletTransaction::isIgnored() const noexcept
     {
         return mIgnored;

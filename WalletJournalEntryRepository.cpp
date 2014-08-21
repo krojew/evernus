@@ -60,6 +60,7 @@ namespace Evernus
         walletJournalEntry->setReason((reason.isNull()) ? (WalletJournalEntry::ReasonType{}) : (reason.toString()));
         walletJournalEntry->setTaxReceiverId((taxReceiverId.isNull()) ? (WalletJournalEntry::TaxReceiverType{}) : (taxReceiverId.toULongLong()));
         walletJournalEntry->setTaxAmount((taxAmount.isNull()) ? (WalletJournalEntry::TaxAmountType{}) : (taxAmount.toDouble()));
+        walletJournalEntry->setCorporationId(record.value("corporation_id").toUInt());
         walletJournalEntry->setIgnored(record.value("ignored").toBool());
         walletJournalEntry->setNew(false);
 
@@ -84,6 +85,7 @@ namespace Evernus
             reason TEXT NULL,
             tax_receiver_id BIGINT NULL,
             tax_amount NUMERIC NULL,
+            corporation_id INTEGER NOT NULL,
             ignored TINYINT NOT NULL
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
@@ -205,6 +207,7 @@ namespace Evernus
             << "reason"
             << "tax_receiver_id"
             << "tax_amount"
+            << "corporation_id"
             << "ignored";
     }
 
@@ -232,6 +235,7 @@ namespace Evernus
         query.bindValue(":reason", (reason) ? (*reason) : (QVariant{QVariant::String}));
         query.bindValue(":tax_receiver_id", (taxReceiverId) ? (*taxReceiverId) : (QVariant{QVariant::ULongLong}));
         query.bindValue(":tax_amount", (taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
+        query.bindValue(":corporation_id", entity.getCorporationId());
         query.bindValue(":ignored", entity.isIgnored());
     }
 
@@ -259,11 +263,7 @@ namespace Evernus
         query.addBindValue((reason) ? (*reason) : (QVariant{QVariant::String}));
         query.addBindValue((taxReceiverId) ? (*taxReceiverId) : (QVariant{QVariant::ULongLong}));
         query.addBindValue((taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
+        query.addBindValue(entity.getCorporationId());
         query.addBindValue(entity.isIgnored());
-    }
-
-    size_t WalletJournalEntryRepository::getMaxRowsPerInsert() const
-    {
-        return 60;
     }
 }

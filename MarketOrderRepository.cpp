@@ -471,9 +471,4 @@ namespace Evernus
         query.addBindValue(entity.getLastSeen());
         query.addBindValue(entity.getCorporationId());
     }
-
-    size_t MarketOrderRepository::getMaxRowsPerInsert() const
-    {
-        return 52;
-    }
 }

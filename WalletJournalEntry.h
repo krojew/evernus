@@ -14,8 +14,11 @@
  */
 #pragma once
 
-#include "WalletJournalData.h"
-#include "Entity.h"
+#include <boost/optional.hpp>
+
+#include <QDateTime>
+
+#include "Character.h"
 
 namespace Evernus
 {
@@ -23,10 +26,10 @@ namespace Evernus
         : public Entity<quint64>
     {
     public:
-        typedef WalletJournalData::ArgType ArgType;
-        typedef WalletJournalData::ReasonType ReasonType;
-        typedef WalletJournalData::TaxReceiverType TaxReceiverType;
-        typedef WalletJournalData::TaxAmountType TaxAmountType;
+        typedef boost::optional<QString> ArgType;
+        typedef boost::optional<QString> ReasonType;
+        typedef boost::optional<quint64> TaxReceiverType;
+        typedef boost::optional<double> TaxAmountType;
 
         using Entity::Entity;
 
@@ -85,10 +88,8 @@ namespace Evernus
         TaxAmountType getTaxAmount() const noexcept;
         void setTaxAmount(TaxAmountType amount) noexcept;
 
-        WalletJournalData getWalletJournalData() const &;
-        WalletJournalData &&getWalletJournalData() && noexcept;
-        void setWalletJournalData(const WalletJournalData &data);
-        void setWalletJournalData(WalletJournalData &&data);
+        uint getCorporationId() const noexcept;
+        void setCorporationId(uint id) noexcept;
 
         bool isIgnored() const noexcept;
         void setIgnored(bool flag) noexcept;
@@ -97,7 +98,21 @@ namespace Evernus
         WalletJournalEntry &operator =(WalletJournalEntry &&) = default;
 
     private:
-        WalletJournalData mData;
+        Character::IdType mCharacterId = Character::invalidId;
+        QDateTime mTimestamp;
+        uint mRefTypeId = 0;
+        QString mOwnerName1;
+        quint64 mOwnerId1 = 0;
+        QString mOwnerName2;
+        quint64 mOwnerId2 = 0;
+        ArgType mArgName;
+        quint64 mArgId = 0;
+        double mAmount = 0.;
+        double mBalance = 0.;
+        ReasonType mReason;
+        TaxReceiverType mTaxReceiverId = static_cast<quint64>(0u);
+        TaxAmountType mTaxAmount = 0.;
+        uint mCorporationId = 0;
         bool mIgnored = false;
     };
 

@@ -70,7 +70,7 @@ namespace Evernus
         virtual void preStore(T &entity) const;
         virtual void postStore(T &entity) const;
 
-        virtual size_t getMaxRowsPerInsert() const;
+        size_t getMaxRowsPerInsert() const;
     };
 }
 

@@ -72,6 +72,9 @@ namespace Evernus
         WalletJournalEntry::IdType getJournalId() const;
         void setJournalId(WalletJournalEntry::IdType id);
 
+        uint getCorporationId() const noexcept;
+        void setCorporationId(uint id) noexcept;
+
         bool isIgnored() const noexcept;
         void setIgnored(bool flag) noexcept;
 
@@ -89,6 +92,7 @@ namespace Evernus
         quint64 mLocationId = 0;
         Type mType = Type::Buy;
         WalletJournalEntry::IdType mJournalId = WalletJournalEntry::invalidId;
+        uint mCorporationId = 0;
         bool mIgnored = false;
     };
 

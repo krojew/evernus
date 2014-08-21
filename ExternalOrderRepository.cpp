@@ -374,11 +374,6 @@ namespace Evernus
         query.addBindValue(entity.getDuration());
     }
 
-    size_t ExternalOrderRepository::getMaxRowsPerInsert() const
-    {
-        return 71;
-    }
-
     ExternalOrderRepository::EntityList ExternalOrderRepository::fetchByType(ExternalOrder::TypeIdType typeId,
                                                                              ExternalOrder::Type type) const
     {

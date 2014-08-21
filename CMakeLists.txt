@@ -494,7 +494,6 @@ add_executable(
     WalletEntryFilterWidget.cpp
     WalletEntryFilterWidget.h
     WalletJournal.h
-    WalletJournalData.h
     WalletJournalEntry.cpp
     WalletJournalEntry.h
     WalletJournalEntryRepository.cpp

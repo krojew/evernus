@@ -20,6 +20,8 @@ namespace Evernus
 {
     template<class T>
     class Repository;
+    class WalletJournalEntryRepository;
+    class WalletTransactionRepository;
     class ExternalOrderRepository;
     class MarketOrderRepository;
     class CacheTimerRepository;
@@ -36,7 +38,11 @@ namespace Evernus
                                      const Repository<Character> &characterRepo,
                                      const ExternalOrderRepository &externalOrderRepo,
                                      const MarketOrderRepository &characterOrderRepo,
-                                     const MarketOrderRepository &corporationOrderRepo) const;
+                                     const MarketOrderRepository &corporationOrderRepo,
+                                     const WalletJournalEntryRepository &walletJournalRepo,
+                                     const WalletJournalEntryRepository &corpWalletJournalRepo,
+                                     const WalletTransactionRepository &walletTransactionRepo,
+                                     const WalletTransactionRepository &corpWalletTransactionRepo) const;
 
         static Updater &getInstance();
 

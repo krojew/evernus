@@ -18,202 +18,192 @@ namespace Evernus
 {
     Character::IdType WalletJournalEntry::getCharacterId() const noexcept
     {
-        return mData.mCharacterId;
+        return mCharacterId;
     }
 
     void WalletJournalEntry::setCharacterId(Character::IdType id) noexcept
     {
-        mData.mCharacterId = id;
+        mCharacterId = id;
     }
 
     QDateTime WalletJournalEntry::getTimestamp() const
     {
-        return mData.mTimestamp;
+        return mTimestamp;
     }
 
     void WalletJournalEntry::setTimestamp(const QDateTime &dt)
     {
-        mData.mTimestamp = dt;
+        mTimestamp = dt;
     }
 
     uint WalletJournalEntry::getRefTypeId() const noexcept
     {
-        return mData.mRefTypeId;
+        return mRefTypeId;
     }
 
     void WalletJournalEntry::setRefTypeId(uint id) noexcept
     {
-        mData.mRefTypeId = id;
+        mRefTypeId = id;
     }
 
     QString WalletJournalEntry::getOwnerName1() const &
     {
-        return mData.mOwnerName1;
+        return mOwnerName1;
     }
 
     QString &&WalletJournalEntry::getOwnerName1() && noexcept
     {
-        return std::move(mData.mOwnerName1);
+        return std::move(mOwnerName1);
     }
 
     void WalletJournalEntry::setOwnerName1(const QString &name)
     {
-        mData.mOwnerName1 = name;
+        mOwnerName1 = name;
     }
 
     void WalletJournalEntry::setOwnerName1(QString &&name)
     {
-        mData.mOwnerName1 = std::move(name);
+        mOwnerName1 = std::move(name);
     }
 
     quint64 WalletJournalEntry::getOwnerId1() const noexcept
     {
-        return mData.mOwnerId1;
+        return mOwnerId1;
     }
 
     void WalletJournalEntry::setOwnerId1(quint64 id) noexcept
     {
-        mData.mOwnerId1 = id;
+        mOwnerId1 = id;
     }
 
     QString WalletJournalEntry::getOwnerName2() const &
     {
-        return mData.mOwnerName2;
+        return mOwnerName2;
     }
 
     QString &&WalletJournalEntry::getOwnerName2() && noexcept
     {
-        return std::move(mData.mOwnerName2);
+        return std::move(mOwnerName2);
     }
 
     void WalletJournalEntry::setOwnerName2(const QString &name)
     {
-        mData.mOwnerName2 = name;
+        mOwnerName2 = name;
     }
 
     void WalletJournalEntry::setOwnerName2(QString &&name)
     {
-        mData.mOwnerName2 = std::move(name);
+        mOwnerName2 = std::move(name);
     }
 
     quint64 WalletJournalEntry::getOwnerId2() const noexcept
     {
-        return mData.mOwnerId2;
+        return mOwnerId2;
     }
 
     void WalletJournalEntry::setOwnerId2(quint64 id) noexcept
     {
-        mData.mOwnerId2 = id;
+        mOwnerId2 = id;
     }
 
     WalletJournalEntry::ArgType WalletJournalEntry::getArgName() const &
     {
-        return mData.mArgName;
+        return mArgName;
     }
 
     WalletJournalEntry::ArgType &&WalletJournalEntry::getArgName() && noexcept
     {
-        return std::move(mData.mArgName);
+        return std::move(mArgName);
     }
 
     void WalletJournalEntry::setArgName(const ArgType &name)
     {
-        mData.mArgName = name;
+        mArgName = name;
     }
 
     void WalletJournalEntry::setArgName(ArgType &&name)
     {
-        mData.mArgName = std::move(name);
+        mArgName = std::move(name);
     }
 
     quint64 WalletJournalEntry::getArgId() const noexcept
     {
-        return mData.mArgId;
+        return mArgId;
     }
 
     void WalletJournalEntry::setArgId(quint64 id) noexcept
     {
-        mData.mArgId = id;
+        mArgId = id;
     }
 
     double WalletJournalEntry::getAmount() const noexcept
     {
-        return mData.mAmount;
+        return mAmount;
     }
 
     void WalletJournalEntry::setAmount(double value) noexcept
     {
-        mData.mAmount = value;
+        mAmount = value;
     }
 
     double WalletJournalEntry::getBalance() const noexcept
     {
-        return mData.mBalance;
+        return mBalance;
     }
 
     void WalletJournalEntry::setBalance(double value) noexcept
     {
-        mData.mBalance = value;
+        mBalance = value;
     }
 
     WalletJournalEntry::ReasonType WalletJournalEntry::getReason() const &
     {
-        return mData.mReason;
+        return mReason;
     }
 
     WalletJournalEntry::ReasonType &&WalletJournalEntry::getReason() && noexcept
     {
-        return std::move(mData.mReason);
+        return std::move(mReason);
     }
 
     void WalletJournalEntry::setReason(const ReasonType &reason)
     {
-        mData.mReason = reason;
+        mReason = reason;
     }
 
     void WalletJournalEntry::setReason(ReasonType &&reason)
     {
-        mData.mReason = std::move(reason);
+        mReason = std::move(reason);
     }
 
     WalletJournalEntry::TaxReceiverType WalletJournalEntry::getTaxReceiverId() const noexcept
     {
-        return mData.mTaxReceiverId;
+        return mTaxReceiverId;
     }
 
     void WalletJournalEntry::setTaxReceiverId(TaxReceiverType id) noexcept
     {
-        mData.mTaxReceiverId = id;
+        mTaxReceiverId = id;
     }
 
     WalletJournalEntry::TaxAmountType WalletJournalEntry::getTaxAmount() const noexcept
     {
-        return mData.mTaxAmount;
+        return mTaxAmount;
     }
 
     void WalletJournalEntry::setTaxAmount(TaxAmountType amount) noexcept
     {
-        mData.mTaxAmount = amount;
+        mTaxAmount = amount;
     }
 
-    WalletJournalData WalletJournalEntry::getWalletJournalData() const &
+    uint WalletJournalEntry::getCorporationId() const noexcept
     {
-        return mData;
+        return mCorporationId;
     }
 
-    WalletJournalData &&WalletJournalEntry::getWalletJournalData() && noexcept
+    void WalletJournalEntry::setCorporationId(uint id) noexcept
     {
-        return std::move(mData);
-    }
-
-    void WalletJournalEntry::setWalletJournalData(const WalletJournalData &data)
-    {
-        mData = data;
-    }
-
-    void WalletJournalEntry::setWalletJournalData(WalletJournalData &&data)
-    {
-        mData = std::move(data);
+        mCorporationId = id;
     }
 
     bool WalletJournalEntry::isIgnored() const noexcept
