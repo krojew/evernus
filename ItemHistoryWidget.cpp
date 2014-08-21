@@ -59,6 +59,7 @@ namespace Evernus
         itemLayout->addWidget(mItemTypeCombo);
         mItemTypeCombo->setEditable(true);
         mItemTypeCombo->setInsertPolicy(QComboBox::NoInsert);
+        mItemTypeCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         connect(mItemTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(computeValues()));
 
         mAllCharactersBtn = new QCheckBox{tr("Combine for all characters"), this};
