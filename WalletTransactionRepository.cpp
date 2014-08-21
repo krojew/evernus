@@ -75,6 +75,8 @@ namespace Evernus
         ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id ON %1(type_id)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id_character ON %1(type_id, character_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp_type ON %1(character_id, timestamp, type)"}.arg(getTableName()));
     }
@@ -172,6 +174,46 @@ namespace Evernus
 
         if (typeId != EveType::invalidId)
             query.addBindValue(typeId);
+
+        DatabaseUtils::execQuery(query);
+
+        const auto size = query.size();
+
+        EntityList result;
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
+    WalletTransactionRepository::EntityList WalletTransactionRepository::fetchForTypeId(EveType::IdType typeId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE type_id = ?"}.arg(getTableName()));
+        query.bindValue(0, typeId);
+
+        DatabaseUtils::execQuery(query);
+
+        const auto size = query.size();
+
+        EntityList result;
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
+    WalletTransactionRepository::EntityList WalletTransactionRepository
+    ::fetchForTypeIdAndCharacter(EveType::IdType typeId, Character::IdType characterId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE type_id = ? AND character_id = ?"}.arg(getTableName()));
+        query.bindValue(0, typeId);
+        query.bindValue(1, characterId);
 
         DatabaseUtils::execQuery(query);
 

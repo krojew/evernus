@@ -38,6 +38,7 @@
 #include "ActiveTasksDialog.h"
 #include "PreferencesDialog.h"
 #include "MarketOrderWidget.h"
+#include "ItemHistoryWidget.h"
 #include "MarginToolDialog.h"
 #include "StatisticsWidget.h"
 #include "CharacterWidget.h"
@@ -581,6 +582,15 @@ namespace Evernus
         addTab(corpTransactionsTab, tr("Corporation transactions"));
         connect(corpTransactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importCorpWalletTransactions);
         connect(this, &MainWindow::corpWalletTransactionsChanged, corpTransactionsTab, &WalletTransactionsWidget::updateData);
+
+        auto itemHistoryTab = new ItemHistoryWidget{mWalletTransactionRepository,
+                                                    mCorpWalletTransactionRepository,
+                                                    mEveDataProvider,
+                                                    this};
+        connect(this, &MainWindow::walletTransactionsChanged, itemHistoryTab, &ItemHistoryWidget::updateData);
+        connect(this, &MainWindow::corpWalletTransactionsChanged, itemHistoryTab, &ItemHistoryWidget::updateData);
+        connect(this, &MainWindow::preferencesChanged, itemHistoryTab, &ItemHistoryWidget::handleNewPreferences);
+        addTab(itemHistoryTab, tr("Item history"));
 
         auto marketBrowserTab = new MarketBrowserWidget{mExternalOrderRepo,
                                                         mMarketOrderRepository,

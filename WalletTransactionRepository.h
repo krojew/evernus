@@ -56,6 +56,9 @@ namespace Evernus
                                             EntryType type,
                                             EveType::IdType typeId = EveType::invalidId) const;
 
+        EntityList fetchForTypeId(EveType::IdType typeId) const;
+        EntityList fetchForTypeIdAndCharacter(EveType::IdType typeId, Character::IdType characterId) const;
+
     private:
         bool mCorp = false;
 
