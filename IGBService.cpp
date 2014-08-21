@@ -57,6 +57,7 @@ namespace Evernus
         mOrderTemplate["scan-delay-text"] = tr("Scan delay:");
         mOrderTemplate["start-scan-text"] = tr("Start Scan");
         mOrderTemplate["stop-scan-text"] = tr("Stop Scan");
+        mOrderTemplate["stop-at-end-text"] = tr("Stop at end");
     }
 
     void IGBService::index(QxtWebRequestEvent *event)

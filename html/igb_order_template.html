@@ -5,6 +5,30 @@
     
     var scanTimer = null;
     
+    function setCookie(name, value) {
+        var d = new Date();
+        d.setTime(d.getTime() + 365 *24 * 60 * 60 * 1000);
+        
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = name + "=" + value + "; " + expires;
+    }
+    
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ')
+                c = c.substring(1);
+                
+            if (c.indexOf(name) != -1) 
+                return c.substring(name.length, c.length);
+        }
+        
+        return "";
+    }
+    
     function unselectOrders() {
         var selected = document.getElementsByClassName("selected-order");
         for (var i = 0; i < selected.length; ++i)
@@ -13,6 +37,10 @@
     
     function selectOrder(orderId) {
         document.getElementById("order-" + orderId).className += " selected-order";
+    }
+    
+    function getCurrentOrder() {
+        return parseInt(document.getElementById("current-order").value);
     }
     
     function showType(typeId) {
@@ -46,7 +74,7 @@
         document.getElementById("prev-button").disabled = true;
         document.getElementById("next-button").disabled = true;
             
-        var currentOrder = Math.max(0, parseInt(document.getElementById("current-order").value)) - 1 + delta;
+        var currentOrder = Math.max(0, getCurrentOrder()) - 1 + delta;
         currentOrder %= orders.length;
         if (currentOrder < 0)
             currentOrder = orders.length + currentOrder;
@@ -65,23 +93,37 @@
         lastAdvance = curTime;
     }
     
-    function startScan() {
-        document.getElementById("start-scan-button").disabled = true;
-        document.getElementById("stop-scan-button").disabled = false;
-        
-        advanceOrder(1);
-        
-        scanTimer = setInterval(function() {
-            advanceOrder(1);
-        }, parseInt(document.getElementById("scan-delay").value) * 1000);
-    }
-    
     function stopScan() {
         document.getElementById("start-scan-button").disabled = false;
         document.getElementById("stop-scan-button").disabled = true;
         
         clearInterval(scanTimer);
     }
+    
+    function startScan() {
+        document.getElementById("start-scan-button").disabled = true;
+        document.getElementById("stop-scan-button").disabled = false;
+        
+        setCookie("stopAtEnd", document.getElementById("stop-at-end").checked);
+        
+        advanceOrder(1);
+        
+        scanTimer = setInterval(function() {
+            if (getCurrentOrder() >= orders.length && document.getElementById("stop-at-end").checked)
+            {
+                stopScan();
+                return;
+            }
+            
+            advanceOrder(1);
+        }, parseInt(document.getElementById("scan-delay").value) * 1000);
+    }
+    
+    window.addEventListener('load', function() {
+        var stopAtEndCookie = getCookie("stopAtEnd");
+        if (stopAtEndCookie == "false")
+            document.getElementById("stop-at-end").checked = false;
+    }, false);
 </script>
 
 <p>
@@ -92,6 +134,7 @@
     <?=scan-delay-text?> <input id="scan-delay" type="number" value="<?=scan-delay?>" />
     <input id="start-scan-button" type="button" value="<?=start-scan-text?>" onclick="startScan();" />
     <input id="stop-scan-button" type="button" value="<?=stop-scan-text?>" onclick="stopScan();" disabled />
+    <label><input id="stop-at-end" type="checkbox" checked /><?=stop-at-end-text?></label> 
 </p>
 
 <p><?=sell-orders-text?></p>
