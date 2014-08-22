@@ -62,7 +62,7 @@ namespace Evernus
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id INTEGER PRIMARY KEY,
-            character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,
+            character_id BIGINT NOT NULL %2,
             timestamp DATETIME NOT NULL,
             quantity INTEGER NOT NULL,
             type_id INTEGER NOT NULL,
@@ -74,7 +74,8 @@ namespace Evernus
             journal_id BIGINT NOT NULL,
             corporation_id INTEGER NOT NULL,
             ignored TINYINT NOT NULL
-        ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
+        ))"}.arg(getTableName()).arg(
+            (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id ON %1(type_id)"}.arg(getTableName()));
