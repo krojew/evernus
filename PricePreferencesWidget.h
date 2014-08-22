@@ -48,6 +48,7 @@ namespace Evernus
         QSpinBox *mPriceMaxAgeEdit = nullptr;
         QSpinBox *mMarketOrderMaxAgeEdit = nullptr;
         QComboBox *mPlotNumberFormatEdit = nullptr;
+        QCheckBox *mRefreshPricesWithOrdersBtn = nullptr;
 
         void addPlotFormat(const QString &text, const QString &value, const QString &curValue);
     };

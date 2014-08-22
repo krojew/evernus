@@ -181,6 +181,7 @@ namespace Evernus
         void refreshCorpMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpMarketOrdersFromLogs(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshConquerableStations();
+        void refreshAllExternalOrders();
         void refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
         void refreshExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &target);

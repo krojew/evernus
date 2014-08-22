@@ -134,6 +134,10 @@ namespace Evernus
         addPlotFormat(tr("scientific"), "g", plotNumberFormat);
         addPlotFormat(tr("fixed"), "f", plotNumberFormat);
 
+        mRefreshPricesWithOrdersBtn = new QCheckBox{tr("Refresh prices after order import"), this};
+        pricesLayout->addRow(mRefreshPricesWithOrdersBtn);
+        mRefreshPricesWithOrdersBtn->setChecked(settings.value(PriceSettings::refreshPricesWithOrdersKey).toBool());
+
         mainLayout->addStretch();
     }
 
@@ -152,6 +156,7 @@ namespace Evernus
         settings.setValue(PriceSettings::priceMaxAgeKey, mPriceMaxAgeEdit->value());
         settings.setValue(PriceSettings::marketOrderMaxAgeKey, mMarketOrderMaxAgeEdit->value());
         settings.setValue(UISettings::plotNumberFormatKey, mPlotNumberFormatEdit->currentData());
+        settings.setValue(PriceSettings::refreshPricesWithOrdersKey, mRefreshPricesWithOrdersBtn->isChecked());
     }
 
     void PricePreferencesWidget::addPlotFormat(const QString &text, const QString &value, const QString &curValue)

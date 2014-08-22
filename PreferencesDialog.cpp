@@ -22,6 +22,7 @@
 
 #include "CharacterImportPreferencesWidget.h"
 #include "AssetsImportPreferencesWidget.h"
+#include "ImportSourcePreferencesWidget.h"
 #include "CorpImportPreferencesWidget.h"
 #include "NetworkPreferencesWidget.h"
 #include "GeneralPreferencesWidget.h"
@@ -85,6 +86,7 @@ namespace Evernus
         importCategories.emplace_back(std::make_pair(tr("Character"), new CharacterImportPreferencesWidget{this}));
         importCategories.emplace_back(std::make_pair(tr("Assets"), new AssetsImportPreferencesWidget{this}));
         importCategories.emplace_back(std::make_pair(tr("Corporation"), new CorpImportPreferencesWidget{this}));
+        importCategories.emplace_back(std::make_pair(tr("Source"), new ImportSourcePreferencesWidget{this}));
 
         for (auto i = 0; i < importCategories.size(); ++i)
         {

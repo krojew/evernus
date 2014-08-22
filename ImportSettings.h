@@ -27,10 +27,18 @@ namespace Evernus
             TLS
         };
 
+        enum class PriceImportSource
+        {
+            Web,
+            File,
+            Cache
+        };
+
         const auto importTimerDefault = 60;
         const auto autoImportTimerDefault = 60;
         const auto smtpHostDefault = "localhost";
         const auto smtpPortDefault = 25;
+        const auto priceImportSourceDefault = PriceImportSource::Web;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
@@ -54,5 +62,6 @@ namespace Evernus
         const auto smtpPortKey = "import/email/smtpPort";
         const auto smtpUserKey = "import/email/smtpUser";
         const auto smtpPasswordKey = "import/email/smtpPassword";
+        const auto priceImportSourceKey = "import/source/price";
     }
 }

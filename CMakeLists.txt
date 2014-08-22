@@ -67,6 +67,7 @@ qt5_wrap_cpp(
     IGBPreferencesWidget.h
     IGBService.h
     ImportPreferencesWidget.h
+    ImportSourcePreferencesWidget.h
     ItemCostEditDialog.h
     ItemCostModel.h
     ItemCostWidget.h
@@ -286,6 +287,8 @@ add_executable(
     ImportPreferencesWidget.cpp
     ImportPreferencesWidget.h
     ImportSettings.h
+    ImportSourcePreferencesWidget.cpp
+    ImportSourcePreferencesWidget.h
     Item.cpp
     Item.h
     ItemCost.cpp

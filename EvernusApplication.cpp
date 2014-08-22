@@ -1410,6 +1410,41 @@ namespace Evernus
         });
     }
 
+    void EvernusApplication::refreshAllExternalOrders()
+    {
+        ExternalOrderImporter::TypeLocationPairs target;
+
+        QSqlQuery query{mMainDb};
+        query.prepare(QString{R"(SELECT DISTINCT ids.type_id, ids.location_id FROM (
+            SELECT type_id, location_id FROM %1 WHERE state = ?
+            UNION
+            SELECT type_id, location_id FROM %2 WHERE state = ?
+        ) ids)"}.arg(mMarketOrderRepository->getTableName()).arg(mCorpMarketOrderRepository->getTableName()));
+
+        query.addBindValue(static_cast<int>(MarketOrder::State::Active));
+        query.addBindValue(static_cast<int>(MarketOrder::State::Active));
+
+        DatabaseUtils::execQuery(query);
+
+        while (query.next())
+            target.emplace(std::make_pair(query.value(0).value<EveType::IdType>(), query.value(1).toUInt()));
+
+        QSettings settings;
+
+        const auto source = static_cast<ImportSettings::PriceImportSource>(
+            settings.value(ImportSettings::priceImportSourceKey, static_cast<int>(ImportSettings::priceImportSourceDefault)).toInt());
+        switch (source) {
+        case ImportSettings::PriceImportSource::File:
+            refreshExternalOrdersFromFile(target);
+            break;
+        case ImportSettings::PriceImportSource::Cache:
+            refreshExternalOrdersFromCache(target);
+            break;
+        default:
+            refreshExternalOrdersFromWeb(target);
+        }
+    }
+
     void EvernusApplication::refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &target)
     {
         importExternalOrders(ExternalOrderImporterNames::webImporter, target);
@@ -2212,6 +2247,9 @@ namespace Evernus
 
             if (autoSetCosts)
                 refreshWalletTransactions(id);
+
+            if (settings.value(PriceSettings::refreshPricesWithOrdersKey).toBool())
+                refreshAllExternalOrders();
         }
         catch (const CharacterRepository::NotFoundException &)
         {
