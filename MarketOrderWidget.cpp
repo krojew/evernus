@@ -109,7 +109,7 @@ namespace Evernus
         auto mainTabs = new QTabWidget{this};
         mainLayout->addWidget(mainTabs);
 
-        mSellView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, itemCostProvider, this};
+        mSellView = new MarketOrderViewWithTransactions{transactionsRepo, characterRepository, dataProvider, itemCostProvider, corp, this};
         mainTabs->addTab(mSellView, QIcon{":/images/arrow_out.png"}, tr("Sell"));
         mSellView->setModel(&mSellModel);
         mSellView->sortByColumn(0, Qt::AscendingOrder);
@@ -119,7 +119,7 @@ namespace Evernus
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mSellView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::textFilterChanged, mSellView, &MarketOrderViewWithTransactions::textFilterChanged);
 
-        mBuyView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, itemCostProvider, this};
+        mBuyView = new MarketOrderViewWithTransactions{transactionsRepo, characterRepository, dataProvider, itemCostProvider, corp, this};
         mainTabs->addTab(mBuyView, QIcon{":/images/arrow_in.png"}, tr("Buy"));
         mBuyView->setModel(&mBuyModel);
         mBuyView->sortByColumn(0, Qt::AscendingOrder);
@@ -177,7 +177,7 @@ namespace Evernus
 
         rangeLayout->addStretch();
 
-        mArchiveView = new MarketOrderViewWithTransactions{transactionsRepo, dataProvider, itemCostProvider, this};
+        mArchiveView = new MarketOrderViewWithTransactions{transactionsRepo, characterRepository, dataProvider, itemCostProvider, corp, this};
         archiveLayout->addWidget(mArchiveView);
         mArchiveView->setShowInfo(false);
         mArchiveView->statusFilterChanged(MarketOrderFilterProxyModel::EveryStatus);

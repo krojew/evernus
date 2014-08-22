@@ -81,6 +81,9 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id_character ON %1(type_id, character_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp_type ON %1(character_id, timestamp, type)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp_type_type_id ON %1(character_id, timestamp, type, type_id)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_timestamp_type ON %1(corporation_id, timestamp, type)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_timestamp_type_type_id ON %1(corporation_id, timestamp, type, type_id)"}.arg(getTableName()));
     }
 
     WalletTransaction::IdType WalletTransactionRepository::getLatestEntryId(Character::IdType characterId) const
@@ -157,38 +160,17 @@ namespace Evernus
                                EntryType type,
                                EveType::IdType typeId) const
     {
-        QString queryStr;
-        if (type == EntryType::All)
-            queryStr = "SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ?";
-        else
-            queryStr = "SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ? AND type = ?";
+        return fetchForColumnInRange(characterId, from, till, type, typeId, "character_id");
+    }
 
-        if (typeId != EveType::invalidId)
-            queryStr += " AND type_id = ?";
-
-        auto query = prepare(queryStr.arg(getTableName()));
-        query.addBindValue(characterId);
-        query.addBindValue(from);
-        query.addBindValue(till);
-
-        if (type != EntryType::All)
-            query.addBindValue(static_cast<int>((type == EntryType::Buy) ? (WalletTransaction::Type::Buy) : (WalletTransaction::Type::Sell)));
-
-        if (typeId != EveType::invalidId)
-            query.addBindValue(typeId);
-
-        DatabaseUtils::execQuery(query);
-
-        const auto size = query.size();
-
-        EntityList result;
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-            result.emplace_back(populate(query.record()));
-
-        return result;
+    WalletTransactionRepository::EntityList WalletTransactionRepository
+    ::fetchForCorporationInRange(uint corporationId,
+                                 const QDateTime &from,
+                                 const QDateTime &till,
+                                 EntryType type,
+                                 EveType::IdType typeId) const
+    {
+        return fetchForColumnInRange(corporationId, from, till, type, typeId, "corporation_id");
     }
 
     WalletTransactionRepository::EntityList WalletTransactionRepository::fetchForTypeId(EveType::IdType typeId) const
@@ -285,5 +267,47 @@ namespace Evernus
         query.addBindValue(entity.getJournalId());
         query.addBindValue(entity.getCorporationId());
         query.addBindValue(entity.isIgnored());
+    }
+
+    template<class T>
+    WalletTransactionRepository::EntityList WalletTransactionRepository::fetchForColumnInRange(T id,
+                                                                                               const QDateTime &from,
+                                                                                               const QDateTime &till,
+                                                                                               EntryType type,
+                                                                                               EveType::IdType typeId,
+                                                                                               const QString &column) const
+    {
+        QString queryStr;
+        if (type == EntryType::All)
+            queryStr = "SELECT * FROM %2 WHERE %1 = ? AND timestamp BETWEEN ? AND ?";
+        else
+            queryStr = "SELECT * FROM %2 WHERE %1 = ? AND timestamp BETWEEN ? AND ? AND type = ?";
+
+        if (typeId != EveType::invalidId)
+            queryStr += " AND type_id = ?";
+
+        auto query = prepare(queryStr.arg(column).arg(getTableName()));
+        query.addBindValue(id);
+        query.addBindValue(from);
+        query.addBindValue(till);
+
+        if (type != EntryType::All)
+            query.addBindValue(static_cast<int>((type == EntryType::Buy) ? (WalletTransaction::Type::Buy) : (WalletTransaction::Type::Sell)));
+
+        if (typeId != EveType::invalidId)
+            query.addBindValue(typeId);
+
+        DatabaseUtils::execQuery(query);
+
+        const auto size = query.size();
+
+        EntityList result;
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
     }
 }

@@ -16,6 +16,7 @@
 #include <QColor>
 #include <QFont>
 
+#include "CharacterRepository.h"
 #include "EveDataProvider.h"
 #include "TextUtils.h"
 
@@ -23,11 +24,16 @@
 
 namespace Evernus
 {
-    WalletTransactionsModel
-    ::WalletTransactionsModel(const WalletTransactionRepository &transactionsRepo, const EveDataProvider &dataProvider, QObject *parent)
+    WalletTransactionsModel::WalletTransactionsModel(const WalletTransactionRepository &transactionsRepo,
+                                                     const CharacterRepository &characterRepository,
+                                                     const EveDataProvider &dataProvider,
+                                                     bool corp,
+                                                     QObject *parent)
         : QAbstractTableModel(parent)
         , mTransactionsRepository(transactionsRepo)
+        , mCharacterRepository(characterRepository)
         , mDataProvider(dataProvider)
+        , mCorp(corp)
     {
         mColumns
             << tr("Ignored")
@@ -188,25 +194,40 @@ namespace Evernus
         mData.clear();
         if (mCharacterId != Character::invalidId)
         {
-            const auto entries
-                = mTransactionsRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}.toUTC(), QDateTime{mTill}.addDays(1).toUTC(), mType, mTypeId);
-            mData.reserve(entries.size());
-
-            for (const auto &entry : entries)
+            try
             {
-                mData.emplace_back();
-                auto &data = mData.back();
+                const auto entries = (mCorp) ?
+                                     (mTransactionsRepository.fetchForCorporationInRange(mCharacterRepository.getCorporationId(mCharacterId),
+                                                                                         QDateTime{mFrom}.toUTC(),
+                                                                                         QDateTime{mTill}.addDays(1).toUTC(),
+                                                                                         mType,
+                                                                                         mTypeId)) :
+                                     (mTransactionsRepository.fetchForCharacterInRange(mCharacterId,
+                                                                                       QDateTime{mFrom}.toUTC(),
+                                                                                       QDateTime{mTill}.addDays(1).toUTC(),
+                                                                                       mType,
+                                                                                       mTypeId));
+                mData.reserve(entries.size());
 
-                data
-                    << entry->isIgnored()
-                    << entry->getTimestamp()
-                    << static_cast<int>(entry->getType())
-                    << entry->getQuantity()
-                    << entry->getTypeId()
-                    << entry->getPrice()
-                    << entry->getClientName()
-                    << mDataProvider.getLocationName(entry->getLocationId())
-                    << entry->getId();
+                for (const auto &entry : entries)
+                {
+                    mData.emplace_back();
+                    auto &data = mData.back();
+
+                    data
+                        << entry->isIgnored()
+                        << entry->getTimestamp()
+                        << static_cast<int>(entry->getType())
+                        << entry->getQuantity()
+                        << entry->getTypeId()
+                        << entry->getPrice()
+                        << entry->getClientName()
+                        << mDataProvider.getLocationName(entry->getLocationId())
+                        << entry->getId();
+                }
+            }
+            catch (const CharacterRepository::NotFoundException &)
+            {
             }
         }
 

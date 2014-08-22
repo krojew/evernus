@@ -25,6 +25,7 @@ class QItemSelection;
 namespace Evernus
 {
     class WalletTransactionRepository;
+    class CharacterRepository;
     class ItemCostProvider;
     class MarketOrderModel;
     class EveDataProvider;
@@ -38,8 +39,10 @@ namespace Evernus
 
     public:
         MarketOrderViewWithTransactions(const WalletTransactionRepository &transactionsRepo,
+                                        const CharacterRepository &characterRepository,
                                         const EveDataProvider &dataProvider,
                                         ItemCostProvider &costProvider,
+                                        bool corp,
                                         QWidget *parent = nullptr);
         virtual ~MarketOrderViewWithTransactions() = default;
 

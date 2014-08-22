@@ -33,6 +33,7 @@
 namespace Evernus
 {
     WalletTransactionsWidget::WalletTransactionsWidget(const WalletTransactionRepository &walletRepo,
+                                                       const CharacterRepository &characterRepository,
                                                        const FilterTextRepository &filterRepo,
                                                        const CacheTimerProvider &cacheTimerProvider,
                                                        const EveDataProvider &dataProvider,
@@ -44,7 +45,7 @@ namespace Evernus
                                ImportSettings::maxWalletAgeKey,
                                parent)
         , mItemCostProvider(itemCostProvider)
-        , mModel(walletRepo, dataProvider)
+        , mModel(walletRepo, characterRepository, dataProvider, corp)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

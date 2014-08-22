@@ -2038,17 +2038,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Zlecenia postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="553"/>
+        <location filename="../MainWindow.cpp" line="554"/>
         <source>Corporation orders</source>
         <translation>Zlecenia korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="593"/>
+        <location filename="../MainWindow.cpp" line="595"/>
         <source>Item history</source>
         <translation>Historia przedmiotów</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="606"/>
+        <location filename="../MainWindow.cpp" line="608"/>
         <source>Market browser</source>
         <translation>Rynek</translation>
     </message>
@@ -2058,17 +2058,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Dziennik postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="571"/>
+        <location filename="../MainWindow.cpp" line="572"/>
         <source>Corporation journal</source>
         <translation>Dziennik korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="540"/>
+        <location filename="../MainWindow.cpp" line="541"/>
         <source>Character transactions</source>
         <translation>Transakcje postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="582"/>
+        <location filename="../MainWindow.cpp" line="584"/>
         <source>Corporation transactions</source>
         <translation>Transakcje korporacji</translation>
     </message>
@@ -2085,7 +2085,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Transakcje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="615"/>
+        <location filename="../MainWindow.cpp" line="617"/>
         <source>Item costs</source>
         <translation>Koszty</translation>
     </message>
@@ -3241,12 +3241,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderViewWithTransactions</name>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="51"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="53"/>
         <source>Transactions</source>
         <translation>Transakcje</translation>
     </message>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="60"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="62"/>
         <source>Add to item costs</source>
         <translation>Dodaj do własnych kosztów</translation>
     </message>
@@ -4090,52 +4090,52 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletTransactionsModel</name>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="33"/>
+        <location filename="../WalletTransactionsModel.cpp" line="39"/>
         <source>Ignored</source>
         <translation>Ignorowane</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="34"/>
+        <location filename="../WalletTransactionsModel.cpp" line="40"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="35"/>
+        <location filename="../WalletTransactionsModel.cpp" line="41"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="36"/>
+        <location filename="../WalletTransactionsModel.cpp" line="42"/>
         <source>Quantity</source>
         <translation>Ilość</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="37"/>
+        <location filename="../WalletTransactionsModel.cpp" line="43"/>
         <source>Item</source>
         <translation>Przedmiot</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="38"/>
+        <location filename="../WalletTransactionsModel.cpp" line="44"/>
         <source>Price</source>
         <translation>Cena</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="39"/>
+        <location filename="../WalletTransactionsModel.cpp" line="45"/>
         <source>Client</source>
         <translation>Klient</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="40"/>
+        <location filename="../WalletTransactionsModel.cpp" line="46"/>
         <source>Location</source>
         <translation>Lokacja</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="90"/>
+        <location filename="../WalletTransactionsModel.cpp" line="96"/>
         <source>Buy</source>
         <translation>Kupno</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="91"/>
+        <location filename="../WalletTransactionsModel.cpp" line="97"/>
         <source>Sell</source>
         <translation>Sprzedaż</translation>
     </message>
@@ -4143,22 +4143,22 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletTransactionsWidget</name>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="58"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="59"/>
         <source>all</source>
         <translation>wszystko</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="58"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="59"/>
         <source>buy</source>
         <translation>kupno</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="58"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="59"/>
         <source>sell</source>
         <translation>sprzedaż</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="71"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="72"/>
         <source>Add to item costs</source>
         <translation>Dodaj do własnych kosztów</translation>
     </message>

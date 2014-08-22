@@ -24,6 +24,7 @@ namespace Evernus
     class WalletTransactionRepository;
     class WalletEntryFilterWidget;
     class FilterTextRepository;
+    class CharacterRepository;
     class CacheTimerProvider;
     class ItemCostProvider;
     class EveDataProvider;
@@ -38,6 +39,7 @@ namespace Evernus
         typedef WalletTransactionsModel::EntryType EntryType;
 
         WalletTransactionsWidget(const WalletTransactionRepository &walletRepo,
+                                 const CharacterRepository &characterRepository,
                                  const FilterTextRepository &filterRepo,
                                  const CacheTimerProvider &cacheTimerProvider,
                                  const EveDataProvider &dataProvider,

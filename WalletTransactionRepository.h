@@ -56,6 +56,12 @@ namespace Evernus
                                             EntryType type,
                                             EveType::IdType typeId = EveType::invalidId) const;
 
+        EntityList fetchForCorporationInRange(uint corporationId,
+                                              const QDateTime &from,
+                                              const QDateTime &till,
+                                              EntryType type,
+                                              EveType::IdType typeId = EveType::invalidId) const;
+
         EntityList fetchForTypeId(EveType::IdType typeId) const;
         EntityList fetchForTypeIdAndCharacter(EveType::IdType typeId, Character::IdType characterId) const;
 
@@ -65,5 +71,13 @@ namespace Evernus
         virtual QStringList getColumns() const override;
         virtual void bindValues(const WalletTransaction &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const WalletTransaction &entity, QSqlQuery &query) const override;
+
+        template<class T>
+        EntityList fetchForColumnInRange(T id,
+                                         const QDateTime &from,
+                                         const QDateTime &till,
+                                         EntryType type,
+                                         EveType::IdType typeId,
+                                         const QString &column) const;
     };
 }
