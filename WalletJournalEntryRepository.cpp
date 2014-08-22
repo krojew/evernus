@@ -94,8 +94,17 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp ON %1(character_id, timestamp)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp_amount ON %1(character_id, timestamp, amount)"}.arg(getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_timestamp ON %1(corporation_id, timestamp)"}.arg(getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_timestamp_amount ON %1(corporation_id, timestamp, amount)"}.arg(getTableName()));
+
+        try
+        {
+            exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_timestamp ON %1(corporation_id, timestamp)"}.arg(getTableName()));
+            exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_timestamp_amount ON %1(corporation_id, timestamp, amount)"}.arg(getTableName()));
+        }
+        catch (const std::exception &)
+        {
+            // ignore - versions < 1.9 do not have this column
+            qDebug() << "SQL errors ignored";
+        }
     }
 
     WalletJournalEntry::IdType WalletJournalEntryRepository::getLatestEntryId(Character::IdType characterId) const
