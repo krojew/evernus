@@ -338,7 +338,8 @@ namespace Evernus
         const auto hash = qHash(url);
 
         QDir hashDir{mCacheDir};
-        hashDir.cd(QString::number(hash));
+        if (!hashDir.cd(QString::number(hash)))
+            return QString{};
 
         const auto files = hashDir.entryList(QDir::Files | QDir::Readable);
 
