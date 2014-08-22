@@ -55,6 +55,10 @@ namespace Evernus
                                             const QDateTime &from,
                                             const QDateTime &till,
                                             EntryType type) const;
+        EntityList fetchForCorporationInRange(uint corporationId,
+                                              const QDateTime &from,
+                                              const QDateTime &till,
+                                              EntryType type) const;
 
     private:
         bool mCorp = false;
@@ -62,5 +66,12 @@ namespace Evernus
         virtual QStringList getColumns() const override;
         virtual void bindValues(const WalletJournalEntry &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const WalletJournalEntry &entity, QSqlQuery &query) const override;
+
+        template<class T>
+        EntityList fetchForColumnInRange(T id,
+                                         const QDateTime &from,
+                                         const QDateTime &till,
+                                         EntryType type,
+                                         const QString &column) const;
     };
 }

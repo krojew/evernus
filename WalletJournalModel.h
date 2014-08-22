@@ -24,6 +24,7 @@
 
 namespace Evernus
 {
+    class CharacterRepository;
     class EveDataProvider;
 
     class WalletJournalModel
@@ -35,7 +36,9 @@ namespace Evernus
         typedef WalletJournalEntryRepository::EntryType EntryType;
 
         WalletJournalModel(const WalletJournalEntryRepository &journalRepo,
+                           const CharacterRepository &characterRepository,
                            const EveDataProvider &dataProvider,
+                           bool corp,
                            QObject *parent = nullptr);
         virtual ~WalletJournalModel() = default;
 
@@ -58,6 +61,7 @@ namespace Evernus
         static const auto idColumn = 9;
 
         const WalletJournalEntryRepository &mJournalRepository;
+        const CharacterRepository &mCharacterRepository;
         const EveDataProvider &mDataProvider;
 
         Character::IdType mCharacterId = Character::invalidId;
@@ -67,5 +71,7 @@ namespace Evernus
         std::vector<QVariantList> mData;
 
         QStringList mColumns;
+
+        bool mCorp = false;
     };
 }

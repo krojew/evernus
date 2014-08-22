@@ -17,6 +17,7 @@
 #include <QColor>
 #include <QFont>
 
+#include "CharacterRepository.h"
 #include "EveDataProvider.h"
 #include "TextUtils.h"
 
@@ -24,11 +25,16 @@
 
 namespace Evernus
 {
-    WalletJournalModel
-    ::WalletJournalModel(const WalletJournalEntryRepository &journalRepo, const EveDataProvider &dataProvider, QObject *parent)
+    WalletJournalModel::WalletJournalModel(const WalletJournalEntryRepository &journalRepo,
+                                           const CharacterRepository &characterRepository,
+                                           const EveDataProvider &dataProvider,
+                                           bool corp,
+                                           QObject *parent)
         : QAbstractTableModel(parent)
         , mJournalRepository(journalRepo)
+        , mCharacterRepository(characterRepository)
         , mDataProvider(dataProvider)
+        , mCorp(corp)
     {
         mColumns
             << tr("Ignored")
@@ -154,31 +160,44 @@ namespace Evernus
         mData.clear();
         if (mCharacterId != Character::invalidId)
         {
-            const auto entries
-                = mJournalRepository.fetchForCharacterInRange(mCharacterId, QDateTime{mFrom}.toUTC(), QDateTime{mTill}.addDays(1).toUTC(), mType);
-            mData.reserve(entries.size());
-
-            QRegularExpression re{"^DESC: "};
-
-            for (const auto &entry : entries)
+            try
             {
-                const auto argName = entry->getArgName();
-                auto reason = entry->getReason();
+                const auto entries = (mCorp) ?
+                                     (mJournalRepository.fetchForCorporationInRange(mCharacterRepository.getCorporationId(mCharacterId),
+                                                                                    QDateTime{mFrom}.toUTC(),
+                                                                                    QDateTime{mTill}.addDays(1).toUTC(),
+                                                                                    mType)) :
+                                     (mJournalRepository.fetchForCharacterInRange(mCharacterId,
+                                                                                  QDateTime{mFrom}.toUTC(),
+                                                                                  QDateTime{mTill}.addDays(1).toUTC(),
+                                                                                  mType));
+                mData.reserve(entries.size());
 
-                mData.emplace_back();
-                auto &data = mData.back();
+                QRegularExpression re{"^DESC: "};
 
-                data
-                    << entry->isIgnored()
-                    << entry->getTimestamp()
-                    << mDataProvider.getRefTypeName(entry->getRefTypeId())
-                    << entry->getOwnerName1()
-                    << entry->getOwnerName2()
-                    << ((argName) ? (*argName) : (QVariant{}))
-                    << entry->getAmount()
-                    << entry->getBalance()
-                    << ((reason) ? (reason->remove(re)) : (QVariant{}))
-                    << entry->getId();
+                for (const auto &entry : entries)
+                {
+                    const auto argName = entry->getArgName();
+                    auto reason = entry->getReason();
+
+                    mData.emplace_back();
+                    auto &data = mData.back();
+
+                    data
+                        << entry->isIgnored()
+                        << entry->getTimestamp()
+                        << mDataProvider.getRefTypeName(entry->getRefTypeId())
+                        << entry->getOwnerName1()
+                        << entry->getOwnerName2()
+                        << ((argName) ? (*argName) : (QVariant{}))
+                        << entry->getAmount()
+                        << entry->getBalance()
+                        << ((reason) ? (reason->remove(re)) : (QVariant{}))
+                        << entry->getId();
+                }
+            }
+            catch (const CharacterRepository::NotFoundException &)
+            {
             }
         }
 

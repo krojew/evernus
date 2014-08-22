@@ -521,6 +521,7 @@ namespace Evernus
         connect(this, &MainWindow::itemCostsChanged, orderTab, &MarketOrderWidget::updateData);
 
         auto journalTab = new WalletJournalWidget{mWalletJournalRepository,
+                                                  mCharacterRepository,
                                                   mFilterRepository,
                                                   mCacheTimerProvider,
                                                   mEveDataProvider,
@@ -564,6 +565,7 @@ namespace Evernus
         connect(this, &MainWindow::itemCostsChanged, corpOrderTab, &MarketOrderWidget::updateData);
 
         auto corpJournalTab = new WalletJournalWidget{mCorpWalletJournalRepository,
+                                                      mCharacterRepository,
                                                       mFilterRepository,
                                                       mCacheTimerProvider,
                                                       mEveDataProvider,

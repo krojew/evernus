@@ -24,6 +24,7 @@ namespace Evernus
     class WalletJournalEntryRepository;
     class WalletEntryFilterWidget;
     class FilterTextRepository;
+    class CharacterRepository;
     class CacheTimerProvider;
     class EveDataProvider;
     class StyledTreeView;
@@ -37,6 +38,7 @@ namespace Evernus
         typedef WalletJournalModel::EntryType EntryType;
 
         WalletJournalWidget(const WalletJournalEntryRepository &journalRepo,
+                            const CharacterRepository &characterRepository,
                             const FilterTextRepository &filterRepo,
                             const CacheTimerProvider &cacheTimerProvider,
                             const EveDataProvider &dataProvider,

@@ -3993,47 +3993,47 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletJournalModel</name>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="34"/>
+        <location filename="../WalletJournalModel.cpp" line="40"/>
         <source>Ignored</source>
         <translation>Ignorowane</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="35"/>
+        <location filename="../WalletJournalModel.cpp" line="41"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="36"/>
+        <location filename="../WalletJournalModel.cpp" line="42"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="37"/>
+        <location filename="../WalletJournalModel.cpp" line="43"/>
         <source>First party</source>
         <translation>Pierwsza strona</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="38"/>
+        <location filename="../WalletJournalModel.cpp" line="44"/>
         <source>Second party</source>
         <translation>Druga strona</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="39"/>
+        <location filename="../WalletJournalModel.cpp" line="45"/>
         <source>Additional data</source>
         <translation>Dodatkowe dane</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="40"/>
+        <location filename="../WalletJournalModel.cpp" line="46"/>
         <source>Amount</source>
         <translation>Wartość</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="41"/>
+        <location filename="../WalletJournalModel.cpp" line="47"/>
         <source>Balance after</source>
         <translation>Bilans po</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="42"/>
+        <location filename="../WalletJournalModel.cpp" line="48"/>
         <source>Reason</source>
         <translation>Powód</translation>
     </message>
@@ -4041,17 +4041,17 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletJournalWidget</name>
     <message>
-        <location filename="../WalletJournalWidget.cpp" line="52"/>
+        <location filename="../WalletJournalWidget.cpp" line="53"/>
         <source>all</source>
         <translation>wszystko</translation>
     </message>
     <message>
-        <location filename="../WalletJournalWidget.cpp" line="52"/>
+        <location filename="../WalletJournalWidget.cpp" line="53"/>
         <source>incoming</source>
         <translation>przychód</translation>
     </message>
     <message>
-        <location filename="../WalletJournalWidget.cpp" line="52"/>
+        <location filename="../WalletJournalWidget.cpp" line="53"/>
         <source>outgoing</source>
         <translation>koszt</translation>
     </message>

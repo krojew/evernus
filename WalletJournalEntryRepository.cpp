@@ -92,6 +92,9 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp ON %1(character_id, timestamp)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp_amount ON %1(character_id, timestamp, amount)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_timestamp ON %1(corporation_id, timestamp)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_timestamp_amount ON %1(corporation_id, timestamp, amount)"}.arg(getTableName()));
     }
 
     WalletJournalEntry::IdType WalletJournalEntryRepository::getLatestEntryId(Character::IdType characterId) const
@@ -158,35 +161,13 @@ namespace Evernus
     WalletJournalEntryRepository::EntityList WalletJournalEntryRepository
     ::fetchForCharacterInRange(Character::IdType characterId, const QDateTime &from, const QDateTime &till, EntryType type) const
     {
-        QString queryStr;
-        switch (type) {
-        case EntryType::Incomig:
-            queryStr = "SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ? AND amount >= 0";
-            break;
-        case EntryType::Outgoing:
-            queryStr = "SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ? AND amount < 0";
-            break;
-        default:
-            queryStr = "SELECT * FROM %1 WHERE character_id = ? AND timestamp BETWEEN ? AND ?";
-        }
+        return fetchForColumnInRange(characterId, from, till, type, "character_id");
+    }
 
-        auto query = prepare(queryStr.arg(getTableName()));
-        query.addBindValue(characterId);
-        query.addBindValue(from);
-        query.addBindValue(till);
-
-        DatabaseUtils::execQuery(query);
-
-        const auto size = query.size();
-
-        EntityList result;
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-            result.emplace_back(populate(query.record()));
-
-        return result;
+    WalletJournalEntryRepository::EntityList WalletJournalEntryRepository
+    ::fetchForCorporationInRange(uint corporationId, const QDateTime &from, const QDateTime &till, EntryType type) const
+    {
+        return fetchForColumnInRange(corporationId, from, till, type, "corporation_id");
     }
 
     QStringList WalletJournalEntryRepository::getColumns() const
@@ -265,5 +246,43 @@ namespace Evernus
         query.addBindValue((taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
         query.addBindValue(entity.getCorporationId());
         query.addBindValue(entity.isIgnored());
+    }
+
+    template<class T>
+    WalletJournalEntryRepository::EntityList WalletJournalEntryRepository::fetchForColumnInRange(T id,
+                                                                                                 const QDateTime &from,
+                                                                                                 const QDateTime &till,
+                                                                                                 EntryType type,
+                                                                                                 const QString &column) const
+    {
+        QString queryStr;
+        switch (type) {
+        case EntryType::Incomig:
+            queryStr = "SELECT * FROM %1 WHERE %2 = ? AND timestamp BETWEEN ? AND ? AND amount >= 0";
+            break;
+        case EntryType::Outgoing:
+            queryStr = "SELECT * FROM %1 WHERE %2 = ? AND timestamp BETWEEN ? AND ? AND amount < 0";
+            break;
+        default:
+            queryStr = "SELECT * FROM %1 WHERE %2 = ? AND timestamp BETWEEN ? AND ?";
+        }
+
+        auto query = prepare(queryStr.arg(getTableName()).arg(column));
+        query.addBindValue(id);
+        query.addBindValue(from);
+        query.addBindValue(till);
+
+        DatabaseUtils::execQuery(query);
+
+        const auto size = query.size();
+
+        EntityList result;
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
     }
 }

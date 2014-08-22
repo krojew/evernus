@@ -29,6 +29,7 @@
 namespace Evernus
 {
     WalletJournalWidget::WalletJournalWidget(const WalletJournalEntryRepository &journalRepo,
+                                             const CharacterRepository &characterRepository,
                                              const FilterTextRepository &filterRepo,
                                              const CacheTimerProvider &cacheTimerProvider,
                                              const EveDataProvider &dataProvider,
@@ -38,7 +39,7 @@ namespace Evernus
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, (corp) ? (TimerType::CorpWalletJournal) : (TimerType::WalletJournal)),
                                ImportSettings::maxWalletAgeKey,
                                parent)
-        , mModel(journalRepo, dataProvider)
+        , mModel(journalRepo, characterRepository, dataProvider, corp)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
