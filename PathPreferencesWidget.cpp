@@ -87,6 +87,10 @@ namespace Evernus
         cacheLayout->addWidget(browseBtn);
         connect(browseBtn, &QPushButton::clicked, this, &PathPreferencesWidget::browseForCacheFolder);
 
+        mDeleteCacheBtn = new QCheckBox{tr("Delete processed cache files"), this};
+        eveLayout->addWidget(mDeleteCacheBtn);
+        mDeleteCacheBtn->setChecked(settings.value(PathSettings::deleteProcessedCacheFilesKey, true).toBool());
+
         auto cacheLabel = new QLabel{tr("Setting the cache path is optional. When left blank, Evernus will try to guess the path itself."), this};
         eveLayout->addWidget(cacheLabel);
         cacheLabel->setWordWrap(true);
@@ -102,6 +106,7 @@ namespace Evernus
         settings.setValue(PathSettings::characterLogWildcardKey, mCharacterLogWildcardEdit->text());
         settings.setValue(PathSettings::corporationLogWildcardKey, mCorporationLogWildcardEdit->text());
         settings.setValue(PathSettings::eveCachePathKey, mEveCachePathEdit->text());
+        settings.setValue(PathSettings::deleteProcessedCacheFilesKey, mDeleteCacheBtn->isChecked());
     }
 
     void PathPreferencesWidget::browseForMarketLogsFolder()

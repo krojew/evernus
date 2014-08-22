@@ -27,7 +27,7 @@ namespace Evernus
         const auto deleteLogsKey = "path/marketLogs/delete";
         const auto characterLogWildcardKey = "path/marketLogs/characterWildcard";
         const auto corporationLogWildcardKey = "path/marketLogs/corporationWildcard";
-
+        const auto deleteProcessedCacheFilesKey = "path/cache/deleteProcessed";
         const auto eveCachePathKey = "path/eve/cache";
     }
 }

@@ -3493,6 +3493,11 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="90"/>
+        <source>Delete processed cache files</source>
+        <translation>Usuń przetworzone pliki</translation>
+    </message>
+    <message>
+        <location filename="../PathPreferencesWidget.cpp" line="94"/>
         <source>Setting the cache path is optional. When left blank, Evernus will try to guess the path itself.</source>
         <translation>Ustawienie ścieżki cache jest opcjonalne. Pusta ścieżka spowoduje próbę odgadnięcia.</translation>
     </message>

@@ -43,5 +43,6 @@ namespace Evernus
         QLineEdit *mCharacterLogWildcardEdit = nullptr;
         QLineEdit *mCorporationLogWildcardEdit = nullptr;
         QLineEdit *mEveCachePathEdit = nullptr;
+        QCheckBox *mDeleteCacheBtn = nullptr;
     };
 }

@@ -16,10 +16,13 @@
 
 #include <QApplication>
 #include <QDirIterator>
+#include <QSettings>
 #include <QDebug>
+#include <QFile>
 
 #include "EveCacheFileParser.h"
 #include "EveCacheFile.h"
+#include "PathSettings.h"
 
 #include "EveCacheManager.h"
 
@@ -60,6 +63,9 @@ namespace Evernus
 
         qDebug() << "Searching paths:" << mMachoNetPaths;
 
+        QSettings settings;
+        const auto deleteFiles = settings.value(PathSettings::deleteProcessedCacheFilesKey, true).toBool();
+
         try
         {
             auto counter = 0;
@@ -83,6 +89,9 @@ namespace Evernus
 
                             EveCacheFileParser parser{cacheFile};
                             parser.parse();
+
+                            if (deleteFiles)
+                                QFile::remove(file);
 
                             auto &streams = parser.getStreams();
 
