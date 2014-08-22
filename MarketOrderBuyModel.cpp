@@ -19,12 +19,12 @@
 #include <QFont>
 
 #include "MarketOrderProvider.h"
-#include "CharacterRepository.h"
 #include "CacheTimerProvider.h"
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "ExternalOrder.h"
+#include "PriceUtils.h"
 #include "IconUtils.h"
 #include "TextUtils.h"
 
@@ -48,7 +48,7 @@ namespace Evernus
 
     int MarketOrderBuyModel::columnCount(const QModelIndex &parent) const
     {
-        return (mCorp) ? (16) : (15);
+        return (mCorp) ? (17) : (16);
     }
 
     QVariant MarketOrderBuyModel::data(const QModelIndex &index, int role) const
@@ -153,6 +153,8 @@ namespace Evernus
                 return data->getVolumeRemaining() * data->getPrice();
             case deltaColumn:
                 return data->getDelta();
+            case marginColumn:
+                return getMargin(*data);
             case rangeColumn:
                 return data->getRange();
             case minQuantityColumn:
@@ -249,6 +251,10 @@ namespace Evernus
                     if (data->getDelta() != 0)
                         return locale.toString(data->getDelta());
                     break;
+                case marginColumn:
+                    {
+                        return QString{"%1%2"}.arg(locale.toString(getMargin(*data), 'f', 2)).arg(locale.percent());
+                    }
                 case rangeColumn:
                     {
                         const auto range = data->getRange();
@@ -366,6 +372,18 @@ namespace Evernus
                 break;
             case priceStatusColumn:
                 return QColor{Qt::darkRed};
+            case marginColumn:
+                {
+                    const auto margin =  getMargin(*data);
+
+                    QSettings settings;
+                    if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
+                        return QColor{Qt::red};
+                    if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
+                        return QColor{0xff, 0xa5, 0x00};
+
+                    return QColor{Qt::green};
+                }
             }
             break;
         case Qt::TextAlignmentRole:
@@ -399,6 +417,8 @@ namespace Evernus
                 return tr("Total");
             case deltaColumn:
                 return tr("Delta");
+            case marginColumn:
+                return tr("Margin");
             case rangeColumn:
                 return tr("Range");
             case minQuantityColumn:
@@ -477,5 +497,33 @@ namespace Evernus
         {
             return OrderList{};
         }
+    }
+
+    void MarketOrderBuyModel::handleNewCharacter()
+    {
+        try
+        {
+            mCharacter = mCharacterRepository.find(mCharacterId);
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            mCharacter = std::make_shared<Character>();
+        }
+    }
+
+    double MarketOrderBuyModel::getMargin(const MarketOrder &order) const
+    {
+        QSettings settings;
+
+
+        const auto price = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getStationId());
+        if (price->isNew())
+            return 100.;
+
+        const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        const auto realCost = PriceUtils::getCoS(order.getPrice(), taxes);
+        const auto realPrice = PriceUtils::getRevenue(price->getPrice() - delta, taxes);
+        return 100. * (realPrice - realCost) / realPrice;
     }
 }

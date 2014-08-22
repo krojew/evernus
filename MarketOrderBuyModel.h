@@ -15,6 +15,7 @@
 #pragma once
 
 #include "MarketOrderTreeModel.h"
+#include "CharacterRepository.h"
 
 namespace Evernus
 {
@@ -58,21 +59,27 @@ namespace Evernus
         static const auto volumeColumn = 5;
         static const auto totalColumn = 6;
         static const auto deltaColumn = 7;
-        static const auto rangeColumn = 8;
-        static const auto minQuantityColumn = 9;
-        static const auto etaColumn = 10;
-        static const auto timeLeftColumn = 11;
-        static const auto orderAgeColumn = 12;
-        static const auto firstSeenColumn = 13;
-        static const auto stationColumn = 14;
-        static const auto ownerColumn = 15;
+        static const auto marginColumn = 8;
+        static const auto rangeColumn = 9;
+        static const auto minQuantityColumn = 10;
+        static const auto etaColumn = 11;
+        static const auto timeLeftColumn = 12;
+        static const auto orderAgeColumn = 13;
+        static const auto firstSeenColumn = 14;
+        static const auto stationColumn = 15;
+        static const auto ownerColumn = 16;
 
         const MarketOrderProvider &mOrderProvider;
         const CacheTimerProvider &mCacheTimerProvider;
         const CharacterRepository &mCharacterRepository;
 
+        Repository<Character>::EntityPtr mCharacter;
+
         bool mCorp = false;
 
         virtual OrderList getOrders() const override;
+        virtual void handleNewCharacter() override;
+
+        double getMargin(const MarketOrder &order) const;
     };
 }
