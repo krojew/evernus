@@ -929,6 +929,8 @@
         <location filename="../EvernusApplication.cpp" line="1155"/>
         <location filename="../EvernusApplication.cpp" line="1197"/>
         <location filename="../EvernusApplication.cpp" line="1228"/>
+        <location filename="../EvernusApplication.cpp" line="1306"/>
+        <location filename="../EvernusApplication.cpp" line="1348"/>
         <source>Character not found!</source>
         <translation>Postać nie znaleziona!</translation>
     </message>
@@ -957,12 +959,6 @@
         <location filename="../EvernusApplication.cpp" line="1236"/>
         <source>Fetching market orders for character %1...</source>
         <translation>Pobieranie zleceń dla postaci %1...</translation>
-    </message>
-    <message>
-        <location filename="../EvernusApplication.cpp" line="1306"/>
-        <location filename="../EvernusApplication.cpp" line="1348"/>
-        <source>Character found!</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="1314"/>
@@ -3945,7 +3941,7 @@ Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     <message>
         <location filename="../Updater.cpp" line="108"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta akutalizacja wymaga ponownego zaimportowania dziennika i transakcji korporacji.</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="122"/>

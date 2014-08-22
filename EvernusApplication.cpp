@@ -1303,7 +1303,7 @@ namespace Evernus
         }
         catch (const CharacterRepository::NotFoundException &)
         {
-            emit taskEnded(task, tr("Character found!"));
+            emit taskEnded(task, tr("Character not found!"));
         }
     }
 
@@ -1345,7 +1345,7 @@ namespace Evernus
         }
         catch (const CharacterRepository::NotFoundException &)
         {
-            emit taskEnded(task, tr("Character found!"));
+            emit taskEnded(task, tr("Character not found!"));
         }
     }
 
