@@ -3870,19 +3870,24 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::StyledTreeView</name>
     <message>
-        <location filename="../StyledTreeView.cpp" line="36"/>
+        <location filename="../StyledTreeView.cpp" line="37"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiuj</translation>
     </message>
     <message>
-        <location filename="../StyledTreeView.cpp" line="42"/>
+        <location filename="../StyledTreeView.cpp" line="43"/>
         <source>Copy &amp;rows</source>
         <translation>Kopiuj wie&amp;rsze</translation>
     </message>
     <message>
-        <location filename="../StyledTreeView.cpp" line="46"/>
+        <location filename="../StyledTreeView.cpp" line="47"/>
         <source>Copy raw &amp;data</source>
         <translation>Kopiuj &amp;dane źródłowe</translation>
+    </message>
+    <message>
+        <location filename="../StyledTreeView.cpp" line="53"/>
+        <source>Show/hide columns</source>
+        <translation>Pokaż/ukryj kolumny</translation>
     </message>
 </context>
 <context>

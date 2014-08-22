@@ -55,6 +55,7 @@ namespace Evernus
         mView->setModel(&mProxy);
         connect(mView, &StyledTreeView::clicked, this, &MarketOrderView::showPriceInfo);
         connect(mView->header(), &QHeaderView::sectionMoved, this, &MarketOrderView::saveHeaderState);
+        connect(mView->header(), &QHeaderView::sectionResized, this, &MarketOrderView::saveHeaderState);
 
         mInfoWidget = new QWidget{this};
         mainLayout->addWidget(mInfoWidget);

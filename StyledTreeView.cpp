@@ -16,6 +16,7 @@
 #include <QHeaderView>
 #include <QClipboard>
 #include <QAction>
+#include <QMenu>
 
 #include "StyledTreeViewItemDelegate.h"
 
@@ -46,6 +47,27 @@ namespace Evernus
         action = new QAction{tr("Copy raw &data"), this};
         connect(action, &QAction::triggered, this, &StyledTreeView::copyRawData);
         addAction(action);
+
+        mColumnsMenu = new QMenu{this};
+
+        action = new QAction{tr("Show/hide columns"), this};
+        action->setMenu(mColumnsMenu);
+        addAction(action);
+    }
+
+    void StyledTreeView::setModel(QAbstractItemModel *newModel)
+    {
+        auto prevModel = model();
+        if (prevModel != nullptr)
+            disconnect(newModel, SIGNAL(modelReset()), this, SLOT(setColumnsMenu()));
+
+        QTreeView::setModel(newModel);
+
+        if (newModel != nullptr)
+        {
+            setColumnsMenu(newModel);
+            connect(newModel, SIGNAL(modelReset()), this, SLOT(setColumnsMenu()));
+        }
     }
 
     void StyledTreeView::copy()
@@ -67,6 +89,26 @@ namespace Evernus
     void StyledTreeView::copyRawData()
     {
         copyRowsWithRole(Qt::UserRole);
+    }
+
+    void StyledTreeView::setColumnsMenu(QAbstractItemModel *model)
+    {
+        if (model == nullptr)
+            model = static_cast<QAbstractItemModel *>(sender());
+
+        mColumnsMenu->clear();
+
+        const auto columns = model->columnCount();
+        for (auto i = 0; i < columns; ++i)
+        {
+            const auto name = model->headerData(i, Qt::Horizontal);
+            auto action = mColumnsMenu->addAction(name.toString());
+            action->setCheckable(true);
+            action->setChecked(!isColumnHidden(i));
+            connect(action, &QAction::triggered, this, [i, this](bool checked) {
+                setColumnHidden(i, !checked);
+            });
+        }
     }
 
     void StyledTreeView::copyRowsWithRole(int role) const

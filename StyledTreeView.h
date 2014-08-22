@@ -27,12 +27,18 @@ namespace Evernus
         explicit StyledTreeView(QWidget *parent = nullptr);
         virtual ~StyledTreeView() = default;
 
+        virtual void setModel(QAbstractItemModel *newModel) override;
+
     private slots:
         void copy();
         void copyRows();
         void copyRawData();
 
+        void setColumnsMenu(QAbstractItemModel *model = nullptr);
+
     private:
+        QMenu *mColumnsMenu = nullptr;
+
         void copyRowsWithRole(int role) const;
     };
 }
