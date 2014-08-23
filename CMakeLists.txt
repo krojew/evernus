@@ -15,7 +15,9 @@ find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
-if(UNIX)
+if(APPLE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y")
+elseif(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -stdlib=libc++ -g")
 elseif(WIN32)
     find_package(Qt5WinExtras REQUIRED)
@@ -137,6 +139,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 add_executable(
     ${PROJECT_NAME}
     WIN32
+    MACOSX_BUNDLE
     AboutDialog.cpp
     AboutDialog.h
     ActiveTasksDialog.cpp
@@ -537,6 +540,18 @@ add_executable(
 if(WIN32)
     # cmake bug
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "${LINK_FLAGS} /machine:x64")
+elseif(APPLE)
+    set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE TRUE)
+    set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "Info.plist")
+
+    set(CMAKE_BUILD_TYPE "Release")
+    set(CMAKE_CONFIGURATION_TYPES "Release;Debug;MinSizeRel;RelWithDebInfo")
+
+    # Make sure bundle will be always created at the same path
+    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR})
+    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR})
+    set(BUNDLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.app")
 endif()
 
 target_link_libraries(
@@ -551,3 +566,30 @@ target_link_libraries(
     Qt5::Widgets
     ${ADDITIONAL_LIBS}
 )
+
+if(APPLE)
+    # All resources directories which should be located next to executable
+    set(RESOURCES
+        "res"
+        "trans"
+    )
+
+    foreach(RES ${RESOURCES})
+        install(DIRECTORY ${RES} DESTINATION "${BUNDLE_PATH}Contents/MacOS/")
+    endforeach()
+
+    find_path(MACDEPLOYQT_PATH macdeployqt PATH_SUFFIXES bin)
+    if(NOT MACDEPLOYQT_PATH)
+        message(FATAL_ERROR "Could not find macdeployqt for OSX bunding. You can point MACDEPLOYQT_PATH to it's path.")
+    endif()
+
+    # If macdeployqt is found just build and install.
+    # With xcode it is:
+    # $ xcodebuild -project Evernus.xcodeproj
+    # $ xcodebuild -project Evernus.xcodeproj -target install
+    # OSX budle is ready.
+    install(CODE "
+            execute_process(COMMAND ${MACDEPLOYQT_PATH} \"${BUNDLE_PATH}\")
+            " COMPONENT Runtime
+    )
+endif()
