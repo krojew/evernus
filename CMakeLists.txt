@@ -578,6 +578,8 @@ if(APPLE)
         install(DIRECTORY ${RES} DESTINATION "${BUNDLE_PATH}/Contents/MacOS/")
     endforeach()
 
+    install(FILES iconfile.icns DESTINATION "${BUNDLE_PATH}/Contents/Resources/")
+
     find_path(MACDEPLOYQT_PATH macdeployqt PATH_SUFFIXES bin)
     if(NOT MACDEPLOYQT_PATH)
         message(FATAL_ERROR "Could not find macdeployqt for OSX bunding. You can point MACDEPLOYQT_PATH to it's path.")
