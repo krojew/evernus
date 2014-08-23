@@ -589,7 +589,7 @@ if(APPLE)
     # $ xcodebuild -project Evernus.xcodeproj -target install
     # OSX budle is ready.
     install(CODE "
-            execute_process(COMMAND ${MACDEPLOYQT_PATH} \"${BUNDLE_PATH}\")
+            execute_process(COMMAND ${MACDEPLOYQT_PATH}/macdeployqt \"${BUNDLE_PATH}\" -verbose=2)
             " COMPONENT Runtime
     )
 endif()
