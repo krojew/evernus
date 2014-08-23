@@ -575,7 +575,7 @@ if(APPLE)
     )
 
     foreach(RES ${RESOURCES})
-        install(DIRECTORY ${RES} DESTINATION "${BUNDLE_PATH}Contents/MacOS/")
+        install(DIRECTORY ${RES} DESTINATION "${BUNDLE_PATH}/Contents/MacOS/")
     endforeach()
 
     find_path(MACDEPLOYQT_PATH macdeployqt PATH_SUFFIXES bin)
