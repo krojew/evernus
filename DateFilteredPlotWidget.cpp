@@ -73,6 +73,10 @@ namespace Evernus
         mPlot->xAxis->setSubTickCount(0);
         mPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
         mPlot->xAxis->setDateTimeFormat(locale().dateFormat(QLocale::NarrowFormat));
+        
+        auto locale = mPlot->locale();
+        locale.setNumberOptions(0);
+        mPlot->setLocale(locale);
     }
 
     QDate DateFilteredPlotWidget::getFrom() const

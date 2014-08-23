@@ -85,6 +85,10 @@ namespace Evernus
         mPlot->yAxis2->setLabel(tr("Volume"));
         mPlot->legend->setVisible(true);
 
+        auto locale = mPlot->locale();
+        locale.setNumberOptions(0);
+        mPlot->setLocale(locale);
+
         QSettings settings;
         mPlot->yAxis->setNumberFormat(
             settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString());
