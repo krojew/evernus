@@ -567,13 +567,12 @@ target_link_libraries(
     ${ADDITIONAL_LIBS}
 )
 
-if(APPLE)
-    # All resources directories which should be located next to executable
-    set(RESOURCES
-        "res"
-        "trans"
-    )
+set(RESOURCES
+    "res"
+    "trans"
+)
 
+if(APPLE)
     foreach(RES ${RESOURCES})
         install(DIRECTORY ${RES} DESTINATION "${BUNDLE_PATH}/Contents/MacOS/")
     endforeach()
@@ -594,4 +593,10 @@ if(APPLE)
             execute_process(COMMAND ${MACDEPLOYQT_PATH}/macdeployqt \"${BUNDLE_PATH}\" -verbose=2)
             " COMPONENT Runtime
     )
+elseif(UNIX)
+    foreach(RES ${RESOURCES})
+        install(DIRECTORY ${RES} DESTINATION "/usr/share/Evernus")
+    endforeach()
+    
+    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "/usr/bin")
 endif()

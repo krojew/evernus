@@ -27,3 +27,4 @@ qrc_evernus.cpp
 Release/*
 trans/lang_*
 RelWithDebInfo/*
+install_manifest.txt

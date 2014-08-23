@@ -16,6 +16,7 @@
 #include <stdexcept>
 #include <queue>
 
+#include <QStandardPaths>
 #include <QSplashScreen>
 #include <QMessageBox>
 #include <QFileDialog>
@@ -1673,7 +1674,17 @@ namespace Evernus
         if (!mEveDb.isValid())
             throw std::runtime_error{"Error crating Eve DB object!"};
 
-        mEveDb.setDatabaseName(applicationDirPath() + "/res/eve.db");
+        auto eveDbPath = applicationDirPath() + "/res/eve.db";
+        if (!QFile::exists(eveDbPath))
+        {
+            eveDbPath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, applicationName() + "/res/eve.db");
+            if (!QFile::exists(eveDbPath))
+                throw std::runtime_error{"Cannot find Eve DB!"};
+        }
+        
+        qDebug() << "Eve DB path:" << eveDbPath;
+            
+        mEveDb.setDatabaseName(eveDbPath);
         mEveDb.setConnectOptions("QSQLITE_OPEN_READONLY");
 
         if (!mEveDb.open())
