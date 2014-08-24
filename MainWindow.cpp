@@ -164,16 +164,20 @@ namespace Evernus
 
     void MainWindow::showMarginTool()
     {
+        showMinimized();
+
         if (mMarginToolDialog.isNull())
         {
             mMarginToolDialog = new MarginToolDialog{mCharacterRepository, mItemCostProvider, mEveDataProvider};
             mMarginToolDialog->setCharacter(mCurrentCharacterId);
+            mMarginToolDialog->show();
             connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, mMarginToolDialog, &MarginToolDialog::setCharacter);
         }
-
-        showMinimized();
-
-        mMarginToolDialog->activateWindow();
+        else
+        {
+            mMarginToolDialog->show();
+            mMarginToolDialog->activateWindow();
+        }
     }
 
     void MainWindow::showAbout()

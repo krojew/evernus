@@ -171,6 +171,7 @@ namespace Evernus
         settings.setValue(MarginToolSettings::alwaysOnTopKey, alwaysOnTop);
 
         setNewWindowFlags(alwaysOnTop);
+        show();
     }
 
     void MarginToolDialog::refreshData(const QString &path)
@@ -504,7 +505,6 @@ namespace Evernus
 
         setWindowFlags(flags);
 #endif
-        show();
     }
 
     QTableWidget *MarginToolDialog::createSampleTable()
