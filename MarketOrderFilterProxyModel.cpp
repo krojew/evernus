@@ -115,6 +115,10 @@ namespace Evernus
 
     bool MarketOrderFilterProxyModel::acceptsStatus(const MarketOrder &order) const
     {
+        const auto type = static_cast<MarketOrderModel *>(sourceModel())->getType();
+        if (type == MarketOrderModel::Type::Neither)
+            return true;
+
         if ((mStatusFilter & Changed) && (order.getDelta() != 0))
             return true;
         if ((mStatusFilter & Active) && (order.getState() == MarketOrder::State::Active))

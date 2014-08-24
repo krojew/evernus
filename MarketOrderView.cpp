@@ -45,6 +45,7 @@ namespace Evernus
 
         mProxy.setSortRole(Qt::UserRole);
         mProxy.setFilterCaseSensitivity(Qt::CaseInsensitive);
+        mProxy.setFilterKeyColumn(-1);
         connect(this, &MarketOrderView::statusFilterChanged, &mProxy, &MarketOrderFilterProxyModel::setStatusFilter);
         connect(this, &MarketOrderView::priceStatusFilterChanged, &mProxy, &MarketOrderFilterProxyModel::setPriceStatusFilter);
         connect(this, &MarketOrderView::textFilterChanged, &mProxy, &MarketOrderFilterProxyModel::setTextFilter);
