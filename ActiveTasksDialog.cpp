@@ -202,7 +202,7 @@ namespace Evernus
 #endif
             if (mAutoCloseBtn->isChecked() && !mHadError)
             {
-                close();
+                QMetaObject::invokeMethod(this, "close", Qt::QueuedConnection);
             }
         }
     }
