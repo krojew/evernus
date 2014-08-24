@@ -433,11 +433,15 @@ namespace Evernus
 
         auto fileMenu = bar->addMenu(tr("&File"));
         fileMenu->addAction(QIcon{":/images/user.png"}, tr("&Manage characters..."), this, SLOT(showCharacterManagement()));
-        fileMenu->addAction(QIcon{":/images/wrench.png"}, tr("&Preferences..."), this, SLOT(showPreferences()), Qt::CTRL + Qt::Key_O);
+#ifdef Q_OS_OSX
+        fileMenu->addAction(QIcon{":/images/wrench.png"}, tr("&Preferences..."), this, SLOT(showPreferences()), QKeySequence::Preferences)->setMenuRole(QAction::PreferencesRole);
+#else
+        fileMenu->addAction(QIcon{":/images/wrench.png"}, tr("&Preferences..."), this, SLOT(showPreferences()), Qt::CTRL + Qt::Key_O)->setMenuRole(QAction::PreferencesRole);
+#endif
         fileMenu->addSeparator();
         fileMenu->addAction(tr("Import EVE Mentat order history..."), this, SIGNAL(importFromMentat()));
         fileMenu->addSeparator();
-        fileMenu->addAction(tr("E&xit"), this, SLOT(close()));
+        fileMenu->addAction(tr("E&xit"), this, SLOT(close()), QKeySequence::Quit)->setMenuRole(QAction::QuitRole);
 
         auto toolsMenu = bar->addMenu(tr("&Tools"));
         toolsMenu->addAction(tr("Import conquerable stations"), this, SIGNAL(refreshConquerableStations()));
@@ -450,7 +454,7 @@ namespace Evernus
         helpMenu->addAction(QIcon{":/images/help.png"}, tr("&Online help..."), this, SLOT(openHelp()));
         helpMenu->addAction(tr("Check for &updates"), this, SLOT(checkForUpdates()));
         helpMenu->addSeparator();
-        helpMenu->addAction(tr("&About..."), this, SLOT(showAbout()));
+        helpMenu->addAction(tr("&About..."), this, SLOT(showAbout()))->setMenuRole(QAction::AboutRole);
 
         mMenuWidget = new MenuBarWidget{mCharacterRepository, this};
         bar->setCornerWidget(mMenuWidget);
