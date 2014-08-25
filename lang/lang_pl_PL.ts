@@ -761,26 +761,31 @@
     </message>
     <message>
         <location filename="../DateFilteredPlotWidget.cpp" line="59"/>
+        <source>Show legend</source>
+        <translation>Pokaż legendę</translation>
+    </message>
+    <message>
+        <location filename="../DateFilteredPlotWidget.cpp" line="63"/>
         <source>Save...</source>
         <translation>Zapisz...</translation>
     </message>
     <message>
-        <location filename="../DateFilteredPlotWidget.cpp" line="109"/>
+        <location filename="../DateFilteredPlotWidget.cpp" line="117"/>
         <source>Save plot</source>
         <translation>Zapisz wykres</translation>
     </message>
     <message>
-        <location filename="../DateFilteredPlotWidget.cpp" line="114"/>
+        <location filename="../DateFilteredPlotWidget.cpp" line="122"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../DateFilteredPlotWidget.cpp" line="114"/>
+        <location filename="../DateFilteredPlotWidget.cpp" line="122"/>
         <source>Error saving image.</source>
         <translation>Błąd zapisu obrazka.</translation>
     </message>
     <message>
-        <location filename="../DateFilteredPlotWidget.cpp" line="109"/>
+        <location filename="../DateFilteredPlotWidget.cpp" line="117"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp *.ppm *.xbm *.xpm)</source>
         <translation>Obrazy (*.png *.jpg *.jpeg *.bmp *.ppm *.xbm *.xpm)</translation>
     </message>

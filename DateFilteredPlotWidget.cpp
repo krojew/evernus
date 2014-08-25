@@ -56,6 +56,10 @@ namespace Evernus
         labelBtn->setChecked(true);
         connect(labelBtn, &QCheckBox::stateChanged, this, &DateFilteredPlotWidget::showLabels);
 
+        auto legendBtn = new QCheckBox{tr("Show legend"), this};
+        filterLayout->addWidget(legendBtn);
+        legendBtn->setChecked(true);
+
         auto saveBtn = new QPushButton{QIcon{":/images/image.png"}, tr("Save..."), this};
         filterLayout->addWidget(saveBtn);
         saveBtn->setFlat(true);
@@ -73,6 +77,10 @@ namespace Evernus
         mPlot->xAxis->setSubTickCount(0);
         mPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
         mPlot->xAxis->setDateTimeFormat(locale().dateFormat(QLocale::NarrowFormat));
+        connect(legendBtn, &QCheckBox::stateChanged, this, [this](bool checked) {
+            mPlot->legend->setVisible(checked);
+            mPlot->replot();
+        });
         
         auto locale = mPlot->locale();
         locale.setNumberOptions(0);
