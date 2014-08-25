@@ -62,14 +62,17 @@ namespace Evernus
         static const auto totalColumn = 6;
         static const auto deltaColumn = 7;
         static const auto marginColumn = 8;
-        static const auto rangeColumn = 9;
-        static const auto minQuantityColumn = 10;
-        static const auto etaColumn = 11;
-        static const auto timeLeftColumn = 12;
-        static const auto orderAgeColumn = 13;
-        static const auto firstSeenColumn = 14;
-        static const auto stationColumn = 15;
-        static const auto ownerColumn = 16;
+        static const auto newMarginColumn = 9;
+        static const auto rangeColumn = 10;
+        static const auto minQuantityColumn = 11;
+        static const auto etaColumn = 12;
+        static const auto timeLeftColumn = 13;
+        static const auto orderAgeColumn = 14;
+        static const auto firstSeenColumn = 15;
+        static const auto stationColumn = 16;
+        static const auto ownerColumn = 17;
+
+        static const auto maxColumn = ownerColumn;
 
         const MarketOrderProvider &mOrderProvider;
         const CacheTimerProvider &mCacheTimerProvider;
@@ -85,6 +88,9 @@ namespace Evernus
         virtual void handleNewCharacter() override;
 
         double getMargin(const MarketOrder &order) const;
+        double getNewMargin(const MarketOrder &order) const;
         QString getCharacterName(Character::IdType id) const;
+
+        static QColor getMarginColor(double margin);
     };
 }
