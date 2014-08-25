@@ -16,17 +16,17 @@
 
 #include <unordered_map>
 
-#include "MarketOrderRepository.h"
 #include "MarketOrderProvider.h"
 
 namespace Evernus
 {
-    class CachingMarketOrderProvider
+    class CharacterCorporationCombinedMarketOrderProvider
         : public MarketOrderProvider
     {
     public:
-        explicit CachingMarketOrderProvider(const MarketOrderRepository &orderRepo);
-        virtual ~CachingMarketOrderProvider() = default;
+        CharacterCorporationCombinedMarketOrderProvider(const MarketOrderProvider &charOrderProvider,
+                                                        const MarketOrderProvider &corpOrderProvider);
+        virtual ~CharacterCorporationCombinedMarketOrderProvider() = default;
 
         virtual OrderList getSellOrders(Character::IdType characterId) const override;
         virtual OrderList getBuyOrders(Character::IdType characterId) const override;
@@ -37,21 +37,16 @@ namespace Evernus
         virtual OrderList getArchivedOrdersForCorporation(uint corporationId, const QDateTime &from, const QDateTime &to) const override;
 
         void clearOrdersForCharacter(Character::IdType id) const;
-        void clearOrdersForCorporation(uint id) const;
-        void clearArchived() const;
 
     private:
         typedef std::unordered_map<Character::IdType, OrderList> MarketOrderMap;
-        typedef std::unordered_map<uint, OrderList> CorpMarketOrderMap;
 
-        const MarketOrderRepository &mOrderRepo;
+        const MarketOrderProvider &mCharOrderProvider;
+        const MarketOrderProvider &mCorpOrderProvider;
 
         mutable MarketOrderMap mSellOrders;
         mutable MarketOrderMap mBuyOrders;
-        mutable MarketOrderMap mArchivedOrders;
 
-        mutable CorpMarketOrderMap mCorpSellOrders;
-        mutable CorpMarketOrderMap mCorpBuyOrders;
-        mutable CorpMarketOrderMap mCorpArchivedOrders;
+        static bool shouldCombine();
     };
 }

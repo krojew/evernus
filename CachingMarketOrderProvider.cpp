@@ -22,7 +22,7 @@ namespace Evernus
     {
     }
 
-    std::vector<std::shared_ptr<MarketOrder>> CachingMarketOrderProvider::getSellOrders(Character::IdType characterId) const
+    MarketOrderProvider::OrderList CachingMarketOrderProvider::getSellOrders(Character::IdType characterId) const
     {
         auto it = mSellOrders.find(characterId);
         if (it == std::end(mSellOrders))
@@ -31,7 +31,7 @@ namespace Evernus
         return it->second;
     }
 
-    std::vector<std::shared_ptr<MarketOrder>> CachingMarketOrderProvider::getBuyOrders(Character::IdType characterId) const
+    MarketOrderProvider::OrderList CachingMarketOrderProvider::getBuyOrders(Character::IdType characterId) const
     {
         auto it = mBuyOrders.find(characterId);
         if (it == std::end(mBuyOrders))
@@ -40,7 +40,7 @@ namespace Evernus
         return it->second;
     }
 
-    std::vector<std::shared_ptr<MarketOrder>> CachingMarketOrderProvider
+    MarketOrderProvider::OrderList CachingMarketOrderProvider
     ::getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const
     {
         auto it = mArchivedOrders.find(characterId);
@@ -59,7 +59,7 @@ namespace Evernus
         return result;
     }
 
-    std::vector<std::shared_ptr<MarketOrder>> CachingMarketOrderProvider::getSellOrdersForCorporation(uint corporationId) const
+    MarketOrderProvider::OrderList CachingMarketOrderProvider::getSellOrdersForCorporation(uint corporationId) const
     {
         auto it = mCorpSellOrders.find(corporationId);
         if (it == std::end(mCorpSellOrders))
@@ -68,7 +68,7 @@ namespace Evernus
         return it->second;
     }
 
-    std::vector<std::shared_ptr<MarketOrder>> CachingMarketOrderProvider::getBuyOrdersForCorporation(uint corporationId) const
+    MarketOrderProvider::OrderList CachingMarketOrderProvider::getBuyOrdersForCorporation(uint corporationId) const
     {
         auto it = mCorpBuyOrders.find(corporationId);
         if (it == std::end(mCorpBuyOrders))
@@ -77,7 +77,7 @@ namespace Evernus
         return it->second;
     }
 
-    std::vector<std::shared_ptr<MarketOrder>> CachingMarketOrderProvider
+    MarketOrderProvider::OrderList CachingMarketOrderProvider
     ::getArchivedOrdersForCorporation(uint corporationId, const QDateTime &from, const QDateTime &to) const
     {
         auto it = mCorpArchivedOrders.find(corporationId);

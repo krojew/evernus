@@ -35,5 +35,6 @@ namespace Evernus
     private:
         QCheckBox *mUpdateCorpDataBtn = nullptr;
         QCheckBox *mMakeCorpSnapshotsBtn = nullptr;
+        QCheckBox *mShowCorpOrdersWithCharacterBtn = nullptr;
     };
 }

@@ -28,15 +28,17 @@ namespace Evernus
     class MarketOrderProvider
     {
     public:
+        typedef std::vector<std::shared_ptr<MarketOrder>> OrderList;
+
         MarketOrderProvider() = default;
         virtual ~MarketOrderProvider() = default;
 
-        virtual std::vector<std::shared_ptr<MarketOrder>> getSellOrders(Character::IdType characterId) const = 0;
-        virtual std::vector<std::shared_ptr<MarketOrder>> getBuyOrders(Character::IdType characterId) const = 0;
-        virtual std::vector<std::shared_ptr<MarketOrder>> getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const = 0;
+        virtual OrderList getSellOrders(Character::IdType characterId) const = 0;
+        virtual OrderList getBuyOrders(Character::IdType characterId) const = 0;
+        virtual OrderList getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const = 0;
 
-        virtual std::vector<std::shared_ptr<MarketOrder>> getSellOrdersForCorporation(uint corporationId) const = 0;
-        virtual std::vector<std::shared_ptr<MarketOrder>> getBuyOrdersForCorporation(uint corporationId) const = 0;
-        virtual std::vector<std::shared_ptr<MarketOrder>> getArchivedOrdersForCorporation(uint corporationId, const QDateTime &from, const QDateTime &to) const = 0;
+        virtual OrderList getSellOrdersForCorporation(uint corporationId) const = 0;
+        virtual OrderList getBuyOrdersForCorporation(uint corporationId) const = 0;
+        virtual OrderList getArchivedOrdersForCorporation(uint corporationId, const QDateTime &from, const QDateTime &to) const = 0;
     };
 }

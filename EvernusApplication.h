@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <functional>
 #include <memory>
 
 #include <boost/functional/hash.hpp>
@@ -22,6 +23,7 @@
 #include <QSqlDatabase>
 #include <QTranslator>
 
+#include "CharacterCorporationCombinedMarketOrderProvider.h"
 #include "MarketOrderValueSnapshotRepository.h"
 #include "ExternalOrderImporterRegistry.h"
 #include "ConquerableStationRepository.h"
@@ -210,6 +212,8 @@ namespace Evernus
 
         typedef std::unordered_map<Character::IdType, QDateTime> CharacterTimerMap;
 
+        typedef std::function<WalletTransactionRepository::EntityList (const QDateTime &, const QDateTime &, EveType::IdType)> TransactionFetcher;
+
         QSqlDatabase mMainDb, mEveDb;
 
         std::unique_ptr<KeyRepository> mKeyRepository;
@@ -284,6 +288,7 @@ namespace Evernus
         CharacterTimerMap mCorpMarketOrdersUtcUpdateTimes;
 
         std::unique_ptr<CachingMarketOrderProvider> mCharacterOrderProvider, mCorpOrderProvider;
+        std::unique_ptr<CharacterCorporationCombinedMarketOrderProvider> mCombinedOrderProvider;
 
         mutable std::unordered_map<CharacterTypePair, ItemCostRepository::EntityPtr, boost::hash<CharacterTypePair>>
         mCharacterItemCostCache;
@@ -348,7 +353,9 @@ namespace Evernus
 
         const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
 
-        void computeAutoCosts(Character::IdType characterId, const WalletTransactionRepository &transactionRepo);
+        void computeAutoCosts(Character::IdType characterId,
+                              const MarketOrderProvider::OrderList &orders,
+                              const TransactionFetcher &transFetcher);
 
         void setSmtpSettings();
 

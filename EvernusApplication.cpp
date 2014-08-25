@@ -96,6 +96,8 @@ namespace Evernus
 
         mCharacterOrderProvider = std::make_unique<CachingMarketOrderProvider>(*mMarketOrderRepository);
         mCorpOrderProvider = std::make_unique<CachingMarketOrderProvider>(*mCorpMarketOrderRepository);
+        mCombinedOrderProvider
+            = std::make_unique<CharacterCorporationCombinedMarketOrderProvider>(*mCharacterOrderProvider, *mCorpOrderProvider);
 
         showSplashMessage(tr("Precaching ref types..."), splash);
         precacheRefTypes();
@@ -123,7 +125,7 @@ namespace Evernus
             mIGBSessionManager.start();
 
         showSplashMessage(tr("Setting up HTTP service..."), splash);
-        auto httpService = new HttpService{*mCharacterOrderProvider,
+        auto httpService = new HttpService{*mCombinedOrderProvider,
                                            *mCorpOrderProvider,
                                            *this,
                                            *mCharacterRepository,
@@ -968,7 +970,7 @@ namespace Evernus
 
     const MarketOrderProvider &EvernusApplication::getMarketOrderProvider() const noexcept
     {
-        return *mCharacterOrderProvider;
+        return *mCombinedOrderProvider;
     }
 
     const MarketOrderProvider &EvernusApplication::getCorpMarketOrderProvider() const noexcept
@@ -1181,7 +1183,17 @@ namespace Evernus
 
                     QSettings settings;
                     if (settings.value(Evernus::PriceSettings::autoAddCustomItemCostKey, false).toBool() && !mPendingAutoCostOrders.empty())
-                        computeAutoCosts(id, *mWalletTransactionRepository);
+                    {
+                        computeAutoCosts(id,
+                                         mCharacterOrderProvider->getBuyOrders(id),
+                                         std::bind(&WalletTransactionRepository::fetchForCharacterInRange,
+                                                   mWalletTransactionRepository.get(),
+                                                   id,
+                                                   std::placeholders::_1,
+                                                   std::placeholders::_2,
+                                                   Evernus::WalletTransactionRepository::EntryType::Buy,
+                                                   std::placeholders::_3));
+                    }
 
                     emit walletTransactionsChanged();
                 }
@@ -1319,12 +1331,13 @@ namespace Evernus
         {
             const auto key = getCorpKey(id);
             const auto maxId = mCorpWalletTransactionRepository->getLatestEntryId(id);
+            const auto corpId = mCharacterRepository->getCorporationId(id);
 
             if (maxId == WalletTransaction::invalidId)
                 emit taskInfoChanged(task, tr("Fetching corporation wallet transactions for character %1 (this may take a while)...").arg(id));
 
-            mAPIManager.fetchWalletTransactions(*key, id, mCharacterRepository->getCorporationId(id), WalletTransaction::invalidId, maxId,
-                                                [task, id, this](auto &&data, const auto &error) {
+            mAPIManager.fetchWalletTransactions(*key, id, corpId, WalletTransaction::invalidId, maxId,
+                                                [task, id, corpId, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
                     mCorpWalletTransactionRepository->batchStore(data, true);
@@ -1332,7 +1345,17 @@ namespace Evernus
 
                     QSettings settings;
                     if (settings.value(Evernus::PriceSettings::autoAddCustomItemCostKey, false).toBool() && !mPendingAutoCostOrders.empty())
-                        computeAutoCosts(id, *mCorpWalletTransactionRepository);
+                    {
+                        computeAutoCosts(id,
+                                         mCorpOrderProvider->getBuyOrdersForCorporation(corpId),
+                                         std::bind(&WalletTransactionRepository::fetchForCorporationInRange,
+                                                   mCorpWalletTransactionRepository.get(),
+                                                   corpId,
+                                                   std::placeholders::_1,
+                                                   std::placeholders::_2,
+                                                   Evernus::WalletTransactionRepository::EntryType::Buy,
+                                                   std::placeholders::_3));
+                    }
 
                     emit corpWalletTransactionsChanged();
                 }
@@ -2091,6 +2114,7 @@ namespace Evernus
                 mCharacterOrderProvider->clearOrdersForCorporation(corpId);
             }
 
+            mCombinedOrderProvider->clearOrdersForCharacter(id);
             mPendingAutoCostOrders.clear();
 
             QSettings settings;
@@ -2558,7 +2582,9 @@ namespace Evernus
                 .first->second;
     }
 
-    void EvernusApplication::computeAutoCosts(Character::IdType characterId, const WalletTransactionRepository &transactionRepo)
+    void EvernusApplication::computeAutoCosts(Character::IdType characterId,
+                                              const MarketOrderProvider::OrderList &orders,
+                                              const TransactionFetcher &transFetcher)
     {
         struct ItemCostData
         {
@@ -2568,7 +2594,6 @@ namespace Evernus
 
         std::unordered_map<Evernus::EveType::IdType, ItemCostData> newItemCosts;
 
-        const auto orders = mCharacterOrderProvider->getBuyOrders(characterId);
         for (const auto &order : orders)
         {
             const auto it = mPendingAutoCostOrders.find(order->getId());
@@ -2576,12 +2601,7 @@ namespace Evernus
                 continue;
 
             const auto lastSeen = std::min(QDateTime::currentDateTimeUtc(), order->getIssued().addDays(order->getDuration()));
-            const auto transactions
-                = transactionRepo.fetchForCharacterInRange(characterId,
-                                                           order->getFirstSeen(),
-                                                           lastSeen,
-                                                           Evernus::WalletTransactionRepository::EntryType::Buy,
-                                                           order->getTypeId());
+            const auto transactions = transFetcher(order->getFirstSeen(), lastSeen, order->getTypeId());
 
             auto &cost = newItemCosts[order->getTypeId()];
             for (const auto &transaction : transactions)

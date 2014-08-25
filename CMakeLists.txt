@@ -188,6 +188,8 @@ add_executable(
     Character.h
     CharacterBoundWidget.cpp
     CharacterBoundWidget.h
+    CharacterCorporationCombinedMarketOrderProvider.cpp
+    CharacterCorporationCombinedMarketOrderProvider.h
     CharacterData.h
     CharacterDomParser.h
     CharacterImportPreferencesWidget.cpp

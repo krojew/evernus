@@ -524,6 +524,7 @@ namespace Evernus
         connect(orderTab, &MarketOrderWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
         connect(orderTab, &MarketOrderWidget::openMarginTool, this, &MainWindow::showMarginTool);
         connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::corpMarketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::conquerableStationsChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, orderTab, &MarketOrderWidget::updateData);
