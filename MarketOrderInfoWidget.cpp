@@ -33,6 +33,9 @@ namespace Evernus
     MarketOrderInfoWidget::MarketOrderInfoWidget(const MarketOrderModel::OrderInfo &info, QWidget *parent)
         : QFrame(parent, Qt::Tool | Qt::FramelessWindowHint)
         , mTargetPrice(QString::number(info.mTargetPrice, 'f', 2))
+#ifdef Q_OS_MAC
+        , mWasDeactivated(false)
+#endif
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -106,6 +109,12 @@ namespace Evernus
         const auto type = event->type();
         if (type == QEvent::WindowDeactivate || type == QEvent::FocusOut)
         {
+#ifdef Q_OS_MAC
+            if (!mWasDeactivated) {
+                mWasDeactivated = true;
+                return QFrame::event(event);
+            }
+#endif
             event->accept();
             deleteLater();
             return true;
