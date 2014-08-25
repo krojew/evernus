@@ -28,7 +28,7 @@ namespace Evernus
 
     void ExternalOrderFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     {
-        Q_ASSERT(dynamic_cast<ExternalOrderModel *>(sourceModel) != nullptr);
+        Q_ASSERT(sourceModel == nullptr || dynamic_cast<ExternalOrderModel *>(sourceModel) != nullptr);
         QSortFilterProxyModel::setSourceModel(sourceModel);
     }
 
