@@ -1077,7 +1077,7 @@ namespace Evernus
 
                     QSettings settings;
 
-                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool())
+                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, Evernus::ImportSettings::autoUpdateAssetValueDefault).toBool())
                         computeAssetListSellValue(data);
 
                     saveUpdateTimer(Evernus::TimerType::AssetList, mAssetsUtcUpdateTimes, id);
@@ -1187,7 +1187,7 @@ namespace Evernus
                     {
                         computeAutoCosts(id,
                                          mCharacterOrderProvider->getBuyOrders(id),
-                                         std::bind(&WalletTransactionRepository::fetchForCharacterInRange,
+                                         std::bind(&Evernus::WalletTransactionRepository::fetchForCharacterInRange,
                                                    mWalletTransactionRepository.get(),
                                                    id,
                                                    std::placeholders::_1,
@@ -1350,7 +1350,7 @@ namespace Evernus
                     {
                         computeAutoCosts(id,
                                          mCorpOrderProvider->getBuyOrdersForCorporation(corpId),
-                                         std::bind(&WalletTransactionRepository::fetchForCorporationInRange,
+                                         std::bind(&Evernus::WalletTransactionRepository::fetchForCorporationInRange,
                                                    mCorpWalletTransactionRepository.get(),
                                                    corpId,
                                                    std::placeholders::_1,
@@ -1916,7 +1916,7 @@ namespace Evernus
                     const auto prevData = mCharacterRepository->find(data.getId());
 
                     QSettings settings;
-                    if (!settings.value(Evernus::ImportSettings::importSkillsKey, ImportSettings::importSkillsDefault).toBool())
+                    if (!settings.value(Evernus::ImportSettings::importSkillsKey, Evernus::ImportSettings::importSkillsDefault).toBool())
                     {
                         data.setOrderAmountSkills(prevData->getOrderAmountSkills());
                         data.setTradeRangeSkills(prevData->getTradeRangeSkills());
