@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <unordered_map>
+
 #include "MarketOrderTreeModel.h"
 #include "CharacterRepository.h"
 
@@ -77,9 +79,12 @@ namespace Evernus
 
         bool mCorp = false;
 
+        mutable std::unordered_map<Character::IdType, QString> mCharacterNames;
+
         virtual OrderList getOrders() const override;
         virtual void handleNewCharacter() override;
 
         double getMargin(const MarketOrder &order) const;
+        QString getCharacterName(Character::IdType id) const;
     };
 }
