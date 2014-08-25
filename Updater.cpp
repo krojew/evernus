@@ -70,7 +70,7 @@ namespace Evernus
                     if (minorVersion < 5)
                     {
                         if (minorVersion < 3)
-                            settings.setValue(PriceSettings::autoAddCustomItemCostKey, false);
+                            settings.setValue(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault);
 
                         cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
                         cacheTimerRepo.create(characterRepo);

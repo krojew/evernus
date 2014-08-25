@@ -38,6 +38,11 @@ namespace Evernus
         const auto priceMaxAgeDefault = 1;
         const auto importLogWaitTimeDefault = 1000;
         const auto marketOrderMaxAgeDefault = 7;
+        const auto copyModeDefault = CopyMode::DontCopy;
+        const auto priceAltImportDefault = true;
+        const auto autoAddCustomItemCostDefault = false;
+        const auto costDataSourceDefault = DataSource::Orders;
+        const auto shareCostsDefault = false;
 
         const auto minMarginKey = "prices/margin/min";
         const auto preferredMarginKey = "prices/margin/preferred";

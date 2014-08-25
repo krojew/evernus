@@ -18,6 +18,8 @@ namespace Evernus
 {
     namespace MarginToolSettings
     {
+        const auto alwaysOnTopDefault = true;
+
         const auto alwaysOnTopKey = "marginTool/awlaysOnTop";
     }
 }

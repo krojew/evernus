@@ -73,7 +73,7 @@ namespace Evernus
 #ifdef Q_OS_WIN
         mAltImportBtn = new QCheckBox{tr("Use alternative margin import method*"), this};
         marginLayout->addWidget(mAltImportBtn);
-        mAltImportBtn->setChecked(settings.value(PriceSettings::priceAltImportKey, true).toBool());
+        mAltImportBtn->setChecked(settings.value(PriceSettings::priceAltImportKey, PriceSettings::priceAltImportDefault).toBool());
 
         auto infoLabel = new QLabel{tr("* Gives faster results, but can sometimes be incorrect. If the price fluctuates after a few imports, turn it off."), this};
         infoLabel->setWordWrap(true);
@@ -88,11 +88,11 @@ namespace Evernus
 
         mAutoAddCustomCostBtn = new QCheckBox{tr("Auto add custom item costs on fulfilled buy order*"), this};
         costsLayout->addWidget(mAutoAddCustomCostBtn);
-        mAutoAddCustomCostBtn->setChecked(settings.value(PriceSettings::autoAddCustomItemCostKey, false).toBool());
+        mAutoAddCustomCostBtn->setChecked(settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool());
 
         mShareCustomCostsBtn = new QCheckBox{tr("Share costs between characters"), this};
         costsLayout->addWidget(mShareCustomCostsBtn);
-        mShareCustomCostsBtn->setChecked(settings.value(PriceSettings::shareCostsKey, false).toBool());
+        mShareCustomCostsBtn->setChecked(settings.value(PriceSettings::shareCostsKey, PriceSettings::shareCostsDefault).toBool());
 
         auto autoCostsLabel = new QLabel{tr("* Also turns on importing wallet transactions."), this};
         costsLayout->addWidget(autoCostsLabel);

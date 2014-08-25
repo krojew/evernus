@@ -439,7 +439,7 @@ namespace Evernus
                 mCorporationContractingSkillEdit->setValue(contractSkills.mCorporationContracting);
 
                 QSettings settings;
-                if (settings.value(ImportSettings::importPortraitKey, true).toBool())
+                if (settings.value(ImportSettings::importPortraitKey, ImportSettings::importPortraitDefault).toBool())
                 {
                     const auto portraitPath = getPortraitPath(id);
 

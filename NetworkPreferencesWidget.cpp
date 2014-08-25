@@ -37,15 +37,16 @@ namespace Evernus
     {
         QSettings settings;
 
-        const auto useProxy = settings.value(NetworkSettings::useProxyKey).toBool();
+        const auto useProxy = settings.value(NetworkSettings::useProxyKey, NetworkSettings::useProxyDefault).toBool();
         const auto proxyType = settings.value(NetworkSettings::proxyTypeKey).toInt();
         const auto proxyHost = settings.value(NetworkSettings::proxyHostKey).toString();
         const quint16 proxyPort = settings.value(NetworkSettings::proxyPortKey).toUInt();
         const auto proxyUser = settings.value(NetworkSettings::proxyUserKey).toString();
         const auto proxyPassword = mCrypt.decryptToString(settings.value(NetworkSettings::proxyPasswordKey).toString());
 
-        const auto usemCustomProvider = settings.value(NetworkSettings::useCustomProvider).toBool();
-        const auto providerHost = settings.value(NetworkSettings::providerHost).toString();
+        const auto usemCustomProvider
+            = settings.value(NetworkSettings::useCustomProviderKey, NetworkSettings::useCustomProviderDefault).toBool();
+        const auto providerHost = settings.value(NetworkSettings::providerHostKey).toString();
 
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -156,8 +157,8 @@ namespace Evernus
         settings.setValue(NetworkSettings::proxyUserKey, proxyUser);
         settings.setValue(NetworkSettings::proxyPasswordKey, mCrypt.encryptToString(proxyPassword));
 
-        settings.setValue(NetworkSettings::useCustomProvider, !mUseDefaultProviderBtn->isChecked());
-        settings.setValue(NetworkSettings::providerHost, mProviderHostEdit->text());
+        settings.setValue(NetworkSettings::useCustomProviderKey, !mUseDefaultProviderBtn->isChecked());
+        settings.setValue(NetworkSettings::providerHostKey, mProviderHostEdit->text());
 
         if (useProxy)
         {

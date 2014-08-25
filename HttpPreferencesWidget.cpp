@@ -46,7 +46,7 @@ namespace Evernus
 
         mEnabledBtn = new QCheckBox{tr("Enabled"), this};
         mainGroupLayout->addRow(mEnabledBtn);
-        mEnabledBtn->setChecked(settings.value(HttpSettings::enabledKey, false).toBool());
+        mEnabledBtn->setChecked(settings.value(HttpSettings::enabledKey, HttpSettings::enabledDefault).toBool());
 
         mPortEdit = new QSpinBox{this};
         mainGroupLayout->addRow(tr("Port:"), mPortEdit);

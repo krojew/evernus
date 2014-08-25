@@ -18,6 +18,8 @@ namespace Evernus
 {
     namespace NetworkSettings
     {
+        const auto useProxyDefault = false;
+        const auto useCustomProviderDefault = false;
         const auto defaultAPIProvider = "https://api.eveonline.com";
 
         const auto useProxyKey = "network/useProxy";
@@ -26,8 +28,7 @@ namespace Evernus
         const auto proxyPortKey = "network/proxy/port";
         const auto proxyUserKey = "network/proxy/user";
         const auto proxyPasswordKey = "network/proxy/password";
-
-        const auto useCustomProvider = "network/useCustomProvider";
-        const auto providerHost = "network/provider/host";
+        const auto useCustomProviderKey = "network/useCustomProvider";
+        const auto providerHostKey = "network/provider/host";
     }
 }

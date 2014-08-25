@@ -41,7 +41,7 @@ namespace Evernus
         ExternalOrderList result;
 
         QSettings settings;
-        const auto deleteLogs = settings.value(PathSettings::deleteLogsKey, true).toBool();
+        const auto deleteLogs = settings.value(PathSettings::deleteLogsKey, PathSettings::deleteLogsDefault).toBool();
 
         const QRegExp charLogWildcard{
             settings.value(PathSettings::characterLogWildcardKey, PathSettings::characterLogWildcardDefault).toString(),

@@ -64,11 +64,11 @@ namespace Evernus
 
         mMinimizeToTrayBtn = new QCheckBox{tr("Minimize to tray"), this};
         generalGroupLayout->addWidget(mMinimizeToTrayBtn);
-        mMinimizeToTrayBtn->setChecked(settings.value(UISettings::minimizeToTrayKey, false).toBool());
+        mMinimizeToTrayBtn->setChecked(settings.value(UISettings::minimizeToTrayKey, UISettings::minimizeToTrayDefault).toBool());
 
         mAutoUpdateBtn = new QCheckBox{tr("Check for updates on startup"), this};
         generalGroupLayout->addWidget(mAutoUpdateBtn);
-        mAutoUpdateBtn->setChecked(settings.value(UpdaterSettings::autoUpdateKey, true).toBool());
+        mAutoUpdateBtn->setChecked(settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool());
 
         auto dtFormatLayout = new QHBoxLayout{};
         generalGroupLayout->addLayout(dtFormatLayout);

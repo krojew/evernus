@@ -18,6 +18,7 @@ namespace Evernus
 {
     namespace IGBSettings
     {
+        const auto enabledDefault = true;
         const auto portDefault = 4632;
         const auto scanDelayDefault = 3;
 

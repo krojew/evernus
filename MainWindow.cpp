@@ -318,10 +318,10 @@ namespace Evernus
 
         QSettings settings;
 
-        if (!settings.value(PriceSettings::autoAddCustomItemCostKey, false).toBool())
+        if (!settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool())
             refreshWalletTransactions();
 
-        if (settings.value(ImportSettings::importAssetsKey, true).toBool())
+        if (settings.value(ImportSettings::importAssetsKey, ImportSettings::importAssetsDefault).toBool())
             refreshAssets();
     }
 
@@ -383,7 +383,7 @@ namespace Evernus
     {
         QSettings settings;
         if ((event->type() == QEvent::WindowStateChange) &&
-            settings.value(UISettings::minimizeToTrayKey, false).toBool())
+            settings.value(UISettings::minimizeToTrayKey, UISettings::minimizeToTrayDefault).toBool())
         {
             if (isMinimized())
             {
@@ -657,7 +657,7 @@ namespace Evernus
         mAutoImportTimer.setInterval(
             settings.value(ImportSettings::autoImportTimeKey, ImportSettings::autoImportTimerDefault).toInt() * 1000 * 60);
 
-        if (settings.value(ImportSettings::autoImportEnabledKey, false).toBool())
+        if (settings.value(ImportSettings::autoImportEnabledKey, ImportSettings::autoImportEnabledDefault).toBool())
             mAutoImportTimer.start();
         else
             mAutoImportTimer.stop();

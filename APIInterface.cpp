@@ -150,8 +150,8 @@ namespace Evernus
         QSettings settings;
         QUrl url;
 
-        if (settings.value(NetworkSettings::useCustomProvider).toBool())
-            url = settings.value(NetworkSettings::providerHost).toString() + endpoint;
+        if (settings.value(NetworkSettings::useCustomProviderKey, NetworkSettings::useCustomProviderDefault).toBool())
+            url = settings.value(NetworkSettings::providerHostKey).toString() + endpoint;
         else
             url = NetworkSettings::defaultAPIProvider + endpoint;
 

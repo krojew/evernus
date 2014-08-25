@@ -73,7 +73,8 @@ namespace Evernus
     {
         QSettings settings;
 
-        const auto alwaysOnTop = settings.value(MarginToolSettings::alwaysOnTopKey, true).toBool();
+        const auto alwaysOnTop
+            = settings.value(MarginToolSettings::alwaysOnTopKey, MarginToolSettings::alwaysOnTopDefault).toBool();
 
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -225,7 +226,7 @@ namespace Evernus
             QFileInfo info{file};
 
 #ifdef Q_OS_WIN
-            if (settings.value(PriceSettings::priceAltImportKey, true).toBool())
+            if (settings.value(PriceSettings::priceAltImportKey, PriceSettings::priceAltImportDefault).toBool())
             {
                 while (!file.open(QIODevice::ReadWrite))
                     std::this_thread::sleep_for(std::chrono::milliseconds{10});
@@ -331,7 +332,7 @@ namespace Evernus
 
             const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
-            if (settings.value(PathSettings::deleteLogsKey, true).toBool())
+            if (settings.value(PathSettings::deleteLogsKey, PathSettings::deleteLogsDefault).toBool())
                 file.remove();
 
             if (mItemCostSourceBtn->isChecked())
@@ -643,7 +644,7 @@ namespace Evernus
         QSettings settings;
 
         const auto copyMode = static_cast<const PriceSettings::CopyMode>(
-            settings.value(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::CopyMode::DontCopy)).toInt());
+            settings.value(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::copyModeDefault)).toInt());
 
         mDontCopyBtn = new QRadioButton{tr("Nothing"), this};
         copyLayout->addWidget(mDontCopyBtn);
@@ -715,7 +716,7 @@ namespace Evernus
         QSettings settings;
 
         const auto dataSource = static_cast<PriceSettings::DataSource>(
-            settings.value(PriceSettings::costDataSourceKey, static_cast<int>(PriceSettings::DataSource::Orders)).toInt());
+            settings.value(PriceSettings::costDataSourceKey, static_cast<int>(PriceSettings::costDataSourceDefault)).toInt());
 
         mOrderSourceBtn = new QRadioButton{tr("Orders only"), this};
         sourceLayout->addWidget(mOrderSourceBtn);

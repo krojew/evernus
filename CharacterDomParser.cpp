@@ -35,7 +35,7 @@ namespace Evernus
             result.setISK(node.firstChildElement("balance").text().toDouble());
 
             QSettings settings;
-            if (settings.value(ImportSettings::importSkillsKey, true).toBool())
+            if (settings.value(ImportSettings::importSkillsKey, ImportSettings::importSkillsDefault).toBool())
             {
                 const auto rowsets = node.elementsByTagName("rowset");
 

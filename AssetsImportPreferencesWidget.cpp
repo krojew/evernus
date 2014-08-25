@@ -40,15 +40,17 @@ namespace Evernus
 
         mImportAssetsBox = new QCheckBox{tr("Import assets"), this};
         importBoxLayout->addWidget(mImportAssetsBox);
-        mImportAssetsBox->setChecked(settings.value(ImportSettings::importAssetsKey, true).toBool());
+        mImportAssetsBox->setChecked(settings.value(ImportSettings::importAssetsKey, ImportSettings::importAssetsDefault).toBool());
 
         mAutoUpdateValueBox = new QCheckBox{tr("Store total asset value on import/price import"), this};
         importBoxLayout->addWidget(mAutoUpdateValueBox);
-        mAutoUpdateValueBox->setChecked(settings.value(ImportSettings::autoUpdateAssetValueKey, true).toBool());
+        mAutoUpdateValueBox->setChecked(
+            settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool());
 
         mUpdateOnlyFullValueBox = new QCheckBox{tr("Store total asset value only when all prices are available"), this};
         importBoxLayout->addWidget(mUpdateOnlyFullValueBox);
-        mUpdateOnlyFullValueBox->setChecked(settings.value(ImportSettings::updateOnlyFullAssetValueKey, false).toBool());
+        mUpdateOnlyFullValueBox->setChecked(
+            settings.value(ImportSettings::updateOnlyFullAssetValueKey, ImportSettings::updateOnlyFullAssetValueDefault).toBool());
 
         mainLayout->addStretch();
     }

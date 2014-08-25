@@ -280,7 +280,7 @@
         <translation>Zapisz całkowitą wartość aktywów przy imporcie/imporcie cen</translation>
     </message>
     <message>
-        <location filename="../AssetsImportPreferencesWidget.cpp" line="49"/>
+        <location filename="../AssetsImportPreferencesWidget.cpp" line="50"/>
         <source>Store total asset value only when all prices are available</source>
         <translation>Zapisz całkowitą wartość aktywów tylko, gdy wszystkie ceny są dostępne</translation>
     </message>
@@ -918,8 +918,8 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="1011"/>
         <location filename="../EvernusApplication.cpp" line="1017"/>
-        <location filename="../EvernusApplication.cpp" line="2258"/>
-        <location filename="../EvernusApplication.cpp" line="2291"/>
+        <location filename="../EvernusApplication.cpp" line="2260"/>
+        <location filename="../EvernusApplication.cpp" line="2293"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -941,21 +941,21 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="1093"/>
         <location filename="../EvernusApplication.cpp" line="1154"/>
-        <location filename="../EvernusApplication.cpp" line="1206"/>
-        <location filename="../EvernusApplication.cpp" line="1237"/>
-        <location filename="../EvernusApplication.cpp" line="1315"/>
-        <location filename="../EvernusApplication.cpp" line="1368"/>
-        <location filename="../EvernusApplication.cpp" line="1399"/>
+        <location filename="../EvernusApplication.cpp" line="1207"/>
+        <location filename="../EvernusApplication.cpp" line="1238"/>
+        <location filename="../EvernusApplication.cpp" line="1316"/>
+        <location filename="../EvernusApplication.cpp" line="1370"/>
+        <location filename="../EvernusApplication.cpp" line="1401"/>
         <source>Key not found!</source>
         <translation>Klucz nie znaleziony!</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="1097"/>
         <location filename="../EvernusApplication.cpp" line="1158"/>
-        <location filename="../EvernusApplication.cpp" line="1210"/>
-        <location filename="../EvernusApplication.cpp" line="1241"/>
-        <location filename="../EvernusApplication.cpp" line="1319"/>
-        <location filename="../EvernusApplication.cpp" line="1372"/>
+        <location filename="../EvernusApplication.cpp" line="1211"/>
+        <location filename="../EvernusApplication.cpp" line="1242"/>
+        <location filename="../EvernusApplication.cpp" line="1320"/>
+        <location filename="../EvernusApplication.cpp" line="1374"/>
         <source>Character not found!</source>
         <translation>Postać nie znaleziona!</translation>
     </message>
@@ -980,34 +980,34 @@
         <translation>Pobieranie transakcji dla postaci %1 (może zajać sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1218"/>
-        <location filename="../EvernusApplication.cpp" line="1249"/>
+        <location filename="../EvernusApplication.cpp" line="1219"/>
+        <location filename="../EvernusApplication.cpp" line="1250"/>
         <source>Fetching market orders for character %1...</source>
         <translation>Pobieranie zleceń dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1327"/>
+        <location filename="../EvernusApplication.cpp" line="1328"/>
         <source>Fetching corporation wallet transactions for character %1...</source>
         <translation>Pobieranie transakcji korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1337"/>
+        <location filename="../EvernusApplication.cpp" line="1338"/>
         <source>Fetching corporation wallet transactions for character %1 (this may take a while)...</source>
         <translation>Pobieranie transakcji korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1380"/>
-        <location filename="../EvernusApplication.cpp" line="1407"/>
+        <location filename="../EvernusApplication.cpp" line="1382"/>
+        <location filename="../EvernusApplication.cpp" line="1409"/>
         <source>Fetching corporation market orders for character %1...</source>
         <translation>Pobieranie zleceń korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1487"/>
+        <location filename="../EvernusApplication.cpp" line="1489"/>
         <source>Cache import</source>
         <translation>Import z cache</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1487"/>
+        <location filename="../EvernusApplication.cpp" line="1489"/>
         <source>Warning! Reading cache is considered a gray area. CPP on one hand considers this a violation of the EULA, but on the other has stated they will only penalize when used in conjunction with illegal activities, like botting.
 
 Do wish to continue?
@@ -1020,43 +1020,43 @@ Czy chcesz kontynuować?
 Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialność za jakąkolwiek karę CPP może na Ciebie nałożyć, jeśli zmienią swoją politykę.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1665"/>
+        <location filename="../EvernusApplication.cpp" line="1667"/>
         <source>SMTP Error</source>
         <translation>Błąd SMTP</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1665"/>
-        <location filename="../EvernusApplication.cpp" line="1673"/>
+        <location filename="../EvernusApplication.cpp" line="1667"/>
+        <location filename="../EvernusApplication.cpp" line="1675"/>
         <source>Error sending email: %1</source>
         <translation>Błąd wysyłania maila: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1673"/>
+        <location filename="../EvernusApplication.cpp" line="1675"/>
         <source>Mail Error</source>
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1982"/>
+        <location filename="../EvernusApplication.cpp" line="1984"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1996"/>
+        <location filename="../EvernusApplication.cpp" line="1998"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2007"/>
+        <location filename="../EvernusApplication.cpp" line="2009"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2259"/>
+        <location filename="../EvernusApplication.cpp" line="2261"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2263"/>
+        <location filename="../EvernusApplication.cpp" line="2265"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1065,69 +1065,69 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2266"/>
+        <location filename="../EvernusApplication.cpp" line="2268"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2291"/>
+        <location filename="../EvernusApplication.cpp" line="2293"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1261"/>
+        <location filename="../EvernusApplication.cpp" line="1262"/>
         <source>Fetching corporation wallet journal for character %1...</source>
         <translation>Pobieranie dziennika korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1270"/>
+        <location filename="../EvernusApplication.cpp" line="1271"/>
         <source>Fetching corporation wallet journal for character %1 (this may take a while)...</source>
         <translation>Pobieranie dziennika korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1419"/>
+        <location filename="../EvernusApplication.cpp" line="1421"/>
         <source>Fetching conquerable stations...</source>
         <translation>Pobieranie stacji graczy...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1553"/>
+        <location filename="../EvernusApplication.cpp" line="1555"/>
         <source>Select Mentat directory</source>
         <translation>Wybierz katalog Mentat</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1563"/>
+        <location filename="../EvernusApplication.cpp" line="1565"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1563"/>
+        <location filename="../EvernusApplication.cpp" line="1565"/>
         <source>Error opening %1</source>
         <translation>Błąd otwierania %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1567"/>
+        <location filename="../EvernusApplication.cpp" line="1569"/>
         <source>Importing order history...</source>
         <translation>Importowanie historii zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1613"/>
+        <location filename="../EvernusApplication.cpp" line="1615"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importowanie historii zleceń: %1 przetworzonych</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1618"/>
+        <location filename="../EvernusApplication.cpp" line="1620"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1908"/>
+        <location filename="../EvernusApplication.cpp" line="1910"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1971"/>
+        <location filename="../EvernusApplication.cpp" line="1973"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>
@@ -1718,57 +1718,57 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Włącz powiadomienia mailem</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="80"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="81"/>
         <source>Destination address:</source>
         <translation>Adres docelowy:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="86"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="87"/>
         <source>SMTP security:</source>
         <translation>Bezpieczeństwo SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="87"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="88"/>
         <source>None</source>
         <translation>Brak</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="88"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="89"/>
         <source>STARTTLS</source>
         <translation>STARTTLS</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="89"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="90"/>
         <source>SSL/TLS</source>
         <translation>SSL/TLS</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="92"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="93"/>
         <source>SMTP host:</source>
         <translation>Serwer SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="95"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="96"/>
         <source>SMTP port:</source>
         <translation>Port SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="101"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="102"/>
         <source>SMTP user:</source>
         <translation>Użytkownik SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="104"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="105"/>
         <source>SMTP password:</source>
         <translation>Hasło SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="107"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="108"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
         <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="136"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="137"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -2143,174 +2143,174 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarginToolDialog</name>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="541"/>
+        <location filename="../MarginToolDialog.cpp" line="542"/>
         <source>export market logs in game</source>
         <translation>wyeksportuj logi z gry</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="551"/>
+        <location filename="../MarginToolDialog.cpp" line="552"/>
         <source>Sell:</source>
         <translation>Sprzedaż:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="552"/>
+        <location filename="../MarginToolDialog.cpp" line="553"/>
         <source>Buy:</source>
         <translation>Kupno:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="553"/>
+        <location filename="../MarginToolDialog.cpp" line="554"/>
         <source>Profit:</source>
         <translation>Zysk:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="554"/>
+        <location filename="../MarginToolDialog.cpp" line="555"/>
         <source>Revenue:</source>
         <translation>Dochód:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="555"/>
+        <location filename="../MarginToolDialog.cpp" line="556"/>
         <source>Cost of sales:</source>
         <translation>Koszt sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="566"/>
-        <location filename="../MarginToolDialog.cpp" line="578"/>
+        <location filename="../MarginToolDialog.cpp" line="567"/>
+        <location filename="../MarginToolDialog.cpp" line="579"/>
         <source>Copy to clipboard</source>
         <translation>Skopiuj do schowka</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="597"/>
+        <location filename="../MarginToolDialog.cpp" line="598"/>
         <source>Buy orders:</source>
         <translation>Zlecenia kupna:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="602"/>
+        <location filename="../MarginToolDialog.cpp" line="603"/>
         <source>Sell orders:</source>
         <translation>Zlecenia sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="607"/>
+        <location filename="../MarginToolDialog.cpp" line="608"/>
         <source>Buy volume/movement:</source>
         <translation>Wolumen kupna:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="612"/>
+        <location filename="../MarginToolDialog.cpp" line="613"/>
         <source>Sell volume/movement:</source>
         <translation>Wolumen sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="626"/>
+        <location filename="../MarginToolDialog.cpp" line="627"/>
         <source>Margin:</source>
         <translation>Marża:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="632"/>
+        <location filename="../MarginToolDialog.cpp" line="633"/>
         <source>Markup:</source>
         <translation>Narzut:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="637"/>
+        <location filename="../MarginToolDialog.cpp" line="638"/>
         <source>Autocopy</source>
         <translation>Auto. kopiowanie</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="648"/>
+        <location filename="../MarginToolDialog.cpp" line="649"/>
         <source>Nothing</source>
         <translation>Nic</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="653"/>
+        <location filename="../MarginToolDialog.cpp" line="654"/>
         <source>Sell price</source>
         <translation>Cena sprzedaży</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="658"/>
+        <location filename="../MarginToolDialog.cpp" line="659"/>
         <source>Buy price</source>
         <translation>Cena kupna</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="673"/>
+        <location filename="../MarginToolDialog.cpp" line="674"/>
         <source>Broker fee:</source>
         <translation>Broker fee:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="678"/>
+        <location filename="../MarginToolDialog.cpp" line="679"/>
         <source>Sales tax:</source>
         <translation>Podatek od sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="683"/>
+        <location filename="../MarginToolDialog.cpp" line="684"/>
         <source>Sample data</source>
         <translation>Przykładowe dane</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="695"/>
+        <location filename="../MarginToolDialog.cpp" line="696"/>
         <source>If you experience problems with importing orders, adjust margin tool settings in the Preferences.</source>
         <translation>Jeśli naptokasz problem z importem zleceń, dostosuj ustawienia narzędzia marży.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="709"/>
+        <location filename="../MarginToolDialog.cpp" line="710"/>
         <source>Preferred source</source>
         <translation>Preferowane źródło</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="720"/>
+        <location filename="../MarginToolDialog.cpp" line="721"/>
         <source>Orders only</source>
         <translation>Tylko zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="724"/>
+        <location filename="../MarginToolDialog.cpp" line="725"/>
         <source>Prefer custom item costs (if available)</source>
         <translation>Własne koszty (jeśli dostępne)</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="728"/>
+        <location filename="../MarginToolDialog.cpp" line="729"/>
         <source>Custom station</source>
         <translation>Wybrana stacja</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="732"/>
+        <location filename="../MarginToolDialog.cpp" line="733"/>
         <source>Source station</source>
         <translation>Stacja źródłowa</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="89"/>
+        <location filename="../MarginToolDialog.cpp" line="90"/>
         <source>Always on top</source>
         <translation>Zawsze na wierzchu</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="83"/>
+        <location filename="../MarginToolDialog.cpp" line="84"/>
         <source>Margin data</source>
         <translation>Marża</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="84"/>
+        <location filename="../MarginToolDialog.cpp" line="85"/>
         <source>Data source</source>
         <translation>Źródło danych</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="96"/>
+        <location filename="../MarginToolDialog.cpp" line="97"/>
         <source>Quit application</source>
         <translation>Wyjdź z aplikacji</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="108"/>
-        <location filename="../MarginToolDialog.cpp" line="114"/>
+        <location filename="../MarginToolDialog.cpp" line="109"/>
+        <location filename="../MarginToolDialog.cpp" line="115"/>
         <source>Margin tool error</source>
         <translation>Błąd narzędzia</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="109"/>
+        <location filename="../MarginToolDialog.cpp" line="110"/>
         <source>Could not determine market log path. Please enter log path in settings.</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu. Wpisz ścieżkę ręcznie w ustawieniach.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="115"/>
+        <location filename="../MarginToolDialog.cpp" line="116"/>
         <source>Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again.</source>
         <translation>Nie udało się rozpocząć obserwacji katalogu z logami. Upewnij się, że katalog istnieje (np. wyeksportuj logi) i spróbuj ponownie.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="124"/>
+        <location filename="../MarginToolDialog.cpp" line="125"/>
         <source>Margin tool</source>
         <translation>Narzędzie marży</translation>
     </message>
@@ -2975,43 +2975,43 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Skopiuj</translation>
     </message>
     <message>
-        <location filename="../MarketOrderInfoWidget.cpp" line="58"/>
+        <location filename="../MarketOrderInfoWidget.cpp" line="59"/>
         <source>Copy new price on open</source>
         <translation>Skopiuj przy otwarciu</translation>
     </message>
     <message>
-        <location filename="../MarketOrderInfoWidget.cpp" line="70"/>
+        <location filename="../MarketOrderInfoWidget.cpp" line="71"/>
         <source>&lt;span style=&apos;color: blue&apos;&gt;Your price:&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color: blue&apos;&gt;Twoja cena:&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="../MarketOrderInfoWidget.cpp" line="71"/>
+        <location filename="../MarketOrderInfoWidget.cpp" line="72"/>
         <source>&lt;span style=&apos;color: blue&apos;&gt;%1&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color: blue&apos;&gt;%1&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="../MarketOrderInfoWidget.cpp" line="73"/>
-        <location filename="../MarketOrderInfoWidget.cpp" line="79"/>
+        <location filename="../MarketOrderInfoWidget.cpp" line="74"/>
+        <location filename="../MarketOrderInfoWidget.cpp" line="80"/>
         <source>Valid on:</source>
         <translation>Ważne:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderInfoWidget.cpp" line="76"/>
+        <location filename="../MarketOrderInfoWidget.cpp" line="77"/>
         <source>&lt;span style=&apos;color: red&apos;&gt;Market price:&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color: red&apos;&gt;Cena na rynku:&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="../MarketOrderInfoWidget.cpp" line="77"/>
+        <location filename="../MarketOrderInfoWidget.cpp" line="78"/>
         <source>&lt;span style=&apos;color: red&apos;&gt;%1&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;color: red&apos;&gt;%1&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="../MarketOrderInfoWidget.cpp" line="82"/>
+        <location filename="../MarketOrderInfoWidget.cpp" line="83"/>
         <source>Difference:</source>
         <translation>Różnica:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderInfoWidget.cpp" line="84"/>
+        <location filename="../MarketOrderInfoWidget.cpp" line="85"/>
         <source>New price:</source>
         <translation>Nowa cena:</translation>
     </message>
@@ -3433,72 +3433,72 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::NetworkPreferencesWidget</name>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="53"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="54"/>
         <source>Proxy</source>
         <translation>Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="59"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="60"/>
         <source>No proxy</source>
         <translation>Brak proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="62"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="63"/>
         <source>Custom proxy</source>
         <translation>Własne proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
         <source>Type:</source>
         <translation>Typ:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="75"/>
         <source>SOCKS5</source>
         <translation>SOCKS5</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="75"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="76"/>
         <source>HTTP</source>
         <translation>HTTP</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="78"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="79"/>
         <source>Host:</source>
         <translation>Serwer:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="81"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="82"/>
         <source>Port:</source>
         <translation>Port:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="87"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="88"/>
         <source>User:</source>
         <translation>Użytkownik:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="90"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="91"/>
         <source>Password:</source>
         <translation>Hasło:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="93"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="94"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
         <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="97"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="98"/>
         <source>API provider</source>
         <translation>Dostawca API</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="103"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="104"/>
         <source>Use default provider</source>
         <translation>Domyślny</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="108"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="109"/>
         <source>Use custom provider</source>
         <translation>Własny</translation>
     </message>
@@ -4159,24 +4159,24 @@ Czy chcesz ściągnąć ją teraz?</translation>
     </message>
     <message>
         <location filename="../WalletPreferencesWidget.cpp" line="43"/>
-        <location filename="../WalletPreferencesWidget.cpp" line="70"/>
+        <location filename="../WalletPreferencesWidget.cpp" line="71"/>
         <source>Delete old entries</source>
         <translation>Usuń stare wpisy</translation>
     </message>
     <message>
         <location filename="../WalletPreferencesWidget.cpp" line="50"/>
-        <location filename="../WalletPreferencesWidget.cpp" line="77"/>
+        <location filename="../WalletPreferencesWidget.cpp" line="78"/>
         <source>Delete older than:</source>
         <translation>Usuń starsze niż:</translation>
     </message>
     <message>
         <location filename="../WalletPreferencesWidget.cpp" line="55"/>
-        <location filename="../WalletPreferencesWidget.cpp" line="82"/>
+        <location filename="../WalletPreferencesWidget.cpp" line="83"/>
         <source> days</source>
         <translation>dni</translation>
     </message>
     <message>
-        <location filename="../WalletPreferencesWidget.cpp" line="64"/>
+        <location filename="../WalletPreferencesWidget.cpp" line="65"/>
         <source>Transactions</source>
         <translation>Transakcje</translation>
     </message>

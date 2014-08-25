@@ -53,7 +53,8 @@ namespace Evernus
 
         QSettings settings;
 
-        const auto autoCopy = settings.value(UISettings::autoCopyPriceFromInfoKey, true).toBool();
+        const auto autoCopy
+            = settings.value(UISettings::autoCopyPriceFromInfoKey, UISettings::autoCopyPriceFromInfoDefault).toBool();
 
         auto copyCheck = new QCheckBox{tr("Copy new price on open"), this};
         btnLayout->addWidget(copyCheck);

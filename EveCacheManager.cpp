@@ -64,7 +64,8 @@ namespace Evernus
         qDebug() << "Searching paths:" << mMachoNetPaths;
 
         QSettings settings;
-        const auto deleteFiles = settings.value(PathSettings::deleteProcessedCacheFilesKey, true).toBool();
+        const auto deleteFiles
+            = settings.value(PathSettings::deleteProcessedCacheFilesKey, PathSettings::deleteProcessedCacheFilesDefault).toBool();
 
         try
         {

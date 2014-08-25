@@ -34,8 +34,15 @@ namespace Evernus
             Cache
         };
 
+        const auto importSkillsDefault = true;
+        const auto importPortraitDefault = true;
+        const auto importAssetsDefault = true;
+        const auto autoUpdateAssetValueDefault = true;
+        const auto updateOnlyFullAssetValueDefault = false;
         const auto importTimerDefault = 60;
+        const auto autoImportEnabledDefault = false;
         const auto autoImportTimerDefault = 60;
+        const auto emailNotificationsEnabledDefault = true;
         const auto smtpHostDefault = "localhost";
         const auto smtpPortDefault = 25;
         const auto priceImportSourceDefault = PriceImportSource::Web;

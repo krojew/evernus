@@ -57,7 +57,8 @@ namespace Evernus
 
         journalDaysLayout->addStretch();
 
-        const auto deleteJournal = settings.value(WalletSettings::deleteOldJournalKey, true).toBool();
+        const auto deleteJournal
+            = settings.value(WalletSettings::deleteOldJournalKey, WalletSettings::deleteOldJournalDefault).toBool();
         mDeleteOldJournalBtn->setChecked(deleteJournal);
         mOldJournalDaysEdit->setEnabled(deleteJournal);
 
@@ -84,7 +85,8 @@ namespace Evernus
 
         transactionsDaysLayout->addStretch();
 
-        const auto deleteTransactions = settings.value(WalletSettings::deleteOldTransactionsKey, true).toBool();
+        const auto deleteTransactions
+            = settings.value(WalletSettings::deleteOldTransactionsKey, WalletSettings::deleteOldTransactionsDefault).toBool();
         mDeleteOldTransactionsBtn->setChecked(deleteTransactions);
         mOldTransactionsDaysEdit->setEnabled(deleteTransactions);
 

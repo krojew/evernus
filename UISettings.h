@@ -18,8 +18,12 @@ namespace Evernus
 {
     namespace UISettings
     {
+        const auto autoCloseTasksDefault = true;
+        const auto autoCopyPriceFromInfoDefault = true;
+        const auto minimizeToTrayDefault = false;
         const auto translationPath =  "/trans";
         const auto plotNumberFormatDefault = "f";
+        const auto cacheImportApprovedDefault = false;
 
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";

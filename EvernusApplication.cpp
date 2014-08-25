@@ -121,7 +121,7 @@ namespace Evernus
         mIGBSessionManager.setStaticContentService(igbService);
         mIGBSessionManager.setConnector(QxtHttpSessionManager::HttpServer);
 
-        if (settings.value(IGBSettings::enabledKey, true).toBool())
+        if (settings.value(IGBSettings::enabledKey, IGBSettings::enabledDefault).toBool())
             mIGBSessionManager.start();
 
         showSplashMessage(tr("Setting up HTTP service..."), splash);
@@ -138,7 +138,7 @@ namespace Evernus
         mHttpSessionManager.setStaticContentService(httpService);
         mHttpSessionManager.setConnector(QxtHttpSessionManager::HttpServer);
 
-        if (settings.value(HttpSettings::enabledKey, false).toBool())
+        if (settings.value(HttpSettings::enabledKey, HttpSettings::enabledDefault).toBool())
             mHttpSessionManager.start();
 
         showSplashMessage(tr("Loading..."), splash);
@@ -163,7 +163,7 @@ namespace Evernus
 
         connect(&mAPIManager, &APIManager::generalError, this, &EvernusApplication::apiError);
 
-        if (settings.value(UpdaterSettings::autoUpdateKey, true).toBool())
+        if (settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool())
             Updater::getInstance().checkForUpdates(true);
     }
 
@@ -789,7 +789,7 @@ namespace Evernus
         catch (const ItemCostRepository::NotFoundException &)
         {
             QSettings settings;
-            if (settings.value(PriceSettings::shareCostsKey, false).toBool())
+            if (settings.value(PriceSettings::shareCostsKey, PriceSettings::shareCostsDefault).toBool())
             {
                 const auto it = mTypeItemCostCache.find(typeId);
                 if (it != std::end(mTypeItemCostCache))
@@ -1077,7 +1077,7 @@ namespace Evernus
 
                     QSettings settings;
 
-                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, true).toBool())
+                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool())
                         computeAssetListSellValue(data);
 
                     saveUpdateTimer(Evernus::TimerType::AssetList, mAssetsUtcUpdateTimes, id);
@@ -1182,7 +1182,8 @@ namespace Evernus
                     saveUpdateTimer(Evernus::TimerType::WalletTransactions, mWalletTransactionsUtcUpdateTimes, id);
 
                     QSettings settings;
-                    if (settings.value(Evernus::PriceSettings::autoAddCustomItemCostKey, false).toBool() && !mPendingAutoCostOrders.empty())
+                    if (settings.value(Evernus::PriceSettings::autoAddCustomItemCostKey, Evernus::PriceSettings::autoAddCustomItemCostDefault).toBool() &&
+                        !mPendingAutoCostOrders.empty())
                     {
                         computeAutoCosts(id,
                                          mCharacterOrderProvider->getBuyOrders(id),
@@ -1344,7 +1345,8 @@ namespace Evernus
                     saveUpdateTimer(Evernus::TimerType::CorpWalletTransactions, mCorpWalletTransactionsUtcUpdateTimes, id);
 
                     QSettings settings;
-                    if (settings.value(Evernus::PriceSettings::autoAddCustomItemCostKey, false).toBool() && !mPendingAutoCostOrders.empty())
+                    if (settings.value(Evernus::PriceSettings::autoAddCustomItemCostKey, Evernus::PriceSettings::autoAddCustomItemCostDefault).toBool() &&
+                        !mPendingAutoCostOrders.empty())
                     {
                         computeAutoCosts(id,
                                          mCorpOrderProvider->getBuyOrdersForCorporation(corpId),
@@ -1482,7 +1484,7 @@ namespace Evernus
     void EvernusApplication::refreshExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &target)
     {
         QSettings settings;
-        if (!settings.value(UISettings::cacheImportApprovedKey, false).toBool())
+        if (!settings.value(UISettings::cacheImportApprovedKey, UISettings::cacheImportApprovedDefault).toBool())
         {
             if (QMessageBox::warning(activeWindow(), tr("Cache import"), tr(
                 "Warning! Reading cache is considered a gray area. CPP on one hand considers this a violation of the EULA, "
@@ -1508,7 +1510,7 @@ namespace Evernus
             updateExternalOrders(orders);
 
             QSettings settings;
-            if (settings.value(ImportSettings::autoUpdateAssetValueKey, true).toBool())
+            if (settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool())
             {
                 for (const auto &list : mCharacterAssets)
                     computeAssetListSellValue(*list.second);
@@ -1532,13 +1534,13 @@ namespace Evernus
         mIGBSessionManager.shutdown();
         mIGBSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
 
-        if (settings.value(IGBSettings::enabledKey, true).toBool())
+        if (settings.value(IGBSettings::enabledKey, IGBSettings::enabledDefault).toBool())
             mIGBSessionManager.start();
 
         mHttpSessionManager.shutdown();
         mHttpSessionManager.setPort(settings.value(HttpSettings::portKey, HttpSettings::portDefault).value<quint16>());
 
-        if (settings.value(HttpSettings::enabledKey, true).toBool())
+        if (settings.value(HttpSettings::enabledKey, HttpSettings::enabledDefault).toBool())
             mHttpSessionManager.start();
 
         mCharacterItemCostCache.clear();
@@ -1873,14 +1875,14 @@ namespace Evernus
     {
         QSettings settings;
 
-        if (settings.value(WalletSettings::deleteOldJournalKey, true).toBool())
+        if (settings.value(WalletSettings::deleteOldJournalKey, WalletSettings::deleteOldJournalDefault).toBool())
         {
             const auto journalDt = QDateTime::currentDateTimeUtc().addDays(
                 -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
             mWalletJournalEntryRepository->deleteOldEntires(journalDt);
         }
 
-        if (settings.value(WalletSettings::deleteOldTransactionsKey, true).toBool())
+        if (settings.value(WalletSettings::deleteOldTransactionsKey, WalletSettings::deleteOldTransactionsDefault).toBool())
         {
             const auto transactionDt = QDateTime::currentDateTimeUtc().addDays(
                 -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
@@ -1914,7 +1916,7 @@ namespace Evernus
                     const auto prevData = mCharacterRepository->find(data.getId());
 
                     QSettings settings;
-                    if (!settings.value(Evernus::ImportSettings::importSkillsKey, true).toBool())
+                    if (!settings.value(Evernus::ImportSettings::importSkillsKey, ImportSettings::importSkillsDefault).toBool())
                     {
                         data.setOrderAmountSkills(prevData->getOrderAmountSkills());
                         data.setTradeRangeSkills(prevData->getTradeRangeSkills());
@@ -2077,7 +2079,7 @@ namespace Evernus
 
             if (characterFound || corp)
             {
-                if (settings.value(PathSettings::deleteLogsKey, true).toBool())
+                if (settings.value(PathSettings::deleteLogsKey, PathSettings::deleteLogsDefault).toBool())
                     file.remove();
 
                 importMarketOrders(id, orders, corp);
@@ -2118,10 +2120,10 @@ namespace Evernus
             mPendingAutoCostOrders.clear();
 
             QSettings settings;
-            const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, false).toBool();
+            const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool();
             const auto makeCorpSnapshot = settings.value(ImportSettings::makeCorpSnapshotsKey).toBool();
-            const auto emailNotification = settings.value(ImportSettings::autoImportEnabledKey, false).toBool() &&
-                                           settings.value(ImportSettings::emailNotificationsEnabledKey, true).toBool();
+            const auto emailNotification = settings.value(ImportSettings::autoImportEnabledKey, ImportSettings::autoImportEnabledDefault).toBool() &&
+                                           settings.value(ImportSettings::emailNotificationsEnabledKey, ImportSettings::emailNotificationsEnabledDefault).toBool();
 
             struct EmailOrderInfo
             {
@@ -2390,7 +2392,8 @@ namespace Evernus
     double EvernusApplication::getTotalItemSellValue(const Item &item, quint64 locationId) const
     {
         QSettings settings;
-        const auto throwOnUnavailable = settings.value(ImportSettings::updateOnlyFullAssetValueKey, false).toBool();
+        const auto throwOnUnavailable
+            = settings.value(ImportSettings::updateOnlyFullAssetValueKey, ImportSettings::updateOnlyFullAssetValueDefault).toBool();
 
         auto price = getTypeSellPrice(item.getTypeId(), locationId, !throwOnUnavailable)->getPrice() * item.getQuantity();
         for (const auto &child : item)

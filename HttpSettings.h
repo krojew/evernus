@@ -20,6 +20,7 @@ namespace Evernus
 {
     namespace HttpSettings
     {
+        const auto enabledDefault = false;
         const auto portDefault = 4633;
 
         const auto cryptKey = Q_UINT64_C(0xaab439c6740ee721);

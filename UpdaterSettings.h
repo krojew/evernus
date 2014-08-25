@@ -18,6 +18,8 @@ namespace Evernus
 {
     namespace UpdaterSettings
     {
+        const auto autoUpdateDefault = true;
+
         const auto autoUpdateKey = "updater/autoUpdate";
     }
 }

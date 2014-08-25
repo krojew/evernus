@@ -39,11 +39,11 @@ namespace Evernus
 
         mImportSkillsBox = new QCheckBox{tr("Import skills"), this};
         importBoxLayout->addWidget(mImportSkillsBox);
-        mImportSkillsBox->setChecked(settings.value(ImportSettings::importSkillsKey, true).toBool());
+        mImportSkillsBox->setChecked(settings.value(ImportSettings::importSkillsKey, ImportSettings::importSkillsDefault).toBool());
 
         mImportPortraitBox = new QCheckBox{tr("Import portrait"), this};
         importBoxLayout->addWidget(mImportPortraitBox);
-        mImportPortraitBox->setChecked(settings.value(ImportSettings::importPortraitKey, true).toBool());
+        mImportPortraitBox->setChecked(settings.value(ImportSettings::importPortraitKey, ImportSettings::importPortraitDefault).toBool());
 
         mainLayout->addStretch();
     }

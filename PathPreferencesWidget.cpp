@@ -61,7 +61,7 @@ namespace Evernus
 
         mDeleteLogsBtn = new QCheckBox{tr("Delete parsed logs"), this};
         marketLogGroupLayout->addRow(mDeleteLogsBtn);
-        mDeleteLogsBtn->setChecked(settings.value(PathSettings::deleteLogsKey, true).toBool());
+        mDeleteLogsBtn->setChecked(settings.value(PathSettings::deleteLogsKey, PathSettings::deleteLogsDefault).toBool());
 
         mCharacterLogWildcardEdit = new QLineEdit{
             settings.value(PathSettings::characterLogWildcardKey, PathSettings::characterLogWildcardDefault).toString(), this};
@@ -89,7 +89,7 @@ namespace Evernus
 
         mDeleteCacheBtn = new QCheckBox{tr("Delete processed cache files"), this};
         eveLayout->addWidget(mDeleteCacheBtn);
-        mDeleteCacheBtn->setChecked(settings.value(PathSettings::deleteProcessedCacheFilesKey, true).toBool());
+        mDeleteCacheBtn->setChecked(settings.value(PathSettings::deleteProcessedCacheFilesKey, PathSettings::deleteProcessedCacheFilesDefault).toBool());
 
         auto cacheLabel = new QLabel{tr("Setting the cache path is optional. When left blank, Evernus will try to guess the path itself."), this};
         eveLayout->addWidget(cacheLabel);

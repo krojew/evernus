@@ -63,7 +63,7 @@ namespace Evernus
 
         mAutoImportBtn = new QCheckBox{tr("Enabled"), this};
         autoImportBoxLayout->addRow(mAutoImportBtn);
-        mAutoImportBtn->setChecked(settings.value(ImportSettings::autoImportEnabledKey, false).toBool());
+        mAutoImportBtn->setChecked(settings.value(ImportSettings::autoImportEnabledKey, ImportSettings::autoImportEnabledDefault).toBool());
 
         mAutoImportTimeEdit = new QSpinBox{this};
         autoImportBoxLayout->addRow(tr("Auto-import time:"), mAutoImportTimeEdit);
@@ -74,7 +74,8 @@ namespace Evernus
 
         mEmailNotificationBtn = new QCheckBox{tr("Enable email notifications"), this};
         autoImportBoxLayout->addRow(mEmailNotificationBtn);
-        mEmailNotificationBtn->setChecked(settings.value(ImportSettings::emailNotificationsEnabledKey, true).toBool());
+        mEmailNotificationBtn->setChecked(
+            settings.value(ImportSettings::emailNotificationsEnabledKey, ImportSettings::emailNotificationsEnabledDefault).toBool());
 
         mEmailNotificationAddressEdit = new QLineEdit{settings.value(ImportSettings::emailNotificationAddressKey).toString(), this};
         autoImportBoxLayout->addRow(tr("Destination address:"), mEmailNotificationAddressEdit);
