@@ -83,6 +83,7 @@ namespace Evernus
         static const QString settingsLastTabkey;
 
         const MarketOrderProvider &mOrderProvider;
+        const CharacterRepository &mCharacterRepository;
 
         MarketOrderViewWithTransactions *mSellView = nullptr;
         MarketOrderViewWithTransactions *mBuyView = nullptr;
@@ -97,6 +98,8 @@ namespace Evernus
         QPushButton *mLogImportBtn = nullptr;
         QComboBox *mGroupingCombo = nullptr;
         DateRangeWidget *mArchiveRangeEdit = nullptr;
+
+        bool mCorp = false;
 
         virtual void handleNewCharacter(Character::IdType id) override;
 

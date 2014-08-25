@@ -53,9 +53,11 @@ namespace Evernus
                                ImportSettings::maxMarketOrdersAgeKey,
                                parent)
         , mOrderProvider(orderProvider)
-        , mSellModel(mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider, characterRepository, corp)
-        , mBuyModel(mOrderProvider, dataProvider, cacheTimerProvider, characterRepository, corp)
-        , mArchiveModel(mOrderProvider, dataProvider, itemCostProvider, characterRepository, corp)
+        , mCharacterRepository(characterRepository)
+        , mSellModel(mOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider, mCharacterRepository, corp)
+        , mBuyModel(mOrderProvider, dataProvider, cacheTimerProvider, mCharacterRepository, corp)
+        , mArchiveModel(mOrderProvider, dataProvider, itemCostProvider, mCharacterRepository, corp)
+        , mCorp(corp)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -272,8 +274,24 @@ namespace Evernus
                 target.emplace(std::make_pair(order->getTypeId(), order->getStationId()));
         };
 
-        importer(mOrderProvider.getBuyOrders(getCharacterId()));
-        importer(mOrderProvider.getSellOrders(getCharacterId()));
+        if (mCorp)
+        {
+            try
+            {
+                const auto id = mCharacterRepository.getCorporationId(getCharacterId());
+
+                importer(mOrderProvider.getBuyOrdersForCorporation(id));
+                importer(mOrderProvider.getSellOrdersForCorporation(id));
+            }
+            catch (const CharacterRepository::NotFoundException &)
+            {
+            }
+        }
+        else
+        {
+            importer(mOrderProvider.getBuyOrders(getCharacterId()));
+            importer(mOrderProvider.getSellOrders(getCharacterId()));
+        }
 
         return target;
     }
