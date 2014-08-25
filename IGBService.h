@@ -56,6 +56,8 @@ namespace Evernus
         void openMarginTool(QxtWebRequestEvent *event);
 
     private:
+        typedef std::vector<std::shared_ptr<MarketOrder>> OrderList;
+
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const EveDataProvider &mDataProvider;
 
@@ -66,11 +68,15 @@ namespace Evernus
                                 QStringList &idContainer,
                                 QStringList &typeIdContainer) const;
 
-        void showOrders(QxtWebRequestEvent *event, const MarketOrderProvider &provider, MarketOrder::State state, bool needsDelta);
-        std::vector<std::shared_ptr<MarketOrder>> filterAndSort(const std::vector<std::shared_ptr<MarketOrder>> &orders,
-                                                                MarketOrder::State state,
-                                                                bool needsDelta) const;
+        template<class T, OrderList (MarketOrderProvider::* SellFunc)(T) const, OrderList (MarketOrderProvider::* BuyFunc)(T) const>
+        void showOrders(QxtWebRequestEvent *event,
+                        const MarketOrderProvider &provider,
+                        MarketOrder::State state,
+                        bool needsDelta,
+                        T id);
+        OrderList filterAndSort(const OrderList &orders, MarketOrder::State state, bool needsDelta) const;
 
         static Character::IdType getCharacterId(QxtWebRequestEvent *event);
+        static uint getCorporationId(QxtWebRequestEvent *event);
     };
 }

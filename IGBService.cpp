@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <algorithm>
+#include <limits>
 
 #include <QSettings>
 
@@ -67,22 +68,26 @@ namespace Evernus
 
     void IGBService::active(QxtWebRequestEvent *event)
     {
-        showOrders(event, mOrderProvider, MarketOrder::State::Active, false);
+        showOrders<Character::IdType, &MarketOrderProvider::getSellOrders, &MarketOrderProvider::getBuyOrders>(
+            event, mOrderProvider, MarketOrder::State::Active, false, getCharacterId(event));
     }
 
     void IGBService::fulfilled(QxtWebRequestEvent *event)
     {
-        showOrders(event, mOrderProvider, MarketOrder::State::Fulfilled, true);
+        showOrders<Character::IdType, &MarketOrderProvider::getSellOrders, &MarketOrderProvider::getBuyOrders>(
+            event, mOrderProvider, MarketOrder::State::Fulfilled, true, getCharacterId(event));
     }
 
     void IGBService::corpActive(QxtWebRequestEvent *event)
     {
-        showOrders(event, mCorpOrderProvider, MarketOrder::State::Active, false);
+        showOrders<uint, &MarketOrderProvider::getSellOrdersForCorporation, &MarketOrderProvider::getBuyOrdersForCorporation>(
+            event, mCorpOrderProvider, MarketOrder::State::Active, false, getCorporationId(event));
     }
 
     void IGBService::corpFulfilled(QxtWebRequestEvent *event)
     {
-        showOrders(event, mCorpOrderProvider, MarketOrder::State::Fulfilled, true);
+        showOrders<uint, &MarketOrderProvider::getSellOrdersForCorporation, &MarketOrderProvider::getBuyOrdersForCorporation>(
+            event, mCorpOrderProvider, MarketOrder::State::Fulfilled, true, getCorporationId(event));
     }
 
     void IGBService::openMarginTool(QxtWebRequestEvent *event)
@@ -121,26 +126,21 @@ namespace Evernus
         return result;
     }
 
-    Character::IdType IGBService::getCharacterId(QxtWebRequestEvent *event)
-    {
-        const auto charIdHeader = "EVE_CHARID";
-
-        if (!event->headers.contains(charIdHeader))
-            return Character::invalidId;
-
-        return event->headers.values(charIdHeader).first().toULongLong();
-    }
-
-    void IGBService::showOrders(QxtWebRequestEvent *event, const MarketOrderProvider &provider, MarketOrder::State state, bool needsDelta)
+    template<class T, IGBService::OrderList (MarketOrderProvider::* SellFunc)(T) const, IGBService::OrderList (MarketOrderProvider::* BuyFunc)(T) const>
+    void IGBService::showOrders(QxtWebRequestEvent *event,
+                                const MarketOrderProvider &provider,
+                                MarketOrder::State state,
+                                bool needsDelta,
+                                T id)
     {
         QStringList idContainer, typeIdContainer;
         QSettings settings;
 
         mOrderTemplate["sell-orders"] = renderOrderList(
-            filterAndSort(provider.getSellOrders(getCharacterId(event)), state, needsDelta), idContainer, typeIdContainer);
+            filterAndSort((provider.*SellFunc)(id), state, needsDelta), idContainer, typeIdContainer);
         mOrderTemplate["buy-orders-start"] = QString::number(idContainer.size() + 1);
         mOrderTemplate["buy-orders"] = renderOrderList(
-            filterAndSort(provider.getBuyOrders(getCharacterId(event)), state, needsDelta), idContainer, typeIdContainer);
+            filterAndSort((provider.*BuyFunc)(id), state, needsDelta), idContainer, typeIdContainer);
         mOrderTemplate["order-ids"] = idContainer.join(", ");
         mOrderTemplate["type-ids"] = typeIdContainer.join(", ");
         mOrderTemplate["scan-delay"] = settings.value(IGBSettings::scanDelayKey, IGBSettings::scanDelayDefault).toString();
@@ -148,10 +148,9 @@ namespace Evernus
         renderContent(event, mOrderTemplate.render());
     }
 
-    std::vector<std::shared_ptr<MarketOrder>> IGBService
-    ::filterAndSort(const std::vector<std::shared_ptr<MarketOrder>> &orders, MarketOrder::State state, bool needsDelta) const
+    IGBService::OrderList IGBService::filterAndSort(const OrderList &orders, MarketOrder::State state, bool needsDelta) const
     {
-        std::vector<std::shared_ptr<MarketOrder>> result;
+        OrderList result;
         result.reserve(orders.size());
 
         for (const auto &order : orders)
@@ -164,5 +163,25 @@ namespace Evernus
             return mDataProvider.getTypeName(o1->getTypeId()) < mDataProvider.getTypeName(o2->getTypeId());
         });
         return result;
+    }
+
+    Character::IdType IGBService::getCharacterId(QxtWebRequestEvent *event)
+    {
+        const auto charIdHeader = "EVE_CHARID";
+
+        if (!event->headers.contains(charIdHeader))
+            return Character::invalidId;
+
+        return event->headers.values(charIdHeader).first().toULongLong();
+    }
+
+    uint IGBService::getCorporationId(QxtWebRequestEvent *event)
+    {
+        const auto corpIdHeader = "EVE_CORPID";
+
+        if (!event->headers.contains(corpIdHeader))
+            return std::numeric_limits<uint>::max();    // 0 fetches orders without a corp
+
+        return event->headers.values(corpIdHeader).first().toUInt();
     }
 }
