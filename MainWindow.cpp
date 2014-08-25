@@ -170,14 +170,11 @@ namespace Evernus
         {
             mMarginToolDialog = new MarginToolDialog{mCharacterRepository, mItemCostProvider, mEveDataProvider};
             mMarginToolDialog->setCharacter(mCurrentCharacterId);
-            mMarginToolDialog->show();
             connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, mMarginToolDialog, &MarginToolDialog::setCharacter);
         }
-        else
-        {
-            mMarginToolDialog->show();
-            mMarginToolDialog->activateWindow();
-        }
+
+        mMarginToolDialog->showNormal();
+        mMarginToolDialog->activateWindow();
     }
 
     void MainWindow::showAbout()
