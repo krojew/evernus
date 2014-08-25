@@ -36,12 +36,19 @@ namespace Evernus
         radio->blockSignals(true);
         radio->setChecked(true);
         radio->blockSignals(false);
+        radio->setToolTip(tr("Uses median price of displayed orders as reference."));
 
-        mainLayout->addWidget(createTypeButton(tr("Best buy/sell price"), ExternalOrderModel::DeviationSourceType::Best));
-        mainLayout->addWidget(createTypeButton(tr("Custom cost"), ExternalOrderModel::DeviationSourceType::Cost));
+        radio = createTypeButton(tr("Best buy/sell price"), ExternalOrderModel::DeviationSourceType::Best);
+        mainLayout->addWidget(radio);
+        radio->setToolTip(tr("Uses lowest sell order for buy orders or highest buy order for sell orders in the order station as reference."));
+
+        radio = createTypeButton(tr("Custom cost"), ExternalOrderModel::DeviationSourceType::Cost);
+        mainLayout->addWidget(radio);
+        radio->setToolTip(tr("Uses custom item cost as reference."));
 
         mFixedValueBtn = createTypeButton(tr("Fixed price"), ExternalOrderModel::DeviationSourceType::Fixed);
         mainLayout->addWidget(mFixedValueBtn);
+        mFixedValueBtn->setToolTip(tr("Uses given fixed value as reference."));
 
         mPriceEdit = new QDoubleSpinBox{this};
         mainLayout->addWidget(mPriceEdit);

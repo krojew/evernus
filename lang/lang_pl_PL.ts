@@ -806,19 +806,39 @@
         <translation>Mediany</translation>
     </message>
     <message>
-        <location filename="../DeviationSourceWidget.cpp" line="40"/>
+        <location filename="../DeviationSourceWidget.cpp" line="39"/>
+        <source>Uses median price of displayed orders as reference.</source>
+        <translation>Używa mediany z wyświetlanych zleceń jako odniesienia.</translation>
+    </message>
+    <message>
+        <location filename="../DeviationSourceWidget.cpp" line="41"/>
         <source>Best buy/sell price</source>
         <translation>Najlepszej ceny</translation>
     </message>
     <message>
-        <location filename="../DeviationSourceWidget.cpp" line="41"/>
+        <location filename="../DeviationSourceWidget.cpp" line="43"/>
+        <source>Uses lowest sell order for buy orders or highest buy order for sell orders in the order station as reference.</source>
+        <translation>Używa najniższego zlecenia sprzedaży dla kupna lub nawyższego zlecenia kupna dla sprzedaży w danej stacji jako odniesienia.</translation>
+    </message>
+    <message>
+        <location filename="../DeviationSourceWidget.cpp" line="45"/>
         <source>Custom cost</source>
         <translation>Kosztu własnego</translation>
     </message>
     <message>
-        <location filename="../DeviationSourceWidget.cpp" line="43"/>
+        <location filename="../DeviationSourceWidget.cpp" line="47"/>
+        <source>Uses custom item cost as reference.</source>
+        <translation>Używa kosztu własnego jako odniesienia.</translation>
+    </message>
+    <message>
+        <location filename="../DeviationSourceWidget.cpp" line="49"/>
         <source>Fixed price</source>
         <translation>Ustalonej ceny</translation>
+    </message>
+    <message>
+        <location filename="../DeviationSourceWidget.cpp" line="51"/>
+        <source>Uses given fixed value as reference.</source>
+        <translation>Używa ustalonej wartości jako odniesienia.</translation>
     </message>
 </context>
 <context>
@@ -1112,7 +1132,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../ExternalOrderBuyModel.cpp" line="83"/>
         <location filename="../ExternalOrderBuyModel.cpp" line="112"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="409"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="412"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
@@ -1180,7 +1200,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../ExternalOrderBuyModel.cpp" line="116"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="413"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="416"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
@@ -1205,17 +1225,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Zlecenia</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="411"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="414"/>
         <source>System</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="415"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="418"/>
         <source>%1 jumps</source>
         <translation>%1 skoków</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="483"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="486"/>
         <source>Your order</source>
         <translation>Twoje zlecenie</translation>
     </message>
@@ -1223,7 +1243,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ExternalOrderSellModel</name>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="459"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="462"/>
         <source>Your order</source>
         <translation>Twoje zlecenie</translation>
     </message>
