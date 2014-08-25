@@ -51,7 +51,7 @@ namespace Evernus
 
     int MarketOrderSellModel::columnCount(const QModelIndex &parent) const
     {
-        return (mCorp) ? (19) : (18);
+        return (mCorp) ? (numColumns) : (numColumns - 1);
     }
 
     QVariant MarketOrderSellModel::data(const QModelIndex &index, int role) const
@@ -154,6 +154,8 @@ namespace Evernus
 
                     return (price->getPrice() < data->getPrice()) ? (0) : (3);
                 }
+            case priceDifferenceColumn:
+                return mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice();
             case volumeColumn:
                 return QVariantList{} << data->getVolumeRemaining() << data->getVolumeEntered();
             case totalColumn:
@@ -277,6 +279,8 @@ namespace Evernus
                             return tr("Data too old");
                     }
                     break;
+                case priceDifferenceColumn:
+                    return locale.toCurrencyString(mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice(), "ISK");
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(data->getVolumeRemaining())).arg(locale.toString(data->getVolumeEntered()));
                 case totalColumn:
@@ -462,6 +466,8 @@ namespace Evernus
                 return tr("Price");
             case priceStatusColumn:
                 return tr("Price status");
+            case priceDifferenceColumn:
+                return tr("Price difference");
             case volumeColumn:
                 return tr("Volume");
             case totalColumn:

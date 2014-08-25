@@ -53,26 +53,30 @@ namespace Evernus
         virtual Type getType() const override;
 
     private:
-        static const auto nameColumn = 0;
-        static const auto groupColumn = 1;
-        static const auto statusColumn = 2;
-        static const auto priceColumn = 3;
-        static const auto priceStatusColumn = 4;
-        static const auto volumeColumn = 5;
-        static const auto totalColumn = 6;
-        static const auto deltaColumn = 7;
-        static const auto marginColumn = 8;
-        static const auto newMarginColumn = 9;
-        static const auto rangeColumn = 10;
-        static const auto minQuantityColumn = 11;
-        static const auto etaColumn = 12;
-        static const auto timeLeftColumn = 13;
-        static const auto orderAgeColumn = 14;
-        static const auto firstSeenColumn = 15;
-        static const auto stationColumn = 16;
-        static const auto ownerColumn = 17;
+        enum
+        {
+            nameColumn,
+            groupColumn,
+            statusColumn,
+            priceColumn,
+            priceStatusColumn,
+            priceDifferenceColumn,
+            volumeColumn,
+            totalColumn,
+            deltaColumn,
+            marginColumn,
+            newMarginColumn,
+            rangeColumn,
+            minQuantityColumn,
+            etaColumn,
+            timeLeftColumn,
+            orderAgeColumn,
+            firstSeenColumn,
+            stationColumn,
+            ownerColumn,
 
-        static const auto maxColumn = ownerColumn;
+            numColumns
+        };
 
         const MarketOrderProvider &mOrderProvider;
         const CacheTimerProvider &mCacheTimerProvider;
