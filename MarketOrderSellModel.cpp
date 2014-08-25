@@ -224,13 +224,7 @@ namespace Evernus
             case stationColumn:
                 return mDataProvider.getLocationName(data->getStationId());
             case ownerColumn:
-                try
-                {
-                    return mCharacterRepository.getCharacterName(data->getCharacterId());
-                }
-                catch (const CharacterRepository::NotFoundException &)
-                {
-                }
+                return getCharacterName(data->getCharacterId());
             }
             break;
         case Qt::DisplayRole:
@@ -359,13 +353,7 @@ namespace Evernus
                 case stationColumn:
                     return mDataProvider.getLocationName(data->getStationId());
                 case ownerColumn:
-                    try
-                    {
-                        return mCharacterRepository.getCharacterName(data->getCharacterId());
-                    }
-                    catch (const CharacterRepository::NotFoundException &)
-                    {
-                    }
+                    return getCharacterName(data->getCharacterId());
                 }
             }
             break;
@@ -570,5 +558,24 @@ namespace Evernus
         {
             mCharacter.reset();
         }
+    }
+
+    QString MarketOrderSellModel::getCharacterName(Character::IdType id) const
+    {
+        const auto it = mCharacterNames.find(id);
+        if (it != std::end(mCharacterNames))
+            return it->second;
+
+        QString result;
+
+        try
+        {
+            result = mCharacterRepository.getCharacterName(id);
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+        }
+
+        return mCharacterNames.emplace(id, result).first->second;
     }
 }

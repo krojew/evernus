@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <unordered_map>
+
 #include "MarketOrderTreeModel.h"
 #include "Repository.h"
 
@@ -82,7 +84,11 @@ namespace Evernus
 
         Repository<Character>::EntityPtr mCharacter;
 
+        mutable std::unordered_map<Character::IdType, QString> mCharacterNames;
+
         virtual OrderList getOrders() const override;
         virtual void handleNewCharacter() override;
+
+        QString getCharacterName(Character::IdType id) const;
     };
 }
