@@ -16,9 +16,13 @@
 
 #include <QHeaderView>
 #include <QVBoxLayout>
+#include <QTabWidget>
 #include <QGroupBox>
 #include <QAction>
 
+#include "ExternalOrderSellModel.h"
+#include "ExternalOrderBuyModel.h"
+#include "ExternalOrderView.h"
 #include "ItemCostProvider.h"
 #include "MarketOrderModel.h"
 #include "MarketOrderView.h"
@@ -29,19 +33,27 @@
 namespace Evernus
 {
     MarketOrderViewWithTransactions::MarketOrderViewWithTransactions(const WalletTransactionRepository &transactionsRepo,
-                                                                     const CharacterRepository &characterRepository,
+                                                                     const CharacterRepository &characterRepo,
+                                                                     const ExternalOrderRepository &externalOrderRepo,
                                                                      const EveDataProvider &dataProvider,
                                                                      ItemCostProvider &costProvider,
+                                                                     const MarketOrderProvider &orderProvider,
+                                                                     const MarketOrderProvider &corpOrderProvider,
                                                                      bool corp,
                                                                      QWidget *parent)
         : QWidget(parent)
+        , mCharacterRepo(characterRepo)
+        , mExternalOrderRepo(externalOrderRepo)
+        , mDataProvider(dataProvider)
         , mCostProvider(costProvider)
-        , mTransactionModel(transactionsRepo, characterRepository, dataProvider, corp)
+        , mOrderProvider(orderProvider)
+        , mCorpOrderProvider(corpOrderProvider)
+        , mTransactionModel(transactionsRepo, mCharacterRepo, mDataProvider, corp)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
-        mOrderView = new MarketOrderView{dataProvider, this};
+        mOrderView = new MarketOrderView{mDataProvider, this};
         mainLayout->addWidget(mOrderView, 1);
         connect(this, &MarketOrderViewWithTransactions::statusFilterChanged, mOrderView, &MarketOrderView::statusFilterChanged);
         connect(this, &MarketOrderViewWithTransactions::priceStatusFilterChanged, mOrderView, &MarketOrderView::priceStatusFilterChanged);
@@ -50,7 +62,7 @@ namespace Evernus
         connect(mOrderView->getSelectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &MarketOrderViewWithTransactions::selectOrder);
 
-        auto transactionGroup = new QGroupBox{tr("Transactions"), this};
+        auto transactionGroup = new QGroupBox{this};
         mainLayout->addWidget(transactionGroup);
 
         auto groupLayout = new QVBoxLayout{};
@@ -62,8 +74,15 @@ namespace Evernus
         auto addCostAct = new QAction{tr("Add to item costs"), this};
         connect(addCostAct, &QAction::triggered, this, &MarketOrderViewWithTransactions::addItemCost);
 
+        auto tabs = new QTabWidget{this};
+        groupLayout->addWidget(tabs);
+        tabs->setTabPosition(QTabWidget::West);
+
+        mExternalOrderView = new ExternalOrderView{mCostProvider, mDataProvider, this};
+        tabs->addTab(mExternalOrderView, tr("Market orders"));
+
         mTransactionsView = new StyledTreeView{this};
-        groupLayout->addWidget(mTransactionsView);
+        tabs->addTab(mTransactionsView, tr("Transactions"));
         mTransactionsView->setModel(&mTransactionProxyModel);
         mTransactionsView->sortByColumn(1, Qt::DescendingOrder);
         mTransactionsView->addAction(addCostAct);
@@ -74,6 +93,42 @@ namespace Evernus
     {
         mOrderModel = model;
         mOrderView->setModel(mOrderModel);
+
+        if (mOrderModel == nullptr)
+        {
+            mExternalOrderModel.reset();
+        }
+        else
+        {
+            switch (mOrderModel->getType()) {
+            case MarketOrderModel::Type::Buy:
+                mExternalOrderModel = std::make_unique<ExternalOrderBuyModel>(mDataProvider,
+                                                                              mExternalOrderRepo,
+                                                                              mCharacterRepo,
+                                                                              mOrderProvider,
+                                                                              mCorpOrderProvider,
+                                                                              mCostProvider);
+                break;
+            case MarketOrderModel::Type::Sell:
+                mExternalOrderModel = std::make_unique<ExternalOrderSellModel>(mDataProvider,
+                                                                               mExternalOrderRepo,
+                                                                               mCharacterRepo,
+                                                                               mOrderProvider,
+                                                                               mCorpOrderProvider,
+                                                                               mCostProvider);
+                break;
+            default:
+                mExternalOrderModel.reset();
+            }
+
+            if (mExternalOrderModel)
+            {
+                mExternalOrderModel->setPriceColorMode(ExternalOrderModel::PriceColorMode::Deviation);
+                connect(mOrderModel, &MarketOrderModel::modelReset, mExternalOrderModel.get(), &ExternalOrderModel::reset);
+            }
+        }
+
+        mExternalOrderView->setModel(mExternalOrderModel.get());
     }
 
     void MarketOrderViewWithTransactions::setShowInfo(bool flag)
@@ -85,6 +140,9 @@ namespace Evernus
     {
         mCharacterId = id;
         mTransactionModel.clear();
+
+        if (mExternalOrderModel)
+            mExternalOrderModel->setCharacter(mCharacterId);
     }
 
     void MarketOrderViewWithTransactions::expandAll()
@@ -104,9 +162,9 @@ namespace Evernus
         if (mOrderModel != nullptr && !selected.isEmpty())
         {
             const auto index = mOrderView->getProxyModel().mapToSource(selected.indexes().first());
-            const auto typeId = mOrderModel->getOrderTypeId(index);
+            const auto order = mOrderModel->getOrder(index);
 
-            if (typeId == EveType::invalidId)
+            if (order == nullptr || order->getTypeId() == EveType::invalidId)
             {
                 mTransactionModel.clear();
             }
@@ -118,7 +176,28 @@ namespace Evernus
                     range.mTo = QDateTime::currentDateTimeUtc();
 
                 mTransactionModel.setFilter(
-                    mCharacterId, range.mFrom.date(), range.mTo.date(), mOrderModel->getOrderTypeFilter(index), typeId);
+                    mCharacterId, range.mFrom.date(), range.mTo.date(), mOrderModel->getOrderTypeFilter(index), order->getTypeId());
+            }
+
+            if (mExternalOrderModel)
+            {
+                mExternalOrderModel->blockSignals(true);
+
+                if (order == nullptr)
+                {
+                    mExternalOrderModel->setTypeId(EveType::invalidId);
+                    mExternalOrderModel->setStationId(0);
+                }
+                else
+                {
+                    mExternalOrderModel->setTypeId(order->getTypeId());
+                    mExternalOrderModel->setStationId(order->getStationId());
+                }
+
+                mExternalOrderModel->changeDeviationSource(ExternalOrderModel::DeviationSourceType::Fixed, order->getPrice());
+                mExternalOrderModel->blockSignals(false);
+
+                mExternalOrderModel->reset();
             }
         }
     }

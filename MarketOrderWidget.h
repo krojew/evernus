@@ -27,6 +27,7 @@ namespace Evernus
 {
     class MarketOrderViewWithTransactions;
     class WalletTransactionRepository;
+    class ExternalOrderRepository;
     class FilterTextRepository;
     class MarketOrderProvider;
     class CharacterRepository;
@@ -43,12 +44,14 @@ namespace Evernus
 
     public:
         MarketOrderWidget(const MarketOrderProvider &orderProvider,
+                          const MarketOrderProvider &corpOrderProvider,
                           const CacheTimerProvider &cacheTimerProvider,
                           const EveDataProvider &dataProvider,
                           ItemCostProvider &itemCostProvider,
                           const WalletTransactionRepository &transactionsRepo,
                           const CharacterRepository &characterRepository,
                           const FilterTextRepository &filterRepo,
+                          const ExternalOrderRepository &externalOrderRepo,
                           bool corp,
                           QWidget *parent = nullptr);
         virtual ~MarketOrderWidget() = default;

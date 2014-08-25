@@ -40,12 +40,14 @@ namespace Evernus
     const QString MarketOrderWidget::settingsLastTabkey = "ui/orders/lastTab";
 
     MarketOrderWidget::MarketOrderWidget(const MarketOrderProvider &orderProvider,
+                                         const MarketOrderProvider &corpOrderProvider,
                                          const CacheTimerProvider &cacheTimerProvider,
                                          const EveDataProvider &dataProvider,
                                          ItemCostProvider &itemCostProvider,
                                          const WalletTransactionRepository &transactionsRepo,
                                          const CharacterRepository &characterRepository,
                                          const FilterTextRepository &filterRepo,
+                                         const ExternalOrderRepository &externalOrderRepo,
                                          bool corp,
                                          QWidget *parent)
         : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, (corp) ? (TimerType::CorpMarketOrders) : (TimerType::MarketOrders)),
@@ -111,7 +113,15 @@ namespace Evernus
         auto mainTabs = new QTabWidget{this};
         mainLayout->addWidget(mainTabs);
 
-        mSellView = new MarketOrderViewWithTransactions{transactionsRepo, characterRepository, dataProvider, itemCostProvider, corp, this};
+        mSellView = new MarketOrderViewWithTransactions{transactionsRepo,
+                                                        characterRepository,
+                                                        externalOrderRepo,
+                                                        dataProvider,
+                                                        itemCostProvider,
+                                                        mOrderProvider,
+                                                        corpOrderProvider,
+                                                        corp,
+                                                        this};
         mainTabs->addTab(mSellView, QIcon{":/images/arrow_out.png"}, tr("Sell"));
         mSellView->setModel(&mSellModel);
         mSellView->sortByColumn(0, Qt::AscendingOrder);
@@ -121,7 +131,15 @@ namespace Evernus
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mSellView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::textFilterChanged, mSellView, &MarketOrderViewWithTransactions::textFilterChanged);
 
-        mBuyView = new MarketOrderViewWithTransactions{transactionsRepo, characterRepository, dataProvider, itemCostProvider, corp, this};
+        mBuyView = new MarketOrderViewWithTransactions{transactionsRepo,
+                                                       characterRepository,
+                                                       externalOrderRepo,
+                                                       dataProvider,
+                                                       itemCostProvider,
+                                                       mOrderProvider,
+                                                       corpOrderProvider,
+                                                       corp,
+                                                       this};
         mainTabs->addTab(mBuyView, QIcon{":/images/arrow_in.png"}, tr("Buy"));
         mBuyView->setModel(&mBuyModel);
         mBuyView->sortByColumn(0, Qt::AscendingOrder);
@@ -179,7 +197,15 @@ namespace Evernus
 
         rangeLayout->addStretch();
 
-        mArchiveView = new MarketOrderViewWithTransactions{transactionsRepo, characterRepository, dataProvider, itemCostProvider, corp, this};
+        mArchiveView = new MarketOrderViewWithTransactions{transactionsRepo,
+                                                           characterRepository,
+                                                           externalOrderRepo,
+                                                           dataProvider,
+                                                           itemCostProvider,
+                                                           mOrderProvider,
+                                                           corpOrderProvider,
+                                                           corp,
+                                                           this};
         archiveLayout->addWidget(mArchiveView);
         mArchiveView->setShowInfo(false);
         mArchiveView->statusFilterChanged(MarketOrderFilterProxyModel::EveryStatus);

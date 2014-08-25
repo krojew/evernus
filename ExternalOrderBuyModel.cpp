@@ -210,23 +210,6 @@ namespace Evernus
         return *mOrders[row];
     }
 
-    double ExternalOrderBuyModel::getPrice(const QModelIndex &index) const
-    {
-        if (!index.isValid())
-            return 0.;
-
-        switch (mGrouping) {
-        case Grouping::None:
-            return mOrders[index.row()]->getPrice();
-        case Grouping::Station:
-        case Grouping::System:
-        case Grouping::Region:
-            return mGroupedData[index.row()].mLowestPrice;
-        }
-
-        return 0.;
-    }
-
     void ExternalOrderBuyModel::setCharacter(Character::IdType id)
     {
         beginResetModel();
@@ -240,8 +223,7 @@ namespace Evernus
 
         try
         {
-            const auto character = mCharacterRepo.find(mCharacterId);
-            const auto corpOrders = mCorpOrderProvider.getBuyOrdersForCorporation(character->getCorporationId());
+            const auto corpOrders = mCorpOrderProvider.getBuyOrdersForCorporation(mCharacterRepo.getCorporationId(mCharacterId));
             for (const auto &order : corpOrders)
                 mOwnOrders.emplace(order->getId());
         }
@@ -252,14 +234,9 @@ namespace Evernus
         endResetModel();
     }
 
-    void ExternalOrderBuyModel::setRegionId(uint id)
+    void ExternalOrderBuyModel::setTypeId(EveType::IdType id)
     {
-        mRegionId = id;
-    }
-
-    void ExternalOrderBuyModel::setSolarSystemId(uint id)
-    {
-        mSolarSystemId = id;
+        mTypeId = id;
     }
 
     void ExternalOrderBuyModel::setStationId(uint id)
@@ -267,14 +244,9 @@ namespace Evernus
         mStationId = id;
     }
 
-    EveType::IdType ExternalOrderBuyModel::getTypeId() const noexcept
+    void ExternalOrderBuyModel::setPriceColorMode(PriceColorMode mode)
     {
-        return mTypeId;
-    }
-
-    void ExternalOrderBuyModel::setTypeId(EveType::IdType id) noexcept
-    {
-        mTypeId = id;
+        mPriceColorMode = mode;
     }
 
     void ExternalOrderBuyModel::reset()
@@ -337,6 +309,38 @@ namespace Evernus
         mDeviationValue = value;
 
         endResetModel();
+    }
+
+    double ExternalOrderBuyModel::getPrice(const QModelIndex &index) const
+    {
+        if (!index.isValid())
+            return 0.;
+
+        switch (mGrouping) {
+        case Grouping::None:
+            return mOrders[index.row()]->getPrice();
+        case Grouping::Station:
+        case Grouping::System:
+        case Grouping::Region:
+            return mGroupedData[index.row()].mLowestPrice;
+        }
+
+        return 0.;
+    }
+
+    void ExternalOrderBuyModel::setRegionId(uint id)
+    {
+        mRegionId = id;
+    }
+
+    void ExternalOrderBuyModel::setSolarSystemId(uint id)
+    {
+        mSolarSystemId = id;
+    }
+
+    EveType::IdType ExternalOrderBuyModel::getTypeId() const noexcept
+    {
+        return mTypeId;
     }
 
     void ExternalOrderBuyModel::setGrouping(Grouping grouping)
@@ -475,7 +479,12 @@ namespace Evernus
             break;
         case Qt::ForegroundRole:
             if (column == totalCostColumn)
-                return QColor{Qt::darkRed};
+            {
+                if (mPriceColorMode == PriceColorMode::Direction)
+                    return QColor{Qt::darkRed};
+
+                return (computeDeviation(order) > 0.) ? (QColor{Qt::darkRed}) : (QColor{Qt::darkGreen});
+            }
             break;
         case Qt::BackgroundRole:
             if (mOwnOrders.find(order.getId()) != std::end(mOwnOrders))

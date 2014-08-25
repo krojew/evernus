@@ -508,12 +508,14 @@ namespace Evernus
         connect(this, &MainWindow::externalOrdersChangedWithMarketOrders, assetsTab, &AssetsWidget::updateData);
 
         auto orderTab = new MarketOrderWidget{mOrderProvider,
+                                              mCorpOrderProvider,
                                               mCacheTimerProvider,
                                               mEveDataProvider,
                                               mItemCostProvider,
                                               mWalletTransactionRepository,
                                               mCharacterRepository,
                                               mFilterRepository,
+                                              mExternalOrderRepo,
                                               false,
                                               this};
         addTab(orderTab, tr("Character orders"));
@@ -553,12 +555,14 @@ namespace Evernus
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
 
         auto corpOrderTab = new MarketOrderWidget{mCorpOrderProvider,
+                                                  mCorpOrderProvider,
                                                   mCacheTimerProvider,
                                                   mEveDataProvider,
                                                   mItemCostProvider,
                                                   mCorpWalletTransactionRepository,
                                                   mCharacterRepository,
                                                   mFilterRepository,
+                                                  mExternalOrderRepo,
                                                   true,
                                                   this};
         addTab(corpOrderTab, tr("Corporation orders"));

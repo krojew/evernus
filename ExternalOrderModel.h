@@ -16,6 +16,9 @@
 
 #include <QAbstractItemModel>
 
+#include "Character.h"
+#include "EveType.h"
+
 namespace Evernus
 {
     class ExternalOrder;
@@ -40,6 +43,12 @@ namespace Evernus
             Region
         };
 
+        enum class PriceColorMode
+        {
+            Direction,
+            Deviation
+        };
+
         using QAbstractItemModel::QAbstractItemModel;
         virtual ~ExternalOrderModel() = default;
 
@@ -55,5 +64,14 @@ namespace Evernus
         virtual double getMinPrice() const = 0;
 
         virtual const ExternalOrder &getOrder(size_t row) const = 0;
+
+        virtual void setCharacter(Character::IdType id) = 0;
+        virtual void setTypeId(EveType::IdType id) = 0;
+        virtual void setStationId(uint id) = 0;
+        virtual void setPriceColorMode(PriceColorMode mode) = 0;
+
+        virtual void reset() = 0;
+
+        virtual void changeDeviationSource(DeviationSourceType type, double value) = 0;
     };
 }

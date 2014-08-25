@@ -14,18 +14,24 @@
  */
 #pragma once
 
+#include <memory>
+
 #include <QSortFilterProxyModel>
 #include <QWidget>
 
 #include "MarketOrderFilterProxyModel.h"
 #include "WalletTransactionsModel.h"
+#include "ExternalOrderModel.h"
 
 class QItemSelection;
 
 namespace Evernus
 {
     class WalletTransactionRepository;
+    class ExternalOrderRepository;
+    class MarketOrderProvider;
     class CharacterRepository;
+    class ExternalOrderView;
     class ItemCostProvider;
     class MarketOrderModel;
     class EveDataProvider;
@@ -39,9 +45,12 @@ namespace Evernus
 
     public:
         MarketOrderViewWithTransactions(const WalletTransactionRepository &transactionsRepo,
-                                        const CharacterRepository &characterRepository,
+                                        const CharacterRepository &characterRepo,
+                                        const ExternalOrderRepository &externalOrderRepo,
                                         const EveDataProvider &dataProvider,
                                         ItemCostProvider &costProvider,
+                                        const MarketOrderProvider &orderProvider,
+                                        const MarketOrderProvider &corpOrderProvider,
                                         bool corp,
                                         QWidget *parent = nullptr);
         virtual ~MarketOrderViewWithTransactions() = default;
@@ -68,14 +77,22 @@ namespace Evernus
         void addItemCost();
 
     private:
+        const CharacterRepository &mCharacterRepo;
+        const ExternalOrderRepository &mExternalOrderRepo;
+        const EveDataProvider &mDataProvider;
         ItemCostProvider &mCostProvider;
+        const MarketOrderProvider &mOrderProvider;
+        const MarketOrderProvider &mCorpOrderProvider;
 
         MarketOrderView *mOrderView = nullptr;
+        ExternalOrderView *mExternalOrderView = nullptr;
         StyledTreeView *mTransactionsView = nullptr;
 
         MarketOrderModel *mOrderModel = nullptr;
         WalletTransactionsModel mTransactionModel;
         QSortFilterProxyModel mTransactionProxyModel;
+
+        std::unique_ptr<ExternalOrderModel> mExternalOrderModel;
 
         Character::IdType mCharacterId = Character::invalidId;
     };

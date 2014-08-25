@@ -22,7 +22,6 @@
 #include "ExternalOrderModel.h"
 #include "ExternalOrder.h"
 #include "MarketOrder.h"
-#include "Character.h"
 
 namespace Evernus
 {
@@ -67,19 +66,21 @@ namespace Evernus
 
         virtual const ExternalOrder &getOrder(size_t row) const override;
 
+        virtual void setCharacter(Character::IdType id) override;
+        virtual void setTypeId(EveType::IdType id) override;
+        virtual void setStationId(uint id) override;
+        virtual void setPriceColorMode(PriceColorMode mode) override;
+
+        virtual void reset() override;
+
+        virtual void changeDeviationSource(DeviationSourceType type, double value) override;
+
         double getPrice(const QModelIndex &index) const;
 
-        void setCharacter(Character::IdType id);
         void setRegionId(uint id);
         void setSolarSystemId(uint id);
-        void setStationId(uint id);
 
         EveType::IdType getTypeId() const noexcept;
-        void setTypeId(EveType::IdType id) noexcept;
-
-        void reset();
-
-        void changeDeviationSource(DeviationSourceType type, double value);
 
         void setGrouping(Grouping grouping);
 
@@ -126,6 +127,8 @@ namespace Evernus
 
         EveType::IdType mTypeId = EveType::invalidId;
         uint mRegionId = 0, mSolarSystemId = 0, mStationId = 0;
+
+        PriceColorMode mPriceColorMode = PriceColorMode::Direction;
 
         DeviationSourceType mDeviationType = DeviationSourceType::Median;
         double mDeviationValue = 1.;

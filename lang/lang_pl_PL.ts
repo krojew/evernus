@@ -1137,7 +1137,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../ExternalOrderBuyModel.cpp" line="83"/>
         <location filename="../ExternalOrderBuyModel.cpp" line="112"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="412"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="416"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
@@ -1205,7 +1205,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../ExternalOrderBuyModel.cpp" line="116"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="416"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="420"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
@@ -1230,17 +1230,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Zlecenia</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="414"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="418"/>
         <source>System</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="418"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="422"/>
         <source>%1 jumps</source>
         <translation>%1 skoków</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="486"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="495"/>
         <source>Your order</source>
         <translation>Twoje zlecenie</translation>
     </message>
@@ -1248,7 +1248,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ExternalOrderSellModel</name>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="462"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="471"/>
         <source>Your order</source>
         <translation>Twoje zlecenie</translation>
     </message>
@@ -2083,42 +2083,42 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="519"/>
+        <location filename="../MainWindow.cpp" line="521"/>
         <source>Character orders</source>
         <translation>Zlecenia postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="564"/>
+        <location filename="../MainWindow.cpp" line="568"/>
         <source>Corporation orders</source>
         <translation>Zlecenia korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="606"/>
+        <location filename="../MainWindow.cpp" line="610"/>
         <source>Item history</source>
         <translation>Historia przedmiotów</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="619"/>
+        <location filename="../MainWindow.cpp" line="623"/>
         <source>Market browser</source>
         <translation>Rynek</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="539"/>
+        <location filename="../MainWindow.cpp" line="541"/>
         <source>Character journal</source>
         <translation>Dziennik postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="583"/>
+        <location filename="../MainWindow.cpp" line="587"/>
         <source>Corporation journal</source>
         <translation>Dziennik korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="551"/>
+        <location filename="../MainWindow.cpp" line="553"/>
         <source>Character transactions</source>
         <translation>Transakcje postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="595"/>
+        <location filename="../MainWindow.cpp" line="599"/>
         <source>Corporation transactions</source>
         <translation>Transakcje korporacji</translation>
     </message>
@@ -2135,7 +2135,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Transakcje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="628"/>
+        <location filename="../MainWindow.cpp" line="632"/>
         <source>Item costs</source>
         <translation>Koszty</translation>
     </message>
@@ -3315,12 +3315,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderViewWithTransactions</name>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="53"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="82"/>
+        <source>Market orders</source>
+        <translation>Zlecenia</translation>
+    </message>
+    <message>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="85"/>
         <source>Transactions</source>
         <translation>Transakcje</translation>
     </message>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="62"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="74"/>
         <source>Add to item costs</source>
         <translation>Dodaj do własnych kosztów</translation>
     </message>
@@ -3328,17 +3333,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderWidget</name>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="71"/>
+        <location filename="../MarketOrderWidget.cpp" line="73"/>
         <source>File import</source>
         <translation>Importuj z pliku</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="81"/>
+        <location filename="../MarketOrderWidget.cpp" line="83"/>
         <source>Import prices from Web</source>
         <translation>Importuj ceny z sieci</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="82"/>
+        <location filename="../MarketOrderWidget.cpp" line="84"/>
         <source>Import prices from logs</source>
         <translation>Importuj ceny z logów</translation>
     </message>
@@ -3347,77 +3352,77 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="obsolete">Import</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="83"/>
+        <location filename="../MarketOrderWidget.cpp" line="85"/>
         <source>Import prices from cache</source>
         <translation>Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="85"/>
+        <location filename="../MarketOrderWidget.cpp" line="87"/>
         <source>Import prices  </source>
         <translation>Importuj ceny  </translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="90"/>
+        <location filename="../MarketOrderWidget.cpp" line="92"/>
         <source>Open margin tool</source>
         <translation>Otwórz narzędzie marży</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="98"/>
+        <location filename="../MarketOrderWidget.cpp" line="100"/>
         <source>Group by:</source>
         <translation>Grupuj po:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="102"/>
+        <location filename="../MarketOrderWidget.cpp" line="104"/>
         <source>- none -</source>
         <translation>- brak -</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="103"/>
+        <location filename="../MarketOrderWidget.cpp" line="105"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="104"/>
+        <location filename="../MarketOrderWidget.cpp" line="106"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="105"/>
+        <location filename="../MarketOrderWidget.cpp" line="107"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="115"/>
+        <location filename="../MarketOrderWidget.cpp" line="125"/>
         <source>Sell</source>
         <translation>Sprzedaż</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="125"/>
+        <location filename="../MarketOrderWidget.cpp" line="143"/>
         <source>Buy</source>
         <translation>Kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="134"/>
+        <location filename="../MarketOrderWidget.cpp" line="152"/>
         <source>Sell &amp;&amp; Buy</source>
         <translation>Sprzedaż i kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="139"/>
+        <location filename="../MarketOrderWidget.cpp" line="157"/>
         <source>Sell orders</source>
         <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="153"/>
+        <location filename="../MarketOrderWidget.cpp" line="171"/>
         <source>Buy orders</source>
         <translation>Zlecenia kupna</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="168"/>
+        <location filename="../MarketOrderWidget.cpp" line="186"/>
         <source>History</source>
         <translation>Historia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="248"/>
+        <location filename="../MarketOrderWidget.cpp" line="274"/>
         <source>Script error</source>
         <translation>Błąd skryptu</translation>
     </message>
