@@ -1157,7 +1157,7 @@ namespace Evernus
 
                     if (it != std::end(data))
                     {
-                        Contracts corpContracts(it, std::end(data));
+                        Evernus::Contracts corpContracts(it, std::end(data));
                         mCorpContractRepository->batchStore(corpContracts, true);
 
                         mCharacterContractProvider->clearForCorporation(corpContracts.front().getIssuerCorpId());
@@ -1370,7 +1370,7 @@ namespace Evernus
                         mCharacterContractProvider->clearForCorporation(corpId);
                         mCorpContractProvider->clearForCorporation(corpId);
                     }
-                    catch (const CharacterRepository::NotFoundException &)
+                    catch (const Evernus::CharacterRepository::NotFoundException &)
                     {
                     }
 
