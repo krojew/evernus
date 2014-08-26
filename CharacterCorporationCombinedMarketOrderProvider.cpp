@@ -86,19 +86,19 @@ namespace Evernus
     }
 
     MarketOrderProvider::OrderList CharacterCorporationCombinedMarketOrderProvider
-    ::getSellOrdersForCorporation(uint corporationId) const
+    ::getSellOrdersForCorporation(quint64 corporationId) const
     {
         return mCorpOrderProvider.getSellOrdersForCorporation(corporationId);
     }
 
     MarketOrderProvider::OrderList CharacterCorporationCombinedMarketOrderProvider
-    ::getBuyOrdersForCorporation(uint corporationId) const
+    ::getBuyOrdersForCorporation(quint64 corporationId) const
     {
         return mCorpOrderProvider.getBuyOrdersForCorporation(corporationId);
     }
 
     MarketOrderProvider::OrderList CharacterCorporationCombinedMarketOrderProvider
-    ::getArchivedOrdersForCorporation(uint corporationId, const QDateTime &from, const QDateTime &to) const
+    ::getArchivedOrdersForCorporation(quint64 corporationId, const QDateTime &from, const QDateTime &to) const
     {
         return mCorpOrderProvider.getArchivedOrdersForCorporation(corporationId, from, to);
     }

@@ -84,13 +84,13 @@ namespace Evernus
 
     void IGBService::corpActive(QxtWebRequestEvent *event)
     {
-        showOrders<uint, &MarketOrderProvider::getSellOrdersForCorporation, &MarketOrderProvider::getBuyOrdersForCorporation>(
+        showOrders<quint64, &MarketOrderProvider::getSellOrdersForCorporation, &MarketOrderProvider::getBuyOrdersForCorporation>(
             event, mCorpOrderProvider, MarketOrder::State::Active, false, getCorporationId(event));
     }
 
     void IGBService::corpFulfilled(QxtWebRequestEvent *event)
     {
-        showOrders<uint, &MarketOrderProvider::getSellOrdersForCorporation, &MarketOrderProvider::getBuyOrdersForCorporation>(
+        showOrders<quint64, &MarketOrderProvider::getSellOrdersForCorporation, &MarketOrderProvider::getBuyOrdersForCorporation>(
             event, mCorpOrderProvider, MarketOrder::State::Fulfilled, true, getCorporationId(event));
     }
 

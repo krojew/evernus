@@ -51,7 +51,7 @@ namespace Evernus
         walletTransaction->setLocationId(record.value("location_id").toULongLong());
         walletTransaction->setType(static_cast<WalletTransaction::Type>(record.value("type").toInt()));
         walletTransaction->setJournalId(record.value("journal_id").value<WalletJournalEntry::IdType>());
-        walletTransaction->setCorporationId(record.value("corporation_id").toUInt());
+        walletTransaction->setCorporationId(record.value("corporation_id").toULongLong());
         walletTransaction->setIgnored(record.value("ignored").toBool());
         walletTransaction->setNew(false);
 
@@ -72,7 +72,7 @@ namespace Evernus
             location_id BIGINT NOT NULL,
             type TINYINT NOT NULL,
             journal_id BIGINT NOT NULL,
-            corporation_id INTEGER NOT NULL,
+            corporation_id BIGINT NOT NULL,
             ignored TINYINT NOT NULL
         ))"}.arg(getTableName()).arg(
             (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
@@ -174,7 +174,7 @@ namespace Evernus
     }
 
     WalletTransactionRepository::EntityList WalletTransactionRepository
-    ::fetchForCorporationInRange(uint corporationId,
+    ::fetchForCorporationInRange(quint64 corporationId,
                                  const QDateTime &from,
                                  const QDateTime &till,
                                  EntryType type,

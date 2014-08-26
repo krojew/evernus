@@ -55,7 +55,7 @@ namespace Evernus
                                             const QDateTime &from,
                                             const QDateTime &till,
                                             EntryType type) const;
-        EntityList fetchForCorporationInRange(uint corporationId,
+        EntityList fetchForCorporationInRange(quint64 corporationId,
                                               const QDateTime &from,
                                               const QDateTime &till,
                                               EntryType type) const;

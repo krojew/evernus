@@ -196,12 +196,12 @@ namespace Evernus
         mTaxAmount = amount;
     }
 
-    uint WalletJournalEntry::getCorporationId() const noexcept
+    quint64 WalletJournalEntry::getCorporationId() const noexcept
     {
         return mCorporationId;
     }
 
-    void WalletJournalEntry::setCorporationId(uint id) noexcept
+    void WalletJournalEntry::setCorporationId(quint64 id) noexcept
     {
         mCorporationId = id;
     }

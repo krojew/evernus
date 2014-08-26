@@ -88,8 +88,8 @@ namespace Evernus
         TaxAmountType getTaxAmount() const noexcept;
         void setTaxAmount(TaxAmountType amount) noexcept;
 
-        uint getCorporationId() const noexcept;
-        void setCorporationId(uint id) noexcept;
+        quint64 getCorporationId() const noexcept;
+        void setCorporationId(quint64 id) noexcept;
 
         bool isIgnored() const noexcept;
         void setIgnored(bool flag) noexcept;
@@ -112,7 +112,7 @@ namespace Evernus
         ReasonType mReason;
         TaxReceiverType mTaxReceiverId = static_cast<quint64>(0u);
         TaxAmountType mTaxAmount = 0.;
-        uint mCorporationId = 0;
+        quint64 mCorporationId = 0;
         bool mIgnored = false;
     };
 

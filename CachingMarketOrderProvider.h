@@ -32,9 +32,9 @@ namespace Evernus
         virtual OrderList getBuyOrders(Character::IdType characterId) const override;
         virtual OrderList getArchivedOrders(Character::IdType characterId, const QDateTime &from, const QDateTime &to) const override;
 
-        virtual OrderList getSellOrdersForCorporation(uint corporationId) const override;
-        virtual OrderList getBuyOrdersForCorporation(uint corporationId) const override;
-        virtual OrderList getArchivedOrdersForCorporation(uint corporationId, const QDateTime &from, const QDateTime &to) const override;
+        virtual OrderList getSellOrdersForCorporation(quint64 corporationId) const override;
+        virtual OrderList getBuyOrdersForCorporation(quint64 corporationId) const override;
+        virtual OrderList getArchivedOrdersForCorporation(quint64 corporationId, const QDateTime &from, const QDateTime &to) const override;
 
         void clearOrdersForCharacter(Character::IdType id) const;
         void clearOrdersForCorporation(uint id) const;
@@ -42,7 +42,7 @@ namespace Evernus
 
     private:
         typedef std::unordered_map<Character::IdType, OrderList> MarketOrderMap;
-        typedef std::unordered_map<uint, OrderList> CorpMarketOrderMap;
+        typedef std::unordered_map<quint64, OrderList> CorpMarketOrderMap;
 
         const MarketOrderRepository &mOrderRepo;
 

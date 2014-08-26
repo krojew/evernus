@@ -102,8 +102,8 @@ namespace Evernus
         QDateTime getLastSeen() const;
         void setLastSeen(const QDateTime &dt);
 
-        uint getCorporationId() const noexcept;
-        void setCorporationId(uint id) noexcept;
+        quint64 getCorporationId() const noexcept;
+        void setCorporationId(quint64 id) noexcept;
 
         bool isArchived() const;
 
@@ -129,6 +129,6 @@ namespace Evernus
         Type mType = Type::Buy;
         QDateTime mIssued;
         QDateTime mFirstSeen, mLastSeen;
-        uint mCorporationId = 0;
+        quint64 mCorporationId = 0;
     };
 }

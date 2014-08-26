@@ -126,12 +126,12 @@ namespace Evernus
         mJournalId = id;
     }
 
-    uint WalletTransaction::getCorporationId() const noexcept
+    quint64 WalletTransaction::getCorporationId() const noexcept
     {
         return mCorporationId;
     }
 
-    void WalletTransaction::setCorporationId(uint id) noexcept
+    void WalletTransaction::setCorporationId(quint64 id) noexcept
     {
         mCorporationId = id;
     }

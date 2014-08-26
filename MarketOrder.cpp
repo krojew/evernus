@@ -186,12 +186,12 @@ namespace Evernus
         mLastSeen = dt;
     }
 
-    uint MarketOrder::getCorporationId() const noexcept
+    quint64 MarketOrder::getCorporationId() const noexcept
     {
         return mCorporationId;
     }
 
-    void MarketOrder::setCorporationId(uint id) noexcept
+    void MarketOrder::setCorporationId(quint64 id) noexcept
     {
         mCorporationId = id;
     }

@@ -49,7 +49,7 @@ namespace Evernus
 
         QString getNameColumn() const;
 
-        uint getCorporationId(Character::IdType id) const;
+        quint64 getCorporationId(Character::IdType id) const;
         QString getCharacterName(Character::IdType id) const;
 
         QSqlQuery getEnabledQuery() const;

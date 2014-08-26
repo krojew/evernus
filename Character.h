@@ -49,8 +49,8 @@ namespace Evernus
         void setCorporationName(const QString &name);
         void setCorporationName(QString &&name);
 
-        uint getCorporationId() const noexcept;
-        void setCorporationId(uint id) noexcept;
+        quint64 getCorporationId() const noexcept;
+        void setCorporationId(quint64 id) noexcept;
 
         QString getRace() const &;
         QString &&getRace() && noexcept;

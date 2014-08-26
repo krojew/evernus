@@ -32,7 +32,7 @@ namespace Evernus
         , mCharacterRepo(characterRepo)
         , mCorpKey(corpKey)
     {
-        const auto corpKeyLink = "https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=6295562";
+        const auto corpKeyLink = "https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=73404426";
 
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

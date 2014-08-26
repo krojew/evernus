@@ -60,7 +60,7 @@ namespace Evernus
         walletJournalEntry->setReason((reason.isNull()) ? (WalletJournalEntry::ReasonType{}) : (reason.toString()));
         walletJournalEntry->setTaxReceiverId((taxReceiverId.isNull()) ? (WalletJournalEntry::TaxReceiverType{}) : (taxReceiverId.toULongLong()));
         walletJournalEntry->setTaxAmount((taxAmount.isNull()) ? (WalletJournalEntry::TaxAmountType{}) : (taxAmount.toDouble()));
-        walletJournalEntry->setCorporationId(record.value("corporation_id").toUInt());
+        walletJournalEntry->setCorporationId(record.value("corporation_id").toULongLong());
         walletJournalEntry->setIgnored(record.value("ignored").toBool());
         walletJournalEntry->setNew(false);
 
@@ -85,7 +85,7 @@ namespace Evernus
             reason TEXT NULL,
             tax_receiver_id BIGINT NULL,
             tax_amount NUMERIC NULL,
-            corporation_id INTEGER NOT NULL,
+            corporation_id BIGINT NOT NULL,
             ignored TINYINT NOT NULL
         ))"}.arg(getTableName()).arg(
             (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
@@ -175,7 +175,7 @@ namespace Evernus
     }
 
     WalletJournalEntryRepository::EntityList WalletJournalEntryRepository
-    ::fetchForCorporationInRange(uint corporationId, const QDateTime &from, const QDateTime &till, EntryType type) const
+    ::fetchForCorporationInRange(quint64 corporationId, const QDateTime &from, const QDateTime &till, EntryType type) const
     {
         return fetchForColumnInRange(corporationId, from, till, type, "corporation_id");
     }

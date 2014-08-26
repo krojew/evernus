@@ -38,7 +38,7 @@ namespace Evernus
         character->setKeyId((keyId.isNull()) ? (Character::KeyIdType{}) : (keyId.value<Key::IdType>()));
         character->setName(record.value("name").toString());
         character->setCorporationName(record.value("corporation_name").toString());
-        character->setCorporationId(record.value("corporation_id").toUInt());
+        character->setCorporationId(record.value("corporation_id").toULongLong());
         character->setRace(record.value("race").toString());
         character->setBloodline(record.value("bloodline").toString());
         character->setAncestry(record.value("ancestry").toString());
@@ -85,7 +85,7 @@ namespace Evernus
             key_id INTEGER NULL REFERENCES %2(id) ON UPDATE SET NULL ON DELETE SET NULL,
             name TEXT NOT NULL,
             corporation_name TEXT NOT NULL,
-            corporation_id INTEGER NOT NULL,
+            corporation_id BIGINT NOT NULL,
             race TEXT NOT NULL,
             bloodline TEXT NOT NULL,
             ancestry TEXT NOT NULL,
@@ -187,7 +187,7 @@ namespace Evernus
         return "name";
     }
 
-    uint CharacterRepository::getCorporationId(Character::IdType id) const
+    quint64 CharacterRepository::getCorporationId(Character::IdType id) const
     {
         auto query = prepare(QString{"SELECT corporation_id FROM %1 WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
         query.bindValue(0, id);
@@ -197,7 +197,7 @@ namespace Evernus
         if (!query.next())
             throw NotFoundException{};
 
-        return query.value(0).toUInt();
+        return query.value(0).toULongLong();
     }
 
     QString CharacterRepository::getCharacterName(Character::IdType id) const

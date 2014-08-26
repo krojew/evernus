@@ -203,7 +203,7 @@ namespace Evernus
 
     void APIManager::fetchWalletJournal(const CorpKey &key,
                                         Character::IdType characterId,
-                                        uint corpId,
+                                        quint64 corpId,
                                         WalletJournalEntry::IdType fromId,
                                         WalletJournalEntry::IdType tillId,
                                         const Callback<WalletJournal> &callback) const
@@ -222,7 +222,7 @@ namespace Evernus
 
     void APIManager::fetchWalletTransactions(const CorpKey &key,
                                              Character::IdType characterId,
-                                             uint corpId,
+                                             quint64 corpId,
                                              WalletTransaction::IdType fromId,
                                              WalletTransaction::IdType tillId,
                                              const Callback<WalletTransactions> &callback) const
@@ -243,7 +243,7 @@ namespace Evernus
     template<class Key>
     void APIManager::fetchWalletJournal(const Key &key,
                                         Character::IdType characterId,
-                                        uint corpId,
+                                        quint64 corpId,
                                         WalletJournalEntry::IdType fromId,
                                         WalletJournalEntry::IdType tillId,
                                         std::shared_ptr<WalletJournal> &&journal,
@@ -304,7 +304,7 @@ namespace Evernus
     template<class Key>
     void APIManager::fetchWalletTransactions(const Key &key,
                                              Character::IdType characterId,
-                                             uint corpId,
+                                             quint64 corpId,
                                              WalletTransaction::IdType fromId,
                                              WalletTransaction::IdType tillId,
                                              std::shared_ptr<WalletTransactions> &&transactions,

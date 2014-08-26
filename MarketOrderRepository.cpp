@@ -65,7 +65,7 @@ namespace Evernus
         marketOrder->setIssued(issued);
         marketOrder->setFirstSeen(firstSeen);
         marketOrder->setLastSeen(lastSeen);
-        marketOrder->setCorporationId(record.value("corporation_id").toUInt());
+        marketOrder->setCorporationId(record.value("corporation_id").toULongLong());
         marketOrder->setNew(false);
 
         return marketOrder;
@@ -92,7 +92,7 @@ namespace Evernus
             issued DATETIME NOT NULL,
             first_seen DATETIME NOT NULL,
             last_seen DATETIME NULL,
-            corporation_id INTEGER NOT NULL
+            corporation_id BIGINT NOT NULL
         ))"}.arg(getTableName()).arg(
             (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
 

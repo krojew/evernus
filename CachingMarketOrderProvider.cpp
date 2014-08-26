@@ -59,7 +59,7 @@ namespace Evernus
         return result;
     }
 
-    MarketOrderProvider::OrderList CachingMarketOrderProvider::getSellOrdersForCorporation(uint corporationId) const
+    MarketOrderProvider::OrderList CachingMarketOrderProvider::getSellOrdersForCorporation(quint64 corporationId) const
     {
         auto it = mCorpSellOrders.find(corporationId);
         if (it == std::end(mCorpSellOrders))
@@ -68,7 +68,7 @@ namespace Evernus
         return it->second;
     }
 
-    MarketOrderProvider::OrderList CachingMarketOrderProvider::getBuyOrdersForCorporation(uint corporationId) const
+    MarketOrderProvider::OrderList CachingMarketOrderProvider::getBuyOrdersForCorporation(quint64 corporationId) const
     {
         auto it = mCorpBuyOrders.find(corporationId);
         if (it == std::end(mCorpBuyOrders))
@@ -78,7 +78,7 @@ namespace Evernus
     }
 
     MarketOrderProvider::OrderList CachingMarketOrderProvider
-    ::getArchivedOrdersForCorporation(uint corporationId, const QDateTime &from, const QDateTime &to) const
+    ::getArchivedOrdersForCorporation(quint64 corporationId, const QDateTime &from, const QDateTime &to) const
     {
         auto it = mCorpArchivedOrders.find(corporationId);
         if (it == std::end(mCorpArchivedOrders))

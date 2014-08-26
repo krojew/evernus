@@ -68,12 +68,12 @@ namespace Evernus
         mData.mCorporationName = std::move(name);
     }
 
-    uint Character::getCorporationId() const noexcept
+    quint64 Character::getCorporationId() const noexcept
     {
         return mData.mCorporationId;
     }
 
-    void Character::setCorporationId(uint id) noexcept
+    void Character::setCorporationId(quint64 id) noexcept
     {
         mData.mCorporationId = id;
     }
