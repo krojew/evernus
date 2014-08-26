@@ -1151,6 +1151,9 @@ namespace Evernus
                     }
 
                     mContractRepository->batchStore(data, true);
+
+                    saveUpdateTimer(Evernus::TimerType::Contracts, mContractsUtcUpdateTimes, id);
+
                     emit contractsChanged();
                 }
 
@@ -1338,6 +1341,9 @@ namespace Evernus
                 if (error.isEmpty())
                 {
                     mCorpContractRepository->batchStore(data, true);
+
+                    saveUpdateTimer(Evernus::TimerType::CorpContracts, mCorpContractsUtcUpdateTimes, id);
+
                     emit corpContractsChanged();
                 }
 
