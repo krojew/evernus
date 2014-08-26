@@ -78,6 +78,8 @@ int main(int argc, char *argv[])
                                         app.getMarketOrderProvider(),
                                         app.getCorpMarketOrderProvider(),
                                         app,
+                                        app.getContractProvider(),
+                                        app.getCorpContractProvider(),
                                         app,
                                         app,
                                         app};

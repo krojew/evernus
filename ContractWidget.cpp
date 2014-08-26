@@ -14,22 +14,32 @@
  */
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QTabWidget>
 #include <QDebug>
 
 #include "CacheTimerProvider.h"
 #include "WarningBarWidget.h"
+#include "TextFilterWidget.h"
 #include "ButtonWithTimer.h"
 #include "ImportSettings.h"
+#include "ContractView.h"
 
 #include "ContractWidget.h"
 
 namespace Evernus
 {
-    ContractWidget::ContractWidget(const CacheTimerProvider &cacheTimerProvider, bool corp, QWidget *parent)
+    ContractWidget::ContractWidget(const CacheTimerProvider &cacheTimerProvider,
+                                   const EveDataProvider &dataProvider,
+                                   const ContractProvider &contractProvider,
+                                   const FilterTextRepository &filterRepo,
+                                   const CharacterRepository &characterRepo,
+                                   bool corp,
+                                   QWidget *parent)
         : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, (corp) ? (TimerType::CorpContracts) : (TimerType::Contracts)),
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, (corp) ? (TimerType::CorpContracts) : (TimerType::Contracts)),
                                ImportSettings::maxContractsAgeKey,
                                parent)
+        , mIssuedModel(dataProvider, contractProvider, characterRepo, corp)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -40,17 +50,31 @@ namespace Evernus
         auto &importBtn = getAPIImportButton();
         toolBarLayout->addWidget(&importBtn);
 
+        auto filterEdit = new TextFilterWidget{filterRepo, this};
+        toolBarLayout->addWidget(filterEdit, 1);
+
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);
+
+        auto tabs = new QTabWidget{this};
+        mainLayout->addWidget(tabs, 1);
+
+        auto issuedView = new ContractView{this};
+        tabs->addTab(issuedView, tr("Issued"));
+        issuedView->setModel(&mIssuedModel);
+        connect(filterEdit, &TextFilterWidget::filterEntered, issuedView, &ContractView::setFilterWildcard);
     }
 
     void ContractWidget::updateData()
     {
         refreshImportTimer();
+        mIssuedModel.reset();
     }
 
     void ContractWidget::handleNewCharacter(Character::IdType id)
     {
         qDebug() << "Switching contracts to" << id;
+
+        mIssuedModel.setCharacter(id);
     }
 }

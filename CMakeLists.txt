@@ -50,6 +50,8 @@ qt5_wrap_cpp(
     CharacterModel.h
     CharacterImportPreferencesWidget.h
     CharacterWidget.h
+    ContractModel.h
+    ContractView.h
     ContractWidget.h
     CorpImportPreferencesWidget.h
     CorpKeyEditDialog.h
@@ -183,6 +185,8 @@ add_executable(
     CacheTimerProvider.h
     CacheTimerRepository.cpp
     CacheTimerRepository.h
+    CachingContractProvider.cpp
+    CachingContractProvider.h
     CachingMarketOrderProvider.cpp
     CachingMarketOrderProvider.h
     Character.cpp
@@ -214,11 +218,16 @@ add_executable(
     ConquerableStationRepository.h
     Contract.cpp
     Contract.h
+    ContractModel.cpp
+    ContractModel.h
+    ContractProvider.h
     ContractRepository.cpp
     ContractRepository.h
     Contracts.h
     ContractsXmlReceiver.cpp
     ContractsXmlReceiver.h
+    ContractView.cpp
+    ContractView.h
     ContractWidget.cpp
     ContractWidget.h
     CorpImportPreferencesWidget.cpp
@@ -304,6 +313,8 @@ add_executable(
     ImportSettings.h
     ImportSourcePreferencesWidget.cpp
     ImportSourcePreferencesWidget.h
+    IssuedContractModel.cpp
+    IssuedContractModel.h
     Item.cpp
     Item.h
     ItemCost.cpp

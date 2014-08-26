@@ -57,6 +57,7 @@ namespace Evernus
     class ActiveTasksDialog;
     class MarginToolDialog;
     class ItemCostProvider;
+    class ContractProvider;
     class EveDataProvider;
     class MenuBarWidget;
     class AssetProvider;
@@ -89,6 +90,8 @@ namespace Evernus
                    const MarketOrderProvider &orderProvider,
                    const MarketOrderProvider &corpOrderProvider,
                    const AssetProvider &assetProvider,
+                   const ContractProvider &contractProvider,
+                   const ContractProvider &corpContractProvider,
                    EveDataProvider &eveDataProvider,
                    const CacheTimerProvider &cacheTimerProvider,
                    ItemCostProvider &itemCostProvider,
@@ -198,6 +201,7 @@ namespace Evernus
         const ExternalOrderRepository &mExternalOrderRepo;
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const AssetProvider &mAssetProvider;
+        const ContractProvider &mContractProvider, &mCorpContractProvider;
         ItemCostProvider &mItemCostProvider;
 
         EveDataProvider &mEveDataProvider;

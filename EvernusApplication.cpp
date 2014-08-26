@@ -100,6 +100,9 @@ namespace Evernus
         mCombinedOrderProvider
             = std::make_unique<CharacterCorporationCombinedMarketOrderProvider>(*mCharacterOrderProvider, *mCorpOrderProvider);
 
+        mCharacterContractProvider = std::make_unique<CachingContractProvider>(*mContractRepository);
+        mCorpContractProvider = std::make_unique<CachingContractProvider>(*mCorpContractRepository);
+
         showSplashMessage(tr("Precaching ref types..."), splash);
         precacheRefTypes();
 
@@ -1005,6 +1008,16 @@ namespace Evernus
         return *mCorpOrderProvider;
     }
 
+    const ContractProvider &EvernusApplication::getContractProvider() const noexcept
+    {
+        return *mCharacterContractProvider;
+    }
+
+    const ContractProvider &EvernusApplication::getCorpContractProvider() const noexcept
+    {
+        return *mCorpContractProvider;
+    }
+
     void EvernusApplication::refreshCharacters()
     {
         qDebug() << "Refreshing characters...";
@@ -1146,9 +1159,17 @@ namespace Evernus
                     {
                         Contracts corpContracts(it, std::end(data));
                         mCorpContractRepository->batchStore(corpContracts, true);
+
+                        mCharacterContractProvider->clearForCorporation(corpContracts.front().getIssuerCorpId());
+                        mCorpContractProvider->clearForCorporation(corpContracts.front().getIssuerCorpId());
+                        mCharacterContractProvider->clearForCorporation(corpContracts.front().getAssigneeId());
+                        mCorpContractProvider->clearForCorporation(corpContracts.front().getAssigneeId());
                     }
 
                     mContractRepository->batchStore(data, true);
+
+                    mCharacterContractProvider->clearForCharacter(id);
+                    mCorpContractProvider->clearForCharacter(id);
 
                     saveUpdateTimer(Evernus::TimerType::Contracts, mContractsUtcUpdateTimes, id);
 
@@ -1339,6 +1360,19 @@ namespace Evernus
                 if (error.isEmpty())
                 {
                     mCorpContractRepository->batchStore(data, true);
+
+                    try
+                    {
+                        const auto corpId = mCharacterRepository->getCorporationId(id);
+
+                        mCharacterContractProvider->clearForCorporation(corpId);
+                        mCorpContractProvider->clearForCorporation(corpId);
+                        mCharacterContractProvider->clearForCorporation(corpId);
+                        mCorpContractProvider->clearForCorporation(corpId);
+                    }
+                    catch (const CharacterRepository::NotFoundException &)
+                    {
+                    }
 
                     saveUpdateTimer(Evernus::TimerType::CorpContracts, mCorpContractsUtcUpdateTimes, id);
 

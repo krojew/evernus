@@ -33,11 +33,20 @@ namespace Evernus
 
         void create(const Repository<Character> &characterRepo) const;
 
+        EntityList fetchIssuedForCharacter(Character::IdType id) const;
+        EntityList fetchAssignedForCharacter(Character::IdType id) const;
+
+        EntityList fetchIssuedForCorporation(quint64 id) const;
+        EntityList fetchAssignedForCorporation(quint64 id) const;
+
     private:
         bool mCorp = false;
 
         virtual QStringList getColumns() const override;
         virtual void bindValues(const Contract &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const Contract &entity, QSqlQuery &query) const override;
+
+        template<class T>
+        EntityList fetchByColumn(T id, const QString &column) const;
     };
 }

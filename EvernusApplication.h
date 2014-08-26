@@ -34,6 +34,7 @@
 #include "LocationBookmarkRepository.h"
 #include "WalletSnapshotRepository.h"
 #include "ExternalOrderRepository.h"
+#include "CachingContractProvider.h"
 #include "FavoriteItemRepository.h"
 #include "ExternalOrderImporter.h"
 #include "MarketGroupRepository.h"
@@ -147,6 +148,9 @@ namespace Evernus
 
         const MarketOrderProvider &getMarketOrderProvider() const noexcept;
         const MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
+
+        const ContractProvider &getContractProvider() const noexcept;
+        const ContractProvider &getCorpContractProvider() const noexcept;
 
     signals:
         void taskStarted(uint taskId, const QString &description);
@@ -299,6 +303,8 @@ namespace Evernus
 
         std::unique_ptr<CachingMarketOrderProvider> mCharacterOrderProvider, mCorpOrderProvider;
         std::unique_ptr<CharacterCorporationCombinedMarketOrderProvider> mCombinedOrderProvider;
+
+        std::unique_ptr<CachingContractProvider> mCharacterContractProvider, mCorpContractProvider;
 
         mutable std::unordered_map<CharacterTypePair, ItemCostRepository::EntityPtr, boost::hash<CharacterTypePair>>
         mCharacterItemCostCache;

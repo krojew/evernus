@@ -83,6 +83,8 @@ namespace Evernus
                            const MarketOrderProvider &orderProvider,
                            const MarketOrderProvider &corpOrderProvider,
                            const AssetProvider &assetProvider,
+                           const ContractProvider &contractProvider,
+                           const ContractProvider &corpContractProvider,
                            EveDataProvider &eveDataProvider,
                            const CacheTimerProvider &cacheTimerProvider,
                            ItemCostProvider &itemCostProvider,
@@ -110,6 +112,8 @@ namespace Evernus
         , mOrderProvider{orderProvider}
         , mCorpOrderProvider{corpOrderProvider}
         , mAssetProvider{assetProvider}
+        , mContractProvider{contractProvider}
+        , mCorpContractProvider{corpContractProvider}
         , mItemCostProvider{itemCostProvider}
         , mEveDataProvider{eveDataProvider}
         , mCacheTimerProvider{cacheTimerProvider}
@@ -552,7 +556,13 @@ namespace Evernus
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
 
-        auto contractsTab = new ContractWidget{mCacheTimerProvider, false, this};
+        auto contractsTab = new ContractWidget{mCacheTimerProvider,
+                                               mEveDataProvider,
+                                               mContractProvider,
+                                               mFilterRepository,
+                                               mCharacterRepository,
+                                               false,
+                                               this};
         addTab(contractsTab, tr("Character contracts"));
         connect(contractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importContracts);
         connect(this, &MainWindow::contractsChanged, contractsTab, &ContractWidget::updateData);
@@ -603,7 +613,13 @@ namespace Evernus
         connect(corpTransactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importCorpWalletTransactions);
         connect(this, &MainWindow::corpWalletTransactionsChanged, corpTransactionsTab, &WalletTransactionsWidget::updateData);
 
-        auto corpContractsTab = new ContractWidget{mCacheTimerProvider, true, this};
+        auto corpContractsTab = new ContractWidget{mCacheTimerProvider,
+                                                   mEveDataProvider,
+                                                   mCorpContractProvider,
+                                                   mFilterRepository,
+                                                   mCharacterRepository,
+                                                   true,
+                                                   this};
         addTab(corpContractsTab, tr("Corporation contracts"));
         connect(corpContractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importCorpContracts);
         connect(this, &MainWindow::corpContractsChanged, corpContractsTab, &ContractWidget::updateData);

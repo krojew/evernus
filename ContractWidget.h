@@ -15,10 +15,15 @@
 #pragma once
 
 #include "CharacterBoundWidget.h"
+#include "IssuedContractModel.h"
 
 namespace Evernus
 {
+    class FilterTextRepository;
+    class CharacterRepository;
     class CacheTimerProvider;
+    class ContractProvider;
+    class EveDataProvider;
 
     class ContractWidget
         : public CharacterBoundWidget
@@ -26,13 +31,21 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        ContractWidget(const CacheTimerProvider &cacheTimerProvider, bool corp, QWidget *parent = nullptr);
+        ContractWidget(const CacheTimerProvider &cacheTimerProvider,
+                       const EveDataProvider &dataProvider,
+                       const ContractProvider &contractProvider,
+                       const FilterTextRepository &filterRepo,
+                       const CharacterRepository &characterRepo,
+                       bool corp,
+                       QWidget *parent = nullptr);
         virtual ~ContractWidget() = default;
 
     public slots:
         void updateData();
 
     private:
+        IssuedContractModel mIssuedModel;
+
         virtual void handleNewCharacter(Character::IdType id) override;
     };
 }

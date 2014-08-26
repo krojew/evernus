@@ -103,6 +103,30 @@ namespace Evernus
             volume DOUBLE NOT NULL
         ))"}.arg(getTableName()).arg(
             (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
+
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_issuer ON %1(issuer_id)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_issuer_corp ON %1(issuer_corp_id)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_assignee ON %1(assignee_id)"}.arg(getTableName()));
+    }
+
+    ContractRepository::EntityList ContractRepository::fetchIssuedForCharacter(Character::IdType id) const
+    {
+        return fetchByColumn(id, "issuer_id");
+    }
+
+    ContractRepository::EntityList ContractRepository::fetchAssignedForCharacter(Character::IdType id) const
+    {
+        return fetchByColumn(id, "assignee_id");
+    }
+
+    ContractRepository::EntityList ContractRepository::fetchIssuedForCorporation(quint64 id) const
+    {
+        return fetchByColumn(id, "issuer_corp_id");
+    }
+
+    ContractRepository::EntityList ContractRepository::fetchAssignedForCorporation(quint64 id) const
+    {
+        return fetchByColumn(id, "assignee_id");
     }
 
     QStringList ContractRepository::getColumns() const
@@ -186,5 +210,25 @@ namespace Evernus
         query.addBindValue(entity.getCollateral());
         query.addBindValue(entity.getBuyout());
         query.addBindValue(entity.getVolume());
+    }
+
+    template<class T>
+    ContractRepository::EntityList ContractRepository::fetchByColumn(T id, const QString &column) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE %2 = ?"}.arg(getTableName()).arg(column));
+        query.bindValue(0, id);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
     }
 }
