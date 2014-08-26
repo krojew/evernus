@@ -28,6 +28,8 @@
 
 namespace Evernus
 {
+    const QString IGBService::limitToStationsCookie = "limitToStations";
+
     IGBService::IGBService(const MarketOrderProvider &orderProvider,
                            const MarketOrderProvider &corpOrderProvider,
                            const EveDataProvider &dataProvider,
@@ -59,6 +61,8 @@ namespace Evernus
         mOrderTemplate["start-scan-text"] = tr("Start Scan");
         mOrderTemplate["stop-scan-text"] = tr("Stop Scan");
         mOrderTemplate["stop-at-end-text"] = tr("Stop at end");
+        mOrderTemplate["limit-to-stations-text"] = tr("Limit to current station, if available");
+        mOrderTemplate["limit-to-stations-cookie"] = limitToStationsCookie;
     }
 
     void IGBService::index(QxtWebRequestEvent *event)
@@ -109,15 +113,19 @@ namespace Evernus
 
     QString IGBService::renderOrderList(const std::vector<std::shared_ptr<MarketOrder>> &orders,
                                         QStringList &idContainer,
-                                        QStringList &typeIdContainer) const
+                                        QStringList &typeIdContainer,
+                                        uint stationId) const
     {
         QString result;
         for (const auto &order : orders)
         {
+            if (stationId != 0 && stationId != order->getStationId())
+                continue;
+
             idContainer << QString::number(order->getId());
             typeIdContainer << QString::number(order->getTypeId());
 
-            result.append(QString{"<li><a class='order' id='order-%3' href='#' onclick='showOrder(%1);'>%2</a></li>"}
+            result.append(QString{"<li class='%4'><a class='order' id='order-%3' href='#' onclick='showOrder(%1);'>%2</a></li>"}
                 .arg(order->getId())
                 .arg(mDataProvider.getTypeName(order->getTypeId()))
                 .arg(order->getId()));
@@ -136,11 +144,13 @@ namespace Evernus
         QStringList idContainer, typeIdContainer;
         QSettings settings;
 
+        const auto stationId = getStationIdForFiltering(event);
+
         mOrderTemplate["sell-orders"] = renderOrderList(
-            filterAndSort((provider.*SellFunc)(id), state, needsDelta), idContainer, typeIdContainer);
+            filterAndSort((provider.*SellFunc)(id), state, needsDelta), idContainer, typeIdContainer, stationId);
         mOrderTemplate["buy-orders-start"] = QString::number(idContainer.size() + 1);
         mOrderTemplate["buy-orders"] = renderOrderList(
-            filterAndSort((provider.*BuyFunc)(id), state, needsDelta), idContainer, typeIdContainer);
+            filterAndSort((provider.*BuyFunc)(id), state, needsDelta), idContainer, typeIdContainer, stationId);
         mOrderTemplate["order-ids"] = idContainer.join(", ");
         mOrderTemplate["type-ids"] = typeIdContainer.join(", ");
         mOrderTemplate["scan-delay"] = settings.value(IGBSettings::scanDelayKey, IGBSettings::scanDelayDefault).toString();
@@ -165,6 +175,15 @@ namespace Evernus
         return result;
     }
 
+    uint IGBService::getStationIdForFiltering(QxtWebRequestEvent *event) const
+    {
+        if (!event->cookies.contains(limitToStationsCookie))
+            return 0;
+
+        const auto value = event->cookies.values(limitToStationsCookie).first();
+        return (value.compare("false", Qt::CaseInsensitive) == 0) ? (0) : (getStationId(event));
+    }
+
     Character::IdType IGBService::getCharacterId(QxtWebRequestEvent *event)
     {
         const auto charIdHeader = "EVE_CHARID";
@@ -183,5 +202,15 @@ namespace Evernus
             return std::numeric_limits<uint>::max();    // 0 fetches orders without a corp
 
         return event->headers.values(corpIdHeader).first().toUInt();
+    }
+
+    uint IGBService::getStationId(QxtWebRequestEvent *event)
+    {
+        const auto stationIdHeader = "EVE_STATIONID";
+
+        if (!event->headers.contains(stationIdHeader))
+            return 0;
+
+        return event->headers.values(stationIdHeader).first().toUInt();
     }
 }

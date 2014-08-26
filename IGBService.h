@@ -58,6 +58,8 @@ namespace Evernus
     private:
         typedef std::vector<std::shared_ptr<MarketOrder>> OrderList;
 
+        static const QString limitToStationsCookie;
+
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const EveDataProvider &mDataProvider;
 
@@ -66,7 +68,8 @@ namespace Evernus
         void renderContent(QxtWebRequestEvent *event, const QString &content);
         QString renderOrderList(const std::vector<std::shared_ptr<MarketOrder>> &orders,
                                 QStringList &idContainer,
-                                QStringList &typeIdContainer) const;
+                                QStringList &typeIdContainer,
+                                uint stationId) const;
 
         template<class T, OrderList (MarketOrderProvider::* SellFunc)(T) const, OrderList (MarketOrderProvider::* BuyFunc)(T) const>
         void showOrders(QxtWebRequestEvent *event,
@@ -76,7 +79,10 @@ namespace Evernus
                         T id);
         OrderList filterAndSort(const OrderList &orders, MarketOrder::State state, bool needsDelta) const;
 
+        uint getStationIdForFiltering(QxtWebRequestEvent *event) const;
+
         static Character::IdType getCharacterId(QxtWebRequestEvent *event);
         static uint getCorporationId(QxtWebRequestEvent *event);
+        static uint getStationId(QxtWebRequestEvent *event);
     };
 }

@@ -119,10 +119,14 @@
         }, parseInt(document.getElementById("scan-delay").value) * 1000);
     }
     
+    function limitToStations() {
+        setCookie("<?=limit-to-stations-cookie?>", document.getElementById("limit-to-stations").checked);
+        location.reload();
+    }
+    
     window.addEventListener('load', function() {
-        var stopAtEndCookie = getCookie("stopAtEnd");
-        if (stopAtEndCookie == "false")
-            document.getElementById("stop-at-end").checked = false;
+        document.getElementById("stop-at-end").checked = getCookie("stopAtEnd") != "false";
+        document.getElementById("limit-to-stations").checked = getCookie("<?=limit-to-stations-cookie?>") == "true";
     }, false);
 </script>
 
@@ -135,6 +139,8 @@
     <input id="start-scan-button" type="button" value="<?=start-scan-text?>" onclick="startScan();" />
     <input id="stop-scan-button" type="button" value="<?=stop-scan-text?>" onclick="stopScan();" disabled />
     <label><input id="stop-at-end" type="checkbox" checked /><?=stop-at-end-text?></label> 
+    <br />
+    <label><input id="limit-to-stations" type="checkbox" onchange="limitToStations();" /><?=limit-to-stations-text?></label>
 </p>
 
 <p><?=sell-orders-text?></p>
