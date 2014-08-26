@@ -39,5 +39,8 @@ namespace Evernus
 
     private:
         QString mTargetPrice;
+#ifdef Q_OS_MAC
+        bool mWasDeactivated;
+#endif
     };
 }
