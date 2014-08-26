@@ -55,6 +55,9 @@ namespace Evernus
         mMarketOrdersTimerEdit = createTimerSpin(settings.value(ImportSettings::maxMarketOrdersAgeKey, ImportSettings::importTimerDefault).toInt());
         timersBoxLayout->addRow(tr("Max. market orders update age:"), mMarketOrdersTimerEdit);
 
+        mContractsTimerEdit = createTimerSpin(settings.value(ImportSettings::maxContractsAgeKey, ImportSettings::importTimerDefault).toInt());
+        timersBoxLayout->addRow(tr("Max. contracts update age:"), mContractsTimerEdit);
+
         auto autoImportBox = new QGroupBox{tr("Auto-import"), this};
         mainLayout->addWidget(autoImportBox);
 
@@ -119,6 +122,7 @@ namespace Evernus
         settings.setValue(ImportSettings::maxAssetListAgeKey, mAssetListTimerEdit->value());
         settings.setValue(ImportSettings::maxWalletAgeKey, mWalletTimerEdit->value());
         settings.setValue(ImportSettings::maxMarketOrdersAgeKey, mMarketOrdersTimerEdit->value());
+        settings.setValue(ImportSettings::maxContractsAgeKey, mContractsTimerEdit->value());
         settings.setValue(ImportSettings::autoImportEnabledKey, mAutoImportBtn->isChecked());
         settings.setValue(ImportSettings::autoImportTimeKey, mAutoImportTimeEdit->value());
         settings.setValue(ImportSettings::emailNotificationsEnabledKey, mEmailNotificationBtn->isChecked());

@@ -90,6 +90,9 @@ namespace Evernus
         bool isForCorp() const noexcept;
         void setForCorp(bool flag) noexcept;
 
+        Availability getAvailability() const noexcept;
+        void setAvailability(Availability value) noexcept;
+
         QDateTime getIssued() const;
         void setIssued(const QDateTime &dt);
 
@@ -134,6 +137,7 @@ namespace Evernus
         Status mStatus = Status::Outstanding;
         QString mTitle;
         bool mForCorp = false;
+        Availability mAvailability = Availability::Private;
         QDateTime mIssued;
         QDateTime mExpired;
         QDateTime mAccepted;

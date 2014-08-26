@@ -14,6 +14,7 @@
  */
 #include <unordered_set>
 #include <stdexcept>
+#include <algorithm>
 #include <queue>
 
 #include <QStandardPaths>
@@ -655,6 +656,11 @@ namespace Evernus
             if (it == std::end(mMarketOrdersUtcCacheTimes))
                 return QDateTime::currentDateTime();
             break;
+        case TimerType::Contracts:
+            it = mContractsUtcCacheTimes.find(id);
+            if (it == std::end(mContractsUtcCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
         case TimerType::CorpWalletJournal:
             it = mCorpWalletJournalUtcCacheTimes.find(id);
             if (it == std::end(mCorpWalletJournalUtcCacheTimes))
@@ -668,6 +674,11 @@ namespace Evernus
         case TimerType::CorpMarketOrders:
             it = mCorpMarketOrdersUtcCacheTimes.find(id);
             if (it == std::end(mCorpMarketOrdersUtcCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
+        case TimerType::CorpContracts:
+            it = mCorpContractsUtcCacheTimes.find(id);
+            if (it == std::end(mCorpContractsUtcCacheTimes))
                 return QDateTime::currentDateTime();
             break;
         default:
@@ -698,6 +709,9 @@ namespace Evernus
         case TimerType::MarketOrders:
             mMarketOrdersUtcCacheTimes[id] = dt;
             break;
+        case TimerType::Contracts:
+            mContractsUtcCacheTimes[id] = dt;
+            break;
         case TimerType::CorpWalletJournal:
             mCorpWalletJournalUtcCacheTimes[id] = dt;
             break;
@@ -706,6 +720,9 @@ namespace Evernus
             break;
         case TimerType::CorpMarketOrders:
             mCorpMarketOrdersUtcCacheTimes[id] = dt;
+            break;
+        case TimerType::CorpContracts:
+            mCorpContractsUtcCacheTimes[id] = dt;
             break;
         default:
             throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
@@ -752,6 +769,11 @@ namespace Evernus
             if (it == std::end(mMarketOrdersUtcUpdateTimes))
                 return QDateTime{};
             break;
+        case TimerType::Contracts:
+            it = mContractsUtcUpdateTimes.find(id);
+            if (it == std::end(mContractsUtcUpdateTimes))
+                return QDateTime{};
+            break;
         case TimerType::CorpWalletJournal:
             it = mCorpWalletJournalUtcUpdateTimes.find(id);
             if (it == std::end(mCorpWalletJournalUtcUpdateTimes))
@@ -765,6 +787,11 @@ namespace Evernus
         case TimerType::CorpMarketOrders:
             it = mCorpMarketOrdersUtcUpdateTimes.find(id);
             if (it == std::end(mCorpMarketOrdersUtcUpdateTimes))
+                return QDateTime{};
+            break;
+        case TimerType::CorpContracts:
+            it = mCorpContractsUtcUpdateTimes.find(id);
+            if (it == std::end(mCorpContractsUtcUpdateTimes))
                 return QDateTime{};
             break;
         default:
@@ -1098,6 +1125,48 @@ namespace Evernus
         }
     }
 
+    void EvernusApplication::refreshContracts(Character::IdType id, uint parentTask)
+    {
+        qDebug() << "Refreshing contracts: " << id;
+
+        const auto task = startTask(tr("Fetching contracts for character %1...").arg(id));
+        processEvents();
+
+        try
+        {
+            const auto key = getCharacterKey(id);
+            mAPIManager.fetchContracts(*key, id, [task, id, this](auto &&data, const auto &error) {
+                if (error.isEmpty())
+                {
+                    const auto it = std::remove_if(std::begin(data), std::end(data), [](const auto &contract) {
+                        return contract.isForCorp();
+                    });
+
+                    if (it != std::end(data))
+                    {
+                        Contracts corpContracts(std::make_move_iterator(it), std::make_move_iterator(std::end(data)));
+                        data.erase(it, std::end(data));
+
+                        mCorpContractRepository->batchStore(corpContracts, true);
+                    }
+
+                    mContractRepository->batchStore(data, true);
+                    emit contractsChanged();
+                }
+
+                emit taskEnded(task, error);
+            });
+        }
+        catch (const KeyRepository::NotFoundException &)
+        {
+            emit taskEnded(task, tr("Key not found!"));
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            emit taskEnded(task, tr("Character not found!"));
+        }
+    }
+
     void EvernusApplication::refreshWalletJournal(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing wallet journal: " << id;
@@ -1253,6 +1322,32 @@ namespace Evernus
         importMarketOrdersFromLogs(id, task, false);
 
         emit taskEnded(task, QString{});
+    }
+
+    void EvernusApplication::refreshCorpContracts(Character::IdType id, uint parentTask)
+    {
+        qDebug() << "Refreshing corp contracts: " << id;
+
+        const auto task = startTask(tr("Fetching corporation contracts for character %1...").arg(id));
+        processEvents();
+
+        try
+        {
+            const auto key = getCorpKey(id);
+            mAPIManager.fetchContracts(*key, id, [task, id, this](auto &&data, const auto &error) {
+                if (error.isEmpty())
+                {
+                    mCorpContractRepository->batchStore(data, true);
+                    emit corpContractsChanged();
+                }
+
+                emit taskEnded(task, error);
+            });
+        }
+        catch (const CorpKeyRepository::NotFoundException &)
+        {
+            emit taskEnded(task, tr("Key not found!"));
+        }
     }
 
     void EvernusApplication::refreshCorpWalletJournal(Character::IdType id, uint parentTask)
@@ -1792,6 +1887,9 @@ namespace Evernus
             case TimerType::WalletTransactions:
                 mWalletTransactionsUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
                 break;
+            case TimerType::Contracts:
+                mContractsUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
+                break;
             case TimerType::MarketOrders:
                 mMarketOrdersUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
                 break;
@@ -1803,6 +1901,9 @@ namespace Evernus
                 break;
             case TimerType::CorpMarketOrders:
                 mCorpMarketOrdersUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
+                break;
+            case TimerType::CorpContracts:
+                mCorpContractsUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
             }
         }
     }
@@ -1828,6 +1929,9 @@ namespace Evernus
             case TimerType::MarketOrders:
                 mMarketOrdersUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
                 break;
+            case TimerType::Contracts:
+                mContractsUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
+                break;
             case TimerType::CorpWalletJournal:
                 mCorpWalletJournalUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
                 break;
@@ -1836,6 +1940,9 @@ namespace Evernus
                 break;
             case TimerType::CorpMarketOrders:
                 mCorpMarketOrdersUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
+                break;
+            case TimerType::CorpContracts:
+                mCorpContractsUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
             }
         }
     }

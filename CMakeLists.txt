@@ -50,6 +50,7 @@ qt5_wrap_cpp(
     CharacterModel.h
     CharacterImportPreferencesWidget.h
     CharacterWidget.h
+    ContractWidget.h
     CorpImportPreferencesWidget.h
     CorpKeyEditDialog.h
     DateFilteredPlotWidget.h
@@ -215,6 +216,11 @@ add_executable(
     Contract.h
     ContractRepository.cpp
     ContractRepository.h
+    Contracts.h
+    ContractsXmlReceiver.cpp
+    ContractsXmlReceiver.h
+    ContractWidget.cpp
+    ContractWidget.h
     CorpImportPreferencesWidget.cpp
     CorpImportPreferencesWidget.h
     CorpKey.cpp

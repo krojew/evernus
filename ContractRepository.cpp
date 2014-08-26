@@ -27,7 +27,7 @@ namespace Evernus
 
     QString ContractRepository::getTableName() const
     {
-        return "contracts";
+        return (mCorp) ? ("corp_contracts") : ("contracts");
     }
 
     QString ContractRepository::getIdColumn() const
@@ -60,6 +60,7 @@ namespace Evernus
         contract->setStatus(static_cast<Contract::Status>(record.value("status").toInt()));
         contract->setTitle(record.value("title").toString());
         contract->setForCorp(record.value("for_corp").toBool());
+        contract->setAvailability(static_cast<Contract::Availability>(record.value("availability").toInt()));
         contract->setIssued(issued);
         contract->setExpired(expired);
         contract->setAccepted(accepted);
@@ -89,10 +90,11 @@ namespace Evernus
             status TINYINT NOT NULL,
             title TEXT NOT NULL,
             for_corp TINYINT NOT NULL,
+            availability TINYINT NOT NULL,
             issued DATETIME NOT NULL,
             expired DATETIME NOT NULL,
-            accepted DATETIME NOT NULL,
-            completed DATETIME NOT NULL,
+            accepted DATETIME NULL,
+            completed DATETIME NULL,
             num_days INTEGER NOT NULL,
             price DOUBLE NOT NULL,
             reward DOUBLE NOT NULL,
@@ -117,6 +119,7 @@ namespace Evernus
             << "status"
             << "title"
             << "for_corp"
+            << "availability"
             << "issued"
             << "expired"
             << "accepted"
@@ -144,6 +147,7 @@ namespace Evernus
         query.bindValue(":status", static_cast<int>(entity.getStatus()));
         query.bindValue(":title", entity.getTitle());
         query.bindValue(":for_corp", entity.isForCorp());
+        query.bindValue(":availability", static_cast<int>(entity.getAvailability()));
         query.bindValue(":issued", entity.getIssued());
         query.bindValue(":expired", entity.getExpired());
         query.bindValue(":accepted", entity.getAccepted());
@@ -171,6 +175,7 @@ namespace Evernus
         query.addBindValue(static_cast<int>(entity.getStatus()));
         query.addBindValue(entity.getTitle());
         query.addBindValue(entity.isForCorp());
+        query.addBindValue(static_cast<int>(entity.getAvailability()));
         query.addBindValue(entity.getIssued());
         query.addBindValue(entity.getExpired());
         query.addBindValue(entity.getAccepted());

@@ -25,6 +25,8 @@ namespace Evernus
         MarketOrders,
         CorpWalletJournal,
         CorpWalletTransactions,
-        CorpMarketOrders
+        CorpMarketOrders,
+        Contracts,
+        CorpContracts
     };
 }

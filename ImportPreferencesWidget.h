@@ -45,6 +45,7 @@ namespace Evernus
         QSpinBox *mAssetListTimerEdit = nullptr;
         QSpinBox *mWalletTimerEdit = nullptr;
         QSpinBox *mMarketOrdersTimerEdit = nullptr;
+        QSpinBox *mContractsTimerEdit = nullptr;
 
         QCheckBox *mAutoImportBtn = nullptr;
         QSpinBox *mAutoImportTimeEdit = nullptr;

@@ -88,6 +88,11 @@ namespace Evernus
         makeRequest("/char/MarketOrders.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
     }
 
+    void APIInterface::fetchContracts(const Key &key, Character::IdType characterId, const Callback &callback) const
+    {
+        makeRequest("/char/Contracts.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
+    }
+
     void APIInterface::fetchWalletJournal(const CorpKey &key,
                                           Character::IdType characterId,
                                           WalletJournalEntry::IdType fromId,
@@ -117,6 +122,11 @@ namespace Evernus
     void APIInterface::fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback &callback) const
     {
         makeRequest("/corp/MarketOrders.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
+    }
+
+    void APIInterface::fetchContracts(const CorpKey &key, Character::IdType characterId, const Callback &callback) const
+    {
+        makeRequest("/corp/Contracts.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
     }
 
     void APIInterface::processReply()

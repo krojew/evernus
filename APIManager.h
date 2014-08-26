@@ -26,6 +26,7 @@
 #include "MarketOrders.h"
 #include "APIInterface.h"
 #include "TimerTypes.h"
+#include "Contracts.h"
 #include "AssetList.h"
 #include "Character.h"
 #include "RefType.h"
@@ -79,6 +80,8 @@ namespace Evernus
                                      const Callback<WalletTransactions> &callback) const;
         void fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const;
         void fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const;
+        void fetchContracts(const Key &key, Character::IdType characterId, const Callback<Contracts> &callback) const;
+        void fetchContracts(const CorpKey &key, Character::IdType characterId, const Callback<Contracts> &callback) const;
 
     signals:
         void generalError(const QString &info);
@@ -115,6 +118,9 @@ namespace Evernus
 
         template<class Key>
         void doFetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback, TimerType timerType) const;
+
+        template<class Key>
+        void doFetchContracts(const Key &key, Character::IdType characterId, const Callback<Contracts> &callback, TimerType timerType) const;
 
         template<class T, class CurElem>
         static std::vector<T> parseResults(const QString &xml, const QString &rowsetName);

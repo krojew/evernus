@@ -86,10 +86,12 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(refreshConquerableStations()), SLOT(refreshConquerableStations()));
             app.connect(&mainWnd, SIGNAL(importCharacter(Character::IdType)), SLOT(refreshCharacter(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importAssets(Character::IdType)), SLOT(refreshAssets(Character::IdType)));
+            app.connect(&mainWnd, SIGNAL(importContracts(Character::IdType)), SLOT(refreshContracts(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importWalletJournal(Character::IdType)), SLOT(refreshWalletJournal(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importWalletTransactions(Character::IdType)), SLOT(refreshWalletTransactions(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importMarketOrdersFromAPI(Character::IdType)), SLOT(refreshMarketOrdersFromAPI(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importMarketOrdersFromLogs(Character::IdType)), SLOT(refreshMarketOrdersFromLogs(Character::IdType)));
+            app.connect(&mainWnd, SIGNAL(importCorpContracts(Character::IdType)), SLOT(refreshCorpContracts(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importCorpWalletJournal(Character::IdType)), SLOT(refreshCorpWalletJournal(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importCorpWalletTransactions(Character::IdType)), SLOT(refreshCorpWalletTransactions(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importCorpMarketOrdersFromAPI(Character::IdType)), SLOT(refreshCorpMarketOrdersFromAPI(Character::IdType)));
@@ -112,9 +114,11 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(walletJournalChanged()), SIGNAL(walletJournalChanged()));
             mainWnd.connect(&app, SIGNAL(walletTransactionsChanged()), SIGNAL(walletTransactionsChanged()));
             mainWnd.connect(&app, SIGNAL(marketOrdersChanged()), SIGNAL(marketOrdersChanged()));
+            mainWnd.connect(&app, SIGNAL(contractsChanged()), SIGNAL(contractsChanged()));
             mainWnd.connect(&app, SIGNAL(corpWalletJournalChanged()), SIGNAL(corpWalletJournalChanged()));
             mainWnd.connect(&app, SIGNAL(corpWalletTransactionsChanged()), SIGNAL(corpWalletTransactionsChanged()));
             mainWnd.connect(&app, SIGNAL(corpMarketOrdersChanged()), SIGNAL(corpMarketOrdersChanged()));
+            mainWnd.connect(&app, SIGNAL(corpContractsChanged()), SIGNAL(corpContractsChanged()));
             mainWnd.connect(&app, SIGNAL(itemCostsChanged()), SIGNAL(itemCostsChanged()));
             mainWnd.connect(&app, SIGNAL(charactersChanged()), SLOT(updateIskData()));
             mainWnd.connect(&app, SIGNAL(openMarginTool()), SLOT(showMarginTool()));

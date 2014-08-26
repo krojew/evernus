@@ -126,6 +126,16 @@ namespace Evernus
         mForCorp = flag;
     }
 
+    Contract::Availability Contract::getAvailability() const noexcept
+    {
+        return mAvailability;
+    }
+
+    void Contract::setAvailability(Availability value) noexcept
+    {
+        mAvailability = value;
+    }
+
     QDateTime Contract::getIssued() const
     {
         return mIssued;

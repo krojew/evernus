@@ -22,6 +22,7 @@
 #include "WalletJournalXmlReceiver.h"
 #include "CharacterListXmlReceiver.h"
 #include "MarketOrdersXmlReceiver.h"
+#include "ContractsXmlReceiver.h"
 #include "AssetListXmlReceiver.h"
 #include "RefTypeXmlReceiver.h"
 #include "CharacterDomParser.h"
@@ -240,6 +241,16 @@ namespace Evernus
         doFetchMarketOrders(key, characterId, callback, TimerType::CorpMarketOrders);
     }
 
+    void APIManager::fetchContracts(const Key &key, Character::IdType characterId, const Callback<Contracts> &callback) const
+    {
+        doFetchContracts(key, characterId, callback, TimerType::Contracts);
+    }
+
+    void APIManager::fetchContracts(const CorpKey &key, Character::IdType characterId, const Callback<Contracts> &callback) const
+    {
+        doFetchContracts(key, characterId, callback, TimerType::CorpContracts);
+    }
+
     template<class Key>
     void APIManager::fetchWalletJournal(const Key &key,
                                         Character::IdType characterId,
@@ -382,6 +393,27 @@ namespace Evernus
             catch (const std::exception &e)
             {
                 callback(MarketOrders{}, e.what());
+            }
+        });
+    }
+
+    template<class Key>
+    void APIManager::doFetchContracts(const Key &key, Character::IdType characterId, const Callback<Contracts> &callback, TimerType timerType) const
+    {
+        mInterface.fetchContracts(key, characterId, [callback, characterId, timerType, this](const QString &response, const QString &error) {
+            try
+            {
+                handlePotentialError(response, error);
+
+                mCacheTimerProvider.setUtcCacheTimer(characterId,
+                                                     timerType,
+                                                     APIUtils::getCachedUntil(response));
+
+                callback(parseResults<Contracts::value_type, APIXmlReceiver<Contracts::value_type>::CurElemType>(response, "contractList"), QString{});
+            }
+            catch (const std::exception &e)
+            {
+                callback(Contracts{}, e.what());
             }
         });
     }

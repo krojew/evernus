@@ -42,6 +42,7 @@
 #include "MarginToolDialog.h"
 #include "StatisticsWidget.h"
 #include "CharacterWidget.h"
+#include "ContractWidget.h"
 #include "ItemCostWidget.h"
 #include "ImportSettings.h"
 #include "MenuBarWidget.h"
@@ -551,6 +552,11 @@ namespace Evernus
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
 
+        auto contractsTab = new ContractWidget{mCacheTimerProvider, false, this};
+        addTab(contractsTab, tr("Character contracts"));
+        connect(contractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importContracts);
+        connect(this, &MainWindow::contractsChanged, contractsTab, &ContractWidget::updateData);
+
         auto corpOrderTab = new MarketOrderWidget{mCorpOrderProvider,
                                                   mCorpOrderProvider,
                                                   mCacheTimerProvider,
@@ -596,6 +602,11 @@ namespace Evernus
         addTab(corpTransactionsTab, tr("Corporation transactions"));
         connect(corpTransactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importCorpWalletTransactions);
         connect(this, &MainWindow::corpWalletTransactionsChanged, corpTransactionsTab, &WalletTransactionsWidget::updateData);
+
+        auto corpContractsTab = new ContractWidget{mCacheTimerProvider, true, this};
+        addTab(corpContractsTab, tr("Corporation contracts"));
+        connect(corpContractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importCorpContracts);
+        connect(this, &MainWindow::corpContractsChanged, corpContractsTab, &ContractWidget::updateData);
 
         auto itemHistoryTab = new ItemHistoryWidget{mWalletTransactionRepository,
                                                     mCorpWalletTransactionRepository,

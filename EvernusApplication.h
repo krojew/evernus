@@ -164,9 +164,11 @@ namespace Evernus
         void walletJournalChanged();
         void walletTransactionsChanged();
         void marketOrdersChanged();
+        void contractsChanged();
         void corpWalletJournalChanged();
         void corpWalletTransactionsChanged();
         void corpMarketOrdersChanged();
+        void corpContractsChanged();
         void itemCostsChanged() const;
 
         void openMarginTool();
@@ -175,10 +177,12 @@ namespace Evernus
         void refreshCharacters();
         void refreshCharacter(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshContracts(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshMarketOrdersFromLogs(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshCorpContracts(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
@@ -276,18 +280,22 @@ namespace Evernus
         CharacterTimerMap mWalletJournalUtcCacheTimes;
         CharacterTimerMap mWalletTransactionsUtcCacheTimes;
         CharacterTimerMap mMarketOrdersUtcCacheTimes;
+        CharacterTimerMap mContractsUtcCacheTimes;
         CharacterTimerMap mCorpWalletJournalUtcCacheTimes;
         CharacterTimerMap mCorpWalletTransactionsUtcCacheTimes;
         CharacterTimerMap mCorpMarketOrdersUtcCacheTimes;
+        CharacterTimerMap mCorpContractsUtcCacheTimes;
 
         CharacterTimerMap mCharacterUtcUpdateTimes;
         CharacterTimerMap mAssetsUtcUpdateTimes;
         CharacterTimerMap mWalletJournalUtcUpdateTimes;
         CharacterTimerMap mWalletTransactionsUtcUpdateTimes;
         CharacterTimerMap mMarketOrdersUtcUpdateTimes;
+        CharacterTimerMap mContractsUtcUpdateTimes;
         CharacterTimerMap mCorpWalletJournalUtcUpdateTimes;
         CharacterTimerMap mCorpWalletTransactionsUtcUpdateTimes;
         CharacterTimerMap mCorpMarketOrdersUtcUpdateTimes;
+        CharacterTimerMap mCorpContractsUtcUpdateTimes;
 
         std::unique_ptr<CachingMarketOrderProvider> mCharacterOrderProvider, mCorpOrderProvider;
         std::unique_ptr<CharacterCorporationCombinedMarketOrderProvider> mCombinedOrderProvider;

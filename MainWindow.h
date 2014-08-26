@@ -110,9 +110,11 @@ namespace Evernus
         void walletJournalChanged();
         void walletTransactionsChanged();
         void marketOrdersChanged();
+        void contractsChanged();
         void corpWalletJournalChanged();
         void corpWalletTransactionsChanged();
         void corpMarketOrdersChanged();
+        void corpContractsChanged();
         void itemCostsChanged();
 
         void preferencesChanged();
@@ -124,10 +126,12 @@ namespace Evernus
 
         void importCharacter(Character::IdType id);
         void importAssets(Character::IdType id);
+        void importContracts(Character::IdType id);
         void importWalletJournal(Character::IdType id);
         void importWalletTransactions(Character::IdType id);
         void importMarketOrdersFromAPI(Character::IdType id);
         void importMarketOrdersFromLogs(Character::IdType id);
+        void importCorpContracts(Character::IdType id);
         void importCorpWalletJournal(Character::IdType id);
         void importCorpWalletTransactions(Character::IdType id);
         void importCorpMarketOrdersFromAPI(Character::IdType id);

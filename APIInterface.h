@@ -56,6 +56,7 @@ namespace Evernus
                                      WalletTransaction::IdType fromId,
                                      const Callback &callback) const;
         void fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback &callback) const;
+        void fetchContracts(const Key &key, Character::IdType characterId, const Callback &callback) const;
         void fetchWalletJournal(const CorpKey &key,
                                 Character::IdType characterId,
                                 WalletJournalEntry::IdType fromId,
@@ -65,6 +66,7 @@ namespace Evernus
                                      WalletTransaction::IdType fromId,
                                      const Callback &callback) const;
         void fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback &callback) const;
+        void fetchContracts(const CorpKey &key, Character::IdType characterId, const Callback &callback) const;
 
     signals:
         void generalError(const QString &info);
