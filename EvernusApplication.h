@@ -47,6 +47,7 @@
 #include "MetaGroupRepository.h"
 #include "ItemCostRepository.h"
 #include "CacheTimerProvider.h"
+#include "ContractRepository.h"
 #include "EveTypeRepository.h"
 #include "RefTypeRepository.h"
 #include "CorpKeyRepository.h"
@@ -237,6 +238,7 @@ namespace Evernus
         std::unique_ptr<OrderScriptRepository> mOrderScriptRepository;
         std::unique_ptr<FavoriteItemRepository> mFavoriteItemRepository;
         std::unique_ptr<LocationBookmarkRepository> mLocationBookmarkRepository;
+        std::unique_ptr<ContractRepository> mContractRepository, mCorpContractRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
         std::unique_ptr<MarketGroupRepository> mMarketGroupRepository;
         std::unique_ptr<MetaGroupRepository> mMetaGroupRepository;

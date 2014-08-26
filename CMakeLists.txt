@@ -211,6 +211,10 @@ add_executable(
     ConquerableStationListXmlReceiver.h
     ConquerableStationRepository.cpp
     ConquerableStationRepository.h
+    Contract.cpp
+    Contract.h
+    ContractRepository.cpp
+    ContractRepository.h
     CorpImportPreferencesWidget.cpp
     CorpImportPreferencesWidget.h
     CorpKey.cpp
