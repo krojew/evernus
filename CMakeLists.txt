@@ -232,6 +232,8 @@ add_executable(
     ContractItem.h
     ContractItemRepository.cpp
     ContractItemRepository.h
+    ContractItemsXmlReceiver.cpp
+    ContractItemsXmlReceiver.h
     ContractModel.cpp
     ContractModel.h
     ContractProvider.h

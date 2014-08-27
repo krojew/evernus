@@ -216,6 +216,12 @@ namespace Evernus
         query.addBindValue(entity.getVolume());
     }
 
+    void ContractRepository::preStore(Contract &entity) const
+    {
+        if (!entity.isNew())
+            mContractItemRepo.deleteForContract(entity.getId());
+    }
+
     template<class T>
     ContractRepository::EntityList ContractRepository::fetchByColumn(T id, const QString &column) const
     {

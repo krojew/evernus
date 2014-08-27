@@ -16,12 +16,12 @@
 
 namespace Evernus
 {
-    Contract::IdType ContractItem::getContractId() const noexcept
+    quint64 ContractItem::getContractId() const noexcept
     {
         return mContractId;
     }
 
-    void ContractItem::setContractId(Contract::IdType id) noexcept
+    void ContractItem::setContractId(quint64 id) noexcept
     {
         mContractId = id;
     }

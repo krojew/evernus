@@ -39,12 +39,12 @@ namespace Evernus
 
     void APIInterface::fetchCharacter(const Key &key, Character::IdType characterId, const Callback &callback) const
     {
-        makeRequest("/char/CharacterSheet.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
+        makeRequest("/char/CharacterSheet.xml.aspx", key, callback, { std::make_pair("characterID", QString::number(characterId)) });
     }
 
     void APIInterface::fetchAssets(const Key &key, Character::IdType characterId, const Callback &callback) const
     {
-        makeRequest("/char/AssetList.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
+        makeRequest("/char/AssetList.xml.aspx", key, callback, { std::make_pair("characterID", QString::number(characterId)) });
     }
 
     void APIInterface::fetchConquerableStationList(const Callback &callback) const
@@ -62,7 +62,7 @@ namespace Evernus
                                           WalletJournalEntry::IdType fromId,
                                           const Callback &callback) const
     {
-        QueryParams params{std::make_pair("characterId", QString::number(characterId))};
+        QueryParams params{std::make_pair("characterID", QString::number(characterId))};
         params.emplace_back("rowCount", rowLimit);
         if (fromId != WalletJournalEntry::invalidId)
             params.emplace_back("fromID", QString::number(fromId));
@@ -75,7 +75,7 @@ namespace Evernus
                                                WalletTransaction::IdType fromId,
                                                const Callback &callback) const
     {
-        QueryParams params{std::make_pair("characterId", QString::number(characterId))};
+        QueryParams params{std::make_pair("characterID", QString::number(characterId))};
         params.emplace_back("rowCount", rowLimit);
         if (fromId != WalletJournalEntry::invalidId)
             params.emplace_back("fromID", QString::number(fromId));
@@ -85,12 +85,23 @@ namespace Evernus
 
     void APIInterface::fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback &callback) const
     {
-        makeRequest("/char/MarketOrders.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
+        makeRequest("/char/MarketOrders.xml.aspx", key, callback, { std::make_pair("characterID", QString::number(characterId)) });
     }
 
     void APIInterface::fetchContracts(const Key &key, Character::IdType characterId, const Callback &callback) const
     {
-        makeRequest("/char/Contracts.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
+        makeRequest("/char/Contracts.xml.aspx", key, callback, { std::make_pair("characterID", QString::number(characterId)) });
+    }
+
+    void APIInterface::fetchContractItems(const Key &key,
+                                          Character::IdType characterId,
+                                          Contract::IdType contractId,
+                                          const Callback &callback) const
+    {
+        makeRequest("/char/ContractItems.xml.aspx",
+                    key,
+                    callback,
+                    { std::make_pair("characterID", QString::number(characterId)), std::make_pair("contractID", QString::number(contractId)) });
     }
 
     void APIInterface::fetchWalletJournal(const CorpKey &key,
@@ -98,7 +109,7 @@ namespace Evernus
                                           WalletJournalEntry::IdType fromId,
                                           const Callback &callback) const
     {
-        QueryParams params{std::make_pair("characterId", QString::number(characterId))};
+        QueryParams params{std::make_pair("characterID", QString::number(characterId))};
         params.emplace_back("rowCount", rowLimit);
         if (fromId != WalletJournalEntry::invalidId)
             params.emplace_back("fromID", QString::number(fromId));
@@ -111,7 +122,7 @@ namespace Evernus
                                                WalletTransaction::IdType fromId,
                                                const Callback &callback) const
     {
-        QueryParams params{std::make_pair("characterId", QString::number(characterId))};
+        QueryParams params{std::make_pair("characterID", QString::number(characterId))};
         params.emplace_back("rowCount", rowLimit);
         if (fromId != WalletJournalEntry::invalidId)
             params.emplace_back("fromID", QString::number(fromId));
@@ -121,12 +132,23 @@ namespace Evernus
 
     void APIInterface::fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback &callback) const
     {
-        makeRequest("/corp/MarketOrders.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
+        makeRequest("/corp/MarketOrders.xml.aspx", key, callback, { std::make_pair("characterID", QString::number(characterId)) });
     }
 
     void APIInterface::fetchContracts(const CorpKey &key, Character::IdType characterId, const Callback &callback) const
     {
-        makeRequest("/corp/Contracts.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
+        makeRequest("/corp/Contracts.xml.aspx", key, callback, { std::make_pair("characterID", QString::number(characterId)) });
+    }
+
+    void APIInterface::fetchContractItems(const CorpKey &key,
+                                          Character::IdType characterId,
+                                          Contract::IdType contractId,
+                                          const Callback &callback) const
+    {
+        makeRequest("/corp/ContractItems.xml.aspx",
+                    key,
+                    callback,
+                    { std::make_pair("characterID", QString::number(characterId)), std::make_pair("contractID", QString::number(contractId)) });
     }
 
     void APIInterface::fetchGenericName(quint64 id, const Callback &callback) const

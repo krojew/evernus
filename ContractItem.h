@@ -14,7 +14,6 @@
  */
 #pragma once
 
-#include "Contract.h"
 #include "EveType.h"
 
 namespace Evernus
@@ -29,8 +28,8 @@ namespace Evernus
         ContractItem(const ContractItem &) = default;
         ContractItem(ContractItem &&) = default;
 
-        Contract::IdType getContractId() const noexcept;
-        void setContractId(Contract::IdType id) noexcept;
+        quint64 getContractId() const noexcept;
+        void setContractId(quint64 id) noexcept;
 
         EveType::IdType getTypeId() const noexcept;
         void setTypeId(EveType::IdType id) noexcept;
@@ -45,7 +44,7 @@ namespace Evernus
         ContractItem &operator =(ContractItem &&) = default;
 
     private:
-        Contract::IdType mContractId = Contract::invalidId;
+        quint64 mContractId = 0;
         EveType::IdType mTypeId = EveType::invalidId;
         quint64 mQuantity = 0;
         bool mIncluded = false;

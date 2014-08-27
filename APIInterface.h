@@ -25,6 +25,7 @@
 #include "WalletTransaction.h"
 #include "APIResponseCache.h"
 #include "Character.h"
+#include "Contract.h"
 
 namespace Evernus
 {
@@ -57,6 +58,10 @@ namespace Evernus
                                      const Callback &callback) const;
         void fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback &callback) const;
         void fetchContracts(const Key &key, Character::IdType characterId, const Callback &callback) const;
+        void fetchContractItems(const Key &key,
+                                Character::IdType characterId,
+                                Contract::IdType contractId,
+                                const Callback &callback) const;
         void fetchWalletJournal(const CorpKey &key,
                                 Character::IdType characterId,
                                 WalletJournalEntry::IdType fromId,
@@ -67,6 +72,10 @@ namespace Evernus
                                      const Callback &callback) const;
         void fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback &callback) const;
         void fetchContracts(const CorpKey &key, Character::IdType characterId, const Callback &callback) const;
+        void fetchContractItems(const CorpKey &key,
+                                Character::IdType characterId,
+                                Contract::IdType contractId,
+                                const Callback &callback) const;
         void fetchGenericName(quint64 id, const Callback &callback) const;
 
     signals:

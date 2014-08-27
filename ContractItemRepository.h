@@ -16,6 +16,7 @@
 
 #include "ContractItem.h"
 #include "Repository.h"
+#include "Contract.h"
 
 namespace Evernus
 {
@@ -32,6 +33,8 @@ namespace Evernus
         virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         void create(const Repository<Contract> &contractRepo) const;
+
+        void deleteForContract(Contract::IdType id) const;
 
     private:
         bool mCorp = false;

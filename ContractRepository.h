@@ -49,6 +49,8 @@ namespace Evernus
         virtual void bindValues(const Contract &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const Contract &entity, QSqlQuery &query) const override;
 
+        virtual void preStore(Contract &entity) const override;
+
         template<class T>
         EntityList fetchByColumn(T id, const QString &column) const;
     };

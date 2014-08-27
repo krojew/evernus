@@ -21,6 +21,7 @@
 #include "WalletTransactionsXmlReceiver.h"
 #include "WalletJournalXmlReceiver.h"
 #include "CharacterListXmlReceiver.h"
+#include "ContractItemsXmlReceiver.h"
 #include "MarketOrdersXmlReceiver.h"
 #include "ContractsXmlReceiver.h"
 #include "AssetListXmlReceiver.h"
@@ -252,6 +253,22 @@ namespace Evernus
         doFetchContracts(key, characterId, callback, TimerType::CorpContracts);
     }
 
+    void APIManager::fetchContractItems(const Key &key,
+                                        Character::IdType characterId,
+                                        Contract::IdType contractId,
+                                        const Callback<ContractItemList> &callback) const
+    {
+        doFetchContractItems(key, characterId, contractId, callback);
+    }
+
+    void APIManager::fetchContractItems(const CorpKey &key,
+                                        Character::IdType characterId,
+                                        Contract::IdType contractId,
+                                        const Callback<ContractItemList> &callback) const
+    {
+        doFetchContractItems(key, characterId, contractId, callback);
+    }
+
     void APIManager::fetchGenericName(quint64 id, const Callback<QString> &callback) const
     {
 #ifdef Q_OS_WIN
@@ -435,6 +452,30 @@ namespace Evernus
             catch (const std::exception &e)
             {
                 callback(Contracts{}, e.what());
+            }
+        });
+    }
+
+    template<class Key>
+    void APIManager::doFetchContractItems(const Key &key,
+                                          Character::IdType characterId,
+                                          Contract::IdType contractId,
+                                          const Callback<ContractItemList> &callback) const
+    {
+        mInterface.fetchContractItems(key, characterId, contractId, [contractId, callback, this](const QString &response, const QString &error) {
+            try
+            {
+                handlePotentialError(response, error);
+
+                auto result = parseResults<ContractItem, APIXmlReceiver<ContractItem>::CurElemType>(response, "itemList");
+                for (auto &item : result)
+                    item.setContractId(contractId);
+
+                callback(std::move(result), QString{});
+            }
+            catch (const std::exception &e)
+            {
+                callback(ContractItemList{}, e.what());
             }
         });
     }

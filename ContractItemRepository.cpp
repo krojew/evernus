@@ -58,6 +58,14 @@ namespace Evernus
         ))"}.arg(getTableName()).arg(contractRepo.getTableName()).arg(contractRepo.getIdColumn()));
     }
 
+    void ContractItemRepository::deleteForContract(Contract::IdType id) const
+    {
+        auto query = prepare(QString{"DELETE FROM %1 WHERE contract_id = ?"}.arg(getTableName()));
+        query.bindValue(0, id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     QStringList ContractItemRepository::getColumns() const
     {
         return QStringList{}

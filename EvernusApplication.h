@@ -276,6 +276,8 @@ namespace Evernus
 
         std::unique_ptr<CachingEveDataProvider> mDataProvider;
 
+        size_t mPendingContractItemRequests = 0;
+
         void updateTranslator(const QString &lang);
 
         void createDb();

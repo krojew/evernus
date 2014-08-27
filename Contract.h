@@ -14,8 +14,11 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <QDateTime>
 
+#include "ContractItem.h"
 #include "Character.h"
 
 namespace Evernus
@@ -24,6 +27,8 @@ namespace Evernus
         : public Entity<quint64>
     {
     public:
+        typedef std::vector<std::shared_ptr<ContractItem>> ItemList;
+
         enum class Type
         {
             ItemExchange,
@@ -148,5 +153,6 @@ namespace Evernus
         double mCollateral = 0.;
         double mBuyout = 0.;
         double mVolume = 0.;
+        ItemList mItems;
     };
 }

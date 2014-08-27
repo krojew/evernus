@@ -738,7 +738,7 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            mAPIManager.fetchContracts(*key, id, [task, id, this](auto &&data, const auto &error) {
+            mAPIManager.fetchContracts(*key, id, [key, task, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
                     const auto it = std::remove_if(std::begin(data), std::end(data), [](const auto &contract) {
@@ -763,7 +763,31 @@ namespace Evernus
 
                     saveUpdateTimer(Evernus::TimerType::Contracts, mContractsUtcUpdateTimes, id);
 
-                    emit contractsChanged();
+                    for (const auto &contract : data)
+                    {
+                        if (contract.getType() == Contract::Type::Courier)
+                            continue;
+
+                        ++mPendingContractItemRequests;
+
+                        const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
+                        processEvents();
+
+                        mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, this](auto &&data, const auto &error) {
+                            --mPendingContractItemRequests;
+
+                            if (error.isEmpty())
+                                mContractItemRepository->batchStore(data, true);
+
+                            if (mPendingContractItemRequests == 0)
+                                emit contractsChanged();
+
+                            emit taskEnded(subTask, error);
+                        });
+                    }
+
+                    if (mPendingContractItemRequests == 0)
+                        emit contractsChanged();
                 }
 
                 emit taskEnded(task, error);
