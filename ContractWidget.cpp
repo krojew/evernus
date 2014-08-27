@@ -135,6 +135,6 @@ namespace Evernus
         if (filter & ContractFilterProxyModel::InProgress)
             filters << tr("Ip");
 
-        return (filters.isEmpty()) ? (tr("Status filter")) : (tr("Status filter [%1]").arg(filters.join(", ")));
+        return (filters.isEmpty()) ? (tr("Status filter")) : (tr("Status filter [%1]  ").arg(filters.join(", ")));
     }
 }
