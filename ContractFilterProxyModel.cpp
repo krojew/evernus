@@ -23,7 +23,7 @@ namespace Evernus
     void ContractFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     {
         Q_ASSERT(dynamic_cast<ContractModel *>(sourceModel) != nullptr);
-        QSortFilterProxyModel::setSourceModel(sourceModel);
+        LeafFilterProxyModel::setSourceModel(sourceModel);
     }
 
     void ContractFilterProxyModel::setStatusFilter(const StatusFilters &filter)
@@ -34,13 +34,13 @@ namespace Evernus
 
     bool ContractFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
     {
-        if (!QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent))
+        if (!LeafFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent))
             return false;
 
         const auto model = sourceModel();
         const auto contract = static_cast<const ContractModel *>(model)->getContract(model->index(sourceRow, 0, sourceParent));
         if (!contract)
-            return false;
+            return true;
 
         switch (contract->getStatus()) {
         case Contract::Status::Cancelled:

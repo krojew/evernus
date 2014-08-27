@@ -129,6 +129,12 @@ namespace Evernus
         double getVolume() const noexcept;
         void setVolume(double value) noexcept;
 
+        void addItem(const std::shared_ptr<ContractItem> &item);
+        void addItem(std::shared_ptr<ContractItem> &&item);
+        std::shared_ptr<ContractItem> getItem(size_t index) const;
+
+        size_t getItemCount() const noexcept;
+
         Contract &operator =(const Contract &) = default;
         Contract &operator =(Contract &&) = default;
 

@@ -52,6 +52,6 @@ namespace Evernus
         virtual void preStore(Contract &entity) const override;
 
         template<class T>
-        EntityList fetchByColumn(T id, const QString &column) const;
+        EntityList fetchByColumnWithItems(T id, const QString &column) const;
     };
 }

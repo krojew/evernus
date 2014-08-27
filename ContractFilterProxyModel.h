@@ -14,12 +14,12 @@
  */
 #pragma once
 
-#include <QSortFilterProxyModel>
+#include "LeafFilterProxyModel.h"
 
 namespace Evernus
 {
     class ContractFilterProxyModel
-        : public QSortFilterProxyModel
+        : public LeafFilterProxyModel
     {
     public:
         enum StatusFilter
@@ -42,7 +42,7 @@ namespace Evernus
 
         static const StatusFilters defaultStatusFilter;
 
-        using QSortFilterProxyModel::QSortFilterProxyModel;
+        using LeafFilterProxyModel::LeafFilterProxyModel;
         virtual ~ContractFilterProxyModel() = default;
 
         virtual void setSourceModel(QAbstractItemModel *sourceModel) override;

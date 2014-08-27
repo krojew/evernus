@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_map>
+
 #include <QSqlRecord>
 #include <QSqlQuery>
 
@@ -115,22 +117,22 @@ namespace Evernus
 
     ContractRepository::EntityList ContractRepository::fetchIssuedForCharacter(Character::IdType id) const
     {
-        return fetchByColumn(id, "issuer_id");
+        return fetchByColumnWithItems(id, "issuer_id");
     }
 
     ContractRepository::EntityList ContractRepository::fetchAssignedForCharacter(Character::IdType id) const
     {
-        return fetchByColumn(id, "assignee_id");
+        return fetchByColumnWithItems(id, "assignee_id");
     }
 
     ContractRepository::EntityList ContractRepository::fetchIssuedForCorporation(quint64 id) const
     {
-        return fetchByColumn(id, "issuer_corp_id");
+        return fetchByColumnWithItems(id, "issuer_corp_id");
     }
 
     ContractRepository::EntityList ContractRepository::fetchAssignedForCorporation(quint64 id) const
     {
-        return fetchByColumn(id, "assignee_id");
+        return fetchByColumnWithItems(id, "assignee_id");
     }
 
     QStringList ContractRepository::getColumns() const
@@ -223,9 +225,21 @@ namespace Evernus
     }
 
     template<class T>
-    ContractRepository::EntityList ContractRepository::fetchByColumn(T id, const QString &column) const
+    ContractRepository::EntityList ContractRepository::fetchByColumnWithItems(T id, const QString &column) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE %2 = ?"}.arg(getTableName()).arg(column));
+        // all this because https://bugreports.qt-project.org/browse/QTBUG-14904
+        auto queryStr = QString{"SELECT %1.*, %4 FROM %1 LEFT JOIN %3 i ON i.contract_id = %1.id WHERE %1.%2 = ?"}
+            .arg(getTableName())
+            .arg(column)
+            .arg(mContractItemRepo.getTableName());
+
+        auto columns = mContractItemRepo.getColumns();
+        for (auto &column : columns)
+            column = QString("i.%1 i_%1").arg(column);
+
+        queryStr = queryStr.arg(columns.join(", "));
+
+        auto query = prepare(queryStr);
         query.bindValue(0, id);
 
         DatabaseUtils::execQuery(query);
@@ -236,8 +250,21 @@ namespace Evernus
         if (size > 0)
             result.reserve(size);
 
+        std::unordered_map<Contract::IdType, EntityPtr> contracts;
+
         while (query.next())
-            result.emplace_back(populate(query.record()));
+        {
+            const auto id = query.value("id").value<Contract::IdType>();
+            auto it = contracts.find(id);
+            if (it == std::end(contracts))
+                it = contracts.emplace(id, populate(query.record())).first;
+
+            if (!query.isNull("i_id"))
+                it->second->addItem(mContractItemRepo.populate("i_", query.record()));
+        }
+
+        for (auto &contract : contracts)
+            result.emplace_back(std::move(contract.second));
 
         return result;
     }

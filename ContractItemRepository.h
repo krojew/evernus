@@ -31,15 +31,17 @@ namespace Evernus
         virtual QString getIdColumn() const override;
 
         virtual EntityPtr populate(const QSqlRecord &record) const override;
+        EntityPtr populate(const QString &prefix, const QSqlRecord &record) const;
 
         void create(const Repository<Contract> &contractRepo) const;
 
         void deleteForContract(Contract::IdType id) const;
 
+        virtual QStringList getColumns() const override;
+
     private:
         bool mCorp = false;
 
-        virtual QStringList getColumns() const override;
         virtual void bindValues(const ContractItem &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const ContractItem &entity, QSqlQuery &query) const override;
     };

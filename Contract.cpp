@@ -235,4 +235,24 @@ namespace Evernus
     {
         mVolume = value;
     }
+
+    void Contract::addItem(const std::shared_ptr<ContractItem> &item)
+    {
+        mItems.emplace_back(item);
+    }
+
+    void Contract::addItem(std::shared_ptr<ContractItem> &&item)
+    {
+        mItems.emplace_back(std::move(item));
+    }
+
+    std::shared_ptr<ContractItem> Contract::getItem(size_t index) const
+    {
+        return mItems[index];
+    }
+
+    size_t Contract::getItemCount() const noexcept
+    {
+        return mItems.size();
+    }
 }

@@ -94,5 +94,8 @@ namespace Evernus
         double mTotalVolume = 0.;
 
         virtual ContractList getContracts() const = 0;
+
+        QVariant contractData(const QModelIndex &index, int role) const;
+        QVariant itemData(const QModelIndex &index, int role) const;
     };
 }

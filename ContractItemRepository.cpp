@@ -47,6 +47,19 @@ namespace Evernus
         return contractItem;
     }
 
+    ContractItemRepository::EntityPtr ContractItemRepository::populate(const QString &prefix, const QSqlRecord &record) const
+    {
+        // all this because https://bugreports.qt-project.org/browse/QTBUG-14904
+        auto contractItem = std::make_shared<ContractItem>(record.value(prefix + "id").value<ContractItem::IdType>());
+        contractItem->setContractId(record.value(prefix + "contract_id").value<Contract::IdType>());
+        contractItem->setTypeId(record.value(prefix + "type_id").value<EveType::IdType>());
+        contractItem->setQuantity(record.value(prefix + "quantity").toULongLong());
+        contractItem->setIncluded(record.value(prefix + "included").toBool());
+        contractItem->setNew(false);
+
+        return contractItem;
+    }
+
     void ContractItemRepository::create(const Repository<Contract> &contractRepo) const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (

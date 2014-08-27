@@ -39,6 +39,151 @@ namespace Evernus
         if (!index.isValid())
             return QVariant{};
 
+        return (index.internalId() == 0) ? (contractData(index, role)) : (itemData(index, role));
+    }
+
+    QVariant ContractModel::headerData(int section, Qt::Orientation orientation, int role) const
+    {
+        if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+        {
+            switch (section) {
+            case issuerColumn:
+                return tr("Issuer");
+            case issuerCorpColumn:
+                return tr("Issuer corporation");
+            case assigneeColumn:
+                return tr("Assignee");
+            case acceptorColumn:
+                return tr("Acceptor");
+            case startStationColumn:
+                return tr("Start station");
+            case endStationColumn:
+                return tr("End station");
+            case typeColumn:
+                return tr("Type");
+            case statusColumn:
+                return tr("Status");
+            case titleColumn:
+                return tr("Title");
+            case forCorpColumn:
+                return tr("Corporation");
+            case availabilityColumn:
+                return tr("Availability");
+            case issuedColumn:
+                return tr("Issued");
+            case expiredColumn:
+                return tr("Expiration");
+            case acceptedColumn:
+                return tr("Accepted");
+            case completedColumn:
+                return tr("Completed");
+            case numDaysColumn:
+                return tr("Days");
+            case priceColumn:
+                return tr("Price");
+            case rewardColumn:
+                return tr("Reward");
+            case collateralColumn:
+                return tr("Collateral");
+            case buyoutColumn:
+                return tr("Buyout");
+            case volumeColumn:
+                return tr("Volume");
+            }
+        }
+
+        return QVariant{};
+    }
+
+    QModelIndex ContractModel::index(int row, int column, const QModelIndex &parent) const
+    {
+        if (parent.isValid())
+        {
+            if (parent.internalId() != 0)
+                return QModelIndex{};
+
+            return createIndex(row, column, parent.row() + 1);
+        }
+
+        return createIndex(row, column);
+    }
+
+    QModelIndex ContractModel::parent(const QModelIndex &index) const
+    {
+        const auto id = index.internalId();
+        if (id == 0)
+            return QModelIndex{};
+
+        return createIndex(id - 1, 0);
+    }
+
+    int ContractModel::rowCount(const QModelIndex &parent) const
+    {
+        if (parent.isValid())
+            return (parent.internalId() == 0) ? (static_cast<int>(mContracts[parent.row()]->getItemCount())) : (0);
+
+        return static_cast<int>(mContracts.size());
+    }
+
+    size_t ContractModel::getNumContracts() const noexcept
+    {
+        return mContracts.size();
+    }
+
+    double ContractModel::getTotalPrice() const noexcept
+    {
+        return mTotalPrice;
+    }
+
+    double ContractModel::getTotalReward() const noexcept
+    {
+        return mTotalReward;
+    }
+
+    double ContractModel::getTotalCollateral() const noexcept
+    {
+        return mTotalCollateral;
+    }
+
+    double ContractModel::getTotalVolume() const noexcept
+    {
+        return mTotalVolume;
+    }
+
+    std::shared_ptr<Contract> ContractModel::getContract(const QModelIndex &index) const
+    {
+        return (index.internalId() == 0) ? (mContracts[index.row()]) : (std::shared_ptr<Contract>{});
+    }
+
+    void ContractModel::reset()
+    {
+        beginResetModel();
+
+        mTotalPrice = mTotalReward = mTotalCollateral = mTotalVolume = 0.;
+
+        mContracts = getContracts();
+        for (const auto &contract : mContracts)
+        {
+            mTotalPrice += contract->getPrice();
+            mTotalReward += contract->getReward();
+            mTotalCollateral += contract->getCollateral();
+            mTotalVolume += contract->getVolume();
+        }
+
+        endResetModel();
+    }
+
+    void ContractModel::updateNames()
+    {
+        emit dataChanged(index(0, issuerColumn),
+                         index(rowCount() - 1, acceptorColumn),
+                         QVector<int>{}
+                             << Qt::UserRole
+                             << Qt::DisplayRole);
+    }
+
+    QVariant ContractModel::contractData(const QModelIndex &index, int role = Qt::DisplayRole) const
+    {
         const auto &contract = mContracts[index.row()];
 
         switch (role) {
@@ -178,131 +323,16 @@ namespace Evernus
         return QVariant{};
     }
 
-    QVariant ContractModel::headerData(int section, Qt::Orientation orientation, int role) const
+    QVariant ContractModel::itemData(const QModelIndex &index, int role) const
     {
-        if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+        if ((role == Qt::DisplayRole || role == Qt::UserRole) && (index.column() == 0))
         {
-            switch (section) {
-            case issuerColumn:
-                return tr("Issuer");
-            case issuerCorpColumn:
-                return tr("Issuer corporation");
-            case assigneeColumn:
-                return tr("Assignee");
-            case acceptorColumn:
-                return tr("Acceptor");
-            case startStationColumn:
-                return tr("Start station");
-            case endStationColumn:
-                return tr("End station");
-            case typeColumn:
-                return tr("Type");
-            case statusColumn:
-                return tr("Status");
-            case titleColumn:
-                return tr("Title");
-            case forCorpColumn:
-                return tr("Corporation");
-            case availabilityColumn:
-                return tr("Availability");
-            case issuedColumn:
-                return tr("Issued");
-            case expiredColumn:
-                return tr("Expiration");
-            case acceptedColumn:
-                return tr("Accepted");
-            case completedColumn:
-                return tr("Completed");
-            case numDaysColumn:
-                return tr("Days");
-            case priceColumn:
-                return tr("Price");
-            case rewardColumn:
-                return tr("Reward");
-            case collateralColumn:
-                return tr("Collateral");
-            case buyoutColumn:
-                return tr("Buyout");
-            case volumeColumn:
-                return tr("Volume");
-            }
+            const auto &contract = mContracts[index.internalId() - 1];
+            const auto item = contract->getItem(index.row());
+
+            return QString{"%1 %2%3"}.arg(mDataProvider.getTypeName(item->getTypeId())).arg(QChar(215)).arg(QLocale{}.toString(item->getQuantity()));
         }
 
         return QVariant{};
-    }
-
-    QModelIndex ContractModel::index(int row, int column, const QModelIndex &parent) const
-    {
-        if (parent.isValid())
-            return QModelIndex{};
-
-        return createIndex(row, column);
-    }
-
-    QModelIndex ContractModel::parent(const QModelIndex &index) const
-    {
-        return QModelIndex{};
-    }
-
-    int ContractModel::rowCount(const QModelIndex &parent) const
-    {
-        return (parent.isValid()) ? (0) : (static_cast<int>(mContracts.size()));
-    }
-
-    size_t ContractModel::getNumContracts() const noexcept
-    {
-        return mContracts.size();
-    }
-
-    double ContractModel::getTotalPrice() const noexcept
-    {
-        return mTotalPrice;
-    }
-
-    double ContractModel::getTotalReward() const noexcept
-    {
-        return mTotalReward;
-    }
-
-    double ContractModel::getTotalCollateral() const noexcept
-    {
-        return mTotalCollateral;
-    }
-
-    double ContractModel::getTotalVolume() const noexcept
-    {
-        return mTotalVolume;
-    }
-
-    std::shared_ptr<Contract> ContractModel::getContract(const QModelIndex &index) const
-    {
-        return mContracts[index.row()];
-    }
-
-    void ContractModel::reset()
-    {
-        beginResetModel();
-
-        mTotalPrice = mTotalReward = mTotalCollateral = mTotalVolume = 0.;
-
-        mContracts = getContracts();
-        for (const auto &contract : mContracts)
-        {
-            mTotalPrice += contract->getPrice();
-            mTotalReward += contract->getReward();
-            mTotalCollateral += contract->getCollateral();
-            mTotalVolume += contract->getVolume();
-        }
-
-        endResetModel();
-    }
-
-    void ContractModel::updateNames()
-    {
-        emit dataChanged(index(0, issuerColumn),
-                         index(rowCount() - 1, acceptorColumn),
-                         QVector<int>{}
-                             << Qt::UserRole
-                             << Qt::DisplayRole);
     }
 }
