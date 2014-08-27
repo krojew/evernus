@@ -771,8 +771,6 @@ namespace Evernus
                         ++mPendingContractItemRequests;
 
                         const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
-                        processEvents();
-
                         mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, this](auto &&data, const auto &error) {
                             --mPendingContractItemRequests;
 
@@ -789,8 +787,10 @@ namespace Evernus
                     if (mPendingContractItemRequests == 0)
                         emit contractsChanged();
                 }
-
-                emit taskEnded(task, error);
+                else
+                {
+                    emit taskEnded(task, error);
+                }
             });
         }
         catch (const KeyRepository::NotFoundException &)
