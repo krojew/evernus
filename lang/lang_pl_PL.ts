@@ -334,7 +334,7 @@
         <location filename="../CachingEveDataProvider.cpp" line="168"/>
         <location filename="../CachingEveDataProvider.cpp" line="176"/>
         <source>(unknown)</source>
-        <translation type="unfinished"></translation>
+        <translation>(nieznane)</translation>
     </message>
 </context>
 <context>
@@ -701,188 +701,188 @@
     <message>
         <location filename="../ContractModel.cpp" line="111"/>
         <source>Item Exchange</source>
-        <translation type="unfinished"></translation>
+        <translation>Wymiana</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="113"/>
         <source>Courier</source>
-        <translation type="unfinished"></translation>
+        <translation>Kurier</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="115"/>
         <source>Auction</source>
-        <translation type="unfinished"></translation>
+        <translation>Aukcja</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="121"/>
         <source>Outstanding</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaległy</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="123"/>
         <source>Deleted</source>
-        <translation type="unfinished">Usunięte</translation>
+        <translation>Usunięty</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="127"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieukończony</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="129"/>
         <source>Completed by Issuer</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukończony przez wystawiającego</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="131"/>
         <source>Completed by Contractor</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukończony przez akceptującego</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="133"/>
         <source>Cancelled</source>
-        <translation type="unfinished">Anulowane</translation>
+        <translation>Anulowany</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="135"/>
         <source>Rejected</source>
-        <translation type="unfinished"></translation>
+        <translation>Odrzucony</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="137"/>
         <source>Reversed</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbity</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="139"/>
         <source>In Progress</source>
-        <translation type="unfinished"></translation>
+        <translation>W trakcie</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="145"/>
         <source>yes</source>
-        <translation type="unfinished"></translation>
+        <translation>tak</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="145"/>
         <source>no</source>
-        <translation type="unfinished"></translation>
+        <translation>nie</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="149"/>
         <source>Private</source>
-        <translation type="unfinished"></translation>
+        <translation>Prywatny</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="151"/>
         <source>Public</source>
-        <translation type="unfinished"></translation>
+        <translation>Publiczny</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="187"/>
         <source>Issuer</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystawiający</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="189"/>
         <source>Issuer corporation</source>
-        <translation type="unfinished"></translation>
+        <translation>Korporacja wystawiającego</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="191"/>
         <source>Assignee</source>
-        <translation type="unfinished"></translation>
+        <translation>Beneficjent</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="193"/>
         <source>Acceptor</source>
-        <translation type="unfinished"></translation>
+        <translation>Akceptujący</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="195"/>
         <source>Start station</source>
-        <translation type="unfinished"></translation>
+        <translation>Początkowa stacja</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="197"/>
         <source>End station</source>
-        <translation type="unfinished"></translation>
+        <translation>Końcowa stacja</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="199"/>
         <source>Type</source>
-        <translation type="unfinished">Typ</translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="201"/>
         <source>Status</source>
-        <translation type="unfinished">Stan</translation>
+        <translation>Stan</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="203"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Tytuł</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="207"/>
         <source>Availability</source>
-        <translation type="unfinished"></translation>
+        <translation>Dostępność</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="209"/>
         <source>Issued</source>
-        <translation type="unfinished">Wystawiono</translation>
+        <translation>Wystawiony</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="211"/>
         <source>Expiration</source>
-        <translation type="unfinished"></translation>
+        <translation>Wygasa</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="213"/>
         <source>Accepted</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaakceptowany</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="125"/>
         <location filename="../ContractModel.cpp" line="215"/>
         <source>Completed</source>
-        <translation type="unfinished">Zakończony</translation>
+        <translation>Zakończony</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="205"/>
         <source>Corporation</source>
-        <translation type="unfinished">Korporacja</translation>
+        <translation>Korporacja</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="217"/>
         <source>Days</source>
-        <translation type="unfinished"></translation>
+        <translation>Dni</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="219"/>
         <source>Price</source>
-        <translation type="unfinished">Cena</translation>
+        <translation>Cena</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="221"/>
         <source>Reward</source>
-        <translation type="unfinished"></translation>
+        <translation>Nagroda</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="223"/>
         <source>Collateral</source>
-        <translation type="unfinished"></translation>
+        <translation>Zabezpieczenie</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="225"/>
         <source>Buyout</source>
-        <translation type="unfinished"></translation>
+        <translation>Wykup</translation>
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="227"/>
         <source>Volume</source>
-        <translation type="unfinished">Wolumen</translation>
+        <translation>Wolumen</translation>
     </message>
 </context>
 <context>
@@ -890,57 +890,57 @@
     <message>
         <location filename="../ContractStatusesWidget.cpp" line="38"/>
         <source>Outstanding</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaległy</translation>
     </message>
     <message>
         <location filename="../ContractStatusesWidget.cpp" line="39"/>
         <source>Deleted</source>
-        <translation type="unfinished">Usunięte</translation>
+        <translation>Usunięty</translation>
     </message>
     <message>
         <location filename="../ContractStatusesWidget.cpp" line="40"/>
         <source>Completed</source>
-        <translation type="unfinished">Zakończony</translation>
+        <translation>Zakończony</translation>
     </message>
     <message>
         <location filename="../ContractStatusesWidget.cpp" line="41"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieukończony</translation>
     </message>
     <message>
         <location filename="../ContractStatusesWidget.cpp" line="42"/>
         <source>Completed by Issuer</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukończony przez wystawiającego</translation>
     </message>
     <message>
         <location filename="../ContractStatusesWidget.cpp" line="43"/>
         <source>Completed by Contractor</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukończony przez akceptującego</translation>
     </message>
     <message>
         <location filename="../ContractStatusesWidget.cpp" line="44"/>
         <source>Cancelled</source>
-        <translation type="unfinished">Anulowane</translation>
+        <translation>Anulowany</translation>
     </message>
     <message>
         <location filename="../ContractStatusesWidget.cpp" line="45"/>
         <source>Rejected</source>
-        <translation type="unfinished"></translation>
+        <translation>Odrzucony</translation>
     </message>
     <message>
         <location filename="../ContractStatusesWidget.cpp" line="46"/>
         <source>Reversed</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbity</translation>
     </message>
     <message>
         <location filename="../ContractStatusesWidget.cpp" line="47"/>
         <source>In Progress</source>
-        <translation type="unfinished"></translation>
+        <translation>W trakcie</translation>
     </message>
     <message>
         <location filename="../ContractStatusesWidget.cpp" line="49"/>
         <source>Reset</source>
-        <translation type="unfinished">Resetuj</translation>
+        <translation>Resetuj</translation>
     </message>
 </context>
 <context>
@@ -948,27 +948,27 @@
     <message>
         <location filename="../ContractView.cpp" line="40"/>
         <source>Total contracts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrakty:</translation>
     </message>
     <message>
         <location filename="../ContractView.cpp" line="49"/>
         <source>Total price:</source>
-        <translation type="unfinished"></translation>
+        <translation>Całkowita cena:</translation>
     </message>
     <message>
         <location filename="../ContractView.cpp" line="55"/>
         <source>Total reward:</source>
-        <translation type="unfinished"></translation>
+        <translation>Całkowita nagroda:</translation>
     </message>
     <message>
         <location filename="../ContractView.cpp" line="61"/>
         <source>Total collateral:</source>
-        <translation type="unfinished"></translation>
+        <translation>Całkowite zabezpieczenie:</translation>
     </message>
     <message>
         <location filename="../ContractView.cpp" line="67"/>
         <source>Total volume:</source>
-        <translation type="unfinished">Całkowity wolumen:</translation>
+        <translation>Całkowity wolumen:</translation>
     </message>
 </context>
 <context>
@@ -976,72 +976,72 @@
     <message>
         <location filename="../ContractWidget.cpp" line="82"/>
         <source>Issued</source>
-        <translation type="unfinished">Wystawiono</translation>
+        <translation>Wystawione</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="88"/>
         <source>Assigned</source>
-        <translation type="unfinished"></translation>
+        <translation>Przypisane</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="118"/>
         <source>O</source>
-        <translation type="unfinished">S</translation>
+        <translation>Z</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="120"/>
         <source>D</source>
-        <translation type="unfinished">U</translation>
+        <translation>U</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="122"/>
         <source>C</source>
-        <translation type="unfinished">An</translation>
+        <translation>Zak</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="124"/>
         <source>F</source>
-        <translation type="unfinished">Z</translation>
+        <translation>N</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="126"/>
         <source>Ci</source>
-        <translation type="unfinished"></translation>
+        <translation>Zw</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="128"/>
         <source>Cc</source>
-        <translation type="unfinished"></translation>
+        <translation>Za</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="130"/>
         <source>Ca</source>
-        <translation type="unfinished"></translation>
+        <translation>An</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="132"/>
         <source>Rj</source>
-        <translation type="unfinished"></translation>
+        <translation>Od</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="134"/>
         <source>Re</source>
-        <translation type="unfinished"></translation>
+        <translation>Odb</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="136"/>
         <source>Ip</source>
-        <translation type="unfinished"></translation>
+        <translation>Wt</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="138"/>
         <source>Status filter</source>
-        <translation type="unfinished">Filtr stanu</translation>
+        <translation>Filtr stanu</translation>
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="138"/>
         <source>Status filter [%1]</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtr stanu [%1]</translation>
     </message>
 </context>
 <context>
@@ -1328,7 +1328,7 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="735"/>
         <source>Fetching contracts for character %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie kontraktów dla postaci: %1...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="786"/>
@@ -1359,7 +1359,7 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="943"/>
         <source>Fetching corporation contracts for character %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie kontraktów korporacji dla postaci %1...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="1023"/>
@@ -2076,7 +2076,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="59"/>
         <source>Max. contracts update age:</source>
-        <translation type="unfinished"></translation>
+        <translation>Maks. czas aktualizacji kontraktów:</translation>
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="61"/>
@@ -2476,7 +2476,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MainWindow.cpp" line="566"/>
         <source>Character contracts</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrakty postaci</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="581"/>
@@ -2486,7 +2486,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MainWindow.cpp" line="623"/>
         <source>Corporation contracts</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrakty korporacji</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="634"/>
