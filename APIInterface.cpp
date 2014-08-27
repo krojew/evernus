@@ -98,10 +98,11 @@ namespace Evernus
                                           Contract::IdType contractId,
                                           const Callback &callback) const
     {
-        makeRequest("/char/ContractItems.xml.aspx",
-                    key,
-                    callback,
-                    { std::make_pair("characterID", QString::number(characterId)), std::make_pair("contractID", QString::number(contractId)) });
+        QueryParams params;
+        params.emplace_back(std::make_pair("characterID", QString::number(characterId)));
+        params.emplace_back(std::make_pair("contractID", QString::number(contractId)));
+
+        makeRequest("/char/ContractItems.xml.aspx", key, callback, params);
     }
 
     void APIInterface::fetchWalletJournal(const CorpKey &key,
@@ -145,10 +146,11 @@ namespace Evernus
                                           Contract::IdType contractId,
                                           const Callback &callback) const
     {
-        makeRequest("/corp/ContractItems.xml.aspx",
-                    key,
-                    callback,
-                    { std::make_pair("characterID", QString::number(characterId)), std::make_pair("contractID", QString::number(contractId)) });
+        QueryParams params;
+        params.emplace_back(std::make_pair("characterID", QString::number(characterId)));
+        params.emplace_back(std::make_pair("contractID", QString::number(contractId)));
+
+        makeRequest("/corp/ContractItems.xml.aspx", key, callback, params);
     }
 
     void APIInterface::fetchGenericName(quint64 id, const Callback &callback) const
