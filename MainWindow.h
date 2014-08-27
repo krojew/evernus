@@ -162,6 +162,7 @@ namespace Evernus
         void setCharacter(Character::IdType id);
 
         void refreshAssets();
+        void refreshContracts();
         void refreshWalletJournal();
         void refreshWalletTransactions();
         void refreshMarketOrdersFromAPI();

@@ -262,6 +262,18 @@ namespace Evernus
             emit importAssets(mCurrentCharacterId);
     }
 
+    void MainWindow::refreshContracts()
+    {
+        if (mCurrentCharacterId != Character::invalidId)
+        {
+            QSettings settings;
+            if (settings.value(ImportSettings::updateCorpDataKey).toBool())
+                emit importCorpContracts(mCurrentCharacterId);
+
+            emit importContracts(mCurrentCharacterId);
+        }
+    }
+
     void MainWindow::refreshWalletJournal()
     {
         if (mCurrentCharacterId != Character::invalidId)
@@ -325,6 +337,8 @@ namespace Evernus
 
         if (settings.value(ImportSettings::importAssetsKey, ImportSettings::importAssetsDefault).toBool())
             refreshAssets();
+        if (settings.value(ImportSettings::importContractsKey, ImportSettings::importContractsDefault).toBool())
+            refreshContracts();
     }
 
     void MainWindow::updateCurrentTab(int index)
