@@ -82,11 +82,11 @@ namespace Evernus
         return contract;
     }
 
-    void ContractRepository::create(const Repository<Character> &characterRepo) const
+    void ContractRepository::create() const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id BIGINT PRIMARY KEY,
-            issuer_id BIGINT NOT NULL %2,
+            issuer_id BIGINT NOT NULL,
             issuer_corp_id BIGINT NOT NULL,
             assignee_id BIGINT NOT NULL,
             acceptor_id BIGINT NOT NULL,
@@ -107,8 +107,7 @@ namespace Evernus
             collateral DOUBLE NOT NULL,
             buyout DOUBLE NOT NULL,
             volume DOUBLE NOT NULL
-        ))"}.arg(getTableName()).arg(
-            (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
+        ))"}.arg(getTableName()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_issuer ON %1(issuer_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_issuer_corp ON %1(issuer_corp_id)"}.arg(getTableName()));

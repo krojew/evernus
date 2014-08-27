@@ -33,7 +33,7 @@ namespace Evernus
 
         virtual EntityPtr populate(const QSqlRecord &record) const override;
 
-        void create(const Repository<Character> &characterRepo) const;
+        void create() const;
 
         EntityList fetchIssuedForCharacter(Character::IdType id) const;
         EntityList fetchAssignedForCharacter(Character::IdType id) const;

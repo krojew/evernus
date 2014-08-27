@@ -1532,8 +1532,8 @@ namespace Evernus
         mOrderScriptRepository->create();
         mFavoriteItemRepository->create();
         mLocationBookmarkRepository->create();
-        mContractRepository->create(*mCharacterRepository);
-        mCorpContractRepository->create(*mCharacterRepository);
+        mContractRepository->create();
+        mCorpContractRepository->create();
         mContractItemRepository->create(*mContractRepository);
         mCorpContractItemRepository->create(*mCorpContractRepository);
         mRefTypeRepository->create();
