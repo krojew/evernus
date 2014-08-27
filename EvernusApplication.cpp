@@ -765,7 +765,7 @@ namespace Evernus
 
                     for (const auto &contract : data)
                     {
-                        if (contract.getType() == Contract::Type::Courier)
+                        if (contract.getType() == Evernus::Contract::Type::Courier)
                             continue;
 
                         ++mPendingContractItemRequests;
