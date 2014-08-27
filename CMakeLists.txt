@@ -590,8 +590,8 @@ elseif(APPLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE TRUE)
     set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "Info.plist")
 
-    set(CMAKE_BUILD_TYPE "MinSizeRel")
-    set(CMAKE_CONFIGURATION_TYPES "MinSizeRel;Release;RelWithDebInfo;Debug")
+    set(CMAKE_BUILD_TYPE "Release")
+    set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo;Debug")
 
     set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Evernus")
 
