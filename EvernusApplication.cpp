@@ -763,29 +763,37 @@ namespace Evernus
 
                     saveUpdateTimer(Evernus::TimerType::Contracts, mContractsUtcUpdateTimes, id);
 
-                    for (const auto &contract : data)
+                    if (data.empty())
                     {
-                        if (contract.getType() == Evernus::Contract::Type::Courier)
-                            continue;
-
-                        ++mPendingContractItemRequests;
-
-                        const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
-                        mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, this](auto &&data, const auto &error) {
-                            --mPendingContractItemRequests;
-
-                            if (error.isEmpty())
-                                mContractItemRepository->batchStore(data, true);
-
-                            if (mPendingContractItemRequests == 0)
-                                emit contractsChanged();
-
-                            emit taskEnded(subTask, error);
-                        });
-                    }
-
-                    if (mPendingContractItemRequests == 0)
                         emit contractsChanged();
+                        emit taskEnded(task, QString{});
+                    }
+                    else
+                    {
+                        for (const auto &contract : data)
+                        {
+                            if (contract.getType() == Evernus::Contract::Type::Courier)
+                                continue;
+
+                            ++mPendingContractItemRequests;
+
+                            const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
+                            mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, this](auto &&data, const auto &error) {
+                                --mPendingContractItemRequests;
+
+                                if (error.isEmpty())
+                                    mContractItemRepository->batchStore(data, true);
+
+                                if (mPendingContractItemRequests == 0)
+                                    emit contractsChanged();
+
+                                emit taskEnded(subTask, error);
+                            });
+                        }
+
+                        if (mPendingContractItemRequests == 0)
+                            emit contractsChanged();
+                    }
                 }
                 else
                 {
@@ -990,29 +998,37 @@ namespace Evernus
 
                     saveUpdateTimer(Evernus::TimerType::CorpContracts, mCorpContractsUtcUpdateTimes, id);
 
-                    for (const auto &contract : data)
+                    if (data.empty())
                     {
-                        if (contract.getType() == Evernus::Contract::Type::Courier)
-                            continue;
-
-                        ++mPendingContractItemRequests;
-
-                        const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
-                        mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, this](auto &&data, const auto &error) {
-                            --mPendingContractItemRequests;
-
-                            if (error.isEmpty())
-                                mContractItemRepository->batchStore(data, true);
-
-                            if (mPendingContractItemRequests == 0)
-                                emit corpContractsChanged();
-
-                            emit taskEnded(subTask, error);
-                        });
-                    }
-
-                    if (mPendingContractItemRequests == 0)
                         emit corpContractsChanged();
+                        emit taskEnded(task, QString{});
+                    }
+                    else
+                    {
+                        for (const auto &contract : data)
+                        {
+                            if (contract.getType() == Evernus::Contract::Type::Courier)
+                                continue;
+
+                            ++mPendingContractItemRequests;
+
+                            const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
+                            mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, this](auto &&data, const auto &error) {
+                                --mPendingContractItemRequests;
+
+                                if (error.isEmpty())
+                                    mContractItemRepository->batchStore(data, true);
+
+                                if (mPendingContractItemRequests == 0)
+                                    emit corpContractsChanged();
+
+                                emit taskEnded(subTask, error);
+                            });
+                        }
+
+                        if (mPendingContractItemRequests == 0)
+                            emit corpContractsChanged();
+                    }
                 }
                 else
                 {
