@@ -970,7 +970,7 @@ namespace Evernus
         try
         {
             const auto key = getCorpKey(id);
-            mAPIManager.fetchContracts(*key, id, [task, id, this](auto &&data, const auto &error) {
+            mAPIManager.fetchContracts(*key, id, [key, task, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
                     mCorpContractRepository->batchStore(data, true);
@@ -990,10 +990,34 @@ namespace Evernus
 
                     saveUpdateTimer(Evernus::TimerType::CorpContracts, mCorpContractsUtcUpdateTimes, id);
 
-                    emit corpContractsChanged();
-                }
+                    for (const auto &contract : data)
+                    {
+                        if (contract.getType() == Evernus::Contract::Type::Courier)
+                            continue;
 
-                emit taskEnded(task, error);
+                        ++mPendingContractItemRequests;
+
+                        const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
+                        mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, this](auto &&data, const auto &error) {
+                            --mPendingContractItemRequests;
+
+                            if (error.isEmpty())
+                                mContractItemRepository->batchStore(data, true);
+
+                            if (mPendingContractItemRequests == 0)
+                                emit corpContractsChanged();
+
+                            emit taskEnded(subTask, error);
+                        });
+                    }
+
+                    if (mPendingContractItemRequests == 0)
+                        emit corpContractsChanged();
+                }
+                else
+                {
+                    emit taskEnded(task, error);
+                }
             });
         }
         catch (const CorpKeyRepository::NotFoundException &)
