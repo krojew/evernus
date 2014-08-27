@@ -39,7 +39,7 @@ namespace Evernus
         if (!index.isValid())
             return QVariant{};
 
-        return (index.internalId() == 0) ? (contractData(index, role)) : (itemData(index, role));
+        return (index.internalId() == 0) ? (contractData(index, role)) : (contractItemData(index, role));
     }
 
     QVariant ContractModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -323,7 +323,7 @@ namespace Evernus
         return QVariant{};
     }
 
-    QVariant ContractModel::itemData(const QModelIndex &index, int role) const
+    QVariant ContractModel::contractItemData(const QModelIndex &index, int role) const
     {
         if ((role == Qt::DisplayRole || role == Qt::UserRole) && (index.column() == 0))
         {
