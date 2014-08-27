@@ -15,12 +15,16 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 
+#include "ContractItemRepository.h"
 #include "ContractRepository.h"
 
 namespace Evernus
 {
-    ContractRepository::ContractRepository(bool corp, const QSqlDatabase &db)
+    ContractRepository::ContractRepository(const ContractItemRepository &contractItemRepo,
+                                           bool corp,
+                                           const QSqlDatabase &db)
         : Repository{db}
+        , mContractItemRepo{contractItemRepo}
         , mCorp{corp}
     {
     }

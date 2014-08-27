@@ -1434,8 +1434,10 @@ namespace Evernus
         mOrderScriptRepository.reset(new OrderScriptRepository{mMainDb});
         mFavoriteItemRepository.reset(new FavoriteItemRepository{mMainDb});
         mLocationBookmarkRepository.reset(new LocationBookmarkRepository{mMainDb});
-        mContractRepository.reset(new ContractRepository{false, mMainDb});
-        mCorpContractRepository.reset(new ContractRepository{true, mMainDb});
+        mContractItemRepository.reset(new ContractItemRepository{false, mMainDb});
+        mCorpContractItemRepository.reset(new ContractItemRepository{true, mMainDb});
+        mContractRepository.reset(new ContractRepository{*mContractItemRepository, false, mMainDb});
+        mCorpContractRepository.reset(new ContractRepository{*mCorpContractItemRepository, true, mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
         mMarketGroupRepository.reset(new MarketGroupRepository{mEveDb});
         mMetaGroupRepository.reset(new MetaGroupRepository{mEveDb});
@@ -1468,6 +1470,8 @@ namespace Evernus
         mLocationBookmarkRepository->create();
         mContractRepository->create(*mCharacterRepository);
         mCorpContractRepository->create(*mCharacterRepository);
+        mContractItemRepository->create(*mContractRepository);
+        mCorpContractItemRepository->create(*mCorpContractRepository);
         mRefTypeRepository->create();
     }
 

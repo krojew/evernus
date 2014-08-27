@@ -14,42 +14,30 @@
  */
 #pragma once
 
+#include "ContractItem.h"
 #include "Repository.h"
-#include "Contract.h"
 
 namespace Evernus
 {
-    class ContractItemRepository;
-
-    class ContractRepository
-        : public Repository<Contract>
+    class ContractItemRepository
+        : public Repository<ContractItem>
     {
     public:
-        ContractRepository(const ContractItemRepository &contractItemRepo, bool corp, const QSqlDatabase &db);
-        virtual ~ContractRepository() = default;
+        ContractItemRepository(bool corp, const QSqlDatabase &db);
+        virtual ~ContractItemRepository() = default;
 
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
 
         virtual EntityPtr populate(const QSqlRecord &record) const override;
 
-        void create(const Repository<Character> &characterRepo) const;
-
-        EntityList fetchIssuedForCharacter(Character::IdType id) const;
-        EntityList fetchAssignedForCharacter(Character::IdType id) const;
-
-        EntityList fetchIssuedForCorporation(quint64 id) const;
-        EntityList fetchAssignedForCorporation(quint64 id) const;
+        void create(const Repository<Contract> &contractRepo) const;
 
     private:
-        const ContractItemRepository &mContractItemRepo;
         bool mCorp = false;
 
         virtual QStringList getColumns() const override;
-        virtual void bindValues(const Contract &entity, QSqlQuery &query) const override;
-        virtual void bindPositionalValues(const Contract &entity, QSqlQuery &query) const override;
-
-        template<class T>
-        EntityList fetchByColumn(T id, const QString &column) const;
+        virtual void bindValues(const ContractItem &entity, QSqlQuery &query) const override;
+        virtual void bindPositionalValues(const ContractItem &entity, QSqlQuery &query) const override;
     };
 }

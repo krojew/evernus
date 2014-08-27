@@ -35,6 +35,7 @@
 #include "CachingContractProvider.h"
 #include "FavoriteItemRepository.h"
 #include "CachingEveDataProvider.h"
+#include "ContractItemRepository.h"
 #include "ExternalOrderImporter.h"
 #include "MarketGroupRepository.h"
 #include "UpdateTimerRepository.h"
@@ -217,6 +218,7 @@ namespace Evernus
         std::unique_ptr<OrderScriptRepository> mOrderScriptRepository;
         std::unique_ptr<FavoriteItemRepository> mFavoriteItemRepository;
         std::unique_ptr<LocationBookmarkRepository> mLocationBookmarkRepository;
+        std::unique_ptr<ContractItemRepository> mContractItemRepository, mCorpContractItemRepository;
         std::unique_ptr<ContractRepository> mContractRepository, mCorpContractRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
         std::unique_ptr<MarketGroupRepository> mMarketGroupRepository;

@@ -228,6 +228,10 @@ add_executable(
     Contract.h
     ContractFilterProxyModel.cpp
     ContractFilterProxyModel.h
+    ContractItem.cpp
+    ContractItem.h
+    ContractItemRepository.cpp
+    ContractItemRepository.h
     ContractModel.cpp
     ContractModel.h
     ContractProvider.h
