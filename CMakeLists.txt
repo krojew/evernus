@@ -52,6 +52,7 @@ qt5_wrap_cpp(
     CharacterImportPreferencesWidget.h
     CharacterWidget.h
     ContractModel.h
+    ContractStatusesWidget.h
     ContractView.h
     ContractWidget.h
     CorpImportPreferencesWidget.h
@@ -225,12 +226,16 @@ add_executable(
     ConquerableStationRepository.h
     Contract.cpp
     Contract.h
+    ContractFilterProxyModel.cpp
+    ContractFilterProxyModel.h
     ContractModel.cpp
     ContractModel.h
     ContractProvider.h
     ContractRepository.cpp
     ContractRepository.h
     Contracts.h
+    ContractStatusesWidget.cpp
+    ContractStatusesWidget.h
     ContractsXmlReceiver.cpp
     ContractsXmlReceiver.h
     ContractView.cpp

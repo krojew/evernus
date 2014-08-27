@@ -18,40 +18,35 @@
 
 #include "ContractFilterProxyModel.h"
 
-class QLabel;
+class QCheckBox;
 
 namespace Evernus
 {
-    class StyledTreeView;
-    class ContractModel;
-
-    class ContractView
+    class ContractStatusesWidget
         : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit ContractView(QWidget *parent = nullptr);
-        virtual ~ContractView() = default;
+        explicit ContractStatusesWidget(QWidget *parent = nullptr);
+        virtual ~ContractStatusesWidget() = default;
 
-        void setModel(ContractModel *model);
+        ContractFilterProxyModel::StatusFilters getStatusFilter() const noexcept;
 
-    public slots:
-        void setFilterWildcard(const QString &pattern);
-        void setStatusFilter(const ContractFilterProxyModel::StatusFilters &filter);
+    signals:
+        void filterChanged(const ContractFilterProxyModel::StatusFilters &filter);
 
     private slots:
-        void updateInfo();
+        void changeFilter(int state);
+
+        void reset();
 
     private:
-        StyledTreeView *mView = nullptr;
-        QLabel *mTotalContractsLabel = nullptr;
-        QLabel *mTotalPriceLabel = nullptr;
-        QLabel *mTotalRewardLabel = nullptr;
-        QLabel *mTotalCollateralLabel = nullptr;
-        QLabel *mTotalVolumeLabel = nullptr;
+        static const char * const filterPropertyName;
 
-        ContractFilterProxyModel mProxy;
-        ContractModel *mModel = nullptr;
+        ContractFilterProxyModel::StatusFilters mCurrentFilter = ContractFilterProxyModel::defaultStatusFilter;
+
+        QCheckBox *createCheckBox(ContractFilterProxyModel::StatusFilter filter, const QString &label);
+        void setNewFilter(const ContractFilterProxyModel::StatusFilters &filter);
     };
 }

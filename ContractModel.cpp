@@ -274,6 +274,11 @@ namespace Evernus
         return mTotalVolume;
     }
 
+    std::shared_ptr<Contract> ContractModel::getContract(const QModelIndex &index) const
+    {
+        return mContracts[index.row()];
+    }
+
     void ContractModel::reset()
     {
         beginResetModel();

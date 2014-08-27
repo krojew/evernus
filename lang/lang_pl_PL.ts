@@ -886,6 +886,64 @@
     </message>
 </context>
 <context>
+    <name>Evernus::ContractStatusesWidget</name>
+    <message>
+        <location filename="../ContractStatusesWidget.cpp" line="38"/>
+        <source>Outstanding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractStatusesWidget.cpp" line="39"/>
+        <source>Deleted</source>
+        <translation type="unfinished">Usunięte</translation>
+    </message>
+    <message>
+        <location filename="../ContractStatusesWidget.cpp" line="40"/>
+        <source>Completed</source>
+        <translation type="unfinished">Zakończony</translation>
+    </message>
+    <message>
+        <location filename="../ContractStatusesWidget.cpp" line="41"/>
+        <source>Failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractStatusesWidget.cpp" line="42"/>
+        <source>Completed by Issuer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractStatusesWidget.cpp" line="43"/>
+        <source>Completed by Contractor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractStatusesWidget.cpp" line="44"/>
+        <source>Cancelled</source>
+        <translation type="unfinished">Anulowane</translation>
+    </message>
+    <message>
+        <location filename="../ContractStatusesWidget.cpp" line="45"/>
+        <source>Rejected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractStatusesWidget.cpp" line="46"/>
+        <source>Reversed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractStatusesWidget.cpp" line="47"/>
+        <source>In Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractStatusesWidget.cpp" line="49"/>
+        <source>Reset</source>
+        <translation type="unfinished">Resetuj</translation>
+    </message>
+</context>
+<context>
     <name>Evernus::ContractView</name>
     <message>
         <location filename="../ContractView.cpp" line="40"/>
@@ -916,13 +974,73 @@
 <context>
     <name>Evernus::ContractWidget</name>
     <message>
-        <location filename="../ContractWidget.cpp" line="64"/>
+        <location filename="../ContractWidget.cpp" line="82"/>
         <source>Issued</source>
         <translation type="unfinished">Wystawiono</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="69"/>
+        <location filename="../ContractWidget.cpp" line="88"/>
         <source>Assigned</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="118"/>
+        <source>O</source>
+        <translation type="unfinished">S</translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="120"/>
+        <source>D</source>
+        <translation type="unfinished">U</translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="122"/>
+        <source>C</source>
+        <translation type="unfinished">An</translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="124"/>
+        <source>F</source>
+        <translation type="unfinished">Z</translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="126"/>
+        <source>Ci</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="128"/>
+        <source>Cc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="130"/>
+        <source>Ca</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="132"/>
+        <source>Rj</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="134"/>
+        <source>Re</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="136"/>
+        <source>Ip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="138"/>
+        <source>Status filter</source>
+        <translation type="unfinished">Filtr stanu</translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="138"/>
+        <source>Status filter [%1]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4609,12 +4727,12 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="134"/>
+        <location filename="../main.cpp" line="136"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="143"/>
+        <location filename="../main.cpp" line="145"/>
         <source>Initialization error</source>
         <translation>Błąd inicjalizacji</translation>
     </message>

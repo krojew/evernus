@@ -12,11 +12,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QWidgetAction>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QPushButton>
 #include <QTabWidget>
 #include <QDebug>
+#include <QMenu>
 
+#include "ContractStatusesWidget.h"
 #include "CacheTimerProvider.h"
 #include "WarningBarWidget.h"
 #include "TextFilterWidget.h"
@@ -51,6 +55,20 @@ namespace Evernus
         auto &importBtn = getAPIImportButton();
         toolBarLayout->addWidget(&importBtn);
 
+        auto statusesWidget = new ContractStatusesWidget{this};
+        connect(statusesWidget, &ContractStatusesWidget::filterChanged, this, &ContractWidget::setStatusFilter);
+
+        auto filterStatusAction = new QWidgetAction{this};
+        filterStatusAction->setDefaultWidget(statusesWidget);
+
+        auto filterStatusMenu = new QMenu{this};
+        filterStatusMenu->addAction(filterStatusAction);
+
+        mStatusFilterBtn = new QPushButton{QIcon{":/images/flag_blue.png"}, getStatusFilterButtonText(statusesWidget->getStatusFilter()), this};
+        toolBarLayout->addWidget(mStatusFilterBtn);
+        mStatusFilterBtn->setFlat(true);
+        mStatusFilterBtn->setMenu(filterStatusMenu);
+
         auto filterEdit = new TextFilterWidget{filterRepo, this};
         toolBarLayout->addWidget(filterEdit, 1);
 
@@ -64,11 +82,13 @@ namespace Evernus
         tabs->addTab(issuedView, tr("Issued"));
         issuedView->setModel(&mIssuedModel);
         connect(filterEdit, &TextFilterWidget::filterEntered, issuedView, &ContractView::setFilterWildcard);
+        connect(statusesWidget, &ContractStatusesWidget::filterChanged, issuedView, &ContractView::setStatusFilter);
 
         auto assignedView = new ContractView{this};
         tabs->addTab(assignedView, tr("Assigned"));
         assignedView->setModel(&mAssignedModel);
         connect(filterEdit, &TextFilterWidget::filterEntered, assignedView, &ContractView::setFilterWildcard);
+        connect(statusesWidget, &ContractStatusesWidget::filterChanged, assignedView, &ContractView::setStatusFilter);
     }
 
     void ContractWidget::updateData()
@@ -78,11 +98,43 @@ namespace Evernus
         mAssignedModel.reset();
     }
 
+    void ContractWidget::setStatusFilter(const ContractFilterProxyModel::StatusFilters &filter)
+    {
+        mStatusFilterBtn->setText(getStatusFilterButtonText(filter));
+    }
+
     void ContractWidget::handleNewCharacter(Character::IdType id)
     {
         qDebug() << "Switching contracts to" << id;
 
         mIssuedModel.setCharacter(id);
         mAssignedModel.setCharacter(id);
+    }
+
+    QString ContractWidget::getStatusFilterButtonText(const ContractFilterProxyModel::StatusFilters &filter)
+    {
+        QStringList filters;
+        if (filter & ContractFilterProxyModel::Outstanding)
+            filters << tr("O");
+        if (filter & ContractFilterProxyModel::Deleted)
+            filters << tr("D");
+        if (filter & ContractFilterProxyModel::Completed)
+            filters << tr("C");
+        if (filter & ContractFilterProxyModel::Failed)
+            filters << tr("F");
+        if (filter & ContractFilterProxyModel::CompletedByIssuer)
+            filters << tr("Ci");
+        if (filter & ContractFilterProxyModel::CompletedByContractor)
+            filters << tr("Cc");
+        if (filter & ContractFilterProxyModel::Cancelled)
+            filters << tr("Ca");
+        if (filter & ContractFilterProxyModel::Rejected)
+            filters << tr("Rj");
+        if (filter & ContractFilterProxyModel::Reversed)
+            filters << tr("Re");
+        if (filter & ContractFilterProxyModel::InProgress)
+            filters << tr("Ip");
+
+        return (filters.isEmpty()) ? (tr("Status filter")) : (tr("Status filter [%1]").arg(filters.join(", ")));
     }
 }

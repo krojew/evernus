@@ -88,6 +88,11 @@ namespace Evernus
         mProxy.setFilterWildcard(pattern);
     }
 
+    void ContractView::setStatusFilter(const ContractFilterProxyModel::StatusFilters &filter)
+    {
+        mProxy.setStatusFilter(filter);
+    }
+
     void ContractView::updateInfo()
     {
         if (mModel == nullptr)

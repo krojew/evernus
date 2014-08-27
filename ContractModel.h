@@ -49,6 +49,8 @@ namespace Evernus
         double getTotalCollateral() const noexcept;
         double getTotalVolume() const noexcept;
 
+        std::shared_ptr<Contract> getContract(const QModelIndex &index) const;
+
         void reset();
 
     private slots:

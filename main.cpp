@@ -22,6 +22,7 @@
 #include "MarketOrderFilterProxyModel.h"
 #include "ExternalOrderImporterNames.h"
 #include "CacheExternalOrderImporter.h"
+#include "ContractFilterProxyModel.h"
 #include "ExternalOrderModel.h"
 #include "EvernusApplication.h"
 #include "MainWindow.h"
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
         qRegisterMetaType<Evernus::ExternalOrderImporter::TypeLocationPairs>("ExternalOrderImporter::TypeLocationPairs");
         qRegisterMetaType<Evernus::ExternalOrderModel::DeviationSourceType>("ExternalOrderModel::DeviationSourceType");
         qRegisterMetaType<Evernus::ExternalOrderModel::DeviationSourceType>("DeviationSourceType");
+        qRegisterMetaType<Evernus::ContractFilterProxyModel::StatusFilters>("ContractFilterProxyModel::StatusFilters");
 
         Evernus::EvernusApplication app{argc, argv};
 

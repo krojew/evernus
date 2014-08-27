@@ -35,5 +35,6 @@ namespace Evernus
         const auto orderViewHeaderStateKey = "ui/orderView/header/%1";
         const auto plotNumberFormatKey = "ui/plot/numberFormat";
         const auto cacheImportApprovedKey = "ui/cacheImport/approved";
+        const auto contractStatusFilterKey = "ui/contracts/statusFilter";
     }
 }

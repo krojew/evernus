@@ -14,9 +14,12 @@
  */
 #pragma once
 
+#include "ContractFilterProxyModel.h"
 #include "AssignedContractModel.h"
 #include "CharacterBoundWidget.h"
 #include "IssuedContractModel.h"
+
+class QPushButton;
 
 namespace Evernus
 {
@@ -44,10 +47,17 @@ namespace Evernus
     public slots:
         void updateData();
 
+    private slots:
+        void setStatusFilter(const ContractFilterProxyModel::StatusFilters &filter);
+
     private:
         IssuedContractModel mIssuedModel;
         AssignedContractModel mAssignedModel;
 
+        QPushButton *mStatusFilterBtn = nullptr;
+
         virtual void handleNewCharacter(Character::IdType id) override;
+
+        static QString getStatusFilterButtonText(const ContractFilterProxyModel::StatusFilters &filter);
     };
 }
