@@ -40,6 +40,7 @@ namespace Evernus
                                ImportSettings::maxContractsAgeKey,
                                parent)
         , mIssuedModel(dataProvider, contractProvider, characterRepo, corp)
+        , mAssignedModel(dataProvider, contractProvider, characterRepo, corp)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -63,12 +64,18 @@ namespace Evernus
         tabs->addTab(issuedView, tr("Issued"));
         issuedView->setModel(&mIssuedModel);
         connect(filterEdit, &TextFilterWidget::filterEntered, issuedView, &ContractView::setFilterWildcard);
+
+        auto assignedView = new ContractView{this};
+        tabs->addTab(assignedView, tr("Assigned"));
+        assignedView->setModel(&mAssignedModel);
+        connect(filterEdit, &TextFilterWidget::filterEntered, assignedView, &ContractView::setFilterWildcard);
     }
 
     void ContractWidget::updateData()
     {
         refreshImportTimer();
         mIssuedModel.reset();
+        mAssignedModel.reset();
     }
 
     void ContractWidget::handleNewCharacter(Character::IdType id)
@@ -76,5 +83,6 @@ namespace Evernus
         qDebug() << "Switching contracts to" << id;
 
         mIssuedModel.setCharacter(id);
+        mAssignedModel.setCharacter(id);
     }
 }

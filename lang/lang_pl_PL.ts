@@ -916,9 +916,14 @@
 <context>
     <name>Evernus::ContractWidget</name>
     <message>
-        <location filename="../ContractWidget.cpp" line="63"/>
+        <location filename="../ContractWidget.cpp" line="64"/>
         <source>Issued</source>
         <translation type="unfinished">Wystawiono</translation>
+    </message>
+    <message>
+        <location filename="../ContractWidget.cpp" line="69"/>
+        <source>Assigned</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

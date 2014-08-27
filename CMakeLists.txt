@@ -178,6 +178,8 @@ add_executable(
     AssetValueSnapshot.h
     AssetValueSnapshotRepository.cpp
     AssetValueSnapshotRepository.h
+    AssignedContractModel.cpp
+    AssignedContractModel.h
     ButtonWithTimer.cpp
     ButtonWithTimer.h
     CacheExternalOrderImporter.cpp

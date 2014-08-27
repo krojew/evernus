@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include "AssignedContractModel.h"
 #include "CharacterBoundWidget.h"
 #include "IssuedContractModel.h"
 
@@ -45,6 +46,7 @@ namespace Evernus
 
     private:
         IssuedContractModel mIssuedModel;
+        AssignedContractModel mAssignedModel;
 
         virtual void handleNewCharacter(Character::IdType id) override;
     };
