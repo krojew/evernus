@@ -701,199 +701,199 @@
     <message>
         <location filename="../ContractImportPreferencesWidget.cpp" line="35"/>
         <source>Contract import</source>
-        <translation type="unfinished"></translation>
+        <translation>Importowanie kontraktów</translation>
     </message>
     <message>
         <location filename="../ContractImportPreferencesWidget.cpp" line="41"/>
         <source>Import contracts</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj kontrakty</translation>
     </message>
 </context>
 <context>
     <name>Evernus::ContractModel</name>
     <message>
-        <location filename="../ContractModel.cpp" line="111"/>
+        <location filename="../ContractModel.cpp" line="256"/>
         <source>Item Exchange</source>
         <translation>Wymiana</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="113"/>
+        <location filename="../ContractModel.cpp" line="258"/>
         <source>Courier</source>
         <translation>Kurier</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="115"/>
+        <location filename="../ContractModel.cpp" line="260"/>
         <source>Auction</source>
         <translation>Aukcja</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="121"/>
+        <location filename="../ContractModel.cpp" line="266"/>
         <source>Outstanding</source>
         <translation>Zaległy</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="123"/>
+        <location filename="../ContractModel.cpp" line="268"/>
         <source>Deleted</source>
         <translation>Usunięty</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="127"/>
+        <location filename="../ContractModel.cpp" line="272"/>
         <source>Failed</source>
         <translation>Nieukończony</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="129"/>
+        <location filename="../ContractModel.cpp" line="274"/>
         <source>Completed by Issuer</source>
         <translation>Ukończony przez wystawiającego</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="131"/>
+        <location filename="../ContractModel.cpp" line="276"/>
         <source>Completed by Contractor</source>
         <translation>Ukończony przez akceptującego</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="133"/>
+        <location filename="../ContractModel.cpp" line="278"/>
         <source>Cancelled</source>
         <translation>Anulowany</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="135"/>
+        <location filename="../ContractModel.cpp" line="280"/>
         <source>Rejected</source>
         <translation>Odrzucony</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="137"/>
+        <location filename="../ContractModel.cpp" line="282"/>
         <source>Reversed</source>
         <translation>Odbity</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="139"/>
+        <location filename="../ContractModel.cpp" line="284"/>
         <source>In Progress</source>
         <translation>W trakcie</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="145"/>
+        <location filename="../ContractModel.cpp" line="290"/>
         <source>yes</source>
         <translation>tak</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="145"/>
+        <location filename="../ContractModel.cpp" line="290"/>
         <source>no</source>
         <translation>nie</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="149"/>
+        <location filename="../ContractModel.cpp" line="294"/>
         <source>Private</source>
         <translation>Prywatny</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="151"/>
+        <location filename="../ContractModel.cpp" line="296"/>
         <source>Public</source>
         <translation>Publiczny</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="187"/>
+        <location filename="../ContractModel.cpp" line="51"/>
         <source>Issuer</source>
         <translation>Wystawiający</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="189"/>
+        <location filename="../ContractModel.cpp" line="53"/>
         <source>Issuer corporation</source>
         <translation>Korporacja wystawiającego</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="191"/>
+        <location filename="../ContractModel.cpp" line="55"/>
         <source>Assignee</source>
         <translation>Beneficjent</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="193"/>
+        <location filename="../ContractModel.cpp" line="57"/>
         <source>Acceptor</source>
         <translation>Akceptujący</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="195"/>
+        <location filename="../ContractModel.cpp" line="59"/>
         <source>Start station</source>
         <translation>Początkowa stacja</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="197"/>
+        <location filename="../ContractModel.cpp" line="61"/>
         <source>End station</source>
         <translation>Końcowa stacja</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="199"/>
+        <location filename="../ContractModel.cpp" line="63"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="201"/>
+        <location filename="../ContractModel.cpp" line="65"/>
         <source>Status</source>
         <translation>Stan</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="203"/>
+        <location filename="../ContractModel.cpp" line="67"/>
         <source>Title</source>
         <translation>Tytuł</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="207"/>
+        <location filename="../ContractModel.cpp" line="71"/>
         <source>Availability</source>
         <translation>Dostępność</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="209"/>
+        <location filename="../ContractModel.cpp" line="73"/>
         <source>Issued</source>
         <translation>Wystawiony</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="211"/>
+        <location filename="../ContractModel.cpp" line="75"/>
         <source>Expiration</source>
         <translation>Wygasa</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="213"/>
+        <location filename="../ContractModel.cpp" line="77"/>
         <source>Accepted</source>
         <translation>Zaakceptowany</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="125"/>
-        <location filename="../ContractModel.cpp" line="215"/>
+        <location filename="../ContractModel.cpp" line="79"/>
+        <location filename="../ContractModel.cpp" line="270"/>
         <source>Completed</source>
         <translation>Zakończony</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="205"/>
+        <location filename="../ContractModel.cpp" line="69"/>
         <source>Corporation</source>
         <translation>Korporacja</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="217"/>
+        <location filename="../ContractModel.cpp" line="81"/>
         <source>Days</source>
         <translation>Dni</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="219"/>
+        <location filename="../ContractModel.cpp" line="83"/>
         <source>Price</source>
         <translation>Cena</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="221"/>
+        <location filename="../ContractModel.cpp" line="85"/>
         <source>Reward</source>
         <translation>Nagroda</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="223"/>
+        <location filename="../ContractModel.cpp" line="87"/>
         <source>Collateral</source>
         <translation>Zabezpieczenie</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="225"/>
+        <location filename="../ContractModel.cpp" line="89"/>
         <source>Buyout</source>
         <translation>Wykup</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="227"/>
+        <location filename="../ContractModel.cpp" line="91"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
@@ -1053,8 +1053,12 @@
     </message>
     <message>
         <location filename="../ContractWidget.cpp" line="138"/>
+        <source>Status filter [%1]  </source>
+        <translation>Filtr stanu [%1]  </translation>
+    </message>
+    <message>
         <source>Status filter [%1]</source>
-        <translation>Filtr stanu [%1]</translation>
+        <translation type="vanished">Filtr stanu [%1]</translation>
     </message>
 </context>
 <context>
@@ -1346,7 +1350,7 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="773"/>
         <source>Fetching contract items for contract %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="810"/>
@@ -4030,7 +4034,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../PreferencesDialog.cpp" line="89"/>
         <source>Contract</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrakt</translation>
     </message>
     <message>
         <location filename="../PreferencesDialog.cpp" line="90"/>
