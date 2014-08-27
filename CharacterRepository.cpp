@@ -200,19 +200,6 @@ namespace Evernus
         return query.value(0).toULongLong();
     }
 
-    QString CharacterRepository::getCharacterName(Character::IdType id) const
-    {
-        auto query = prepare(QString{"SELECT name FROM %1 WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
-        query.bindValue(0, id);
-
-        DatabaseUtils::execQuery(query);
-
-        if (!query.next())
-            throw NotFoundException{};
-
-        return query.value(0).toString();
-    }
-
     QSqlQuery CharacterRepository::getEnabledQuery() const
     {
         return exec(QString{"SELECT %2, name FROM %1 WHERE enabled != 0 AND key_id IS NOT NULL ORDER BY name"}

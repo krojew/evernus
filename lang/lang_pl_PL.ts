@@ -136,7 +136,7 @@
 <context>
     <name>Evernus::APIInterface</name>
     <message>
-        <location filename="../APIInterface.cpp" line="154"/>
+        <location filename="../APIInterface.cpp" line="159"/>
         <source>Encountered SSL errors:
 
 %1</source>
@@ -148,12 +148,12 @@
 <context>
     <name>Evernus::APIManager</name>
     <message>
-        <location filename="../APIManager.cpp" line="448"/>
+        <location filename="../APIManager.cpp" line="469"/>
         <source>Invalid XML document received!</source>
         <translation>Nieprawidłowy dokument XML!</translation>
     </message>
     <message>
-        <location filename="../APIManager.cpp" line="471"/>
+        <location filename="../APIManager.cpp" line="492"/>
         <source>No XML document received!</source>
         <translation>Brak dokumentu XML!</translation>
     </message>
@@ -325,6 +325,16 @@
         <location filename="../CacheExternalOrderImporter.cpp" line="46"/>
         <source>Couldn&apos;t determine Eve cache path. Did you set it in the Preferences?</source>
         <translation>Nie udało się znaleźć ścieżki cache. Czy wpisałeś ścieżkę w ustawieniach?</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::CachingEveDataProvider</name>
+    <message>
+        <location filename="../CachingEveDataProvider.cpp" line="151"/>
+        <location filename="../CachingEveDataProvider.cpp" line="168"/>
+        <location filename="../CachingEveDataProvider.cpp" line="176"/>
+        <source>(unknown)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -689,188 +699,188 @@
 <context>
     <name>Evernus::ContractModel</name>
     <message>
-        <location filename="../ContractModel.cpp" line="94"/>
+        <location filename="../ContractModel.cpp" line="111"/>
         <source>Item Exchange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="96"/>
+        <location filename="../ContractModel.cpp" line="113"/>
         <source>Courier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="98"/>
+        <location filename="../ContractModel.cpp" line="115"/>
         <source>Auction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="104"/>
+        <location filename="../ContractModel.cpp" line="121"/>
         <source>Outstanding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="106"/>
+        <location filename="../ContractModel.cpp" line="123"/>
         <source>Deleted</source>
         <translation type="unfinished">Usunięte</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="110"/>
+        <location filename="../ContractModel.cpp" line="127"/>
         <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="112"/>
+        <location filename="../ContractModel.cpp" line="129"/>
         <source>Completed by Issuer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="114"/>
+        <location filename="../ContractModel.cpp" line="131"/>
         <source>Completed by Contractor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="116"/>
+        <location filename="../ContractModel.cpp" line="133"/>
         <source>Cancelled</source>
         <translation type="unfinished">Anulowane</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="118"/>
+        <location filename="../ContractModel.cpp" line="135"/>
         <source>Rejected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="120"/>
+        <location filename="../ContractModel.cpp" line="137"/>
         <source>Reversed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="122"/>
+        <location filename="../ContractModel.cpp" line="139"/>
         <source>In Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="128"/>
+        <location filename="../ContractModel.cpp" line="145"/>
         <source>yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="128"/>
+        <location filename="../ContractModel.cpp" line="145"/>
         <source>no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="132"/>
+        <location filename="../ContractModel.cpp" line="149"/>
         <source>Private</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="134"/>
+        <location filename="../ContractModel.cpp" line="151"/>
         <source>Public</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="170"/>
+        <location filename="../ContractModel.cpp" line="187"/>
         <source>Issuer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="172"/>
+        <location filename="../ContractModel.cpp" line="189"/>
         <source>Issuer corporation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="174"/>
+        <location filename="../ContractModel.cpp" line="191"/>
         <source>Assignee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="176"/>
+        <location filename="../ContractModel.cpp" line="193"/>
         <source>Acceptor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="178"/>
+        <location filename="../ContractModel.cpp" line="195"/>
         <source>Start station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="180"/>
+        <location filename="../ContractModel.cpp" line="197"/>
         <source>End station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="182"/>
+        <location filename="../ContractModel.cpp" line="199"/>
         <source>Type</source>
         <translation type="unfinished">Typ</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="184"/>
+        <location filename="../ContractModel.cpp" line="201"/>
         <source>Status</source>
         <translation type="unfinished">Stan</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="186"/>
+        <location filename="../ContractModel.cpp" line="203"/>
         <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="190"/>
+        <location filename="../ContractModel.cpp" line="207"/>
         <source>Availability</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="192"/>
+        <location filename="../ContractModel.cpp" line="209"/>
         <source>Issued</source>
         <translation type="unfinished">Wystawiono</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="194"/>
+        <location filename="../ContractModel.cpp" line="211"/>
         <source>Expiration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="196"/>
+        <location filename="../ContractModel.cpp" line="213"/>
         <source>Accepted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="108"/>
-        <location filename="../ContractModel.cpp" line="198"/>
+        <location filename="../ContractModel.cpp" line="125"/>
+        <location filename="../ContractModel.cpp" line="215"/>
         <source>Completed</source>
         <translation type="unfinished">Zakończony</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="188"/>
+        <location filename="../ContractModel.cpp" line="205"/>
         <source>Corporation</source>
         <translation type="unfinished">Korporacja</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="200"/>
+        <location filename="../ContractModel.cpp" line="217"/>
         <source>Days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="202"/>
+        <location filename="../ContractModel.cpp" line="219"/>
         <source>Price</source>
         <translation type="unfinished">Cena</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="204"/>
+        <location filename="../ContractModel.cpp" line="221"/>
         <source>Reward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="206"/>
+        <location filename="../ContractModel.cpp" line="223"/>
         <source>Collateral</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="208"/>
+        <location filename="../ContractModel.cpp" line="225"/>
         <source>Buyout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="210"/>
+        <location filename="../ContractModel.cpp" line="227"/>
         <source>Volume</source>
         <translation type="unfinished">Wolumen</translation>
     </message>
@@ -1079,178 +1089,178 @@
 <context>
     <name>Evernus::EvernusApplication</name>
     <message>
-        <location filename="../EvernusApplication.cpp" line="90"/>
-        <location filename="../EvernusApplication.cpp" line="148"/>
+        <location filename="../EvernusApplication.cpp" line="88"/>
+        <location filename="../EvernusApplication.cpp" line="157"/>
         <source>Loading...</source>
         <translation>Ładowanie...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="92"/>
+        <location filename="../EvernusApplication.cpp" line="90"/>
         <source>Creating databases...</source>
         <translation>Tworzenie baz danych...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="95"/>
+        <location filename="../EvernusApplication.cpp" line="93"/>
         <source>Creating schemas...</source>
         <translation>Tworzenie modelu danych...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="106"/>
+        <location filename="../EvernusApplication.cpp" line="115"/>
         <source>Precaching ref types...</source>
         <translation>Odczyt typów...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="109"/>
+        <location filename="../EvernusApplication.cpp" line="118"/>
         <source>Precaching timers...</source>
         <translation>Odczyt czasów...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="113"/>
+        <location filename="../EvernusApplication.cpp" line="122"/>
         <source>Precaching jump map...</source>
         <translation>Odczyt mapy skoków...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="116"/>
+        <location filename="../EvernusApplication.cpp" line="125"/>
         <source>Clearing old wallet entries...</source>
         <translation>Czyszczenie starych wpisów portfela...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="119"/>
+        <location filename="../EvernusApplication.cpp" line="128"/>
         <source>Setting up IGB service...</source>
         <translation>Włączanie usługi IGB...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="131"/>
+        <location filename="../EvernusApplication.cpp" line="140"/>
         <source>Setting up HTTP service...</source>
         <translation>Włączanie usługi HTTP...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="688"/>
-        <location filename="../EvernusApplication.cpp" line="731"/>
+        <location filename="../EvernusApplication.cpp" line="273"/>
+        <location filename="../EvernusApplication.cpp" line="316"/>
         <source>Unknown cache timer type: %1</source>
         <translation>Nieznany typ czasu cache: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="801"/>
+        <location filename="../EvernusApplication.cpp" line="386"/>
         <source>Unknown update timer type: %1</source>
         <translation>Nieznany typ czasu aktualizacji: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1025"/>
+        <location filename="../EvernusApplication.cpp" line="615"/>
         <source>Fetching characters...</source>
         <translation>Pobieranie postaci...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1038"/>
+        <location filename="../EvernusApplication.cpp" line="628"/>
         <source>Fetching characters for key %1...</source>
         <translation>Pobieranie postaci dla klucza %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1051"/>
-        <location filename="../EvernusApplication.cpp" line="1057"/>
-        <location filename="../EvernusApplication.cpp" line="2381"/>
-        <location filename="../EvernusApplication.cpp" line="2414"/>
+        <location filename="../EvernusApplication.cpp" line="641"/>
+        <location filename="../EvernusApplication.cpp" line="647"/>
+        <location filename="../EvernusApplication.cpp" line="1938"/>
+        <location filename="../EvernusApplication.cpp" line="1971"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1051"/>
+        <location filename="../EvernusApplication.cpp" line="641"/>
         <source>An error occurred while updating character key information: %1. Data sync should work, but character tab will display incorrect information.</source>
         <translation>Wystąpił błąd aktualizacji informacji o kluczu postaci: %1 Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1057"/>
+        <location filename="../EvernusApplication.cpp" line="647"/>
         <source>An error occurred while updating character key information. Data sync should work, but character tab will display incorrect information.</source>
         <translation>Wystąpił błąd aktualizacji informacji o kluczu postaci Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1101"/>
+        <location filename="../EvernusApplication.cpp" line="691"/>
         <source>Fetching assets for character %1...</source>
         <translation>Pobieranie aktywów dla postaci: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1133"/>
-        <location filename="../EvernusApplication.cpp" line="1184"/>
-        <location filename="../EvernusApplication.cpp" line="1245"/>
-        <location filename="../EvernusApplication.cpp" line="1298"/>
-        <location filename="../EvernusApplication.cpp" line="1329"/>
-        <location filename="../EvernusApplication.cpp" line="1387"/>
-        <location filename="../EvernusApplication.cpp" line="1421"/>
-        <location filename="../EvernusApplication.cpp" line="1475"/>
-        <location filename="../EvernusApplication.cpp" line="1506"/>
+        <location filename="../EvernusApplication.cpp" line="723"/>
+        <location filename="../EvernusApplication.cpp" line="774"/>
+        <location filename="../EvernusApplication.cpp" line="835"/>
+        <location filename="../EvernusApplication.cpp" line="888"/>
+        <location filename="../EvernusApplication.cpp" line="919"/>
+        <location filename="../EvernusApplication.cpp" line="977"/>
+        <location filename="../EvernusApplication.cpp" line="1011"/>
+        <location filename="../EvernusApplication.cpp" line="1065"/>
+        <location filename="../EvernusApplication.cpp" line="1096"/>
         <source>Key not found!</source>
         <translation>Klucz nie znaleziony!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1137"/>
-        <location filename="../EvernusApplication.cpp" line="1188"/>
-        <location filename="../EvernusApplication.cpp" line="1249"/>
-        <location filename="../EvernusApplication.cpp" line="1302"/>
-        <location filename="../EvernusApplication.cpp" line="1333"/>
-        <location filename="../EvernusApplication.cpp" line="1425"/>
-        <location filename="../EvernusApplication.cpp" line="1479"/>
+        <location filename="../EvernusApplication.cpp" line="727"/>
+        <location filename="../EvernusApplication.cpp" line="778"/>
+        <location filename="../EvernusApplication.cpp" line="839"/>
+        <location filename="../EvernusApplication.cpp" line="892"/>
+        <location filename="../EvernusApplication.cpp" line="923"/>
+        <location filename="../EvernusApplication.cpp" line="1015"/>
+        <location filename="../EvernusApplication.cpp" line="1069"/>
         <source>Character not found!</source>
         <translation>Postać nie znaleziona!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1145"/>
+        <location filename="../EvernusApplication.cpp" line="735"/>
         <source>Fetching contracts for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1196"/>
+        <location filename="../EvernusApplication.cpp" line="786"/>
         <source>Fetching wallet journal for character %1...</source>
         <translation>Pobieranie dziennika dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1205"/>
+        <location filename="../EvernusApplication.cpp" line="795"/>
         <source>Fetching wallet journal for character %1 (this may take a while)...</source>
         <translation>Pobieranie dziennika dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1257"/>
+        <location filename="../EvernusApplication.cpp" line="847"/>
         <source>Fetching wallet transactions for character %1...</source>
         <translation>Pobieranie transakcji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1266"/>
+        <location filename="../EvernusApplication.cpp" line="856"/>
         <source>Fetching wallet transactions for character %1 (this may take a while)...</source>
         <translation>Pobieranie transakcji dla postaci %1 (może zajać sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1310"/>
-        <location filename="../EvernusApplication.cpp" line="1341"/>
+        <location filename="../EvernusApplication.cpp" line="900"/>
+        <location filename="../EvernusApplication.cpp" line="931"/>
         <source>Fetching market orders for character %1...</source>
         <translation>Pobieranie zleceń dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1353"/>
+        <location filename="../EvernusApplication.cpp" line="943"/>
         <source>Fetching corporation contracts for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1433"/>
+        <location filename="../EvernusApplication.cpp" line="1023"/>
         <source>Fetching corporation wallet transactions for character %1...</source>
         <translation>Pobieranie transakcji korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1443"/>
+        <location filename="../EvernusApplication.cpp" line="1033"/>
         <source>Fetching corporation wallet transactions for character %1 (this may take a while)...</source>
         <translation>Pobieranie transakcji korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1487"/>
-        <location filename="../EvernusApplication.cpp" line="1514"/>
+        <location filename="../EvernusApplication.cpp" line="1077"/>
+        <location filename="../EvernusApplication.cpp" line="1104"/>
         <source>Fetching corporation market orders for character %1...</source>
         <translation>Pobieranie zleceń korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1594"/>
+        <location filename="../EvernusApplication.cpp" line="1184"/>
         <source>Cache import</source>
         <translation>Import z cache</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1594"/>
+        <location filename="../EvernusApplication.cpp" line="1184"/>
         <source>Warning! Reading cache is considered a gray area. CPP on one hand considers this a violation of the EULA, but on the other has stated they will only penalize when used in conjunction with illegal activities, like botting.
 
 Do wish to continue?
@@ -1263,43 +1273,43 @@ Czy chcesz kontynuować?
 Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialność za jakąkolwiek karę CPP może na Ciebie nałożyć, jeśli zmienią swoją politykę.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1772"/>
+        <location filename="../EvernusApplication.cpp" line="1362"/>
         <source>SMTP Error</source>
         <translation>Błąd SMTP</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1772"/>
-        <location filename="../EvernusApplication.cpp" line="1780"/>
+        <location filename="../EvernusApplication.cpp" line="1362"/>
+        <location filename="../EvernusApplication.cpp" line="1370"/>
         <source>Error sending email: %1</source>
         <translation>Błąd wysyłania maila: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1780"/>
+        <location filename="../EvernusApplication.cpp" line="1370"/>
         <source>Mail Error</source>
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2105"/>
+        <location filename="../EvernusApplication.cpp" line="1662"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2119"/>
+        <location filename="../EvernusApplication.cpp" line="1676"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2130"/>
+        <location filename="../EvernusApplication.cpp" line="1687"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2382"/>
+        <location filename="../EvernusApplication.cpp" line="1939"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2386"/>
+        <location filename="../EvernusApplication.cpp" line="1943"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1308,69 +1318,69 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2389"/>
+        <location filename="../EvernusApplication.cpp" line="1946"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2414"/>
+        <location filename="../EvernusApplication.cpp" line="1971"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1395"/>
+        <location filename="../EvernusApplication.cpp" line="985"/>
         <source>Fetching corporation wallet journal for character %1...</source>
         <translation>Pobieranie dziennika korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1404"/>
+        <location filename="../EvernusApplication.cpp" line="994"/>
         <source>Fetching corporation wallet journal for character %1 (this may take a while)...</source>
         <translation>Pobieranie dziennika korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1526"/>
+        <location filename="../EvernusApplication.cpp" line="1116"/>
         <source>Fetching conquerable stations...</source>
         <translation>Pobieranie stacji graczy...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1660"/>
+        <location filename="../EvernusApplication.cpp" line="1250"/>
         <source>Select Mentat directory</source>
         <translation>Wybierz katalog Mentat</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1670"/>
+        <location filename="../EvernusApplication.cpp" line="1260"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1670"/>
+        <location filename="../EvernusApplication.cpp" line="1260"/>
         <source>Error opening %1</source>
         <translation>Błąd otwierania %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1674"/>
+        <location filename="../EvernusApplication.cpp" line="1264"/>
         <source>Importing order history...</source>
         <translation>Importowanie historii zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1720"/>
+        <location filename="../EvernusApplication.cpp" line="1310"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importowanie historii zleceń: %1 przetworzonych</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1725"/>
+        <location filename="../EvernusApplication.cpp" line="1315"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2031"/>
+        <location filename="../EvernusApplication.cpp" line="1588"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2094"/>
+        <location filename="../EvernusApplication.cpp" line="1651"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>
@@ -2835,102 +2845,102 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarketOrderArchiveModel</name>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="113"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="109"/>
         <source>Active</source>
         <translation>Aktywne</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="114"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="110"/>
         <source>Closed</source>
         <translation>Zamknięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="115"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="111"/>
         <source>Fulfilled</source>
         <translation>Zakończone</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="116"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="112"/>
         <source>Cancelled</source>
         <translation>Anulowane</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="117"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="113"/>
         <source>Pending</source>
         <translation>Oczekujące</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="118"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="114"/>
         <source>Character Deleted</source>
         <translation>Usunięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="127"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="123"/>
         <source>Buy</source>
         <translation>Kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="127"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="123"/>
         <source>Sell</source>
         <translation>Sprzedaż</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="137"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="133"/>
         <source>Expired</source>
         <translation>Wygasła</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="219"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="209"/>
         <source>Completed</source>
         <translation>Zakończony</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="221"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="211"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="223"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="213"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="225"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="215"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="227"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="217"/>
         <source>Status</source>
         <translation>Stan</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="229"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="219"/>
         <source>Custom cost</source>
         <translation>Koszt własny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="231"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="221"/>
         <source>Price</source>
         <translation>Cena</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="233"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="223"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="235"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="225"/>
         <source>Profit</source>
         <translation>Zysk</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="237"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="227"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="239"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="229"/>
         <source>Owner</source>
         <translation>Właściciel</translation>
     </message>
@@ -2938,108 +2948,108 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarketOrderBuyModel</name>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="81"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="83"/>
         <source>No price data -&gt; Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation>Brak danych o cenach -&gt; Zaimporuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży.</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="87"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="89"/>
         <source>You have been overbid. Current price is %1 (%2 different from yours).
 Click the icon for details.</source>
         <translation>Twoja cena została przebita. Aktualna cena to %1 (różnica: %2).
 Kliknij na ikonę, aby zobaczyć więcej.</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="96"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="98"/>
         <source>Price data is too old (valid on %1).
 Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation>Dane o cenie są za stare (akutalizacja: %1).
 Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży.</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="100"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="102"/>
         <source>Your price was best on %1</source>
         <translation>Twoja cena była najlepsza: %1</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="204"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="206"/>
         <source>Active</source>
         <translation>Aktywne</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="205"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="207"/>
         <source>Closed</source>
         <translation>Zamknięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="206"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="208"/>
         <source>Fulfilled</source>
         <translation>Zakończone</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="207"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="209"/>
         <source>Cancelled</source>
         <translation>Anulowane</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="208"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="210"/>
         <source>Pending</source>
         <translation>Oczekujące</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="209"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="211"/>
         <source>Character Deleted</source>
         <translation>Usunięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="224"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="226"/>
         <source>Expired</source>
         <translation>Wygasłe</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="236"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="238"/>
         <source>No price data</source>
         <translation>Brak danych o cenie</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="241"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="243"/>
         <source>Data too old</source>
         <translation>Dane za stare</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="263"/>
-        <location filename="../MarketOrderBuyModel.cpp" line="425"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="265"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="427"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="265"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="267"/>
         <source>System</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="267"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="269"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="269"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="271"/>
         <source>%1 jumps</source>
         <translation>%1 skoków</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="278"/>
-        <location filename="../MarketOrderBuyModel.cpp" line="282"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="280"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="284"/>
         <source>unknown</source>
         <translation>nieznany</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="285"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="287"/>
         <source>today</source>
         <translation>dziś</translation>
     </message>
     <message numerus="yes">
-        <location filename="../MarketOrderBuyModel.cpp" line="285"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="287"/>
         <source>%n day(s)</source>
         <translation>
             <numerusform>%n dzień</numerusform>
@@ -3048,57 +3058,57 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         </translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="391"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="393"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="393"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="395"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="395"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="397"/>
         <source>Status</source>
         <translation>Stan</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="397"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="399"/>
         <source>Price</source>
         <translation>Cena</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="399"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="401"/>
         <source>Price status</source>
         <translation>Stan ceny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="401"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="403"/>
         <source>Price difference</source>
         <translation>Różnica cen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="403"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="405"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="405"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="407"/>
         <source>Total</source>
         <translation>Suma</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="407"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="409"/>
         <source>Delta</source>
         <translation>Zmiana</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="409"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="411"/>
         <source>Order margin</source>
         <translation>Marża zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="411"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="413"/>
         <source>Best margin</source>
         <translation>Najlepsza marża</translation>
     </message>
@@ -3107,37 +3117,37 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Marża</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="413"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="415"/>
         <source>Range</source>
         <translation>Zasięg</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="415"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="417"/>
         <source>Min. quantity</source>
         <translation>Min. ilość</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="417"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="419"/>
         <source>ETA</source>
         <translation>ETA</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="419"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="421"/>
         <source>Time left</source>
         <translation>Pozostały czas</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="421"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="423"/>
         <source>Order age</source>
         <translation>Wiek zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="423"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="425"/>
         <source>First issued</source>
         <translation>Wystawiono</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="427"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="429"/>
         <source>Owner</source>
         <translation>Właściciel</translation>
     </message>
@@ -3305,82 +3315,82 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderSellModel</name>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="86"/>
+        <location filename="../MarketOrderSellModel.cpp" line="88"/>
         <source>No price data -&gt; Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation>Brak danych o cenach -&gt; Zaimporuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży.</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="92"/>
+        <location filename="../MarketOrderSellModel.cpp" line="94"/>
         <source>You have been undercut. Current price is %1 (%2 different from yours).
 Click the icon for details.</source>
         <translation>Twoja cena została podcięta. Aktualna cena to %1 (różnica: %2).
 Kliknij na ikonę, aby zobaczyć więcej.</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="101"/>
+        <location filename="../MarketOrderSellModel.cpp" line="103"/>
         <source>Price data is too old (valid on %1).
 Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation>Dane o cenie są za stare (akutalizacja: %1).
 Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży.</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="105"/>
+        <location filename="../MarketOrderSellModel.cpp" line="107"/>
         <source>Your price was best on %1</source>
         <translation>Twoja cena była najlepsza: %1</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="235"/>
+        <location filename="../MarketOrderSellModel.cpp" line="237"/>
         <source>Active</source>
         <translation>Aktywne</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="236"/>
+        <location filename="../MarketOrderSellModel.cpp" line="238"/>
         <source>Closed</source>
         <translation>Zamknięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="237"/>
+        <location filename="../MarketOrderSellModel.cpp" line="239"/>
         <source>Fulfilled</source>
         <translation>Zakończone</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="238"/>
+        <location filename="../MarketOrderSellModel.cpp" line="240"/>
         <source>Cancelled</source>
         <translation>Anulowane</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="239"/>
+        <location filename="../MarketOrderSellModel.cpp" line="241"/>
         <source>Pending</source>
         <translation>Oczekujące</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="240"/>
+        <location filename="../MarketOrderSellModel.cpp" line="242"/>
         <source>Character Deleted</source>
         <translation>Usunięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="255"/>
+        <location filename="../MarketOrderSellModel.cpp" line="257"/>
         <source>Expired</source>
         <translation>Wygasłe</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="274"/>
+        <location filename="../MarketOrderSellModel.cpp" line="276"/>
         <source>No price data</source>
         <translation>Brak danych o cenie</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="279"/>
+        <location filename="../MarketOrderSellModel.cpp" line="281"/>
         <source>Data too old</source>
         <translation>Dane za stare</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="328"/>
-        <location filename="../MarketOrderSellModel.cpp" line="332"/>
+        <location filename="../MarketOrderSellModel.cpp" line="330"/>
+        <location filename="../MarketOrderSellModel.cpp" line="334"/>
         <source>unknown</source>
         <translation>nieznany</translation>
     </message>
     <message numerus="yes">
-        <location filename="../MarketOrderSellModel.cpp" line="335"/>
+        <location filename="../MarketOrderSellModel.cpp" line="337"/>
         <source>%n day(s)</source>
         <translation>
             <numerusform>%n dzień</numerusform>
@@ -3389,107 +3399,107 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         </translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="335"/>
+        <location filename="../MarketOrderSellModel.cpp" line="337"/>
         <source>today</source>
         <translation>dziś</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="458"/>
+        <location filename="../MarketOrderSellModel.cpp" line="460"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="460"/>
+        <location filename="../MarketOrderSellModel.cpp" line="462"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="462"/>
+        <location filename="../MarketOrderSellModel.cpp" line="464"/>
         <source>Status</source>
         <translation>Stan</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="464"/>
+        <location filename="../MarketOrderSellModel.cpp" line="466"/>
         <source>Custom cost</source>
         <translation>Koszt własny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="466"/>
+        <location filename="../MarketOrderSellModel.cpp" line="468"/>
         <source>Price</source>
         <translation>Cena</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="468"/>
+        <location filename="../MarketOrderSellModel.cpp" line="470"/>
         <source>Price status</source>
         <translation>Stan ceny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="470"/>
+        <location filename="../MarketOrderSellModel.cpp" line="472"/>
         <source>Price difference</source>
         <translation>Różnica cen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="472"/>
+        <location filename="../MarketOrderSellModel.cpp" line="474"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="474"/>
+        <location filename="../MarketOrderSellModel.cpp" line="476"/>
         <source>Total</source>
         <translation>Suma</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="476"/>
+        <location filename="../MarketOrderSellModel.cpp" line="478"/>
         <source>Delta</source>
         <translation>Zmiana</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="478"/>
+        <location filename="../MarketOrderSellModel.cpp" line="480"/>
         <source>Margin</source>
         <translation>Marża</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="480"/>
+        <location filename="../MarketOrderSellModel.cpp" line="482"/>
         <source>Profit</source>
         <translation>Zysk</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="482"/>
+        <location filename="../MarketOrderSellModel.cpp" line="484"/>
         <source>Total profit</source>
         <translation>Całkowity zysk</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="484"/>
+        <location filename="../MarketOrderSellModel.cpp" line="486"/>
         <source>Profit per item</source>
         <translation>Zysk jednostkowy</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="486"/>
+        <location filename="../MarketOrderSellModel.cpp" line="488"/>
         <source>ETA</source>
         <translation>ETA</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="488"/>
+        <location filename="../MarketOrderSellModel.cpp" line="490"/>
         <source>Time left</source>
         <translation>Pozostały czas</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="490"/>
+        <location filename="../MarketOrderSellModel.cpp" line="492"/>
         <source>Order age</source>
         <translation>Wiek zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="492"/>
+        <location filename="../MarketOrderSellModel.cpp" line="494"/>
         <source>First issued</source>
         <translation>Wystawiono</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="494"/>
+        <location filename="../MarketOrderSellModel.cpp" line="496"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="496"/>
+        <location filename="../MarketOrderSellModel.cpp" line="498"/>
         <source>Owner</source>
         <translation>Właściciel</translation>
     </message>

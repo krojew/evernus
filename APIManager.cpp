@@ -24,6 +24,7 @@
 #include "MarketOrdersXmlReceiver.h"
 #include "ContractsXmlReceiver.h"
 #include "AssetListXmlReceiver.h"
+#include "GenericNameDomParser.h"
 #include "RefTypeXmlReceiver.h"
 #include "CharacterDomParser.h"
 #include "CacheTimerProvider.h"
@@ -249,6 +250,26 @@ namespace Evernus
     void APIManager::fetchContracts(const CorpKey &key, Character::IdType characterId, const Callback<Contracts> &callback) const
     {
         doFetchContracts(key, characterId, callback, TimerType::CorpContracts);
+    }
+
+    void APIManager::fetchGenericName(quint64 id, const Callback<QString> &callback) const
+    {
+#ifdef Q_OS_WIN
+        mInterface.fetchGenericName(id, [callback, this](const QString &response, const QString &error) {
+#else
+        mInterface.fetchGenericName(id, [callback = callback, this](const QString &response, const QString &error) {
+#endif
+            try
+            {
+                handlePotentialError(response, error);
+
+                callback(parseResult<QString>(response), QString{});
+            }
+            catch (const std::exception &e)
+            {
+                callback(QString{}, e.what());
+            }
+        });
     }
 
     template<class Key>

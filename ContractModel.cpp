@@ -25,6 +25,7 @@ namespace Evernus
         : QAbstractItemModel{parent}
         , mDataProvider{dataProvider}
     {
+        connect(&mDataProvider, &EveDataProvider::namesChanged, this, &ContractModel::updateNames);
     }
 
     int ContractModel::columnCount(const QModelIndex &parent) const
@@ -43,6 +44,14 @@ namespace Evernus
         switch (role) {
         case Qt::UserRole:
             switch (index.column()) {
+            case issuerColumn:
+                return mDataProvider.getGenericName(contract->getIssuerId());
+            case issuerCorpColumn:
+                return mDataProvider.getGenericName(contract->getIssuerCorpId());
+            case assigneeColumn:
+                return mDataProvider.getGenericName(contract->getAssigneeId());
+            case acceptorColumn:
+                return mDataProvider.getGenericName(contract->getAcceptorId());
             case startStationColumn:
                 return mDataProvider.getLocationName(contract->getStartStationId());
             case endStationColumn:
@@ -84,6 +93,14 @@ namespace Evernus
                 QLocale locale;
 
                 switch (index.column()) {
+                case issuerColumn:
+                    return mDataProvider.getGenericName(contract->getIssuerId());
+                case issuerCorpColumn:
+                    return mDataProvider.getGenericName(contract->getIssuerCorpId());
+                case assigneeColumn:
+                    return mDataProvider.getGenericName(contract->getAssigneeId());
+                case acceptorColumn:
+                    return mDataProvider.getGenericName(contract->getAcceptorId());
                 case startStationColumn:
                     return mDataProvider.getLocationName(contract->getStartStationId());
                 case endStationColumn:
@@ -273,5 +290,14 @@ namespace Evernus
         }
 
         endResetModel();
+    }
+
+    void ContractModel::updateNames()
+    {
+        emit dataChanged(index(0, issuerColumn),
+                         index(rowCount() - 1, acceptorColumn),
+                         QVector<int>{}
+                             << Qt::UserRole
+                             << Qt::DisplayRole);
     }
 }

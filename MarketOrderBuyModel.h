@@ -14,8 +14,6 @@
  */
 #pragma once
 
-#include <unordered_map>
-
 #include "MarketOrderTreeModel.h"
 #include "CharacterRepository.h"
 
@@ -52,6 +50,9 @@ namespace Evernus
 
         virtual Type getType() const override;
 
+    private slots:
+        void updateNames();
+
     private:
         enum
         {
@@ -85,8 +86,6 @@ namespace Evernus
         Repository<Character>::EntityPtr mCharacter;
 
         bool mCorp = false;
-
-        mutable std::unordered_map<Character::IdType, QString> mCharacterNames;
 
         virtual OrderList getOrders() const override;
         virtual void handleNewCharacter() override;

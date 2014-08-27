@@ -43,6 +43,8 @@ namespace Evernus
         , mCharacterRepository{characterRepository}
         , mCorp{corp}
     {
+        if (mCorp)
+            connect(&mDataProvider, &EveDataProvider::namesChanged, this, &MarketOrderArchiveModel::updateNames);
     }
 
     int MarketOrderArchiveModel::columnCount(const QModelIndex &parent) const
@@ -98,13 +100,7 @@ namespace Evernus
             case stationColumn:
                 return mDataProvider.getLocationName(data->getStationId());
             case ownerColumn:
-                try
-                {
-                    return mCharacterRepository.getCharacterName(data->getCharacterId());
-                }
-                catch (const CharacterRepository::NotFoundException &)
-                {
-                }
+                return mDataProvider.getGenericName(data->getCharacterId());
             }
             break;
         case Qt::DisplayRole:
@@ -154,13 +150,7 @@ namespace Evernus
                 case stationColumn:
                     return mDataProvider.getLocationName(data->getStationId());
                 case ownerColumn:
-                    try
-                    {
-                        return mCharacterRepository.getCharacterName(data->getCharacterId());
-                    }
-                    catch (const CharacterRepository::NotFoundException &)
-                    {
-                    }
+                    return mDataProvider.getGenericName(data->getCharacterId());
                 }
             }
             break;
@@ -281,6 +271,34 @@ namespace Evernus
         mTo = to;
 
         setCharacter(id);
+    }
+
+    void MarketOrderArchiveModel::updateNames()
+    {
+        if (mGrouping == Grouping::None)
+        {
+            emit dataChanged(index(0, ownerColumn),
+                             index(rowCount() - 1, ownerColumn),
+                             QVector<int>{}
+                                 << Qt::UserRole
+                                 << Qt::DisplayRole);
+        }
+        else
+        {
+            const auto rows = mRootItem.childCount();
+            for (auto row = 0; row < rows; ++row)
+            {
+                const auto child = mRootItem.child(row);
+                const auto children = child->childCount();
+                const auto parent = index(row, 0);
+
+                emit dataChanged(index(0, ownerColumn, parent),
+                                 index(children - 1, ownerColumn, parent),
+                                 QVector<int>{}
+                                     << Qt::UserRole
+                                     << Qt::DisplayRole);
+            }
+        }
     }
 
     MarketOrderTreeModel::OrderList MarketOrderArchiveModel::getOrders() const

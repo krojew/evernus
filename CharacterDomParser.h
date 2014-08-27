@@ -25,5 +25,3 @@ namespace Evernus
         Character parse<Character>(const QDomElement &node);
     }
 }
-
-#include "CharacterDomParser.cpp"

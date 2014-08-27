@@ -47,6 +47,8 @@ namespace Evernus
         , mCharacterRepository{characterRepository}
         , mCorp{corp}
     {
+        if (mCorp)
+            connect(&mDataProvider, &EveDataProvider::namesChanged, this, &MarketOrderSellModel::updateNames);
     }
 
     int MarketOrderSellModel::columnCount(const QModelIndex &parent) const
@@ -544,6 +546,34 @@ namespace Evernus
         return Type::Sell;
     }
 
+    void MarketOrderSellModel::updateNames()
+    {
+        if (mGrouping == Grouping::None)
+        {
+            emit dataChanged(index(0, ownerColumn),
+                             index(rowCount() - 1, ownerColumn),
+                             QVector<int>{}
+                                 << Qt::UserRole
+                                 << Qt::DisplayRole);
+        }
+        else
+        {
+            const auto rows = mRootItem.childCount();
+            for (auto row = 0; row < rows; ++row)
+            {
+                const auto child = mRootItem.child(row);
+                const auto children = child->childCount();
+                const auto parent = index(row, 0);
+
+                emit dataChanged(index(0, ownerColumn, parent),
+                                 index(children - 1, ownerColumn, parent),
+                                 QVector<int>{}
+                                     << Qt::UserRole
+                                     << Qt::DisplayRole);
+            }
+        }
+    }
+
     MarketOrderTreeModel::OrderList MarketOrderSellModel::getOrders() const
     {
         if (!mCharacter)
@@ -568,20 +598,6 @@ namespace Evernus
 
     QString MarketOrderSellModel::getCharacterName(Character::IdType id) const
     {
-        const auto it = mCharacterNames.find(id);
-        if (it != std::end(mCharacterNames))
-            return it->second;
-
-        QString result;
-
-        try
-        {
-            result = mCharacterRepository.getCharacterName(id);
-        }
-        catch (const CharacterRepository::NotFoundException &)
-        {
-        }
-
-        return mCharacterNames.emplace(id, result).first->second;
+        return mDataProvider.getGenericName(id);
     }
 }

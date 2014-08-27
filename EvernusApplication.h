@@ -17,8 +17,6 @@
 #include <functional>
 #include <memory>
 
-#include <boost/functional/hash.hpp>
-
 #include <QApplication>
 #include <QSqlDatabase>
 #include <QTranslator>
@@ -36,6 +34,7 @@
 #include "ExternalOrderRepository.h"
 #include "CachingContractProvider.h"
 #include "FavoriteItemRepository.h"
+#include "CachingEveDataProvider.h"
 #include "ExternalOrderImporter.h"
 #include "MarketGroupRepository.h"
 #include "UpdateTimerRepository.h"
@@ -53,7 +52,6 @@
 #include "RefTypeRepository.h"
 #include "CorpKeyRepository.h"
 #include "ItemCostProvider.h"
-#include "EveDataProvider.h"
 #include "ItemRepository.h"
 #include "AssetProvider.h"
 #include "TaskConstants.h"
@@ -69,7 +67,6 @@ namespace Evernus
 
     class EvernusApplication
         : public QApplication
-        , public EveDataProvider
         , public ExternalOrderImporterRegistry
         , public AssetProvider
         , public CacheTimerProvider
@@ -82,32 +79,6 @@ namespace Evernus
 
         EvernusApplication(int &argc, char *argv[]);
         virtual ~EvernusApplication() = default;
-
-        virtual QString getTypeName(EveType::IdType id) const override;
-        virtual QString getTypeMarketGroupParentName(EveType::IdType id) const override;
-        virtual QString getTypeMarketGroupName(EveType::IdType id) const override;
-        virtual MarketGroup::IdType getTypeMarketGroupParentId(EveType::IdType id) const override;
-        virtual const std::unordered_map<EveType::IdType, QString> &getAllTypeNames() const override;
-        virtual QString getTypeMetaGroupName(EveType::IdType id) const override;
-
-        virtual double getTypeVolume(EveType::IdType id) const override;
-        virtual std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
-        virtual std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const override;
-
-        virtual void updateExternalOrders(const std::vector<ExternalOrder> &orders) override;
-
-        virtual QString getLocationName(quint64 id) const override;
-        virtual QString getRegionName(uint id) const override;
-        virtual QString getSolarSystemName(uint id) const override;
-
-        virtual QString getRefTypeName(uint id) const override;
-
-        virtual const std::vector<MapLocation> &getRegions() const override;
-        virtual const std::vector<MapLocation> &getConstellations(uint regionId) const override;
-        virtual const std::vector<MapLocation> &getSolarSystems(uint constellationId) const override;
-        virtual const std::vector<Station> &getStations(uint solarSystemId) const override;
-
-        virtual double getSolarSystemSecurityStatus(uint solarSystemId) const override;
 
         virtual void registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer) override;
 
@@ -151,6 +122,8 @@ namespace Evernus
 
         const ContractProvider &getContractProvider() const noexcept;
         const ContractProvider &getCorpContractProvider() const noexcept;
+
+        EveDataProvider &getDataProvider() noexcept;
 
     signals:
         void taskStarted(uint taskId, const QString &description);
@@ -215,9 +188,7 @@ namespace Evernus
         void showMailError(int mailID, int errorCode, const QByteArray &message);
 
     private:
-        typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
         typedef std::pair<Character::IdType, EveType::IdType> CharacterTypePair;
-        typedef std::pair<EveType::IdType, uint> TypeRegionPair;
 
         typedef std::unordered_map<Character::IdType, QDateTime> CharacterTimerMap;
 
@@ -259,23 +230,7 @@ namespace Evernus
         bool mCharacterUpdateScheduled = false;
         bool mItemCostUpdateScheduled = false;
 
-        mutable std::unordered_map<EveType::IdType, EveTypeRepository::EntityPtr> mTypeCache;
-        mutable std::unordered_map<EveType::IdType, QString> mTypeNameCache;
-        mutable std::unordered_map<EveType::IdType, MarketGroupRepository::EntityPtr> mTypeMarketGroupParentCache;
-        mutable std::unordered_map<EveType::IdType, MarketGroupRepository::EntityPtr> mTypeMarketGroupCache;
-        mutable std::unordered_map<EveType::IdType, MetaGroupRepository::EntityPtr> mTypeMetaGroupCache;
-        mutable std::unordered_map<quint64, QString> mLocationNameCache;
-        mutable std::unordered_map<uint, uint> mSolarSystemRegionCache;
-        mutable std::unordered_map<quint64, uint> mLocationSolarSystemCache;
-
-        mutable std::unordered_map<TypeLocationPair, ExternalOrderRepository::EntityPtr, boost::hash<TypeLocationPair>>
-        mSellPrices;
-        mutable std::unordered_map<TypeLocationPair, ExternalOrderRepository::EntityPtr, boost::hash<TypeLocationPair>>
-        mBuyPrices;
-
         std::unordered_map<std::string, ImporterPtr> mExternalOrderImporters;
-
-        std::unordered_map<RefType::IdType, QString> mRefTypeNames;
 
         mutable std::unordered_map<Character::IdType, AssetListRepository::EntityPtr> mCharacterAssets;
 
@@ -310,35 +265,21 @@ namespace Evernus
         mCharacterItemCostCache;
         mutable std::unordered_map<EveType::IdType, ItemCostRepository::EntityPtr> mTypeItemCostCache;
 
-        std::unordered_map<uint, std::unordered_multimap<uint, uint>> mSystemJumpMap;
-
-        mutable std::unordered_map<TypeRegionPair, ExternalOrderRepository::EntityList, boost::hash<TypeRegionPair>>
-        mTypeRegionOrderCache;
-
         QTranslator mTranslator, mQtTranslator;
 
         QxtHttpSessionManager mIGBSessionManager, mHttpSessionManager;
         QxtSmtp mSmtp;
 
-        mutable std::vector<MapLocation> mRegionCache;
-        mutable std::unordered_map<uint, std::vector<MapLocation>> mConstellationCache, mSolarSystemCache;
-        mutable std::unordered_map<uint, std::vector<Station>> mStationCache;
-
-        mutable std::unordered_map<uint, QString> mRegionNameCache;
-        mutable std::unordered_map<uint, QString> mSolarSystemNameCache;
-
         std::unordered_set<MarketOrder::IdType> mPendingAutoCostOrders;
 
-        mutable std::unordered_map<uint, double> mSecurityStatuses;
+        std::unique_ptr<CachingEveDataProvider> mDataProvider;
 
         void updateTranslator(const QString &lang);
 
         void createDb();
         void createDbSchema();
-        void precacheRefTypes();
         void precacheCacheTimers();
         void precacheUpdateTimers();
-        void precacheJumpMap();
         void deleteOldWalletEntries();
 
         uint startTask(const QString &description);
@@ -354,28 +295,16 @@ namespace Evernus
 
         void finishExternalOrderImportTask(const QString &info);
 
-        std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
         void computeAssetListSellValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;
 
         void saveUpdateTimer(TimerType timer, CharacterTimerMap &map, Character::IdType characterId) const;
-
-        EveTypeRepository::EntityPtr getEveType(EveType::IdType id) const;
-        MarketGroupRepository::EntityPtr getMarketGroupParent(MarketGroup::IdType id) const;
-        MarketGroupRepository::EntityPtr getMarketGroup(MarketGroup::IdType id) const;
-
-        uint getSolarSystemRegionId(uint stationId) const;
-        uint getStationSolarSystemId(quint64 stationId) const;
-
-        const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
 
         void computeAutoCosts(Character::IdType characterId,
                               const MarketOrderProvider::OrderList &orders,
                               const TransactionFetcher &transFetcher);
 
         void setSmtpSettings();
-
-        void clearExternalOrderCaches();
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };

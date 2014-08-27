@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
                                         app,
                                         app.getContractProvider(),
                                         app.getCorpContractProvider(),
-                                        app,
+                                        app.getDataProvider(),
                                         app,
                                         app};
 

@@ -45,6 +45,7 @@ qt5_wrap_cpp(
     AssetsWidget.h
     ButtonWithTimer.h
     CacheExternalOrderImporter.h
+    CachingEveDataProvider.h
     CharacterBoundWidget.h
     CharacterManagerDialog.h
     CharacterModel.h
@@ -58,6 +59,7 @@ qt5_wrap_cpp(
     DateFilteredPlotWidget.h
     DateRangeWidget.h
     DeviationSourceWidget.h
+    EveDataProvider.h
     EveMarketDataExternalOrderImporter.h
     EvernusApplication.h
     ExternalOrderBuyModel.h
@@ -187,6 +189,8 @@ add_executable(
     CacheTimerRepository.h
     CachingContractProvider.cpp
     CachingContractProvider.h
+    CachingEveDataProvider.cpp
+    CachingEveDataProvider.h
     CachingMarketOrderProvider.cpp
     CachingMarketOrderProvider.h
     Character.cpp
@@ -196,6 +200,7 @@ add_executable(
     CharacterCorporationCombinedMarketOrderProvider.cpp
     CharacterCorporationCombinedMarketOrderProvider.h
     CharacterData.h
+    CharacterDomParser.cpp
     CharacterDomParser.h
     CharacterImportPreferencesWidget.cpp
     CharacterImportPreferencesWidget.h
@@ -296,6 +301,8 @@ add_executable(
     FilterTextRepository.h
     GeneralPreferencesWidget.cpp
     GeneralPreferencesWidget.h
+    GenericNameDomParser.cpp
+    GenericNameDomParser.h
     HttpPreferencesWidget.cpp
     HttpPreferencesWidget.h
     HttpService.cpp

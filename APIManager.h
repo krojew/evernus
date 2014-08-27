@@ -83,6 +83,8 @@ namespace Evernus
         void fetchContracts(const Key &key, Character::IdType characterId, const Callback<Contracts> &callback) const;
         void fetchContracts(const CorpKey &key, Character::IdType characterId, const Callback<Contracts> &callback) const;
 
+        void fetchGenericName(quint64 id, const Callback<QString> &callback) const;
+
     signals:
         void generalError(const QString &info);
 

@@ -51,6 +51,9 @@ namespace Evernus
 
         void reset();
 
+    private slots:
+        void updateNames();
+
     private:
         enum
         {

@@ -67,6 +67,7 @@ namespace Evernus
                                      const Callback &callback) const;
         void fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback &callback) const;
         void fetchContracts(const CorpKey &key, Character::IdType characterId, const Callback &callback) const;
+        void fetchGenericName(quint64 id, const Callback &callback) const;
 
     signals:
         void generalError(const QString &info);

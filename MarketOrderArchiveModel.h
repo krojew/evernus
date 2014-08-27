@@ -52,6 +52,9 @@ namespace Evernus
 
         void setCharacterAndRange(Character::IdType id, const QDateTime &from, const QDateTime &to);
 
+    private slots:
+        void updateNames();
+
     private:
         static const auto lastSeenColumn = 0;
         static const auto typeColumn = 1;

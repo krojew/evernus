@@ -129,6 +129,11 @@ namespace Evernus
         makeRequest("/corp/Contracts.xml.aspx", key, callback, { std::make_pair("characterId", QString::number(characterId)) });
     }
 
+    void APIInterface::fetchGenericName(quint64 id, const Callback &callback) const
+    {
+        makeRequest("/eve/CharacterName.xml.aspx", Key{}, callback, { std::make_pair("ids", QString::number(id)) });
+    }
+
     void APIInterface::processReply()
     {
         auto reply = qobject_cast<QNetworkReply *>(sender());

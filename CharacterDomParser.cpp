@@ -15,6 +15,7 @@
 #include <QDomElement>
 #include <QSettings>
 
+#include "CharacterDomParser.h"
 #include "ImportSettings.h"
 
 namespace Evernus
