@@ -41,6 +41,7 @@ namespace Evernus
                                                                      const MarketOrderProvider &corpOrderProvider,
                                                                      bool corp,
                                                                      const QString &objectName,
+                                                                     bool showExternalOrders,
                                                                      QWidget *parent)
         : QWidget(parent)
         , mCharacterRepo(characterRepo)
@@ -79,8 +80,11 @@ namespace Evernus
         groupLayout->addWidget(tabs);
         tabs->setTabPosition(QTabWidget::West);
 
-        mExternalOrderView = new ExternalOrderView{mCostProvider, mDataProvider, objectName + "-externalOrders", this};
-        tabs->addTab(mExternalOrderView, tr("Market orders"));
+        if (showExternalOrders)
+        {
+            mExternalOrderView = new ExternalOrderView{mCostProvider, mDataProvider, objectName + "-externalOrders", this};
+            tabs->addTab(mExternalOrderView, tr("Market orders"));
+        }
 
         mTransactionsView = new StyledTreeView{objectName + "-transactions", this};
         tabs->addTab(mTransactionsView, tr("Transactions"));
@@ -129,7 +133,8 @@ namespace Evernus
             }
         }
 
-        mExternalOrderView->setModel(mExternalOrderModel.get());
+        if (mExternalOrderView != nullptr)
+            mExternalOrderView->setModel(mExternalOrderModel.get());
     }
 
     void MarketOrderViewWithTransactions::setShowInfo(bool flag)

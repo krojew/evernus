@@ -122,6 +122,7 @@ namespace Evernus
                                                         corpOrderProvider,
                                                         corp,
                                                         "marketOrderSellView",
+                                                        true,
                                                         this};
         mainTabs->addTab(mSellView, QIcon{":/images/arrow_out.png"}, tr("Sell"));
         mSellView->setModel(&mSellModel);
@@ -141,6 +142,7 @@ namespace Evernus
                                                        corpOrderProvider,
                                                        corp,
                                                        "marketOrderBuyView",
+                                                       true,
                                                        this};
         mainTabs->addTab(mBuyView, QIcon{":/images/arrow_in.png"}, tr("Buy"));
         mBuyView->setModel(&mBuyModel);
@@ -208,6 +210,7 @@ namespace Evernus
                                                            corpOrderProvider,
                                                            corp,
                                                            "marketOrderArchiveView",
+                                                           false,
                                                            this};
         archiveLayout->addWidget(mArchiveView);
         mArchiveView->setShowInfo(false);

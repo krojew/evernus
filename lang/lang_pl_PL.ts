@@ -3733,17 +3733,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderViewWithTransactions</name>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="83"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="86"/>
         <source>Market orders</source>
         <translation>Zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="86"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="90"/>
         <source>Transactions</source>
         <translation>Transakcje</translation>
     </message>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="75"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="76"/>
         <source>Add to item costs</source>
         <translation>Dodaj do własnych kosztów</translation>
     </message>
@@ -3810,37 +3810,37 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="126"/>
+        <location filename="../MarketOrderWidget.cpp" line="127"/>
         <source>Sell</source>
         <translation>Sprzedaż</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="145"/>
+        <location filename="../MarketOrderWidget.cpp" line="147"/>
         <source>Buy</source>
         <translation>Kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="154"/>
+        <location filename="../MarketOrderWidget.cpp" line="156"/>
         <source>Sell &amp;&amp; Buy</source>
         <translation>Sprzedaż i kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="159"/>
+        <location filename="../MarketOrderWidget.cpp" line="161"/>
         <source>Sell orders</source>
         <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="173"/>
+        <location filename="../MarketOrderWidget.cpp" line="175"/>
         <source>Buy orders</source>
         <translation>Zlecenia kupna</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="188"/>
+        <location filename="../MarketOrderWidget.cpp" line="190"/>
         <source>History</source>
         <translation>Historia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="277"/>
+        <location filename="../MarketOrderWidget.cpp" line="280"/>
         <source>Script error</source>
         <translation>Błąd skryptu</translation>
     </message>
