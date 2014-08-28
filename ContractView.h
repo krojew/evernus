@@ -31,7 +31,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit ContractView(QWidget *parent = nullptr);
+        explicit ContractView(const QString &objectName, QWidget *parent = nullptr);
         virtual ~ContractView() = default;
 
         void setModel(ContractModel *model);

@@ -24,13 +24,13 @@
 
 namespace Evernus
 {
-    ContractView::ContractView(QWidget *parent)
+    ContractView::ContractView(const QString &objectName, QWidget *parent)
         : QWidget(parent)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
-        mView = new StyledTreeView{this};
+        mView = new StyledTreeView{objectName, this};
         mainLayout->addWidget(mView);
         mView->setModel(&mProxy);
 

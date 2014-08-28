@@ -82,7 +82,7 @@ namespace Evernus
         mModelProxy->setSortRole(Qt::UserRole);
         mModelProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
-        mAssetView = new StyledTreeView{this};
+        mAssetView = new StyledTreeView{"assetView", this};
         mainLayout->addWidget(mAssetView);
         mAssetView->setModel(mModelProxy);
 

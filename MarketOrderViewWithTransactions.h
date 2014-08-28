@@ -52,6 +52,7 @@ namespace Evernus
                                         const MarketOrderProvider &orderProvider,
                                         const MarketOrderProvider &corpOrderProvider,
                                         bool corp,
+                                        const QString &objectName,
                                         QWidget *parent = nullptr);
         virtual ~MarketOrderViewWithTransactions() = default;
 

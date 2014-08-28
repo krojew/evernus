@@ -121,6 +121,7 @@ namespace Evernus
                                                         mOrderProvider,
                                                         corpOrderProvider,
                                                         corp,
+                                                        "marketOrderSellView",
                                                         this};
         mainTabs->addTab(mSellView, QIcon{":/images/arrow_out.png"}, tr("Sell"));
         mSellView->setModel(&mSellModel);
@@ -139,6 +140,7 @@ namespace Evernus
                                                        mOrderProvider,
                                                        corpOrderProvider,
                                                        corp,
+                                                       "marketOrderBuyView",
                                                        this};
         mainTabs->addTab(mBuyView, QIcon{":/images/arrow_in.png"}, tr("Buy"));
         mBuyView->setModel(&mBuyModel);
@@ -160,7 +162,7 @@ namespace Evernus
         auto sellGroupLayout = new QVBoxLayout{};
         sellGroup->setLayout(sellGroupLayout);
 
-        mCombinedSellView = new MarketOrderView{dataProvider, this};
+        mCombinedSellView = new MarketOrderView{dataProvider, "marketOrderSellView",this};
         sellGroupLayout->addWidget(mCombinedSellView);
         mCombinedSellView->setModel(&mSellModel);
         mCombinedSellView->sortByColumn(0, Qt::AscendingOrder);
@@ -174,7 +176,7 @@ namespace Evernus
         auto buyGroupLayout = new QVBoxLayout{};
         buyGroup->setLayout(buyGroupLayout);
 
-        mCombinedBuyView = new MarketOrderView{dataProvider, this};
+        mCombinedBuyView = new MarketOrderView{dataProvider, "marketOrderBuyView",this};
         buyGroupLayout->addWidget(mCombinedBuyView);
         mCombinedBuyView->setModel(&mBuyModel);
         mCombinedBuyView->sortByColumn(0, Qt::AscendingOrder);
@@ -205,6 +207,7 @@ namespace Evernus
                                                            mOrderProvider,
                                                            corpOrderProvider,
                                                            corp,
+                                                           "marketOrderArchiveView",
                                                            this};
         archiveLayout->addWidget(mArchiveView);
         mArchiveView->setShowInfo(false);

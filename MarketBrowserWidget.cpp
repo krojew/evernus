@@ -333,7 +333,7 @@ namespace Evernus
         auto sellLayout = new QVBoxLayout{};
         sellGroup->setLayout(sellLayout);
 
-        mSellView = new ExternalOrderView{costProvider, mDataProvider, this};
+        mSellView = new ExternalOrderView{costProvider, mDataProvider, "externalOrderSellView", this};
         sellLayout->addWidget(mSellView);
         mSellView->setModel(&mExternalOrderSellModel);
 
@@ -351,7 +351,7 @@ namespace Evernus
         auto buyLayout = new QVBoxLayout{};
         buyGroup->setLayout(buyLayout);
 
-        mBuyView = new ExternalOrderView{costProvider, mDataProvider, this};
+        mBuyView = new ExternalOrderView{costProvider, mDataProvider, "externalOrderBuyView", this};
         buyLayout->addWidget(mBuyView);
         mBuyView->setModel(&mExternalOrderBuyModel);
 

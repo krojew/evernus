@@ -40,6 +40,7 @@ namespace Evernus
                                                                      const MarketOrderProvider &orderProvider,
                                                                      const MarketOrderProvider &corpOrderProvider,
                                                                      bool corp,
+                                                                     const QString &objectName,
                                                                      QWidget *parent)
         : QWidget(parent)
         , mCharacterRepo(characterRepo)
@@ -53,7 +54,7 @@ namespace Evernus
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
-        mOrderView = new MarketOrderView{mDataProvider, this};
+        mOrderView = new MarketOrderView{mDataProvider, objectName + "-orders", this};
         mainLayout->addWidget(mOrderView, 1);
         connect(this, &MarketOrderViewWithTransactions::statusFilterChanged, mOrderView, &MarketOrderView::statusFilterChanged);
         connect(this, &MarketOrderViewWithTransactions::priceStatusFilterChanged, mOrderView, &MarketOrderView::priceStatusFilterChanged);
@@ -78,10 +79,10 @@ namespace Evernus
         groupLayout->addWidget(tabs);
         tabs->setTabPosition(QTabWidget::West);
 
-        mExternalOrderView = new ExternalOrderView{mCostProvider, mDataProvider, this};
+        mExternalOrderView = new ExternalOrderView{mCostProvider, mDataProvider, objectName + "-externalOrders", this};
         tabs->addTab(mExternalOrderView, tr("Market orders"));
 
-        mTransactionsView = new StyledTreeView{this};
+        mTransactionsView = new StyledTreeView{objectName + "-transactions", this};
         tabs->addTab(mTransactionsView, tr("Transactions"));
         mTransactionsView->setModel(&mTransactionProxyModel);
         mTransactionsView->sortByColumn(1, Qt::DescendingOrder);

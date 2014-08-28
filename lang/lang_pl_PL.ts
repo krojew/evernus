@@ -1738,43 +1738,43 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ExternalOrderView</name>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="52"/>
+        <location filename="../ExternalOrderView.cpp" line="55"/>
         <source>Total cost:</source>
         <translation>Całkowity koszt:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="58"/>
+        <location filename="../ExternalOrderView.cpp" line="61"/>
         <source>Total volume:</source>
         <translation>Całkowity wolumen:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="64"/>
+        <location filename="../ExternalOrderView.cpp" line="67"/>
         <source>Total size:</source>
         <translation>Całkowita objętość:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="70"/>
+        <location filename="../ExternalOrderView.cpp" line="73"/>
         <source>Min. price:</source>
         <translation>Min. cena:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="76"/>
+        <location filename="../ExternalOrderView.cpp" line="79"/>
         <source>Median price:</source>
         <translation>Mediana:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="82"/>
+        <location filename="../ExternalOrderView.cpp" line="85"/>
         <source>Max. price:</source>
         <translation>Maks. cena:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="88"/>
+        <location filename="../ExternalOrderView.cpp" line="91"/>
         <source>Custom cost:</source>
         <translation>Koszt własny:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="163"/>
-        <location filename="../ExternalOrderView.cpp" line="169"/>
+        <location filename="../ExternalOrderView.cpp" line="166"/>
+        <location filename="../ExternalOrderView.cpp" line="172"/>
         <source>N/A</source>
         <translation>brak</translation>
     </message>
@@ -3701,32 +3701,32 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderView</name>
     <message>
-        <location filename="../MarketOrderView.cpp" line="68"/>
+        <location filename="../MarketOrderView.cpp" line="66"/>
         <source>Active orders:</source>
         <translation>Aktywne zlecenia:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="74"/>
+        <location filename="../MarketOrderView.cpp" line="72"/>
         <source>Total volume:</source>
         <translation>Całkowity wolumen:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="80"/>
+        <location filename="../MarketOrderView.cpp" line="78"/>
         <source>Total ISK in orders:</source>
         <translation>Całkowita inwestycja:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="86"/>
+        <location filename="../MarketOrderView.cpp" line="84"/>
         <source>Total size:</source>
         <translation>Całkowita objętość:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="96"/>
+        <location filename="../MarketOrderView.cpp" line="94"/>
         <source>Lookup item on eve-marketdata.com</source>
         <translation>Sprawdź cenę na eve-marketdata.com</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="99"/>
+        <location filename="../MarketOrderView.cpp" line="97"/>
         <source>Lookup item on eve-central.com</source>
         <translation>Sprawdź cenę na eve-central.com</translation>
     </message>
@@ -3734,17 +3734,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderViewWithTransactions</name>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="82"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="83"/>
         <source>Market orders</source>
         <translation>Zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="85"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="86"/>
         <source>Transactions</source>
         <translation>Transakcje</translation>
     </message>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="74"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="75"/>
         <source>Add to item costs</source>
         <translation>Dodaj do własnych kosztów</translation>
     </message>
@@ -3811,37 +3811,37 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="125"/>
+        <location filename="../MarketOrderWidget.cpp" line="126"/>
         <source>Sell</source>
         <translation>Sprzedaż</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="143"/>
+        <location filename="../MarketOrderWidget.cpp" line="145"/>
         <source>Buy</source>
         <translation>Kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="152"/>
+        <location filename="../MarketOrderWidget.cpp" line="154"/>
         <source>Sell &amp;&amp; Buy</source>
         <translation>Sprzedaż i kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="157"/>
+        <location filename="../MarketOrderWidget.cpp" line="159"/>
         <source>Sell orders</source>
         <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="171"/>
+        <location filename="../MarketOrderWidget.cpp" line="173"/>
         <source>Buy orders</source>
         <translation>Zlecenia kupna</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="186"/>
+        <location filename="../MarketOrderWidget.cpp" line="188"/>
         <source>History</source>
         <translation>Historia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="274"/>
+        <location filename="../MarketOrderWidget.cpp" line="277"/>
         <source>Script error</source>
         <translation>Błąd skryptu</translation>
     </message>
@@ -4387,22 +4387,22 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::StyledTreeView</name>
     <message>
-        <location filename="../StyledTreeView.cpp" line="37"/>
+        <location filename="../StyledTreeView.cpp" line="39"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiuj</translation>
     </message>
     <message>
-        <location filename="../StyledTreeView.cpp" line="43"/>
+        <location filename="../StyledTreeView.cpp" line="45"/>
         <source>Copy &amp;rows</source>
         <translation>Kopiuj wie&amp;rsze</translation>
     </message>
     <message>
-        <location filename="../StyledTreeView.cpp" line="47"/>
+        <location filename="../StyledTreeView.cpp" line="49"/>
         <source>Copy raw &amp;data</source>
         <translation>Kopiuj &amp;dane źródłowe</translation>
     </message>
     <message>
-        <location filename="../StyledTreeView.cpp" line="53"/>
+        <location filename="../StyledTreeView.cpp" line="55"/>
         <source>Show/hide columns</source>
         <translation>Pokaż/ukryj kolumny</translation>
     </message>

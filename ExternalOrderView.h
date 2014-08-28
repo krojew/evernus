@@ -34,7 +34,10 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        ExternalOrderView(const ItemCostProvider &costProvider, const EveDataProvider &dataProvider, QWidget *parent = nullptr);
+        ExternalOrderView(const ItemCostProvider &costProvider,
+                          const EveDataProvider &dataProvider,
+                          const QString &objectName,
+                          QWidget *parent = nullptr);
         virtual ~ExternalOrderView() = default;
 
         void setModel(ExternalOrderModel *model);

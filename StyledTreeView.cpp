@@ -15,10 +15,12 @@
 #include <QApplication>
 #include <QHeaderView>
 #include <QClipboard>
+#include <QSettings>
 #include <QAction>
 #include <QMenu>
 
 #include "StyledTreeViewItemDelegate.h"
+#include "UISettings.h"
 
 #include "StyledTreeView.h"
 
@@ -53,6 +55,15 @@ namespace Evernus
         action = new QAction{tr("Show/hide columns"), this};
         action->setMenu(mColumnsMenu);
         addAction(action);
+
+        connect(header(), &QHeaderView::sectionMoved, this, &StyledTreeView::saveHeaderState);
+        connect(header(), &QHeaderView::sectionResized, this, &StyledTreeView::saveHeaderState);
+    }
+
+    StyledTreeView::StyledTreeView(const QString &objectName, QWidget *parent)
+        : StyledTreeView{parent}
+    {
+        setObjectName(objectName);
     }
 
     void StyledTreeView::setModel(QAbstractItemModel *newModel)
@@ -67,6 +78,16 @@ namespace Evernus
         {
             setColumnsMenu(newModel);
             connect(newModel, SIGNAL(modelReset()), this, SLOT(setColumnsMenu()));
+
+            const auto name = objectName();
+            if (!name.isEmpty())
+            {
+                QSettings settings;
+
+                const auto state = settings.value(QString{UISettings::headerStateKey}.arg(name)).toByteArray();
+                if (!state.isEmpty())
+                    header()->restoreState(state);
+            }
         }
     }
 
@@ -108,6 +129,16 @@ namespace Evernus
             connect(action, &QAction::triggered, this, [i, this](bool checked) {
                 setColumnHidden(i, !checked);
             });
+        }
+    }
+
+    void StyledTreeView::saveHeaderState()
+    {
+        const auto name = objectName();
+        if (!name.isEmpty())
+        {
+            QSettings settings;
+            settings.setValue(QString{UISettings::headerStateKey}.arg(name), header()->saveState());
         }
     }
 

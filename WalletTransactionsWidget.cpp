@@ -72,7 +72,7 @@ namespace Evernus
         auto addCostAct = new QAction{tr("Add to item costs"), this};
         connect(addCostAct, &QAction::triggered, this, &WalletTransactionsWidget::addItemCost);
 
-        mView = new StyledTreeView{this};
+        mView = new StyledTreeView{"transactionsView", this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(mFilterModel);
         mView->sortByColumn(1, Qt::DescendingOrder);

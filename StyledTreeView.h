@@ -25,6 +25,7 @@ namespace Evernus
 
     public:
         explicit StyledTreeView(QWidget *parent = nullptr);
+        explicit StyledTreeView(const QString &objectName, QWidget *parent = nullptr);
         virtual ~StyledTreeView() = default;
 
         virtual void setModel(QAbstractItemModel *newModel) override;
@@ -35,6 +36,8 @@ namespace Evernus
         void copyRawData();
 
         void setColumnsMenu(QAbstractItemModel *model = nullptr);
+
+        void saveHeaderState();
 
     private:
         QMenu *mColumnsMenu = nullptr;
