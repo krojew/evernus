@@ -2007,7 +2007,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../IGBService.cpp" line="55"/>
         <source>Error reading IGB script template.</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd oczytu danych skryptu IGB.</translation>
     </message>
     <message>
         <location filename="../IGBService.cpp" line="59"/>
@@ -2032,22 +2032,22 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../IGBService.cpp" line="63"/>
         <source>Favorite Items</source>
-        <translation type="unfinished"></translation>
+        <translation>Ulubione</translation>
     </message>
     <message>
         <location filename="../IGBService.cpp" line="68"/>
         <source>Show Previous Entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Poprzednia pozycja</translation>
     </message>
     <message>
         <location filename="../IGBService.cpp" line="69"/>
         <source>Show Next Entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Następna pozycja</translation>
     </message>
     <message>
         <location filename="../IGBService.cpp" line="70"/>
         <source>Current entry:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualna pozycja:</translation>
     </message>
     <message>
         <location filename="../IGBService.cpp" line="80"/>
@@ -2082,7 +2082,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../IGBService.cpp" line="77"/>
         <source>Favorite items:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ulubione przedmioty:</translation>
     </message>
     <message>
         <location filename="../IGBService.cpp" line="87"/>
