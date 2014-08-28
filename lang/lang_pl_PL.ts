@@ -2064,7 +2064,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Wybierz kategorię z menu.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="108"/>
+        <location filename="../IGBService.cpp" line="109"/>
         <source>Website trust is required. Please add it to Trusted Sites.</source>
         <translation>Wymagane jest zaufanie stronie. Dodaj stronę do zaufanych (Trusted Sites).</translation>
     </message>

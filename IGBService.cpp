@@ -96,8 +96,9 @@ namespace Evernus
 
     void IGBService::openMarginTool(QxtWebRequestEvent *event)
     {
-        Q_UNUSED(event);
         emit openMarginTool();
+
+        postEvent(new QxtWebPageEvent(event->sessionID, event->requestID, QByteArray{}));
     }
 
     void IGBService::renderContent(QxtWebRequestEvent *event, const QString &content)
