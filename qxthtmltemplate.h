@@ -43,6 +43,7 @@ public:
     QxtHtmlTemplate();
     bool open(const QString& filename);
     void load(const QString& data);
+    void copyArguments(const QMap<QString, QString> &map);
 
     QString render() const;
 

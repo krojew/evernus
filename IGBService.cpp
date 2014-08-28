@@ -13,10 +13,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <algorithm>
+#include <stdexcept>
 #include <limits>
 
 #include <QSettings>
+#include <QFile>
 
+#include "FavoriteItemRepository.h"
 #include "MarketOrderProvider.h"
 #include "EveDataProvider.h"
 #include "IGBSettings.h"
@@ -29,19 +32,27 @@
 namespace Evernus
 {
     const QString IGBService::limitToStationsCookie = "limitToStations";
+    const QString IGBService::orderHtmlTemplate = "<li><a class='order' id='order-%2' href='#' onclick='showOrder(%2);'>%1</a></li>";
 
     IGBService::IGBService(const MarketOrderProvider &orderProvider,
                            const MarketOrderProvider &corpOrderProvider,
                            const EveDataProvider &dataProvider,
+                           const FavoriteItemRepository &favoriteItemRepo,
                            QxtHttpSessionManager *sm,
                            QObject *parent)
         : QxtWebSlotService(sm, parent)
         , mOrderProvider(orderProvider)
         , mCorpOrderProvider(corpOrderProvider)
         , mDataProvider(dataProvider)
+        , mFavoriteItemRepo(favoriteItemRepo)
     {
         mMainTemplate.open(":/html/igb_template.html");
         mOrderTemplate.open(":/html/igb_order_template.html");
+        mFavoriteTemplate.open(":/html/igb_favorite_template.html");
+
+        QFile orderScript{":/html/igb_order_js_template.html"};
+        if (!orderScript.open(QIODevice::ReadOnly))
+            throw std::runtime_error{tr("Error reading IGB script template.").toStdString()};
 
         QSettings settings;
 
@@ -49,18 +60,24 @@ namespace Evernus
         mMainTemplate["fulfilled-link-text"] = tr("Character Fulfilled Orders");
         mMainTemplate["corp-active-link-text"] = tr("Corporation Active Orders");
         mMainTemplate["corp-fulfilled-link-text"] = tr("Corporation Fulfilled Orders");
+        mMainTemplate["favorite-link-text"] = tr("Favorite Items");
         mMainTemplate["open-margin-tool-link-text"] = tr("Open Margin Tool");
         mMainTemplate["port"] = settings.value(IGBSettings::portKey, IGBSettings::portDefault).toString();
 
-        mOrderTemplate["sell-orders-text"] = tr("Sell orders:");
-        mOrderTemplate["buy-orders-text"] = tr("Buy orders:");
-        mOrderTemplate["prev-order-text"] = tr("Show Previous Order");
-        mOrderTemplate["next-order-text"] = tr("Show Next Order");
-        mOrderTemplate["current-order-text"] = tr("Current order:");
+        mOrderTemplate["order-script"] = orderScript.readAll();
+        mOrderTemplate["prev-order-text"] = tr("Show Previous Entry");
+        mOrderTemplate["next-order-text"] = tr("Show Next Entry");
+        mOrderTemplate["current-order-text"] = tr("Current entry:");
         mOrderTemplate["scan-delay-text"] = tr("Scan delay:");
         mOrderTemplate["start-scan-text"] = tr("Start Scan");
         mOrderTemplate["stop-scan-text"] = tr("Stop Scan");
         mOrderTemplate["stop-at-end-text"] = tr("Stop at end");
+
+        mFavoriteTemplate.copyArguments(mOrderTemplate);
+        mFavoriteTemplate["favorite-text"] = tr("Favorite items:");
+
+        mOrderTemplate["sell-orders-text"] = tr("Sell orders:");
+        mOrderTemplate["buy-orders-text"] = tr("Buy orders:");
         mOrderTemplate["limit-to-stations-text"] = tr("Limit to current station, if available");
         mOrderTemplate["limit-to-stations-cookie"] = limitToStationsCookie;
     }
@@ -92,6 +109,32 @@ namespace Evernus
     {
         showOrders<quint64, &MarketOrderProvider::getSellOrdersForCorporation, &MarketOrderProvider::getBuyOrdersForCorporation>(
             event, mCorpOrderProvider, MarketOrder::State::Fulfilled, true, getCorporationId(event));
+    }
+
+    void IGBService::favorite(QxtWebRequestEvent *event)
+    {
+        QStringList idContainer, typeIdContainer;
+        QString result;
+
+        const auto items = mFavoriteItemRepo.fetchAll();
+        auto i = 0u;
+
+        for (const auto &item : items)
+        {
+            idContainer << QString::number(++i);
+            typeIdContainer << QString::number(item->getId());
+
+            result.append(orderHtmlTemplate.arg(mDataProvider.getTypeName(item->getId())).arg(idContainer.last()));
+        }
+
+        QSettings settings;
+
+        mFavoriteTemplate["order-ids"] = idContainer.join(", ");
+        mFavoriteTemplate["type-ids"] = typeIdContainer.join(", ");
+        mFavoriteTemplate["scan-delay"] = settings.value(IGBSettings::scanDelayKey, IGBSettings::scanDelayDefault).toString();
+        mFavoriteTemplate["favorite-items"] = result;
+
+        renderContent(event, mFavoriteTemplate.render());
     }
 
     void IGBService::openMarginTool(QxtWebRequestEvent *event)
@@ -126,10 +169,7 @@ namespace Evernus
             idContainer << QString::number(order->getId());
             typeIdContainer << QString::number(order->getTypeId());
 
-            result.append(QString{"<li class='%4'><a class='order' id='order-%3' href='#' onclick='showOrder(%1);'>%2</a></li>"}
-                .arg(order->getId())
-                .arg(mDataProvider.getTypeName(order->getTypeId()))
-                .arg(order->getId()));
+            result.append(orderHtmlTemplate.arg(mDataProvider.getTypeName(order->getTypeId())).arg(order->getId()));
         }
 
         return result;

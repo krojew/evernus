@@ -126,7 +126,12 @@ namespace Evernus
         deleteOldWalletEntries();
 
         showSplashMessage(tr("Setting up IGB service..."), splash);
-        auto igbService = new IGBService{*mCharacterOrderProvider, *mCorpOrderProvider, *mDataProvider, &mIGBSessionManager, this};
+        auto igbService = new IGBService{*mCharacterOrderProvider,
+                                         *mCorpOrderProvider,
+                                         *mDataProvider,
+                                         *mFavoriteItemRepository,
+                                         &mIGBSessionManager,
+                                         this};
         connect(igbService, SIGNAL(openMarginTool()), this, SIGNAL(openMarginTool()));
 
         mIGBSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());

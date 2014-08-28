@@ -28,6 +28,7 @@ class QxtHttpSessionManager;
 
 namespace Evernus
 {
+    class FavoriteItemRepository;
     class MarketOrderProvider;
     class EveDataProvider;
 
@@ -40,6 +41,7 @@ namespace Evernus
         IGBService(const MarketOrderProvider &orderProvider,
                    const MarketOrderProvider &corpOrderProvider,
                    const EveDataProvider &dataProvider,
+                   const FavoriteItemRepository &favoriteItemRepo,
                    QxtHttpSessionManager *sm,
                    QObject *parent = nullptr);
         virtual ~IGBService() = default;
@@ -53,17 +55,21 @@ namespace Evernus
         void fulfilled(QxtWebRequestEvent *event);
         void corpActive(QxtWebRequestEvent *event);
         void corpFulfilled(QxtWebRequestEvent *event);
+        void favorite(QxtWebRequestEvent *event);
         void openMarginTool(QxtWebRequestEvent *event);
 
     private:
         typedef std::vector<std::shared_ptr<MarketOrder>> OrderList;
 
         static const QString limitToStationsCookie;
+        static const QString orderHtmlTemplate;
 
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const EveDataProvider &mDataProvider;
 
-        QxtHtmlTemplate mMainTemplate, mOrderTemplate;
+        const FavoriteItemRepository &mFavoriteItemRepo;
+
+        QxtHtmlTemplate mMainTemplate, mOrderTemplate, mFavoriteTemplate;
 
         void renderContent(QxtWebRequestEvent *event, const QString &content);
         QString renderOrderList(const std::vector<std::shared_ptr<MarketOrder>> &orders,
