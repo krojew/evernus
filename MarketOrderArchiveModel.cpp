@@ -105,15 +105,6 @@ namespace Evernus
             break;
         case Qt::DisplayRole:
             {
-                const char * const stateNames[] = {
-                    QT_TR_NOOP("Active"),
-                    QT_TR_NOOP("Closed"),
-                    QT_TR_NOOP("Fulfilled"),
-                    QT_TR_NOOP("Cancelled"),
-                    QT_TR_NOOP("Pending"),
-                    QT_TR_NOOP("Character Deleted")
-                };
-
                 QLocale locale;
 
                 switch (column) {
@@ -127,6 +118,15 @@ namespace Evernus
                     return getGroupName(data->getTypeId());
                 case statusColumn:
                     {
+                        const char * const stateNames[] = {
+                            QT_TR_NOOP("Active"),
+                            QT_TR_NOOP("Closed"),
+                            QT_TR_NOOP("Fulfilled"),
+                            QT_TR_NOOP("Cancelled"),
+                            QT_TR_NOOP("Pending"),
+                            QT_TR_NOOP("Character Deleted")
+                        };
+
                         const auto prefix = (data->getDelta() != 0) ? ("*") : ("");
 
                         if (data->getState() == MarketOrder::State::Fulfilled && data->getVolumeRemaining() > 0)

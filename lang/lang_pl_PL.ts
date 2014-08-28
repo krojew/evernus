@@ -2990,42 +2990,42 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarketOrderArchiveModel</name>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="109"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="122"/>
         <source>Active</source>
         <translation>Aktywne</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="110"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="123"/>
         <source>Closed</source>
         <translation>Zamknięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="111"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="124"/>
         <source>Fulfilled</source>
         <translation>Zakończone</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="112"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="125"/>
         <source>Cancelled</source>
         <translation>Anulowane</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="113"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="126"/>
         <source>Pending</source>
         <translation>Oczekujące</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="114"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="127"/>
         <source>Character Deleted</source>
         <translation>Usunięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="123"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="114"/>
         <source>Buy</source>
         <translation>Kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="123"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="114"/>
         <source>Sell</source>
         <translation>Sprzedaż</translation>
     </message>
@@ -3117,32 +3117,32 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Twoja cena była najlepsza: %1</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="206"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="215"/>
         <source>Active</source>
         <translation>Aktywne</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="207"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="216"/>
         <source>Closed</source>
         <translation>Zamknięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="208"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="217"/>
         <source>Fulfilled</source>
         <translation>Zakończone</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="209"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="218"/>
         <source>Cancelled</source>
         <translation>Anulowane</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="210"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="219"/>
         <source>Pending</source>
         <translation>Oczekujące</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="211"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="220"/>
         <source>Character Deleted</source>
         <translation>Usunięte</translation>
     </message>
@@ -3484,32 +3484,32 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Twoja cena była najlepsza: %1</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="237"/>
+        <location filename="../MarketOrderSellModel.cpp" line="246"/>
         <source>Active</source>
         <translation>Aktywne</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="238"/>
+        <location filename="../MarketOrderSellModel.cpp" line="247"/>
         <source>Closed</source>
         <translation>Zamknięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="239"/>
+        <location filename="../MarketOrderSellModel.cpp" line="248"/>
         <source>Fulfilled</source>
         <translation>Zakończone</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="240"/>
+        <location filename="../MarketOrderSellModel.cpp" line="249"/>
         <source>Cancelled</source>
         <translation>Anulowane</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="241"/>
+        <location filename="../MarketOrderSellModel.cpp" line="250"/>
         <source>Pending</source>
         <translation>Oczekujące</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="242"/>
+        <location filename="../MarketOrderSellModel.cpp" line="251"/>
         <source>Character Deleted</source>
         <translation>Usunięte</translation>
     </message>

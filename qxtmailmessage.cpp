@@ -54,27 +54,29 @@ struct QxtMailMessagePrivate : public QSharedData
     QxtMailMessagePrivate(const QxtMailMessagePrivate& other)
             : QSharedData(other), rcptTo(other.rcptTo), rcptCc(other.rcptCc), rcptBcc(other.rcptBcc),
             subject(other.subject), body(other.body), sender(other.sender),
-            extraHeaders(other.extraHeaders), attachments(other.attachments),
-            wordWrapLimit(78), preserveStartSpaces(false) {}
+            extraHeaders(other.extraHeaders), attachments(other.attachments)
+            {}
     QStringList rcptTo, rcptCc, rcptBcc;
     QString subject, body, sender;
     QHash<QString, QString> extraHeaders;
     QHash<QString, QxtMailAttachment> attachments;
     mutable QByteArray boundary;
-    int wordWrapLimit;
-    bool preserveStartSpaces;
+    int wordWrapLimit = 78;
+    bool preserveStartSpaces = false;
 };
 
 class QxtRfc2822Parser
 {
 public:
+    QxtRfc2822Parser() = default;
+
     QxtMailMessagePrivate* parse(const QByteArray& buffer);
 private:
     enum State {
         Headers,
         Body
     };
-    State state;
+    State state = Headers;
     QString currentHeaderKey;
     QStringList currentHeaderValue;
     void parseHeader(const QByteArray& line, QHash<QString, QString>& headers);
@@ -393,7 +395,6 @@ QByteArray QxtMailMessage::rfc2822() const
                 if (QXT_MUST_QP(b[i])) nonAscii++;
             }
             useQuotedPrintable = !(nonAscii > 20);
-            useBase64 = !useQuotedPrintable;
         }
     }
 
@@ -604,14 +605,13 @@ QxtMailMessagePrivate* QxtRfc2822Parser::parse(const QByteArray& buffer)
 void QxtRfc2822Parser::parseEntity(const QByteArray& buffer, QHash<QString,QString>& headers, QString& body)
 {
     int pos = 0;
-    int crlfPos = 0;
     QByteArray line;
     currentHeaderKey = QString();
     currentHeaderValue.clear();
     state = Headers;
     while (true)
     {
-        crlfPos = buffer.indexOf("\r\n", pos);
+        const auto crlfPos = buffer.indexOf("\r\n", pos);
         if (crlfPos == -1)
         {
             break;
@@ -689,21 +689,19 @@ void QxtRfc2822Parser::parseBody(QxtMailMessagePrivate* msg)
     {
         qDebug("regexp %s not valid ! %s", bndRe.pattern().toLatin1().data(), bndRe.errorString().toLatin1().data());
     }
-#ifdef QXT_MAIL_MESSAGE_DEBUG
-    bool last = false;
-#endif
     // keep track of the position of two consecutive boundary delimiters:
     // begin* is the position of the delimiter first character,
     // end* is the position of the first character of the part following it.
     int beginFirst = 0;
     int endFirst = 0;
-    int beginSecond = 0;
     int endSecond = 0;
     while(bndRe.indexIn(body, endSecond) != -1)
     {
-        beginSecond = bndRe.pos() + bndRe.cap(1).length(); // add length of preceding line break, if any
+        auto beginSecond = bndRe.pos() + bndRe.cap(1).length(); // add length of preceding line break, if any
         endSecond = bndRe.pos() + bndRe.matchedLength();
 #ifdef QXT_MAIL_MESSAGE_DEBUG
+        bool last = false;
+
 #if QT_VERSION >= 0x040600
         if (bndRe.captureCount() == 2 && bndRe.cap(2) == "--") last = true;
 #else
@@ -813,7 +811,6 @@ QString QxtRfc2822Parser::decode(const QString& charset, const QString& encoding
 
 QxtMailAttachment* QxtRfc2822Parser::parseAttachment(const QHash<QString,QString>& headers, const QString& body, QString& filename)
 {
-    static int count = 1;
     QByteArray content;
     QRegExp filenameRe(";\\s+filename=\"?([^\"]*)\"?(?=;|$)");
     if (filenameRe.indexIn(headers["content-disposition"]) != -1)
@@ -822,6 +819,7 @@ QxtMailAttachment* QxtRfc2822Parser::parseAttachment(const QHash<QString,QString
     }
     else
     {
+        static int count = 1;
         filename = QString("attachment%1").arg(count);
     }
 //    qDebug("Attachment %s", filename.toLocal8Bit().data());

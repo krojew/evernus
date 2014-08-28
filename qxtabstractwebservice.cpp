@@ -82,7 +82,7 @@ public:
     QXT_DECLARE_PUBLIC(QxtAbstractWebService)
     QxtAbstractWebServicePrivate() {}
 
-    QxtAbstractWebSessionManager* manager;
+    QxtAbstractWebSessionManager* manager = nullptr;
 };
 #endif
 
