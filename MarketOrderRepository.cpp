@@ -380,7 +380,7 @@ namespace Evernus
     void MarketOrderRepository::archive(const std::vector<MarketOrder::IdType> &ids) const
     {
         QStringList list;
-        for (auto i = 0; i < ids.size(); ++i)
+        for (auto i = 0u; i < ids.size(); ++i)
             list << "?";
 
         auto query = prepare(QString{R"(UPDATE %1 SET 

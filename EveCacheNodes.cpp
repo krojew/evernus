@@ -176,7 +176,7 @@ namespace Evernus
                 return nullptr;
             }
 
-            for (auto i = 1; i < size; i += 2)
+            for (auto i = 1u; i < size; i += 2)
             {
                 const auto id = dynamic_cast<const Ident *>(children[i].get());
                 if (id != nullptr && id->getName() == name)

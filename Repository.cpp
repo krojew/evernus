@@ -127,7 +127,7 @@ namespace Evernus
         if (reminder > 0)
         {
             QStringList restBindings;
-            for (auto i = 0; i < reminder; ++i)
+            for (auto i = 0u; i < reminder; ++i)
                 restBindings << bindingStr;
 
             const auto restQueryStr = baseQueryStr.arg(restBindings.join(", "));
