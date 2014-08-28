@@ -768,11 +768,11 @@ namespace Evernus
 
                     saveUpdateTimer(Evernus::TimerType::Contracts, mContractsUtcUpdateTimes, id);
 
-                    handleIncomingContracts<&EvernusApplication::contractsChanged>(key,
-                                                                                   data,
-                                                                                   id,
-                                                                                   *mContractItemRepository,
-                                                                                   task);
+                    this->handleIncomingContracts<&Evernus::EvernusApplication::contractsChanged>(key,
+                                                                                                  data,
+                                                                                                  id,
+                                                                                                  *mContractItemRepository,
+                                                                                                  task);
                 }
                 else
                 {
@@ -968,11 +968,11 @@ namespace Evernus
 
                     saveUpdateTimer(Evernus::TimerType::CorpContracts, mCorpContractsUtcUpdateTimes, id);
 
-                    handleIncomingContracts<&EvernusApplication::corpContractsChanged>(key,
-                                                                                       data,
-                                                                                       id,
-                                                                                       *mCorpContractItemRepository,
-                                                                                       task);
+                    this->handleIncomingContracts<&Evernus::EvernusApplication::corpContractsChanged>(key,
+                                                                                                      data,
+                                                                                                      id,
+                                                                                                      *mCorpContractItemRepository,
+                                                                                                      task);
                 }
                 else
                 {
@@ -2145,7 +2145,7 @@ namespace Evernus
                 ++mPendingContractItemRequests;
 
                 const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
-                mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, &itemRepo, this](auto &&data, const auto &error) {
+                mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, &itemRepo, this](APIManager::ContractItemList &&data, const QString &error) {
                     --mPendingContractItemRequests;
 
                     if (error.isEmpty())
@@ -2166,7 +2166,7 @@ namespace Evernus
     template<void (EvernusApplication::* Signal)(), class Key>
     void EvernusApplication::doRefreshMarketOrdersFromAPI(const Key &key, Character::IdType id, uint task)
     {
-        mAPIManager.fetchMarketOrders(*key, id, [task, id, this](auto &&data, const auto &error) {
+        mAPIManager.fetchMarketOrders(*key, id, [task, id, this](MarketOrders &&data, const QString &error) {
             if (error.isEmpty())
             {
                 importMarketOrders(id, data, std::is_same<Key, CorpKey>());
