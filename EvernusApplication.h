@@ -310,6 +310,15 @@ namespace Evernus
 
         void setSmtpSettings();
 
+        template<void (EvernusApplication::* Signal)(), class Key>
+        void handleIncomingContracts(const Key &key,
+                                     const Contracts &data,
+                                     Character::IdType id,
+                                     const ContractItemRepository &itemRepo,
+                                     uint task);
+        template<void (EvernusApplication::* Signal)(), class Key>
+        void doRefreshMarketOrdersFromAPI(const Key &key, Character::IdType id, uint task);
+
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };
 }
