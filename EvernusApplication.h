@@ -319,6 +319,12 @@ namespace Evernus
         template<void (EvernusApplication::* Signal)(), class Key>
         void doRefreshMarketOrdersFromAPI(const Key &key, Character::IdType id, uint task);
 
+        template<class T, class Data>
+        void asyncBatchStore(const T &repo, const Data &data, bool hasId);
+
+        template<class Func, class... Args>
+        void asyncExecute(Func &&func, Args && ...args);
+
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
     };
 }

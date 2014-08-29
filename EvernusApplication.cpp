@@ -15,6 +15,7 @@
 #include <unordered_set>
 #include <stdexcept>
 #include <algorithm>
+#include <future>
 
 #include <QStandardPaths>
 #include <QSplashScreen>
@@ -755,7 +756,7 @@ namespace Evernus
                     if (it != std::end(data))
                     {
                         Evernus::Contracts corpContracts(it, std::end(data));
-                        mCorpContractRepository->batchStore(corpContracts, true);
+                        asyncBatchStore(*mCorpContractRepository, corpContracts, true);
 
                         mCharacterContractProvider->clearForCorporation(corpContracts.front().getIssuerCorpId());
                         mCorpContractProvider->clearForCorporation(corpContracts.front().getIssuerCorpId());
@@ -763,7 +764,7 @@ namespace Evernus
                         mCorpContractProvider->clearForCorporation(corpContracts.front().getAssigneeId());
                     }
 
-                    mContractRepository->batchStore(data, true);
+                    asyncBatchStore(*mContractRepository, data, true);
 
                     mCharacterContractProvider->clearForCharacter(id);
                     mCorpContractProvider->clearForCharacter(id);
@@ -832,8 +833,8 @@ namespace Evernus
                         }
                     }
 
-                    mWalletJournalEntryRepository->batchStore(data, true);
-                    mWalletSnapshotRepository->batchStore(snapshots, false);
+                    asyncBatchStore(*mWalletJournalEntryRepository, data, true);
+                    asyncBatchStore(*mWalletSnapshotRepository, snapshots, false);
 
                     saveUpdateTimer(Evernus::TimerType::WalletJournal, mWalletJournalUtcUpdateTimes, id);
 
@@ -872,7 +873,7 @@ namespace Evernus
                                                 [task, id, this](const auto &data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    mWalletTransactionRepository->batchStore(data, true);
+                    asyncBatchStore(*mWalletTransactionRepository, data, true);
                     saveUpdateTimer(Evernus::TimerType::WalletTransactions, mWalletTransactionsUtcUpdateTimes, id);
 
                     QSettings settings;
@@ -953,7 +954,7 @@ namespace Evernus
             mAPIManager.fetchContracts(*key, id, [key, task, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    mCorpContractRepository->batchStore(data, true);
+                    asyncBatchStore(*mCorpContractRepository, data, true);
 
                     try
                     {
@@ -1007,7 +1008,7 @@ namespace Evernus
                                            [task, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    mCorpWalletJournalEntryRepository->batchStore(data, true);
+                    asyncBatchStore(*mCorpWalletJournalEntryRepository, data, true);
                     saveUpdateTimer(Evernus::TimerType::CorpWalletJournal, mCorpWalletJournalUtcUpdateTimes, id);
 
                     emit corpWalletJournalChanged();
@@ -1046,7 +1047,7 @@ namespace Evernus
                                                 [task, id, corpId, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    mCorpWalletTransactionRepository->batchStore(data, true);
+                    asyncBatchStore(*mCorpWalletTransactionRepository, data, true);
                     saveUpdateTimer(Evernus::TimerType::CorpWalletTransactions, mCorpWalletTransactionsUtcUpdateTimes, id);
 
                     QSettings settings;
@@ -1123,7 +1124,7 @@ namespace Evernus
                 mDataProvider->clearStationCache();
 
                 mConquerableStationRepository->exec(QString{"DELETE FROM %1"}.arg(mConquerableStationRepository->getTableName()));
-                mConquerableStationRepository->batchStore(list, true);
+                asyncBatchStore(*mConquerableStationRepository, list, true);
 
                 emit conquerableStationsChanged();
             }
@@ -1203,7 +1204,7 @@ namespace Evernus
     {
         try
         {
-            mDataProvider->updateExternalOrders(orders);
+            asyncExecute(&CachingEveDataProvider::updateExternalOrders, mDataProvider.get(), std::cref(orders));
 
             QSettings settings;
             if (settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool())
@@ -1317,7 +1318,7 @@ namespace Evernus
 
         try
         {
-            mMarketOrderRepository->batchStore(orders, true);
+            asyncBatchStore(*mMarketOrderRepository, orders, true);
             emit taskEnded(task, QString{});
         }
         catch (const std::exception &e)
@@ -1917,7 +1918,7 @@ namespace Evernus
                 mMarketOrderValueSnapshotRepository->store(snapshot);
             }
 
-            orderRepo.batchStore(orders, true);
+            asyncBatchStore(orderRepo, orders, true);
 
             mDataProvider->clearExternalOrderCaches();
 
@@ -2151,7 +2152,7 @@ namespace Evernus
                     --mPendingContractItemRequests;
 
                     if (error.isEmpty())
-                        itemRepo.batchStore(data, true);
+                        asyncBatchStore(itemRepo, data, true);
 
                     if (mPendingContractItemRequests == 0)
                         emit (this->*Signal)();
@@ -2178,6 +2179,24 @@ namespace Evernus
 
             emit taskEnded(task, error);
         });
+    }
+
+    template<class T, class Data>
+    void EvernusApplication::asyncBatchStore(const T &repo, const Data &data, bool hasId)
+    {
+        asyncExecute(&T::template batchStore<Data>, &repo, std::cref(data), hasId);
+    }
+
+    template<class Func, class... Args>
+    void EvernusApplication::asyncExecute(Func &&func, Args && ...args)
+    {
+        qDebug() << "Stating async task...";
+
+        auto future = std::async(std::launch::async, std::forward<Func>(func), std::forward<Args>(args)...);
+        while (future.wait_for(std::chrono::seconds{0}) != std::future_status::ready)
+            processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        qDebug() << "Done.";
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)

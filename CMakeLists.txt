@@ -16,9 +16,9 @@ find_package(Qt5XmlPatterns REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
 if(APPLE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -pthread")
 elseif(UNIX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -stdlib=libc++ -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -pthread -stdlib=libc++ -g")
 elseif(WIN32)
     find_package(Qt5WinExtras REQUIRED)
 
