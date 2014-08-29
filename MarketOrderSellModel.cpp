@@ -196,12 +196,12 @@ namespace Evernus
                 }
             case etaColumn:
                 {
-                    const auto elapsed = data->getIssued().daysTo(QDateTime::currentDateTimeUtc());
-                    if (elapsed <= 0)
-                        return 0;
+                    const double elapsed = data->getFirstSeen().daysTo(QDateTime::currentDateTimeUtc());
+                    if (elapsed <= 0.)
+                        return 0.;
 
                     const auto movement = (data->getVolumeEntered() - data->getVolumeRemaining()) / elapsed;
-                    return (movement > 0) ? (data->getVolumeRemaining() / movement) : (0);
+                    return (movement > 0.) ? (data->getVolumeRemaining() / movement) : (0.);
                 }
             case timeLeftColumn:
                 {
@@ -321,15 +321,15 @@ namespace Evernus
                     }
                 case etaColumn:
                     {
-                        const auto elapsed = data->getIssued().daysTo(QDateTime::currentDateTimeUtc());
-                        if (elapsed <= 0)
+                        const double elapsed = data->getFirstSeen().daysTo(QDateTime::currentDateTimeUtc());
+                        if (elapsed <= 0.)
                             return tr("unknown");
 
                         const auto movement = (data->getVolumeEntered() - data->getVolumeRemaining()) / elapsed;
-                        if (movement <= 0)
+                        if (movement <= 0.)
                             return tr("unknown");
 
-                        const auto eta = data->getVolumeRemaining() / movement;
+                        const int eta = data->getVolumeRemaining() / movement;
                         return (eta > 0) ? (tr("%n day(s)", "", eta)) : (tr("today"));
                     }
                 case timeLeftColumn:
