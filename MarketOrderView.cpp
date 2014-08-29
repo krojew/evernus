@@ -153,6 +153,9 @@ namespace Evernus
 
     void MarketOrderView::updateInfo()
     {
+        if (mSource == nullptr)
+            return;
+
         const auto volRemaining = mSource->getVolumeRemaining();
         const auto volEntered = mSource->getVolumeEntered();
 

@@ -191,9 +191,9 @@ namespace Evernus
                 {
                     mExternalOrderModel->setTypeId(order->getTypeId());
                     mExternalOrderModel->setStationId(order->getStationId());
+                    mExternalOrderModel->changeDeviationSource(ExternalOrderModel::DeviationSourceType::Fixed, order->getPrice());
                 }
 
-                mExternalOrderModel->changeDeviationSource(ExternalOrderModel::DeviationSourceType::Fixed, order->getPrice());
                 mExternalOrderModel->blockSignals(false);
 
                 mExternalOrderModel->reset();

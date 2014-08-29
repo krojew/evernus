@@ -429,8 +429,6 @@ namespace Evernus
                         }
 
                         obj = std::make_unique<EveCacheNode::Bool>(boolCount & boolBuf);
-
-                        boolCount <<= 1;
                     }
                     break;
                 case 128:
