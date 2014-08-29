@@ -22,6 +22,7 @@
 #include "FavoriteItemRepository.h"
 #include "MarketOrderProvider.h"
 #include "EveDataProvider.h"
+#include "ExternalOrder.h"
 #include "IGBSettings.h"
 
 #include "qxthttpsessionmanager.h"
@@ -58,8 +59,10 @@ namespace Evernus
 
         mMainTemplate["active-link-text"] = tr("Character Active Orders");
         mMainTemplate["fulfilled-link-text"] = tr("Character Fulfilled Orders");
+        mMainTemplate["overbid-link-text"] = tr("Character Overbid Orders");
         mMainTemplate["corp-active-link-text"] = tr("Corporation Active Orders");
         mMainTemplate["corp-fulfilled-link-text"] = tr("Corporation Fulfilled Orders");
+        mMainTemplate["corp-overbid-link-text"] = tr("Corporation Overbid Orders");
         mMainTemplate["favorite-link-text"] = tr("Favorite Items");
         mMainTemplate["open-margin-tool-link-text"] = tr("Open Margin Tool");
         mMainTemplate["port"] = settings.value(IGBSettings::portKey, IGBSettings::portDefault).toString();
@@ -89,26 +92,120 @@ namespace Evernus
 
     void IGBService::active(QxtWebRequestEvent *event)
     {
-        showOrders<Character::IdType, &MarketOrderProvider::getSellOrders, &MarketOrderProvider::getBuyOrders>(
-            event, mOrderProvider, MarketOrder::State::Active, false, getCharacterId(event));
+        showOrders(event,
+                   [event, this] {
+                       return mOrderProvider.getSellOrders(getCharacterId(event));
+                   },
+                   [event, this] {
+                       return mOrderProvider.getBuyOrders(getCharacterId(event));
+                   },
+                   MarketOrder::State::Active,
+                   false);
     }
 
     void IGBService::fulfilled(QxtWebRequestEvent *event)
     {
-        showOrders<Character::IdType, &MarketOrderProvider::getSellOrders, &MarketOrderProvider::getBuyOrders>(
-            event, mOrderProvider, MarketOrder::State::Fulfilled, true, getCharacterId(event));
+        showOrders(event,
+                   [event, this] {
+                       return mOrderProvider.getSellOrders(getCharacterId(event));
+                   },
+                   [event, this] {
+                       return mOrderProvider.getBuyOrders(getCharacterId(event));
+                   },
+                   MarketOrder::State::Fulfilled,
+                   true);
+    }
+
+    void IGBService::overbid(QxtWebRequestEvent *event)
+    {
+        showOrders(event,
+                   [event, this] {
+                       auto orders = mOrderProvider.getSellOrders(getCharacterId(event));
+                       for (auto it = std::begin(orders); it != std::end(orders);)
+                       {
+                           const auto price = mDataProvider.getTypeSellPrice((*it)->getTypeId(), (*it)->getStationId());
+                           if (price->isNew() || price->getPrice() > (*it)->getPrice())
+                               it = orders.erase(it);
+                           else
+                               ++it;
+                       }
+
+                       return orders;
+                   },
+                   [event, this] {
+                       auto orders = mOrderProvider.getBuyOrders(getCharacterId(event));
+                       for (auto it = std::begin(orders); it != std::end(orders);)
+                       {
+                           const auto price = mDataProvider.getTypeBuyPrice((*it)->getTypeId(), (*it)->getStationId());
+                           if (price->isNew() || price->getPrice() < (*it)->getPrice())
+                               it = orders.erase(it);
+                           else
+                               ++it;
+                       }
+
+                       return orders;
+                   },
+                   MarketOrder::State::Active,
+                   false);
     }
 
     void IGBService::corpActive(QxtWebRequestEvent *event)
     {
-        showOrders<quint64, &MarketOrderProvider::getSellOrdersForCorporation, &MarketOrderProvider::getBuyOrdersForCorporation>(
-            event, mCorpOrderProvider, MarketOrder::State::Active, false, getCorporationId(event));
+        showOrders(event,
+                   [event, this] {
+                       return mOrderProvider.getSellOrdersForCorporation(getCorporationId(event));
+                   },
+                   [event, this] {
+                       return mOrderProvider.getBuyOrdersForCorporation(getCorporationId(event));
+                   },
+                   MarketOrder::State::Active,
+                   false);
     }
 
     void IGBService::corpFulfilled(QxtWebRequestEvent *event)
     {
-        showOrders<quint64, &MarketOrderProvider::getSellOrdersForCorporation, &MarketOrderProvider::getBuyOrdersForCorporation>(
-            event, mCorpOrderProvider, MarketOrder::State::Fulfilled, true, getCorporationId(event));
+        showOrders(event,
+                   [event, this] {
+                       return mOrderProvider.getSellOrdersForCorporation(getCorporationId(event));
+                   },
+                   [event, this] {
+                       return mOrderProvider.getBuyOrdersForCorporation(getCorporationId(event));
+                   },
+                   MarketOrder::State::Fulfilled,
+                   true);
+    }
+
+    void IGBService::corpOverbid(QxtWebRequestEvent *event)
+    {
+        showOrders(event,
+                   [event, this] {
+                       auto orders = mOrderProvider.getSellOrdersForCorporation(getCorporationId(event));
+                       for (auto it = std::begin(orders); it != std::end(orders);)
+                       {
+                           const auto price = mDataProvider.getTypeSellPrice((*it)->getTypeId(), (*it)->getStationId());
+                           if (price->isNew() || price->getPrice() > (*it)->getPrice())
+                               it = orders.erase(it);
+                           else
+                               ++it;
+                       }
+
+                       return orders;
+                   },
+                   [event, this] {
+                       auto orders = mOrderProvider.getBuyOrdersForCorporation(getCorporationId(event));
+                       for (auto it = std::begin(orders); it != std::end(orders);)
+                       {
+                           const auto price = mDataProvider.getTypeBuyPrice((*it)->getTypeId(), (*it)->getStationId());
+                           if (price->isNew() || price->getPrice() < (*it)->getPrice())
+                               it = orders.erase(it);
+                           else
+                               ++it;
+                       }
+
+                       return orders;
+                   },
+                   MarketOrder::State::Fulfilled,
+                   true);
     }
 
     void IGBService::favorite(QxtWebRequestEvent *event)
@@ -175,12 +272,12 @@ namespace Evernus
         return result;
     }
 
-    template<class T, IGBService::OrderList (MarketOrderProvider::* SellFunc)(T) const, IGBService::OrderList (MarketOrderProvider::* BuyFunc)(T) const>
+    template<class SellFunc, class BuyFunc>
     void IGBService::showOrders(QxtWebRequestEvent *event,
-                                const MarketOrderProvider &provider,
+                                const SellFunc &sellFunc,
+                                const BuyFunc &buyFunc,
                                 MarketOrder::State state,
-                                bool needsDelta,
-                                T id)
+                                bool needsDelta)
     {
         QStringList idContainer, typeIdContainer;
         QSettings settings;
@@ -188,10 +285,10 @@ namespace Evernus
         const auto stationId = getStationIdForFiltering(event);
 
         mOrderTemplate["sell-orders"] = renderOrderList(
-            filterAndSort((provider.*SellFunc)(id), state, needsDelta), idContainer, typeIdContainer, stationId);
+            filterAndSort(sellFunc(), state, needsDelta), idContainer, typeIdContainer, stationId);
         mOrderTemplate["buy-orders-start"] = QString::number(idContainer.size() + 1);
         mOrderTemplate["buy-orders"] = renderOrderList(
-            filterAndSort((provider.*BuyFunc)(id), state, needsDelta), idContainer, typeIdContainer, stationId);
+            filterAndSort(buyFunc(), state, needsDelta), idContainer, typeIdContainer, stationId);
         mOrderTemplate["order-ids"] = idContainer.join(", ");
         mOrderTemplate["type-ids"] = typeIdContainer.join(", ");
         mOrderTemplate["scan-delay"] = settings.value(IGBSettings::scanDelayKey, IGBSettings::scanDelayDefault).toString();

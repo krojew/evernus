@@ -1979,7 +1979,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Aktywne zlecenia</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="64"/>
+        <location filename="../IGBService.cpp" line="67"/>
         <source>Open Margin Tool</source>
         <translation>Otwórz narzędzie marży</translation>
     </message>
@@ -2000,97 +2000,107 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Aktualne zlecenie:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="79"/>
+        <location filename="../IGBService.cpp" line="82"/>
         <source>Sell orders:</source>
         <translation>Zlecenia sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="55"/>
+        <location filename="../IGBService.cpp" line="56"/>
         <source>Error reading IGB script template.</source>
         <translation>Błąd oczytu danych skryptu IGB.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="59"/>
+        <location filename="../IGBService.cpp" line="60"/>
         <source>Character Active Orders</source>
         <translation>Aktywne zlecenia postaci</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="60"/>
+        <location filename="../IGBService.cpp" line="61"/>
         <source>Character Fulfilled Orders</source>
         <translation>Zakończone zlecenia postaci</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="61"/>
+        <location filename="../IGBService.cpp" line="62"/>
+        <source>Character Overbid Orders</source>
+        <translation>Przebite zlecenia postaci</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="63"/>
         <source>Corporation Active Orders</source>
         <translation>Aktywne zlecenia korporacji</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="62"/>
+        <location filename="../IGBService.cpp" line="64"/>
         <source>Corporation Fulfilled Orders</source>
         <translation>Zakończone zlecenia korporacji</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="63"/>
+        <location filename="../IGBService.cpp" line="65"/>
+        <source>Corporation Overbid Orders</source>
+        <translation>Przebite zlecenia korporacji</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="66"/>
         <source>Favorite Items</source>
         <translation>Ulubione</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="68"/>
+        <location filename="../IGBService.cpp" line="71"/>
         <source>Show Previous Entry</source>
         <translation>Poprzednia pozycja</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="69"/>
+        <location filename="../IGBService.cpp" line="72"/>
         <source>Show Next Entry</source>
         <translation>Następna pozycja</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="70"/>
+        <location filename="../IGBService.cpp" line="73"/>
         <source>Current entry:</source>
         <translation>Aktualna pozycja:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="80"/>
+        <location filename="../IGBService.cpp" line="83"/>
         <source>Buy orders:</source>
         <translation>Zlecenia kupna:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="71"/>
+        <location filename="../IGBService.cpp" line="74"/>
         <source>Scan delay:</source>
         <translation>Opóźnienie skanowania:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="72"/>
+        <location filename="../IGBService.cpp" line="75"/>
         <source>Start Scan</source>
         <translation>Rozpocznij skanowanie</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="73"/>
+        <location filename="../IGBService.cpp" line="76"/>
         <source>Stop Scan</source>
         <translation>Zakończ skanowanie</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="74"/>
+        <location filename="../IGBService.cpp" line="77"/>
         <source>Stop at end</source>
         <translation>Zatrzymaj na końcu</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="81"/>
+        <location filename="../IGBService.cpp" line="84"/>
         <source>Limit to current station, if available</source>
         <translation>Ogranicz do akutalnej stacji, jeśli dostępne</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="77"/>
+        <location filename="../IGBService.cpp" line="80"/>
         <source>Favorite items:</source>
         <translation>Ulubione przedmioty:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="87"/>
+        <location filename="../IGBService.cpp" line="90"/>
         <source>Please select a category from the menu.</source>
         <translation>Wybierz kategorię z menu.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="152"/>
+        <location filename="../IGBService.cpp" line="249"/>
         <source>Website trust is required. Please add it to Trusted Sites.</source>
         <translation>Wymagane jest zaufanie stronie. Dodaj stronę do zaufanych (Trusted Sites).</translation>
     </message>

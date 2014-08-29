@@ -53,8 +53,10 @@ namespace Evernus
         void index(QxtWebRequestEvent *event);
         void active(QxtWebRequestEvent *event);
         void fulfilled(QxtWebRequestEvent *event);
+        void overbid(QxtWebRequestEvent *event);
         void corpActive(QxtWebRequestEvent *event);
         void corpFulfilled(QxtWebRequestEvent *event);
+        void corpOverbid(QxtWebRequestEvent *event);
         void favorite(QxtWebRequestEvent *event);
         void openMarginTool(QxtWebRequestEvent *event);
 
@@ -77,12 +79,12 @@ namespace Evernus
                                 QStringList &typeIdContainer,
                                 uint stationId) const;
 
-        template<class T, OrderList (MarketOrderProvider::* SellFunc)(T) const, OrderList (MarketOrderProvider::* BuyFunc)(T) const>
+        template<class SellFunc, class BuyFunc>
         void showOrders(QxtWebRequestEvent *event,
-                        const MarketOrderProvider &provider,
+                        const SellFunc &sellFunc,
+                        const BuyFunc &buyFunc,
                         MarketOrder::State state,
-                        bool needsDelta,
-                        T id);
+                        bool needsDelta);
         OrderList filterAndSort(const OrderList &orders, MarketOrder::State state, bool needsDelta) const;
 
         uint getStationIdForFiltering(QxtWebRequestEvent *event) const;
