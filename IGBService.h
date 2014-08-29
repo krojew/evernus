@@ -30,6 +30,8 @@ namespace Evernus
 {
     class FavoriteItemRepository;
     class MarketOrderProvider;
+    class CharacterRepository;
+    class ItemCostProvider;
     class EveDataProvider;
 
     class IGBService
@@ -41,7 +43,9 @@ namespace Evernus
         IGBService(const MarketOrderProvider &orderProvider,
                    const MarketOrderProvider &corpOrderProvider,
                    const EveDataProvider &dataProvider,
+                   const ItemCostProvider &itemCostProvider,
                    const FavoriteItemRepository &favoriteItemRepo,
+                   const CharacterRepository &characterRepository,
                    QxtHttpSessionManager *sm,
                    QObject *parent = nullptr);
         virtual ~IGBService() = default;
@@ -54,9 +58,11 @@ namespace Evernus
         void active(QxtWebRequestEvent *event);
         void fulfilled(QxtWebRequestEvent *event);
         void overbid(QxtWebRequestEvent *event);
+        void belowMargin(QxtWebRequestEvent *event);
         void corpActive(QxtWebRequestEvent *event);
         void corpFulfilled(QxtWebRequestEvent *event);
         void corpOverbid(QxtWebRequestEvent *event);
+        void corpBelowMargin(QxtWebRequestEvent *event);
         void favorite(QxtWebRequestEvent *event);
         void openMarginTool(QxtWebRequestEvent *event);
 
@@ -68,8 +74,10 @@ namespace Evernus
 
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const EveDataProvider &mDataProvider;
+        const ItemCostProvider &mItemCostProvider;
 
         const FavoriteItemRepository &mFavoriteItemRepo;
+        const CharacterRepository &mCharacterRepository;
 
         QxtHtmlTemplate mMainTemplate, mOrderTemplate, mFavoriteTemplate;
 

@@ -168,9 +168,7 @@ namespace Evernus
                 {
                     const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
-                    const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                    return 100. * (realPrice - realCost) / realPrice;
+                    return PriceUtils::getMargin(cost->getCost(), data->getPrice(), taxes);
                 }
             case profitColumn:
                 {
@@ -295,9 +293,7 @@ namespace Evernus
                     {
                         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
-                        const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                        return QString{"%1%2"}.arg(locale.toString(100. * (realPrice - realCost) / realPrice, 'f', 2)).arg(locale.percent());
+                        return QString{"%1%2"}.arg(locale.toString(PriceUtils::getMargin(cost->getCost(), data->getPrice(), taxes), 'f', 2)).arg(locale.percent());
                     }
                 case profitColumn:
                     {

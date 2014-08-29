@@ -20,10 +20,14 @@
 #include <QFile>
 
 #include "FavoriteItemRepository.h"
+#include "CharacterRepository.h"
 #include "MarketOrderProvider.h"
+#include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
+#include "PriceSettings.h"
 #include "IGBSettings.h"
+#include "PriceUtils.h"
 
 #include "qxthttpsessionmanager.h"
 #include "qxtwebevent.h"
@@ -38,14 +42,18 @@ namespace Evernus
     IGBService::IGBService(const MarketOrderProvider &orderProvider,
                            const MarketOrderProvider &corpOrderProvider,
                            const EveDataProvider &dataProvider,
+                           const ItemCostProvider &itemCostProvider,
                            const FavoriteItemRepository &favoriteItemRepo,
+                           const CharacterRepository &characterRepository,
                            QxtHttpSessionManager *sm,
                            QObject *parent)
         : QxtWebSlotService(sm, parent)
         , mOrderProvider(orderProvider)
         , mCorpOrderProvider(corpOrderProvider)
         , mDataProvider(dataProvider)
+        , mItemCostProvider(itemCostProvider)
         , mFavoriteItemRepo(favoriteItemRepo)
+        , mCharacterRepository(characterRepository)
     {
         mMainTemplate.open(":/html/igb_template.html");
         mOrderTemplate.open(":/html/igb_order_template.html");
@@ -60,9 +68,11 @@ namespace Evernus
         mMainTemplate["active-link-text"] = tr("Character Active Orders");
         mMainTemplate["fulfilled-link-text"] = tr("Character Fulfilled Orders");
         mMainTemplate["overbid-link-text"] = tr("Character Overbid Orders");
+        mMainTemplate["below-margin-link-text"] = tr("Character Below Min. Margin Orders");
         mMainTemplate["corp-active-link-text"] = tr("Corporation Active Orders");
         mMainTemplate["corp-fulfilled-link-text"] = tr("Corporation Fulfilled Orders");
         mMainTemplate["corp-overbid-link-text"] = tr("Corporation Overbid Orders");
+        mMainTemplate["corp-below-margin-link-text"] = tr("Corporation Below Min. Margin Orders");
         mMainTemplate["favorite-link-text"] = tr("Favorite Items");
         mMainTemplate["open-margin-tool-link-text"] = tr("Open Margin Tool");
         mMainTemplate["port"] = settings.value(IGBSettings::portKey, IGBSettings::portDefault).toString();
@@ -149,6 +159,53 @@ namespace Evernus
                    false);
     }
 
+    void IGBService::belowMargin(QxtWebRequestEvent *event)
+    {
+        try
+        {
+            const auto character = mCharacterRepository.find(getCharacterId(event));
+            const auto taxes = PriceUtils::calculateTaxes(*character);
+
+            QSettings settings;
+            const auto min = settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble();
+            const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+
+            showOrders(event,
+                       [event, min, delta, &character, &taxes, this] {
+                           auto orders = mOrderProvider.getSellOrders(character->getId());
+                           for (auto it = std::begin(orders); it != std::end(orders);)
+                           {
+                               const auto cost = mItemCostProvider.fetchForCharacterAndType(character->getId(), (*it)->getTypeId());
+                               if (PriceUtils::getMargin(cost->getCost(), (*it)->getPrice(), taxes) > min)
+                                   it = orders.erase(it);
+                               else
+                                   ++it;
+                           }
+
+                           return orders;
+                       },
+                       [event, min, delta, &character, &taxes, this] {
+                           auto orders = mOrderProvider.getBuyOrders(character->getId());
+                           for (auto it = std::begin(orders); it != std::end(orders);)
+                           {
+                               const auto price = mDataProvider.getTypeSellPrice((*it)->getTypeId(), (*it)->getStationId());
+                               if (price->isNew() || PriceUtils::getMargin((*it)->getPrice(), price->getPrice() - delta, taxes) > min)
+                                   it = orders.erase(it);
+                               else
+                                   ++it;
+                           }
+
+                           return orders;
+                       },
+                       MarketOrder::State::Active,
+                       false);
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            renderContent(event, tr("Character not found!"));
+        }
+    }
+
     void IGBService::corpActive(QxtWebRequestEvent *event)
     {
         showOrders(event,
@@ -179,7 +236,7 @@ namespace Evernus
     {
         showOrders(event,
                    [event, this] {
-                       auto orders = mOrderProvider.getSellOrdersForCorporation(getCorporationId(event));
+                       auto orders = mCorpOrderProvider.getSellOrdersForCorporation(getCorporationId(event));
                        for (auto it = std::begin(orders); it != std::end(orders);)
                        {
                            const auto price = mDataProvider.getTypeSellPrice((*it)->getTypeId(), (*it)->getStationId());
@@ -192,7 +249,7 @@ namespace Evernus
                        return orders;
                    },
                    [event, this] {
-                       auto orders = mOrderProvider.getBuyOrdersForCorporation(getCorporationId(event));
+                       auto orders = mCorpOrderProvider.getBuyOrdersForCorporation(getCorporationId(event));
                        for (auto it = std::begin(orders); it != std::end(orders);)
                        {
                            const auto price = mDataProvider.getTypeBuyPrice((*it)->getTypeId(), (*it)->getStationId());
@@ -206,6 +263,53 @@ namespace Evernus
                    },
                    MarketOrder::State::Fulfilled,
                    true);
+    }
+
+    void IGBService::corpBelowMargin(QxtWebRequestEvent *event)
+    {
+        try
+        {
+            const auto character = mCharacterRepository.find(getCharacterId(event));
+            const auto taxes = PriceUtils::calculateTaxes(*character);
+
+            QSettings settings;
+            const auto min = settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble();
+            const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+
+            showOrders(event,
+                       [event, min, delta, &character, &taxes, this] {
+                           auto orders = mCorpOrderProvider.getSellOrdersForCorporation(character->getCorporationId());
+                           for (auto it = std::begin(orders); it != std::end(orders);)
+                           {
+                               const auto cost = mItemCostProvider.fetchForCharacterAndType(character->getId(), (*it)->getTypeId());
+                               if (PriceUtils::getMargin(cost->getCost(), (*it)->getPrice(), taxes) > min)
+                                   it = orders.erase(it);
+                               else
+                                   ++it;
+                           }
+
+                           return orders;
+                       },
+                       [event, min, delta, &character, &taxes, this] {
+                           auto orders = mCorpOrderProvider.getBuyOrdersForCorporation(character->getCorporationId());
+                           for (auto it = std::begin(orders); it != std::end(orders);)
+                           {
+                               const auto price = mDataProvider.getTypeSellPrice((*it)->getTypeId(), (*it)->getStationId());
+                               if (price->isNew() || PriceUtils::getMargin((*it)->getPrice(), price->getPrice() - delta, taxes) > min)
+                                   it = orders.erase(it);
+                               else
+                                   ++it;
+                           }
+
+                           return orders;
+                       },
+                       MarketOrder::State::Active,
+                       false);
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            renderContent(event, tr("Character not found!"));
+        }
     }
 
     void IGBService::favorite(QxtWebRequestEvent *event)

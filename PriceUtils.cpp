@@ -41,5 +41,12 @@ namespace Evernus
         {
             return sellPrice - sellPrice * taxes.mSalesTax - sellPrice * taxes.mBrokerFee;
         }
+
+        double getMargin(double cost, double price, const Taxes &taxes)
+        {
+            const auto realCost = PriceUtils::getCoS(cost, taxes);
+            const auto realPrice = PriceUtils::getRevenue(price, taxes);
+            return 100. * (realPrice - realCost) / realPrice;
+        }
     }
 }

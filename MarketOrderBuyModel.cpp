@@ -541,9 +541,7 @@ namespace Evernus
 
         const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-        const auto realCost = PriceUtils::getCoS(order.getPrice(), taxes);
-        const auto realPrice = PriceUtils::getRevenue(price->getPrice() - delta, taxes);
-        return 100. * (realPrice - realCost) / realPrice;
+        return PriceUtils::getMargin(order.getPrice(), price->getPrice() - delta, taxes);
     }
 
     double MarketOrderBuyModel::getNewMargin(const MarketOrder &order) const
@@ -563,9 +561,7 @@ namespace Evernus
             newPrice += delta;
 
         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-        const auto realCost = PriceUtils::getCoS(newPrice, taxes);
-        const auto realPrice = PriceUtils::getRevenue(price->getPrice() - delta, taxes);
-        return 100. * (realPrice - realCost) / realPrice;
+        return PriceUtils::getMargin(newPrice, price->getPrice() - delta, taxes);
     }
 
     QString MarketOrderBuyModel::getCharacterName(Character::IdType id) const

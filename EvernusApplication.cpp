@@ -129,7 +129,9 @@ namespace Evernus
         auto igbService = new IGBService{*mCharacterOrderProvider,
                                          *mCorpOrderProvider,
                                          *mDataProvider,
+                                         *this,
                                          *mFavoriteItemRepository,
+                                         *mCharacterRepository,
                                          &mIGBSessionManager,
                                          this};
         connect(igbService, SIGNAL(openMarginTool()), this, SIGNAL(openMarginTool()));
