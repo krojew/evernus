@@ -2184,7 +2184,7 @@ namespace Evernus
     template<class T, class Data>
     void EvernusApplication::asyncBatchStore(const T &repo, const Data &data, bool hasId)
     {
-        asyncExecute(&T::template batchStore<Data>, &repo, std::cref(data), hasId);
+        asyncExecute(std::bind(&T::template batchStore<Data>, &repo, std::cref(data), hasId));
     }
 
     template<class Func, class... Args>

@@ -3786,12 +3786,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderViewWithTransactions</name>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="82"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="80"/>
         <source>Market orders</source>
         <translation>Zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="86"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="84"/>
         <source>Transactions</source>
         <translation>Transakcje</translation>
     </message>
@@ -4664,17 +4664,17 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletTransactionView</name>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="94"/>
+        <location filename="../WalletTransactionView.cpp" line="96"/>
         <source>Copy suggested price: %1</source>
         <translation>Skopiuj sugerowaną cenę: %1</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="157"/>
+        <location filename="../WalletTransactionView.cpp" line="159"/>
         <source>Add to item costs</source>
         <translation>Dodaj do własnych kosztów</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="171"/>
+        <location filename="../WalletTransactionView.cpp" line="173"/>
         <source>Copy suggested price</source>
         <translation>Skopiuj sugerowaną cenę</translation>
     </message>
@@ -4735,17 +4735,17 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletTransactionsWidget</name>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="61"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="59"/>
         <source>all</source>
         <translation>wszystko</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="61"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="59"/>
         <source>buy</source>
         <translation>kupno</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="61"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="59"/>
         <source>sell</source>
         <translation>sprzedaż</translation>
     </message>
