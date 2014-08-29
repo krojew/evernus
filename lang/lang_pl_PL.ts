@@ -3786,19 +3786,18 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderViewWithTransactions</name>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="86"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="82"/>
         <source>Market orders</source>
         <translation>Zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="90"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="86"/>
         <source>Transactions</source>
         <translation>Transakcje</translation>
     </message>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="76"/>
         <source>Add to item costs</source>
-        <translation>Dodaj do własnych kosztów</translation>
+        <translation type="vanished">Dodaj do własnych kosztów</translation>
     </message>
 </context>
 <context>
@@ -4663,6 +4662,24 @@ Czy chcesz ściągnąć ją teraz?</translation>
     </message>
 </context>
 <context>
+    <name>Evernus::WalletTransactionView</name>
+    <message>
+        <location filename="../WalletTransactionView.cpp" line="94"/>
+        <source>Copy suggested price: %1</source>
+        <translation>Skopiuj sugerowaną cenę: %1</translation>
+    </message>
+    <message>
+        <location filename="../WalletTransactionView.cpp" line="157"/>
+        <source>Add to item costs</source>
+        <translation>Dodaj do własnych kosztów</translation>
+    </message>
+    <message>
+        <location filename="../WalletTransactionView.cpp" line="171"/>
+        <source>Copy suggested price</source>
+        <translation>Skopiuj sugerowaną cenę</translation>
+    </message>
+</context>
+<context>
     <name>Evernus::WalletTransactionsModel</name>
     <message>
         <location filename="../WalletTransactionsModel.cpp" line="39"/>
@@ -4718,24 +4735,23 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletTransactionsWidget</name>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="59"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="61"/>
         <source>all</source>
         <translation>wszystko</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="59"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="61"/>
         <source>buy</source>
         <translation>kupno</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="59"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="61"/>
         <source>sell</source>
         <translation>sprzedaż</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="72"/>
         <source>Add to item costs</source>
-        <translation>Dodaj do własnych kosztów</translation>
+        <translation type="vanished">Dodaj do własnych kosztów</translation>
     </message>
 </context>
 <context>

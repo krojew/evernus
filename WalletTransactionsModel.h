@@ -52,6 +52,7 @@ namespace Evernus
         EveType::IdType getTypeId(int row) const;
         uint getQuantity(int row) const;
         double getPrice(int row) const;
+        WalletTransaction::Type getType(int row) const;
 
         void setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, EveType::IdType typeId = EveType::invalidId);
 

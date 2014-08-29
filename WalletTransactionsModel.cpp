@@ -92,7 +92,7 @@ namespace Evernus
             case timestampColumn:
                 return TextUtils::dateTimeToString(mData[row][timestampColumn].toDateTime().toLocalTime(), QLocale{});
             case typeColumn:
-                return (static_cast<WalletTransaction::Type>(mData[row][typeColumn].toInt()) == WalletTransaction::Type::Buy) ?
+                return (getType(row) == WalletTransaction::Type::Buy) ?
                        (tr("Buy")) :
                        (tr("Sell"));
             case quantityColumn:
@@ -113,7 +113,7 @@ namespace Evernus
         case Qt::ForegroundRole:
             if (column == priceColumn)
             {
-                return (static_cast<WalletTransaction::Type>(mData[row][typeColumn].toInt()) == WalletTransaction::Type::Buy) ?
+                return (getType(row) == WalletTransaction::Type::Buy) ?
                        (QColor{Qt::darkRed}) :
                        (QColor{Qt::darkGreen});
             }
@@ -174,6 +174,11 @@ namespace Evernus
     double WalletTransactionsModel::getPrice(int row) const
     {
         return mData[row][priceColumn].toDouble();
+    }
+
+    WalletTransaction::Type WalletTransactionsModel::getType(int row) const
+    {
+        return static_cast<WalletTransaction::Type>(mData[row][typeColumn].toInt());
     }
 
     void WalletTransactionsModel::setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, EveType::IdType typeId)

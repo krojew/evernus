@@ -29,6 +29,7 @@ namespace Evernus
 {
     class WalletTransactionRepository;
     class ExternalOrderRepository;
+    class WalletTransactionView;
     class MarketOrderProvider;
     class CharacterRepository;
     class ExternalOrderView;
@@ -36,7 +37,6 @@ namespace Evernus
     class MarketOrderModel;
     class EveDataProvider;
     class MarketOrderView;
-    class StyledTreeView;
 
     class MarketOrderViewWithTransactions
         : public QWidget
@@ -74,9 +74,7 @@ namespace Evernus
         void scriptError(const QString &message);
 
     private slots:
-        void selectOrder(const QItemSelection &selected, const QItemSelection &deselected);
-
-        void addItemCost();
+        void selectOrder(const QItemSelection &selected);
 
     private:
         const CharacterRepository &mCharacterRepo;
@@ -88,7 +86,7 @@ namespace Evernus
 
         MarketOrderView *mOrderView = nullptr;
         ExternalOrderView *mExternalOrderView = nullptr;
-        StyledTreeView *mTransactionsView = nullptr;
+        WalletTransactionView *mTransactionsView = nullptr;
 
         MarketOrderModel *mOrderModel = nullptr;
         WalletTransactionsModel mTransactionModel;

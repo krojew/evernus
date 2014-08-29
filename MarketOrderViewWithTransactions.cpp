@@ -12,21 +12,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <unordered_map>
-
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QTabWidget>
 #include <QGroupBox>
-#include <QAction>
 
 #include "ExternalOrderSellModel.h"
 #include "ExternalOrderBuyModel.h"
+#include "WalletTransactionView.h"
 #include "ExternalOrderView.h"
 #include "ItemCostProvider.h"
 #include "MarketOrderModel.h"
 #include "MarketOrderView.h"
-#include "StyledTreeView.h"
 
 #include "MarketOrderViewWithTransactions.h"
 
@@ -73,9 +70,6 @@ namespace Evernus
         mTransactionProxyModel.setSortRole(Qt::UserRole);
         mTransactionProxyModel.setSourceModel(&mTransactionModel);
 
-        auto addCostAct = new QAction{tr("Add to item costs"), this};
-        connect(addCostAct, &QAction::triggered, this, &MarketOrderViewWithTransactions::addItemCost);
-
         auto tabs = new QTabWidget{this};
         groupLayout->addWidget(tabs);
         tabs->setTabPosition(QTabWidget::West);
@@ -86,11 +80,10 @@ namespace Evernus
             tabs->addTab(mExternalOrderView, tr("Market orders"));
         }
 
-        mTransactionsView = new StyledTreeView{objectName + "-transactions", this};
+        mTransactionsView = new WalletTransactionView{objectName + "-transactions", mCostProvider, this};
         tabs->addTab(mTransactionsView, tr("Transactions"));
-        mTransactionsView->setModel(&mTransactionProxyModel);
+        mTransactionsView->setModels(&mTransactionProxyModel, &mTransactionModel);
         mTransactionsView->sortByColumn(1, Qt::DescendingOrder);
-        mTransactionsView->addAction(addCostAct);
         mTransactionsView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     }
 
@@ -147,6 +140,8 @@ namespace Evernus
         mCharacterId = id;
         mTransactionModel.clear();
 
+        mTransactionsView->setCharacter(id);
+
         if (mExternalOrderModel)
             mExternalOrderModel->setCharacter(mCharacterId);
     }
@@ -161,10 +156,8 @@ namespace Evernus
         mOrderView->sortByColumn(column, order);
     }
 
-    void MarketOrderViewWithTransactions::selectOrder(const QItemSelection &selected, const QItemSelection &deselected)
+    void MarketOrderViewWithTransactions::selectOrder(const QItemSelection &selected)
     {
-        Q_UNUSED(deselected);
-
         if (mOrderModel != nullptr && !selected.isEmpty())
         {
             const auto index = mOrderView->getProxyModel().mapToSource(selected.indexes().first());
@@ -206,36 +199,5 @@ namespace Evernus
                 mExternalOrderModel->reset();
             }
         }
-    }
-
-    void MarketOrderViewWithTransactions::addItemCost()
-    {
-        const auto selection = mTransactionsView->selectionModel()->selectedIndexes();
-
-        struct ItemData
-        {
-            uint mQuantity;
-            double mPrice;
-        };
-
-        std::unordered_map<EveType::IdType, ItemData> aggrData;
-        for (const auto &index : selection)
-        {
-            if (index.column() != 0)
-                continue;
-
-            const auto mappedIndex = mTransactionProxyModel.mapToSource(index);
-            const auto row = mappedIndex.row();
-
-            auto &data = aggrData[mTransactionModel.getTypeId(row)];
-
-            const auto quantity = mTransactionModel.getQuantity(row);
-
-            data.mQuantity += quantity;
-            data.mPrice += quantity * mTransactionModel.getPrice(row);
-        }
-
-        for (const auto &data : aggrData)
-            mCostProvider.setForCharacterAndType(mCharacterId, data.first, data.second.mPrice / data.second.mQuantity);
     }
 }

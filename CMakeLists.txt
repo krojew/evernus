@@ -132,6 +132,7 @@ qt5_wrap_cpp(
     WalletPreferencesWidget.h
     WalletTransactionsModel.h
     WalletTransactionsWidget.h
+    WalletTransactionView.h
 )
 
 qt5_add_resources(
@@ -574,6 +575,8 @@ add_executable(
     WalletTransactionsWidget.h
     WalletTransactionsXmlReceiver.cpp
     WalletTransactionsXmlReceiver.h
+    WalletTransactionView.cpp
+    WalletTransactionView.h
     WarningBarWidget.cpp
     WarningBarWidget.h
     ${MOC_FILES}

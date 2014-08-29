@@ -18,17 +18,18 @@
 #include "CharacterBoundWidget.h"
 
 class QSortFilterProxyModel;
+class QItemSelection;
 
 namespace Evernus
 {
     class WalletTransactionRepository;
     class WalletEntryFilterWidget;
+    class WalletTransactionView;
     class FilterTextRepository;
     class CharacterRepository;
     class CacheTimerProvider;
     class ItemCostProvider;
     class EveDataProvider;
-    class StyledTreeView;
 
     class WalletTransactionsWidget
         : public CharacterBoundWidget
@@ -53,18 +54,13 @@ namespace Evernus
 
         void updateFilter(const QDate &from, const QDate &to, const QString &filter, int type);
 
-    private slots:
-        void addItemCost();
-
     private:
-        ItemCostProvider &mItemCostProvider;
-
         WalletTransactionsModel mModel;
         QSortFilterProxyModel *mFilterModel = nullptr;
 
         WalletEntryFilterWidget *mFilter = nullptr;
 
-        StyledTreeView *mView = nullptr;
+        WalletTransactionView *mView = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
     };
