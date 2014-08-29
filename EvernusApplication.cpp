@@ -165,6 +165,7 @@ namespace Evernus
         showSplashMessage(tr("Loading..."), splash);
 
         Updater::getInstance().performVersionMigration(*mCacheTimerRepository,
+                                                       *mUpdateTimerRepository,
                                                        *mCharacterRepository,
                                                        *mExternalOrderRepository,
                                                        *mMarketOrderRepository,
