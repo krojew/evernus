@@ -269,6 +269,7 @@ namespace Evernus
         auto show = false;
 
         QSettings settings;
+        const auto importContracts = settings.value(ImportSettings::importContractsKey, ImportSettings::importContractsDefault).toBool();
 
         mUpdateTimersList->clear();
 
@@ -291,7 +292,9 @@ namespace Evernus
         checker(TimerType::MarketOrders, ImportSettings::maxMarketOrdersAgeKey, tr("Market orders: %1"));
         checker(TimerType::WalletJournal, ImportSettings::maxWalletAgeKey, tr("Wallet journal: %1"));
         checker(TimerType::WalletTransactions, ImportSettings::maxWalletAgeKey, tr("Wallet transactions: %1"));
-        checker(TimerType::Contracts, ImportSettings::maxWalletAgeKey, tr("Contracts: %1"));
+
+        if (importContracts)
+            checker(TimerType::Contracts, ImportSettings::maxWalletAgeKey, tr("Contracts: %1"));
 
         try
         {
@@ -300,7 +303,9 @@ namespace Evernus
             checker(TimerType::CorpMarketOrders, ImportSettings::maxMarketOrdersAgeKey, tr("Corp. market orders: %1"));
             checker(TimerType::CorpWalletJournal, ImportSettings::maxWalletAgeKey, tr("Corp. wallet journal: %1"));
             checker(TimerType::CorpWalletTransactions, ImportSettings::maxWalletAgeKey, tr("Corp. wallet transactions: %1"));
-            checker(TimerType::CorpContracts, ImportSettings::maxWalletAgeKey, tr("Corp. contracts: %1"));
+
+            if (importContracts)
+                checker(TimerType::CorpContracts, ImportSettings::maxWalletAgeKey, tr("Corp. contracts: %1"));
         }
         catch (const CorpKeyRepository::NotFoundException &)
         {
