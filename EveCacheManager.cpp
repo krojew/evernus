@@ -14,7 +14,7 @@
  */
 #include <stdexcept>
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QDirIterator>
 #include <QSettings>
 #include <QDebug>
@@ -122,7 +122,7 @@ namespace Evernus
                             qDebug() << e.what();
                         }
 
-                        qApp->processEvents();
+                        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
                     }
                 }
             }

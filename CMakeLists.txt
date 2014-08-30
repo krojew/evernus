@@ -16,9 +16,9 @@ find_package(Qt5XmlPatterns REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
 if(APPLE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -pthread")
 elseif(UNIX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -stdlib=libc++ -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -pthread -stdlib=libc++ -g")
 elseif(WIN32)
     find_package(Qt5WinExtras REQUIRED)
 
@@ -132,6 +132,7 @@ qt5_wrap_cpp(
     WalletPreferencesWidget.h
     WalletTransactionsModel.h
     WalletTransactionsWidget.h
+    WalletTransactionView.h
 )
 
 qt5_add_resources(
@@ -574,6 +575,8 @@ add_executable(
     WalletTransactionsWidget.h
     WalletTransactionsXmlReceiver.cpp
     WalletTransactionsXmlReceiver.h
+    WalletTransactionView.cpp
+    WalletTransactionView.h
     WarningBarWidget.cpp
     WarningBarWidget.h
     ${MOC_FILES}
@@ -590,8 +593,8 @@ elseif(APPLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE TRUE)
     set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "Info.plist")
 
-    set(CMAKE_BUILD_TYPE "MinSizeRel")
-    set(CMAKE_CONFIGURATION_TYPES "MinSizeRel;Release;RelWithDebInfo;Debug")
+    set(CMAKE_BUILD_TYPE "Release")
+    set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo;Debug")
 
     set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Evernus")
 

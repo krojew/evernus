@@ -12,21 +12,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <unordered_map>
-
 #include <QSortFilterProxyModel>
+#include <QApplication>
 #include <QHeaderView>
 #include <QVBoxLayout>
-#include <QAction>
+#include <QClipboard>
+#include <QSettings>
 #include <QDebug>
 
 #include "WalletEntryFilterWidget.h"
+#include "WalletTransactionView.h"
 #include "CacheTimerProvider.h"
 #include "WarningBarWidget.h"
 #include "ItemCostProvider.h"
 #include "ButtonWithTimer.h"
-#include "StyledTreeView.h"
 #include "ImportSettings.h"
+#include "PriceSettings.h"
 
 #include "WalletTransactionsWidget.h"
 
@@ -44,7 +45,6 @@ namespace Evernus
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, (corp) ? (TimerType::CorpWalletTransactions) : (TimerType::WalletTransactions)),
                                ImportSettings::maxWalletAgeKey,
                                parent)
-        , mItemCostProvider(itemCostProvider)
         , mModel(walletRepo, characterRepository, dataProvider, corp)
     {
         auto mainLayout = new QVBoxLayout{};
@@ -69,14 +69,10 @@ namespace Evernus
         mFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
         mFilterModel->setSourceModel(&mModel);
 
-        auto addCostAct = new QAction{tr("Add to item costs"), this};
-        connect(addCostAct, &QAction::triggered, this, &WalletTransactionsWidget::addItemCost);
-
-        mView = new StyledTreeView{this};
+        mView = new WalletTransactionView{"transactionsView", itemCostProvider, this};
         mainLayout->addWidget(mView, 1);
-        mView->setModel(mFilterModel);
+        mView->setModels(mFilterModel, &mModel);
         mView->sortByColumn(1, Qt::DescendingOrder);
-        mView->addAction(addCostAct);
     }
 
     void WalletTransactionsWidget::updateData()
@@ -89,37 +85,6 @@ namespace Evernus
     {
         mModel.setFilter(getCharacterId(), from, to.addDays(1), static_cast<EntryType>(type));
         mFilterModel->setFilterWildcard(filter);
-    }
-
-    void WalletTransactionsWidget::addItemCost()
-    {
-        const auto selection = mView->selectionModel()->selectedIndexes();
-
-        struct ItemData
-        {
-            uint mQuantity;
-            double mPrice;
-        };
-
-        std::unordered_map<EveType::IdType, ItemData> aggrData;
-        for (const auto &index : selection)
-        {
-            if (index.column() != 0)
-                continue;
-
-            const auto mappedIndex = mFilterModel->mapToSource(index);
-            const auto row = mappedIndex.row();
-
-            auto &data = aggrData[mModel.getTypeId(row)];
-
-            const auto quantity = mModel.getQuantity(row);
-
-            data.mQuantity += quantity;
-            data.mPrice += quantity * mModel.getPrice(row);
-        }
-
-        for (const auto &data : aggrData)
-            mItemCostProvider.setForCharacterAndType(getCharacterId(), data.first, data.second.mPrice / data.second.mQuantity);
     }
 
     void WalletTransactionsWidget::handleNewCharacter(Character::IdType id)
@@ -135,6 +100,7 @@ namespace Evernus
 
         mModel.setFilter(id, fromDate, tillDate, EntryType::All);
 
+        mView->setCharacter(id);
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
     }
 }

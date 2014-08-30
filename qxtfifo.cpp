@@ -152,7 +152,7 @@ QxtFifo::QxtFifo(const QByteArray &prime, QObject *parent) : QIODevice(parent)
 */
 qint64 QxtFifo::readData ( char * data, qint64 maxSize )
 {
-    int bytes, step;
+    int bytes;
 #if QT_VERSION >=  0x50000
     bytes = qxt_d().available.load();
 #else
@@ -173,7 +173,7 @@ qint64 QxtFifo::readData ( char * data, qint64 maxSize )
         node = qxt_d().head;
 #endif
 
-        step = node->content.size();
+        auto step = node->content.size();
         if(step >= bytes) {
             int rem = step - bytes;
             memcpy(writePos, node->content.constData(), bytes);

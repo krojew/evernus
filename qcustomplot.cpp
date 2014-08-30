@@ -5635,7 +5635,6 @@ void QCPAxis::setupTickVectors()
   mSubTickVector.resize((mTickVector.size()-1)*mSubTickCount);
   if (mSubTickCount > 0)
   {
-    double subTickStep = 0;
     double subTickPosition = 0;
     int subTickIndex = 0;
     bool done = false;
@@ -5643,7 +5642,7 @@ void QCPAxis::setupTickVectors()
     int highTick = mHighestVisibleTick < mTickVector.size()-1 ? mHighestVisibleTick+1 : mHighestVisibleTick;
     for (int i=lowTick+1; i<=highTick; ++i)
     {
-      subTickStep = (mTickVector.at(i)-mTickVector.at(i-1))/(double)(mSubTickCount+1);
+      double subTickStep = (mTickVector.at(i)-mTickVector.at(i-1))/(double)(mSubTickCount+1);
       for (int k=1; k<=mSubTickCount; ++k)
       {
         subTickPosition = mTickVector.at(i-1) + k*subTickStep;
@@ -7510,7 +7509,7 @@ void QCPAbstractPlottable::deselectEvent(bool *selectionStateChanged)
   you want to make a new item subclass. Use \ref QCPAbstractItem::createAnchor instead, as
   explained in the subclassing section of the QCPAbstractItem documentation.
 */
-QCPItemAnchor::QCPItemAnchor(QCustomPlot *parentPlot, QCPAbstractItem *parentItem, const QString name, int anchorId) :
+QCPItemAnchor::QCPItemAnchor(QCustomPlot *parentPlot, QCPAbstractItem *parentItem, const QString &name, int anchorId) :
   mName(name),
   mParentPlot(parentPlot),
   mParentItem(parentItem),
@@ -7614,7 +7613,7 @@ void QCPItemAnchor::removeChild(QCPItemPosition *pos)
   you want to make a new item subclass. Use \ref QCPAbstractItem::createPosition instead, as
   explained in the subclassing section of the QCPAbstractItem documentation.
 */
-QCPItemPosition::QCPItemPosition(QCustomPlot *parentPlot, QCPAbstractItem *parentItem, const QString name) :
+QCPItemPosition::QCPItemPosition(QCustomPlot *parentPlot, QCPAbstractItem *parentItem, const QString &name) :
   QCPItemAnchor(parentPlot, parentItem, name),
   mPositionType(ptAbsolute),
   mKey(0),
@@ -15282,10 +15281,9 @@ void QCPGraph::getStepLeftPlotData(QVector<QPointF> *linePixelData, QVector<QCPD
   if (keyAxis->orientation() == Qt::Vertical)
   {
     double lastValue = valueAxis->coordToPixel(lineData.first().value);
-    double key;
     for (int i=0; i<lineData.size(); ++i)
     {
-      key = keyAxis->coordToPixel(lineData.at(i).key);
+      double key = keyAxis->coordToPixel(lineData.at(i).key);
       (*linePixelData)[i*2+0].setX(lastValue);
       (*linePixelData)[i*2+0].setY(key);
       lastValue = valueAxis->coordToPixel(lineData.at(i).value);
@@ -15295,10 +15293,9 @@ void QCPGraph::getStepLeftPlotData(QVector<QPointF> *linePixelData, QVector<QCPD
   } else // key axis is horizontal
   {
     double lastValue = valueAxis->coordToPixel(lineData.first().value);
-    double key;
     for (int i=0; i<lineData.size(); ++i)
     {
-      key = keyAxis->coordToPixel(lineData.at(i).key);
+      double key = keyAxis->coordToPixel(lineData.at(i).key);
       (*linePixelData)[i*2+0].setX(key);
       (*linePixelData)[i*2+0].setY(lastValue);
       lastValue = valueAxis->coordToPixel(lineData.at(i).value);
@@ -15335,10 +15332,9 @@ void QCPGraph::getStepRightPlotData(QVector<QPointF> *linePixelData, QVector<QCP
   if (keyAxis->orientation() == Qt::Vertical)
   {
     double lastKey = keyAxis->coordToPixel(lineData.first().key);
-    double value;
     for (int i=0; i<lineData.size(); ++i)
     {
-      value = valueAxis->coordToPixel(lineData.at(i).value);
+      double value = valueAxis->coordToPixel(lineData.at(i).value);
       (*linePixelData)[i*2+0].setX(value);
       (*linePixelData)[i*2+0].setY(lastKey);
       lastKey = keyAxis->coordToPixel(lineData.at(i).key);
@@ -15348,10 +15344,9 @@ void QCPGraph::getStepRightPlotData(QVector<QPointF> *linePixelData, QVector<QCP
   } else // key axis is horizontal
   {
     double lastKey = keyAxis->coordToPixel(lineData.first().key);
-    double value;
     for (int i=0; i<lineData.size(); ++i)
     {
-      value = valueAxis->coordToPixel(lineData.at(i).value);
+      double value = valueAxis->coordToPixel(lineData.at(i).value);
       (*linePixelData)[i*2+0].setX(lastKey);
       (*linePixelData)[i*2+0].setY(value);
       lastKey = keyAxis->coordToPixel(lineData.at(i).key);
@@ -17162,13 +17157,12 @@ void QCPCurve::getCurveData(QVector<QPointF> *lineData) const
   double RRight = keyAxis->range().upper;
   double RBottom = valueAxis->range().lower;
   double RTop = valueAxis->range().upper;
-  double x, y; // current key/value
   bool addedLastAlready = true;
   bool firstPoint = true; // first point must always be drawn, to make sure fill works correctly
   for (it = mData->constBegin(); it != mData->constEnd(); ++it)
   {
-    x = it.value().key;
-    y = it.value().value;
+    double x = it.value().key;
+    double y = it.value().value;
     // determine current region:
     if (x < RLeft) // region 123
     {
@@ -17325,12 +17319,10 @@ QCPRange QCPCurve::getKeyRange(bool &foundRange, SignDomain inSignDomain) const
   bool haveLower = false;
   bool haveUpper = false;
   
-  double current;
-  
   QCPCurveDataMap::const_iterator it = mData->constBegin();
   while (it != mData->constEnd())
   {
-    current = it.value().key;
+    double current = it.value().key;
     if (inSignDomain == sdBoth || (inSignDomain == sdNegative && current < 0) || (inSignDomain == sdPositive && current > 0))
     {
       if (current < range.lower || !haveLower)
@@ -20456,7 +20448,6 @@ double QCPItemEllipse::selectTest(const QPointF &pos, bool onlySelectable, QVari
   if (onlySelectable && !mSelectable)
     return -1;
   
-  double result = -1;
   QPointF p1 = topLeft->pixelPoint();
   QPointF p2 = bottomRight->pixelPoint();
   QPointF center((p1+p2)/2.0);
@@ -20467,7 +20458,7 @@ double QCPItemEllipse::selectTest(const QPointF &pos, bool onlySelectable, QVari
   
   // distance to border:
   double c = 1.0/qSqrt(x*x/(a*a)+y*y/(b*b));
-  result = qAbs(c-1)*qSqrt(x*x+y*y);
+  double result = qAbs(c-1)*qSqrt(x*x+y*y);
   // filled ellipse, allow click inside to count as hit:
   if (result > mParentPlot->selectionTolerance()*0.99 && mBrush.style() != Qt::NoBrush && mBrush.color().alpha() != 0)
   {

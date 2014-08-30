@@ -15,6 +15,7 @@
 #include <unordered_set>
 #include <stdexcept>
 #include <algorithm>
+#include <future>
 
 #include <QStandardPaths>
 #include <QSplashScreen>
@@ -126,7 +127,14 @@ namespace Evernus
         deleteOldWalletEntries();
 
         showSplashMessage(tr("Setting up IGB service..."), splash);
-        auto igbService = new IGBService{*mCharacterOrderProvider, *mCorpOrderProvider, *mDataProvider, &mIGBSessionManager, this};
+        auto igbService = new IGBService{*mCharacterOrderProvider,
+                                         *mCorpOrderProvider,
+                                         *mDataProvider,
+                                         *this,
+                                         *mFavoriteItemRepository,
+                                         *mCharacterRepository,
+                                         &mIGBSessionManager,
+                                         this};
         connect(igbService, SIGNAL(openMarginTool()), this, SIGNAL(openMarginTool()));
 
         mIGBSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
@@ -157,6 +165,7 @@ namespace Evernus
         showSplashMessage(tr("Loading..."), splash);
 
         Updater::getInstance().performVersionMigration(*mCacheTimerRepository,
+                                                       *mUpdateTimerRepository,
                                                        *mCharacterRepository,
                                                        *mExternalOrderRepository,
                                                        *mMarketOrderRepository,
@@ -748,7 +757,7 @@ namespace Evernus
                     if (it != std::end(data))
                     {
                         Evernus::Contracts corpContracts(it, std::end(data));
-                        mCorpContractRepository->batchStore(corpContracts, true);
+                        asyncBatchStore(*mCorpContractRepository, corpContracts, true);
 
                         mCharacterContractProvider->clearForCorporation(corpContracts.front().getIssuerCorpId());
                         mCorpContractProvider->clearForCorporation(corpContracts.front().getIssuerCorpId());
@@ -756,44 +765,18 @@ namespace Evernus
                         mCorpContractProvider->clearForCorporation(corpContracts.front().getAssigneeId());
                     }
 
-                    mContractRepository->batchStore(data, true);
+                    asyncBatchStore(*mContractRepository, data, true);
 
                     mCharacterContractProvider->clearForCharacter(id);
                     mCorpContractProvider->clearForCharacter(id);
 
                     saveUpdateTimer(Evernus::TimerType::Contracts, mContractsUtcUpdateTimes, id);
 
-                    if (data.empty())
-                    {
-                        emit contractsChanged();
-                        emit taskEnded(task, QString{});
-                    }
-                    else
-                    {
-                        for (const auto &contract : data)
-                        {
-                            if (contract.getType() == Evernus::Contract::Type::Courier)
-                                continue;
-
-                            ++mPendingContractItemRequests;
-
-                            const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
-                            mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, this](auto &&data, const auto &error) {
-                                --mPendingContractItemRequests;
-
-                                if (error.isEmpty())
-                                    mContractItemRepository->batchStore(data, true);
-
-                                if (mPendingContractItemRequests == 0)
-                                    emit contractsChanged();
-
-                                emit taskEnded(subTask, error);
-                            });
-                        }
-
-                        if (mPendingContractItemRequests == 0)
-                            emit contractsChanged();
-                    }
+                    this->handleIncomingContracts<&Evernus::EvernusApplication::contractsChanged>(key,
+                                                                                                  data,
+                                                                                                  id,
+                                                                                                  *mContractItemRepository,
+                                                                                                  task);
                 }
                 else
                 {
@@ -851,8 +834,8 @@ namespace Evernus
                         }
                     }
 
-                    mWalletJournalEntryRepository->batchStore(data, true);
-                    mWalletSnapshotRepository->batchStore(snapshots, false);
+                    asyncBatchStore(*mWalletJournalEntryRepository, data, true);
+                    asyncBatchStore(*mWalletSnapshotRepository, snapshots, false);
 
                     saveUpdateTimer(Evernus::TimerType::WalletJournal, mWalletJournalUtcUpdateTimes, id);
 
@@ -891,7 +874,7 @@ namespace Evernus
                                                 [task, id, this](const auto &data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    mWalletTransactionRepository->batchStore(data, true);
+                    asyncBatchStore(*mWalletTransactionRepository, data, true);
                     saveUpdateTimer(Evernus::TimerType::WalletTransactions, mWalletTransactionsUtcUpdateTimes, id);
 
                     QSettings settings;
@@ -935,16 +918,7 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            mAPIManager.fetchMarketOrders(*key, id, [task, id, this](auto &&data, const auto &error) {
-                if (error.isEmpty())
-                {
-                    importMarketOrders(id, data, false);
-                    emit marketOrdersChanged();
-                    emit externalOrdersChangedWithMarketOrders();
-                }
-
-                emit taskEnded(task, error);
-            });
+            doRefreshMarketOrdersFromAPI<&EvernusApplication::marketOrdersChanged>(key, id, task);
         }
         catch (const KeyRepository::NotFoundException &)
         {
@@ -981,7 +955,7 @@ namespace Evernus
             mAPIManager.fetchContracts(*key, id, [key, task, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    mCorpContractRepository->batchStore(data, true);
+                    asyncBatchStore(*mCorpContractRepository, data, true);
 
                     try
                     {
@@ -998,37 +972,11 @@ namespace Evernus
 
                     saveUpdateTimer(Evernus::TimerType::CorpContracts, mCorpContractsUtcUpdateTimes, id);
 
-                    if (data.empty())
-                    {
-                        emit corpContractsChanged();
-                        emit taskEnded(task, QString{});
-                    }
-                    else
-                    {
-                        for (const auto &contract : data)
-                        {
-                            if (contract.getType() == Evernus::Contract::Type::Courier)
-                                continue;
-
-                            ++mPendingContractItemRequests;
-
-                            const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
-                            mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, this](auto &&data, const auto &error) {
-                                --mPendingContractItemRequests;
-
-                                if (error.isEmpty())
-                                    mContractItemRepository->batchStore(data, true);
-
-                                if (mPendingContractItemRequests == 0)
-                                    emit corpContractsChanged();
-
-                                emit taskEnded(subTask, error);
-                            });
-                        }
-
-                        if (mPendingContractItemRequests == 0)
-                            emit corpContractsChanged();
-                    }
+                    this->handleIncomingContracts<&Evernus::EvernusApplication::corpContractsChanged>(key,
+                                                                                                      data,
+                                                                                                      id,
+                                                                                                      *mCorpContractItemRepository,
+                                                                                                      task);
                 }
                 else
                 {
@@ -1061,7 +1009,7 @@ namespace Evernus
                                            [task, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    mCorpWalletJournalEntryRepository->batchStore(data, true);
+                    asyncBatchStore(*mCorpWalletJournalEntryRepository, data, true);
                     saveUpdateTimer(Evernus::TimerType::CorpWalletJournal, mCorpWalletJournalUtcUpdateTimes, id);
 
                     emit corpWalletJournalChanged();
@@ -1100,7 +1048,7 @@ namespace Evernus
                                                 [task, id, corpId, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    mCorpWalletTransactionRepository->batchStore(data, true);
+                    asyncBatchStore(*mCorpWalletTransactionRepository, data, true);
                     saveUpdateTimer(Evernus::TimerType::CorpWalletTransactions, mCorpWalletTransactionsUtcUpdateTimes, id);
 
                     QSettings settings;
@@ -1144,16 +1092,7 @@ namespace Evernus
         try
         {
             const auto key = getCorpKey(id);
-            mAPIManager.fetchMarketOrders(*key, id, [task, id, this](auto &&data, const auto &error) {
-                if (error.isEmpty())
-                {
-                    importMarketOrders(id, data, true);
-                    emit corpMarketOrdersChanged();
-                    emit externalOrdersChangedWithMarketOrders();
-                }
-
-                emit taskEnded(task, error);
-            });
+            doRefreshMarketOrdersFromAPI<&EvernusApplication::corpMarketOrdersChanged>(key, id, task);
         }
         catch (const CorpKeyRepository::NotFoundException &)
         {
@@ -1186,7 +1125,7 @@ namespace Evernus
                 mDataProvider->clearStationCache();
 
                 mConquerableStationRepository->exec(QString{"DELETE FROM %1"}.arg(mConquerableStationRepository->getTableName()));
-                mConquerableStationRepository->batchStore(list, true);
+                asyncBatchStore(*mConquerableStationRepository, list, true);
 
                 emit conquerableStationsChanged();
             }
@@ -1266,7 +1205,7 @@ namespace Evernus
     {
         try
         {
-            mDataProvider->updateExternalOrders(orders);
+            asyncExecute(&CachingEveDataProvider::updateExternalOrders, mDataProvider.get(), std::cref(orders));
 
             QSettings settings;
             if (settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool())
@@ -1380,7 +1319,7 @@ namespace Evernus
 
         try
         {
-            mMarketOrderRepository->batchStore(orders, true);
+            asyncBatchStore(*mMarketOrderRepository, orders, true);
             emit taskEnded(task, QString{});
         }
         catch (const std::exception &e)
@@ -1980,7 +1919,7 @@ namespace Evernus
                 mMarketOrderValueSnapshotRepository->store(snapshot);
             }
 
-            orderRepo.batchStore(orders, true);
+            asyncBatchStore(orderRepo, orders, true);
 
             mDataProvider->clearExternalOrderCaches();
 
@@ -2186,6 +2125,79 @@ namespace Evernus
         mSmtp.setPassword(crypt.decryptToByteArray(settings.value(ImportSettings::smtpPasswordKey).toString()));
         mSmtp.setStartTlsDisabled(static_cast<ImportSettings::SmtpConnectionSecurity>(
             settings.value(ImportSettings::smtpConnectionSecurityKey).toInt()) != ImportSettings::SmtpConnectionSecurity::STARTTLS);
+    }
+
+    template<void (EvernusApplication::* Signal)(), class Key>
+    void EvernusApplication::handleIncomingContracts(const Key &key,
+                                                     const Contracts &data,
+                                                     Character::IdType id,
+                                                     const ContractItemRepository &itemRepo,
+                                                     uint task)
+    {
+        if (data.empty())
+        {
+            emit (this->*Signal)();
+            emit taskEnded(task, QString{});
+        }
+        else
+        {
+            for (const auto &contract : data)
+            {
+                if (contract.getType() == Evernus::Contract::Type::Courier)
+                    continue;
+
+                ++mPendingContractItemRequests;
+
+                const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
+                mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, &itemRepo, this](APIManager::ContractItemList &&data, const QString &error) {
+                    --mPendingContractItemRequests;
+
+                    if (error.isEmpty())
+                        asyncBatchStore(itemRepo, data, true);
+
+                    if (mPendingContractItemRequests == 0)
+                        emit (this->*Signal)();
+
+                    emit taskEnded(subTask, error);
+                });
+            }
+
+            if (mPendingContractItemRequests == 0)
+                emit (this->*Signal)();
+        }
+    }
+
+    template<void (EvernusApplication::* Signal)(), class Key>
+    void EvernusApplication::doRefreshMarketOrdersFromAPI(const Key &key, Character::IdType id, uint task)
+    {
+        mAPIManager.fetchMarketOrders(*key, id, [task, id, this](MarketOrders &&data, const QString &error) {
+            if (error.isEmpty())
+            {
+                importMarketOrders(id, data, std::is_same<Key, CorpKey>());
+                emit (this->*Signal)();
+                emit externalOrdersChangedWithMarketOrders();
+            }
+
+            emit taskEnded(task, error);
+        });
+    }
+
+    template<class T, class Data>
+    void EvernusApplication::asyncBatchStore(const T &repo, const Data &data, bool hasId)
+    {
+        asyncExecute(std::bind(&T::template batchStore<Data>, &repo, std::cref(data), hasId));
+    }
+
+    template<class Func, class... Args>
+    void EvernusApplication::asyncExecute(Func &&func, Args && ...args)
+    {
+        qDebug() << "Stating async task...";
+
+        auto future = std::async(std::launch::async, std::forward<Func>(func), std::forward<Args>(args)...);
+        while (future.wait_for(std::chrono::seconds{0}) != std::future_status::ready)
+            processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        qDebug() << "Done.";
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)

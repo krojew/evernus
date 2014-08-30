@@ -72,7 +72,7 @@ namespace Evernus
         mProxy.setSourceModel(&mModel);
         mProxy.setFilterCaseSensitivity(Qt::CaseInsensitive);
 
-        mView = new StyledTreeView{this};
+        mView = new StyledTreeView{"itemCostView", this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
         connect(mView->selectionModel(), &QItemSelectionModel::selectionChanged,

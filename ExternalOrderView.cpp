@@ -27,7 +27,10 @@
 
 namespace Evernus
 {
-    ExternalOrderView::ExternalOrderView(const ItemCostProvider &costProvider, const EveDataProvider &dataProvider, QWidget *parent)
+    ExternalOrderView::ExternalOrderView(const ItemCostProvider &costProvider,
+                                         const EveDataProvider &dataProvider,
+                                         const QString &objectName,
+                                         QWidget *parent)
         : QWidget(parent)
         , mCostProvider(costProvider)
         , mProxy(dataProvider)
@@ -38,7 +41,7 @@ namespace Evernus
         mProxy.setSortRole(Qt::UserRole);
         connect(&mProxy, &QSortFilterProxyModel::modelReset, this, &ExternalOrderView::handleModelReset, Qt::QueuedConnection);
 
-        mView = new StyledTreeView{this};
+        mView = new StyledTreeView{objectName, this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
         mView->setRootIsDecorated(false);

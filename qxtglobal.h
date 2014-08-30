@@ -161,8 +161,8 @@ template <typename PUB>
 class QxtPrivate
 {
 public:
-    virtual ~QxtPrivate()
-    {}
+    QxtPrivate() = default;
+    virtual ~QxtPrivate() = default;
     inline void QXT_setPublic(PUB* pub)
     {
         qxt_p_ptr = pub;
@@ -225,8 +225,8 @@ public:
 	return static_cast<PVT*>(pvt);
     }
 private:
-    QxtPrivateInterface(const QxtPrivateInterface&) { }
-    QxtPrivateInterface& operator=(const QxtPrivateInterface&) { }
+    QxtPrivateInterface(const QxtPrivateInterface&) = delete;
+    QxtPrivateInterface& operator=(const QxtPrivateInterface&) = delete;
     QxtPrivate<PUB>* pvt;
 };
 

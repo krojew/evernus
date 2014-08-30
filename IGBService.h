@@ -28,7 +28,10 @@ class QxtHttpSessionManager;
 
 namespace Evernus
 {
+    class FavoriteItemRepository;
     class MarketOrderProvider;
+    class CharacterRepository;
+    class ItemCostProvider;
     class EveDataProvider;
 
     class IGBService
@@ -40,6 +43,9 @@ namespace Evernus
         IGBService(const MarketOrderProvider &orderProvider,
                    const MarketOrderProvider &corpOrderProvider,
                    const EveDataProvider &dataProvider,
+                   const ItemCostProvider &itemCostProvider,
+                   const FavoriteItemRepository &favoriteItemRepo,
+                   const CharacterRepository &characterRepository,
                    QxtHttpSessionManager *sm,
                    QObject *parent = nullptr);
         virtual ~IGBService() = default;
@@ -51,19 +57,29 @@ namespace Evernus
         void index(QxtWebRequestEvent *event);
         void active(QxtWebRequestEvent *event);
         void fulfilled(QxtWebRequestEvent *event);
+        void overbid(QxtWebRequestEvent *event);
+        void belowMargin(QxtWebRequestEvent *event);
         void corpActive(QxtWebRequestEvent *event);
         void corpFulfilled(QxtWebRequestEvent *event);
+        void corpOverbid(QxtWebRequestEvent *event);
+        void corpBelowMargin(QxtWebRequestEvent *event);
+        void favorite(QxtWebRequestEvent *event);
         void openMarginTool(QxtWebRequestEvent *event);
 
     private:
         typedef std::vector<std::shared_ptr<MarketOrder>> OrderList;
 
         static const QString limitToStationsCookie;
+        static const QString orderHtmlTemplate;
 
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const EveDataProvider &mDataProvider;
+        const ItemCostProvider &mItemCostProvider;
 
-        QxtHtmlTemplate mMainTemplate, mOrderTemplate;
+        const FavoriteItemRepository &mFavoriteItemRepo;
+        const CharacterRepository &mCharacterRepository;
+
+        QxtHtmlTemplate mMainTemplate, mOrderTemplate, mFavoriteTemplate;
 
         void renderContent(QxtWebRequestEvent *event, const QString &content);
         QString renderOrderList(const std::vector<std::shared_ptr<MarketOrder>> &orders,
@@ -71,12 +87,12 @@ namespace Evernus
                                 QStringList &typeIdContainer,
                                 uint stationId) const;
 
-        template<class T, OrderList (MarketOrderProvider::* SellFunc)(T) const, OrderList (MarketOrderProvider::* BuyFunc)(T) const>
+        template<class SellFunc, class BuyFunc>
         void showOrders(QxtWebRequestEvent *event,
-                        const MarketOrderProvider &provider,
+                        const SellFunc &sellFunc,
+                        const BuyFunc &buyFunc,
                         MarketOrder::State state,
-                        bool needsDelta,
-                        T id);
+                        bool needsDelta);
         OrderList filterAndSort(const OrderList &orders, MarketOrder::State state, bool needsDelta) const;
 
         uint getStationIdForFiltering(QxtWebRequestEvent *event) const;

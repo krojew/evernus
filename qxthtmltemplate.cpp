@@ -92,6 +92,11 @@ void QxtHtmlTemplate::load(const QString& d)
     data = d;
 }
 
+void QxtHtmlTemplate::copyArguments(const QMap<QString, QString> &map)
+{
+    *static_cast<QMap<QString, QString> *>(this) = map;
+}
+
 bool QxtHtmlTemplate::open(const QString& filename)
 {
     QFile f(filename);

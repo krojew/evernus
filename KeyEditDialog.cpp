@@ -64,7 +64,7 @@ namespace Evernus
     void KeyEditDialog::accept()
     {
         mKey.setId(mIdEdit->text().toInt());
-        mKey.setCode(mCodeEdit->text());
+        mKey.setCode(mCodeEdit->text().trimmed());
 
         QDialog::accept();
     }

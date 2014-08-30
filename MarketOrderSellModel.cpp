@@ -168,9 +168,7 @@ namespace Evernus
                 {
                     const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
-                    const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                    return 100. * (realPrice - realCost) / realPrice;
+                    return PriceUtils::getMargin(cost->getCost(), data->getPrice(), taxes);
                 }
             case profitColumn:
                 {
@@ -198,12 +196,12 @@ namespace Evernus
                 }
             case etaColumn:
                 {
-                    const auto elapsed = data->getIssued().daysTo(QDateTime::currentDateTimeUtc());
-                    if (elapsed <= 0)
-                        return 0;
+                    const double elapsed = data->getFirstSeen().daysTo(QDateTime::currentDateTimeUtc());
+                    if (elapsed <= 0.)
+                        return 0.;
 
                     const auto movement = (data->getVolumeEntered() - data->getVolumeRemaining()) / elapsed;
-                    return (movement > 0) ? (data->getVolumeRemaining() / movement) : (0);
+                    return (movement > 0.) ? (data->getVolumeRemaining() / movement) : (0.);
                 }
             case timeLeftColumn:
                 {
@@ -233,15 +231,6 @@ namespace Evernus
             break;
         case Qt::DisplayRole:
             {
-                const char * const stateNames[] = {
-                    QT_TR_NOOP("Active"),
-                    QT_TR_NOOP("Closed"),
-                    QT_TR_NOOP("Fulfilled"),
-                    QT_TR_NOOP("Cancelled"),
-                    QT_TR_NOOP("Pending"),
-                    QT_TR_NOOP("Character Deleted")
-                };
-
                 QLocale locale;
 
                 switch (column) {
@@ -251,6 +240,15 @@ namespace Evernus
                     return getGroupName(data->getTypeId());
                 case statusColumn:
                     {
+                        const char * const stateNames[] = {
+                            QT_TR_NOOP("Active"),
+                            QT_TR_NOOP("Closed"),
+                            QT_TR_NOOP("Fulfilled"),
+                            QT_TR_NOOP("Cancelled"),
+                            QT_TR_NOOP("Pending"),
+                            QT_TR_NOOP("Character Deleted")
+                        };
+
                         const auto prefix = (data->getDelta() != 0) ? ("*") : ("");
 
                         if (data->getState() == MarketOrder::State::Fulfilled && data->getVolumeRemaining() > 0)
@@ -295,9 +293,7 @@ namespace Evernus
                     {
                         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
-                        const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                        return QString{"%1%2"}.arg(locale.toString(100. * (realPrice - realCost) / realPrice, 'f', 2)).arg(locale.percent());
+                        return QString{"%1%2"}.arg(locale.toString(PriceUtils::getMargin(cost->getCost(), data->getPrice(), taxes), 'f', 2)).arg(locale.percent());
                     }
                 case profitColumn:
                     {
@@ -325,15 +321,15 @@ namespace Evernus
                     }
                 case etaColumn:
                     {
-                        const auto elapsed = data->getIssued().daysTo(QDateTime::currentDateTimeUtc());
-                        if (elapsed <= 0)
+                        const double elapsed = data->getFirstSeen().daysTo(QDateTime::currentDateTimeUtc());
+                        if (elapsed <= 0.)
                             return tr("unknown");
 
                         const auto movement = (data->getVolumeEntered() - data->getVolumeRemaining()) / elapsed;
-                        if (movement <= 0)
+                        if (movement <= 0.)
                             return tr("unknown");
 
-                        const auto eta = data->getVolumeRemaining() / movement;
+                        const int eta = data->getVolumeRemaining() / movement;
                         return (eta > 0) ? (tr("%n day(s)", "", eta)) : (tr("today"));
                     }
                 case timeLeftColumn:

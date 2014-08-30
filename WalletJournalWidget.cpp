@@ -63,7 +63,7 @@ namespace Evernus
         mFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
         mFilterModel->setSourceModel(&mModel);
 
-        mView = new StyledTreeView{this};
+        mView = new StyledTreeView{"journalView", this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(mFilterModel);
         mView->sortByColumn(1, Qt::DescendingOrder);

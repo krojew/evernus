@@ -51,9 +51,9 @@ class QXT_CORE_EXPORT QxtGenericFunctionPointer
     friend QxtGenericFunctionPointer qxtFuncPtr(FUNCTION funcPtr);
 public:
     QxtGenericFunctionPointer(const QxtGenericFunctionPointer& other)
+        : funcPtr{other.funcPtr}
+        , typeName{other.typeName}
     {
-        funcPtr = other.funcPtr;
-        typeName = other.typeName;
     }
 
     typedef void(voidFunc)();

@@ -49,6 +49,8 @@
         <file>html/http_index_template.html</file>
         <file>html/http_orders_template.html</file>
         <file>html/http_template.html</file>
+        <file>html/igb_favorite_template.html</file>
+        <file>html/igb_order_js_template.html</file>
         <file>html/igb_order_template.html</file>
         <file>html/igb_template.html</file>
     </qresource>

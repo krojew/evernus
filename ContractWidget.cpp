@@ -78,13 +78,13 @@ namespace Evernus
         auto tabs = new QTabWidget{this};
         mainLayout->addWidget(tabs, 1);
 
-        auto issuedView = new ContractView{this};
+        auto issuedView = new ContractView{"issuedContractsView", this};
         tabs->addTab(issuedView, tr("Issued"));
         issuedView->setModel(&mIssuedModel);
         connect(filterEdit, &TextFilterWidget::filterEntered, issuedView, &ContractView::setFilterWildcard);
         connect(statusesWidget, &ContractStatusesWidget::filterChanged, issuedView, &ContractView::setStatusFilter);
 
-        auto assignedView = new ContractView{this};
+        auto assignedView = new ContractView{"assignedContractsView", this};
         tabs->addTab(assignedView, tr("Assigned"));
         assignedView->setModel(&mAssignedModel);
         connect(filterEdit, &TextFilterWidget::filterEntered, assignedView, &ContractView::setFilterWildcard);

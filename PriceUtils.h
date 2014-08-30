@@ -30,5 +30,6 @@ namespace Evernus
 
         double getCoS(double buyPrice, const Taxes &taxes);
         double getRevenue(double sellPrice, const Taxes &taxes);
+        double getMargin(double cost, double price, const Taxes &taxes);
     }
 }

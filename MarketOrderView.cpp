@@ -33,7 +33,7 @@
 
 namespace Evernus
 {
-    MarketOrderView::MarketOrderView(const EveDataProvider &dataProvider, QWidget *parent)
+    MarketOrderView::MarketOrderView(const EveDataProvider &dataProvider, const QString &objectName, QWidget *parent)
         : QWidget(parent)
         , mProxy(dataProvider)
     {
@@ -51,12 +51,10 @@ namespace Evernus
         connect(this, &MarketOrderView::textFilterChanged, &mProxy, &MarketOrderFilterProxyModel::setTextFilter);
         connect(&mProxy, &MarketOrderFilterProxyModel::scriptError, this, &MarketOrderView::scriptError);
 
-        mView = new StyledTreeView{this};
+        mView = new StyledTreeView{objectName, this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
         connect(mView, &StyledTreeView::clicked, this, &MarketOrderView::showPriceInfo);
-        connect(mView->header(), &QHeaderView::sectionMoved, this, &MarketOrderView::saveHeaderState);
-        connect(mView->header(), &QHeaderView::sectionResized, this, &MarketOrderView::saveHeaderState);
 
         mInfoWidget = new QWidget{this};
         mainLayout->addWidget(mInfoWidget);
@@ -132,13 +130,7 @@ namespace Evernus
         mView->setItemDelegateForColumn(model->getVolumeColumn(), new MarketOrderVolumeItemDelegate{this});
 
         if (mSource != nullptr)
-        {
-            QSettings settings;
-            mView->header()->restoreState(
-                settings.value(QString{UISettings::orderViewHeaderStateKey}.arg(static_cast<int>(mSource->getType()))).toByteArray());
-
             connect(mSource, &MarketOrderModel::modelReset, this, &MarketOrderView::updateInfo);
-        }
 
         updateInfo();
     }
@@ -161,6 +153,9 @@ namespace Evernus
 
     void MarketOrderView::updateInfo()
     {
+        if (mSource == nullptr)
+            return;
+
         const auto volRemaining = mSource->getVolumeRemaining();
         const auto volEntered = mSource->getVolumeEntered();
 
@@ -203,16 +198,6 @@ namespace Evernus
     void MarketOrderView::lookupOnEveCentral()
     {
         lookupOnWeb("https://eve-central.com/home/quicklook.html?typeid=%1");
-    }
-
-    void MarketOrderView::saveHeaderState()
-    {
-        if (mSource != nullptr)
-        {
-            QSettings settings;
-            settings.setValue(QString{UISettings::orderViewHeaderStateKey}.arg(static_cast<int>(mSource->getType())),
-                              mView->header()->saveState());
-        }
     }
 
     void MarketOrderView::lookupOnWeb(const QString &baseUrl) const

@@ -33,7 +33,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit MarketOrderView(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
+        MarketOrderView(const EveDataProvider &dataProvider, const QString &objectName, QWidget *parent = nullptr);
         virtual ~MarketOrderView() = default;
 
         QItemSelectionModel *getSelectionModel() const;
@@ -64,8 +64,6 @@ namespace Evernus
 
         void lookupOnEveMarketdata();
         void lookupOnEveCentral();
-
-        void saveHeaderState();
 
     private:
         StyledTreeView *mView = nullptr;

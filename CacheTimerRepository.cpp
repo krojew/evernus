@@ -47,7 +47,7 @@ namespace Evernus
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
             id INTEGER PRIMARY KEY ASC,
-            character_id BIGINT NOT NULL REFERENCES %2(%3),
+            character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,
             type TINYINT NOT NULL,
             cache_until DATETIME NOT NULL,
 

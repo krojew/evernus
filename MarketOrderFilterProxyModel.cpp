@@ -43,7 +43,7 @@ namespace Evernus
 
     void MarketOrderFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     {
-        Q_ASSERT(dynamic_cast<MarketOrderModel *>(sourceModel) != nullptr);
+        Q_ASSERT(sourceModel == nullptr || dynamic_cast<MarketOrderModel *>(sourceModel) != nullptr);
         LeafFilterProxyModel::setSourceModel(sourceModel);
     }
 

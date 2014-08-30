@@ -32,9 +32,9 @@ namespace Evernus
         const auto minimizeToTrayKey = "ui/mainWindow/minimizeToTray";
         const auto languageKey = "ui/global/language";
         const auto dateTimeFormatKey = "ui/global/dateTimeFormat";
-        const auto orderViewHeaderStateKey = "ui/orderView/header/%1";
         const auto plotNumberFormatKey = "ui/plot/numberFormat";
         const auto cacheImportApprovedKey = "ui/cacheImport/approved";
         const auto contractStatusFilterKey = "ui/contracts/statusFilter";
+        const auto headerStateKey = "ui/header/state/%1";
     }
 }

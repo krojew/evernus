@@ -1,145 +1,17 @@
+<?=order-script?>
+
 <script>
-    var orders = [ <?=order-ids?> ];
-    var items = [ <?=type-ids?> ];
-    var lastAdvance = new Date();
-    
-    var scanTimer = null;
-    
-    function setCookie(name, value) {
-        var d = new Date();
-        d.setTime(d.getTime() + 365 *24 * 60 * 60 * 1000);
-        
-        var expires = "expires=" + d.toGMTString();
-        document.cookie = name + "=" + value + "; " + expires;
-    }
-    
-    function getCookie(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ')
-                c = c.substring(1);
-                
-            if (c.indexOf(name) != -1) 
-                return c.substring(name.length, c.length);
-        }
-        
-        return "";
-    }
-    
-    function unselectOrders() {
-        var selected = document.getElementsByClassName("selected-order");
-        for (var i = 0; i < selected.length; ++i)
-            selected[i].className = selected[i].className.replace(" selected-order", "");
-    }
-    
-    function selectOrder(orderId) {
-        document.getElementById("order-" + orderId).className += " selected-order";
-    }
-    
-    function getCurrentOrder() {
-        return parseInt(document.getElementById("current-order").value);
-    }
-    
-    function showType(typeId) {
-        CCPEVE.showMarketDetails(typeId);
-    }
-    
-    function showOrder(orderId) {
-        var curTime = new Date();
-        if (curTime - lastAdvance < 1000)
-            return;
-            
-        unselectOrders();
-        selectOrder(orderId);
-            
-        var orderNo = orders.indexOf(orderId);
-        document.getElementById("current-order").value = orderNo + 1;
-        
-        showType(items[orderNo]);
-        
-        lastAdvance = curTime;
-    }
-    
-    function advanceOrder(delta) {
-        if (orders.length == 0)
-            return;
-            
-        var curTime = new Date();
-        if (curTime - lastAdvance < 1000)
-            return;
-            
-        document.getElementById("prev-button").disabled = true;
-        document.getElementById("next-button").disabled = true;
-            
-        var currentOrder = Math.max(0, getCurrentOrder()) - 1 + delta;
-        currentOrder %= orders.length;
-        if (currentOrder < 0)
-            currentOrder = orders.length + currentOrder;
-            
-        document.getElementById("current-order").value = currentOrder + 1;
-            
-        unselectOrders();
-        selectOrder(orders[currentOrder]);
-        
-        showType(items[currentOrder]);
-        setTimeout(function() {
-            document.getElementById("prev-button").disabled = false;
-            document.getElementById("next-button").disabled = false;
-        }, 1000);
-        
-        lastAdvance = curTime;
-    }
-    
-    function stopScan() {
-        document.getElementById("start-scan-button").disabled = false;
-        document.getElementById("stop-scan-button").disabled = true;
-        
-        clearInterval(scanTimer);
-    }
-    
-    function startScan() {
-        document.getElementById("start-scan-button").disabled = true;
-        document.getElementById("stop-scan-button").disabled = false;
-        
-        setCookie("stopAtEnd", document.getElementById("stop-at-end").checked);
-        
-        advanceOrder(1);
-        
-        scanTimer = setInterval(function() {
-            if (getCurrentOrder() >= orders.length && document.getElementById("stop-at-end").checked)
-            {
-                stopScan();
-                return;
-            }
-            
-            advanceOrder(1);
-        }, parseInt(document.getElementById("scan-delay").value) * 1000);
-    }
-    
     function limitToStations() {
         setCookie("<?=limit-to-stations-cookie?>", document.getElementById("limit-to-stations").checked);
         location.reload();
     }
     
     window.addEventListener('load', function() {
-        document.getElementById("stop-at-end").checked = getCookie("stopAtEnd") != "false";
         document.getElementById("limit-to-stations").checked = getCookie("<?=limit-to-stations-cookie?>") == "true";
     }, false);
 </script>
 
 <p>
-    <?=current-order-text?> <input id="current-order" type="number" value="0" />
-    <input id="prev-button" type="button" value="<?=prev-order-text?>" onclick="advanceOrder(-1);" />
-    <input id="next-button" type="button" value="<?=next-order-text?>" onclick="advanceOrder(1);" />
-    <br />
-    <?=scan-delay-text?> <input id="scan-delay" type="number" value="<?=scan-delay?>" />
-    <input id="start-scan-button" type="button" value="<?=start-scan-text?>" onclick="startScan();" />
-    <input id="stop-scan-button" type="button" value="<?=stop-scan-text?>" onclick="stopScan();" disabled />
-    <label><input id="stop-at-end" type="checkbox" checked /><?=stop-at-end-text?></label> 
-    <br />
     <label><input id="limit-to-stations" type="checkbox" onchange="limitToStations();" /><?=limit-to-stations-text?></label>
 </p>
 

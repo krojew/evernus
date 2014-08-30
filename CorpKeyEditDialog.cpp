@@ -85,7 +85,7 @@ namespace Evernus
     {
         mCorpKey.setId(mIdEdit->text().toInt());
         mCorpKey.setCharacterId(mCharacterEdit->currentData().value<Character::IdType>());
-        mCorpKey.setCode(mCodeEdit->text());
+        mCorpKey.setCode(mCodeEdit->text().trimmed());
 
         QDialog::accept();
     }

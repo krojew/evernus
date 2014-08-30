@@ -67,21 +67,21 @@ public:
         Resetting
     };
 
-    bool useSecure, disableStartTLS;
-    SmtpState state; // rather then an int use the enum.  makes sure invalid states are entered at compile time, and makes debugging easier
+    bool useSecure = true, disableStartTLS = false;
+    SmtpState state = Disconnected; // rather then an int use the enum.  makes sure invalid states are entered at compile time, and makes debugging easier
     QxtSmtp::AuthType authType;
     int allowedAuthTypes;
     QByteArray buffer, username, password;
     QHash<QString, QString> extensions;
     QList<QPair<int, QxtMailMessage> > pending;
     QStringList recipients;
-    int nextID, rcptNumber, rcptAck;
-    bool mailAck;
+    int nextID = 0, rcptNumber = 0, rcptAck = 0;
+    bool mailAck = false;
 
 #ifndef QT_NO_OPENSSL
-    QSslSocket* socket;
+    QSslSocket* socket = nullptr;
 #else
-    QTcpSocket* socket;
+    QTcpSocket* socket = nullptr;
 #endif
 
     void parseEhlo(const QByteArray& code, bool cont, const QString& line);
