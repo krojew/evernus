@@ -107,12 +107,12 @@ namespace Evernus
             .arg(columns.join(", "));
 
         QStringList batchBindings;
-        for (auto i = 0; i < maxRowsPerInsert; ++i)
+        for (auto i = 0u; i < maxRowsPerInsert; ++i)
             batchBindings << bindingStr;
 
         const auto batchQueryStr = baseQueryStr.arg(batchBindings.join(", "));
 
-        for (auto batch = 0; batch < batches; ++batch)
+        for (auto batch = 0u; batch < batches; ++batch)
         {
             auto query = prepare(batchQueryStr);
 
@@ -127,7 +127,7 @@ namespace Evernus
         if (reminder > 0)
         {
             QStringList restBindings;
-            for (auto i = 0; i < reminder; ++i)
+            for (auto i = 0u; i < reminder; ++i)
                 restBindings << bindingStr;
 
             const auto restQueryStr = baseQueryStr.arg(restBindings.join(", "));

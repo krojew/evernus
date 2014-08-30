@@ -43,7 +43,7 @@ namespace Evernus
 
     AssetModel::TreeItem *AssetModel::TreeItem::child(int row) const
     {
-        return (row >= mChildItems.size()) ? (nullptr) : (mChildItems[row].get());
+        return (row >= static_cast<int>(mChildItems.size())) ? (nullptr) : (mChildItems[row].get());
     }
 
     int AssetModel::TreeItem::childCount() const

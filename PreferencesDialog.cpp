@@ -65,7 +65,7 @@ namespace Evernus
         categories.emplace_back(std::make_pair(tr("Web Service"), new HttpPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Wallet"), new WalletPreferencesWidget{this}));
 
-        for (auto i = 0; i < categories.size(); ++i)
+        for (auto i = 0u; i < categories.size(); ++i)
         {
             auto item = new QTreeWidgetItem{categoryTree, QStringList{categories[i].first}};
             item->setData(0, Qt::UserRole, i);
@@ -90,7 +90,7 @@ namespace Evernus
         importCategories.emplace_back(std::make_pair(tr("Corporation"), new CorpImportPreferencesWidget{this}));
         importCategories.emplace_back(std::make_pair(tr("Source"), new ImportSourcePreferencesWidget{this}));
 
-        for (auto i = 0; i < importCategories.size(); ++i)
+        for (auto i = 0u; i < importCategories.size(); ++i)
         {
             auto item = new QTreeWidgetItem{importItem, QStringList{importCategories[i].first}};
             item->setData(0, Qt::UserRole, i + static_cast<int>(categories.size()));

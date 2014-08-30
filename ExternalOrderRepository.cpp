@@ -298,7 +298,7 @@ namespace Evernus
             return;
 
         QStringList reminderWhere;
-        for (auto i = 0; i < reminder; ++i)
+        for (auto i = 0u; i < reminder; ++i)
             reminderWhere << baseWhere;
 
         const auto reminderQuery = baseQuery.arg(reminderWhere.join(" OR "));

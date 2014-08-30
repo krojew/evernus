@@ -147,7 +147,7 @@ namespace Evernus
     void CharacterRepository::disableByKey(Key::IdType id, const std::vector<Character::IdType> &excluded) const
     {
         QStringList ids;
-        for (auto i = 0; i < excluded.size(); ++i)
+        for (auto i = 0u; i < excluded.size(); ++i)
             ids << "?";
 
         auto query = prepare(QString{"UPDATE %1 SET key_id = NULL, enabled = 0 WHERE key_id = ? AND %2 NOT IN (%3)"}

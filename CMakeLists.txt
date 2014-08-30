@@ -583,7 +583,7 @@ add_executable(
     ${ADDITIONAL_SRC}
 )
 
-if(WIN32)
+if(WIN32 AND NOT ${WIN32BIT})
     # cmake bug
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "${LINK_FLAGS} /machine:x64")
 elseif(APPLE)

@@ -31,7 +31,7 @@ namespace Evernus
 
     MarketOrderTreeModel::TreeItem *MarketOrderTreeModel::TreeItem::child(int row) const
     {
-        return (row >= mChildItems.size()) ? (nullptr) : (mChildItems[row].get());
+        return (row >= static_cast<int>(mChildItems.size())) ? (nullptr) : (mChildItems[row].get());
     }
 
     int MarketOrderTreeModel::TreeItem::childCount() const
