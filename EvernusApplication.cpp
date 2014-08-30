@@ -698,7 +698,7 @@ namespace Evernus
         qDebug() << "Refreshing assets: " << id;
 
         const auto assetSubtask = startTask(parentTask, tr("Fetching assets for character %1...").arg(id));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         try
         {
@@ -742,7 +742,7 @@ namespace Evernus
         qDebug() << "Refreshing contracts: " << id;
 
         const auto task = startTask(tr("Fetching contracts for character %1...").arg(id));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         try
         {
@@ -799,7 +799,7 @@ namespace Evernus
         qDebug() << "Refreshing wallet journal: " << id;
 
         const auto task = startTask(tr("Fetching wallet journal for character %1...").arg(id));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         try
         {
@@ -860,7 +860,7 @@ namespace Evernus
         qDebug() << "Refreshing wallet transactions: " << id;
 
         const auto task = startTask(tr("Fetching wallet transactions for character %1...").arg(id));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         try
         {
@@ -913,7 +913,7 @@ namespace Evernus
         qDebug() << "Refreshing market orders from API: " << id;
 
         const auto task = startTask(tr("Fetching market orders for character %1...").arg(id));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         try
         {
@@ -935,7 +935,7 @@ namespace Evernus
         qDebug() << "Refreshing market orders from logs: " << id;
 
         const auto task = startTask(tr("Fetching market orders for character %1...").arg(id));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         importMarketOrdersFromLogs(id, task, false);
 
@@ -947,7 +947,7 @@ namespace Evernus
         qDebug() << "Refreshing corp contracts: " << id;
 
         const auto task = startTask(tr("Fetching corporation contracts for character %1...").arg(id));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         try
         {
@@ -995,7 +995,7 @@ namespace Evernus
         qDebug() << "Refreshing corp wallet journal: " << id;
 
         const auto task = startTask(tr("Fetching corporation wallet journal for character %1...").arg(id));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         try
         {
@@ -1033,7 +1033,7 @@ namespace Evernus
         qDebug() << "Refreshing corp wallet transactions: " << id;
 
         const auto task = startTask(tr("Fetching corporation wallet transactions for character %1...").arg(id));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         try
         {
@@ -1087,7 +1087,7 @@ namespace Evernus
         qDebug() << "Refreshing corp market orders from API: " << id;
 
         const auto task = startTask(tr("Fetching corporation market orders for character %1...").arg(id));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         try
         {
@@ -1105,7 +1105,7 @@ namespace Evernus
         qDebug() << "Refreshing corp market orders from logs: " << id;
 
         const auto task = startTask(tr("Fetching corporation market orders for character %1...").arg(id));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         importMarketOrdersFromLogs(id, task, true);
 
@@ -1117,7 +1117,7 @@ namespace Evernus
         qDebug() << "Refreshing conquerable stations...";
 
         const auto task = startTask(tr("Fetching conquerable stations..."));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         mAPIManager.fetchConquerableStationList([task, this](const auto &list, const auto &error) {
             if (error.isEmpty())
@@ -1312,7 +1312,7 @@ namespace Evernus
 
             emit taskInfoChanged(task, tr("Importing order history: %1 processed").arg(orders.size()));
 
-            processEvents();
+            processEvents(QEventLoop::ExcludeUserInputEvents);
         }
 
         emit taskInfoChanged(task, tr("Importing order history: storing %1 orders (this may take a while)").arg(orders.size()));
@@ -1656,7 +1656,7 @@ namespace Evernus
         Q_ASSERT(it != std::end(mExternalOrderImporters));
 
         mCurrentExternalOrderImportTask = startTask(tr("Importing item prices..."));
-        processEvents();
+        processEvents(QEventLoop::ExcludeUserInputEvents);
 
         it->second->fetchExternalOrders(target);
     }
