@@ -631,77 +631,77 @@
         <translation>Corporation contracting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="284"/>
+        <location filename="../CharacterWidget.cpp" line="285"/>
         <source>never imported</source>
         <translation>nigdy nie zaimportowane</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="289"/>
+        <location filename="../CharacterWidget.cpp" line="290"/>
         <source>Character sheet: %1</source>
         <translation>Karta postaci: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="290"/>
+        <location filename="../CharacterWidget.cpp" line="291"/>
         <source>Asset list: %1</source>
         <translation>Aktywa: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="291"/>
+        <location filename="../CharacterWidget.cpp" line="292"/>
         <source>Market orders: %1</source>
         <translation>Zlecenia: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="292"/>
+        <location filename="../CharacterWidget.cpp" line="293"/>
         <source>Wallet journal: %1</source>
         <translation>Dziennik: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="293"/>
+        <location filename="../CharacterWidget.cpp" line="294"/>
         <source>Wallet transactions: %1</source>
         <translation>Transakcje: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="294"/>
+        <location filename="../CharacterWidget.cpp" line="297"/>
         <source>Contracts: %1</source>
         <translation>Kontrakty: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="300"/>
+        <location filename="../CharacterWidget.cpp" line="303"/>
         <source>Corp. market orders: %1</source>
         <translation>Zlecenia korporacji: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="301"/>
+        <location filename="../CharacterWidget.cpp" line="304"/>
         <source>Corp. wallet journal: %1</source>
         <translation>Dziennik korporacji: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="302"/>
+        <location filename="../CharacterWidget.cpp" line="305"/>
         <source>Corp. wallet transactions: %1</source>
         <translation>Transakcje korporacji: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="303"/>
+        <location filename="../CharacterWidget.cpp" line="308"/>
         <source>Corp. contracts: %1</source>
         <translation>Kontrakty korporacji: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="461"/>
+        <location filename="../CharacterWidget.cpp" line="466"/>
         <source>Character error</source>
         <translation>Błąd postaci</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="461"/>
+        <location filename="../CharacterWidget.cpp" line="466"/>
         <source>Character not found in DB. Refresh characters.</source>
         <translation>Postać nie została znaleziona w bazie danych. Odśwież postacie.</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="539"/>
+        <location filename="../CharacterWidget.cpp" line="544"/>
         <source>&lt;strong&gt;%1 of %2&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1 z %2&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="549"/>
+        <location filename="../CharacterWidget.cpp" line="554"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>
