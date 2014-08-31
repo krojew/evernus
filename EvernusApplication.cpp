@@ -1015,7 +1015,30 @@ namespace Evernus
                                            [task, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
+                    std::vector<Evernus::CorpWalletSnapshot> snapshots;
+                    snapshots.reserve(data.size());
+
+                    QSet<QDateTime> usedSnapshots;
+
+                    for (auto &entry : data)
+                    {
+                        const auto timestamp = entry.getTimestamp();
+
+                        if (!usedSnapshots.contains(timestamp))
+                        {
+                            Evernus::CorpWalletSnapshot snapshot;
+                            snapshot.setTimestamp(timestamp);
+                            snapshot.setBalance(entry.getBalance());
+                            snapshot.setCorporationId(entry.getCorporationId());
+
+                            snapshots.emplace_back(std::move(snapshot));
+                            usedSnapshots << timestamp;
+                        }
+                    }
+
                     asyncBatchStore(*mCorpWalletJournalEntryRepository, data, true);
+                    asyncBatchStore(*mCorpWalletSnapshotRepository, snapshots, false);
+
                     saveUpdateTimer(Evernus::TimerType::CorpWalletJournal, mCorpWalletJournalUtcUpdateTimes, id);
 
                     emit corpWalletJournalChanged();
