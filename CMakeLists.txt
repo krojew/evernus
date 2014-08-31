@@ -586,9 +586,11 @@ add_executable(
     ${ADDITIONAL_SRC}
 )
 
-if(WIN32 AND ${CMAKE_CL_64})
-    # cmake bug
-    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "${LINK_FLAGS} /machine:x64")
+if(WIN32)
+    if(${CMAKE_CL_64})
+        # cmake bug
+        set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "${LINK_FLAGS} /machine:x64")
+    endif()
 elseif(APPLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE TRUE)
     set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "Info.plist")
@@ -650,6 +652,6 @@ elseif(UNIX)
     foreach(RES ${RESOURCES})
         install(DIRECTORY ${RES} DESTINATION "/usr/share/Evernus")
     endforeach()
-    
+
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "/usr/bin")
 endif()
