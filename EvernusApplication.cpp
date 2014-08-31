@@ -1707,20 +1707,9 @@ namespace Evernus
 
                 if (values.size() >= 22)
                 {
-                    if (!characterFound && !corp)
-                    {
-                        const auto characterId = values[2].toULongLong();
-                        if (characterId != id)
-                        {
-                            file.close();
-                            continue;
-                        }
-
-                        characterFound = true;
-                    }
-
                     const auto idColumn = 0;
                     const auto typeIdColumn = 1;
+                    const auto characterIdColumn = 2;
                     const auto stationIdColumn = 6;
                     const auto rangeColumn = 8;
                     const auto typeColumn = 9;
@@ -1734,11 +1723,23 @@ namespace Evernus
                     const auto isCorpColumn = 18;
                     const auto escrowColumn = 21;
 
+                    const auto characterId = values[characterIdColumn].toULongLong();
+                    if (!characterFound && !corp)
+                    {
+                        if (characterId != id)
+                        {
+                            file.close();
+                            continue;
+                        }
+
+                        characterFound = true;
+                    }
+
                     if ((corp && values[isCorpColumn] != "True") || (!corp && values[isCorpColumn] != "False"))
                         continue;
 
                     MarketOrder order{values[idColumn].toULongLong()};
-                    order.setCharacterId(id);
+                    order.setCharacterId(characterId);
                     order.setStationId(values[stationIdColumn].toULongLong());
                     order.setVolumeEntered(values[volumeEnteredColumn].toUInt());
                     order.setVolumeRemaining(static_cast<uint>(values[volumeRemainingColumn].toDouble()));
