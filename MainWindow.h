@@ -34,26 +34,11 @@ class QWinTaskbarButton;
 
 namespace Evernus
 {
-    template<class T>
-    class Repository;
-    class MarketOrderValueSnapshotRepository;
-    class AssetValueSnapshotRepository;
-    class WalletJournalEntryRepository;
-    class WalletTransactionRepository;
-    class LocationBookmarkRepository;
-    class WalletSnapshotRepository;
-    class ExternalOrderRepository;
-    class FavoriteItemRepository;
     class CharacterManagerDialog;
-    class OrderScriptRepository;
-    class MarketOrderRepository;
-    class FilterTextRepository;
     class MarketOrderProvider;
-    class CharacterRepository;
-    class ItemCostRepository;
     class WalletJournalEntry;
     class CacheTimerProvider;
-    class CorpKeyRepository;
+    class RepositoryProvider;
     class ActiveTasksDialog;
     class MarginToolDialog;
     class ItemCostProvider;
@@ -69,24 +54,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MainWindow(const CharacterRepository &characterRepository,
-                   const Repository<Key> &keyRepository,
-                   const CorpKeyRepository &corpKeyRepository,
-                   const AssetValueSnapshotRepository &assetSnapshotRepo,
-                   const WalletSnapshotRepository &walletSnapshotRepo,
-                   const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
-                   const WalletJournalEntryRepository &walletJournalRepo,
-                   const WalletJournalEntryRepository &corpWalletJournalRepo,
-                   const WalletTransactionRepository &walletTransactionRepo,
-                   const WalletTransactionRepository &corpWalletTransactionRepo,
-                   const MarketOrderRepository &orderRepo,
-                   const MarketOrderRepository &corpOrderRepo,
-                   const ItemCostRepository &itemCostRepo,
-                   const FilterTextRepository &filterRepo,
-                   const OrderScriptRepository &orderScriptRepo,
-                   const FavoriteItemRepository &favoriteItemRepo,
-                   const LocationBookmarkRepository &locationBookmarkRepo,
-                   const ExternalOrderRepository &externalOrderRepo,
+        MainWindow(const RepositoryProvider &repositoryProvider,
                    const MarketOrderProvider &orderProvider,
                    const MarketOrderProvider &corpOrderProvider,
                    const AssetProvider &assetProvider,
@@ -185,21 +153,7 @@ namespace Evernus
         static const QString settingsPosKey;
         static const QString settingsSizeKey;
 
-        const CharacterRepository &mCharacterRepository;
-        const Repository<Key> &mKeyRepository;
-        const CorpKeyRepository &mCorpKeyRepository;
-        const AssetValueSnapshotRepository &mAssetSnapshotRepository;
-        const WalletSnapshotRepository &mWalletSnapshotRepository;
-        const MarketOrderValueSnapshotRepository &mMarketOrderSnapshotRepository;
-        const WalletJournalEntryRepository &mWalletJournalRepository, &mCorpWalletJournalRepository;
-        const WalletTransactionRepository &mWalletTransactionRepository, &mCorpWalletTransactionRepository;
-        const MarketOrderRepository &mMarketOrderRepository, &mCorpMarketOrderRepository;
-        const ItemCostRepository &mItemCostRepository;
-        const FilterTextRepository &mFilterRepository;
-        const OrderScriptRepository &mOrderScriptRepository;
-        const FavoriteItemRepository &mFavoriteItemRepository;
-        const LocationBookmarkRepository &mLocationBookmarkRepository;
-        const ExternalOrderRepository &mExternalOrderRepo;
+        const RepositoryProvider &mRepositoryProvider;
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const AssetProvider &mAssetProvider;
         const ContractProvider &mContractProvider, &mCorpContractProvider;

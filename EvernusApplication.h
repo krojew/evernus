@@ -27,6 +27,7 @@
 #include "ConquerableStationRepository.h"
 #include "AssetValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
+#include "CorpWalletSnapshotRepository.h"
 #include "WalletTransactionRepository.h"
 #include "CachingMarketOrderProvider.h"
 #include "LocationBookmarkRepository.h"
@@ -48,6 +49,7 @@
 #include "MetaGroupRepository.h"
 #include "ItemCostRepository.h"
 #include "CacheTimerProvider.h"
+#include "RepositoryProvider.h"
 #include "ContractRepository.h"
 #include "EveTypeRepository.h"
 #include "RefTypeRepository.h"
@@ -72,6 +74,7 @@ namespace Evernus
         , public AssetProvider
         , public CacheTimerProvider
         , public ItemCostProvider
+        , public RepositoryProvider
     {
         Q_OBJECT
 
@@ -99,24 +102,25 @@ namespace Evernus
         virtual void storeItemCost(ItemCost &cost) const override;
         virtual void removeAllItemCosts(Character::IdType characterId) const override;
 
-        const KeyRepository &getKeyRepository() const noexcept;
-        const CorpKeyRepository &getCorpKeyRepository() const noexcept;
-        const CharacterRepository &getCharacterRepository() const noexcept;
-        const WalletSnapshotRepository &getWalletSnapshotRepository() const noexcept;
-        const AssetValueSnapshotRepository &getAssetValueSnapshotRepository() const noexcept;
-        const WalletJournalEntryRepository &getWalletJournalEntryRepository() const noexcept;
-        const WalletTransactionRepository &getWalletTransactionRepository() const noexcept;
-        const MarketOrderRepository &getMarketOrderRepository() const noexcept;
-        const WalletJournalEntryRepository &getCorpWalletJournalEntryRepository() const noexcept;
-        const WalletTransactionRepository &getCorpWalletTransactionRepository() const noexcept;
-        const MarketOrderRepository &getCorpMarketOrderRepository() const noexcept;
-        const ItemCostRepository &getItemCostRepository() const noexcept;
-        const MarketOrderValueSnapshotRepository &getMarketOrderValueSnapshotRepository() const noexcept;
-        const FilterTextRepository &getFilterTextRepository() const noexcept;
-        const OrderScriptRepository &getOrderScriptRepository() const noexcept;
-        const FavoriteItemRepository &getFavoriteItemRepository() const noexcept;
-        const LocationBookmarkRepository &getLocationBookmarkRepository() const noexcept;
-        const ExternalOrderRepository &getExternalOrderRepository() const noexcept;
+        virtual const KeyRepository &getKeyRepository() const noexcept override;
+        virtual const CorpKeyRepository &getCorpKeyRepository() const noexcept override;
+        virtual const CharacterRepository &getCharacterRepository() const noexcept override;
+        virtual const WalletSnapshotRepository &getWalletSnapshotRepository() const noexcept override;
+        virtual const CorpWalletSnapshotRepository &getCorpWalletSnapshotRepository() const noexcept override;
+        virtual const AssetValueSnapshotRepository &getAssetValueSnapshotRepository() const noexcept override;
+        virtual const WalletJournalEntryRepository &getWalletJournalEntryRepository() const noexcept override;
+        virtual const WalletTransactionRepository &getWalletTransactionRepository() const noexcept override;
+        virtual const MarketOrderRepository &getMarketOrderRepository() const noexcept override;
+        virtual const WalletJournalEntryRepository &getCorpWalletJournalEntryRepository() const noexcept override;
+        virtual const WalletTransactionRepository &getCorpWalletTransactionRepository() const noexcept override;
+        virtual const MarketOrderRepository &getCorpMarketOrderRepository() const noexcept override;
+        virtual const ItemCostRepository &getItemCostRepository() const noexcept override;
+        virtual const MarketOrderValueSnapshotRepository &getMarketOrderValueSnapshotRepository() const noexcept override;
+        virtual const FilterTextRepository &getFilterTextRepository() const noexcept override;
+        virtual const OrderScriptRepository &getOrderScriptRepository() const noexcept override;
+        virtual const FavoriteItemRepository &getFavoriteItemRepository() const noexcept override;
+        virtual const LocationBookmarkRepository &getLocationBookmarkRepository() const noexcept override;
+        virtual const ExternalOrderRepository &getExternalOrderRepository() const noexcept override;
 
         const MarketOrderProvider &getMarketOrderProvider() const noexcept;
         const MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
@@ -204,6 +208,7 @@ namespace Evernus
         std::unique_ptr<AssetListRepository> mAssetListRepository;
         std::unique_ptr<ConquerableStationRepository> mConquerableStationRepository;
         std::unique_ptr<WalletSnapshotRepository> mWalletSnapshotRepository;
+        std::unique_ptr<CorpWalletSnapshotRepository> mCorpWalletSnapshotRepository;
         std::unique_ptr<ExternalOrderRepository> mExternalOrderRepository;
         std::unique_ptr<AssetValueSnapshotRepository> mAssetValueSnapshotRepository;
         std::unique_ptr<WalletJournalEntryRepository> mWalletJournalEntryRepository, mCorpWalletJournalEntryRepository;

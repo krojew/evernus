@@ -260,6 +260,10 @@ add_executable(
     CorpKeyEditDialog.h
     CorpKeyRepository.cpp
     CorpKeyRepository.h
+    CorpWalletSnapshot.cpp
+    CorpWalletSnapshot.h
+    CorpWalletSnapshotRepository.cpp
+    CorpWalletSnapshotRepository.h
     DatabaseUtils.cpp
     DatabaseUtils.h
     DateFilteredPlotWidget.cpp
@@ -516,6 +520,7 @@ add_executable(
     RefTypeXmlReceiver.cpp
     RefTypeXmlReceiver.h
     Repository.h
+    RepositoryProvider.h
     ScriptOrderProcessingModel.cpp
     ScriptOrderProcessingModel.h
     ScriptUtils.cpp

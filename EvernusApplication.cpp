@@ -55,6 +55,7 @@ namespace Evernus
         , AssetProvider()
         , CacheTimerProvider()
         , ItemCostProvider()
+        , RepositoryProvider()
         , mMainDb(QSqlDatabase::addDatabase("QSQLITE", "main"))
         , mEveDb(QSqlDatabase::addDatabase("QSQLITE", "eve"))
         , mAPIManager(*this)
@@ -520,6 +521,11 @@ namespace Evernus
     const WalletSnapshotRepository &EvernusApplication::getWalletSnapshotRepository() const noexcept
     {
         return *mWalletSnapshotRepository;
+    }
+
+    const CorpWalletSnapshotRepository &EvernusApplication::getCorpWalletSnapshotRepository() const noexcept
+    {
+        return *mCorpWalletSnapshotRepository;
     }
 
     const AssetValueSnapshotRepository &EvernusApplication::getAssetValueSnapshotRepository() const noexcept
@@ -1404,9 +1410,9 @@ namespace Evernus
             if (!QFile::exists(eveDbPath))
                 throw std::runtime_error{"Cannot find Eve DB!"};
         }
-        
+
         qDebug() << "Eve DB path:" << eveDbPath;
-            
+
         mEveDb.setDatabaseName(eveDbPath);
         mEveDb.setConnectOptions("QSQLITE_OPEN_READONLY");
 
@@ -1420,6 +1426,7 @@ namespace Evernus
         mAssetListRepository.reset(new AssetListRepository{mMainDb, *mItemRepository});
         mConquerableStationRepository.reset(new ConquerableStationRepository{mMainDb});
         mWalletSnapshotRepository.reset(new WalletSnapshotRepository{mMainDb});
+        mCorpWalletSnapshotRepository.reset(new CorpWalletSnapshotRepository{mMainDb});
         mExternalOrderRepository.reset(new ExternalOrderRepository{mMainDb});
         mAssetValueSnapshotRepository.reset(new AssetValueSnapshotRepository{mMainDb});
         mWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{false, mMainDb});
@@ -1455,6 +1462,7 @@ namespace Evernus
         mItemRepository->create(*mAssetListRepository);
         mConquerableStationRepository->create();
         mWalletSnapshotRepository->create(*mCharacterRepository);
+        mCorpWalletSnapshotRepository->create();
         mAssetValueSnapshotRepository->create(*mCharacterRepository);
         mWalletJournalEntryRepository->create(*mCharacterRepository);
         mCorpWalletJournalEntryRepository->create(*mCharacterRepository);
