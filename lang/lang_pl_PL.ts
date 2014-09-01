@@ -1747,45 +1747,55 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ExternalOrderView</name>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="55"/>
+        <location filename="../ExternalOrderView.cpp" line="70"/>
         <source>Total cost:</source>
         <translation>Całkowity koszt:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="61"/>
+        <location filename="../ExternalOrderView.cpp" line="76"/>
         <source>Total volume:</source>
         <translation>Całkowity wolumen:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="67"/>
+        <location filename="../ExternalOrderView.cpp" line="82"/>
         <source>Total size:</source>
         <translation>Całkowita objętość:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="73"/>
+        <location filename="../ExternalOrderView.cpp" line="88"/>
         <source>Min. price:</source>
         <translation>Min. cena:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="79"/>
+        <location filename="../ExternalOrderView.cpp" line="94"/>
         <source>Median price:</source>
         <translation>Mediana:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="85"/>
+        <location filename="../ExternalOrderView.cpp" line="100"/>
         <source>Max. price:</source>
         <translation>Maks. cena:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="91"/>
+        <location filename="../ExternalOrderView.cpp" line="106"/>
         <source>Custom cost:</source>
         <translation>Koszt własny:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="166"/>
-        <location filename="../ExternalOrderView.cpp" line="172"/>
+        <location filename="../ExternalOrderView.cpp" line="191"/>
+        <source>Copy suggested price: %1</source>
+        <translation>Skopiuj sugerowaną cenę: %1</translation>
+    </message>
+    <message>
+        <location filename="../ExternalOrderView.cpp" line="207"/>
+        <location filename="../ExternalOrderView.cpp" line="213"/>
         <source>N/A</source>
         <translation>brak</translation>
+    </message>
+    <message>
+        <location filename="../ExternalOrderView.cpp" line="236"/>
+        <source>Copy suggested price</source>
+        <translation>Skopiuj sugerowaną cenę</translation>
     </message>
 </context>
 <context>

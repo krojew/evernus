@@ -54,6 +54,9 @@ namespace Evernus
 
     private slots:
         void handleModelReset();
+        void copySuggestedPrice() const;
+
+        void selectTransaction(const QItemSelection &selected);
 
     private:
         const ItemCostProvider &mCostProvider;
@@ -73,6 +76,14 @@ namespace Evernus
         ExternalOrderModel *mSource = nullptr;
         ExternalOrderFilterProxyModel mProxy;
 
+        QModelIndex mCurrentOrder;
+
+        QAction *mCopySuggestedPriceAct = nullptr;
+
         void setCustomCost();
+
+        double getSuggestedPrice() const;
+
+        static QString getDefaultCopySuggestedPriceText();
     };
 }

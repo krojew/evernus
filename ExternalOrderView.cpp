@@ -12,9 +12,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QApplication>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
+#include <QClipboard>
+#include <QSettings>
+#include <QLocale>
+#include <QAction>
 #include <QLabel>
 #include <QFont>
 
@@ -22,6 +27,8 @@
 #include "ExternalOrderModel.h"
 #include "ItemCostProvider.h"
 #include "StyledTreeView.h"
+#include "ExternalOrder.h"
+#include "PriceSettings.h"
 
 #include "ExternalOrderView.h"
 
@@ -45,6 +52,14 @@ namespace Evernus
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
         mView->setRootIsDecorated(false);
+        connect(mView->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &ExternalOrderView::selectTransaction);
+
+        mCopySuggestedPriceAct = new QAction{getDefaultCopySuggestedPriceText(), this};
+        mCopySuggestedPriceAct->setEnabled(false);
+        connect(mCopySuggestedPriceAct, &QAction::triggered, this, &ExternalOrderView::copySuggestedPrice);
+
+        mView->addAction(mCopySuggestedPriceAct);
 
         auto infoLayout = new QHBoxLayout{};
         mainLayout->addLayout(infoLayout);
@@ -159,6 +174,32 @@ namespace Evernus
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
     }
 
+    void ExternalOrderView::selectTransaction(const QItemSelection &selected)
+    {
+        if (selected.isEmpty())
+        {
+            mCurrentOrder = QModelIndex{};
+
+            mCopySuggestedPriceAct->setText(getDefaultCopySuggestedPriceText());
+            mCopySuggestedPriceAct->setEnabled(false);
+        }
+        else
+        {
+            mCurrentOrder = mProxy.mapToSource(selected.indexes().first());
+
+            const auto price = getSuggestedPrice();
+            mCopySuggestedPriceAct->setText(tr("Copy suggested price: %1").arg(locale().toCurrencyString(price, "ISK")));
+
+            mCopySuggestedPriceAct->setEnabled(true);
+        }
+    }
+
+    void ExternalOrderView::copySuggestedPrice() const
+    {
+        const auto price = getSuggestedPrice();
+        QApplication::clipboard()->setText(QString::number(price, 'f', 2));
+    }
+
     void ExternalOrderView::setCustomCost()
     {
         if (mCharacterId == Character::invalidId || mTypeId == EveType::invalidId)
@@ -173,5 +214,25 @@ namespace Evernus
             else
                 mItemCostLabel->setText(locale().toCurrencyString(cost->getCost(), "ISK"));
         }
+    }
+
+    double ExternalOrderView::getSuggestedPrice() const
+    {
+        QSettings settings;
+        const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+        const auto &order = mSource->getOrder(mCurrentOrder.row());
+        auto price = 0.;
+
+        if (order.getType() == ExternalOrder::Type::Buy)
+            price = order.getPrice() + priceDelta;
+        else
+            price = order.getPrice() - priceDelta;
+
+        return price;
+    }
+
+    QString ExternalOrderView::getDefaultCopySuggestedPriceText()
+    {
+        return tr("Copy suggested price");
     }
 }
