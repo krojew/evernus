@@ -144,6 +144,8 @@ namespace Evernus
         void copyIGBLink();
         void copyHTTPLink();
 
+        void showMarketBrowser();
+
     protected:
         virtual void changeEvent(QEvent *event) override;
         virtual void closeEvent(QCloseEvent *event) override;
@@ -186,6 +188,8 @@ namespace Evernus
 
         QTimer mAutoImportTimer;
 
+        int mMarketBrowserTab = -1;
+
         void readSettings();
         void writeSettings();
 
@@ -194,7 +198,7 @@ namespace Evernus
         void createStatusBar();
 
         QWidget *createMainViewTab(QWidget *content);
-        void addTab(QWidget *widget, const QString &label);
+        int addTab(QWidget *widget, const QString &label);
 
         void setUpAutoImportTimer();
     };

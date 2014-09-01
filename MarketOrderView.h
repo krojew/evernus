@@ -17,6 +17,7 @@
 #include <QWidget>
 
 #include "MarketOrderFilterProxyModel.h"
+#include "EveType.h"
 
 class QItemSelectionModel;
 class QActionGroup;
@@ -57,6 +58,8 @@ namespace Evernus
 
         void scriptError(const QString &message);
 
+        void showExternalOrders(EveType::IdType id);
+
     public slots:
         void updateInfo();
 
@@ -68,6 +71,7 @@ namespace Evernus
 
         void selectOrder(const QItemSelection &selected);
         void removeOrders();
+        void showExternalOrdersForCurrent();
 
     private:
         StyledTreeView *mView = nullptr;
@@ -82,6 +86,7 @@ namespace Evernus
         MarketOrderFilterProxyModel mProxy;
 
         QAction *mRemoveOrderAct = nullptr;
+        QAction *mShowExternalOrdersAct = nullptr;
         QActionGroup *mLookupGroup = nullptr;
 
         void lookupOnWeb(const QString &baseUrl) const;

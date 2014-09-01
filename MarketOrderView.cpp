@@ -64,6 +64,11 @@ namespace Evernus
         mView->addAction(mRemoveOrderAct);
         connect(mRemoveOrderAct, &QAction::triggered, this, &MarketOrderView::removeOrders);
 
+        mShowExternalOrdersAct = new QAction{tr("Show in market browser"), this};
+        mShowExternalOrdersAct->setEnabled(false);
+        mView->addAction(mShowExternalOrdersAct);
+        connect(mShowExternalOrdersAct, &QAction::triggered, this, &MarketOrderView::showExternalOrdersForCurrent);
+
         mInfoWidget = new QWidget{this};
         mainLayout->addWidget(mInfoWidget);
 
@@ -211,19 +216,36 @@ namespace Evernus
 
     void MarketOrderView::selectOrder(const QItemSelection &selected)
     {
+        if (mSource == nullptr)
+            return;
+
         const auto enable = !selected.isEmpty() && mSource->getOrder(mProxy.mapToSource(mView->currentIndex())) != nullptr;
         mRemoveOrderAct->setEnabled(enable);
+        mShowExternalOrdersAct->setEnabled(enable);
         mLookupGroup->setEnabled(enable);
     }
 
     void MarketOrderView::removeOrders()
     {
+        if (mSource == nullptr)
+            return;
+
         const auto selection = getSelectionModel()->selectedIndexes();
         for (const auto &selected : selection)
         {
             const auto index = mProxy.mapToSource(selected);
             mSource->removeRow(index.row(), mSource->parent(index));
         }
+    }
+
+    void MarketOrderView::showExternalOrdersForCurrent()
+    {
+        if (mSource == nullptr)
+            return;
+
+        const auto typeId = mSource->getOrderTypeId(mProxy.mapToSource(mView->currentIndex()));
+        if (typeId != EveType::invalidId)
+            emit showExternalOrders(typeId);
     }
 
     void MarketOrderView::lookupOnWeb(const QString &baseUrl) const

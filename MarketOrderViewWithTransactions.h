@@ -73,6 +73,8 @@ namespace Evernus
 
         void scriptError(const QString &message);
 
+        void showExternalOrders(EveType::IdType id);
+
     private slots:
         void selectOrder(const QItemSelection &selected);
 

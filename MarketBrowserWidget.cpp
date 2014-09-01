@@ -411,6 +411,18 @@ namespace Evernus
         mOrderNameModel.setTypes(std::move(types));
     }
 
+    void MarketBrowserWidget::showOrdersForType(EveType::IdType typeId)
+    {
+        setTypeId(typeId);
+
+        if (!mBlockNavigationChange)
+        {
+            saveNavigationState();
+            mExternalOrderSellModel.reset();
+            mExternalOrderBuyModel.reset();
+        }
+    }
+
     void MarketBrowserWidget::prepareItemImportFromWeb()
     {
         emit importPricesFromWeb(getImportTarget());
@@ -740,18 +752,6 @@ namespace Evernus
 
         for (const auto &bookmark : bookmarks)
             mBookmarksMenu->addAction(bookmark->toString(mDataProvider), this, SLOT(selectBookmark()))->setData(bookmark->getId());
-    }
-
-    void MarketBrowserWidget::showOrdersForType(EveType::IdType typeId)
-    {
-        setTypeId(typeId);
-
-        if (!mBlockNavigationChange)
-        {
-            saveNavigationState();
-            mExternalOrderSellModel.reset();
-            mExternalOrderBuyModel.reset();
-        }
     }
 
     QWidget *MarketBrowserWidget::createItemNameListTab(ItemNameModel &model, QListView *&view, QLayout *toolbarLayout)

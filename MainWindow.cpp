@@ -368,6 +368,11 @@ namespace Evernus
         QMessageBox::information(this, tr("Evernus"), tr("HTTP link was copied to the clipboard."));
     }
 
+    void MainWindow::showMarketBrowser()
+    {
+        mMainTabs->setCurrentIndex(mMarketBrowserTab);
+    }
+
     void MainWindow::changeEvent(QEvent *event)
     {
         QSettings settings;
@@ -530,6 +535,7 @@ namespace Evernus
         connect(orderTab, &MarketOrderWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(orderTab, &MarketOrderWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
         connect(orderTab, &MarketOrderWidget::openMarginTool, this, &MainWindow::showMarginTool);
+        connect(orderTab, &MarketOrderWidget::showExternalOrders, this, &MainWindow::showMarketBrowser);
         connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::corpMarketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, orderTab, &MarketOrderWidget::updateData);
@@ -588,6 +594,7 @@ namespace Evernus
         connect(corpOrderTab, &MarketOrderWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(corpOrderTab, &MarketOrderWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
         connect(corpOrderTab, &MarketOrderWidget::openMarginTool, this, &MainWindow::showMarginTool);
+        connect(corpOrderTab, &MarketOrderWidget::showExternalOrders, this, &MainWindow::showMarketBrowser);
         connect(this, &MainWindow::corpMarketOrdersChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::conquerableStationsChanged, corpOrderTab, &MarketOrderWidget::updateData);
@@ -647,10 +654,12 @@ namespace Evernus
                                                         mEveDataProvider,
                                                         mItemCostProvider,
                                                         this};
-        addTab(marketBrowserTab, tr("Market browser"));
+        mMarketBrowserTab = addTab(marketBrowserTab, tr("Market browser"));
         connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
+        connect(corpOrderTab, &MarketOrderWidget::showExternalOrders, marketBrowserTab, &MarketBrowserWidget::showOrdersForType);
+        connect(orderTab, &MarketOrderWidget::showExternalOrders, marketBrowserTab, &MarketBrowserWidget::showOrdersForType);
         connect(this, &MainWindow::marketOrdersChanged, marketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
         connect(this, &MainWindow::corpMarketOrdersChanged, marketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
         connect(this, &MainWindow::externalOrdersChanged, marketBrowserTab, &MarketBrowserWidget::updateData);
@@ -676,9 +685,12 @@ namespace Evernus
         return scroll;
     }
 
-    void MainWindow::addTab(QWidget *widget, const QString &label)
+    int MainWindow::addTab(QWidget *widget, const QString &label)
     {
-        mTabWidgets[mMainTabs->addTab(createMainViewTab(widget), label)] = widget;
+        const auto index = mMainTabs->addTab(createMainViewTab(widget), label);
+
+        mTabWidgets[index] = widget;
+        return index;
     }
 
     void MainWindow::setUpAutoImportTimer()

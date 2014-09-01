@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
         QCoreApplication::setOrganizationName("evernus.com");
 
         qRegisterMetaType<Evernus::MarketLogExternalOrderImporterThread::ExternalOrderList>("ExternalOrderList");
+        qRegisterMetaType<Evernus::EveType::IdType>("EveType::IdType");
         qRegisterMetaType<Evernus::Character::IdType>("Character::IdType");
         qRegisterMetaType<Evernus::MarketOrderFilterProxyModel::StatusFilters>("MarketOrderFilterProxyModel::StatusFilters");
         qRegisterMetaType<Evernus::MarketOrderFilterProxyModel::StatusFilters>("StatusFilters");

@@ -76,6 +76,8 @@ namespace Evernus
 
         void fillOrderItemNames();
 
+        void showOrdersForType(EveType::IdType typeId);
+
     private slots:
         void prepareItemImportFromWeb();
         void prepareItemImportFromFile();
@@ -175,7 +177,6 @@ namespace Evernus
         void fillKnownItemNames();
         void fillFavoriteItemNames();
         void fillBookmarksMenu();
-        void showOrdersForType(EveType::IdType typeId);
 
         QWidget *createItemNameListTab(ItemNameModel &model, QListView *&view, QLayout *toolbarLayout = nullptr);
 

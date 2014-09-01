@@ -58,6 +58,7 @@ namespace Evernus
         connect(this, &MarketOrderViewWithTransactions::priceStatusFilterChanged, mOrderView, &MarketOrderView::priceStatusFilterChanged);
         connect(this, &MarketOrderViewWithTransactions::textFilterChanged, mOrderView, &MarketOrderView::textFilterChanged);
         connect(mOrderView, &MarketOrderView::scriptError, this, &MarketOrderViewWithTransactions::scriptError);
+        connect(mOrderView, &MarketOrderView::showExternalOrders, this, &MarketOrderViewWithTransactions::showExternalOrders);
         connect(mOrderView->getSelectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &MarketOrderViewWithTransactions::selectOrder);
 
