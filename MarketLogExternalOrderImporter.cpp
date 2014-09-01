@@ -38,11 +38,7 @@ namespace Evernus
 
     void MarketLogExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
     {
-        if (target.empty())
-        {
-            emit externalOrdersChanged(std::vector<ExternalOrder>{});
-            return;
-        }
+        Q_UNUSED(target);
 
         auto thread = std::make_unique<MarketLogExternalOrderImporterThread>();
         connect(thread.get(), &MarketLogExternalOrderImporterThread::finished, this, &MarketLogExternalOrderImporter::threadFinished);
