@@ -4217,7 +4217,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="137"/>
         <source>Combine character and corporation journal in statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Połącz dzienniki korporacji i postaci w statystykach</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="142"/>
@@ -4296,7 +4296,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../StatisticsWidget.cpp" line="589"/>
         <source>Corp. wallet balance</source>
-        <translation type="unfinished"></translation>
+        <translation>Portfel korporacji</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="593"/>
