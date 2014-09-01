@@ -65,24 +65,12 @@ namespace Evernus
         for (const auto &pair : target)
             requests.insert(pair.second, pair.first);
 
-        const auto locations = requests.uniqueKeys();
-        for (const auto &location : locations)
-        {
-            qDebug() << "Sending request for location:" << location;
-
+        const auto requestSend = [this](const auto &typeIds, const auto &stationId) {
             QUrlQuery query;
             query.addQueryItem("buysell", "a");
             query.addQueryItem("char_name", QCoreApplication::applicationName());
-
-            QStringList typeIds, stationIds;
-            for (auto it = requests.find(location); it != std::end(requests) && it.key() == location; ++it)
-            {
-                typeIds << QString::number(it.value());
-                stationIds << QString::number(location);
-            }
-
             query.addQueryItem("type_ids", typeIds.join(','));
-            query.addQueryItem("station_ids", stationIds.join(','));
+            query.addQueryItem("station_ids", stationId);
 
             QUrl url{"http://api.eve-marketdata.com/api/item_orders2.xml"};
             url.setQuery(query);
@@ -91,6 +79,33 @@ namespace Evernus
             connect(reply, &QNetworkReply::finished, this, &EveMarketDataExternalOrderImporter::processReply);
 
             ++mRequestCount;
+        };
+
+        const auto locations = requests.uniqueKeys();
+        for (const auto &location : locations)
+        {
+            qDebug() << "Sending request for location:" << location;
+
+            const auto maxBatchSize = 100;
+            QStringList typeIds;
+
+            auto counter = 0;
+            for (auto it = requests.find(location); it != std::end(requests) && it.key() == location; ++it)
+            {
+                typeIds << QString::number(it.value());
+
+                ++counter;
+                if (counter == maxBatchSize)
+                {
+                    requestSend(typeIds, QString::number(location));
+                    typeIds.clear();
+
+                    counter = 0;
+                }
+            }
+
+            if (counter != 0)
+                requestSend(typeIds, QString::number(location));
         }
 
         qDebug() << "Total requests:" << mRequestCount;
