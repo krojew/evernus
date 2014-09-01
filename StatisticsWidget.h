@@ -33,10 +33,12 @@ namespace Evernus
     class MarketOrderValueSnapshotRepository;
     class WalletJournalEntryRepository;
     class AssetValueSnapshotRepository;
+    class CorpWalletSnapshotRepository;
     class WalletTransactionRepository;
     class WalletSnapshotRepository;
     class DateFilteredPlotWidget;
     class OrderScriptRepository;
+    class CharacterRepository;
 
     class StatisticsWidget
         : public QWidget
@@ -46,11 +48,13 @@ namespace Evernus
     public:
         StatisticsWidget(const AssetValueSnapshotRepository &assetSnapshotRepo,
                          const WalletSnapshotRepository &walletSnapshotRepo,
+                         const CorpWalletSnapshotRepository &corpWalletSnapshotRepo,
                          const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
                          const WalletJournalEntryRepository &journalRepo,
                          const WalletTransactionRepository &transactionRepo,
                          const MarketOrderRepository &orderRepo,
                          const OrderScriptRepository &orderScriptRepo,
+                         const CharacterRepository &characterRepo,
                          const EveDataProvider &dataProvider,
                          QWidget *parent = nullptr);
         virtual ~StatisticsWidget() = default;
@@ -76,19 +80,25 @@ namespace Evernus
         void deleteScript();
 
     private:
-        static constexpr auto assetValueGraph = 0;
-        static constexpr auto walletBalanceGraph = 1;
-        static constexpr auto buyOrdersGraph = 2;
-        static constexpr auto sellOrdersGraph = 3;
-        static constexpr auto totalValueGraph = 4;
+        enum
+        {
+            assetValueGraph,
+            walletBalanceGraph,
+            corpWalletBalanceGraph,
+            buyOrdersGraph,
+            sellOrdersGraph,
+            totalValueGraph,
+        };
 
         const AssetValueSnapshotRepository &mAssetSnapshotRepository;
         const WalletSnapshotRepository &mWalletSnapshotRepository;
+        const CorpWalletSnapshotRepository &mCorpWalletSnapshotRepository;
         const MarketOrderValueSnapshotRepository &mMarketOrderSnapshotRepository;
-        const WalletJournalEntryRepository &mJournalRepo;
-        const WalletTransactionRepository &mTransactionRepo;
+        const WalletJournalEntryRepository &mJournalRepository;
+        const WalletTransactionRepository &mTransactionRepository;
         const MarketOrderRepository &mMarketOrderRepository;
         const OrderScriptRepository &mOrderScriptRepository;
+        const CharacterRepository &mCharacterRepository;
 
         DateFilteredPlotWidget *mBalancePlot = nullptr;
         DateFilteredPlotWidget *mJournalPlot = nullptr;

@@ -36,11 +36,13 @@
 #include "MarketOrderValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
 #include "AssetValueSnapshotRepository.h"
+#include "CorpWalletSnapshotRepository.h"
 #include "WalletTransactionRepository.h"
 #include "QtScriptSyntaxHighlighter.h"
 #include "WalletSnapshotRepository.h"
 #include "DateFilteredPlotWidget.h"
 #include "OrderScriptRepository.h"
+#include "CharacterRepository.h"
 #include "UISettings.h"
 
 #include "qcustomplot.h"
@@ -51,21 +53,25 @@ namespace Evernus
 {
     StatisticsWidget::StatisticsWidget(const AssetValueSnapshotRepository &assetSnapshotRepo,
                                        const WalletSnapshotRepository &walletSnapshotRepo,
+                                       const CorpWalletSnapshotRepository &corpWalletSnapshotRepo,
                                        const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
                                        const WalletJournalEntryRepository &journalRepo,
                                        const WalletTransactionRepository &transactionRepo,
                                        const MarketOrderRepository &orderRepo,
                                        const OrderScriptRepository &orderScriptRepo,
+                                       const CharacterRepository &characterRepo,
                                        const EveDataProvider &dataProvider,
                                        QWidget *parent)
         : QWidget(parent)
         , mAssetSnapshotRepository(assetSnapshotRepo)
         , mWalletSnapshotRepository(walletSnapshotRepo)
+        , mCorpWalletSnapshotRepository(corpWalletSnapshotRepo)
         , mMarketOrderSnapshotRepository(marketOrderSnapshotRepo)
-        , mJournalRepo(journalRepo)
-        , mTransactionRepo(transactionRepo)
+        , mJournalRepository(journalRepo)
+        , mTransactionRepository(transactionRepo)
         , mMarketOrderRepository(orderRepo)
         , mOrderScriptRepository(orderScriptRepo)
+        , mCharacterRepository(characterRepo)
         , mAggrModel(mMarketOrderRepository, dataProvider)
         , mScriptModel(dataProvider)
     {
@@ -142,12 +148,14 @@ namespace Evernus
 
         auto assetGraph = mBalancePlot->getPlot().graph(assetValueGraph);
         auto walletGraph = mBalancePlot->getPlot().graph(walletBalanceGraph);
+        auto corpWalletGraph = mBalancePlot->getPlot().graph(corpWalletBalanceGraph);
         auto buyGraph = mBalancePlot->getPlot().graph(buyOrdersGraph);
         auto sellGraph = mBalancePlot->getPlot().graph(sellOrdersGraph);
         auto sumGraph = mBalancePlot->getPlot().graph(totalValueGraph);
 
         auto assetValues = std::make_unique<QCPDataMap>();
         auto walletValues = std::make_unique<QCPDataMap>();
+        auto corpWalletValues = std::make_unique<QCPDataMap>();
         auto buyValues = std::make_unique<QCPDataMap>();
         auto sellValues = std::make_unique<QCPDataMap>();;
 
@@ -270,6 +278,23 @@ namespace Evernus
         *sumData = merger(*assetValues, *walletValues);
         *sumData = merger(*sumData, buyAndSellValues);
 
+        try
+        {
+            const auto corpId = mCharacterRepository.getCorporationId(mCharacterId);
+            const auto walletShots = (combineStats) ?
+                                     (mCorpWalletSnapshotRepository.fetchRange(from.toUTC(), to.toUTC())) :
+                                     (mCorpWalletSnapshotRepository.fetchRange(corpId, from.toUTC(), to.toUTC()));
+
+            if (!walletShots.empty())
+            {
+                dataInserter(corpWalletValues, walletShots);
+                *sumData = merger(*sumData, *corpWalletValues);
+            }
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+        }
+
         QVector<double> sumTicks;
         for (const auto &entry : *sumData)
             sumTicks << entry.key;
@@ -281,6 +306,9 @@ namespace Evernus
 
         walletGraph->setData(walletValues.get(), false);
         walletValues.release();
+
+        corpWalletGraph->setData(corpWalletValues.get(), false);
+        corpWalletValues.release();
 
         buyGraph->setData(buyValues.get(), false);
         buyValues.release();
@@ -299,10 +327,10 @@ namespace Evernus
     void StatisticsWidget::updateJournalData()
     {
         const auto entries = (mCombineStatsBtn->isChecked()) ?
-                             (mJournalRepo.fetchInRange(QDateTime{mJournalPlot->getFrom()},
+                             (mJournalRepository.fetchInRange(QDateTime{mJournalPlot->getFrom()},
                                                         QDateTime{mJournalPlot->getTo().addDays(1)},
                                                         WalletJournalEntryRepository::EntryType::All)) :
-                             (mJournalRepo.fetchForCharacterInRange(mCharacterId,
+                             (mJournalRepository.fetchForCharacterInRange(mCharacterId,
                                                                     QDateTime{mJournalPlot->getFrom()},
                                                                     QDateTime{mJournalPlot->getTo().addDays(1)},
                                                                     WalletJournalEntryRepository::EntryType::All));
@@ -352,10 +380,10 @@ namespace Evernus
     void StatisticsWidget::updateTransactionData()
     {
         const auto entries = (mCombineStatsBtn->isChecked()) ?
-                             (mTransactionRepo.fetchInRange(QDateTime{mTransactionPlot->getFrom()},
+                             (mTransactionRepository.fetchInRange(QDateTime{mTransactionPlot->getFrom()},
                                                             QDateTime{mTransactionPlot->getTo().addDays(1)},
                                                             WalletTransactionRepository::EntryType::All)) :
-                             (mTransactionRepo.fetchForCharacterInRange(mCharacterId,
+                             (mTransactionRepository.fetchForCharacterInRange(mCharacterId,
                                                                        QDateTime{mTransactionPlot->getFrom()},
                                                                        QDateTime{mTransactionPlot->getTo().addDays(1)},
                                                                        WalletTransactionRepository::EntryType::All));
@@ -524,6 +552,10 @@ namespace Evernus
         auto walletGraph = mBalancePlot->getPlot().addGraph();
         walletGraph->setName(tr("Wallet balance"));
         walletGraph->setPen(QPen{Qt::red});
+
+        auto corpWalletGraph = mBalancePlot->getPlot().addGraph();
+        corpWalletGraph->setName(tr("Corp. wallet balance"));
+        corpWalletGraph->setPen(QPen{Qt::cyan});
 
         auto buyGraph = mBalancePlot->getPlot().addGraph();
         buyGraph->setName(tr("Buy order value"));
