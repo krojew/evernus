@@ -34,12 +34,6 @@ namespace Evernus
 
     void CacheExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
     {
-        if (target.empty())
-        {
-            emit externalOrdersChanged(std::vector<ExternalOrder>{});
-            return;
-        }
-
         const auto cachePaths = getEveCachePaths();
         if (cachePaths.isEmpty())
         {

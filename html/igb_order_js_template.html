@@ -5,6 +5,8 @@
     
     var scanTimer = null;
     
+    var socket = new WebSocket("<?=websocket-uri?>");
+    
     function setCookie(name, value) {
         var d = new Date();
         d.setTime(d.getTime() + 365 *24 * 60 * 60 * 1000);
@@ -93,6 +95,14 @@
         lastAdvance = curTime;
     }
     
+    function socketMessage(event) {
+        alert(event.data);
+    }
+    
+    function startImport() {
+        socket.send("<?=auto-import-message?>");
+    }
+    
     function stopScan() {
         document.getElementById("start-scan-button").disabled = false;
         document.getElementById("stop-scan-button").disabled = true;
@@ -105,13 +115,17 @@
         document.getElementById("stop-scan-button").disabled = false;
         
         setCookie("stopAtEnd", document.getElementById("stop-at-end").checked);
+        setCookie("importAtEnd", document.getElementById("import-at-end").checked);
         
         advanceOrder(1);
         
         scanTimer = setInterval(function() {
-            if (getCurrentOrder() >= orders.length && document.getElementById("stop-at-end").checked)
-            {
+            if (getCurrentOrder() >= orders.length && document.getElementById("stop-at-end").checked) {
                 stopScan();
+                
+                if (document.getElementById("import-at-end").checked)
+                    startImport();
+                
                 return;
             }
             
@@ -119,8 +133,12 @@
         }, parseInt(document.getElementById("scan-delay").value) * 1000);
     }
     
+    socket.onerror = socketMessage;
+    socket.onmessage = socketMessage;
+    
     window.addEventListener('load', function() {
         document.getElementById("stop-at-end").checked = getCookie("stopAtEnd") != "false";
+        document.getElementById("import-at-end").checked = getCookie("importAtEnd") != "false";
     }, false);
 </script>
 
@@ -132,5 +150,6 @@
     <?=scan-delay-text?> <input id="scan-delay" type="number" value="<?=scan-delay?>" />
     <input id="start-scan-button" type="button" value="<?=start-scan-text?>" onclick="startScan();" />
     <input id="stop-scan-button" type="button" value="<?=stop-scan-text?>" onclick="stopScan();" disabled />
-    <label><input id="stop-at-end" type="checkbox" checked /><?=stop-at-end-text?></label> 
+    <label><input id="stop-at-end" type="checkbox" checked /><?=stop-at-end-text?></label>
+    <label><input id="import-at-end" type="checkbox" checked /><?=import-at-end-text?></label>
 </p>

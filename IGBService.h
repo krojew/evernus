@@ -17,6 +17,8 @@
 #include <vector>
 #include <memory>
 
+#include <QWebSocketServer>
+
 #include "MarketOrder.h"
 
 #include "qxtwebslotservice.h"
@@ -53,6 +55,8 @@ namespace Evernus
     signals:
         void openMarginTool();
 
+        void importFromCache();
+
     public slots:
         void index(QxtWebRequestEvent *event);
         void active(QxtWebRequestEvent *event);
@@ -66,11 +70,16 @@ namespace Evernus
         void favorite(QxtWebRequestEvent *event);
         void openMarginTool(QxtWebRequestEvent *event);
 
+    private slots:
+        void handleNewConnection();
+        void handleTextMessage(const QString &message);
+
     private:
         typedef std::vector<std::shared_ptr<MarketOrder>> OrderList;
 
         static const QString limitToStationsCookie;
         static const QString orderHtmlTemplate;
+        static const QString autoImportMessage;
 
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const EveDataProvider &mDataProvider;
@@ -80,6 +89,8 @@ namespace Evernus
         const CharacterRepository &mCharacterRepository;
 
         QxtHtmlTemplate mMainTemplate, mOrderTemplate, mFavoriteTemplate;
+
+        QWebSocketServer mSocketServer;
 
         void renderContent(QxtWebRequestEvent *event, const QString &content);
         QString renderOrderList(const std::vector<std::shared_ptr<MarketOrder>> &orders,

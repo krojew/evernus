@@ -16,7 +16,10 @@
 #include <stdexcept>
 #include <limits>
 
+#include <QCoreApplication>
+#include <QWebSocket>
 #include <QSettings>
+#include <QDebug>
 #include <QFile>
 
 #include "FavoriteItemRepository.h"
@@ -38,6 +41,7 @@ namespace Evernus
 {
     const QString IGBService::limitToStationsCookie = "limitToStations";
     const QString IGBService::orderHtmlTemplate = "<li><a class='order' id='order-%2' href='#' onclick='showOrder(%2);'>%1</a></li>";
+    const QString IGBService::autoImportMessage = "autoImport";
 
     IGBService::IGBService(const MarketOrderProvider &orderProvider,
                            const MarketOrderProvider &corpOrderProvider,
@@ -54,7 +58,13 @@ namespace Evernus
         , mItemCostProvider(itemCostProvider)
         , mFavoriteItemRepo(favoriteItemRepo)
         , mCharacterRepository(characterRepository)
+        , mSocketServer(QCoreApplication::applicationName(), QWebSocketServer::NonSecureMode)
     {
+        if (!mSocketServer.listen(QHostAddress::LocalHost))
+            throw std::runtime_error{tr("Error setting up WebSocket server!").toStdString()};
+
+        connect(&mSocketServer, &QWebSocketServer::newConnection, this, &IGBService::handleNewConnection);
+
         mMainTemplate.open(":/html/igb_template.html");
         mOrderTemplate.open(":/html/igb_order_template.html");
         mFavoriteTemplate.open(":/html/igb_favorite_template.html");
@@ -85,6 +95,9 @@ namespace Evernus
         mOrderTemplate["start-scan-text"] = tr("Start Scan");
         mOrderTemplate["stop-scan-text"] = tr("Stop Scan");
         mOrderTemplate["stop-at-end-text"] = tr("Stop at end");
+        mOrderTemplate["import-at-end-text"] = tr("Auto-import at end");
+        mOrderTemplate["websocket-uri"] = QString{"ws://%1:%2"}.arg(mSocketServer.serverAddress().toString()).arg(mSocketServer.serverPort());
+        mOrderTemplate["auto-import-message"] = autoImportMessage;
 
         mFavoriteTemplate.copyArguments(mOrderTemplate);
         mFavoriteTemplate["favorite-text"] = tr("Favorite items:");
@@ -343,6 +356,25 @@ namespace Evernus
         emit openMarginTool();
 
         postEvent(new QxtWebPageEvent(event->sessionID, event->requestID, QByteArray{}));
+    }
+
+    void IGBService::handleNewConnection()
+    {
+        qDebug() << "New WebSocket connection.";
+
+        auto socket = mSocketServer.nextPendingConnection();
+        socket->setParent(this);
+
+        connect(socket, &QWebSocket::disconnected, socket, &QWebSocket::deleteLater);
+        connect(socket, &QWebSocket::textMessageReceived, this, &IGBService::handleTextMessage);
+    }
+
+    void IGBService::handleTextMessage(const QString &message)
+    {
+        qDebug() << "WebSocket message:" << message;
+
+        if (message == autoImportMessage)
+            emit importFromCache();
     }
 
     void IGBService::renderContent(QxtWebRequestEvent *event, const QString &content)
