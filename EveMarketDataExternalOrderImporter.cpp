@@ -76,7 +76,7 @@ namespace Evernus
             url.setQuery(query);
 
             auto reply = mNetworkManager.get(QNetworkRequest{url});
-            connect(reply, &QNetworkReply::finished, this, &EveMarketDataExternalOrderImporter::processReply);
+            connect(reply, &QNetworkReply::finished, this, &Evernus::EveMarketDataExternalOrderImporter::processReply);
 
             ++mRequestCount;
         };
