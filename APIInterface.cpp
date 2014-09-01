@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QCoreApplication>
 #include <QUrlQuery>
 #include <QSettings>
 
@@ -205,6 +206,8 @@ namespace Evernus
 
         QNetworkRequest request{url};
         request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
+        request.setHeader(QNetworkRequest::UserAgentHeader,
+                          QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
 
         auto reply = mNetworkManager.get(request);
         connect(reply, &QNetworkReply::finished, this, &APIInterface::processReply, Qt::QueuedConnection);
