@@ -38,8 +38,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        HttpService(const MarketOrderProvider &orderProvider,
-                    const MarketOrderProvider &corpOrderProvider,
+        HttpService(MarketOrderProvider &orderProvider,
+                    MarketOrderProvider &corpOrderProvider,
                     const EveDataProvider &dataProvider,
                     const CharacterRepository &characterRepo,
                     const CacheTimerProvider &cacheTimerProvider,

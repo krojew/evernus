@@ -17,7 +17,8 @@
 namespace Evernus
 {
     CachingMarketOrderProvider::CachingMarketOrderProvider(const MarketOrderRepository &orderRepo)
-        : MarketOrderProvider{}
+        : QObject{}
+        , MarketOrderProvider{}
         , mOrderRepo{orderRepo}
     {
     }
@@ -94,6 +95,20 @@ namespace Evernus
         }
 
         return result;
+    }
+
+    void CachingMarketOrderProvider::removeOrder(MarketOrder::IdType id)
+    {
+        mSellOrders.clear();
+        mBuyOrders.clear();
+        mArchivedOrders.clear();
+        mCorpSellOrders.clear();
+        mCorpBuyOrders.clear();
+        mCorpArchivedOrders.clear();
+
+        mOrderRepo.remove(id);
+
+        emit orderDeleted();
     }
 
     void CachingMarketOrderProvider::clearOrdersForCharacter(Character::IdType id) const

@@ -29,7 +29,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MarketOrderArchiveModel(const MarketOrderProvider &orderProvider,
+        MarketOrderArchiveModel(MarketOrderProvider &orderProvider,
                                 const EveDataProvider &dataProvider,
                                 const ItemCostProvider &itemCostProvider,
                                 const CharacterRepository &characterRepository,
@@ -68,7 +68,7 @@ namespace Evernus
         static const auto stationColumn = 9;
         static const auto ownerColumn = 10;
 
-        const MarketOrderProvider &mOrderProvider;
+        MarketOrderProvider &mOrderProvider;
         const ItemCostProvider &mItemCostProvider;
         const CharacterRepository &mCharacterRepository;
 
@@ -77,5 +77,7 @@ namespace Evernus
         QDateTime mFrom, mTo;
 
         virtual OrderList getOrders() const override;
+
+        virtual void handleOrderRemoval(const MarketOrder &order) override;
     };
 }

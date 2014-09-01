@@ -29,7 +29,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MarketOrderBuyModel(const MarketOrderProvider &orderProvider,
+        MarketOrderBuyModel(MarketOrderProvider &orderProvider,
                             const EveDataProvider &dataProvider,
                             const CacheTimerProvider &cacheTimerProvider,
                             const CharacterRepository &characterRepository,
@@ -79,7 +79,7 @@ namespace Evernus
             numColumns
         };
 
-        const MarketOrderProvider &mOrderProvider;
+        MarketOrderProvider &mOrderProvider;
         const CacheTimerProvider &mCacheTimerProvider;
         const CharacterRepository &mCharacterRepository;
 
@@ -88,7 +88,9 @@ namespace Evernus
         bool mCorp = false;
 
         virtual OrderList getOrders() const override;
+
         virtual void handleNewCharacter() override;
+        virtual void handleOrderRemoval(const MarketOrder &order) override;
 
         double getMargin(const MarketOrder &order) const;
         double getNewMargin(const MarketOrder &order) const;

@@ -46,6 +46,7 @@ qt5_wrap_cpp(
     ButtonWithTimer.h
     CacheExternalOrderImporter.h
     CachingEveDataProvider.h
+    CachingMarketOrderProvider.h
     CharacterBoundWidget.h
     CharacterManagerDialog.h
     CharacterModel.h

@@ -19,6 +19,7 @@
 #include <QHeaderView>
 #include <QSettings>
 #include <QCursor>
+#include <QAction>
 #include <QLabel>
 #include <QFont>
 #include <QUrl>
@@ -55,6 +56,13 @@ namespace Evernus
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
         connect(mView, &StyledTreeView::clicked, this, &MarketOrderView::showPriceInfo);
+        connect(getSelectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &MarketOrderView::selectOrder);
+
+        mRemoveOrderAct = new QAction{QIcon{":/images/delete.png"}, tr("Delete order"), this};
+        mRemoveOrderAct->setEnabled(false);
+        mView->addAction(mRemoveOrderAct);
+        connect(mRemoveOrderAct, &QAction::triggered, this, &MarketOrderView::removeOrders);
 
         mInfoWidget = new QWidget{this};
         mainLayout->addWidget(mInfoWidget);
@@ -89,19 +97,20 @@ namespace Evernus
 
         infoLayout->addStretch();
 
-        auto actionGroup = new QActionGroup{this};
+        mLookupGroup = new QActionGroup{this};
+        mLookupGroup->setEnabled(false);
 
-        auto action = actionGroup->addAction(tr("Lookup item on eve-marketdata.com"));
+        auto action = mLookupGroup->addAction(tr("Lookup item on eve-marketdata.com"));
         connect(action, &QAction::triggered, this, &MarketOrderView::lookupOnEveMarketdata);
 
-        action = actionGroup->addAction(tr("Lookup item on eve-central.com"));
+        action = mLookupGroup->addAction(tr("Lookup item on eve-central.com"));
         connect(action, &QAction::triggered, this, &MarketOrderView::lookupOnEveCentral);
 
         action = new QAction{this};
         action->setSeparator(true);
 
         mView->addAction(action);
-        mView->addActions(actionGroup->actions());
+        mView->addActions(mLookupGroup->actions());
     }
 
     QItemSelectionModel *MarketOrderView::getSelectionModel() const
@@ -198,6 +207,23 @@ namespace Evernus
     void MarketOrderView::lookupOnEveCentral()
     {
         lookupOnWeb("https://eve-central.com/home/quicklook.html?typeid=%1");
+    }
+
+    void MarketOrderView::selectOrder(const QItemSelection &selected)
+    {
+        const auto enable = !selected.isEmpty() && mSource->getOrder(mProxy.mapToSource(mView->currentIndex())) != nullptr;
+        mRemoveOrderAct->setEnabled(enable);
+        mLookupGroup->setEnabled(enable);
+    }
+
+    void MarketOrderView::removeOrders()
+    {
+        const auto selection = getSelectionModel()->selectedIndexes();
+        for (const auto &selected : selection)
+        {
+            const auto index = mProxy.mapToSource(selected);
+            mSource->removeRow(index.row(), mSource->parent(index));
+        }
     }
 
     void MarketOrderView::lookupOnWeb(const QString &baseUrl) const

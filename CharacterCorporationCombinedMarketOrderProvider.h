@@ -24,8 +24,8 @@ namespace Evernus
         : public MarketOrderProvider
     {
     public:
-        CharacterCorporationCombinedMarketOrderProvider(const MarketOrderProvider &charOrderProvider,
-                                                        const MarketOrderProvider &corpOrderProvider);
+        CharacterCorporationCombinedMarketOrderProvider(MarketOrderProvider &charOrderProvider,
+                                                        MarketOrderProvider &corpOrderProvider);
         virtual ~CharacterCorporationCombinedMarketOrderProvider() = default;
 
         virtual OrderList getSellOrders(Character::IdType characterId) const override;
@@ -36,13 +36,15 @@ namespace Evernus
         virtual OrderList getBuyOrdersForCorporation(quint64 corporationId) const override;
         virtual OrderList getArchivedOrdersForCorporation(quint64 corporationId, const QDateTime &from, const QDateTime &to) const override;
 
+        virtual void removeOrder(MarketOrder::IdType id) override;
+
         void clearOrdersForCharacter(Character::IdType id) const;
 
     private:
         typedef std::unordered_map<Character::IdType, OrderList> MarketOrderMap;
 
-        const MarketOrderProvider &mCharOrderProvider;
-        const MarketOrderProvider &mCorpOrderProvider;
+        MarketOrderProvider &mCharOrderProvider;
+        MarketOrderProvider &mCorpOrderProvider;
 
         mutable MarketOrderMap mSellOrders;
         mutable MarketOrderMap mBuyOrders;

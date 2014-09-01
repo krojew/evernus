@@ -29,8 +29,8 @@ namespace Evernus
 {
     const QString HttpService::characterIdName = "characterId";
 
-    HttpService::HttpService(const MarketOrderProvider &orderProvider,
-                             const MarketOrderProvider &corpOrderProvider,
+    HttpService::HttpService(MarketOrderProvider &orderProvider,
+                             MarketOrderProvider &corpOrderProvider,
                              const EveDataProvider &dataProvider,
                              const CharacterRepository &characterRepo,
                              const CacheTimerProvider &cacheTimerProvider,

@@ -19,6 +19,7 @@
 #include "MarketOrderFilterProxyModel.h"
 
 class QItemSelectionModel;
+class QActionGroup;
 class QLabel;
 
 namespace Evernus
@@ -65,6 +66,9 @@ namespace Evernus
         void lookupOnEveMarketdata();
         void lookupOnEveCentral();
 
+        void selectOrder(const QItemSelection &selected);
+        void removeOrders();
+
     private:
         StyledTreeView *mView = nullptr;
 
@@ -76,6 +80,9 @@ namespace Evernus
 
         MarketOrderModel *mSource = nullptr;
         MarketOrderFilterProxyModel mProxy;
+
+        QAction *mRemoveOrderAct = nullptr;
+        QActionGroup *mLookupGroup = nullptr;
 
         void lookupOnWeb(const QString &baseUrl) const;
     };

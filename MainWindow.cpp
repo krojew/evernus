@@ -65,8 +65,8 @@ namespace Evernus
     const QString MainWindow::settingsSizeKey = "mainWindow/size";
 
     MainWindow::MainWindow(const RepositoryProvider &repositoryProvider,
-                           const MarketOrderProvider &orderProvider,
-                           const MarketOrderProvider &corpOrderProvider,
+                           MarketOrderProvider &orderProvider,
+                           MarketOrderProvider &corpOrderProvider,
                            const AssetProvider &assetProvider,
                            const ContractProvider &contractProvider,
                            const ContractProvider &corpContractProvider,

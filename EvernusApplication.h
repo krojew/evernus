@@ -122,8 +122,8 @@ namespace Evernus
         virtual const LocationBookmarkRepository &getLocationBookmarkRepository() const noexcept override;
         virtual const ExternalOrderRepository &getExternalOrderRepository() const noexcept override;
 
-        const MarketOrderProvider &getMarketOrderProvider() const noexcept;
-        const MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
+        MarketOrderProvider &getMarketOrderProvider() const noexcept;
+        MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
 
         const ContractProvider &getContractProvider() const noexcept;
         const ContractProvider &getCorpContractProvider() const noexcept;
@@ -185,6 +185,12 @@ namespace Evernus
         void scheduleCharacterUpdate();
         void updateCharacters();
 
+        void scheduleMarketOrderChange();
+        void updateMarketOrders();
+
+        void scheduleCorpMarketOrderChange();
+        void updateCorpMarketOrders();
+
         void showPriceImportError(const QString &info);
 
         void emitNewItemCosts();
@@ -236,6 +242,8 @@ namespace Evernus
 
         bool mCharacterUpdateScheduled = false;
         bool mItemCostUpdateScheduled = false;
+        bool mMarketOrderUpdateScheduled = false;
+        bool mCorpMarketOrderUpdateScheduled = false;
 
         std::unordered_map<std::string, ImporterPtr> mExternalOrderImporters;
 

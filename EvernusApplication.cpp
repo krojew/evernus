@@ -96,7 +96,13 @@ namespace Evernus
         createDbSchema();
 
         mCharacterOrderProvider = std::make_unique<CachingMarketOrderProvider>(*mMarketOrderRepository);
+        connect(mCharacterOrderProvider.get(), &CachingMarketOrderProvider::orderDeleted,
+                this, &EvernusApplication::scheduleMarketOrderChange);
+
         mCorpOrderProvider = std::make_unique<CachingMarketOrderProvider>(*mCorpMarketOrderRepository);
+        connect(mCorpOrderProvider.get(), &CachingMarketOrderProvider::orderDeleted,
+                this, &EvernusApplication::scheduleCorpMarketOrderChange);
+
         mCombinedOrderProvider
             = std::make_unique<CharacterCorporationCombinedMarketOrderProvider>(*mCharacterOrderProvider, *mCorpOrderProvider);
 
@@ -598,12 +604,12 @@ namespace Evernus
         return *mExternalOrderRepository;
     }
 
-    const MarketOrderProvider &EvernusApplication::getMarketOrderProvider() const noexcept
+    MarketOrderProvider &EvernusApplication::getMarketOrderProvider() const noexcept
     {
         return *mCombinedOrderProvider;
     }
 
-    const MarketOrderProvider &EvernusApplication::getCorpMarketOrderProvider() const noexcept
+    MarketOrderProvider &EvernusApplication::getCorpMarketOrderProvider() const noexcept
     {
         return *mCorpOrderProvider;
     }
@@ -1375,6 +1381,38 @@ namespace Evernus
         mCharacterUpdateScheduled = false;
 
         emit charactersChanged();
+    }
+
+    void EvernusApplication::scheduleMarketOrderChange()
+    {
+        if (mMarketOrderUpdateScheduled)
+            return;
+
+        mMarketOrderUpdateScheduled = true;
+        QMetaObject::invokeMethod(this, "updateMarketOrders", Qt::QueuedConnection);
+    }
+
+    void EvernusApplication::updateMarketOrders()
+    {
+        mMarketOrderUpdateScheduled = false;
+
+        emit marketOrdersChanged();
+    }
+
+    void EvernusApplication::scheduleCorpMarketOrderChange()
+    {
+        if (mCorpMarketOrderUpdateScheduled)
+            return;
+
+        mCorpMarketOrderUpdateScheduled = true;
+        QMetaObject::invokeMethod(this, "updateCorpMarketOrders", Qt::QueuedConnection);
+    }
+
+    void EvernusApplication::updateCorpMarketOrders()
+    {
+        mCorpMarketOrderUpdateScheduled = false;
+
+        emit corpMarketOrdersChanged();
     }
 
     void EvernusApplication::showPriceImportError(const QString &info)

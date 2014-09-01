@@ -39,8 +39,8 @@ namespace Evernus
 {
     const QString MarketOrderWidget::settingsLastTabkey = "ui/orders/lastTab";
 
-    MarketOrderWidget::MarketOrderWidget(const MarketOrderProvider &orderProvider,
-                                         const MarketOrderProvider &corpOrderProvider,
+    MarketOrderWidget::MarketOrderWidget(MarketOrderProvider &orderProvider,
+                                         MarketOrderProvider &corpOrderProvider,
                                          const CacheTimerProvider &cacheTimerProvider,
                                          const EveDataProvider &dataProvider,
                                          ItemCostProvider &itemCostProvider,

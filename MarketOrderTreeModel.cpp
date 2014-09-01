@@ -126,6 +126,22 @@ namespace Evernus
         return createIndex(parentItem->row(), 0, parentItem);
     }
 
+    bool MarketOrderTreeModel::removeRows(int row, int count, const QModelIndex &parent)
+    {
+        beginRemoveRows(parent, row, row + count);
+
+        for (auto i = row; i < row + count; ++i)
+        {
+            const auto order = getOrder(index(i, 0, parent));
+            if (order != nullptr)
+                handleOrderRemoval(*order);
+        }
+
+        endRemoveRows();
+
+        return true;
+    }
+
     int MarketOrderTreeModel::rowCount(const QModelIndex &parent) const
     {
         const TreeItem *parentItem = nullptr;

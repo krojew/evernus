@@ -17,14 +17,12 @@
 #include <vector>
 #include <memory>
 
-#include "Character.h"
+#include "MarketOrder.h"
 
 class QDateTime;
 
 namespace Evernus
 {
-    class MarketOrder;
-
     class MarketOrderProvider
     {
     public:
@@ -40,5 +38,7 @@ namespace Evernus
         virtual OrderList getSellOrdersForCorporation(quint64 corporationId) const = 0;
         virtual OrderList getBuyOrdersForCorporation(quint64 corporationId) const = 0;
         virtual OrderList getArchivedOrdersForCorporation(quint64 corporationId, const QDateTime &from, const QDateTime &to) const = 0;
+
+        virtual void removeOrder(MarketOrder::IdType id) = 0;
     };
 }

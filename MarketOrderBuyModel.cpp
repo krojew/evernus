@@ -32,7 +32,7 @@
 
 namespace Evernus
 {
-    MarketOrderBuyModel::MarketOrderBuyModel(const MarketOrderProvider &orderProvider,
+    MarketOrderBuyModel::MarketOrderBuyModel(MarketOrderProvider &orderProvider,
                                              const EveDataProvider &dataProvider,
                                              const CacheTimerProvider &cacheTimerProvider,
                                              const CharacterRepository &characterRepository,
@@ -529,6 +529,11 @@ namespace Evernus
         {
             mCharacter = std::make_shared<Character>();
         }
+    }
+
+    void MarketOrderBuyModel::handleOrderRemoval(const MarketOrder &order)
+    {
+        mOrderProvider.removeOrder(order.getId());
     }
 
     double MarketOrderBuyModel::getMargin(const MarketOrder &order) const

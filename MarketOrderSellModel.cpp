@@ -33,7 +33,7 @@
 
 namespace Evernus
 {
-    MarketOrderSellModel::MarketOrderSellModel(const MarketOrderProvider &orderProvider,
+    MarketOrderSellModel::MarketOrderSellModel(MarketOrderProvider &orderProvider,
                                                const EveDataProvider &dataProvider,
                                                const ItemCostProvider &itemCostProvider,
                                                const CacheTimerProvider &cacheTimerProvider,
@@ -590,6 +590,11 @@ namespace Evernus
         {
             mCharacter.reset();
         }
+    }
+
+    void MarketOrderSellModel::handleOrderRemoval(const MarketOrder &order)
+    {
+        mOrderProvider.removeOrder(order.getId());
     }
 
     QString MarketOrderSellModel::getCharacterName(Character::IdType id) const

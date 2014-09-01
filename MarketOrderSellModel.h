@@ -30,7 +30,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MarketOrderSellModel(const MarketOrderProvider &orderProvider,
+        MarketOrderSellModel(MarketOrderProvider &orderProvider,
                              const EveDataProvider &dataProvider,
                              const ItemCostProvider &itemCostProvider,
                              const CacheTimerProvider &cacheTimerProvider,
@@ -82,7 +82,7 @@ namespace Evernus
             numColumns
         };
 
-        const MarketOrderProvider &mOrderProvider;
+        MarketOrderProvider &mOrderProvider;
         const ItemCostProvider &mItemCostProvider;
         const CacheTimerProvider &mCacheTimerProvider;
         const CharacterRepository &mCharacterRepository;
@@ -92,7 +92,9 @@ namespace Evernus
         Repository<Character>::EntityPtr mCharacter;
 
         virtual OrderList getOrders() const override;
+
         virtual void handleNewCharacter() override;
+        virtual void handleOrderRemoval(const MarketOrder &order) override;
 
         QString getCharacterName(Character::IdType id) const;
     };

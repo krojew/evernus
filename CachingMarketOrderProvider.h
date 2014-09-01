@@ -22,8 +22,11 @@
 namespace Evernus
 {
     class CachingMarketOrderProvider
-        : public MarketOrderProvider
+        : public QObject
+        , public MarketOrderProvider
     {
+        Q_OBJECT
+
     public:
         explicit CachingMarketOrderProvider(const MarketOrderRepository &orderRepo);
         virtual ~CachingMarketOrderProvider() = default;
@@ -36,9 +39,14 @@ namespace Evernus
         virtual OrderList getBuyOrdersForCorporation(quint64 corporationId) const override;
         virtual OrderList getArchivedOrdersForCorporation(quint64 corporationId, const QDateTime &from, const QDateTime &to) const override;
 
+        virtual void removeOrder(MarketOrder::IdType id) override;
+
         void clearOrdersForCharacter(Character::IdType id) const;
         void clearOrdersForCorporation(uint id) const;
         void clearArchived() const;
+
+    signals:
+        void orderDeleted();
 
     private:
         typedef std::unordered_map<Character::IdType, OrderList> MarketOrderMap;

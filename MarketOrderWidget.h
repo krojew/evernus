@@ -43,8 +43,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MarketOrderWidget(const MarketOrderProvider &orderProvider,
-                          const MarketOrderProvider &corpOrderProvider,
+        MarketOrderWidget(MarketOrderProvider &orderProvider,
+                          MarketOrderProvider &corpOrderProvider,
                           const CacheTimerProvider &cacheTimerProvider,
                           const EveDataProvider &dataProvider,
                           ItemCostProvider &itemCostProvider,
@@ -85,7 +85,7 @@ namespace Evernus
     private:
         static const QString settingsLastTabkey;
 
-        const MarketOrderProvider &mOrderProvider;
+        MarketOrderProvider &mOrderProvider;
         const CharacterRepository &mCharacterRepository;
 
         MarketOrderViewWithTransactions *mSellView = nullptr;

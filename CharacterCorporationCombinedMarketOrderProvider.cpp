@@ -21,8 +21,8 @@
 namespace Evernus
 {
     CharacterCorporationCombinedMarketOrderProvider
-    ::CharacterCorporationCombinedMarketOrderProvider(const MarketOrderProvider &charOrderProvider,
-                                                      const MarketOrderProvider &corpOrderProvider)
+    ::CharacterCorporationCombinedMarketOrderProvider(MarketOrderProvider &charOrderProvider,
+                                                      MarketOrderProvider &corpOrderProvider)
         : MarketOrderProvider{}
         , mCharOrderProvider{charOrderProvider}
         , mCorpOrderProvider{corpOrderProvider}
@@ -101,6 +101,15 @@ namespace Evernus
     ::getArchivedOrdersForCorporation(quint64 corporationId, const QDateTime &from, const QDateTime &to) const
     {
         return mCorpOrderProvider.getArchivedOrdersForCorporation(corporationId, from, to);
+    }
+
+    void CharacterCorporationCombinedMarketOrderProvider::removeOrder(MarketOrder::IdType id)
+    {
+        mCharOrderProvider.removeOrder(id);
+        mCorpOrderProvider.removeOrder(id);
+
+        mSellOrders.clear();
+        mBuyOrders.clear();
     }
 
     void CharacterCorporationCombinedMarketOrderProvider::clearOrdersForCharacter(Character::IdType id) const

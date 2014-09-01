@@ -31,7 +31,7 @@
 
 namespace Evernus
 {
-    MarketOrderArchiveModel::MarketOrderArchiveModel(const MarketOrderProvider &orderProvider,
+    MarketOrderArchiveModel::MarketOrderArchiveModel(MarketOrderProvider &orderProvider,
                                                      const EveDataProvider &dataProvider,
                                                      const ItemCostProvider &itemCostProvider,
                                                      const CharacterRepository &characterRepository,
@@ -313,5 +313,10 @@ namespace Evernus
         {
             return OrderList{};
         }
+    }
+
+    void MarketOrderArchiveModel::handleOrderRemoval(const MarketOrder &order)
+    {
+        mOrderProvider.removeOrder(order.getId());
     }
 }

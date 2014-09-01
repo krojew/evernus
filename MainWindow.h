@@ -55,8 +55,8 @@ namespace Evernus
 
     public:
         MainWindow(const RepositoryProvider &repositoryProvider,
-                   const MarketOrderProvider &orderProvider,
-                   const MarketOrderProvider &corpOrderProvider,
+                   MarketOrderProvider &orderProvider,
+                   MarketOrderProvider &corpOrderProvider,
                    const AssetProvider &assetProvider,
                    const ContractProvider &contractProvider,
                    const ContractProvider &corpContractProvider,
@@ -154,7 +154,7 @@ namespace Evernus
         static const QString settingsSizeKey;
 
         const RepositoryProvider &mRepositoryProvider;
-        const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
+        MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const AssetProvider &mAssetProvider;
         const ContractProvider &mContractProvider, &mCorpContractProvider;
         ItemCostProvider &mItemCostProvider;

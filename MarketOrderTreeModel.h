@@ -34,6 +34,7 @@ namespace Evernus
 
         virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex{}) const override;
         virtual QModelIndex parent(const QModelIndex &index) const override;
+        virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex{}) override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
         virtual size_t getOrderCount() const override;
@@ -105,6 +106,7 @@ namespace Evernus
         virtual OrderList getOrders() const = 0;
 
         virtual void handleNewCharacter();
+        virtual void handleOrderRemoval(const MarketOrder &order) = 0;
 
         quintptr getGroupingId(const MarketOrder &order) const;
         QString getGroupingData(const MarketOrder &order) const;
