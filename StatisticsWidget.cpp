@@ -43,6 +43,7 @@
 #include "DateFilteredPlotWidget.h"
 #include "OrderScriptRepository.h"
 #include "CharacterRepository.h"
+#include "PriceSettings.h"
 #include "UISettings.h"
 
 #include "qcustomplot.h"
@@ -57,6 +58,8 @@ namespace Evernus
                                        const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
                                        const WalletJournalEntryRepository &journalRepo,
                                        const WalletTransactionRepository &transactionRepo,
+                                       const WalletJournalEntryRepository &corpJournalRepo,
+                                       const WalletTransactionRepository &corpTransactionRepo,
                                        const MarketOrderRepository &orderRepo,
                                        const OrderScriptRepository &orderScriptRepo,
                                        const CharacterRepository &characterRepo,
@@ -68,7 +71,9 @@ namespace Evernus
         , mCorpWalletSnapshotRepository(corpWalletSnapshotRepo)
         , mMarketOrderSnapshotRepository(marketOrderSnapshotRepo)
         , mJournalRepository(journalRepo)
+        , mCorpJournalRepository(corpJournalRepo)
         , mTransactionRepository(transactionRepo)
+        , mCorpTransactionRepository(corpTransactionRepo)
         , mMarketOrderRepository(orderRepo)
         , mOrderScriptRepository(orderScriptRepo)
         , mCharacterRepository(characterRepo)
@@ -326,47 +331,59 @@ namespace Evernus
 
     void StatisticsWidget::updateJournalData()
     {
-        const auto entries = (mCombineStatsBtn->isChecked()) ?
+        const auto combineStats = mCombineStatsBtn->isChecked();
+        const auto entries = (combineStats) ?
                              (mJournalRepository.fetchInRange(QDateTime{mJournalPlot->getFrom()},
-                                                        QDateTime{mJournalPlot->getTo().addDays(1)},
-                                                        WalletJournalEntryRepository::EntryType::All)) :
+                                                              QDateTime{mJournalPlot->getTo().addDays(1)},
+                                                              WalletJournalEntryRepository::EntryType::All)) :
                              (mJournalRepository.fetchForCharacterInRange(mCharacterId,
-                                                                    QDateTime{mJournalPlot->getFrom()},
-                                                                    QDateTime{mJournalPlot->getTo().addDays(1)},
-                                                                    WalletJournalEntryRepository::EntryType::All));
+                                                                          QDateTime{mJournalPlot->getFrom()},
+                                                                          QDateTime{mJournalPlot->getTo().addDays(1)},
+                                                                          WalletJournalEntryRepository::EntryType::All));
 
         QHash<QDate, std::pair<double, double>> values;
-        for (const auto &entry : entries)
+        const auto valueAdder = [&values](const auto &entries) {
+            for (const auto &entry : entries)
+            {
+                if (entry->isIgnored())
+                    continue;
+
+                auto &value = values[entry->getTimestamp().toLocalTime().date()];
+
+                const auto amount = entry->getAmount();
+                if (amount < 0.)
+                    value.first -= amount;
+                else
+                    value.second += amount;
+            }
+        };
+
+        valueAdder(entries);
+
+        QSettings settings;
+        if (settings.value(PriceSettings::combineCorpAndCharPlotsKey, PriceSettings::combineCorpAndCharPlotsDefault).toBool())
         {
-            if (entry->isIgnored())
-                continue;
+            try
+            {
+                const auto corpId = mCharacterRepository.getCorporationId(mCharacterId);
+                const auto entries = (combineStats) ?
+                                     (mCorpJournalRepository.fetchInRange(QDateTime{mJournalPlot->getFrom()},
+                                                                          QDateTime{mJournalPlot->getTo().addDays(1)},
+                                                                          WalletJournalEntryRepository::EntryType::All)) :
+                                     (mCorpJournalRepository.fetchForCorporationInRange(corpId,
+                                                                                        QDateTime{mJournalPlot->getFrom()},
+                                                                                        QDateTime{mJournalPlot->getTo().addDays(1)},
+                                                                                        WalletJournalEntryRepository::EntryType::All));
 
-            auto &value = values[entry->getTimestamp().toLocalTime().date()];
-
-            const auto amount = entry->getAmount();
-            if (amount < 0.)
-                value.first -= amount;
-            else
-                value.second += amount;
+                valueAdder(entries);
+            }
+            catch (const CharacterRepository::NotFoundException &)
+            {
+            }
         }
 
         QVector<double> ticks, incomingTicks, outgoingTicks, incomingValues, outgoingValues;
-
-        QHashIterator<QDate, std::pair<double, double>> it{values};
-        while (it.hasNext())
-        {
-            it.next();
-
-            const auto secs = QDateTime{it.key()}.toMSecsSinceEpoch() / 1000.;
-
-            ticks << secs;
-
-            incomingTicks << secs - 3600 * 3;
-            outgoingTicks << secs + 3600 * 3;
-
-            outgoingValues << it.value().first;
-            incomingValues << it.value().second;
-        }
+        createBarTicks(ticks, incomingTicks, outgoingTicks, incomingValues, outgoingValues, values);
 
         mIncomingPlot->setData(incomingTicks, incomingValues);
         mOutgoingPlot->setData(outgoingTicks, outgoingValues);
@@ -379,47 +396,59 @@ namespace Evernus
 
     void StatisticsWidget::updateTransactionData()
     {
-        const auto entries = (mCombineStatsBtn->isChecked()) ?
+        const auto combineStats = mCombineStatsBtn->isChecked();
+        const auto entries = (combineStats) ?
                              (mTransactionRepository.fetchInRange(QDateTime{mTransactionPlot->getFrom()},
-                                                            QDateTime{mTransactionPlot->getTo().addDays(1)},
-                                                            WalletTransactionRepository::EntryType::All)) :
+                                                                  QDateTime{mTransactionPlot->getTo().addDays(1)},
+                                                                  WalletTransactionRepository::EntryType::All)) :
                              (mTransactionRepository.fetchForCharacterInRange(mCharacterId,
-                                                                       QDateTime{mTransactionPlot->getFrom()},
-                                                                       QDateTime{mTransactionPlot->getTo().addDays(1)},
-                                                                       WalletTransactionRepository::EntryType::All));
+                                                                              QDateTime{mTransactionPlot->getFrom()},
+                                                                              QDateTime{mTransactionPlot->getTo().addDays(1)},
+                                                                              WalletTransactionRepository::EntryType::All));
 
         QHash<QDate, std::pair<double, double>> values;
-        for (const auto &entry : entries)
+        const auto valueAdder = [&values](const auto &entries) {
+            for (const auto &entry : entries)
+            {
+                if (entry->isIgnored())
+                    continue;
+
+                auto &value = values[entry->getTimestamp().toLocalTime().date()];
+
+                const auto amount = entry->getPrice();
+                if (entry->getType() == WalletTransaction::Type::Buy)
+                    value.first += amount;
+                else
+                    value.second += amount;
+            }
+        };
+
+        valueAdder(entries);
+
+        QSettings settings;
+        if (settings.value(PriceSettings::combineCorpAndCharPlotsKey, PriceSettings::combineCorpAndCharPlotsDefault).toBool())
         {
-            if (entry->isIgnored())
-                continue;
+            try
+            {
+                const auto corpId = mCharacterRepository.getCorporationId(mCharacterId);
+                const auto entries = (combineStats) ?
+                                     (mCorpTransactionRepository.fetchInRange(QDateTime{mJournalPlot->getFrom()},
+                                                                              QDateTime{mJournalPlot->getTo().addDays(1)},
+                                                                              WalletTransactionRepository::EntryType::All)) :
+                                     (mCorpTransactionRepository.fetchForCorporationInRange(corpId,
+                                                                                            QDateTime{mJournalPlot->getFrom()},
+                                                                                            QDateTime{mJournalPlot->getTo().addDays(1)},
+                                                                                            WalletTransactionRepository::EntryType::All));
 
-            auto &value = values[entry->getTimestamp().toLocalTime().date()];
-
-            const auto amount = entry->getPrice();
-            if (entry->getType() == WalletTransaction::Type::Buy)
-                value.first += amount;
-            else
-                value.second += amount;
+                valueAdder(entries);
+            }
+            catch (const CharacterRepository::NotFoundException &)
+            {
+            }
         }
 
         QVector<double> ticks, incomingTicks, outgoingTicks, incomingValues, outgoingValues;
-
-        QHashIterator<QDate, std::pair<double, double>> it{values};
-        while (it.hasNext())
-        {
-            it.next();
-
-            const auto secs = QDateTime{it.key()}.toMSecsSinceEpoch() / 1000.;
-
-            ticks << secs;
-
-            incomingTicks << secs - 3600 * 3;
-            outgoingTicks << secs + 3600 * 3;
-
-            outgoingValues << it.value().first;
-            incomingValues << it.value().second;
-        }
+        createBarTicks(ticks, incomingTicks, outgoingTicks, incomingValues, outgoingValues, values);
 
         mSellPlot->setData(incomingTicks, incomingValues);
         mBuyPlot->setData(outgoingTicks, outgoingValues);
@@ -445,6 +474,9 @@ namespace Evernus
         mBalancePlot->getPlot().yAxis->setNumberFormat(format);
         mJournalPlot->getPlot().yAxis->setNumberFormat(format);
         mTransactionPlot->getPlot().yAxis->setNumberFormat(format);
+
+        updateJournalData();
+        updateTransactionData();
 
         mBalancePlot->getPlot().replot();
         mJournalPlot->getPlot().replot();
@@ -785,5 +817,29 @@ namespace Evernus
         graph.release();
 
         return graphPtr;
+    }
+
+    void StatisticsWidget::createBarTicks(QVector<double> &ticks,
+                                          QVector<double> &incomingTicks,
+                                          QVector<double> &outgoingTicks,
+                                          QVector<double> &incomingValues,
+                                          QVector<double> &outgoingValues,
+                                          const QHash<QDate, std::pair<double, double>> &values)
+    {
+        QHashIterator<QDate, std::pair<double, double>> it{values};
+        while (it.hasNext())
+        {
+            it.next();
+
+            const auto secs = QDateTime{it.key()}.toMSecsSinceEpoch() / 1000.;
+
+            ticks << secs;
+
+            incomingTicks << secs - 3600 * 3;
+            outgoingTicks << secs + 3600 * 3;
+
+            outgoingValues << it.value().first;
+            incomingValues << it.value().second;
+        }
     }
 }

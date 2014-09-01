@@ -478,6 +478,8 @@ namespace Evernus
                                              mRepositoryProvider.getMarketOrderValueSnapshotRepository(),
                                              mRepositoryProvider.getWalletJournalEntryRepository(),
                                              mRepositoryProvider.getWalletTransactionRepository(),
+                                             mRepositoryProvider.getCorpWalletJournalEntryRepository(),
+                                             mRepositoryProvider.getCorpWalletTransactionRepository(),
                                              mRepositoryProvider.getMarketOrderRepository(),
                                              mRepositoryProvider.getOrderScriptRepository(),
                                              mRepositoryProvider.getCharacterRepository(),
@@ -489,8 +491,10 @@ namespace Evernus
         connect(this, &MainWindow::assetsChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::walletJournalChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::walletJournalChanged, statsTab, &StatisticsWidget::updateJournalData);
+        connect(this, &MainWindow::corpWalletJournalChanged, statsTab, &StatisticsWidget::updateJournalData);
         connect(this, &MainWindow::corpWalletJournalChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::walletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
+        connect(this, &MainWindow::corpWalletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
         connect(this, &MainWindow::preferencesChanged, statsTab, &StatisticsWidget::handleNewPreferences);
 
         auto assetsTab = new AssetsWidget{mAssetProvider,

@@ -52,6 +52,8 @@ namespace Evernus
                          const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
                          const WalletJournalEntryRepository &journalRepo,
                          const WalletTransactionRepository &transactionRepo,
+                         const WalletJournalEntryRepository &corpJournalRepo,
+                         const WalletTransactionRepository &corpTransactionRepo,
                          const MarketOrderRepository &orderRepo,
                          const OrderScriptRepository &orderScriptRepo,
                          const CharacterRepository &characterRepo,
@@ -94,8 +96,8 @@ namespace Evernus
         const WalletSnapshotRepository &mWalletSnapshotRepository;
         const CorpWalletSnapshotRepository &mCorpWalletSnapshotRepository;
         const MarketOrderValueSnapshotRepository &mMarketOrderSnapshotRepository;
-        const WalletJournalEntryRepository &mJournalRepository;
-        const WalletTransactionRepository &mTransactionRepository;
+        const WalletJournalEntryRepository &mJournalRepository, &mCorpJournalRepository;
+        const WalletTransactionRepository &mTransactionRepository, &mCorpTransactionRepository;
         const MarketOrderRepository &mMarketOrderRepository;
         const OrderScriptRepository &mOrderScriptRepository;
         const CharacterRepository &mCharacterRepository;
@@ -137,5 +139,11 @@ namespace Evernus
         DateFilteredPlotWidget *createPlot();
 
         static QCPBars *createBarPlot(DateFilteredPlotWidget *plot, const QString &name, Qt::GlobalColor color);
+        static void createBarTicks(QVector<double> &ticks,
+                                   QVector<double> &incomingTicks,
+                                   QVector<double> &outgoingTicks,
+                                   QVector<double> &incomingValues,
+                                   QVector<double> &outgoingValues,
+                                   const QHash<QDate, std::pair<double, double>> &values);
     };
 }

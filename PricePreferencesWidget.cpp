@@ -134,6 +134,11 @@ namespace Evernus
         addPlotFormat(tr("scientific"), "g", plotNumberFormat);
         addPlotFormat(tr("fixed"), "f", plotNumberFormat);
 
+        mCombineCorpAndCharPlotsBtn = new QCheckBox{tr("Combine character and corporation journal in statistics"), this};
+        pricesLayout->addRow(mCombineCorpAndCharPlotsBtn);
+        mCombineCorpAndCharPlotsBtn->setChecked(
+            settings.value(PriceSettings::combineCorpAndCharPlotsKey, PriceSettings::combineCorpAndCharPlotsDefault).toBool());
+
         mRefreshPricesWithOrdersBtn = new QCheckBox{tr("Refresh prices after order import"), this};
         pricesLayout->addRow(mRefreshPricesWithOrdersBtn);
         mRefreshPricesWithOrdersBtn->setChecked(settings.value(PriceSettings::refreshPricesWithOrdersKey).toBool());
@@ -156,6 +161,7 @@ namespace Evernus
         settings.setValue(PriceSettings::priceMaxAgeKey, mPriceMaxAgeEdit->value());
         settings.setValue(PriceSettings::marketOrderMaxAgeKey, mMarketOrderMaxAgeEdit->value());
         settings.setValue(UISettings::plotNumberFormatKey, mPlotNumberFormatEdit->currentData());
+        settings.setValue(PriceSettings::combineCorpAndCharPlotsKey, mCombineCorpAndCharPlotsBtn->isChecked());
         settings.setValue(PriceSettings::refreshPricesWithOrdersKey, mRefreshPricesWithOrdersBtn->isChecked());
     }
 

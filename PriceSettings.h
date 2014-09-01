@@ -43,6 +43,7 @@ namespace Evernus
         const auto autoAddCustomItemCostDefault = false;
         const auto costDataSourceDefault = DataSource::Orders;
         const auto shareCostsDefault = false;
+        const auto combineCorpAndCharPlotsDefault = false;
 
         const auto minMarginKey = "prices/margin/min";
         const auto preferredMarginKey = "prices/margin/preferred";
@@ -57,5 +58,6 @@ namespace Evernus
         const auto costSourceStationKey = "prices/costSourceStation";
         const auto shareCostsKey = "prices/shareCosts";
         const auto refreshPricesWithOrdersKey = "prices/orders/autoRefresh";
+        const auto combineCorpAndCharPlotsKey = "rpices/combineCorpAndCharPlots";
     }
 }
