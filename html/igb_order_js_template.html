@@ -96,7 +96,16 @@
     }
     
     function socketMessage(event) {
-        alert(event.data);
+        var message = event.data;
+        
+        if (typeof message == "string")
+        {
+            var data = message.split(";");
+            if (data[0] == "<?=open-market-message?>")
+                showType(data[1]);
+            else
+                alert(event.data);
+        }
     }
     
     function startImport() {

@@ -114,6 +114,8 @@ namespace Evernus
 
         void importFromMentat();
 
+        void showInEve(EveType::IdType id);
+
     public slots:
         void showCharacterManagement();
         void showPreferences();

@@ -68,6 +68,7 @@ namespace Evernus
         void openMarginTool();
 
         void showExternalOrders(EveType::IdType id);
+        void showInEve(EveType::IdType id);
 
     public slots:
         void updateData();

@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <unordered_set>
 #include <vector>
 #include <memory>
 
@@ -27,6 +28,7 @@
 #include "Character.h"
 
 class QxtHttpSessionManager;
+class QWebSocket;
 
 namespace Evernus
 {
@@ -70,6 +72,8 @@ namespace Evernus
         void favorite(QxtWebRequestEvent *event);
         void openMarginTool(QxtWebRequestEvent *event);
 
+        void showInEve(EveType::IdType id);
+
     private slots:
         void handleNewConnection();
         void handleTextMessage(const QString &message);
@@ -79,7 +83,9 @@ namespace Evernus
 
         static const QString limitToStationsCookie;
         static const QString orderHtmlTemplate;
+
         static const QString autoImportMessage;
+        static const QString openMarketMessage;
 
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const EveDataProvider &mDataProvider;
@@ -91,6 +97,8 @@ namespace Evernus
         QxtHtmlTemplate mMainTemplate, mOrderTemplate, mFavoriteTemplate;
 
         QWebSocketServer mSocketServer;
+
+        std::unordered_set<QWebSocket *> mConnectedSockets;
 
         void renderContent(QxtWebRequestEvent *event, const QString &content);
         QString renderOrderList(const std::vector<std::shared_ptr<MarketOrder>> &orders,

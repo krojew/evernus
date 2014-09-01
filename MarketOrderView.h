@@ -59,6 +59,7 @@ namespace Evernus
         void scriptError(const QString &message);
 
         void showExternalOrders(EveType::IdType id);
+        void showInEve(EveType::IdType id);
 
     public slots:
         void updateInfo();
@@ -72,6 +73,7 @@ namespace Evernus
         void selectOrder(const QItemSelection &selected);
         void removeOrders();
         void showExternalOrdersForCurrent();
+        void showInEveForCurrent();
 
     private:
         StyledTreeView *mView = nullptr;
@@ -87,6 +89,7 @@ namespace Evernus
 
         QAction *mRemoveOrderAct = nullptr;
         QAction *mShowExternalOrdersAct = nullptr;
+        QAction *mShowInEveAct = nullptr;
         QActionGroup *mLookupGroup = nullptr;
 
         void lookupOnWeb(const QString &baseUrl) const;

@@ -155,6 +155,8 @@ namespace Evernus
 
         void openMarginTool();
 
+        void showInEve(EveType::IdType id);
+
     public slots:
         void refreshCharacters();
         void refreshCharacter(Character::IdType id, uint parentTask = TaskConstants::invalidTask);

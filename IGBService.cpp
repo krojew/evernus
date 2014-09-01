@@ -17,6 +17,7 @@
 #include <limits>
 
 #include <QCoreApplication>
+#include <QMessageBox>
 #include <QWebSocket>
 #include <QSettings>
 #include <QDebug>
@@ -42,6 +43,7 @@ namespace Evernus
     const QString IGBService::limitToStationsCookie = "limitToStations";
     const QString IGBService::orderHtmlTemplate = "<li><a class='order' id='order-%2' href='#' onclick='showOrder(%2);'>%1</a></li>";
     const QString IGBService::autoImportMessage = "autoImport";
+    const QString IGBService::openMarketMessage = "openMarket";
 
     IGBService::IGBService(const MarketOrderProvider &orderProvider,
                            const MarketOrderProvider &corpOrderProvider,
@@ -98,6 +100,7 @@ namespace Evernus
         mOrderTemplate["import-at-end-text"] = tr("Auto-import at end");
         mOrderTemplate["websocket-uri"] = QString{"ws://%1:%2"}.arg(mSocketServer.serverAddress().toString()).arg(mSocketServer.serverPort());
         mOrderTemplate["auto-import-message"] = autoImportMessage;
+        mOrderTemplate["open-market-message"] = openMarketMessage;
 
         mFavoriteTemplate.copyArguments(mOrderTemplate);
         mFavoriteTemplate["favorite-text"] = tr("Favorite items:");
@@ -358,6 +361,19 @@ namespace Evernus
         postEvent(new QxtWebPageEvent(event->sessionID, event->requestID, QByteArray{}));
     }
 
+    void IGBService::showInEve(EveType::IdType id)
+    {
+        if (mConnectedSockets.empty())
+        {
+            QMessageBox::information(nullptr, tr("Evernus"), tr("You have to open Evernus in EVE In-Game Browser first."));
+        }
+        else
+        {
+            for (const auto socket : mConnectedSockets)
+                socket->sendTextMessage(QString{"%1;%2"}.arg(openMarketMessage).arg(id));
+        }
+    }
+
     void IGBService::handleNewConnection()
     {
         qDebug() << "New WebSocket connection.";
@@ -365,7 +381,12 @@ namespace Evernus
         auto socket = mSocketServer.nextPendingConnection();
         socket->setParent(this);
 
-        connect(socket, &QWebSocket::disconnected, socket, &QWebSocket::deleteLater);
+        mConnectedSockets.emplace(socket);
+
+        connect(socket, &QWebSocket::disconnected, this, [socket, this] {
+            mConnectedSockets.erase(socket);
+            socket->deleteLater();
+        });
         connect(socket, &QWebSocket::textMessageReceived, this, &IGBService::handleTextMessage);
     }
 
