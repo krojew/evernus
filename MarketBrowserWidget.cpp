@@ -931,7 +931,7 @@ namespace Evernus
         mBuyView->setTypeId(typeId);
 
         if (typeId != EveType::invalidId)
-            mInfoLabel->setText(tr("%1 (%2m³)").arg(mDataProvider.getTypeName(typeId)).arg(mDataProvider.getTypeVolume(typeId)));
+            mInfoLabel->setText(tr("%1 (%2m³)").arg(mDataProvider.getTypeName(typeId)).arg(locale().toString(mDataProvider.getTypeVolume(typeId), 'f', 2)));
         else
             mInfoLabel->setText(tr("select an item"));
     }
