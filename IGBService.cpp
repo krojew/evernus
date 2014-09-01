@@ -79,6 +79,7 @@ namespace Evernus
         mMainTemplate["favorite-link-text"] = tr("Favorite Items");
         mMainTemplate["open-margin-tool-link-text"] = tr("Open Margin Tool");
         mMainTemplate["port"] = settings.value(IGBSettings::portKey, IGBSettings::portDefault).toString();
+        mMainTemplate["open-market-message"] = openMarketMessage;
 
         mOrderTemplate["order-script"] = orderScript.readAll();
         mOrderTemplate["prev-order-text"] = tr("Show Previous Entry");
@@ -89,7 +90,6 @@ namespace Evernus
         mOrderTemplate["stop-scan-text"] = tr("Stop Scan");
         mOrderTemplate["stop-at-end-text"] = tr("Stop at end");
         mOrderTemplate["import-at-end-text"] = tr("Auto-import at end");
-        mOrderTemplate["open-market-message"] = openMarketMessage;
 
         mFavoriteTemplate.copyArguments(mOrderTemplate);
         mFavoriteTemplate["favorite-text"] = tr("Favorite items:");
@@ -357,9 +357,30 @@ namespace Evernus
         postEvent(new QxtWebPageEvent(event->sessionID, event->requestID, QByteArray{}));
     }
 
+    void IGBService::update(QxtWebRequestEvent *event)
+    {
+        mPollingRequests.emplace_back(event);
+    }
+
     void IGBService::showInEve(EveType::IdType id)
     {
-        
+        if (mPollingRequests.empty())
+        {
+            QMessageBox::information(nullptr, tr("Evernus"), tr("You have to open Evernus in EVE In-Game Browser first."));
+            return;
+        }
+
+        for (const auto event : mPollingRequests)
+        {
+            auto response = new QxtWebPageEvent(event->sessionID,
+                                                event->requestID,
+                                                QString{"{ message: '%1', type: %2 }"}.arg(openMarketMessage).arg(id).toLatin1());
+            response->contentType = "application/json";
+
+            postEvent(response);
+        }
+
+        mPollingRequests.clear();
     }
 
     void IGBService::renderContent(QxtWebRequestEvent *event, const QString &content)
@@ -371,6 +392,8 @@ namespace Evernus
                                    (content);
 
         postEvent(new QxtWebPageEvent(event->sessionID, event->requestID, mMainTemplate.render().toUtf8()));
+
+        mPollingRequests.clear();
     }
 
     QString IGBService::renderOrderList(const std::vector<std::shared_ptr<MarketOrder>> &orders,

@@ -33,6 +33,26 @@
                 xhr.open("GET", "/openMarginTool", true);
                 xhr.send();
             }
+            
+            function showType(typeId) {
+                CCPEVE.showMarketDetails(typeId);
+            }
+            
+            function pollServer() {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/update");
+                xhr.onload = function() {
+                    var data = JSON.parse(xhr.responseText);
+                    if (data.message == "<?=open-market-message?>")
+                        showType(data.type);
+                    
+                    pollServer();
+                }
+                
+                xhr.send();
+            }
+            
+            pollServer();
         </script>
     </head>
         <body onload="CCPEVE.requestTrust('http://localhost:<?=port?>');">

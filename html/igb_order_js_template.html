@@ -43,10 +43,6 @@
         return parseInt(document.getElementById("current-order").value);
     }
     
-    function showType(typeId) {
-        CCPEVE.showMarketDetails(typeId);
-    }
-    
     function showOrder(orderId) {
         var curTime = new Date();
         if (curTime - lastAdvance < 1000)

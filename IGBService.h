@@ -68,6 +68,7 @@ namespace Evernus
         void favorite(QxtWebRequestEvent *event);
         void openMarginTool(QxtWebRequestEvent *event);
         void startImport(QxtWebRequestEvent *event);
+        void update(QxtWebRequestEvent *event);
 
         void showInEve(EveType::IdType id);
 
@@ -86,6 +87,8 @@ namespace Evernus
         const CharacterRepository &mCharacterRepository;
 
         QxtHtmlTemplate mMainTemplate, mOrderTemplate, mFavoriteTemplate;
+
+        std::vector<QxtWebRequestEvent *> mPollingRequests;
 
         void renderContent(QxtWebRequestEvent *event, const QString &content);
         QString renderOrderList(const std::vector<std::shared_ptr<MarketOrder>> &orders,

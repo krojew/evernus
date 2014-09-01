@@ -127,6 +127,11 @@ QxtHttpSessionManager::QxtHttpSessionManager(QObject* parent) : QxtAbstractWebSe
     qxt_d().mainThread = QThread::currentThreadId();
 }
 
+QxtHttpSessionManager::~QxtHttpSessionManager()
+{
+    qDeleteAll(qxt_d().pendingRequests);
+}
+
 /*!
  * Returns the interface on which the session manager will listen for incoming connections.
  * \sa setListenInterface()

@@ -54,6 +54,7 @@ public:
     enum Connector { HttpServer, Scgi, Fcgi };
 
     QxtHttpSessionManager(QObject* parent = 0);
+    virtual ~QxtHttpSessionManager();
 
     virtual void postEvent(QxtWebEvent*);
 
