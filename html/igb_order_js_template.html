@@ -5,8 +5,6 @@
     
     var scanTimer = null;
     
-    var socket = new WebSocket("<?=websocket-uri?>");
-    
     function setCookie(name, value) {
         var d = new Date();
         d.setTime(d.getTime() + 365 *24 * 60 * 60 * 1000);
@@ -109,7 +107,9 @@
     }
     
     function startImport() {
-        socket.send("<?=auto-import-message?>");
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/startImport", true);
+        xhr.send();
     }
     
     function stopScan() {
@@ -141,9 +141,6 @@
             advanceOrder(1);
         }, parseInt(document.getElementById("scan-delay").value) * 1000);
     }
-    
-    socket.onerror = socketMessage;
-    socket.onmessage = socketMessage;
     
     window.addEventListener('load', function() {
         document.getElementById("stop-at-end").checked = getCookie("stopAtEnd") != "false";

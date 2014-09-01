@@ -13,7 +13,6 @@ find_package(Qt5Script REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
-find_package(Qt5WebSockets REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
 if(APPLE)
@@ -625,7 +624,6 @@ target_link_libraries(
     Qt5::Sql
     Qt5::Xml
     Qt5::XmlPatterns
-    Qt5::WebSockets
     Qt5::Widgets
     ${ADDITIONAL_LIBS}
 )
