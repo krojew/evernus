@@ -30,7 +30,11 @@ endif()
 set(TRANSLATIONS lang/lang_pl_PL.ts)
 set_source_files_properties(${TRANSLATIONS} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/trans")
 
-add_definitions("-DQXT_STATIC")
+add_definitions(-DQXT_STATIC)
+
+if(DEFINED EVERNUS_DROPBOX_APP_KEY AND DEFINED EVERNUS_DROPBOX_APP_SECRET)
+    add_definitions(-DEVERNUS_DROPBOX_APP_KEY=${EVERNUS_DROPBOX_APP_KEY} -DEVERNUS_DROPBOX_APP_SECRET=${EVERNUS_DROPBOX_APP_SECRET})
+endif() 
 
 qt5_wrap_cpp(
     MOC_FILES
@@ -130,6 +134,7 @@ qt5_wrap_cpp(
     StationModel.h
     StatisticsWidget.h
     StyledTreeView.h
+    SyncPreferencesWidget.h
     TextFilterWidget.h
     Updater.h
     WalletEntryFilterWidget.h
@@ -553,6 +558,9 @@ add_executable(
     StyledTreeView.h
     StyledTreeViewItemDelegate.cpp
     StyledTreeViewItemDelegate.h
+    SyncPreferencesWidget.cpp
+    SyncPreferencesWidget.h
+    SyncSettings.h
     TaskConstants.h
     TextFilterWidget.cpp
     TextFilterWidget.h

@@ -4093,72 +4093,77 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::PreferencesDialog</name>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="60"/>
+        <location filename="../PreferencesDialog.cpp" line="61"/>
         <source>General</source>
         <translation>Ogólne</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="61"/>
+        <location filename="../PreferencesDialog.cpp" line="62"/>
         <source>Paths</source>
         <translation>Ścieżki</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="62"/>
+        <location filename="../PreferencesDialog.cpp" line="63"/>
         <source>Prices</source>
         <translation>Ceny</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="63"/>
+        <location filename="../PreferencesDialog.cpp" line="64"/>
         <source>Network</source>
         <translation>Sieć</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="64"/>
+        <location filename="../PreferencesDialog.cpp" line="65"/>
+        <source>Synchronization</source>
+        <translation>Synchronizacja</translation>
+    </message>
+    <message>
+        <location filename="../PreferencesDialog.cpp" line="66"/>
         <source>In-Game Browser</source>
         <translation>Przeglądarka IGB</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="65"/>
+        <location filename="../PreferencesDialog.cpp" line="67"/>
         <source>Web Service</source>
         <translation>Usługa sieciowa</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="66"/>
+        <location filename="../PreferencesDialog.cpp" line="68"/>
         <source>Wallet</source>
         <translation>Portfel</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="83"/>
+        <location filename="../PreferencesDialog.cpp" line="85"/>
         <source>Import</source>
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="87"/>
+        <location filename="../PreferencesDialog.cpp" line="89"/>
         <source>Character</source>
         <translation>Postać</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="88"/>
+        <location filename="../PreferencesDialog.cpp" line="90"/>
         <source>Assets</source>
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="89"/>
+        <location filename="../PreferencesDialog.cpp" line="91"/>
         <source>Contract</source>
         <translation>Kontrakt</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="90"/>
+        <location filename="../PreferencesDialog.cpp" line="92"/>
         <source>Corporation</source>
         <translation>Korporacja</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="91"/>
+        <location filename="../PreferencesDialog.cpp" line="93"/>
         <source>Source</source>
         <translation>Źródło</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="116"/>
+        <location filename="../PreferencesDialog.cpp" line="118"/>
         <source>Preferences</source>
         <translation>Ustawienia</translation>
     </message>
@@ -4525,6 +4530,19 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <location filename="../StyledTreeView.cpp" line="55"/>
         <source>Show/hide columns</source>
         <translation>Pokaż/ukryj kolumny</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::SyncPreferencesWidget</name>
+    <message>
+        <location filename="../SyncPreferencesWidget.cpp" line="46"/>
+        <source>Evernus was compiled without Dropbox app key and secret values. In order to enable Dropbox support, register a new app key with Dropbox and recompile Evernus with EVERNUS_DROPBOX_APP_KEY and EVERNUS_DROPBOX_APP_SECRET defined.</source>
+        <translation>Evernus został skompilowany bez informacji o kluczu aplikacji Dropbox (app key i secret). Aby włączyć obsługę, zarejestruj nowy klucz w Dropbox i przekompiluj Evernusa z definicjami EVERNUS_DROPBOX_APP_KEY i EVERNUS_DROPBOX_APP_SECRET.</translation>
+    </message>
+    <message>
+        <location filename="../SyncPreferencesWidget.cpp" line="42"/>
+        <source>Enabled</source>
+        <translation>Włączona</translation>
     </message>
 </context>
 <context>
