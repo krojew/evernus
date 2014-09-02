@@ -87,6 +87,8 @@ namespace Evernus
         void clearExternalOrderCaches();
         void clearStationCache();
 
+        void handleNewPreferences();
+
         std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
 
     private:
@@ -143,6 +145,8 @@ namespace Evernus
         mutable std::unordered_map<uint, QString> mRegionNameCache;
         mutable std::unordered_map<uint, QString> mSolarSystemNameCache;
 
+        bool mUsePackagedVolume = false;
+
         EveTypeRepository::EntityPtr getEveType(EveType::IdType id) const;
 
         MarketGroupRepository::EntityPtr getMarketGroupParent(MarketGroup::IdType id) const;
@@ -152,5 +156,7 @@ namespace Evernus
         uint getStationSolarSystemId(quint64 stationId) const;
 
         const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
+
+        static double getPackagedVolume(const EveType &type);
     };
 }

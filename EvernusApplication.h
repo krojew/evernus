@@ -152,6 +152,7 @@ namespace Evernus
         void corpMarketOrdersChanged();
         void corpContractsChanged();
         void itemCostsChanged() const;
+        void itemVolumeChanged();
 
         void openMarginTool();
 

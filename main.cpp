@@ -109,6 +109,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(corpMarketOrdersChanged()), SIGNAL(corpMarketOrdersChanged()));
             mainWnd.connect(&app, SIGNAL(corpContractsChanged()), SIGNAL(corpContractsChanged()));
             mainWnd.connect(&app, SIGNAL(itemCostsChanged()), SIGNAL(itemCostsChanged()));
+            mainWnd.connect(&app, SIGNAL(itemVolumeChanged()), SIGNAL(itemVolumeChanged()));
             mainWnd.connect(&app, SIGNAL(charactersChanged()), SLOT(updateIskData()));
             mainWnd.connect(&app, SIGNAL(openMarginTool()), SLOT(showMarginTool()));
             mainWnd.showAsSaved();

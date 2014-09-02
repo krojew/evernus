@@ -18,6 +18,7 @@
 #include <QSqlDatabase>
 #include <QDataStream>
 #include <QSqlQuery>
+#include <QSettings>
 #include <QDebug>
 #include <QFile>
 #include <QDir>
@@ -25,6 +26,7 @@
 #include "ConquerableStationRepository.h"
 #include "MarketOrderRepository.h"
 #include "RefTypeRepository.h"
+#include "UISettings.h"
 #include "APIManager.h"
 
 #include "CachingEveDataProvider.h"
@@ -65,6 +67,8 @@ namespace Evernus
             QDataStream cacheStream{&nameCache};
             cacheStream >> mGenericNameCache;
         }
+
+        handleNewPreferences();
     }
 
     CachingEveDataProvider::~CachingEveDataProvider()
@@ -180,7 +184,7 @@ namespace Evernus
     {
         const auto it = mTypeCache.find(id);
         if (it != std::end(mTypeCache))
-            return it->second->getVolume();
+            return (mUsePackagedVolume) ? (getPackagedVolume(*it->second)) : (it->second->getVolume());
 
         EveTypeRepository::EntityPtr result;
 
@@ -194,7 +198,7 @@ namespace Evernus
         }
 
         mTypeCache.emplace(id, result);
-        return result->getVolume();
+        return (mUsePackagedVolume) ? (getPackagedVolume(*result)) : (result->getVolume());
     }
 
     std::shared_ptr<ExternalOrder> CachingEveDataProvider::getTypeSellPrice(EveType::IdType id, quint64 stationId) const
@@ -589,6 +593,12 @@ namespace Evernus
         mStationCache.clear();
     }
 
+    void CachingEveDataProvider::handleNewPreferences()
+    {
+        QSettings settings;
+        mUsePackagedVolume = settings.value(UISettings::usePackagedVolumeKey, UISettings::usePackagedVolumeDefault).toBool();
+    }
+
     std::shared_ptr<ExternalOrder> CachingEveDataProvider::getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
     {
         const auto key = std::make_pair(id, stationId);
@@ -781,5 +791,72 @@ namespace Evernus
         return mTypeRegionOrderCache.emplace(
             key, mExternalOrderRepository.findBuyByTypeAndRegion(typeId, regionId, mMarketOrderRepository, mCorpMarketOrderRepository))
                 .first->second;
+    }
+
+    double CachingEveDataProvider::getPackagedVolume(const EveType &type)
+    {
+        // https://bitbucket.org/krojew/evernus/issue/30/utilize-packaged-size-for-total-size
+        // thank you CCP for this cool and unexpected feature!
+        const auto groupId = type.getGroupId();
+        switch (groupId) {
+        case 29:
+        case 1022:
+        case 31:
+            return 500.;
+        case 448:
+        case 12:
+        case 649:
+        case 952:
+        case 340:
+            return 1000.;
+        case 324:
+        case 830:
+        case 893:
+        case 25:
+        case 831:
+        case 237:
+        case 834:
+            return 2500.;
+        case 543:
+        case 463:
+            return 3750.;
+        case 420:
+        case 541:
+        case 963:
+            return 5000.;
+        case 906:
+        case 26:
+        case 833:
+        case 358:
+        case 894:
+        case 832:
+            return 10000.;
+        case 1201:
+        case 419:
+        case 540:
+            return 15000.;
+        case 380:
+        case 1202:
+        case 28:
+            return 20000.;
+        case 27:
+        case 898:
+        case 381:
+        case 900:
+            return 50000.;
+        case 941:
+            return 500000.;
+        case 883:
+        case 547:
+        case 485:
+        case 513:
+        case 902:
+        case 659:
+            return 1000000.;
+        case 30:
+            return 10000000.f;
+        }
+
+        return type.getVolume();
     }
 }

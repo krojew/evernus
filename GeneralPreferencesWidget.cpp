@@ -70,6 +70,10 @@ namespace Evernus
         generalGroupLayout->addWidget(mAutoUpdateBtn);
         mAutoUpdateBtn->setChecked(settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool());
 
+        mUsePackagedVolumeBtn = new QCheckBox{tr("Use packaged size for ships"), this};
+        generalGroupLayout->addWidget(mUsePackagedVolumeBtn);
+        mUsePackagedVolumeBtn->setChecked(settings.value(UISettings::usePackagedVolumeKey, UISettings::usePackagedVolumeDefault).toBool());
+
         auto dtFormatLayout = new QHBoxLayout{};
         generalGroupLayout->addLayout(dtFormatLayout);
 
@@ -88,6 +92,7 @@ namespace Evernus
         settings.setValue(UISettings::languageKey, mLanguageEdit->currentData(Qt::UserRole));
         settings.setValue(UISettings::minimizeToTrayKey, mMinimizeToTrayBtn->isChecked());
         settings.setValue(UpdaterSettings::autoUpdateKey, mAutoUpdateBtn->isChecked());
+        settings.setValue(UISettings::usePackagedVolumeKey, mUsePackagedVolumeBtn->isChecked());
         settings.setValue(UISettings::dateTimeFormatKey, mDateFormEdit->text());
     }
 }

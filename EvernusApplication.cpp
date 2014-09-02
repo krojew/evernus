@@ -1281,10 +1281,12 @@ namespace Evernus
             mHttpSessionManager.start();
 
         mCharacterItemCostCache.clear();
+        mDataProvider->handleNewPreferences();
 
         setSmtpSettings();
 
         emit itemCostsChanged();
+        emit itemVolumeChanged();
     }
 
     void EvernusApplication::importFromMentat()

@@ -87,6 +87,7 @@ namespace Evernus
         void corpMarketOrdersChanged();
         void corpContractsChanged();
         void itemCostsChanged();
+        void itemVolumeChanged();
 
         void preferencesChanged();
 

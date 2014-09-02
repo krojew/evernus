@@ -24,6 +24,7 @@ namespace Evernus
         const auto translationPath =  "/trans";
         const auto plotNumberFormatDefault = "f";
         const auto cacheImportApprovedDefault = false;
+        const auto usePackagedVolumeDefault = false;
 
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
@@ -36,5 +37,6 @@ namespace Evernus
         const auto cacheImportApprovedKey = "ui/cacheImport/approved";
         const auto contractStatusFilterKey = "ui/contracts/statusFilter";
         const auto headerStateKey = "ui/header/state/%1";
+        const auto usePackagedVolumeKey = "ui/global/usePackagedVolume";
     }
 }

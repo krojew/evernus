@@ -39,6 +39,7 @@ namespace Evernus
         LanguageComboBox *mLanguageEdit = nullptr;
         QCheckBox *mMinimizeToTrayBtn = nullptr;
         QCheckBox *mAutoUpdateBtn = nullptr;
+        QCheckBox *mUsePackagedVolumeBtn = nullptr;
         QLineEdit *mDateFormEdit = nullptr;
     };
 }
