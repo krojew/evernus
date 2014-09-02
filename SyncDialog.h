@@ -14,18 +14,35 @@
  */
 #pragma once
 
-#if defined(EVERNUS_DROPBOX_APP_KEY) && defined(EVERNUS_DROPBOX_APP_SECRET)
-#   define EVERNUS_DROPBOX_ENABLED 1
-#endif
+#include <QDialog>
+
+#include "qdropbox.h"
+
+#include "SimpleCrypt.h"
+
+class QGroupBox;
+class QLineEdit;
 
 namespace Evernus
 {
-    namespace SyncSettings
+    class SyncDialog
+        : public QDialog
     {
-        const auto enabledDefault = false;
+        Q_OBJECT
 
-        const auto enabledKey = "sync/enabled";
-        const auto dbTokenKey = "sync/db/token";
-        const auto dbTokenSecretKey = "sync/db/tokenSecret";
-    }
+    public:
+        explicit SyncDialog(QWidget *parent = nullptr);
+        virtual ~SyncDialog() = default;
+
+    private slots:
+        void startSync();
+
+    private:
+        SimpleCrypt mCrypt;
+        QDropbox mDb;
+
+        QGroupBox *mTokenGroup = nullptr;
+        QLineEdit *mTokenEdit = nullptr;
+        QLineEdit *mTokenSecretEdit = nullptr;
+    };
 }

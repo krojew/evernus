@@ -134,6 +134,7 @@ qt5_wrap_cpp(
     StationModel.h
     StatisticsWidget.h
     StyledTreeView.h
+    SyncDialog.h
     SyncPreferencesWidget.h
     TextFilterWidget.h
     Updater.h
@@ -558,6 +559,8 @@ add_executable(
     StyledTreeView.h
     StyledTreeViewItemDelegate.cpp
     StyledTreeViewItemDelegate.h
+    SyncDialog.cpp
+    SyncDialog.h
     SyncPreferencesWidget.cpp
     SyncPreferencesWidget.h
     SyncSettings.h
