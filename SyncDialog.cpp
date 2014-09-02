@@ -27,7 +27,10 @@
 
 #include "SyncDialog.h"
 
-#define EVERNUS_TEXT(s) #s
+#define STR_VALUE(s) #s
+#define EVERNUS_TEXT(s) STR_VALUE(s)
+#define EVERNUS_DROPBOX_APP_KEY_TEXT EVERNUS_TEXT(EVERNUS_DROPBOX_APP_KEY)
+#define EVERNUS_DROPBOX_APP_SECRET_TEXT EVERNUS_TEXT(EVERNUS_DROPBOX_APP_SECRET)
 
 namespace Evernus
 {
@@ -35,7 +38,7 @@ namespace Evernus
         : QDialog(parent)
         , mCrypt(Q_UINT64_C(0x4630e0cc6a00124b))
 #ifdef EVERNUS_DROPBOX_ENABLED
-        , mDb(EVERNUS_TEXT(EVERNUS_DROPBOX_APP_KEY), EVERNUS_TEXT(EVERNUS_DROPBOX_APP_SECRET))
+        , mDb(EVERNUS_DROPBOX_APP_KEY_TEXT, EVERNUS_DROPBOX_APP_SECRET_TEXT)
 #endif
     {
         auto mainLayout = new QVBoxLayout{};
