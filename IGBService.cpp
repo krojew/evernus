@@ -215,10 +215,10 @@ namespace Evernus
     {
         showOrders(event,
                    [event, this] {
-                       return mOrderProvider.getSellOrdersForCorporation(getCorporationId(event));
+                       return mCorpOrderProvider.getSellOrdersForCorporation(getCorporationId(event));
                    },
                    [event, this] {
-                       return mOrderProvider.getBuyOrdersForCorporation(getCorporationId(event));
+                       return mCorpOrderProvider.getBuyOrdersForCorporation(getCorporationId(event));
                    },
                    MarketOrder::State::Active,
                    false);
@@ -228,10 +228,10 @@ namespace Evernus
     {
         showOrders(event,
                    [event, this] {
-                       return mOrderProvider.getSellOrdersForCorporation(getCorporationId(event));
+                       return mCorpOrderProvider.getSellOrdersForCorporation(getCorporationId(event));
                    },
                    [event, this] {
-                       return mOrderProvider.getBuyOrdersForCorporation(getCorporationId(event));
+                       return mCorpOrderProvider.getBuyOrdersForCorporation(getCorporationId(event));
                    },
                    MarketOrder::State::Fulfilled,
                    true);
