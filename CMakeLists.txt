@@ -109,6 +109,11 @@ qt5_wrap_cpp(
     PreferencesDialog.h
     PricePreferencesWidget.h
     qcustomplot.h
+    qdropbox.h
+    qdropboxaccount.h
+    qdropboxfile.h
+    qdropboxfileinfo.h
+    qdropboxjson.h
     qxtabstracthttpconnector.h
     qxtabstractwebservice.h
     qxtabstractwebsessionmanager.h
@@ -466,8 +471,20 @@ add_executable(
     PriceUtils.h
     qcustomplot.cpp
     qcustomplot.h
+    qdropbox.cpp
+    qdropbox.h
+    qdropboxaccount.cpp
+    qdropboxaccount.h
+    qdropboxfile.cpp
+    qdropboxfile.h
+    qdropboxfileinfo.cpp
+    qdropboxfileinfo.h
+    qdropboxjson.cpp
+    qdropboxjson.h
     qhttpheader.cpp
     qhttpheader.h
+    qtdropbox.h
+    qtdropbox_global.h
     QtScriptSyntaxHighlighter.cpp
     QtScriptSyntaxHighlighter.h
     qxtabstracthttpconnector.cpp
