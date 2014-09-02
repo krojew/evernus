@@ -4535,32 +4535,32 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::SyncDialog</name>
     <message>
-        <location filename="../SyncDialog.cpp" line="58"/>
+        <location filename="../SyncDialog.cpp" line="60"/>
         <source>Synchronizing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="62"/>
+        <location filename="../SyncDialog.cpp" line="64"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="74"/>
+        <location filename="../SyncDialog.cpp" line="76"/>
         <source>Token:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="77"/>
+        <location filename="../SyncDialog.cpp" line="79"/>
         <source>Token secret:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="79"/>
+        <location filename="../SyncDialog.cpp" line="81"/>
         <source>Dropbox requires authenticating Evernus first. Please click on &lt;a href=&apos;%1&apos;&gt;this link&lt;/a&gt;, obtain token data, fill the form above and press &apos;Accept&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="86"/>
+        <location filename="../SyncDialog.cpp" line="88"/>
         <source>Synchronization</source>
         <translation type="unfinished">Synchronizacja</translation>
     </message>

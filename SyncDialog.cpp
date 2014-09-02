@@ -96,6 +96,9 @@ namespace Evernus
         const auto tokenSecret = settings.value(SyncSettings::dbTokenSecretKey).toString();
 
         if (token.isEmpty() || tokenSecret.isEmpty())
+        {
             mTokenGroup->show();
+            adjustSize();
+        }
     }
 }
