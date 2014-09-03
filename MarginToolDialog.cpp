@@ -295,6 +295,8 @@ namespace Evernus
 
                     if (order.getType() == ExternalOrder::Type::Buy)
                     {
+                        // warning: this does not take into account orders in the same system, but different station -
+                        //          there's no way to check if the station matches
                         if (jumps != 0)
                         {
                             const auto range = order.getRange();
