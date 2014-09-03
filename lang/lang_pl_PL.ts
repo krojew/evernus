@@ -4545,47 +4545,47 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="91"/>
+        <location filename="../SyncDialog.cpp" line="136"/>
         <source>Dropbox requires authenticating Evernus first. Please click on &lt;a href=&apos;%1&apos;&gt;this link&lt;/a&gt;, authorize Evernus and press &apos;Proceed&apos;.</source>
         <translation>Dropbox wymaga autoryzowania aplikacji. Kliknij na &lt;a href=&apos;%1&apos;&gt;ten link&lt;/a&gt;, autoryzuj Evernusa i kliknij &apos;Dalej&apos;.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="97"/>
+        <location filename="../SyncDialog.cpp" line="96"/>
         <source>Proceed</source>
         <translation>Dalej</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="153"/>
+        <location filename="../SyncDialog.cpp" line="156"/>
         <source>Error: %1 (%2)</source>
         <translation>Błąd: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="187"/>
+        <location filename="../SyncDialog.cpp" line="190"/>
         <source>Something modified cloud data since last synchronization. Do you wish to overwrite it?</source>
         <translation>Dane w chmurze zostały zmodyfikowane od ostatniej synchronizacji. Czy chcesz je zastąpić?</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="238"/>
+        <location filename="../SyncDialog.cpp" line="241"/>
         <source>Couldn&apos;t open file for writing! Synchronization failed.</source>
         <translation>Nie udało się otworzyć pliku do zapisu! Synchronizacja nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="265"/>
+        <location filename="../SyncDialog.cpp" line="268"/>
         <source>Couldn&apos;t open remote file! Synchronization failed.</source>
         <translation>Nie udało się otworzyć zdalnego pliku! Synchronizacja nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="273"/>
+        <location filename="../SyncDialog.cpp" line="276"/>
         <source>Couldn&apos;t open local file! Synchronization failed.</source>
         <translation>Nie udało się otworzyć lokalnego pliku! Synchronizacja nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="101"/>
-        <location filename="../SyncDialog.cpp" line="153"/>
-        <location filename="../SyncDialog.cpp" line="186"/>
-        <location filename="../SyncDialog.cpp" line="238"/>
-        <location filename="../SyncDialog.cpp" line="265"/>
-        <location filename="../SyncDialog.cpp" line="273"/>
+        <location filename="../SyncDialog.cpp" line="100"/>
+        <location filename="../SyncDialog.cpp" line="156"/>
+        <location filename="../SyncDialog.cpp" line="189"/>
+        <location filename="../SyncDialog.cpp" line="241"/>
+        <location filename="../SyncDialog.cpp" line="268"/>
+        <location filename="../SyncDialog.cpp" line="276"/>
         <source>Synchronization</source>
         <translation>Synchronizacja</translation>
     </message>

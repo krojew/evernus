@@ -88,8 +88,7 @@ namespace Evernus
         auto tokenLayout = new QVBoxLayout{};
         mTokenGroup->setLayout(tokenLayout);
 
-        mTokenLabel = new QLabel{tr("Dropbox requires authenticating Evernus first. Please click on "
-            "<a href='%1'>this link</a>, authorize Evernus and press 'Proceed'."), this};
+        mTokenLabel = new QLabel{this};
         tokenLayout->addWidget(mTokenLabel);
         mTokenLabel->setOpenExternalLinks(true);
         mTokenLabel->setWordWrap(true);
@@ -134,7 +133,8 @@ namespace Evernus
 
     void SyncDialog::showTokenLink()
     {
-        mTokenLabel->setText(mTokenLabel->text().arg(mDb.authorizeLink().toString()));
+        mTokenLabel->setText(tr("Dropbox requires authenticating Evernus first. Please click on "
+            "<a href='%1'>this link</a>, authorize Evernus and press 'Proceed'.").arg(mDb.authorizeLink().toString()));
         mTokenGroup->show();
         adjustSize();
     }
@@ -142,6 +142,9 @@ namespace Evernus
     void SyncDialog::acceptToken()
     {
         qDebug() << "Requesting access token...";
+
+        mTokenGroup->hide();
+        adjustSize();
 
         mDb.requestAccessToken();
     }

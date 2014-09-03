@@ -377,8 +377,6 @@ void QDropboxFile::rplyFileWrite(QNetworkReply *rply)
     qDebug() << "QDropboxFile::rplyFileWrite(...)" << endl;
 #endif
 
-    qDebug() << rply->error();
-
     lastErrorCode = 0;
 
     QByteArray response = rply->readAll();
