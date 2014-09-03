@@ -243,7 +243,7 @@ namespace Evernus
                 return;
             }
 
-            file.write(mainDb.readAll());
+            file.write(qUncompress(mainDb.readAll()));
 
             if (file.commit())
                 mLastSyncTime = mainDb.metadata().modified();
@@ -278,7 +278,7 @@ namespace Evernus
             return;
         }
 
-        const auto data = localMainDb.readAll();
+        const auto data = qCompress(localMainDb.readAll(), 9);
 
         mainDb.setFlushThreshold(data.size() + 1);
         mainDb.write(data);
