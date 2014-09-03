@@ -404,8 +404,6 @@ namespace Evernus
         QSettings settings;
         if (settings.value(SyncSettings::enabledKey, SyncSettings::enabledDefault).toBool())
         {
-            mRepositoryProvider.getKeyRepository().exec("VACUUM");
-
             SyncDialog syncDlg{SyncDialog::Mode::Upload};
             syncDlg.exec();
         }
