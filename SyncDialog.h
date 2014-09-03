@@ -14,14 +14,17 @@
  */
 #pragma once
 
+#include <QDateTime>
 #include <QDialog>
 
 #include "qdropbox.h"
 
 #include "SimpleCrypt.h"
 
+class QProgressBar;
+class QPushButton;
 class QGroupBox;
-class QLineEdit;
+class QLabel;
 
 namespace Evernus
 {
@@ -31,18 +34,46 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit SyncDialog(QWidget *parent = nullptr);
+        enum class Mode
+        {
+            Download,
+            Upload
+        };
+
+        explicit SyncDialog(Mode mode, QWidget *parent = nullptr);
         virtual ~SyncDialog() = default;
 
     private slots:
         void startSync();
+        void showTokenLink();
+        void acceptToken();
+        void showError();
+        void setToken(const QString &token, const QString &secret);
+        void processMetadata(const QString &json);
+        void handleNoFiles();
+
+        void updateProgress(qint64 current, qint64 total);
 
     private:
+        static const QString mainDbPath;
+
+        static QDateTime mLastSyncTime;
+
+        Mode mMode = Mode::Download;
+        bool mStarted = false;
+
         SimpleCrypt mCrypt;
         QDropbox mDb;
 
+        QPushButton *mCancelBtn = nullptr;
+        QProgressBar *mProgress = nullptr;
         QGroupBox *mTokenGroup = nullptr;
-        QLineEdit *mTokenEdit = nullptr;
-        QLineEdit *mTokenSecretEdit = nullptr;
+        QLabel *mTokenLabel = nullptr;
+
+        void requestMetadata();
+        void downloadFiles();
+        void uploadFiles();
+
+        static QString getMainDbPath();
     };
 }

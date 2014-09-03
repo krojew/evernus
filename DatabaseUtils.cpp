@@ -16,11 +16,11 @@
 
 #include <QCoreApplication>
 #include <QStandardPaths>
-#include <QStringBuilder>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
+#include <QFile>
 #include <QDir>
 
 #include "DatabaseUtils.h"
@@ -29,14 +29,17 @@ namespace Evernus
 {
     namespace DatabaseUtils
     {
+        QString getDbPath()
+        {
+            return QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/db/";
+        }
+
         void createDb(QSqlDatabase &db, const QString &name)
         {
             if (!db.isValid())
                 throw std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error crating DB object!").toStdString()};
 
-            const QString dbPath =
-                QStandardPaths::writableLocation(QStandardPaths::DataLocation) %
-                "/db/";
+            const auto dbPath = getDbPath();
 
             qDebug() << "DB path: " << dbPath;
 
@@ -59,6 +62,21 @@ namespace Evernus
                 qCritical() << error;
                 throw std::runtime_error{error.toStdString()};
             }
+        }
+
+        QString backupDatabase(const QSqlDatabase &db)
+        {
+            return backupDatabase(db.databaseName());
+        }
+
+        QString backupDatabase(const QString &dbPath)
+        {
+            const auto dbBak = dbPath + ".bak";
+
+            QFile::remove(dbBak);
+            QFile::copy(dbPath, dbBak);
+
+            return dbBak;
         }
     }
 }

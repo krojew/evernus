@@ -12,18 +12,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QProgressBar>
+#include <QMessageBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QFormLayout>
 #include <QPushButton>
 #include <QGroupBox>
-#include <QLineEdit>
 #include <QSettings>
+#include <QSaveFile>
+#include <QFileInfo>
 #include <QLabel>
 #include <QMovie>
+#include <QDebug>
+#include <QFile>
 #include <QFont>
 
+#include "DatabaseUtils.h"
 #include "SyncSettings.h"
+
+#include "qdropboxfile.h"
 
 #include "SyncDialog.h"
 
@@ -34,8 +41,12 @@
 
 namespace Evernus
 {
-    SyncDialog::SyncDialog(QWidget *parent)
+    const QString SyncDialog::mainDbPath = "/sandbox/main.db";
+    QDateTime SyncDialog::mLastSyncTime;
+
+    SyncDialog::SyncDialog(Mode mode, QWidget *parent)
         : QDialog(parent)
+        , mMode(mode)
         , mCrypt(Q_UINT64_C(0x4630e0cc6a00124b))
 #ifdef EVERNUS_DROPBOX_ENABLED
         , mDb(EVERNUS_DROPBOX_APP_KEY_TEXT, EVERNUS_DROPBOX_APP_SECRET_TEXT)
@@ -62,46 +73,221 @@ namespace Evernus
         infoLayout->addWidget(throbberText, 1, Qt::AlignLeft);
         throbberText->setFont(font);
 
-        auto cancelBtn = new QPushButton{tr("Cancel"), this};
-        infoLayout->addWidget(cancelBtn);
-        connect(cancelBtn, &QPushButton::clicked, this, &SyncDialog::reject);
+        mCancelBtn = new QPushButton{tr("Cancel"), this};
+        infoLayout->addWidget(mCancelBtn);
+        connect(mCancelBtn, &QPushButton::clicked, this, &SyncDialog::reject);
+
+        mProgress = new QProgressBar{this};
+        mainLayout->addWidget(mProgress);
+        mProgress->setRange(0, 100);
 
         mTokenGroup = new QGroupBox{};
         mainLayout->addWidget(mTokenGroup);
         mTokenGroup->setVisible(false);
 
-        auto tokenLayout = new QFormLayout{};
+        auto tokenLayout = new QVBoxLayout{};
         mTokenGroup->setLayout(tokenLayout);
 
-        mTokenEdit = new QLineEdit{this};
-        tokenLayout->addRow(tr("Token:"), mTokenEdit);
+        mTokenLabel = new QLabel{tr("Dropbox requires authenticating Evernus first. Please click on "
+            "<a href='%1'>this link</a>, authorize Evernus and press 'Proceed'."), this};
+        tokenLayout->addWidget(mTokenLabel);
+        mTokenLabel->setOpenExternalLinks(true);
+        mTokenLabel->setWordWrap(true);
 
-        mTokenSecretEdit = new QLineEdit{this};
-        tokenLayout->addRow(tr("Token secret:"), mTokenSecretEdit);
-
-        auto tokenLabel = new QLabel{tr("Dropbox requires authenticating Evernus first. Please click on "
-                "<a href='%1'>this link</a>, obtain token data, fill the form above and press 'Accept'.")
-                .arg(mDb.authorizeLink().toString()), this};
-        tokenLayout->addRow(tokenLabel);
-        tokenLabel->setOpenExternalLinks(true);
-        tokenLabel->setWordWrap(true);
+        auto acceptTokenBtn = new QPushButton{tr("Proceed"), this};
+        tokenLayout->addWidget(acceptTokenBtn);
+        connect(acceptTokenBtn, &QPushButton::clicked, this, &SyncDialog::acceptToken);
 
         setWindowTitle(tr("Synchronization"));
+
+        connect(&mDb, &QDropbox::errorOccured, this, &SyncDialog::showError);
+        connect(&mDb, &QDropbox::requestTokenFinished, this, &SyncDialog::showTokenLink);
+        connect(&mDb, &QDropbox::tokenExpired, this, &SyncDialog::showTokenLink);
+        connect(&mDb, &QDropbox::accessTokenFinished, this, &SyncDialog::setToken);
+        connect(&mDb, &QDropbox::metadataReceived, this, &SyncDialog::processMetadata);
+        connect(&mDb, &QDropbox::fileNotFound, this, &SyncDialog::handleNoFiles);
 
         QMetaObject::invokeMethod(this, "startSync", Qt::QueuedConnection);
     }
 
     void SyncDialog::startSync()
     {
+        qDebug() << "Starting sync...";
+
         QSettings settings;
 
-        const auto token = settings.value(SyncSettings::dbTokenKey).toString();
-        const auto tokenSecret = settings.value(SyncSettings::dbTokenSecretKey).toString();
+        const auto token = mCrypt.decryptToString(settings.value(SyncSettings::dbTokenKey).toString());
+        const auto tokenSecret = mCrypt.decryptToString(settings.value(SyncSettings::dbTokenSecretKey).toString());
 
         if (token.isEmpty() || tokenSecret.isEmpty())
         {
-            mTokenGroup->show();
-            adjustSize();
+            mDb.requestToken();
         }
+        else
+        {
+            mDb.setToken(token);
+            mDb.setTokenSecret(tokenSecret);
+
+            requestMetadata();
+        }
+    }
+
+    void SyncDialog::showTokenLink()
+    {
+        mTokenLabel->setText(mTokenLabel->text().arg(mDb.authorizeLink().toString()));
+        mTokenGroup->show();
+        adjustSize();
+    }
+
+    void SyncDialog::acceptToken()
+    {
+        qDebug() << "Requesting access token...";
+
+        mDb.requestAccessToken();
+    }
+
+    void SyncDialog::showError()
+    {
+        qDebug() << "Error:" << mDb.error() << mDb.errorString();
+
+        QMessageBox::warning(this, tr("Synchronization"), tr("Error: %1 (%2)").arg(mDb.error()).arg(mDb.errorString()));
+        QMetaObject::invokeMethod(this, "reject", Qt::QueuedConnection);
+    }
+
+    void SyncDialog::setToken(const QString &token, const QString &secret)
+    {
+        QSettings settings;
+        settings.setValue(SyncSettings::dbTokenKey, mCrypt.encryptToString(token));
+        settings.setValue(SyncSettings::dbTokenSecretKey, mCrypt.encryptToString(secret));
+
+        requestMetadata();
+    }
+
+    void SyncDialog::processMetadata(const QString &json)
+    {
+        if (mStarted)
+            return;
+
+        QDropboxFileInfo info{json};
+
+        if (mMode == Mode::Download)
+        {
+            QFileInfo currentInfo{getMainDbPath()};
+            if (currentInfo.lastModified() > info.modified())
+                QMetaObject::invokeMethod(this, "accept", Qt::QueuedConnection);
+            else
+                downloadFiles();
+        }
+        else
+        {
+            if (info.modified() > mLastSyncTime)
+            {
+                const auto ret = QMessageBox::question(this,
+                                                       tr("Synchronization"),
+                                                       tr("Something modified cloud data since last synchronization. Do you wish to overwrite it?"));
+                if (ret == QMessageBox::No)
+                {
+                    QMetaObject::invokeMethod(this, "reject", Qt::QueuedConnection);
+                    return;
+                }
+            }
+
+            uploadFiles();
+        }
+    }
+
+    void SyncDialog::handleNoFiles()
+    {
+        if (mMode == Mode::Download)
+            reject();
+        else if (!mStarted)
+            uploadFiles();
+    }
+
+    void SyncDialog::updateProgress(qint64 current, qint64 total)
+    {
+        if (total > 0)
+            mProgress->setValue(current * 100 / total);
+    }
+
+    void SyncDialog::requestMetadata()
+    {
+        qDebug() << "Requesting metadata...";
+        mDb.requestMetadata(mainDbPath);
+    }
+
+    void SyncDialog::downloadFiles()
+    {
+        qDebug() << "Downloading files...";
+
+        mStarted = true;
+
+        QDropboxFile mainDb{mainDbPath, &mDb};
+        connect(&mainDb, &QDropboxFile::downloadProgress, this, &SyncDialog::updateProgress);
+        connect(mCancelBtn, &QPushButton::clicked, &mainDb, &QDropboxFile::abort);
+
+        if (mainDb.open(QIODevice::ReadOnly))
+        {
+            qDebug() << "Saving main db...";
+
+            DatabaseUtils::backupDatabase(getMainDbPath());
+
+            QSaveFile file{getMainDbPath()};
+            if (!file.open(QIODevice::WriteOnly))
+            {
+                QMessageBox::warning(this, tr("Synchronization"), tr("Couldn't open file for writing! Synchronization failed."));
+                QMetaObject::invokeMethod(this, "reject", Qt::QueuedConnection);
+                return;
+            }
+
+            file.write(mainDb.readAll());
+
+            if (file.commit())
+                mLastSyncTime = mainDb.metadata().modified();
+        }
+
+        QMetaObject::invokeMethod(this, "accept", Qt::QueuedConnection);
+    }
+
+    void SyncDialog::uploadFiles()
+    {
+        qDebug() << "Uploading files...";
+
+        mStarted = true;
+
+        QDropboxFile mainDb{mainDbPath, &mDb};
+        mainDb.setOverwrite(true);
+        connect(&mainDb, &QDropboxFile::uploadProgress, this, &SyncDialog::updateProgress);
+        connect(mCancelBtn, &QPushButton::clicked, &mainDb, &QDropboxFile::abort);
+
+        if (!mainDb.open(QIODevice::WriteOnly))
+        {
+            QMessageBox::warning(this, tr("Synchronization"), tr("Couldn't open remote file! Synchronization failed."));
+            QMetaObject::invokeMethod(this, "reject", Qt::QueuedConnection);
+            return;
+        }
+
+        QFile localMainDb{getMainDbPath()};
+        if (!localMainDb.open(QIODevice::ReadOnly))
+        {
+            QMessageBox::warning(this, tr("Synchronization"), tr("Couldn't open local file! Synchronization failed."));
+            QMetaObject::invokeMethod(this, "reject", Qt::QueuedConnection);
+            return;
+        }
+
+        const auto data = localMainDb.readAll();
+
+        mainDb.setFlushThreshold(data.size() + 1);
+        mainDb.write(data);
+        mainDb.close();
+
+        mLastSyncTime = mainDb.metadata().modified();
+
+        QMetaObject::invokeMethod(this, "accept", Qt::QueuedConnection);
+    }
+
+    QString SyncDialog::getMainDbPath()
+    {
+        return DatabaseUtils::getDbPath() + "main.db";
     }
 }

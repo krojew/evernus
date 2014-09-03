@@ -20,7 +20,6 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QDebug>
-#include <QFile>
 #include <QUrl>
 
 #include "WalletJournalEntryRepository.h"
@@ -60,8 +59,7 @@ namespace Evernus
 
         qDebug() << "Update from" << majorVersion << "." << minorVersion;
 
-        const auto dbName = characterRepo.getDatabase().databaseName();
-        QFile::copy(dbName, dbName + ".bak");
+        const auto dbBak = DatabaseUtils::backupDatabase(characterRepo.getDatabase());
 
         try
         {
@@ -131,7 +129,7 @@ namespace Evernus
         {
             QMessageBox::critical(nullptr, tr("Update"), tr(
                 "An error occurred during the update process.\n"
-                "Database backup was saved as %1. Please read online help how to deal with this situation.").arg(dbName + ".bak"));
+                "Database backup was saved as %1. Please read online help how to deal with this situation.").arg(dbBak));
 
             throw;
         }

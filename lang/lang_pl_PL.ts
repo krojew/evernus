@@ -12,17 +12,17 @@
 <context>
     <name>DatabaseUtils</name>
     <message>
-        <location filename="../DatabaseUtils.cpp" line="35"/>
+        <location filename="../DatabaseUtils.cpp" line="40"/>
         <source>Error crating DB object!</source>
         <translation>Błąd tworzenia obiektu bazy danych!</translation>
     </message>
     <message>
-        <location filename="../DatabaseUtils.cpp" line="44"/>
+        <location filename="../DatabaseUtils.cpp" line="47"/>
         <source>Error creating DB path!</source>
         <translation>Błąd tworzenia katalogu bazy danych!</translation>
     </message>
     <message>
-        <location filename="../DatabaseUtils.cpp" line="48"/>
+        <location filename="../DatabaseUtils.cpp" line="51"/>
         <source>Error opening DB!</source>
         <translation>Błąd przy otwieraniu bazy danych!</translation>
     </message>
@@ -2476,164 +2476,164 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MainWindow</name>
     <message>
-        <location filename="../MainWindow.cpp" line="167"/>
+        <location filename="../MainWindow.cpp" line="169"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="346"/>
+        <location filename="../MainWindow.cpp" line="348"/>
         <source>IGB link was copied to the clipboard.</source>
         <translation>Link dla przeglądarki został skopiowany do schowka.</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="216"/>
+        <location filename="../MainWindow.cpp" line="218"/>
         <source>Wallet: &lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation>Portfel: &lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="346"/>
-        <location filename="../MainWindow.cpp" line="368"/>
+        <location filename="../MainWindow.cpp" line="348"/>
+        <location filename="../MainWindow.cpp" line="370"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="368"/>
+        <location filename="../MainWindow.cpp" line="370"/>
         <source>HTTP link was copied to the clipboard.</source>
         <translation>Link do usługi został skopiowany do schowka.</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="428"/>
+        <location filename="../MainWindow.cpp" line="442"/>
         <source>&amp;File</source>
         <translation>&amp;Plik</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="429"/>
+        <location filename="../MainWindow.cpp" line="443"/>
         <source>&amp;Manage characters...</source>
         <translation>&amp;Zarządzaj postaciami...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="431"/>
-        <location filename="../MainWindow.cpp" line="433"/>
+        <location filename="../MainWindow.cpp" line="445"/>
+        <location filename="../MainWindow.cpp" line="447"/>
         <source>&amp;Preferences...</source>
         <translation>&amp;Ustawienia...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="436"/>
+        <location filename="../MainWindow.cpp" line="450"/>
         <source>Import EVE Mentat order history...</source>
         <translation>Zaimportuj historię z EVE Mentat...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="438"/>
+        <location filename="../MainWindow.cpp" line="452"/>
         <source>E&amp;xit</source>
         <translation>Za&amp;kończ</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="440"/>
+        <location filename="../MainWindow.cpp" line="454"/>
         <source>&amp;Tools</source>
         <translation>&amp;Narzędzia</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="441"/>
+        <location filename="../MainWindow.cpp" line="455"/>
         <source>Import conquerable stations</source>
         <translation>Importuj stacje graczy</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="442"/>
+        <location filename="../MainWindow.cpp" line="456"/>
         <source>Ma&amp;rgin tool...</source>
         <translation>Narzędzie &amp;marży...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="444"/>
+        <location filename="../MainWindow.cpp" line="458"/>
         <source>Copy HTTP link</source>
         <translation>Skopiuj link HTTP</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="445"/>
+        <location filename="../MainWindow.cpp" line="459"/>
         <source>Copy IGB link</source>
         <translation>Skopiuj link IGB</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="447"/>
+        <location filename="../MainWindow.cpp" line="461"/>
         <source>&amp;Help</source>
         <translation>Pomo&amp;c</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="448"/>
+        <location filename="../MainWindow.cpp" line="462"/>
         <source>&amp;Online help...</source>
         <translation>Pomoc &amp;online...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="449"/>
+        <location filename="../MainWindow.cpp" line="463"/>
         <source>Check for &amp;updates</source>
         <translation>Sprawdź &amp;akutalizacje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="451"/>
+        <location filename="../MainWindow.cpp" line="465"/>
         <source>&amp;About...</source>
         <translation>&amp;O programie...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="471"/>
+        <location filename="../MainWindow.cpp" line="485"/>
         <source>Character</source>
         <translation>Postać</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="493"/>
+        <location filename="../MainWindow.cpp" line="507"/>
         <source>Statistics</source>
         <translation>Statystyki</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="510"/>
+        <location filename="../MainWindow.cpp" line="524"/>
         <source>Assets</source>
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="532"/>
+        <location filename="../MainWindow.cpp" line="546"/>
         <source>Character orders</source>
         <translation>Zlecenia postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="577"/>
+        <location filename="../MainWindow.cpp" line="591"/>
         <source>Character contracts</source>
         <translation>Kontrakty postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="592"/>
+        <location filename="../MainWindow.cpp" line="606"/>
         <source>Corporation orders</source>
         <translation>Zlecenia korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="636"/>
+        <location filename="../MainWindow.cpp" line="650"/>
         <source>Corporation contracts</source>
         <translation>Kontrakty korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="647"/>
+        <location filename="../MainWindow.cpp" line="661"/>
         <source>Item history</source>
         <translation>Historia przedmiotów</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="660"/>
+        <location filename="../MainWindow.cpp" line="674"/>
         <source>Market browser</source>
         <translation>Rynek</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="554"/>
+        <location filename="../MainWindow.cpp" line="568"/>
         <source>Character journal</source>
         <translation>Dziennik postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="613"/>
+        <location filename="../MainWindow.cpp" line="627"/>
         <source>Corporation journal</source>
         <translation>Dziennik korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="566"/>
+        <location filename="../MainWindow.cpp" line="580"/>
         <source>Character transactions</source>
         <translation>Transakcje postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="625"/>
+        <location filename="../MainWindow.cpp" line="639"/>
         <source>Corporation transactions</source>
         <translation>Transakcje korporacji</translation>
     </message>
@@ -2650,7 +2650,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Transakcje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="672"/>
+        <location filename="../MainWindow.cpp" line="686"/>
         <source>Item costs</source>
         <translation>Koszty</translation>
     </message>
@@ -4535,34 +4535,59 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::SyncDialog</name>
     <message>
-        <location filename="../SyncDialog.cpp" line="61"/>
+        <location filename="../SyncDialog.cpp" line="72"/>
         <source>Synchronizing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronizowanie...</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="65"/>
+        <location filename="../SyncDialog.cpp" line="76"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="77"/>
-        <source>Token:</source>
-        <translation type="unfinished"></translation>
+        <location filename="../SyncDialog.cpp" line="91"/>
+        <source>Dropbox requires authenticating Evernus first. Please click on &lt;a href=&apos;%1&apos;&gt;this link&lt;/a&gt;, authorize Evernus and press &apos;Proceed&apos;.</source>
+        <translation>Dropbox wymaga autoryzowania aplikacji. Kliknij na &lt;a href=&apos;%1&apos;&gt;ten link&lt;/a&gt;, autoryzuj Evernusa i kliknij &apos;Dalej&apos;.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="80"/>
-        <source>Token secret:</source>
-        <translation type="unfinished"></translation>
+        <location filename="../SyncDialog.cpp" line="97"/>
+        <source>Proceed</source>
+        <translation>Dalej</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="82"/>
-        <source>Dropbox requires authenticating Evernus first. Please click on &lt;a href=&apos;%1&apos;&gt;this link&lt;/a&gt;, obtain token data, fill the form above and press &apos;Accept&apos;.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../SyncDialog.cpp" line="153"/>
+        <source>Error: %1 (%2)</source>
+        <translation>Błąd: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="89"/>
+        <location filename="../SyncDialog.cpp" line="187"/>
+        <source>Something modified cloud data since last synchronization. Do you wish to overwrite it?</source>
+        <translation>Dane w chmurze zostały zmodyfikowane od ostatniej synchronizacji. Czy chcesz je zastąpić?</translation>
+    </message>
+    <message>
+        <location filename="../SyncDialog.cpp" line="238"/>
+        <source>Couldn&apos;t open file for writing! Synchronization failed.</source>
+        <translation>Nie udało się otworzyć pliku do zapisu! Synchronizacja nie powiodła się.</translation>
+    </message>
+    <message>
+        <location filename="../SyncDialog.cpp" line="265"/>
+        <source>Couldn&apos;t open remote file! Synchronization failed.</source>
+        <translation>Nie udało się otworzyć zdalnego pliku! Synchronizacja nie powiodła się.</translation>
+    </message>
+    <message>
+        <location filename="../SyncDialog.cpp" line="273"/>
+        <source>Couldn&apos;t open local file! Synchronization failed.</source>
+        <translation>Nie udało się otworzyć lokalnego pliku! Synchronizacja nie powiodła się.</translation>
+    </message>
+    <message>
+        <location filename="../SyncDialog.cpp" line="101"/>
+        <location filename="../SyncDialog.cpp" line="153"/>
+        <location filename="../SyncDialog.cpp" line="186"/>
+        <location filename="../SyncDialog.cpp" line="238"/>
+        <location filename="../SyncDialog.cpp" line="265"/>
+        <location filename="../SyncDialog.cpp" line="273"/>
         <source>Synchronization</source>
-        <translation type="unfinished">Synchronizacja</translation>
+        <translation>Synchronizacja</translation>
     </message>
 </context>
 <context>
@@ -4589,14 +4614,14 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="172"/>
-        <location filename="../Updater.cpp" line="183"/>
-        <location filename="../Updater.cpp" line="193"/>
+        <location filename="../Updater.cpp" line="170"/>
+        <location filename="../Updater.cpp" line="181"/>
+        <location filename="../Updater.cpp" line="191"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="172"/>
+        <location filename="../Updater.cpp" line="170"/>
         <source>Error contacting update server: %1</source>
         <translation>Błąd odpytywania serwera akutalizacji: %1</translation>
     </message>
@@ -4605,10 +4630,10 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="89"/>
-        <location filename="../Updater.cpp" line="106"/>
-        <location filename="../Updater.cpp" line="112"/>
-        <location filename="../Updater.cpp" line="132"/>
+        <location filename="../Updater.cpp" line="87"/>
+        <location filename="../Updater.cpp" line="104"/>
+        <location filename="../Updater.cpp" line="110"/>
+        <location filename="../Updater.cpp" line="130"/>
         <source>Update</source>
         <translation>Aktualizacja</translation>
     </message>
@@ -4620,56 +4645,56 @@ Please click on &quot;Import all&quot; after the update.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="89"/>
+        <location filename="../Updater.cpp" line="87"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania wszystkich danych.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="106"/>
+        <location filename="../Updater.cpp" line="104"/>
         <source>This update requires re-importing all item prices.</source>
         <translation>Ta aktualizacja wymaga ponownego zaimportowania cen przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="112"/>
+        <location filename="../Updater.cpp" line="110"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania dziennika i transakcji korporacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="132"/>
+        <location filename="../Updater.cpp" line="130"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation>Wystąpił błąd podczas akutalizacji.
 Kopia zapasowa bazay danych została zapisana jako %1. Zajrzyj do pomocy online w celu uzyskania informacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="183"/>
+        <location filename="../Updater.cpp" line="181"/>
         <source>Error parsing response from the update server: %1</source>
         <translation>Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="193"/>
+        <location filename="../Updater.cpp" line="191"/>
         <source>Missing update version information!</source>
         <translation>Brak informacji o wersji!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="206"/>
+        <location filename="../Updater.cpp" line="204"/>
         <source>No update found</source>
         <translation>Brak aktualizacji</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="206"/>
+        <location filename="../Updater.cpp" line="204"/>
         <source>Your current version is up-to-date.</source>
         <translation>Twoja wersja jest najbardziej aktualna.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="212"/>
+        <location filename="../Updater.cpp" line="210"/>
         <source>Update found</source>
         <translation>Znaleziono aktualizację</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="212"/>
+        <location filename="../Updater.cpp" line="210"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation>Znaleziono nową wersję: %1

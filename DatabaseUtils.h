@@ -22,7 +22,10 @@ namespace Evernus
 {
     namespace DatabaseUtils
     {
+        QString getDbPath();
         void createDb(QSqlDatabase &db, const QString &name);
         void execQuery(QSqlQuery &query);
+        QString backupDatabase(const QSqlDatabase &db);
+        QString backupDatabase(const QString &dbPath);
     }
 }

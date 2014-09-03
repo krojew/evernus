@@ -217,9 +217,18 @@ qint64 QDropboxFile::writeData(const char *data, qint64 len)
 
 void QDropboxFile::networkRequestFinished(QNetworkReply *rply)
 {
+    rply->deleteLater();
+
 #ifdef QTDROPBOX_DEBUG
     qDebug() << "QDropboxFile::networkRequestFinished(...)" << endl;
 #endif
+
+    if (rply->error() != QNetworkReply::NoError)
+    {
+        lastErrorCode = rply->error();
+        stopEventLoop();
+        return;
+    }
 
     switch(_waitMode)
     {
@@ -291,7 +300,9 @@ bool QDropboxFile::getFileContent(QString filename)
 #endif
 
     QNetworkRequest rq(request);
-    _conManager.get(rq);
+    auto reply = _conManager.get(rq);
+    connect(this, &QDropboxFile::operationAborted, reply, &QNetworkReply::abort);
+    connect(reply, &QNetworkReply::downloadProgress, this, &QDropboxFile::downloadProgress);
 
     _waitMode = waitForRead;
     startEventLoop();
@@ -366,6 +377,8 @@ void QDropboxFile::rplyFileWrite(QNetworkReply *rply)
     qDebug() << "QDropboxFile::rplyFileWrite(...)" << endl;
 #endif
 
+    qDebug() << rply->error();
+
     lastErrorCode = 0;
 
     QByteArray response = rply->readAll();
@@ -400,10 +413,15 @@ void QDropboxFile::rplyFileWrite(QNetworkReply *rply)
         return;
         break;
     default:
+        if (_metadata != nullptr)
+            delete _metadata;
+
+        _metadata = new QDropboxFileInfo{QString{response}.trimmed(), this};
+        if (!_metadata->isValid())
+            _metadata->clear();
         break;
     }
 
-    // TODO interpret returned data as QDropboxFileMetadata
     emit bytesWritten(_buffer->size());
     return;
 }
@@ -462,7 +480,9 @@ bool QDropboxFile::putFile()
 #endif
 
     QNetworkRequest rq(request);
-    _conManager.put(rq, *_buffer);
+    auto reply = _conManager.put(rq, *_buffer);
+    connect(this, &QDropboxFile::operationAborted, reply, &QNetworkReply::abort);
+    connect(reply, &QNetworkReply::uploadProgress, this, &QDropboxFile::uploadProgress);
 
     _waitMode = waitForWrite;	
     startEventLoop();
@@ -560,4 +580,9 @@ bool QDropboxFile::reset()
 	QIODevice::reset();
 	_position = 0;
 	return true;
+}
+
+void QDropboxFile::abort()
+{
+    emit operationAborted();
 }

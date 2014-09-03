@@ -49,10 +49,12 @@
 #include "KeyRepository.h"
 #include "MenuBarWidget.h"
 #include "PriceSettings.h"
+#include "SyncSettings.h"
 #include "HttpSettings.h"
 #include "AssetsWidget.h"
 #include "AboutDialog.h"
 #include "IGBSettings.h"
+#include "SyncDialog.h"
 #include "UISettings.h"
 #include "Updater.h"
 
@@ -397,6 +399,18 @@ namespace Evernus
             mMarginToolDialog->close();
 
         writeSettings();
+
+#ifdef EVERNUS_DROPBOX_ENABLED
+        QSettings settings;
+        if (settings.value(SyncSettings::enabledKey, SyncSettings::enabledDefault).toBool())
+        {
+            mRepositoryProvider.getKeyRepository().exec("VACUUM");
+
+            SyncDialog syncDlg{SyncDialog::Mode::Upload};
+            syncDlg.exec();
+        }
+#endif
+
         event->accept();
     }
 
