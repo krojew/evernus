@@ -375,6 +375,14 @@ namespace Evernus
         mMainTabs->setCurrentIndex(mMarketBrowserTab);
     }
 
+    void MainWindow::performSync()
+    {
+#ifdef EVERNUS_DROPBOX_ENABLED
+        SyncDialog syncDlg{SyncDialog::Mode::Upload};
+        syncDlg.exec();
+#endif
+    }
+
     void MainWindow::changeEvent(QEvent *event)
     {
         QSettings settings;
@@ -400,14 +408,9 @@ namespace Evernus
 
         writeSettings();
 
-#ifdef EVERNUS_DROPBOX_ENABLED
         QSettings settings;
         if (settings.value(SyncSettings::enabledOnShutdownKey, SyncSettings::enabledOnShutdownDefault).toBool())
-        {
-            SyncDialog syncDlg{SyncDialog::Mode::Upload};
-            syncDlg.exec();
-        }
-#endif
+            performSync();
 
         event->accept();
     }
@@ -455,6 +458,10 @@ namespace Evernus
         toolsMenu->addSeparator();
         toolsMenu->addAction(tr("Copy HTTP link"), this, SLOT(copyHTTPLink()));
         toolsMenu->addAction(tr("Copy IGB link"), this, SLOT(copyIGBLink()));
+#ifdef EVERNUS_DROPBOX_ENABLED
+        toolsMenu->addSeparator();
+        toolsMenu->addAction(QIcon{":/images/arrow_refresh.png"}, tr("Upload data to cloud..."), this, SLOT(performSync()));
+#endif
 
         auto helpMenu = bar->addMenu(tr("&Help"));
         helpMenu->addAction(QIcon{":/images/help.png"}, tr("&Online help..."), this, SLOT(openHelp()));
