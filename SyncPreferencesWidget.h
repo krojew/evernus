@@ -33,6 +33,7 @@ namespace Evernus
         void applySettings();
 
     private:
-        QCheckBox *mEnabledBtn = nullptr;
+        QCheckBox *mEnabledOnStartupBtn = nullptr;
+        QCheckBox *mEnabledOnShutdownBtn = nullptr;
     };
 }

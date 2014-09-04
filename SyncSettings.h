@@ -22,9 +22,11 @@ namespace Evernus
 {
     namespace SyncSettings
     {
-        const auto enabledDefault = false;
+        const auto enabledOnStartupDefault = false;
+        const auto enabledOnShutdownDefault = false;
 
-        const auto enabledKey = "sync/enabled";
+        const auto enabledOnStartupKey = "sync/enabledOnStartup";
+        const auto enabledOnShutdownKey = "sync/enabledOnShutdown";
         const auto dbTokenKey = "sync/db/token";
         const auto dbTokenSecretKey = "sync/db/tokenSecret";
     }

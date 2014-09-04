@@ -402,7 +402,7 @@ namespace Evernus
 
 #ifdef EVERNUS_DROPBOX_ENABLED
         QSettings settings;
-        if (settings.value(SyncSettings::enabledKey, SyncSettings::enabledDefault).toBool())
+        if (settings.value(SyncSettings::enabledOnShutdownKey, SyncSettings::enabledOnShutdownDefault).toBool())
         {
             SyncDialog syncDlg{SyncDialog::Mode::Upload};
             syncDlg.exec();

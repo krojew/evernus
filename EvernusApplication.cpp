@@ -88,7 +88,7 @@ namespace Evernus
         }
 
 #ifdef EVERNUS_DROPBOX_ENABLED
-        if (settings.value(SyncSettings::enabledKey, SyncSettings::enabledDefault).toBool())
+        if (settings.value(SyncSettings::enabledOnStartupKey, SyncSettings::enabledOnStartupDefault).toBool())
         {
             SyncDialog syncDlg{SyncDialog::Mode::Download};
             syncDlg.exec();

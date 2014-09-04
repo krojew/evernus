@@ -39,9 +39,13 @@ namespace Evernus
         auto dropboxGroupLayout = new QVBoxLayout{};
         dropboxGroup->setLayout(dropboxGroupLayout);
 
-        mEnabledBtn = new QCheckBox{tr("Enabled"), this};
-        dropboxGroupLayout->addWidget(mEnabledBtn);
-        mEnabledBtn->setChecked(settings.value(SyncSettings::enabledKey, SyncSettings::enabledDefault).toBool());
+        mEnabledOnStartupBtn = new QCheckBox{tr("Download on startup"), this};
+        dropboxGroupLayout->addWidget(mEnabledOnStartupBtn);
+        mEnabledOnStartupBtn->setChecked(settings.value(SyncSettings::enabledOnStartupKey, SyncSettings::enabledOnStartupDefault).toBool());
+
+        mEnabledOnShutdownBtn = new QCheckBox{tr("Upload on shutdown"), this};
+        dropboxGroupLayout->addWidget(mEnabledOnShutdownBtn);
+        mEnabledOnShutdownBtn->setChecked(settings.value(SyncSettings::enabledOnShutdownKey, SyncSettings::enabledOnShutdownDefault).toBool());
 #else
         auto info = new QLabel{tr(
             "Evernus was compiled without Dropbox app key and secret values. In order to enable Dropbox support, register "
@@ -60,7 +64,8 @@ namespace Evernus
     {
 #ifdef EVERNUS_DROPBOX_ENABLED
         QSettings settings;
-        settings.setValue(SyncSettings::enabledKey, mEnabledBtn->isChecked());
+        settings.setValue(SyncSettings::enabledOnStartupKey, mEnabledOnStartupBtn->isChecked());
+        settings.setValue(SyncSettings::enabledOnShutdownKey, mEnabledOnShutdownBtn->isChecked());
 #endif
     }
 }
