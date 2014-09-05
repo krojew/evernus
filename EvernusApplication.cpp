@@ -716,6 +716,9 @@ namespace Evernus
         const auto assetSubtask = startTask(parentTask, tr("Fetching assets for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
+        if (!checkImportAndEndTask(id, TimerType::AssetList, assetSubtask))
+            return;
+
         try
         {
             const auto key = getCharacterKey(id);
@@ -759,6 +762,9 @@ namespace Evernus
 
         const auto task = startTask(tr("Fetching contracts for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        if (!checkImportAndEndTask(id, TimerType::Contracts, task))
+            return;
 
         try
         {
@@ -878,6 +884,9 @@ namespace Evernus
         const auto task = startTask(tr("Fetching wallet transactions for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
+        if (!checkImportAndEndTask(id, TimerType::WalletTransactions, task))
+            return;
+
         try
         {
             const auto key = getCharacterKey(id);
@@ -931,6 +940,9 @@ namespace Evernus
         const auto task = startTask(tr("Fetching market orders for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
+        if (!checkImportAndEndTask(id, TimerType::MarketOrders, task))
+            return;
+
         try
         {
             const auto key = getCharacterKey(id);
@@ -964,6 +976,9 @@ namespace Evernus
 
         const auto task = startTask(tr("Fetching corporation contracts for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        if (!checkImportAndEndTask(id, TimerType::CorpContracts, task))
+            return;
 
         try
         {
@@ -1012,6 +1027,9 @@ namespace Evernus
 
         const auto task = startTask(tr("Fetching corporation wallet journal for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        if (!checkImportAndEndTask(id, TimerType::CorpWalletJournal, task))
+            return;
 
         try
         {
@@ -1074,6 +1092,9 @@ namespace Evernus
         const auto task = startTask(tr("Fetching corporation wallet transactions for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
+        if (!checkImportAndEndTask(id, TimerType::CorpWalletTransactions, task))
+            return;
+
         try
         {
             const auto key = getCorpKey(id);
@@ -1127,6 +1148,9 @@ namespace Evernus
 
         const auto task = startTask(tr("Fetching corporation market orders for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        if (!checkImportAndEndTask(id, TimerType::CorpMarketOrders, task))
+            return;
 
         try
         {
@@ -1668,6 +1692,9 @@ namespace Evernus
     void EvernusApplication::importCharacter(Character::IdType id, uint parentTask, const Key &key)
     {
         const auto charSubtask = startTask(parentTask, tr("Fetching character %1...").arg(id));
+        if (!checkImportAndEndTask(id, TimerType::Character, charSubtask))
+            return;
+
         mAPIManager.fetchCharacter(key, id, [charSubtask, id, this](auto &&data, const auto &error) {
             if (error.isEmpty())
             {
@@ -2201,6 +2228,24 @@ namespace Evernus
         mSmtp.setPassword(crypt.decryptToByteArray(settings.value(ImportSettings::smtpPasswordKey).toString()));
         mSmtp.setStartTlsDisabled(static_cast<ImportSettings::SmtpConnectionSecurity>(
             settings.value(ImportSettings::smtpConnectionSecurityKey).toInt()) != ImportSettings::SmtpConnectionSecurity::STARTTLS);
+    }
+
+    bool EvernusApplication::shouldImport(Character::IdType id, TimerType type) const
+    {
+        QSettings settings;
+        if (!settings.value(ImportSettings::ignoreCachedImportKey, ImportSettings::ignoreCachedImportDefault).toBool())
+            return true;
+
+        return getLocalCacheTimer(id, type) <= QDateTime::currentDateTime();
+    }
+
+    bool EvernusApplication::checkImportAndEndTask(Character::IdType id, TimerType type, uint task)
+    {
+        const auto ret = shouldImport(id, type);
+        if (!ret)
+            emit taskEnded(task, QString{});
+
+        return ret;
     }
 
     template<void (EvernusApplication::* Signal)(), class Key>

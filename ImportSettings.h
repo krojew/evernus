@@ -48,6 +48,7 @@ namespace Evernus
         const auto priceImportSourceDefault = PriceImportSource::Web;
         const auto corpOrdersWithCharacterDefault = true;
         const auto importContractsDefault = true;
+        const auto ignoreCachedImportDefault = true;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
@@ -75,5 +76,6 @@ namespace Evernus
         const auto priceImportSourceKey = "import/source/price";
         const auto corpOrdersWithCharacterKey = "import/corp/showWithCharacter";
         const auto importContractsKey = "import/contracts/import";
+        const auto ignoreCachedImportKey = "import/ignoreCached";
     }
 }

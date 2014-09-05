@@ -326,6 +326,9 @@ namespace Evernus
 
         void setSmtpSettings();
 
+        bool shouldImport(Character::IdType id, TimerType type) const;
+        bool checkImportAndEndTask(Character::IdType id, TimerType type, uint task);
+
         template<void (EvernusApplication::* Signal)(), class Key>
         void handleIncomingContracts(const Key &key,
                                      const Contracts &data,

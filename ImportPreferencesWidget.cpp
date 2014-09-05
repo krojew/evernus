@@ -37,6 +37,16 @@ namespace Evernus
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
+        auto generalBox = new QGroupBox{this};
+        mainLayout->addWidget(generalBox);
+
+        auto generalBoxLayout = new QVBoxLayout{};
+        generalBox->setLayout(generalBoxLayout);
+
+        mIgnoreCachedBtn = new QCheckBox{tr("Ignore up-to-date data"), this};
+        generalBoxLayout->addWidget(mIgnoreCachedBtn);
+        mIgnoreCachedBtn->setChecked(settings.value(ImportSettings::ignoreCachedImportKey, ImportSettings::ignoreCachedImportDefault).toBool());
+
         auto timersBox = new QGroupBox{tr("Data age"), this};
         mainLayout->addWidget(timersBox);
 
@@ -118,6 +128,7 @@ namespace Evernus
     void ImportPreferencesWidget::applySettings()
     {
         QSettings settings;
+        settings.setValue(ImportSettings::ignoreCachedImportKey, mIgnoreCachedBtn->isChecked());
         settings.setValue(ImportSettings::maxCharacterAgeKey, mCharacterTimerEdit->value());
         settings.setValue(ImportSettings::maxAssetListAgeKey, mAssetListTimerEdit->value());
         settings.setValue(ImportSettings::maxWalletAgeKey, mWalletTimerEdit->value());

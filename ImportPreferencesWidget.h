@@ -41,6 +41,8 @@ namespace Evernus
     private:
         SimpleCrypt mCrypt;
 
+        QCheckBox *mIgnoreCachedBtn = nullptr;
+
         QSpinBox *mCharacterTimerEdit = nullptr;
         QSpinBox *mAssetListTimerEdit = nullptr;
         QSpinBox *mWalletTimerEdit = nullptr;
