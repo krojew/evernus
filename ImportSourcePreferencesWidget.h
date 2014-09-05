@@ -16,8 +16,6 @@
 
 #include <QWidget>
 
-#include "ImportSettings.h"
-
 class QComboBox;
 
 namespace Evernus
@@ -36,9 +34,9 @@ namespace Evernus
 
     private:
         QComboBox *mPriceSourceCombo = nullptr;
+        QComboBox *mMarketOrderSourceCombo = nullptr;
 
-        void addPriceSourceItem(const QString &text,
-                                ImportSettings::PriceImportSource value,
-                                ImportSettings::PriceImportSource current);
+        template<class T>
+        void addSourceItem(QComboBox &combo, const QString &text, T value, T current);
     };
 }

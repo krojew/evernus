@@ -30,8 +30,14 @@ namespace Evernus
         enum class PriceImportSource
         {
             Web,
-            File,
+            Logs,
             Cache
+        };
+
+        enum class MarketOrderImportSource
+        {
+            API,
+            Logs
         };
 
         const auto importSkillsDefault = true;
@@ -49,6 +55,7 @@ namespace Evernus
         const auto corpOrdersWithCharacterDefault = true;
         const auto importContractsDefault = true;
         const auto ignoreCachedImportDefault = true;
+        const auto marketOrderImportSourceDefault = MarketOrderImportSource::API;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
@@ -77,5 +84,6 @@ namespace Evernus
         const auto corpOrdersWithCharacterKey = "import/corp/showWithCharacter";
         const auto importContractsKey = "import/contracts/import";
         const auto ignoreCachedImportKey = "import/ignoreCached";
+        const auto marketOrderImportSourceKey = "import/source/marketOrder";
     }
 }

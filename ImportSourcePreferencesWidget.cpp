@@ -18,6 +18,8 @@
 #include <QComboBox>
 #include <QSettings>
 
+#include "ImportSettings.h"
+
 #include "ImportSourcePreferencesWidget.h"
 
 namespace Evernus
@@ -34,16 +36,26 @@ namespace Evernus
         auto sourceGroupLayout = new QFormLayout{};
         sourceGroup->setLayout(sourceGroupLayout);
 
+        QSettings settings;
+
         mPriceSourceCombo = new QComboBox{this};
         sourceGroupLayout->addRow(tr("Prices:"), mPriceSourceCombo);
 
-        QSettings settings;
         const auto priceSource = static_cast<ImportSettings::PriceImportSource>(
             settings.value(ImportSettings::priceImportSourceKey, static_cast<int>(ImportSettings::priceImportSourceDefault)).toInt());
 
-        addPriceSourceItem(tr("Web"), ImportSettings::PriceImportSource::Web, priceSource);
-        addPriceSourceItem(tr("File"), ImportSettings::PriceImportSource::File, priceSource);
-        addPriceSourceItem(tr("Cache"), ImportSettings::PriceImportSource::Cache, priceSource);
+        addSourceItem(*mPriceSourceCombo, tr("Web"), ImportSettings::PriceImportSource::Web, priceSource);
+        addSourceItem(*mPriceSourceCombo, tr("Logs"), ImportSettings::PriceImportSource::Logs, priceSource);
+        addSourceItem(*mPriceSourceCombo, tr("Cache"), ImportSettings::PriceImportSource::Cache, priceSource);
+
+        mMarketOrderSourceCombo = new QComboBox{this};
+        sourceGroupLayout->addRow(tr("Market orders:"), mMarketOrderSourceCombo);
+
+        const auto marketOrderSource = static_cast<ImportSettings::MarketOrderImportSource>(
+            settings.value(ImportSettings::marketOrderImportSourceKey, static_cast<int>(ImportSettings::marketOrderImportSourceDefault)).toInt());
+
+        addSourceItem(*mMarketOrderSourceCombo, tr("API"), ImportSettings::MarketOrderImportSource::API, marketOrderSource);
+        addSourceItem(*mMarketOrderSourceCombo, tr("Logs"), ImportSettings::MarketOrderImportSource::Logs, marketOrderSource);
 
         mainLayout->addStretch();
     }
@@ -51,15 +63,15 @@ namespace Evernus
     void ImportSourcePreferencesWidget::applySettings()
     {
         QSettings settings;
-        settings.setValue(ImportSettings::priceImportSourceKey, mPriceSourceCombo->currentData().toInt());
+        settings.setValue(ImportSettings::priceImportSourceKey, mPriceSourceCombo->currentData());
+        settings.setValue(ImportSettings::marketOrderImportSourceKey, mMarketOrderSourceCombo->currentData());
     }
 
-    void ImportSourcePreferencesWidget::addPriceSourceItem(const QString &text,
-                                                           ImportSettings::PriceImportSource value,
-                                                           ImportSettings::PriceImportSource current)
+    template<class T>
+    void ImportSourcePreferencesWidget::addSourceItem(QComboBox &combo,const QString &text, T value, T current)
     {
-        mPriceSourceCombo->addItem(text, static_cast<int>(value));
+        combo.addItem(text, static_cast<int>(value));
         if (value == current)
-            mPriceSourceCombo->setCurrentIndex(mPriceSourceCombo->count() - 1);
+            combo.setCurrentIndex(combo.count() - 1);
     }
 }

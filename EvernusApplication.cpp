@@ -1221,7 +1221,7 @@ namespace Evernus
         const auto source = static_cast<ImportSettings::PriceImportSource>(
             settings.value(ImportSettings::priceImportSourceKey, static_cast<int>(ImportSettings::priceImportSourceDefault)).toInt());
         switch (source) {
-        case ImportSettings::PriceImportSource::File:
+        case ImportSettings::PriceImportSource::Logs:
             refreshExternalOrdersFromFile(target);
             break;
         case ImportSettings::PriceImportSource::Cache:

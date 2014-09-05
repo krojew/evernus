@@ -86,7 +86,7 @@ namespace Evernus
         std::vector<std::pair<QString, QWidget *>> importCategories;
         importCategories.emplace_back(std::make_pair(tr("Character"), new CharacterImportPreferencesWidget{this}));
         importCategories.emplace_back(std::make_pair(tr("Assets"), new AssetsImportPreferencesWidget{this}));
-        importCategories.emplace_back(std::make_pair(tr("Contract"), new ContractImportPreferencesWidget{this}));
+        importCategories.emplace_back(std::make_pair(tr("Contracts"), new ContractImportPreferencesWidget{this}));
         importCategories.emplace_back(std::make_pair(tr("Corporation"), new CorpImportPreferencesWidget{this}));
         importCategories.emplace_back(std::make_pair(tr("Source"), new ImportSourcePreferencesWidget{this}));
 

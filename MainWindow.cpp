@@ -301,9 +301,15 @@ namespace Evernus
         emit refreshConquerableStations();
 
         refreshWalletJournal();
-        refreshMarketOrdersFromAPI();
 
         QSettings settings;
+
+        const auto marketOrderSource = static_cast<ImportSettings::MarketOrderImportSource>(
+            settings.value(ImportSettings::marketOrderImportSourceKey, static_cast<int>(ImportSettings::marketOrderImportSourceDefault)).toInt());
+        if (marketOrderSource == ImportSettings::MarketOrderImportSource::Logs)
+            refreshMarketOrdersFromLogs();
+        else
+            refreshMarketOrdersFromAPI();
 
         if (!settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool())
             refreshWalletTransactions();
