@@ -2243,7 +2243,7 @@ namespace Evernus
     {
         const auto ret = shouldImport(id, type);
         if (!ret)
-            emit taskEnded(task, QString{});
+            QMetaObject::invokeMethod(this, "taskEnded", Qt::QueuedConnection, Q_ARG(uint, task), Q_ARG(QString, QString{}));
 
         return ret;
     }
