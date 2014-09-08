@@ -1531,6 +1531,7 @@ namespace Evernus
         mCorpMarketOrderRepository.reset(new MarketOrderRepository{true, mMainDb});
         mItemCostRepository.reset(new ItemCostRepository{mMainDb});
         mMarketOrderValueSnapshotRepository.reset(new MarketOrderValueSnapshotRepository{mMainDb});
+        mCorpMarketOrderValueSnapshotRepository.reset(new CorpMarketOrderValueSnapshotRepository{mMainDb});
         mFilterTextRepository.reset(new FilterTextRepository{mMainDb});
         mOrderScriptRepository.reset(new OrderScriptRepository{mMainDb});
         mFavoriteItemRepository.reset(new FavoriteItemRepository{mMainDb});
@@ -1566,6 +1567,7 @@ namespace Evernus
         mCorpMarketOrderRepository->create(*mCharacterRepository);
         mItemCostRepository->create(*mCharacterRepository);
         mMarketOrderValueSnapshotRepository->create(*mCharacterRepository);
+        mCorpMarketOrderValueSnapshotRepository->create();
         mFilterTextRepository->create();
         mOrderScriptRepository->create();
         mFavoriteItemRepository->create();

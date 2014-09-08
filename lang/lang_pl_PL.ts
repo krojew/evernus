@@ -1308,8 +1308,8 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="666"/>
         <location filename="../EvernusApplication.cpp" line="672"/>
-        <location filename="../EvernusApplication.cpp" line="2048"/>
-        <location filename="../EvernusApplication.cpp" line="2081"/>
+        <location filename="../EvernusApplication.cpp" line="2050"/>
+        <location filename="../EvernusApplication.cpp" line="2083"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -1358,7 +1358,7 @@
         <translation>Pobieranie kontraktów dla postaci: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2272"/>
+        <location filename="../EvernusApplication.cpp" line="2274"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
@@ -1444,27 +1444,27 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1771"/>
+        <location filename="../EvernusApplication.cpp" line="1773"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1785"/>
+        <location filename="../EvernusApplication.cpp" line="1787"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1796"/>
+        <location filename="../EvernusApplication.cpp" line="1798"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2049"/>
+        <location filename="../EvernusApplication.cpp" line="2051"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2053"/>
+        <location filename="../EvernusApplication.cpp" line="2055"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1473,14 +1473,14 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2056"/>
+        <location filename="../EvernusApplication.cpp" line="2058"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2081"/>
+        <location filename="../EvernusApplication.cpp" line="2083"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
@@ -1530,12 +1530,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1694"/>
+        <location filename="../EvernusApplication.cpp" line="1696"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1760"/>
+        <location filename="../EvernusApplication.cpp" line="1762"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>

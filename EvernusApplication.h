@@ -22,6 +22,7 @@
 #include <QTranslator>
 
 #include "CharacterCorporationCombinedMarketOrderProvider.h"
+#include "CorpMarketOrderValueSnapshotRepository.h"
 #include "MarketOrderValueSnapshotRepository.h"
 #include "ExternalOrderImporterRegistry.h"
 #include "ConquerableStationRepository.h"
@@ -228,6 +229,7 @@ namespace Evernus
         std::unique_ptr<MarketOrderRepository> mMarketOrderRepository, mCorpMarketOrderRepository;
         std::unique_ptr<ItemCostRepository> mItemCostRepository;
         std::unique_ptr<MarketOrderValueSnapshotRepository> mMarketOrderValueSnapshotRepository;
+        std::unique_ptr<CorpMarketOrderValueSnapshotRepository> mCorpMarketOrderValueSnapshotRepository;
         std::unique_ptr<FilterTextRepository> mFilterTextRepository;
         std::unique_ptr<OrderScriptRepository> mOrderScriptRepository;
         std::unique_ptr<FavoriteItemRepository> mFavoriteItemRepository;

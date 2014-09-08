@@ -261,6 +261,10 @@ add_executable(
     CorpKeyEditDialog.h
     CorpKeyRepository.cpp
     CorpKeyRepository.h
+    CorpMarketOrderValueSnapshot.cpp
+    CorpMarketOrderValueSnapshot.h
+    CorpMarketOrderValueSnapshotRepository.cpp
+    CorpMarketOrderValueSnapshotRepository.h
     CorpWalletSnapshot.cpp
     CorpWalletSnapshot.h
     CorpWalletSnapshotRepository.cpp
