@@ -1911,7 +1911,7 @@ namespace Evernus
 
             QSettings settings;
             const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool();
-            const auto makeCorpSnapshot = settings.value(ImportSettings::makeCorpSnapshotsKey).toBool();
+            const auto makeCorpSnapshot = settings.value(ImportSettings::makeCorpSnapshotsKey, ImportSettings::makeCorpSnapshotsDefault).toBool();
             const auto emailNotification = settings.value(ImportSettings::autoImportEnabledKey, ImportSettings::autoImportEnabledDefault).toBool() &&
                                            settings.value(ImportSettings::emailNotificationsEnabledKey, ImportSettings::emailNotificationsEnabledDefault).toBool();
 
@@ -1979,7 +1979,7 @@ namespace Evernus
             if (!toArchive.empty())
                 orderRepo.archive(toArchive);
 
-            if (!corp || makeCorpSnapshot)
+            if (!corp)
             {
                 MarketOrderValueSnapshot snapshot;
                 snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
@@ -2007,21 +2007,49 @@ namespace Evernus
                     }
                 };
 
-                if (corp)
-                {
-                    adder(buy, mCharacterOrderProvider->getBuyOrders(id));
-                    adder(sell, mCharacterOrderProvider->getSellOrders(id));
-                }
-                else if (makeCorpSnapshot)
-                {
-                    adder(buy, mCorpOrderProvider->getBuyOrders(id));
-                    adder(sell, mCorpOrderProvider->getSellOrders(id));
-                }
+                adder(buy, mCharacterOrderProvider->getBuyOrders(id));
+                adder(sell, mCharacterOrderProvider->getSellOrders(id));
 
                 snapshot.setBuyValue(buy);
                 snapshot.setSellValue(sell);
 
                 mMarketOrderValueSnapshotRepository->store(snapshot);
+            }
+            else if (makeCorpSnapshot)
+            {
+                CorpMarketOrderValueSnapshot snapshot;
+                snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
+                snapshot.setCorporationId(corpId);
+
+                double buy = 0., sell = 0.;
+                for (const auto &order : orders)
+                {
+                    if (order.getState() != MarketOrder::State::Active)
+                        continue;
+
+                    if (order.getType() == MarketOrder::Type::Buy)
+                        buy += order.getPrice() * order.getVolumeRemaining();
+                    else
+                        sell += order.getPrice() * order.getVolumeRemaining();
+                }
+
+                const auto adder = [](auto &sum, const auto &orders) {
+                    for (const auto &order : orders)
+                    {
+                        if (order->getState() != Evernus::MarketOrder::State::Active)
+                            continue;
+
+                        sum += order->getPrice() * order->getVolumeRemaining();
+                    }
+                };
+
+                adder(buy, mCorpOrderProvider->getBuyOrders(corpId));
+                adder(sell, mCorpOrderProvider->getSellOrders(corpId));
+
+                snapshot.setBuyValue(buy);
+                snapshot.setSellValue(sell);
+
+                mCorpMarketOrderValueSnapshotRepository->store(snapshot);
             }
 
             asyncBatchStore(orderRepo, orders, true);

@@ -1089,7 +1089,7 @@
         <translation>Zapisuj wartości do statystyk na bazie danych korporacji</translation>
     </message>
     <message>
-        <location filename="../CorpImportPreferencesWidget.cpp" line="48"/>
+        <location filename="../CorpImportPreferencesWidget.cpp" line="49"/>
         <source>Show corporation orders with character&apos;s</source>
         <translation>Pokaż własne zlecenia korporacji na zakładce zleceń postaci</translation>
     </message>

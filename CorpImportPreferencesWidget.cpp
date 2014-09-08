@@ -43,7 +43,8 @@ namespace Evernus
 
         mMakeCorpSnapshotsBtn = new QCheckBox{tr("Make value snapshots form corporation data"), this};
         importBoxLayout->addWidget(mMakeCorpSnapshotsBtn);
-        mMakeCorpSnapshotsBtn->setChecked(settings.value(ImportSettings::makeCorpSnapshotsKey).toBool());
+        mMakeCorpSnapshotsBtn->setChecked(
+            settings.value(ImportSettings::makeCorpSnapshotsKey, ImportSettings::makeCorpSnapshotsDefault).toBool());
 
         mShowCorpOrdersWithCharacterBtn = new QCheckBox{tr("Show corporation orders with character's"), this};
         importBoxLayout->addWidget(mShowCorpOrdersWithCharacterBtn);

@@ -56,6 +56,7 @@ namespace Evernus
         const auto importContractsDefault = true;
         const auto ignoreCachedImportDefault = true;
         const auto marketOrderImportSourceDefault = MarketOrderImportSource::API;
+        const auto makeCorpSnapshotsDefault = true;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
