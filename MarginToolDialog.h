@@ -29,6 +29,7 @@
 class QTableWidget;
 class QRadioButton;
 class QColumnView;
+class QLineEdit;
 class QLabel;
 
 namespace Evernus
@@ -61,9 +62,9 @@ namespace Evernus
         void toggleAlwaysOnTop(int state);
 
         void refreshData(const QString &path);
+        void refreshDataByEdits();
 
         void saveCopyMode();
-
         void saveSelectedStation(const QModelIndex &index);
 
     protected:
@@ -83,8 +84,8 @@ namespace Evernus
         QFileSystemWatcher mWatcher;
 
         QLabel *mNameLabel = nullptr;
-        QLabel *mBestBuyLabel = nullptr;
-        QLabel *mBestSellLabel = nullptr;
+        QLineEdit *mBestBuyEdit = nullptr;
+        QLineEdit *mBestSellEdit = nullptr;
         QLabel *mProfitLabel = nullptr;
         QLabel *mRevenueLabel = nullptr;
         QLabel *mCostOfSalesLabel = nullptr;
@@ -124,6 +125,8 @@ namespace Evernus
 
         QWidget *createMarginDataTab();
         QWidget *createDataSourceTab();
+
+        void updateInfo(double buy, double sell, bool updatePriceEdits);
 
         static void fillSampleData(QTableWidget &table, double revenue, double cos, int multiplier);
 

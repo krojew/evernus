@@ -34,6 +34,7 @@
 #include <QSettings>
 #include <QCheckBox>
 #include <QGroupBox>
+#include <QLineEdit>
 #include <QRegExp>
 #include <QLabel>
 #include <QDebug>
@@ -358,101 +359,14 @@ namespace Evernus
             mBuyVolLabel->setText(QString{"%1/%2"}.arg(curLocale.toString(buyVol)).arg(curLocale.toString(buyInit - buyVol)));
             mSellVolLabel->setText(QString{"%1/%2"}.arg(curLocale.toString(sellVol)).arg(curLocale.toString(sellInit - sellVol)));
 
-            try
-            {
-                const auto character = mCharacterRepository.find(mCharacterId);
-                const auto taxes = PriceUtils::calculateTaxes(*character);
-
-                if (buy < 0. || sell < 0.)
-                {
-                    if (buy < 0.)
-                    {
-                        mBestBuyLabel->setText("-");
-                        mCostOfSalesLabel->setText("-");
-
-                        mBuyPrice = 0.;
-                    }
-                    else
-                    {
-                        mBuyPrice = buy + priceDelta;
-
-                        mBestBuyLabel->setText(curLocale.toCurrencyString(mBuyPrice, "ISK"));
-                        mCostOfSalesLabel->setText(curLocale.toCurrencyString(PriceUtils::getCoS(mBuyPrice, taxes), "ISK"));
-
-                        if (mCopyBuyBtn->isChecked())
-                            QApplication::clipboard()->setText(QString::number(mBuyPrice, 'f', 2));
-                    }
-
-                    if (sell < 0.)
-                    {
-                        mBestSellLabel->setText("-");
-                        mRevenueLabel->setText("-");
-
-                        mSellPrice = 0.;
-                    }
-                    else
-                    {
-                        mSellPrice = sell - priceDelta;
-
-                        mBestSellLabel->setText(curLocale.toCurrencyString(mSellPrice, "ISK"));
-                        mRevenueLabel->setText(curLocale.toCurrencyString(PriceUtils::getRevenue(mSellPrice, taxes), "ISK"));
-
-                        if (mCopySellBtn->isChecked())
-                            QApplication::clipboard()->setText(QString::number(mSellPrice, 'f', 2));
-                    }
-
-                    mProfitLabel->setText("-");
-                    mMarginLabel->setText("-");
-                    mMarkupLabel->setText("-");
-                    mMarginLabel->setStyleSheet("color: palette(text);");
-                    m1SampleDataTable->clearContents();
-                    m5SampleDataTable->clearContents();
-                }
-                else
-                {
-                        const auto bestBuy = buy;
-                        const auto bestSell = sell;
-
-                        mSellPrice = bestSell - priceDelta;
-                        mBuyPrice = bestBuy + priceDelta;
-
-                        const auto revenue = PriceUtils::getRevenue(mSellPrice, taxes);
-                        const auto cos = PriceUtils::getCoS(mBuyPrice, taxes);
-                        const auto margin = 100. * (revenue - cos) / revenue;
-                        const auto markup = 100. * (revenue - cos) / cos;
-
-                        mMarginLabel->setText(QString{"%1%2"}.arg(curLocale.toString(margin, 'f', 2)).arg(curLocale.percent()));
-                        mMarkupLabel->setText(QString{"%1%2"}.arg(curLocale.toString(markup, 'f', 2)).arg(curLocale.percent()));
-
-                        mBestBuyLabel->setText(curLocale.toCurrencyString(mBuyPrice, "ISK"));
-                        mBestSellLabel->setText(curLocale.toCurrencyString(mSellPrice, "ISK"));
-
-                        mProfitLabel->setText(curLocale.toCurrencyString(revenue - cos, "ISK"));
-                        mRevenueLabel->setText(curLocale.toCurrencyString(revenue, "ISK"));
-                        mCostOfSalesLabel->setText(curLocale.toCurrencyString(cos, "ISK"));
-
-                        if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
-                            mMarginLabel->setStyleSheet("color: red;");
-                        else if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
-                            mMarginLabel->setStyleSheet("color: orange;");
-                        else
-                            mMarginLabel->setStyleSheet("color: green;");
-
-                        auto clipboard = QApplication::clipboard();
-
-                        if (mCopySellBtn->isChecked())
-                            clipboard->setText(QString::number(mSellPrice, 'f', 2));
-                        else if (mCopyBuyBtn->isChecked())
-                            clipboard->setText(QString::number(mBuyPrice, 'f', 2));
-
-                        fillSampleData(*m1SampleDataTable, revenue, cos, 1);
-                        fillSampleData(*m5SampleDataTable, revenue, cos, 5);
-                }
-            }
-            catch (const Repository<Character>::NotFoundException &)
-            {
-            }
+            updateInfo(buy, sell, true);
         }
+    }
+
+    void MarginToolDialog::refreshDataByEdits()
+    {
+        const auto curLocale = locale();
+        updateInfo(curLocale.toDouble(mBestBuyEdit->text()), curLocale.toDouble(mBestSellEdit->text()), false);
     }
 
     void MarginToolDialog::saveCopyMode()
@@ -560,8 +474,11 @@ namespace Evernus
         auto sellLayout = new QHBoxLayout{};
         priceLayout->addLayout(sellLayout, 0, 1);
 
-        mBestSellLabel = new QLabel{"-", this};
-        sellLayout->addWidget(mBestSellLabel);
+        mBestSellEdit = new QLineEdit{this};
+        sellLayout->addWidget(mBestSellEdit);
+        mBestSellEdit->setPlaceholderText("-");
+        mBestSellEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        connect(mBestSellEdit, &QLineEdit::textEdited, this, &MarginToolDialog::refreshDataByEdits);
 
         auto copySellBtn = new QPushButton{QIcon{":/images/paste_plain.png"}, QString{}, this};
         sellLayout->addWidget(copySellBtn);
@@ -572,8 +489,11 @@ namespace Evernus
         auto buyLayout = new QHBoxLayout{};
         priceLayout->addLayout(buyLayout, 1, 1);
 
-        mBestBuyLabel = new QLabel{"-", this};
-        buyLayout->addWidget(mBestBuyLabel);
+        mBestBuyEdit = new QLineEdit{this};
+        buyLayout->addWidget(mBestBuyEdit);
+        mBestBuyEdit->setPlaceholderText("-");
+        mBestBuyEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        connect(mBestBuyEdit, &QLineEdit::textEdited, this, &MarginToolDialog::refreshDataByEdits);
 
         auto copyBuyBtn = new QPushButton{QIcon{":/images/paste_plain.png"}, QString{}, this};
         buyLayout->addWidget(copyBuyBtn);
@@ -781,6 +701,116 @@ namespace Evernus
         });
 
         return tabWidget;
+    }
+
+    void MarginToolDialog::updateInfo(double buy, double sell, bool updatePriceEdits)
+    {
+        QSettings settings;
+
+        const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+        auto curLocale = locale();
+
+        try
+        {
+            const auto character = mCharacterRepository.find(mCharacterId);
+            const auto taxes = PriceUtils::calculateTaxes(*character);
+
+            if (buy < 0. || sell < 0.)
+            {
+                if (buy < 0.)
+                {
+                    if (updatePriceEdits)
+                        mBestBuyEdit->clear();
+
+                    mCostOfSalesLabel->setText("-");
+
+                    mBuyPrice = 0.;
+                }
+                else
+                {
+                    mBuyPrice = buy + priceDelta;
+
+                    mBestBuyEdit->setText(curLocale.toCurrencyString(mBuyPrice, "ISK"));
+                    mCostOfSalesLabel->setText(curLocale.toCurrencyString(PriceUtils::getCoS(mBuyPrice, taxes), "ISK"));
+
+                    if (mCopyBuyBtn->isChecked())
+                        QApplication::clipboard()->setText(QString::number(mBuyPrice, 'f', 2));
+                }
+
+                if (sell < 0.)
+                {
+                    if (updatePriceEdits)
+                        mBestSellEdit->clear();
+
+                    mRevenueLabel->setText("-");
+
+                    mSellPrice = 0.;
+                }
+                else
+                {
+                    mSellPrice = sell - priceDelta;
+
+                    mBestSellEdit->setText(curLocale.toCurrencyString(mSellPrice, "ISK"));
+                    mRevenueLabel->setText(curLocale.toCurrencyString(PriceUtils::getRevenue(mSellPrice, taxes), "ISK"));
+
+                    if (mCopySellBtn->isChecked())
+                        QApplication::clipboard()->setText(QString::number(mSellPrice, 'f', 2));
+                }
+
+                mProfitLabel->setText("-");
+                mMarginLabel->setText("-");
+                mMarkupLabel->setText("-");
+                mMarginLabel->setStyleSheet("color: palette(text);");
+                m1SampleDataTable->clearContents();
+                m5SampleDataTable->clearContents();
+            }
+            else
+            {
+                    const auto bestBuy = buy;
+                    const auto bestSell = sell;
+
+                    mSellPrice = bestSell - priceDelta;
+                    mBuyPrice = bestBuy + priceDelta;
+
+                    const auto revenue = PriceUtils::getRevenue(mSellPrice, taxes);
+                    const auto cos = PriceUtils::getCoS(mBuyPrice, taxes);
+                    const auto margin = 100. * (revenue - cos) / revenue;
+                    const auto markup = 100. * (revenue - cos) / cos;
+
+                    mMarginLabel->setText(QString{"%1%2"}.arg(curLocale.toString(margin, 'f', 2)).arg(curLocale.percent()));
+                    mMarkupLabel->setText(QString{"%1%2"}.arg(curLocale.toString(markup, 'f', 2)).arg(curLocale.percent()));
+
+                    if (updatePriceEdits)
+                    {
+                        mBestBuyEdit->setText(curLocale.toCurrencyString(mBuyPrice, "ISK"));
+                        mBestSellEdit->setText(curLocale.toCurrencyString(mSellPrice, "ISK"));
+                    }
+
+                    mProfitLabel->setText(curLocale.toCurrencyString(revenue - cos, "ISK"));
+                    mRevenueLabel->setText(curLocale.toCurrencyString(revenue, "ISK"));
+                    mCostOfSalesLabel->setText(curLocale.toCurrencyString(cos, "ISK"));
+
+                    if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
+                        mMarginLabel->setStyleSheet("color: red;");
+                    else if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
+                        mMarginLabel->setStyleSheet("color: orange;");
+                    else
+                        mMarginLabel->setStyleSheet("color: green;");
+
+                    auto clipboard = QApplication::clipboard();
+
+                    if (mCopySellBtn->isChecked())
+                        clipboard->setText(QString::number(mSellPrice, 'f', 2));
+                    else if (mCopyBuyBtn->isChecked())
+                        clipboard->setText(QString::number(mBuyPrice, 'f', 2));
+
+                    fillSampleData(*m1SampleDataTable, revenue, cos, 1);
+                    fillSampleData(*m5SampleDataTable, revenue, cos, 5);
+            }
+        }
+        catch (const Repository<Character>::NotFoundException &)
+        {
+        }
     }
 
     void MarginToolDialog::fillSampleData(QTableWidget &table, double revenue, double cos, int multiplier)
