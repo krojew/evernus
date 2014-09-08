@@ -946,7 +946,7 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            doRefreshMarketOrdersFromAPI<&EvernusApplication::marketOrdersChanged>(key, id, task);
+            doRefreshMarketOrdersFromAPI<&EvernusApplication::marketOrdersChanged>(*key, id, task);
         }
         catch (const KeyRepository::NotFoundException &)
         {
@@ -1155,7 +1155,7 @@ namespace Evernus
         try
         {
             const auto key = getCorpKey(id);
-            doRefreshMarketOrdersFromAPI<&EvernusApplication::corpMarketOrdersChanged>(key, id, task);
+            doRefreshMarketOrdersFromAPI<&EvernusApplication::corpMarketOrdersChanged>(*key, id, task);
         }
         catch (const CorpKeyRepository::NotFoundException &)
         {
@@ -2293,7 +2293,7 @@ namespace Evernus
     template<void (EvernusApplication::* Signal)(), class Key>
     void EvernusApplication::doRefreshMarketOrdersFromAPI(const Key &key, Character::IdType id, uint task)
     {
-        mAPIManager.fetchMarketOrders(*key, id, [task, id, this](MarketOrders &&data, const QString &error) {
+        mAPIManager.fetchMarketOrders(key, id, [task, id, this](MarketOrders &&data, const QString &error) {
             if (error.isEmpty())
             {
                 importMarketOrders(id, data, std::is_same<Key, CorpKey>());

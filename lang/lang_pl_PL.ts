@@ -1308,8 +1308,8 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="666"/>
         <location filename="../EvernusApplication.cpp" line="672"/>
-        <location filename="../EvernusApplication.cpp" line="2050"/>
-        <location filename="../EvernusApplication.cpp" line="2083"/>
+        <location filename="../EvernusApplication.cpp" line="2078"/>
+        <location filename="../EvernusApplication.cpp" line="2111"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -1358,7 +1358,7 @@
         <translation>Pobieranie kontraktów dla postaci: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2274"/>
+        <location filename="../EvernusApplication.cpp" line="2302"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
@@ -1459,12 +1459,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2051"/>
+        <location filename="../EvernusApplication.cpp" line="2079"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2055"/>
+        <location filename="../EvernusApplication.cpp" line="2083"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1473,14 +1473,14 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2058"/>
+        <location filename="../EvernusApplication.cpp" line="2086"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2083"/>
+        <location filename="../EvernusApplication.cpp" line="2111"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
