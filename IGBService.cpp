@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_set>
 #include <algorithm>
 #include <stdexcept>
 #include <limits>
@@ -442,13 +443,18 @@ namespace Evernus
 
     IGBService::OrderList IGBService::filterAndSort(const OrderList &orders, MarketOrder::State state, bool needsDelta) const
     {
+        std::unordered_set<EveType::IdType> usedTypes;
+
         OrderList result;
         result.reserve(orders.size());
 
         for (const auto &order : orders)
         {
-            if (order->getState() == state && (!needsDelta || order->getDelta() != 0))
+            if ((order->getState() == state) && (!needsDelta || order->getDelta() != 0) && (usedTypes.find(order->getTypeId()) == std::end(usedTypes)))
+            {
                 result.emplace_back(order);
+                usedTypes.emplace(order->getTypeId());
+            }
         }
 
         std::sort(std::begin(result), std::end(result), [this](const auto &o1, const auto &o2) {
