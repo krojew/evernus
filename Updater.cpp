@@ -130,6 +130,8 @@ namespace Evernus
                     }
 
                     settings.setValue(ImportSettings::ignoreCachedImportKey, false);
+                    settings.setValue(PriceSettings::combineCorpAndCharPlotsKey,
+                                      settings.value("rpices/combineCorpAndCharPlots", PriceSettings::combineCorpAndCharPlotsDefault));
                 }
             }
         }

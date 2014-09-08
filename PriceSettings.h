@@ -58,6 +58,6 @@ namespace Evernus
         const auto costSourceStationKey = "prices/costSourceStation";
         const auto shareCostsKey = "prices/shareCosts";
         const auto refreshPricesWithOrdersKey = "prices/orders/autoRefresh";
-        const auto combineCorpAndCharPlotsKey = "rpices/combineCorpAndCharPlots";
+        const auto combineCorpAndCharPlotsKey = "prices/combineCorpAndCharPlots";
     }
 }

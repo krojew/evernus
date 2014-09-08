@@ -4567,14 +4567,14 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="178"/>
-        <location filename="../Updater.cpp" line="189"/>
-        <location filename="../Updater.cpp" line="199"/>
+        <location filename="../Updater.cpp" line="180"/>
+        <location filename="../Updater.cpp" line="191"/>
+        <location filename="../Updater.cpp" line="201"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="178"/>
+        <location filename="../Updater.cpp" line="180"/>
         <source>Error contacting update server: %1</source>
         <translation>Błąd odpytywania serwera akutalizacji: %1</translation>
     </message>
@@ -4586,7 +4586,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <location filename="../Updater.cpp" line="90"/>
         <location filename="../Updater.cpp" line="109"/>
         <location filename="../Updater.cpp" line="115"/>
-        <location filename="../Updater.cpp" line="138"/>
+        <location filename="../Updater.cpp" line="140"/>
         <source>Update</source>
         <translation>Aktualizacja</translation>
     </message>
@@ -4615,39 +4615,39 @@ Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania dziennika i transakcji korporacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="138"/>
+        <location filename="../Updater.cpp" line="140"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation>Wystąpił błąd podczas akutalizacji.
 Kopia zapasowa bazay danych została zapisana jako %1. Zajrzyj do pomocy online w celu uzyskania informacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="189"/>
+        <location filename="../Updater.cpp" line="191"/>
         <source>Error parsing response from the update server: %1</source>
         <translation>Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="199"/>
+        <location filename="../Updater.cpp" line="201"/>
         <source>Missing update version information!</source>
         <translation>Brak informacji o wersji!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="212"/>
+        <location filename="../Updater.cpp" line="214"/>
         <source>No update found</source>
         <translation>Brak aktualizacji</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="212"/>
+        <location filename="../Updater.cpp" line="214"/>
         <source>Your current version is up-to-date.</source>
         <translation>Twoja wersja jest najbardziej aktualna.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="218"/>
+        <location filename="../Updater.cpp" line="220"/>
         <source>Update found</source>
         <translation>Znaleziono aktualizację</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="218"/>
+        <location filename="../Updater.cpp" line="220"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation>Znaleziono nową wersję: %1
