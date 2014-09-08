@@ -3857,12 +3857,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Całkowita objętość:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="113"/>
+        <location filename="../MarketOrderView.cpp" line="111"/>
         <source>Lookup item on eve-marketdata.com</source>
         <translation>Sprawdź cenę na eve-marketdata.com</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="116"/>
+        <location filename="../MarketOrderView.cpp" line="114"/>
         <source>Lookup item on eve-central.com</source>
         <translation>Sprawdź cenę na eve-central.com</translation>
     </message>
@@ -4838,19 +4838,49 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletTransactionsWidget</name>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="59"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="62"/>
         <source>all</source>
         <translation>wszystko</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="59"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="62"/>
         <source>buy</source>
         <translation>kupno</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="59"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="62"/>
         <source>sell</source>
         <translation>sprzedaż</translation>
+    </message>
+    <message>
+        <location filename="../WalletTransactionsWidget.cpp" line="86"/>
+        <source>Total transactions:</source>
+        <translation>Transakcje:</translation>
+    </message>
+    <message>
+        <location filename="../WalletTransactionsWidget.cpp" line="92"/>
+        <source>Total quantity:</source>
+        <translation>Całkowita ilość:</translation>
+    </message>
+    <message>
+        <location filename="../WalletTransactionsWidget.cpp" line="98"/>
+        <source>Total size:</source>
+        <translation>Całkowita objętość:</translation>
+    </message>
+    <message>
+        <location filename="../WalletTransactionsWidget.cpp" line="104"/>
+        <source>Total income:</source>
+        <translation>Całkowity zysk:</translation>
+    </message>
+    <message>
+        <location filename="../WalletTransactionsWidget.cpp" line="111"/>
+        <source>Total cost:</source>
+        <translation>Całkowity koszt:</translation>
+    </message>
+    <message>
+        <location filename="../WalletTransactionsWidget.cpp" line="118"/>
+        <source>Total balance:</source>
+        <translation>Całkowity bilans:</translation>
     </message>
     <message>
         <source>Add to item costs</source>

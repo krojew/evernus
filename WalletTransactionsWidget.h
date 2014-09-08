@@ -19,6 +19,7 @@
 
 class QSortFilterProxyModel;
 class QItemSelection;
+class QLabel;
 
 namespace Evernus
 {
@@ -62,6 +63,15 @@ namespace Evernus
 
         WalletTransactionView *mView = nullptr;
 
+        QLabel *mTotalTransactionsLabel = nullptr;
+        QLabel *mTotalQuantityLabel = nullptr;
+        QLabel *mTotalSizeLabel = nullptr;
+        QLabel *mTotalIncomeLabel = nullptr;
+        QLabel *mTotalCostLabel = nullptr;
+        QLabel *mTotalBalanceLabel = nullptr;
+
         virtual void handleNewCharacter(Character::IdType id) override;
+
+        void updateInfo();
     };
 }

@@ -325,6 +325,8 @@ add_executable(
     FilterText.h
     FilterTextRepository.cpp
     FilterTextRepository.h
+    FlowLayout.cpp
+    FlowLayout.h
     GeneralPreferencesWidget.cpp
     GeneralPreferencesWidget.h
     GenericNameDomParser.cpp

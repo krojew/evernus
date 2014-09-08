@@ -18,7 +18,9 @@
 #include <QVBoxLayout>
 #include <QClipboard>
 #include <QSettings>
+#include <QLabel>
 #include <QDebug>
+#include <QFont>
 
 #include "WalletEntryFilterWidget.h"
 #include "WalletTransactionView.h"
@@ -28,6 +30,7 @@
 #include "ButtonWithTimer.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
+#include "FlowLayout.h"
 
 #include "WalletTransactionsWidget.h"
 
@@ -73,18 +76,66 @@ namespace Evernus
         mainLayout->addWidget(mView, 1);
         mView->setModels(mFilterModel, &mModel);
         mView->sortByColumn(1, Qt::DescendingOrder);
+
+        QFont font;
+        font.setBold(true);
+
+        auto infoLayout = new FlowLayout{};
+        mainLayout->addLayout(infoLayout);
+
+        infoLayout->addWidget(new QLabel{tr("Total transactions:"), this});
+
+        mTotalTransactionsLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mTotalTransactionsLabel);
+        mTotalTransactionsLabel->setFont(font);
+
+        infoLayout->addWidget(new QLabel{tr("Total quantity:"), this});
+
+        mTotalQuantityLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mTotalQuantityLabel);
+        mTotalQuantityLabel->setFont(font);
+
+        infoLayout->addWidget(new QLabel{tr("Total size:"), this});
+
+        mTotalSizeLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mTotalSizeLabel);
+        mTotalSizeLabel->setFont(font);
+
+        infoLayout->addWidget(new QLabel{tr("Total income:"), this});
+
+        mTotalIncomeLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mTotalIncomeLabel);
+        mTotalIncomeLabel->setFont(font);
+        mTotalIncomeLabel->setStyleSheet("color: darkGreen;");
+
+        infoLayout->addWidget(new QLabel{tr("Total cost:"), this});
+
+        mTotalCostLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mTotalCostLabel);
+        mTotalCostLabel->setFont(font);
+        mTotalCostLabel->setStyleSheet("color: darkRed;");
+
+        infoLayout->addWidget(new QLabel{tr("Total balance:"), this});
+
+        mTotalBalanceLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mTotalBalanceLabel);
+        mTotalBalanceLabel->setFont(font);
     }
 
     void WalletTransactionsWidget::updateData()
     {
         refreshImportTimer();
         mModel.reset();
+
+        updateInfo();
     }
 
     void WalletTransactionsWidget::updateFilter(const QDate &from, const QDate &to, const QString &filter, int type)
     {
         mModel.setFilter(getCharacterId(), from, to.addDays(1), static_cast<EntryType>(type));
         mFilterModel->setFilterWildcard(filter);
+
+        updateInfo();
     }
 
     void WalletTransactionsWidget::handleNewCharacter(Character::IdType id)
@@ -102,5 +153,27 @@ namespace Evernus
 
         mView->setCharacter(id);
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
+
+        updateInfo();
+    }
+
+    void WalletTransactionsWidget::updateInfo()
+    {
+        auto curLocale = locale();
+
+        const auto income = mModel.getTotalIncome();
+        const auto cost = mModel.getTotalCost();
+
+        mTotalTransactionsLabel->setText(curLocale.toString(mModel.rowCount()));
+        mTotalQuantityLabel->setText(curLocale.toString(mModel.getTotalQuantity()));
+        mTotalSizeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(mModel.getTotalSize(), 'f', 2)));
+        mTotalIncomeLabel->setText(curLocale.toCurrencyString(income, "ISK"));
+        mTotalCostLabel->setText(curLocale.toCurrencyString(cost, "ISK"));
+        mTotalBalanceLabel->setText(curLocale.toCurrencyString(income - cost, "ISK"));
+
+        if (income - cost > 0.)
+            mTotalBalanceLabel->setStyleSheet("color: darkGreen;");
+        else
+            mTotalBalanceLabel->setStyleSheet("color: darkRed;");
     }
 }

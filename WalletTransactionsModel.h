@@ -54,6 +54,11 @@ namespace Evernus
         double getPrice(int row) const;
         WalletTransaction::Type getType(int row) const;
 
+        quint64 getTotalQuantity() const noexcept;
+        double getTotalSize() const noexcept;
+        double getTotalIncome() const noexcept;
+        double getTotalCost() const noexcept;
+
         void setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, EveType::IdType typeId = EveType::invalidId);
 
         void reset();
@@ -82,5 +87,10 @@ namespace Evernus
         QStringList mColumns;
 
         bool mCorp = false;
+
+        quint64 mTotalQuantity = 0;
+        double mTotalSize = 0.;
+        double mTotalIncome = 0.;
+        double mTotalCost = 0.;
     };
 }

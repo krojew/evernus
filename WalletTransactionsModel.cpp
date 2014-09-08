@@ -181,6 +181,26 @@ namespace Evernus
         return static_cast<WalletTransaction::Type>(mData[row][typeColumn].toInt());
     }
 
+    quint64 WalletTransactionsModel::getTotalQuantity() const noexcept
+    {
+        return mTotalQuantity;
+    }
+
+    double WalletTransactionsModel::getTotalSize() const noexcept
+    {
+        return mTotalSize;
+    }
+
+    double WalletTransactionsModel::getTotalIncome() const noexcept
+    {
+        return mTotalIncome;
+    }
+
+    double WalletTransactionsModel::getTotalCost() const noexcept
+    {
+        return mTotalCost;
+    }
+
     void WalletTransactionsModel::setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, EveType::IdType typeId)
     {
         mCharacterId = id;
@@ -195,6 +215,11 @@ namespace Evernus
     void WalletTransactionsModel::reset()
     {
         beginResetModel();
+
+        mTotalQuantity = 0;
+        mTotalSize = 0.;
+        mTotalIncome = 0.;
+        mTotalCost = 0.;
 
         mData.clear();
         if (mCharacterId != Character::invalidId)
@@ -229,6 +254,14 @@ namespace Evernus
                         << entry->getClientName()
                         << mDataProvider.getLocationName(entry->getLocationId())
                         << entry->getId();
+
+                    mTotalQuantity += entry->getQuantity();
+                    mTotalSize += mDataProvider.getTypeVolume(entry->getTypeId());
+
+                    if (entry->getType() == WalletTransaction::Type::Buy)
+                        mTotalCost += entry->getPrice();
+                    else
+                        mTotalIncome += entry->getPrice();
                 }
             }
             catch (const CharacterRepository::NotFoundException &)

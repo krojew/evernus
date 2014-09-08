@@ -15,7 +15,6 @@
 #include <QDesktopServices>
 #include <QActionGroup>
 #include <QVBoxLayout>
-#include <QHBoxLayout>
 #include <QHeaderView>
 #include <QSettings>
 #include <QCursor>
@@ -28,6 +27,7 @@
 #include "MarketOrderInfoWidget.h"
 #include "MarketOrderModel.h"
 #include "StyledTreeView.h"
+#include "FlowLayout.h"
 #include "UISettings.h"
 
 #include "MarketOrderView.h"
@@ -77,7 +77,7 @@ namespace Evernus
         mInfoWidget = new QWidget{this};
         mainLayout->addWidget(mInfoWidget);
 
-        auto infoLayout = new QHBoxLayout{};
+        auto infoLayout = new FlowLayout{};
         mInfoWidget->setLayout(infoLayout);
         infoLayout->setContentsMargins(QMargins{});
 
@@ -104,8 +104,6 @@ namespace Evernus
         mTotalSizeLabel = new QLabel{this};
         infoLayout->addWidget(mTotalSizeLabel);
         mTotalSizeLabel->setFont(font);
-
-        infoLayout->addStretch();
 
         mLookupGroup = new QActionGroup{this};
         mLookupGroup->setEnabled(false);
