@@ -121,7 +121,7 @@ namespace Evernus
                                                         mOrderProvider,
                                                         corpOrderProvider,
                                                         corp,
-                                                        "marketOrderSellView",
+                                                        (mCorp) ? ("corpMarketOrderSellView") : ("marketOrderSellView"),
                                                         true,
                                                         this};
         mainTabs->addTab(mSellView, QIcon{":/images/arrow_out.png"}, tr("Sell"));
@@ -143,7 +143,7 @@ namespace Evernus
                                                        mOrderProvider,
                                                        corpOrderProvider,
                                                        corp,
-                                                       "marketOrderBuyView",
+                                                       (mCorp) ? ("corpMarketOrderBuyView") : ("marketOrderBuyView"),
                                                        true,
                                                        this};
         mainTabs->addTab(mBuyView, QIcon{":/images/arrow_in.png"}, tr("Buy"));
@@ -168,7 +168,9 @@ namespace Evernus
         auto sellGroupLayout = new QVBoxLayout{};
         sellGroup->setLayout(sellGroupLayout);
 
-        mCombinedSellView = new MarketOrderView{dataProvider, "marketOrderSellView",this};
+        mCombinedSellView = new MarketOrderView{dataProvider,
+                                                (mCorp) ? ("corpCombinedMarketOrderSellView") : ("combinedMarketOrderSellView"),
+                                                this};
         sellGroupLayout->addWidget(mCombinedSellView);
         mCombinedSellView->setModel(&mSellModel);
         mCombinedSellView->sortByColumn(0, Qt::AscendingOrder);
@@ -184,7 +186,9 @@ namespace Evernus
         auto buyGroupLayout = new QVBoxLayout{};
         buyGroup->setLayout(buyGroupLayout);
 
-        mCombinedBuyView = new MarketOrderView{dataProvider, "marketOrderBuyView",this};
+        mCombinedBuyView = new MarketOrderView{dataProvider,
+                                               (mCorp) ? ("corpCombinedMarketOrderBuyView") : ("combinedMarketOrderBuyView"),
+                                               this};
         buyGroupLayout->addWidget(mCombinedBuyView);
         mCombinedBuyView->setModel(&mBuyModel);
         mCombinedBuyView->sortByColumn(0, Qt::AscendingOrder);
@@ -217,7 +221,7 @@ namespace Evernus
                                                            mOrderProvider,
                                                            corpOrderProvider,
                                                            corp,
-                                                           "marketOrderArchiveView",
+                                                           (mCorp) ? ("corpMarketOrderArchiveView") : ("marketOrderArchiveView"),
                                                            false,
                                                            this};
         archiveLayout->addWidget(mArchiveView);

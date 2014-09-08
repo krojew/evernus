@@ -69,7 +69,7 @@ namespace Evernus
         mFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
         mFilterModel->setSourceModel(&mModel);
 
-        mView = new WalletTransactionView{"transactionsView", itemCostProvider, this};
+        mView = new WalletTransactionView{(corp) ? ("corpTransactionsView") : ("transactionsView"), itemCostProvider, this};
         mainLayout->addWidget(mView, 1);
         mView->setModels(mFilterModel, &mModel);
         mView->sortByColumn(1, Qt::DescendingOrder);
