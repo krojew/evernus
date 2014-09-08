@@ -117,6 +117,7 @@ namespace Evernus
         virtual const MarketOrderRepository &getCorpMarketOrderRepository() const noexcept override;
         virtual const ItemCostRepository &getItemCostRepository() const noexcept override;
         virtual const MarketOrderValueSnapshotRepository &getMarketOrderValueSnapshotRepository() const noexcept override;
+        virtual const CorpMarketOrderValueSnapshotRepository &getCorpMarketOrderValueSnapshotRepository() const noexcept override;
         virtual const FilterTextRepository &getFilterTextRepository() const noexcept override;
         virtual const OrderScriptRepository &getOrderScriptRepository() const noexcept override;
         virtual const FavoriteItemRepository &getFavoriteItemRepository() const noexcept override;

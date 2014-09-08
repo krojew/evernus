@@ -33,6 +33,7 @@
 #include <QHash>
 #include <QFont>
 
+#include "CorpMarketOrderValueSnapshotRepository.h"
 #include "MarketOrderValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
 #include "AssetValueSnapshotRepository.h"
@@ -56,6 +57,7 @@ namespace Evernus
                                        const WalletSnapshotRepository &walletSnapshotRepo,
                                        const CorpWalletSnapshotRepository &corpWalletSnapshotRepo,
                                        const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
+                                       const CorpMarketOrderValueSnapshotRepository &corpMarketOrderSnapshotRepo,
                                        const WalletJournalEntryRepository &journalRepo,
                                        const WalletTransactionRepository &transactionRepo,
                                        const WalletJournalEntryRepository &corpJournalRepo,
@@ -70,6 +72,7 @@ namespace Evernus
         , mWalletSnapshotRepository(walletSnapshotRepo)
         , mCorpWalletSnapshotRepository(corpWalletSnapshotRepo)
         , mMarketOrderSnapshotRepository(marketOrderSnapshotRepo)
+        , mCorpMarketOrderSnapshotRepository(corpMarketOrderSnapshotRepo)
         , mJournalRepository(journalRepo)
         , mCorpJournalRepository(corpJournalRepo)
         , mTransactionRepository(transactionRepo)
@@ -172,12 +175,12 @@ namespace Evernus
             for (const auto &shot : range)
             {
                 const auto secs = shot->getTimestamp().toMSecsSinceEpoch() / 1000.;
-                values->insert(secs, QCPData{secs, shot->getBalance()});
+                values.insert(secs, QCPData{secs, shot->getBalance()});
             }
         };
 
-        dataInserter(assetValues, assetShots);
-        dataInserter(walletValues, walletShots);
+        dataInserter(*assetValues, assetShots);
+        dataInserter(*walletValues, walletShots);
 
         for (const auto &order : orderShots)
         {
@@ -281,7 +284,6 @@ namespace Evernus
         };
 
         *sumData = merger(*assetValues, *walletValues);
-        *sumData = merger(*sumData, buyAndSellValues);
 
         try
         {
@@ -291,14 +293,32 @@ namespace Evernus
                                      (mCorpWalletSnapshotRepository.fetchRange(corpId, from.toUTC(), to.toUTC()));
 
             if (!walletShots.empty())
-            {
-                dataInserter(corpWalletValues, walletShots);
                 *sumData = merger(*sumData, *corpWalletValues);
+
+            const auto corpOrderShots = mCorpMarketOrderSnapshotRepository.fetchRange(corpId, from.toUTC(), to.toUTC());
+            if (!corpOrderShots.empty())
+            {
+                QCPDataMap corpBuyValues, corpSellValues, corpBuyAndSellValues;
+                for (const auto &order : corpOrderShots)
+                {
+                    const auto secs = order->getTimestamp().toMSecsSinceEpoch() / 1000.;
+
+                    corpBuyValues.insert(secs, QCPData{secs, order->getBuyValue()});
+                    corpSellValues.insert(secs, QCPData{secs, order->getSellValue()});
+
+                    corpBuyAndSellValues.insert(secs, QCPData{secs, order->getBuyValue() + order->getSellValue()});
+                }
+
+                *buyValues = merger(*buyValues, corpBuyValues);
+                *sellValues = merger(*sellValues, corpSellValues);
+                buyAndSellValues = merger(buyAndSellValues, corpBuyAndSellValues);
             }
         }
         catch (const CharacterRepository::NotFoundException &)
         {
         }
+
+        *sumData = merger(*sumData, buyAndSellValues);
 
         QVector<double> sumTicks;
         for (const auto &entry : *sumData)

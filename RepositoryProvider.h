@@ -16,6 +16,7 @@
 
 namespace Evernus
 {
+    class CorpMarketOrderValueSnapshotRepository;
     class MarketOrderValueSnapshotRepository;
     class WalletJournalEntryRepository;
     class AssetValueSnapshotRepository;
@@ -54,6 +55,7 @@ namespace Evernus
         virtual const MarketOrderRepository &getCorpMarketOrderRepository() const noexcept = 0;
         virtual const ItemCostRepository &getItemCostRepository() const noexcept = 0;
         virtual const MarketOrderValueSnapshotRepository &getMarketOrderValueSnapshotRepository() const noexcept = 0;
+        virtual const CorpMarketOrderValueSnapshotRepository &getCorpMarketOrderValueSnapshotRepository() const noexcept = 0;
         virtual const FilterTextRepository &getFilterTextRepository() const noexcept = 0;
         virtual const OrderScriptRepository &getOrderScriptRepository() const noexcept = 0;
         virtual const FavoriteItemRepository &getFavoriteItemRepository() const noexcept = 0;

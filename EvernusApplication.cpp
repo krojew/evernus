@@ -583,6 +583,11 @@ namespace Evernus
         return *mMarketOrderValueSnapshotRepository;
     }
 
+    const CorpMarketOrderValueSnapshotRepository &EvernusApplication::getCorpMarketOrderValueSnapshotRepository() const noexcept
+    {
+        return *mCorpMarketOrderValueSnapshotRepository;
+    }
+
     const FilterTextRepository &EvernusApplication::getFilterTextRepository() const noexcept
     {
         return *mFilterTextRepository;

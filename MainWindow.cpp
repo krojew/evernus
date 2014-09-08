@@ -487,6 +487,7 @@ namespace Evernus
                                              mRepositoryProvider.getWalletSnapshotRepository(),
                                              mRepositoryProvider.getCorpWalletSnapshotRepository(),
                                              mRepositoryProvider.getMarketOrderValueSnapshotRepository(),
+                                             mRepositoryProvider.getCorpMarketOrderValueSnapshotRepository(),
                                              mRepositoryProvider.getWalletJournalEntryRepository(),
                                              mRepositoryProvider.getWalletTransactionRepository(),
                                              mRepositoryProvider.getCorpWalletJournalEntryRepository(),

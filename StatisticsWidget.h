@@ -30,6 +30,7 @@ class QCPBars;
 
 namespace Evernus
 {
+    class CorpMarketOrderValueSnapshotRepository;
     class MarketOrderValueSnapshotRepository;
     class WalletJournalEntryRepository;
     class AssetValueSnapshotRepository;
@@ -50,6 +51,7 @@ namespace Evernus
                          const WalletSnapshotRepository &walletSnapshotRepo,
                          const CorpWalletSnapshotRepository &corpWalletSnapshotRepo,
                          const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
+                         const CorpMarketOrderValueSnapshotRepository &corpMarketOrderSnapshotRepo,
                          const WalletJournalEntryRepository &journalRepo,
                          const WalletTransactionRepository &transactionRepo,
                          const WalletJournalEntryRepository &corpJournalRepo,
@@ -96,6 +98,7 @@ namespace Evernus
         const WalletSnapshotRepository &mWalletSnapshotRepository;
         const CorpWalletSnapshotRepository &mCorpWalletSnapshotRepository;
         const MarketOrderValueSnapshotRepository &mMarketOrderSnapshotRepository;
+        const CorpMarketOrderValueSnapshotRepository &mCorpMarketOrderSnapshotRepository;
         const WalletJournalEntryRepository &mJournalRepository, &mCorpJournalRepository;
         const WalletTransactionRepository &mTransactionRepository, &mCorpTransactionRepository;
         const MarketOrderRepository &mMarketOrderRepository;
