@@ -1840,6 +1840,29 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
 </context>
 <context>
+    <name>Evernus::GenericMarketOrdersInfoWidget</name>
+    <message>
+        <location filename="../GenericMarketOrdersInfoWidget.cpp" line="36"/>
+        <source>Active orders:</source>
+        <translation>Aktywne zlecenia:</translation>
+    </message>
+    <message>
+        <location filename="../GenericMarketOrdersInfoWidget.cpp" line="42"/>
+        <source>Total volume:</source>
+        <translation>Całkowity wolumen:</translation>
+    </message>
+    <message>
+        <location filename="../GenericMarketOrdersInfoWidget.cpp" line="48"/>
+        <source>Total ISK in orders:</source>
+        <translation>Całkowita inwestycja:</translation>
+    </message>
+    <message>
+        <location filename="../GenericMarketOrdersInfoWidget.cpp" line="54"/>
+        <source>Total size:</source>
+        <translation>Całkowita objętość:</translation>
+    </message>
+</context>
+<context>
     <name>Evernus::HttpPreferencesWidget</name>
     <message>
         <location filename="../HttpPreferencesWidget.cpp" line="47"/>
@@ -3666,107 +3689,107 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>dziś</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="474"/>
+        <location filename="../MarketOrderSellModel.cpp" line="472"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="476"/>
+        <location filename="../MarketOrderSellModel.cpp" line="474"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="478"/>
+        <location filename="../MarketOrderSellModel.cpp" line="476"/>
         <source>Status</source>
         <translation>Stan</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="480"/>
+        <location filename="../MarketOrderSellModel.cpp" line="478"/>
         <source>Custom cost</source>
         <translation>Koszt własny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="482"/>
+        <location filename="../MarketOrderSellModel.cpp" line="480"/>
         <source>Price</source>
         <translation>Cena</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="484"/>
+        <location filename="../MarketOrderSellModel.cpp" line="482"/>
         <source>Price status</source>
         <translation>Stan ceny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="486"/>
+        <location filename="../MarketOrderSellModel.cpp" line="484"/>
         <source>Price difference</source>
         <translation>Różnica cen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="488"/>
+        <location filename="../MarketOrderSellModel.cpp" line="486"/>
         <source>Price difference, %1</source>
         <translation>Różnica cen, %1</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="490"/>
+        <location filename="../MarketOrderSellModel.cpp" line="488"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="492"/>
+        <location filename="../MarketOrderSellModel.cpp" line="490"/>
         <source>Total</source>
         <translation>Suma</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="494"/>
+        <location filename="../MarketOrderSellModel.cpp" line="492"/>
         <source>Delta</source>
         <translation>Zmiana</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="496"/>
+        <location filename="../MarketOrderSellModel.cpp" line="494"/>
         <source>Margin</source>
         <translation>Marża</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="498"/>
+        <location filename="../MarketOrderSellModel.cpp" line="496"/>
         <source>Profit</source>
         <translation>Zysk</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="500"/>
+        <location filename="../MarketOrderSellModel.cpp" line="498"/>
         <source>Total profit</source>
         <translation>Całkowity zysk</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="502"/>
+        <location filename="../MarketOrderSellModel.cpp" line="500"/>
         <source>Profit per item</source>
         <translation>Zysk jednostkowy</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="504"/>
+        <location filename="../MarketOrderSellModel.cpp" line="502"/>
         <source>ETA</source>
         <translation>ETA</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="506"/>
+        <location filename="../MarketOrderSellModel.cpp" line="504"/>
         <source>Time left</source>
         <translation>Pozostały czas</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="508"/>
+        <location filename="../MarketOrderSellModel.cpp" line="506"/>
         <source>Order age</source>
         <translation>Wiek zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="510"/>
+        <location filename="../MarketOrderSellModel.cpp" line="508"/>
         <source>First issued</source>
         <translation>Wystawiono</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="512"/>
+        <location filename="../MarketOrderSellModel.cpp" line="510"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="514"/>
+        <location filename="../MarketOrderSellModel.cpp" line="512"/>
         <source>Owner</source>
         <translation>Właściciel</translation>
     </message>
@@ -3822,47 +3845,43 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderView</name>
     <message>
-        <location filename="../MarketOrderView.cpp" line="62"/>
+        <location filename="../MarketOrderView.cpp" line="61"/>
         <source>Delete order</source>
         <translation>Usuń zlecenie</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="67"/>
+        <location filename="../MarketOrderView.cpp" line="66"/>
         <source>Show in market browser</source>
         <translation>Pokaż na rynku</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="72"/>
+        <location filename="../MarketOrderView.cpp" line="71"/>
         <source>Show in EVE</source>
         <translation>Pokaż w EVE</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="84"/>
         <source>Active orders:</source>
-        <translation>Aktywne zlecenia:</translation>
+        <translation type="vanished">Aktywne zlecenia:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="90"/>
         <source>Total volume:</source>
-        <translation>Całkowity wolumen:</translation>
+        <translation type="vanished">Całkowity wolumen:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="96"/>
         <source>Total ISK in orders:</source>
-        <translation>Całkowita inwestycja:</translation>
+        <translation type="vanished">Całkowita inwestycja:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="102"/>
         <source>Total size:</source>
-        <translation>Całkowita objętość:</translation>
+        <translation type="vanished">Całkowita objętość:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="111"/>
+        <location filename="../MarketOrderView.cpp" line="82"/>
         <source>Lookup item on eve-marketdata.com</source>
         <translation>Sprawdź cenę na eve-marketdata.com</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="114"/>
+        <location filename="../MarketOrderView.cpp" line="85"/>
         <source>Lookup item on eve-central.com</source>
         <translation>Sprawdź cenę na eve-central.com</translation>
     </message>
@@ -3870,12 +3889,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderViewWithTransactions</name>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="82"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="83"/>
         <source>Market orders</source>
         <translation>Zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="86"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="87"/>
         <source>Transactions</source>
         <translation>Transakcje</translation>
     </message>
@@ -3887,17 +3906,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderWidget</name>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="73"/>
+        <location filename="../MarketOrderWidget.cpp" line="75"/>
         <source>File import</source>
         <translation>Importuj z pliku</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="83"/>
+        <location filename="../MarketOrderWidget.cpp" line="85"/>
         <source>Import prices from Web</source>
         <translation>Importuj ceny z sieci</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="84"/>
+        <location filename="../MarketOrderWidget.cpp" line="86"/>
         <source>Import prices from logs</source>
         <translation>Importuj ceny z logów</translation>
     </message>
@@ -3906,77 +3925,77 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="obsolete">Import</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="85"/>
+        <location filename="../MarketOrderWidget.cpp" line="87"/>
         <source>Import prices from cache</source>
         <translation>Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="87"/>
+        <location filename="../MarketOrderWidget.cpp" line="89"/>
         <source>Import prices  </source>
         <translation>Importuj ceny  </translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="92"/>
+        <location filename="../MarketOrderWidget.cpp" line="94"/>
         <source>Open margin tool</source>
         <translation>Otwórz narzędzie marży</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="100"/>
+        <location filename="../MarketOrderWidget.cpp" line="102"/>
         <source>Group by:</source>
         <translation>Grupuj po:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="104"/>
+        <location filename="../MarketOrderWidget.cpp" line="106"/>
         <source>- none -</source>
         <translation>- brak -</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="105"/>
+        <location filename="../MarketOrderWidget.cpp" line="107"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="106"/>
+        <location filename="../MarketOrderWidget.cpp" line="108"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="107"/>
+        <location filename="../MarketOrderWidget.cpp" line="109"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="127"/>
+        <location filename="../MarketOrderWidget.cpp" line="130"/>
         <source>Sell</source>
         <translation>Sprzedaż</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="149"/>
+        <location filename="../MarketOrderWidget.cpp" line="153"/>
         <source>Buy</source>
         <translation>Kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="160"/>
+        <location filename="../MarketOrderWidget.cpp" line="164"/>
         <source>Sell &amp;&amp; Buy</source>
         <translation>Sprzedaż i kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="165"/>
+        <location filename="../MarketOrderWidget.cpp" line="169"/>
         <source>Sell orders</source>
         <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="183"/>
+        <location filename="../MarketOrderWidget.cpp" line="188"/>
         <source>Buy orders</source>
         <translation>Zlecenia kupna</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="202"/>
+        <location filename="../MarketOrderWidget.cpp" line="208"/>
         <source>History</source>
         <translation>Historia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="294"/>
+        <location filename="../MarketOrderWidget.cpp" line="300"/>
         <source>Script error</source>
         <translation>Błąd skryptu</translation>
     </message>
@@ -4306,6 +4325,40 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <location filename="../PricePreferencesWidget.cpp" line="146"/>
         <source>Auto-copy non-overbid prices with price helper</source>
         <translation>Auto. kopiowanie nieprzebitych cen</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::SellMarketOrdersInfoWidget</name>
+    <message>
+        <source>Active orders:</source>
+        <translation type="obsolete">Aktywne zlecenia:</translation>
+    </message>
+    <message>
+        <source>Total volume:</source>
+        <translation type="obsolete">Całkowity wolumen:</translation>
+    </message>
+    <message>
+        <source>Total ISK in orders:</source>
+        <translation type="obsolete">Całkowita inwestycja:</translation>
+    </message>
+    <message>
+        <source>Total size:</source>
+        <translation type="obsolete">Całkowita objętość:</translation>
+    </message>
+    <message>
+        <location filename="../SellMarketOrdersInfoWidget.cpp" line="37"/>
+        <source>Total income:</source>
+        <translation>Całkowity zysk:</translation>
+    </message>
+    <message>
+        <location filename="../SellMarketOrdersInfoWidget.cpp" line="44"/>
+        <source>Total cost:</source>
+        <translation>Całkowity koszt:</translation>
+    </message>
+    <message>
+        <location filename="../SellMarketOrdersInfoWidget.cpp" line="51"/>
+        <source>Total margin:</source>
+        <translation>Całkowita marża:</translation>
     </message>
 </context>
 <context>

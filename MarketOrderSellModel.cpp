@@ -437,9 +437,7 @@ namespace Evernus
                 {
                     const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
-                    const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                    const auto margin = 100. * (realPrice - realCost) / realPrice;
+                    const auto margin = PriceUtils::getMargin(cost->getCost(), data->getPrice(), taxes);
 
                     QSettings settings;
                     if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
@@ -566,6 +564,16 @@ namespace Evernus
         return Type::Sell;
     }
 
+    double MarketOrderSellModel::getTotalCost() const noexcept
+    {
+        return mTotalCost;
+    }
+
+    double MarketOrderSellModel::getTotalIncome() const noexcept
+    {
+        return mTotalIncome;
+    }
+
     void MarketOrderSellModel::updateNames()
     {
         if (mGrouping == Grouping::None)
@@ -596,12 +604,29 @@ namespace Evernus
 
     MarketOrderTreeModel::OrderList MarketOrderSellModel::getOrders() const
     {
+        mTotalCost = 0.;
+        mTotalIncome = 0.;
+
         if (!mCharacter)
             return OrderList{};
 
-        return (mCorp) ?
-               (mOrderProvider.getSellOrdersForCorporation(mCharacter->getCorporationId())) :
-               (mOrderProvider.getSellOrders(mCharacterId));
+        const auto orders = (mCorp) ?
+                            (mOrderProvider.getSellOrdersForCorporation(mCharacter->getCorporationId())) :
+                            (mOrderProvider.getSellOrders(mCharacterId));
+
+        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        for (const auto &order : orders)
+        {
+            if (order->getState() != MarketOrder::State::Active)
+                continue;
+
+            const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, order->getTypeId());
+
+            mTotalCost += order->getVolumeEntered() * PriceUtils::getCoS(cost->getCost(), taxes);
+            mTotalIncome += order->getVolumeEntered() * PriceUtils::getRevenue(order->getPrice(), taxes);
+        }
+
+        return orders;
     }
 
     void MarketOrderSellModel::handleNewCharacter()

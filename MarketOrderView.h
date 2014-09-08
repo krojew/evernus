@@ -21,12 +21,12 @@
 
 class QItemSelectionModel;
 class QActionGroup;
-class QLabel;
 
 namespace Evernus
 {
-    class EveDataProvider;
+    class MarketOrdersInfoWidget;
     class MarketOrderModel;
+    class EveDataProvider;
     class StyledTreeView;
 
     class MarketOrderView
@@ -35,14 +35,16 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MarketOrderView(const EveDataProvider &dataProvider, const QString &objectName, QWidget *parent = nullptr);
+        MarketOrderView(const EveDataProvider &dataProvider,
+                        const QString &objectName,
+                        MarketOrdersInfoWidget *infoWidget,
+                        QWidget *parent = nullptr);
         virtual ~MarketOrderView() = default;
 
         QItemSelectionModel *getSelectionModel() const;
         const QAbstractProxyModel &getProxyModel() const;
 
         void setModel(MarketOrderModel *model);
-        void setShowInfo(bool flag);
 
         void expandAll();
 
@@ -61,9 +63,6 @@ namespace Evernus
         void showExternalOrders(EveType::IdType id);
         void showInEve(EveType::IdType id);
 
-    public slots:
-        void updateInfo();
-
     private slots:
         void showPriceInfo(const QModelIndex &index);
 
@@ -75,14 +74,11 @@ namespace Evernus
         void showExternalOrdersForCurrent();
         void showInEveForCurrent();
 
+        void handleReset();
+
     private:
         StyledTreeView *mView = nullptr;
-
-        QLabel *mTotalOrdersLabel = nullptr;
-        QLabel *mVolumeLabel = nullptr;
-        QLabel *mTotalISKLabel = nullptr;
-        QLabel *mTotalSizeLabel = nullptr;
-        QWidget *mInfoWidget = nullptr;
+        MarketOrdersInfoWidget *mInfoWidget = nullptr;
 
         MarketOrderModel *mSource = nullptr;
         MarketOrderFilterProxyModel mProxy;

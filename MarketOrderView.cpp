@@ -19,28 +19,27 @@
 #include <QSettings>
 #include <QCursor>
 #include <QAction>
-#include <QLabel>
-#include <QFont>
 #include <QUrl>
 
 #include "MarketOrderVolumeItemDelegate.h"
+#include "MarketOrdersInfoWidget.h"
 #include "MarketOrderInfoWidget.h"
 #include "MarketOrderModel.h"
 #include "StyledTreeView.h"
-#include "FlowLayout.h"
 #include "UISettings.h"
 
 #include "MarketOrderView.h"
 
 namespace Evernus
 {
-    MarketOrderView::MarketOrderView(const EveDataProvider &dataProvider, const QString &objectName, QWidget *parent)
+    MarketOrderView::MarketOrderView(const EveDataProvider &dataProvider,
+                                     const QString &objectName,
+                                     MarketOrdersInfoWidget *infoWidget,
+                                     QWidget *parent)
         : QWidget(parent)
+        , mInfoWidget(infoWidget)
         , mProxy(dataProvider)
     {
-        QFont font;
-        font.setBold(true);
-
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
@@ -74,36 +73,8 @@ namespace Evernus
         mView->addAction(mShowInEveAct);
         connect(mShowInEveAct, &QAction::triggered, this, &MarketOrderView::showInEveForCurrent);
 
-        mInfoWidget = new QWidget{this};
-        mainLayout->addWidget(mInfoWidget);
-
-        auto infoLayout = new FlowLayout{};
-        mInfoWidget->setLayout(infoLayout);
-        infoLayout->setContentsMargins(QMargins{});
-
-        infoLayout->addWidget(new QLabel{tr("Active orders:"), this});
-
-        mTotalOrdersLabel = new QLabel{this};
-        infoLayout->addWidget(mTotalOrdersLabel);
-        mTotalOrdersLabel->setFont(font);
-
-        infoLayout->addWidget(new QLabel{tr("Total volume:"), this});
-
-        mVolumeLabel = new QLabel{this};
-        infoLayout->addWidget(mVolumeLabel);
-        mVolumeLabel->setFont(font);
-
-        infoLayout->addWidget(new QLabel{tr("Total ISK in orders:"), this});
-
-        mTotalISKLabel = new QLabel{this};
-        infoLayout->addWidget(mTotalISKLabel);
-        mTotalISKLabel->setFont(font);
-
-        infoLayout->addWidget(new QLabel{tr("Total size:"), this});
-
-        mTotalSizeLabel = new QLabel{this};
-        infoLayout->addWidget(mTotalSizeLabel);
-        mTotalSizeLabel->setFont(font);
+        if (mInfoWidget != nullptr)
+            mainLayout->addWidget(mInfoWidget);
 
         mLookupGroup = new QActionGroup{this};
         mLookupGroup->setEnabled(false);
@@ -140,21 +111,29 @@ namespace Evernus
 
         auto curModel = mProxy.sourceModel();
         if (curModel != nullptr)
-            curModel->disconnect(this, SLOT(updateInfo()));
+        {
+            curModel->disconnect(this, SLOT(handleReset()));
+
+            if (mInfoWidget != nullptr)
+                curModel->disconnect(mInfoWidget, SLOT(updateData()));
+        }
 
         mProxy.setSourceModel(mSource);
 
         mView->setItemDelegateForColumn(model->getVolumeColumn(), new MarketOrderVolumeItemDelegate{this});
 
         if (mSource != nullptr)
-            connect(mSource, &MarketOrderModel::modelReset, this, &MarketOrderView::updateInfo);
+        {
+            connect(mSource, &MarketOrderModel::modelReset, this, &MarketOrderView::handleReset);
 
-        updateInfo();
-    }
+            if (mInfoWidget != nullptr)
+                connect(mSource, &MarketOrderModel::modelReset, mInfoWidget, &MarketOrdersInfoWidget::updateData);
+        }
 
-    void MarketOrderView::setShowInfo(bool flag)
-    {
-        mInfoWidget->setVisible(flag);
+        if (mInfoWidget != nullptr)
+            mInfoWidget->updateData();
+
+        handleReset();
     }
 
     void MarketOrderView::expandAll()
@@ -168,26 +147,9 @@ namespace Evernus
         mView->sortByColumn(column, order);
     }
 
-    void MarketOrderView::updateInfo()
+    void MarketOrderView::handleReset()
     {
-        if (mSource == nullptr)
-            return;
-
-        const auto volRemaining = mSource->getVolumeRemaining();
-        const auto volEntered = mSource->getVolumeEntered();
-
-        const auto curLocale = locale();
-
         emit closeOrderInfo();
-
-        mTotalOrdersLabel->setText(curLocale.toString(static_cast<qulonglong>(mSource->getOrderCount())));
-        mVolumeLabel->setText(QString{"%1/%2 (%3%)"}
-            .arg(curLocale.toString(volRemaining))
-            .arg(curLocale.toString(volEntered))
-            .arg(curLocale.toString((volEntered > 0.) ? (volRemaining * 100. / volEntered) : (0.), 'f', 1)));
-        mTotalISKLabel->setText(curLocale.toCurrencyString(mSource->getTotalISK(), "ISK"));
-        mTotalSizeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(mSource->getTotalSize(), 'f', 2)));
-
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
     }
 

@@ -72,6 +72,7 @@ qt5_wrap_cpp(
     FileDownload.h
     FilterTextRepository.h
     GeneralPreferencesWidget.h
+    GenericMarketOrdersInfoWidget.h
     HttpPreferencesWidget.h
     HttpService.h
     IGBPreferencesWidget.h
@@ -99,6 +100,7 @@ qt5_wrap_cpp(
     MarketOrderInfoWidget.h
     MarketOrderPriceStatusesWidget.h
     MarketOrderSellModel.h
+    MarketOrdersInfoWidget.h
     MarketOrderStatesWidget.h
     MarketOrderView.h
     MarketOrderViewWithTransactions.h
@@ -122,6 +124,7 @@ qt5_wrap_cpp(
     qxtwebcontent.h
     qxtwebslotservice.h
     ScriptOrderProcessingModel.h
+    SellMarketOrdersInfoWidget.h
     StationModel.h
     StatisticsWidget.h
     StyledTreeView.h
@@ -329,6 +332,8 @@ add_executable(
     FlowLayout.h
     GeneralPreferencesWidget.cpp
     GeneralPreferencesWidget.h
+    GenericMarketOrdersInfoWidget.cpp
+    GenericMarketOrdersInfoWidget.h
     GenericNameDomParser.cpp
     GenericNameDomParser.h
     HttpPreferencesWidget.cpp
@@ -427,6 +432,7 @@ add_executable(
     MarketOrders.h
     MarketOrderSellModel.cpp
     MarketOrderSellModel.h
+    MarketOrdersInfoWidget.h
     MarketOrderStatesWidget.cpp
     MarketOrderStatesWidget.h
     MarketOrdersXmlReceiver.cpp
@@ -532,6 +538,8 @@ add_executable(
     ScriptOrderProcessingModel.h
     ScriptUtils.cpp
     ScriptUtils.h
+    SellMarketOrdersInfoWidget.cpp
+    SellMarketOrdersInfoWidget.h
     SimpleCrypt.cpp
     SimpleCrypt.h
     StationModel.cpp

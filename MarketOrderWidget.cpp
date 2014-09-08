@@ -24,6 +24,8 @@
 #include <QMenu>
 
 #include "MarketOrderViewWithTransactions.h"
+#include "GenericMarketOrdersInfoWidget.h"
+#include "SellMarketOrdersInfoWidget.h"
 #include "MarketOrderFilterWidget.h"
 #include "MarketOrderProvider.h"
 #include "CacheTimerProvider.h"
@@ -122,6 +124,7 @@ namespace Evernus
                                                         corpOrderProvider,
                                                         corp,
                                                         (mCorp) ? ("corpMarketOrderSellView") : ("marketOrderSellView"),
+                                                        new SellMarketOrdersInfoWidget{mSellModel, this},
                                                         true,
                                                         this};
         mainTabs->addTab(mSellView, QIcon{":/images/arrow_out.png"}, tr("Sell"));
@@ -144,6 +147,7 @@ namespace Evernus
                                                        corpOrderProvider,
                                                        corp,
                                                        (mCorp) ? ("corpMarketOrderBuyView") : ("marketOrderBuyView"),
+                                                       new GenericMarketOrdersInfoWidget{mBuyModel, this},
                                                        true,
                                                        this};
         mainTabs->addTab(mBuyView, QIcon{":/images/arrow_in.png"}, tr("Buy"));
@@ -170,6 +174,7 @@ namespace Evernus
 
         mCombinedSellView = new MarketOrderView{dataProvider,
                                                 (mCorp) ? ("corpCombinedMarketOrderSellView") : ("combinedMarketOrderSellView"),
+                                                new SellMarketOrdersInfoWidget{mSellModel, this},
                                                 this};
         sellGroupLayout->addWidget(mCombinedSellView);
         mCombinedSellView->setModel(&mSellModel);
@@ -188,6 +193,7 @@ namespace Evernus
 
         mCombinedBuyView = new MarketOrderView{dataProvider,
                                                (mCorp) ? ("corpCombinedMarketOrderBuyView") : ("combinedMarketOrderBuyView"),
+                                               new GenericMarketOrdersInfoWidget{mBuyModel, this},
                                                this};
         buyGroupLayout->addWidget(mCombinedBuyView);
         mCombinedBuyView->setModel(&mBuyModel);
@@ -222,10 +228,10 @@ namespace Evernus
                                                            corpOrderProvider,
                                                            corp,
                                                            (mCorp) ? ("corpMarketOrderArchiveView") : ("marketOrderArchiveView"),
+                                                           nullptr,
                                                            false,
                                                            this};
         archiveLayout->addWidget(mArchiveView);
-        mArchiveView->setShowInfo(false);
         mArchiveView->statusFilterChanged(MarketOrderFilterProxyModel::EveryStatus);
         mArchiveView->priceStatusFilterChanged(MarketOrderFilterProxyModel::EveryPriceStatus);
         mArchiveView->setModel(&mArchiveModel);

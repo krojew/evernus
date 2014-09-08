@@ -29,6 +29,7 @@ namespace Evernus
 {
     class WalletTransactionRepository;
     class ExternalOrderRepository;
+    class MarketOrdersInfoWidget;
     class WalletTransactionView;
     class MarketOrderProvider;
     class CharacterRepository;
@@ -53,12 +54,12 @@ namespace Evernus
                                         const MarketOrderProvider &corpOrderProvider,
                                         bool corp,
                                         const QString &objectName,
+                                        MarketOrdersInfoWidget *infoWidget,
                                         bool showExternalOrders,
                                         QWidget *parent = nullptr);
         virtual ~MarketOrderViewWithTransactions() = default;
 
         void setModel(MarketOrderModel *model);
-        void setShowInfo(bool flag);
         void setCharacter(Character::IdType id);
 
         void expandAll();

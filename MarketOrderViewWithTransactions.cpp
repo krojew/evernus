@@ -38,6 +38,7 @@ namespace Evernus
                                                                      const MarketOrderProvider &corpOrderProvider,
                                                                      bool corp,
                                                                      const QString &objectName,
+                                                                     MarketOrdersInfoWidget *infoWidget,
                                                                      bool showExternalOrders,
                                                                      QWidget *parent)
         : QWidget(parent)
@@ -52,7 +53,7 @@ namespace Evernus
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
-        mOrderView = new MarketOrderView{mDataProvider, objectName + "-orders", this};
+        mOrderView = new MarketOrderView{mDataProvider, objectName + "-orders", infoWidget, this};
         mainLayout->addWidget(mOrderView, 1);
         connect(this, &MarketOrderViewWithTransactions::statusFilterChanged, mOrderView, &MarketOrderView::statusFilterChanged);
         connect(this, &MarketOrderViewWithTransactions::priceStatusFilterChanged, mOrderView, &MarketOrderView::priceStatusFilterChanged);
@@ -130,11 +131,6 @@ namespace Evernus
 
         if (mExternalOrderView != nullptr)
             mExternalOrderView->setModel(mExternalOrderModel.get());
-    }
-
-    void MarketOrderViewWithTransactions::setShowInfo(bool flag)
-    {
-        mOrderView->setShowInfo(flag);
     }
 
     void MarketOrderViewWithTransactions::setCharacter(Character::IdType id)

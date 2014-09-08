@@ -52,6 +52,9 @@ namespace Evernus
 
         virtual Type getType() const override;
 
+        double getTotalCost() const noexcept;
+        double getTotalIncome() const noexcept;
+
     private slots:
         void updateNames();
 
@@ -91,6 +94,9 @@ namespace Evernus
         bool mCorp = false;
 
         Repository<Character>::EntityPtr mCharacter;
+
+        mutable double mTotalCost = 0.;
+        mutable double mTotalIncome = 0.;
 
         virtual OrderList getOrders() const override;
 
