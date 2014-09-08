@@ -65,6 +65,7 @@ namespace Evernus
             priceColumn,
             priceStatusColumn,
             priceDifferenceColumn,
+            priceDifferencePercentColumn,
             volumeColumn,
             totalColumn,
             deltaColumn,

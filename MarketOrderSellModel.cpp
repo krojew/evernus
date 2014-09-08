@@ -158,6 +158,14 @@ namespace Evernus
                 }
             case priceDifferenceColumn:
                 return mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice();
+            case priceDifferencePercentColumn:
+                {
+                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                    if (cost->isNew() || qFuzzyIsNull(cost->getCost()))
+                        break;
+
+                    return (mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice()) / cost->getCost();
+                }
             case volumeColumn:
                 return QVariantList{} << data->getVolumeRemaining() << data->getVolumeEntered();
             case totalColumn:
@@ -281,6 +289,16 @@ namespace Evernus
                     break;
                 case priceDifferenceColumn:
                     return locale.toCurrencyString(mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice(), "ISK");
+                case priceDifferencePercentColumn:
+                    {
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                        if (cost->isNew() || qFuzzyIsNull(cost->getCost()))
+                            break;
+
+                        return QString{"%1%2"}
+                            .arg(locale.toString((mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice()) / cost->getCost(), 'f', 2))
+                            .arg(locale.percent());
+                    }
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(data->getVolumeRemaining())).arg(locale.toString(data->getVolumeEntered()));
                 case totalColumn:
@@ -466,6 +484,8 @@ namespace Evernus
                 return tr("Price status");
             case priceDifferenceColumn:
                 return tr("Price difference");
+            case priceDifferencePercentColumn:
+                return tr("Price difference, %1").arg(QLocale{}.percent());
             case volumeColumn:
                 return tr("Volume");
             case totalColumn:
