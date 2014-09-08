@@ -448,9 +448,13 @@ namespace Evernus
         OrderInfo info;
         info.mOrderPrice = order->getPrice();
         info.mMarketPrice = price->getPrice();
-        info.mTargetPrice = (info.mMarketPrice > info.mOrderPrice) ? (info.mMarketPrice + priceDelta) : (info.mOrderPrice);
         info.mOrderLocalTimestamp = mCacheTimerProvider.getLocalUpdateTimer(mCharacterId, TimerType::MarketOrders);
         info.mMarketLocalTimestamp = price->getUpdateTime().toLocalTime();
+
+        if (info.mMarketPrice > info.mOrderPrice || settings.value(PriceSettings::copyNonOverbidPriceKey, PriceSettings::copyNonOverbidPriceDefault).toBool())
+            info.mTargetPrice = info.mMarketPrice + priceDelta;
+        else
+            info.mTargetPrice = info.mOrderPrice;
 
         return info;
     }

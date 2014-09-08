@@ -143,6 +143,10 @@ namespace Evernus
         pricesLayout->addRow(mRefreshPricesWithOrdersBtn);
         mRefreshPricesWithOrdersBtn->setChecked(settings.value(PriceSettings::refreshPricesWithOrdersKey).toBool());
 
+        mCopyNonOverbidBtn = new QCheckBox{tr("Auto-copy non-overbid prices with price helper"), this};
+        pricesLayout->addRow(mCopyNonOverbidBtn);
+        mCopyNonOverbidBtn->setChecked(settings.value(PriceSettings::copyNonOverbidPriceKey, PriceSettings::copyNonOverbidPriceDefault).toBool());
+
         mainLayout->addStretch();
     }
 
@@ -163,6 +167,7 @@ namespace Evernus
         settings.setValue(UISettings::plotNumberFormatKey, mPlotNumberFormatEdit->currentData());
         settings.setValue(PriceSettings::combineCorpAndCharPlotsKey, mCombineCorpAndCharPlotsBtn->isChecked());
         settings.setValue(PriceSettings::refreshPricesWithOrdersKey, mRefreshPricesWithOrdersBtn->isChecked());
+        settings.setValue(PriceSettings::copyNonOverbidPriceKey, mCopyNonOverbidBtn->isChecked());
     }
 
     void PricePreferencesWidget::addPlotFormat(const QString &text, const QString &value, const QString &curValue)

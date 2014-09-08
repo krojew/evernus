@@ -50,6 +50,7 @@ namespace Evernus
         QComboBox *mPlotNumberFormatEdit = nullptr;
         QCheckBox *mCombineCorpAndCharPlotsBtn = nullptr;
         QCheckBox *mRefreshPricesWithOrdersBtn = nullptr;
+        QCheckBox *mCopyNonOverbidBtn = nullptr;
 
         void addPlotFormat(const QString &text, const QString &value, const QString &curValue);
     };

@@ -4302,6 +4302,11 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <source>Refresh prices after order import</source>
         <translation>Odśwież ceny po imporcie zleceń</translation>
     </message>
+    <message>
+        <location filename="../PricePreferencesWidget.cpp" line="146"/>
+        <source>Auto-copy non-overbid prices with price helper</source>
+        <translation>Auto. kopiowanie nieprzebitych cen</translation>
+    </message>
 </context>
 <context>
     <name>Evernus::StatisticsWidget</name>
