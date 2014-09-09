@@ -78,17 +78,21 @@ namespace Evernus
         {
             connect(newModel, SIGNAL(modelReset()), this, SLOT(setColumnsMenu()));
 
-            const auto name = objectName();
-            if (!name.isEmpty())
-            {
-                QSettings settings;
-
-                const auto state = settings.value(QString{UISettings::headerStateKey}.arg(name)).toByteArray();
-                if (!state.isEmpty())
-                    header()->restoreState(state);
-            }
-
+            restoreHeaderState();
             setColumnsMenu(newModel);
+        }
+    }
+
+    void StyledTreeView::restoreHeaderState()
+    {
+        const auto name = objectName();
+        if (!name.isEmpty())
+        {
+            QSettings settings;
+
+            const auto state = settings.value(QString{UISettings::headerStateKey}.arg(name)).toByteArray();
+            if (!state.isEmpty())
+                header()->restoreState(state);
         }
     }
 
@@ -115,6 +119,7 @@ namespace Evernus
 
     void StyledTreeView::setColumnsMenu(QAbstractItemModel *model)
     {
+        const auto name = objectName();
         if (model == nullptr)
             model = static_cast<QAbstractItemModel *>(sender());
 

@@ -30,6 +30,8 @@ namespace Evernus
 
         virtual void setModel(QAbstractItemModel *newModel) override;
 
+        void restoreHeaderState();
+
     private slots:
         void copy();
         void copyRows();
