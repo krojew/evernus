@@ -2106,7 +2106,12 @@ namespace Evernus
             }
 
             if (autoSetCosts)
-                refreshWalletTransactions(id);
+            {
+                if (corp)
+                    refreshCorpWalletTransactions(id);
+                else
+                    refreshWalletTransactions(id);
+            }
 
             if (settings.value(PriceSettings::refreshPricesWithOrdersKey).toBool())
                 refreshAllExternalOrders();
