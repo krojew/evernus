@@ -1178,14 +1178,49 @@
 <context>
     <name>Evernus::DateRangeWidget</name>
     <message>
-        <location filename="../DateRangeWidget.cpp" line="30"/>
+        <location filename="../DateRangeWidget.cpp" line="32"/>
         <source>From:</source>
         <translation>Od:</translation>
     </message>
     <message>
-        <location filename="../DateRangeWidget.cpp" line="37"/>
+        <location filename="../DateRangeWidget.cpp" line="39"/>
         <source>To:</source>
         <translation>Do:</translation>
+    </message>
+    <message>
+        <location filename="../DateRangeWidget.cpp" line="46"/>
+        <source>Quick date</source>
+        <translation>Szybki zakres</translation>
+    </message>
+    <message>
+        <location filename="../DateRangeWidget.cpp" line="51"/>
+        <source>Today</source>
+        <translation>Dziś</translation>
+    </message>
+    <message>
+        <location filename="../DateRangeWidget.cpp" line="57"/>
+        <source>Past day</source>
+        <translation>Wczoraj</translation>
+    </message>
+    <message>
+        <location filename="../DateRangeWidget.cpp" line="63"/>
+        <source>This week</source>
+        <translation>Ten tydzień</translation>
+    </message>
+    <message>
+        <location filename="../DateRangeWidget.cpp" line="70"/>
+        <source>Past week</source>
+        <translation>Poprzedni tydzień</translation>
+    </message>
+    <message>
+        <location filename="../DateRangeWidget.cpp" line="78"/>
+        <source>This month</source>
+        <translation>Ten miesiąc</translation>
+    </message>
+    <message>
+        <location filename="../DateRangeWidget.cpp" line="85"/>
+        <source>Past month</source>
+        <translation>Poprzedni miesiąc</translation>
     </message>
 </context>
 <context>

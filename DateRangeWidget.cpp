@@ -13,8 +13,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QHBoxLayout>
+#include <QPushButton>
 #include <QDateEdit>
 #include <QLabel>
+#include <QMenu>
 
 #include "DateRangeWidget.h"
 
@@ -40,6 +42,56 @@ namespace Evernus
         mainLayout->addWidget(mToEdit);
         mToEdit->setCalendarPopup(true);
         connect(mToEdit, &QDateEdit::dateChanged, this, &DateRangeWidget::toChanged);
+
+        auto presetBtn = new QPushButton{QIcon{":/images/calendar_view_month.png"}, tr("Quick date"), this};
+        mainLayout->addWidget(presetBtn);
+        presetBtn->setFlat(true);
+
+        auto presetMenu = new QMenu{this};
+        connect(presetMenu->addAction(tr("Today")), &QAction::triggered, this, [this] {
+            const auto date = QDate::currentDate();
+            setRange(date, date);
+
+            emit rangeChanged(date, date);
+        });
+        connect(presetMenu->addAction(tr("Past day")), &QAction::triggered, this, [this] {
+            const auto date = QDate::currentDate().addDays(-1);
+            setRange(date, date);
+
+            emit rangeChanged(date, date);
+        });
+        connect(presetMenu->addAction(tr("This week")), &QAction::triggered, this, [this] {
+            const auto to = QDate::currentDate();
+            const auto from = to.addDays(-to.dayOfWeek() + 1);
+            setRange(from, to);
+
+            emit rangeChanged(from, to);
+        });
+        connect(presetMenu->addAction(tr("Past week")), &QAction::triggered, this, [this] {
+            auto to = QDate::currentDate();
+            to = to.addDays(-to.dayOfWeek());
+            const auto from = to.addDays(-to.dayOfWeek() + 1);
+            setRange(from, to);
+
+            emit rangeChanged(from, to);
+        });
+        connect(presetMenu->addAction(tr("This month")), &QAction::triggered, this, [this] {
+            const auto to = QDate::currentDate();
+            const auto from = to.addDays(-to.day() + 1);
+            setRange(from, to);
+
+            emit rangeChanged(from, to);
+        });
+        connect(presetMenu->addAction(tr("Past month")), &QAction::triggered, this, [this] {
+            auto to = QDate::currentDate();
+            to = to.addDays(-to.day());
+            const auto from = to.addDays(-to.day() + 1);
+            setRange(from, to);
+
+            emit rangeChanged(from, to);
+        });
+
+        presetBtn->setMenu(presetMenu);
     }
 
     QDate DateRangeWidget::getFrom() const
