@@ -77,6 +77,7 @@ namespace Evernus
             duration INTEGER NOT NULL
         ))"}.arg(getTableName()));
 
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id ON %1(type_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id_location ON %1(type_id, location_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_solar_system ON %1(solar_system_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_region ON %1(region_id)"}.arg(getTableName()));
@@ -311,6 +312,14 @@ namespace Evernus
 
             ++it;
         }
+
+        DatabaseUtils::execQuery(query);
+    }
+
+    void ExternalOrderRepository::removeForType(ExternalOrder::TypeIdType typeId) const
+    {
+        auto query = prepare(QString{"DELETE FROM %1 WHERE type_id = ?"}.arg(getTableName()));
+        query.bindValue(0, typeId);
 
         DatabaseUtils::execQuery(query);
     }

@@ -109,6 +109,7 @@ namespace Evernus
         void selectBookmark();
 
         void cleanAllOrders();
+        void cleanCurrentType();
 
     private:
         struct NavigationState

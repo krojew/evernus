@@ -68,6 +68,7 @@ namespace Evernus
 
         virtual void updateExternalOrders(const std::vector<ExternalOrder> &orders) override;
         virtual void clearExternalOrders() override;
+        virtual void clearExternalOrdersForType(EveType::IdType id) override;
 
         virtual QString getLocationName(quint64 id) const override;
         virtual QString getRegionName(uint id) const override;

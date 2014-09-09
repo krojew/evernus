@@ -116,6 +116,7 @@ namespace Evernus
 
         auto cleanupMenu = new QMenu{this};
         cleanupMenu->addAction(tr("Clean all orders"), this, SLOT(cleanAllOrders()));
+        cleanupMenu->addAction(tr("Clean for selected type"), this, SLOT(cleanCurrentType()));
 
         auto cleanupBtn = new QPushButton{QIcon{":/images/cross.png"}, tr("Cleanup"), this};
         toolbarLayout->addWidget(cleanupBtn);
@@ -683,7 +684,12 @@ namespace Evernus
     void MarketBrowserWidget::cleanAllOrders()
     {
         mDataProvider.clearExternalOrders();
+        emit externalOrdersChanged();
+    }
 
+    void MarketBrowserWidget::cleanCurrentType()
+    {
+        mDataProvider.clearExternalOrdersForType(mExternalOrderSellModel.getTypeId());
         emit externalOrdersChanged();
     }
 

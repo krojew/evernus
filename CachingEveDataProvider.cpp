@@ -320,8 +320,13 @@ namespace Evernus
     void CachingEveDataProvider::clearExternalOrders()
     {
         clearExternalOrderCaches();
-
         mExternalOrderRepository.removeAll();
+    }
+
+    void CachingEveDataProvider::clearExternalOrdersForType(EveType::IdType id)
+    {
+        clearExternalOrderCaches();
+        mExternalOrderRepository.removeForType(id);
     }
 
     QString CachingEveDataProvider::getLocationName(quint64 id) const
