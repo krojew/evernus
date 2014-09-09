@@ -38,6 +38,8 @@ namespace Evernus
         void applyCurrentFilter();
         void refreshHistory();
 
+        void showItemContextMenu(const QPoint &pos);
+
     private:
         const FilterTextRepository &mFilterRepo;
     };

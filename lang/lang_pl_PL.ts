@@ -4617,9 +4617,14 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::TextFilterWidget</name>
     <message>
-        <location filename="../TextFilterWidget.cpp" line="44"/>
+        <location filename="../TextFilterWidget.cpp" line="50"/>
         <source>type in wildcard and press Enter</source>
         <translation>wpisz filtr i naciśnij Enter</translation>
+    </message>
+    <message>
+        <location filename="../TextFilterWidget.cpp" line="91"/>
+        <source>Remove</source>
+        <translation>Usuń</translation>
     </message>
 </context>
 <context>

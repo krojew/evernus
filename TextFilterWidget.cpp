@@ -12,8 +12,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QAbstractItemView>
 #include <QCompleter>
 #include <QLineEdit>
+#include <QMenu>
 
 #include "FilterTextRepository.h"
 
@@ -35,6 +37,10 @@ namespace Evernus
         auto edit = lineEdit();
         edit->setPlaceholderText(getDefaultPlaceholderText());
         connect(edit, &QLineEdit::returnPressed, this, &TextFilterWidget::applyCurrentFilter);
+
+        auto itemView = view();
+        itemView->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(itemView, &QAbstractItemView::customContextMenuRequested, this, &TextFilterWidget::showItemContextMenu);
 
         connect(&mFilterRepo, &FilterTextRepository::filtersChanged, this, &TextFilterWidget::refreshHistory);
     }
@@ -70,5 +76,24 @@ namespace Evernus
         clear();
         addItems(mFilterRepo.fetchRecentlyUsed());
         setCurrentText(text);
+    }
+
+    void TextFilterWidget::showItemContextMenu(const QPoint &pos)
+    {
+        const auto itemView = view();
+        const auto index = itemView->indexAt(pos);
+
+        if (!index.isValid())
+            return;
+
+        QMenu menu;
+
+        auto action = menu.addAction(QIcon{":/images/cross.png"}, tr("Remove"));
+        connect(action, &QAction::triggered, this, [index, this] {
+            mFilterRepo.remove(itemText(index.row()));
+            showPopup();
+        });
+
+        menu.exec(itemView->mapToGlobal(pos));
     }
 }

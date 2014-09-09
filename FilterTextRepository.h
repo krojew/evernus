@@ -34,8 +34,12 @@ namespace Evernus
 
         virtual EntityPtr populate(const QSqlRecord &record) const override;
 
-        using Repository<FilterText>::store;
+        using Repository::store;
         void store(const QString &text) const;
+
+        using Repository::remove;
+        void remove(const QString &text) const;
+        void remove(QString &&text) const;
 
         void create() const;
 

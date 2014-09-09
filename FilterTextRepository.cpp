@@ -48,6 +48,21 @@ namespace Evernus
         emit filtersChanged();
     }
 
+    void FilterTextRepository::remove(const QString &text) const
+    {
+        remove(std::move(text));
+    }
+
+    void FilterTextRepository::remove(QString &&text) const
+    {
+        auto query = prepare(QString{"DELETE FROM %1 WHERE text = ?"}.arg(getTableName()));
+        query.bindValue(0, text);
+
+        DatabaseUtils::execQuery(query);
+
+        emit filtersChanged();
+    }
+
     void FilterTextRepository::create() const
     {
         exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
