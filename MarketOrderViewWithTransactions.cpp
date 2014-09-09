@@ -48,7 +48,7 @@ namespace Evernus
         , mCostProvider(costProvider)
         , mOrderProvider(orderProvider)
         , mCorpOrderProvider(corpOrderProvider)
-        , mTransactionModel(transactionsRepo, mCharacterRepo, mDataProvider, corp)
+        , mTransactionModel(transactionsRepo, mCharacterRepo, mDataProvider, mCostProvider, corp)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);

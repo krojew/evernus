@@ -69,6 +69,7 @@ namespace Evernus
         QLabel *mTotalIncomeLabel = nullptr;
         QLabel *mTotalCostLabel = nullptr;
         QLabel *mTotalBalanceLabel = nullptr;
+        QLabel *mTotalProfitLabel = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
 

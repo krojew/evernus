@@ -48,7 +48,7 @@ namespace Evernus
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, (corp) ? (TimerType::CorpWalletTransactions) : (TimerType::WalletTransactions)),
                                ImportSettings::maxWalletAgeKey,
                                parent)
-        , mModel(walletRepo, characterRepository, dataProvider, corp)
+        , mModel(walletRepo, characterRepository, dataProvider, itemCostProvider, corp)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
@@ -120,6 +120,12 @@ namespace Evernus
         mTotalBalanceLabel = new QLabel{"-", this};
         infoLayout->addWidget(mTotalBalanceLabel);
         mTotalBalanceLabel->setFont(font);
+
+        infoLayout->addWidget(new QLabel{tr("Total profit based on costs:"), this});
+
+        mTotalProfitLabel = new QLabel{"-", this};
+        infoLayout->addWidget(mTotalProfitLabel);
+        mTotalProfitLabel->setFont(font);
     }
 
     void WalletTransactionsWidget::updateData()
@@ -163,6 +169,14 @@ namespace Evernus
 
         const auto income = mModel.getTotalIncome();
         const auto cost = mModel.getTotalCost();
+        const auto profit = mModel.getTotalProfit();
+
+        const auto setColor = [](auto label, auto value) {
+            if (value > 0.)
+                label->setStyleSheet("color: darkGreen;");
+            else
+                label->setStyleSheet("color: darkRed;");
+        };
 
         mTotalTransactionsLabel->setText(curLocale.toString(mModel.rowCount()));
         mTotalQuantityLabel->setText(curLocale.toString(mModel.getTotalQuantity()));
@@ -170,10 +184,9 @@ namespace Evernus
         mTotalIncomeLabel->setText(curLocale.toCurrencyString(income, "ISK"));
         mTotalCostLabel->setText(curLocale.toCurrencyString(cost, "ISK"));
         mTotalBalanceLabel->setText(curLocale.toCurrencyString(income - cost, "ISK"));
+        mTotalProfitLabel->setText(curLocale.toCurrencyString(profit, "ISK"));
 
-        if (income - cost > 0.)
-            mTotalBalanceLabel->setStyleSheet("color: darkGreen;");
-        else
-            mTotalBalanceLabel->setStyleSheet("color: darkRed;");
+        setColor(mTotalBalanceLabel, income - cost);
+        setColor(mTotalProfitLabel, profit);
     }
 }

@@ -17,6 +17,7 @@
 #include <QFont>
 
 #include "CharacterRepository.h"
+#include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "TextUtils.h"
 
@@ -27,12 +28,14 @@ namespace Evernus
     WalletTransactionsModel::WalletTransactionsModel(const WalletTransactionRepository &transactionsRepo,
                                                      const CharacterRepository &characterRepository,
                                                      const EveDataProvider &dataProvider,
+                                                     const ItemCostProvider &itemCostProvider,
                                                      bool corp,
                                                      QObject *parent)
         : QAbstractTableModel(parent)
         , mTransactionsRepository(transactionsRepo)
         , mCharacterRepository(characterRepository)
         , mDataProvider(dataProvider)
+        , mItemCostProvider(itemCostProvider)
         , mCorp(corp)
     {
         mColumns
@@ -201,6 +204,11 @@ namespace Evernus
         return mTotalCost;
     }
 
+    double WalletTransactionsModel::getTotalProfit() const noexcept
+    {
+        return mTotalProfit;
+    }
+
     void WalletTransactionsModel::setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, EveType::IdType typeId)
     {
         mCharacterId = id;
@@ -220,6 +228,7 @@ namespace Evernus
         mTotalSize = 0.;
         mTotalIncome = 0.;
         mTotalCost = 0.;
+        mTotalProfit = 0.;
 
         mData.clear();
         if (mCharacterId != Character::invalidId)
@@ -259,9 +268,14 @@ namespace Evernus
                     mTotalSize += mDataProvider.getTypeVolume(entry->getTypeId());
 
                     if (entry->getType() == WalletTransaction::Type::Buy)
+                    {
                         mTotalCost += entry->getPrice();
+                    }
                     else
+                    {
                         mTotalIncome += entry->getPrice();
+                        mTotalProfit += entry->getPrice() - mItemCostProvider.fetchForCharacterAndType(mCharacterId, entry->getTypeId())->getCost();
+                    }
                 }
             }
             catch (const CharacterRepository::NotFoundException &)

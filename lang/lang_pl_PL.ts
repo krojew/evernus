@@ -4838,52 +4838,52 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletTransactionsModel</name>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="39"/>
+        <location filename="../WalletTransactionsModel.cpp" line="42"/>
         <source>Ignored</source>
         <translation>Ignorowane</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="40"/>
+        <location filename="../WalletTransactionsModel.cpp" line="43"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="41"/>
+        <location filename="../WalletTransactionsModel.cpp" line="44"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="42"/>
+        <location filename="../WalletTransactionsModel.cpp" line="45"/>
         <source>Quantity</source>
         <translation>Ilość</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="43"/>
+        <location filename="../WalletTransactionsModel.cpp" line="46"/>
         <source>Item</source>
         <translation>Przedmiot</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="44"/>
+        <location filename="../WalletTransactionsModel.cpp" line="47"/>
         <source>Price</source>
         <translation>Cena</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="45"/>
+        <location filename="../WalletTransactionsModel.cpp" line="48"/>
         <source>Client</source>
         <translation>Klient</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="46"/>
+        <location filename="../WalletTransactionsModel.cpp" line="49"/>
         <source>Location</source>
         <translation>Lokacja</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="96"/>
+        <location filename="../WalletTransactionsModel.cpp" line="99"/>
         <source>Buy</source>
         <translation>Kupno</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsModel.cpp" line="97"/>
+        <location filename="../WalletTransactionsModel.cpp" line="100"/>
         <source>Sell</source>
         <translation>Sprzedaż</translation>
     </message>
@@ -4934,6 +4934,11 @@ Czy chcesz ściągnąć ją teraz?</translation>
         <location filename="../WalletTransactionsWidget.cpp" line="118"/>
         <source>Total balance:</source>
         <translation>Całkowity bilans:</translation>
+    </message>
+    <message>
+        <location filename="../WalletTransactionsWidget.cpp" line="124"/>
+        <source>Total profit based on costs:</source>
+        <translation>Całkowity zysk na podst. kosztów:</translation>
     </message>
     <message>
         <source>Add to item costs</source>

@@ -25,6 +25,7 @@
 namespace Evernus
 {
     class CharacterRepository;
+    class ItemCostProvider;
     class EveDataProvider;
 
     class WalletTransactionsModel
@@ -38,6 +39,7 @@ namespace Evernus
         WalletTransactionsModel(const WalletTransactionRepository &transactionsRepo,
                                 const CharacterRepository &characterRepository,
                                 const EveDataProvider &dataProvider,
+                                const ItemCostProvider &itemCostProvider,
                                 bool corp,
                                 QObject *parent = nullptr);
         virtual ~WalletTransactionsModel() = default;
@@ -58,6 +60,7 @@ namespace Evernus
         double getTotalSize() const noexcept;
         double getTotalIncome() const noexcept;
         double getTotalCost() const noexcept;
+        double getTotalProfit() const noexcept;
 
         void setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, EveType::IdType typeId = EveType::invalidId);
 
@@ -76,6 +79,7 @@ namespace Evernus
         const WalletTransactionRepository &mTransactionsRepository;
         const CharacterRepository &mCharacterRepository;
         const EveDataProvider &mDataProvider;
+        const ItemCostProvider &mItemCostProvider;
 
         Character::IdType mCharacterId = Character::invalidId;
         QDate mFrom, mTill;
@@ -92,5 +96,6 @@ namespace Evernus
         double mTotalSize = 0.;
         double mTotalIncome = 0.;
         double mTotalCost = 0.;
+        double mTotalProfit = 0.;
     };
 }
