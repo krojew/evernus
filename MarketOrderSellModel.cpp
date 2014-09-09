@@ -296,7 +296,7 @@ namespace Evernus
                             break;
 
                         return QString{"%1%2"}
-                            .arg(locale.toString((mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice()) / cost->getCost(), 'f', 2))
+                            .arg(locale.toString(100. * (mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice()) / cost->getCost(), 'f', 2))
                             .arg(locale.percent());
                     }
                 case volumeColumn:
