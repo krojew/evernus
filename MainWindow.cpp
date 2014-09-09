@@ -179,6 +179,12 @@ namespace Evernus
         Updater::getInstance().checkForUpdates(false);
     }
 
+    void MainWindow::showColumnHelp()
+    {
+        QMessageBox::information(this, tr("Evernus"), tr(
+            "You can show/hide table columns via right-click menu. Columns can also be moved around via dragging."));
+    }
+
     void MainWindow::addNewTaskInfo(uint taskId, const QString &description)
     {
         if (mActiveTasksDialog == nullptr)
@@ -454,6 +460,7 @@ namespace Evernus
 
         auto viewMenu = bar->addMenu(tr("&View"));
         mViewTabsMenu = viewMenu->addMenu(tr("Show/hide tabs"));
+        viewMenu->addAction(tr("Show/hide table columns"), this, SLOT(showColumnHelp()));
 
         auto helpMenu = bar->addMenu(tr("&Help"));
         helpMenu->addAction(QIcon{":/images/help.png"}, tr("&Online help..."), this, SLOT(openHelp()));

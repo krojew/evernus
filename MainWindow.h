@@ -125,6 +125,7 @@ namespace Evernus
         void showError(const QString &info);
         void openHelp();
         void checkForUpdates();
+        void showColumnHelp();
 
         void addNewTaskInfo(uint taskId, const QString &description);
 

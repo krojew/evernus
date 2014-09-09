@@ -2559,6 +2559,16 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Błąd</translation>
     </message>
     <message>
+        <location filename="../MainWindow.cpp" line="463"/>
+        <source>Show/hide table columns</source>
+        <translation>Pokaż/ukryj kolumny tabel</translation>
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="185"/>
+        <source>You can show/hide table columns via right-click menu. Columns can also be moved around via dragging.</source>
+        <translation>Możesz pokazać/ukryć kolumny przez menu kontekstowe. Kolumny mogą być też przesuwane przez przeciąganie.</translation>
+    </message>
+    <message>
         <location filename="../MainWindow.cpp" line="354"/>
         <source>IGB link was copied to the clipboard.</source>
         <translation>Link dla przeglądarki został skopiowany do schowka.</translation>
