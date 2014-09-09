@@ -315,6 +315,11 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    void ExternalOrderRepository::removeAll() const
+    {
+        exec(QString{"DELETE FROM %1"}.arg(getTableName()));
+    }
+
     QStringList ExternalOrderRepository::getColumns() const
     {
         return QStringList{}

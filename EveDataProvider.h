@@ -53,6 +53,7 @@ namespace Evernus
         virtual std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const = 0;
 
         virtual void updateExternalOrders(const std::vector<ExternalOrder> &orders) = 0;
+        virtual void clearExternalOrders() = 0;
 
         virtual QString getLocationName(quint64 id) const = 0;
         virtual QString getRegionName(uint id) const = 0;

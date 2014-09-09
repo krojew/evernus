@@ -317,6 +317,13 @@ namespace Evernus
         mExternalOrderRepository.batchStore(toStore, true);
     }
 
+    void CachingEveDataProvider::clearExternalOrders()
+    {
+        clearExternalOrderCaches();
+
+        mExternalOrderRepository.removeAll();
+    }
+
     QString CachingEveDataProvider::getLocationName(quint64 id) const
     {
         const auto it = mLocationNameCache.find(id);

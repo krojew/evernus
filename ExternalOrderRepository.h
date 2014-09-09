@@ -71,6 +71,7 @@ namespace Evernus
         std::vector<uint> fetchUniqueStationsBySolarSystem(uint solarSystemId) const;
 
         void removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const;
+        void removeAll() const;
 
     private:
         virtual QStringList getColumns() const override;

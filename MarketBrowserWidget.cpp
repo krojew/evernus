@@ -56,7 +56,7 @@ namespace Evernus
                                              const LocationBookmarkRepository &locationBookmarkRepo,
                                              const MarketOrderProvider &orderProvider,
                                              const MarketOrderProvider &corpOrderProvider,
-                                             const EveDataProvider &dataProvider,
+                                             EveDataProvider &dataProvider,
                                              const ItemCostProvider &costProvider,
                                              QWidget *parent)
         : QWidget(parent)
@@ -113,6 +113,14 @@ namespace Evernus
         toolbarLayout->addWidget(mDeviationBtn);
         mDeviationBtn->setFlat(true);
         mDeviationBtn->setMenu(deviationMenu);
+
+        auto cleanupMenu = new QMenu{this};
+        cleanupMenu->addAction(tr("Clean all orders"), this, SLOT(cleanAllOrders()));
+
+        auto cleanupBtn = new QPushButton{QIcon{":/images/cross.png"}, tr("Cleanup"), this};
+        toolbarLayout->addWidget(cleanupBtn);
+        cleanupBtn->setFlat(true);
+        cleanupBtn->setMenu(cleanupMenu);
 
         toolbarLayout->addStretch();
 
@@ -670,6 +678,13 @@ namespace Evernus
         catch (const LocationBookmarkRepository::NotFoundException &)
         {
         }
+    }
+
+    void MarketBrowserWidget::cleanAllOrders()
+    {
+        mDataProvider.clearExternalOrders();
+
+        emit externalOrdersChanged();
     }
 
     ExternalOrderImporter::TypeLocationPairs MarketBrowserWidget::getImportTarget() const

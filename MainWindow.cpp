@@ -674,6 +674,7 @@ namespace Evernus
         connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
+        connect(marketBrowserTab, &MarketBrowserWidget::externalOrdersChanged, this, &MainWindow::externalOrdersChanged);
         connect(corpOrderTab, &MarketOrderWidget::showExternalOrders, marketBrowserTab, &MarketBrowserWidget::showOrdersForType);
         connect(orderTab, &MarketOrderWidget::showExternalOrders, marketBrowserTab, &MarketBrowserWidget::showOrdersForType);
         connect(this, &MainWindow::marketOrdersChanged, marketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);

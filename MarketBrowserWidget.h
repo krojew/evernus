@@ -59,7 +59,7 @@ namespace Evernus
                             const LocationBookmarkRepository &locationBookmarkRepo,
                             const MarketOrderProvider &orderProvider,
                             const MarketOrderProvider &corpOrderProvider,
-                            const EveDataProvider &dataProvider,
+                            EveDataProvider &dataProvider,
                             const ItemCostProvider &costProvider,
                             QWidget *parent = nullptr);
         virtual ~MarketBrowserWidget() = default;
@@ -68,6 +68,8 @@ namespace Evernus
         void importPricesFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromCache(const ExternalOrderImporter::TypeLocationPairs &target);
+
+        void externalOrdersChanged();
 
     public slots:
         void setCharacter(Character::IdType id);
@@ -106,6 +108,8 @@ namespace Evernus
         void removeBookmark();
         void selectBookmark();
 
+        void cleanAllOrders();
+
     private:
         struct NavigationState
         {
@@ -126,7 +130,7 @@ namespace Evernus
         const MarketOrderRepository &mCorpOrderRepo;
         const FavoriteItemRepository &mFavoriteItemRepo;
         const LocationBookmarkRepository &mLocationBookmarkRepo;
-        const EveDataProvider &mDataProvider;
+        EveDataProvider &mDataProvider;
 
         ItemNameModel mNameModel;
         ItemNameModel mOrderNameModel;
