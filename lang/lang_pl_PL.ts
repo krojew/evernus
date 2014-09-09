@@ -3445,77 +3445,77 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Skrypt</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="95"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="96"/>
         <source>type in script and press Enter</source>
         <translation>wpisz skrypt i naciśnij Enter</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="105"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="106"/>
         <source>Ch</source>
         <translation>Zm</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="107"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="108"/>
         <source>A</source>
         <translation>Ak</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="109"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="110"/>
         <source>F</source>
         <translation>Z</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="111"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="112"/>
         <source>C</source>
         <translation>An</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="113"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="114"/>
         <source>P</source>
         <translation>O</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="115"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="116"/>
         <source>D</source>
         <translation>U</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="117"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="118"/>
         <source>E</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="119"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="120"/>
         <source>Status filter</source>
         <translation>Filtr stanu</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="119"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="120"/>
         <source>Status filter [%1]  </source>
         <translation>Filtr stanu [%1]  </translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="126"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="127"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="128"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="129"/>
         <source>N</source>
         <translation>B</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="130"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="131"/>
         <source>O</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="132"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="133"/>
         <source>Price status filter</source>
         <translation>Filtr stanu ceny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderFilterWidget.cpp" line="132"/>
+        <location filename="../MarketOrderFilterWidget.cpp" line="133"/>
         <source>Price status filter [%1]  </source>
         <translation>Filtr stanu ceny [%1]  </translation>
     </message>

@@ -91,11 +91,12 @@ namespace Evernus
 
     void MarketOrderFilterWidget::applyScriptChange(bool scriptChecked)
     {
+        mFilterEdit->clearEditText();
         mFilterEdit->lineEdit()->setPlaceholderText((scriptChecked) ?
                                                     (tr("type in script and press Enter")) :
                                                     (TextFilterWidget::getDefaultPlaceholderText()));
 
-        emit textFilterChanged(mFilterEdit->currentText(), mScriptFilterBtn->isChecked());
+        emit textFilterChanged(QString{}, mScriptFilterBtn->isChecked());
     }
 
     QString MarketOrderFilterWidget::getStateFilterButtonText(const MarketOrderFilterProxyModel::StatusFilters &filter)
