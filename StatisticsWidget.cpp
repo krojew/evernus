@@ -43,6 +43,7 @@
 #include "WalletSnapshotRepository.h"
 #include "DateFilteredPlotWidget.h"
 #include "OrderScriptRepository.h"
+#include "NumberFormatDelegate.h"
 #include "CharacterRepository.h"
 #include "PriceSettings.h"
 #include "UISettings.h"
@@ -807,6 +808,7 @@ namespace Evernus
         mainLayout->addWidget(mAggrView, 1);
         mAggrView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
         mAggrView->addAction(copyAct);
+        mAggrView->setItemDelegate(new NumberFormatDelegate{this});
 
         return widget;
     }

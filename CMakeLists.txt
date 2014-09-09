@@ -460,6 +460,8 @@ add_executable(
     NetworkPreferencesWidget.cpp
     NetworkPreferencesWidget.h
     NetworkSettings.h
+    NumberFormatDelegate.cpp
+    NumberFormatDelegate.h
     OrderScript.cpp
     OrderScript.h
     OrderScriptRepository.cpp
