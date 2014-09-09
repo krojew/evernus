@@ -76,7 +76,6 @@ namespace Evernus
 
         if (newModel != nullptr)
         {
-            setColumnsMenu(newModel);
             connect(newModel, SIGNAL(modelReset()), this, SLOT(setColumnsMenu()));
 
             const auto name = objectName();
@@ -88,6 +87,8 @@ namespace Evernus
                 if (!state.isEmpty())
                     header()->restoreState(state);
             }
+
+            setColumnsMenu(newModel);
         }
     }
 
