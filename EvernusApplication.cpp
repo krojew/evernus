@@ -1984,6 +1984,8 @@ namespace Evernus
             if (!toArchive.empty())
                 orderRepo.archive(toArchive);
 
+            asyncBatchStore(orderRepo, orders, true);
+
             if (!corp)
             {
                 MarketOrderValueSnapshot snapshot;
@@ -2056,8 +2058,6 @@ namespace Evernus
 
                 mCorpMarketOrderValueSnapshotRepository->store(snapshot);
             }
-
-            asyncBatchStore(orderRepo, orders, true);
 
             mDataProvider->clearExternalOrderCaches();
 
