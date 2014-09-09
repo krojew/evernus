@@ -57,6 +57,8 @@ namespace Evernus
 
     void SellMarketOrdersInfoWidget::updateData()
     {
+        GenericMarketOrdersInfoWidget::updateData();
+
         const auto curLocale = locale();
         const auto income = mModel.getTotalIncome();
         const auto cost = mModel.getTotalCost();
