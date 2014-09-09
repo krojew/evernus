@@ -30,6 +30,7 @@
 #include <QGroupBox>
 #include <QSpinBox>
 #include <QAction>
+#include <QDebug>
 #include <QHash>
 #include <QFont>
 
@@ -100,6 +101,8 @@ namespace Evernus
 
     void StatisticsWidget::setCharacter(Character::IdType id)
     {
+        qDebug() << "Switching statistics to" << id;
+
         mCharacterId = id;
 
         if (mCharacterId == Character::invalidId)

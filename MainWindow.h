@@ -189,6 +189,8 @@ namespace Evernus
         std::unordered_map<int, Character::IdType> mTabCharacterIds;
         std::unordered_map<int, QWidget *> mTabWidgets;
 
+        QMenu *mViewTabsMenu = nullptr;
+
         QTimer mAutoImportTimer;
 
         int mMarketBrowserTab = -1;

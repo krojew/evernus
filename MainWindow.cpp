@@ -23,6 +23,7 @@
 #include <QTabWidget>
 #include <QSettings>
 #include <QMenuBar>
+#include <QTabBar>
 #include <QLabel>
 #include <QDebug>
 
@@ -451,6 +452,9 @@ namespace Evernus
         toolsMenu->addAction(tr("Copy HTTP link"), this, SLOT(copyHTTPLink()));
         toolsMenu->addAction(tr("Copy IGB link"), this, SLOT(copyIGBLink()));
 
+        auto viewMenu = bar->addMenu(tr("&View"));
+        mViewTabsMenu = viewMenu->addMenu(tr("Show/hide tabs"));
+
         auto helpMenu = bar->addMenu(tr("&Help"));
         helpMenu->addAction(QIcon{":/images/help.png"}, tr("&Online help..."), this, SLOT(openHelp()));
         helpMenu->addAction(tr("Check for &updates"), this, SLOT(checkForUpdates()));
@@ -468,6 +472,7 @@ namespace Evernus
     {
         mMainTabs = new QTabWidget{this};
         setCentralWidget(mMainTabs);
+        mMainTabs->tabBar()->setStyleSheet("*::tab:disabled { width: 0; height: 0; margin: 0; padding: 0; border: none; }");
         connect(mMainTabs, &QTabWidget::currentChanged, this, &MainWindow::updateCurrentTab);
 
         auto charTab = new CharacterWidget{mRepositoryProvider.getCharacterRepository(),
@@ -679,6 +684,15 @@ namespace Evernus
         auto itemCostTab = new ItemCostWidget{mItemCostProvider, mEveDataProvider, this};
         addTab(itemCostTab, tr("Item costs"));
         connect(this, &MainWindow::itemCostsChanged, itemCostTab, &ItemCostWidget::updateData);
+
+        QSettings settings;
+
+        const auto actions = mViewTabsMenu->actions();
+        for (auto i = 0; i < actions.size(); ++i)
+        {
+            if (!settings.value(QString{UISettings::tabShowStateKey}.arg(i), true).toBool())
+                actions[i]->setChecked(false);
+        }
     }
 
     void MainWindow::createStatusBar()
@@ -700,8 +714,19 @@ namespace Evernus
     int MainWindow::addTab(QWidget *widget, const QString &label)
     {
         const auto index = mMainTabs->addTab(createMainViewTab(widget), label);
-
         mTabWidgets[index] = widget;
+
+        auto action = mViewTabsMenu->addAction(label);
+        action->setCheckable(true);
+        action->setChecked(true);
+        connect(action, &QAction::toggled, this, [index, this](bool checked) {
+            mMainTabs->setTabEnabled(index, checked);
+            mMainTabs->setElideMode(mMainTabs->elideMode());    // hack to refresh layout, since there is no api to do that
+
+            QSettings settings;
+            settings.setValue(QString{UISettings::tabShowStateKey}.arg(index), checked);
+        });
+
         return index;
     }
 
