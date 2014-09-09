@@ -401,6 +401,8 @@ namespace Evernus
 
     void MarginToolDialog::closeEvent(QCloseEvent *event)
     {
+        emit hidden();
+
         savePosition();
         QDialog::closeEvent(event);
     }

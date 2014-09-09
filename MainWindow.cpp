@@ -149,6 +149,7 @@ namespace Evernus
                                                      mEveDataProvider};
             mMarginToolDialog->setCharacter(mCurrentCharacterId);
             connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, mMarginToolDialog, &MarginToolDialog::setCharacter);
+            connect(mMarginToolDialog, &MarginToolDialog::hidden, this, &MainWindow::showNormal);
         }
 
         mMarginToolDialog->showNormal();

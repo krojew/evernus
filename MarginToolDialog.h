@@ -52,6 +52,9 @@ namespace Evernus
                          QWidget *parent = nullptr);
         virtual ~MarginToolDialog() = default;
 
+    signals:
+        void hidden();
+
     public slots:
         void setCharacter(Character::IdType id);
 
