@@ -1,0 +1,11 @@
+#define MAJOR "${MAJOR_VERSION}"
+#define MINOR "${MINOR_VERSION}"
+
+namespace version {
+constexpr const char *majorStr() { return MAJOR; }
+constexpr const char *minorStr() { return MINOR; }
+constexpr const char *fullStr() { return MAJOR "." MINOR; }
+}
+
+#undef MINOR
+#undef MAJOR

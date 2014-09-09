@@ -30,13 +30,14 @@
 #include "ExternalOrderModel.h"
 #include "EvernusApplication.h"
 #include "MainWindow.h"
+#include "Version.h.in"
 
 int main(int argc, char *argv[])
 {
     try
     {
         QCoreApplication::setApplicationName("Evernus");
-        QCoreApplication::setApplicationVersion("1.13");
+        QCoreApplication::setApplicationVersion(version::fullStr());
         QCoreApplication::setOrganizationDomain("evernus.com");
         QCoreApplication::setOrganizationName("evernus.com");
 

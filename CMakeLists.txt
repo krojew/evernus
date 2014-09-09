@@ -4,6 +4,8 @@ project(Evernus)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_NAME "evernus")
+set(MAJOR_VERSION "1")
+set(MINOR_VERSION "13")
 
 find_package(Boost REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
@@ -15,7 +17,10 @@ find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
+configure_file(Version.h.in Version.h)
+
 if(APPLE)
+    configure_file(Info.plist.in Info.plist)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -pthread")
 elseif(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -pthread -stdlib=libc++ -g")
@@ -566,6 +571,7 @@ add_executable(
     UpdateTimer.h
     UpdateTimerRepository.cpp
     UpdateTimerRepository.h
+    Version.h
     WalletEntryFilterWidget.cpp
     WalletEntryFilterWidget.h
     WalletJournal.h
