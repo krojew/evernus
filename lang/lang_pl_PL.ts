@@ -5064,12 +5064,34 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="122"/>
+        <location filename="../main.cpp" line="56"/>
+        <location filename="../main.cpp" line="71"/>
+        <source>Already running</source>
+        <translation>Już włączono</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="56"/>
+        <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
+        <translation>Evernus zdaje się już być włączony. Jeśli tak nie jest, usuń &apos;%1&apos;.</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="71"/>
+        <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
+        <translation>Evernus prawdopodobnie nie został czysto zamknięty. Czy chcesz przeprowadzić próbę wyczyszczenia?</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="80"/>
+        <location filename="../main.cpp" line="180"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="131"/>
+        <location filename="../main.cpp" line="81"/>
+        <source>Couldn&apos;t remove &apos;%1&apos;!</source>
+        <translation>Nie udało się usunać &apos;%1&apos;!</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="189"/>
         <source>Initialization error</source>
         <translation>Błąd inicjalizacji</translation>
     </message>

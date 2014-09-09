@@ -13,8 +13,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QApplication>
+#include <QLocalSocket>
+#include <QLocalServer>
 #include <QMessageBox>
 #include <QDebug>
+#include <QFile>
+#include <QDir>
 
 #include "MarketLogExternalOrderImporterThread.h"
 #include "EveMarketDataExternalOrderImporter.h"
@@ -35,6 +39,60 @@ int main(int argc, char *argv[])
         QCoreApplication::setApplicationVersion("1.13");
         QCoreApplication::setOrganizationDomain("evernus.com");
         QCoreApplication::setOrganizationName("evernus.com");
+
+#ifdef Q_OS_WIN
+        const auto serverName = QCoreApplication::applicationName() + ".socket";
+#else
+        const auto serverName = QDir::tempPath() + "/" + QCoreApplication::applicationName() + ".socket";
+#endif
+
+        QLocalSocket socket;
+        socket.connectToServer(serverName);
+        if (socket.waitForConnected(500))
+        {
+            qDebug() << "Connected to" << socket.fullServerName();
+
+            QApplication tempApp{argc, argv};
+            QMessageBox::information(nullptr, QCoreApplication::translate("main", "Already running"), QCoreApplication::translate("main",
+                "Evernus seems to be already running. If this is not the case, please remove '%1'.").arg(socket.fullServerName()));
+
+            return 0;
+        }
+
+        QLocalServer server;
+        server.connect(&server, &QLocalServer::newConnection, &QLocalServer::nextPendingConnection);
+        if (!server.listen(serverName))
+        {
+            qDebug() << "Local server listen failed:" << server.errorString();
+#ifndef Q_OS_WIN
+            if (server.serverError() == QAbstractSocket::AddressInUseError)
+            {
+                QApplication tempApp{argc, argv};
+                const auto ret = QMessageBox::question(nullptr, QCoreApplication::translate("main", "Already running"), QCoreApplication::translate("main",
+                    "Evernus probably didn't close cleanly the last time. Do you want to try to perform a cleanup?"));
+                if (ret == QMessageBox::Yes)
+                {
+                    qDebug() << "Cleanup attempt.";
+                    if (!QFile::remove(serverName))
+                    {
+                        qDebug() << "Cleanup failed.";
+                        QMessageBox::critical(nullptr,
+                                              QCoreApplication::translate("main", "Error"),
+                                              QCoreApplication::translate("main", "Couldn't remove '%1'!").arg(serverName));
+                        return 1;
+                    }
+                    else
+                    {
+                        server.listen(serverName);
+                    }
+                }
+            }
+            else
+            {
+                qDebug() << "Running anyway...";
+            }
+#endif
+        }
 
         qRegisterMetaType<Evernus::MarketLogExternalOrderImporterThread::ExternalOrderList>("ExternalOrderList");
         qRegisterMetaType<Evernus::EveType::IdType>("EveType::IdType");
