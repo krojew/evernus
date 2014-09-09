@@ -30,7 +30,7 @@
 #include "ExternalOrderModel.h"
 #include "EvernusApplication.h"
 #include "MainWindow.h"
-#include "Version.h.in"
+#include "Version.h"
 
 int main(int argc, char *argv[])
 {
