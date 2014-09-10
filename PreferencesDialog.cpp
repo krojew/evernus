@@ -29,6 +29,7 @@
 #include "GeneralPreferencesWidget.h"
 #include "WalletPreferencesWidget.h"
 #include "ImportPreferencesWidget.h"
+#include "LMevePreferencesWidget.h"
 #include "PricePreferencesWidget.h"
 #include "HttpPreferencesWidget.h"
 #include "PathPreferencesWidget.h"
@@ -64,6 +65,7 @@ namespace Evernus
         categories.emplace_back(std::make_pair(tr("In-Game Browser"), new IGBPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Web Service"), new HttpPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Wallet"), new WalletPreferencesWidget{this}));
+        categories.emplace_back(std::make_pair(tr("LMeve"), new LMevePreferencesWidget{this}));
 
         for (auto i = 0u; i < categories.size(); ++i)
         {

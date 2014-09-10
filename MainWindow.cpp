@@ -52,6 +52,7 @@
 #include "PriceSettings.h"
 #include "HttpSettings.h"
 #include "AssetsWidget.h"
+#include "LMeveWidget.h"
 #include "AboutDialog.h"
 #include "IGBSettings.h"
 #include "UISettings.h"
@@ -692,6 +693,9 @@ namespace Evernus
         auto itemCostTab = new ItemCostWidget{mItemCostProvider, mEveDataProvider, this};
         addTab(itemCostTab, tr("Item costs"));
         connect(this, &MainWindow::itemCostsChanged, itemCostTab, &ItemCostWidget::updateData);
+
+        auto lmEveTab = new LMeveWidget{this};
+        addTab(lmEveTab, tr("LMeve"));
 
         QSettings settings;
 

@@ -92,6 +92,8 @@ qt5_wrap_cpp(
     ItemTypeSelectDialog.h
     KeyEditDialog.h
     LanguageSelectDialog.h
+    LMevePreferencesWidget.h
+    LMeveWidget.h
     LocationBookmarkSelectDialog.h
     MainWindow.h
     MarginToolDialog.h
@@ -394,6 +396,11 @@ add_executable(
     LanguageSelectDialog.h
     LeafFilterProxyModel.cpp
     LeafFilterProxyModel.h
+    LMevePreferencesWidget.cpp
+    LMevePreferencesWidget.h
+    LMeveWidget.cpp
+    LMeveWidget.h
+    LMeveSettings.h
     LocationBookmark.cpp
     LocationBookmark.h
     LocationBookmarkRepository.cpp
