@@ -401,6 +401,8 @@ add_executable(
     LMeveWidget.cpp
     LMeveWidget.h
     LMeveSettings.h
+    LMeveTask.cpp
+    LMeveTask.h
     LocationBookmark.cpp
     LocationBookmark.h
     LocationBookmarkRepository.cpp
