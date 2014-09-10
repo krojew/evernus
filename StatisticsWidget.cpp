@@ -297,7 +297,10 @@ namespace Evernus
                                      (mCorpWalletSnapshotRepository.fetchRange(corpId, from.toUTC(), to.toUTC()));
 
             if (!walletShots.empty())
+            {
+                dataInserter(*corpWalletValues, walletShots);
                 *sumData = merger(*sumData, *corpWalletValues);
+            }
 
             const auto corpOrderShots = mCorpMarketOrderSnapshotRepository.fetchRange(corpId, from.toUTC(), to.toUTC());
             if (!corpOrderShots.empty())
