@@ -12,18 +12,45 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QVBoxLayout>
+#include <QTabWidget>
+#include <QLabel>
+
+#include "StyledTreeView.h"
+
 #include "LMeveWidget.h"
 
 namespace Evernus
 {
-    LMeveWidget::LMeveWidget(QWidget *parent)
+    LMeveWidget::LMeveWidget(const EveDataProvider &dataProvider, QWidget *parent)
         : QWidget(parent)
+        , mTaskModel(dataProvider)
     {
+        auto mainLayout = new QVBoxLayout{};
+        setLayout(mainLayout);
 
+        auto infoLabel = new QLabel{tr("Before synchronizing, enter LMeve url and key in the <a href='#'>Preferences</a>."), this};
+        mainLayout->addWidget(infoLabel);
+        connect(infoLabel, &QLabel::linkActivated, this, &LMeveWidget::openPreferences);
+
+        auto tabs = new QTabWidget{this};
+        mainLayout->addWidget(tabs, 1);
+
+        tabs->addTab(createTaskTab(), tr("Tasks"));
     }
 
     void LMeveWidget::setCharacter(Character::IdType id)
     {
         mCharacterId = id;
+    }
+
+    QWidget *LMeveWidget::createTaskTab()
+    {
+        mTaskProxy.setSourceModel(&mTaskModel);
+
+        auto view = new StyledTreeView{"lmeve-tasks", this};
+        view->setModel(&mTaskProxy);
+
+        return view;
     }
 }

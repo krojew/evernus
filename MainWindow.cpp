@@ -694,8 +694,9 @@ namespace Evernus
         addTab(itemCostTab, tr("Item costs"));
         connect(this, &MainWindow::itemCostsChanged, itemCostTab, &ItemCostWidget::updateData);
 
-        auto lmEveTab = new LMeveWidget{this};
+        auto lmEveTab = new LMeveWidget{mEveDataProvider, this};
         addTab(lmEveTab, tr("LMeve"));
+        connect(lmEveTab, &LMeveWidget::openPreferences, this, &MainWindow::showPreferences);
 
         QSettings settings;
 

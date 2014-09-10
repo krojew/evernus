@@ -14,8 +14,10 @@
  */
 #pragma once
 
+#include <QSortFilterProxyModel>
 #include <QWidget>
 
+#include "LMeveTaskModel.h"
 #include "Character.h"
 
 namespace Evernus
@@ -26,13 +28,21 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit LMeveWidget(QWidget *parent = nullptr);
+        explicit LMeveWidget(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
         virtual ~LMeveWidget() = default;
+
+    signals:
+        void openPreferences();
 
     public slots:
         void setCharacter(Character::IdType id);
 
     private:
         Character::IdType mCharacterId = Character::invalidId;
+
+        LMeveTaskModel mTaskModel;
+        QSortFilterProxyModel mTaskProxy;
+
+        QWidget *createTaskTab();
     };
 }

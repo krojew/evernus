@@ -2549,6 +2549,19 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
 </context>
 <context>
+    <name>Evernus::LMeveWidget</name>
+    <message>
+        <location filename="../LMeveWidget.cpp" line="32"/>
+        <source>Before synchronizing, enter LMeve url and key in the &lt;a href=&apos;#&apos;&gt;Preferences&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../LMeveWidget.cpp" line="39"/>
+        <source>Tasks</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::LanguageSelectDialog</name>
     <message>
         <location filename="../LanguageSelectDialog.cpp" line="35"/>
