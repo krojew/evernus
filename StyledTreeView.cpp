@@ -119,7 +119,6 @@ namespace Evernus
 
     void StyledTreeView::setColumnsMenu(QAbstractItemModel *model)
     {
-        const auto name = objectName();
         if (model == nullptr)
             model = static_cast<QAbstractItemModel *>(sender());
 
