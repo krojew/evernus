@@ -416,6 +416,8 @@ add_executable(
     LMevePreferencesWidget.h
     LMeveTaskModel.cpp
     LMeveTaskModel.h
+    LMeveTaskRepository.cpp
+    LMeveTaskRepository.h
     LMeveWidget.cpp
     LMeveWidget.h
     LMeveSettings.h

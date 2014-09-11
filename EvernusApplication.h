@@ -46,6 +46,7 @@
 #include "CacheTimerRepository.h"
 #include "FilterTextRepository.h"
 #include "CharacterRepository.h"
+#include "LMeveTaskRepository.h"
 #include "AssetListRepository.h"
 #include "MetaGroupRepository.h"
 #include "ItemCostRepository.h"
@@ -238,6 +239,7 @@ namespace Evernus
         std::unique_ptr<ContractItemRepository> mContractItemRepository, mCorpContractItemRepository;
         std::unique_ptr<ContractRepository> mContractRepository, mCorpContractRepository;
         std::unique_ptr<EveTypeRepository> mEveTypeRepository;
+        std::unique_ptr<LMeveTaskRepository> mLMeveTaskRepository;
         std::unique_ptr<MarketGroupRepository> mMarketGroupRepository;
         std::unique_ptr<MetaGroupRepository> mMetaGroupRepository;
 

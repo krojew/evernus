@@ -1555,6 +1555,7 @@ namespace Evernus
         mCorpContractItemRepository.reset(new ContractItemRepository{true, mMainDb});
         mContractRepository.reset(new ContractRepository{*mContractItemRepository, false, mMainDb});
         mCorpContractRepository.reset(new ContractRepository{*mCorpContractItemRepository, true, mMainDb});
+        mLMeveTaskRepository.reset(new LMeveTaskRepository{mMainDb});
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
         mMarketGroupRepository.reset(new MarketGroupRepository{mEveDb});
         mMetaGroupRepository.reset(new MetaGroupRepository{mEveDb});
@@ -1591,6 +1592,7 @@ namespace Evernus
         mCorpContractRepository->create();
         mContractItemRepository->create(*mContractRepository);
         mCorpContractItemRepository->create(*mCorpContractRepository);
+        mLMeveTaskRepository->create(*mCharacterRepository);
         mRefTypeRepository->create();
     }
 
