@@ -35,7 +35,15 @@ endif()
 set(TRANSLATIONS lang/lang_pl_PL.ts)
 set_source_files_properties(${TRANSLATIONS} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/trans")
 
-add_definitions("-DQXT_STATIC")
+add_definitions(-DQXT_STATIC)
+
+if(DEFINED EVERNUS_DROPBOX_APP_KEY AND DEFINED EVERNUS_DROPBOX_APP_SECRET)
+    add_definitions(-DEVERNUS_DROPBOX_APP_KEY=${EVERNUS_DROPBOX_APP_KEY} -DEVERNUS_DROPBOX_APP_SECRET=${EVERNUS_DROPBOX_APP_SECRET})
+    
+    if(DEFINED QTDROPBOX_DEBUG)
+        add_definitions(-DQTDROPBOX_DEBUG)
+    endif()
+endif() 
 
 qt5_wrap_cpp(
     MOC_FILES
@@ -119,6 +127,11 @@ qt5_wrap_cpp(
     PreferencesDialog.h
     PricePreferencesWidget.h
     qcustomplot.h
+    qdropbox.h
+    qdropboxaccount.h
+    qdropboxfile.h
+    qdropboxfileinfo.h
+    qdropboxjson.h
     qxtabstracthttpconnector.h
     qxtabstractwebservice.h
     qxtabstractwebsessionmanager.h
@@ -136,6 +149,8 @@ qt5_wrap_cpp(
     StationModel.h
     StatisticsWidget.h
     StyledTreeView.h
+    SyncDialog.h
+    SyncPreferencesWidget.h
     TextFilterWidget.h
     Updater.h
     WalletEntryFilterWidget.h
@@ -497,8 +512,20 @@ add_executable(
     PriceUtils.h
     qcustomplot.cpp
     qcustomplot.h
+    qdropbox.cpp
+    qdropbox.h
+    qdropboxaccount.cpp
+    qdropboxaccount.h
+    qdropboxfile.cpp
+    qdropboxfile.h
+    qdropboxfileinfo.cpp
+    qdropboxfileinfo.h
+    qdropboxjson.cpp
+    qdropboxjson.h
     qhttpheader.cpp
     qhttpheader.h
+    qtdropbox.h
+    qtdropbox_global.h
     QtScriptSyntaxHighlighter.cpp
     QtScriptSyntaxHighlighter.h
     qxtabstracthttpconnector.cpp
@@ -569,6 +596,11 @@ add_executable(
     StyledTreeView.h
     StyledTreeViewItemDelegate.cpp
     StyledTreeViewItemDelegate.h
+    SyncDialog.cpp
+    SyncDialog.h
+    SyncPreferencesWidget.cpp
+    SyncPreferencesWidget.h
+    SyncSettings.h
     TaskConstants.h
     TextFilterWidget.cpp
     TextFilterWidget.h

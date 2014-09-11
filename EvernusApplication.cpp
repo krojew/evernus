@@ -33,10 +33,12 @@
 #include "PriceSettings.h"
 #include "PathSettings.h"
 #include "HttpSettings.h"
+#include "SyncSettings.h"
 #include "IGBSettings.h"
 #include "SimpleCrypt.h"
 #include "HttpService.h"
 #include "IGBService.h"
+#include "SyncDialog.h"
 #include "UISettings.h"
 #include "PathUtils.h"
 #include "Updater.h"
@@ -84,6 +86,14 @@ namespace Evernus
         {
             updateTranslator(lang);
         }
+
+#ifdef EVERNUS_DROPBOX_ENABLED
+        if (settings.value(SyncSettings::enabledOnStartupKey, SyncSettings::enabledOnStartupDefault).toBool())
+        {
+            SyncDialog syncDlg{SyncDialog::Mode::Download};
+            syncDlg.exec();
+        }
+#endif
 
         QSplashScreen splash{QPixmap{":/images/splash.png"}};
         splash.show();

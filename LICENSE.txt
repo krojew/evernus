@@ -15,6 +15,10 @@ Evernus:
 
 3rd party licenses:
 
+QtDropbox:
+
+Licensed under GNU LGPLv3.
+
 Silk icon set:
 
 Mark James
@@ -42,7 +46,7 @@ QCustomPlot:
 
 Eve Online with related content:
 
-©CCP hf. All rights reserved. Used with permission.
+ï¿½CCP hf. All rights reserved. Used with permission.
 
 Simplecrypt:
 

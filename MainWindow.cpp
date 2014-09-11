@@ -50,11 +50,13 @@
 #include "KeyRepository.h"
 #include "MenuBarWidget.h"
 #include "PriceSettings.h"
+#include "SyncSettings.h"
 #include "HttpSettings.h"
 #include "AssetsWidget.h"
 #include "LMeveWidget.h"
 #include "AboutDialog.h"
 #include "IGBSettings.h"
+#include "SyncDialog.h"
 #include "UISettings.h"
 #include "Updater.h"
 
@@ -388,6 +390,14 @@ namespace Evernus
         mMainTabs->setCurrentIndex(mMarketBrowserTab);
     }
 
+    void MainWindow::performSync()
+    {
+#ifdef EVERNUS_DROPBOX_ENABLED
+        SyncDialog syncDlg{SyncDialog::Mode::Upload};
+        syncDlg.exec();
+#endif
+    }
+
     void MainWindow::changeEvent(QEvent *event)
     {
         QSettings settings;
@@ -412,6 +422,11 @@ namespace Evernus
             mMarginToolDialog->close();
 
         writeSettings();
+
+        QSettings settings;
+        if (settings.value(SyncSettings::enabledOnShutdownKey, SyncSettings::enabledOnShutdownDefault).toBool())
+            performSync();
+
         event->accept();
     }
 
@@ -458,6 +473,10 @@ namespace Evernus
         toolsMenu->addSeparator();
         toolsMenu->addAction(tr("Copy HTTP link"), this, SLOT(copyHTTPLink()));
         toolsMenu->addAction(tr("Copy IGB link"), this, SLOT(copyIGBLink()));
+#ifdef EVERNUS_DROPBOX_ENABLED
+        toolsMenu->addSeparator();
+        toolsMenu->addAction(QIcon{":/images/arrow_refresh.png"}, tr("Upload data to cloud..."), this, SLOT(performSync()));
+#endif
 
         auto viewMenu = bar->addMenu(tr("&View"));
         mViewTabsMenu = viewMenu->addMenu(tr("Show/hide tabs"));

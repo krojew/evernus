@@ -14,18 +14,26 @@
  */
 #pragma once
 
-class QSqlDatabase;
-class QSqlQuery;
-class QString;
+#include <QWidget>
+
+class QCheckBox;
 
 namespace Evernus
 {
-    namespace DatabaseUtils
+    class SyncPreferencesWidget
+        : public QWidget
     {
-        QString getDbPath();
-        void createDb(QSqlDatabase &db, const QString &name);
-        void execQuery(QSqlQuery &query);
-        QString backupDatabase(const QSqlDatabase &db);
-        QString backupDatabase(const QString &dbPath);
-    }
+        Q_OBJECT
+
+    public:
+        explicit SyncPreferencesWidget(QWidget *parent = nullptr);
+        virtual ~SyncPreferencesWidget() = default;
+
+    public slots:
+        void applySettings();
+
+    private:
+        QCheckBox *mEnabledOnStartupBtn = nullptr;
+        QCheckBox *mEnabledOnShutdownBtn = nullptr;
+    };
 }

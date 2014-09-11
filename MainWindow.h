@@ -150,6 +150,8 @@ namespace Evernus
 
         void showMarketBrowser();
 
+        void performSync();
+
     protected:
         virtual void changeEvent(QEvent *event) override;
         virtual void closeEvent(QCloseEvent *event) override;
