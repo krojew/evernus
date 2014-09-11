@@ -299,6 +299,11 @@ namespace Evernus
             if (it == std::end(mCorpContractsUtcCacheTimes))
                 return QDateTime::currentDateTime();
             break;
+        case TimerType::LMeveTasks:
+            it = mLMeveUtcCacheTimes.find(id);
+            if (it == std::end(mLMeveUtcCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
         default:
             throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
         }
@@ -341,6 +346,9 @@ namespace Evernus
             break;
         case TimerType::CorpContracts:
             mCorpContractsUtcCacheTimes[id] = dt;
+            break;
+        case TimerType::LMeveTasks:
+            mLMeveUtcCacheTimes[id] = dt;
             break;
         default:
             throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
@@ -1412,6 +1420,26 @@ namespace Evernus
         emit marketOrdersChanged();
     }
 
+    void EvernusApplication::syncLMeve(Character::IdType id)
+    {
+        qDebug() << "Performing LMeve sync:" << id;
+
+        const auto task = startTask(tr("Synchronizing with LMeve..."));
+        processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        mLMeveAPIManager.fetchTasks(id, [id, task, this](auto &&list, const auto &error) {
+            if (error.isEmpty())
+            {
+                asyncBatchStore(*mLMeveTaskRepository, list, true);
+                setUtcCacheTimer(id, Evernus::TimerType::LMeveTasks, QDateTime::currentDateTimeUtc().addSecs(3600));
+
+                emit lMeveTasksChanged();
+            }
+
+            emit taskEnded(task, error);
+        });
+    }
+
     void EvernusApplication::scheduleCharacterUpdate()
     {
         if (mCharacterUpdateScheduled)
@@ -1631,6 +1659,10 @@ namespace Evernus
                 break;
             case TimerType::CorpContracts:
                 mCorpContractsUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
+                break;
+            case TimerType::LMeveTasks:
+                mLMeveUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
+                break;
             }
         }
     }
@@ -1670,6 +1702,9 @@ namespace Evernus
                 break;
             case TimerType::CorpContracts:
                 mCorpContractsUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
+                break;
+            case TimerType::LMeveTasks:
+                break;
             }
         }
     }

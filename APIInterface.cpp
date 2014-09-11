@@ -162,6 +162,7 @@ namespace Evernus
     void APIInterface::processReply()
     {
         auto reply = qobject_cast<QNetworkReply *>(sender());
+        reply->deleteLater();
 
         const auto it = mPendingCallbacks.find(reply);
         Q_ASSERT(it != std::end(mPendingCallbacks));
@@ -171,8 +172,6 @@ namespace Evernus
         it->second(reply->readAll(),
                    (error == QNetworkReply::NoError || error == QNetworkReply::ContentAccessDenied) ? (QString{}) : (reply->errorString()));
         mPendingCallbacks.erase(it);
-
-        reply->deleteLater();
     }
 
     void APIInterface::processSslErrors(const QList<QSslError> &errors)

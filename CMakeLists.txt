@@ -100,6 +100,8 @@ qt5_wrap_cpp(
     ItemTypeSelectDialog.h
     KeyEditDialog.h
     LanguageSelectDialog.h
+    LMeveAPIInterface.h
+    LMeveAPIManager.h
     LMevePreferencesWidget.h
     LMeveTaskModel.h
     LMeveWidget.h
@@ -412,6 +414,10 @@ add_executable(
     LanguageSelectDialog.h
     LeafFilterProxyModel.cpp
     LeafFilterProxyModel.h
+    LMeveAPIManager.cpp
+    LMeveAPIManager.h
+    LMeveAPIInterface.cpp
+    LMeveAPIInterface.h
     LMevePreferencesWidget.cpp
     LMevePreferencesWidget.h
     LMeveTaskModel.cpp

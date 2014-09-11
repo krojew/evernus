@@ -13,25 +13,44 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QTabWidget>
 #include <QLabel>
 
+#include "CacheTimerProvider.h"
+#include "ButtonWithTimer.h"
 #include "StyledTreeView.h"
 
 #include "LMeveWidget.h"
 
 namespace Evernus
 {
-    LMeveWidget::LMeveWidget(const EveDataProvider &dataProvider, QWidget *parent)
+    LMeveWidget::LMeveWidget(const CacheTimerProvider &cacheTimerProvider,
+                             const EveDataProvider &dataProvider,
+                             QWidget *parent)
         : QWidget(parent)
+        , mCacheTimerProvider(cacheTimerProvider)
         , mTaskModel(dataProvider)
     {
         auto mainLayout = new QVBoxLayout{};
         setLayout(mainLayout);
 
+        auto toolbarLayout = new QHBoxLayout{};
+        mainLayout->addLayout(toolbarLayout);
+
+        mSyncBtn = new ButtonWithTimer{tr("Synchronize"), this};
+        toolbarLayout->addWidget(mSyncBtn);
+        mSyncBtn->setEnabled(false);
+        connect(mSyncBtn, &ButtonWithTimer::clicked, this, [this] {
+            Q_ASSERT(mCharacterId != Character::invalidId);
+            emit syncLMeve(mCharacterId);
+        });
+
         auto infoLabel = new QLabel{tr("Before synchronizing, enter LMeve url and key in the <a href='#'>Preferences</a>."), this};
-        mainLayout->addWidget(infoLabel);
+        toolbarLayout->addWidget(infoLabel);
         connect(infoLabel, &QLabel::linkActivated, this, &LMeveWidget::openPreferences);
+
+        toolbarLayout->addStretch();
 
         auto tabs = new QTabWidget{this};
         mainLayout->addWidget(tabs, 1);
@@ -42,6 +61,12 @@ namespace Evernus
     void LMeveWidget::setCharacter(Character::IdType id)
     {
         mCharacterId = id;
+        updateData();
+    }
+
+    void LMeveWidget::updateData()
+    {
+        refreshImportTimer();
     }
 
     QWidget *LMeveWidget::createTaskTab()
@@ -52,5 +77,19 @@ namespace Evernus
         view->setModel(&mTaskProxy);
 
         return view;
+    }
+
+    void LMeveWidget::refreshImportTimer()
+    {
+        if (mCharacterId == Character::invalidId)
+        {
+            mSyncBtn->setDisabled(true);
+            mSyncBtn->stopTimer();
+        }
+        else
+        {
+            mSyncBtn->setEnabled(true);
+            mSyncBtn->setTimer(mCacheTimerProvider.getLocalCacheTimer(mCharacterId, TimerType::LMeveTasks));
+        }
     }
 }

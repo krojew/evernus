@@ -88,6 +88,7 @@ namespace Evernus
         void corpContractsChanged();
         void itemCostsChanged();
         void itemVolumeChanged();
+        void lMeveTasksChanged();
 
         void preferencesChanged();
 
@@ -114,6 +115,8 @@ namespace Evernus
         void importExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &target);
 
         void importFromMentat();
+
+        void syncLMeve(Character::IdType id);
 
         void showInEve(EveType::IdType id);
 

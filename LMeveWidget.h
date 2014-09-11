@@ -22,27 +22,41 @@
 
 namespace Evernus
 {
+    class CacheTimerProvider;
+    class ButtonWithTimer;
+
     class LMeveWidget
         : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit LMeveWidget(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
+        LMeveWidget(const CacheTimerProvider &cacheTimerProvider,
+                    const EveDataProvider &dataProvider,
+                    QWidget *parent = nullptr);
         virtual ~LMeveWidget() = default;
 
     signals:
+        void syncLMeve(Character::IdType id);
+
         void openPreferences();
 
     public slots:
         void setCharacter(Character::IdType id);
+        void updateData();
 
     private:
+        const CacheTimerProvider &mCacheTimerProvider;
+
+        ButtonWithTimer *mSyncBtn = nullptr;
+
         Character::IdType mCharacterId = Character::invalidId;
 
         LMeveTaskModel mTaskModel;
         QSortFilterProxyModel mTaskProxy;
 
         QWidget *createTaskTab();
+
+        void refreshImportTimer();
     };
 }

@@ -27,6 +27,7 @@ namespace Evernus
         CorpWalletTransactions,
         CorpMarketOrders,
         Contracts,
-        CorpContracts
+        CorpContracts,
+        LMeveTasks,
     };
 }

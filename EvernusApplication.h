@@ -57,11 +57,13 @@
 #include "RefTypeRepository.h"
 #include "CorpKeyRepository.h"
 #include "ItemCostProvider.h"
+#include "LMeveAPIManager.h"
 #include "ItemRepository.h"
 #include "AssetProvider.h"
 #include "TaskConstants.h"
 #include "KeyRepository.h"
 #include "APIManager.h"
+
 #include "qxtsmtp.h"
 
 class QSplashScreen;
@@ -156,6 +158,7 @@ namespace Evernus
         void corpContractsChanged();
         void itemCostsChanged() const;
         void itemVolumeChanged();
+        void lMeveTasksChanged();
 
         void openMarginTool();
 
@@ -186,6 +189,8 @@ namespace Evernus
         void handleNewPreferences();
 
         void importFromMentat();
+
+        void syncLMeve(Character::IdType id);
 
     private slots:
         void scheduleCharacterUpdate();
@@ -244,6 +249,7 @@ namespace Evernus
         std::unique_ptr<MetaGroupRepository> mMetaGroupRepository;
 
         APIManager mAPIManager;
+        LMeveAPIManager mLMeveAPIManager;
 
         uint mTaskId = TaskConstants::invalidTask + 1;
         uint mCurrentExternalOrderImportTask = TaskConstants::invalidTask;
@@ -267,6 +273,7 @@ namespace Evernus
         CharacterTimerMap mCorpWalletTransactionsUtcCacheTimes;
         CharacterTimerMap mCorpMarketOrdersUtcCacheTimes;
         CharacterTimerMap mCorpContractsUtcCacheTimes;
+        CharacterTimerMap mLMeveUtcCacheTimes;
 
         CharacterTimerMap mCharacterUtcUpdateTimes;
         CharacterTimerMap mAssetsUtcUpdateTimes;
