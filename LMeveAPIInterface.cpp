@@ -43,7 +43,9 @@ namespace Evernus
         const auto it = mPendingCallbacks.find(reply);
         Q_ASSERT(it != std::end(mPendingCallbacks));
 
-        it->second(reply->readAll(), reply->errorString());
+        const auto error = reply->error();
+
+        it->second(reply->readAll(), (error == QNetworkReply::NoError) ? (QString{}) : (reply->errorString()));
         mPendingCallbacks.erase(it);
     }
 

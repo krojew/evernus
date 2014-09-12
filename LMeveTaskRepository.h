@@ -32,6 +32,7 @@ namespace Evernus
         virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         void create(const Repository<Character> &characterRepo) const;
+        void removeForCharacter(Character::IdType id) const;
 
     private:
         virtual QStringList getColumns() const override;

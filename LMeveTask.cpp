@@ -12,10 +12,65 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <stdexcept>
+
+#include <QCoreApplication>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QVariant>
+
 #include "LMeveTask.h"
 
 namespace Evernus
 {
+    LMeveTask::LMeveTask(const QJsonValue &json)
+        : Entity{}
+    {
+        if (!json.isObject())
+            throw std::runtime_error{QCoreApplication::translate("LMeveTask", "Missing JSON object!").toStdString()};
+
+        const auto obj = json.toObject();
+        const auto set = [&obj](const auto &name, const auto &setter) {
+            if (!obj.contains(name))
+                throw std::runtime_error{QCoreApplication::translate("LMeveTask", "Missing JSON value: %1").arg(name).toStdString()};
+
+            const auto value = obj.value(name);
+            if (!value.isNull())
+                setter(value.toVariant());
+        };
+
+        set("characterID", [this](const auto &value) {
+            setCharacterId(value.template value<Character::IdType>());
+        });
+        set("typeID", [this](const auto &value) {
+            setTypeId(value.template value<EveType::IdType>());
+        });
+        set("activityName", [this](const auto &value) {
+            setActivity(value.toString());
+        });
+        set("taskID", [this](const auto &value) {
+            setId(value.toInt());
+        });
+        set("runs", [this](const auto &value) {
+            setRuns(value.toUInt());
+        });
+        set("runsDone", [this](const auto &value) {
+            setRunsDone(value.toUInt());
+        });
+        set("jobsDone", [this](const auto &value) {
+            setJobsDone(value.toUInt());
+        });
+        set("jobsSuccess", [this](const auto &value) {
+            setJobsSuccess(value.toUInt());
+        });
+        set("jobsCompleted", [this](const auto &value) {
+            setJobsCompleted(value.toUInt());
+        });
+        set("runsCompleted", [this](const auto &value) {
+            setRunsCompleted(value.toUInt());
+        });
+    }
+
     Character::IdType LMeveTask::getCharacterId() const noexcept
     {
         return mCharacterId;

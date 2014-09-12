@@ -1427,9 +1427,17 @@ namespace Evernus
         const auto task = startTask(tr("Synchronizing with LMeve..."));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
+        if (getLocalCacheTimer(id, TimerType::LMeveTasks) > QDateTime::currentDateTime())
+        {
+            emit taskEnded(task, QString{});
+            return;
+        }
+
         mLMeveAPIManager.fetchTasks(id, [id, task, this](auto &&list, const auto &error) {
             if (error.isEmpty())
             {
+                mLMeveTaskRepository->removeForCharacter(id);
+
                 asyncBatchStore(*mLMeveTaskRepository, list, true);
                 setUtcCacheTimer(id, Evernus::TimerType::LMeveTasks, QDateTime::currentDateTimeUtc().addSecs(3600));
 

@@ -1343,8 +1343,8 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="689"/>
         <location filename="../EvernusApplication.cpp" line="695"/>
-        <location filename="../EvernusApplication.cpp" line="2130"/>
-        <location filename="../EvernusApplication.cpp" line="2168"/>
+        <location filename="../EvernusApplication.cpp" line="2138"/>
+        <location filename="../EvernusApplication.cpp" line="2176"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -1395,10 +1395,10 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="1427"/>
         <source>Synchronizing with LMeve...</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronizowanie z LMeve...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2359"/>
+        <location filename="../EvernusApplication.cpp" line="2367"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
@@ -1468,43 +1468,43 @@ Czy chcesz kontynuować?
 Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialność za jakąkolwiek karę CPP może na Ciebie nałożyć, jeśli zmienią swoją politykę.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1505"/>
+        <location filename="../EvernusApplication.cpp" line="1513"/>
         <source>SMTP Error</source>
         <translation>Błąd SMTP</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1505"/>
         <location filename="../EvernusApplication.cpp" line="1513"/>
+        <location filename="../EvernusApplication.cpp" line="1521"/>
         <source>Error sending email: %1</source>
         <translation>Błąd wysyłania maila: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1513"/>
+        <location filename="../EvernusApplication.cpp" line="1521"/>
         <source>Mail Error</source>
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1825"/>
+        <location filename="../EvernusApplication.cpp" line="1833"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1839"/>
+        <location filename="../EvernusApplication.cpp" line="1847"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1850"/>
+        <location filename="../EvernusApplication.cpp" line="1858"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2131"/>
+        <location filename="../EvernusApplication.cpp" line="2139"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2135"/>
+        <location filename="../EvernusApplication.cpp" line="2143"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1513,14 +1513,14 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2138"/>
+        <location filename="../EvernusApplication.cpp" line="2146"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2168"/>
+        <location filename="../EvernusApplication.cpp" line="2176"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
@@ -1570,12 +1570,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1748"/>
+        <location filename="../EvernusApplication.cpp" line="1756"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1814"/>
+        <location filename="../EvernusApplication.cpp" line="1822"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>
@@ -2538,32 +2538,32 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::LMeveAPIInterface</name>
     <message>
-        <location filename="../LMeveAPIInterface.cpp" line="58"/>
+        <location filename="../LMeveAPIInterface.cpp" line="60"/>
         <source>Missing LMeve url!</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak adresu LMeve!</translation>
     </message>
     <message>
-        <location filename="../LMeveAPIInterface.cpp" line="65"/>
+        <location filename="../LMeveAPIInterface.cpp" line="67"/>
         <source>Missing LMeve key!</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak klucza LMeve!</translation>
     </message>
 </context>
 <context>
     <name>Evernus::LMeveAPIManager</name>
     <message>
-        <location filename="../LMeveAPIManager.cpp" line="57"/>
+        <location filename="../LMeveAPIManager.cpp" line="59"/>
         <source>Unexpected object received!</source>
-        <translation type="unfinished"></translation>
+        <translation>Odebrano nieoczekiwany obiekt!</translation>
     </message>
     <message>
-        <location filename="../LMeveAPIManager.cpp" line="61"/>
+        <location filename="../LMeveAPIManager.cpp" line="63"/>
         <source>Expected task array!</source>
-        <translation type="unfinished"></translation>
+        <translation>Oczekiwano listy zadań!</translation>
     </message>
     <message>
-        <location filename="../LMeveAPIManager.cpp" line="78"/>
+        <location filename="../LMeveAPIManager.cpp" line="88"/>
         <source>Empty response from server!</source>
-        <translation type="unfinished"></translation>
+        <translation>Pusta odpowiedź serwera!</translation>
     </message>
 </context>
 <context>
@@ -2589,17 +2589,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../LMeveWidget.cpp" line="41"/>
         <source>Synchronize</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronizuj</translation>
     </message>
     <message>
         <location filename="../LMeveWidget.cpp" line="49"/>
         <source>Before synchronizing, enter LMeve url and key in the &lt;a href=&apos;#&apos;&gt;Preferences&lt;/a&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Przed synchronizacją, wprowadź adres i klucz LMeve w &lt;a href=&apos;#&apos;&gt;Ustawieniach&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../LMeveWidget.cpp" line="58"/>
         <source>Tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Zadania</translation>
     </message>
 </context>
 <context>
@@ -5191,6 +5191,19 @@ Czy chcesz ściągnąć ją teraz?</translation>
     <message>
         <source>Add to item costs</source>
         <translation type="vanished">Dodaj do własnych kosztów</translation>
+    </message>
+</context>
+<context>
+    <name>LMeveTask</name>
+    <message>
+        <location filename="../LMeveTask.cpp" line="30"/>
+        <source>Missing JSON object!</source>
+        <translation>Brak obiektu JSON!</translation>
+    </message>
+    <message>
+        <location filename="../LMeveTask.cpp" line="35"/>
+        <source>Missing JSON value: %1</source>
+        <translation>Brak wartości JSON: %1</translation>
     </message>
 </context>
 <context>

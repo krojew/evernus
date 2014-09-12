@@ -72,6 +72,14 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
     }
 
+    void LMeveTaskRepository::removeForCharacter(Character::IdType id) const
+    {
+        auto query = prepare(QString{"DELETE FROM %1 WHERE character_id = ?"}.arg(getTableName()));
+        query.bindValue(0, id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     QStringList LMeveTaskRepository::getColumns() const
     {
         return QStringList{}

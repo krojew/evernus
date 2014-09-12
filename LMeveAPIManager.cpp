@@ -32,12 +32,14 @@ namespace Evernus
         mPendingTaskRequests.emplace(characterId);
 
 #ifdef Q_OS_WIN
-        mInterface.fetchTasks(characterId, [callback](const QByteArray &response, const QString &error) {
+        mInterface.fetchTasks(characterId, [callback, characterId](const QByteArray &response, const QString &error) {
 #else
-        mInterface.fetchTasks(characterId, [callback = callback](const QByteArray &response, const QString &error) {
+        mInterface.fetchTasks(characterId, [callback = callback, characterId, this](const QByteArray &response, const QString &error) {
 #endif
             try
             {
+                mPendingTaskRequests.erase(characterId);
+
                 qDebug() << "Got JSON reply:" << response;
 
                 handlePotentialError(response, error);
@@ -61,6 +63,14 @@ namespace Evernus
                     throw std::runtime_error{tr("Expected task array!").toStdString()};
 
                 const auto array = doc.array();
+
+                TaskList result;
+                result.reserve(array.size());
+
+                for (const auto &elem : array)
+                    result.emplace_back(LMeveTask{elem});
+
+                callback(std::move(result), QString{});
             }
             catch (const std::exception &e)
             {

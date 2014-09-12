@@ -20,6 +20,8 @@
 #include "EveType.h"
 #include "Entity.h"
 
+class QJsonValue;
+
 namespace Evernus
 {
     class LMeveTask
@@ -31,6 +33,7 @@ namespace Evernus
         using Entity::Entity;
 
         LMeveTask() = default;
+        explicit LMeveTask(const QJsonValue &json);
         LMeveTask(const LMeveTask &) = default;
         LMeveTask(LMeveTask &&) = default;
         virtual ~LMeveTask() = default;
