@@ -40,6 +40,7 @@ namespace Evernus
     class CacheTimerProvider;
     class RepositoryProvider;
     class ActiveTasksDialog;
+    class LMeveDataProvider;
     class MarginToolDialog;
     class ItemCostProvider;
     class ContractProvider;
@@ -63,6 +64,7 @@ namespace Evernus
                    EveDataProvider &eveDataProvider,
                    const CacheTimerProvider &cacheTimerProvider,
                    ItemCostProvider &itemCostProvider,
+                   const LMeveDataProvider &lMeveDataProvider,
                    QWidget *parent = nullptr,
                    Qt::WindowFlags flags = 0);
         virtual ~MainWindow() = default;
@@ -170,6 +172,7 @@ namespace Evernus
         const ContractProvider &mContractProvider, &mCorpContractProvider;
         ItemCostProvider &mItemCostProvider;
 
+        const LMeveDataProvider &mLMeveDataProvider;
         EveDataProvider &mEveDataProvider;
 
         const CacheTimerProvider &mCacheTimerProvider;

@@ -14,10 +14,12 @@
  */
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QHeaderView>
 #include <QTabWidget>
 #include <QLabel>
 
 #include "CacheTimerProvider.h"
+#include "LMeveDataProvider.h"
 #include "ButtonWithTimer.h"
 #include "StyledTreeView.h"
 
@@ -27,9 +29,11 @@ namespace Evernus
 {
     LMeveWidget::LMeveWidget(const CacheTimerProvider &cacheTimerProvider,
                              const EveDataProvider &dataProvider,
+                             const LMeveDataProvider &lMeveDataProvider,
                              QWidget *parent)
         : QWidget(parent)
         , mCacheTimerProvider(cacheTimerProvider)
+        , mLMeveDataProvider(lMeveDataProvider)
         , mTaskModel(dataProvider)
     {
         auto mainLayout = new QVBoxLayout{};
@@ -56,6 +60,8 @@ namespace Evernus
         mainLayout->addWidget(tabs, 1);
 
         tabs->addTab(createTaskTab(), tr("Tasks"));
+
+        mTaskProxy.setSortRole(Qt::UserRole);
     }
 
     void LMeveWidget::setCharacter(Character::IdType id)
@@ -67,16 +73,19 @@ namespace Evernus
     void LMeveWidget::updateData()
     {
         refreshImportTimer();
+        mTaskModel.setTasks(mLMeveDataProvider.getTasks(mCharacterId));
+        mTaskView->header()->resizeSections(QHeaderView::ResizeToContents);
     }
 
     QWidget *LMeveWidget::createTaskTab()
     {
         mTaskProxy.setSourceModel(&mTaskModel);
 
-        auto view = new StyledTreeView{"lmeve-tasks", this};
-        view->setModel(&mTaskProxy);
+        mTaskView = new StyledTreeView{"lmeve-tasks", this};
+        mTaskView->setModel(&mTaskProxy);
+        mTaskView->setRootIsDecorated(false);
 
-        return view;
+        return mTaskView;
     }
 
     void LMeveWidget::refreshImportTimer()

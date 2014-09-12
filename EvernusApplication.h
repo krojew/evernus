@@ -56,6 +56,7 @@
 #include "EveTypeRepository.h"
 #include "RefTypeRepository.h"
 #include "CorpKeyRepository.h"
+#include "LMeveDataProvider.h"
 #include "ItemCostProvider.h"
 #include "LMeveAPIManager.h"
 #include "ItemRepository.h"
@@ -79,6 +80,7 @@ namespace Evernus
         , public CacheTimerProvider
         , public ItemCostProvider
         , public RepositoryProvider
+        , public LMeveDataProvider
     {
         Q_OBJECT
 
@@ -126,6 +128,8 @@ namespace Evernus
         virtual const FavoriteItemRepository &getFavoriteItemRepository() const noexcept override;
         virtual const LocationBookmarkRepository &getLocationBookmarkRepository() const noexcept override;
         virtual const ExternalOrderRepository &getExternalOrderRepository() const noexcept override;
+
+        virtual std::vector<std::shared_ptr<LMeveTask>> getTasks(Character::IdType characterId) const override;
 
         MarketOrderProvider &getMarketOrderProvider() const noexcept;
         MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
@@ -305,6 +309,8 @@ namespace Evernus
         std::unique_ptr<CachingEveDataProvider> mDataProvider;
 
         size_t mPendingContractItemRequests = 0;
+
+        mutable std::unordered_map<Character::IdType, LMeveTaskRepository::EntityList> mLMeveTaskCache;
 
         void updateTranslator(const QString &lang);
 

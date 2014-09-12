@@ -127,6 +127,7 @@ int main(int argc, char *argv[])
                                         app.getCorpContractProvider(),
                                         app.getDataProvider(),
                                         app,
+                                        app,
                                         app};
 
             app.connect(&mainWnd, SIGNAL(refreshCharacters()), SLOT(refreshCharacters()));

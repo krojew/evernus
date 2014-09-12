@@ -418,6 +418,7 @@ add_executable(
     LMeveAPIManager.h
     LMeveAPIInterface.cpp
     LMeveAPIInterface.h
+    LMeveDataProvider.h
     LMevePreferencesWidget.cpp
     LMevePreferencesWidget.h
     LMeveTaskModel.cpp

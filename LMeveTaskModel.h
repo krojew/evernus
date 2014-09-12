@@ -15,6 +15,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include <QAbstractTableModel>
 
@@ -30,6 +31,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        typedef std::vector<std::shared_ptr<LMeveTask>> TaskList;
+
         explicit LMeveTaskModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~LMeveTaskModel() = default;
 
@@ -38,16 +41,26 @@ namespace Evernus
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
+        void setTasks(const TaskList &data);
+        void setTasks(TaskList &&data);
+
     private:
         enum
         {
             typeColumn,
+            activityColumn,
+            runsColumn,
+            runsDoneColumn,
+            runsCompletedColumn,
+            jobsDoneColumn,
+            jobsSuccessColumn,
+            jobsCompletedColumn,
 
             numColumns
         };
 
         const EveDataProvider &mDataProvider;
 
-        std::vector<LMeveTask> mData;
+        TaskList mData;
     };
 }

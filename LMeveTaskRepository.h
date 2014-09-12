@@ -34,6 +34,8 @@ namespace Evernus
         void create(const Repository<Character> &characterRepo) const;
         void removeForCharacter(Character::IdType id) const;
 
+        EntityList fetchForCharacter(Character::IdType id) const;
+
     private:
         virtual QStringList getColumns() const override;
         virtual void bindValues(const LMeveTask &entity, QSqlQuery &query) const override;

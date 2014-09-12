@@ -77,6 +77,7 @@ namespace Evernus
                            EveDataProvider &eveDataProvider,
                            const CacheTimerProvider &cacheTimerProvider,
                            ItemCostProvider &itemCostProvider,
+                           const LMeveDataProvider &lMeveDataProvider,
                            QWidget *parent,
                            Qt::WindowFlags flags)
         : QMainWindow{parent, flags}
@@ -87,6 +88,7 @@ namespace Evernus
         , mContractProvider{contractProvider}
         , mCorpContractProvider{corpContractProvider}
         , mItemCostProvider{itemCostProvider}
+        , mLMeveDataProvider{lMeveDataProvider}
         , mEveDataProvider{eveDataProvider}
         , mCacheTimerProvider{cacheTimerProvider}
         , mTrayIcon{new QSystemTrayIcon{QIcon{":/images/main-icon.png"}, this}}
@@ -713,7 +715,7 @@ namespace Evernus
         addTab(itemCostTab, tr("Item costs"));
         connect(this, &MainWindow::itemCostsChanged, itemCostTab, &ItemCostWidget::updateData);
 
-        auto lmEveTab = new LMeveWidget{mCacheTimerProvider, mEveDataProvider, this};
+        auto lmEveTab = new LMeveWidget{mCacheTimerProvider, mEveDataProvider, mLMeveDataProvider, this};
         addTab(lmEveTab, tr("LMeve"));
         connect(lmEveTab, &LMeveWidget::openPreferences, this, &MainWindow::showPreferences);
         connect(lmEveTab, &LMeveWidget::syncLMeve, this, &MainWindow::syncLMeve);

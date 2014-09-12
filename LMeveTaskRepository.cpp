@@ -80,6 +80,25 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    LMeveTaskRepository::EntityList LMeveTaskRepository::fetchForCharacter(Character::IdType id) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ?"}.arg(getTableName()));
+        query.bindValue(0, id);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
     QStringList LMeveTaskRepository::getColumns() const
     {
         return QStringList{}

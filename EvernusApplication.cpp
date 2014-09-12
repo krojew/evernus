@@ -58,6 +58,7 @@ namespace Evernus
         , CacheTimerProvider()
         , ItemCostProvider()
         , RepositoryProvider()
+        , LMeveDataProvider()
         , mMainDb(QSqlDatabase::addDatabase("QSQLITE", "main"))
         , mEveDb(QSqlDatabase::addDatabase("QSQLITE", "eve"))
         , mAPIManager(*this)
@@ -629,6 +630,15 @@ namespace Evernus
     const ExternalOrderRepository &EvernusApplication::getExternalOrderRepository() const noexcept
     {
         return *mExternalOrderRepository;
+    }
+
+    std::vector<std::shared_ptr<LMeveTask>> EvernusApplication::getTasks(Character::IdType characterId) const
+    {
+        const auto it = mLMeveTaskCache.find(characterId);
+        if (it != std::end(mLMeveTaskCache))
+            return it->second;
+
+        return mLMeveTaskCache.emplace(characterId, mLMeveTaskRepository->fetchForCharacter(characterId)).first->second;
     }
 
     MarketOrderProvider &EvernusApplication::getMarketOrderProvider() const noexcept
@@ -1436,6 +1446,7 @@ namespace Evernus
         mLMeveAPIManager.fetchTasks(id, [id, task, this](auto &&list, const auto &error) {
             if (error.isEmpty())
             {
+                mLMeveTaskCache.erase(id);
                 mLMeveTaskRepository->removeForCharacter(id);
 
                 asyncBatchStore(*mLMeveTaskRepository, list, true);

@@ -23,7 +23,9 @@
 namespace Evernus
 {
     class CacheTimerProvider;
+    class LMeveDataProvider;
     class ButtonWithTimer;
+    class StyledTreeView;
 
     class LMeveWidget
         : public QWidget
@@ -33,6 +35,7 @@ namespace Evernus
     public:
         LMeveWidget(const CacheTimerProvider &cacheTimerProvider,
                     const EveDataProvider &dataProvider,
+                    const LMeveDataProvider &lMeveDataProvider,
                     QWidget *parent = nullptr);
         virtual ~LMeveWidget() = default;
 
@@ -47,8 +50,10 @@ namespace Evernus
 
     private:
         const CacheTimerProvider &mCacheTimerProvider;
+        const LMeveDataProvider &mLMeveDataProvider;
 
         ButtonWithTimer *mSyncBtn = nullptr;
+        StyledTreeView *mTaskView = nullptr;
 
         Character::IdType mCharacterId = Character::invalidId;
 
