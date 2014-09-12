@@ -40,10 +40,10 @@ namespace Evernus
         };
 
         set("characterID", [this](const auto &value) {
-            setCharacterId(value.template value<Character::IdType>());
+            setCharacterId(value.template value<Evernus::Character::IdType>());
         });
         set("typeID", [this](const auto &value) {
-            setTypeId(value.template value<EveType::IdType>());
+            setTypeId(value.template value<Evernus::EveType::IdType>());
         });
         set("activityName", [this](const auto &value) {
             setActivity(value.toString());
