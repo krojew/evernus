@@ -65,10 +65,10 @@ namespace Evernus
 
     void FilterTextRepository::create() const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY,
-            text TEXT NOT NULL UNIQUE
-        ))"}.arg(getTableName()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id INTEGER PRIMARY KEY,"
+            "text TEXT NOT NULL UNIQUE"
+        ")"}.arg(getTableName()));
     }
 
     QStringList FilterTextRepository::fetchRecentlyUsed() const

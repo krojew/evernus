@@ -45,12 +45,12 @@ namespace Evernus
 
     void WalletSnapshotRepository::create(const Repository<Character> &characterRepo) const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY ASC,
-            timestamp DATETIME NOT NULL,
-            character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,
-            balance DOUBLE NOT NULL
-        ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id INTEGER PRIMARY KEY ASC,"
+            "timestamp DATETIME NOT NULL,"
+            "character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,"
+            "balance DOUBLE NOT NULL"
+        ")"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)"}.arg(getTableName()));

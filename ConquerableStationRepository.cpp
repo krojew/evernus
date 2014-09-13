@@ -38,11 +38,11 @@ namespace Evernus
 
     void ConquerableStationRepository::create() const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL,
-            solar_system_id INTEGER NOT NULL
-        ))"}.arg(getTableName()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id INTEGER PRIMARY KEY,"
+            "name TEXT NOT NULL,"
+            "solar_system_id INTEGER NOT NULL"
+        ")"}.arg(getTableName()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_solar_system ON %1(solar_system_id)"}.arg(getTableName()));
     }

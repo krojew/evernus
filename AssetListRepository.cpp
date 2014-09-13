@@ -50,10 +50,10 @@ namespace Evernus
 
     void AssetListRepository::create(const Repository<Character> &characterRepo) const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY ASC,
-            character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE
-        ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id INTEGER PRIMARY KEY ASC,"
+            "character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"
+        ")"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
     }

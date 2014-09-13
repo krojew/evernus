@@ -80,34 +80,34 @@ namespace Evernus
 
     void CharacterRepository::create(const KeyRepository &keyRepository) const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id BIGINT PRIMARY KEY,
-            key_id INTEGER NULL REFERENCES %2(id) ON UPDATE SET NULL ON DELETE SET NULL,
-            name TEXT NOT NULL,
-            corporation_name TEXT NOT NULL,
-            corporation_id BIGINT NOT NULL,
-            race TEXT NOT NULL,
-            bloodline TEXT NOT NULL,
-            ancestry TEXT NOT NULL,
-            gender TEXT NOT NULL,
-            isk DOUBLE NOT NULL,
-            corp_standing FLOAT NOT NULL,
-            faction_standing FLOAT NOT NULL,
-            trade_skill TINYINT NOT NULL,
-            retail_skill TINYINT NOT NULL,
-            wholesale_skill TINYINT NOT NULL,
-            tycoon_skill TINYINT NOT NULL,
-            marketing_skill TINYINT NOT NULL,
-            procurement_skill TINYINT NOT NULL,
-            daytrading_skill TINYINT NOT NULL,
-            visibility_skill TINYINT NOT NULL,
-            accounting_skill TINYINT NOT NULL,
-            broker_relations_skill TINYINT NOT NULL,
-            margin_trading_skill TINYINT NOT NULL,
-            contracting_skill TINYINT NOT NULL,
-            corporation_contracting_skill TINYINT NOT NULL,
-            enabled TINYINT NOT NULL
-        ))"}.arg(getTableName()).arg(keyRepository.getTableName()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id BIGINT PRIMARY KEY,"
+            "key_id INTEGER NULL REFERENCES %2(id) ON UPDATE SET NULL ON DELETE SET NULL,"
+            "name TEXT NOT NULL,"
+            "corporation_name TEXT NOT NULL,"
+            "corporation_id BIGINT NOT NULL,"
+            "race TEXT NOT NULL,"
+            "bloodline TEXT NOT NULL,"
+            "ancestry TEXT NOT NULL,"
+            "gender TEXT NOT NULL,"
+            "isk DOUBLE NOT NULL,"
+            "corp_standing FLOAT NOT NULL,"
+            "faction_standing FLOAT NOT NULL,"
+            "trade_skill TINYINT NOT NULL,"
+            "retail_skill TINYINT NOT NULL,"
+            "wholesale_skill TINYINT NOT NULL,"
+            "tycoon_skill TINYINT NOT NULL,"
+            "marketing_skill TINYINT NOT NULL,"
+            "procurement_skill TINYINT NOT NULL,"
+            "daytrading_skill TINYINT NOT NULL,"
+            "visibility_skill TINYINT NOT NULL,"
+            "accounting_skill TINYINT NOT NULL,"
+            "broker_relations_skill TINYINT NOT NULL,"
+            "margin_trading_skill TINYINT NOT NULL,"
+            "contracting_skill TINYINT NOT NULL,"
+            "corporation_contracting_skill TINYINT NOT NULL,"
+            "enabled TINYINT NOT NULL"
+        ")"}.arg(getTableName()).arg(keyRepository.getTableName()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(key_id)"}.arg(getTableName()).arg(keyRepository.getTableName()));
     }

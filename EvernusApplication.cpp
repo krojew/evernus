@@ -1235,11 +1235,11 @@ namespace Evernus
         ExternalOrderImporter::TypeLocationPairs target;
 
         QSqlQuery query{mMainDb};
-        query.prepare(QString{R"(SELECT DISTINCT ids.type_id, ids.location_id FROM (
-            SELECT type_id, location_id FROM %1 WHERE state = ?
-            UNION
-            SELECT type_id, location_id FROM %2 WHERE state = ?
-        ) ids)"}.arg(mMarketOrderRepository->getTableName()).arg(mCorpMarketOrderRepository->getTableName()));
+        query.prepare(QString{"SELECT DISTINCT ids.type_id, ids.location_id FROM ("
+            "SELECT type_id, location_id FROM %1 WHERE state = ? "
+            "UNION "
+            "SELECT type_id, location_id FROM %2 WHERE state = ?"
+        ") ids"}.arg(mMarketOrderRepository->getTableName()).arg(mCorpMarketOrderRepository->getTableName()));
 
         query.addBindValue(static_cast<int>(MarketOrder::State::Active));
         query.addBindValue(static_cast<int>(MarketOrder::State::Active));

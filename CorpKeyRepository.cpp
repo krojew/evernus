@@ -40,11 +40,11 @@ namespace Evernus
 
     void CorpKeyRepository::create(const Repository<Character> &characterRepo) const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY,
-            character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,
-            code TEXT NOT NULL
-        ))"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id INTEGER PRIMARY KEY,"
+            "character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,"
+            "code TEXT NOT NULL"
+        ")"}.arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
     }

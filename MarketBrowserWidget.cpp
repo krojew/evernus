@@ -397,11 +397,11 @@ namespace Evernus
     void MarketBrowserWidget::fillOrderItemNames()
     {
         QSqlQuery query{mOrderRepo.getDatabase()};
-        query.prepare(QString{R"(SELECT DISTINCT ids.type_id FROM (
-            SELECT type_id FROM %1 WHERE state = ?
-            UNION
-            SELECT type_id FROM %2 WHERE state = ?
-        ) ids)"}.arg(mOrderRepo.getTableName()).arg(mCorpOrderRepo.getTableName()));
+        query.prepare(QString{"SELECT DISTINCT ids.type_id FROM ("
+            "SELECT type_id FROM %1 WHERE state = ? "
+            "UNION "
+            "SELECT type_id FROM %2 WHERE state = ?"
+        ") ids"}.arg(mOrderRepo.getTableName()).arg(mCorpOrderRepo.getTableName()));
 
         query.addBindValue(static_cast<int>(MarketOrder::State::Active));
         query.addBindValue(static_cast<int>(MarketOrder::State::Active));
@@ -698,13 +698,13 @@ namespace Evernus
         ExternalOrderImporter::TypeLocationPairs result;
 
         QSqlQuery query{mOrderRepo.getDatabase()};
-        query.prepare(QString{R"(SELECT DISTINCT ids.type_id, ids.location_id FROM (
-            SELECT type_id, location_id FROM %1 WHERE state = ?
-            UNION
-            SELECT type_id, location_id FROM %2 WHERE state = ?
-            UNION
-            SELECT type_id, location_id FROM %3
-        ) ids)"}.arg(mOrderRepo.getTableName()).arg(mCorpOrderRepo.getTableName()).arg(mExternalOrderRepo.getTableName()));
+        query.prepare(QString{"SELECT DISTINCT ids.type_id, ids.location_id FROM ("
+            "SELECT type_id, location_id FROM %1 WHERE state = ? "
+            "UNION "
+            "SELECT type_id, location_id FROM %2 WHERE state = ? "
+            "UNION "
+            "SELECT type_id, location_id FROM %3"
+        ") ids"}.arg(mOrderRepo.getTableName()).arg(mCorpOrderRepo.getTableName()).arg(mExternalOrderRepo.getTableName()));
 
         query.addBindValue(static_cast<int>(MarketOrder::State::Active));
         query.addBindValue(static_cast<int>(MarketOrder::State::Active));

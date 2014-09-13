@@ -45,12 +45,12 @@ namespace Evernus
 
     void CorpWalletSnapshotRepository::create() const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY ASC,
-            timestamp DATETIME NOT NULL,
-            corporation_id BIGINT NOT NULL,
-            balance DOUBLE NOT NULL
-        ))"}.arg(getTableName()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id INTEGER PRIMARY KEY ASC,"
+            "timestamp DATETIME NOT NULL,"
+            "corporation_id BIGINT NOT NULL,"
+            "balance DOUBLE NOT NULL"
+        ")"}.arg(getTableName()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)"}.arg(getTableName()));
         exec(QString{"CREATE UNIQUE INDEX IF NOT EXISTS %1_corporation_timestamp ON %1(corporation_id, timestamp)"}.arg(getTableName()));

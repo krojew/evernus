@@ -38,18 +38,17 @@ namespace Evernus
         mainLayout->addWidget(closeBtn, 0, Qt::AlignRight | Qt::AlignVCenter);
         connect(closeBtn, &QPushButton::clicked, this, &WarningBarWidget::hide);
 
-        setStyleSheet(R"(
-            QFrame {
-                background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ff8, stop: 1 #fa4);
-                border: 1px solid #aaa;
-                border-radius: 3px;
-            }
+        setStyleSheet(
+            "QFrame {"
+                "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ff8, stop: 1 #fa4);"
+                "border: 1px solid #aaa;"
+                "border-radius: 3px;"
+            "} "
 
-            QFrame > * {
-                background: transparent;
-                border: none;
-            }        
-        )");
+            "QFrame > * {"
+                "background: transparent;"
+                "border: none;"
+            "}");
     }
 
     void WarningBarWidget::setText(const QString &text)

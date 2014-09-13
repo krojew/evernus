@@ -84,30 +84,30 @@ namespace Evernus
 
     void ContractRepository::create() const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id BIGINT PRIMARY KEY,
-            issuer_id BIGINT NOT NULL,
-            issuer_corp_id BIGINT NOT NULL,
-            assignee_id BIGINT NOT NULL,
-            acceptor_id BIGINT NOT NULL,
-            start_station_id INTEGER NOT NULL,
-            end_station_id INTEGER NOT NULL,
-            type TINYINT NOT NULL,
-            status TINYINT NOT NULL,
-            title TEXT NOT NULL,
-            for_corp TINYINT NOT NULL,
-            availability TINYINT NOT NULL,
-            issued DATETIME NOT NULL,
-            expired DATETIME NOT NULL,
-            accepted DATETIME NULL,
-            completed DATETIME NULL,
-            num_days INTEGER NOT NULL,
-            price DOUBLE NOT NULL,
-            reward DOUBLE NOT NULL,
-            collateral DOUBLE NOT NULL,
-            buyout DOUBLE NOT NULL,
-            volume DOUBLE NOT NULL
-        ))"}.arg(getTableName()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id BIGINT PRIMARY KEY,"
+            "issuer_id BIGINT NOT NULL,"
+            "issuer_corp_id BIGINT NOT NULL,"
+            "assignee_id BIGINT NOT NULL,"
+            "acceptor_id BIGINT NOT NULL,"
+            "start_station_id INTEGER NOT NULL,"
+            "end_station_id INTEGER NOT NULL,"
+            "type TINYINT NOT NULL,"
+            "status TINYINT NOT NULL,"
+            "title TEXT NOT NULL,"
+            "for_corp TINYINT NOT NULL,"
+            "availability TINYINT NOT NULL,"
+            "issued DATETIME NOT NULL,"
+            "expired DATETIME NOT NULL,"
+            "accepted DATETIME NULL,"
+            "completed DATETIME NULL,"
+            "num_days INTEGER NOT NULL,"
+            "price DOUBLE NOT NULL,"
+            "reward DOUBLE NOT NULL,"
+            "collateral DOUBLE NOT NULL,"
+            "buyout DOUBLE NOT NULL,"
+            "volume DOUBLE NOT NULL"
+        ")"}.arg(getTableName()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_issuer ON %1(issuer_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_issuer_corp ON %1(issuer_corp_id)"}.arg(getTableName()));
