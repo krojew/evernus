@@ -112,6 +112,11 @@ namespace Evernus
         QMetaObject::invokeMethod(this, "startSync", Qt::QueuedConnection);
     }
 
+    bool SyncDialog::performedSync()
+    {
+        return mLastSyncTime.isValid();
+    }
+
     void SyncDialog::startSync()
     {
         qDebug() << "Starting sync...";

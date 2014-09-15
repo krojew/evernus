@@ -43,6 +43,8 @@ namespace Evernus
         explicit SyncDialog(Mode mode, QWidget *parent = nullptr);
         virtual ~SyncDialog() = default;
 
+        static bool performedSync();
+
     private slots:
         void startSync();
         void showTokenLink();

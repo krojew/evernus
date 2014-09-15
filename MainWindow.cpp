@@ -125,8 +125,8 @@ namespace Evernus
                                                                  mRepositoryProvider.getKeyRepository(),
                                                                  mRepositoryProvider.getCorpKeyRepository(),
                                                                  this};
-            connect(mCharacterManagerDialog, &CharacterManagerDialog::refreshCharacters, this, &MainWindow::refreshCharacters);
             connect(this, &MainWindow::charactersChanged, mCharacterManagerDialog, &CharacterManagerDialog::updateCharacters);
+            connect(mCharacterManagerDialog, &CharacterManagerDialog::refreshCharacters, this, &MainWindow::refreshCharacters);
             connect(mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged,
                     mMenuWidget, &MenuBarWidget::refreshCharacters);
         }
@@ -427,7 +427,8 @@ namespace Evernus
 
         QSettings settings;
         if (settings.value(SyncSettings::enabledOnStartupKey, SyncSettings::enabledOnStartupDefault).toBool() &&
-            settings.value(SyncSettings::enabledOnShutdownKey, SyncSettings::enabledOnShutdownDefault).toBool())
+            settings.value(SyncSettings::enabledOnShutdownKey, SyncSettings::enabledOnShutdownDefault).toBool() &&
+            SyncDialog::performedSync())
         {
             performSync();
         }
