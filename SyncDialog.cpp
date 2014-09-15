@@ -183,7 +183,7 @@ namespace Evernus
         }
         else
         {
-            if (info.modified() > mLastSyncTime)
+            if (mLastSyncTime.isValid() && info.modified() > mLastSyncTime)
             {
                 const auto ret = QMessageBox::question(this,
                                                        tr("Synchronization"),

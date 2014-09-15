@@ -426,8 +426,11 @@ namespace Evernus
         writeSettings();
 
         QSettings settings;
-        if (settings.value(SyncSettings::enabledOnShutdownKey, SyncSettings::enabledOnShutdownDefault).toBool())
+        if (settings.value(SyncSettings::enabledOnStartupKey, SyncSettings::enabledOnStartupDefault).toBool() &&
+            settings.value(SyncSettings::enabledOnShutdownKey, SyncSettings::enabledOnShutdownDefault).toBool())
+        {
             performSync();
+        }
 
         event->accept();
     }
