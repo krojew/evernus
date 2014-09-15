@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(taskEnded(uint, const QString &)), SIGNAL(taskEnded(uint, const QString &)));
             mainWnd.connect(&app, SIGNAL(apiError(const QString &)), SLOT(showError(const QString &)));
             mainWnd.connect(&app, SIGNAL(conquerableStationsChanged()), SIGNAL(conquerableStationsChanged()));
-            mainWnd.connect(&app, SIGNAL(charactersChanged()), SIGNAL(charactersChanged()));
+            mainWnd.connect(&app, SIGNAL(charactersChanged()), SLOT(updateCharacters()));
             mainWnd.connect(&app, SIGNAL(assetsChanged()), SIGNAL(assetsChanged()));
             mainWnd.connect(&app, SIGNAL(externalOrdersChanged()), SIGNAL(externalOrdersChanged()));
             mainWnd.connect(&app, SIGNAL(externalOrdersChangedWithMarketOrders()), SIGNAL(externalOrdersChangedWithMarketOrders()));

@@ -44,6 +44,12 @@ namespace Evernus
         refreshCharacters();
     }
 
+    void MenuBarWidget::setCurrentCharacter(Character::IdType id)
+    {
+        const auto index = mCharacterCombo->findData(id);
+        mCharacterCombo->setCurrentIndex(index);
+    }
+
     void MenuBarWidget::refreshCharacters()
     {
         const auto index = mCharacterCombo->currentIndex();

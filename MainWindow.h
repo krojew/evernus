@@ -135,6 +135,7 @@ namespace Evernus
         void addNewTaskInfo(uint taskId, const QString &description);
 
         void updateIskData();
+        void updateCharacters();
 
         void setCharacter(Character::IdType id);
 
@@ -198,6 +199,7 @@ namespace Evernus
         std::unordered_map<int, Character::IdType> mTabCharacterIds;
         std::unordered_map<int, QWidget *> mTabWidgets;
 
+        QMenu *mCharactersMenu = nullptr;
         QMenu *mViewTabsMenu = nullptr;
 
         QTimer mAutoImportTimer;
@@ -215,5 +217,6 @@ namespace Evernus
         int addTab(QWidget *widget, const QString &label);
 
         void setUpAutoImportTimer();
+        void refreshCharactersMenu();
     };
 }

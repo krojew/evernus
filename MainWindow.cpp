@@ -129,6 +129,8 @@ namespace Evernus
             connect(mCharacterManagerDialog, &CharacterManagerDialog::refreshCharacters, this, &MainWindow::refreshCharacters);
             connect(mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged,
                     mMenuWidget, &MenuBarWidget::refreshCharacters);
+            connect(mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged,
+                    this, &MainWindow::updateCharacters);
         }
 
         mCharacterManagerDialog->exec();
@@ -233,6 +235,12 @@ namespace Evernus
         {
             mStatusWalletLabel->setText(QString{});
         }
+    }
+
+    void MainWindow::updateCharacters()
+    {
+        refreshCharactersMenu();
+        emit charactersChanged();
     }
 
     void MainWindow::setCharacter(Character::IdType id)
@@ -462,6 +470,7 @@ namespace Evernus
         auto bar = menuBar();
 
         auto fileMenu = bar->addMenu(tr("&File"));
+        mCharactersMenu = fileMenu->addMenu(tr("Select character"));
         fileMenu->addAction(QIcon{":/images/user.png"}, tr("&Manage characters..."), this, SLOT(showCharacterManagement()));
 #ifdef Q_OS_OSX
         fileMenu->addAction(QIcon{":/images/wrench.png"}, tr("&Preferences..."), this, SLOT(showPreferences()), QKeySequence::Preferences)->setMenuRole(QAction::PreferencesRole);
@@ -499,6 +508,8 @@ namespace Evernus
         connect(this, &MainWindow::charactersChanged, mMenuWidget, &MenuBarWidget::refreshCharacters);
         connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, this, &MainWindow::setCharacter);
         connect(mMenuWidget, &MenuBarWidget::importAll, this, &MainWindow::refreshAll);
+
+        refreshCharactersMenu();
     }
 
     void MainWindow::createMainView()
@@ -781,5 +792,21 @@ namespace Evernus
             mAutoImportTimer.start();
         else
             mAutoImportTimer.stop();
+    }
+
+    void MainWindow::refreshCharactersMenu()
+    {
+        mCharactersMenu->clear();
+
+        auto characters = mRepositoryProvider.getCharacterRepository().getEnabledQuery();
+        while (characters.next())
+        {
+            const auto id = characters.value("id").value<Character::IdType>();
+            auto action = mCharactersMenu->addAction(characters.value("name").toString());
+
+            connect(action, &QAction::triggered, this, [id, this] {
+                mMenuWidget->setCurrentCharacter(id);
+            });
+        }
     }
 }

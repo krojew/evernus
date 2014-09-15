@@ -35,6 +35,7 @@ namespace Evernus
 
     public slots:
         void refreshCharacters();
+        void setCurrentCharacter(Character::IdType id);
 
     private slots:
         void changeCharacter(int index);
