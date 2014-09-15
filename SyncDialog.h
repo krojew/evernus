@@ -75,5 +75,8 @@ namespace Evernus
         void uploadFiles();
 
         static QString getMainDbPath();
+
+        template<class T>
+        static void asyncExec(T &&func);
     };
 }

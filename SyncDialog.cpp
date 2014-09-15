@@ -12,6 +12,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <future>
+
+#include <QApplication>
 #include <QProgressBar>
 #include <QMessageBox>
 #include <QVBoxLayout>
@@ -227,12 +230,13 @@ namespace Evernus
 
         QDropboxFile mainDb{mainDbPath, &mDb};
         connect(&mainDb, &QDropboxFile::downloadProgress, this, &SyncDialog::updateProgress);
-        connect(mCancelBtn, &QPushButton::clicked, &mainDb, &QDropboxFile::abort);
+        connect(mCancelBtn, &QPushButton::clicked, &mainDb, &QDropboxFile::abort, Qt::QueuedConnection);
 
         if (mainDb.open(QIODevice::ReadOnly))
         {
             qDebug() << "Saving main db...";
 
+            mCancelBtn->setEnabled(false);
             DatabaseUtils::backupDatabase(getMainDbPath());
 
             QSaveFile file{getMainDbPath()};
@@ -243,10 +247,20 @@ namespace Evernus
                 return;
             }
 
-            file.write(qUncompress(mainDb.readAll()));
+            asyncExec([&, this] {
+                file.write(qUncompress(mainDb.readAll()));
+            });
+            mCancelBtn->setEnabled(true);
 
             if (file.commit())
+            {
                 mLastSyncTime = mainDb.metadata().modified();
+            }
+            else
+            {
+                QMessageBox::warning(this, tr("Synchronization"), tr("Couldn't write destination file! Synchronization failed."));
+                QMetaObject::invokeMethod(this, "reject", Qt::QueuedConnection);
+            }
         }
 
         QMetaObject::invokeMethod(this, "accept", Qt::QueuedConnection);
@@ -257,6 +271,7 @@ namespace Evernus
         qDebug() << "Uploading files...";
 
         mStarted = true;
+        mCancelBtn->setEnabled(false);
 
         QDropboxFile mainDb{mainDbPath, &mDb};
         mainDb.setOverwrite(true);
@@ -278,10 +293,14 @@ namespace Evernus
             return;
         }
 
-        const auto data = qCompress(localMainDb.readAll(), 9);
+        asyncExec([&] {
+            const auto data = qCompress(localMainDb.readAll(), 9);
 
-        mainDb.setFlushThreshold(data.size() + 1);
-        mainDb.write(data);
+            mainDb.setFlushThreshold(data.size() + 1);
+            mainDb.write(data);
+        });
+        mCancelBtn->setEnabled(true);
+
         mainDb.close();
 
         mLastSyncTime = mainDb.metadata().modified();
@@ -292,5 +311,13 @@ namespace Evernus
     QString SyncDialog::getMainDbPath()
     {
         return DatabaseUtils::getDbPath() + "main.db";
+    }
+
+    template<class T>
+    void SyncDialog::asyncExec(T &&func)
+    {
+        auto future = std::async(std::launch::async, std::forward<T>(func));
+        while (future.wait_for(std::chrono::seconds{0}) != std::future_status::ready)
+            qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     }
 }

@@ -2678,7 +2678,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="485"/>
+        <location filename="../MainWindow.cpp" line="488"/>
         <source>Show/hide table columns</source>
         <translation>Pokaż/ukryj kolumny tabel</translation>
     </message>
@@ -2710,158 +2710,158 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Link do usługi został skopiowany do schowka.</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="460"/>
+        <location filename="../MainWindow.cpp" line="463"/>
         <source>&amp;File</source>
         <translation>&amp;Plik</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="461"/>
+        <location filename="../MainWindow.cpp" line="464"/>
         <source>&amp;Manage characters...</source>
         <translation>&amp;Zarządzaj postaciami...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="463"/>
-        <location filename="../MainWindow.cpp" line="465"/>
+        <location filename="../MainWindow.cpp" line="466"/>
+        <location filename="../MainWindow.cpp" line="468"/>
         <source>&amp;Preferences...</source>
         <translation>&amp;Ustawienia...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="468"/>
+        <location filename="../MainWindow.cpp" line="471"/>
         <source>Import EVE Mentat order history...</source>
         <translation>Zaimportuj historię z EVE Mentat...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="470"/>
+        <location filename="../MainWindow.cpp" line="473"/>
         <source>E&amp;xit</source>
         <translation>Za&amp;kończ</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="472"/>
+        <location filename="../MainWindow.cpp" line="475"/>
         <source>&amp;Tools</source>
         <translation>&amp;Narzędzia</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="473"/>
+        <location filename="../MainWindow.cpp" line="476"/>
         <source>Import conquerable stations</source>
         <translation>Importuj stacje graczy</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="474"/>
+        <location filename="../MainWindow.cpp" line="477"/>
         <source>Ma&amp;rgin tool...</source>
         <translation>Narzędzie &amp;marży...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="476"/>
+        <location filename="../MainWindow.cpp" line="479"/>
         <source>Copy HTTP link</source>
         <translation>Skopiuj link HTTP</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="477"/>
+        <location filename="../MainWindow.cpp" line="480"/>
         <source>Copy IGB link</source>
         <translation>Skopiuj link IGB</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="480"/>
+        <location filename="../MainWindow.cpp" line="483"/>
         <source>Upload data to cloud...</source>
         <translation>Wyślij dane do chmury...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="483"/>
+        <location filename="../MainWindow.cpp" line="486"/>
         <source>&amp;View</source>
         <translation>&amp;Widok</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="484"/>
+        <location filename="../MainWindow.cpp" line="487"/>
         <source>Show/hide tabs</source>
         <translation>Pokaż/ukryj zakładki</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="487"/>
+        <location filename="../MainWindow.cpp" line="490"/>
         <source>&amp;Help</source>
         <translation>Pomo&amp;c</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="488"/>
+        <location filename="../MainWindow.cpp" line="491"/>
         <source>&amp;Online help...</source>
         <translation>Pomoc &amp;online...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="489"/>
+        <location filename="../MainWindow.cpp" line="492"/>
         <source>Check for &amp;updates</source>
         <translation>Sprawdź &amp;akutalizacje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="491"/>
+        <location filename="../MainWindow.cpp" line="494"/>
         <source>&amp;About...</source>
         <translation>&amp;O programie...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="512"/>
+        <location filename="../MainWindow.cpp" line="515"/>
         <source>Character</source>
         <translation>Postać</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="535"/>
+        <location filename="../MainWindow.cpp" line="538"/>
         <source>Statistics</source>
         <translation>Statystyki</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="552"/>
+        <location filename="../MainWindow.cpp" line="555"/>
         <source>Assets</source>
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="574"/>
+        <location filename="../MainWindow.cpp" line="577"/>
         <source>Character orders</source>
         <translation>Zlecenia postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="619"/>
+        <location filename="../MainWindow.cpp" line="622"/>
         <source>Character contracts</source>
         <translation>Kontrakty postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="634"/>
+        <location filename="../MainWindow.cpp" line="637"/>
         <source>Corporation orders</source>
         <translation>Zlecenia korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="678"/>
+        <location filename="../MainWindow.cpp" line="681"/>
         <source>Corporation contracts</source>
         <translation>Kontrakty korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="689"/>
+        <location filename="../MainWindow.cpp" line="692"/>
         <source>Item history</source>
         <translation>Historia przedmiotów</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="702"/>
+        <location filename="../MainWindow.cpp" line="705"/>
         <source>Market browser</source>
         <translation>Rynek</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="719"/>
+        <location filename="../MainWindow.cpp" line="722"/>
         <source>LMeve</source>
         <translation>LMeve</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="596"/>
+        <location filename="../MainWindow.cpp" line="599"/>
         <source>Character journal</source>
         <translation>Dziennik postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="655"/>
+        <location filename="../MainWindow.cpp" line="658"/>
         <source>Corporation journal</source>
         <translation>Dziennik korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="608"/>
+        <location filename="../MainWindow.cpp" line="611"/>
         <source>Character transactions</source>
         <translation>Transakcje postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="667"/>
+        <location filename="../MainWindow.cpp" line="670"/>
         <source>Corporation transactions</source>
         <translation>Transakcje korporacji</translation>
     </message>
@@ -2878,7 +2878,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Transakcje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="715"/>
+        <location filename="../MainWindow.cpp" line="718"/>
         <source>Item costs</source>
         <translation>Koszty</translation>
     </message>
@@ -4827,57 +4827,63 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::SyncDialog</name>
     <message>
-        <location filename="../SyncDialog.cpp" line="72"/>
+        <location filename="../SyncDialog.cpp" line="75"/>
         <source>Synchronizing...</source>
         <translation>Synchronizowanie...</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="76"/>
+        <location filename="../SyncDialog.cpp" line="79"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="136"/>
+        <location filename="../SyncDialog.cpp" line="139"/>
         <source>Dropbox requires authenticating Evernus first. Please click on &lt;a href=&apos;%1&apos;&gt;this link&lt;/a&gt;, authorize Evernus and press &apos;Proceed&apos;.</source>
         <translation>Dropbox wymaga autoryzowania aplikacji. Kliknij na &lt;a href=&apos;%1&apos;&gt;ten link&lt;/a&gt;, autoryzuj Evernusa i kliknij &apos;Dalej&apos;.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="100"/>
-        <location filename="../SyncDialog.cpp" line="156"/>
-        <location filename="../SyncDialog.cpp" line="189"/>
-        <location filename="../SyncDialog.cpp" line="241"/>
-        <location filename="../SyncDialog.cpp" line="268"/>
-        <location filename="../SyncDialog.cpp" line="276"/>
+        <location filename="../SyncDialog.cpp" line="103"/>
+        <location filename="../SyncDialog.cpp" line="159"/>
+        <location filename="../SyncDialog.cpp" line="192"/>
+        <location filename="../SyncDialog.cpp" line="244"/>
+        <location filename="../SyncDialog.cpp" line="261"/>
+        <location filename="../SyncDialog.cpp" line="282"/>
+        <location filename="../SyncDialog.cpp" line="290"/>
         <source>Synchronization</source>
         <translation>Synchronizacja</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="96"/>
+        <location filename="../SyncDialog.cpp" line="99"/>
         <source>Proceed</source>
         <translation>Dalej</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="156"/>
+        <location filename="../SyncDialog.cpp" line="159"/>
         <source>Error: %1 (%2)</source>
         <translation>Błąd: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="190"/>
+        <location filename="../SyncDialog.cpp" line="193"/>
         <source>Something modified cloud data since last synchronization. Do you wish to overwrite it?</source>
         <translation>Dane w chmurze zostały zmodyfikowane od ostatniej synchronizacji. Czy chcesz je zastąpić?</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="241"/>
+        <location filename="../SyncDialog.cpp" line="244"/>
         <source>Couldn&apos;t open file for writing! Synchronization failed.</source>
         <translation>Nie udało się otworzyć pliku do zapisu! Synchronizacja nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="268"/>
+        <location filename="../SyncDialog.cpp" line="261"/>
+        <source>Couldn&apos;t write destination file! Synchronization failed.</source>
+        <translation>Nie udało się zapisać docelowego pliku! Synchronizacja nie powiodła się!</translation>
+    </message>
+    <message>
+        <location filename="../SyncDialog.cpp" line="282"/>
         <source>Couldn&apos;t open remote file! Synchronization failed.</source>
         <translation>Nie udało się otworzyć zdalnego pliku! Synchronizacja nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="276"/>
+        <location filename="../SyncDialog.cpp" line="290"/>
         <source>Couldn&apos;t open local file! Synchronization failed.</source>
         <translation>Nie udało się otworzyć lokalnego pliku! Synchronizacja nie powiodła się.</translation>
     </message>
@@ -4895,7 +4901,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Wyślij dane przy zamykaniu</translation>
     </message>
     <message>
-        <location filename="../SyncPreferencesWidget.cpp" line="50"/>
+        <location filename="../SyncPreferencesWidget.cpp" line="52"/>
         <source>Evernus was compiled without Dropbox app key and secret values. In order to enable Dropbox support, register a new app key with Dropbox and recompile Evernus with EVERNUS_DROPBOX_APP_KEY and EVERNUS_DROPBOX_APP_SECRET defined.</source>
         <translation>Evernus został skompilowany bez informacji o kluczu aplikacji Dropbox (app key i secret). Aby włączyć obsługę, zarejestruj nowy klucz w Dropbox i przekompiluj Evernusa z definicjami EVERNUS_DROPBOX_APP_KEY i EVERNUS_DROPBOX_APP_SECRET.</translation>
     </message>
