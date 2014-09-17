@@ -43,7 +43,7 @@ namespace Evernus
         {
             MarketOrder::State mState = MarketOrder::State::Active;
             uint mVolumeRemaining = 0;
-            QDateTime mFirstSeen, mLastSeen;
+            QDateTime mFirstSeen, mLastSeen, mExpiry;
             int mDelta = 0;
         };
 
@@ -94,6 +94,7 @@ namespace Evernus
         EntityList fetchArchivedForCorporation(uint corporationId) const;
 
         void archive(const std::vector<MarketOrder::IdType> &ids) const;
+        void fulfill(const std::vector<MarketOrder::IdType> &ids) const;
 
     private:
         bool mCorp = false;

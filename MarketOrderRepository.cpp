@@ -182,9 +182,9 @@ namespace Evernus
         CustomAggregatedData result;
 
         QString queryStr{R"(
-            SELECT %1, COUNT(*), SUM(price), SUM(volume_entered) 
-            FROM %2 
-            WHERE character_id = ? %3 
+            SELECT %1, COUNT(*), SUM(price), SUM(volume_entered)
+            FROM %2
+            WHERE character_id = ? %3
             GROUP BY %1
             ORDER BY %4 DESC
             LIMIT %5)"};
@@ -256,7 +256,7 @@ namespace Evernus
     {
         OrderStateMap result;
 
-        auto query = prepare(QString{"SELECT %1, state, volume_remaining, first_seen, last_seen, delta FROM %2 WHERE character_id = ?"}
+        auto query = prepare(QString{"SELECT %1, state, volume_remaining, first_seen, last_seen, delta, issued, duration FROM %2 WHERE character_id = ?"}
             .arg(getIdColumn())
             .arg(getTableName()));
         query.bindValue(0, characterId);
@@ -272,6 +272,8 @@ namespace Evernus
             state.mFirstSeen.setTimeSpec(Qt::UTC);
             state.mLastSeen = query.value(4).toDateTime();
             state.mLastSeen.setTimeSpec(Qt::UTC);
+            state.mExpiry = query.value(6).toDateTime().addDays(query.value(7).toInt());
+            state.mExpiry.setTimeSpec(Qt::UTC);
             state.mDelta = query.value(5).toInt();
 
             result.emplace(query.value(0).value<MarketOrder::IdType>(), std::move(state));
@@ -383,13 +385,36 @@ namespace Evernus
         for (auto i = 0u; i < ids.size(); ++i)
             list << "?";
 
-        auto query = prepare(QString{R"(UPDATE %1 SET 
+        auto query = prepare(QString{R"(UPDATE %1 SET
             last_seen = min(strftime('%Y-%m-%dT%H:%M:%f', first_seen, duration || ' days'), strftime('%Y-%m-%dT%H:%M:%f', 'now')),
             state = ?,
             delta = 0
             WHERE %2 IN (%3)
         )"}.arg(getTableName()).arg(getIdColumn()).arg(list.join(", ")));
 
+        query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
+
+        for (const auto &id : ids)
+            query.addBindValue(id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
+    void MarketOrderRepository::fulfill(const std::vector<MarketOrder::IdType> &ids) const
+    {
+        QStringList list;
+        for (auto i = 0u; i < ids.size(); ++i)
+            list << "?";
+
+        auto query = prepare(QString{R"(UPDATE %1 SET
+            last_seen = ?,
+            state = ?,
+            delta = volume_remaining,
+            volume_remaining = 0
+            WHERE %2 IN (%3)
+        )"}.arg(getTableName()).arg(getIdColumn()).arg(list.join(", ")));
+
+        query.addBindValue(QDateTime::currentDateTimeUtc());
         query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
 
         for (const auto &id : ids)

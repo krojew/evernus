@@ -1995,6 +1995,8 @@ namespace Evernus
 
             std::vector<EmailOrderInfo> emailOrders;
 
+            const auto curDt = QDateTime::currentDateTimeUtc();
+
             for (auto &order : orders)
             {
                 const auto cIt = curStates.find(order.getId());
@@ -2011,7 +2013,7 @@ namespace Evernus
                         }
                         else
                         {
-                            order.setLastSeen(std::min(QDateTime::currentDateTimeUtc(), order.getIssued().addDays(order.getDuration())));
+                            order.setLastSeen(std::min(curDt, order.getIssued().addDays(order.getDuration())));
 
                             if (emailNotification)
                             {
@@ -2038,17 +2040,25 @@ namespace Evernus
                     mPendingAutoCostOrders.emplace(order.getId());
             }
 
-            std::vector<MarketOrder::IdType> toArchive;
+            std::vector<MarketOrder::IdType> toArchive, toFulfill;
             toArchive.reserve(curStates.size());
+            toFulfill.reserve(curStates.size());
 
             for (const auto &order : curStates)
             {
                 if (order.second.mLastSeen.isNull() || order.second.mDelta != 0)
-                    toArchive.emplace_back(order.first);
+                {
+                    if (order.second.mExpiry < curDt)
+                        toArchive.emplace_back(order.first);
+                    else
+                        toFulfill.emplace_back(order.first);
+                }
             }
 
             if (!toArchive.empty())
                 orderRepo.archive(toArchive);
+            if (!toFulfill.empty())
+                orderRepo.fulfill(toFulfill);
 
             asyncBatchStore(orderRepo, orders, true);
 
