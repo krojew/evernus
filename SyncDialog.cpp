@@ -183,9 +183,14 @@ namespace Evernus
         {
             QFileInfo currentInfo{getMainDbPath()};
             if (currentInfo.lastModified() > info.modified())
+            {
+                mLastSyncTime = QDateTime::currentDateTimeUtc();
                 QMetaObject::invokeMethod(this, "accept", Qt::QueuedConnection);
+            }
             else
+            {
                 downloadFiles();
+            }
         }
         else
         {
