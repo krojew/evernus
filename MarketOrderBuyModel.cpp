@@ -542,6 +542,9 @@ namespace Evernus
 
     double MarketOrderBuyModel::getMargin(const MarketOrder &order) const
     {
+        if (!mCharacter)
+            return 0.;
+
         QSettings settings;
 
         const auto price = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getStationId());
@@ -555,6 +558,9 @@ namespace Evernus
 
     double MarketOrderBuyModel::getNewMargin(const MarketOrder &order) const
     {
+        if (!mCharacter)
+            return 0.;
+
         QSettings settings;
 
         const auto price = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getStationId());

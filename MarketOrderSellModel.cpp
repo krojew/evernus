@@ -173,12 +173,15 @@ namespace Evernus
             case deltaColumn:
                 return data->getDelta();
             case marginColumn:
+                if (mCharacter)
                 {
                     const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
                     return PriceUtils::getMargin(cost->getCost(), data->getPrice(), taxes);
                 }
+                break;
             case profitColumn:
+                if (mCharacter)
                 {
                     const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
@@ -186,7 +189,9 @@ namespace Evernus
                     const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
                     return data->getVolumeRemaining() * (realPrice - realCost);
                 }
+                break;
             case totalProfitColumn:
+                if (mCharacter)
                 {
                     const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
@@ -194,7 +199,9 @@ namespace Evernus
                     const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
                     return data->getVolumeEntered() * (realPrice - realCost);
                 }
+                break;
             case profitPerItemColumn:
+                if (mCharacter)
                 {
                     const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
@@ -202,6 +209,7 @@ namespace Evernus
                     const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
                     return realPrice - realCost;
                 }
+                break;
             case etaColumn:
                 {
                     const double elapsed = data->getFirstSeen().daysTo(QDateTime::currentDateTimeUtc());
@@ -308,12 +316,15 @@ namespace Evernus
                         return locale.toString(data->getDelta());
                     break;
                 case marginColumn:
+                    if (mCharacter)
                     {
                         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
                         return QString{"%1%2"}.arg(locale.toString(PriceUtils::getMargin(cost->getCost(), data->getPrice(), taxes), 'f', 2)).arg(locale.percent());
                     }
+                    break;
                 case profitColumn:
+                    if (mCharacter)
                     {
                         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
@@ -321,7 +332,9 @@ namespace Evernus
                         const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
                         return locale.toCurrencyString(data->getVolumeRemaining() * (realPrice - realCost), "ISK");
                     }
+                    break;
                 case totalProfitColumn:
+                    if (mCharacter)
                     {
                         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
@@ -329,7 +342,9 @@ namespace Evernus
                         const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
                         return locale.toCurrencyString(data->getVolumeEntered() * (realPrice - realCost), "ISK");
                     }
+                    break;
                 case profitPerItemColumn:
+                    if (mCharacter)
                     {
                         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
@@ -337,6 +352,7 @@ namespace Evernus
                         const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
                         return locale.toCurrencyString(realPrice - realCost, "ISK");
                     }
+                    break;
                 case etaColumn:
                     {
                         const double elapsed = data->getFirstSeen().daysTo(QDateTime::currentDateTimeUtc());
