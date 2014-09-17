@@ -730,10 +730,19 @@ namespace Evernus
         addTab(itemCostTab, tr("Item costs"));
         connect(this, &MainWindow::itemCostsChanged, itemCostTab, &ItemCostWidget::updateData);
 
-        auto lmEveTab = new LMeveWidget{mCacheTimerProvider, mEveDataProvider, mLMeveDataProvider, this};
+        auto lmEveTab = new LMeveWidget{mCacheTimerProvider,
+                                        mEveDataProvider,
+                                        mLMeveDataProvider,
+                                        mItemCostProvider,
+                                        mRepositoryProvider.getCharacterRepository(),
+                                        this};
         addTab(lmEveTab, tr("LMeve"));
         connect(lmEveTab, &LMeveWidget::openPreferences, this, &MainWindow::showPreferences);
         connect(lmEveTab, &LMeveWidget::syncLMeve, this, &MainWindow::syncLMeve);
+        connect(lmEveTab, &LMeveWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
+        connect(lmEveTab, &LMeveWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
+        connect(lmEveTab, &LMeveWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
+        connect(this, &MainWindow::externalOrdersChanged, lmEveTab, &LMeveWidget::updateData);
         connect(this, &MainWindow::lMeveTasksChanged, lmEveTab, &LMeveWidget::updateData);
 
         QSettings settings;

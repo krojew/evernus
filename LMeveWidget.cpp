@@ -15,8 +15,12 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
+#include <QColumnView>
 #include <QTabWidget>
+#include <QGroupBox>
 #include <QLabel>
+#include <QDebug>
+#include <QMenu>
 
 #include "CacheTimerProvider.h"
 #include "LMeveDataProvider.h"
@@ -30,11 +34,14 @@ namespace Evernus
     LMeveWidget::LMeveWidget(const CacheTimerProvider &cacheTimerProvider,
                              const EveDataProvider &dataProvider,
                              const LMeveDataProvider &lMeveDataProvider,
+                             const ItemCostProvider &costProvider,
+                             const CharacterRepository &characterRepository,
                              QWidget *parent)
         : QWidget(parent)
         , mCacheTimerProvider(cacheTimerProvider)
         , mLMeveDataProvider(lMeveDataProvider)
-        , mTaskModel(dataProvider)
+        , mTaskModel(dataProvider, costProvider, characterRepository)
+        , mStationModel(dataProvider)
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -65,7 +72,10 @@ namespace Evernus
 
     void LMeveWidget::setCharacter(Character::IdType id)
     {
+        qDebug() << "Switching LMeve to" << id;
+
         mCharacterId = id;
+        mTaskModel.setCharacterId(mCharacterId);
         updateData();
     }
 
@@ -76,15 +86,70 @@ namespace Evernus
         mTaskView->header()->resizeSections(QHeaderView::ResizeToContents);
     }
 
+    void LMeveWidget::prepareItemImportFromWeb()
+    {
+        emit importPricesFromWeb(getImportTarget());
+    }
+
+    void LMeveWidget::prepareItemImportFromFile()
+    {
+        emit importPricesFromFile(getImportTarget());
+    }
+
+    void LMeveWidget::prepareItemImportFromCache()
+    {
+        emit importPricesFromCache(getImportTarget());
+    }
+
+    void LMeveWidget::setStationId(const QModelIndex &index)
+    {
+        if (index.isValid())
+        {
+            const auto id = mStationModel.getStationId(index);
+            mImportBtn->setEnabled(id != 0);
+            mTaskModel.setStationId(id);
+        }
+        else
+        {
+            mImportBtn->setEnabled(false);
+        }
+    }
+
     QWidget *LMeveWidget::createTaskTab()
     {
+        auto container = new QWidget{this};
+        auto containerLayout = new QHBoxLayout{container};
+
+        auto stationGroup = new QGroupBox{tr("Sell station"), this};
+        containerLayout->addWidget(stationGroup);
+
+        auto stationLayout = new QVBoxLayout{stationGroup};
+
+        auto stationView = new QColumnView{this};
+        stationLayout->addWidget(stationView, 1);
+        stationView->setModel(&mStationModel);
+        connect(stationView, &QColumnView::clicked, this, &LMeveWidget::setStationId);
+
+        auto importMenu = new QMenu{this};
+
+        importMenu->addAction(QIcon{":/images/world.png"}, tr("Import prices from Web"), this, SLOT(prepareItemImportFromWeb()));
+        importMenu->addAction(QIcon{":/images/page_refresh.png"}, tr("Import prices from logs"), this, SLOT(prepareItemImportFromFile()));
+        importMenu->addAction(QIcon{":/images/disk_multiple.png"}, tr("Import prices from cache"), this, SLOT(prepareItemImportFromCache()));
+
+        mImportBtn = new QPushButton{QIcon{":/images/arrow_refresh_small.png"}, tr("Import prices  "), this};
+        stationLayout->addWidget(mImportBtn);
+        mImportBtn->setFlat(true);
+        mImportBtn->setMenu(importMenu);
+        mImportBtn->setEnabled(false);
+
         mTaskProxy.setSourceModel(&mTaskModel);
 
         mTaskView = new StyledTreeView{"lmeve-tasks", this};
+        containerLayout->addWidget(mTaskView, 1);
         mTaskView->setModel(&mTaskProxy);
         mTaskView->setRootIsDecorated(false);
 
-        return mTaskView;
+        return container;
     }
 
     void LMeveWidget::refreshImportTimer()
@@ -99,5 +164,20 @@ namespace Evernus
             mSyncBtn->setEnabled(true);
             mSyncBtn->setTimer(mCacheTimerProvider.getLocalCacheTimer(mCharacterId, TimerType::LMeveTasks));
         }
+    }
+
+    ExternalOrderImporter::TypeLocationPairs LMeveWidget::getImportTarget() const
+    {
+        ExternalOrderImporter::TypeLocationPairs result;
+
+        const auto stationId = mTaskModel.getStationId();
+        if (stationId != 0)
+        {
+            const auto &tasks = mTaskModel.getTasks();
+            for (const auto &task : tasks)
+                result.emplace(std::make_pair(task->getTypeId(), stationId));
+        }
+
+        return result;
     }
 }

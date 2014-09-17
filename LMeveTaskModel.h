@@ -19,10 +19,12 @@
 
 #include <QAbstractTableModel>
 
+#include "CharacterRepository.h"
 #include "LMeveTask.h"
 
 namespace Evernus
 {
+    class ItemCostProvider;
     class EveDataProvider;
 
     class LMeveTaskModel
@@ -33,7 +35,10 @@ namespace Evernus
     public:
         typedef std::vector<std::shared_ptr<LMeveTask>> TaskList;
 
-        explicit LMeveTaskModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        LMeveTaskModel(const EveDataProvider &dataProvider,
+                       const ItemCostProvider &costProvider,
+                       const CharacterRepository &characterRepository,
+                       QObject *parent = nullptr);
         virtual ~LMeveTaskModel() = default;
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
@@ -41,8 +46,14 @@ namespace Evernus
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
+        const TaskList &getTasks() const noexcept;
         void setTasks(const TaskList &data);
         void setTasks(TaskList &&data);
+
+        void setCharacterId(Character::IdType id);
+
+        quint64 getStationId() const noexcept;
+        void setStationId(quint64 id);
 
     private:
         enum
@@ -55,12 +66,23 @@ namespace Evernus
             jobsDoneColumn,
             jobsSuccessColumn,
             jobsCompletedColumn,
+            costColumn,
+            priceColumn,
+            marginColumn,
 
             numColumns
         };
 
         const EveDataProvider &mDataProvider;
+        const ItemCostProvider &mCostProvider;
+        const CharacterRepository &mCharacterRepository;
 
         TaskList mData;
+
+        quint64 mStationId = 0;
+
+        CharacterRepository::EntityPtr mCharacter;
+
+        double getMargin(const LMeveTask &task) const;
     };
 }

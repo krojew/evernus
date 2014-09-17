@@ -12,17 +12,29 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QSettings>
 #include <QLocale>
+#include <QColor>
 
+#include "ItemCostProvider.h"
 #include "EveDataProvider.h"
+#include "PriceSettings.h"
+#include "ExternalOrder.h"
+#include "PriceUtils.h"
+#include "TextUtils.h"
 
 #include "LMeveTaskModel.h"
 
 namespace Evernus
 {
-    LMeveTaskModel::LMeveTaskModel(const EveDataProvider &dataProvider, QObject *parent)
+    LMeveTaskModel::LMeveTaskModel(const EveDataProvider &dataProvider,
+                                   const ItemCostProvider &costProvider,
+                                   const CharacterRepository &characterRepository,
+                                   QObject *parent)
         : QAbstractTableModel{parent}
         , mDataProvider{dataProvider}
+        , mCostProvider{costProvider}
+        , mCharacterRepository{characterRepository}
     {
     }
 
@@ -38,10 +50,11 @@ namespace Evernus
             return QVariant{};
 
         const auto &data = mData[index.row()];
+        const auto column = index.column();
 
-        if (role == Qt::UserRole)
-        {
-            switch (index.column()) {
+        switch (role) {
+        case Qt::UserRole:
+            switch (column) {
             case typeColumn:
                 return mDataProvider.getTypeName(data->getTypeId());
             case activityColumn:
@@ -69,39 +82,111 @@ namespace Evernus
             case jobsCompletedColumn:
                 if (data->getJobsCompleted())
                     return *data->getJobsCompleted();
+                break;
+            case costColumn:
+                if (mCharacter)
+                    return mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getCost();
+                break;
+            case priceColumn:
+                return mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice();
+            case marginColumn:
+                return getMargin(*data);
             }
-        }
-        else if (role == Qt::DisplayRole)
-        {
-            QLocale locale;
-            switch (index.column()) {
-            case typeColumn:
-                return mDataProvider.getTypeName(data->getTypeId());
-            case activityColumn:
-                return data->getActivity();
-            case runsColumn:
-                if (data->getRuns())
-                    return locale.toString(*data->getRuns());
-                break;
-            case runsDoneColumn:
-                if (data->getRunsDone())
-                    return locale.toString(*data->getRunsDone());
-                break;
-            case runsCompletedColumn:
-                if (data->getRunsCompleted())
-                    return locale.toString(*data->getRunsCompleted());
-                break;
-            case jobsDoneColumn:
-                if (data->getJobsDone())
-                    return locale.toString(*data->getJobsDone());
-                break;
-            case jobsSuccessColumn:
-                if (data->getJobsSuccess())
-                    return locale.toString(*data->getJobsSuccess());
-                break;
-            case jobsCompletedColumn:
-                if (data->getJobsCompleted())
-                    return locale.toString(*data->getJobsCompleted());
+            break;
+        case  Qt::DisplayRole:
+            {
+                QLocale locale;
+                switch (column) {
+                case typeColumn:
+                    return mDataProvider.getTypeName(data->getTypeId());
+                case activityColumn:
+                    return data->getActivity();
+                case runsColumn:
+                    if (data->getRuns())
+                        return locale.toString(*data->getRuns());
+                    break;
+                case runsDoneColumn:
+                    if (data->getRunsDone())
+                        return locale.toString(*data->getRunsDone());
+                    break;
+                case runsCompletedColumn:
+                    if (data->getRunsCompleted())
+                        return locale.toString(*data->getRunsCompleted());
+                    break;
+                case jobsDoneColumn:
+                    if (data->getJobsDone())
+                        return locale.toString(*data->getJobsDone());
+                    break;
+                case jobsSuccessColumn:
+                    if (data->getJobsSuccess())
+                        return locale.toString(*data->getJobsSuccess());
+                    break;
+                case jobsCompletedColumn:
+                    if (data->getJobsCompleted())
+                        return locale.toString(*data->getJobsCompleted());
+                    break;
+                case costColumn:
+                    if (mCharacter)
+                    {
+                        const auto cost = mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId());
+                        if (!cost->isNew())
+                            return locale.toCurrencyString(cost->getCost(), "ISK");
+                    }
+                    break;
+                case priceColumn:
+                    {
+                        const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId);
+                        if (price->isNew())
+                            return tr("unknown");
+
+                        return locale.toCurrencyString(price->getPrice(), "ISK");
+                    }
+                case marginColumn:
+                    return QString{"%1%2"}.arg(locale.toString(getMargin(*data), 'f', 2)).arg(locale.percent());
+                }
+            }
+            break;
+        case Qt::ToolTipRole:
+            if (column == priceColumn)
+            {
+                const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId);
+                if (!price->isNew())
+                {
+                    QSettings settings;
+                    const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
+                    if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
+                    {
+                        return tr("Price data is too old (valid on %1).")
+                            .arg(TextUtils::dateTimeToString(price->getUpdateTime().toLocalTime(), QLocale{}));
+                    }
+                }
+            }
+            break;
+        case Qt::ForegroundRole:
+            if (column == marginColumn)
+            {
+                const auto margin = getMargin(*data);
+
+                QSettings settings;
+                if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
+                    return QColor{Qt::red};
+                if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
+                    return QColor{0xff, 0xa5, 0x00};
+
+                return QColor{Qt::green};
+            }
+            break;
+        case Qt::BackgroundRole:
+            if (column == priceColumn)
+            {
+                const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId);
+                if (!price->isNew())
+                {
+                    QSettings settings;
+                    const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
+                    if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
+                        return QColor{255, 255, 192};
+                }
             }
         }
 
@@ -129,6 +214,12 @@ namespace Evernus
                 return tr("Successful jobs");
             case jobsCompletedColumn:
                 return tr("Jobs completed");
+            case costColumn:
+                return tr("Custom cost");
+            case priceColumn:
+                return tr("Sell price");
+            case marginColumn:
+                return tr("Margin");
             }
         }
 
@@ -138,6 +229,11 @@ namespace Evernus
     int LMeveTaskModel::rowCount(const QModelIndex &parent) const
     {
         return (parent.isValid()) ? (0) : (static_cast<int>(mData.size()));
+    }
+
+    const LMeveTaskModel::TaskList &LMeveTaskModel::getTasks() const noexcept
+    {
+        return mData;
     }
 
     void LMeveTaskModel::setTasks(const TaskList &data)
@@ -152,5 +248,43 @@ namespace Evernus
         beginResetModel();
         mData = std::move(data);
         endResetModel();
+    }
+
+    void LMeveTaskModel::setCharacterId(Character::IdType id)
+    {
+        try
+        {
+            mCharacter = mCharacterRepository.find(id);
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            mCharacter.reset();
+        }
+    }
+
+    quint64 LMeveTaskModel::getStationId() const noexcept
+    {
+        return mStationId;
+    }
+
+    void LMeveTaskModel::setStationId(quint64 id)
+    {
+        beginResetModel();
+        mStationId = id;
+        endResetModel();
+    }
+
+    double LMeveTaskModel::getMargin(const LMeveTask &task) const
+    {
+        if (!mCharacter)
+            return 0.;
+
+        const auto price = mDataProvider.getTypeSellPrice(task.getTypeId(), mStationId);
+        if (price->isNew())
+            return 100.;
+
+        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        const auto cost = mCostProvider.fetchForCharacterAndType(mCharacter->getId(), task.getTypeId());
+        return PriceUtils::getMargin(cost->getCost(), price->getPrice(), taxes);
     }
 }

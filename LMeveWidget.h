@@ -17,13 +17,18 @@
 #include <QSortFilterProxyModel>
 #include <QWidget>
 
+#include "ExternalOrderImporter.h"
 #include "LMeveTaskModel.h"
+#include "StationModel.h"
 #include "Character.h"
+
+class QPushButton;
 
 namespace Evernus
 {
     class CacheTimerProvider;
     class LMeveDataProvider;
+    class ItemCostProvider;
     class ButtonWithTimer;
     class StyledTreeView;
 
@@ -36,6 +41,8 @@ namespace Evernus
         LMeveWidget(const CacheTimerProvider &cacheTimerProvider,
                     const EveDataProvider &dataProvider,
                     const LMeveDataProvider &lMeveDataProvider,
+                    const ItemCostProvider &costProvider,
+                    const CharacterRepository &characterRepository,
                     QWidget *parent = nullptr);
         virtual ~LMeveWidget() = default;
 
@@ -44,9 +51,20 @@ namespace Evernus
 
         void openPreferences();
 
+        void importPricesFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromCache(const ExternalOrderImporter::TypeLocationPairs &target);
+
     public slots:
         void setCharacter(Character::IdType id);
         void updateData();
+
+    private slots:
+        void setStationId(const QModelIndex &index);
+
+        void prepareItemImportFromWeb();
+        void prepareItemImportFromFile();
+        void prepareItemImportFromCache();
 
     private:
         const CacheTimerProvider &mCacheTimerProvider;
@@ -54,14 +72,19 @@ namespace Evernus
 
         ButtonWithTimer *mSyncBtn = nullptr;
         StyledTreeView *mTaskView = nullptr;
+        QPushButton *mImportBtn = nullptr;
 
         Character::IdType mCharacterId = Character::invalidId;
 
         LMeveTaskModel mTaskModel;
         QSortFilterProxyModel mTaskProxy;
 
+        StationModel mStationModel;
+
         QWidget *createTaskTab();
 
         void refreshImportTimer();
+
+        ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
     };
 }
