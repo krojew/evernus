@@ -92,6 +92,7 @@ namespace Evernus
         QLabel *mProfitLabel = nullptr;
         QLabel *mRevenueLabel = nullptr;
         QLabel *mCostOfSalesLabel = nullptr;
+        QLabel *mBuyoutLabel = nullptr;
         QLabel *mMarginLabel = nullptr;
         QLabel *mMarkupLabel = nullptr;
         QLabel *mBrokerFeeLabel = nullptr;

@@ -260,6 +260,7 @@ namespace Evernus
 
             auto buyCount = 0u;
             auto sellCount = 0u;
+            auto buyout = 0.;
 
             QString name;
             const auto priceTime = info.created();
@@ -317,10 +318,14 @@ namespace Evernus
                         if (jumps != 0)
                             continue;
 
-                        if (order.getPrice() < sell || sell < 0.)
-                            sell = order.getPrice();
+                        const auto price = order.getPrice();
+                        if (price < sell || sell < 0.)
+                            sell = price;
 
-                        sellVol += static_cast<uint>(values[volRemainingColumn].toDouble());
+                        const auto remaining = static_cast<uint>(values[volRemainingColumn].toDouble());
+
+                        buyout += remaining * price;
+                        sellVol += remaining;
                         sellInit += static_cast<uint>(values[volEnteredColumn].toDouble());
 
                         ++sellCount;
@@ -353,10 +358,11 @@ namespace Evernus
             }
 
             mNameLabel->setText(name);
-            mBuyOrdersLabel->setText(QString::number(buyCount));
-            mSellOrdersLabel->setText(QString::number(sellCount));
+            mBuyOrdersLabel->setText(curLocale.toString(buyCount));
+            mSellOrdersLabel->setText(curLocale.toString(sellCount));
             mBuyVolLabel->setText(QString{"%1/%2"}.arg(curLocale.toString(buyVol)).arg(curLocale.toString(buyInit - buyVol)));
             mSellVolLabel->setText(QString{"%1/%2"}.arg(curLocale.toString(sellVol)).arg(curLocale.toString(sellInit - sellVol)));
+            mBuyoutLabel->setText(curLocale.toCurrencyString(buyout, "ISK"));
 
             updateInfo(buy, sell, true);
         }
@@ -469,6 +475,7 @@ namespace Evernus
         priceLayout->addWidget(new QLabel{tr("Profit:")}, 2, 0);
         priceLayout->addWidget(new QLabel{tr("Revenue:")}, 0, 2);
         priceLayout->addWidget(new QLabel{tr("Cost of sales:")}, 1, 2);
+        priceLayout->addWidget(new QLabel{tr("Buyout:")}, 2, 2);
 
         auto sellLayout = new QHBoxLayout{};
         priceLayout->addLayout(sellLayout, 0, 1);
@@ -509,6 +516,9 @@ namespace Evernus
 
         mCostOfSalesLabel = new QLabel{"-", this};
         priceLayout->addWidget(mCostOfSalesLabel, 1, 3);
+
+        mBuyoutLabel = new QLabel{"-", this};
+        priceLayout->addWidget(mBuyoutLabel, 2, 3);
 
         auto orderGroup = new QGroupBox{this};
         mainLayout->addWidget(orderGroup);
