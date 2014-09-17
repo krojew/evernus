@@ -50,8 +50,7 @@ namespace Evernus
                                parent)
         , mModel(walletRepo, characterRepository, dataProvider, itemCostProvider, corp)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto toolBarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolBarLayout);

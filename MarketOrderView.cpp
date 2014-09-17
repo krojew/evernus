@@ -40,8 +40,7 @@ namespace Evernus
         , mInfoWidget(infoWidget)
         , mProxy(dataProvider)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         mProxy.setSortRole(Qt::UserRole);
         mProxy.setFilterCaseSensitivity(Qt::CaseInsensitive);

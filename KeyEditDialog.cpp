@@ -31,8 +31,7 @@ namespace Evernus
     {
         const auto keyLink = "https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=73404426";
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto formLayout = new QFormLayout{};
         mainLayout->addLayout(formLayout);

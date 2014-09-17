@@ -33,14 +33,12 @@ namespace Evernus
     {
         QSettings settings;
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto languageGroup = new QGroupBox{this};
         mainLayout->addWidget(languageGroup);
 
-        auto languageGroupLayout = new QVBoxLayout{};
-        languageGroup->setLayout(languageGroupLayout);
+        auto languageGroupLayout = new QVBoxLayout{languageGroup};
 
         auto languageEditLayout = new QHBoxLayout{};
         languageGroupLayout->addLayout(languageEditLayout);
@@ -59,8 +57,7 @@ namespace Evernus
         auto generalGroup = new QGroupBox{this};
         mainLayout->addWidget(generalGroup);
 
-        auto generalGroupLayout = new QVBoxLayout{};
-        generalGroup->setLayout(generalGroupLayout);
+        auto generalGroupLayout = new QVBoxLayout{generalGroup};
 
         mMinimizeToTrayBtn = new QCheckBox{tr("Minimize to tray"), this};
         generalGroupLayout->addWidget(mMinimizeToTrayBtn);

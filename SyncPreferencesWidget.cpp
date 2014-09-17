@@ -27,8 +27,7 @@ namespace Evernus
     SyncPreferencesWidget::SyncPreferencesWidget(QWidget *parent)
         : QWidget(parent)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
 #ifdef EVERNUS_DROPBOX_ENABLED
         QSettings settings;
@@ -36,8 +35,7 @@ namespace Evernus
         auto dropboxGroup = new QGroupBox{this};
         mainLayout->addWidget(dropboxGroup);
 
-        auto dropboxGroupLayout = new QVBoxLayout{};
-        dropboxGroup->setLayout(dropboxGroupLayout);
+        auto dropboxGroupLayout = new QVBoxLayout{dropboxGroup};
 
         mEnabledOnStartupBtn = new QCheckBox{tr("Download on startup"), this};
         dropboxGroupLayout->addWidget(mEnabledOnStartupBtn);

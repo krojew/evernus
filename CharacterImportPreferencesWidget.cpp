@@ -28,14 +28,12 @@ namespace Evernus
     {
         QSettings settings;
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto importBox = new QGroupBox{tr("Character import"), this};
         mainLayout->addWidget(importBox);
 
-        auto importBoxLayout = new QVBoxLayout{};
-        importBox->setLayout(importBoxLayout);
+        auto importBoxLayout = new QVBoxLayout{importBox};
 
         mImportSkillsBox = new QCheckBox{tr("Import skills"), this};
         importBoxLayout->addWidget(mImportSkillsBox);

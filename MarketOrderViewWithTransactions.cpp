@@ -50,8 +50,7 @@ namespace Evernus
         , mCorpOrderProvider(corpOrderProvider)
         , mTransactionModel(transactionsRepo, mCharacterRepo, mDataProvider, mCostProvider, corp)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         mOrderView = new MarketOrderView{mDataProvider, objectName + "-orders", infoWidget, this};
         mainLayout->addWidget(mOrderView, 1);
@@ -67,8 +66,7 @@ namespace Evernus
         auto transactionGroup = new QGroupBox{this};
         mainLayout->addWidget(transactionGroup);
 
-        auto groupLayout = new QVBoxLayout{};
-        transactionGroup->setLayout(groupLayout);
+        auto groupLayout = new QVBoxLayout{transactionGroup};
 
         mTransactionProxyModel.setSortRole(Qt::UserRole);
         mTransactionProxyModel.setSourceModel(&mTransactionModel);

@@ -49,8 +49,7 @@ namespace Evernus
         , mCorpKeyModel(nullptr, mCorpKeyRepository.getDatabase())
         , mCharacterModel(mCharacterRepository)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto tabs = new QTabWidget{this};
         mainLayout->addWidget(tabs);
@@ -205,14 +204,12 @@ namespace Evernus
     {
         auto page = new QWidget{this};
 
-        auto pageLayout = new QVBoxLayout{};
-        page->setLayout(pageLayout);
+        auto pageLayout = new QVBoxLayout{page};
 
         auto keyGroup = new QGroupBox{tr("Added keys"), this};
         pageLayout->addWidget(keyGroup);
 
-        auto groupLayout = new QVBoxLayout{};
-        keyGroup->setLayout(groupLayout);
+        auto groupLayout = new QVBoxLayout{keyGroup};
 
         auto keyView = new QTreeView{this};
         groupLayout->addWidget(keyView);
@@ -244,14 +241,12 @@ namespace Evernus
     {
         auto page = new QWidget{this};
 
-        auto pageLayout = new QVBoxLayout{};
-        page->setLayout(pageLayout);
+        auto pageLayout = new QVBoxLayout{page};
 
         auto keyGroup = new QGroupBox{tr("Added keys"), this};
         pageLayout->addWidget(keyGroup);
 
-        auto groupLayout = new QVBoxLayout{};
-        keyGroup->setLayout(groupLayout);
+        auto groupLayout = new QVBoxLayout{keyGroup};
 
         auto keyView = new QTreeView{this};
         groupLayout->addWidget(keyView);
@@ -283,15 +278,12 @@ namespace Evernus
     QWidget *CharacterManagerDialog::createCharacterTab()
     {
         auto page = new QWidget{this};
-
-        auto pageLayout = new QVBoxLayout{};
-        page->setLayout(pageLayout);
+        auto pageLayout = new QVBoxLayout{page};
 
         auto charGroup = new QGroupBox{tr("Available characters"), this};
         pageLayout->addWidget(charGroup);
 
-        auto groupLayout = new QVBoxLayout{};
-        charGroup->setLayout(groupLayout);
+        auto groupLayout = new QVBoxLayout{charGroup};
 
         mCharacterModelProxy = new QSortFilterProxyModel{this};
         mCharacterModelProxy->setSourceModel(&mCharacterModel);

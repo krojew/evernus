@@ -34,14 +34,12 @@ namespace Evernus
     {
         QSettings settings;
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto marketLogGroup = new QGroupBox{tr("Market logs path"), this};
         mainLayout->addWidget(marketLogGroup);
 
-        auto marketLogGroupLayout = new QFormLayout{};
-        marketLogGroup->setLayout(marketLogGroupLayout);
+        auto marketLogGroupLayout = new QFormLayout{marketLogGroup};
 
         auto infoLabel = new QLabel{tr(
             "You can specify custom market logs path or leave empty to use the default one. Custom path is required on *nix systems."), this};
@@ -74,8 +72,7 @@ namespace Evernus
         auto eveGroup = new QGroupBox{tr("Eve cache path"), this};
         mainLayout->addWidget(eveGroup);
 
-        auto eveLayout = new QVBoxLayout{};
-        eveGroup->setLayout(eveLayout);
+        auto eveLayout = new QVBoxLayout{eveGroup};
 
         auto cacheLayout = new QHBoxLayout{};
         eveLayout->addLayout(cacheLayout);

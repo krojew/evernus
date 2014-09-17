@@ -24,9 +24,7 @@ namespace Evernus
     AboutDialog::AboutDialog(QWidget *parent)
         : QDialog(parent)
     {
-        auto mainLayout = new QHBoxLayout{};
-        setLayout(mainLayout);
-
+        auto mainLayout = new QHBoxLayout{this};
         auto icon = parent->windowIcon();
 
         auto iconLabel = new QLabel{this};

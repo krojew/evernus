@@ -63,8 +63,7 @@ namespace Evernus
         , mCorpKeyRepository(corpKeyRepository)
         , mCacheTimerProvider(cacheTimerProvider)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto toolBarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolBarLayout);
@@ -83,8 +82,7 @@ namespace Evernus
         auto infoGroup = new QGroupBox{tr("Character info"), this};
         characterLayout->addWidget(infoGroup, 1);
 
-        auto infoLayout = new QHBoxLayout{};
-        infoGroup->setLayout(infoLayout);
+        auto infoLayout = new QHBoxLayout{infoGroup};
 
         auto downloadPortraitAction = new QAction{tr("Download portrait"), this};
         connect(downloadPortraitAction, &QAction::triggered, this, &CharacterWidget::downloadPortrait);
@@ -120,8 +118,7 @@ namespace Evernus
         characterLayout->addWidget(mUpdateTimersGroup);
         mUpdateTimersGroup->setVisible(false);
 
-        auto timersLayout = new QVBoxLayout{};
-        mUpdateTimersGroup->setLayout(timersLayout);
+        auto timersLayout = new QVBoxLayout{mUpdateTimersGroup};
 
         mUpdateTimersList = new QListWidget{this};
         timersLayout->addWidget(mUpdateTimersList, 0, Qt::AlignTop | Qt::AlignHCenter);
@@ -137,8 +134,7 @@ namespace Evernus
         auto addInfoGroup = new QGroupBox{tr("Orders"), this};
         underInfoLayout->addWidget(addInfoGroup);
 
-        auto addInfoLayout = new QGridLayout{};
-        addInfoGroup->setLayout(addInfoLayout);
+        auto addInfoLayout = new QGridLayout{addInfoGroup};
 
         addInfoLayout->addWidget(new QLabel{tr("Buy orders:"), this}, 0, 0, Qt::AlignRight);
 
@@ -182,8 +178,7 @@ namespace Evernus
         auto standingsGroup = new QGroupBox{tr("Station owner standings"), this};
         underInfoLayout->addWidget(standingsGroup);
 
-        auto standingsLayout = new QFormLayout{};
-        standingsGroup->setLayout(standingsLayout);
+        auto standingsLayout = new QFormLayout{standingsGroup};
 
         mCorpStandingEdit = new QDoubleSpinBox{this};
         standingsLayout->addRow(tr("Corporation standing:"), mCorpStandingEdit);
@@ -198,14 +193,12 @@ namespace Evernus
         auto skillsGroup = new QGroupBox{tr("Trade skills"), this};
         mainLayout->addWidget(skillsGroup);
 
-        auto skillsLayout = new QHBoxLayout{};
-        skillsGroup->setLayout(skillsLayout);
+        auto skillsLayout = new QHBoxLayout{skillsGroup};
 
         auto orderAmountGroup = new QGroupBox{tr("Order amount skills"), this};
         skillsLayout->addWidget(orderAmountGroup);
 
-        auto orderAmountLayout = new QFormLayout{};
-        orderAmountGroup->setLayout(orderAmountLayout);
+        auto orderAmountLayout = new QFormLayout{orderAmountGroup};
 
         orderAmountLayout->addRow(tr("Trade:"), createSkillEdit(mTradeSkillEdit, "trade_skill"));
         orderAmountLayout->addRow(tr("Retail:"), createSkillEdit(mRetailSkillEdit, "retail_skill"));
@@ -215,8 +208,7 @@ namespace Evernus
         auto tradeRangeGroup = new QGroupBox{tr("Trade range skills"), this};
         skillsLayout->addWidget(tradeRangeGroup);
 
-        auto tradeRangeLayout = new QFormLayout{};
-        tradeRangeGroup->setLayout(tradeRangeLayout);
+        auto tradeRangeLayout = new QFormLayout{tradeRangeGroup};
 
         tradeRangeLayout->addRow(tr("Marketing:"), createSkillEdit(mMarketingSkillEdit, "marketing_skill"));
         tradeRangeLayout->addRow(tr("Procurement:"), createSkillEdit(mProcurementSkillEdit, "procurement_skill"));
@@ -226,8 +218,7 @@ namespace Evernus
         auto feeGroup = new QGroupBox{tr("Fee skills"), this};
         skillsLayout->addWidget(feeGroup);
 
-        auto feeLayout = new QFormLayout{};
-        feeGroup->setLayout(feeLayout);
+        auto feeLayout = new QFormLayout{feeGroup};
 
         feeLayout->addRow(tr("Accounting:"), createSkillEdit(mAccountingSkillEdit, "accounting_skill"));
         feeLayout->addRow(tr("Broker relations:"), createSkillEdit(mBrokerRelationsSkillEdit, "broker_relations_skill"));
@@ -236,8 +227,7 @@ namespace Evernus
         auto contractingGroup = new QGroupBox{tr("Contracting skills"), this};
         skillsLayout->addWidget(contractingGroup);
 
-        auto contractingLayout = new QFormLayout{};
-        contractingGroup->setLayout(contractingLayout);
+        auto contractingLayout = new QFormLayout{contractingGroup};
 
         contractingLayout->addRow(tr("Contracting:"), createSkillEdit(mContractingSkillEdit, "contracting_skill"));
         contractingLayout->addRow(tr("Corporation contracting:"),

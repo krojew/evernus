@@ -34,8 +34,7 @@ namespace Evernus
         , mEveDataProvider(eveDataProvider)
         , mModel(mCostProvider, mEveDataProvider)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto toolBarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolBarLayout);

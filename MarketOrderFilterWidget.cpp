@@ -30,8 +30,7 @@ namespace Evernus
     MarketOrderFilterWidget::MarketOrderFilterWidget(const FilterTextRepository &filterRepo, QWidget *parent)
         : QWidget(parent)
     {
-        auto mainLayout = new QHBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QHBoxLayout{this};
         mainLayout->setContentsMargins(QMargins{});
 
         auto statesWidget = new MarketOrderStatesWidget{this};

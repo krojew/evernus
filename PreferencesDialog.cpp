@@ -43,8 +43,7 @@ namespace Evernus
     PreferencesDialog::PreferencesDialog(QWidget *parent)
         : QDialog(parent)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto preferencesLayout = new QHBoxLayout{};
         mainLayout->addLayout(preferencesLayout);

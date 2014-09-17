@@ -85,8 +85,7 @@ namespace Evernus
         , mAggrModel(mMarketOrderRepository, dataProvider)
         , mScriptModel(dataProvider)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto tabs = new QTabWidget{this};
         mainLayout->addWidget(tabs);
@@ -643,9 +642,7 @@ namespace Evernus
     QWidget *StatisticsWidget::createBasicStatisticsWidget()
     {
         auto widget = new QWidget{this};
-
-        auto mainLayout = new QVBoxLayout{};
-        widget->setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{widget};
 
         mCombineStatsBtn = new QCheckBox{tr("Combine statistics for all characters"), this};
         mainLayout->addWidget(mCombineStatsBtn);
@@ -654,8 +651,7 @@ namespace Evernus
         auto balanceGroup = new QGroupBox{tr("Balance"), this};
         mainLayout->addWidget(balanceGroup);
 
-        auto balanceLayout = new QVBoxLayout{};
-        balanceGroup->setLayout(balanceLayout);
+        auto balanceLayout = new QVBoxLayout{balanceGroup};
 
         mBalancePlot = createPlot();
         balanceLayout->addWidget(mBalancePlot);
@@ -664,8 +660,7 @@ namespace Evernus
         auto journalGroup = new QGroupBox{tr("Wallet journal"), this};
         mainLayout->addWidget(journalGroup);
 
-        auto journalLayout = new QVBoxLayout{};
-        journalGroup->setLayout(journalLayout);
+        auto journalLayout = new QVBoxLayout{journalGroup};
 
         mJournalPlot = createPlot();
         journalLayout->addWidget(mJournalPlot);
@@ -674,8 +669,7 @@ namespace Evernus
         auto transactionGroup = new QGroupBox{tr("Wallet transactions"), this};
         mainLayout->addWidget(transactionGroup);
 
-        auto transactionLayout = new QVBoxLayout{};
-        transactionGroup->setLayout(transactionLayout);
+        auto transactionLayout = new QVBoxLayout{transactionGroup};
 
         mTransactionPlot = createPlot();
         transactionLayout->addWidget(mTransactionPlot);
@@ -689,9 +683,7 @@ namespace Evernus
     QWidget *StatisticsWidget::createAdvancedStatisticsWidget()
     {
         auto widget = new QWidget{this};
-
-        auto mainLayout = new QVBoxLayout{};
-        widget->setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{widget};
 
         mainLayout->addWidget(new QLabel{tr(
             "This tab allows you to create custom reports aggregating historic market order data."), this});
@@ -699,8 +691,7 @@ namespace Evernus
         auto configGroup = new QGroupBox{this};
         mainLayout->addWidget(configGroup);
 
-        auto configLayout = new QVBoxLayout{};
-        configGroup->setLayout(configLayout);
+        auto configLayout = new QVBoxLayout{configGroup};
 
         auto simpleConfigBtn = new QRadioButton{tr("Simple aggregation"), this};
         configLayout->addWidget(simpleConfigBtn);
@@ -710,8 +701,7 @@ namespace Evernus
         configLayout->addWidget(simpleConfigWidget);
         connect(simpleConfigBtn, &QRadioButton::toggled, simpleConfigWidget, &QWidget::setVisible);
 
-        auto simgpleConfigLayout = new QHBoxLayout{};
-        simpleConfigWidget->setLayout(simgpleConfigLayout);
+        auto simgpleConfigLayout = new QHBoxLayout{simpleConfigWidget};
 
         simgpleConfigLayout->addWidget(new QLabel{tr("Group by:"), this});
 
@@ -757,8 +747,7 @@ namespace Evernus
         scriptConfigWidget->setVisible(false);
         connect(scriptConfigBtn, &QRadioButton::toggled, scriptConfigWidget, &QWidget::setVisible);
 
-        auto scriptConfigLayout = new QHBoxLayout{};
-        scriptConfigWidget->setLayout(scriptConfigLayout);
+        auto scriptConfigLayout = new QHBoxLayout{scriptConfigWidget};
 
         QFont scriptFont{"Monospace"};
         scriptFont.setFixedPitch(true);
@@ -794,8 +783,7 @@ namespace Evernus
         auto scriptModeGroup = new QGroupBox{tr("Mode"), this};
         scriptControlsLayout->addWidget(scriptModeGroup);
 
-        auto scriptModeGroupLayout = new QVBoxLayout{};
-        scriptModeGroup->setLayout(scriptModeGroupLayout);
+        auto scriptModeGroupLayout = new QVBoxLayout{scriptModeGroup};
 
         mScriptForEachModeBtn = new QRadioButton{tr("For each"), this};
         scriptModeGroupLayout->addWidget(mScriptForEachModeBtn);

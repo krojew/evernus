@@ -29,14 +29,12 @@ namespace Evernus
         : QWidget(parent)
         , mCrypt(LMeveSettings::lmeveCryptKey)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto mainGroup = new QGroupBox{this};
         mainLayout->addWidget(mainGroup);
 
-        auto mainGroupLayout = new QFormLayout{};
-        mainGroup->setLayout(mainGroupLayout);
+        auto mainGroupLayout = new QFormLayout{mainGroup};
 
         auto infoLabel
             = new QLabel{tr("To start working with LMeve, visit its <a href='https://github.com/roxlukas/lmeve'>homepage</a>."), this};

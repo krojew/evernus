@@ -33,14 +33,12 @@ namespace Evernus
     {
         QSettings settings;
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto mainGroup = new QGroupBox{this};
         mainLayout->addWidget(mainGroup);
 
-        auto mainGroupLayout = new QFormLayout{};
-        mainGroup->setLayout(mainGroupLayout);
+        auto mainGroupLayout = new QFormLayout{mainGroup};
 
         mEnabledBtn = new QCheckBox{tr("Enabled"), this};
         mainGroupLayout->addRow(mEnabledBtn);

@@ -32,8 +32,7 @@ namespace Evernus
         mCurrentFilter = static_cast<MarketOrderFilterProxyModel::PriceStatusFilters>(
             settings.value(UISettings::marketOrderPriceStatusFilterKey, static_cast<int>(MarketOrderFilterProxyModel::defaultPriceStatusFilter)).toInt());
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         mainLayout->addWidget(createCheckBox(MarketOrderFilterProxyModel::Ok, tr("Ok")));
         mainLayout->addWidget(createCheckBox(MarketOrderFilterProxyModel::NoData, tr("No data")));

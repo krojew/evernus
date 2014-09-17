@@ -30,8 +30,7 @@ namespace Evernus
         : QDialog(parent)
         , mCost(cost)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         mTypeCombo = new QComboBox{this};
         mainLayout->addWidget(mTypeCombo);

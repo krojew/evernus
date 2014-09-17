@@ -32,8 +32,7 @@ namespace Evernus
         mCurrentFilter = static_cast<ContractFilterProxyModel::StatusFilters>(
             settings.value(UISettings::contractStatusFilterKey, static_cast<int>(ContractFilterProxyModel::defaultStatusFilter)).toInt());
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         mainLayout->addWidget(createCheckBox(ContractFilterProxyModel::Outstanding, tr("Outstanding")));
         mainLayout->addWidget(createCheckBox(ContractFilterProxyModel::Deleted, tr("Deleted")));

@@ -28,14 +28,12 @@ namespace Evernus
     {
         QSettings settings;
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto importBox = new QGroupBox{tr("Corporation data import"), this};
         mainLayout->addWidget(importBox);
 
-        auto importBoxLayout = new QVBoxLayout{};
-        importBox->setLayout(importBoxLayout);
+        auto importBoxLayout = new QVBoxLayout{importBox};
 
         mUpdateCorpDataBtn = new QCheckBox{tr("Import corporation data along with character"), this};
         importBoxLayout->addWidget(mUpdateCorpDataBtn);

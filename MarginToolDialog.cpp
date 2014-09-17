@@ -77,8 +77,7 @@ namespace Evernus
         const auto alwaysOnTop
             = settings.value(MarginToolSettings::alwaysOnTopKey, MarginToolSettings::alwaysOnTopDefault).toBool();
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto tabs = new QTabWidget{this};
         mainLayout->addWidget(tabs);
@@ -454,8 +453,7 @@ namespace Evernus
 
         auto tabWidget = new QWidget{this};
 
-        auto mainLayout = new QVBoxLayout{};
-        tabWidget->setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{tabWidget};
 
         mNameLabel = new QLabel{tr("export market logs in game"), this};
         mainLayout->addWidget(mNameLabel);
@@ -464,8 +462,7 @@ namespace Evernus
         auto priceGroup = new QGroupBox{this};
         mainLayout->addWidget(priceGroup);
 
-        auto priceLayout = new QGridLayout{};
-        priceGroup->setLayout(priceLayout);
+        auto priceLayout = new QGridLayout{priceGroup};
 
         priceLayout->addWidget(new QLabel{tr("Sell:")}, 0, 0);
         priceLayout->addWidget(new QLabel{tr("Buy:")}, 1, 0);
@@ -516,8 +513,7 @@ namespace Evernus
         auto orderGroup = new QGroupBox{this};
         mainLayout->addWidget(orderGroup);
 
-        auto orderLayout = new QGridLayout{};
-        orderGroup->setLayout(orderLayout);
+        auto orderLayout = new QGridLayout{orderGroup};
 
         orderLayout->addWidget(new QLabel{tr("Buy orders:")}, 0, 0);
 
@@ -545,8 +541,7 @@ namespace Evernus
         auto marginGroup = new QGroupBox{this};
         infoLayout->addWidget(marginGroup);
 
-        auto marginLayout = new QGridLayout{};
-        marginGroup->setLayout(marginLayout);
+        auto marginLayout = new QGridLayout{marginGroup};
 
         marginLayout->addWidget(new QLabel{tr("Margin:")}, 0, 0);
 
@@ -562,8 +557,7 @@ namespace Evernus
         auto copyGroup = new QGroupBox{tr("Autocopy"), this};
         infoLayout->addWidget(copyGroup);
 
-        auto copyLayout = new QVBoxLayout{};
-        copyGroup->setLayout(copyLayout);
+        auto copyLayout = new QVBoxLayout{copyGroup};
 
         QSettings settings;
 
@@ -592,8 +586,7 @@ namespace Evernus
         auto taxesGroup = new QGroupBox{this};
         mainLayout->addWidget(taxesGroup);
 
-        auto taxesLayout = new QHBoxLayout{};
-        taxesGroup->setLayout(taxesLayout);
+        auto taxesLayout = new QHBoxLayout{taxesGroup};
 
         taxesLayout->addWidget(new QLabel{tr("Broker fee:"), this});
 
@@ -608,8 +601,7 @@ namespace Evernus
         auto sampleGroup = new QGroupBox{tr("Sample data"), this};
         mainLayout->addWidget(sampleGroup);
 
-        auto sampleLayout = new QHBoxLayout{};
-        sampleGroup->setLayout(sampleLayout);
+        auto sampleLayout = new QHBoxLayout{sampleGroup};
 
         m1SampleDataTable = createSampleTable();
         sampleLayout->addWidget(m1SampleDataTable);
@@ -627,15 +619,12 @@ namespace Evernus
     QWidget *MarginToolDialog::createDataSourceTab()
     {
         auto tabWidget = new QWidget{this};
-
-        auto mainLayout = new QVBoxLayout{};
-        tabWidget->setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{tabWidget};
 
         auto sourceGroup = new QGroupBox{tr("Preferred source"), this};
         mainLayout->addWidget(sourceGroup);
 
-        auto sourceLayout = new QHBoxLayout{};
-        sourceGroup->setLayout(sourceLayout);
+        auto sourceLayout = new QHBoxLayout{sourceGroup};
 
         QSettings settings;
 
@@ -658,8 +647,7 @@ namespace Evernus
         mainLayout->addWidget(stationGroup, 1);
         stationGroup->setEnabled(dataSource == PriceSettings::DataSource::Station);
 
-        auto stationLayout = new QVBoxLayout{};
-        stationGroup->setLayout(stationLayout);
+        auto stationLayout = new QVBoxLayout{stationGroup};
 
         mStationView = new QColumnView{this};
         stationLayout->addWidget(mStationView);

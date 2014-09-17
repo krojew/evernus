@@ -36,14 +36,12 @@ namespace Evernus
     {
         QSettings settings;
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto marginGroup = new QGroupBox{tr("Margins"), this};
         mainLayout->addWidget(marginGroup);
 
-        auto marginLayout = new QVBoxLayout{};
-        marginGroup->setLayout(marginLayout);
+        auto marginLayout = new QVBoxLayout{marginGroup};
 
         auto marginControlsLayout = new QGridLayout{};
         marginLayout->addLayout(marginControlsLayout);
@@ -83,8 +81,7 @@ namespace Evernus
         auto costsGroup = new QGroupBox{tr("Costs"), this};
         mainLayout->addWidget(costsGroup);
 
-        auto costsLayout = new QVBoxLayout{};
-        costsGroup->setLayout(costsLayout);
+        auto costsLayout = new QVBoxLayout{costsGroup};
 
         mAutoAddCustomCostBtn = new QCheckBox{tr("Auto add custom item costs on fulfilled buy order*"), this};
         costsLayout->addWidget(mAutoAddCustomCostBtn);
@@ -101,8 +98,7 @@ namespace Evernus
         auto pricesGroup = new QGroupBox{this};
         mainLayout->addWidget(pricesGroup);
 
-        auto pricesLayout = new QFormLayout{};
-        pricesGroup->setLayout(pricesLayout);
+        auto pricesLayout = new QFormLayout{pricesGroup};
 
         mPriceDeltaEdit = new QDoubleSpinBox{this};
         pricesLayout->addRow(tr("Price delta:"), mPriceDeltaEdit);

@@ -29,14 +29,12 @@ namespace Evernus
     {
         QSettings settings;
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto importBox = new QGroupBox{tr("Contract import"), this};
         mainLayout->addWidget(importBox);
 
-        auto importBoxLayout = new QVBoxLayout{};
-        importBox->setLayout(importBoxLayout);
+        auto importBoxLayout = new QVBoxLayout{importBox};
 
         mImportContractBox = new QCheckBox{tr("Import contracts"), this};
         importBoxLayout->addWidget(mImportContractBox);

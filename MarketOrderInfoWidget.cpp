@@ -37,8 +37,7 @@ namespace Evernus
         , mWasDeactivated(false)
 #endif
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
         mainLayout->setContentsMargins(3, 3, 3, 3);
 
         auto btnLayout = new QHBoxLayout{};

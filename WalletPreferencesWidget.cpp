@@ -31,14 +31,12 @@ namespace Evernus
     {
         QSettings settings;
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto journalGroup = new QGroupBox{tr("Journal"), this};
         mainLayout->addWidget(journalGroup);
 
-        auto journalLayout = new QVBoxLayout{};
-        journalGroup->setLayout(journalLayout);
+        auto journalLayout = new QVBoxLayout{journalGroup};
 
         mDeleteOldJournalBtn = new QCheckBox{tr("Delete old entries"), this};
         journalLayout->addWidget(mDeleteOldJournalBtn);
@@ -65,8 +63,7 @@ namespace Evernus
         auto transactionsGroup = new QGroupBox{tr("Transactions"), this};
         mainLayout->addWidget(transactionsGroup);
 
-        auto transactionsLayout = new QVBoxLayout{};
-        transactionsGroup->setLayout(transactionsLayout);
+        auto transactionsLayout = new QVBoxLayout{transactionsGroup};
 
         mDeleteOldTransactionsBtn = new QCheckBox{tr("Delete old entries"), this};
         transactionsLayout->addWidget(mDeleteOldTransactionsBtn);

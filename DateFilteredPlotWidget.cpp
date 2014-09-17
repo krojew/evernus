@@ -31,8 +31,7 @@ namespace Evernus
     DateFilteredPlotWidget::DateFilteredPlotWidget(QWidget *parent)
         : QWidget(parent)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto filterLayout = new QHBoxLayout{};
         mainLayout->addLayout(filterLayout);
@@ -81,7 +80,7 @@ namespace Evernus
             mPlot->legend->setVisible(checked);
             mPlot->replot();
         });
-        
+
         auto locale = mPlot->locale();
         locale.setNumberOptions(0);
         mPlot->setLocale(locale);

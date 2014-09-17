@@ -27,14 +27,12 @@ namespace Evernus
     ImportSourcePreferencesWidget::ImportSourcePreferencesWidget(QWidget *parent)
         : QWidget(parent)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto sourceGroup = new QGroupBox{tr("Default import sources"), this};
         mainLayout->addWidget(sourceGroup);
 
-        auto sourceGroupLayout = new QFormLayout{};
-        sourceGroup->setLayout(sourceGroupLayout);
+        auto sourceGroupLayout = new QFormLayout{sourceGroup};
 
         QSettings settings;
 

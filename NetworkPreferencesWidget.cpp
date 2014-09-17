@@ -48,14 +48,12 @@ namespace Evernus
             = settings.value(NetworkSettings::useCustomProviderKey, NetworkSettings::useCustomProviderDefault).toBool();
         const auto providerHost = settings.value(NetworkSettings::providerHostKey).toString();
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto proxyGroup = new QGroupBox{tr("Proxy"), this};
         mainLayout->addWidget(proxyGroup);
 
-        auto proxyLayout = new QVBoxLayout{};
-        proxyGroup->setLayout(proxyLayout);
+        auto proxyLayout = new QVBoxLayout{proxyGroup};
 
         mNoProxyBtn = new QRadioButton{tr("No proxy"), this};
         proxyLayout->addWidget(mNoProxyBtn);
@@ -67,8 +65,7 @@ namespace Evernus
         proxyLayout->addWidget(proxySettingsContainerWidget);
         connect(customProxyBtn, &QRadioButton::toggled, proxySettingsContainerWidget, &QWidget::setEnabled);
 
-        auto proxySettingLayout = new QFormLayout{};
-        proxySettingsContainerWidget->setLayout(proxySettingLayout);
+        auto proxySettingLayout = new QFormLayout{proxySettingsContainerWidget};
 
         mProxyTypeCombo = new QComboBox{this};
         proxySettingLayout->addRow(tr("Type:"), mProxyTypeCombo);
@@ -98,8 +95,7 @@ namespace Evernus
         auto providerGroup = new QGroupBox{tr("API provider"), this};
         mainLayout->addWidget(providerGroup);
 
-        auto providerLayout = new QVBoxLayout{};
-        providerGroup->setLayout(providerLayout);
+        auto providerLayout = new QVBoxLayout{providerGroup};
 
         mUseDefaultProviderBtn = new QRadioButton{tr("Use default provider"), this};
         providerLayout->addWidget(mUseDefaultProviderBtn);

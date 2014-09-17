@@ -33,8 +33,7 @@ namespace Evernus
         mCurrentFilter = static_cast<MarketOrderFilterProxyModel::StatusFilters>(
             settings.value(UISettings::marketOrderStateFilterKey, static_cast<int>(MarketOrderFilterProxyModel::defaultStatusFilter)).toInt());
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         QFont font;
         font.setBold(true);

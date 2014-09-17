@@ -43,9 +43,7 @@ namespace Evernus
     {
         QSettings settings;
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
-
+        auto mainLayout = new QVBoxLayout{this};
         auto throbberMovie = new QMovie{":/images/loader.gif", QByteArray{}, this};
 
         QFont font;

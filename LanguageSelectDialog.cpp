@@ -26,8 +26,7 @@ namespace Evernus
     LanguageSelectDialog::LanguageSelectDialog(QWidget *parent)
         : QDialog(parent)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto languageLayout = new QHBoxLayout{};
         mainLayout->addLayout(languageLayout);

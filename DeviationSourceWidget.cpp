@@ -26,8 +26,7 @@ namespace Evernus
     DeviationSourceWidget::DeviationSourceWidget(QWidget *parent)
         : QWidget(parent)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         mainLayout->addWidget(new QLabel{tr("Calculate deviation from:"), this});
 

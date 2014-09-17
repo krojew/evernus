@@ -46,8 +46,7 @@ namespace Evernus
         , mIssuedModel(dataProvider, contractProvider, characterRepo, corp)
         , mAssignedModel(dataProvider, contractProvider, characterRepo, corp)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto toolBarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolBarLayout);

@@ -23,8 +23,7 @@ namespace Evernus
     WarningBarWidget::WarningBarWidget(QWidget *parent)
         : QFrame{parent}
     {
-        auto mainLayout = new QHBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QHBoxLayout{this};
 
         auto iconLabel = new QLabel{this};
         mainLayout->addWidget(iconLabel);
@@ -48,7 +47,7 @@ namespace Evernus
             QFrame > * {
                 background: transparent;
                 border: none;
-            }        
+            }
         )");
     }
 

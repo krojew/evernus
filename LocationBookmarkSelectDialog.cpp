@@ -29,8 +29,7 @@ namespace Evernus
                                                                QWidget *parent)
         : QDialog(parent)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         mBookmarkCombo = new QComboBox{this};
         mainLayout->addWidget(mBookmarkCombo);

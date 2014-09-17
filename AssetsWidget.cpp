@@ -46,8 +46,7 @@ namespace Evernus
         , mAssetProvider(assetProvider)
         , mModel(mAssetProvider, nameProvider)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto toolBarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolBarLayout);
@@ -69,7 +68,7 @@ namespace Evernus
         toolBarLayout->addWidget(importFromCache);
         importFromCache->setFlat(true);
         connect(importFromCache, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromCache);
-        
+
         auto filterEdit = new TextFilterWidget{filterRepo, this};
         toolBarLayout->addWidget(filterEdit, 1);
         connect(filterEdit, &TextFilterWidget::filterEntered, this, &AssetsWidget::applyWildcard);

@@ -26,8 +26,7 @@ namespace Evernus
         : QWidget(parent)
         , mCharacterRepository(characterRepository)
     {
-        auto mainLayout = new QHBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QHBoxLayout{this};
         mainLayout->setContentsMargins(QMargins{});
 
         auto importBtn = new QPushButton{QIcon{":/images/arrow_refresh.png"}, tr("Import all"), this};

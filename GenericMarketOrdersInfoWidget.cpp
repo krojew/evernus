@@ -29,8 +29,7 @@ namespace Evernus
         QFont font;
         font.setBold(true);
 
-        auto mainLayout = new FlowLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new FlowLayout{this};
         mainLayout->setContentsMargins(QMargins{});
 
         mainLayout->addWidget(new QLabel{tr("Active orders:"), this});

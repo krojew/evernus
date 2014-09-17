@@ -63,8 +63,7 @@ namespace Evernus
         , mArchiveModel(mOrderProvider, dataProvider, itemCostProvider, mCharacterRepository, corp)
         , mCorp(corp)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto toolBarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolBarLayout);
@@ -163,14 +162,12 @@ namespace Evernus
         auto combinedWidget = new QWidget{this};
         mainTabs->addTab(combinedWidget, QIcon{":/images/arrow_inout.png"}, tr("Sell && Buy"));
 
-        auto combinedLayout = new QVBoxLayout{};
-        combinedWidget->setLayout(combinedLayout);
+        auto combinedLayout = new QVBoxLayout{combinedWidget};
 
         auto sellGroup = new QGroupBox{tr("Sell orders"), this};
         combinedLayout->addWidget(sellGroup);
 
-        auto sellGroupLayout = new QVBoxLayout{};
-        sellGroup->setLayout(sellGroupLayout);
+        auto sellGroupLayout = new QVBoxLayout{sellGroup};
 
         mCombinedSellView = new MarketOrderView{dataProvider,
                                                 (mCorp) ? ("corpCombinedMarketOrderSellView") : ("combinedMarketOrderSellView"),
@@ -188,8 +185,7 @@ namespace Evernus
         auto buyGroup = new QGroupBox{tr("Buy orders"), this};
         combinedLayout->addWidget(buyGroup);
 
-        auto buyGroupLayout = new QVBoxLayout{};
-        buyGroup->setLayout(buyGroupLayout);
+        auto buyGroupLayout = new QVBoxLayout{buyGroup};
 
         mCombinedBuyView = new MarketOrderView{dataProvider,
                                                (mCorp) ? ("corpCombinedMarketOrderBuyView") : ("combinedMarketOrderBuyView"),
@@ -207,8 +203,7 @@ namespace Evernus
         auto archiveTab = new QWidget{this};
         mainTabs->addTab(archiveTab, QIcon{":/images/hourglass.png"}, tr("History"));
 
-        auto archiveLayout = new QVBoxLayout{};
-        archiveTab->setLayout(archiveLayout);
+        auto archiveLayout = new QVBoxLayout{archiveTab};
 
         auto rangeLayout = new QHBoxLayout{};
         archiveLayout->addLayout(rangeLayout);

@@ -55,8 +55,7 @@ namespace Evernus
         , mDb(EVERNUS_DROPBOX_APP_KEY_TEXT, EVERNUS_DROPBOX_APP_SECRET_TEXT)
 #endif
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto infoLayout = new QHBoxLayout{};
         mainLayout->addLayout(infoLayout);
@@ -88,8 +87,7 @@ namespace Evernus
         mainLayout->addWidget(mTokenGroup);
         mTokenGroup->setVisible(false);
 
-        auto tokenLayout = new QVBoxLayout{};
-        mTokenGroup->setLayout(tokenLayout);
+        auto tokenLayout = new QVBoxLayout{mTokenGroup};
 
         mTokenLabel = new QLabel{this};
         tokenLayout->addWidget(mTokenLabel);

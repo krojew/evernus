@@ -36,8 +36,7 @@ namespace Evernus
         , mLMeveDataProvider(lMeveDataProvider)
         , mTaskModel(dataProvider)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto toolbarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolbarLayout);

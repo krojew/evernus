@@ -72,8 +72,7 @@ namespace Evernus
         , mExternalOrderSellModel(mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider)
         , mExternalOrderBuyModel(mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto toolbarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolbarLayout);
@@ -131,8 +130,7 @@ namespace Evernus
         auto navigatorGroup = new QGroupBox{tr("Navigator"), this};
         mainViewLayout->addWidget(navigatorGroup);
 
-        auto navigatorGroupLayout = new QVBoxLayout{};
-        navigatorGroup->setLayout(navigatorGroupLayout);
+        auto navigatorGroupLayout = new QVBoxLayout{navigatorGroup};
 
         auto navigationLayout = new QHBoxLayout{};
         navigatorGroupLayout->addLayout(navigationLayout);
@@ -160,8 +158,7 @@ namespace Evernus
         auto groupingGroup = new QGroupBox{tr("Grouping"), this};
         navigatorGroupLayout->addWidget(groupingGroup);
 
-        auto groupingLayout = new QHBoxLayout{};
-        groupingGroup->setLayout(groupingLayout);
+        auto groupingLayout = new QHBoxLayout{groupingGroup};
 
         auto groupingBtn = new QRadioButton{tr("None"), this};
         groupingLayout->addWidget(groupingBtn);
@@ -266,8 +263,7 @@ namespace Evernus
         mFilterGroup->setVisible(false);
         connect(filterBtn, &QPushButton::toggled, mFilterGroup, &QGroupBox::setVisible);
 
-        auto filterLayout = new QGridLayout{};
-        mFilterGroup->setLayout(filterLayout);
+        auto filterLayout = new QGridLayout{mFilterGroup};
 
         filterLayout->addWidget(new QLabel{tr("Min. price:"), this}, 0, 0);
 
@@ -339,8 +335,7 @@ namespace Evernus
         auto sellGroup = new QGroupBox{tr("Sell orders"), this};
         orderLayout->addWidget(sellGroup);
 
-        auto sellLayout = new QVBoxLayout{};
-        sellGroup->setLayout(sellLayout);
+        auto sellLayout = new QVBoxLayout{sellGroup};
 
         mSellView = new ExternalOrderView{costProvider, mDataProvider, "externalOrderSellView", this};
         sellLayout->addWidget(mSellView);
@@ -357,8 +352,7 @@ namespace Evernus
         auto buyGroup = new QGroupBox{tr("Buy orders"), this};
         orderLayout->addWidget(buyGroup);
 
-        auto buyLayout = new QVBoxLayout{};
-        buyGroup->setLayout(buyLayout);
+        auto buyLayout = new QVBoxLayout{buyGroup};
 
         mBuyView = new ExternalOrderView{costProvider, mDataProvider, "externalOrderBuyView", this};
         buyLayout->addWidget(mBuyView);
@@ -778,9 +772,7 @@ namespace Evernus
     QWidget *MarketBrowserWidget::createItemNameListTab(ItemNameModel &model, QListView *&view, QLayout *toolbarLayout)
     {
         auto knownItemsTab = new QWidget{this};
-
-        auto knownItemsLayout = new QVBoxLayout{};
-        knownItemsTab->setLayout(knownItemsLayout);
+        auto knownItemsLayout = new QVBoxLayout{knownItemsTab};
 
         if (toolbarLayout != nullptr)
             knownItemsLayout->addLayout(toolbarLayout);

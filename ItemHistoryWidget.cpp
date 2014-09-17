@@ -44,14 +44,12 @@ namespace Evernus
         , mCorpWalletRepo(corpWalletRepo)
         , mDataProvider(dataProvider)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto itemGroup = new QGroupBox{this};
         mainLayout->addWidget(itemGroup);
 
-        auto itemLayout = new QHBoxLayout{};
-        itemGroup->setLayout(itemLayout);
+        auto itemLayout = new QHBoxLayout{itemGroup};
 
         itemLayout->addWidget(new QLabel{tr("Item type:"), this});
 
@@ -110,8 +108,7 @@ namespace Evernus
         auto totalGroup = new QGroupBox{this};
         mainLayout->addWidget(totalGroup);
 
-        auto totalLayout = new QHBoxLayout{};
-        totalGroup->setLayout(totalLayout);
+        auto totalLayout = new QHBoxLayout{totalGroup};
 
         QFont font;
         font.setBold(true);

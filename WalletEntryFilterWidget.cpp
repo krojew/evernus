@@ -27,8 +27,7 @@ namespace Evernus
     WalletEntryFilterWidget::WalletEntryFilterWidget(const QStringList &typeFilters, const FilterTextRepository &filterRepo, QWidget *parent)
         : QWidget(parent)
     {
-        auto mainLayout = new QHBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QHBoxLayout{this};
 
         mainLayout->addWidget(new QLabel(tr("Show:"), this));
 

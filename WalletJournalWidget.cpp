@@ -41,8 +41,7 @@ namespace Evernus
                                parent)
         , mModel(journalRepo, characterRepository, dataProvider, corp)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto toolBarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolBarLayout);

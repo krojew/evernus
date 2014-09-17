@@ -42,8 +42,7 @@ namespace Evernus
         , mCostProvider(costProvider)
         , mProxy(dataProvider)
     {
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         mProxy.setSortRole(Qt::UserRole);
         connect(&mProxy, &QSortFilterProxyModel::modelReset, this, &ExternalOrderView::handleModelReset, Qt::QueuedConnection);

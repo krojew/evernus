@@ -34,14 +34,12 @@ namespace Evernus
     {
         QSettings settings;
 
-        auto mainLayout = new QVBoxLayout{};
-        setLayout(mainLayout);
+        auto mainLayout = new QVBoxLayout{this};
 
         auto generalBox = new QGroupBox{this};
         mainLayout->addWidget(generalBox);
 
-        auto generalBoxLayout = new QVBoxLayout{};
-        generalBox->setLayout(generalBoxLayout);
+        auto generalBoxLayout = new QVBoxLayout{generalBox};
 
         mIgnoreCachedBtn = new QCheckBox{tr("Ignore up-to-date data"), this};
         generalBoxLayout->addWidget(mIgnoreCachedBtn);
@@ -50,8 +48,7 @@ namespace Evernus
         auto timersBox = new QGroupBox{tr("Data age"), this};
         mainLayout->addWidget(timersBox);
 
-        auto timersBoxLayout = new QFormLayout{};
-        timersBox->setLayout(timersBoxLayout);
+        auto timersBoxLayout = new QFormLayout{timersBox};
 
         mCharacterTimerEdit = createTimerSpin(settings.value(ImportSettings::maxCharacterAgeKey, ImportSettings::importTimerDefault).toInt());
         timersBoxLayout->addRow(tr("Max. character update age:"), mCharacterTimerEdit);
@@ -71,8 +68,7 @@ namespace Evernus
         auto autoImportBox = new QGroupBox{tr("Auto-import"), this};
         mainLayout->addWidget(autoImportBox);
 
-        auto autoImportBoxLayout = new QFormLayout{};
-        autoImportBox->setLayout(autoImportBoxLayout);
+        auto autoImportBoxLayout = new QFormLayout{autoImportBox};
 
         mAutoImportBtn = new QCheckBox{tr("Enabled"), this};
         autoImportBoxLayout->addRow(mAutoImportBtn);
