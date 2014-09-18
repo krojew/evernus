@@ -89,6 +89,13 @@ namespace Evernus
                 break;
             case priceColumn:
                 return getAdjustedPrice(mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice());
+            case profitColumn:
+                if (mCharacter)
+                {
+                    return getAdjustedPrice(mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice()) -
+                           mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getCost();
+                }
+                return getAdjustedPrice(mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice());
             case marginColumn:
                 return getMargin(*data);
             }
@@ -140,6 +147,14 @@ namespace Evernus
                             return tr("unknown");
 
                         return locale.toCurrencyString(getAdjustedPrice(price->getPrice()), "ISK");
+                    }
+                case profitColumn:
+                    {
+                        auto cost = 0.;
+                        if (mCharacter)
+                            cost = mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getCost();
+
+                        return locale.toCurrencyString(getAdjustedPrice(mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice()) - cost, "ISK");
                     }
                 case marginColumn:
                     return QString{"%1%2"}.arg(locale.toString(getMargin(*data), 'f', 2)).arg(locale.percent());
@@ -218,6 +233,8 @@ namespace Evernus
                 return tr("Custom cost");
             case priceColumn:
                 return tr("Sell price");
+            case profitColumn:
+                return tr("Profit");
             case marginColumn:
                 return tr("Margin");
             }

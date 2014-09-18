@@ -68,6 +68,7 @@ namespace Evernus
             jobsCompletedColumn,
             costColumn,
             priceColumn,
+            profitColumn,
             marginColumn,
 
             numColumns

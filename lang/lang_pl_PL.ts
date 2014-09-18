@@ -2587,52 +2587,57 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::LMeveTaskModel</name>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="140"/>
+        <location filename="../LMeveTaskModel.cpp" line="147"/>
         <source>unknown</source>
         <translation>nieznana</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="159"/>
+        <location filename="../LMeveTaskModel.cpp" line="174"/>
         <source>Price data is too old (valid on %1).</source>
         <translation>Dane ceny są za stare (ważne o %1).</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="202"/>
+        <location filename="../LMeveTaskModel.cpp" line="217"/>
         <source>Item</source>
         <translation>Przedmiot</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="204"/>
+        <location filename="../LMeveTaskModel.cpp" line="219"/>
         <source>Activity</source>
         <translation>Aktywność</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="206"/>
+        <location filename="../LMeveTaskModel.cpp" line="221"/>
         <source>Runs</source>
         <translation>Przebiegi</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="208"/>
+        <location filename="../LMeveTaskModel.cpp" line="223"/>
         <source>Runs completed and in progress</source>
         <translation>Przebiegi ukończone i w trakcie</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="212"/>
+        <location filename="../LMeveTaskModel.cpp" line="227"/>
         <source>Jobs completed and in progress</source>
         <translation>Zadania ukończone i w trakcie</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="218"/>
+        <location filename="../LMeveTaskModel.cpp" line="233"/>
         <source>Custom cost</source>
         <translation>Koszt własny</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="220"/>
+        <location filename="../LMeveTaskModel.cpp" line="235"/>
         <source>Sell price</source>
         <translation>Cena sprzedaży</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="222"/>
+        <location filename="../LMeveTaskModel.cpp" line="237"/>
+        <source>Profit</source>
+        <translation>Zysk</translation>
+    </message>
+    <message>
+        <location filename="../LMeveTaskModel.cpp" line="239"/>
         <source>Margin</source>
         <translation>Marża</translation>
     </message>
@@ -2641,17 +2646,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="obsolete">Przebiegi</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="210"/>
+        <location filename="../LMeveTaskModel.cpp" line="225"/>
         <source>Runs completed</source>
         <translation>Przebiegi ukończone</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="214"/>
+        <location filename="../LMeveTaskModel.cpp" line="229"/>
         <source>Successful jobs</source>
         <translation>Zadania zakończone sukcesem</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="216"/>
+        <location filename="../LMeveTaskModel.cpp" line="231"/>
         <source>Jobs completed</source>
         <translation>Zadania ukończone</translation>
     </message>
