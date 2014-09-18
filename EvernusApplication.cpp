@@ -1749,7 +1749,7 @@ namespace Evernus
 
     uint EvernusApplication::startTask(const QString &description)
     {
-        emit taskStarted(mTaskId, description);
+        QMetaObject::invokeMethod(this, "taskStarted", Qt::QueuedConnection, Q_ARG(uint, mTaskId), Q_ARG(QString, description));
         return mTaskId++;
     }
 
@@ -1758,7 +1758,7 @@ namespace Evernus
         if (parentTask == TaskConstants::invalidTask)
             return startTask(description);
 
-        emit taskStarted(mTaskId, parentTask, description);
+        QMetaObject::invokeMethod(this, "taskStarted", Qt::QueuedConnection, Q_ARG(uint, mTaskId), Q_ARG(uint, parentTask), Q_ARG(QString, description));
         return mTaskId++;
     }
 
