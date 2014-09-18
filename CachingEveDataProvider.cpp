@@ -251,9 +251,9 @@ namespace Evernus
             }
 
             result = order;
-            mBuyPrices[key] = result;
         }
 
+        mBuyPrices[key] = result;
         return result;
     }
 
