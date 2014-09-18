@@ -18,6 +18,7 @@
 #include <QColumnView>
 #include <QTabWidget>
 #include <QGroupBox>
+#include <QSettings>
 #include <QLabel>
 #include <QDebug>
 #include <QMenu>
@@ -26,6 +27,7 @@
 #include "LMeveDataProvider.h"
 #include "ButtonWithTimer.h"
 #include "StyledTreeView.h"
+#include "LMeveSettings.h"
 
 #include "LMeveWidget.h"
 
@@ -108,6 +110,18 @@ namespace Evernus
             const auto id = mStationModel.getStationId(index);
             mImportBtn->setEnabled(id != 0);
             mTaskModel.setStationId(id);
+
+            QVariantList path;
+
+            auto current = index;
+            while (current.isValid())
+            {
+                path.prepend(mStationModel.getGenericId(current));
+                current = mStationModel.parent(current);
+            }
+
+            QSettings settings;
+            settings.setValue(LMeveSettings::sellStationKey, path);
         }
         else
         {
@@ -128,7 +142,8 @@ namespace Evernus
         auto stationView = new QColumnView{this};
         stationLayout->addWidget(stationView, 1);
         stationView->setModel(&mStationModel);
-        connect(stationView, &QColumnView::clicked, this, &LMeveWidget::setStationId);
+        stationView->setMaximumWidth(260);
+        connect(stationView->selectionModel(), &QItemSelectionModel::currentChanged, this, &LMeveWidget::setStationId);
 
         auto importMenu = new QMenu{this};
 
@@ -148,6 +163,18 @@ namespace Evernus
         containerLayout->addWidget(mTaskView, 1);
         mTaskView->setModel(&mTaskProxy);
         mTaskView->setRootIsDecorated(false);
+
+        QSettings settings;
+
+        const auto path = settings.value(LMeveSettings::sellStationKey).toList();
+        if (path.size() == 4)
+        {
+            QModelIndex index;
+            for (const auto &element : path)
+                index = mStationModel.index(element.value<quint64>(), index);
+
+            stationView->setCurrentIndex(index);
+        }
 
         return container;
     }

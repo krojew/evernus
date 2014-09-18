@@ -2664,42 +2664,42 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::LMeveWidget</name>
     <message>
-        <location filename="../LMeveWidget.cpp" line="51"/>
+        <location filename="../LMeveWidget.cpp" line="53"/>
         <source>Synchronize</source>
         <translation>Synchronizuj</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="59"/>
+        <location filename="../LMeveWidget.cpp" line="61"/>
         <source>Before synchronizing, enter LMeve url and key in the &lt;a href=&apos;#&apos;&gt;Preferences&lt;/a&gt;.</source>
         <translation>Przed synchronizacją, wprowadź adres i klucz LMeve w &lt;a href=&apos;#&apos;&gt;Ustawieniach&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="68"/>
+        <location filename="../LMeveWidget.cpp" line="70"/>
         <source>Tasks</source>
         <translation>Zadania</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="123"/>
+        <location filename="../LMeveWidget.cpp" line="137"/>
         <source>Sell station</source>
         <translation>Stacja sprzedaży</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="135"/>
+        <location filename="../LMeveWidget.cpp" line="150"/>
         <source>Import prices from Web</source>
         <translation>Importuj ceny z sieci</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="136"/>
+        <location filename="../LMeveWidget.cpp" line="151"/>
         <source>Import prices from logs</source>
         <translation>Importuj ceny z logów</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="137"/>
+        <location filename="../LMeveWidget.cpp" line="152"/>
         <source>Import prices from cache</source>
         <translation>Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="139"/>
+        <location filename="../LMeveWidget.cpp" line="154"/>
         <source>Import prices  </source>
         <translation>Importuj ceny  </translation>
     </message>

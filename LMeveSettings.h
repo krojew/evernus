@@ -22,5 +22,6 @@ namespace Evernus
 
         const auto urlKey = "lmeve/url";
         const auto keyKey = "lmeve/key";
+        const auto sellStationKey = "lmeve/sellStation";
     }
 }
