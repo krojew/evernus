@@ -3158,8 +3158,8 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="120"/>
-        <source>Cleanup</source>
-        <translation>Wyczyść</translation>
+        <source>Cleanup  </source>
+        <translation>Wyczyść  </translation>
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="130"/>

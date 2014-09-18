@@ -117,7 +117,7 @@ namespace Evernus
         cleanupMenu->addAction(tr("Clean all orders"), this, SLOT(cleanAllOrders()));
         cleanupMenu->addAction(tr("Clean for selected type"), this, SLOT(cleanCurrentType()));
 
-        auto cleanupBtn = new QPushButton{QIcon{":/images/cross.png"}, tr("Cleanup"), this};
+        auto cleanupBtn = new QPushButton{QIcon{":/images/cross.png"}, tr("Cleanup  "), this};
         toolbarLayout->addWidget(cleanupBtn);
         cleanupBtn->setFlat(true);
         cleanupBtn->setMenu(cleanupMenu);
