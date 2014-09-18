@@ -239,7 +239,7 @@ namespace Evernus
                 if (order->getStationId() != stationId)
                     continue;
             }
-            else if (getDistance(solarSystemId, order->getSolarSystemId()) > order->getRange() + range)
+            else if (getDistance(solarSystemId, order->getSolarSystemId()) > order->getRange() + static_cast<uint>(range))
             {
                 continue;
             }
