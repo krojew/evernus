@@ -34,6 +34,7 @@
 namespace Evernus
 {
     const QString CachingEveDataProvider::nameCacheFileName = "generic_names";
+    const QString CachingEveDataProvider::systemDistanceCacheFileName = "system_distances";
 
     CachingEveDataProvider::CachingEveDataProvider(const EveTypeRepository &eveTypeRepository,
                                                    const MetaGroupRepository &metaGroupRepository,
@@ -58,10 +59,7 @@ namespace Evernus
         , mAPIManager{apiManager}
         , mEveDb{eveDb}
     {
-        const auto cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-        QDir dataCacheDir{cacheDir + "/data"};
-
-        QFile nameCache{dataCacheDir.filePath(nameCacheFileName)};
+        QFile nameCache{getCacheDir().filePath(nameCacheFileName)};
         if (nameCache.open(QIODevice::ReadOnly))
         {
             QDataStream cacheStream{&nameCache};
@@ -75,17 +73,20 @@ namespace Evernus
     {
         try
         {
-            const auto cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-            QDir dataCacheDir{cacheDir + "/data"};
-
+            const auto dataCacheDir = getCacheDir();
             if (dataCacheDir.mkpath("."))
             {
-                QFile nameCache{dataCacheDir.filePath(nameCacheFileName)};
-                if (nameCache.open(QIODevice::WriteOnly))
-                {
-                    QDataStream cacheStream{&nameCache};
-                    cacheStream << mGenericNameCache;
-                }
+                const auto cacheWrite = [&dataCacheDir](const auto &name, const auto &data) {
+                    QFile nameCache{dataCacheDir.filePath(name)};
+                    if (nameCache.open(QIODevice::WriteOnly))
+                    {
+                        QDataStream cacheStream{&nameCache};
+                        cacheStream << data;
+                    }
+                };
+
+                cacheWrite(nameCacheFileName, mGenericNameCache);
+                cacheWrite(systemDistanceCacheFileName, mSystemDistances);
             }
         }
         catch (...)
@@ -206,7 +207,7 @@ namespace Evernus
         return getTypeSellPrice(id, stationId, true);
     }
 
-    std::shared_ptr<ExternalOrder> CachingEveDataProvider::getTypeBuyPrice(EveType::IdType id, quint64 stationId) const
+    std::shared_ptr<ExternalOrder> CachingEveDataProvider::getTypeBuyPrice(EveType::IdType id, quint64 stationId, int range) const
     {
         const auto key = std::make_pair(id, stationId);
         const auto it = mBuyPrices.find(key);
@@ -224,74 +225,24 @@ namespace Evernus
         if (regionId == 0)
             return result;
 
-        const auto jIt = mSystemJumpMap.find(regionId);
-        if (jIt == std::end(mSystemJumpMap))
-            return result;
-
-        const auto &jumpMap = jIt->second;
-        const auto isReachable = [stationId, solarSystemId, &jumpMap, this](const auto &order) {
-            const auto range = order->getRange();
-            if (range == -1)
-                return stationId == order->getStationId();
-
-            std::unordered_set<uint> visited;
-            std::queue<uint> candidates;
-
-            visited.emplace(solarSystemId);
-            candidates.emplace(solarSystemId);
-
-            auto depth = 0;
-
-            auto incrementNode = 0u, lastParentNode = solarSystemId;
-
-            while (!candidates.empty())
-            {
-                const auto current = candidates.front();
-                candidates.pop();
-
-                if (current == incrementNode)
-                {
-                    ++depth;
-                    if (depth > range)
-                        return false;
-                }
-
-                if (order->getSolarSystemId() == current)
-                    return true;
-
-                const auto children = jumpMap.equal_range(current);
-
-                if (current == lastParentNode)
-                {
-                    if (children.first == children.second)
-                    {
-                        if (!candidates.empty())
-                            lastParentNode = candidates.front();
-                    }
-                    else
-                    {
-                        lastParentNode = incrementNode = children.first->second;
-                    }
-                }
-
-                for (auto it = children.first; it != children.second; ++it)
-                {
-                    if (visited.find(it->second) == std::end(visited))
-                    {
-                        visited.emplace(it->second);
-                        candidates.emplace(it->second);
-                    }
-                }
-            }
-
-            return false;
-        };
+        if (range < 0)
+            range = 0;
 
         const auto &orders = getExternalOrders(id, regionId);
         for (const auto &order : orders)
         {
-            if (order->getPrice() <= result->getPrice() || !isReachable(order))
+            if (order->getPrice() <= result->getPrice())
                 continue;
+
+            if (order->getRange() == -1)
+            {
+                if (order->getStationId() != stationId)
+                    continue;
+            }
+            else if (getDistance(solarSystemId, order->getSolarSystemId()) > order->getRange() + range)
+            {
+                continue;
+            }
 
             result = order;
             mBuyPrices[key] = result;
@@ -565,6 +516,15 @@ namespace Evernus
         auto query = mEveDb.exec("SELECT fromRegionID, fromSolarSystemID, toSolarSystemID FROM mapSolarSystemJumps WHERE fromRegionID = toRegionID");
         while (query.next())
             mSystemJumpMap[query.value(0).toUInt()].emplace(query.value(1).toUInt(), query.value(2).toUInt());
+
+        const auto dataCacheDir = getCacheDir();
+
+        QFile distanceCache{dataCacheDir.filePath(systemDistanceCacheFileName)};
+        if (distanceCache.open(QIODevice::ReadOnly))
+        {
+            QDataStream cacheStream{&distanceCache};
+            cacheStream >> mSystemDistances;
+        }
     }
 
     void CachingEveDataProvider::precacheRefTypes()
@@ -805,6 +765,84 @@ namespace Evernus
                 .first->second;
     }
 
+    uint CachingEveDataProvider::getDistance(uint startSystem, uint endSystem) const
+    {
+        const auto key = qMakePair(startSystem, endSystem);
+        const auto it = mSystemDistances.find(key);
+        if (it != std::end(mSystemDistances))
+            return it.value();
+
+        const auto makeUnreachable = [=] {
+            const auto value = std::numeric_limits<uint>::max();
+            mSystemDistances[key] = value;
+            mSystemDistances[qMakePair(endSystem, startSystem)] = value;
+
+            return value;
+        };
+
+        const auto regionId = getSolarSystemRegionId(startSystem);
+        if (regionId == 0)
+            return makeUnreachable();
+
+        const auto jIt = mSystemJumpMap.find(regionId);
+        if (jIt == std::end(mSystemJumpMap))
+            return makeUnreachable();
+
+        const auto &jumpMap = jIt->second;
+
+        std::unordered_set<uint> visited;
+        std::queue<uint> candidates;
+
+        visited.emplace(startSystem);
+        candidates.emplace(startSystem);
+
+        auto depth = 0u;
+        auto incrementNode = 0u, lastParentNode = startSystem;
+
+        while (!candidates.empty())
+        {
+            const auto current = candidates.front();
+            candidates.pop();
+
+            if (current == incrementNode)
+                ++depth;
+
+            if (current == endSystem)
+            {
+                mSystemDistances[key] = depth;
+                mSystemDistances[qMakePair(endSystem, startSystem)] = depth;
+
+                return depth;
+            }
+
+            const auto children = jumpMap.equal_range(current);
+
+            if (current == lastParentNode)
+            {
+                if (children.first == children.second)
+                {
+                    if (!candidates.empty())
+                        lastParentNode = candidates.front();
+                }
+                else
+                {
+                    lastParentNode = incrementNode = children.first->second;
+                }
+            }
+
+            for (auto it = children.first; it != children.second; ++it)
+            {
+                if (visited.find(it->second) == std::end(visited))
+                {
+                    visited.emplace(it->second);
+                    candidates.emplace(it->second);
+                }
+            }
+        }
+
+        return makeUnreachable();
+    }
+
     double CachingEveDataProvider::getPackagedVolume(const EveType &type)
     {
         // https://bitbucket.org/krojew/evernus/issue/30/utilize-packaged-size-for-total-size
@@ -870,5 +908,10 @@ namespace Evernus
         }
 
         return type.getVolume();
+    }
+
+    QDir CachingEveDataProvider::getCacheDir()
+    {
+        return QDir{QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/data"};
     }
 }

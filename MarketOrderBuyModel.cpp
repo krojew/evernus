@@ -78,7 +78,7 @@ namespace Evernus
         case Qt::ToolTipRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId());
+                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
                 if (price->isNew())
                     return tr("No price data -> Please import prices from Orders/Assets tab or by using Margin tool.");
 
@@ -105,7 +105,7 @@ namespace Evernus
         case Qt::DecorationRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId());
+                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
                 if (price->isNew())
                     return QIcon{":/images/error.png"};
 
@@ -138,7 +138,7 @@ namespace Evernus
                 return data->getPrice();
             case priceStatusColumn:
                 {
-                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId());
+                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
                     if (price->isNew())
                         return 1;
 
@@ -150,7 +150,7 @@ namespace Evernus
                     return (price->getPrice() > data->getPrice()) ? (0) : (3);
                 }
             case priceDifferenceColumn:
-                return mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice();
+                return mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange())->getPrice() - data->getPrice();
             case volumeColumn:
                 return QVariantList{} << data->getVolumeRemaining() << data->getVolumeEntered();
             case totalColumn:
@@ -233,7 +233,7 @@ namespace Evernus
                     return locale.toCurrencyString(data->getPrice(), "ISK");
                 case priceStatusColumn:
                     {
-                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId());
+                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
                         if (price->isNew())
                             return tr("No price data");
 
@@ -244,7 +244,7 @@ namespace Evernus
                     }
                     break;
                 case priceDifferenceColumn:
-                    return locale.toCurrencyString(mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice(), "ISK");
+                    return locale.toCurrencyString(mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange())->getPrice() - data->getPrice(), "ISK");
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(data->getVolumeRemaining())).arg(locale.toString(data->getVolumeEntered()));
                 case totalColumn:
@@ -325,7 +325,7 @@ namespace Evernus
         case Qt::BackgroundRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId());
+                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
                 if (!price->isNew())
                 {
                     if (price->getPrice() > data->getPrice())
@@ -442,7 +442,7 @@ namespace Evernus
 
         QSettings settings;
 
-        const auto price = mDataProvider.getTypeBuyPrice(order->getTypeId(), order->getStationId());
+        const auto price = mDataProvider.getTypeBuyPrice(order->getTypeId(), order->getStationId(), order->getRange());
         const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
         OrderInfo info;
@@ -569,7 +569,7 @@ namespace Evernus
 
         const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
-        auto newPrice = mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId())->getPrice();
+        auto newPrice = mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId(), order.getRange())->getPrice();
         if (newPrice < 0.01)
             newPrice = order.getPrice();
         else

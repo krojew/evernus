@@ -147,7 +147,7 @@ namespace Evernus
             return true;
 
         const auto price = (type == MarketOrderModel::Type::Buy) ?
-                           (mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId())) :
+                           (mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId(), order.getRange())) :
                            (mDataProvider.getTypeSellPrice(order.getTypeId(), order.getStationId()));
 
         if (price->isNew())
@@ -177,7 +177,7 @@ namespace Evernus
         const auto type = static_cast<MarketOrderModel *>(sourceModel())->getType();
         switch (type) {
         case MarketOrderModel::Type::Buy:
-            overbidOrder = mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId());
+            overbidOrder = mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId(), order.getRange());
             break;
         case MarketOrderModel::Type::Sell:
             overbidOrder = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getStationId());

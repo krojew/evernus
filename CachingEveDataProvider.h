@@ -28,6 +28,8 @@
 
 #include "EveDataProvider.h"
 
+class QDir;
+
 namespace Evernus
 {
     class ConquerableStationRepository;
@@ -64,7 +66,7 @@ namespace Evernus
 
         virtual double getTypeVolume(EveType::IdType id) const override;
         virtual std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
-        virtual std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId) const override;
+        virtual std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId, int range = -1) const override;
 
         virtual void updateExternalOrders(const std::vector<ExternalOrder> &orders) override;
         virtual void clearExternalOrders() override;
@@ -98,6 +100,7 @@ namespace Evernus
         typedef std::pair<EveType::IdType, uint> TypeRegionPair;
 
         static const QString nameCacheFileName;
+        static const QString systemDistanceCacheFileName;
 
         const EveTypeRepository &mEveTypeRepository;
         const MetaGroupRepository &mMetaGroupRepository;
@@ -149,6 +152,8 @@ namespace Evernus
 
         bool mUsePackagedVolume = false;
 
+        mutable QHash<QPair<uint, uint>, uint> mSystemDistances;
+
         EveTypeRepository::EntityPtr getEveType(EveType::IdType id) const;
 
         MarketGroupRepository::EntityPtr getMarketGroupParent(MarketGroup::IdType id) const;
@@ -159,6 +164,9 @@ namespace Evernus
 
         const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
 
+        uint getDistance(uint startSystem, uint endSystem) const;
+
         static double getPackagedVolume(const EveType &type);
+        static QDir getCacheDir();
     };
 }
