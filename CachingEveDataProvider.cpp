@@ -225,9 +225,7 @@ namespace Evernus
         if (regionId == 0)
             return result;
 
-        if (range < 0)
-            range = 0;
-
+        const uint realRange = (range < 0) ? (0) : (range);
         const auto &orders = getExternalOrders(id, regionId);
         for (const auto &order : orders)
         {
@@ -236,10 +234,18 @@ namespace Evernus
 
             if (order->getRange() == -1)
             {
-                if (order->getStationId() != stationId)
-                    continue;
+                if (range == -1)
+                {
+                    if (order->getStationId() != stationId)
+                        continue;
+                }
+                else
+                {
+                    if (getDistance(solarSystemId, order->getSolarSystemId()) > realRange)
+                        continue;
+                }
             }
-            else if (getDistance(solarSystemId, order->getSolarSystemId()) > order->getRange() + static_cast<uint>(range))
+            else if (getDistance(solarSystemId, order->getSolarSystemId()) > order->getRange() + realRange)
             {
                 continue;
             }
