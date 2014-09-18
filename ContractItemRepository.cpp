@@ -62,13 +62,13 @@ namespace Evernus
 
     void ContractItemRepository::create(const Repository<Contract> &contractRepo) const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id BIGINT PRIMARY KEY,
-            contract_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,
-            type_id INTEGER NOT NULL,
-            quantity BIGINT NOT NULL,
-            included TINYINT NOT NULL
-        ))"}.arg(getTableName()).arg(contractRepo.getTableName()).arg(contractRepo.getIdColumn()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id BIGINT PRIMARY KEY,"
+            "contract_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,"
+            "type_id INTEGER NOT NULL,"
+            "quantity BIGINT NOT NULL,"
+            "included TINYINT NOT NULL"
+        ")"}.arg(getTableName()).arg(contractRepo.getTableName()).arg(contractRepo.getIdColumn()));
     }
 
     void ContractItemRepository::deleteForContract(Contract::IdType id) const

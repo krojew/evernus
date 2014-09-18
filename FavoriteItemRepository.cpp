@@ -39,9 +39,9 @@ namespace Evernus
 
     void FavoriteItemRepository::create() const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY
-        ))"}.arg(getTableName()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id INTEGER PRIMARY KEY"
+        ")"}.arg(getTableName()));
     }
 
     QStringList FavoriteItemRepository::getColumns() const

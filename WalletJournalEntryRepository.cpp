@@ -69,25 +69,25 @@ namespace Evernus
 
     void WalletJournalEntryRepository::create(const Repository<Character> &characterRepo) const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY,
-            character_id BIGINT NOT NULL %2,
-            timestamp DATETIME NOT NULL,
-            ref_type_id INTEGER NOT NULL,
-            owner_name_1 TEXT NOT NULL,
-            owner_id_1 BIGINT NOT NULL,
-            owner_name_2 TEXT NOT NULL,
-            owner_id_2 BIGINT NOT NULL,
-            arg_name TEXT NULL,
-            arg_id BIGINT NOT NULL,
-            amount NUMERIC NOT NULL,
-            balance NUMERIC NOT NULL,
-            reason TEXT NULL,
-            tax_receiver_id BIGINT NULL,
-            tax_amount NUMERIC NULL,
-            corporation_id BIGINT NOT NULL,
-            ignored TINYINT NOT NULL
-        ))"}.arg(getTableName()).arg(
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id INTEGER PRIMARY KEY,"
+            "character_id BIGINT NOT NULL %2,"
+            "timestamp DATETIME NOT NULL,"
+            "ref_type_id INTEGER NOT NULL,"
+            "owner_name_1 TEXT NOT NULL,"
+            "owner_id_1 BIGINT NOT NULL,"
+            "owner_name_2 TEXT NOT NULL,"
+            "owner_id_2 BIGINT NOT NULL,"
+            "arg_name TEXT NULL,"
+            "arg_id BIGINT NOT NULL,"
+            "amount NUMERIC NOT NULL,"
+            "balance NUMERIC NOT NULL,"
+            "reason TEXT NULL,"
+            "tax_receiver_id BIGINT NULL,"
+            "tax_amount NUMERIC NULL,"
+            "corporation_id BIGINT NOT NULL,"
+            "ignored TINYINT NOT NULL"
+        ")"}.arg(getTableName()).arg(
             (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));

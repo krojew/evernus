@@ -73,27 +73,27 @@ namespace Evernus
 
     void MarketOrderRepository::create(const Repository<Character> &characterRepo) const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id BIGINT PRIMARY KEY,
-            character_id BIGINT NOT NULL %2,
-            location_id INTEGER NOT NULL,
-            volume_entered INTEGER NOT NULL,
-            volume_remaining INTEGER NOT NULL,
-            min_volume INTEGER NOT NULL,
-            delta INTEGER NOT NULL DEFAULT 0,
-            state TINYINT NOT NULL,
-            type_id INTEGER NOT NULL,
-            range INTEGER NOT NULL,
-            account_key INTEGER NOT NULL,
-            duration INTEGER NOT NULL,
-            escrow NUMERIC NOT NULL,
-            price NUMERIC NOT NULL,
-            type TINYINT NOT NULL,
-            issued DATETIME NOT NULL,
-            first_seen DATETIME NOT NULL,
-            last_seen DATETIME NULL,
-            corporation_id BIGINT NOT NULL
-        ))"}.arg(getTableName()).arg(
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id BIGINT PRIMARY KEY,"
+            "character_id BIGINT NOT NULL %2,"
+            "location_id INTEGER NOT NULL,"
+            "volume_entered INTEGER NOT NULL,"
+            "volume_remaining INTEGER NOT NULL,"
+            "min_volume INTEGER NOT NULL,"
+            "delta INTEGER NOT NULL DEFAULT 0,"
+            "state TINYINT NOT NULL,"
+            "type_id INTEGER NOT NULL,"
+            "range INTEGER NOT NULL,"
+            "account_key INTEGER NOT NULL,"
+            "duration INTEGER NOT NULL,"
+            "escrow NUMERIC NOT NULL,"
+            "price NUMERIC NOT NULL,"
+            "type TINYINT NOT NULL,"
+            "issued DATETIME NOT NULL,"
+            "first_seen DATETIME NOT NULL,"
+            "last_seen DATETIME NULL,"
+            "corporation_id BIGINT NOT NULL"
+        ")"}.arg(getTableName()).arg(
             (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
@@ -127,13 +127,12 @@ namespace Evernus
 
     void MarketOrderRepository::copyDataWithoutCorporationIdFrom(const QString &table) const
     {
-        exec(QString{R"(REPLACE INTO %1
-            (id, character_id, location_id, volume_entered, volume_remaining, min_volume, delta, state, type_id, range,
-             account_key, duration, escrow, price, type, issued, first_seen, last_seen, corporation_id)
-            SELECT id, character_id, location_id, volume_entered, volume_remaining, min_volume, delta, state, type_id, range,
-                   account_key, duration, escrow, price, type, issued, first_seen, last_seen, 0
-            FROM %2
-        )"}.arg(getTableName()).arg(table));
+        exec(QString{"REPLACE INTO %1 "
+            "(id, character_id, location_id, volume_entered, volume_remaining, min_volume, delta, state, type_id, range,"
+             "account_key, duration, escrow, price, type, issued, first_seen, last_seen, corporation_id) "
+            "SELECT id, character_id, location_id, volume_entered, volume_remaining, min_volume, delta, state, type_id, range,"
+                   "account_key, duration, escrow, price, type, issued, first_seen, last_seen, 0 "
+            "FROM %2"}.arg(getTableName()).arg(table));
     }
 
     MarketOrderRepository::AggrData MarketOrderRepository::getAggregatedData(Character::IdType characterId) const
@@ -181,13 +180,13 @@ namespace Evernus
     {
         CustomAggregatedData result;
 
-        QString queryStr{R"(
-            SELECT %1, COUNT(*), SUM(price), SUM(volume_entered)
-            FROM %2
-            WHERE character_id = ? %3
-            GROUP BY %1
-            ORDER BY %4 DESC
-            LIMIT %5)"};
+        QString queryStr{
+            "SELECT %1, COUNT(*), SUM(price), SUM(volume_entered) "
+            "FROM %2 "
+            "WHERE character_id = ? %3 "
+            "GROUP BY %1 "
+            "ORDER BY %4 DESC "
+            "LIMIT %5"};
 
         switch (groupingColumn) {
         case AggregateColumn::TypeId:
@@ -385,12 +384,11 @@ namespace Evernus
         for (auto i = 0u; i < ids.size(); ++i)
             list << "?";
 
-        auto query = prepare(QString{R"(UPDATE %1 SET
-            last_seen = min(strftime('%Y-%m-%dT%H:%M:%f', first_seen, duration || ' days'), strftime('%Y-%m-%dT%H:%M:%f', 'now')),
-            state = ?,
-            delta = 0
-            WHERE %2 IN (%3)
-        )"}.arg(getTableName()).arg(getIdColumn()).arg(list.join(", ")));
+        auto query = prepare(QString{"UPDATE %1 SET "
+            "last_seen = min(strftime('%Y-%m-%dT%H:%M:%f', first_seen, duration || ' days'), strftime('%Y-%m-%dT%H:%M:%f', 'now')),"
+            "state = ?,"
+            "delta = 0 "
+            "WHERE %2 IN (%3)"}.arg(getTableName()).arg(getIdColumn()).arg(list.join(", ")));
 
         query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
 
@@ -406,13 +404,13 @@ namespace Evernus
         for (auto i = 0u; i < ids.size(); ++i)
             list << "?";
 
-        auto query = prepare(QString{R"(UPDATE %1 SET
-            last_seen = ?,
-            state = ?,
-            delta = volume_remaining,
-            volume_remaining = 0
-            WHERE %2 IN (%3)
-        )"}.arg(getTableName()).arg(getIdColumn()).arg(list.join(", ")));
+        auto query = prepare(QString{"UPDATE %1 SET"
+            "last_seen = ?,"
+            "state = ?,"
+            "delta = volume_remaining,"
+            "volume_remaining = 0 "
+            "WHERE %2 IN (%3)"
+        }.arg(getTableName()).arg(getIdColumn()).arg(list.join(", ")));
 
         query.addBindValue(QDateTime::currentDateTimeUtc());
         query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));

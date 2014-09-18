@@ -40,10 +40,10 @@ namespace Evernus
 
     void OrderScriptRepository::create() const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id TEXT PRIMARY KEY,
-            code TEXT NOT NULL
-        ))"}.arg(getTableName()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id TEXT PRIMARY KEY,"
+            "code TEXT NOT NULL"
+        ")"}.arg(getTableName()));
     }
 
     QStringList OrderScriptRepository::getAllNames() const

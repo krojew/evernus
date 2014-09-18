@@ -161,19 +161,19 @@ namespace Evernus
 
         if (mAllCharactersBtn->isChecked())
         {
-            query.prepare(QString{R"(SELECT DISTINCT ids.type_id FROM (
-                SELECT type_id FROM %1
-                UNION
-                SELECT type_id FROM %2
-            ) ids)"}.arg(mWalletRepo.getTableName()).arg(mCorpWalletRepo.getTableName()));
+            query.prepare(QString{"SELECT DISTINCT ids.type_id FROM ("
+                "SELECT type_id FROM %1 "
+                "UNION "
+                "SELECT type_id FROM %2"
+            ") ids"}.arg(mWalletRepo.getTableName()).arg(mCorpWalletRepo.getTableName()));
         }
         else
         {
-            query.prepare(QString{R"(SELECT DISTINCT ids.type_id FROM (
-                SELECT type_id, character_id FROM %1
-                UNION
-                SELECT type_id, character_id FROM %2
-            ) ids WHERE ids.character_id = ?)"}.arg(mWalletRepo.getTableName()).arg(mCorpWalletRepo.getTableName()));
+            query.prepare(QString{"SELECT DISTINCT ids.type_id FROM ("
+                "SELECT type_id, character_id FROM %1 "
+                "UNION "
+                "SELECT type_id, character_id FROM %2"
+            ") ids WHERE ids.character_id = ?"}.arg(mWalletRepo.getTableName()).arg(mCorpWalletRepo.getTableName()));
             query.bindValue(0, mCharacterId);
         }
 

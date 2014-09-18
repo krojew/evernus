@@ -49,14 +49,14 @@ namespace Evernus
 
     void ItemRepository::create(const Repository<AssetList> &assetRepo) const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY,
-            asset_list_id INTEGER NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,
-            parent_id BIGINT NULL REFERENCES %1(id) ON UPDATE CASCADE ON DELETE CASCADE,
-            type_id INTEGER NOT NULL,
-            location_id BIGINT NULL,
-            quantity INTEGER NOT NULL
-        ))"}.arg(getTableName()).arg(assetRepo.getTableName()).arg(assetRepo.getIdColumn()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id INTEGER PRIMARY KEY,"
+            "asset_list_id INTEGER NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,"
+            "parent_id BIGINT NULL REFERENCES %1(id) ON UPDATE CASCADE ON DELETE CASCADE,"
+            "type_id INTEGER NOT NULL,"
+            "location_id BIGINT NULL,"
+            "quantity INTEGER NOT NULL"
+        ")"}.arg(getTableName()).arg(assetRepo.getTableName()).arg(assetRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(asset_list_id)"}.arg(getTableName()).arg(assetRepo.getTableName()));
     }

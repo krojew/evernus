@@ -39,10 +39,10 @@ namespace Evernus
 
     void RefTypeRepository::create() const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL
-        ))"}.arg(getTableName()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id INTEGER PRIMARY KEY,"
+            "name TEXT NOT NULL"
+        ")"}.arg(getTableName()));
     }
 
     QStringList RefTypeRepository::getColumns() const

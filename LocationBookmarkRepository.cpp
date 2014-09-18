@@ -42,14 +42,14 @@ namespace Evernus
 
     void LocationBookmarkRepository::create() const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY,
-            region_id INTEGER NOT NULL,
-            solar_system_id INTEGER NOT NULL,
-            station_id INTEGER NOT NULL,
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id INTEGER PRIMARY KEY,"
+            "region_id INTEGER NOT NULL,"
+            "solar_system_id INTEGER NOT NULL,"
+            "station_id INTEGER NOT NULL,"
 
-            UNIQUE (region_id, solar_system_id, station_id)
-        ))"}.arg(getTableName()));
+            "UNIQUE (region_id, solar_system_id, station_id)"
+        ")"}.arg(getTableName()));
     }
 
     QStringList LocationBookmarkRepository::getColumns() const

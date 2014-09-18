@@ -60,22 +60,22 @@ namespace Evernus
 
     void ExternalOrderRepository::create() const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id BIGINT PRIMARY KEY,
-            type TINYINT NOT NULL,
-            type_id INTEGER NOT NULL,
-            location_id BIGINT NOT NULL,
-            solar_system_id INTEGER NOT NULL,
-            region_id INTEGER NOT NULL,
-            range INTEGER NOT NULL,
-            update_time DATETIME NOT NULL,
-            value DOUBLE NOT NULL,
-            volume_entered INTEGER NOT NULL,
-            volume_remaining INTEGER NOT NULL,
-            min_volume INTEGER NOT NULL,
-            issued DATETIME NOT NULL,
-            duration INTEGER NOT NULL
-        ))"}.arg(getTableName()));
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id BIGINT PRIMARY KEY,"
+            "type TINYINT NOT NULL,"
+            "type_id INTEGER NOT NULL,"
+            "location_id BIGINT NOT NULL,"
+            "solar_system_id INTEGER NOT NULL,"
+            "region_id INTEGER NOT NULL,"
+            "range INTEGER NOT NULL,"
+            "update_time DATETIME NOT NULL,"
+            "value DOUBLE NOT NULL,"
+            "volume_entered INTEGER NOT NULL,"
+            "volume_remaining INTEGER NOT NULL,"
+            "min_volume INTEGER NOT NULL,"
+            "issued DATETIME NOT NULL,"
+            "duration INTEGER NOT NULL"
+        ")"}.arg(getTableName()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id ON %1(type_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id_location ON %1(type_id, location_id)"}.arg(getTableName()));
@@ -92,10 +92,10 @@ namespace Evernus
                                                                                          const Repository<MarketOrder> &orderRepo,
                                                                                          const Repository<MarketOrder> &corpOrderRepo) const
     {
-        auto query = prepare(QString{R"(
-            SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ? AND id NOT IN
-            (SELECT id FROM %2 WHERE state = ? UNION SELECT id FROM %3 WHERE state = ?)
-            ORDER BY value ASC LIMIT 1)"}
+        auto query = prepare(QString{
+            "SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ? AND id NOT IN "
+            "(SELECT id FROM %2 WHERE state = ? UNION SELECT id FROM %3 WHERE state = ?) "
+            "ORDER BY value ASC LIMIT 1"}
             .arg(getTableName()).arg(orderRepo.getTableName()).arg(corpOrderRepo.getTableName()));
         query.addBindValue(static_cast<int>(ExternalOrder::Type::Sell));
         query.addBindValue(typeId);
@@ -115,10 +115,10 @@ namespace Evernus
                                                                                         const Repository<MarketOrder> &orderRepo,
                                                                                         const Repository<MarketOrder> &corpOrderRepo) const
     {
-        auto query = prepare(QString{R"(
-            SELECT * FROM %1 WHERE type = ? AND type_id = ? AND region_id = ? AND id NOT IN
-            (SELECT id FROM %2 WHERE state = ? UNION SELECT id FROM %3 WHERE state = ?)
-        )"}.arg(getTableName()).arg(orderRepo.getTableName()).arg(corpOrderRepo.getTableName()));
+        auto query = prepare(QString{
+            "SELECT * FROM %1 WHERE type = ? AND type_id = ? AND region_id = ? AND id NOT IN "
+            "(SELECT id FROM %2 WHERE state = ? UNION SELECT id FROM %3 WHERE state = ?)"
+            }.arg(getTableName()).arg(orderRepo.getTableName()).arg(corpOrderRepo.getTableName()));
         query.addBindValue(static_cast<int>(ExternalOrder::Type::Buy));
         query.addBindValue(typeId);
         query.addBindValue(regionId);

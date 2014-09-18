@@ -60,21 +60,21 @@ namespace Evernus
 
     void WalletTransactionRepository::create(const Repository<Character> &characterRepo) const
     {
-        exec(QString{R"(CREATE TABLE IF NOT EXISTS %1 (
-            id INTEGER PRIMARY KEY,
-            character_id BIGINT NOT NULL %2,
-            timestamp DATETIME NOT NULL,
-            quantity INTEGER NOT NULL,
-            type_id INTEGER NOT NULL,
-            price NUMERIC NOT NULL,
-            client_id BIGINT NOT NULL,
-            client_name TEXT NOT NULL,
-            location_id BIGINT NOT NULL,
-            type TINYINT NOT NULL,
-            journal_id BIGINT NOT NULL,
-            corporation_id BIGINT NOT NULL,
-            ignored TINYINT NOT NULL
-        ))"}.arg(getTableName()).arg(
+        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+            "id INTEGER PRIMARY KEY,"
+            "character_id BIGINT NOT NULL %2,"
+            "timestamp DATETIME NOT NULL,"
+            "quantity INTEGER NOT NULL,"
+            "type_id INTEGER NOT NULL,"
+            "price NUMERIC NOT NULL,"
+            "client_id BIGINT NOT NULL,"
+            "client_name TEXT NOT NULL,"
+            "location_id BIGINT NOT NULL,"
+            "type TINYINT NOT NULL,"
+            "journal_id BIGINT NOT NULL,"
+            "corporation_id BIGINT NOT NULL,"
+            "ignored TINYINT NOT NULL"
+        ")"}.arg(getTableName()).arg(
             (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
