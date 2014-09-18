@@ -88,7 +88,7 @@ namespace Evernus
                     return mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getCost();
                 break;
             case priceColumn:
-                return mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice();
+                return getAdjustedPrice(mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice());
             case marginColumn:
                 return getMargin(*data);
             }
@@ -139,7 +139,7 @@ namespace Evernus
                         if (price->isNew())
                             return tr("unknown");
 
-                        return locale.toCurrencyString(price->getPrice(), "ISK");
+                        return locale.toCurrencyString(getAdjustedPrice(price->getPrice()), "ISK");
                     }
                 case marginColumn:
                     return QString{"%1%2"}.arg(locale.toString(getMargin(*data), 'f', 2)).arg(locale.percent());
@@ -285,6 +285,12 @@ namespace Evernus
 
         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
         const auto cost = mCostProvider.fetchForCharacterAndType(mCharacter->getId(), task.getTypeId());
-        return PriceUtils::getMargin(cost->getCost(), price->getPrice(), taxes);
+        return PriceUtils::getMargin(cost->getCost(), getAdjustedPrice(price->getPrice()), taxes);
+    }
+
+    double LMeveTaskModel::getAdjustedPrice(double price)
+    {
+        QSettings settings;
+        return price - settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
     }
 }

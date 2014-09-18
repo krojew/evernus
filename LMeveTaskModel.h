@@ -84,5 +84,7 @@ namespace Evernus
         CharacterRepository::EntityPtr mCharacter;
 
         double getMargin(const LMeveTask &task) const;
+
+        static double getAdjustedPrice(double price);
     };
 }
