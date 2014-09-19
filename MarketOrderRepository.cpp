@@ -404,7 +404,7 @@ namespace Evernus
         for (auto i = 0u; i < ids.size(); ++i)
             list << "?";
 
-        auto query = prepare(QString{"UPDATE %1 SET"
+        auto query = prepare(QString{"UPDATE %1 SET "
             "last_seen = ?,"
             "state = ?,"
             "delta = volume_remaining,"
