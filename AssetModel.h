@@ -45,6 +45,7 @@ namespace Evernus
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
         void setCharacter(Character::IdType id);
+        void setCustomStation(quint64 id);
 
         void reset();
 
@@ -100,6 +101,7 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         Character::IdType mCharacterId = Character::invalidId;
+        quint64 mCustomStationId = 0;
 
         TreeItem mRootItem;
 

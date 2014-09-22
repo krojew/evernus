@@ -57,6 +57,7 @@ namespace Evernus
         const auto ignoreCachedImportDefault = true;
         const auto marketOrderImportSourceDefault = MarketOrderImportSource::API;
         const auto makeCorpSnapshotsDefault = true;
+        const auto useCustomAssetStationDefault = false;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
@@ -86,5 +87,7 @@ namespace Evernus
         const auto importContractsKey = "import/contracts/import";
         const auto ignoreCachedImportKey = "import/ignoreCached";
         const auto marketOrderImportSourceKey = "import/source/marketOrder";
+        const auto useCustomAssetStationKey = "import/assets/useCustomStation";
+        const auto customAssetStationKey = "import/assets/customStation";
     }
 }

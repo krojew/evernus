@@ -256,7 +256,11 @@ namespace Evernus
     void AssetModel::setCharacter(Character::IdType id)
     {
         mCharacterId = id;
-        reset();
+    }
+
+    void AssetModel::setCustomStation(quint64 id)
+    {
+        mCustomStationId = id;
     }
 
     void AssetModel::reset()
@@ -301,13 +305,15 @@ namespace Evernus
                     locationItem = mLocationItems[*id];
                 }
 
-                auto treeItem = createTreeItemForItem(*item, *id);
+                const auto locationId = (mCustomStationId == 0) ? (*id) : (mCustomStationId);
+
+                auto treeItem = createTreeItemForItem(*item, locationId);
 
                 const auto curAssets = mTotalAssets;
                 const auto curVolume = mTotalVolume;
                 const auto curSellPrice = mTotalSellPrice;
 
-                buildItemMap(*item, *treeItem, *id);
+                buildItemMap(*item, *treeItem, locationId);
                 locationItem->appendChild(std::move(treeItem));
 
                 auto data = locationItem->data();

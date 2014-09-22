@@ -296,19 +296,34 @@
 <context>
     <name>Evernus::AssetsWidget</name>
     <message>
-        <location filename="../AssetsWidget.cpp" line="57"/>
+        <location filename="../AssetsWidget.cpp" line="61"/>
         <source>Import prices from Web</source>
         <translation>Importuj ceny z sieci</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="62"/>
+        <location filename="../AssetsWidget.cpp" line="66"/>
         <source>Import prices from logs</source>
         <translation>Importuj ceny z logów</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="67"/>
+        <location filename="../AssetsWidget.cpp" line="71"/>
         <source>Import prices from cache</source>
         <translation>Importuj ceny z cache</translation>
+    </message>
+    <message>
+        <location filename="../AssetsWidget.cpp" line="95"/>
+        <source>Price station</source>
+        <translation>Stacja z cenami</translation>
+    </message>
+    <message>
+        <location filename="../AssetsWidget.cpp" line="104"/>
+        <source>Use asset location</source>
+        <translation>Użyj stacji z przedmiotem</translation>
+    </message>
+    <message>
+        <location filename="../AssetsWidget.cpp" line="114"/>
+        <source>Use custom station</source>
+        <translation>Użyj wybranej stacji</translation>
     </message>
 </context>
 <context>

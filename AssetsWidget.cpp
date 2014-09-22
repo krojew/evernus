@@ -13,9 +13,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QSortFilterProxyModel>
+#include <QRadioButton>
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QGroupBox>
+#include <QSettings>
 #include <QLocale>
 #include <QLabel>
 #include <QDebug>
@@ -28,6 +31,7 @@
 #include "StyledTreeView.h"
 #include "ImportSettings.h"
 #include "AssetProvider.h"
+#include "StationView.h"
 #include "AssetList.h"
 
 #include "AssetsWidget.h"
@@ -35,7 +39,7 @@
 namespace Evernus
 {
     AssetsWidget::AssetsWidget(const AssetProvider &assetProvider,
-                               const EveDataProvider &nameProvider,
+                               const EveDataProvider &dataProvider,
                                const CacheTimerProvider &cacheTimerProvider,
                                const FilterTextRepository &filterRepo,
                                QWidget *parent)
@@ -44,7 +48,7 @@ namespace Evernus
                                ImportSettings::maxAssetListAgeKey,
                                parent)
         , mAssetProvider(assetProvider)
-        , mModel(mAssetProvider, nameProvider)
+        , mModel(mAssetProvider, dataProvider)
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -76,17 +80,54 @@ namespace Evernus
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);
 
+        auto assetLayout = new QHBoxLayout{};
+        mainLayout->addLayout(assetLayout);
+
         mModelProxy = new LeafFilterProxyModel{this};
         mModelProxy->setSourceModel(&mModel);
         mModelProxy->setSortRole(Qt::UserRole);
         mModelProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
         mAssetView = new StyledTreeView{"assetView", this};
-        mainLayout->addWidget(mAssetView);
+        assetLayout->addWidget(mAssetView, 1);
         mAssetView->setModel(mModelProxy);
+
+        auto stationGroup = new QGroupBox{tr("Price station"), this};
+        assetLayout->addWidget(stationGroup);
+
+        auto stationGroupLayout = new QVBoxLayout{stationGroup};
+
+        QSettings settings;
+        const auto useCustomStation
+            = settings.value(ImportSettings::useCustomAssetStationKey, ImportSettings::useCustomAssetStationDefault).toBool();
+
+        mUseAssetStationBtn = new QRadioButton{tr("Use asset location"), this};
+        stationGroupLayout->addWidget(mUseAssetStationBtn);
+        mUseAssetStationBtn->setChecked(!useCustomStation);
+        connect(mUseAssetStationBtn, &QRadioButton::toggled, this, [this](bool checked) {
+            if (checked)
+                setCustomStation(0);
+            else
+                setCustomStation(mStationView->getStationId());
+        });
+
+        auto customStationBtn = new QRadioButton{tr("Use custom station"), this};
+        stationGroupLayout->addWidget(customStationBtn);
+        customStationBtn->setChecked(useCustomStation);
+
+        mStationView = new StationView{dataProvider, this};
+        stationGroupLayout->addWidget(mStationView);
+        mStationView->setEnabled(useCustomStation);
+        mStationView->setMaximumWidth(260);
+        mStationView->selectPath(settings.value(ImportSettings::customAssetStationKey).toList());
+        connect(mStationView, &StationView::stationChanged, this, &AssetsWidget::setCustomStation);
+        connect(customStationBtn, &QRadioButton::toggled, mStationView, &StationView::setEnabled);
 
         mInfoLabel = new QLabel{this};
         mainLayout->addWidget(mInfoLabel);
+
+        if (useCustomStation)
+            mModel.setCustomStation(mStationView->getStationId());
     }
 
     void AssetsWidget::updateData()
@@ -119,11 +160,34 @@ namespace Evernus
         mAssetView->expandAll();
     }
 
+    void AssetsWidget::setCustomStation(quint64 id)
+    {
+        mCustomStationId = id;
+
+        if (mCustomStationId != 0)
+        {
+            QSettings settings;
+            settings.setValue(ImportSettings::customAssetStationKey, mStationView->getSelectedPath());
+        }
+        else if (!mUseAssetStationBtn->isChecked())
+        {
+            return;
+        }
+
+        mModel.setCustomStation(mCustomStationId);
+        mModel.reset();
+
+        mAssetView->expandAll();
+
+        setNewInfo();
+    }
+
     void AssetsWidget::handleNewCharacter(Character::IdType id)
     {
         qDebug() << "Switching assets to" << id;
 
         mModel.setCharacter(id);
+        mModel.reset();
         mAssetView->expandAll();
         mAssetView->header()->resizeSections(QHeaderView::ResizeToContents);
 
@@ -146,11 +210,18 @@ namespace Evernus
         const auto assets = mAssetProvider.fetchAssetsForCharacter(getCharacterId());
         for (const auto &item : *assets)
         {
-            const auto locationId = item->getLocationId();
-            if (!locationId)
-                continue;
+            if (mCustomStationId == 0)
+            {
+                const auto locationId = item->getLocationId();
+                if (!locationId)
+                    continue;
 
-            buildImportTarget(target, *item, *locationId);
+                buildImportTarget(target, *item, *locationId);
+            }
+            else
+            {
+                buildImportTarget(target, *item, mCustomStationId);
+            }
         }
 
         return target;

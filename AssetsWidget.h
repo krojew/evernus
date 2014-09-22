@@ -18,6 +18,7 @@
 #include "ExternalOrderImporter.h"
 #include "AssetModel.h"
 
+class QRadioButton;
 class QLabel;
 
 namespace Evernus
@@ -28,6 +29,7 @@ namespace Evernus
     class EveDataProvider;
     class StyledTreeView;
     class AssetProvider;
+    class StationView;
     class AssetList;
 
     class AssetsWidget
@@ -37,7 +39,7 @@ namespace Evernus
 
     public:
         AssetsWidget(const AssetProvider &assetProvider,
-                     const EveDataProvider &nameProvider,
+                     const EveDataProvider &dataProvider,
                      const CacheTimerProvider &cacheTimerProvider,
                      const FilterTextRepository &filterRepo,
                      QWidget *parent = nullptr);
@@ -58,14 +60,20 @@ namespace Evernus
 
         void applyWildcard(const QString &text);
 
+        void setCustomStation(quint64 id);
+
     private:
         const AssetProvider &mAssetProvider;
 
+        QRadioButton *mUseAssetStationBtn = nullptr;
         StyledTreeView *mAssetView = nullptr;
+        StationView *mStationView = nullptr;
         QLabel *mInfoLabel = nullptr;
 
         AssetModel mModel;
         LeafFilterProxyModel *mModelProxy = nullptr;
+
+        quint64 mCustomStationId = 0;
 
         virtual void handleNewCharacter(Character::IdType id) override;
 
