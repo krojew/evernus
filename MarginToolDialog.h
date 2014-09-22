@@ -23,12 +23,10 @@
 #include <QHash>
 
 #include "ExternalOrder.h"
-#include "StationModel.h"
 #include "Character.h"
 
 class QTableWidget;
 class QRadioButton;
-class QColumnView;
 class QLineEdit;
 class QLabel;
 
@@ -39,6 +37,7 @@ namespace Evernus
     class ItemCostProvider;
     class EveDataProvider;
     class ExternalOrder;
+    class StationView;
 
     class MarginToolDialog
         : public QDialog
@@ -68,7 +67,7 @@ namespace Evernus
         void refreshDataByEdits();
 
         void saveCopyMode();
-        void saveSelectedStation(const QModelIndex &index);
+        void saveSelectedStation(quint64 id);
 
     protected:
         virtual void closeEvent(QCloseEvent *event) override;
@@ -113,13 +112,11 @@ namespace Evernus
         QRadioButton *mItemCostSourceBtn = nullptr;
         QRadioButton *mStationSourceBtn = nullptr;
 
-        QColumnView *mStationView = nullptr;
+        StationView *mStationView = nullptr;
 
         FileModificationMap mKnownFiles;
 
         Character::IdType mCharacterId = Character::invalidId;
-
-        StationModel mStationModel;
 
         double mBuyPrice = 0., mSellPrice = 0.;
 

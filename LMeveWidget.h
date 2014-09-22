@@ -19,7 +19,6 @@
 
 #include "ExternalOrderImporter.h"
 #include "LMeveTaskModel.h"
-#include "StationModel.h"
 #include "Character.h"
 
 class QPushButton;
@@ -31,6 +30,7 @@ namespace Evernus
     class ItemCostProvider;
     class ButtonWithTimer;
     class StyledTreeView;
+    class StationView;
 
     class LMeveWidget
         : public QWidget
@@ -60,7 +60,7 @@ namespace Evernus
         void updateData();
 
     private slots:
-        void setStationId(const QModelIndex &index);
+        void setStationId(quint64 id);
 
         void prepareItemImportFromWeb();
         void prepareItemImportFromFile();
@@ -72,6 +72,7 @@ namespace Evernus
 
         ButtonWithTimer *mSyncBtn = nullptr;
         StyledTreeView *mTaskView = nullptr;
+        StationView *mStationView = nullptr;
         QPushButton *mImportBtn = nullptr;
 
         Character::IdType mCharacterId = Character::invalidId;
@@ -79,9 +80,7 @@ namespace Evernus
         LMeveTaskModel mTaskModel;
         QSortFilterProxyModel mTaskProxy;
 
-        StationModel mStationModel;
-
-        QWidget *createTaskTab();
+        QWidget *createTaskTab(const EveDataProvider &dataProvider);
 
         void refreshImportTimer();
 

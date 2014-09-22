@@ -39,11 +39,11 @@ add_definitions(-DQXT_STATIC)
 
 if(DEFINED EVERNUS_DROPBOX_APP_KEY AND DEFINED EVERNUS_DROPBOX_APP_SECRET)
     add_definitions(-DEVERNUS_DROPBOX_APP_KEY=${EVERNUS_DROPBOX_APP_KEY} -DEVERNUS_DROPBOX_APP_SECRET=${EVERNUS_DROPBOX_APP_SECRET})
-    
+
     if(DEFINED QTDROPBOX_DEBUG)
         add_definitions(-DQTDROPBOX_DEBUG)
     endif()
-endif() 
+endif()
 
 qt5_wrap_cpp(
     MOC_FILES
@@ -149,6 +149,7 @@ qt5_wrap_cpp(
     ScriptOrderProcessingModel.h
     SellMarketOrdersInfoWidget.h
     StationModel.h
+    StationView.h
     StatisticsWidget.h
     StyledTreeView.h
     SyncDialog.h
@@ -599,6 +600,8 @@ add_executable(
     SimpleCrypt.h
     StationModel.cpp
     StationModel.h
+    StationView.cpp
+    StationView.h
     StatisticsWidget.cpp
     StatisticsWidget.h
     StyledTreeView.cpp

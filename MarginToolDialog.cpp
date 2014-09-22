@@ -27,7 +27,6 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QPushButton>
-#include <QColumnView>
 #include <QClipboard>
 #include <QTabWidget>
 #include <QDateTime>
@@ -52,6 +51,7 @@
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "PathSettings.h"
+#include "StationView.h"
 #include "Repository.h"
 #include "PriceUtils.h"
 #include "PathUtils.h"
@@ -70,7 +70,6 @@ namespace Evernus
         , mCharacterRepository(characterRepository)
         , mItemCostProvider(itemCostProvider)
         , mDataProvider(dataProvider)
-        , mStationModel(dataProvider)
     {
         QSettings settings;
 
@@ -350,11 +349,11 @@ namespace Evernus
             }
             else if (mStationSourceBtn->isChecked())
             {
-                const auto selection = mStationView->selectionModel()->selectedIndexes();
-                if (selection.isEmpty())
+                const auto station = mStationView->getStationId();
+                if (station == 0)
                     buy = 0.;
                 else
-                    buy = mDataProvider.getTypeBuyPrice(typeId, mStationModel.getStationId(selection.first()))->getPrice() - priceDelta;
+                    buy = mDataProvider.getTypeBuyPrice(typeId, station)->getPrice() - priceDelta;
             }
 
             mNameLabel->setText(name);
@@ -386,21 +385,12 @@ namespace Evernus
             settings.setValue(PriceSettings::copyModeKey, static_cast<int>(PriceSettings::CopyMode::CopyBuy));
     }
 
-    void MarginToolDialog::saveSelectedStation(const QModelIndex &index)
+    void MarginToolDialog::saveSelectedStation(quint64 id)
     {
-        if (mStationModel.getStationId(index) != 0)
+        if (id != 0)
         {
-            QVariantList path;
-
-            auto current = index;
-            while (current.isValid())
-            {
-                path.prepend(mStationModel.getGenericId(current));
-                current = mStationModel.parent(current);
-            }
-
             QSettings settings;
-            settings.setValue(PriceSettings::costSourceStationKey, path);
+            settings.setValue(PriceSettings::costSourceStationKey, mStationView->getSelectedPath());
         }
     }
 
@@ -659,21 +649,13 @@ namespace Evernus
 
         auto stationLayout = new QVBoxLayout{stationGroup};
 
-        mStationView = new QColumnView{this};
+        mStationView = new StationView{mDataProvider, this};
         stationLayout->addWidget(mStationView);
-        mStationView->setModel(&mStationModel);
 
         const auto path = settings.value(PriceSettings::costSourceStationKey).toList();
-        if (path.size() == 4)
-        {
-            QModelIndex index;
-            for (const auto &element : path)
-                index = mStationModel.index(element.value<quint64>(), index);
+        mStationView->selectPath(path);
 
-            mStationView->setCurrentIndex(index);
-        }
-
-        connect(mStationView->selectionModel(), &QItemSelectionModel::currentChanged,
+        connect(mStationView, &StationView::stationChanged,
                 this, &MarginToolDialog::saveSelectedStation);
 
         connect(mOrderSourceBtn, &QRadioButton::toggled, [](bool checked) {

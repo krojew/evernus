@@ -15,7 +15,6 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
-#include <QColumnView>
 #include <QTabWidget>
 #include <QGroupBox>
 #include <QSettings>
@@ -28,6 +27,7 @@
 #include "ButtonWithTimer.h"
 #include "StyledTreeView.h"
 #include "LMeveSettings.h"
+#include "StationView.h"
 
 #include "LMeveWidget.h"
 
@@ -43,7 +43,6 @@ namespace Evernus
         , mCacheTimerProvider(cacheTimerProvider)
         , mLMeveDataProvider(lMeveDataProvider)
         , mTaskModel(dataProvider, costProvider, characterRepository)
-        , mStationModel(dataProvider)
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -67,7 +66,7 @@ namespace Evernus
         auto tabs = new QTabWidget{this};
         mainLayout->addWidget(tabs, 1);
 
-        tabs->addTab(createTaskTab(), tr("Tasks"));
+        tabs->addTab(createTaskTab(dataProvider), tr("Tasks"));
 
         mTaskProxy.setSortRole(Qt::UserRole);
     }
@@ -103,25 +102,15 @@ namespace Evernus
         emit importPricesFromCache(getImportTarget());
     }
 
-    void LMeveWidget::setStationId(const QModelIndex &index)
+    void LMeveWidget::setStationId(quint64 id)
     {
-        if (index.isValid())
+        if (id != 0)
         {
-            const auto id = mStationModel.getStationId(index);
-            mImportBtn->setEnabled(id != 0);
+            mImportBtn->setEnabled(true);
             mTaskModel.setStationId(id);
 
-            QVariantList path;
-
-            auto current = index;
-            while (current.isValid())
-            {
-                path.prepend(mStationModel.getGenericId(current));
-                current = mStationModel.parent(current);
-            }
-
             QSettings settings;
-            settings.setValue(LMeveSettings::sellStationKey, path);
+            settings.setValue(LMeveSettings::sellStationKey, mStationView->getSelectedPath());
         }
         else
         {
@@ -129,7 +118,7 @@ namespace Evernus
         }
     }
 
-    QWidget *LMeveWidget::createTaskTab()
+    QWidget *LMeveWidget::createTaskTab(const EveDataProvider &dataProvider)
     {
         auto container = new QWidget{this};
         auto containerLayout = new QHBoxLayout{container};
@@ -139,11 +128,10 @@ namespace Evernus
 
         auto stationLayout = new QVBoxLayout{stationGroup};
 
-        auto stationView = new QColumnView{this};
-        stationLayout->addWidget(stationView, 1);
-        stationView->setModel(&mStationModel);
-        stationView->setMaximumWidth(260);
-        connect(stationView->selectionModel(), &QItemSelectionModel::currentChanged, this, &LMeveWidget::setStationId);
+        mStationView = new StationView{dataProvider, this};
+        stationLayout->addWidget(mStationView, 1);
+        mStationView->setMaximumWidth(260);
+        connect(mStationView, &StationView::stationChanged, this, &LMeveWidget::setStationId);
 
         auto importMenu = new QMenu{this};
 
@@ -167,14 +155,7 @@ namespace Evernus
         QSettings settings;
 
         const auto path = settings.value(LMeveSettings::sellStationKey).toList();
-        if (path.size() == 4)
-        {
-            QModelIndex index;
-            for (const auto &element : path)
-                index = mStationModel.index(element.value<quint64>(), index);
-
-            stationView->setCurrentIndex(index);
-        }
+        mStationView->selectPath(path);
 
         return container;
     }
