@@ -1837,18 +1837,18 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Koszt własny:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="190"/>
+        <location filename="../ExternalOrderView.cpp" line="194"/>
         <source>Copy suggested price: %1</source>
         <translation>Skopiuj sugerowaną cenę: %1</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="206"/>
-        <location filename="../ExternalOrderView.cpp" line="212"/>
+        <location filename="../ExternalOrderView.cpp" line="210"/>
+        <location filename="../ExternalOrderView.cpp" line="216"/>
         <source>N/A</source>
         <translation>brak</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="235"/>
+        <location filename="../ExternalOrderView.cpp" line="239"/>
         <source>Copy suggested price</source>
         <translation>Skopiuj sugerowaną cenę</translation>
     </message>

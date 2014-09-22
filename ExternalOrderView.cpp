@@ -113,8 +113,12 @@ namespace Evernus
 
     void ExternalOrderView::setModel(ExternalOrderModel *model)
     {
+        if (mSource == model)
+            return;
+
         mSource = model;
         mProxy.setSourceModel(mSource);
+        mView->restoreHeaderState();
 
         if (mSource != nullptr)
         {
