@@ -2694,27 +2694,27 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Zadania</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="126"/>
+        <location filename="../LMeveWidget.cpp" line="131"/>
         <source>Sell station</source>
         <translation>Stacja sprzedaży</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="138"/>
+        <location filename="../LMeveWidget.cpp" line="143"/>
         <source>Import prices from Web</source>
         <translation>Importuj ceny z sieci</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="139"/>
+        <location filename="../LMeveWidget.cpp" line="144"/>
         <source>Import prices from logs</source>
         <translation>Importuj ceny z logów</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="140"/>
+        <location filename="../LMeveWidget.cpp" line="145"/>
         <source>Import prices from cache</source>
         <translation>Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="142"/>
+        <location filename="../LMeveWidget.cpp" line="147"/>
         <source>Import prices  </source>
         <translation>Importuj ceny  </translation>
     </message>

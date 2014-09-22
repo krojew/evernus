@@ -123,6 +123,11 @@ namespace Evernus
         auto container = new QWidget{this};
         auto containerLayout = new QHBoxLayout{container};
 
+        mTaskView = new StyledTreeView{"lmeve-tasks", this};
+        containerLayout->addWidget(mTaskView, 1);
+        mTaskView->setModel(&mTaskProxy);
+        mTaskView->setRootIsDecorated(false);
+
         auto stationGroup = new QGroupBox{tr("Sell station"), this};
         containerLayout->addWidget(stationGroup);
 
@@ -146,11 +151,6 @@ namespace Evernus
         mImportBtn->setEnabled(false);
 
         mTaskProxy.setSourceModel(&mTaskModel);
-
-        mTaskView = new StyledTreeView{"lmeve-tasks", this};
-        containerLayout->addWidget(mTaskView, 1);
-        mTaskView->setModel(&mTaskProxy);
-        mTaskView->setRootIsDecorated(false);
 
         QSettings settings;
 
