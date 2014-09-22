@@ -22,6 +22,15 @@ namespace Evernus
     {
         setModel(&mStationModel);
 
+        auto dummyWidget = new QWidget{this};
+        dummyWidget->setMaximumSize(0, 0);
+        dummyWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        setPreviewWidget(dummyWidget);
+        connect(this, &StationView::updatePreviewWidget, [dummyWidget] {
+            dummyWidget->parentWidget()->parentWidget()->setMinimumWidth(0);
+            dummyWidget->parentWidget()->parentWidget()->setMaximumWidth(0);
+        });
+
         connect(selectionModel(), &QItemSelectionModel::currentChanged,
                 this, &StationView::selectStation);
     }
