@@ -118,12 +118,12 @@ namespace Evernus
         }
 
         mProxy.setSourceModel(mSource);
-
-        mView->setItemDelegateForColumn(model->getVolumeColumn(), new MarketOrderVolumeItemDelegate{this});
         mView->restoreHeaderState();
 
         if (mSource != nullptr)
         {
+            mView->setItemDelegateForColumn(mSource->getVolumeColumn(), new MarketOrderVolumeItemDelegate{this});
+
             connect(mSource, &MarketOrderModel::modelReset, this, &MarketOrderView::handleReset);
 
             if (mInfoWidget != nullptr)
