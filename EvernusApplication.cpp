@@ -1784,6 +1784,8 @@ namespace Evernus
                         data.setContractSkills(prevData->getContractSkills());
                     }
 
+                    data.setCorpStanding(prevData->getCorpStanding());
+                    data.setFactionStanding(prevData->getFactionStanding());
                     data.setEnabled(prevData->isEnabled());
                 }
                 catch (const Evernus::CharacterRepository::NotFoundException &)

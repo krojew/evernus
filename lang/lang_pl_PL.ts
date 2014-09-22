@@ -1358,8 +1358,8 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="699"/>
         <location filename="../EvernusApplication.cpp" line="705"/>
-        <location filename="../EvernusApplication.cpp" line="2159"/>
-        <location filename="../EvernusApplication.cpp" line="2197"/>
+        <location filename="../EvernusApplication.cpp" line="2161"/>
+        <location filename="../EvernusApplication.cpp" line="2199"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -1413,7 +1413,7 @@
         <translation>Synchronizowanie z LMeve...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2388"/>
+        <location filename="../EvernusApplication.cpp" line="2390"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
@@ -1499,27 +1499,27 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1844"/>
+        <location filename="../EvernusApplication.cpp" line="1846"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1858"/>
+        <location filename="../EvernusApplication.cpp" line="1860"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1869"/>
+        <location filename="../EvernusApplication.cpp" line="1871"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2160"/>
+        <location filename="../EvernusApplication.cpp" line="2162"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2164"/>
+        <location filename="../EvernusApplication.cpp" line="2166"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1528,14 +1528,14 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2167"/>
+        <location filename="../EvernusApplication.cpp" line="2169"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2197"/>
+        <location filename="../EvernusApplication.cpp" line="2199"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
@@ -1590,7 +1590,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1833"/>
+        <location filename="../EvernusApplication.cpp" line="1835"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>
