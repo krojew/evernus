@@ -2082,19 +2082,6 @@ namespace Evernus
                         sell += order.getPrice() * order.getVolumeRemaining();
                 }
 
-                const auto adder = [](auto &sum, const auto &orders) {
-                    for (const auto &order : orders)
-                    {
-                        if (order->getState() != Evernus::MarketOrder::State::Active)
-                            continue;
-
-                        sum += order->getPrice() * order->getVolumeRemaining();
-                    }
-                };
-
-                adder(buy, mCharacterOrderProvider->getBuyOrders(id));
-                adder(sell, mCharacterOrderProvider->getSellOrders(id));
-
                 snapshot.setBuyValue(buy);
                 snapshot.setSellValue(sell);
 
@@ -2117,19 +2104,6 @@ namespace Evernus
                     else
                         sell += order.getPrice() * order.getVolumeRemaining();
                 }
-
-                const auto adder = [](auto &sum, const auto &orders) {
-                    for (const auto &order : orders)
-                    {
-                        if (order->getState() != Evernus::MarketOrder::State::Active)
-                            continue;
-
-                        sum += order->getPrice() * order->getVolumeRemaining();
-                    }
-                };
-
-                adder(buy, mCorpOrderProvider->getBuyOrders(corpId));
-                adder(sell, mCorpOrderProvider->getSellOrders(corpId));
 
                 snapshot.setBuyValue(buy);
                 snapshot.setSellValue(sell);
