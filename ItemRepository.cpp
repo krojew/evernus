@@ -70,7 +70,7 @@ namespace Evernus
         const auto batches = totalRows / maxRowsPerInsert;
 
         const auto columns = getColumns();
-        const auto baseQueryStr = QString{"INSERT INTO %1 (%2) VALUES %3"}.arg(getTableName()).arg(columns.join(", "));
+        const auto baseQueryStr = QString{"REPLACE INTO %1 (%2) VALUES %3"}.arg(getTableName()).arg(columns.join(", "));
 
         QStringList columnBindings;
         for (auto i = 0; i < columns.count(); ++i)
