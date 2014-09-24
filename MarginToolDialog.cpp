@@ -764,8 +764,8 @@ namespace Evernus
 
                     if (updatePriceEdits)
                     {
-                        mBestBuyEdit->setText(curLocale.toCurrencyString(mBuyPrice, "ISK"));
-                        mBestSellEdit->setText(curLocale.toCurrencyString(mSellPrice, "ISK"));
+                        mBestBuyEdit->setText(curLocale.toString(mBuyPrice, 'f', 2));
+                        mBestSellEdit->setText(curLocale.toString(mSellPrice, 'f', 2));
                     }
 
                     mProfitLabel->setText(curLocale.toCurrencyString(revenue - cos, "ISK"));
