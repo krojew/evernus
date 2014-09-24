@@ -60,5 +60,21 @@ namespace Evernus
         virtual ~Updater() = default;
 
         void finishCheck(bool quiet) const;
+
+        void migrateTo03() const;
+        void migrateTo05(const CacheTimerRepository &cacheTimerRepo,
+                         const Repository<Character> &characterRepo,
+                         const MarketOrderRepository &characterOrderRepo,
+                         const MarketOrderRepository &corporationOrderRepo) const;
+        void migrateTo18(const ExternalOrderRepository &externalOrderRepo) const;
+        void migrateTo19(const Repository<Character> &characterRepo,
+                         const WalletJournalEntryRepository &walletJournalRepo,
+                         const WalletJournalEntryRepository &corpWalletJournalRepo,
+                         const WalletTransactionRepository &walletTransactionRepo,
+                         const WalletTransactionRepository &corpWalletTransactionRepo) const;
+        void migrateTo111(const CacheTimerRepository &cacheTimerRepo,
+                          const UpdateTimerRepository &updateTimerRepo,
+                          const Repository<Character> &characterRepo) const;
+        void migrateTo113() const;
     };
 }

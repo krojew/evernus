@@ -71,23 +71,9 @@ namespace Evernus
                     if (minorVersion < 5)
                     {
                         if (minorVersion < 3)
-                            settings.setValue(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault);
+                            migrateTo03();
 
-                        cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
-                        cacheTimerRepo.create(characterRepo);
-
-                        characterRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterRepo.getTableName()));
-                        characterOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterOrderRepo.getTableName()));
-                        corporationOrderRepo.exec(QString{"ALTER TABLE %1 RENAME TO %1_temp"}.arg(corporationOrderRepo.getTableName()));
-
-                        corporationOrderRepo.dropIndexes(characterRepo);
-                        corporationOrderRepo.create(characterRepo);
-                        corporationOrderRepo.copyDataWithoutCorporationIdFrom(QString{"%1_temp"}.arg(corporationOrderRepo.getTableName()));
-                        corporationOrderRepo.exec(QString{"DROP TABLE %1_temp"}.arg(corporationOrderRepo.getTableName()));
-
-                        QMessageBox::information(nullptr, tr("Update"), tr(
-                            "This update requires re-importing all data.\n"
-                            "Please click on \"Import all\" after the update."));
+                        migrateTo05(cacheTimerRepo, characterRepo, characterOrderRepo, corporationOrderRepo);
                     }
                 }
 
@@ -98,38 +84,19 @@ namespace Evernus
                         if (minorVersion < 9)
                         {
                             if (minorVersion < 8)
-                            {
-                                const auto cachePath = settings.value(PathSettings::eveCachePathKey).toString();
-                                const auto index = cachePath.indexOf("MachoNet");
-                                if (index != -1)
-                                    settings.setValue(PathSettings::eveCachePathKey, cachePath.left(index));
+                                migrateTo18(externalOrderRepo);
 
-                                QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all item prices."));
-
-                                externalOrderRepo.exec(QString{"DROP TABLE %1"}.arg(externalOrderRepo.getTableName()));
-                                externalOrderRepo.create();
-                            }
-
-                            QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all corporation transactions and journal."));
-
-                            corpWalletJournalRepo.exec(QString{"DROP TABLE %1"}.arg(corpWalletJournalRepo.getTableName()));
-                            corpWalletJournalRepo.create(characterRepo);
-                            corpWalletTransactionRepo.exec(QString{"DROP TABLE %1"}.arg(corpWalletTransactionRepo.getTableName()));
-                            corpWalletTransactionRepo.create(characterRepo);
-
-                            walletJournalRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(walletJournalRepo.getTableName()));
-                            walletTransactionRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(walletTransactionRepo.getTableName()));
+                            migrateTo19(characterRepo,
+                                        walletJournalRepo,
+                                        corpWalletJournalRepo,
+                                        walletTransactionRepo,
+                                        corpWalletTransactionRepo);
                         }
 
-                        cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
-                        cacheTimerRepo.create(characterRepo);
-                        updateTimerRepo.exec(QString{"DROP TABLE %1"}.arg(updateTimerRepo.getTableName()));
-                        updateTimerRepo.create(characterRepo);
+                        migrateTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
                     }
 
-                    settings.setValue(ImportSettings::ignoreCachedImportKey, false);
-                    settings.setValue(PriceSettings::combineCorpAndCharPlotsKey,
-                                      settings.value("rpices/combineCorpAndCharPlots", PriceSettings::combineCorpAndCharPlotsDefault));
+                    migrateTo113();
                 }
             }
         }
@@ -218,5 +185,83 @@ namespace Evernus
             nullptr, tr("Update found"), tr("A new version is available: %1\nDo you wish to download it now?").arg(nextVersionString));
         if (ret == QMessageBox::Yes)
             QDesktopServices::openUrl(QUrl{"http://evernus.com/download"});
+    }
+
+    void Updater::migrateTo03() const
+    {
+        QSettings settings;
+        settings.setValue(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault);
+    }
+
+    void Updater::migrateTo05(const CacheTimerRepository &cacheTimerRepo,
+                              const Repository<Character> &characterRepo,
+                              const MarketOrderRepository &characterOrderRepo,
+                              const MarketOrderRepository &corporationOrderRepo) const
+    {
+        cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
+        cacheTimerRepo.create(characterRepo);
+
+        characterRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterRepo.getTableName()));
+        characterOrderRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterOrderRepo.getTableName()));
+        corporationOrderRepo.exec(QString{"ALTER TABLE %1 RENAME TO %1_temp"}.arg(corporationOrderRepo.getTableName()));
+
+        corporationOrderRepo.dropIndexes(characterRepo);
+        corporationOrderRepo.create(characterRepo);
+        corporationOrderRepo.copyDataWithoutCorporationIdFrom(QString{"%1_temp"}.arg(corporationOrderRepo.getTableName()));
+        corporationOrderRepo.exec(QString{"DROP TABLE %1_temp"}.arg(corporationOrderRepo.getTableName()));
+
+        QMessageBox::information(nullptr, tr("Update"), tr(
+            "This update requires re-importing all data.\n"
+            "Please click on \"Import all\" after the update."));
+    }
+
+    void Updater::migrateTo18(const ExternalOrderRepository &externalOrderRepo) const
+    {
+        QSettings settings;
+
+        const auto cachePath = settings.value(PathSettings::eveCachePathKey).toString();
+        const auto index = cachePath.indexOf("MachoNet");
+        if (index != -1)
+            settings.setValue(PathSettings::eveCachePathKey, cachePath.left(index));
+
+        QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all item prices."));
+
+        externalOrderRepo.exec(QString{"DROP TABLE %1"}.arg(externalOrderRepo.getTableName()));
+        externalOrderRepo.create();
+    }
+
+    void Updater::migrateTo19(const Repository<Character> &characterRepo,
+                              const WalletJournalEntryRepository &walletJournalRepo,
+                              const WalletJournalEntryRepository &corpWalletJournalRepo,
+                              const WalletTransactionRepository &walletTransactionRepo,
+                              const WalletTransactionRepository &corpWalletTransactionRepo) const
+    {
+        QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all corporation transactions and journal."));
+
+        corpWalletJournalRepo.exec(QString{"DROP TABLE %1"}.arg(corpWalletJournalRepo.getTableName()));
+        corpWalletJournalRepo.create(characterRepo);
+        corpWalletTransactionRepo.exec(QString{"DROP TABLE %1"}.arg(corpWalletTransactionRepo.getTableName()));
+        corpWalletTransactionRepo.create(characterRepo);
+
+        walletJournalRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(walletJournalRepo.getTableName()));
+        walletTransactionRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(walletTransactionRepo.getTableName()));
+    }
+
+    void Updater::migrateTo111(const CacheTimerRepository &cacheTimerRepo,
+                               const UpdateTimerRepository &updateTimerRepo,
+                               const Repository<Character> &characterRepo) const
+    {
+        cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
+        cacheTimerRepo.create(characterRepo);
+        updateTimerRepo.exec(QString{"DROP TABLE %1"}.arg(updateTimerRepo.getTableName()));
+        updateTimerRepo.create(characterRepo);
+    }
+
+    void Updater::migrateTo113() const
+    {
+        QSettings settings;
+        settings.setValue(ImportSettings::ignoreCachedImportKey, false);
+        settings.setValue(PriceSettings::combineCorpAndCharPlotsKey,
+                          settings.value("rpices/combineCorpAndCharPlots", PriceSettings::combineCorpAndCharPlotsDefault));
     }
 }
