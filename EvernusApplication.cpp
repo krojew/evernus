@@ -195,7 +195,9 @@ namespace Evernus
                                                        *mWalletJournalEntryRepository,
                                                        *mCorpWalletJournalEntryRepository,
                                                        *mWalletTransactionRepository,
-                                                       *mCorpWalletTransactionRepository);
+                                                       *mCorpWalletTransactionRepository,
+                                                       *mMarketOrderValueSnapshotRepository,
+                                                       *mCorpMarketOrderValueSnapshotRepository);
 
         settings.setValue(versionKey, applicationVersion());
 

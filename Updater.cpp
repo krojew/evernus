@@ -22,6 +22,8 @@
 #include <QDebug>
 #include <QUrl>
 
+#include "CorpMarketOrderValueSnapshotRepository.h"
+#include "MarketOrderValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
 #include "WalletTransactionRepository.h"
 #include "ExternalOrderRepository.h"
@@ -46,7 +48,9 @@ namespace Evernus
                                           const WalletJournalEntryRepository &walletJournalRepo,
                                           const WalletJournalEntryRepository &corpWalletJournalRepo,
                                           const WalletTransactionRepository &walletTransactionRepo,
-                                          const WalletTransactionRepository &corpWalletTransactionRepo) const
+                                          const WalletTransactionRepository &corpWalletTransactionRepo,
+                                          const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
+                                          const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const
     {
         QSettings settings;
 
@@ -77,26 +81,31 @@ namespace Evernus
                     }
                 }
 
-                if (minorVersion < 13)
+                if (minorVersion < 16)
                 {
-                    if (minorVersion < 11)
+                    if (minorVersion < 13)
                     {
-                        if (minorVersion < 9)
+                        if (minorVersion < 11)
                         {
-                            if (minorVersion < 8)
-                                migrateTo18(externalOrderRepo);
+                            if (minorVersion < 9)
+                            {
+                                if (minorVersion < 8)
+                                    migrateTo18(externalOrderRepo);
 
-                            migrateTo19(characterRepo,
-                                        walletJournalRepo,
-                                        corpWalletJournalRepo,
-                                        walletTransactionRepo,
-                                        corpWalletTransactionRepo);
+                                migrateTo19(characterRepo,
+                                            walletJournalRepo,
+                                            corpWalletJournalRepo,
+                                            walletTransactionRepo,
+                                            corpWalletTransactionRepo);
+                            }
+
+                            migrateTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
                         }
 
-                        migrateTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
+                        migrateTo113();
                     }
 
-                    migrateTo113();
+                    migrateTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
                 }
             }
         }
@@ -263,5 +272,20 @@ namespace Evernus
         settings.setValue(ImportSettings::ignoreCachedImportKey, false);
         settings.setValue(PriceSettings::combineCorpAndCharPlotsKey,
                           settings.value("rpices/combineCorpAndCharPlots", PriceSettings::combineCorpAndCharPlotsDefault));
+    }
+
+    void Updater::migrateTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
+                               const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const
+    {
+        const auto updateShots = [](const auto &repo) {
+            auto query = repo.prepare(QString{
+                "UPDATE %1 SET buy_value = buy_value / 2, sell_value = sell_value / 2 WHERE timestamp >= ?"}.arg(repo.getTableName()));
+            query.bindValue(0, QDateTime{QDate{2014, 9, 9}, QTime{0, 0}, Qt::UTC});
+
+            DatabaseUtils::execQuery(query);
+        };
+
+        updateShots(orderValueSnapshotRepo);
+        updateShots(corpOrderValueSnapshotRepo);
     }
 }
