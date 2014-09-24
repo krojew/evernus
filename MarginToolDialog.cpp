@@ -712,7 +712,7 @@ namespace Evernus
                 {
                     mBuyPrice = buy + priceDelta;
 
-                    mBestBuyEdit->setText(curLocale.toCurrencyString(mBuyPrice, "ISK"));
+                    mBestBuyEdit->setText(curLocale.toString(mBuyPrice, 'f', 2));
                     mCostOfSalesLabel->setText(curLocale.toCurrencyString(PriceUtils::getCoS(mBuyPrice, taxes), "ISK"));
 
                     if (mCopyBuyBtn->isChecked())
@@ -732,7 +732,7 @@ namespace Evernus
                 {
                     mSellPrice = sell - priceDelta;
 
-                    mBestSellEdit->setText(curLocale.toCurrencyString(mSellPrice, "ISK"));
+                    mBestSellEdit->setText(curLocale.toString(mSellPrice, 'f', 2));
                     mRevenueLabel->setText(curLocale.toCurrencyString(PriceUtils::getRevenue(mSellPrice, taxes), "ISK"));
 
                     if (mCopySellBtn->isChecked())
