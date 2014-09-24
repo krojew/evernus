@@ -282,7 +282,7 @@ namespace Evernus
                 "UPDATE %1 SET buy_value = buy_value / 2, sell_value = sell_value / 2 WHERE timestamp >= ?"}.arg(repo.getTableName()));
             query.bindValue(0, QDateTime{QDate{2014, 9, 9}, QTime{0, 0}, Qt::UTC});
 
-            DatabaseUtils::execQuery(query);
+            Evernus::DatabaseUtils::execQuery(query);
         };
 
         updateShots(orderValueSnapshotRepo);
