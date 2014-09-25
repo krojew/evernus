@@ -79,6 +79,7 @@ namespace Evernus
         mMainTemplate["corp-below-margin-link-text"] = tr("Corporation Below Min. Margin Orders");
         mMainTemplate["favorite-link-text"] = tr("Favorite Items");
         mMainTemplate["open-margin-tool-link-text"] = tr("Open Margin Tool");
+        mMainTemplate["trade-advisor-link-text"] = tr("Trade Advisor");
         mMainTemplate["port"] = settings.value(IGBSettings::portKey, IGBSettings::portDefault).toString();
         mMainTemplate["open-market-message"] = openMarketMessage;
 
@@ -387,10 +388,16 @@ namespace Evernus
     void IGBService::renderContent(QxtWebRequestEvent *event, const QString &content)
     {
         const auto trustedHeader = "EVE_TRUSTED";
+        const auto solarSystemIdHeader = "EVE_SOLARSYSTEMID";
 
         mMainTemplate["content"] = (!event->headers.contains(trustedHeader) || event->headers.values(trustedHeader).first() != "Yes") ?
                                    (QString{"<h3>%1</h3>%2"}.arg(tr("Website trust is required. Please add it to Trusted Sites.")).arg(content)) :
                                    (content);
+
+        if (event->headers.contains(solarSystemIdHeader))
+            mMainTemplate["trade-advisor-link"] = "http://tradeadvisor.evernus.com/" + event->headers.values(solarSystemIdHeader).first();
+        else
+            mMainTemplate["trade-advisor-link"] = "http://tradeadvisor.evernus.com";
 
         postEvent(new QxtWebPageEvent(event->sessionID, event->requestID, mMainTemplate.render().toUtf8()));
 
