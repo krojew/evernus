@@ -479,11 +479,7 @@ QDateTime QDropboxJson::getTimestamp(QString key, bool force)
 
     const QString dtFormat = "dd MMM yyyy HH:mm:ss";
 
-    const QLocale locale;
-    QLocale::setDefault(QLocale{QLocale::English});
-    auto res = QDateTime::fromString(e.value.value->mid(6, dtFormat.size()), dtFormat);
-    QLocale::setDefault(locale);
-
+    auto res = QLocale{QLocale::English}.toDateTime(e.value.value->mid(6, dtFormat.size()), dtFormat);
     res.setTimeSpec(Qt::UTC);
 
     return res;
@@ -499,7 +495,7 @@ void QDropboxJson::setTimestamp(QString key, QDateTime value)
         *(valueMap[key].value.value) = value.toString(dtFormat);
     }else{
         qdropboxjson_entry e;
-        QString *valuePointer = new QString(value.toString(dtFormat));
+        QString *valuePointer = new QString(QLocale{QLocale::English}.toString(value, dtFormat));
         e.value.value = valuePointer;
         e.value.value = valuePointer;
         e.type        = QDROPBOXJSON_TYPE_STR;
