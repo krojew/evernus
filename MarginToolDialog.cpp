@@ -473,7 +473,7 @@ namespace Evernus
         mBestSellEdit = new QLineEdit{this};
         sellLayout->addWidget(mBestSellEdit);
         mBestSellEdit->setPlaceholderText("-");
-        mBestSellEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        mBestSellEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
         connect(mBestSellEdit, &QLineEdit::textEdited, this, &MarginToolDialog::refreshDataByEdits);
 
         auto copySellBtn = new QPushButton{QIcon{":/images/paste_plain.png"}, QString{}, this};
@@ -488,7 +488,7 @@ namespace Evernus
         mBestBuyEdit = new QLineEdit{this};
         buyLayout->addWidget(mBestBuyEdit);
         mBestBuyEdit->setPlaceholderText("-");
-        mBestBuyEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        mBestBuyEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
         connect(mBestBuyEdit, &QLineEdit::textEdited, this, &MarginToolDialog::refreshDataByEdits);
 
         auto copyBuyBtn = new QPushButton{QIcon{":/images/paste_plain.png"}, QString{}, this};
