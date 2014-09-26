@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <ctime>
+
 #include <QNetworkInterface>
 #include <QDesktopServices>
 #include <QApplication>
@@ -28,7 +30,10 @@
 #include <QDebug>
 
 #ifdef Q_OS_WIN
+#   include <sys/utime.h>
 #   include <QWinTaskbarButton>
+#else
+#   include <utime.h>
 #endif
 
 #include "WalletTransactionsWidget.h"
@@ -405,6 +410,12 @@ namespace Evernus
 #ifdef EVERNUS_DROPBOX_ENABLED
         SyncDialog syncDlg{SyncDialog::Mode::Upload};
         syncDlg.exec();
+
+        utimbuf buf;
+        time(&buf.actime);
+        buf.modtime = buf.actime;
+
+        utime(mRepositoryProvider.getKeyRepository().getDatabase().databaseName().toUtf8().constData(), &buf);
 #endif
     }
 
