@@ -4422,67 +4422,72 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::PreferencesDialog</name>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="61"/>
+        <location filename="../PreferencesDialog.cpp" line="62"/>
         <source>General</source>
         <translation>Ogólne</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="65"/>
+        <location filename="../PreferencesDialog.cpp" line="66"/>
         <source>Synchronization</source>
         <translation>Synchronizacja</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="62"/>
+        <location filename="../PreferencesDialog.cpp" line="63"/>
         <source>Paths</source>
         <translation>Ścieżki</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="63"/>
+        <location filename="../PreferencesDialog.cpp" line="64"/>
         <source>Prices</source>
         <translation>Ceny</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="64"/>
+        <location filename="../PreferencesDialog.cpp" line="65"/>
         <source>Network</source>
         <translation>Sieć</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="66"/>
+        <location filename="../PreferencesDialog.cpp" line="67"/>
         <source>In-Game Browser</source>
         <translation>Przeglądarka IGB</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="67"/>
+        <location filename="../PreferencesDialog.cpp" line="68"/>
         <source>Web Service</source>
         <translation>Usługa sieciowa</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="68"/>
+        <location filename="../PreferencesDialog.cpp" line="69"/>
         <source>Wallet</source>
         <translation>Portfel</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="69"/>
+        <location filename="../PreferencesDialog.cpp" line="70"/>
+        <source>Uploader</source>
+        <translation>Uploader</translation>
+    </message>
+    <message>
+        <location filename="../PreferencesDialog.cpp" line="71"/>
         <source>LMeve</source>
         <translation>LMeve</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="86"/>
+        <location filename="../PreferencesDialog.cpp" line="88"/>
         <source>Import</source>
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="90"/>
+        <location filename="../PreferencesDialog.cpp" line="92"/>
         <source>Character</source>
         <translation>Postać</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="91"/>
+        <location filename="../PreferencesDialog.cpp" line="93"/>
         <source>Assets</source>
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="92"/>
+        <location filename="../PreferencesDialog.cpp" line="94"/>
         <source>Contracts</source>
         <translation>Kontrakty</translation>
     </message>
@@ -4491,17 +4496,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Kontrakt</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="93"/>
+        <location filename="../PreferencesDialog.cpp" line="95"/>
         <source>Corporation</source>
         <translation>Korporacja</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="94"/>
+        <location filename="../PreferencesDialog.cpp" line="96"/>
         <source>Source</source>
         <translation>Źródło</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="119"/>
+        <location filename="../PreferencesDialog.cpp" line="121"/>
         <source>Preferences</source>
         <translation>Ustawienia</translation>
     </message>
@@ -5096,6 +5101,14 @@ Kopia zapasowa bazay danych została zapisana jako %1. Zajrzyj do pomocy online 
 Do you wish to download it now?</source>
         <translation>Znaleziono nową wersję: %1
 Czy chcesz ściągnąć ją teraz?</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::UploaderPreferencesWidget</name>
+    <message>
+        <location filename="../UploaderPreferencesWidget.cpp" line="38"/>
+        <source>Enabled</source>
+        <translation>Włączony</translation>
     </message>
 </context>
 <context>

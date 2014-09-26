@@ -156,6 +156,7 @@ qt5_wrap_cpp(
     SyncPreferencesWidget.h
     TextFilterWidget.h
     Updater.h
+    UploaderPreferencesWidget.h
     WalletEntryFilterWidget.h
     WalletJournalModel.h
     WalletJournalWidget.h
@@ -627,6 +628,9 @@ add_executable(
     UpdateTimer.h
     UpdateTimerRepository.cpp
     UpdateTimerRepository.h
+    UploaderPreferencesWidget.cpp
+    UploaderPreferencesWidget.h
+    UploaderSettings.h
     Version.h
     WalletEntryFilterWidget.cpp
     WalletEntryFilterWidget.h
