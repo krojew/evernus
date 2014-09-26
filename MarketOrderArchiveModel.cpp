@@ -93,10 +93,12 @@ namespace Evernus
             case volumeColumn:
                 return QVariantList{} << data->getVolumeRemaining() << data->getVolumeEntered();
             case profitColumn:
+                if (data->getType() == MarketOrder::Type::Sell)
                 {
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    return data->getVolumeRemaining() * (data->getPrice() - cost->getCost());
+                    return (data->getVolumeEntered() - data->getVolumeRemaining()) * (data->getPrice() - cost->getCost());
                 }
+                break;
             case stationColumn:
                 return mDataProvider.getLocationName(data->getStationId());
             case ownerColumn:
@@ -147,6 +149,13 @@ namespace Evernus
                     return locale.toCurrencyString(data->getPrice(), "ISK");
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(data->getVolumeRemaining())).arg(locale.toString(data->getVolumeEntered()));
+                case profitColumn:
+                    if (data->getType() == MarketOrder::Type::Sell)
+                    {
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                        return locale.toCurrencyString((data->getVolumeEntered() - data->getVolumeRemaining()) * (data->getPrice() - cost->getCost()), "ISK");
+                    }
+                    break;
                 case stationColumn:
                     return mDataProvider.getLocationName(data->getStationId());
                 case ownerColumn:

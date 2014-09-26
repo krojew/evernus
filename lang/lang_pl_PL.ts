@@ -3460,57 +3460,57 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Wygasła</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="209"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="214"/>
         <source>Completed</source>
         <translation>Zakończony</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="211"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="216"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="213"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="218"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="215"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="220"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="217"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="222"/>
         <source>Status</source>
         <translation>Stan</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="219"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="224"/>
         <source>Custom cost</source>
         <translation>Koszt własny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="221"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="226"/>
         <source>Price</source>
         <translation>Cena</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="223"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="228"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="225"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="230"/>
         <source>Profit</source>
         <translation>Zysk</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="227"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="232"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderArchiveModel.cpp" line="229"/>
+        <location filename="../MarketOrderArchiveModel.cpp" line="234"/>
         <source>Owner</source>
         <translation>Właściciel</translation>
     </message>
