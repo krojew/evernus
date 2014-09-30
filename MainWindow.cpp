@@ -348,7 +348,7 @@ namespace Evernus
 
     void MainWindow::setUploaderStatus(const QString &status)
     {
-        mStatusUploaderLabel->setText(status);
+        mStatusUploaderLabel->setText(tr("Market uploader: ") + status);
     }
 
     void MainWindow::updateCurrentTab(int index)
@@ -773,10 +773,9 @@ namespace Evernus
 
     void MainWindow::createStatusBar()
     {
-        mStatusUploaderLabel = new QLabel{tr("unknown"), this};
+        mStatusUploaderLabel = new QLabel{tr("Market uploader: unknown"), this};
         mStatusWalletLabel = new QLabel{this};
 
-        statusBar()->addPermanentWidget(new QLabel{tr("Market uploader:"), this});
         statusBar()->addPermanentWidget(mStatusUploaderLabel);
         statusBar()->addPermanentWidget(mStatusWalletLabel);
     }
