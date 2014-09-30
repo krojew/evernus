@@ -341,6 +341,11 @@ namespace Evernus
             refreshContracts();
     }
 
+    void MainWindow::setUploaderStatus(const QString &status)
+    {
+        mStatusUploaderLabel->setText(status);
+    }
+
     void MainWindow::updateCurrentTab(int index)
     {
         auto widget = mMainTabs->widget(index);
@@ -757,7 +762,11 @@ namespace Evernus
 
     void MainWindow::createStatusBar()
     {
+        mStatusUploaderLabel = new QLabel{tr("unknown"), this};
         mStatusWalletLabel = new QLabel{this};
+
+        statusBar()->addPermanentWidget(new QLabel{tr("Market uploader:"), this});
+        statusBar()->addPermanentWidget(mStatusUploaderLabel);
         statusBar()->addPermanentWidget(mStatusWalletLabel);
     }
 

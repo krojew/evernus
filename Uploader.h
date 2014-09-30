@@ -34,6 +34,8 @@ namespace Evernus
     signals:
         void dataChanged();
 
+        void statusChanged(const QString &status);
+
     private slots:
         void requestEndpoints();
         void handleEndpoints();

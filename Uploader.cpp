@@ -39,6 +39,7 @@ namespace Evernus
         requestEndpoints();
 
         connect(this, &Uploader::dataChanged, &mWorkerThread, &UploaderThread::handleChangedData);
+        connect(&mWorkerThread, &UploaderThread::statusChanged, this, &Uploader::statusChanged);
     }
 
     Uploader::~Uploader()
@@ -61,6 +62,8 @@ namespace Evernus
     void Uploader::requestEndpoints()
     {
         qDebug() << "Requesting endpoints...";
+
+        emit statusChanged(tr("requesting endpoints"));
 
         // TODO: use own domain
         auto reply = mAccessManager.get(
@@ -91,12 +94,16 @@ namespace Evernus
             return;
         }
 
+        emit statusChanged(tr("parsing endpoints"));
+
         QJsonParseError jsonError;
         const auto doc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
 
         if (jsonError.error != QJsonParseError::NoError)
         {
             qDebug() << jsonError.errorString();
+
+            emit statusChanged(tr("endpoint request error"));
             return;
         }
 
@@ -128,6 +135,7 @@ namespace Evernus
             mWorkerThread.emplaceEndpoint(std::move(endpoint));
         }
 
+        emit statusChanged(tr("idle"));
         mWorkerThread.start();
     }
 }

@@ -59,6 +59,9 @@ namespace Evernus
             mEndpoints.emplace_back(std::forward<T>(endpoint));
         }
 
+    signals:
+        void statusChanged(const QString &status);
+
     public slots:
         void handleChangedData();
 
@@ -78,5 +81,6 @@ namespace Evernus
 
         std::atomic_bool mEnabled;
         bool mDoUpload = false, mDataChanged = true;
+        uint mRequestCount = 0;
     };
 }

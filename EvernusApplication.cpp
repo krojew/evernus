@@ -212,6 +212,7 @@ namespace Evernus
 
         mMarketUploader = std::make_unique<Uploader>(*mExternalOrderRepository);
         connect(this, &EvernusApplication::externalOrdersChanged, mMarketUploader.get(), &Uploader::dataChanged);
+        connect(mMarketUploader.get(), &Uploader::statusChanged, this, &EvernusApplication::uploaderStatusChanged);
 
         if (settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool())
             Updater::getInstance().checkForUpdates(true);

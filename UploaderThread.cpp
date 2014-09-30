@@ -59,8 +59,13 @@ namespace Evernus
 
     void UploaderThread::finishUpload()
     {
+        --mRequestCount;
+
         auto reply = static_cast<QNetworkReply *>(sender());
         reply->deleteLater();
+
+        if (mRequestCount == 0)
+            emit statusChanged(tr("idle"));
 
         const auto error = reply->error();
 
@@ -83,6 +88,8 @@ namespace Evernus
                 continue;
             }
 
+            emit statusChanged(tr("uploading"));
+
             qDebug() << "Uploading market data...";
 
             mDoUpload = false;
@@ -97,6 +104,8 @@ namespace Evernus
             if (endpoints.empty())
             {
                 qDebug() << "No enabled endpoints found.";
+
+                emit statusChanged(tr("idle"));
                 continue;
             }
 
@@ -214,6 +223,8 @@ namespace Evernus
             if (rowsets.isEmpty())
             {
                 qDebug() << "No order data to upload.";
+
+                emit statusChanged(tr("idle"));
                 continue;
             }
 
@@ -262,6 +273,8 @@ namespace Evernus
                 case UploadMethod::Put:
                     reply = accessManager.put(QNetworkRequest{endpoint->mUrl}, json);
                 }
+
+                ++mRequestCount;
 
                 Q_ASSERT(reply != nullptr);
                 connect(reply, &QNetworkReply::finished, this, &UploaderThread::finishUpload);

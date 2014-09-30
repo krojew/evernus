@@ -170,6 +170,8 @@ namespace Evernus
 
         void showInEve(EveType::IdType id);
 
+        void uploaderStatusChanged(const QString &status);
+
     public slots:
         void refreshCharacters();
         void refreshCharacter(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
