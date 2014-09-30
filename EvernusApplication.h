@@ -64,6 +64,7 @@
 #include "TaskConstants.h"
 #include "KeyRepository.h"
 #include "APIManager.h"
+#include "Uploader.h"
 
 #include "qxtsmtp.h"
 
@@ -71,6 +72,7 @@ class QSplashScreen;
 
 namespace Evernus
 {
+    class Uploader;
     class Key;
 
     class EvernusApplication
@@ -167,6 +169,8 @@ namespace Evernus
         void openMarginTool();
 
         void showInEve(EveType::IdType id);
+
+        void uploaderStatusChanged(const QString &status);
 
     public slots:
         void refreshCharacters();
@@ -311,6 +315,8 @@ namespace Evernus
         size_t mPendingContractItemRequests = 0;
 
         mutable std::unordered_map<Character::IdType, LMeveTaskRepository::EntityList> mLMeveTaskCache;
+
+        std::unique_ptr<Uploader> mMarketUploader;
 
         void updateTranslator(const QString &lang);
 

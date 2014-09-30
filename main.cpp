@@ -174,6 +174,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(lMeveTasksChanged()), SIGNAL(lMeveTasksChanged()));
             mainWnd.connect(&app, SIGNAL(charactersChanged()), SLOT(updateIskData()));
             mainWnd.connect(&app, SIGNAL(openMarginTool()), SLOT(showMarginTool()));
+            mainWnd.connect(&app, SIGNAL(uploaderStatusChanged(const QString &)), SLOT(setUploaderStatus(const QString &)));
             mainWnd.showAsSaved();
 
             return app.exec();
