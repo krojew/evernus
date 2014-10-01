@@ -65,9 +65,8 @@ namespace Evernus
 
         emit statusChanged(tr("requesting endpoints"));
 
-        // TODO: use own domain
         auto reply = mAccessManager.get(
-            QNetworkRequest{QUrl{"https://bitbucket.org/BattleClinic/evemon/wiki/emuu/endpoints/endpoints.json"}});
+            QNetworkRequest{QUrl{"http://evernus.com/endpoints.json"}});
         connect(reply, &QNetworkReply::finished, this, &Uploader::handleEndpoints);
     }
 

@@ -5129,17 +5129,17 @@ Czy chcesz ściągnąć ją teraz?</translation>
         <translation>pobieranie punktów końcowych</translation>
     </message>
     <message>
-        <location filename="../Uploader.cpp" line="97"/>
+        <location filename="../Uploader.cpp" line="96"/>
         <source>parsing endpoints</source>
         <translation>parsowanie punktów końcowych</translation>
     </message>
     <message>
-        <location filename="../Uploader.cpp" line="106"/>
+        <location filename="../Uploader.cpp" line="105"/>
         <source>endpoint request error</source>
         <translation>błąd pobierania punktów końcowych</translation>
     </message>
     <message>
-        <location filename="../Uploader.cpp" line="138"/>
+        <location filename="../Uploader.cpp" line="137"/>
         <source>idle</source>
         <translation>oczekuje</translation>
     </message>
