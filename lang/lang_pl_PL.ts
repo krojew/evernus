@@ -2753,6 +2753,11 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Błąd</translation>
     </message>
     <message>
+        <location filename="../MainWindow.cpp" line="351"/>
+        <source>Market uploader: %1</source>
+        <translation>Wysyłanie zleceń: %1</translation>
+    </message>
+    <message>
         <location filename="../MainWindow.cpp" line="514"/>
         <source>Show/hide table columns</source>
         <translation>Pokaż/ukryj kolumny tabel</translation>
@@ -2927,13 +2932,16 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="776"/>
-        <source>unknown</source>
-        <translation>nieznane</translation>
+        <source>Market uploader: unknown</source>
+        <translation>Wysyłanie zleceń: nieznane</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="779"/>
+        <source>unknown</source>
+        <translation type="vanished">nieznane</translation>
+    </message>
+    <message>
         <source>Market uploader:</source>
-        <translation>Wysyłanie zleceń:</translation>
+        <translation type="vanished">Wysyłanie zleceń:</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="627"/>

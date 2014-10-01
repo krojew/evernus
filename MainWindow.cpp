@@ -348,7 +348,7 @@ namespace Evernus
 
     void MainWindow::setUploaderStatus(const QString &status)
     {
-        mStatusUploaderLabel->setText(tr("Market uploader: ") + status);
+        mStatusUploaderLabel->setText(tr("Market uploader: %1").arg(status));
     }
 
     void MainWindow::updateCurrentTab(int index)
