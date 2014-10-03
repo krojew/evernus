@@ -532,6 +532,10 @@ namespace Evernus
     {
         mMainTabs = new QTabWidget{this};
         setCentralWidget(mMainTabs);
+#ifdef Q_OS_OSX
+        mMainTabs->tabBar()->setElideMode(Qt::ElideNone);
+        mMainTabs->tabBar()->setUsesScrollButtons(true);
+#endif
         mMainTabs->tabBar()->setStyleSheet("*::tab:disabled { width: 0; height: 0; margin: 0; padding: 0; border: none; }");
         connect(mMainTabs, &QTabWidget::currentChanged, this, &MainWindow::updateCurrentTab);
 
