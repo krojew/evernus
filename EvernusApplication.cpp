@@ -222,8 +222,8 @@ namespace Evernus
     {
         Q_ASSERT(mExternalOrderImporters.find(name) == std::end(mExternalOrderImporters));
 
-        connect(importer.get(), &ExternalOrderImporter::error, this, &EvernusApplication::showPriceImportError);
-        connect(importer.get(), &ExternalOrderImporter::externalOrdersChanged, this, &EvernusApplication::updateExternalOrdersAndAssetValue);
+        connect(importer.get(), &ExternalOrderImporter::error, this, &EvernusApplication::showPriceImportError, Qt::QueuedConnection);
+        connect(importer.get(), &ExternalOrderImporter::externalOrdersChanged, this, &EvernusApplication::updateExternalOrdersAndAssetValue, Qt::QueuedConnection);
         mExternalOrderImporters.emplace(name, std::move(importer));
     }
 
