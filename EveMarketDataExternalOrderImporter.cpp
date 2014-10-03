@@ -16,7 +16,6 @@
 #include <QCoreApplication>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QMetaObject>
 #include <QMultiHash>
 #include <QUrlQuery>
 #include <QXmlQuery>
@@ -152,7 +151,6 @@ namespace Evernus
 
             if (mRequestCount == 0)
             {
-                //QMetaObject::invokeMethod(const_cast<EveMarketDataExternalOrderImporter*>(this), "externalOrdersChanged", Qt::QueuedConnection, Q_ARG(std::vector<ExternalOrder>, std::move(mResult)));
                 emit externalOrdersChanged(mResult);
                 mResult.clear();
             }
