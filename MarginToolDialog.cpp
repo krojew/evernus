@@ -98,7 +98,7 @@ namespace Evernus
         connect(buttons, &QDialogButtonBox::rejected, this, &MarginToolDialog::close);
         connect(quitBtn, &QPushButton::clicked, this, [this](){
             savePosition();
-            qApp->quit();
+            emit quit();
         });
 
         const auto logPath = PathUtils::getMarketLogsPath();
