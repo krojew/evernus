@@ -177,6 +177,11 @@ namespace Evernus
         order.setDuration(values[durationColumn].toShort());
 
         auto dt = QDateTime::fromString(values[issuedColumn], eveDateFormat);
+        if (!dt.isValid())
+        {
+            const auto altEveDateFormat = "yyyy-MM-dd";
+            dt = QDateTime::fromString(values[issuedColumn], altEveDateFormat);
+        }
         dt.setTimeSpec(Qt::UTC);
 
         order.setIssued(dt);
