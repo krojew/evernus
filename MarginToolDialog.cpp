@@ -171,7 +171,10 @@ namespace Evernus
         settings.setValue(MarginToolSettings::alwaysOnTopKey, alwaysOnTop);
 
         setNewWindowFlags(alwaysOnTop);
+
+        const auto geom = geometry();
         show();
+        setGeometry(geom);
     }
 
     void MarginToolDialog::refreshData(const QString &path)
