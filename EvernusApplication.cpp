@@ -2086,7 +2086,7 @@ namespace Evernus
                         continue;
 
                     if (order.getType() == MarketOrder::Type::Buy)
-                        buy += order.getPrice() * order.getVolumeRemaining();
+                        buy += order.getEscrow();
                     else
                         sell += order.getPrice() * order.getVolumeRemaining();
                 }
@@ -2109,7 +2109,7 @@ namespace Evernus
                         continue;
 
                     if (order.getType() == MarketOrder::Type::Buy)
-                        buy += order.getPrice() * order.getVolumeRemaining();
+                        buy += order.getEscrow();
                     else
                         sell += order.getPrice() * order.getVolumeRemaining();
                 }
