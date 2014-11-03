@@ -252,6 +252,8 @@ add_executable(
     CharacterRepository.h
     CharacterWidget.cpp
     CharacterWidget.h
+    CommonScriptAPI.cpp
+    CommonScriptAPI.h
     ConquerableStation.cpp
     ConquerableStation.h
     ConquerableStationList.h

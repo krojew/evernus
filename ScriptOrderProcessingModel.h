@@ -56,8 +56,5 @@ namespace Evernus
 
         std::vector<QVariantList> mData;
         int mMaxColumns = 0;
-
-        static QScriptValue getTypeName(QScriptContext *context, QScriptEngine *engine, void *arg);
-        static QScriptValue getLocationName(QScriptContext *context, QScriptEngine *engine, void *arg);
     };
 }

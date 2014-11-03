@@ -14,6 +14,7 @@
  */
 #include <QScriptEngine>
 
+#include "CommonScriptAPI.h"
 #include "EveDataProvider.h"
 #include "ScriptUtils.h"
 
@@ -66,10 +67,7 @@ namespace Evernus
         mData.clear();
 
         QScriptEngine engine;
-        engine.globalObject().setProperty("getTypeName", engine.newFunction(
-            &ScriptOrderProcessingModel::getTypeName, const_cast<EveDataProvider *>(&mDataProvider)));
-        engine.globalObject().setProperty("getLocationName", engine.newFunction(
-            &ScriptOrderProcessingModel::getLocationName, const_cast<EveDataProvider *>(&mDataProvider)));
+        CommonScriptAPI::insertAPI(engine, mDataProvider);
 
         if (mode == Mode::ForEach)
         {
@@ -126,23 +124,5 @@ namespace Evernus
         }
 
         endResetModel();
-    }
-
-    QScriptValue ScriptOrderProcessingModel::getTypeName(QScriptContext *context, QScriptEngine *engine, void *arg)
-    {
-        if (context->argumentCount() != 1)
-            return context->throwError("Missing argument.");
-
-        const auto dataProvider = static_cast<const EveDataProvider *>(arg);
-        return dataProvider->getTypeName(context->argument(0).toUInt32());
-    }
-
-    QScriptValue ScriptOrderProcessingModel::getLocationName(QScriptContext *context, QScriptEngine *engine, void *arg)
-    {
-        if (context->argumentCount() != 1)
-            return context->throwError("Missing argument.");
-
-        const auto dataProvider = static_cast<const EveDataProvider *>(arg);
-        return dataProvider->getLocationName(context->argument(0).toUInt32());
     }
 }

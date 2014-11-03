@@ -16,6 +16,7 @@
 #include <QTimer>
 
 #include "MarketOrderModel.h"
+#include "CommonScriptAPI.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "ExternalOrder.h"
@@ -39,6 +40,8 @@ namespace Evernus
             settings.value(UISettings::marketOrderStateFilterKey, static_cast<int>(defaultStatusFilter)).toInt());
         mPriceStatusFilter = static_cast<PriceStatusFilters>(
             settings.value(UISettings::marketOrderPriceStatusFilterKey, static_cast<int>(defaultPriceStatusFilter)).toInt());
+
+        CommonScriptAPI::insertAPI(mEngine, mDataProvider);
     }
 
     void MarketOrderFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
