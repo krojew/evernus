@@ -137,7 +137,7 @@ namespace Evernus
                     {
                         const auto cost = mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId());
                         if (!cost->isNew())
-                            return locale.toCurrencyString(cost->getCost(), "ISK");
+                            return TextUtils::currencyToString(cost->getCost(), locale);
                     }
                     break;
                 case priceColumn:
@@ -146,7 +146,7 @@ namespace Evernus
                         if (price->isNew())
                             return tr("unknown");
 
-                        return locale.toCurrencyString(getAdjustedPrice(price->getPrice()), "ISK");
+                        return TextUtils::currencyToString(getAdjustedPrice(price->getPrice()), locale);
                     }
                 case profitColumn:
                     {
@@ -154,7 +154,7 @@ namespace Evernus
                         if (mCharacter)
                             cost = mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getCost();
 
-                        return locale.toCurrencyString(getAdjustedPrice(mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice()) - cost, "ISK");
+                        return TextUtils::currencyToString(getAdjustedPrice(mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice()) - cost, locale);
                     }
                 case marginColumn:
                     return QString{"%1%2"}.arg(locale.toString(getMargin(*data), 'f', 2)).arg(locale.percent());

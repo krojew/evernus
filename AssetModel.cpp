@@ -165,10 +165,10 @@ namespace Evernus
                 return QString{"%1m³"}.arg(locale.toString(item->data(totalVolumeColumn).toDouble(), 'f', 2));
             case unitPriceColumn:
                 if (item->parent() != &mRootItem)
-                    return locale.toCurrencyString(item->data(unitPriceColumn).toDouble(), "ISK");
+                    return TextUtils::currencyToString(item->data(unitPriceColumn).toDouble(), locale);
                 break;
             case totalPriceColumn:
-                return locale.toCurrencyString(item->data(totalPriceColumn).toDouble(), "ISK");
+                return TextUtils::currencyToString(item->data(totalPriceColumn).toDouble(), locale);
             }
             return item->data(column);
         case Qt::FontRole:

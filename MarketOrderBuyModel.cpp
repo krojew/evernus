@@ -87,8 +87,8 @@ namespace Evernus
                 if (price->getPrice() > data->getPrice())
                 {
                     return tr("You have been overbid. Current price is %1 (%2 different from yours).\nClick the icon for details.")
-                        .arg(locale.toCurrencyString(price->getPrice(), "ISK"))
-                        .arg(locale.toCurrencyString(price->getPrice() - data->getPrice(), "ISK"));
+                        .arg(TextUtils::currencyToString(price->getPrice(), locale))
+                        .arg(TextUtils::currencyToString(price->getPrice() - data->getPrice(), locale));
                 }
 
                 QSettings settings;
@@ -230,7 +230,7 @@ namespace Evernus
                     }
                     break;
                 case priceColumn:
-                    return locale.toCurrencyString(data->getPrice(), "ISK");
+                    return TextUtils::currencyToString(data->getPrice(), locale);
                 case priceStatusColumn:
                     {
                         const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
@@ -244,11 +244,11 @@ namespace Evernus
                     }
                     break;
                 case priceDifferenceColumn:
-                    return locale.toCurrencyString(mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange())->getPrice() - data->getPrice(), "ISK");
+                    return TextUtils::currencyToString(mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange())->getPrice() - data->getPrice(), locale);
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(data->getVolumeRemaining())).arg(locale.toString(data->getVolumeEntered()));
                 case totalColumn:
-                    return locale.toCurrencyString(data->getVolumeRemaining() * data->getPrice(), "ISK");
+                    return TextUtils::currencyToString(data->getVolumeRemaining() * data->getPrice(), locale);
                 case deltaColumn:
                     if (data->getDelta() != 0)
                         return locale.toString(data->getDelta());

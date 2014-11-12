@@ -72,20 +72,20 @@ namespace Evernus
 
         infoLayout->addWidget(new QLabel{tr("<span style='color: blue'>Your price:</span>"), this}, 0, 0);
         infoLayout->addWidget(new QLabel{tr("<span style='color: blue'>%1</span>")
-            .arg(curLocale.toCurrencyString(info.mOrderPrice, "ISK")), this}, 0, 1);
+            .arg(TextUtils::currencyToString(info.mOrderPrice, curLocale)), this}, 0, 1);
         infoLayout->addWidget(new QLabel{tr("Valid on:"), this}, 0, 2);
         infoLayout->addWidget(new QLabel{(info.mOrderLocalTimestamp.isValid()) ? (TextUtils::dateTimeToString(info.mOrderLocalTimestamp, curLocale)) : ("-"), this}, 0, 3);
 
         infoLayout->addWidget(new QLabel{tr("<span style='color: red'>Market price:</span>"), this}, 1, 0);
         infoLayout->addWidget(new QLabel{tr("<span style='color: red'>%1</span>")
-            .arg(curLocale.toCurrencyString(info.mMarketPrice, "ISK")), this}, 1, 1);
+            .arg(TextUtils::currencyToString(info.mMarketPrice, curLocale)), this}, 1, 1);
         infoLayout->addWidget(new QLabel{tr("Valid on:"), this}, 1, 2);
         infoLayout->addWidget(new QLabel{(info.mMarketLocalTimestamp.isValid()) ? (TextUtils::dateTimeToString(info.mMarketLocalTimestamp, curLocale)) : ("-"), this}, 1, 3);
 
         infoLayout->addWidget(new QLabel{tr("Difference:"), this}, 2, 0);
-        infoLayout->addWidget(new QLabel{curLocale.toCurrencyString(info.mMarketPrice - info.mOrderPrice, "ISK"), this}, 2, 1);
+        infoLayout->addWidget(new QLabel{TextUtils::currencyToString(info.mMarketPrice - info.mOrderPrice, curLocale), this}, 2, 1);
         infoLayout->addWidget(new QLabel{tr("New price:"), this}, 2, 2);
-        infoLayout->addWidget(new QLabel{QString{"<strong>%1</strong>"}.arg(curLocale.toCurrencyString(info.mTargetPrice, "ISK")), this}, 2, 3);
+        infoLayout->addWidget(new QLabel{QString{"<strong>%1</strong>"}.arg(TextUtils::currencyToString(info.mTargetPrice, curLocale)), this}, 2, 3);
 
         setFrameStyle(QFrame::StyledPanel);
 

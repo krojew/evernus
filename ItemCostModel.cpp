@@ -15,6 +15,7 @@
 #include <QLocale>
 
 #include "EveDataProvider.h"
+#include "TextUtils.h"
 
 #include "ItemCostModel.h"
 
@@ -61,7 +62,7 @@ namespace Evernus
             case 0:
                 return mDataProvider.getTypeName(cost->getTypeId());
             case 1:
-                return QLocale{}.toCurrencyString(cost->getCost(), "ISK");
+                return TextUtils::currencyToString(cost->getCost(), QLocale{});
             }
         }
         else if (role == Qt::UserRole)

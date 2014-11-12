@@ -204,22 +204,22 @@
 <context>
     <name>Evernus::AggregatedStatisticsModel</name>
     <message>
-        <location filename="../AggregatedStatisticsModel.cpp" line="86"/>
+        <location filename="../AggregatedStatisticsModel.cpp" line="87"/>
         <source>Id</source>
         <translation>Identyfikator</translation>
     </message>
     <message>
-        <location filename="../AggregatedStatisticsModel.cpp" line="88"/>
+        <location filename="../AggregatedStatisticsModel.cpp" line="89"/>
         <source>Count</source>
         <translation>Ilość</translation>
     </message>
     <message>
-        <location filename="../AggregatedStatisticsModel.cpp" line="90"/>
+        <location filename="../AggregatedStatisticsModel.cpp" line="91"/>
         <source>Price sum</source>
         <translation>Suma cen</translation>
     </message>
     <message>
-        <location filename="../AggregatedStatisticsModel.cpp" line="92"/>
+        <location filename="../AggregatedStatisticsModel.cpp" line="93"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
@@ -296,32 +296,32 @@
 <context>
     <name>Evernus::AssetsWidget</name>
     <message>
-        <location filename="../AssetsWidget.cpp" line="61"/>
+        <location filename="../AssetsWidget.cpp" line="62"/>
         <source>Import prices from Web</source>
         <translation>Importuj ceny z sieci</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="66"/>
+        <location filename="../AssetsWidget.cpp" line="67"/>
         <source>Import prices from logs</source>
         <translation>Importuj ceny z logów</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="71"/>
+        <location filename="../AssetsWidget.cpp" line="72"/>
         <source>Import prices from cache</source>
         <translation>Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="95"/>
+        <location filename="../AssetsWidget.cpp" line="96"/>
         <source>Price station</source>
         <translation>Stacja z cenami</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="104"/>
+        <location filename="../AssetsWidget.cpp" line="105"/>
         <source>Use asset location</source>
         <translation>Użyj stacji z przedmiotem</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="114"/>
+        <location filename="../AssetsWidget.cpp" line="115"/>
         <source>Use custom station</source>
         <translation>Użyj wybranej stacji</translation>
     </message>
@@ -984,27 +984,27 @@
 <context>
     <name>Evernus::ContractView</name>
     <message>
-        <location filename="../ContractView.cpp" line="39"/>
+        <location filename="../ContractView.cpp" line="40"/>
         <source>Total contracts:</source>
         <translation>Kontrakty:</translation>
     </message>
     <message>
-        <location filename="../ContractView.cpp" line="48"/>
+        <location filename="../ContractView.cpp" line="49"/>
         <source>Total price:</source>
         <translation>Całkowita cena:</translation>
     </message>
     <message>
-        <location filename="../ContractView.cpp" line="54"/>
+        <location filename="../ContractView.cpp" line="55"/>
         <source>Total reward:</source>
         <translation>Całkowita nagroda:</translation>
     </message>
     <message>
-        <location filename="../ContractView.cpp" line="60"/>
+        <location filename="../ContractView.cpp" line="61"/>
         <source>Total collateral:</source>
         <translation>Całkowite zabezpieczenie:</translation>
     </message>
     <message>
-        <location filename="../ContractView.cpp" line="66"/>
+        <location filename="../ContractView.cpp" line="67"/>
         <source>Total volume:</source>
         <translation>Całkowity wolumen:</translation>
     </message>
@@ -1802,53 +1802,53 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ExternalOrderView</name>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="69"/>
+        <location filename="../ExternalOrderView.cpp" line="70"/>
         <source>Total cost:</source>
         <translation>Całkowity koszt:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="75"/>
+        <location filename="../ExternalOrderView.cpp" line="76"/>
         <source>Total volume:</source>
         <translation>Całkowity wolumen:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="81"/>
+        <location filename="../ExternalOrderView.cpp" line="82"/>
         <source>Total size:</source>
         <translation>Całkowita objętość:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="87"/>
+        <location filename="../ExternalOrderView.cpp" line="88"/>
         <source>Min. price:</source>
         <translation>Min. cena:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="93"/>
+        <location filename="../ExternalOrderView.cpp" line="94"/>
         <source>Median price:</source>
         <translation>Mediana:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="99"/>
+        <location filename="../ExternalOrderView.cpp" line="100"/>
         <source>Max. price:</source>
         <translation>Maks. cena:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="105"/>
+        <location filename="../ExternalOrderView.cpp" line="106"/>
         <source>Custom cost:</source>
         <translation>Koszt własny:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="194"/>
+        <location filename="../ExternalOrderView.cpp" line="195"/>
         <source>Copy suggested price: %1</source>
         <translation>Skopiuj sugerowaną cenę: %1</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="210"/>
-        <location filename="../ExternalOrderView.cpp" line="216"/>
+        <location filename="../ExternalOrderView.cpp" line="211"/>
+        <location filename="../ExternalOrderView.cpp" line="217"/>
         <source>N/A</source>
         <translation>brak</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="239"/>
+        <location filename="../ExternalOrderView.cpp" line="240"/>
         <source>Copy suggested price</source>
         <translation>Skopiuj sugerowaną cenę</translation>
     </message>
@@ -1889,7 +1889,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Używaj spakowanego rozmiaru statków</translation>
     </message>
     <message>
-        <location filename="../GeneralPreferencesWidget.cpp" line="77"/>
+        <location filename="../GeneralPreferencesWidget.cpp" line="74"/>
+        <source>Omit currency symbol (requires restart)</source>
+        <translation>Pomiń symbol waluty (wymaga ponownego uruchomienia)</translation>
+    </message>
+    <message>
+        <location filename="../GeneralPreferencesWidget.cpp" line="81"/>
         <source>Date/time format:</source>
         <translation>Format daty/czasu:</translation>
     </message>
@@ -1897,22 +1902,22 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::GenericMarketOrdersInfoWidget</name>
     <message>
-        <location filename="../GenericMarketOrdersInfoWidget.cpp" line="35"/>
+        <location filename="../GenericMarketOrdersInfoWidget.cpp" line="36"/>
         <source>Active orders:</source>
         <translation>Aktywne zlecenia:</translation>
     </message>
     <message>
-        <location filename="../GenericMarketOrdersInfoWidget.cpp" line="41"/>
+        <location filename="../GenericMarketOrdersInfoWidget.cpp" line="42"/>
         <source>Total volume:</source>
         <translation>Całkowity wolumen:</translation>
     </message>
     <message>
-        <location filename="../GenericMarketOrdersInfoWidget.cpp" line="47"/>
+        <location filename="../GenericMarketOrdersInfoWidget.cpp" line="48"/>
         <source>Total ISK in orders:</source>
         <translation>Całkowita inwestycja:</translation>
     </message>
     <message>
-        <location filename="../GenericMarketOrdersInfoWidget.cpp" line="53"/>
+        <location filename="../GenericMarketOrdersInfoWidget.cpp" line="54"/>
         <source>Total size:</source>
         <translation>Całkowita objętość:</translation>
     </message>
@@ -2425,12 +2430,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ItemCostModel</name>
     <message>
-        <location filename="../ItemCostModel.cpp" line="38"/>
+        <location filename="../ItemCostModel.cpp" line="39"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../ItemCostModel.cpp" line="40"/>
+        <location filename="../ItemCostModel.cpp" line="41"/>
         <source>Cost</source>
         <translation>Koszt</translation>
     </message>
@@ -2466,27 +2471,27 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ItemHistoryWidget</name>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="54"/>
+        <location filename="../ItemHistoryWidget.cpp" line="55"/>
         <source>Item type:</source>
         <translation>Type:</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="63"/>
+        <location filename="../ItemHistoryWidget.cpp" line="64"/>
         <source>Combine for all characters</source>
         <translation>Połącz dla wszystkich postaci</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="105"/>
+        <location filename="../ItemHistoryWidget.cpp" line="106"/>
         <source>Balance</source>
         <translation>Bilans</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="116"/>
+        <location filename="../ItemHistoryWidget.cpp" line="117"/>
         <source>Total income:</source>
         <translation>Całkowity zysk:</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="122"/>
+        <location filename="../ItemHistoryWidget.cpp" line="123"/>
         <source>Total cost:</source>
         <translation>Całkowity koszt:</translation>
     </message>
@@ -2495,23 +2500,23 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Całkowity koszt:</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="128"/>
+        <location filename="../ItemHistoryWidget.cpp" line="129"/>
         <source>Balance:</source>
         <translation>Bilans:</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="134"/>
+        <location filename="../ItemHistoryWidget.cpp" line="135"/>
         <source>Margin:</source>
         <translation>Marża:</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="140"/>
+        <location filename="../ItemHistoryWidget.cpp" line="141"/>
         <source>Total volume:</source>
         <translation>Całkowity wolumen:</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="83"/>
-        <location filename="../ItemHistoryWidget.cpp" line="99"/>
+        <location filename="../ItemHistoryWidget.cpp" line="84"/>
+        <location filename="../ItemHistoryWidget.cpp" line="100"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
@@ -2984,179 +2989,179 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarginToolDialog</name>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="457"/>
+        <location filename="../MarginToolDialog.cpp" line="458"/>
         <source>export market logs in game</source>
         <translation>wyeksportuj logi z gry</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="466"/>
+        <location filename="../MarginToolDialog.cpp" line="467"/>
         <source>Sell:</source>
         <translation>Sprzedaż:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="467"/>
+        <location filename="../MarginToolDialog.cpp" line="468"/>
         <source>Buy:</source>
         <translation>Kupno:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="468"/>
+        <location filename="../MarginToolDialog.cpp" line="469"/>
         <source>Profit:</source>
         <translation>Zysk:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="469"/>
+        <location filename="../MarginToolDialog.cpp" line="470"/>
         <source>Revenue:</source>
         <translation>Dochód:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="470"/>
+        <location filename="../MarginToolDialog.cpp" line="471"/>
         <source>Cost of sales:</source>
         <translation>Koszt sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="471"/>
+        <location filename="../MarginToolDialog.cpp" line="472"/>
         <source>Buyout:</source>
         <translation>Wykup:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="485"/>
-        <location filename="../MarginToolDialog.cpp" line="500"/>
+        <location filename="../MarginToolDialog.cpp" line="486"/>
+        <location filename="../MarginToolDialog.cpp" line="501"/>
         <source>Copy to clipboard</source>
         <translation>Skopiuj do schowka</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="521"/>
+        <location filename="../MarginToolDialog.cpp" line="522"/>
         <source>Buy orders:</source>
         <translation>Zlecenia kupna:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="526"/>
+        <location filename="../MarginToolDialog.cpp" line="527"/>
         <source>Sell orders:</source>
         <translation>Zlecenia sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="531"/>
+        <location filename="../MarginToolDialog.cpp" line="532"/>
         <source>Buy volume/movement:</source>
         <translation>Wolumen kupna:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="536"/>
+        <location filename="../MarginToolDialog.cpp" line="537"/>
         <source>Sell volume/movement:</source>
         <translation>Wolumen sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="549"/>
+        <location filename="../MarginToolDialog.cpp" line="550"/>
         <source>Margin:</source>
         <translation>Marża:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="555"/>
+        <location filename="../MarginToolDialog.cpp" line="556"/>
         <source>Markup:</source>
         <translation>Narzut:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="560"/>
+        <location filename="../MarginToolDialog.cpp" line="561"/>
         <source>Autocopy</source>
         <translation>Auto. kopiowanie</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="570"/>
+        <location filename="../MarginToolDialog.cpp" line="571"/>
         <source>Nothing</source>
         <translation>Nic</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="575"/>
+        <location filename="../MarginToolDialog.cpp" line="576"/>
         <source>Sell price</source>
         <translation>Cena sprzedaży</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="580"/>
+        <location filename="../MarginToolDialog.cpp" line="581"/>
         <source>Buy price</source>
         <translation>Cena kupna</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="594"/>
+        <location filename="../MarginToolDialog.cpp" line="595"/>
         <source>Broker fee:</source>
         <translation>Broker fee:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="599"/>
+        <location filename="../MarginToolDialog.cpp" line="600"/>
         <source>Sales tax:</source>
         <translation>Podatek od sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="604"/>
+        <location filename="../MarginToolDialog.cpp" line="605"/>
         <source>Sample data</source>
         <translation>Przykładowe dane</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="615"/>
+        <location filename="../MarginToolDialog.cpp" line="616"/>
         <source>If you experience problems with importing orders, adjust margin tool settings in the Preferences.</source>
         <translation>Jeśli naptokasz problem z importem zleceń, dostosuj ustawienia narzędzia marży.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="627"/>
+        <location filename="../MarginToolDialog.cpp" line="628"/>
         <source>Preferred source</source>
         <translation>Preferowane źródło</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="637"/>
+        <location filename="../MarginToolDialog.cpp" line="638"/>
         <source>Orders only</source>
         <translation>Tylko zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="641"/>
+        <location filename="../MarginToolDialog.cpp" line="642"/>
         <source>Prefer custom item costs (if available)</source>
         <translation>Własne koszty (jeśli dostępne)</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="645"/>
+        <location filename="../MarginToolDialog.cpp" line="646"/>
         <source>Custom station</source>
         <translation>Wybrana stacja</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="649"/>
+        <location filename="../MarginToolDialog.cpp" line="650"/>
         <source>Source station</source>
         <translation>Stacja źródłowa</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="89"/>
+        <location filename="../MarginToolDialog.cpp" line="90"/>
         <source>Always on top</source>
         <translation>Zawsze na wierzchu</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="83"/>
+        <location filename="../MarginToolDialog.cpp" line="84"/>
         <source>Margin data</source>
         <translation>Marża</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="84"/>
+        <location filename="../MarginToolDialog.cpp" line="85"/>
         <source>Data source</source>
         <translation>Źródło danych</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="96"/>
+        <location filename="../MarginToolDialog.cpp" line="97"/>
         <source>Quit application</source>
         <translation>Wyjdź z aplikacji</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="108"/>
-        <location filename="../MarginToolDialog.cpp" line="114"/>
+        <location filename="../MarginToolDialog.cpp" line="109"/>
+        <location filename="../MarginToolDialog.cpp" line="115"/>
         <source>Margin tool error</source>
         <translation>Błąd narzędzia</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="109"/>
+        <location filename="../MarginToolDialog.cpp" line="110"/>
         <source>Could not determine market log path. Please enter log path in settings.</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu. Wpisz ścieżkę ręcznie w ustawieniach.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="115"/>
+        <location filename="../MarginToolDialog.cpp" line="116"/>
         <source>Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again.</source>
         <translation>Nie udało się rozpocząć obserwacji katalogu z logami. Upewnij się, że katalog istnieje (np. wyeksportuj logi) i spróbuj ponownie.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="124"/>
+        <location filename="../MarginToolDialog.cpp" line="125"/>
         <source>Margin tool</source>
         <translation>Narzędzie marży</translation>
     </message>
@@ -4664,17 +4669,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="obsolete">Całkowita objętość:</translation>
     </message>
     <message>
-        <location filename="../SellMarketOrdersInfoWidget.cpp" line="37"/>
+        <location filename="../SellMarketOrdersInfoWidget.cpp" line="38"/>
         <source>Total income:</source>
         <translation>Całkowity zysk:</translation>
     </message>
     <message>
-        <location filename="../SellMarketOrdersInfoWidget.cpp" line="44"/>
+        <location filename="../SellMarketOrdersInfoWidget.cpp" line="45"/>
         <source>Total cost:</source>
         <translation>Całkowity koszt:</translation>
     </message>
     <message>
-        <location filename="../SellMarketOrdersInfoWidget.cpp" line="51"/>
+        <location filename="../SellMarketOrdersInfoWidget.cpp" line="52"/>
         <source>Total margin:</source>
         <translation>Całkowita marża:</translation>
     </message>
@@ -5275,17 +5280,17 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletTransactionView</name>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="96"/>
+        <location filename="../WalletTransactionView.cpp" line="97"/>
         <source>Copy suggested price: %1</source>
         <translation>Skopiuj sugerowaną cenę: %1</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="159"/>
+        <location filename="../WalletTransactionView.cpp" line="160"/>
         <source>Add to item costs</source>
         <translation>Dodaj do własnych kosztów</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="173"/>
+        <location filename="../WalletTransactionView.cpp" line="174"/>
         <source>Copy suggested price</source>
         <translation>Skopiuj sugerowaną cenę</translation>
     </message>
@@ -5346,52 +5351,52 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletTransactionsWidget</name>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="61"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="62"/>
         <source>all</source>
         <translation>wszystko</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="61"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="62"/>
         <source>buy</source>
         <translation>kupno</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="61"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="62"/>
         <source>sell</source>
         <translation>sprzedaż</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="85"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="86"/>
         <source>Total transactions:</source>
         <translation>Transakcje:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="91"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="92"/>
         <source>Total quantity:</source>
         <translation>Całkowita ilość:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="97"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="98"/>
         <source>Total size:</source>
         <translation>Całkowita objętość:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="103"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="104"/>
         <source>Total income:</source>
         <translation>Całkowity zysk:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="110"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="111"/>
         <source>Total cost:</source>
         <translation>Całkowity koszt:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="117"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="118"/>
         <source>Total balance:</source>
         <translation>Całkowity bilans:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="123"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="124"/>
         <source>Total profit based on costs:</source>
         <translation>Całkowity zysk na podst. kosztów:</translation>
     </message>

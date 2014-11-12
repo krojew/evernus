@@ -108,7 +108,7 @@ namespace Evernus
                     if (static_cast<WalletTransaction::Type>(mData[row][typeColumn].toInt()) == WalletTransaction::Type::Buy)
                         price = -price;
 
-                    return QLocale{}.toCurrencyString(price, "ISK");
+                    return TextUtils::currencyToString(price, QLocale{});
                 }
             }
 

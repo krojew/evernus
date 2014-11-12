@@ -50,5 +50,14 @@ namespace Evernus
             QSettings settings;
             return locale.toString(dt, settings.value(UISettings::dateTimeFormatKey, locale.dateTimeFormat(QLocale::ShortFormat)).toString());
         }
+
+        QString currencyToString(double value, const QLocale &locale)
+        {
+            QSettings settings;
+
+            const auto omitSymbol
+                = settings.value(UISettings::omitCurrencySymbolKey, UISettings::omitCurrencySymbolDefault).toBool();
+            return (omitSymbol) ? (locale.toString(value, 'f', 2)) : (locale.toCurrencyString(value, "ISK"));
+        }
     }
 }

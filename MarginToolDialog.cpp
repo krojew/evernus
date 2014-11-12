@@ -55,6 +55,7 @@
 #include "Repository.h"
 #include "PriceUtils.h"
 #include "PathUtils.h"
+#include "TextUtils.h"
 
 #include "MarginToolDialog.h"
 
@@ -364,7 +365,7 @@ namespace Evernus
             mSellOrdersLabel->setText(curLocale.toString(sellCount));
             mBuyVolLabel->setText(QString{"%1/%2"}.arg(curLocale.toString(buyVol)).arg(curLocale.toString(buyInit - buyVol)));
             mSellVolLabel->setText(QString{"%1/%2"}.arg(curLocale.toString(sellVol)).arg(curLocale.toString(sellInit - sellVol)));
-            mBuyoutLabel->setText(curLocale.toCurrencyString(buyout, "ISK"));
+            mBuyoutLabel->setText(TextUtils::currencyToString(buyout, curLocale));
 
             updateInfo(buy, sell, true);
         }
@@ -716,7 +717,7 @@ namespace Evernus
                     mBuyPrice = buy + priceDelta;
 
                     mBestBuyEdit->setText(curLocale.toString(mBuyPrice, 'f', 2));
-                    mCostOfSalesLabel->setText(curLocale.toCurrencyString(PriceUtils::getCoS(mBuyPrice, taxes), "ISK"));
+                    mCostOfSalesLabel->setText(TextUtils::currencyToString(PriceUtils::getCoS(mBuyPrice, taxes), curLocale));
 
                     if (mCopyBuyBtn->isChecked())
                         QApplication::clipboard()->setText(QString::number(mBuyPrice, 'f', 2));
@@ -736,7 +737,7 @@ namespace Evernus
                     mSellPrice = sell - priceDelta;
 
                     mBestSellEdit->setText(curLocale.toString(mSellPrice, 'f', 2));
-                    mRevenueLabel->setText(curLocale.toCurrencyString(PriceUtils::getRevenue(mSellPrice, taxes), "ISK"));
+                    mRevenueLabel->setText(TextUtils::currencyToString(PriceUtils::getRevenue(mSellPrice, taxes), curLocale));
 
                     if (mCopySellBtn->isChecked())
                         QApplication::clipboard()->setText(QString::number(mSellPrice, 'f', 2));
@@ -771,9 +772,9 @@ namespace Evernus
                         mBestSellEdit->setText(curLocale.toString(mSellPrice, 'f', 2));
                     }
 
-                    mProfitLabel->setText(curLocale.toCurrencyString(revenue - cos, "ISK"));
-                    mRevenueLabel->setText(curLocale.toCurrencyString(revenue, "ISK"));
-                    mCostOfSalesLabel->setText(curLocale.toCurrencyString(cos, "ISK"));
+                    mProfitLabel->setText(TextUtils::currencyToString(revenue - cos, curLocale));
+                    mRevenueLabel->setText(TextUtils::currencyToString(revenue, curLocale));
+                    mCostOfSalesLabel->setText(TextUtils::currencyToString(cos, curLocale));
 
                     if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
                         mMarginLabel->setStyleSheet("color: red;");

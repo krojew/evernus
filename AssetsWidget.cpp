@@ -33,6 +33,7 @@
 #include "AssetProvider.h"
 #include "StationView.h"
 #include "AssetList.h"
+#include "TextUtils.h"
 
 #include "AssetsWidget.h"
 
@@ -200,7 +201,7 @@ namespace Evernus
         mInfoLabel->setText(QString{"Total assets: <strong>%1</strong> Total volume: <strong>%2m³</strong> Total sell price: <strong>%3</strong>"}
             .arg(locale.toString(mModel.getTotalAssets()))
             .arg(locale.toString(mModel.getTotalVolume(), 'f', 2))
-            .arg(locale.toCurrencyString(mModel.getTotalSellPrice(), "ISK")));
+            .arg(TextUtils::currencyToString(mModel.getTotalSellPrice(), locale)));
     }
 
     ExternalOrderImporter::TypeLocationPairs AssetsWidget::getImportTarget() const

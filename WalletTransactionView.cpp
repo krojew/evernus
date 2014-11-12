@@ -23,6 +23,7 @@
 #include "WalletTransactionsModel.h"
 #include "ItemCostProvider.h"
 #include "PriceSettings.h"
+#include "TextUtils.h"
 
 #include "WalletTransactionView.h"
 
@@ -93,7 +94,7 @@ namespace Evernus
                                   (selected.indexes().first());
 
             const auto price = getSuggestedPrice(mModel->getPrice(mCurrentTransaction.row()));
-            mCopySuggestedPriceAct->setText(tr("Copy suggested price: %1").arg(locale().toCurrencyString(price, "ISK")));
+            mCopySuggestedPriceAct->setText(tr("Copy suggested price: %1").arg(TextUtils::currencyToString(price, locale())));
 
             mCopySuggestedPriceAct->setEnabled(true);
         }

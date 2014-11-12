@@ -28,6 +28,7 @@
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "UISettings.h"
+#include "TextUtils.h"
 
 #include "qcustomplot.h"
 
@@ -268,9 +269,9 @@ namespace Evernus
 
         const auto curLocale = locale();
 
-        mTotalIncomeLabel->setText(curLocale.toCurrencyString(mTotalIncome, "ISK"));
-        mTotalOutcomeLabel->setText(curLocale.toCurrencyString(mTotalOutcome, "ISK"));
-        mTotalBalanceLabel->setText(curLocale.toCurrencyString(mTotalIncome - mTotalOutcome, "ISK"));
+        mTotalIncomeLabel->setText(TextUtils::currencyToString(mTotalIncome, curLocale));
+        mTotalOutcomeLabel->setText(TextUtils::currencyToString(mTotalOutcome, curLocale));
+        mTotalBalanceLabel->setText(TextUtils::currencyToString(mTotalIncome - mTotalOutcome, curLocale));
         mTotalMarginLabel->setText(QString{"%1%2"}.arg(curLocale.toString(getMargin(), 'f', 2)).arg(curLocale.percent()));
         mTotalVolumeLabel->setText(curLocale.toString(totalVolume));
 

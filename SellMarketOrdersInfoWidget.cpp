@@ -20,6 +20,7 @@
 #include "PriceSettings.h"
 #include "FlowLayout.h"
 #include "PriceUtils.h"
+#include "TextUtils.h"
 
 #include "SellMarketOrdersInfoWidget.h"
 
@@ -64,8 +65,8 @@ namespace Evernus
         const auto cost = mModel.getTotalCost();
         const auto margin = 100. * (income - cost) / income;
 
-        mTotalIncomeLabel->setText(curLocale.toCurrencyString(income, "ISK"));
-        mTotalCostLabel->setText(curLocale.toCurrencyString(cost, "ISK"));
+        mTotalIncomeLabel->setText(TextUtils::currencyToString(income, curLocale));
+        mTotalCostLabel->setText(TextUtils::currencyToString(cost, curLocale));
         mTotalMarginLabel->setText(QString{"%1%2"}.arg(curLocale.toString(margin, 'f', 2)).arg(curLocale.percent()));
 
         QSettings settings;

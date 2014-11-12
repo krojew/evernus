@@ -17,6 +17,7 @@
 
 #include "MarketOrderModel.h"
 #include "FlowLayout.h"
+#include "TextUtils.h"
 
 #include "GenericMarketOrdersInfoWidget.h"
 
@@ -69,7 +70,7 @@ namespace Evernus
             .arg(curLocale.toString(volRemaining))
             .arg(curLocale.toString(volEntered))
             .arg(curLocale.toString((volEntered > 0.) ? (volRemaining * 100. / volEntered) : (0.), 'f', 1)));
-        mTotalISKLabel->setText(curLocale.toCurrencyString(mModel.getTotalISK(), "ISK"));
+        mTotalISKLabel->setText(TextUtils::currencyToString(mModel.getTotalISK(), curLocale));
         mTotalSizeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(mModel.getTotalSize(), 'f', 2)));
     }
 }

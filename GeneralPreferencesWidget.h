@@ -40,6 +40,7 @@ namespace Evernus
         QCheckBox *mMinimizeToTrayBtn = nullptr;
         QCheckBox *mAutoUpdateBtn = nullptr;
         QCheckBox *mUsePackagedVolumeBtn = nullptr;
+        QCheckBox *mOmitCurrencySymbolBtn = nullptr;
         QLineEdit *mDateFormEdit = nullptr;
     };
 }

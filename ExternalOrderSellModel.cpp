@@ -401,11 +401,11 @@ namespace Evernus
                 case deviationColumn:
                     return QString{"%1%2"}.arg(static_cast<int>(computeDeviation(order) * 100.)).arg(locale.percent());
                 case priceColumn:
-                    return locale.toCurrencyString(order.getPrice(), "ISK");
+                    return TextUtils::currencyToString(order.getPrice(), locale);
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(order.getVolumeRemaining())).arg(locale.toString(order.getVolumeEntered()));
                 case totalProfitColumn:
-                    return locale.toCurrencyString(order.getVolumeRemaining() * order.getPrice(), "ISK");
+                    return TextUtils::currencyToString(order.getVolumeRemaining() * order.getPrice(),locale);
                 case totalSizeColumn:
                     return QString{"%1m³"}.arg(locale.toString(order.getVolumeRemaining() * mDataProvider.getTypeVolume(order.getTypeId()), 'f', 2));
                 case issuedColumn:
@@ -535,15 +535,15 @@ namespace Evernus
 
                 switch (column) {
                 case lowestPriceColumn:
-                    return locale.toCurrencyString(data.mLowestPrice, "ISK");
+                    return TextUtils::currencyToString(data.mLowestPrice, locale);
                 case medianPriceColumn:
-                    return locale.toCurrencyString(data.mMedianPrice, "ISK");
+                    return TextUtils::currencyToString(data.mMedianPrice, locale);
                 case highestPriceColumn:
-                    return locale.toCurrencyString(data.mHighestPrice, "ISK");
+                    return TextUtils::currencyToString(data.mHighestPrice, locale);
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(data.mVolumeRemaining)).arg(locale.toString(data.mVolumeEntered));
                 case groupedTotalProfitColumn:
-                    return locale.toCurrencyString(data.mTotalProfit, "ISK");
+                    return TextUtils::currencyToString(data.mTotalProfit, locale);
                 case ordersColumn:
                     return locale.toString(data.mCount);
                 case groupedTotalSizeColumn:

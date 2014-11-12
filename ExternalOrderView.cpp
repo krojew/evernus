@@ -29,6 +29,7 @@
 #include "StyledTreeView.h"
 #include "ExternalOrder.h"
 #include "PriceSettings.h"
+#include "TextUtils.h"
 
 #include "ExternalOrderView.h"
 
@@ -166,12 +167,12 @@ namespace Evernus
 
         if (mSource != nullptr)
         {
-            mTotalPriceLabel->setText(curLocale.toCurrencyString(mSource->getTotalPrice(), "ISK"));
+            mTotalPriceLabel->setText(TextUtils::currencyToString(mSource->getTotalPrice(), curLocale));
             mTotalVolumeLabel->setText(curLocale.toString(mSource->getTotalVolume()));
             mTotalSizeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(mSource->getTotalSize(), 'f', 2)));
-            mMinPriceLabel->setText(curLocale.toCurrencyString(mSource->getMinPrice(), "ISK"));
-            mMedianPriceLabel->setText(curLocale.toCurrencyString(mSource->getMedianPrice(), "ISK"));
-            mMaxPriceLabel->setText(curLocale.toCurrencyString(mSource->getMaxPrice(), "ISK"));
+            mMinPriceLabel->setText(TextUtils::currencyToString(mSource->getMinPrice(), curLocale));
+            mMedianPriceLabel->setText(TextUtils::currencyToString(mSource->getMedianPrice(), curLocale));
+            mMaxPriceLabel->setText(TextUtils::currencyToString(mSource->getMaxPrice(), curLocale));
         }
 
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
@@ -191,7 +192,7 @@ namespace Evernus
             mCurrentOrder = mProxy.mapToSource(selected.indexes().first());
 
             const auto price = getSuggestedPrice();
-            mCopySuggestedPriceAct->setText(tr("Copy suggested price: %1").arg(locale().toCurrencyString(price, "ISK")));
+            mCopySuggestedPriceAct->setText(tr("Copy suggested price: %1").arg(TextUtils::currencyToString(price, locale())));
 
             mCopySuggestedPriceAct->setEnabled(true);
         }
@@ -215,7 +216,7 @@ namespace Evernus
             if (cost->isNew())
                 mItemCostLabel->setText(tr("N/A"));
             else
-                mItemCostLabel->setText(locale().toCurrencyString(cost->getCost(), "ISK"));
+                mItemCostLabel->setText(TextUtils::currencyToString(cost->getCost(), locale()));
         }
     }
 

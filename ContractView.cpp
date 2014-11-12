@@ -19,6 +19,7 @@
 
 #include "StyledTreeView.h"
 #include "ContractModel.h"
+#include "TextUtils.h"
 
 #include "ContractView.h"
 
@@ -100,9 +101,9 @@ namespace Evernus
         auto curLocale = locale();
 
         mTotalContractsLabel->setText(curLocale.toString(static_cast<qulonglong>(mModel->getNumContracts())));
-        mTotalPriceLabel->setText(curLocale.toCurrencyString(mModel->getTotalPrice(), "ISK"));
-        mTotalRewardLabel->setText(curLocale.toCurrencyString(mModel->getTotalReward(), "ISK"));
-        mTotalCollateralLabel->setText(curLocale.toCurrencyString(mModel->getTotalCollateral(), "ISK"));
+        mTotalPriceLabel->setText(TextUtils::currencyToString(mModel->getTotalPrice(), curLocale));
+        mTotalRewardLabel->setText(TextUtils::currencyToString(mModel->getTotalReward(), curLocale));
+        mTotalCollateralLabel->setText(TextUtils::currencyToString(mModel->getTotalCollateral(), curLocale));
         mTotalVolumeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(mModel->getTotalVolume(), 'f', 2)));
     }
 }

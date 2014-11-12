@@ -92,7 +92,7 @@ namespace Evernus
                 return TextUtils::dateTimeToString(mData[row][timestampColumn].toDateTime().toLocalTime(), QLocale{});
             case amountColumn:
             case balanceColumn:
-                return QLocale{}.toCurrencyString(mData[row][column].toDouble(), "ISK");
+                return TextUtils::currencyToString(mData[row][column].toDouble(), QLocale{});
             }
 
             return mData[row][column];

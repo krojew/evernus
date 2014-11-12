@@ -92,8 +92,8 @@ namespace Evernus
                 if (price->getPrice() < data->getPrice())
                 {
                     return tr("You have been undercut. Current price is %1 (%2 different from yours).\nClick the icon for details.")
-                        .arg(locale.toCurrencyString(price->getPrice(), "ISK"))
-                        .arg(locale.toCurrencyString(price->getPrice() - data->getPrice(), "ISK"));
+                        .arg(TextUtils::currencyToString(price->getPrice(), locale))
+                        .arg(TextUtils::currencyToString(price->getPrice() - data->getPrice(), locale));
                 }
 
                 QSettings settings;
@@ -278,11 +278,11 @@ namespace Evernus
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
                         if (!cost->isNew())
-                            return locale.toCurrencyString(cost->getCost(), "ISK");
+                            return TextUtils::currencyToString(cost->getCost(), locale);
                     }
                     break;
                 case priceColumn:
-                    return locale.toCurrencyString(data->getPrice(), "ISK");
+                    return TextUtils::currencyToString(data->getPrice(), locale);
                 case priceStatusColumn:
                     {
                         const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId());
@@ -296,7 +296,7 @@ namespace Evernus
                     }
                     break;
                 case priceDifferenceColumn:
-                    return locale.toCurrencyString(mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice(), "ISK");
+                    return TextUtils::currencyToString(mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice(), locale);
                 case priceDifferencePercentColumn:
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
@@ -310,7 +310,7 @@ namespace Evernus
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(data->getVolumeRemaining())).arg(locale.toString(data->getVolumeEntered()));
                 case totalColumn:
-                    return locale.toCurrencyString(data->getVolumeRemaining() * data->getPrice(), "ISK");
+                    return TextUtils::currencyToString(data->getVolumeRemaining() * data->getPrice(), locale);
                 case deltaColumn:
                     if (data->getDelta() != 0)
                         return locale.toString(data->getDelta());
@@ -330,7 +330,7 @@ namespace Evernus
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
                         const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
                         const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                        return locale.toCurrencyString(data->getVolumeRemaining() * (realPrice - realCost), "ISK");
+                        return TextUtils::currencyToString(data->getVolumeRemaining() * (realPrice - realCost), locale);
                     }
                     break;
                 case totalProfitColumn:
@@ -340,7 +340,7 @@ namespace Evernus
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
                         const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
                         const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                        return locale.toCurrencyString(data->getVolumeEntered() * (realPrice - realCost), "ISK");
+                        return TextUtils::currencyToString(data->getVolumeEntered() * (realPrice - realCost), locale);
                     }
                     break;
                 case profitPerItemColumn:
@@ -350,7 +350,7 @@ namespace Evernus
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
                         const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
                         const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                        return locale.toCurrencyString(realPrice - realCost, "ISK");
+                        return TextUtils::currencyToString(realPrice - realCost, locale);
                     }
                     break;
                 case etaColumn:

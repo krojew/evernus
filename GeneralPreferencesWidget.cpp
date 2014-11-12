@@ -71,6 +71,10 @@ namespace Evernus
         generalGroupLayout->addWidget(mUsePackagedVolumeBtn);
         mUsePackagedVolumeBtn->setChecked(settings.value(UISettings::usePackagedVolumeKey, UISettings::usePackagedVolumeDefault).toBool());
 
+        mOmitCurrencySymbolBtn = new QCheckBox{tr("Omit currency symbol (requires restart)"), this};
+        generalGroupLayout->addWidget(mOmitCurrencySymbolBtn);
+        mOmitCurrencySymbolBtn->setChecked(settings.value(UISettings::omitCurrencySymbolKey, UISettings::omitCurrencySymbolDefault).toBool());
+
         auto dtFormatLayout = new QHBoxLayout{};
         generalGroupLayout->addLayout(dtFormatLayout);
 
@@ -90,6 +94,7 @@ namespace Evernus
         settings.setValue(UISettings::minimizeToTrayKey, mMinimizeToTrayBtn->isChecked());
         settings.setValue(UpdaterSettings::autoUpdateKey, mAutoUpdateBtn->isChecked());
         settings.setValue(UISettings::usePackagedVolumeKey, mUsePackagedVolumeBtn->isChecked());
+        settings.setValue(UISettings::omitCurrencySymbolKey, mOmitCurrencySymbolBtn->isChecked());
         settings.setValue(UISettings::dateTimeFormatKey, mDateFormEdit->text());
     }
 }

@@ -31,6 +31,7 @@
 #include "ImportSettings.h"
 #include "PriceSettings.h"
 #include "FlowLayout.h"
+#include "TextUtils.h"
 
 #include "WalletTransactionsWidget.h"
 
@@ -180,10 +181,10 @@ namespace Evernus
         mTotalTransactionsLabel->setText(curLocale.toString(mModel.rowCount()));
         mTotalQuantityLabel->setText(curLocale.toString(mModel.getTotalQuantity()));
         mTotalSizeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(mModel.getTotalSize(), 'f', 2)));
-        mTotalIncomeLabel->setText(curLocale.toCurrencyString(income, "ISK"));
-        mTotalCostLabel->setText(curLocale.toCurrencyString(cost, "ISK"));
-        mTotalBalanceLabel->setText(curLocale.toCurrencyString(income - cost, "ISK"));
-        mTotalProfitLabel->setText(curLocale.toCurrencyString(profit, "ISK"));
+        mTotalIncomeLabel->setText(TextUtils::currencyToString(income, curLocale));
+        mTotalCostLabel->setText(TextUtils::currencyToString(cost, curLocale));
+        mTotalBalanceLabel->setText(TextUtils::currencyToString(income - cost, curLocale));
+        mTotalProfitLabel->setText(TextUtils::currencyToString(profit, curLocale));
 
         setColor(mTotalBalanceLabel, income - cost);
         setColor(mTotalProfitLabel, profit);

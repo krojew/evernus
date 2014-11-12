@@ -25,6 +25,7 @@ namespace Evernus
         const auto plotNumberFormatDefault = "f";
         const auto cacheImportApprovedDefault = false;
         const auto usePackagedVolumeDefault = false;
+        const auto omitCurrencySymbolDefault = false;
 
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
@@ -39,5 +40,6 @@ namespace Evernus
         const auto headerStateKey = "ui/header/state/%1";
         const auto usePackagedVolumeKey = "ui/global/usePackagedVolume";
         const auto tabShowStateKey = "ui/mainWindow/tabShowState/%1";
+        const auto omitCurrencySymbolKey = "ui/global/omitCurrencySymbol";
     }
 }

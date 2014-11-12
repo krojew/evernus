@@ -14,6 +14,8 @@
  */
 #include <QLocale>
 
+#include "TextUtils.h"
+
 #include "Character.h"
 
 namespace Evernus
@@ -166,7 +168,7 @@ namespace Evernus
     QString Character::getISKPresentation() const
     {
         QLocale locale;
-        return locale.toCurrencyString(getISK(), "ISK");
+        return TextUtils::currencyToString(getISK(), locale);
     }
 
     void Character::setISK(CharacterData::ISKType isk) noexcept

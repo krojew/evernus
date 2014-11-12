@@ -142,18 +142,18 @@ namespace Evernus
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
                         if (!cost->isNew())
-                            return locale.toCurrencyString(cost->getCost(), "ISK");
+                            return TextUtils::currencyToString(cost->getCost(), locale);
                     }
                     break;
                 case priceColumn:
-                    return locale.toCurrencyString(data->getPrice(), "ISK");
+                    return TextUtils::currencyToString(data->getPrice(), locale);
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(data->getVolumeRemaining())).arg(locale.toString(data->getVolumeEntered()));
                 case profitColumn:
                     if (data->getType() == MarketOrder::Type::Sell)
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        return locale.toCurrencyString((data->getVolumeEntered() - data->getVolumeRemaining()) * (data->getPrice() - cost->getCost()), "ISK");
+                        return TextUtils::currencyToString((data->getVolumeEntered() - data->getVolumeRemaining()) * (data->getPrice() - cost->getCost()), locale);
                     }
                     break;
                 case stationColumn:

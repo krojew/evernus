@@ -539,10 +539,10 @@ namespace Evernus
         mSellOrderVolumeLabel->setText(curLocale.toString(aggrData.mSellData.mVolume));
         mTotalOrderVolumeLabel->setText(curLocale.toString(aggrData.mBuyData.mVolume + aggrData.mSellData.mVolume));
 
-        mBuyOrderValueLabel->setText(curLocale.toCurrencyString(aggrData.mBuyData.mPriceSum, "ISK"));
-        mSellOrderValueLabel->setText(curLocale.toCurrencyString(aggrData.mSellData.mPriceSum, "ISK"));
+        mBuyOrderValueLabel->setText(TextUtils::currencyToString(aggrData.mBuyData.mPriceSum, curLocale));
+        mSellOrderValueLabel->setText(TextUtils::currencyToString(aggrData.mSellData.mPriceSum, curLocale));
         mTotalOrderValueLabel->setText(tr("<strong>%1</strong>")
-            .arg(curLocale.toCurrencyString(aggrData.mBuyData.mPriceSum + aggrData.mSellData.mPriceSum, "ISK")));
+            .arg(TextUtils::currencyToString(aggrData.mBuyData.mPriceSum + aggrData.mSellData.mPriceSum, curLocale)));
     }
 
     QSpinBox *CharacterWidget::createSkillEdit(QSpinBox *&target, const QString &skillField)

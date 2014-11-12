@@ -307,13 +307,13 @@ namespace Evernus
                 case numDaysColumn:
                     return locale.toString(contract->getNumDays());
                 case priceColumn:
-                    return locale.toCurrencyString(contract->getPrice(), "ISK");
+                    return TextUtils::currencyToString(contract->getPrice(), locale);
                 case rewardColumn:
-                    return locale.toCurrencyString(contract->getReward(), "ISK");
+                    return TextUtils::currencyToString(contract->getReward(), locale);
                 case collateralColumn:
-                    return locale.toCurrencyString(contract->getCollateral(), "ISK");
+                    return TextUtils::currencyToString(contract->getCollateral(), locale);
                 case buyoutColumn:
-                    return locale.toCurrencyString(contract->getBuyout(), "ISK");
+                    return TextUtils::currencyToString(contract->getBuyout(), locale);
                 case volumeColumn:
                     return QString{"%1m³"}.arg(locale.toString(contract->getVolume(), 'f', 2));
                 }

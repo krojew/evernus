@@ -15,6 +15,7 @@
 #include <QLocale>
 
 #include "EveDataProvider.h"
+#include "TextUtils.h"
 
 #include "AggregatedStatisticsModel.h"
 
@@ -55,7 +56,7 @@ namespace Evernus
             case countColumn:
                 return locale.toString(record.second.mCount);
             case priceColumn:
-                return locale.toCurrencyString(record.second.mPriceSum, "ISK");
+                return TextUtils::currencyToString(record.second.mPriceSum, locale);
             case volumeColumn:
                 return locale.toString(record.second.mVolume);
             }
