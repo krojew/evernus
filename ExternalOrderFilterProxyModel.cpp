@@ -62,10 +62,10 @@ namespace Evernus
             return false;
 
         const auto security = mDataProvider.getSolarSystemSecurityStatus(order.getSolarSystemId());
-        if ((security < 0.) && (mSecurityStatus & NullSec))
-            return true;
-        if ((security < 0.5) && (mSecurityStatus & LowSec))
-            return true;
+        if (security < 0.)
+            return mSecurityStatus & NullSec;
+        if (security < 0.5)
+            return mSecurityStatus & LowSec;
 
         return mSecurityStatus & HighSec;
     }
