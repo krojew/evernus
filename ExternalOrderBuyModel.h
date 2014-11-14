@@ -85,25 +85,36 @@ namespace Evernus
         void setGrouping(Grouping grouping);
 
     private:
-        static const auto stationColumn = 0;
-        static const auto deviationColumn = 1;
-        static const auto priceColumn = 2;
-        static const auto totalCostColumn = 3;
-        static const auto volumeColumn = 4;
-        static const auto rangeColumn = 5;
-        static const auto minQunatityColumn = 6;
-        static const auto totalSizeColumn = 7;
-        static const auto issuedColumn = 8;
-        static const auto durationColumn = 9;
-        static const auto updatedColumn = 10;
+        enum
+        {
+            stationColumn,
+            deviationColumn,
+            priceColumn,
+            totalCostColumn,
+            volumeColumn,
+            rangeColumn,
+            minQunatityColumn,
+            totalSizeColumn,
+            issuedColumn,
+            durationColumn,
+            updatedColumn,
+            regionColumn,
 
-        static const auto groupByColumn = 0;
-        static const auto lowestPriceColumn = 1;
-        static const auto medianPriceColumn = 2;
-        static const auto highestPriceColumn = 3;
-        static const auto groupedTotalCostColumn = 5;
-        static const auto ordersColumn = 6;
-        static const auto groupedTotalSizeColumn = 7;
+            numUngroupedColumns
+        };
+
+        enum
+        {
+            groupByColumn = 0,
+            lowestPriceColumn,
+            medianPriceColumn,
+            highestPriceColumn,
+            groupedTotalCostColumn = 5,
+            ordersColumn,
+            groupedTotalSizeColumn,
+
+            numGroupedColumns
+        };
 
         struct GroupedData
         {

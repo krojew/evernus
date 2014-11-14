@@ -48,7 +48,7 @@ namespace Evernus
 
     int ExternalOrderSellModel::columnCount(const QModelIndex &parent) const
     {
-        return (mGrouping == Grouping::None) ? (9) : (8);
+        return (mGrouping == Grouping::None) ? (numUngroupedColumns) : (numGroupedColumns);
     }
 
     QVariant ExternalOrderSellModel::data(const QModelIndex &index, int role) const
@@ -97,6 +97,8 @@ namespace Evernus
                     return tr("Time left");
                 case updatedColumn:
                     return tr("Imported");
+                case regionColumn:
+                    return tr("Region");
                 }
             }
             else
@@ -421,6 +423,8 @@ namespace Evernus
                     break;
                 case updatedColumn:
                     return TextUtils::dateTimeToString(order.getUpdateTime().toLocalTime(), locale);
+                case regionColumn:
+                    return mDataProvider.getRegionName(order.getRegionId());
                 }
             }
             break;
@@ -451,6 +455,8 @@ namespace Evernus
                 break;
             case updatedColumn:
                 return order.getUpdateTime();
+            case regionColumn:
+                return mDataProvider.getRegionName(order.getRegionId());
             }
             break;
         case Qt::ForegroundRole:

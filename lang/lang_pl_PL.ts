@@ -1599,8 +1599,8 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <name>Evernus::ExternalOrderBuyModel</name>
     <message>
         <location filename="../ExternalOrderBuyModel.cpp" line="83"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="112"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="416"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="114"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="418"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
@@ -1616,7 +1616,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../ExternalOrderBuyModel.cpp" line="89"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="128"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="130"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
@@ -1636,13 +1636,13 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../ExternalOrderBuyModel.cpp" line="95"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="130"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="132"/>
         <source>Total cost</source>
         <translation>Całkowity koszt</translation>
     </message>
     <message>
         <location filename="../ExternalOrderBuyModel.cpp" line="97"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="134"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="136"/>
         <source>Total size</source>
         <translation>Całkowita objętość</translation>
     </message>
@@ -1662,48 +1662,49 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Zaimportowano</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="114"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="116"/>
         <source>Solar system</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="116"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="420"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="105"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="118"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="422"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="122"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="124"/>
         <source>Lowest price</source>
         <translation>Najniższa cena</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="124"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="126"/>
         <source>Median price</source>
         <translation>Mediana ceny</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="126"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="128"/>
         <source>Highest price</source>
         <translation>Najwyższa cena</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="132"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="134"/>
         <source>Orders</source>
         <translation>Zlecenia</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="418"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="420"/>
         <source>System</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="422"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="424"/>
         <source>%1 jumps</source>
         <translation>%1 skoków</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="495"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="501"/>
         <source>Your order</source>
         <translation>Twoje zlecenie</translation>
     </message>
@@ -1711,13 +1712,13 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ExternalOrderSellModel</name>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="471"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="477"/>
         <source>Your order</source>
         <translation>Twoje zlecenie</translation>
     </message>
     <message>
         <location filename="../ExternalOrderSellModel.cpp" line="83"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="108"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="110"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
@@ -1733,43 +1734,44 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../ExternalOrderSellModel.cpp" line="89"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="124"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="126"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
     <message>
         <location filename="../ExternalOrderSellModel.cpp" line="91"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="126"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="128"/>
         <source>Total profit</source>
         <translation>Całkowity zysk</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="110"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="112"/>
         <source>Solar system</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="112"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="101"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="114"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="118"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="120"/>
         <source>Lowest price</source>
         <translation>Najniższa cena</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="120"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="122"/>
         <source>Median price</source>
         <translation>Mediana ceny</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="122"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="124"/>
         <source>Highest price</source>
         <translation>Najwyższa cena</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="128"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="130"/>
         <source>Orders</source>
         <translation>Zlecenia</translation>
     </message>
@@ -1779,7 +1781,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../ExternalOrderSellModel.cpp" line="93"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="130"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="132"/>
         <source>Total size</source>
         <translation>Całkowita objętość</translation>
     </message>
