@@ -279,7 +279,7 @@ namespace Evernus
 
             const auto volume = order->getVolumeRemaining();
 
-            mTotalPrice += price;
+            mTotalPrice += price * volume;
             mTotalSize += mDataProvider.getTypeVolume(order->getTypeId()) * volume;
             mTotalVolume += volume;
         }
