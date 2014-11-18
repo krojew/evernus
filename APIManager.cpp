@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <thread>
+
 #include <QAbstractMessageHandler>
 #include <QDomDocument>
 #include <QXmlQuery>
@@ -201,7 +203,16 @@ namespace Evernus
                                         WalletJournalEntry::IdType tillId,
                                         const Callback<WalletJournal> &callback) const
     {
-        fetchWalletJournal(key, characterId, 0, fromId, tillId, std::make_shared<WalletJournal>(), callback, "transactions", TimerType::WalletJournal);
+        fetchWalletJournal(key,
+                           characterId,
+                           0,
+                           fromId,
+                           tillId,
+                           std::make_shared<WalletJournal>(),
+                           callback,
+                           "transactions",
+                           TimerType::WalletJournal,
+                           false);
     }
 
     void APIManager::fetchWalletJournal(const CorpKey &key,
@@ -211,7 +222,16 @@ namespace Evernus
                                         WalletJournalEntry::IdType tillId,
                                         const Callback<WalletJournal> &callback) const
     {
-        fetchWalletJournal(key, characterId, corpId, fromId, tillId, std::make_shared<WalletJournal>(), callback, "entries", TimerType::CorpWalletJournal);
+        fetchWalletJournal(key,
+                           characterId,
+                           corpId,
+                           fromId,
+                           tillId,
+                           std::make_shared<WalletJournal>(),
+                           callback,
+                           "entries",
+                           TimerType::CorpWalletJournal,
+                           false);
     }
 
     void APIManager::fetchWalletTransactions(const Key &key,
@@ -220,7 +240,15 @@ namespace Evernus
                                              WalletTransaction::IdType tillId,
                                              const Callback<WalletTransactions> &callback) const
     {
-        fetchWalletTransactions(key, characterId, 0, fromId, tillId, std::make_shared<WalletTransactions>(), callback, TimerType::WalletTransactions);
+        fetchWalletTransactions(key,
+                                characterId,
+                                0,
+                                fromId,
+                                tillId,
+                                std::make_shared<WalletTransactions>(),
+                                callback,
+                                TimerType::WalletTransactions,
+                                false);
     }
 
     void APIManager::fetchWalletTransactions(const CorpKey &key,
@@ -230,7 +258,15 @@ namespace Evernus
                                              WalletTransaction::IdType tillId,
                                              const Callback<WalletTransactions> &callback) const
     {
-        fetchWalletTransactions(key, characterId, corpId, fromId, tillId, std::make_shared<WalletTransactions>(), callback, TimerType::CorpWalletTransactions);
+        fetchWalletTransactions(key,
+                                characterId,
+                                corpId,
+                                fromId,
+                                tillId,
+                                std::make_shared<WalletTransactions>(),
+                                callback,
+                                TimerType::CorpWalletTransactions,
+                                false);
     }
 
     void APIManager::fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const
@@ -298,7 +334,8 @@ namespace Evernus
                                         std::shared_ptr<WalletJournal> &&journal,
                                         const Callback<WalletJournal> &callback,
                                         const QString &rowsetName,
-                                        TimerType timerType) const
+                                        TimerType timerType,
+                                        bool retry) const
     {
         mInterface.fetchWalletJournal(key, characterId, fromId,
                                       [=](const QString &response, const QString &error) mutable {
@@ -340,12 +377,39 @@ namespace Evernus
                 }
                 else
                 {
-                    fetchWalletJournal(key, characterId, corpId, nextFromId, tillId, std::move(journal), callback, rowsetName, timerType);
+                    fetchWalletJournal(key,
+                                       characterId,
+                                       corpId,
+                                       nextFromId,
+                                       tillId,
+                                       std::move(journal),
+                                       callback,
+                                       rowsetName,
+                                       timerType,
+                                       retry);
                 }
             }
             catch (const std::exception &e)
             {
-                callback(WalletJournal{}, e.what());
+                if (retry)
+                {
+                    callback(WalletJournal{}, e.what());
+                }
+                else
+                {
+                    // EVE API bug workaround
+                    std::this_thread::sleep_for(std::chrono::seconds{1});
+                    fetchWalletJournal(key,
+                                       characterId,
+                                       corpId,
+                                       fromId,
+                                       tillId,
+                                       std::move(journal),
+                                       callback,
+                                       rowsetName,
+                                       timerType,
+                                       true);
+                }
             }
         });
     }
@@ -358,7 +422,8 @@ namespace Evernus
                                              WalletTransaction::IdType tillId,
                                              std::shared_ptr<WalletTransactions> &&transactions,
                                              const Callback<WalletTransactions> &callback,
-                                             TimerType timerType) const
+                                             TimerType timerType,
+                                             bool retry) const
     {
         mInterface.fetchWalletTransactions(key, characterId, fromId,
                                            [=](const QString &response, const QString &error) mutable {
@@ -400,12 +465,37 @@ namespace Evernus
                 }
                 else
                 {
-                    fetchWalletTransactions(key, characterId, corpId, nextFromId, tillId, std::move(transactions), callback, timerType);
+                    fetchWalletTransactions(key,
+                                            characterId,
+                                            corpId,
+                                            nextFromId,
+                                            tillId,
+                                            std::move(transactions),
+                                            callback,
+                                            timerType,
+                                            retry);
                 }
             }
             catch (const std::exception &e)
             {
-                callback(WalletTransactions{}, e.what());
+                if (retry)
+                {
+                    callback(WalletTransactions{}, e.what());
+                }
+                else
+                {
+                    // EVE API bug workaround
+                    std::this_thread::sleep_for(std::chrono::seconds{1});
+                    fetchWalletTransactions(key,
+                                            characterId,
+                                            corpId,
+                                            fromId,
+                                            tillId,
+                                            std::move(transactions),
+                                            callback,
+                                            timerType,
+                                            true);
+                }
             }
         });
     }

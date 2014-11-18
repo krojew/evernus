@@ -184,7 +184,8 @@ namespace Evernus
     }
 
     template<class Key>
-    void APIInterface::makeRequest(const QString &endpoint, const Key &key, const Callback &callback, const QueryParams &additionalParams) const
+    void APIInterface
+    ::makeRequest(const QString &endpoint, const Key &key, const Callback &callback, const QueryParams &additionalParams) const
     {
         QSettings settings;
         QUrl url;

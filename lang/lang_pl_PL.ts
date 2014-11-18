@@ -148,12 +148,12 @@
 <context>
     <name>Evernus::APIManager</name>
     <message>
-        <location filename="../APIManager.cpp" line="510"/>
+        <location filename="../APIManager.cpp" line="600"/>
         <source>Invalid XML document received!</source>
         <translation>Nieprawidłowy dokument XML!</translation>
     </message>
     <message>
-        <location filename="../APIManager.cpp" line="533"/>
+        <location filename="../APIManager.cpp" line="623"/>
         <source>No XML document received!</source>
         <translation>Brak dokumentu XML!</translation>
     </message>

@@ -115,7 +115,8 @@ namespace Evernus
                                 std::shared_ptr<WalletJournal> &&journal,
                                 const Callback<WalletJournal> &callback,
                                 const QString &rowsetName,
-                                TimerType timerType) const;
+                                TimerType timerType,
+                                bool retry) const;
 
         template<class Key>
         void fetchWalletTransactions(const Key &key,
@@ -125,7 +126,8 @@ namespace Evernus
                                      WalletTransaction::IdType tillId,
                                      std::shared_ptr<WalletTransactions> &&transactions,
                                      const Callback<WalletTransactions> &callback,
-                                     TimerType timerType) const;
+                                     TimerType timerType,
+                                     bool retry) const;
 
         template<class Key>
         void doFetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback, TimerType timerType) const;
