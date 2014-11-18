@@ -386,7 +386,7 @@ namespace Evernus
                                        callback,
                                        rowsetName,
                                        timerType,
-                                       retry);
+                                       false);
                 }
             }
             catch (const std::exception &e)
@@ -397,6 +397,8 @@ namespace Evernus
                 }
                 else
                 {
+                    qDebug() << "Retrying fetching wallet journal...";
+
                     // EVE API bug workaround
                     std::this_thread::sleep_for(std::chrono::seconds{1});
                     fetchWalletJournal(key,
@@ -473,7 +475,7 @@ namespace Evernus
                                             std::move(transactions),
                                             callback,
                                             timerType,
-                                            retry);
+                                            false);
                 }
             }
             catch (const std::exception &e)
@@ -484,6 +486,8 @@ namespace Evernus
                 }
                 else
                 {
+                    qDebug() << "Retrying fetching wallet transactions...";
+
                     // EVE API bug workaround
                     std::this_thread::sleep_for(std::chrono::seconds{1});
                     fetchWalletTransactions(key,
