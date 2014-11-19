@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <future>
+
 #include <QAbstractMessageHandler>
 #include <QCoreApplication>
 #include <QNetworkRequest>
@@ -132,18 +134,22 @@ namespace Evernus
         QString errorMsg;
         EveMarketDataExternalOrderImporterXmlMessageHandler handler{errorMsg};
 
-        QXmlQuery query;
-        query.setMessageHandler(&handler);
-        query.setFocus(reply->readAll());
-        query.setQuery("//rowset[@name='orders']/row");
+        // QXmlQuery creates a message loop - BAD things will happen when launched in this thread
+        auto task = std::async(std::launch::async, [reply, &handler]{
+            QXmlQuery query;
+            query.setMessageHandler(&handler);
+            query.setFocus(reply->readAll());
+            query.setQuery("//rowset[@name='orders']/row");
 
-        EveMarketDataExternalOrderImporterXmlReceiver recevier{query.namePool()};
-        query.evaluateTo(&recevier);
+            EveMarketDataExternalOrderImporterXmlReceiver recevier{query.namePool()};
+            query.evaluateTo(&recevier);
+
+            return std::move(recevier).getResult();
+        });
+        auto &&result = task.get();
 
         if (errorMsg.isEmpty())
         {
-            auto &&result = std::move(recevier).getResult();
-
             mResult.reserve(mResult.size() + result.size());
             mResult.insert(std::end(mResult),
                            std::make_move_iterator(std::begin(result)),
