@@ -84,6 +84,7 @@ namespace Evernus
         importMenu->addAction(QIcon{":/images/world.png"}, tr("Import prices from Web"), this, SLOT(prepareItemImportFromWeb()));
         importMenu->addAction(QIcon{":/images/page_refresh.png"}, tr("Import prices from logs"), this, SLOT(prepareItemImportFromFile()));
         importMenu->addAction(QIcon{":/images/disk_multiple.png"}, tr("Import prices from cache"), this, SLOT(prepareItemImportFromCache()));
+        importMenu->addAction(QIcon{":/images/server_go.png"}, tr("Import prices from CREST"), this, SLOT(prepareItemImportFromCREST()));
 
         auto allImportBtn = new QPushButton{QIcon{":/images/arrow_refresh_small.png"}, tr("Import prices  "), this};
         toolBarLayout->addWidget(allImportBtn);
@@ -283,6 +284,11 @@ namespace Evernus
     void MarketOrderWidget::prepareItemImportFromCache()
     {
         emit importPricesFromCache(getImportTarget());
+    }
+
+    void MarketOrderWidget::prepareItemImportFromCREST()
+    {
+        emit importPricesFromCREST(getImportTarget());
     }
 
     void MarketOrderWidget::setArchiveRange(const QDate &from, const QDate &to)

@@ -14,13 +14,28 @@
  */
 #pragma once
 
+#include "ExternalOrderImporter.h"
+#include "CRESTManager.h"
+
 namespace Evernus
 {
-    namespace ExternalOrderImporterNames
+    class EveDataProvider;
+
+    class CRESTExternalOrderImporter
+        : public ExternalOrderImporter
     {
-        const auto webImporter = "web";
-        const auto logImporter = "logs";
-        const auto cacheImporter = "cache";
-        const auto crestImporter = "crest";
-    }
+    public:
+        explicit CRESTExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        virtual ~CRESTExternalOrderImporter() = default;
+
+        virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
+
+    private:
+        const EveDataProvider &mDataProvider;
+
+        CRESTManager mManager;
+        mutable uint mRequestCount = 0;
+
+        void processResult(std::vector<ExternalOrder> &&orders, const QString &error) const;
+    };
 }

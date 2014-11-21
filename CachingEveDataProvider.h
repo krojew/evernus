@@ -85,6 +85,8 @@ namespace Evernus
 
         virtual double getSolarSystemSecurityStatus(uint solarSystemId) const override;
 
+        virtual uint getStationRegionId(quint64 stationId) const override;
+
         void precacheJumpMap();
         void precacheRefTypes();
 
@@ -149,6 +151,8 @@ namespace Evernus
 
         mutable std::unordered_map<uint, QString> mRegionNameCache;
         mutable std::unordered_map<uint, QString> mSolarSystemNameCache;
+
+        mutable std::unordered_map<quint64, uint> mStationRegionCache;
 
         bool mUsePackagedVolume = false;
 

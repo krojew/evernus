@@ -69,6 +69,8 @@ namespace Evernus
 
         virtual double getSolarSystemSecurityStatus(uint solarSystemId) const = 0;
 
+        virtual uint getStationRegionId(quint64 stationId) const = 0;
+
     signals:
         void namesChanged() const;
     };

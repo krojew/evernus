@@ -64,6 +64,7 @@ namespace Evernus
         void importPricesFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromCache(const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromCREST(const ExternalOrderImporter::TypeLocationPairs &target);
 
         void openMarginTool();
 
@@ -80,6 +81,7 @@ namespace Evernus
         void prepareItemImportFromWeb();
         void prepareItemImportFromFile();
         void prepareItemImportFromCache();
+        void prepareItemImportFromCREST();
 
         void setArchiveRange(const QDate &from, const QDate &to);
 

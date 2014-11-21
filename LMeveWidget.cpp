@@ -102,6 +102,11 @@ namespace Evernus
         emit importPricesFromCache(getImportTarget());
     }
 
+    void LMeveWidget::prepareItemImportFromCREST()
+    {
+        emit importPricesFromCREST(getImportTarget());
+    }
+
     void LMeveWidget::setStationId(quint64 id)
     {
         if (id != 0)
@@ -143,6 +148,7 @@ namespace Evernus
         importMenu->addAction(QIcon{":/images/world.png"}, tr("Import prices from Web"), this, SLOT(prepareItemImportFromWeb()));
         importMenu->addAction(QIcon{":/images/page_refresh.png"}, tr("Import prices from logs"), this, SLOT(prepareItemImportFromFile()));
         importMenu->addAction(QIcon{":/images/disk_multiple.png"}, tr("Import prices from cache"), this, SLOT(prepareItemImportFromCache()));
+        importMenu->addAction(QIcon{":/images/server_go.png"}, tr("Import prices from CREST"), this, SLOT(prepareItemImportFromCREST()));
 
         mImportBtn = new QPushButton{QIcon{":/images/arrow_refresh_small.png"}, tr("Import prices  "), this};
         stationLayout->addWidget(mImportBtn);

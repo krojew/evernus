@@ -12,15 +12,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include "ExternalOrder.h"
+
+#include "CRESTManager.h"
 
 namespace Evernus
 {
-    namespace ExternalOrderImporterNames
+    void CRESTManager::fetchMarketOrders(uint regionId,
+                                         EveType::IdType typeId,
+                                         const Callback<std::vector<ExternalOrder>> &callback) const
     {
-        const auto webImporter = "web";
-        const auto logImporter = "logs";
-        const auto cacheImporter = "cache";
-        const auto crestImporter = "crest";
+        callback(std::vector<ExternalOrder>{}, QString{});
     }
 }

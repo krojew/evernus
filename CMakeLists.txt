@@ -45,6 +45,10 @@ if(DEFINED EVERNUS_DROPBOX_APP_KEY AND DEFINED EVERNUS_DROPBOX_APP_SECRET)
     endif()
 endif()
 
+if(DEFINED EVERNUS_CREST_CLIENT_ID AND DEFINED EVERNUS_CREST_SECRET)
+    add_definitions(-DEVERNUS_CREST_CLIENT_ID=${EVERNUS_CREST_CLIENT_ID} -DEVERNUS_CREST_SECRET=${EVERNUS_CREST_SECRET})
+endif()
+
 qt5_wrap_cpp(
     MOC_FILES
     AboutDialog.h
@@ -303,6 +307,12 @@ add_executable(
     CorpWalletSnapshot.h
     CorpWalletSnapshotRepository.cpp
     CorpWalletSnapshotRepository.h
+    CRESTExternalOrderImporter.cpp
+    CRESTExternalOrderImporter.h
+    CRESTInterface.cpp
+    CRESTInterface.h
+    CRESTManager.cpp
+    CRESTManager.h
     DatabaseUtils.cpp
     DatabaseUtils.h
     DateFilteredPlotWidget.cpp

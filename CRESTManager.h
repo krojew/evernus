@@ -14,13 +14,30 @@
  */
 #pragma once
 
+#include <functional>
+#include <vector>
+
+#include "CRESTInterface.h"
+#include "EveType.h"
+
 namespace Evernus
 {
-    namespace ExternalOrderImporterNames
+    class ExternalOrder;
+
+    class CRESTManager
     {
-        const auto webImporter = "web";
-        const auto logImporter = "logs";
-        const auto cacheImporter = "cache";
-        const auto crestImporter = "crest";
-    }
+    public:
+        template<class T>
+        using Callback = std::function<void (T &&data, const QString &error)>;
+
+        CRESTManager() = default;
+        virtual ~CRESTManager() = default;
+
+        void fetchMarketOrders(uint regionId,
+                               EveType::IdType typeId,
+                               const Callback<std::vector<ExternalOrder>> &callback) const;
+
+    private:
+        CRESTInterface mInterface;
+    };
 }

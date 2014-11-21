@@ -74,6 +74,11 @@ namespace Evernus
         importFromCache->setFlat(true);
         connect(importFromCache, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromCache);
 
+        auto importFromCREST = new QPushButton{QIcon{":/images/server_go.png"}, tr("Import prices from CREST"), this};
+        toolBarLayout->addWidget(importFromCREST);
+        importFromCREST->setFlat(true);
+        connect(importFromCREST, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromCREST);
+
         auto filterEdit = new TextFilterWidget{filterRepo, this};
         toolBarLayout->addWidget(filterEdit, 1);
         connect(filterEdit, &TextFilterWidget::filterEntered, this, &AssetsWidget::applyWildcard);
@@ -153,6 +158,11 @@ namespace Evernus
     void AssetsWidget::prepareItemImportFromCache()
     {
         emit importPricesFromCache(getImportTarget());
+    }
+
+    void AssetsWidget::prepareItemImportFromCREST()
+    {
+        emit importPricesFromCREST(getImportTarget());
     }
 
     void AssetsWidget::applyWildcard(const QString &text)

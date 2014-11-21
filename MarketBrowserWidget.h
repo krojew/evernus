@@ -68,6 +68,7 @@ namespace Evernus
         void importPricesFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromCache(const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromCREST(const ExternalOrderImporter::TypeLocationPairs &target);
 
         void externalOrdersChanged();
 
@@ -84,6 +85,7 @@ namespace Evernus
         void prepareItemImportFromWeb();
         void prepareItemImportFromFile();
         void prepareItemImportFromCache();
+        void prepareItemImportFromCREST();
 
         void selectRegion(QListWidgetItem *item);
         void selectSolarSystem(QListWidgetItem *item);

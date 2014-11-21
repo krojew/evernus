@@ -16,11 +16,10 @@
 
 namespace Evernus
 {
-    namespace ExternalOrderImporterNames
+    class CRESTInterface
     {
-        const auto webImporter = "web";
-        const auto logImporter = "logs";
-        const auto cacheImporter = "cache";
-        const auto crestImporter = "crest";
-    }
+    public:
+        CRESTInterface() = default;
+        virtual ~CRESTInterface() = default;
+    };
 }
