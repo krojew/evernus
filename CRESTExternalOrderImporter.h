@@ -35,7 +35,10 @@ namespace Evernus
 
         CRESTManager mManager;
         mutable uint mRequestCount = 0;
+        mutable bool mPreparingRequests = false;
 
-        void processResult(std::vector<ExternalOrder> &&orders, const QString &error) const;
+        mutable std::vector<ExternalOrder> mResult;
+
+        void processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const;
     };
 }

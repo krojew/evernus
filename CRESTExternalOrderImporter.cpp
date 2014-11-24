@@ -14,6 +14,8 @@
  */
 #include <QDebug>
 
+#include <boost/scope_exit.hpp>
+
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
 
@@ -35,6 +37,13 @@ namespace Evernus
             return;
         }
 
+        mResult.clear();
+
+        mPreparingRequests = true;
+        BOOST_SCOPE_EXIT(this_) {
+            this_->mPreparingRequests = false;
+        } BOOST_SCOPE_EXIT_END
+
         for (const auto &pair : target)
         {
             const auto regionId = mDataProvider.getStationRegionId(pair.second);
@@ -48,13 +57,24 @@ namespace Evernus
         }
 
         qDebug() << "Making" << mRequestCount << "CREST requests...";
+
+        if (mRequestCount == 0)
+            emit externalOrdersChanged(mResult);
     }
 
-    void CRESTExternalOrderImporter::processResult(std::vector<ExternalOrder> &&orders, const QString &error) const
+    void CRESTExternalOrderImporter::processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const
     {
         --mRequestCount;
 
-        if (mRequestCount == 0)
-            emit externalOrdersChanged(std::vector<ExternalOrder>{});
+        qDebug() << "Got reply," << mRequestCount << "remaining.";
+
+        if (!errorText.isEmpty())
+        {
+            emit error(errorText);
+            return;
+        }
+
+        if (mRequestCount == 0 && !mPreparingRequests)
+            emit externalOrdersChanged(mResult);
     }
 }
