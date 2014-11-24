@@ -21,7 +21,6 @@
 #include <QDir>
 
 #include "MarketLogExternalOrderImporterThread.h"
-#include "EveMarketDataExternalOrderImporter.h"
 #include "MarketLogExternalOrderImporter.h"
 #include "MarketOrderFilterProxyModel.h"
 #include "ExternalOrderImporterNames.h"
@@ -112,13 +111,11 @@ int main(int argc, char *argv[])
         Evernus::EvernusApplication app{argc, argv};
 
         app.registerImporter(Evernus::ExternalOrderImporterNames::webImporter,
-                             std::make_unique<Evernus::EveMarketDataExternalOrderImporter>());
+                             std::make_unique<Evernus::CRESTExternalOrderImporter>(app.getDataProvider()));
         app.registerImporter(Evernus::ExternalOrderImporterNames::logImporter,
                              std::make_unique<Evernus::MarketLogExternalOrderImporter>());
         app.registerImporter(Evernus::ExternalOrderImporterNames::cacheImporter,
                              std::make_unique<Evernus::CacheExternalOrderImporter>());
-        app.registerImporter(Evernus::ExternalOrderImporterNames::crestImporter,
-                             std::make_unique<Evernus::CRESTExternalOrderImporter>(app.getDataProvider()));
 
         try
         {
@@ -150,7 +147,6 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(importExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(importExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(importExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &)));
-            app.connect(&mainWnd, SIGNAL(importExternalOrdersFromCREST(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromCREST(const ExternalOrderImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(preferencesChanged()), SLOT(handleNewPreferences()));
             app.connect(&mainWnd, SIGNAL(importFromMentat()), SLOT(importFromMentat()));
             app.connect(&mainWnd, SIGNAL(syncLMeve(Character::IdType)), SLOT(syncLMeve(Character::IdType)));

@@ -115,7 +115,6 @@ namespace Evernus
         void importExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void importExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
         void importExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &target);
-        void importExternalOrdersFromCREST(const ExternalOrderImporter::TypeLocationPairs &target);
 
         void importFromMentat();
 

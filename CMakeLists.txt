@@ -80,7 +80,6 @@ qt5_wrap_cpp(
     DateRangeWidget.h
     DeviationSourceWidget.h
     EveDataProvider.h
-    EveMarketDataExternalOrderImporter.h
     EvernusApplication.h
     ExternalOrderBuyModel.h
     ExternalOrderImporter.h
@@ -334,10 +333,6 @@ add_executable(
     EveCacheNodes.h
     EveCacheReader.h
     EveDataProvider.h
-    EveMarketDataExternalOrderImporter.cpp
-    EveMarketDataExternalOrderImporter.h
-    EveMarketDataExternalOrderImporterXmlReceiver.cpp
-    EveMarketDataExternalOrderImporterXmlReceiver.h
     EvernusApplication.cpp
     EvernusApplication.h
     EveType.cpp

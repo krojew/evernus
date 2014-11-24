@@ -54,7 +54,6 @@ namespace Evernus
         void importPricesFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromCache(const ExternalOrderImporter::TypeLocationPairs &target);
-        void importPricesFromCREST(const ExternalOrderImporter::TypeLocationPairs &target);
 
     public slots:
         void setCharacter(Character::IdType id);
@@ -66,7 +65,6 @@ namespace Evernus
         void prepareItemImportFromWeb();
         void prepareItemImportFromFile();
         void prepareItemImportFromCache();
-        void prepareItemImportFromCREST();
 
     private:
         const CacheTimerProvider &mCacheTimerProvider;
