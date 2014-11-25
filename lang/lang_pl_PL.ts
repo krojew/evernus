@@ -327,6 +327,29 @@
     </message>
 </context>
 <context>
+    <name>Evernus::CRESTInterface</name>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="95"/>
+        <source>CREST authorization failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="165"/>
+        <source>CREST</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="208"/>
+        <source>Empty refresh token!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="250"/>
+        <source>Empty access token!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::CacheExternalOrderImporter</name>
     <message>
         <source>Couldn&apos;t determine Eve cache path.</source>

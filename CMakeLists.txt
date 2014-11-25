@@ -15,6 +15,7 @@ find_package(Qt5Script REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
+find_package(Qt5WebKitWidgets REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
 configure_file(Version.h.in Version.h)
@@ -49,6 +50,10 @@ if(DEFINED EVERNUS_CREST_CLIENT_ID AND DEFINED EVERNUS_CREST_SECRET)
     add_definitions(-DEVERNUS_CREST_CLIENT_ID=${EVERNUS_CREST_CLIENT_ID} -DEVERNUS_CREST_SECRET=${EVERNUS_CREST_SECRET})
 endif()
 
+if(DEFINED EVERNUS_CREST_SISI)
+    add_definitions(-DEVERNUS_CREST_SISI)
+endif()
+
 qt5_wrap_cpp(
     MOC_FILES
     AboutDialog.h
@@ -76,6 +81,7 @@ qt5_wrap_cpp(
     ContractWidget.h
     CorpImportPreferencesWidget.h
     CorpKeyEditDialog.h
+    CRESTInterface.h
     DateFilteredPlotWidget.h
     DateRangeWidget.h
     DeviationSourceWidget.h
@@ -720,6 +726,7 @@ target_link_libraries(
     Qt5::Xml
     Qt5::XmlPatterns
     Qt5::Widgets
+    Qt5::WebKitWidgets
     ${ADDITIONAL_LIBS}
 )
 

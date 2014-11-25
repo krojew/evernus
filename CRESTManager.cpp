@@ -12,6 +12,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+
 #include "ExternalOrder.h"
 
 #include "CRESTManager.h"
@@ -22,6 +26,35 @@ namespace Evernus
                                          EveType::IdType typeId,
                                          const Callback<std::vector<ExternalOrder>> &callback) const
     {
-        callback(std::vector<ExternalOrder>{}, QString{});
+#if defined(EVERNUS_CREST_CLIENT_ID) and defined(EVERNUS_CREST_SECRET)
+#ifdef Q_OS_WIN
+        mInterface.fetchMarketOrders(regionId, typeId, [=](auto &&data, const auto &error) {
+#else
+        mInterface.fetchMarketOrders(regionId, typeId, [=, callback = callback](auto &&data, const auto &error) {
+#endif
+            if (!error.isEmpty())
+            {
+                callback(std::vector<ExternalOrder>{}, error);
+                return;
+            }
+
+            const auto object = data.object();
+            const auto items = object.value("items").toArray();
+
+            std::vector<ExternalOrder> orders;
+            orders.reserve(items.size());
+
+            for (const auto &item : items)
+            {
+                const auto itemObject = item.toObject();
+
+                ExternalOrder order;
+            }
+
+            callback(std::move(orders), QString{});
+        });
+#else
+        callback(std::vector<ExternalOrder>{}, "Evernus has been compiled without CREST support.");
+#endif
     }
 }

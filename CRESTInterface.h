@@ -14,12 +14,57 @@
  */
 #pragma once
 
+#include <functional>
+#include <memory>
+#include <vector>
+
+#include <QNetworkAccessManager>
+#include <QDateTime>
+#include <QWebView>
+#include <QHash>
+
+#include "EveType.h"
+
+class QJsonDocument;
+
 namespace Evernus
 {
     class CRESTInterface
+        : public QObject
     {
+        Q_OBJECT
+
     public:
-        CRESTInterface() = default;
+        using Callback = std::function<void (QJsonDocument &&data, const QString &error)>;
+
+        explicit CRESTInterface(QObject *parent = nullptr);
         virtual ~CRESTInterface() = default;
+
+        virtual bool eventFilter(QObject *watched, QEvent *event) override;
+
+        void fetchMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
+
+    private:
+        static const QString crestUrl;
+        static const QString loginUrl;
+        static const QString redirectUrl;
+
+        static const QString authUrlName;
+
+        mutable QNetworkAccessManager mNetworkManager;
+        mutable QHash<QString, QString> mEndpoints;
+
+        mutable QString mRefreshToken, mAccessToken;
+        mutable QDateTime mExpiry;
+
+        mutable std::vector<std::function<void (const QString &)>> mPendingRequests;
+
+        mutable std::unique_ptr<QWebView> mAuthView;
+
+        template<class T>
+        void checkAuth(const T &continuation) const;
+
+        template<class T>
+        void fetchAccessToken(const T &continuation) const;
     };
 }

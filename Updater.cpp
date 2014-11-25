@@ -135,7 +135,7 @@ namespace Evernus
         mCheckingForUpdates = true;
 
         auto reply = mAccessManager.get(QNetworkRequest{QUrl{"http://evernus.com/latest_version.xml"}});
-        connect(reply, &QNetworkReply::finished, this, [quiet, this]{
+        connect(reply, &QNetworkReply::finished, this, [quiet, this] {
             finishCheck(quiet);
         });
     }
