@@ -26,9 +26,9 @@ namespace Evernus
                                          EveType::IdType typeId,
                                          const Callback<std::vector<ExternalOrder>> &callback) const
     {
-#if defined(EVERNUS_CREST_CLIENT_ID) and defined(EVERNUS_CREST_SECRET)
+#if defined(EVERNUS_CREST_CLIENT_ID) && defined(EVERNUS_CREST_SECRET)
 #ifdef Q_OS_WIN
-        mInterface.fetchBuyMarketOrders(regionId, typeId, [=](auto &&buyData, const auto &error) {
+        mInterface.fetchBuyMarketOrders(regionId, typeId, [=](QJsonDocument &&buyData, const QString &error) {
 #else
         mInterface.fetchBuyMarketOrders(regionId, typeId, [=, callback = callback](auto &&buyData, const auto &error) {
 #endif
@@ -39,7 +39,7 @@ namespace Evernus
             }
 
 #ifdef Q_OS_WIN
-            mInterface.fetchSellMarketOrders(regionId, typeId, [=](auto &&sellData, const auto &error) {
+            mInterface.fetchSellMarketOrders(regionId, typeId, [=](QJsonDocument &&sellData, const QString &error) {
 #else
             mInterface.fetchSellMarketOrders(regionId, typeId, [=, callback = callback](auto &&sellData, const auto &error) {
 #endif

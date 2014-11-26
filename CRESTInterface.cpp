@@ -69,7 +69,7 @@ namespace Evernus
         qDebug() << "Fetching buy orders for" << regionId << "and" << typeId;
 
 #ifdef Q_OS_WIN
-        auto fetcher = [=](const auto &error) {
+        auto fetcher = [=](const QString &error) {
 #else
         auto fetcher = [=, callback = callback](const auto &error) {
 #endif
@@ -102,7 +102,7 @@ namespace Evernus
         qDebug() << "Fetching sell orders for" << regionId << "and" << typeId;
 
 #ifdef Q_OS_WIN
-        auto fetcher = [=](const auto &error) {
+        auto fetcher = [=](const QString &error) {
 #else
         auto fetcher = [=, callback = callback](const auto &error) {
 #endif
@@ -182,7 +182,7 @@ namespace Evernus
             mPendingRequests.emplace_back(continuation);
             if (mPendingRequests.size() == 1)
             {
-                auto processPending = [=](const auto &error) {
+                auto processPending = [=](const QString &error) {
                     if (mEndpoints.isEmpty())
                     {
                         qDebug() << "Fetching CREST endpoints...";
@@ -252,7 +252,7 @@ namespace Evernus
             mAuthView->setUrl(url);
             mAuthView->show();
 
-            connect(mAuthView->page()->mainFrame(), &QWebFrame::urlChanged, [=](const auto &url) {
+            connect(mAuthView->page()->mainFrame(), &QWebFrame::urlChanged, [=](const QUrl &url) {
                 if (url.host() == redirectUrl)
                 {
                     mAuthView->removeEventFilter(const_cast<CRESTInterface *>(this));
