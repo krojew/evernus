@@ -126,6 +126,8 @@ namespace Evernus
 
             callback(std::move(doc), QString{});
         };
+
+        checkAuth(fetcher);
     }
 
     QUrl CRESTInterface::getRegionBuyOrdersUrl(uint regionId) const
