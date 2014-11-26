@@ -529,6 +529,8 @@ add_executable(
     PathSettings.h
     PathUtils.cpp
     PathUtils.h
+    PersistentCookieJar.cpp
+    PersistentCookieJar.h
     PreferencesDialog.cpp
     PreferencesDialog.h
     PricePreferencesWidget.cpp
