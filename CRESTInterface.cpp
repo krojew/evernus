@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <stdexcept>
+
 #include <QNetworkRequest>
 #include <QDesktopWidget>
 #include <QNetworkReply>
@@ -32,57 +34,16 @@
 namespace Evernus
 {
 #ifdef EVERNUS_CREST_SISI
-    const QString CRESTInterface::crestUrl = "http://public-crest-sisi.testeveonline.com";
+    const QString CRESTInterface::crestUrl = "https://api-sisi.testeveonline.com";
     const QString CRESTInterface::loginUrl = "https://sisilogin.testeveonline.com";
 #else
-    const QString CRESTInterface::crestUrl = "http://public-crest.eveonline.com";
+    const QString CRESTInterface::crestUrl = "https://crest-tq.eveonline.com";
     const QString CRESTInterface::loginUrl = "https://login.eveonline.com";
 #endif
     const QString CRESTInterface::redirectUrl = "evernus.com";
 
-    const QString CRESTInterface::authUrlName = "authEndpoint";
-
-    CRESTInterface::CRESTInterface(QObject *parent)
-        : QObject{parent}
-    {
-        qDebug() << "Fetching CREST endpoints...";
-
-        auto reply = mNetworkManager.get(QNetworkRequest{crestUrl});
-        connect(reply, &QNetworkReply::finished, this, [reply, this] {
-            reply->deleteLater();
-
-            if (reply->error() != QNetworkReply::NoError)
-            {
-                qDebug() << "Error fetching CREST endpoints:" << reply->errorString();
-                return;
-            }
-
-            const auto json = QJsonDocument::fromJson(reply->readAll());
-            if (json.isNull())
-            {
-                qDebug() << "Null CREST endpoints.";
-                return;
-            }
-
-            std::function<void (const QJsonObject &)> addEndpoints = [this, &addEndpoints](const QJsonObject &object) {
-                for (auto it = std::begin(object); it != std::end(object); ++it)
-                {
-                    const auto value = it.value().toObject();
-                    if (value.contains("href"))
-                    {
-                        qDebug() << "Endpoint:" << it.key() << "->" << it.value();
-                        mEndpoints[it.key()] = value.value("href").toString();
-                    }
-                    else
-                    {
-                        addEndpoints(value);
-                    }
-                }
-            };
-
-            addEndpoints(json.object());
-        });
-    }
+    const QString CRESTInterface::regionsUrlName = "regions";
+    const QString CRESTInterface::itemTypesUrlName = "itemTypes";
 
     bool CRESTInterface::eventFilter(QObject *watched, QEvent *event)
     {
@@ -100,15 +61,114 @@ namespace Evernus
         return QObject::eventFilter(watched, event);
     }
 
-    void CRESTInterface::fetchMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const
+    void CRESTInterface::fetchBuyMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const
     {
-        qDebug() << "Fetching orders for" << regionId << "and" << typeId;
+        qDebug() << "Fetching buy orders for" << regionId << "and" << typeId;
 
+#ifdef Q_OS_WIN
         auto fetcher = [=](const auto &error) {
-            callback(QJsonDocument{}, error);
+#else
+        auto fetcher = [=, callback = callback](const auto &error) {
+#endif
+            if (!error.isEmpty())
+            {
+                callback(QJsonDocument{}, error);
+                return;
+            }
+
+            QJsonDocument doc;
+
+            try
+            {
+                doc = getOrders(getRegionBuyOrdersUrl(regionId), typeId);
+            }
+            catch (const std::exception &e)
+            {
+                callback(QJsonDocument{}, e.what());
+                return;
+            }
+
+            callback(std::move(doc), QString{});
         };
 
         checkAuth(fetcher);
+    }
+
+    void CRESTInterface::fetchSellMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const
+    {
+        qDebug() << "Fetching sell orders for" << regionId << "and" << typeId;
+
+#ifdef Q_OS_WIN
+        auto fetcher = [=](const auto &error) {
+#else
+        auto fetcher = [=, callback = callback](const auto &error) {
+#endif
+            if (!error.isEmpty())
+            {
+                callback(QJsonDocument{}, error);
+                return;
+            }
+
+            QJsonDocument doc;
+
+            try
+            {
+                doc = getOrders(getRegionSellOrdersUrl(regionId), typeId);
+            }
+            catch (const std::exception &e)
+            {
+                callback(QJsonDocument{}, e.what());
+                return;
+            }
+
+            callback(std::move(doc), QString{});
+        };
+    }
+
+    QUrl CRESTInterface::getRegionBuyOrdersUrl(uint regionId) const
+    {
+        return getRegionOrdersUrl(regionId, "marketBuyOrders", mRegionBuyOrdersUrls);
+    }
+
+    QUrl CRESTInterface::getRegionSellOrdersUrl(uint regionId) const
+    {
+        return getRegionOrdersUrl(regionId, "marketSellOrders", mRegionSellOrdersUrls);
+    }
+
+    QUrl CRESTInterface::getRegionOrdersUrl(uint regionId,
+                                            const QString &urlName,
+                                            RegionOrderUrlMap &map) const
+    {
+        if (map.contains(regionId))
+            return map[regionId];
+
+        if (!mEndpoints.contains(regionsUrlName))
+            throw std::runtime_error{tr("Missing CREST regions url!").toStdString()};
+
+        qDebug() << "Fetching region orders url:" << regionId << urlName;
+
+        const auto doc = syncGet(QString{"%1%2/"}.arg(mEndpoints[regionsUrlName]).arg(regionId),
+                                 "application/vnd.ccp.eve.Region-v1+json");
+
+        const QUrl href = doc.object().value(urlName).toObject().value("href").toString();
+        map[regionId] = href;
+
+        qDebug() << "Region orders url:" << href;
+
+        return href;
+    }
+
+    QJsonDocument CRESTInterface::getOrders(QUrl regionUrl, EveType::IdType typeId) const
+    {
+        if (!mEndpoints.contains(itemTypesUrlName))
+            throw std::runtime_error{tr("Missing CREST item types url!").toStdString()};
+
+        QUrlQuery query;
+        query.addQueryItem("type", QString{"%1%2/"}.arg(mEndpoints[itemTypesUrlName]).arg(typeId));
+
+        regionUrl.setQuery(query);
+
+        return syncGet(regionUrl, "application/vnd.ccp.eve.MarketOrderCollection-v1+json");
     }
 
     template<class T>
@@ -116,16 +176,34 @@ namespace Evernus
     {
         if (mExpiry < QDateTime::currentDateTime())
         {
-            if (!mEndpoints.contains(authUrlName))
-            {
-                continuation("Missing CREST auth url!");
-                return;
-            }
-
             mPendingRequests.emplace_back(continuation);
             if (mPendingRequests.size() == 1)
             {
                 auto processPending = [=](const auto &error) {
+                    if (mEndpoints.isEmpty())
+                    {
+                        qDebug() << "Fetching CREST endpoints...";
+
+                        const auto json = syncGet(crestUrl, "application/vnd.ccp.eve.Api-v3+json");
+                        std::function<void (const QJsonObject &)> addEndpoints = [this, &addEndpoints](const QJsonObject &object) {
+                            for (auto it = std::begin(object); it != std::end(object); ++it)
+                            {
+                                const auto value = it.value().toObject();
+                                if (value.contains("href"))
+                                {
+                                    qDebug() << "Endpoint:" << it.key() << "->" << it.value();
+                                    mEndpoints[it.key()] = value.value("href").toString();
+                                }
+                                else
+                                {
+                                    addEndpoints(value);
+                                }
+                            }
+                        };
+
+                        addEndpoints(json.object());
+                    }
+
                     for (const auto &request : mPendingRequests)
                         request(error);
 
@@ -162,7 +240,7 @@ namespace Evernus
 
             mAuthView = std::make_unique<QWebView>();
             mAuthView->setWindowModality(Qt::ApplicationModal);
-            mAuthView->setWindowTitle(tr("CREST"));
+            mAuthView->setWindowTitle(tr("CREST Authentication"));
             mAuthView->installEventFilter(const_cast<CRESTInterface *>(this));
             mAuthView->adjustSize();
             mAuthView->move(QApplication::desktop()->screenGeometry(QApplication::activeWindow()).center() -
@@ -182,13 +260,13 @@ namespace Evernus
                     QByteArray data = "grant_type=authorization_code&code=";
                     data.append(query.queryItemValue("code"));
 
-                    QNetworkRequest request{mEndpoints[authUrlName]};
+                    QNetworkRequest request{loginUrl + "/oauth/token"};
                     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
                     request.setRawHeader(
                         "Authorization", QByteArray{EVERNUS_CREST_CLIENT_ID_TEXT ":" EVERNUS_CREST_SECRET_TEXT}.toBase64());
 
                     auto reply = mNetworkManager.post(request, data);
-                    connect(reply, &QNetworkReply::finished, this, [reply, continuation, this] {
+                    connect(reply, &QNetworkReply::finished, this, [=] {
                         reply->deleteLater();
 
                         if (reply->error() != QNetworkReply::NoError)
@@ -224,13 +302,13 @@ namespace Evernus
             QByteArray data = "grant_type=refresh_token&refresh_token=";
             data.append(mRefreshToken);
 
-            QNetworkRequest request{mEndpoints[authUrlName]};
+            QNetworkRequest request{loginUrl + "/oauth/token"};
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
             request.setRawHeader(
                 "Authorization", QByteArray{EVERNUS_CREST_CLIENT_ID_TEXT ":" EVERNUS_CREST_SECRET_TEXT}.toBase64());
 
             auto reply = mNetworkManager.post(request, data);
-            connect(reply, &QNetworkReply::finished, this, [reply, continuation, this] {
+            connect(reply, &QNetworkReply::finished, this, [=] {
                 reply->deleteLater();
 
                 if (reply->error() != QNetworkReply::NoError)
@@ -256,5 +334,30 @@ namespace Evernus
                 continuation(QString{});
             });
         }
+    }
+
+    QJsonDocument CRESTInterface::syncGet(const QUrl &url, const QByteArray &accept) const
+    {
+        qDebug() << "CREST request:" << url;
+
+        QNetworkRequest request{url};
+        request.setHeader(QNetworkRequest::UserAgentHeader,
+                          QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
+        request.setRawHeader("Authorization", "Bearer " + mAccessToken.toLatin1());
+        request.setRawHeader("Accept", accept);
+
+        auto reply = mNetworkManager.get(request);
+
+        QEventLoop loop;
+        connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+
+        loop.exec(QEventLoop::ExcludeUserInputEvents);
+
+        reply->deleteLater();
+
+        if (reply->error() != QNetworkReply::NoError)
+            throw std::runtime_error{reply->errorString().toStdString()};
+
+        return QJsonDocument::fromJson(reply->readAll());
     }
 }

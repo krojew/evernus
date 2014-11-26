@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <unordered_set>
 #include <functional>
 #include <memory>
 #include <vector>
@@ -37,19 +38,23 @@ namespace Evernus
     public:
         using Callback = std::function<void (QJsonDocument &&data, const QString &error)>;
 
-        explicit CRESTInterface(QObject *parent = nullptr);
+        using QObject::QObject;
         virtual ~CRESTInterface() = default;
 
         virtual bool eventFilter(QObject *watched, QEvent *event) override;
 
-        void fetchMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
+        void fetchBuyMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
+        void fetchSellMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
 
     private:
+        using RegionOrderUrlMap = QHash<uint, QUrl>;
+
         static const QString crestUrl;
         static const QString loginUrl;
         static const QString redirectUrl;
 
-        static const QString authUrlName;
+        static const QString regionsUrlName;
+        static const QString itemTypesUrlName;
 
         mutable QNetworkAccessManager mNetworkManager;
         mutable QHash<QString, QString> mEndpoints;
@@ -61,10 +66,24 @@ namespace Evernus
 
         mutable std::unique_ptr<QWebView> mAuthView;
 
+        mutable RegionOrderUrlMap mRegionBuyOrdersUrls, mRegionSellOrdersUrls;
+
+        QUrl getRegionBuyOrdersUrl(uint regionId) const;
+
+        QUrl getRegionSellOrdersUrl(uint regionId) const;
+
+        QUrl getRegionOrdersUrl(uint regionId,
+                                const QString &urlName,
+                                RegionOrderUrlMap &map) const;
+
+        QJsonDocument getOrders(QUrl regionUrl, EveType::IdType typeId) const;
+
         template<class T>
         void checkAuth(const T &continuation) const;
 
         template<class T>
         void fetchAccessToken(const T &continuation) const;
+
+        QJsonDocument syncGet(const QUrl &url, const QByteArray &accept) const;
     };
 }

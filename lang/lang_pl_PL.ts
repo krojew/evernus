@@ -329,22 +329,32 @@
 <context>
     <name>Evernus::CRESTInterface</name>
     <message>
-        <location filename="../CRESTInterface.cpp" line="95"/>
+        <location filename="../CRESTInterface.cpp" line="56"/>
         <source>CREST authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="165"/>
-        <source>CREST</source>
+        <location filename="../CRESTInterface.cpp" line="146"/>
+        <source>Missing CREST regions url!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="208"/>
+        <location filename="../CRESTInterface.cpp" line="164"/>
+        <source>Missing CREST item types url!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="243"/>
+        <source>CREST Authentication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="286"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="250"/>
+        <location filename="../CRESTInterface.cpp" line="328"/>
         <source>Empty access token!</source>
         <translation type="unfinished"></translation>
     </message>

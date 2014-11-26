@@ -28,9 +28,9 @@ namespace Evernus
     {
 #if defined(EVERNUS_CREST_CLIENT_ID) and defined(EVERNUS_CREST_SECRET)
 #ifdef Q_OS_WIN
-        mInterface.fetchMarketOrders(regionId, typeId, [=](auto &&data, const auto &error) {
+        mInterface.fetchBuyMarketOrders(regionId, typeId, [=](auto &&buyData, const auto &error) {
 #else
-        mInterface.fetchMarketOrders(regionId, typeId, [=, callback = callback](auto &&data, const auto &error) {
+        mInterface.fetchBuyMarketOrders(regionId, typeId, [=, callback = callback](auto &&buyData, const auto &error) {
 #endif
             if (!error.isEmpty())
             {
@@ -38,20 +38,32 @@ namespace Evernus
                 return;
             }
 
-            const auto object = data.object();
-            const auto items = object.value("items").toArray();
+#ifdef Q_OS_WIN
+            mInterface.fetchSellMarketOrders(regionId, typeId, [=](auto &&sellData, const auto &error) {
+#else
+            mInterface.fetchSellMarketOrders(regionId, typeId, [=, callback = callback](auto &&sellData, const auto &error) {
+#endif
+                if (!error.isEmpty())
+                {
+                    callback(std::vector<ExternalOrder>{}, error);
+                    return;
+                }
 
-            std::vector<ExternalOrder> orders;
-            orders.reserve(items.size());
+    //            const auto object = data.object();
+    //            const auto items = object.value("items").toArray();
+    //
+                std::vector<ExternalOrder> orders;
+    //            orders.reserve(items.size());
+    //
+    //            for (const auto &item : items)
+    //            {
+    //                const auto itemObject = item.toObject();
+    //
+    //                ExternalOrder order;
+    //            }
 
-            for (const auto &item : items)
-            {
-                const auto itemObject = item.toObject();
-
-                ExternalOrder order;
-            }
-
-            callback(std::move(orders), QString{});
+                callback(std::move(orders), QString{});
+            });
         });
 #else
         callback(std::vector<ExternalOrder>{}, "Evernus has been compiled without CREST support.");
