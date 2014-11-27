@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QRegularExpression>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -27,40 +28,67 @@ namespace Evernus
                                          const Callback<std::vector<ExternalOrder>> &callback) const
     {
 #if defined(EVERNUS_CREST_CLIENT_ID) && defined(EVERNUS_CREST_SECRET)
-#ifdef Q_OS_WIN
         mInterface.fetchBuyMarketOrders(regionId, typeId, [=](QJsonDocument &&buyData, const QString &error) {
-#else
-        mInterface.fetchBuyMarketOrders(regionId, typeId, [=, callback = callback](auto &&buyData, const auto &error) {
-#endif
             if (!error.isEmpty())
             {
                 callback(std::vector<ExternalOrder>{}, error);
                 return;
             }
 
-#ifdef Q_OS_WIN
             mInterface.fetchSellMarketOrders(regionId, typeId, [=](QJsonDocument &&sellData, const QString &error) {
-#else
-            mInterface.fetchSellMarketOrders(regionId, typeId, [=, callback = callback](auto &&sellData, const auto &error) {
-#endif
                 if (!error.isEmpty())
                 {
                     callback(std::vector<ExternalOrder>{}, error);
                     return;
                 }
 
-    //            const auto object = data.object();
-    //            const auto items = object.value("items").toArray();
-    //
                 std::vector<ExternalOrder> orders;
-    //            orders.reserve(items.size());
-    //
-    //            for (const auto &item : items)
-    //            {
-    //                const auto itemObject = item.toObject();
-    //
-    //                ExternalOrder order;
-    //            }
+                auto appendOrders = [=, &orders](const QJsonObject &object) {
+                    QRegularExpression idRe{"/(\\d+)/$"};
+
+                    const auto items = object.value("items").toArray();
+                    for (const auto &item : items)
+                    {
+                        const auto itemObject = item.toObject();
+                        const auto localtion = itemObject.value("location").toObject();
+                        const auto range = itemObject.value("range").toString();
+
+                        auto issued = QDateTime::fromString(itemObject.value("issued").toString(), Qt::ISODate);
+                        issued.setTimeSpec(Qt::UTC);
+
+                        ExternalOrder order;
+
+                        // TODO: replace when ids become available
+                        order.setId(idRe.match(itemObject.value("href").toString()).captured(1).toULongLong());
+                        order.setType((itemObject.value("buy").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
+                        order.setTypeId(typeId);
+                        order.setStationId(idRe.match(localtion.value("href").toString()).captured(1).toUInt());
+                        //TODO: order.setSolarSystemId();
+                        order.setRegionId(regionId);
+
+                        if (range == "station")
+                            order.setRange(-1);
+                        else if (range == "system")
+                            order.setRange(0);
+                        else if (range == "region")
+                            order.setRange(32767);
+                        else
+                            order.setRange(range.toShort());
+
+                        order.setUpdateTime(QDateTime::currentDateTimeUtc());
+                        order.setPrice(itemObject.value("price").toDouble());
+                        // TODO: order.setVolumeEntered()
+                        order.setVolumeRemaining(itemObject.value("volume").toInt());
+                        order.setMinVolume(itemObject.value("minVolume").toInt());
+                        order.setIssued(issued);
+                        order.setDuration(itemObject.value("duration").toInt());
+
+                        orders.emplace_back(std::move(order));
+                    }
+                };
+
+                appendOrders(buyData.object());
+                appendOrders(sellData.object());
 
                 callback(std::move(orders), QString{});
             });

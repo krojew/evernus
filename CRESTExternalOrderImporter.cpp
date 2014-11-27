@@ -59,7 +59,10 @@ namespace Evernus
         qDebug() << "Making" << mRequestCount << "CREST requests...";
 
         if (mRequestCount == 0)
+        {
             emit externalOrdersChanged(mResult);
+            mResult.clear();
+        }
     }
 
     void CRESTExternalOrderImporter::processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const
@@ -70,11 +73,22 @@ namespace Evernus
 
         if (!errorText.isEmpty())
         {
+            if (mRequestCount == 0)
+                mResult.clear();
+
             emit error(errorText);
             return;
         }
 
+        mResult.reserve(mResult.size() + orders.size());
+        mResult.insert(std::end(mResult),
+                       std::make_move_iterator(std::begin(orders)),
+                       std::make_move_iterator(std::end(orders)));
+
         if (mRequestCount == 0 && !mPreparingRequests)
+        {
             emit externalOrdersChanged(mResult);
+            mResult.clear();
+        }
     }
 }
