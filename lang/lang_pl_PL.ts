@@ -331,32 +331,32 @@
     <message>
         <location filename="../CRESTInterface.cpp" line="59"/>
         <source>CREST authorization failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoryzacja CREST nie powiodła się.</translation>
     </message>
     <message>
         <location filename="../CRESTInterface.cpp" line="151"/>
         <source>Missing CREST regions url!</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak adresu regionów w CREST!</translation>
     </message>
     <message>
         <location filename="../CRESTInterface.cpp" line="169"/>
         <source>Missing CREST item types url!</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak adresu typów w CREST!</translation>
     </message>
     <message>
         <location filename="../CRESTInterface.cpp" line="249"/>
         <source>CREST Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
         <location filename="../CRESTInterface.cpp" line="292"/>
         <source>Empty refresh token!</source>
-        <translation type="unfinished"></translation>
+        <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
         <location filename="../CRESTInterface.cpp" line="334"/>
         <source>Empty access token!</source>
-        <translation type="unfinished"></translation>
+        <translation>Pusty token dostępu!</translation>
     </message>
 </context>
 <context>
