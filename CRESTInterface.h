@@ -24,6 +24,7 @@
 #include <QWebView>
 #include <QHash>
 
+#include "SimpleCrypt.h"
 #include "EveType.h"
 
 class QJsonDocument;
@@ -38,7 +39,7 @@ namespace Evernus
     public:
         using Callback = std::function<void (QJsonDocument &&data, const QString &error)>;
 
-        using QObject::QObject;
+        explicit CRESTInterface(QObject *parent = nullptr);
         virtual ~CRESTInterface() = default;
 
         virtual bool eventFilter(QObject *watched, QEvent *event) override;
@@ -55,6 +56,8 @@ namespace Evernus
 
         static const QString regionsUrlName;
         static const QString itemTypesUrlName;
+
+        mutable SimpleCrypt mCrypt;
 
         mutable QNetworkAccessManager mNetworkManager;
         mutable QHash<QString, QString> mEndpoints;

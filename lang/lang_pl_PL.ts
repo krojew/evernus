@@ -329,32 +329,32 @@
 <context>
     <name>Evernus::CRESTInterface</name>
     <message>
-        <location filename="../CRESTInterface.cpp" line="59"/>
+        <location filename="../CRESTInterface.cpp" line="67"/>
         <source>CREST authorization failed.</source>
         <translation>Autoryzacja CREST nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="151"/>
+        <location filename="../CRESTInterface.cpp" line="159"/>
         <source>Missing CREST regions url!</source>
         <translation>Brak adresu regionów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="169"/>
+        <location filename="../CRESTInterface.cpp" line="177"/>
         <source>Missing CREST item types url!</source>
         <translation>Brak adresu typów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="249"/>
+        <location filename="../CRESTInterface.cpp" line="257"/>
         <source>CREST Authentication</source>
         <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="292"/>
+        <location filename="../CRESTInterface.cpp" line="300"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="334"/>
+        <location filename="../CRESTInterface.cpp" line="355"/>
         <source>Empty access token!</source>
         <translation>Pusty token dostępu!</translation>
     </message>

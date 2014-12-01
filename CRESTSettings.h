@@ -14,10 +14,15 @@
  */
 #pragma once
 
+#include <QtGlobal>
+
 namespace Evernus
 {
     namespace CRESTSettings
     {
         const auto cookiesKey = "crest/cookies";
+        const auto refreshTokenKey = "crest/refreshToken";
+
+        const auto cryptKey = Q_UINT64_C(0x5739578fe03aac1b);
     }
 }

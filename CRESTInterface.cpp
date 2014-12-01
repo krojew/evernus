@@ -22,6 +22,7 @@
 #include <QJsonObject>
 #include <QUrlQuery>
 #include <QWebFrame>
+#include <QSettings>
 #include <QDebug>
 
 #include "PersistentCookieJar.h"
@@ -47,6 +48,14 @@ namespace Evernus
 
     const QString CRESTInterface::regionsUrlName = "regions";
     const QString CRESTInterface::itemTypesUrlName = "itemTypes";
+
+    CRESTInterface::CRESTInterface(QObject *parent)
+        : QObject{parent}
+        , mCrypt{CRESTSettings::cryptKey}
+    {
+        QSettings settings;
+        mRefreshToken = mCrypt.decryptToString(settings.value(CRESTSettings::refreshTokenKey).toString());
+    }
 
     bool CRESTInterface::eventFilter(QObject *watched, QEvent *event)
     {
@@ -293,6 +302,9 @@ namespace Evernus
                             return;
                         }
 
+                        QSettings settings;
+                        settings.setValue(CRESTSettings::refreshTokenKey, mCrypt.encryptToString(mRefreshToken));
+
                         mExpiry = QDateTime::currentDateTime().addSecs(object.value("expires_in").toInt() - 10);
                         mAccessToken = object.value("access_token").toString();
 
@@ -317,15 +329,25 @@ namespace Evernus
             connect(reply, &QNetworkReply::finished, this, [=] {
                 reply->deleteLater();
 
+                const auto doc = QJsonDocument::fromJson(reply->readAll());
+                const auto object = doc.object();
+
                 if (reply->error() != QNetworkReply::NoError)
                 {
                     qDebug() << "Error refreshing token:" << reply->errorString();
-                    continuation(reply->errorString());
+
+                    if (object.value("error") == "invalid_token")
+                    {
+                        mRefreshToken.clear();
+                        fetchAccessToken(continuation);
+                    }
+                    else
+                    {
+                        continuation(reply->errorString());
+                    }
+
                     return;
                 }
-
-                const auto doc = QJsonDocument::fromJson(reply->readAll());
-                const auto object = doc.object();
 
                 mAccessToken = object.value("access_token").toString();
                 if (mAccessToken.isEmpty())
