@@ -41,6 +41,5 @@ namespace Evernus
         const auto usePackagedVolumeKey = "ui/global/usePackagedVolume";
         const auto tabShowStateKey = "ui/mainWindow/tabShowState/%1";
         const auto omitCurrencySymbolKey = "ui/global/omitCurrencySymbol";
-        const auto crestCookiesKey = "ui/cookies/crest";
     }
 }

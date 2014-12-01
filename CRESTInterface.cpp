@@ -25,7 +25,7 @@
 #include <QDebug>
 
 #include "PersistentCookieJar.h"
-#include "UISettings.h"
+#include "CRESTSettings.h"
 
 #include "CRESTInterface.h"
 
@@ -244,7 +244,7 @@ namespace Evernus
             url.setQuery(query);
 
             mAuthView = std::make_unique<QWebView>();
-            mAuthView->page()->networkAccessManager()->setCookieJar(new PersistentCookieJar{UISettings::crestCookiesKey});
+            mAuthView->page()->networkAccessManager()->setCookieJar(new PersistentCookieJar{CRESTSettings::cookiesKey});
             mAuthView->setWindowModality(Qt::ApplicationModal);
             mAuthView->setWindowTitle(tr("CREST Authentication"));
             mAuthView->installEventFilter(const_cast<CRESTInterface *>(this));

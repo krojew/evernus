@@ -318,6 +318,7 @@ add_executable(
     CRESTInterface.h
     CRESTManager.cpp
     CRESTManager.h
+    CRESTSettings.h
     DatabaseUtils.cpp
     DatabaseUtils.h
     DateFilteredPlotWidget.cpp
