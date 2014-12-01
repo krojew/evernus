@@ -19,6 +19,7 @@
 #include <memory>
 
 #include <QDateTime>
+#include <QObject>
 
 #include "MarketGroup.h"
 #include "MetaGroup.h"
