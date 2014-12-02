@@ -41,7 +41,7 @@
 #include <QFile>
 #include <QDir>
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
 // see setNewWindowFlags()
 #   include <windows.h>
 #endif
@@ -408,7 +408,7 @@ namespace Evernus
 
     void MarginToolDialog::setNewWindowFlags(bool alwaysOnTop)
     {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
         // https://bugreports.qt-project.org/browse/QTBUG-30359
         if (alwaysOnTop)
             SetWindowPos(reinterpret_cast<HWND>(winId()), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);

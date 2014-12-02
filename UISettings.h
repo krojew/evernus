@@ -26,6 +26,7 @@ namespace Evernus
         const auto cacheImportApprovedDefault = false;
         const auto usePackagedVolumeDefault = false;
         const auto omitCurrencySymbolDefault = false;
+        const auto mainWindowAlwaysOnTopDefault = false;
 
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
@@ -41,5 +42,6 @@ namespace Evernus
         const auto usePackagedVolumeKey = "ui/global/usePackagedVolume";
         const auto tabShowStateKey = "ui/mainWindow/tabShowState/%1";
         const auto omitCurrencySymbolKey = "ui/global/omitCurrencySymbol";
+        const auto mainWindowAlwaysOnTopKey = "ui/mainWindow/alwaysOnTop";
     }
 }

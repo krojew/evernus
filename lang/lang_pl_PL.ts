@@ -148,12 +148,12 @@
 <context>
     <name>Evernus::APIManager</name>
     <message>
-        <location filename="../APIManager.cpp" line="600"/>
+        <location filename="../APIManager.cpp" line="604"/>
         <source>Invalid XML document received!</source>
         <translation>Nieprawidłowy dokument XML!</translation>
     </message>
     <message>
-        <location filename="../APIManager.cpp" line="623"/>
+        <location filename="../APIManager.cpp" line="627"/>
         <source>No XML document received!</source>
         <translation>Brak dokumentu XML!</translation>
     </message>
@@ -2755,190 +2755,195 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MainWindow</name>
     <message>
-        <location filename="../MainWindow.cpp" line="182"/>
+        <location filename="../MainWindow.cpp" line="185"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="352"/>
+        <location filename="../MainWindow.cpp" line="355"/>
         <source>Market uploader: %1</source>
         <translation>Wysyłanie zleceń: %1</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="515"/>
+        <location filename="../MainWindow.cpp" line="518"/>
         <source>Show/hide table columns</source>
         <translation>Pokaż/ukryj kolumny tabel</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="197"/>
+        <location filename="../MainWindow.cpp" line="200"/>
         <source>You can show/hide table columns via right-click menu. Columns can also be moved around via dragging.</source>
         <translation>Możesz pokazać/ukryć kolumny przez menu kontekstowe. Kolumny mogą być też przesuwane przez przeciąganie.</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="384"/>
+        <location filename="../MainWindow.cpp" line="387"/>
         <source>IGB link was copied to the clipboard.</source>
         <translation>Link dla przeglądarki został skopiowany do schowka.</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="237"/>
+        <location filename="../MainWindow.cpp" line="240"/>
         <source>Wallet: &lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation>Portfel: &lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="197"/>
-        <location filename="../MainWindow.cpp" line="384"/>
-        <location filename="../MainWindow.cpp" line="406"/>
+        <location filename="../MainWindow.cpp" line="200"/>
+        <location filename="../MainWindow.cpp" line="387"/>
+        <location filename="../MainWindow.cpp" line="409"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="406"/>
+        <location filename="../MainWindow.cpp" line="409"/>
         <source>HTTP link was copied to the clipboard.</source>
         <translation>Link do usługi został skopiowany do schowka.</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="489"/>
+        <location filename="../MainWindow.cpp" line="492"/>
         <source>&amp;File</source>
         <translation>&amp;Plik</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="490"/>
+        <location filename="../MainWindow.cpp" line="493"/>
         <source>Select character</source>
         <translation>Wybierz postać</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="491"/>
+        <location filename="../MainWindow.cpp" line="494"/>
         <source>&amp;Manage characters...</source>
         <translation>&amp;Zarządzaj postaciami...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="493"/>
-        <location filename="../MainWindow.cpp" line="495"/>
+        <location filename="../MainWindow.cpp" line="496"/>
+        <location filename="../MainWindow.cpp" line="498"/>
         <source>&amp;Preferences...</source>
         <translation>&amp;Ustawienia...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="498"/>
+        <location filename="../MainWindow.cpp" line="501"/>
         <source>Import EVE Mentat order history...</source>
         <translation>Zaimportuj historię z EVE Mentat...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="500"/>
+        <location filename="../MainWindow.cpp" line="503"/>
         <source>E&amp;xit</source>
         <translation>Za&amp;kończ</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="502"/>
+        <location filename="../MainWindow.cpp" line="505"/>
         <source>&amp;Tools</source>
         <translation>&amp;Narzędzia</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="503"/>
+        <location filename="../MainWindow.cpp" line="506"/>
         <source>Import conquerable stations</source>
         <translation>Importuj stacje graczy</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="504"/>
+        <location filename="../MainWindow.cpp" line="507"/>
         <source>Ma&amp;rgin tool...</source>
         <translation>Narzędzie &amp;marży...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="506"/>
+        <location filename="../MainWindow.cpp" line="509"/>
         <source>Copy HTTP link</source>
         <translation>Skopiuj link HTTP</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="507"/>
+        <location filename="../MainWindow.cpp" line="510"/>
         <source>Copy IGB link</source>
         <translation>Skopiuj link IGB</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="510"/>
+        <location filename="../MainWindow.cpp" line="513"/>
         <source>Upload data to cloud...</source>
         <translation>Wyślij dane do chmury...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="513"/>
+        <location filename="../MainWindow.cpp" line="516"/>
         <source>&amp;View</source>
         <translation>&amp;Widok</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="514"/>
+        <location filename="../MainWindow.cpp" line="517"/>
         <source>Show/hide tabs</source>
         <translation>Pokaż/ukryj zakładki</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="517"/>
+        <location filename="../MainWindow.cpp" line="520"/>
+        <source>Always on top</source>
+        <translation>Zawsze na wierzchu</translation>
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="552"/>
         <source>&amp;Help</source>
         <translation>Pomo&amp;c</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="518"/>
+        <location filename="../MainWindow.cpp" line="553"/>
         <source>&amp;Online help...</source>
         <translation>Pomoc &amp;online...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="519"/>
+        <location filename="../MainWindow.cpp" line="554"/>
         <source>Check for &amp;updates</source>
         <translation>Sprawdź &amp;akutalizacje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="521"/>
+        <location filename="../MainWindow.cpp" line="556"/>
         <source>&amp;About...</source>
         <translation>&amp;O programie...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="548"/>
+        <location filename="../MainWindow.cpp" line="584"/>
         <source>Character</source>
         <translation>Postać</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="571"/>
+        <location filename="../MainWindow.cpp" line="607"/>
         <source>Statistics</source>
         <translation>Statystyki</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="588"/>
+        <location filename="../MainWindow.cpp" line="624"/>
         <source>Assets</source>
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="610"/>
+        <location filename="../MainWindow.cpp" line="646"/>
         <source>Character orders</source>
         <translation>Zlecenia postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="655"/>
+        <location filename="../MainWindow.cpp" line="691"/>
         <source>Character contracts</source>
         <translation>Kontrakty postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="670"/>
+        <location filename="../MainWindow.cpp" line="706"/>
         <source>Corporation orders</source>
         <translation>Zlecenia korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="714"/>
+        <location filename="../MainWindow.cpp" line="750"/>
         <source>Corporation contracts</source>
         <translation>Kontrakty korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="725"/>
+        <location filename="../MainWindow.cpp" line="761"/>
         <source>Item history</source>
         <translation>Historia przedmiotów</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="738"/>
+        <location filename="../MainWindow.cpp" line="774"/>
         <source>Market browser</source>
         <translation>Rynek</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="760"/>
+        <location filename="../MainWindow.cpp" line="796"/>
         <source>LMeve</source>
         <translation>LMeve</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="781"/>
+        <location filename="../MainWindow.cpp" line="817"/>
         <source>Market uploader: unknown</source>
         <translation>Wysyłanie zleceń: nieznane</translation>
     </message>
@@ -2951,22 +2956,22 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Wysyłanie zleceń:</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="632"/>
+        <location filename="../MainWindow.cpp" line="668"/>
         <source>Character journal</source>
         <translation>Dziennik postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="691"/>
+        <location filename="../MainWindow.cpp" line="727"/>
         <source>Corporation journal</source>
         <translation>Dziennik korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="644"/>
+        <location filename="../MainWindow.cpp" line="680"/>
         <source>Character transactions</source>
         <translation>Transakcje postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="703"/>
+        <location filename="../MainWindow.cpp" line="739"/>
         <source>Corporation transactions</source>
         <translation>Transakcje korporacji</translation>
     </message>
@@ -2983,7 +2988,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Transakcje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="751"/>
+        <location filename="../MainWindow.cpp" line="787"/>
         <source>Item costs</source>
         <translation>Koszty</translation>
     </message>

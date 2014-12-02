@@ -30,6 +30,9 @@
 #include <QDebug>
 
 #ifdef Q_OS_WIN
+#   if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
+#       include <windows.h>
+#   endif
 #   include <sys/utime.h>
 #   include <QWinTaskbarButton>
 #else
@@ -514,6 +517,38 @@ namespace Evernus
         mViewTabsMenu = viewMenu->addMenu(tr("Show/hide tabs"));
         viewMenu->addAction(tr("Show/hide table columns"), this, SLOT(showColumnHelp()));
 
+        auto action = viewMenu->addAction(tr("Always on top"));
+        auto toggleTopmost = [action, this] {
+            const auto alwaysOnTop = action->isChecked();
+
+            QSettings settings;
+            settings.setValue(UISettings::mainWindowAlwaysOnTopKey, alwaysOnTop);
+
+#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
+            // https://bugreports.qt-project.org/browse/QTBUG-30359
+            if (alwaysOnTop)
+                SetWindowPos(reinterpret_cast<HWND>(winId()), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+            else
+                SetWindowPos(reinterpret_cast<HWND>(winId()), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+#else
+            auto flags = windowFlags();
+            if (alwaysOnTop)
+                flags |= Qt::WindowStaysOnTopHint;
+            else
+                flags &= ~Qt::WindowStaysOnTopHint;
+
+            setWindowFlags(flags);
+            show();
+#endif
+        };
+
+        QSettings settings;
+
+        action->setCheckable(true);
+        action->setChecked(
+            settings.value(UISettings::mainWindowAlwaysOnTopKey, UISettings::mainWindowAlwaysOnTopDefault).toBool());
+        connect(action, &QAction::triggered, this, toggleTopmost);
+
         auto helpMenu = bar->addMenu(tr("&Help"));
         helpMenu->addAction(QIcon{":/images/help.png"}, tr("&Online help..."), this, SLOT(openHelp()));
         helpMenu->addAction(tr("Check for &updates"), this, SLOT(checkForUpdates()));
@@ -527,6 +562,7 @@ namespace Evernus
         connect(mMenuWidget, &MenuBarWidget::importAll, this, &MainWindow::refreshAll);
 
         refreshCharactersMenu();
+        toggleTopmost();
     }
 
     void MainWindow::createMainView()
