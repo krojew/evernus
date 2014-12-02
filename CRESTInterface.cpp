@@ -54,7 +54,7 @@ namespace Evernus
         , mCrypt{CRESTSettings::cryptKey}
     {
         QSettings settings;
-        mRefreshToken = mCrypt.decryptToString(settings.value(CRESTSettings::refreshTokenKey).toString());
+        mRefreshToken = mCrypt.decryptToString(settings.value(CRESTSettings::refreshTokenKey).toByteArray());
     }
 
     bool CRESTInterface::eventFilter(QObject *watched, QEvent *event)
@@ -303,7 +303,7 @@ namespace Evernus
                         }
 
                         QSettings settings;
-                        settings.setValue(CRESTSettings::refreshTokenKey, mCrypt.encryptToString(mRefreshToken));
+                        settings.setValue(CRESTSettings::refreshTokenKey, mCrypt.encryptToByteArray(mRefreshToken));
 
                         mExpiry = QDateTime::currentDateTime().addSecs(object.value("expires_in").toInt() - 10);
                         mAccessToken = object.value("access_token").toString();
