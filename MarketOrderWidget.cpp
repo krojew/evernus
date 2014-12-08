@@ -250,18 +250,17 @@ namespace Evernus
         mSellModel.reset();
         mBuyModel.reset();
         mArchiveModel.reset();
+
+        expandAll();
     }
 
     void MarketOrderWidget::changeGrouping()
     {
         mSellModel.setGrouping(static_cast<MarketOrderModel::Grouping>(mGroupingCombo->currentData().toInt()));
-        mSellView->expandAll();
-        mCombinedSellView->expandAll();
         mBuyModel.setGrouping(static_cast<MarketOrderModel::Grouping>(mGroupingCombo->currentData().toInt()));
-        mBuyView->expandAll();
-        mCombinedBuyView->expandAll();
         mArchiveModel.setGrouping(static_cast<MarketOrderModel::Grouping>(mGroupingCombo->currentData().toInt()));
-        mArchiveView->expandAll();
+
+        expandAll();
     }
 
     void MarketOrderWidget::saveChosenTab(int index)
@@ -341,5 +340,14 @@ namespace Evernus
         }
 
         return target;
+    }
+
+    void MarketOrderWidget::expandAll()
+    {
+        mSellView->expandAll();
+        mCombinedSellView->expandAll();
+        mBuyView->expandAll();
+        mCombinedBuyView->expandAll();
+        mArchiveView->expandAll();
     }
 }

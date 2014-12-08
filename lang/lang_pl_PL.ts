@@ -4310,7 +4310,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Historia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="295"/>
+        <location filename="../MarketOrderWidget.cpp" line="294"/>
         <source>Script error</source>
         <translation>Błąd skryptu</translation>
     </message>

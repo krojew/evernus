@@ -110,5 +110,7 @@ namespace Evernus
         virtual void handleNewCharacter(Character::IdType id) override;
 
         ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
+
+        void expandAll();
     };
 }
