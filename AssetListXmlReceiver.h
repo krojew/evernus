@@ -25,7 +25,7 @@ namespace Evernus
     struct APIXmlReceiverAdditionalData<AssetList::ItemType>
     {
         std::stack<std::unique_ptr<AssetList::ItemType::element_type>> mElementStack;
-        bool mParsingRowset = false;
+        std::stack<QString> mTagStack;
     };
 
     template<>

@@ -26,16 +26,13 @@ namespace Evernus
     template<>
     void APIXmlReceiver<AssetList::ItemType, std::unique_ptr<AssetList::ItemType::element_type>>::startElement(const QXmlName &name)
     {
-        const auto localName = name.localName(mNamePool);
+        auto localName = name.localName(mNamePool);
         if (localName == "row")
-        {
             mCurrentElement.reset(new AssetList::ItemType::element_type{});
-        }
         else if (localName == "rowset")
-        {
-            mAdditionalData.mParsingRowset = true;
             mAdditionalData.mElementStack.emplace(std::move(mCurrentElement));
-        }
+
+        mAdditionalData.mTagStack.emplace(std::move(localName));
     }
 
     template<>
@@ -48,13 +45,24 @@ namespace Evernus
             else
                 mAdditionalData.mElementStack.top()->addItem(std::move(mCurrentElement));
         }
-        else if (mAdditionalData.mParsingRowset)
+        else if (mAdditionalData.mTagStack.top() == "row")
         {
             Q_ASSERT(!mAdditionalData.mElementStack.empty());
-            mContainer.emplace_back(std::move(mAdditionalData.mElementStack.top()));
-            mAdditionalData.mElementStack.pop();
-            mAdditionalData.mParsingRowset = false;
+
+            if (mAdditionalData.mElementStack.size() == 1)
+            {
+                mContainer.emplace_back(std::move(mAdditionalData.mElementStack.top()));
+                mAdditionalData.mElementStack.pop();
+            }
+            else
+            {
+                auto last = std::move(mAdditionalData.mElementStack.top());
+                mAdditionalData.mElementStack.pop();
+                mAdditionalData.mElementStack.top()->addItem(std::move(last));
+            }
         }
+
+        mAdditionalData.mTagStack.pop();
     }
 
     template<>
