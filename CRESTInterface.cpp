@@ -42,7 +42,7 @@ namespace Evernus
     const QString CRESTInterface::loginUrl = "https://sisilogin.testeveonline.com";
 #else
     const QString CRESTInterface::crestUrl = "https://crest-tq.eveonline.com";
-    const QString CRESTInterface::loginUrl = "https://login.eveonline.com";
+    const QString CRESTInterface::loginUrl = "https://login-tq.eveonline.com";
 #endif
     const QString CRESTInterface::redirectUrl = "evernus.com";
 
