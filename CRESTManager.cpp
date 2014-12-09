@@ -17,12 +17,18 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+#include "EveDataProvider.h"
 #include "ExternalOrder.h"
 
 #include "CRESTManager.h"
 
 namespace Evernus
 {
+    CRESTManager::CRESTManager(const EveDataProvider &dataProvider)
+        : mDataProvider{dataProvider}
+    {
+    }
+
     void CRESTManager::fetchMarketOrders(uint regionId,
                                          EveType::IdType typeId,
                                          const Callback<std::vector<ExternalOrder>> &callback) const
@@ -63,7 +69,8 @@ namespace Evernus
                         order.setType((itemObject.value("buy").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
                         order.setTypeId(typeId);
                         order.setStationId(idRe.match(localtion.value("href").toString()).captured(1).toUInt());
-                        //TODO: order.setSolarSystemId();
+                        //TODO: replace when available
+                        order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));
                         order.setRegionId(regionId);
 
                         if (range == "station")
@@ -77,7 +84,8 @@ namespace Evernus
 
                         order.setUpdateTime(QDateTime::currentDateTimeUtc());
                         order.setPrice(itemObject.value("price").toDouble());
-                        // TODO: order.setVolumeEntered()
+                        // TODO: replace when available
+                        order.setVolumeEntered(itemObject.value("volume").toInt());
                         order.setVolumeRemaining(itemObject.value("volume").toInt());
                         order.setMinVolume(itemObject.value("minVolume").toInt());
                         order.setIssued(issued);

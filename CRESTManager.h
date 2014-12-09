@@ -22,6 +22,7 @@
 
 namespace Evernus
 {
+    class EveDataProvider;
     class ExternalOrder;
 
     class CRESTManager
@@ -30,7 +31,7 @@ namespace Evernus
         template<class T>
         using Callback = std::function<void (T &&data, const QString &error)>;
 
-        CRESTManager() = default;
+        explicit CRESTManager(const EveDataProvider &dataProvider);
         virtual ~CRESTManager() = default;
 
         void fetchMarketOrders(uint regionId,
@@ -38,6 +39,8 @@ namespace Evernus
                                const Callback<std::vector<ExternalOrder>> &callback) const;
 
     private:
+        const EveDataProvider &mDataProvider;
+
         CRESTInterface mInterface;
     };
 }

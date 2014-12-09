@@ -26,6 +26,7 @@ namespace Evernus
     CRESTExternalOrderImporter::CRESTExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent)
         : ExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
+        , mManager{mDataProvider}
     {
     }
 

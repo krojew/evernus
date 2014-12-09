@@ -570,6 +570,84 @@ namespace Evernus
         return result;
     }
 
+    uint CachingEveDataProvider::getStationSolarSystemId(quint64 stationId) const
+    {
+        const auto it = mLocationSolarSystemCache.find(stationId);
+        if (it != std::end(mLocationSolarSystemCache))
+            return it->second;
+
+        uint systemId = 0;
+        if (stationId >= 66000000 && stationId <= 66014933)
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT solarSystemID FROM staStations WHERE stationID = ?");
+            query.bindValue(0, stationId - 6000001);
+
+            DatabaseUtils::execQuery(query);
+            query.next();
+
+            systemId = query.value(0).toUInt();
+        }
+        else if (stationId >= 66014934 && stationId <= 67999999)
+        {
+            try
+            {
+                auto station = mConquerableStationRepository.find(stationId - 6000000);
+                systemId = station->getSolarSystemId();
+            }
+            catch (const ConquerableStationRepository::NotFoundException &)
+            {
+            }
+        }
+        else if (stationId >= 60014861 && stationId <= 60014928)
+        {
+            try
+            {
+                auto station = mConquerableStationRepository.find(stationId);
+                systemId = station->getSolarSystemId();
+            }
+            catch (const ConquerableStationRepository::NotFoundException &)
+            {
+            }
+        }
+        else if (stationId > 60000000 && stationId <= 61000000)
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT solarSystemID FROM staStations WHERE stationID = ?");
+            query.bindValue(0, stationId);
+
+            DatabaseUtils::execQuery(query);
+            query.next();
+
+            systemId = query.value(0).toUInt();
+        }
+        else if (stationId > 61000000)
+        {
+            try
+            {
+                auto station = mConquerableStationRepository.find(stationId);
+                systemId = station->getSolarSystemId();
+            }
+            catch (const ConquerableStationRepository::NotFoundException &)
+            {
+            }
+        }
+        else
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT solarSystemID FROM mapDenormalize WHERE itemID = ?");
+            query.bindValue(0, stationId);
+
+            DatabaseUtils::execQuery(query);
+            query.next();
+
+            systemId = query.value(0).toUInt();
+        }
+
+        mLocationSolarSystemCache.emplace(stationId, systemId);
+        return systemId;
+    }
+
     void CachingEveDataProvider::precacheJumpMap()
     {
         auto query = mEveDb.exec("SELECT fromRegionID, fromSolarSystemID, toSolarSystemID FROM mapSolarSystemJumps WHERE fromRegionID = toRegionID");
@@ -732,84 +810,6 @@ namespace Evernus
 
         mSolarSystemRegionCache.emplace(systemId, regionId);
         return regionId;
-    }
-
-    uint CachingEveDataProvider::getStationSolarSystemId(quint64 stationId) const
-    {
-        const auto it = mLocationSolarSystemCache.find(stationId);
-        if (it != std::end(mLocationSolarSystemCache))
-            return it->second;
-
-        uint systemId = 0;
-        if (stationId >= 66000000 && stationId <= 66014933)
-        {
-            QSqlQuery query{mEveDb};
-            query.prepare("SELECT solarSystemID FROM staStations WHERE stationID = ?");
-            query.bindValue(0, stationId - 6000001);
-
-            DatabaseUtils::execQuery(query);
-            query.next();
-
-            systemId = query.value(0).toUInt();
-        }
-        else if (stationId >= 66014934 && stationId <= 67999999)
-        {
-            try
-            {
-                auto station = mConquerableStationRepository.find(stationId - 6000000);
-                systemId = station->getSolarSystemId();
-            }
-            catch (const ConquerableStationRepository::NotFoundException &)
-            {
-            }
-        }
-        else if (stationId >= 60014861 && stationId <= 60014928)
-        {
-            try
-            {
-                auto station = mConquerableStationRepository.find(stationId);
-                systemId = station->getSolarSystemId();
-            }
-            catch (const ConquerableStationRepository::NotFoundException &)
-            {
-            }
-        }
-        else if (stationId > 60000000 && stationId <= 61000000)
-        {
-            QSqlQuery query{mEveDb};
-            query.prepare("SELECT solarSystemID FROM staStations WHERE stationID = ?");
-            query.bindValue(0, stationId);
-
-            DatabaseUtils::execQuery(query);
-            query.next();
-
-            systemId = query.value(0).toUInt();
-        }
-        else if (stationId > 61000000)
-        {
-            try
-            {
-                auto station = mConquerableStationRepository.find(stationId);
-                systemId = station->getSolarSystemId();
-            }
-            catch (const ConquerableStationRepository::NotFoundException &)
-            {
-            }
-        }
-        else
-        {
-            QSqlQuery query{mEveDb};
-            query.prepare("SELECT solarSystemID FROM mapDenormalize WHERE itemID = ?");
-            query.bindValue(0, stationId);
-
-            DatabaseUtils::execQuery(query);
-            query.next();
-
-            systemId = query.value(0).toUInt();
-        }
-
-        mLocationSolarSystemCache.emplace(stationId, systemId);
-        return systemId;
     }
 
     const ExternalOrderRepository::EntityList &CachingEveDataProvider::getExternalOrders(EveType::IdType typeId, uint regionId) const
