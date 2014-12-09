@@ -21,10 +21,10 @@
 #include <QDir>
 
 #include "MarketLogExternalOrderImporterThread.h"
-#include "EveMarketDataExternalOrderImporter.h"
 #include "MarketLogExternalOrderImporter.h"
 #include "MarketOrderFilterProxyModel.h"
 #include "ExternalOrderImporterNames.h"
+#include "CRESTExternalOrderImporter.h"
 #include "CacheExternalOrderImporter.h"
 #include "ContractFilterProxyModel.h"
 #include "ExternalOrderModel.h"
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
         Evernus::EvernusApplication app{argc, argv};
 
         app.registerImporter(Evernus::ExternalOrderImporterNames::webImporter,
-                             std::make_unique<Evernus::EveMarketDataExternalOrderImporter>());
+                             std::make_unique<Evernus::CRESTExternalOrderImporter>(app.getDataProvider()));
         app.registerImporter(Evernus::ExternalOrderImporterNames::logImporter,
                              std::make_unique<Evernus::MarketLogExternalOrderImporter>());
         app.registerImporter(Evernus::ExternalOrderImporterNames::cacheImporter,

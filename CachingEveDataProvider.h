@@ -85,6 +85,9 @@ namespace Evernus
 
         virtual double getSolarSystemSecurityStatus(uint solarSystemId) const override;
 
+        virtual uint getStationRegionId(quint64 stationId) const override;
+        virtual uint getStationSolarSystemId(quint64 stationId) const override;
+
         void precacheJumpMap();
         void precacheRefTypes();
 
@@ -150,6 +153,8 @@ namespace Evernus
         mutable std::unordered_map<uint, QString> mRegionNameCache;
         mutable std::unordered_map<uint, QString> mSolarSystemNameCache;
 
+        mutable std::unordered_map<quint64, uint> mStationRegionCache;
+
         bool mUsePackagedVolume = false;
 
         mutable QHash<QPair<uint, uint>, uint> mSystemDistances;
@@ -160,7 +165,6 @@ namespace Evernus
         MarketGroupRepository::EntityPtr getMarketGroup(MarketGroup::IdType id) const;
 
         uint getSolarSystemRegionId(uint stationId) const;
-        uint getStationSolarSystemId(quint64 stationId) const;
 
         const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
 

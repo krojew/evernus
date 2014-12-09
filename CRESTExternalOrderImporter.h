@@ -14,31 +14,31 @@
  */
 #pragma once
 
-#include <QNetworkAccessManager>
-
 #include "ExternalOrderImporter.h"
-#include "ExternalOrder.h"
+#include "CRESTManager.h"
 
 namespace Evernus
 {
-    class EveMarketDataExternalOrderImporter
+    class EveDataProvider;
+
+    class CRESTExternalOrderImporter
         : public ExternalOrderImporter
     {
-        Q_OBJECT
-
     public:
-        using ExternalOrderImporter::ExternalOrderImporter;
-        virtual ~EveMarketDataExternalOrderImporter() = default;
+        explicit CRESTExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        virtual ~CRESTExternalOrderImporter() = default;
 
         virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
 
-    private slots:
-        void processReply() const;
-
     private:
-        mutable QNetworkAccessManager mNetworkManager;
+        const EveDataProvider &mDataProvider;
+
+        CRESTManager mManager;
         mutable uint mRequestCount = 0;
+        mutable bool mPreparingRequests = false;
 
         mutable std::vector<ExternalOrder> mResult;
+
+        void processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const;
     };
 }

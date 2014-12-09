@@ -15,6 +15,7 @@ find_package(Qt5Script REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
+find_package(Qt5WebKitWidgets REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
 if(${Qt5Widgets_VERSION} VERSION_LESS "5.4.0")
@@ -49,6 +50,14 @@ if(DEFINED EVERNUS_DROPBOX_APP_KEY AND DEFINED EVERNUS_DROPBOX_APP_SECRET)
     endif()
 endif()
 
+if(DEFINED EVERNUS_CREST_CLIENT_ID AND DEFINED EVERNUS_CREST_SECRET)
+    add_definitions(-DEVERNUS_CREST_CLIENT_ID=${EVERNUS_CREST_CLIENT_ID} -DEVERNUS_CREST_SECRET=${EVERNUS_CREST_SECRET})
+endif()
+
+if(DEFINED EVERNUS_CREST_SISI)
+    add_definitions(-DEVERNUS_CREST_SISI)
+endif()
+
 qt5_wrap_cpp(
     MOC_FILES
     AboutDialog.h
@@ -76,11 +85,11 @@ qt5_wrap_cpp(
     ContractWidget.h
     CorpImportPreferencesWidget.h
     CorpKeyEditDialog.h
+    CRESTInterface.h
     DateFilteredPlotWidget.h
     DateRangeWidget.h
     DeviationSourceWidget.h
     EveDataProvider.h
-    EveMarketDataExternalOrderImporter.h
     EvernusApplication.h
     ExternalOrderBuyModel.h
     ExternalOrderImporter.h
@@ -307,6 +316,13 @@ add_executable(
     CorpWalletSnapshot.h
     CorpWalletSnapshotRepository.cpp
     CorpWalletSnapshotRepository.h
+    CRESTExternalOrderImporter.cpp
+    CRESTExternalOrderImporter.h
+    CRESTInterface.cpp
+    CRESTInterface.h
+    CRESTManager.cpp
+    CRESTManager.h
+    CRESTSettings.h
     DatabaseUtils.cpp
     DatabaseUtils.h
     DateFilteredPlotWidget.cpp
@@ -328,10 +344,6 @@ add_executable(
     EveCacheNodes.h
     EveCacheReader.h
     EveDataProvider.h
-    EveMarketDataExternalOrderImporter.cpp
-    EveMarketDataExternalOrderImporter.h
-    EveMarketDataExternalOrderImporterXmlReceiver.cpp
-    EveMarketDataExternalOrderImporterXmlReceiver.h
     EvernusApplication.cpp
     EvernusApplication.h
     EveType.cpp
@@ -522,6 +534,8 @@ add_executable(
     PathSettings.h
     PathUtils.cpp
     PathUtils.h
+    PersistentCookieJar.cpp
+    PersistentCookieJar.h
     PreferencesDialog.cpp
     PreferencesDialog.h
     PricePreferencesWidget.cpp
@@ -719,6 +733,7 @@ target_link_libraries(
     Qt5::Xml
     Qt5::XmlPatterns
     Qt5::Widgets
+    Qt5::WebKitWidgets
     ${ADDITIONAL_LIBS}
 )
 

@@ -327,6 +327,39 @@
     </message>
 </context>
 <context>
+    <name>Evernus::CRESTInterface</name>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="68"/>
+        <source>CREST authorization failed.</source>
+        <translation>Autoryzacja CREST nie powiodła się.</translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="160"/>
+        <source>Missing CREST regions url!</source>
+        <translation>Brak adresu regionów w CREST!</translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="178"/>
+        <source>Missing CREST item types url!</source>
+        <translation>Brak adresu typów w CREST!</translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="258"/>
+        <source>CREST Authentication</source>
+        <translation>Uwierzytelnianie CREST</translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="301"/>
+        <source>Empty refresh token!</source>
+        <translation>Pusty token odświeżania!</translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="356"/>
+        <source>Empty access token!</source>
+        <translation>Pusty token dostępu!</translation>
+    </message>
+</context>
+<context>
     <name>Evernus::CacheExternalOrderImporter</name>
     <message>
         <source>Couldn&apos;t determine Eve cache path.</source>
