@@ -165,10 +165,14 @@ namespace Evernus
             if (selection.isEmpty())
                 return;
 
-            const auto source = mProxy.mapToSource(selection.first());
-            const auto next = mSource->index(selection.first().row() + 1, 0);
+            const auto selected = selection.first();
+            const auto source = mProxy.mapToSource(selected);
+            const auto next = mProxy.index(selected.row() + 1, 0, selected.parent());
             if (next.isValid())
+            {
                 model->select(next, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                mView->scrollTo(next);
+            }
 
             const auto info = mSource->getOrderInfo(source);
             if (info.mTargetPrice >= 0.01)
