@@ -133,6 +133,7 @@ namespace Evernus
         connect(mSellView, &MarketOrderViewWithTransactions::scriptError, this, &MarketOrderWidget::showScriptError);
         connect(mSellView, &MarketOrderViewWithTransactions::showExternalOrders, this, &MarketOrderWidget::showExternalOrders);
         connect(mSellView, &MarketOrderViewWithTransactions::showInEve, this, &MarketOrderWidget::showInEve);
+        connect(mSellView, &MarketOrderViewWithTransactions::itemSelected, this, &MarketOrderWidget::changeFPCExecutor);
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mSellView, &MarketOrderViewWithTransactions::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mSellView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::textFilterChanged, mSellView, &MarketOrderViewWithTransactions::textFilterChanged);
@@ -155,6 +156,7 @@ namespace Evernus
         connect(this, &MarketOrderWidget::characterChanged, mBuyView, &MarketOrderViewWithTransactions::setCharacter);
         connect(mBuyView, &MarketOrderViewWithTransactions::showExternalOrders, this, &MarketOrderWidget::showExternalOrders);
         connect(mBuyView, &MarketOrderViewWithTransactions::showInEve, this, &MarketOrderWidget::showInEve);
+        connect(mBuyView, &MarketOrderViewWithTransactions::itemSelected, this, &MarketOrderWidget::changeFPCExecutor);
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mBuyView, &MarketOrderViewWithTransactions::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mBuyView, &MarketOrderViewWithTransactions::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::textFilterChanged, mBuyView, &MarketOrderViewWithTransactions::textFilterChanged);
@@ -178,6 +180,7 @@ namespace Evernus
         mCombinedSellView->sortByColumn(0, Qt::AscendingOrder);
         connect(mCombinedSellView, &MarketOrderView::showExternalOrders, this, &MarketOrderWidget::showExternalOrders);
         connect(mCombinedSellView, &MarketOrderView::showInEve, this, &MarketOrderWidget::showInEve);
+        connect(mCombinedSellView, &MarketOrderView::itemSelected, this, &MarketOrderWidget::changeFPCExecutor);
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mCombinedSellView, &MarketOrderView::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mCombinedSellView, &MarketOrderView::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::textFilterChanged, mCombinedSellView, &MarketOrderView::textFilterChanged);
@@ -196,6 +199,7 @@ namespace Evernus
         mCombinedBuyView->sortByColumn(0, Qt::AscendingOrder);
         connect(mCombinedBuyView, &MarketOrderView::showExternalOrders, this, &MarketOrderWidget::showExternalOrders);
         connect(mCombinedBuyView, &MarketOrderView::showInEve, this, &MarketOrderWidget::showInEve);
+        connect(mCombinedBuyView, &MarketOrderView::itemSelected, this, &MarketOrderWidget::changeFPCExecutor);
         connect(stateFilter, &MarketOrderFilterWidget::statusFilterChanged, mCombinedBuyView, &MarketOrderView::statusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::priceStatusFilterChanged, mCombinedBuyView, &MarketOrderView::priceStatusFilterChanged);
         connect(stateFilter, &MarketOrderFilterWidget::textFilterChanged, mCombinedBuyView, &MarketOrderView::textFilterChanged);
@@ -292,6 +296,11 @@ namespace Evernus
     void MarketOrderWidget::showScriptError(const QString &message)
     {
         QMessageBox::warning(this, tr("Script error"), message);
+    }
+
+    void MarketOrderWidget::changeFPCExecutor()
+    {
+        emit fpcExecutorChanged(sender());
     }
 
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)

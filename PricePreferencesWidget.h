@@ -16,6 +16,7 @@
 
 #include <QWidget>
 
+class QKeySequenceEdit;
 class QDoubleSpinBox;
 class QComboBox;
 class QCheckBox;
@@ -51,6 +52,8 @@ namespace Evernus
         QCheckBox *mCombineCorpAndCharPlotsBtn = nullptr;
         QCheckBox *mRefreshPricesWithOrdersBtn = nullptr;
         QCheckBox *mCopyNonOverbidBtn = nullptr;
+        QCheckBox *mFPCBtn = nullptr;
+        QKeySequenceEdit *mFPCShortcutEdit = nullptr;
 
         void addPlotFormat(const QString &text, const QString &value, const QString &curValue);
     };

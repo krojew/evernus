@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QKeySequenceEdit>
 #include <QDoubleSpinBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -143,6 +144,21 @@ namespace Evernus
         pricesLayout->addRow(mCopyNonOverbidBtn);
         mCopyNonOverbidBtn->setChecked(settings.value(PriceSettings::copyNonOverbidPriceKey, PriceSettings::copyNonOverbidPriceDefault).toBool());
 
+        auto fpcGroup = new QGroupBox{tr("Fast Price Copy"), this};
+        mainLayout->addWidget(fpcGroup);
+
+        auto fpcLayout = new QHBoxLayout{fpcGroup};
+
+        mFPCBtn = new QCheckBox{tr("Enabled"), this};
+        fpcLayout->addWidget(mFPCBtn);
+        mFPCBtn->setChecked(settings.value(PriceSettings::fpcKey, PriceSettings::fpcDefault).toBool());
+
+        fpcLayout->addWidget(new QLabel{tr("Shourtcut:")}, 0, Qt::AlignBaseline | Qt::AlignRight);
+
+        mFPCShortcutEdit = new QKeySequenceEdit{QKeySequence::fromString(
+            settings.value(PriceSettings::fpcShourtcutKey).toString()), this};
+        fpcLayout->addWidget(mFPCShortcutEdit);
+
         mainLayout->addStretch();
     }
 
@@ -164,6 +180,8 @@ namespace Evernus
         settings.setValue(PriceSettings::combineCorpAndCharPlotsKey, mCombineCorpAndCharPlotsBtn->isChecked());
         settings.setValue(PriceSettings::refreshPricesWithOrdersKey, mRefreshPricesWithOrdersBtn->isChecked());
         settings.setValue(PriceSettings::copyNonOverbidPriceKey, mCopyNonOverbidBtn->isChecked());
+        settings.setValue(PriceSettings::fpcKey, mFPCBtn->isChecked());
+        settings.setValue(PriceSettings::fpcShourtcutKey, mFPCShortcutEdit->keySequence().toString());
     }
 
     void PricePreferencesWidget::addPlotFormat(const QString &text, const QString &value, const QString &curValue)

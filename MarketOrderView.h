@@ -63,6 +63,11 @@ namespace Evernus
         void showExternalOrders(EveType::IdType id);
         void showInEve(EveType::IdType id);
 
+        void itemSelected();
+
+    public slots:
+        void executeFPC();
+
     private slots:
         void showPriceInfo(const QModelIndex &index);
 

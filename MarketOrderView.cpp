@@ -13,9 +13,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QDesktopServices>
+#include <QApplication>
 #include <QActionGroup>
 #include <QVBoxLayout>
 #include <QHeaderView>
+#include <QClipboard>
 #include <QSettings>
 #include <QCursor>
 #include <QAction>
@@ -153,9 +155,31 @@ namespace Evernus
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
     }
 
+    void MarketOrderView::executeFPC()
+    {
+        if (mSource != nullptr)
+        {
+            auto model = getSelectionModel();
+
+            const auto selection = model->selectedRows();
+            if (selection.isEmpty())
+                return;
+
+            const auto source = mProxy.mapToSource(selection.first());
+            const auto next = mSource->index(selection.first().row() + 1, 0);
+            if (next.isValid())
+                model->select(next, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+
+            const auto info = mSource->getOrderInfo(source);
+            if (info.mTargetPrice >= 0.01)
+                QApplication::clipboard()->setText(QString::number(info.mTargetPrice, 'f', 2));
+        }
+    }
+
     void MarketOrderView::showPriceInfo(const QModelIndex &index)
     {
         emit closeOrderInfo();
+        emit itemSelected();
 
         const auto source = mProxy.mapToSource(index);
 
@@ -189,6 +213,8 @@ namespace Evernus
         mShowExternalOrdersAct->setEnabled(enable);
         mShowInEveAct->setEnabled(enable);
         mLookupGroup->setEnabled(enable);
+
+        emit itemSelected();
     }
 
     void MarketOrderView::removeOrders()

@@ -70,6 +70,8 @@ namespace Evernus
         void showExternalOrders(EveType::IdType id);
         void showInEve(EveType::IdType id);
 
+        void fpcExecutorChanged(QObject *executor);
+
     public slots:
         void updateData();
 
@@ -84,6 +86,8 @@ namespace Evernus
         void setArchiveRange(const QDate &from, const QDate &to);
 
         void showScriptError(const QString &message);
+
+        void changeFPCExecutor();
 
     private:
         static const QString settingsLastTabkey;

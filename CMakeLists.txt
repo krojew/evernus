@@ -8,6 +8,7 @@ set(MAJOR_VERSION "1")
 set(MINOR_VERSION "20")
 
 find_package(Boost REQUIRED)
+find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
@@ -27,12 +28,17 @@ configure_file(Version.h.in Version.h)
 if(APPLE)
     configure_file(Info.plist.in Info.plist)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -pthread")
+    set(ADDITIONAL_SRC "qxtglobalshortcut_mac.cpp")
 elseif(UNIX)
+    find_package(X11 REQUIRED)
+
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -pthread -stdlib=libc++ -g")
+    set(ADDITIONAL_SRC "qxtglobalshortcut_x11.cpp")
+    set(ADDITIONAL_LIBS ${X11_LIBRARIES})
 elseif(WIN32)
     find_package(Qt5WinExtras REQUIRED)
 
-    set(ADDITIONAL_SRC "evernus.rc")
+    set(ADDITIONAL_SRC "evernus.rc qxtglobalshortcut_win.cpp")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
     set(ADDITIONAL_LIBS Qt5::WinExtras)
 endif()
@@ -98,6 +104,7 @@ qt5_wrap_cpp(
     ExternalOrderView.h
     FileDownload.h
     FilterTextRepository.h
+    FPCController.h
     GeneralPreferencesWidget.h
     GenericMarketOrdersInfoWidget.h
     HttpPreferencesWidget.h
@@ -154,6 +161,7 @@ qt5_wrap_cpp(
     qxtabstractwebsessionmanager_p.h
     qxtboundfunction.h
     qxtfifo.h
+    qxtglobalshortcut.h
     qxthttpsessionmanager.h
     qxtsmtp_p.h
     qxtsmtp.h
@@ -189,7 +197,7 @@ qt5_add_resources(
 
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TRANSLATIONS})
 
-include_directories(${Boost_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIRS} ${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 
 add_executable(
     ${PROJECT_NAME}
@@ -378,6 +386,8 @@ add_executable(
     FilterTextRepository.h
     FlowLayout.cpp
     FlowLayout.h
+    FPCController.cpp
+    FPCController.h
     GeneralPreferencesWidget.cpp
     GeneralPreferencesWidget.h
     GenericMarketOrdersInfoWidget.cpp
@@ -576,6 +586,9 @@ add_executable(
     qxtfifo.h
     qxtglobal.cpp
     qxtglobal.h
+    qxtglobalshortcut.cpp
+    qxtglobalshortcut.h
+    qxtglobalshortcut_p.h
     qxthmac.cpp
     qxthmac.h
     qxthtmltemplate.cpp

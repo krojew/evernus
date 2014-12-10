@@ -60,6 +60,7 @@ namespace Evernus
         connect(mOrderView, &MarketOrderView::scriptError, this, &MarketOrderViewWithTransactions::scriptError);
         connect(mOrderView, &MarketOrderView::showExternalOrders, this, &MarketOrderViewWithTransactions::showExternalOrders);
         connect(mOrderView, &MarketOrderView::showInEve, this, &MarketOrderViewWithTransactions::showInEve);
+        connect(mOrderView, &MarketOrderView::itemSelected, this, &MarketOrderViewWithTransactions::itemSelected);
         connect(mOrderView->getSelectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &MarketOrderViewWithTransactions::selectOrder);
 
@@ -150,6 +151,11 @@ namespace Evernus
     void MarketOrderViewWithTransactions::sortByColumn(int column, Qt::SortOrder order)
     {
         mOrderView->sortByColumn(column, order);
+    }
+
+    void MarketOrderViewWithTransactions::executeFPC()
+    {
+        mOrderView->executeFPC();
     }
 
     void MarketOrderViewWithTransactions::selectOrder(const QItemSelection &selected)

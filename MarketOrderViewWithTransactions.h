@@ -66,6 +66,9 @@ namespace Evernus
 
         void sortByColumn(int column, Qt::SortOrder order);
 
+    public slots:
+        void executeFPC();
+
     signals:
         void statusFilterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);
         void priceStatusFilterChanged(const MarketOrderFilterProxyModel::PriceStatusFilters &filter);
@@ -76,6 +79,8 @@ namespace Evernus
 
         void showExternalOrders(EveType::IdType id);
         void showInEve(EveType::IdType id);
+
+        void itemSelected();
 
     private slots:
         void selectOrder(const QItemSelection &selected);

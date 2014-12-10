@@ -22,6 +22,7 @@
 #include <QTimer>
 
 #include "ExternalOrderImporter.h"
+#include "FPCController.h"
 #include "Character.h"
 
 class QSystemTrayIcon;
@@ -208,6 +209,8 @@ namespace Evernus
         QTimer mAutoImportTimer;
 
         int mMarketBrowserTab = -1;
+
+        FPCController mFPCController;
 
         void readSettings();
         void writeSettings();
