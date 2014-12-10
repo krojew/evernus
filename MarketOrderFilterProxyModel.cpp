@@ -35,6 +35,8 @@ namespace Evernus
         : LeafFilterProxyModel{parent}
         , mDataProvider{dataProvider}
     {
+        setSortCaseSensitivity(Qt::CaseInsensitive);
+
         QSettings settings;
         mStatusFilter = static_cast<StatusFilters>(
             settings.value(UISettings::marketOrderStateFilterKey, static_cast<int>(defaultStatusFilter)).toInt());
