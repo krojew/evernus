@@ -147,17 +147,29 @@ namespace Evernus
         auto fpcGroup = new QGroupBox{tr("Fast Price Copy"), this};
         mainLayout->addWidget(fpcGroup);
 
-        auto fpcLayout = new QHBoxLayout{fpcGroup};
+        auto fpcLayout = new QVBoxLayout{fpcGroup};
+
+        auto fpcSettingsLayout = new QHBoxLayout{};
+        fpcLayout->addLayout(fpcSettingsLayout);
 
         mFPCBtn = new QCheckBox{tr("Enabled"), this};
-        fpcLayout->addWidget(mFPCBtn);
+        fpcSettingsLayout->addWidget(mFPCBtn);
         mFPCBtn->setChecked(settings.value(PriceSettings::fpcKey, PriceSettings::fpcDefault).toBool());
 
-        fpcLayout->addWidget(new QLabel{tr("Shourtcut:")}, 0, Qt::AlignBaseline | Qt::AlignRight);
+        fpcSettingsLayout->addWidget(new QLabel{tr("Shourtcut:"), this}, 0, Qt::AlignBaseline | Qt::AlignRight);
 
         mFPCShortcutEdit = new QKeySequenceEdit{QKeySequence::fromString(
             settings.value(PriceSettings::fpcShourtcutKey).toString()), this};
-        fpcLayout->addWidget(mFPCShortcutEdit);
+        fpcSettingsLayout->addWidget(mFPCShortcutEdit);
+
+        auto helpLabel = new QLabel{tr(
+            "Fast Price Copy allows you to update your orders in a very fast manner. Simply assign a keyboard shortcut, select an order in any market order view and press the shortcut to "
+            "copy the updated price and automatically jump to the next order on the list. You can do this even when Evernus doesn't have the input focus - the keyboard shortcut works system-wide. "
+            "You can use this to update your prices without ever leaving Eve client."
+        ), this};
+        helpLabel->setWordWrap(true);
+
+        fpcLayout->addWidget(helpLabel);
 
         mainLayout->addStretch();
     }
