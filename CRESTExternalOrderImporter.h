@@ -15,6 +15,7 @@
 #pragma once
 
 #include "ExternalOrderImporter.h"
+#include "ExternalOrder.h"
 #include "CRESTManager.h"
 
 namespace Evernus
@@ -24,6 +25,8 @@ namespace Evernus
     class CRESTExternalOrderImporter
         : public ExternalOrderImporter
     {
+        Q_OBJECT
+
     public:
         explicit CRESTExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~CRESTExternalOrderImporter() = default;

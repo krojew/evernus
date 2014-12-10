@@ -85,6 +85,7 @@ qt5_wrap_cpp(
     ContractWidget.h
     CorpImportPreferencesWidget.h
     CorpKeyEditDialog.h
+    CRESTExternalOrderImporter.h
     CRESTInterface.h
     DateFilteredPlotWidget.h
     DateRangeWidget.h

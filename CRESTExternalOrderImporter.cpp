@@ -17,7 +17,6 @@
 #include <boost/scope_exit.hpp>
 
 #include "EveDataProvider.h"
-#include "ExternalOrder.h"
 
 #include "CRESTExternalOrderImporter.h"
 
@@ -86,10 +85,17 @@ namespace Evernus
                        std::make_move_iterator(std::begin(orders)),
                        std::make_move_iterator(std::end(orders)));
 
-        if (mRequestCount == 0 && !mPreparingRequests)
+        if (mRequestCount == 0)
         {
-            emit externalOrdersChanged(mResult);
-            mResult.clear();
+            if (!mPreparingRequests)
+            {
+                emit externalOrdersChanged(mResult);
+                mResult.clear();
+            }
+        }
+        else
+        {
+            emit statusChanged(tr("CREST import: waiting for %1 server replies").arg(mRequestCount));
         }
     }
 }

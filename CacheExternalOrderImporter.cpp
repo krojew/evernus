@@ -55,9 +55,12 @@ namespace Evernus
             orders.reserve(streams.size());
 
             LogTimeMap timeMap;
+            auto counter = 0u;
 
             for (const auto &stream : streams)
             {
+                emit statusChanged(tr("Cache import: processing %1 of %2").arg(++counter).arg(streams.size()));
+
                 const auto &children = stream->getChildren();
                 if (children.size() < 2)
                 {

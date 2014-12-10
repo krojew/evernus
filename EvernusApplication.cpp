@@ -222,6 +222,7 @@ namespace Evernus
     {
         Q_ASSERT(mExternalOrderImporters.find(name) == std::end(mExternalOrderImporters));
 
+        connect(importer.get(), &ExternalOrderImporter::statusChanged, this, &EvernusApplication::showPriceImportStatus, Qt::QueuedConnection);
         connect(importer.get(), &ExternalOrderImporter::error, this, &EvernusApplication::showPriceImportError, Qt::QueuedConnection);
         connect(importer.get(), &ExternalOrderImporter::externalOrdersChanged, this, &EvernusApplication::updateExternalOrdersAndAssetValue, Qt::QueuedConnection);
         mExternalOrderImporters.emplace(name, std::move(importer));
@@ -1308,6 +1309,8 @@ namespace Evernus
     {
         try
         {
+            emit taskInfoChanged(mCurrentExternalOrderImportTask, tr("Saving %1 imported orders...").arg(orders.size()));
+
             asyncExecute(&CachingEveDataProvider::updateExternalOrders, mDataProvider.get(), std::cref(orders));
 
             QSettings settings;
@@ -1520,6 +1523,12 @@ namespace Evernus
     {
         Q_ASSERT(mCurrentExternalOrderImportTask != TaskConstants::invalidTask);
         finishExternalOrderImportTask(info);
+    }
+
+    void EvernusApplication::showPriceImportStatus(const QString &info)
+    {
+        Q_ASSERT(mCurrentExternalOrderImportTask != TaskConstants::invalidTask);
+        emit taskInfoChanged(mCurrentExternalOrderImportTask, info);
     }
 
     void EvernusApplication::emitNewItemCosts()
