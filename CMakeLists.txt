@@ -10,6 +10,7 @@ set(MINOR_VERSION "22")
 find_package(Boost REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
+find_package(Qt5Multimedia REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
 find_package(Qt5Script REQUIRED)
@@ -170,6 +171,7 @@ qt5_wrap_cpp(
     qxtwebslotservice.h
     ScriptOrderProcessingModel.h
     SellMarketOrdersInfoWidget.h
+    SoundPreferencesWidget.h
     StationModel.h
     StationView.h
     StatisticsWidget.h
@@ -635,6 +637,9 @@ add_executable(
     SellMarketOrdersInfoWidget.h
     SimpleCrypt.cpp
     SimpleCrypt.h
+    SoundPreferencesWidget.cpp
+    SoundPreferencesWidget.h
+    SoundSettings.h
     StationModel.cpp
     StationModel.h
     StationView.cpp
@@ -740,6 +745,8 @@ endif()
 target_link_libraries(
     ${PROJECT_NAME}
     ${Boost_LIBRARIES}
+    Qt5::Gui
+    Qt5::Multimedia
     Qt5::Network
     Qt5::PrintSupport
     Qt5::Script
