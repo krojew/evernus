@@ -26,9 +26,14 @@ endif()
 configure_file(Version.h.in Version.h)
 
 if(APPLE)
+    find_package(Qt5MacExtras REQUIRED)
+    find_library(CarbonLibrary Carbon)
+    mark_as_advanced(CarbonLibrary)
+
     configure_file(Info.plist.in Info.plist)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -pthread")
     set(ADDITIONAL_SRC qxtglobalshortcut_mac.cpp)
+    set(ADDITIONAL_LIBS Qt5::MacExtras ${CarbonLibrary})
 elseif(UNIX)
     find_package(X11 REQUIRED)
 
