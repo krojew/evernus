@@ -19,7 +19,7 @@ find_package(Qt5XmlPatterns REQUIRED)
 find_package(Qt5WebKitWidgets REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
-if(${Qt5Widgets_VERSION} VERSION_LESS "5.4.0")
+if(${Qt5XmlPatterns_VERSION} VERSION_LESS "5.4.0")
     message(WARNING "Qt version < 5.4 requires a patch to QXmlPatterns - see http://evernus.com/download/ for details.")
 endif()
 
