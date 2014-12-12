@@ -4503,72 +4503,77 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::PreferencesDialog</name>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="62"/>
+        <location filename="../PreferencesDialog.cpp" line="63"/>
         <source>General</source>
         <translation>Ogólne</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="66"/>
+        <location filename="../PreferencesDialog.cpp" line="68"/>
         <source>Synchronization</source>
         <translation>Synchronizacja</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="63"/>
+        <location filename="../PreferencesDialog.cpp" line="64"/>
         <source>Paths</source>
         <translation>Ścieżki</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="64"/>
+        <location filename="../PreferencesDialog.cpp" line="65"/>
+        <source>Sounds</source>
+        <translation>Dźwięki</translation>
+    </message>
+    <message>
+        <location filename="../PreferencesDialog.cpp" line="66"/>
         <source>Prices</source>
         <translation>Ceny</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="65"/>
+        <location filename="../PreferencesDialog.cpp" line="67"/>
         <source>Network</source>
         <translation>Sieć</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="67"/>
+        <location filename="../PreferencesDialog.cpp" line="69"/>
         <source>In-Game Browser</source>
         <translation>Przeglądarka IGB</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="68"/>
+        <location filename="../PreferencesDialog.cpp" line="70"/>
         <source>Web Service</source>
         <translation>Usługa sieciowa</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="69"/>
+        <location filename="../PreferencesDialog.cpp" line="71"/>
         <source>Wallet</source>
         <translation>Portfel</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="70"/>
+        <location filename="../PreferencesDialog.cpp" line="72"/>
         <source>Uploader</source>
         <translation>Uploader</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="71"/>
+        <location filename="../PreferencesDialog.cpp" line="73"/>
         <source>LMeve</source>
         <translation>LMeve</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="88"/>
+        <location filename="../PreferencesDialog.cpp" line="90"/>
         <source>Import</source>
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="92"/>
+        <location filename="../PreferencesDialog.cpp" line="94"/>
         <source>Character</source>
         <translation>Postać</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="93"/>
+        <location filename="../PreferencesDialog.cpp" line="95"/>
         <source>Assets</source>
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="94"/>
+        <location filename="../PreferencesDialog.cpp" line="96"/>
         <source>Contracts</source>
         <translation>Kontrakty</translation>
     </message>
@@ -4577,17 +4582,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Kontrakt</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="95"/>
+        <location filename="../PreferencesDialog.cpp" line="97"/>
         <source>Corporation</source>
         <translation>Korporacja</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="96"/>
+        <location filename="../PreferencesDialog.cpp" line="98"/>
         <source>Source</source>
         <translation>Źródło</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="121"/>
+        <location filename="../PreferencesDialog.cpp" line="123"/>
         <source>Preferences</source>
         <translation>Ustawienia</translation>
     </message>
@@ -4713,17 +4718,18 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Szybkie kopiowanie ceny</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="152"/>
+        <location filename="../PricePreferencesWidget.cpp" line="155"/>
         <source>Enabled</source>
         <translation>Włączone</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="156"/>
+        <location filename="../PricePreferencesWidget.cpp" line="159"/>
         <source>Shourtcut:</source>
         <translation>Skrót klawiszowy:</translation>
     </message>
     <message>
-        <source>Fast Price Copy allows you to update your orders in a very fast manner. Simply assign a keyboard shortcut, select an order in any market order view and press the shortcut to copy the updated price and automatically jump to the next order on the list. You can do this even when Evernus doesn't have the input focus - the keyboard shortcut works system-wide. You can use this to update your prices without ever leaving Eve client.</source>
+        <location filename="../PricePreferencesWidget.cpp" line="165"/>
+        <source>Fast Price Copy allows you to update your orders in a very fast manner. Simply assign a keyboard shortcut, select an order in any market order view and press the shortcut to copy the updated price and automatically jump to the next order on the list. You can do this even when Evernus doesn&apos;t have the input focus - the keyboard shortcut works system-wide. You can use this to update your prices without ever leaving Eve client.</source>
         <translation>Możesz użyć szybkiego kopiowania ceny do znacznie szybszej aktualizacji zleceń. Ustaw wybrany skrót klawiszowy, wybierz zlecenie na jakimkolwiek widoku zleceń i użyj skrótu do skopiowania nowej ceny i automatycznego przeskoczenia do kolejnego zlecenia. Możesz to robić nawet, gdy Evernus nie jest na pierwszym tle - skrót działa w całym systemie. Możesz użyć tej metody do aktualizacji cen bez wychodzenia z klienta Eve.</translation>
     </message>
 </context>
@@ -4759,6 +4765,14 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <location filename="../SellMarketOrdersInfoWidget.cpp" line="52"/>
         <source>Total margin:</source>
         <translation>Całkowita marża:</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::SoundPreferencesWidget</name>
+    <message>
+        <location filename="../SoundPreferencesWidget.cpp" line="38"/>
+        <source>Fast Price Copy sound</source>
+        <translation>Dźwięk szybkiego kopiowania ceny</translation>
     </message>
 </context>
 <context>

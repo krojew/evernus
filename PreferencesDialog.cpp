@@ -32,6 +32,7 @@
 #include "ImportPreferencesWidget.h"
 #include "LMevePreferencesWidget.h"
 #include "PricePreferencesWidget.h"
+#include "SoundPreferencesWidget.h"
 #include "SyncPreferencesWidget.h"
 #include "HttpPreferencesWidget.h"
 #include "PathPreferencesWidget.h"
@@ -61,6 +62,7 @@ namespace Evernus
         std::vector<std::pair<QString, QWidget *>> categories;
         categories.emplace_back(std::make_pair(tr("General"), new GeneralPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Paths"), new PathPreferencesWidget{this}));
+        categories.emplace_back(std::make_pair(tr("Sounds"), new SoundPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Prices"), new PricePreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Network"), new NetworkPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Synchronization"), new SyncPreferencesWidget{this}));
