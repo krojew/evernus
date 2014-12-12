@@ -1,4 +1,4 @@
-/**
+﻿/**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -14,8 +14,10 @@
  */
 #include <QSettings>
 #include <QDebug>
+#include <QUrl>
 
 #include "PriceSettings.h"
+#include "SoundSettings.h"
 
 #include "FPCController.h"
 
@@ -24,6 +26,8 @@ namespace Evernus
     FPCController::FPCController(QObject *parent)
         : QObject{parent}
     {
+        mCopySound.setSource(QUrl{"qrc:/sounds/click.wav"});
+
         handleNewPreferences();
 
         connect(&mShortcut, &QxtGlobalShortcut::activated, this, &FPCController::trigger);
@@ -35,6 +39,8 @@ namespace Evernus
 
         mShortcut.setEnabled(settings.value(PriceSettings::fpcKey, PriceSettings::fpcDefault).toBool());
         mShortcut.setShortcut(QKeySequence::fromString(settings.value(PriceSettings::fpcShourtcutKey).toString()));
+
+        mCopySound.setMuted(!settings.value(SoundSettings::fpcSoundKey, SoundSettings::fpcSoundDefault).toBool());
     }
 
     void FPCController::changeExecutor(QObject *executor)
@@ -55,7 +61,11 @@ namespace Evernus
 
     void FPCController::trigger()
     {
-        qDebug() << "FPC triggered.";
-        emit execute();
+        if (mExecutor != nullptr)
+        {
+            qDebug() << "FPC triggered.";
+            emit execute();
+            mCopySound.play();
+        }
     }
 }

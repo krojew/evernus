@@ -34,21 +34,23 @@ namespace Evernus
     }
 
     PersistentCookieJar::~PersistentCookieJar()
-    try
     {
-        QVariantList cookies;
-        QListIterator<QNetworkCookie> it{allCookies()};
-        while (it.hasNext())
+        try
         {
-            const auto &cookie = it.next();
-            if (!cookie.isSessionCookie())
-                cookies << cookie.toRawForm();
-        }
+            QVariantList cookies;
+            QListIterator<QNetworkCookie> it{allCookies()};
+            while (it.hasNext())
+            {
+                const auto &cookie = it.next();
+                if (!cookie.isSessionCookie())
+                    cookies << cookie.toRawForm();
+            }
 
-        QSettings settings;
-        settings.setValue(mConfigKey, cookies);
-    }
-    catch (...)
-    {
+            QSettings settings;
+            settings.setValue(mConfigKey, cookies);
+        }
+        catch (...)
+        {
+        }
     }
 }
