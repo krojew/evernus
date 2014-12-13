@@ -33,8 +33,11 @@ namespace Evernus
     {
         QSettings settings;
 
-        mShortcut.setEnabled(settings.value(PriceSettings::fpcKey, PriceSettings::fpcDefault).toBool());
-        mShortcut.setShortcut(QKeySequence::fromString(settings.value(PriceSettings::fpcShourtcutKey).toString()));
+        auto shortcut = QKeySequence::fromString(settings.value(PriceSettings::fpcShourtcutKey).toString());
+        if (!shortcut.isEmpty()) {
+            mShortcut.setEnabled(settings.value(PriceSettings::fpcKey, PriceSettings::fpcDefault).toBool());
+            mShortcut.setShortcut(shortcut);
+        }
     }
 
     void FPCController::changeExecutor(QObject *executor)
