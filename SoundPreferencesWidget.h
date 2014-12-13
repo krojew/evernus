@@ -14,37 +14,25 @@
  */
 #pragma once
 
-#include <QSoundEffect>
-#include <QObject>
+#include <QWidget>
 
-#include "qxtglobalshortcut.h"
+class QCheckBox;
 
 namespace Evernus
 {
-    class FPCController
-        : public QObject
+    class SoundPreferencesWidget
+        : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit FPCController(QObject *parent = nullptr);
-        virtual ~FPCController() = default;
-
-        void handleNewPreferences();
-
-    signals:
-        void execute();
+        explicit SoundPreferencesWidget(QWidget *parent = nullptr);
+        virtual ~SoundPreferencesWidget() = default;
 
     public slots:
-        void changeExecutor(QObject *executor);
-
-    private slots:
-        void trigger();
+        void applySettings();
 
     private:
-        QxtGlobalShortcut mShortcut;
-        QSoundEffect mCopySound;
-
-        QObject *mExecutor = nullptr;
+        QCheckBox *mFPCSoundBtn = nullptr;
     };
 }

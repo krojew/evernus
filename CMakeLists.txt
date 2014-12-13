@@ -5,11 +5,12 @@ project(Evernus)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_NAME "evernus")
 set(MAJOR_VERSION "1")
-set(MINOR_VERSION "21")
+set(MINOR_VERSION "22")
 
 find_package(Boost REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
+find_package(Qt5Multimedia REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
 find_package(Qt5Script REQUIRED)
@@ -19,7 +20,7 @@ find_package(Qt5XmlPatterns REQUIRED)
 find_package(Qt5WebKitWidgets REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
-if(${Qt5Widgets_VERSION} VERSION_LESS "5.4.0")
+if(${Qt5XmlPatterns_VERSION} VERSION_LESS "5.4.0")
     message(WARNING "Qt version < 5.4 requires a patch to QXmlPatterns - see http://evernus.com/download/ for details.")
 endif()
 
@@ -175,6 +176,7 @@ qt5_wrap_cpp(
     qxtwebslotservice.h
     ScriptOrderProcessingModel.h
     SellMarketOrdersInfoWidget.h
+    SoundPreferencesWidget.h
     StationModel.h
     StationView.h
     StatisticsWidget.h
@@ -640,6 +642,9 @@ add_executable(
     SellMarketOrdersInfoWidget.h
     SimpleCrypt.cpp
     SimpleCrypt.h
+    SoundPreferencesWidget.cpp
+    SoundPreferencesWidget.h
+    SoundSettings.h
     StationModel.cpp
     StationModel.h
     StationView.cpp
@@ -745,6 +750,8 @@ endif()
 target_link_libraries(
     ${PROJECT_NAME}
     ${Boost_LIBRARIES}
+    Qt5::Gui
+    Qt5::Multimedia
     Qt5::Network
     Qt5::PrintSupport
     Qt5::Script
