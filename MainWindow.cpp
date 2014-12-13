@@ -366,6 +366,9 @@ namespace Evernus
                 mTabCharacterIds[index] = mCurrentCharacterId;
                 QMetaObject::invokeMethod(mTabWidgets[index], "setCharacter", Qt::AutoConnection, Q_ARG(Character::IdType, mCurrentCharacterId));
             }
+#ifdef Q_OS_MAC
+            statusBar()->repaint();
+#endif
         }
     }
 
