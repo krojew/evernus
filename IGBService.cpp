@@ -42,6 +42,7 @@ namespace Evernus
     const QString IGBService::limitToStationsCookie = "limitToStations";
     const QString IGBService::orderHtmlTemplate = "<li><a class='order' id='order-%2' href='#' onclick='showOrder(%2);'>%1</a></li>";
     const QString IGBService::openMarketMessage = "openMarket";
+    const QString IGBService::setDestinationMessage = "setDestination";
 
     IGBService::IGBService(const MarketOrderProvider &orderProvider,
                            const MarketOrderProvider &corpOrderProvider,
@@ -82,6 +83,7 @@ namespace Evernus
         mMainTemplate["trade-advisor-link-text"] = tr("Trade Advisor");
         mMainTemplate["port"] = settings.value(IGBSettings::portKey, IGBSettings::portDefault).toString();
         mMainTemplate["open-market-message"] = openMarketMessage;
+        mMainTemplate["set-destination-message"] = setDestinationMessage;
 
         mOrderTemplate["order-script"] = orderScript.readAll();
         mOrderTemplate["prev-order-text"] = tr("Show Previous Entry");
@@ -366,23 +368,12 @@ namespace Evernus
 
     void IGBService::showInEve(EveType::IdType id)
     {
-        if (mPollingRequests.empty())
-        {
-            QMessageBox::information(nullptr, tr("Evernus"), tr("You have to open Evernus in EVE In-Game Browser first."));
-            return;
-        }
+        sendEventToIGB(QString{"{ message: '%1', type: %2 }"}.arg(openMarketMessage).arg(id).toLatin1());
+    }
 
-        for (const auto event : mPollingRequests)
-        {
-            auto response = new QxtWebPageEvent(event->sessionID,
-                                                event->requestID,
-                                                QString{"{ message: '%1', type: %2 }"}.arg(openMarketMessage).arg(id).toLatin1());
-            response->contentType = "application/json";
-
-            postEvent(response);
-        }
-
-        mPollingRequests.clear();
+    void IGBService::setDestinationInEve(quint64 locationId)
+    {
+        sendEventToIGB(QString{"{ message: '%1', id: %2 }"}.arg(setDestinationMessage).arg(locationId).toLatin1());
     }
 
     void IGBService::renderContent(QxtWebRequestEvent *event, const QString &content)
@@ -477,6 +468,25 @@ namespace Evernus
 
         const auto value = event->cookies.values(limitToStationsCookie).first();
         return (value.compare("false", Qt::CaseInsensitive) == 0) ? (0) : (getStationId(event));
+    }
+
+    void IGBService::sendEventToIGB(QByteArray message)
+    {
+        if (mPollingRequests.empty())
+        {
+            QMessageBox::information(nullptr, tr("Evernus"), tr("You have to open Evernus in EVE In-Game Browser first."));
+            return;
+        }
+
+        for (const auto event : mPollingRequests)
+        {
+            auto response = new QxtWebPageEvent(event->sessionID, event->requestID, std::move(message));
+            response->contentType = "application/json";
+
+            postEvent(response);
+        }
+
+        mPollingRequests.clear();
     }
 
     Character::IdType IGBService::getCharacterId(QxtWebRequestEvent *event)

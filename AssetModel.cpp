@@ -81,6 +81,16 @@ namespace Evernus
         mPriceTimestamp = dt;
     }
 
+    AssetModel::LocationId AssetModel::TreeItem::locationId() const noexcept
+    {
+        return mLocationId;
+    }
+
+    void AssetModel::TreeItem::setLocationId(LocationId id) noexcept
+    {
+        mLocationId = id;
+    }
+
     QVariant AssetModel::TreeItem::decoration() const
     {
         return mDecoration;
@@ -280,7 +290,7 @@ namespace Evernus
             {
                 auto id = item->getLocationId();
                 if (!id)
-                    id = ItemData::LocationIdType::value_type{};
+                    id = LocationId{};
 
                 TreeItem *locationItem = nullptr;
 
@@ -295,6 +305,7 @@ namespace Evernus
                         << 0.
                         << QString{}
                         << 0.);
+                    treeItem->setLocationId(*id);
                     locationItem = treeItem.get();
 
                     mLocationItems[*id] = locationItem;
@@ -342,7 +353,13 @@ namespace Evernus
         return mTotalSellPrice;
     }
 
-    void AssetModel::buildItemMap(const Item &item, TreeItem &treeItem, ItemData::LocationIdType::value_type locationId)
+    AssetModel::LocationId AssetModel::getAssetLocationId(const QModelIndex &index) const
+    {
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
+        return (item != nullptr) ? (item->locationId()) : (LocationId{});
+    }
+
+    void AssetModel::buildItemMap(const Item &item, TreeItem &treeItem, LocationId locationId)
     {
         const auto quantity = item.getQuantity();
         const auto typeId = item.getTypeId();
@@ -361,7 +378,7 @@ namespace Evernus
     }
 
     std::unique_ptr<AssetModel::TreeItem> AssetModel
-    ::createTreeItemForItem(const Item &item, ItemData::LocationIdType::value_type locationId) const
+    ::createTreeItemForItem(const Item &item, LocationId locationId) const
     {
         const auto typeId = item.getTypeId();
         const auto volume = mDataProvider.getTypeVolume(typeId);
@@ -379,6 +396,7 @@ namespace Evernus
             << (sellPrice->getPrice() * quantity)
         );
         treeItem->setPriceTimestamp(sellPrice->getUpdateTime());
+        treeItem->setLocationId(locationId);
 
         if (!metaIcon.isNull())
             treeItem->setDecoration(metaIcon);

@@ -18,6 +18,7 @@
 #include "ExternalOrderImporter.h"
 #include "AssetModel.h"
 
+class QItemSelection;
 class QRadioButton;
 class QLabel;
 
@@ -50,6 +51,8 @@ namespace Evernus
         void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromCache(const ExternalOrderImporter::TypeLocationPairs &target);
 
+        void setDestinationInEve(quint64 locationId);
+
     public slots:
         void updateData();
 
@@ -61,6 +64,9 @@ namespace Evernus
         void applyWildcard(const QString &text);
 
         void setCustomStation(quint64 id);
+
+        void setDestinationForCurrent();
+        void handleSelection(const QItemSelection &selected);
 
     private:
         const AssetProvider &mAssetProvider;
@@ -74,6 +80,8 @@ namespace Evernus
         LeafFilterProxyModel *mModelProxy = nullptr;
 
         quint64 mCustomStationId = 0;
+
+        QAction *mSetDestinationAct = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
 

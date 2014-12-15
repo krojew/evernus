@@ -625,6 +625,7 @@ namespace Evernus
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(assetsTab, &AssetsWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
+        connect(assetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setDestinationInEve);
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, assetsTab, &AssetsWidget::updateData);

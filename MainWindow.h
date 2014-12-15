@@ -122,6 +122,7 @@ namespace Evernus
         void syncLMeve(Character::IdType id);
 
         void showInEve(EveType::IdType id);
+        void setDestinationInEve(quint64 locationId);
 
     public slots:
         void showCharacterManagement();

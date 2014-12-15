@@ -38,6 +38,10 @@
                 CCPEVE.showMarketDetails(typeId);
             }
 
+            function setDestination(id) {
+                CCPEVE.setDestination(id);
+            }
+
             function pollServer() {
                 var xhr = new XMLHttpRequest();
                 xhr.open("GET", "/update");
@@ -45,6 +49,8 @@
                     var data = JSON.parse(xhr.responseText);
                     if (data.message == "<?=open-market-message?>")
                         showType(data.type);
+                    else if (data.message == "<?=set-destination-message?>")
+                        setDestination(data.id);
 
                     pollServer();
                 }

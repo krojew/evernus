@@ -167,6 +167,7 @@ namespace Evernus
         void openMarginTool();
 
         void showInEve(EveType::IdType id);
+        void setDestinationInEve(quint64 locationId);
 
     public slots:
         void refreshCharacters();

@@ -158,6 +158,7 @@ namespace Evernus
             refreshExternalOrdersFromCache(ExternalOrderImporter::TypeLocationPairs{});
         });
         connect(this, &EvernusApplication::showInEve, igbService, &IGBService::showInEve);
+        connect(this, &EvernusApplication::setDestinationInEve, igbService, &IGBService::setDestinationInEve);
 
         mIGBSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
         mIGBSessionManager.setListenInterface(QHostAddress::LocalHost);

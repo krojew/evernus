@@ -71,6 +71,7 @@ namespace Evernus
         void update(QxtWebRequestEvent *event);
 
         void showInEve(EveType::IdType id);
+        void setDestinationInEve(quint64 locationId);
 
     private:
         typedef std::vector<std::shared_ptr<MarketOrder>> OrderList;
@@ -78,6 +79,7 @@ namespace Evernus
         static const QString limitToStationsCookie;
         static const QString orderHtmlTemplate;
         static const QString openMarketMessage;
+        static const QString setDestinationMessage;
 
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
         const EveDataProvider &mDataProvider;
@@ -105,6 +107,8 @@ namespace Evernus
         OrderList filterAndSort(const OrderList &orders, MarketOrder::State state, bool needsDelta) const;
 
         uint getStationIdForFiltering(QxtWebRequestEvent *event) const;
+
+        void sendEventToIGB(QByteArray message);
 
         static Character::IdType getCharacterId(QxtWebRequestEvent *event);
         static uint getCorporationId(QxtWebRequestEvent *event);

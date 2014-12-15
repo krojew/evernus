@@ -19,6 +19,7 @@
 #include <QHBoxLayout>
 #include <QGroupBox>
 #include <QSettings>
+#include <QAction>
 #include <QLocale>
 #include <QLabel>
 #include <QDebug>
@@ -92,6 +93,13 @@ namespace Evernus
         mAssetView = new StyledTreeView{"assetView", this};
         assetLayout->addWidget(mAssetView, 1);
         mAssetView->setModel(mModelProxy);
+        connect(mAssetView->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &AssetsWidget::handleSelection);
+
+        mSetDestinationAct = new QAction{tr("Set destination in EVE"), this};
+        mSetDestinationAct->setEnabled(false);
+        mAssetView->addAction(mSetDestinationAct);
+        connect(mSetDestinationAct, &QAction::triggered, this, &AssetsWidget::setDestinationForCurrent);
 
         auto stationGroup = new QGroupBox{tr("Price station"), this};
         assetLayout->addWidget(stationGroup);
@@ -181,6 +189,20 @@ namespace Evernus
         mAssetView->expandAll();
 
         setNewInfo();
+    }
+
+    void AssetsWidget::setDestinationForCurrent()
+    {
+        const auto id = mModel.getAssetLocationId(mModelProxy->mapToSource(mAssetView->currentIndex()));
+        emit setDestinationInEve(id);
+    }
+
+    void AssetsWidget::handleSelection(const QItemSelection &selected)
+    {
+        const auto enable = !selected.isEmpty() &&
+                            mModel.getAssetLocationId(mModelProxy->mapToSource(mAssetView->currentIndex())) != 0;
+
+        mSetDestinationAct->setEnabled(enable);
     }
 
     void AssetsWidget::handleNewCharacter(Character::IdType id)
