@@ -37,10 +37,18 @@ namespace Evernus
     {
         QSettings settings;
 
-        auto shortcut = QKeySequence::fromString(settings.value(PriceSettings::fpcShourtcutKey).toString());
-        if (!shortcut.isEmpty()) {
-            mShortcut.setEnabled(settings.value(PriceSettings::fpcKey, PriceSettings::fpcDefault).toBool());
-            mShortcut.setShortcut(shortcut);
+        if (settings.value(PriceSettings::fpcKey, PriceSettings::fpcDefault).toBool())
+        {
+            auto shortcut = QKeySequence::fromString(settings.value(PriceSettings::fpcShourtcutKey).toString());
+            if (!shortcut.isEmpty())
+            {
+                mShortcut.setEnabled(true);
+                mShortcut.setShortcut(shortcut);
+            }
+        }
+        else
+        {
+            mShortcut.setEnabled(false);
         }
 
         mCopySound.setMuted(!settings.value(SoundSettings::fpcSoundKey, SoundSettings::fpcSoundDefault).toBool());
