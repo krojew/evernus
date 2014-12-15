@@ -148,8 +148,6 @@ namespace Evernus
         void refreshMarketOrdersFromLogs();
         void refreshAll();
 
-        void setUploaderStatus(const QString &status);
-
     private slots:
         void updateCurrentTab(int index);
 
@@ -196,7 +194,6 @@ namespace Evernus
         QPointer<MarginToolDialog> mMarginToolDialog;
 
         QLabel *mStatusWalletLabel = nullptr;
-        QLabel *mStatusUploaderLabel = nullptr;
 
         Character::IdType mCurrentCharacterId = Character::invalidId;
 

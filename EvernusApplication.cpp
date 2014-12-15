@@ -27,7 +27,6 @@
 
 #include "ExternalOrderImporterNames.h"
 #include "LanguageSelectDialog.h"
-#include "UploaderSettings.h"
 #include "UpdaterSettings.h"
 #include "ImportSettings.h"
 #include "WalletSettings.h"
@@ -209,10 +208,6 @@ namespace Evernus
         setSmtpSettings();
 
         connect(&mAPIManager, &APIManager::generalError, this, &EvernusApplication::apiError);
-
-        mMarketUploader = std::make_unique<Uploader>(*mExternalOrderRepository);
-        connect(this, &EvernusApplication::externalOrdersChanged, mMarketUploader.get(), &Uploader::dataChanged);
-        connect(mMarketUploader.get(), &Uploader::statusChanged, this, &EvernusApplication::uploaderStatusChanged);
 
         if (settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool())
             Updater::getInstance().checkForUpdates(true);
@@ -1349,8 +1344,6 @@ namespace Evernus
 
         mCharacterItemCostCache.clear();
         mDataProvider->handleNewPreferences();
-
-        mMarketUploader->setEnabled(settings.value(UploaderSettings::enabledKey, UploaderSettings::enabledDefault).toBool());
 
         setSmtpSettings();
 
