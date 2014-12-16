@@ -16,15 +16,13 @@
 
 #include <unordered_set>
 #include <functional>
-#include <memory>
 #include <vector>
 
 #include <QNetworkAccessManager>
 #include <QDateTime>
-#include <QWebView>
 #include <QHash>
+#include <QUrl>
 
-#include "SimpleCrypt.h"
 #include "EveType.h"
 
 class QJsonDocument;
@@ -39,40 +37,34 @@ namespace Evernus
     public:
         using Callback = std::function<void (QJsonDocument &&data, const QString &error)>;
 
-        CRESTInterface(QByteArray clientId, QByteArray clientSecret, QObject *parent = nullptr);
+        using QObject::QObject;
         virtual ~CRESTInterface() = default;
-
-        bool hasClientCredentials() const;
-
-        virtual bool eventFilter(QObject *watched, QEvent *event) override;
 
         void fetchBuyMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
         void fetchSellMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
+
+    public slots:
+        void updateTokenAndContinue(QString token, const QDateTime &expiry);
+        void handleTokenError(const QString &error);
+
+    signals:
+        void tokenRequested() const;
 
     private:
         using RegionOrderUrlMap = QHash<uint, QUrl>;
 
         static const QString crestUrl;
-        static const QString loginUrl;
-        static const QString redirectUrl;
 
         static const QString regionsUrlName;
         static const QString itemTypesUrlName;
 
-        const QByteArray mClientId;
-        const QByteArray mClientSecret;
-
-        mutable SimpleCrypt mCrypt;
-
         mutable QNetworkAccessManager mNetworkManager;
         mutable QHash<QString, QString> mEndpoints;
 
-        mutable QString mRefreshToken, mAccessToken;
+        mutable QString mAccessToken;
         mutable QDateTime mExpiry;
 
         mutable std::vector<std::function<void (const QString &)>> mPendingRequests;
-
-        mutable std::unique_ptr<QWebView> mAuthView;
 
         mutable RegionOrderUrlMap mRegionBuyOrdersUrls, mRegionSellOrdersUrls;
 

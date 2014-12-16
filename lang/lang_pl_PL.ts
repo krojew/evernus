@@ -334,7 +334,32 @@
 <context>
     <name>Evernus::CRESTExternalOrderImporter</name>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="98"/>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="64"/>
+        <source>CREST authorization failed.</source>
+        <translation>Autoryzacja CREST nie powiodła się.</translation>
+    </message>
+    <message>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="74"/>
+        <source>Evernus has been compiled without CREST support. You can manually specify CREST client id and secret via command line options: --crest-id and --crest-secret</source>
+        <translation>Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
+    </message>
+    <message>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="135"/>
+        <source>CREST Authentication</source>
+        <translation>Uwierzytelnianie CREST</translation>
+    </message>
+    <message>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="178"/>
+        <source>Empty refresh token!</source>
+        <translation>Pusty token odświeżania!</translation>
+    </message>
+    <message>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="231"/>
+        <source>Empty access token!</source>
+        <translation>Pusty token dostępu!</translation>
+    </message>
+    <message>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="276"/>
         <source>CREST import: waiting for %1 server replies</source>
         <translation>Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
     </message>
@@ -342,34 +367,53 @@
 <context>
     <name>Evernus::CRESTInterface</name>
     <message>
-        <location filename="../CRESTInterface.cpp" line="70"/>
         <source>CREST authorization failed.</source>
-        <translation>Autoryzacja CREST nie powiodła się.</translation>
+        <translation type="vanished">Autoryzacja CREST nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="162"/>
+        <location filename="../CRESTInterface.cpp" line="167"/>
         <source>Missing CREST regions url!</source>
         <translation>Brak adresu regionów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="180"/>
+        <location filename="../CRESTInterface.cpp" line="185"/>
         <source>Missing CREST item types url!</source>
         <translation>Brak adresu typów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="260"/>
         <source>CREST Authentication</source>
-        <translation>Uwierzytelnianie CREST</translation>
+        <translation type="vanished">Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="303"/>
         <source>Empty refresh token!</source>
-        <translation>Pusty token odświeżania!</translation>
+        <translation type="vanished">Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="358"/>
         <source>Empty access token!</source>
-        <translation>Pusty token dostępu!</translation>
+        <translation type="vanished">Pusty token dostępu!</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::CRESTManager</name>
+    <message>
+        <source>CREST authorization failed.</source>
+        <translation type="vanished">Autoryzacja CREST nie powiodła się.</translation>
+    </message>
+    <message>
+        <source>Evernus has been compiled without CREST support. You can manually specify CREST client id and secret via command line options: --crest-id and --crest-secret</source>
+        <translation type="vanished">Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
+    </message>
+    <message>
+        <source>CREST Authentication</source>
+        <translation type="vanished">Uwierzytelnianie CREST</translation>
+    </message>
+    <message>
+        <source>Empty refresh token!</source>
+        <translation type="vanished">Pusty token odświeżania!</translation>
+    </message>
+    <message>
+        <source>Empty access token!</source>
+        <translation type="vanished">Pusty token dostępu!</translation>
     </message>
 </context>
 <context>

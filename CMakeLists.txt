@@ -99,6 +99,7 @@ qt5_wrap_cpp(
     CorpKeyEditDialog.h
     CRESTExternalOrderImporter.h
     CRESTInterface.h
+    CRESTManager.h
     DateFilteredPlotWidget.h
     DateRangeWidget.h
     DeviationSourceWidget.h

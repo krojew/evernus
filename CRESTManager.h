@@ -26,17 +26,27 @@ namespace Evernus
     class ExternalOrder;
 
     class CRESTManager
+        : public QObject
     {
+        Q_OBJECT
+
     public:
         template<class T>
         using Callback = std::function<void (T &&data, const QString &error)>;
 
-        CRESTManager(QByteArray clientId, QByteArray clientSecret, const EveDataProvider &dataProvider);
+        explicit CRESTManager(const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~CRESTManager() = default;
 
         void fetchMarketOrders(uint regionId,
                                EveType::IdType typeId,
                                const Callback<std::vector<ExternalOrder>> &callback) const;
+
+    public slots:
+        void updateTokenAndContinue(QString token, const QDateTime &expiry);
+        void handleTokenError(const QString &error);
+
+    signals:
+        void tokenRequested() const;
 
     private:
         const EveDataProvider &mDataProvider;
