@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QCommandLineParser>
 #include <QApplication>
 #include <QLocalSocket>
 #include <QLocalServer>
@@ -32,14 +33,37 @@
 #include "MainWindow.h"
 #include "Version.h"
 
+#define STR_VALUE(s) #s
+#define EVERNUS_TEXT(s) STR_VALUE(s)
+
+#if defined(EVERNUS_CREST_CLIENT_ID) && defined(EVERNUS_CREST_SECRET)
+#   define EVERNUS_CREST_CLIENT_ID_TEXT EVERNUS_TEXT(EVERNUS_CREST_CLIENT_ID)
+#   define EVERNUS_CREST_SECRET_TEXT EVERNUS_TEXT(EVERNUS_CREST_SECRET)
+#else
+#   define EVERNUS_CREST_CLIENT_ID_TEXT ""
+#   define EVERNUS_CREST_SECRET_TEXT ""
+#endif
+
 int main(int argc, char *argv[])
 {
+    const auto crestIdArg = "crest-id";
+    const auto crestSecretArg = "crest-secret";
+
     try
     {
         QCoreApplication::setApplicationName("Evernus");
         QCoreApplication::setApplicationVersion(version::fullStr());
         QCoreApplication::setOrganizationDomain("evernus.com");
         QCoreApplication::setOrganizationName("evernus.com");
+
+        QCommandLineParser parser;
+        parser.setApplicationDescription(QCoreApplication::translate("main", "Evernus EVE Online trade tool"));
+        parser.addHelpOption();
+        parser.addVersionOption();
+        parser.addOptions({
+            {crestIdArg, QCoreApplication::translate("main", "CREST client id."), "id", EVERNUS_CREST_CLIENT_ID_TEXT},
+            {crestSecretArg, QCoreApplication::translate("main", "CREST client secret."), "secret", EVERNUS_CREST_SECRET_TEXT}
+        });
 
 #ifdef Q_OS_WIN
         const auto serverName = QCoreApplication::applicationName() + ".socket";
@@ -110,8 +134,12 @@ int main(int argc, char *argv[])
 
         Evernus::EvernusApplication app{argc, argv};
 
+        parser.process(app);
+
         app.registerImporter(Evernus::ExternalOrderImporterNames::webImporter,
-                             std::make_unique<Evernus::CRESTExternalOrderImporter>(app.getDataProvider()));
+                             std::make_unique<Evernus::CRESTExternalOrderImporter>(parser.value(crestIdArg).toLatin1(),
+                                                                                   parser.value(crestSecretArg).toLatin1(),
+                                                                                   app.getDataProvider()));
         app.registerImporter(Evernus::ExternalOrderImporterNames::logImporter,
                              std::make_unique<Evernus::MarketLogExternalOrderImporter>());
         app.registerImporter(Evernus::ExternalOrderImporterNames::cacheImporter,

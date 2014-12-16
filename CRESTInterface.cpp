@@ -30,11 +30,6 @@
 
 #include "CRESTInterface.h"
 
-#define STR_VALUE(s) #s
-#define EVERNUS_TEXT(s) STR_VALUE(s)
-#define EVERNUS_CREST_CLIENT_ID_TEXT EVERNUS_TEXT(EVERNUS_CREST_CLIENT_ID)
-#define EVERNUS_CREST_SECRET_TEXT EVERNUS_TEXT(EVERNUS_CREST_SECRET)
-
 namespace Evernus
 {
 #ifdef EVERNUS_CREST_SISI
@@ -49,12 +44,19 @@ namespace Evernus
     const QString CRESTInterface::regionsUrlName = "regions";
     const QString CRESTInterface::itemTypesUrlName = "itemTypes";
 
-    CRESTInterface::CRESTInterface(QObject *parent)
+    CRESTInterface::CRESTInterface(QByteArray clientId, QByteArray clientSecret, QObject *parent)
         : QObject{parent}
+        , mClientId{std::move(clientId)}
+        , mClientSecret{std::move(clientSecret)}
         , mCrypt{CRESTSettings::cryptKey}
     {
         QSettings settings;
         mRefreshToken = mCrypt.decryptToString(settings.value(CRESTSettings::refreshTokenKey).toByteArray());
+    }
+
+    bool CRESTInterface::hasClientCredentials() const
+    {
+        return !mClientId.isEmpty() && !mClientSecret.isEmpty();
     }
 
     bool CRESTInterface::eventFilter(QObject *watched, QEvent *event)
@@ -247,7 +249,7 @@ namespace Evernus
             QUrlQuery query;
             query.addQueryItem("response_type", "code");
             query.addQueryItem("redirect_uri", "http://" + redirectUrl);
-            query.addQueryItem("client_id", EVERNUS_CREST_CLIENT_ID_TEXT);
+            query.addQueryItem("client_id", mClientId);
             query.addQueryItem("scope", "publicData");
 
             url.setQuery(query);
@@ -278,7 +280,7 @@ namespace Evernus
                     QNetworkRequest request{loginUrl + "/oauth/token"};
                     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
                     request.setRawHeader(
-                        "Authorization", QByteArray{EVERNUS_CREST_CLIENT_ID_TEXT ":" EVERNUS_CREST_SECRET_TEXT}.toBase64());
+                        "Authorization", (mClientId + ":" + mClientSecret).toBase64());
 
                     auto reply = mNetworkManager.post(request, data);
                     connect(reply, &QNetworkReply::finished, this, [=] {
@@ -323,7 +325,7 @@ namespace Evernus
             QNetworkRequest request{loginUrl + "/oauth/token"};
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
             request.setRawHeader(
-                "Authorization", QByteArray{EVERNUS_CREST_CLIENT_ID_TEXT ":" EVERNUS_CREST_SECRET_TEXT}.toBase64());
+                "Authorization", (mClientId + ":" + mClientSecret).toBase64());
 
             auto reply = mNetworkManager.post(request, data);
             connect(reply, &QNetworkReply::finished, this, [=] {

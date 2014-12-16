@@ -31,7 +31,7 @@ namespace Evernus
         template<class T>
         using Callback = std::function<void (T &&data, const QString &error)>;
 
-        explicit CRESTManager(const EveDataProvider &dataProvider);
+        CRESTManager(QByteArray clientId, QByteArray clientSecret, const EveDataProvider &dataProvider);
         virtual ~CRESTManager() = default;
 
         void fetchMarketOrders(uint regionId,

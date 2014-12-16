@@ -39,8 +39,10 @@ namespace Evernus
     public:
         using Callback = std::function<void (QJsonDocument &&data, const QString &error)>;
 
-        explicit CRESTInterface(QObject *parent = nullptr);
+        CRESTInterface(QByteArray clientId, QByteArray clientSecret, QObject *parent = nullptr);
         virtual ~CRESTInterface() = default;
+
+        bool hasClientCredentials() const;
 
         virtual bool eventFilter(QObject *watched, QEvent *event) override;
 
@@ -56,6 +58,9 @@ namespace Evernus
 
         static const QString regionsUrlName;
         static const QString itemTypesUrlName;
+
+        const QByteArray mClientId;
+        const QByteArray mClientSecret;
 
         mutable SimpleCrypt mCrypt;
 

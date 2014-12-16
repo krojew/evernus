@@ -28,7 +28,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit CRESTExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        CRESTExternalOrderImporter(QByteArray clientId, QByteArray clientSecret, const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~CRESTExternalOrderImporter() = default;
 
         virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;

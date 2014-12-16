@@ -342,32 +342,32 @@
 <context>
     <name>Evernus::CRESTInterface</name>
     <message>
-        <location filename="../CRESTInterface.cpp" line="68"/>
+        <location filename="../CRESTInterface.cpp" line="70"/>
         <source>CREST authorization failed.</source>
         <translation>Autoryzacja CREST nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="160"/>
+        <location filename="../CRESTInterface.cpp" line="162"/>
         <source>Missing CREST regions url!</source>
         <translation>Brak adresu regionów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="178"/>
+        <location filename="../CRESTInterface.cpp" line="180"/>
         <source>Missing CREST item types url!</source>
         <translation>Brak adresu typów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="258"/>
+        <location filename="../CRESTInterface.cpp" line="260"/>
         <source>CREST Authentication</source>
         <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="301"/>
+        <location filename="../CRESTInterface.cpp" line="303"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="356"/>
+        <location filename="../CRESTInterface.cpp" line="358"/>
         <source>Empty access token!</source>
         <translation>Pusty token dostępu!</translation>
     </message>
@@ -5571,34 +5571,49 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="57"/>
-        <location filename="../main.cpp" line="72"/>
+        <location filename="../main.cpp" line="60"/>
+        <source>Evernus EVE Online trade tool</source>
+        <translation>Evernus EVE Online - narzędzie handlu</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="64"/>
+        <source>CREST client id.</source>
+        <translation>Id klienta CREST.</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="65"/>
+        <source>CREST client secret.</source>
+        <translation>Tajny klucz klienta CREST.</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="81"/>
+        <location filename="../main.cpp" line="96"/>
         <source>Already running</source>
         <translation>Już włączono</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="57"/>
+        <location filename="../main.cpp" line="81"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation>Evernus zdaje się już być włączony. Jeśli tak nie jest, usuń &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="72"/>
+        <location filename="../main.cpp" line="96"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation>Evernus prawdopodobnie nie został czysto zamknięty. Czy chcesz przeprowadzić próbę wyczyszczenia?</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="81"/>
-        <location filename="../main.cpp" line="185"/>
+        <location filename="../main.cpp" line="105"/>
+        <location filename="../main.cpp" line="213"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="82"/>
+        <location filename="../main.cpp" line="106"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation>Nie udało się usunać &apos;%1&apos;!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="194"/>
+        <location filename="../main.cpp" line="222"/>
         <source>Initialization error</source>
         <translation>Błąd inicjalizacji</translation>
     </message>

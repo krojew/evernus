@@ -22,10 +22,10 @@
 
 namespace Evernus
 {
-    CRESTExternalOrderImporter::CRESTExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent)
+    CRESTExternalOrderImporter::CRESTExternalOrderImporter(QByteArray clientId, QByteArray clientSecret, const EveDataProvider &dataProvider, QObject *parent)
         : ExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
-        , mManager{mDataProvider}
+        , mManager{std::move(clientId), std::move(clientSecret), mDataProvider}
     {
     }
 
