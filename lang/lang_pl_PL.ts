@@ -334,32 +334,32 @@
 <context>
     <name>Evernus::CRESTExternalOrderImporter</name>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="64"/>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="66"/>
         <source>CREST authorization failed.</source>
         <translation>Autoryzacja CREST nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="74"/>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="76"/>
         <source>Evernus has been compiled without CREST support. You can manually specify CREST client id and secret via command line options: --crest-id and --crest-secret</source>
         <translation>Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
     </message>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="135"/>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="137"/>
         <source>CREST Authentication</source>
         <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="178"/>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="180"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="231"/>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="233"/>
         <source>Empty access token!</source>
         <translation>Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="276"/>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="278"/>
         <source>CREST import: waiting for %1 server replies</source>
         <translation>Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
     </message>

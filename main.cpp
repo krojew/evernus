@@ -60,10 +60,10 @@ int main(int argc, char *argv[])
         parser.setApplicationDescription(QCoreApplication::translate("main", "Evernus EVE Online trade tool"));
         parser.addHelpOption();
         parser.addVersionOption();
-        parser.addOptions({
-            {crestIdArg, QCoreApplication::translate("main", "CREST client id."), "id", EVERNUS_CREST_CLIENT_ID_TEXT},
-            {crestSecretArg, QCoreApplication::translate("main", "CREST client secret."), "secret", EVERNUS_CREST_SECRET_TEXT}
-        });
+        parser.addOption(
+            QCommandLineOption{crestIdArg, QCoreApplication::translate("main", "CREST client id."), "id", EVERNUS_CREST_CLIENT_ID_TEXT});
+        parser.addOption(
+            QCommandLineOption{crestSecretArg, QCoreApplication::translate("main", "CREST client secret."), "secret", EVERNUS_CREST_SECRET_TEXT});
 
 #ifdef Q_OS_WIN
         const auto serverName = QCoreApplication::applicationName() + ".socket";
