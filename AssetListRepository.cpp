@@ -64,7 +64,8 @@ namespace Evernus
         query.bindValue(0, id);
 
         DatabaseUtils::execQuery(query);
-        query.next();
+        if (!query.next())
+            throw NotFoundException{};
 
         auto assets = populate(query.record());
 
