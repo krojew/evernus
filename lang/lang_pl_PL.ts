@@ -5625,7 +5625,7 @@ Czy chcesz ściągnąć ją teraz?</translation>
         <translation>Id klienta CREST.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="65"/>
+        <location filename="../main.cpp" line="66"/>
         <source>CREST client secret.</source>
         <translation>Tajny klucz klienta CREST.</translation>
     </message>
