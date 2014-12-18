@@ -68,13 +68,17 @@ namespace Evernus
 
         mutable RegionOrderUrlMap mRegionBuyOrdersUrls, mRegionSellOrdersUrls;
 
-        QUrl getRegionBuyOrdersUrl(uint regionId) const;
+        template<class T>
+        void getRegionBuyOrdersUrl(uint regionId, T &&continuation) const;
 
-        QUrl getRegionSellOrdersUrl(uint regionId) const;
+        template<class T>
+        void getRegionSellOrdersUrl(uint regionId, T &&continuation) const;
 
-        QUrl getRegionOrdersUrl(uint regionId,
+        template<class T>
+        void getRegionOrdersUrl(uint regionId,
                                 const QString &urlName,
-                                RegionOrderUrlMap &map) const;
+                                RegionOrderUrlMap &map,
+                                T &&continuation) const;
 
         template<class T>
         void getOrders(QUrl regionUrl, EveType::IdType typeId, T &&continuation) const;

@@ -52,7 +52,17 @@ namespace Evernus
                 return;
             }
 
-            getOrders(getRegionBuyOrdersUrl(regionId), typeId, callback);
+            auto orderFetcher = [=](const QUrl &url, const QString &error) {
+                if (!error.isEmpty())
+                {
+                    callback(QJsonDocument{}, error);
+                    return;
+                }
+
+                getOrders(url, typeId, callback);
+            };
+
+            getRegionBuyOrdersUrl(regionId, orderFetcher);
         };
 
         checkAuth(fetcher);
@@ -73,7 +83,17 @@ namespace Evernus
                 return;
             }
 
-            getOrders(getRegionSellOrdersUrl(regionId), typeId, callback);
+            auto orderFetcher = [=](const QUrl &url, const QString &error) {
+                if (!error.isEmpty())
+                {
+                    callback(QJsonDocument{}, error);
+                    return;
+                }
+
+                getOrders(url, typeId, callback);
+            };
+
+            getRegionSellOrdersUrl(regionId, orderFetcher);
         };
 
         checkAuth(fetcher);
@@ -89,7 +109,7 @@ namespace Evernus
             qDebug() << "Fetching CREST endpoints...";
 
             const auto json = syncGet(crestUrl, "application/vnd.ccp.eve.Api-v3+json");
-            std::function<void (const QJsonObject &)> addEndpoints = [this, &addEndpoints](const QJsonObject &object) {
+            std::function<void (const QJsonObject &)> addEndpoints = [=, &addEndpoints](const QJsonObject &object) {
                 for (auto it = std::begin(object); it != std::end(object); ++it)
                 {
                     const auto value = it.value().toObject();
@@ -122,44 +142,64 @@ namespace Evernus
         mPendingRequests.clear();
     }
 
-    QUrl CRESTInterface::getRegionBuyOrdersUrl(uint regionId) const
+    template<class T>
+    void CRESTInterface::getRegionBuyOrdersUrl(uint regionId, T &&continuation) const
     {
-        return getRegionOrdersUrl(regionId, "marketBuyOrders", mRegionBuyOrdersUrls);
+        getRegionOrdersUrl(regionId, "marketBuyOrders", mRegionBuyOrdersUrls, std::forward<T>(continuation));
     }
 
-    QUrl CRESTInterface::getRegionSellOrdersUrl(uint regionId) const
+    template<class T>
+    void CRESTInterface::getRegionSellOrdersUrl(uint regionId, T &&continuation) const
     {
-        return getRegionOrdersUrl(regionId, "marketSellOrders", mRegionSellOrdersUrls);
+        getRegionOrdersUrl(regionId, "marketSellOrders", mRegionSellOrdersUrls, std::forward<T>(continuation));
     }
 
-    QUrl CRESTInterface::getRegionOrdersUrl(uint regionId,
+    template<class T>
+    void CRESTInterface::getRegionOrdersUrl(uint regionId,
                                             const QString &urlName,
-                                            RegionOrderUrlMap &map) const
+                                            RegionOrderUrlMap &map,
+                                            T &&continuation) const
     {
         if (map.contains(regionId))
-            return map[regionId];
+        {
+            continuation(map[regionId], QString{});
+            return;
+        }
 
         if (!mEndpoints.contains(regionsUrlName))
-            throw std::runtime_error{tr("Missing CREST regions url!").toStdString()};
+        {
+            continuation(QUrl{}, tr("Missing CREST regions url!"));
+            return;
+        }
 
         qDebug() << "Fetching region orders url:" << regionId << urlName;
 
-        const auto doc = syncGet(QString{"%1%2/"}.arg(mEndpoints[regionsUrlName]).arg(regionId),
-                                 "application/vnd.ccp.eve.Region-v1+json");
+        auto saveUrl = [=, &map](const QJsonDocument &doc, const QString &error) {
+            if (!error.isEmpty())
+            {
+                continuation(QUrl{}, error);
+                return;
+            }
 
-        const QUrl href = doc.object().value(urlName).toObject().value("href").toString();
-        map[regionId] = href;
+            const QUrl href = doc.object().value(urlName).toObject().value("href").toString();
+            map[regionId] = href;
 
-        qDebug() << "Region orders url:" << href;
+            qDebug() << "Region orders url:" << href;
 
-        return href;
+            continuation(href, QString{});
+        };
+
+        asyncGet(QString{"%1%2/"}.arg(mEndpoints[regionsUrlName]).arg(regionId), "application/vnd.ccp.eve.Region-v1+json", saveUrl);
     }
 
     template<class T>
     void CRESTInterface::getOrders(QUrl regionUrl, EveType::IdType typeId, T &&continuation) const
     {
         if (!mEndpoints.contains(itemTypesUrlName))
-            throw std::runtime_error{tr("Missing CREST item types url!").toStdString()};
+        {
+            continuation(QJsonDocument{}, tr("Missing CREST item types url!"));
+            return;
+        }
 
         QUrlQuery query;
         query.addQueryItem("type", QString{"%1%2/"}.arg(mEndpoints[itemTypesUrlName]).arg(typeId));
@@ -189,8 +229,7 @@ namespace Evernus
     {
         qDebug() << "CREST request:" << url;
 
-        const auto request = prepareRequest(url, accept);
-        auto reply = mNetworkManager.get(request);
+        auto reply = mNetworkManager.get(prepareRequest(url, accept));
 
         connect(reply, &QNetworkReply::finished, this, [=] {
             reply->deleteLater();
@@ -209,8 +248,7 @@ namespace Evernus
     {
         qDebug() << "CREST request:" << url;
 
-        const auto request = prepareRequest(url, accept);
-        auto reply = mNetworkManager.get(request);
+        auto reply = mNetworkManager.get(prepareRequest(url, accept));
 
         QEventLoop loop;
         connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
