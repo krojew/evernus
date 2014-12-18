@@ -17,6 +17,7 @@
 #include <memory>
 
 #include <QNetworkAccessManager>
+#include <QStringList>
 #include <QWebView>
 
 #include "ExternalOrderImporter.h"
@@ -64,6 +65,7 @@ namespace Evernus
         mutable bool mPreparingRequests = false;
 
         mutable std::vector<ExternalOrder> mResult;
+        mutable QStringList mAggregatedErrors;
 
         QString mRefreshToken;
 

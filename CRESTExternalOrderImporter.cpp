@@ -254,9 +254,17 @@ namespace Evernus
         if (!errorText.isEmpty())
         {
             if (mRequestCount == 0)
+            {
                 mResult.clear();
+                emit error(mAggregatedErrors.join("\n"));
 
-            emit error(errorText);
+                mAggregatedErrors.clear();
+            }
+            else
+            {
+                mAggregatedErrors << errorText;
+            }
+
             return;
         }
 
