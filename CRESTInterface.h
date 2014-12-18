@@ -76,14 +76,19 @@ namespace Evernus
                                 const QString &urlName,
                                 RegionOrderUrlMap &map) const;
 
-        QJsonDocument getOrders(QUrl regionUrl, EveType::IdType typeId) const;
+        template<class T>
+        void getOrders(QUrl regionUrl, EveType::IdType typeId, T &&continuation) const;
 
         template<class T>
-        void checkAuth(const T &continuation) const;
+        void checkAuth(T &&continuation) const;
 
         template<class T>
         void fetchAccessToken(const T &continuation) const;
 
+        template<class T>
+        void asyncGet(const QUrl &url, const QByteArray &accept, T &&continuation) const;
         QJsonDocument syncGet(const QUrl &url, const QByteArray &accept) const;
+
+        QNetworkRequest prepareRequest(const QUrl &url, const QByteArray &accept) const;
     };
 }

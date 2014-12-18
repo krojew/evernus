@@ -52,19 +52,7 @@ namespace Evernus
                 return;
             }
 
-            QJsonDocument doc;
-
-            try
-            {
-                doc = getOrders(getRegionBuyOrdersUrl(regionId), typeId);
-            }
-            catch (const std::exception &e)
-            {
-                callback(QJsonDocument{}, e.what());
-                return;
-            }
-
-            callback(std::move(doc), QString{});
+            getOrders(getRegionBuyOrdersUrl(regionId), typeId, callback);
         };
 
         checkAuth(fetcher);
@@ -85,19 +73,7 @@ namespace Evernus
                 return;
             }
 
-            QJsonDocument doc;
-
-            try
-            {
-                doc = getOrders(getRegionSellOrdersUrl(regionId), typeId);
-            }
-            catch (const std::exception &e)
-            {
-                callback(QJsonDocument{}, e.what());
-                return;
-            }
-
-            callback(std::move(doc), QString{});
+            getOrders(getRegionSellOrdersUrl(regionId), typeId, callback);
         };
 
         checkAuth(fetcher);
@@ -179,7 +155,8 @@ namespace Evernus
         return href;
     }
 
-    QJsonDocument CRESTInterface::getOrders(QUrl regionUrl, EveType::IdType typeId) const
+    template<class T>
+    void CRESTInterface::getOrders(QUrl regionUrl, EveType::IdType typeId, T &&continuation) const
     {
         if (!mEndpoints.contains(itemTypesUrlName))
             throw std::runtime_error{tr("Missing CREST item types url!").toStdString()};
@@ -189,15 +166,15 @@ namespace Evernus
 
         regionUrl.setQuery(query);
 
-        return syncGet(regionUrl, "application/vnd.ccp.eve.MarketOrderCollection-v1+json");
+        asyncGet(regionUrl, "application/vnd.ccp.eve.MarketOrderCollection-v1+json", std::forward<T>(continuation));
     }
 
     template<class T>
-    void CRESTInterface::checkAuth(const T &continuation) const
+    void CRESTInterface::checkAuth(T &&continuation) const
     {
         if (mExpiry < QDateTime::currentDateTime())
         {
-            mPendingRequests.emplace_back(continuation);
+            mPendingRequests.emplace_back(std::forward<T>(continuation));
             if (mPendingRequests.size() == 1)
                 emit tokenRequested();
         }
@@ -207,16 +184,32 @@ namespace Evernus
         }
     }
 
+    template<class T>
+    void CRESTInterface::asyncGet(const QUrl &url, const QByteArray &accept, T &&continuation) const
+    {
+        qDebug() << "CREST request:" << url;
+
+        const auto request = prepareRequest(url, accept);
+        auto reply = mNetworkManager.get(request);
+
+        connect(reply, &QNetworkReply::finished, this, [=] {
+            reply->deleteLater();
+
+            if (reply->error() != QNetworkReply::NoError)
+            {
+                continuation(QJsonDocument{}, reply->errorString());
+                return;
+            }
+
+            continuation(QJsonDocument::fromJson(reply->readAll()), QString{});
+        });
+    }
+
     QJsonDocument CRESTInterface::syncGet(const QUrl &url, const QByteArray &accept) const
     {
         qDebug() << "CREST request:" << url;
 
-        QNetworkRequest request{url};
-        request.setHeader(QNetworkRequest::UserAgentHeader,
-                          QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
-        request.setRawHeader("Authorization", "Bearer " + mAccessToken.toLatin1());
-        request.setRawHeader("Accept", accept);
-
+        const auto request = prepareRequest(url, accept);
         auto reply = mNetworkManager.get(request);
 
         QEventLoop loop;
@@ -230,5 +223,16 @@ namespace Evernus
             throw std::runtime_error{reply->errorString().toStdString()};
 
         return QJsonDocument::fromJson(reply->readAll());
+    }
+
+    QNetworkRequest CRESTInterface::prepareRequest(const QUrl &url, const QByteArray &accept) const
+    {
+        QNetworkRequest request{url};
+        request.setHeader(QNetworkRequest::UserAgentHeader,
+                          QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
+        request.setRawHeader("Authorization", "Bearer " + mAccessToken.toLatin1());
+        request.setRawHeader("Accept", accept);
+
+        return request;
     }
 }
