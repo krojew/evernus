@@ -178,7 +178,7 @@ namespace Evernus
             return shot->getTimestamp().toMSecsSinceEpoch() / 1000.;
         };
 
-        const auto dataInserter = [=](auto &values, const auto &range) {
+        const auto dataInserter = [&convertTimestamp](auto &values, const auto &range) {
             for (const auto &shot : range)
             {
                 const auto secs = convertTimestamp(shot);
@@ -277,7 +277,7 @@ namespace Evernus
             return result;
         };
 
-        const auto combineMaps = [=](auto &target, const auto &characterValuesMap) {
+        const auto combineMaps = [&merger](auto &target, const auto &characterValuesMap) {
             if (characterValuesMap.empty())
                 return;
 
@@ -287,8 +287,8 @@ namespace Evernus
                 target = merger(target, it->second);
         };
 
-        const auto combineShots = [=](auto &target, const auto &snapshots) {
-            std::unordered_map<Character::IdType, QCPDataMap> map;
+        const auto combineShots = [&convertTimestamp, &combineMaps](auto &target, const auto &snapshots) {
+            std::unordered_map<Evernus::Character::IdType, QCPDataMap> map;
             for (const auto &snapshot : snapshots)
             {
                 const auto secs = convertTimestamp(snapshot);
