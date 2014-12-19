@@ -174,26 +174,17 @@ namespace Evernus
 
         auto yMax = -1.;
 
-        const auto dataInserter = [](auto &values, const auto &range) {
+        const auto convertTimestamp = [](const auto &shot) {
+            return shot->getTimestamp().toMSecsSinceEpoch() / 1000.;
+        };
+
+        const auto dataInserter = [=](auto &values, const auto &range) {
             for (const auto &shot : range)
             {
-                const auto secs = shot->getTimestamp().toMSecsSinceEpoch() / 1000.;
+                const auto secs = convertTimestamp(shot);
                 values.insert(secs, QCPData{secs, shot->getBalance()});
             }
         };
-
-        dataInserter(*assetValues, assetShots);
-        dataInserter(*walletValues, walletShots);
-
-        for (const auto &order : orderShots)
-        {
-            const auto secs = order->getTimestamp().toMSecsSinceEpoch() / 1000.;
-
-            buyValues->insert(secs, QCPData{secs, order->getBuyValue()});
-            sellValues->insert(secs, QCPData{secs, order->getSellValue()});
-
-            buyAndSellValues.insert(secs, QCPData{secs, order->getBuyValue() + order->getSellValue()});
-        }
 
         auto sumData = std::make_unique<QCPDataMap>();
         const auto merger = [&yMax](const auto &values1, const auto &values2) -> QCPDataMap {
@@ -285,6 +276,66 @@ namespace Evernus
 
             return result;
         };
+
+        const auto combineMaps = [=](auto &target, const auto &characterValuesMap) {
+            if (characterValuesMap.empty())
+                return;
+
+            target = std::begin(characterValuesMap)->second;
+
+            for (auto it = std::next(std::begin(characterValuesMap)); it != std::end(characterValuesMap); ++it)
+                target = merger(target, it->second);
+        };
+
+        const auto combineShots = [=](auto &target, const auto &snapshots) {
+            std::unordered_map<Character::IdType, QCPDataMap> map;
+            for (const auto &snapshot : snapshots)
+            {
+                const auto secs = convertTimestamp(snapshot);
+                map[snapshot->getCharacterId()].insert(secs, QCPData{secs, snapshot->getBalance()});
+            }
+
+            combineMaps(target, map);
+        };
+
+        if (combineStats)
+        {
+            combineShots(*assetValues, assetShots);
+            combineShots(*walletValues, walletShots);
+
+            std::unordered_map<Character::IdType, QCPDataMap> buyMap, sellMap;
+            for (const auto &order : orderShots)
+            {
+                const auto secs = convertTimestamp(order);
+                buyMap[order->getCharacterId()].insert(secs, QCPData{secs, order->getBuyValue()});
+                sellMap[order->getCharacterId()].insert(secs, QCPData{secs, order->getSellValue()});
+            }
+
+            combineMaps(*buyValues, buyMap);
+            combineMaps(*sellValues, sellMap);
+
+            for (auto bIt = std::begin(*buyValues), sIt = std::begin(*sellValues); bIt != std::end(*buyValues); ++bIt, ++sIt)
+            {
+                Q_ASSERT(bIt->first == sIt->first);
+                buyAndSellValues.insert(bIt.key(),
+                                        QCPData{bIt.key(), bIt.value().value + sIt.value().value});
+            }
+        }
+        else
+        {
+            dataInserter(*assetValues, assetShots);
+            dataInserter(*walletValues, walletShots);
+
+            for (const auto &order : orderShots)
+            {
+                const auto secs = convertTimestamp(order);
+
+                buyValues->insert(secs, QCPData{secs, order->getBuyValue()});
+                sellValues->insert(secs, QCPData{secs, order->getSellValue()});
+
+                buyAndSellValues.insert(secs, QCPData{secs, order->getBuyValue() + order->getSellValue()});
+            }
+        }
 
         *sumData = merger(*assetValues, *walletValues);
 
