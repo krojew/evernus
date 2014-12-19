@@ -316,7 +316,7 @@ namespace Evernus
 
             for (auto bIt = std::begin(*buyValues), sIt = std::begin(*sellValues); bIt != std::end(*buyValues); ++bIt, ++sIt)
             {
-                Q_ASSERT(bIt->first == sIt->first);
+                Q_ASSERT(bIt.key() == sIt.key());
                 buyAndSellValues.insert(bIt.key(),
                                         QCPData{bIt.key(), bIt.value().value + sIt.value().value});
             }
