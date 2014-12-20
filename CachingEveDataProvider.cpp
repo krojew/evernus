@@ -265,7 +265,7 @@ namespace Evernus
         for (const auto &order : orders)
         {
             toStore.emplace_back(std::cref(order));
-            affectedOrders.emplace(std::make_pair(order.getTypeId(), order.getStationId()));
+            affectedOrders.emplace(std::make_pair(order.getTypeId(), order.getRegionId()));
         }
 
         clearExternalOrderCaches();
