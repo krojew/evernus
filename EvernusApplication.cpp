@@ -2388,7 +2388,7 @@ namespace Evernus
     template<class Func, class... Args>
     void EvernusApplication::asyncExecute(Func &&func, Args && ...args)
     {
-        qDebug() << "Stating async task...";
+        qDebug() << "Starting async task...";
 
         auto future = std::async(std::launch::async, std::forward<Func>(func), std::forward<Args>(args)...);
         while (future.wait_for(std::chrono::seconds{0}) != std::future_status::ready)
