@@ -30,100 +30,78 @@
 <context>
     <name>EveCacheBuffer</name>
     <message>
-        <location filename="../EveCacheBuffer.cpp" line="54"/>
-        <location filename="../EveCacheBuffer.cpp" line="73"/>
-        <location filename="../EveCacheBuffer.cpp" line="83"/>
-        <location filename="../EveCacheBuffer.cpp" line="107"/>
-        <location filename="../EveCacheBuffer.cpp" line="116"/>
-        <location filename="../EveCacheBuffer.cpp" line="125"/>
         <source>Error reading cache.</source>
-        <translation>Błąd odczytu cache.</translation>
+        <translation type="vanished">Błąd odczytu cache.</translation>
     </message>
     <message>
-        <location filename="../EveCacheBuffer.cpp" line="138"/>
         <source>Cannot open buffer.</source>
-        <translation>Nie można otworzyć bufora.</translation>
+        <translation type="vanished">Nie można otworzyć bufora.</translation>
     </message>
 </context>
 <context>
     <name>EveCacheFile</name>
     <message>
-        <location filename="../EveCacheFile.cpp" line="39"/>
         <source>Cannot open file.</source>
-        <translation>Nie można otworzyć pliku.</translation>
+        <translation type="vanished">Nie można otworzyć pliku.</translation>
     </message>
 </context>
 <context>
     <name>EveCacheFileParser</name>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="127"/>
         <source>Invalid data in share map!</source>
-        <translation>Nieprawidłowe dane w mapie dzielenia!</translation>
+        <translation type="vanished">Nieprawidłowe dane w mapie dzielenia!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="315"/>
         <source>Didn&apos;t encounter a double 0x2d where should be one!</source>
-        <translation>Nie znaleziono podwójnego 0x2d, gdzie powinien być!</translation>
+        <translation type="vanished">Nie znaleziono podwójnego 0x2d, gdzie powinien być!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="321"/>
         <source>Unknown stream type!</source>
-        <translation>Nieznany typ strumienia!</translation>
+        <translation type="vanished">Nieznany typ strumienia!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="325"/>
         <source>Couldn&apos;t parse stream!</source>
-        <translation>Nie udało się odczytać strumienia!</translation>
+        <translation type="vanished">Nie udało się odczytać strumienia!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="339"/>
         <source>DB row not found!</source>
-        <translation>Nie znaleziono wiersza bazy danych!</translation>
+        <translation type="vanished">Nie znaleziono wiersza bazy danych!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="342"/>
         <source>Bad descriptor name!</source>
-        <translation>Nieprawidłowa nazwa deskryptora!</translation>
+        <translation type="vanished">Nieprawidłowa nazwa deskryptora!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="348"/>
         <source>Invalid row size!</source>
-        <translation>Nieprawiłowy rozmiar wiersza!</translation>
+        <translation type="vanished">Nieprawiłowy rozmiar wiersza!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="378"/>
         <source>Invalid row fields!</source>
-        <translation>Nieprawidłowe pola wiersza!</translation>
+        <translation type="vanished">Nieprawidłowe pola wiersza!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="384"/>
         <source>Invalid row field type!</source>
-        <translation>Nieprawidłowy typ pola!</translation>
+        <translation type="vanished">Nieprawidłowy typ pola!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="440"/>
         <source>Unknown ADO type!</source>
-        <translation>Nieznany typ ADO!</translation>
+        <translation type="vanished">Nieznany typ ADO!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="464"/>
         <source>Share index out of range!</source>
-        <translation>Indeks dzielonego obiektu poza zakresem!</translation>
+        <translation type="vanished">Indeks dzielonego obiektu poza zakresem!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="467"/>
         <source>No share at specified index found!</source>
-        <translation>Brak dzielonego obiektu dla danego indeksu!</translation>
+        <translation type="vanished">Brak dzielonego obiektu dla danego indeksu!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="475"/>
         <source>Share cursor out of range!</source>
-        <translation>Kursor dzielonych obiektów poza zakresem!</translation>
+        <translation type="vanished">Kursor dzielonych obiektów poza zakresem!</translation>
     </message>
     <message>
-        <location filename="../EveCacheFileParser.cpp" line="479"/>
         <source>Share ID out of range!</source>
-        <translation>Identyfikator dzielonego obiektu poza zakresem!</translation>
+        <translation type="vanished">Identyfikator dzielonego obiektu poza zakresem!</translation>
     </message>
 </context>
 <context>
@@ -306,27 +284,26 @@
         <translation>Importuj ceny z logów</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="73"/>
         <source>Import prices from cache</source>
-        <translation>Importuj ceny z cache</translation>
+        <translation type="vanished">Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="99"/>
+        <location filename="../AssetsWidget.cpp" line="94"/>
         <source>Set destination in EVE</source>
         <translation>Ustaw jako cel podróży</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="104"/>
+        <location filename="../AssetsWidget.cpp" line="99"/>
         <source>Price station</source>
         <translation>Stacja z cenami</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="113"/>
+        <location filename="../AssetsWidget.cpp" line="108"/>
         <source>Use asset location</source>
         <translation>Użyj stacji z przedmiotem</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="123"/>
+        <location filename="../AssetsWidget.cpp" line="118"/>
         <source>Use custom station</source>
         <translation>Użyj wybranej stacji</translation>
     </message>
@@ -427,14 +404,12 @@
         <translation type="vanished">Ścieżka cache nie istnieje.</translation>
     </message>
     <message>
-        <location filename="../CacheExternalOrderImporter.cpp" line="40"/>
         <source>Couldn&apos;t determine Eve cache path. Did you set it in the Preferences?</source>
-        <translation>Nie udało się znaleźć ścieżki cache. Czy wpisałeś ścieżkę w ustawieniach?</translation>
+        <translation type="vanished">Nie udało się znaleźć ścieżki cache. Czy wpisałeś ścieżkę w ustawieniach?</translation>
     </message>
     <message>
-        <location filename="../CacheExternalOrderImporter.cpp" line="62"/>
         <source>Cache import: processing %1 of %2</source>
-        <translation>Import z cache: przetwarzanie %1  %2</translation>
+        <translation type="vanished">Import z cache: przetwarzanie %1  %2</translation>
     </message>
 </context>
 <context>
@@ -1385,7 +1360,7 @@
     <name>Evernus::EvernusApplication</name>
     <message>
         <location filename="../EvernusApplication.cpp" line="101"/>
-        <location filename="../EvernusApplication.cpp" line="188"/>
+        <location filename="../EvernusApplication.cpp" line="185"/>
         <source>Loading...</source>
         <translation>Ładowanie...</translation>
     </message>
@@ -1425,201 +1400,199 @@
         <translation>Włączanie usługi IGB...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="171"/>
+        <location filename="../EvernusApplication.cpp" line="168"/>
         <source>Setting up HTTP service...</source>
         <translation>Włączanie usługi HTTP...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="313"/>
-        <location filename="../EvernusApplication.cpp" line="359"/>
+        <location filename="../EvernusApplication.cpp" line="310"/>
+        <location filename="../EvernusApplication.cpp" line="356"/>
         <source>Unknown cache timer type: %1</source>
         <translation>Nieznany typ czasu cache: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="429"/>
+        <location filename="../EvernusApplication.cpp" line="426"/>
         <source>Unknown update timer type: %1</source>
         <translation>Nieznany typ czasu aktualizacji: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="677"/>
+        <location filename="../EvernusApplication.cpp" line="674"/>
         <source>Fetching characters...</source>
         <translation>Pobieranie postaci...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="690"/>
+        <location filename="../EvernusApplication.cpp" line="687"/>
         <source>Fetching characters for key %1...</source>
         <translation>Pobieranie postaci dla klucza %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="703"/>
-        <location filename="../EvernusApplication.cpp" line="709"/>
-        <location filename="../EvernusApplication.cpp" line="2147"/>
-        <location filename="../EvernusApplication.cpp" line="2185"/>
+        <location filename="../EvernusApplication.cpp" line="700"/>
+        <location filename="../EvernusApplication.cpp" line="706"/>
+        <location filename="../EvernusApplication.cpp" line="2119"/>
+        <location filename="../EvernusApplication.cpp" line="2157"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="703"/>
+        <location filename="../EvernusApplication.cpp" line="700"/>
         <source>An error occurred while updating character key information: %1. Data sync should work, but character tab will display incorrect information.</source>
         <translation>Wystąpił błąd aktualizacji informacji o kluczu postaci: %1 Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="709"/>
+        <location filename="../EvernusApplication.cpp" line="706"/>
         <source>An error occurred while updating character key information. Data sync should work, but character tab will display incorrect information.</source>
         <translation>Wystąpił błąd aktualizacji informacji o kluczu postaci Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="753"/>
+        <location filename="../EvernusApplication.cpp" line="750"/>
         <source>Fetching assets for character %1...</source>
         <translation>Pobieranie aktywów dla postaci: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="788"/>
-        <location filename="../EvernusApplication.cpp" line="848"/>
-        <location filename="../EvernusApplication.cpp" line="909"/>
-        <location filename="../EvernusApplication.cpp" line="965"/>
-        <location filename="../EvernusApplication.cpp" line="990"/>
-        <location filename="../EvernusApplication.cpp" line="1057"/>
-        <location filename="../EvernusApplication.cpp" line="1117"/>
-        <location filename="../EvernusApplication.cpp" line="1174"/>
-        <location filename="../EvernusApplication.cpp" line="1199"/>
+        <location filename="../EvernusApplication.cpp" line="785"/>
+        <location filename="../EvernusApplication.cpp" line="845"/>
+        <location filename="../EvernusApplication.cpp" line="906"/>
+        <location filename="../EvernusApplication.cpp" line="962"/>
+        <location filename="../EvernusApplication.cpp" line="987"/>
+        <location filename="../EvernusApplication.cpp" line="1054"/>
+        <location filename="../EvernusApplication.cpp" line="1114"/>
+        <location filename="../EvernusApplication.cpp" line="1171"/>
+        <location filename="../EvernusApplication.cpp" line="1196"/>
         <source>Key not found!</source>
         <translation>Klucz nie znaleziony!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="792"/>
-        <location filename="../EvernusApplication.cpp" line="852"/>
-        <location filename="../EvernusApplication.cpp" line="913"/>
-        <location filename="../EvernusApplication.cpp" line="969"/>
-        <location filename="../EvernusApplication.cpp" line="994"/>
-        <location filename="../EvernusApplication.cpp" line="1121"/>
-        <location filename="../EvernusApplication.cpp" line="1178"/>
+        <location filename="../EvernusApplication.cpp" line="789"/>
+        <location filename="../EvernusApplication.cpp" line="849"/>
+        <location filename="../EvernusApplication.cpp" line="910"/>
+        <location filename="../EvernusApplication.cpp" line="966"/>
+        <location filename="../EvernusApplication.cpp" line="991"/>
+        <location filename="../EvernusApplication.cpp" line="1118"/>
+        <location filename="../EvernusApplication.cpp" line="1175"/>
         <source>Character not found!</source>
         <translation>Postać nie znaleziona!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="800"/>
+        <location filename="../EvernusApplication.cpp" line="797"/>
         <source>Fetching contracts for character %1...</source>
         <translation>Pobieranie kontraktów dla postaci: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1443"/>
+        <location filename="../EvernusApplication.cpp" line="1415"/>
         <source>Synchronizing with LMeve...</source>
         <translation>Synchronizowanie z LMeve...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2376"/>
+        <location filename="../EvernusApplication.cpp" line="2348"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="860"/>
+        <location filename="../EvernusApplication.cpp" line="857"/>
         <source>Fetching wallet journal for character %1...</source>
         <translation>Pobieranie dziennika dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="869"/>
+        <location filename="../EvernusApplication.cpp" line="866"/>
         <source>Fetching wallet journal for character %1 (this may take a while)...</source>
         <translation>Pobieranie dziennika dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="921"/>
+        <location filename="../EvernusApplication.cpp" line="918"/>
         <source>Fetching wallet transactions for character %1...</source>
         <translation>Pobieranie transakcji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="933"/>
+        <location filename="../EvernusApplication.cpp" line="930"/>
         <source>Fetching wallet transactions for character %1 (this may take a while)...</source>
         <translation>Pobieranie transakcji dla postaci %1 (może zajać sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="977"/>
-        <location filename="../EvernusApplication.cpp" line="1002"/>
+        <location filename="../EvernusApplication.cpp" line="974"/>
+        <location filename="../EvernusApplication.cpp" line="999"/>
         <source>Fetching market orders for character %1...</source>
         <translation>Pobieranie zleceń dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1014"/>
+        <location filename="../EvernusApplication.cpp" line="1011"/>
         <source>Fetching corporation contracts for character %1...</source>
         <translation>Pobieranie kontraktów korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1129"/>
+        <location filename="../EvernusApplication.cpp" line="1126"/>
         <source>Fetching corporation wallet transactions for character %1...</source>
         <translation>Pobieranie transakcji korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1142"/>
+        <location filename="../EvernusApplication.cpp" line="1139"/>
         <source>Fetching corporation wallet transactions for character %1 (this may take a while)...</source>
         <translation>Pobieranie transakcji korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1186"/>
-        <location filename="../EvernusApplication.cpp" line="1207"/>
+        <location filename="../EvernusApplication.cpp" line="1183"/>
+        <location filename="../EvernusApplication.cpp" line="1204"/>
         <source>Fetching corporation market orders for character %1...</source>
         <translation>Pobieranie zleceń korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1287"/>
         <source>Cache import</source>
-        <translation>Import z cache</translation>
+        <translation type="vanished">Import z cache</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1287"/>
         <source>Warning! Reading cache is considered a gray area. CPP on one hand considers this a violation of the EULA, but on the other has stated they will only penalize when used in conjunction with illegal activities, like botting.
 
 Do wish to continue?
 
 By choosing &apos;Yes&apos; you accept all responsibility of any action CCP may impose upon you, should they choose to changetheir policy.</source>
-        <translation>Uwaga! Odczyt cache jest uważany za szarą strefę. Z jednej strony CPP określiło, że łamie to zasady orkreślone w EULA; z drugiej stwierdzili, że będą karać graczy tylko, jeśli będzie to powiązane z niedozwolonymi czynnościami, np botami.
+        <translation type="vanished">Uwaga! Odczyt cache jest uważany za szarą strefę. Z jednej strony CPP określiło, że łamie to zasady orkreślone w EULA; z drugiej stwierdzili, że będą karać graczy tylko, jeśli będzie to powiązane z niedozwolonymi czynnościami, np botami.
 
 Czy chcesz kontynuować?
 
 Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialność za jakąkolwiek karę CPP może na Ciebie nałożyć, jeśli zmienią swoją politykę.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1308"/>
+        <location filename="../EvernusApplication.cpp" line="1280"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1536"/>
+        <location filename="../EvernusApplication.cpp" line="1508"/>
         <source>SMTP Error</source>
         <translation>Błąd SMTP</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1536"/>
-        <location filename="../EvernusApplication.cpp" line="1544"/>
+        <location filename="../EvernusApplication.cpp" line="1508"/>
+        <location filename="../EvernusApplication.cpp" line="1516"/>
         <source>Error sending email: %1</source>
         <translation>Błąd wysyłania maila: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1544"/>
+        <location filename="../EvernusApplication.cpp" line="1516"/>
         <source>Mail Error</source>
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1858"/>
+        <location filename="../EvernusApplication.cpp" line="1830"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1872"/>
+        <location filename="../EvernusApplication.cpp" line="1844"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1883"/>
+        <location filename="../EvernusApplication.cpp" line="1855"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2148"/>
+        <location filename="../EvernusApplication.cpp" line="2120"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2152"/>
+        <location filename="../EvernusApplication.cpp" line="2124"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1628,69 +1601,69 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2155"/>
+        <location filename="../EvernusApplication.cpp" line="2127"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2185"/>
+        <location filename="../EvernusApplication.cpp" line="2157"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1065"/>
+        <location filename="../EvernusApplication.cpp" line="1062"/>
         <source>Fetching corporation wallet journal for character %1...</source>
         <translation>Pobieranie dziennika korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1077"/>
+        <location filename="../EvernusApplication.cpp" line="1074"/>
         <source>Fetching corporation wallet journal for character %1 (this may take a while)...</source>
         <translation>Pobieranie dziennika korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1219"/>
+        <location filename="../EvernusApplication.cpp" line="1216"/>
         <source>Fetching conquerable stations...</source>
         <translation>Pobieranie stacji graczy...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1357"/>
+        <location filename="../EvernusApplication.cpp" line="1329"/>
         <source>Select Mentat directory</source>
         <translation>Wybierz katalog Mentat</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1367"/>
+        <location filename="../EvernusApplication.cpp" line="1339"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1367"/>
+        <location filename="../EvernusApplication.cpp" line="1339"/>
         <source>Error opening %1</source>
         <translation>Błąd otwierania %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1371"/>
+        <location filename="../EvernusApplication.cpp" line="1343"/>
         <source>Importing order history...</source>
         <translation>Importowanie historii zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1417"/>
+        <location filename="../EvernusApplication.cpp" line="1389"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importowanie historii zleceń: %1 przetworzonych</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1422"/>
+        <location filename="../EvernusApplication.cpp" line="1394"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1779"/>
+        <location filename="../EvernusApplication.cpp" line="1751"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1847"/>
+        <location filename="../EvernusApplication.cpp" line="1819"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>
@@ -2340,17 +2313,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Postać nie znaleziona!</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="477"/>
+        <location filename="../IGBService.cpp" line="470"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="477"/>
+        <location filename="../IGBService.cpp" line="470"/>
         <source>You have to open Evernus in EVE In-Game Browser first.</source>
         <translation>Najpierw musisz otworzyć Evernusa w przeglądarce w EVE.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="385"/>
+        <location filename="../IGBService.cpp" line="378"/>
         <source>Website trust is required. Please add it to Trusted Sites.</source>
         <translation>Wymagane jest zaufanie stronie. Dodaj stronę do zaufanych (Trusted Sites).</translation>
     </message>
@@ -2492,17 +2465,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="46"/>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="56"/>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="55"/>
         <source>Logs</source>
         <translation>Logi</translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="50"/>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="49"/>
         <source>Market orders:</source>
         <translation>Zlecenia:</translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="55"/>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="54"/>
         <source>API</source>
         <translation>API</translation>
     </message>
@@ -2511,9 +2484,8 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Plik</translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="47"/>
         <source>Cache</source>
-        <translation>Cache</translation>
+        <translation type="vanished">Cache</translation>
     </message>
 </context>
 <context>
@@ -2806,27 +2778,26 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Zadania</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="131"/>
+        <location filename="../LMeveWidget.cpp" line="126"/>
         <source>Sell station</source>
         <translation>Stacja sprzedaży</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="143"/>
+        <location filename="../LMeveWidget.cpp" line="138"/>
         <source>Import prices from Web</source>
         <translation>Importuj ceny z sieci</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="144"/>
+        <location filename="../LMeveWidget.cpp" line="139"/>
         <source>Import prices from logs</source>
         <translation>Importuj ceny z logów</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="145"/>
         <source>Import prices from cache</source>
-        <translation>Importuj ceny z cache</translation>
+        <translation type="vanished">Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../LMeveWidget.cpp" line="147"/>
+        <location filename="../LMeveWidget.cpp" line="141"/>
         <source>Import prices  </source>
         <translation>Importuj ceny  </translation>
     </message>
@@ -3007,37 +2978,37 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="646"/>
+        <location filename="../MainWindow.cpp" line="645"/>
         <source>Character orders</source>
         <translation>Zlecenia postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="692"/>
+        <location filename="../MainWindow.cpp" line="690"/>
         <source>Character contracts</source>
         <translation>Kontrakty postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="707"/>
+        <location filename="../MainWindow.cpp" line="705"/>
         <source>Corporation orders</source>
         <translation>Zlecenia korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="752"/>
+        <location filename="../MainWindow.cpp" line="749"/>
         <source>Corporation contracts</source>
         <translation>Kontrakty korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="763"/>
+        <location filename="../MainWindow.cpp" line="760"/>
         <source>Item history</source>
         <translation>Historia przedmiotów</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="776"/>
+        <location filename="../MainWindow.cpp" line="773"/>
         <source>Market browser</source>
         <translation>Rynek</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="798"/>
+        <location filename="../MainWindow.cpp" line="794"/>
         <source>LMeve</source>
         <translation>LMeve</translation>
     </message>
@@ -3054,22 +3025,22 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Wysyłanie zleceń:</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="669"/>
+        <location filename="../MainWindow.cpp" line="667"/>
         <source>Character journal</source>
         <translation>Dziennik postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="729"/>
+        <location filename="../MainWindow.cpp" line="726"/>
         <source>Corporation journal</source>
         <translation>Dziennik korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="681"/>
+        <location filename="../MainWindow.cpp" line="679"/>
         <source>Character transactions</source>
         <translation>Transakcje postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="741"/>
+        <location filename="../MainWindow.cpp" line="738"/>
         <source>Corporation transactions</source>
         <translation>Transakcje korporacji</translation>
     </message>
@@ -3086,7 +3057,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Transakcje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="789"/>
+        <location filename="../MainWindow.cpp" line="785"/>
         <source>Item costs</source>
         <translation>Koszty</translation>
     </message>
@@ -3284,250 +3255,249 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Importuj ceny z logów</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="90"/>
         <source>Import prices from cache</source>
-        <translation>Importuj ceny z cache</translation>
+        <translation type="vanished">Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="95"/>
-        <location filename="../MarketBrowserWidget.cpp" line="261"/>
+        <location filename="../MarketBrowserWidget.cpp" line="90"/>
+        <location filename="../MarketBrowserWidget.cpp" line="256"/>
         <source>Filter</source>
         <translation>Filtr</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="117"/>
+        <location filename="../MarketBrowserWidget.cpp" line="112"/>
         <source>Clean all orders</source>
         <translation>Wyczyść wszystkie</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="118"/>
+        <location filename="../MarketBrowserWidget.cpp" line="113"/>
         <source>Clean for selected type</source>
         <translation>Wyczyść dla wybranego typu</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="120"/>
+        <location filename="../MarketBrowserWidget.cpp" line="115"/>
         <source>Cleanup  </source>
         <translation>Wyczyść  </translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="130"/>
+        <location filename="../MarketBrowserWidget.cpp" line="125"/>
         <source>Navigator</source>
         <translation>Nawigacja</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="138"/>
+        <location filename="../MarketBrowserWidget.cpp" line="133"/>
         <source>Back</source>
         <translation>Wstecz</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="144"/>
+        <location filename="../MarketBrowserWidget.cpp" line="139"/>
         <source>Forward</source>
         <translation>Do przodu</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="153"/>
+        <location filename="../MarketBrowserWidget.cpp" line="148"/>
         <source>Bookmarks</source>
         <translation>Zakładki</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="158"/>
+        <location filename="../MarketBrowserWidget.cpp" line="153"/>
         <source>Grouping</source>
         <translation>Grupowanie</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="163"/>
+        <location filename="../MarketBrowserWidget.cpp" line="158"/>
         <source>None</source>
         <translation>Brak</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="171"/>
+        <location filename="../MarketBrowserWidget.cpp" line="166"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="178"/>
+        <location filename="../MarketBrowserWidget.cpp" line="173"/>
         <source>System</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="185"/>
+        <location filename="../MarketBrowserWidget.cpp" line="180"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="195"/>
+        <location filename="../MarketBrowserWidget.cpp" line="190"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="201"/>
+        <location filename="../MarketBrowserWidget.cpp" line="196"/>
         <source>My orders</source>
         <translation>Moje zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="209"/>
+        <location filename="../MarketBrowserWidget.cpp" line="204"/>
         <source>Favorite</source>
         <translation>Ulubione</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="212"/>
+        <location filename="../MarketBrowserWidget.cpp" line="207"/>
         <source>Add...</source>
         <translation>Dodaj...</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="217"/>
+        <location filename="../MarketBrowserWidget.cpp" line="212"/>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="268"/>
+        <location filename="../MarketBrowserWidget.cpp" line="263"/>
         <source>Min. price:</source>
         <translation>Min. cena:</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="272"/>
-        <location filename="../MarketBrowserWidget.cpp" line="280"/>
-        <location filename="../MarketBrowserWidget.cpp" line="288"/>
-        <location filename="../MarketBrowserWidget.cpp" line="295"/>
+        <location filename="../MarketBrowserWidget.cpp" line="267"/>
+        <location filename="../MarketBrowserWidget.cpp" line="275"/>
+        <location filename="../MarketBrowserWidget.cpp" line="283"/>
+        <location filename="../MarketBrowserWidget.cpp" line="290"/>
         <source>any</source>
         <translation>dowolna/y</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="276"/>
+        <location filename="../MarketBrowserWidget.cpp" line="271"/>
         <source>Max. price:</source>
         <translation>Maks. cena:</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="284"/>
+        <location filename="../MarketBrowserWidget.cpp" line="279"/>
         <source>Min. volume:</source>
         <translation>Min. wolumen:</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="291"/>
+        <location filename="../MarketBrowserWidget.cpp" line="286"/>
         <source>Max. volume:</source>
         <translation>Maks. wolumen:</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="298"/>
+        <location filename="../MarketBrowserWidget.cpp" line="293"/>
         <source>Security status:</source>
         <translation>Bezpieczeństwo:</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="303"/>
+        <location filename="../MarketBrowserWidget.cpp" line="298"/>
         <source>-1.0 - 0.0</source>
         <translation>-1.0 - 0.0</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="308"/>
+        <location filename="../MarketBrowserWidget.cpp" line="303"/>
         <source>0.1 - 0.4</source>
         <translation>0.1 - 0.4</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="313"/>
+        <location filename="../MarketBrowserWidget.cpp" line="308"/>
         <source>0.5 - 1.0</source>
         <translation>0.5 - 1.0</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="320"/>
+        <location filename="../MarketBrowserWidget.cpp" line="315"/>
         <source>Apply</source>
         <translation>Zastosuj</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="324"/>
+        <location filename="../MarketBrowserWidget.cpp" line="319"/>
         <source>Reset</source>
         <translation>Resetuj</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="331"/>
-        <location filename="../MarketBrowserWidget.cpp" line="949"/>
+        <location filename="../MarketBrowserWidget.cpp" line="326"/>
+        <location filename="../MarketBrowserWidget.cpp" line="939"/>
         <source>select an item</source>
         <translation>wybierz przedmiot</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="344"/>
-        <location filename="../MarketBrowserWidget.cpp" line="361"/>
+        <location filename="../MarketBrowserWidget.cpp" line="339"/>
+        <location filename="../MarketBrowserWidget.cpp" line="356"/>
         <source>Set as deviation reference</source>
         <translation>Ustaw jako podstawę odchylenia</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="352"/>
+        <location filename="../MarketBrowserWidget.cpp" line="347"/>
         <source>Buy orders</source>
         <translation>Zlecenia kupna</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="604"/>
+        <location filename="../MarketBrowserWidget.cpp" line="594"/>
         <source>Add to favorites</source>
         <translation>Dodaj do ulubionych</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="759"/>
+        <location filename="../MarketBrowserWidget.cpp" line="749"/>
         <source>Add bookmark</source>
         <translation>Dodaj zakładkę</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="760"/>
+        <location filename="../MarketBrowserWidget.cpp" line="750"/>
         <source>Remove bookmark...</source>
         <translation>Usuń zakładkę...</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="788"/>
+        <location filename="../MarketBrowserWidget.cpp" line="778"/>
         <source>type in wildcard</source>
         <translation>wpisz wzór</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="806"/>
+        <location filename="../MarketBrowserWidget.cpp" line="796"/>
         <source>Deviation [median]  </source>
         <translation>Odchylenie [mediana]  </translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="808"/>
+        <location filename="../MarketBrowserWidget.cpp" line="798"/>
         <source>Deviation [best price]  </source>
         <translation>Odchylenie [najlepsza cena]  </translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="810"/>
+        <location filename="../MarketBrowserWidget.cpp" line="800"/>
         <source>Deviation [custom cost]  </source>
         <translation>Odchylenie [koszt własny]  </translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="812"/>
+        <location filename="../MarketBrowserWidget.cpp" line="802"/>
         <source>Deviation [fixed]  </source>
         <translation>Odchylenie [ustalona cena]  </translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="814"/>
+        <location filename="../MarketBrowserWidget.cpp" line="804"/>
         <source>Deviation  </source>
         <translation>Odchylenie  </translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="947"/>
+        <location filename="../MarketBrowserWidget.cpp" line="937"/>
         <source>%1 (%2m³)</source>
         <translation>%1 (%2m³)</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="228"/>
+        <location filename="../MarketBrowserWidget.cpp" line="223"/>
         <source>Regions [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation>Regiony [&lt;a href=&apos;#&apos;&gt;wszystkie&lt;/a&gt;]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="462"/>
-        <location filename="../MarketBrowserWidget.cpp" line="499"/>
-        <location filename="../MarketBrowserWidget.cpp" line="731"/>
+        <location filename="../MarketBrowserWidget.cpp" line="452"/>
+        <location filename="../MarketBrowserWidget.cpp" line="489"/>
+        <location filename="../MarketBrowserWidget.cpp" line="721"/>
         <source>(all)</source>
         <translation>(wszystko)</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="238"/>
+        <location filename="../MarketBrowserWidget.cpp" line="233"/>
         <source>Solar systems [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation>Systemy [&lt;a href=&apos;#&apos;&gt;wszystkie&lt;/a&gt;]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="248"/>
+        <location filename="../MarketBrowserWidget.cpp" line="243"/>
         <source>Stations [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation>Stacje [&lt;a href=&apos;#&apos;&gt;wszystkie&lt;/a&gt;]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="335"/>
+        <location filename="../MarketBrowserWidget.cpp" line="330"/>
         <source>Sell orders</source>
         <translation>Zlecenia sprzedaży</translation>
     </message>
@@ -4338,77 +4308,76 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="obsolete">Import</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="86"/>
         <source>Import prices from cache</source>
-        <translation>Importuj ceny z cache</translation>
+        <translation type="vanished">Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="88"/>
+        <location filename="../MarketOrderWidget.cpp" line="87"/>
         <source>Import prices  </source>
         <translation>Importuj ceny  </translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="93"/>
+        <location filename="../MarketOrderWidget.cpp" line="92"/>
         <source>Open margin tool</source>
         <translation>Otwórz narzędzie marży</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="101"/>
+        <location filename="../MarketOrderWidget.cpp" line="100"/>
         <source>Group by:</source>
         <translation>Grupuj po:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="105"/>
+        <location filename="../MarketOrderWidget.cpp" line="104"/>
         <source>- none -</source>
         <translation>- brak -</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="106"/>
+        <location filename="../MarketOrderWidget.cpp" line="105"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="107"/>
+        <location filename="../MarketOrderWidget.cpp" line="106"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="108"/>
+        <location filename="../MarketOrderWidget.cpp" line="107"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="129"/>
+        <location filename="../MarketOrderWidget.cpp" line="128"/>
         <source>Sell</source>
         <translation>Sprzedaż</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="153"/>
+        <location filename="../MarketOrderWidget.cpp" line="152"/>
         <source>Buy</source>
         <translation>Kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="165"/>
+        <location filename="../MarketOrderWidget.cpp" line="164"/>
         <source>Sell &amp;&amp; Buy</source>
         <translation>Sprzedaż i kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="169"/>
+        <location filename="../MarketOrderWidget.cpp" line="168"/>
         <source>Sell orders</source>
         <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="188"/>
+        <location filename="../MarketOrderWidget.cpp" line="187"/>
         <source>Buy orders</source>
         <translation>Zlecenia kupna</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="208"/>
+        <location filename="../MarketOrderWidget.cpp" line="207"/>
         <source>History</source>
         <translation>Historia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="298"/>
+        <location filename="../MarketOrderWidget.cpp" line="292"/>
         <source>Script error</source>
         <translation>Błąd skryptu</translation>
     </message>
@@ -5615,49 +5584,49 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="60"/>
+        <location filename="../main.cpp" line="59"/>
         <source>Evernus EVE Online trade tool</source>
         <translation>Evernus EVE Online - narzędzie handlu</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="64"/>
+        <location filename="../main.cpp" line="63"/>
         <source>CREST client id.</source>
         <translation>Id klienta CREST.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="66"/>
+        <location filename="../main.cpp" line="65"/>
         <source>CREST client secret.</source>
         <translation>Tajny klucz klienta CREST.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="81"/>
-        <location filename="../main.cpp" line="96"/>
+        <location filename="../main.cpp" line="80"/>
+        <location filename="../main.cpp" line="95"/>
         <source>Already running</source>
         <translation>Już włączono</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="81"/>
+        <location filename="../main.cpp" line="80"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation>Evernus zdaje się już być włączony. Jeśli tak nie jest, usuń &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="96"/>
+        <location filename="../main.cpp" line="95"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation>Evernus prawdopodobnie nie został czysto zamknięty. Czy chcesz przeprowadzić próbę wyczyszczenia?</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="105"/>
-        <location filename="../main.cpp" line="213"/>
+        <location filename="../main.cpp" line="104"/>
+        <location filename="../main.cpp" line="209"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="106"/>
+        <location filename="../main.cpp" line="105"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation>Nie udało się usunać &apos;%1&apos;!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="222"/>
+        <location filename="../main.cpp" line="218"/>
         <source>Initialization error</source>
         <translation>Błąd inicjalizacji</translation>
     </message>

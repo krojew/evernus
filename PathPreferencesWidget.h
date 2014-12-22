@@ -35,14 +35,11 @@ namespace Evernus
 
     private slots:
         void browseForMarketLogsFolder();
-        void browseForCacheFolder();
 
     private:
         QLineEdit *mMarketLogPathEdit = nullptr;
         QCheckBox *mDeleteLogsBtn = nullptr;
         QLineEdit *mCharacterLogWildcardEdit = nullptr;
         QLineEdit *mCorporationLogWildcardEdit = nullptr;
-        QLineEdit *mEveCachePathEdit = nullptr;
-        QCheckBox *mDeleteCacheBtn = nullptr;
     };
 }

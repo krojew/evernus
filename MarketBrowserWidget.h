@@ -67,7 +67,6 @@ namespace Evernus
     signals:
         void importPricesFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
-        void importPricesFromCache(const ExternalOrderImporter::TypeLocationPairs &target);
 
         void externalOrdersChanged();
 
@@ -83,7 +82,6 @@ namespace Evernus
     private slots:
         void prepareItemImportFromWeb();
         void prepareItemImportFromFile();
-        void prepareItemImportFromCache();
 
         void selectRegion(QListWidgetItem *item);
         void selectSolarSystem(QListWidgetItem *item);

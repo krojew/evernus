@@ -44,7 +44,6 @@ namespace Evernus
 
         addSourceItem(*mPriceSourceCombo, tr("Web"), ImportSettings::PriceImportSource::Web, priceSource);
         addSourceItem(*mPriceSourceCombo, tr("Logs"), ImportSettings::PriceImportSource::Logs, priceSource);
-        addSourceItem(*mPriceSourceCombo, tr("Cache"), ImportSettings::PriceImportSource::Cache, priceSource);
 
         mMarketOrderSourceCombo = new QComboBox{this};
         sourceGroupLayout->addRow(tr("Market orders:"), mMarketOrderSourceCombo);

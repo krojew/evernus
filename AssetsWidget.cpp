@@ -70,11 +70,6 @@ namespace Evernus
         importFromFile->setFlat(true);
         connect(importFromFile, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromFile);
 
-        auto importFromCache = new QPushButton{QIcon{":/images/disk_multiple.png"}, tr("Import prices from cache"), this};
-        toolBarLayout->addWidget(importFromCache);
-        importFromCache->setFlat(true);
-        connect(importFromCache, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromCache);
-
         auto filterEdit = new TextFilterWidget{filterRepo, this};
         toolBarLayout->addWidget(filterEdit, 1);
         connect(filterEdit, &TextFilterWidget::filterEntered, this, &AssetsWidget::applyWildcard);
@@ -156,11 +151,6 @@ namespace Evernus
     void AssetsWidget::prepareItemImportFromFile()
     {
         emit importPricesFromFile(getImportTarget());
-    }
-
-    void AssetsWidget::prepareItemImportFromCache()
-    {
-        emit importPricesFromCache(getImportTarget());
     }
 
     void AssetsWidget::applyWildcard(const QString &text)

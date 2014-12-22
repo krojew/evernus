@@ -82,7 +82,6 @@ qt5_wrap_cpp(
     AssetsImportPreferencesWidget.h
     AssetsWidget.h
     ButtonWithTimer.h
-    CacheExternalOrderImporter.h
     CachingEveDataProvider.h
     CachingMarketOrderProvider.h
     CharacterBoundWidget.h
@@ -245,8 +244,6 @@ add_executable(
     AssignedContractModel.h
     ButtonWithTimer.cpp
     ButtonWithTimer.h
-    CacheExternalOrderImporter.cpp
-    CacheExternalOrderImporter.h
     CacheTimer.cpp
     CacheTimer.h
     CacheTimerProvider.h
@@ -346,17 +343,6 @@ add_executable(
     DeviationSourceWidget.cpp
     DeviationSourceWidget.h
     Entity.h
-    EveCacheBuffer.cpp
-    EveCacheBuffer.h
-    EveCacheFile.cpp
-    EveCacheFile.h
-    EveCacheFileParser.cpp
-    EveCacheFileParser.h
-    EveCacheManager.cpp
-    EveCacheManager.h
-    EveCacheNodes.cpp
-    EveCacheNodes.h
-    EveCacheReader.h
     EveDataProvider.h
     EvernusApplication.cpp
     EvernusApplication.h

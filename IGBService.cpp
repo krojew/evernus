@@ -354,13 +354,6 @@ namespace Evernus
         postEvent(new QxtWebPageEvent(event->sessionID, event->requestID, QByteArray{}));
     }
 
-    void IGBService::startImport(QxtWebRequestEvent *event)
-    {
-        emit importFromCache();
-
-        postEvent(new QxtWebPageEvent(event->sessionID, event->requestID, QByteArray{}));
-    }
-
     void IGBService::update(QxtWebRequestEvent *event)
     {
         mPollingRequests.emplace_back(event);

@@ -87,11 +87,6 @@ namespace Evernus
         importBtn->setFlat(true);
         connect(importBtn, &QPushButton::clicked, this, &MarketBrowserWidget::prepareItemImportFromFile);
 
-        importBtn = new QPushButton{QIcon{":/images/disk_multiple.png"}, tr("Import prices from cache"), this};
-        toolbarLayout->addWidget(importBtn);
-        importBtn->setFlat(true);
-        connect(importBtn, &QPushButton::clicked, this, &MarketBrowserWidget::prepareItemImportFromCache);
-
         auto filterBtn = new QPushButton{QIcon{":/images/flag_blue.png"}, tr("Filter"), this};
         toolbarLayout->addWidget(filterBtn);
         filterBtn->setFlat(true);
@@ -434,11 +429,6 @@ namespace Evernus
     void MarketBrowserWidget::prepareItemImportFromFile()
     {
         emit importPricesFromFile(getImportTarget());
-    }
-
-    void MarketBrowserWidget::prepareItemImportFromCache()
-    {
-        emit importPricesFromCache(getImportTarget());
     }
 
     void MarketBrowserWidget::selectRegion(QListWidgetItem *item)

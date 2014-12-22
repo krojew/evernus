@@ -53,7 +53,6 @@ namespace Evernus
 
     signals:
         void openMarginTool();
-        void importFromCache();
 
     public slots:
         void index(QxtWebRequestEvent *event);
@@ -67,7 +66,6 @@ namespace Evernus
         void corpBelowMargin(QxtWebRequestEvent *event);
         void favorite(QxtWebRequestEvent *event);
         void openMarginTool(QxtWebRequestEvent *event);
-        void startImport(QxtWebRequestEvent *event);
         void update(QxtWebRequestEvent *event);
 
         void showInEve(EveType::IdType id);

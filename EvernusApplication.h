@@ -187,7 +187,6 @@ namespace Evernus
         void refreshAllExternalOrders();
         void refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
-        void refreshExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &target);
 
         void updateExternalOrdersAndAssetValue(const std::vector<ExternalOrder> &orders);
 

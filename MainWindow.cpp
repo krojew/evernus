@@ -624,7 +624,6 @@ namespace Evernus
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
-        connect(assetsTab, &AssetsWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
         connect(assetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setDestinationInEve);
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
@@ -648,7 +647,6 @@ namespace Evernus
         connect(orderTab, &MarketOrderWidget::importFromLogs, this, &MainWindow::importMarketOrdersFromLogs);
         connect(orderTab, &MarketOrderWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(orderTab, &MarketOrderWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
-        connect(orderTab, &MarketOrderWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
         connect(orderTab, &MarketOrderWidget::openMarginTool, this, &MainWindow::showMarginTool);
         connect(orderTab, &MarketOrderWidget::showExternalOrders, this, &MainWindow::showMarketBrowser);
         connect(orderTab, &MarketOrderWidget::showInEve, this, &MainWindow::showInEve);
@@ -709,7 +707,6 @@ namespace Evernus
         connect(corpOrderTab, &MarketOrderWidget::importFromLogs, this, &MainWindow::importCorpMarketOrdersFromLogs);
         connect(corpOrderTab, &MarketOrderWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(corpOrderTab, &MarketOrderWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
-        connect(corpOrderTab, &MarketOrderWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
         connect(corpOrderTab, &MarketOrderWidget::openMarginTool, this, &MainWindow::showMarginTool);
         connect(corpOrderTab, &MarketOrderWidget::showExternalOrders, this, &MainWindow::showMarketBrowser);
         connect(corpOrderTab, &MarketOrderWidget::showInEve, this, &MainWindow::showInEve);
@@ -776,7 +773,6 @@ namespace Evernus
         mMarketBrowserTab = addTab(marketBrowserTab, tr("Market browser"));
         connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
-        connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
         connect(marketBrowserTab, &MarketBrowserWidget::externalOrdersChanged, this, &MainWindow::externalOrdersChanged);
         connect(corpOrderTab, &MarketOrderWidget::showExternalOrders, marketBrowserTab, &MarketBrowserWidget::showOrdersForType);
         connect(orderTab, &MarketOrderWidget::showExternalOrders, marketBrowserTab, &MarketBrowserWidget::showOrdersForType);
@@ -800,7 +796,6 @@ namespace Evernus
         connect(lmEveTab, &LMeveWidget::syncLMeve, this, &MainWindow::syncLMeve);
         connect(lmEveTab, &LMeveWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(lmEveTab, &LMeveWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
-        connect(lmEveTab, &LMeveWidget::importPricesFromCache, this, &MainWindow::importExternalOrdersFromCache);
         connect(this, &MainWindow::externalOrdersChanged, lmEveTab, &LMeveWidget::updateData);
         connect(this, &MainWindow::lMeveTasksChanged, lmEveTab, &LMeveWidget::updateData);
 

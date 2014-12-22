@@ -26,7 +26,6 @@
 #include "MarketOrderFilterProxyModel.h"
 #include "ExternalOrderImporterNames.h"
 #include "CRESTExternalOrderImporter.h"
-#include "CacheExternalOrderImporter.h"
 #include "ContractFilterProxyModel.h"
 #include "ExternalOrderModel.h"
 #include "EvernusApplication.h"
@@ -142,8 +141,6 @@ int main(int argc, char *argv[])
                                                                                    app.getDataProvider()));
         app.registerImporter(Evernus::ExternalOrderImporterNames::logImporter,
                              std::make_unique<Evernus::MarketLogExternalOrderImporter>());
-        app.registerImporter(Evernus::ExternalOrderImporterNames::cacheImporter,
-                             std::make_unique<Evernus::CacheExternalOrderImporter>());
 
         try
         {
@@ -174,7 +171,6 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(importCorpMarketOrdersFromLogs(Character::IdType)), SLOT(refreshCorpMarketOrdersFromLogs(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(importExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)));
-            app.connect(&mainWnd, SIGNAL(importExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &)));
             app.connect(&mainWnd, SIGNAL(preferencesChanged()), SLOT(handleNewPreferences()));
             app.connect(&mainWnd, SIGNAL(importFromMentat()), SLOT(importFromMentat()));
             app.connect(&mainWnd, SIGNAL(syncLMeve(Character::IdType)), SLOT(syncLMeve(Character::IdType)));

@@ -31,7 +31,6 @@ namespace Evernus
         {
             Web,
             Logs,
-            Cache
         };
 
         enum class MarketOrderImportSource

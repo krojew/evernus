@@ -226,13 +226,6 @@ namespace Evernus
 
     void Updater::migrateTo18(const ExternalOrderRepository &externalOrderRepo) const
     {
-        QSettings settings;
-
-        const auto cachePath = settings.value(PathSettings::eveCachePathKey).toString();
-        const auto index = cachePath.indexOf("MachoNet");
-        if (index != -1)
-            settings.setValue(PathSettings::eveCachePathKey, cachePath.left(index));
-
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all item prices."));
 
         externalOrderRepo.exec(QString{"DROP TABLE %1"}.arg(externalOrderRepo.getTableName()));

@@ -154,9 +154,6 @@ namespace Evernus
                                          &mIGBSessionManager,
                                          this};
         connect(igbService, SIGNAL(openMarginTool()), this, SIGNAL(openMarginTool()));
-        connect(igbService, &IGBService::importFromCache, this, [this] {
-            refreshExternalOrdersFromCache(ExternalOrderImporter::TypeLocationPairs{});
-        });
         connect(this, &EvernusApplication::showInEve, igbService, &IGBService::showInEve);
         connect(this, &EvernusApplication::setDestinationInEve, igbService, &IGBService::setDestinationInEve);
 
@@ -1261,9 +1258,6 @@ namespace Evernus
         case ImportSettings::PriceImportSource::Logs:
             refreshExternalOrdersFromFile(target);
             break;
-        case ImportSettings::PriceImportSource::Cache:
-            refreshExternalOrdersFromCache(target);
-            break;
         default:
             refreshExternalOrdersFromWeb(target);
         }
@@ -1277,28 +1271,6 @@ namespace Evernus
     void EvernusApplication::refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &target)
     {
         importExternalOrders(ExternalOrderImporterNames::logImporter, target);
-    }
-
-    void EvernusApplication::refreshExternalOrdersFromCache(const ExternalOrderImporter::TypeLocationPairs &target)
-    {
-        QSettings settings;
-        if (!settings.value(UISettings::cacheImportApprovedKey, UISettings::cacheImportApprovedDefault).toBool())
-        {
-            if (QMessageBox::warning(activeWindow(), tr("Cache import"), tr(
-                "Warning! Reading cache is considered a gray area. CPP on one hand considers this a violation of the EULA, "
-                "but on the other has stated they will only penalize when used in conjunction with illegal activities, like botting.\n\n"
-                "Do wish to continue?\n\n"
-                "By choosing 'Yes' you accept all responsibility of any action CCP may impose upon you, should they choose to change"
-                "their policy."
-            ), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No)
-            {
-                return;
-            }
-
-            settings.setValue(UISettings::cacheImportApprovedKey, true);
-        }
-
-        importExternalOrders(ExternalOrderImporterNames::cacheImporter, target);
     }
 
     void EvernusApplication::updateExternalOrdersAndAssetValue(const std::vector<ExternalOrder> &orders)

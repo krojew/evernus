@@ -23,13 +23,10 @@ namespace Evernus
         const auto characterLogWildcardDefault = "My Orders-*.txt";
         const auto corporationLogWildcardDefault = "Corporation Orders-*.txt";
         const auto deleteLogsDefault = true;
-        const auto deleteProcessedCacheFilesDefault = true;
 
         const auto marketLogsPathKey = "path/marketLogs/path";
         const auto deleteLogsKey = "path/marketLogs/delete";
         const auto characterLogWildcardKey = "path/marketLogs/characterWildcard";
         const auto corporationLogWildcardKey = "path/marketLogs/corporationWildcard";
-        const auto deleteProcessedCacheFilesKey = "path/cache/deleteProcessed";
-        const auto eveCachePathKey = "path/eve/cache";
     }
 }
