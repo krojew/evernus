@@ -82,5 +82,6 @@ namespace Evernus
         void migrateTo113() const;
         void migrateTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
                           const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const;
+        void migrateTo123(const ExternalOrderRepository &externalOrderRepo) const;
     };
 }
