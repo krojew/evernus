@@ -16,8 +16,12 @@
 
 #include <functional>
 #include <vector>
+#include <memory>
+
+#include <QWebView>
 
 #include "CRESTInterface.h"
+#include "SimpleCrypt.h"
 #include "EveType.h"
 
 namespace Evernus
@@ -34,23 +38,44 @@ namespace Evernus
         template<class T>
         using Callback = std::function<void (T &&data, const QString &error)>;
 
-        explicit CRESTManager(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        CRESTManager(QByteArray clientId,
+                     QByteArray clientSecret,
+                     const EveDataProvider &dataProvider,
+                     QObject *parent = nullptr);
         virtual ~CRESTManager() = default;
+
+        virtual bool eventFilter(QObject *watched, QEvent *event) override;
 
         void fetchMarketOrders(uint regionId,
                                EveType::IdType typeId,
                                const Callback<std::vector<ExternalOrder>> &callback) const;
 
-    public slots:
-        void updateTokenAndContinue(QString token, const QDateTime &expiry);
-        void handleTokenError(const QString &error);
+        bool hasClientCredentials() const;
 
     signals:
-        void tokenRequested() const;
+        void tokenError(const QString &error);
+        void acquiredToken(const QString &accessToken, const QDateTime &expiry);
+
+    public slots:
+        void fetchToken();
 
     private:
+        static const QString loginUrl;
+        static const QString redirectUrl;
+
         const EveDataProvider &mDataProvider;
 
+        const QByteArray mClientId;
+        const QByteArray mClientSecret;
+
+        SimpleCrypt mCrypt;
+
         CRESTInterface mInterface;
+
+        QString mRefreshToken;
+
+        QNetworkAccessManager mNetworkManager;
+
+        std::unique_ptr<QWebView> mAuthView;
     };
 }

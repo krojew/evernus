@@ -13,22 +13,61 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QRegularExpression>
+#include <QDesktopWidget>
+#include <QNetworkReply>
 #include <QJsonDocument>
+#include <QApplication>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QUrlQuery>
+#include <QWebFrame>
+#include <QSettings>
+#include <QDebug>
 
+#include "PersistentCookieJar.h"
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
+#include "CRESTSettings.h"
 
 #include "CRESTManager.h"
 
 namespace Evernus
 {
-    CRESTManager::CRESTManager(const EveDataProvider &dataProvider, QObject *parent)
+#ifdef EVERNUS_CREST_SISI
+    const QString CRESTManager::loginUrl = "https://sisilogin.testeveonline.com";
+#else
+    const QString CRESTManager::loginUrl = "https://login-tq.eveonline.com";
+#endif
+
+    const QString CRESTManager::redirectUrl = "evernus.com";
+
+    CRESTManager
+    ::CRESTManager(QByteArray clientId, QByteArray clientSecret, const EveDataProvider &dataProvider, QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
+        , mClientId{std::move(clientId)}
+        , mClientSecret{std::move(clientSecret)}
+        , mCrypt{CRESTSettings::cryptKey}
     {
-        connect(&mInterface, &CRESTInterface::tokenRequested, this, &CRESTManager::tokenRequested);
+        QSettings settings;
+        mRefreshToken = mCrypt.decryptToString(settings.value(CRESTSettings::refreshTokenKey).toByteArray());
+
+        connect(&mInterface, &CRESTInterface::tokenRequested, this, &CRESTManager::fetchToken);
+        connect(this, &CRESTManager::tokenError, &mInterface, &CRESTInterface::handleTokenError);
+        connect(this, &CRESTManager::acquiredToken, &mInterface, &CRESTInterface::updateTokenAndContinue);
+    }
+
+    bool CRESTManager::eventFilter(QObject *watched, QEvent *event)
+    {
+        Q_ASSERT(event != nullptr);
+
+        if (watched == mAuthView.get() && event->type() == QEvent::Close)
+        {
+            qDebug() << "Auth window closed.";
+            emit tokenError(tr("CREST authorization failed."));
+        }
+
+        return QObject::eventFilter(watched, event);
     }
 
     void CRESTManager::fetchMarketOrders(uint regionId,
@@ -104,13 +143,135 @@ namespace Evernus
         });
     }
 
-    void CRESTManager::updateTokenAndContinue(QString token, const QDateTime &expiry)
+    bool CRESTManager::hasClientCredentials() const
     {
-        mInterface.updateTokenAndContinue(std::move(token), expiry);
+        return !mClientId.isEmpty() && !mClientSecret.isEmpty();
     }
 
-    void CRESTManager::handleTokenError(const QString &error)
+    void CRESTManager::fetchToken()
     {
-        mInterface.handleTokenError(error);
+        qDebug() << "Refreshing access token...";
+
+        if (mRefreshToken.isEmpty())
+        {
+            qDebug() << "No refresh token - requesting access.";
+
+            QUrl url{loginUrl + "/oauth/authorize"};
+
+            QUrlQuery query;
+            query.addQueryItem("response_type", "code");
+            query.addQueryItem("redirect_uri", "http://" + redirectUrl);
+            query.addQueryItem("client_id", mClientId);
+            query.addQueryItem("scope", "publicData");
+
+            url.setQuery(query);
+
+            mAuthView = std::make_unique<QWebView>();
+            mAuthView->page()->networkAccessManager()->setCookieJar(new PersistentCookieJar{CRESTSettings::cookiesKey});
+            mAuthView->setWindowModality(Qt::ApplicationModal);
+            mAuthView->setWindowTitle(tr("CREST Authentication"));
+            mAuthView->installEventFilter(this);
+            mAuthView->adjustSize();
+            mAuthView->move(QApplication::desktop()->screenGeometry(QApplication::activeWindow()).center() -
+                            mAuthView->rect().center());
+            mAuthView->setUrl(url);
+            mAuthView->show();
+
+            connect(mAuthView->page()->mainFrame(), &QWebFrame::urlChanged, [=](const QUrl &url) {
+                if (url.host() == redirectUrl)
+                {
+                    mAuthView->removeEventFilter(this);
+                    mAuthView->close();
+
+                    qDebug() << "Requesting access token...";
+
+                    QUrlQuery query{url};
+                    QByteArray data = "grant_type=authorization_code&code=";
+                    data.append(query.queryItemValue("code"));
+
+                    QNetworkRequest request{loginUrl + "/oauth/token"};
+                    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+                    request.setRawHeader(
+                        "Authorization", (mClientId + ":" + mClientSecret).toBase64());
+
+                    auto reply = mNetworkManager.post(request, data);
+                    connect(reply, &QNetworkReply::finished, this, [=] {
+                        reply->deleteLater();
+
+                        if (reply->error() != QNetworkReply::NoError)
+                        {
+                            qDebug() << "Error requesting access token:" << reply->errorString();
+                            emit tokenError(reply->errorString());
+                            return;
+                        }
+
+                        const auto doc = QJsonDocument::fromJson(reply->readAll());
+                        const auto object = doc.object();
+
+                        mRefreshToken = object.value("refresh_token").toString();
+                        if (mRefreshToken.isEmpty())
+                        {
+                            qDebug() << "Empty refresh token!";
+                            emit tokenError(tr("Empty refresh token!"));
+                            return;
+                        }
+
+                        QSettings settings;
+                        settings.setValue(CRESTSettings::refreshTokenKey, mCrypt.encryptToByteArray(mRefreshToken));
+
+                        emit acquiredToken(object.value("access_token").toString(),
+                                           QDateTime::currentDateTime().addSecs(object.value("expires_in").toInt() - 10));
+                    });
+                }
+            });
+        }
+        else
+        {
+            qDebug() << "Refreshing token...";
+
+            QByteArray data = "grant_type=refresh_token&refresh_token=";
+            data.append(mRefreshToken);
+
+            QNetworkRequest request{loginUrl + "/oauth/token"};
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+            request.setRawHeader(
+                "Authorization", (mClientId + ":" + mClientSecret).toBase64());
+
+            auto reply = mNetworkManager.post(request, data);
+            connect(reply, &QNetworkReply::finished, this, [=] {
+                reply->deleteLater();
+
+                const auto doc = QJsonDocument::fromJson(reply->readAll());
+                const auto object = doc.object();
+
+                if (reply->error() != QNetworkReply::NoError)
+                {
+                    qDebug() << "Error refreshing token:" << reply->errorString();
+
+                    if (object.value("error") == "invalid_token")
+                    {
+                        mRefreshToken.clear();
+                        fetchToken();
+                    }
+                    else
+                    {
+                        emit tokenError(reply->errorString());
+                    }
+
+                    return;
+                }
+
+                const auto accessToken = object.value("access_token").toString();
+                if (accessToken.isEmpty())
+                {
+                    qDebug() << "Empty access token!";
+                    emit tokenError(tr("Empty access token!"));
+                    return;
+                }
+
+                emit acquiredToken(accessToken,
+                                   QDateTime::currentDateTime().addSecs(doc.object().value("expires_in").toInt() - 10));
+            });
+        }
     }
 }

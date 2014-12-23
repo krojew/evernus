@@ -14,16 +14,12 @@
  */
 #pragma once
 
-#include <memory>
-
 #include <QNetworkAccessManager>
 #include <QStringList>
-#include <QWebView>
 
 #include "ExternalOrderImporter.h"
 #include "ExternalOrder.h"
 #include "CRESTManager.h"
-#include "SimpleCrypt.h"
 
 namespace Evernus
 {
@@ -35,30 +31,16 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        CRESTExternalOrderImporter(QByteArray clientId, QByteArray clientSecret, const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        CRESTExternalOrderImporter(QByteArray clientId,
+                                   QByteArray clientSecret,
+                                   const EveDataProvider &dataProvider,
+                                   QObject *parent = nullptr);
         virtual ~CRESTExternalOrderImporter() = default;
-
-        virtual bool eventFilter(QObject *watched, QEvent *event) override;
 
         virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
 
-    signals:
-        void tokenError(const QString &error);
-        void acquiredToken(const QString &accessToken, const QDateTime &expiry);
-
-    private slots:
-        void fetchToken();
-
     private:
-        static const QString loginUrl;
-        static const QString redirectUrl;
-
         const EveDataProvider &mDataProvider;
-
-        const QByteArray mClientId;
-        const QByteArray mClientSecret;
-
-        SimpleCrypt mCrypt;
 
         CRESTManager mManager;
         mutable uint mRequestCount = 0;
@@ -66,14 +48,6 @@ namespace Evernus
 
         mutable std::vector<ExternalOrder> mResult;
         mutable QStringList mAggregatedErrors;
-
-        QString mRefreshToken;
-
-        QNetworkAccessManager mNetworkManager;
-
-        std::unique_ptr<QWebView> mAuthView;
-
-        bool hasClientCredentials() const;
 
         void processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const;
     };
