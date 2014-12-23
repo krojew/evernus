@@ -135,6 +135,7 @@ qt5_wrap_cpp(
     LocationBookmarkSelectDialog.h
     MainWindow.h
     MarginToolDialog.h
+    MarketAnalysisWidget.h
     MarketBrowserWidget.h
     MarketLogExternalOrderImporter.h
     MarketLogExternalOrderImporterThread.h
@@ -174,6 +175,7 @@ qt5_wrap_cpp(
     qxtsslserver.h
     qxtwebcontent.h
     qxtwebslotservice.h
+    RegionTypeSelectDialog.h
     ScriptOrderProcessingModel.h
     SellMarketOrdersInfoWidget.h
     SoundPreferencesWidget.h
@@ -466,6 +468,8 @@ add_executable(
     MarginToolDialog.cpp
     MarginToolDialog.h
     MarginToolSettings.h
+    MarketAnalysisWidget.h
+    MarketAnalysisWidget.cpp
     MarketBrowserWidget.cpp
     MarketBrowserWidget.h
     MarketGroup.cpp
@@ -616,6 +620,8 @@ add_executable(
     RefTypeRepository.h
     RefTypeXmlReceiver.cpp
     RefTypeXmlReceiver.h
+    RegionTypeSelectDialog.h
+    RegionTypeSelectDialog.cpp
     Repository.h
     RepositoryProvider.h
     ScriptOrderProcessingModel.cpp
@@ -645,6 +651,7 @@ add_executable(
     SyncPreferencesWidget.h
     SyncSettings.h
     TaskConstants.h
+    TaskManager.h
     TextFilterWidget.cpp
     TextFilterWidget.h
     TextUtils.cpp

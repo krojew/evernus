@@ -59,6 +59,7 @@ namespace Evernus
         , ItemCostProvider()
         , RepositoryProvider()
         , LMeveDataProvider()
+        , TaskManager()
         , mMainDb(QSqlDatabase::addDatabase("QSQLITE", "main"))
         , mEveDb(QSqlDatabase::addDatabase("QSQLITE", "eve"))
         , mAPIManager(*this)
@@ -640,6 +641,48 @@ namespace Evernus
             return it->second;
 
         return mLMeveTaskCache.emplace(characterId, mLMeveTaskRepository->fetchForCharacter(characterId)).first->second;
+    }
+
+    uint EvernusApplication::startTask(const QString &description)
+    {
+        QMetaObject::invokeMethod(this,
+                                  "taskStarted",
+                                  Qt::QueuedConnection,
+                                  Q_ARG(uint, mTaskId),
+                                  Q_ARG(QString, description));
+        return mTaskId++;
+    }
+
+    uint EvernusApplication::startTask(uint parentTask, const QString &description)
+    {
+        if (parentTask == TaskConstants::invalidTask)
+            return startTask(description);
+
+        QMetaObject::invokeMethod(this,
+                                  "taskStarted",
+                                  Qt::QueuedConnection,
+                                  Q_ARG(uint, mTaskId),
+                                  Q_ARG(uint, parentTask),
+                                  Q_ARG(QString, description));
+        return mTaskId++;
+    }
+
+    void EvernusApplication::updateTask(uint taskId, const QString &description)
+    {
+        QMetaObject::invokeMethod(this,
+                                  "taskInfoChanged",
+                                  Qt::QueuedConnection,
+                                  Q_ARG(uint, taskId),
+                                  Q_ARG(QString, description));
+    }
+
+    void EvernusApplication::endTask(uint taskId, const QString &error)
+    {
+        QMetaObject::invokeMethod(this,
+                                  "taskEnded",
+                                  Qt::QueuedConnection,
+                                  Q_ARG(uint, taskId),
+                                  Q_ARG(QString, error));
     }
 
     MarketOrderProvider &EvernusApplication::getMarketOrderProvider() const noexcept
@@ -1729,21 +1772,6 @@ namespace Evernus
                 -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
             mWalletTransactionRepository->deleteOldEntires(transactionDt);
         }
-    }
-
-    uint EvernusApplication::startTask(const QString &description)
-    {
-        QMetaObject::invokeMethod(this, "taskStarted", Qt::QueuedConnection, Q_ARG(uint, mTaskId), Q_ARG(QString, description));
-        return mTaskId++;
-    }
-
-    uint EvernusApplication::startTask(uint parentTask, const QString &description)
-    {
-        if (parentTask == TaskConstants::invalidTask)
-            return startTask(description);
-
-        QMetaObject::invokeMethod(this, "taskStarted", Qt::QueuedConnection, Q_ARG(uint, mTaskId), Q_ARG(uint, parentTask), Q_ARG(QString, description));
-        return mTaskId++;
     }
 
     void EvernusApplication::importCharacter(Character::IdType id, uint parentTask, const Key &key)

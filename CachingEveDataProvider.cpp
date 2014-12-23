@@ -120,12 +120,12 @@ namespace Evernus
         return (marketGroupId) ? (getMarketGroupParent(*marketGroupId)->getId()) : (MarketGroup::invalidId);
     }
 
-    const std::unordered_map<EveType::IdType, QString> &CachingEveDataProvider::getAllTypeNames() const
+    const std::unordered_map<EveType::IdType, QString> &CachingEveDataProvider::getAllTradeableTypeNames() const
     {
         if (!mTypeNameCache.empty())
             return mTypeNameCache;
 
-        mTypeNameCache = mEveTypeRepository.fetchAllNames();
+        mTypeNameCache = mEveTypeRepository.fetchAllTradeableNames();
         return mTypeNameCache;
     }
 

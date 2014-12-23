@@ -70,6 +70,8 @@ namespace Evernus
         std::vector<uint> fetchUniqueStationsByRegion(uint regionId) const;
         std::vector<uint> fetchUniqueStationsBySolarSystem(uint solarSystemId) const;
 
+        ExternalOrderImporter::TypeLocationPairs fetchDistinctTypesAndRegions() const;
+
         void removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const;
         void removeForType(ExternalOrder::TypeIdType typeId) const;
         void removeAll() const;

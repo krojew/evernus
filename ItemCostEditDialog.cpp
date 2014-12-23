@@ -35,7 +35,7 @@ namespace Evernus
         mTypeCombo = new QComboBox{this};
         mainLayout->addWidget(mTypeCombo);
 
-        const auto &types = dataProvider.getAllTypeNames();
+        const auto &types = dataProvider.getAllTradeableTypeNames();
         for (const auto &type : types)
         {
             const auto index = mTypeCombo->count();

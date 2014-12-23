@@ -41,6 +41,7 @@
 
 #include "WalletTransactionsWidget.h"
 #include "CharacterManagerDialog.h"
+#include "MarketAnalysisWidget.h"
 #include "WalletJournalWidget.h"
 #include "CharacterRepository.h"
 #include "MarketBrowserWidget.h"
@@ -86,24 +87,29 @@ namespace Evernus
                            const CacheTimerProvider &cacheTimerProvider,
                            ItemCostProvider &itemCostProvider,
                            const LMeveDataProvider &lMeveDataProvider,
+                           TaskManager &taskManager,
+                           QByteArray crestClientId,
+                           QByteArray crestClientSecret,
                            QWidget *parent,
                            Qt::WindowFlags flags)
         : QMainWindow{parent, flags}
         , mRepositoryProvider{repositoryProvider}
-        , mOrderProvider{orderProvider}
-        , mCorpOrderProvider{corpOrderProvider}
-        , mAssetProvider{assetProvider}
-        , mContractProvider{contractProvider}
-        , mCorpContractProvider{corpContractProvider}
         , mItemCostProvider{itemCostProvider}
-        , mLMeveDataProvider{lMeveDataProvider}
         , mEveDataProvider{eveDataProvider}
-        , mCacheTimerProvider{cacheTimerProvider}
         , mTrayIcon{new QSystemTrayIcon{QIcon{":/images/main-icon.png"}, this}}
     {
         readSettings();
         createMenu();
-        createMainView();
+        createMainView(orderProvider,
+                       corpOrderProvider,
+                       assetProvider,
+                       contractProvider,
+                       corpContractProvider,
+                       lMeveDataProvider,
+                       cacheTimerProvider,
+                       taskManager,
+                       std::move(crestClientId),
+                       std::move(crestClientSecret));
         createStatusBar();
 
         connect(mTrayIcon, &QSystemTrayIcon::activated, this, &MainWindow::activateTrayIcon);
@@ -564,7 +570,16 @@ namespace Evernus
         toggleTopmost();
     }
 
-    void MainWindow::createMainView()
+    void MainWindow::createMainView(MarketOrderProvider &orderProvider,
+                                    MarketOrderProvider &corpOrderProvider,
+                                    const AssetProvider &assetProvider,
+                                    const ContractProvider &contractProvider,
+                                    const ContractProvider &corpContractProvider,
+                                    const LMeveDataProvider &lMeveDataProvider,
+                                    const CacheTimerProvider &cacheTimerProvider,
+                                    TaskManager &taskManager,
+                                    QByteArray crestClientId,
+                                    QByteArray crestClientSecret)
     {
         mMainTabs = new QTabWidget{this};
         setCentralWidget(mMainTabs);
@@ -578,7 +593,7 @@ namespace Evernus
         auto charTab = new CharacterWidget{mRepositoryProvider.getCharacterRepository(),
                                            mRepositoryProvider.getMarketOrderRepository(),
                                            mRepositoryProvider.getCorpKeyRepository(),
-                                           mCacheTimerProvider,
+                                           cacheTimerProvider,
                                            this};
         addTab(charTab, tr("Character"));
         connect(charTab, &CharacterWidget::importFromAPI, this, &MainWindow::importCharacter);
@@ -615,9 +630,9 @@ namespace Evernus
         connect(this, &MainWindow::corpWalletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
         connect(this, &MainWindow::preferencesChanged, statsTab, &StatisticsWidget::handleNewPreferences);
 
-        auto assetsTab = new AssetsWidget{mAssetProvider,
+        auto assetsTab = new AssetsWidget{assetProvider,
                                           mEveDataProvider,
-                                          mCacheTimerProvider,
+                                          cacheTimerProvider,
                                           mRepositoryProvider.getFilterTextRepository(),
                                           this};
         addTab(assetsTab, tr("Assets"));
@@ -631,9 +646,9 @@ namespace Evernus
         connect(this, &MainWindow::externalOrdersChangedWithMarketOrders, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::itemVolumeChanged, assetsTab, &AssetsWidget::updateData);
 
-        auto orderTab = new MarketOrderWidget{mOrderProvider,
-                                              mCorpOrderProvider,
-                                              mCacheTimerProvider,
+        auto orderTab = new MarketOrderWidget{orderProvider,
+                                              corpOrderProvider,
+                                              cacheTimerProvider,
                                               mEveDataProvider,
                                               mItemCostProvider,
                                               mRepositoryProvider.getWalletTransactionRepository(),
@@ -660,7 +675,7 @@ namespace Evernus
         auto journalTab = new WalletJournalWidget{mRepositoryProvider.getWalletJournalEntryRepository(),
                                                   mRepositoryProvider.getCharacterRepository(),
                                                   mRepositoryProvider.getFilterTextRepository(),
-                                                  mCacheTimerProvider,
+                                                  cacheTimerProvider,
                                                   mEveDataProvider,
                                                   false,
                                                   this};
@@ -671,7 +686,7 @@ namespace Evernus
         auto transactionsTab = new WalletTransactionsWidget{mRepositoryProvider.getWalletTransactionRepository(),
                                                             mRepositoryProvider.getCharacterRepository(),
                                                             mRepositoryProvider.getFilterTextRepository(),
-                                                            mCacheTimerProvider,
+                                                            cacheTimerProvider,
                                                             mEveDataProvider,
                                                             mItemCostProvider,
                                                             false,
@@ -680,9 +695,9 @@ namespace Evernus
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
 
-        auto contractsTab = new ContractWidget{mCacheTimerProvider,
+        auto contractsTab = new ContractWidget{cacheTimerProvider,
                                                mEveDataProvider,
-                                               mContractProvider,
+                                               contractProvider,
                                                mRepositoryProvider.getFilterTextRepository(),
                                                mRepositoryProvider.getCharacterRepository(),
                                                false,
@@ -691,9 +706,9 @@ namespace Evernus
         connect(contractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importContracts);
         connect(this, &MainWindow::contractsChanged, contractsTab, &ContractWidget::updateData);
 
-        auto corpOrderTab = new MarketOrderWidget{mCorpOrderProvider,
-                                                  mCorpOrderProvider,
-                                                  mCacheTimerProvider,
+        auto corpOrderTab = new MarketOrderWidget{corpOrderProvider,
+                                                  corpOrderProvider,
+                                                  cacheTimerProvider,
                                                   mEveDataProvider,
                                                   mItemCostProvider,
                                                   mRepositoryProvider.getCorpWalletTransactionRepository(),
@@ -719,7 +734,7 @@ namespace Evernus
         auto corpJournalTab = new WalletJournalWidget{mRepositoryProvider.getCorpWalletJournalEntryRepository(),
                                                       mRepositoryProvider.getCharacterRepository(),
                                                       mRepositoryProvider.getFilterTextRepository(),
-                                                      mCacheTimerProvider,
+                                                      cacheTimerProvider,
                                                       mEveDataProvider,
                                                       true,
                                                       this};
@@ -730,7 +745,7 @@ namespace Evernus
         auto corpTransactionsTab = new WalletTransactionsWidget{mRepositoryProvider.getCorpWalletTransactionRepository(),
                                                                 mRepositoryProvider.getCharacterRepository(),
                                                                 mRepositoryProvider.getFilterTextRepository(),
-                                                                mCacheTimerProvider,
+                                                                cacheTimerProvider,
                                                                 mEveDataProvider,
                                                                 mItemCostProvider,
                                                                 true,
@@ -739,9 +754,9 @@ namespace Evernus
         connect(corpTransactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importCorpWalletTransactions);
         connect(this, &MainWindow::corpWalletTransactionsChanged, corpTransactionsTab, &WalletTransactionsWidget::updateData);
 
-        auto corpContractsTab = new ContractWidget{mCacheTimerProvider,
+        auto corpContractsTab = new ContractWidget{cacheTimerProvider,
                                                    mEveDataProvider,
-                                                   mCorpContractProvider,
+                                                   corpContractProvider,
                                                    mRepositoryProvider.getFilterTextRepository(),
                                                    mRepositoryProvider.getCharacterRepository(),
                                                    true,
@@ -765,8 +780,8 @@ namespace Evernus
                                                         mRepositoryProvider.getCharacterRepository(),
                                                         mRepositoryProvider.getFavoriteItemRepository(),
                                                         mRepositoryProvider.getLocationBookmarkRepository(),
-                                                        mOrderProvider,
-                                                        mCorpOrderProvider,
+                                                        orderProvider,
+                                                        corpOrderProvider,
                                                         mEveDataProvider,
                                                         mItemCostProvider,
                                                         this};
@@ -785,9 +800,9 @@ namespace Evernus
         addTab(itemCostTab, tr("Item costs"));
         connect(this, &MainWindow::itemCostsChanged, itemCostTab, &ItemCostWidget::updateData);
 
-        auto lmEveTab = new LMeveWidget{mCacheTimerProvider,
+        auto lmEveTab = new LMeveWidget{cacheTimerProvider,
                                         mEveDataProvider,
-                                        mLMeveDataProvider,
+                                        lMeveDataProvider,
                                         mItemCostProvider,
                                         mRepositoryProvider.getCharacterRepository(),
                                         this};
@@ -798,6 +813,14 @@ namespace Evernus
         connect(lmEveTab, &LMeveWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(this, &MainWindow::externalOrdersChanged, lmEveTab, &LMeveWidget::updateData);
         connect(this, &MainWindow::lMeveTasksChanged, lmEveTab, &LMeveWidget::updateData);
+
+        auto marketAnalysisTab = new MarketAnalysisWidget{std::move(crestClientId),
+                                                          std::move(crestClientSecret),
+                                                          mEveDataProvider,
+                                                          taskManager,
+                                                          mRepositoryProvider.getExternalOrderRepository(),
+                                                          this};
+        addTab(marketAnalysisTab, tr("Market analysis"));
 
         QSettings settings;
 

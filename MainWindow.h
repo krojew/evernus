@@ -48,6 +48,7 @@ namespace Evernus
     class EveDataProvider;
     class MenuBarWidget;
     class AssetProvider;
+    class TaskManager;
     class Key;
 
     class MainWindow
@@ -66,6 +67,9 @@ namespace Evernus
                    const CacheTimerProvider &cacheTimerProvider,
                    ItemCostProvider &itemCostProvider,
                    const LMeveDataProvider &lMeveDataProvider,
+                   TaskManager &taskManager,
+                   QByteArray crestClientId,
+                   QByteArray crestClientSecret,
                    QWidget *parent = nullptr,
                    Qt::WindowFlags flags = 0);
         virtual ~MainWindow() = default;
@@ -169,15 +173,9 @@ namespace Evernus
         static const QString settingsSizeKey;
 
         const RepositoryProvider &mRepositoryProvider;
-        MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;
-        const AssetProvider &mAssetProvider;
-        const ContractProvider &mContractProvider, &mCorpContractProvider;
         ItemCostProvider &mItemCostProvider;
 
-        const LMeveDataProvider &mLMeveDataProvider;
         EveDataProvider &mEveDataProvider;
-
-        const CacheTimerProvider &mCacheTimerProvider;
 
 #ifdef Q_OS_WIN
         QWinTaskbarButton *mTaskbarButton = nullptr;
@@ -213,7 +211,16 @@ namespace Evernus
         void writeSettings();
 
         void createMenu();
-        void createMainView();
+        void createMainView(MarketOrderProvider &orderProvider,
+                            MarketOrderProvider &corpOrderProvider,
+                            const AssetProvider &assetProvider,
+                            const ContractProvider &contractProvider,
+                            const ContractProvider &corpContractProvider,
+                            const LMeveDataProvider &lMeveDataProvider,
+                            const CacheTimerProvider &cacheTimerProvider,
+                            TaskManager &taskManager,
+                            QByteArray crestClientId,
+                            QByteArray crestClientSecret);
         void createStatusBar();
 
         QWidget *createMainViewTab(QWidget *content);

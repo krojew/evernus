@@ -135,9 +135,12 @@ int main(int argc, char *argv[])
 
         parser.process(app);
 
+        const auto crestId = parser.value(crestIdArg).toLatin1();
+        const auto crestSecret = parser.value(crestSecretArg).toLatin1();
+
         app.registerImporter(Evernus::ExternalOrderImporterNames::webImporter,
-                             std::make_unique<Evernus::CRESTExternalOrderImporter>(parser.value(crestIdArg).toLatin1(),
-                                                                                   parser.value(crestSecretArg).toLatin1(),
+                             std::make_unique<Evernus::CRESTExternalOrderImporter>(crestId,
+                                                                                   crestSecret,
                                                                                    app.getDataProvider()));
         app.registerImporter(Evernus::ExternalOrderImporterNames::logImporter,
                              std::make_unique<Evernus::MarketLogExternalOrderImporter>());
@@ -153,7 +156,10 @@ int main(int argc, char *argv[])
                                         app.getDataProvider(),
                                         app,
                                         app,
-                                        app};
+                                        app,
+                                        app,
+                                        crestId,
+                                        crestSecret};
 
             app.connect(&mainWnd, SIGNAL(refreshCharacters()), SLOT(refreshCharacters()));
             app.connect(&mainWnd, SIGNAL(refreshConquerableStations()), SLOT(refreshConquerableStations()));

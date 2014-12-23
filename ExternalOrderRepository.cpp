@@ -260,6 +260,25 @@ namespace Evernus
         return result;
     }
 
+    ExternalOrderImporter::TypeLocationPairs ExternalOrderRepository::fetchDistinctTypesAndRegions() const
+    {
+        ExternalOrderImporter::TypeLocationPairs result;
+
+        auto query = exec(QString{"SELECT DISTINCT type_id, region_id FROM %1"}.arg(getTableName()));
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+        {
+            result.emplace(query.value(0).value<ExternalOrderImporter::TypeLocationPair::first_type>(),
+                           query.value(1).value<ExternalOrderImporter::TypeLocationPair::second_type>());
+        }
+
+        return result;
+    }
+
     void ExternalOrderRepository::removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const
     {
         if (set.empty())

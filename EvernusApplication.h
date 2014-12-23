@@ -63,6 +63,7 @@
 #include "AssetProvider.h"
 #include "TaskConstants.h"
 #include "KeyRepository.h"
+#include "TaskManager.h"
 #include "APIManager.h"
 
 #include "qxtsmtp.h"
@@ -81,6 +82,7 @@ namespace Evernus
         , public ItemCostProvider
         , public RepositoryProvider
         , public LMeveDataProvider
+        , public TaskManager
     {
         Q_OBJECT
 
@@ -130,6 +132,11 @@ namespace Evernus
         virtual const ExternalOrderRepository &getExternalOrderRepository() const noexcept override;
 
         virtual std::vector<std::shared_ptr<LMeveTask>> getTasks(Character::IdType characterId) const override;
+
+        virtual uint startTask(const QString &description) override;
+        virtual uint startTask(uint parentTask, const QString &description) override;
+        virtual void updateTask(uint taskId, const QString &description) override;
+        virtual void endTask(uint taskId, const QString &error) override;
 
         MarketOrderProvider &getMarketOrderProvider() const noexcept;
         MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
@@ -320,9 +327,6 @@ namespace Evernus
         void precacheCacheTimers();
         void precacheUpdateTimers();
         void deleteOldWalletEntries();
-
-        uint startTask(const QString &description);
-        uint startTask(uint parentTask, const QString &description);
 
         void importCharacter(Character::IdType id, uint parentTask, const Key &key);
         void importExternalOrders(const std::string &importerName, const ExternalOrderImporter::TypeLocationPairs &target);
