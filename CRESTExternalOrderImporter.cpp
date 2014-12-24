@@ -46,6 +46,7 @@ namespace Evernus
         }
 
         mResult.clear();
+        mAggregatedErrors.clear();
 
         mPreparingRequests = true;
         BOOST_SCOPE_EXIT(this_) {
@@ -105,7 +106,16 @@ namespace Evernus
         {
             if (!mPreparingRequests)
             {
-                emit externalOrdersChanged(mResult);
+                if (mAggregatedErrors.isEmpty())
+                {
+                    emit externalOrdersChanged(mResult);
+                }
+                else
+                {
+                    emit error(mAggregatedErrors.join("\n"));
+                    mAggregatedErrors.clear();
+                }
+
                 mResult.clear();
             }
         }
