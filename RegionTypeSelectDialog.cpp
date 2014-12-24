@@ -70,7 +70,7 @@ namespace Evernus
             QRegularExpression re{"^[A-Z]-R\\d+$"};
 
             const auto count = mRegionList->count();
-            for (auto i = 0u; i < count; ++i)
+            for (auto i = 0; i < count; ++i)
             {
                 auto item = mRegionList->item(i);
                 item->setSelected(!re.match(item->text()).hasMatch());
