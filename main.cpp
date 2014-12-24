@@ -182,6 +182,7 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(syncLMeve(Character::IdType)), SLOT(syncLMeve(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(showInEve(EveType::IdType)), SIGNAL(showInEve(EveType::IdType)));
             app.connect(&mainWnd, SIGNAL(setDestinationInEve(quint64)), SIGNAL(setDestinationInEve(quint64)));
+            app.connect(&mainWnd, SIGNAL(updateExternalOrders(const std::vector<ExternalOrder> &)), SLOT(updateExternalOrdersAndAssetValue(const std::vector<ExternalOrder> &)));
             mainWnd.connect(&app, SIGNAL(taskStarted(uint, const QString &)), SLOT(addNewTaskInfo(uint, const QString &)));
             mainWnd.connect(&app, SIGNAL(taskStarted(uint, uint, const QString &)), SIGNAL(newSubTaskInfoAdded(uint, uint, const QString &)));
             mainWnd.connect(&app, SIGNAL(taskInfoChanged(uint, const QString &)), SIGNAL(taskInfoChanged(uint, const QString &)));

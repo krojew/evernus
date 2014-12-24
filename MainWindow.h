@@ -127,6 +127,8 @@ namespace Evernus
         void showInEve(EveType::IdType id);
         void setDestinationInEve(quint64 locationId);
 
+        void updateExternalOrders(const std::vector<ExternalOrder> &orders);
+
     public slots:
         void showCharacterManagement();
         void showPreferences();

@@ -16,9 +16,13 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QCheckBox>
+#include <QDebug>
+
+#include <boost/scope_exit.hpp>
 
 #include "ExternalOrderRepository.h"
 #include "RegionTypeSelectDialog.h"
+#include "TaskManager.h"
 
 #include "MarketAnalysisWidget.h"
 
@@ -46,7 +50,7 @@ namespace Evernus
         importFromWeb->setFlat(true);
         connect(importFromWeb, &QPushButton::clicked, this, &MarketAnalysisWidget::prepareOrderImport);
 
-        mIgnoreExistingOrdersBtn = new QCheckBox{tr("Keep already imported data"), this};
+        mIgnoreExistingOrdersBtn = new QCheckBox{tr("Don't refresh existing data"), this};
         toolBarLayout->addWidget(mIgnoreExistingOrdersBtn);
         mIgnoreExistingOrdersBtn->setChecked(true);
 
@@ -70,19 +74,80 @@ namespace Evernus
         if (mIgnoreExistingOrdersBtn->isChecked())
             ignored = mOrderRepo.fetchDistinctTypesAndRegions();
 
+        mPreparingRequests = true;
+        BOOST_SCOPE_EXIT(this_) {
+            this_->mPreparingRequests = false;
+        } BOOST_SCOPE_EXIT_END
+
+        const auto mainTask = mTaskManager.startTask(tr("Importing data for analysis..."));
+
+        mOrderSubtask = mTaskManager.startTask(mainTask, tr("Making %1 CREST order requests...").arg(pairs.size()));
+
         for (const auto &pair : pairs)
         {
             if (ignored.find(pair) != std::end(ignored))
                 continue;
 
+            ++mRequestCount;
             mManager.fetchMarketOrders(pair.second, pair.first, [this](auto &&orders, const auto &error) {
                 processOrders(std::move(orders), error);
             });
         }
+
+        qDebug() << "Making" << mRequestCount << "CREST order requests...";
+    }
+
+    void MarketAnalysisWidget::storeOrders()
+    {
+        emit updateExternalOrders(mResult);
+        mResult.clear();
     }
 
     void MarketAnalysisWidget::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)
     {
+        --mRequestCount;
 
+        qDebug() << mRequestCount << " remaining:" << errorText;
+
+        mTaskManager.updateTask(mOrderSubtask, tr("Waiting for %1 order server replies...").arg(mRequestCount));
+
+        if (!errorText.isEmpty())
+        {
+            if (mRequestCount == 0)
+            {
+                mResult.clear();
+                mTaskManager.endTask(mOrderSubtask, mAggregatedErrors.join("\n"));
+                mAggregatedErrors.clear();
+            }
+            else
+            {
+                mAggregatedErrors << errorText;
+            }
+
+            return;
+        }
+
+        mResult.reserve(mResult.size() + orders.size());
+        mResult.insert(std::end(mResult),
+                       std::make_move_iterator(std::begin(orders)),
+                       std::make_move_iterator(std::end(orders)));
+
+        if (mRequestCount == 0)
+        {
+            if (!mPreparingRequests)
+            {
+                if (mAggregatedErrors.isEmpty())
+                {
+                    mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(mResult.size()));
+                    QMetaObject::invokeMethod(this, "storeOrders", Qt::QueuedConnection);
+                }
+                else
+                {
+                    mTaskManager.endTask(mOrderSubtask, mAggregatedErrors.join("\n"));
+                    mAggregatedErrors.clear();
+                    mResult.clear();
+                }
+            }
+        }
     }
 }

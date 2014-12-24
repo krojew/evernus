@@ -80,6 +80,8 @@ namespace Evernus
 
         qDebug() << "Got reply," << mRequestCount << "remaining.";
 
+        emit statusChanged(tr("CREST import: waiting for %1 server replies").arg(mRequestCount));
+
         if (!errorText.isEmpty())
         {
             if (mRequestCount == 0)
@@ -118,10 +120,6 @@ namespace Evernus
 
                 mResult.clear();
             }
-        }
-        else
-        {
-            emit statusChanged(tr("CREST import: waiting for %1 server replies").arg(mRequestCount));
         }
     }
 }

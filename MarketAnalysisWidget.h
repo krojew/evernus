@@ -17,6 +17,8 @@
 #include <QWidget>
 
 #include "ExternalOrderImporter.h"
+#include "ExternalOrder.h"
+#include "TaskConstants.h"
 #include "CRESTManager.h"
 
 class QCheckBox;
@@ -41,10 +43,14 @@ namespace Evernus
                              QWidget *parent = nullptr);
         virtual ~MarketAnalysisWidget() = default;
 
+    signals:
+        void updateExternalOrders(const std::vector<ExternalOrder> &orders);
+
     private slots:
         void prepareOrderImport();
 
         void importOrders(const ExternalOrderImporter::TypeLocationPairs &pairs);
+        void storeOrders();
 
     private:
         const EveDataProvider &mDataProvider;
@@ -54,6 +60,14 @@ namespace Evernus
         CRESTManager mManager;
 
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;
+
+        uint mRequestCount = 0;
+        bool mPreparingRequests = false;
+
+        uint mOrderSubtask = TaskConstants::invalidTask;
+
+        std::vector<ExternalOrder> mResult;
+        QStringList mAggregatedErrors;
 
         void processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText);
     };

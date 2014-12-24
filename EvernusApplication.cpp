@@ -218,7 +218,7 @@ namespace Evernus
 
         connect(importer.get(), &ExternalOrderImporter::statusChanged, this, &EvernusApplication::showPriceImportStatus, Qt::QueuedConnection);
         connect(importer.get(), &ExternalOrderImporter::error, this, &EvernusApplication::showPriceImportError, Qt::QueuedConnection);
-        connect(importer.get(), &ExternalOrderImporter::externalOrdersChanged, this, &EvernusApplication::updateExternalOrdersAndAssetValue, Qt::QueuedConnection);
+        connect(importer.get(), &ExternalOrderImporter::externalOrdersChanged, this, &EvernusApplication::finishExternalOrderImport, Qt::QueuedConnection);
         mExternalOrderImporters.emplace(name, std::move(importer));
     }
 
@@ -1316,26 +1316,30 @@ namespace Evernus
         importExternalOrders(ExternalOrderImporterNames::logImporter, target);
     }
 
-    void EvernusApplication::updateExternalOrdersAndAssetValue(const std::vector<ExternalOrder> &orders)
+    void EvernusApplication::finishExternalOrderImport(const std::vector<ExternalOrder> &orders)
     {
         try
         {
             emit taskInfoChanged(mCurrentExternalOrderImportTask, tr("Saving %1 imported orders...").arg(orders.size()));
 
-            asyncExecute(&CachingEveDataProvider::updateExternalOrders, mDataProvider.get(), std::cref(orders));
-
-            QSettings settings;
-            if (settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool())
-            {
-                for (const auto &list : mCharacterAssets)
-                    computeAssetListSellValue(*list.second);
-            }
-
+            updateExternalOrdersAndAssetValue(orders);
             finishExternalOrderImportTask(QString{});
         }
         catch (const std::exception &e)
         {
             finishExternalOrderImportTask(e.what());
+        }
+    }
+
+    void EvernusApplication::updateExternalOrdersAndAssetValue(const std::vector<ExternalOrder> &orders)
+    {
+        asyncExecute(&CachingEveDataProvider::updateExternalOrders, mDataProvider.get(), std::cref(orders));
+
+        QSettings settings;
+        if (settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool())
+        {
+            for (const auto &list : mCharacterAssets)
+                computeAssetListSellValue(*list.second);
         }
 
         emit externalOrdersChanged();

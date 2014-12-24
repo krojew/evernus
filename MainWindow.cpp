@@ -820,6 +820,7 @@ namespace Evernus
                                                           taskManager,
                                                           mRepositoryProvider.getExternalOrderRepository(),
                                                           this};
+        connect(marketAnalysisTab, &MarketAnalysisWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
         addTab(marketAnalysisTab, tr("Market analysis"));
 
         QSettings settings;
