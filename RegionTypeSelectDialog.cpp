@@ -123,6 +123,7 @@ namespace Evernus
                 }
             }
 
+            emit selected(result);
             accept();
         });
         connect(buttonBox, &QDialogButtonBox::rejected, this, &RegionTypeSelectDialog::reject);
