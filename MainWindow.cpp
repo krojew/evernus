@@ -227,13 +227,13 @@ namespace Evernus
             connect(this, &MainWindow::newSubTaskInfoAdded, mActiveTasksDialog, &ActiveTasksDialog::addNewSubTaskInfo);
             connect(this, &MainWindow::taskInfoChanged, mActiveTasksDialog, &ActiveTasksDialog::setTaskInfo);
             connect(this, &MainWindow::taskEnded, mActiveTasksDialog, &ActiveTasksDialog::endTask);
+            mActiveTasksDialog->setAttribute(Qt::WA_ShowWithoutActivating);
             mActiveTasksDialog->setModal(true);
             mActiveTasksDialog->show();
         }
         else
         {
             mActiveTasksDialog->show();
-            mActiveTasksDialog->activateWindow();
         }
 
         emit newTaskInfoAdded(taskId, description);
