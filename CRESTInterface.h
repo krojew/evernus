@@ -67,6 +67,8 @@ namespace Evernus
         mutable std::vector<std::function<void (const QString &)>> mPendingRequests;
 
         mutable RegionOrderUrlMap mRegionBuyOrdersUrls, mRegionSellOrdersUrls;
+        mutable QHash<QPair<uint, QString>, std::vector<std::function<void (const QUrl &, const QString &)>>>
+        mPendingRegionRequests;
 
         template<class T>
         void getRegionBuyOrdersUrl(uint regionId, T &&continuation) const;

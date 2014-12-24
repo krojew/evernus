@@ -108,24 +108,35 @@ namespace Evernus
         {
             qDebug() << "Fetching CREST endpoints...";
 
-            const auto json = syncGet(crestUrl, "application/vnd.ccp.eve.Api-v3+json");
-            std::function<void (const QJsonObject &)> addEndpoints = [=, &addEndpoints](const QJsonObject &object) {
-                for (auto it = std::begin(object); it != std::end(object); ++it)
-                {
-                    const auto value = it.value().toObject();
-                    if (value.contains("href"))
+            try
+            {
+                const auto json = syncGet(crestUrl, "application/vnd.ccp.eve.Api-v3+json");
+                std::function<void (const QJsonObject &)> addEndpoints = [=, &addEndpoints](const QJsonObject &object) {
+                    for (auto it = std::begin(object); it != std::end(object); ++it)
                     {
-                        qDebug() << "Endpoint:" << it.key() << "->" << it.value();
-                        mEndpoints[it.key()] = value.value("href").toString();
+                        const auto value = it.value().toObject();
+                        if (value.contains("href"))
+                        {
+                            qDebug() << "Endpoint:" << it.key() << "->" << it.value();
+                            mEndpoints[it.key()] = value.value("href").toString();
+                        }
+                        else
+                        {
+                            addEndpoints(value);
+                        }
                     }
-                    else
-                    {
-                        addEndpoints(value);
-                    }
-                }
-            };
+                };
 
-            addEndpoints(json.object());
+                addEndpoints(json.object());
+            }
+            catch (const std::exception &e)
+            {
+                for (const auto &request : mPendingRequests)
+                    request(e.what());
+
+                mPendingRequests.clear();
+                return;
+            }
         }
 
         for (const auto &request : mPendingRequests)
@@ -172,12 +183,24 @@ namespace Evernus
             return;
         }
 
+        const auto pendingKey = qMakePair(regionId, urlName);
+        if (mPendingRegionRequests.contains(pendingKey))
+        {
+            mPendingRegionRequests[pendingKey].emplace_back(std::forward<T>(continuation));
+            return;
+        }
+
         qDebug() << "Fetching region orders url:" << regionId << urlName;
+
+        mPendingRegionRequests[pendingKey].emplace_back(std::forward<T>(continuation));
 
         auto saveUrl = [=, &map](const QJsonDocument &doc, const QString &error) {
             if (!error.isEmpty())
             {
-                continuation(QUrl{}, error);
+                for (const auto &continuation : mPendingRegionRequests[pendingKey])
+                    continuation(QUrl{}, error);
+
+                mPendingRegionRequests.remove(pendingKey);
                 return;
             }
 
@@ -186,7 +209,10 @@ namespace Evernus
 
             qDebug() << "Region orders url:" << href;
 
-            continuation(href, QString{});
+            for (const auto &continuation : mPendingRegionRequests[pendingKey])
+                continuation(href, QString{});
+
+            mPendingRegionRequests.remove(pendingKey);
         };
 
         asyncGet(QString{"%1%2/"}.arg(mEndpoints[regionsUrlName]).arg(regionId), "application/vnd.ccp.eve.Region-v1+json", saveUrl);
