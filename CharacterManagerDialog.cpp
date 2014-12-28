@@ -101,8 +101,12 @@ namespace Evernus
         const auto index = mSelectedKeys.first();
         const auto id = mKeyModel.data(mKeyModel.index(index.row(), 0)).value<Key::IdType>();
 
+        mCharacterRepository.disableByKey(id);
         mKeyRepository.remove(id);
         refreshKeys();
+        updateCharacters();
+
+        emit charactersChanged();
     }
 
     void CharacterManagerDialog::addCorpKey()
