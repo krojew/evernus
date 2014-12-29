@@ -136,7 +136,7 @@ namespace Evernus
         virtual uint startTask(const QString &description) override;
         virtual uint startTask(uint parentTask, const QString &description) override;
         virtual void updateTask(uint taskId, const QString &description) override;
-        virtual void endTask(uint taskId, const QString &error) override;
+        virtual void endTask(uint taskId, const QString &error = QString{}) override;
 
         MarketOrderProvider &getMarketOrderProvider() const noexcept;
         MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;

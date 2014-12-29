@@ -27,6 +27,6 @@ namespace Evernus
         virtual uint startTask(const QString &description) = 0;
         virtual uint startTask(uint parentTask, const QString &description) = 0;
         virtual void updateTask(uint taskId, const QString &description) = 0;
-        virtual void endTask(uint taskId, const QString &error) = 0;
+        virtual void endTask(uint taskId, const QString &error = QString{}) = 0;
     };
 }

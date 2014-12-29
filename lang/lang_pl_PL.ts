@@ -3314,12 +3314,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="136"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="138"/>
         <source>Waiting for %1 order server replies...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="167"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="169"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished">Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>

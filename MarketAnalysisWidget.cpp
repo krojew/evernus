@@ -124,6 +124,8 @@ namespace Evernus
     void MarketAnalysisWidget::storeOrders()
     {
         emit updateExternalOrders(mResult);
+
+        mTaskManager.endTask(mOrderSubtask);
         mResult.clear();
     }
 
@@ -166,6 +168,11 @@ namespace Evernus
                     {
                         mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(mResult.size()));
                         QMetaObject::invokeMethod(this, "storeOrders", Qt::QueuedConnection);
+                    }
+                    else
+                    {
+                        mTaskManager.endTask(mOrderSubtask);
+                        mResult.clear();
                     }
                 }
                 else
