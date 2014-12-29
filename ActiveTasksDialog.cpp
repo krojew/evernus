@@ -17,6 +17,7 @@
 #include <QTreeWidget>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QPushButton>
 #include <QCheckBox>
 #include <QSettings>
 #include <QLabel>
@@ -39,7 +40,7 @@ namespace Evernus
 #else
     ActiveTasksDialog::ActiveTasksDialog(QWidget *parent)
 #endif
-        : QDialog(parent)
+        : QDialog(parent, Qt::CustomizeWindowHint | Qt::WindowTitleHint)
     {
         QSettings settings;
 
@@ -85,6 +86,8 @@ namespace Evernus
         mainLayout->addWidget(btnBox);
         connect(btnBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
+        mCloseBtn = btnBox->button(QDialogButtonBox::Close);
+
 #ifdef Q_OS_WIN
         mTaskbarProgress = taskbarButton.progress();
 #endif
@@ -116,6 +119,7 @@ namespace Evernus
 
         fillTaskItem(taskId, new QTreeWidgetItem{mTaskWidget}, description);
         mTaskWidget->resizeColumnToContents(0);
+        mCloseBtn->setEnabled(false);
     }
 
     void ActiveTasksDialog::addNewSubTaskInfo(uint taskId, uint parentTask, const QString &description)
@@ -189,7 +193,7 @@ namespace Evernus
             --it->second.mCount;
             if (it->second.mCount == 0)
             {
-                endTask(it->first, QString{});
+                endTask(it->first);
                 mSubTaskInfo.erase(it);
             }
         }
@@ -198,6 +202,8 @@ namespace Evernus
 #ifdef Q_OS_WIN
             mTaskbarProgress->setVisible(false);
 #endif
+
+            mCloseBtn->setEnabled(true);
             if (mAutoCloseBtn->isChecked() && !mHadError)
             {
                 QMetaObject::invokeMethod(this, "close", Qt::QueuedConnection);

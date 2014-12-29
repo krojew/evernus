@@ -21,6 +21,7 @@
 class QTreeWidgetItem;
 class QProgressBar;
 class QTreeWidget;
+class QPushButton;
 class QCheckBox;
 
 #ifdef Q_OS_WIN
@@ -48,7 +49,7 @@ namespace Evernus
         void addNewTaskInfo(uint taskId, const QString &description);
         void addNewSubTaskInfo(uint taskId, uint parentTask, const QString &description);
         void setTaskInfo(uint taskId, const QString &description);
-        void endTask(uint taskId, const QString &error);
+        void endTask(uint taskId, const QString &error = QString{});
 
     private slots:
         void autoCloseSave(bool enabled);
@@ -67,6 +68,7 @@ namespace Evernus
         QTreeWidget *mTaskWidget = nullptr;
         QProgressBar *mTotalProgressWidget = nullptr;
         QCheckBox *mAutoCloseBtn = nullptr;
+        QPushButton *mCloseBtn = nullptr;
 
         std::unordered_map<uint, QTreeWidgetItem *> mTaskItems;
         std::unordered_map<uint, SubTaskInfo> mSubTaskInfo;

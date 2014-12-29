@@ -203,17 +203,17 @@
 <context>
     <name>Evernus::ActiveTasksDialog</name>
     <message>
-        <location filename="../ActiveTasksDialog.cpp" line="61"/>
+        <location filename="../ActiveTasksDialog.cpp" line="62"/>
         <source>Please wait...</source>
         <translation>Proszę czekać...</translation>
     </message>
     <message>
-        <location filename="../ActiveTasksDialog.cpp" line="73"/>
+        <location filename="../ActiveTasksDialog.cpp" line="74"/>
         <source>Close automatically</source>
         <translation>Zamknij automatycznie</translation>
     </message>
     <message>
-        <location filename="../ActiveTasksDialog.cpp" line="92"/>
+        <location filename="../ActiveTasksDialog.cpp" line="95"/>
         <source>Active Tasks</source>
         <translation>Aktywne zadania</translation>
     </message>
