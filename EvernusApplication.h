@@ -317,8 +317,6 @@ namespace Evernus
 
         std::unique_ptr<CachingEveDataProvider> mDataProvider;
 
-        size_t mPendingContractItemRequests = 0;
-
         mutable std::unordered_map<Character::IdType, LMeveTaskRepository::EntityList> mLMeveTaskCache;
 
         void updateTranslator(const QString &lang);

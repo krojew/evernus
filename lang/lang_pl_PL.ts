@@ -506,7 +506,7 @@
         <translation>Postacie</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="299"/>
+        <location filename="../CharacterManagerDialog.cpp" line="303"/>
         <source>In order to manage characters, add keys first in the Keys tab.</source>
         <translation>Aby zarządzać postaciami, musisz najpierw dodać klucz w zakładce Klucze.</translation>
     </message>
@@ -521,7 +521,7 @@
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="70"/>
-        <location filename="../CharacterManagerDialog.cpp" line="166"/>
+        <location filename="../CharacterManagerDialog.cpp" line="170"/>
         <source>Key ID</source>
         <translation>Key ID</translation>
     </message>
@@ -542,42 +542,42 @@
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="72"/>
-        <location filename="../CharacterManagerDialog.cpp" line="167"/>
+        <location filename="../CharacterManagerDialog.cpp" line="171"/>
         <source>Verification code</source>
         <translation>Verification code</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="209"/>
-        <location filename="../CharacterManagerDialog.cpp" line="246"/>
+        <location filename="../CharacterManagerDialog.cpp" line="213"/>
+        <location filename="../CharacterManagerDialog.cpp" line="250"/>
         <source>Added keys</source>
         <translation>Dodane klucze</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="223"/>
-        <location filename="../CharacterManagerDialog.cpp" line="261"/>
+        <location filename="../CharacterManagerDialog.cpp" line="227"/>
+        <location filename="../CharacterManagerDialog.cpp" line="265"/>
         <source>Add...</source>
         <translation>Dodaj...</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="227"/>
-        <location filename="../CharacterManagerDialog.cpp" line="265"/>
+        <location filename="../CharacterManagerDialog.cpp" line="231"/>
+        <location filename="../CharacterManagerDialog.cpp" line="269"/>
         <source>Edit...</source>
         <translation>Edytuj...</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="232"/>
-        <location filename="../CharacterManagerDialog.cpp" line="270"/>
-        <location filename="../CharacterManagerDialog.cpp" line="308"/>
+        <location filename="../CharacterManagerDialog.cpp" line="236"/>
+        <location filename="../CharacterManagerDialog.cpp" line="274"/>
+        <location filename="../CharacterManagerDialog.cpp" line="312"/>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="283"/>
+        <location filename="../CharacterManagerDialog.cpp" line="287"/>
         <source>Available characters</source>
         <translation>Dostępne postacie</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="304"/>
+        <location filename="../CharacterManagerDialog.cpp" line="308"/>
         <source>Refresh</source>
         <translation>Odśwież</translation>
     </message>
@@ -1522,7 +1522,7 @@
         <translation>Synchronizowanie z LMeve...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2380"/>
+        <location filename="../EvernusApplication.cpp" line="2383"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>

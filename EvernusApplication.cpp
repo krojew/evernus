@@ -2363,6 +2363,9 @@ namespace Evernus
                                                      const ContractItemRepository &itemRepo,
                                                      uint task)
     {
+        static size_t pendingContractItemRequests = 0;
+        static APIManager::ContractItemList contractItems;
+
         if (data.empty())
         {
             emit (this->*Signal)();
@@ -2375,23 +2378,33 @@ namespace Evernus
                 if (contract.getType() == Evernus::Contract::Type::Courier)
                     continue;
 
-                ++mPendingContractItemRequests;
+                ++pendingContractItemRequests;
 
                 const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
-                mAPIManager.fetchContractItems(*key, id, contract.getId(), [subTask, &itemRepo, this](APIManager::ContractItemList &&data, const QString &error) {
-                    --mPendingContractItemRequests;
+                mAPIManager.fetchContractItems(*key, id, contract.getId(), [=, &itemRepo](APIManager::ContractItemList &&data, const QString &error) {
+                    --pendingContractItemRequests;
 
                     if (error.isEmpty())
-                        asyncBatchStore(itemRepo, data, true);
+                    {
+                        contractItems.reserve(contractItems.size() + data.size());
+                        contractItems.insert(std::end(contractItems),
+                                             std::make_move_iterator(std::begin(data)),
+                                             std::make_move_iterator(std::end(data)));
+                    }
 
-                    if (mPendingContractItemRequests == 0)
+                    if (pendingContractItemRequests == 0)
+                    {
+                        asyncBatchStore(itemRepo, contractItems, true);
+                        contractItems.clear();
+
                         emit (this->*Signal)();
+                    }
 
                     emit taskEnded(subTask, error);
                 });
             }
 
-            if (mPendingContractItemRequests == 0)
+            if (pendingContractItemRequests == 0)
                 emit (this->*Signal)();
         }
     }
@@ -2399,7 +2412,7 @@ namespace Evernus
     template<void (EvernusApplication::* Signal)(), class Key>
     void EvernusApplication::doRefreshMarketOrdersFromAPI(const Key &key, Character::IdType id, uint task)
     {
-        mAPIManager.fetchMarketOrders(key, id, [task, id, this](MarketOrders &&data, const QString &error) {
+        mAPIManager.fetchMarketOrders(key, id, [=](MarketOrders &&data, const QString &error) {
             if (error.isEmpty())
             {
                 importMarketOrders(id, data, std::is_same<Key, CorpKey>());
