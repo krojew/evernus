@@ -3289,32 +3289,37 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarketAnalysisWidget</name>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="48"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="51"/>
         <source>Import order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="53"/>
-        <source>Don&apos;t refresh existing data</source>
+        <location filename="../MarketAnalysisWidget.cpp" line="58"/>
+        <source>Don&apos;t refresh existing up-to-date data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="82"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="67"/>
+        <source>Don&apos;t save imported orders (huge performance gain)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="106"/>
         <source>Importing data for analysis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="84"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="108"/>
         <source>Making %1 CREST order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="112"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="136"/>
         <source>Waiting for %1 order server replies...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="141"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="167"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished">Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>

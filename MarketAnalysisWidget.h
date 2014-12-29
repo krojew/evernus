@@ -60,6 +60,7 @@ namespace Evernus
         CRESTManager mManager;
 
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;
+        QCheckBox *mDontSaveBtn = nullptr;
 
         uint mRequestCount = 0;
         bool mPreparingRequests = false;

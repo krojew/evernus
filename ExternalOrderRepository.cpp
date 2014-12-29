@@ -81,6 +81,7 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_id_region ON %1(type_id, region_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_solar_system ON %1(solar_system_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_region ON %1(region_id)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_update_time ON %1(update_time)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id ON %1(type, type_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_location ON %1(type, type_id, location_id)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_type_type_id_solar_system ON %1(type, type_id, solar_system_id)"}.arg(getTableName()));
@@ -260,11 +261,15 @@ namespace Evernus
         return result;
     }
 
-    ExternalOrderImporter::TypeLocationPairs ExternalOrderRepository::fetchDistinctTypesAndRegions() const
+    ExternalOrderImporter::TypeLocationPairs ExternalOrderRepository
+    ::fetchDistinctTypesAndRegions(const QDateTime &from) const
     {
         ExternalOrderImporter::TypeLocationPairs result;
 
-        auto query = exec(QString{"SELECT DISTINCT type_id, region_id FROM %1"}.arg(getTableName()));
+        auto query = prepare(QString{"SELECT DISTINCT type_id, region_id FROM %1 WHERE update_time >= ?"}.arg(getTableName()));
+        query.bindValue(0, from);
+
+        DatabaseUtils::execQuery(query);
 
         const auto size = query.size();
         if (size > 0)

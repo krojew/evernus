@@ -16,13 +16,16 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QCheckBox>
+#include <QSettings>
 #include <QDebug>
 
 #include <boost/scope_exit.hpp>
 
 #include "ExternalOrderRepository.h"
 #include "RegionTypeSelectDialog.h"
+#include "PriceSettings.h"
 #include "TaskManager.h"
+#include "UISettings.h"
 
 #include "MarketAnalysisWidget.h"
 
@@ -50,9 +53,25 @@ namespace Evernus
         importFromWeb->setFlat(true);
         connect(importFromWeb, &QPushButton::clicked, this, &MarketAnalysisWidget::prepareOrderImport);
 
-        mIgnoreExistingOrdersBtn = new QCheckBox{tr("Don't refresh existing data"), this};
+        QSettings settings;
+
+        mIgnoreExistingOrdersBtn = new QCheckBox{tr("Don't refresh existing up-to-date data"), this};
         toolBarLayout->addWidget(mIgnoreExistingOrdersBtn);
-        mIgnoreExistingOrdersBtn->setChecked(true);
+        mIgnoreExistingOrdersBtn->setChecked(
+            settings.value(UISettings::ignoreExistingOrdersKey, UISettings::ignoreExistingOrdersDefault).toBool());
+        connect(mIgnoreExistingOrdersBtn, &QCheckBox::toggled, [](auto checked) {
+            QSettings settings;
+            settings.setValue(UISettings::ignoreExistingOrdersKey, checked);
+        });
+
+        mDontSaveBtn = new QCheckBox{tr("Don't save imported orders (huge performance gain)"), this};
+        toolBarLayout->addWidget(mDontSaveBtn);
+        mDontSaveBtn->setChecked(
+            settings.value(UISettings::dontSaveLargeOrdersKey, UISettings::dontSaveLargeOrdersDefault).toBool());
+        connect(mDontSaveBtn, &QCheckBox::toggled, [](auto checked) {
+            QSettings settings;
+            settings.setValue(UISettings::dontSaveLargeOrdersKey, checked);
+        });
 
         toolBarLayout->addStretch();
     }
@@ -72,7 +91,12 @@ namespace Evernus
 
         ExternalOrderImporter::TypeLocationPairs ignored;
         if (mIgnoreExistingOrdersBtn->isChecked())
-            ignored = mOrderRepo.fetchDistinctTypesAndRegions();
+        {
+            QSettings settings;
+            const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
+
+            ignored = mOrderRepo.fetchDistinctTypesAndRegions(QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge));
+        }
 
         mPreparingRequests = true;
         BOOST_SCOPE_EXIT(this_) {
@@ -138,8 +162,11 @@ namespace Evernus
             {
                 if (mAggregatedErrors.isEmpty())
                 {
-                    mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(mResult.size()));
-                    QMetaObject::invokeMethod(this, "storeOrders", Qt::QueuedConnection);
+                    if (!mDontSaveBtn->isChecked())
+                    {
+                        mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(mResult.size()));
+                        QMetaObject::invokeMethod(this, "storeOrders", Qt::QueuedConnection);
+                    }
                 }
                 else
                 {
