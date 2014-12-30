@@ -46,7 +46,7 @@ namespace Evernus
         return (row >= static_cast<int>(mChildItems.size())) ? (nullptr) : (mChildItems[row].get());
     }
 
-    int AssetModel::TreeItem::childCount() const
+    int AssetModel::TreeItem::childCount() const noexcept
     {
         return static_cast<int>(mChildItems.size());
     }
@@ -118,7 +118,7 @@ namespace Evernus
         return 0;
     }
 
-    AssetModel::TreeItem *AssetModel::TreeItem::parent() const
+    AssetModel::TreeItem *AssetModel::TreeItem::parent() const noexcept
     {
         return mParentItem;
     }

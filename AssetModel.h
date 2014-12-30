@@ -69,7 +69,7 @@ namespace Evernus
 
             TreeItem *child(int row) const;
 
-            int childCount() const;
+            int childCount() const noexcept;
             int columnCount() const;
 
             QVariant data(int column) const;
@@ -87,7 +87,7 @@ namespace Evernus
 
             int row() const;
 
-            TreeItem *parent() const;
+            TreeItem *parent() const noexcept;
 
         private:
             std::vector<std::unique_ptr<TreeItem>> mChildItems;
