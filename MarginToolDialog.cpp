@@ -305,7 +305,10 @@ namespace Evernus
                         {
                             const auto range = order.getRange();
                             if (range == rangeStation || jumps - range > 0)
+                            {
+                                parsedOrders.emplace_back(std::move(order));
                                 continue;
+                            }
                         }
 
                         if (order.getPrice() > buy)
@@ -316,11 +319,8 @@ namespace Evernus
 
                         ++buyCount;
                     }
-                    else
+                    else if (jumps == 0)
                     {
-                        if (jumps != 0)
-                            continue;
-
                         const auto price = order.getPrice();
                         if (price < sell || sell < 0.)
                             sell = price;
