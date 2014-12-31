@@ -186,6 +186,7 @@ qt5_wrap_cpp(
     SyncDialog.h
     SyncPreferencesWidget.h
     TextFilterWidget.h
+    TradeableTypesTreeModel.h
     Updater.h
     WalletEntryFilterWidget.h
     WalletJournalModel.h
@@ -657,6 +658,8 @@ add_executable(
     TextUtils.cpp
     TextUtils.h
     TimerTypes.h
+    TradeableTypesTreeModel.cpp
+    TradeableTypesTreeModel.h
     UISettings.h
     Updater.cpp
     Updater.h
