@@ -123,6 +123,9 @@ namespace Evernus
         }
 
         qDebug() << "Making" << mRequestCount << "CREST order requests...";
+
+        if (mRequestCount == 0)
+            mTaskManager.endTask(mOrderSubtask);
     }
 
     void MarketAnalysisWidget::storeOrders()
@@ -137,7 +140,7 @@ namespace Evernus
     {
         --mRequestCount;
 
-        qDebug() << mRequestCount << " remaining:" << errorText;
+        qDebug() << mRequestCount << " remaining; error:" << errorText;
 
         mTaskManager.updateTask(mOrderSubtask, tr("Waiting for %1 order server replies...").arg(mRequestCount));
 
