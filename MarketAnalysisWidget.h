@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <unordered_map>
+
 #include <QWidget>
 
 #include "ExternalOrderImporter.h"
@@ -53,7 +55,7 @@ namespace Evernus
     private slots:
         void prepareOrderImport();
 
-        void importOrders(const ExternalOrderImporter::TypeLocationPairs &pairs);
+        void importData(const ExternalOrderImporter::TypeLocationPairs &pairs);
         void storeOrders();
 
     private:
@@ -74,10 +76,13 @@ namespace Evernus
         uint mOrderSubtask = TaskConstants::invalidTask;
         uint mHistorySubtask = TaskConstants::invalidTask;
 
-        std::vector<ExternalOrder> mResult;
+        std::vector<ExternalOrder> mOrders;
+        std::unordered_map<uint, std::unordered_map<EveType::IdType, std::map<QDate, MarketHistoryEntry>>>
+        mHistory;
+
         QStringList mAggregatedOrderErrors, mAggregatedHistoryErrors;
 
         void processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText);
-        void processHistory(std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText);
+        void processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText);
     };
 }

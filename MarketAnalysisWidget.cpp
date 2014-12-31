@@ -15,14 +15,17 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QComboBox>
 #include <QCheckBox>
 #include <QSettings>
+#include <QLabel>
 #include <QDebug>
 
 #include <boost/scope_exit.hpp>
 
 #include "ExternalOrderRepository.h"
 #include "RegionTypeSelectDialog.h"
+#include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "TaskManager.h"
 #include "UISettings.h"
@@ -77,18 +80,27 @@ namespace Evernus
             settings.setValue(UISettings::dontSaveLargeOrdersKey, checked);
         });
 
+        toolBarLayout->addWidget(new QLabel{tr("Region:"), this});
+
+        auto regionCombo = new QComboBox{this};
+        toolBarLayout->addWidget(regionCombo);
+
+        const auto regions = mDataProvider.getRegions();
+        for (const auto &region : regions)
+            regionCombo->addItem(region.second, region.first);
+
         toolBarLayout->addStretch();
     }
 
     void MarketAnalysisWidget::prepareOrderImport()
     {
         RegionTypeSelectDialog dlg{mDataProvider, mTypeRepo, mGroupRepo, this};
-        connect(&dlg, &RegionTypeSelectDialog::selected, this, &MarketAnalysisWidget::importOrders);
+        connect(&dlg, &RegionTypeSelectDialog::selected, this, &MarketAnalysisWidget::importData);
 
         dlg.exec();
     }
 
-    void MarketAnalysisWidget::importOrders(const ExternalOrderImporter::TypeLocationPairs &pairs)
+    void MarketAnalysisWidget::importData(const ExternalOrderImporter::TypeLocationPairs &pairs)
     {
         if (pairs.empty())
             return;
@@ -107,6 +119,9 @@ namespace Evernus
             this_->mPreparingRequests = false;
         } BOOST_SCOPE_EXIT_END
 
+        mOrders.clear();
+        mHistory.clear();
+
         const auto mainTask = mTaskManager.startTask(tr("Importing data for analysis..."));
 
         mOrderSubtask = mTaskManager.startTask(mainTask, tr("Making %1 CREST order requests...").arg(pairs.size()));
@@ -123,8 +138,8 @@ namespace Evernus
             mManager.fetchMarketOrders(pair.second, pair.first, [this](auto &&orders, const auto &error) {
                 processOrders(std::move(orders), error);
             });
-            mManager.fetchMarketHistory(pair.second, pair.first, [this](auto &&history, const auto &error) {
-                processHistory(std::move(history), error);
+            mManager.fetchMarketHistory(pair.second, pair.first, [pair, this](auto &&history, const auto &error) {
+                processHistory(pair.second, pair.first, std::move(history), error);
             });
         }
 
@@ -138,10 +153,8 @@ namespace Evernus
 
     void MarketAnalysisWidget::storeOrders()
     {
-        emit updateExternalOrders(mResult);
-
+        emit updateExternalOrders(mOrders);
         mTaskManager.endTask(mOrderSubtask);
-        mResult.clear();
     }
 
     void MarketAnalysisWidget::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)
@@ -156,7 +169,7 @@ namespace Evernus
         {
             if (mOrderRequestCount == 0)
             {
-                mResult.clear();
+                mOrders.clear();
                 mTaskManager.endTask(mOrderSubtask, mAggregatedOrderErrors.join("\n"));
                 mAggregatedOrderErrors.clear();
             }
@@ -168,8 +181,8 @@ namespace Evernus
             return;
         }
 
-        mResult.reserve(mResult.size() + orders.size());
-        mResult.insert(std::end(mResult),
+        mOrders.reserve(mOrders.size() + orders.size());
+        mOrders.insert(std::end(mOrders),
                        std::make_move_iterator(std::begin(orders)),
                        std::make_move_iterator(std::end(orders)));
 
@@ -181,26 +194,25 @@ namespace Evernus
                 {
                     if (!mDontSaveBtn->isChecked())
                     {
-                        mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(mResult.size()));
+                        mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(mOrders.size()));
                         QMetaObject::invokeMethod(this, "storeOrders", Qt::QueuedConnection);
                     }
                     else
                     {
                         mTaskManager.endTask(mOrderSubtask);
-                        mResult.clear();
                     }
                 }
                 else
                 {
                     mTaskManager.endTask(mOrderSubtask, mAggregatedOrderErrors.join("\n"));
                     mAggregatedOrderErrors.clear();
-                    mResult.clear();
                 }
             }
         }
     }
 
-    void MarketAnalysisWidget::processHistory(std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText)
+    void MarketAnalysisWidget
+    ::processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText)
     {
         --mHistoryRequestCount;
 
@@ -222,6 +234,8 @@ namespace Evernus
 
             return;
         }
+
+        mHistory[regionId][typeId] = std::move(history);
 
         if (mHistoryRequestCount == 0)
         {
