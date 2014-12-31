@@ -36,11 +36,15 @@ namespace Evernus
                                                const EveDataProvider &dataProvider,
                                                TaskManager &taskManager,
                                                const ExternalOrderRepository &orderRepo,
+                                               const EveTypeRepository &typeRepo,
+                                               const MarketGroupRepository &groupRepo,
                                                QWidget *parent)
         : QWidget(parent)
         , mDataProvider(dataProvider)
         , mTaskManager(taskManager)
         , mOrderRepo(orderRepo)
+        , mTypeRepo(typeRepo)
+        , mGroupRepo(groupRepo)
         , mManager(std::move(crestClientId), std::move(crestClientSecret), mDataProvider)
     {
         auto mainLayout = new QVBoxLayout{this};
@@ -78,7 +82,7 @@ namespace Evernus
 
     void MarketAnalysisWidget::prepareOrderImport()
     {
-        RegionTypeSelectDialog dlg{mDataProvider, this};
+        RegionTypeSelectDialog dlg{mDataProvider, mTypeRepo, mGroupRepo, this};
         connect(&dlg, &RegionTypeSelectDialog::selected, this, &MarketAnalysisWidget::importOrders);
 
         dlg.exec();

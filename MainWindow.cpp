@@ -819,6 +819,8 @@ namespace Evernus
                                                           mEveDataProvider,
                                                           taskManager,
                                                           mRepositoryProvider.getExternalOrderRepository(),
+                                                          mRepositoryProvider.getEveTypeRepository(),
+                                                          mRepositoryProvider.getMarketGroupRepository(),
                                                           this};
         connect(marketAnalysisTab, &MarketAnalysisWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
         addTab(marketAnalysisTab, tr("Market analysis"));

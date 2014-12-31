@@ -26,6 +26,8 @@ class QCheckBox;
 namespace Evernus
 {
     class ExternalOrderRepository;
+    class MarketGroupRepository;
+    class EveTypeRepository;
     class EveDataProvider;
     class TaskManager;
 
@@ -40,6 +42,8 @@ namespace Evernus
                              const EveDataProvider &dataProvider,
                              TaskManager &taskManager,
                              const ExternalOrderRepository &orderRepo,
+                             const EveTypeRepository &typeRepo,
+                             const MarketGroupRepository &groupRepo,
                              QWidget *parent = nullptr);
         virtual ~MarketAnalysisWidget() = default;
 
@@ -56,6 +60,8 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
         const ExternalOrderRepository &mOrderRepo;
+        const EveTypeRepository &mTypeRepo;
+        const MarketGroupRepository &mGroupRepo;
 
         CRESTManager mManager;
 

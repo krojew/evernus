@@ -29,10 +29,12 @@ namespace Evernus
     class FavoriteItemRepository;
     class MarketOrderRepository;
     class OrderScriptRepository;
+    class MarketGroupRepository;
     class FilterTextRepository;
     class CharacterRepository;
     class ItemCostRepository;
     class CorpKeyRepository;
+    class EveTypeRepository;
     class KeyRepository;
 
     class RepositoryProvider
@@ -61,5 +63,7 @@ namespace Evernus
         virtual const FavoriteItemRepository &getFavoriteItemRepository() const noexcept = 0;
         virtual const LocationBookmarkRepository &getLocationBookmarkRepository() const noexcept = 0;
         virtual const ExternalOrderRepository &getExternalOrderRepository() const noexcept = 0;
+        virtual const EveTypeRepository &getEveTypeRepository() const noexcept = 0;
+        virtual const MarketGroupRepository &getMarketGroupRepository() const noexcept = 0;
     };
 }

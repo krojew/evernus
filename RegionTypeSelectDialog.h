@@ -14,11 +14,14 @@
  */
 #pragma once
 
+#include <QSortFilterProxyModel>
 #include <QDialog>
 
+#include "TradeableTypesTreeModel.h"
 #include "ExternalOrderImporter.h"
 
 class QListWidget;
+class QTreeView;
 
 namespace Evernus
 {
@@ -30,7 +33,10 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit RegionTypeSelectDialog(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
+        RegionTypeSelectDialog(const EveDataProvider &dataProvider,
+                               const EveTypeRepository &typeRepo,
+                               const MarketGroupRepository &groupRepo,
+                               QWidget *parent = nullptr);
         virtual ~RegionTypeSelectDialog() = default;
 
     signals:
@@ -38,6 +44,9 @@ namespace Evernus
 
     private:
         QListWidget *mRegionList = nullptr;
-        QListWidget *mTypeList = nullptr;
+        QTreeView *mTypeView = nullptr;
+
+        TradeableTypesTreeModel mTypeModel;
+        QSortFilterProxyModel mTypeProxy;
     };
 }

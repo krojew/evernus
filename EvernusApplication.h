@@ -130,6 +130,8 @@ namespace Evernus
         virtual const FavoriteItemRepository &getFavoriteItemRepository() const noexcept override;
         virtual const LocationBookmarkRepository &getLocationBookmarkRepository() const noexcept override;
         virtual const ExternalOrderRepository &getExternalOrderRepository() const noexcept override;
+        virtual const EveTypeRepository &getEveTypeRepository() const noexcept override;
+        virtual const MarketGroupRepository &getMarketGroupRepository() const noexcept override;
 
         virtual std::vector<std::shared_ptr<LMeveTask>> getTasks(Character::IdType characterId) const override;
 

@@ -634,6 +634,16 @@ namespace Evernus
         return *mExternalOrderRepository;
     }
 
+    const EveTypeRepository &EvernusApplication::getEveTypeRepository() const noexcept
+    {
+        return *mEveTypeRepository;
+    }
+
+    const MarketGroupRepository &EvernusApplication::getMarketGroupRepository() const noexcept
+    {
+        return *mMarketGroupRepository;
+    }
+
     std::vector<std::shared_ptr<LMeveTask>> EvernusApplication::getTasks(Character::IdType characterId) const
     {
         const auto it = mLMeveTaskCache.find(characterId);

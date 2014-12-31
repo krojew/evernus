@@ -20,6 +20,7 @@
 #include <QListWidget>
 #include <QPushButton>
 #include <QGroupBox>
+#include <QTreeView>
 
 #include "EveDataProvider.h"
 
@@ -27,8 +28,12 @@
 
 namespace Evernus
 {
-    RegionTypeSelectDialog::RegionTypeSelectDialog(const EveDataProvider &dataProvider, QWidget *parent)
+    RegionTypeSelectDialog::RegionTypeSelectDialog(const EveDataProvider &dataProvider,
+                                                   const EveTypeRepository &typeRepo,
+                                                   const MarketGroupRepository &groupRepo,
+                                                   QWidget *parent)
         : QDialog(parent)
+        , mTypeModel(typeRepo, groupRepo)
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -82,29 +87,13 @@ namespace Evernus
 
         auto typeLayout = new QVBoxLayout{typesGroup};
 
-        mTypeList = new QListWidget{this};
-        typeLayout->addWidget(mTypeList);
-        mTypeList->setSelectionMode(QAbstractItemView::ExtendedSelection);
+        mTypeProxy.setSourceModel(&mTypeModel);
+        mTypeProxy.sort(0);
 
-        const auto &types = dataProvider.getAllTradeableTypeNames();
-        for (const auto &type : types)
-        {
-            auto item = new QListWidgetItem{type.second, mTypeList};
-            item->setData(Qt::UserRole, type.first);
-        }
-
-        mTypeList->sortItems();
-
-        auto typeBtnsLayout = new QHBoxLayout{};
-        typeLayout->addLayout(typeBtnsLayout);
-
-        selectBtn = new QPushButton{tr("Select all"), this};
-        typeBtnsLayout->addWidget(selectBtn);
-        connect(selectBtn, &QPushButton::clicked, mTypeList, &QListWidget::selectAll);
-
-        selectBtn = new QPushButton{tr("Deselect all"), this};
-        typeBtnsLayout->addWidget(selectBtn);
-        connect(selectBtn, &QPushButton::clicked, mTypeList, &QListWidget::clearSelection);
+        mTypeView = new QTreeView{this};
+        typeLayout->addWidget(mTypeView);
+        mTypeView->setHeaderHidden(true);
+        mTypeView->setModel(&mTypeProxy);
 
         auto buttonBox = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel};
         mainLayout->addWidget(buttonBox);
@@ -112,13 +101,13 @@ namespace Evernus
             ExternalOrderImporter::TypeLocationPairs result;
 
             const auto regions = mRegionList->selectedItems();
-            const auto types = mTypeList->selectedItems();
+            const auto types = mTypeModel.getSelectedTypes();
 
             for (const auto region : regions)
             {
                 for (const auto type : types)
                 {
-                    result.emplace(type->data(Qt::UserRole).value<ExternalOrderImporter::TypeLocationPair::first_type>(),
+                    result.emplace(type,
                                    region->data(Qt::UserRole).value<ExternalOrderImporter::TypeLocationPair::second_type>());
                 }
             }
