@@ -99,6 +99,26 @@ namespace Evernus
         checkAuth(fetcher);
     }
 
+    void CRESTInterface::fetchMarketHistory(uint regionId, EveType::IdType typeId, const Callback &callback) const
+    {
+        qDebug() << "Fetching market history for" << regionId << "and" << typeId;
+
+        auto fetcher = [=](const QString &error) {
+            if (!error.isEmpty())
+            {
+                callback(QJsonDocument{}, error);
+                return;
+            }
+
+            // TODO: use endpoint map, when available
+            asyncGet(QString{"%1/market/%2/types/%3/history/"}.arg(crestUrl).arg(regionId).arg(typeId),
+                     "application/vnd.ccp.eve.MarketTypeHistoryCollection-v1+json",
+                     callback);
+        };
+
+        checkAuth(fetcher);
+    }
+
     void CRESTInterface::updateTokenAndContinue(QString token, const QDateTime &expiry)
     {
         mAccessToken = std::move(token);

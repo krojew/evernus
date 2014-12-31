@@ -477,6 +477,7 @@ add_executable(
     MarketGroup.h
     MarketGroupRepository.cpp
     MarketGroupRepository.h
+    MarketHistoryEntry.h
     MarketLogExternalOrderImporter.cpp
     MarketLogExternalOrderImporter.h
     MarketLogExternalOrderImporterThread.cpp

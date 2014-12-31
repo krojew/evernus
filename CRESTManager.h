@@ -17,9 +17,12 @@
 #include <functional>
 #include <vector>
 #include <memory>
+#include <map>
 
 #include <QWebView>
+#include <QDate>
 
+#include "MarketHistoryEntry.h"
 #include "CRESTInterface.h"
 #include "SimpleCrypt.h"
 #include "EveType.h"
@@ -49,6 +52,9 @@ namespace Evernus
         void fetchMarketOrders(uint regionId,
                                EveType::IdType typeId,
                                const Callback<std::vector<ExternalOrder>> &callback) const;
+        void fetchMarketHistory(uint regionId,
+                                EveType::IdType typeId,
+                                const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const;
 
         bool hasClientCredentials() const;
 

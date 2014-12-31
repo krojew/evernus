@@ -42,6 +42,7 @@ namespace Evernus
 
         void fetchBuyMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
         void fetchSellMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
+        void fetchMarketHistory(uint regionId, EveType::IdType typeId, const Callback &callback) const;
 
     public slots:
         void updateTokenAndContinue(QString token, const QDateTime &expiry);

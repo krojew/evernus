@@ -110,22 +110,30 @@ namespace Evernus
         const auto mainTask = mTaskManager.startTask(tr("Importing data for analysis..."));
 
         mOrderSubtask = mTaskManager.startTask(mainTask, tr("Making %1 CREST order requests...").arg(pairs.size()));
+        mHistorySubtask = mTaskManager.startTask(mainTask, tr("Making %1 CREST history requests...").arg(pairs.size()));
 
         for (const auto &pair : pairs)
         {
             if (ignored.find(pair) != std::end(ignored))
                 continue;
 
-            ++mRequestCount;
+            ++mOrderRequestCount;
+            ++mHistoryRequestCount;
+
             mManager.fetchMarketOrders(pair.second, pair.first, [this](auto &&orders, const auto &error) {
                 processOrders(std::move(orders), error);
             });
+            mManager.fetchMarketHistory(pair.second, pair.first, [this](auto &&history, const auto &error) {
+                processHistory(std::move(history), error);
+            });
         }
 
-        qDebug() << "Making" << mRequestCount << "CREST order requests...";
+        qDebug() << "Making" << mOrderRequestCount << "CREST order and history requests...";
 
-        if (mRequestCount == 0)
+        if (mOrderRequestCount == 0)
             mTaskManager.endTask(mOrderSubtask);
+        if (mHistoryRequestCount == 0)
+            mTaskManager.endTask(mHistorySubtask);
     }
 
     void MarketAnalysisWidget::storeOrders()
@@ -138,23 +146,23 @@ namespace Evernus
 
     void MarketAnalysisWidget::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)
     {
-        --mRequestCount;
+        --mOrderRequestCount;
 
-        qDebug() << mRequestCount << " remaining; error:" << errorText;
+        qDebug() << mOrderRequestCount << " order remaining; error:" << errorText;
 
-        mTaskManager.updateTask(mOrderSubtask, tr("Waiting for %1 order server replies...").arg(mRequestCount));
+        mTaskManager.updateTask(mOrderSubtask, tr("Waiting for %1 order server replies...").arg(mOrderRequestCount));
 
         if (!errorText.isEmpty())
         {
-            if (mRequestCount == 0)
+            if (mOrderRequestCount == 0)
             {
                 mResult.clear();
-                mTaskManager.endTask(mOrderSubtask, mAggregatedErrors.join("\n"));
-                mAggregatedErrors.clear();
+                mTaskManager.endTask(mOrderSubtask, mAggregatedOrderErrors.join("\n"));
+                mAggregatedOrderErrors.clear();
             }
             else
             {
-                mAggregatedErrors << errorText;
+                mAggregatedOrderErrors << errorText;
             }
 
             return;
@@ -165,11 +173,11 @@ namespace Evernus
                        std::make_move_iterator(std::begin(orders)),
                        std::make_move_iterator(std::end(orders)));
 
-        if (mRequestCount == 0)
+        if (mOrderRequestCount == 0)
         {
             if (!mPreparingRequests)
             {
-                if (mAggregatedErrors.isEmpty())
+                if (mAggregatedOrderErrors.isEmpty())
                 {
                     if (!mDontSaveBtn->isChecked())
                     {
@@ -184,9 +192,49 @@ namespace Evernus
                 }
                 else
                 {
-                    mTaskManager.endTask(mOrderSubtask, mAggregatedErrors.join("\n"));
-                    mAggregatedErrors.clear();
+                    mTaskManager.endTask(mOrderSubtask, mAggregatedOrderErrors.join("\n"));
+                    mAggregatedOrderErrors.clear();
                     mResult.clear();
+                }
+            }
+        }
+    }
+
+    void MarketAnalysisWidget::processHistory(std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText)
+    {
+        --mHistoryRequestCount;
+
+        qDebug() << mHistoryRequestCount << " history remaining; error:" << errorText;
+
+        mTaskManager.updateTask(mHistorySubtask, tr("Waiting for %1 history server replies...").arg(mHistoryRequestCount));
+
+        if (!errorText.isEmpty())
+        {
+            if (mHistoryRequestCount == 0)
+            {
+                mTaskManager.endTask(mHistorySubtask, mAggregatedHistoryErrors.join("\n"));
+                mAggregatedHistoryErrors.clear();
+            }
+            else
+            {
+                mAggregatedHistoryErrors << errorText;
+            }
+
+            return;
+        }
+
+        if (mHistoryRequestCount == 0)
+        {
+            if (!mPreparingRequests)
+            {
+                if (mAggregatedHistoryErrors.isEmpty())
+                {
+                    mTaskManager.endTask(mHistorySubtask);
+                }
+                else
+                {
+                    mTaskManager.endTask(mHistorySubtask, mAggregatedHistoryErrors.join("\n"));
+                    mAggregatedHistoryErrors.clear();
                 }
             }
         }

@@ -96,7 +96,7 @@ namespace Evernus
                     for (const auto &item : items)
                     {
                         const auto itemObject = item.toObject();
-                        const auto localtion = itemObject.value("location").toObject();
+                        const auto location = itemObject.value("location").toObject();
                         const auto range = itemObject.value("range").toString();
 
                         auto issued = QDateTime::fromString(itemObject.value("issued").toString(), Qt::ISODate);
@@ -108,7 +108,7 @@ namespace Evernus
                         order.setId(idRe.match(itemObject.value("href").toString()).captured(1).toULongLong());
                         order.setType((itemObject.value("buy").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
                         order.setTypeId(typeId);
-                        order.setStationId(idRe.match(localtion.value("href").toString()).captured(1).toUInt());
+                        order.setStationId(idRe.match(location.value("href").toString()).captured(1).toUInt());
                         //TODO: replace when available
                         order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));
                         order.setRegionId(regionId);
@@ -140,6 +140,39 @@ namespace Evernus
 
                 callback(std::move(orders), QString{});
             });
+        });
+    }
+
+    void CRESTManager::fetchMarketHistory(uint regionId,
+                                          EveType::IdType typeId,
+                                          const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const
+    {
+        mInterface.fetchMarketHistory(regionId, typeId, [=](QJsonDocument &&data, const QString &error) {
+            if (!error.isEmpty())
+            {
+                callback(std::map<QDate, MarketHistoryEntry>{}, error);
+                return;
+            }
+
+            std::map<QDate, MarketHistoryEntry> history;
+
+            const auto items = data.object().value("items").toArray();
+            for (const auto &item : items)
+            {
+                const auto itemObject = item.toObject();
+                auto date = QDate::fromString(itemObject.value("date").toString(), Qt::ISODate);
+
+                MarketHistoryEntry entry;
+                entry.mAvgPrice = itemObject.value("avgPrice").toDouble();
+                entry.mHighPrice = itemObject.value("highPrice").toDouble();
+                entry.mLowPrice = itemObject.value("lowPrice").toDouble();
+                entry.mOrders = itemObject.value("orderCount").toInt();
+                entry.mVolume = itemObject.value("volume").toInt();
+
+                history.emplace(std::move(date), std::move(entry));
+            }
+
+            callback(std::move(history), QString{});
         });
     }
 

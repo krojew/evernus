@@ -68,14 +68,16 @@ namespace Evernus
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;
         QCheckBox *mDontSaveBtn = nullptr;
 
-        uint mRequestCount = 0;
+        uint mOrderRequestCount = 0, mHistoryRequestCount = 0;
         bool mPreparingRequests = false;
 
         uint mOrderSubtask = TaskConstants::invalidTask;
+        uint mHistorySubtask = TaskConstants::invalidTask;
 
         std::vector<ExternalOrder> mResult;
-        QStringList mAggregatedErrors;
+        QStringList mAggregatedOrderErrors, mAggregatedHistoryErrors;
 
         void processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText);
+        void processHistory(std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText);
     };
 }
