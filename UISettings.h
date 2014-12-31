@@ -43,7 +43,7 @@ namespace Evernus
         const auto tabShowStateKey = "ui/mainWindow/tabShowState/%1";
         const auto omitCurrencySymbolKey = "ui/global/omitCurrencySymbol";
         const auto mainWindowAlwaysOnTopKey = "ui/mainWindow/alwaysOnTop";
-        const auto ignoreExistingOrdersKey = "ui/analysis/dontSaveOrders";
+        const auto ignoreExistingOrdersKey = "ui/analysis/ignoreExisting";
         const auto dontSaveLargeOrdersKey = "ui/analysis/dontSaveOrders";
     }
 }
