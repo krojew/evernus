@@ -56,8 +56,6 @@ namespace Evernus
             item->setData(Qt::UserRole, region.first);
         }
 
-        mRegionList->sortItems();
-
         auto regionBtnsLayout = new QGridLayout{};
         regionLayout->addLayout(regionBtnsLayout);
 
