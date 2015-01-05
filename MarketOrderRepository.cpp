@@ -138,7 +138,7 @@ namespace Evernus
     MarketOrderRepository::AggrData MarketOrderRepository::getAggregatedData(Character::IdType characterId) const
     {
         auto query = prepare(QString{
-            "SELECT type, COUNT(*), SUM(price), SUM(volume_remaining) FROM %1 WHERE character_id = ? AND state = ? GROUP BY type"}
+            "SELECT type, COUNT(*), SUM(price * volume_remaining), SUM(volume_remaining) FROM %1 WHERE character_id = ? AND state = ? GROUP BY type"}
                 .arg(getTableName()));
         query.bindValue(0, characterId);
         query.bindValue(1, static_cast<int>(MarketOrder::State::Active));
