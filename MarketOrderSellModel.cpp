@@ -24,6 +24,7 @@
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
+#include "OrderSettings.h"
 #include "ExternalOrder.h"
 #include "PriceUtils.h"
 #include "IconUtils.h"
@@ -420,7 +421,7 @@ namespace Evernus
             else if (column == firstSeenColumn)
             {
                 QSettings settings;
-                const auto maxAge = settings.value(PriceSettings::marketOrderMaxAgeKey, PriceSettings::marketOrderMaxAgeDefault).toInt();
+                const auto maxAge = settings.value(OrderSettings::marketOrderMaxAgeKey, OrderSettings::marketOrderMaxAgeDefault).toInt();
                 if (data->getFirstSeen() < QDateTime::currentDateTimeUtc().addDays(-maxAge))
                     return QColor{255, 255, 192};
             }

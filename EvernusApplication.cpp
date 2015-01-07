@@ -31,6 +31,7 @@
 #include "ImportSettings.h"
 #include "WalletSettings.h"
 #include "PriceSettings.h"
+#include "OrderSettings.h"
 #include "PathSettings.h"
 #include "HttpSettings.h"
 #include "SyncSettings.h"
@@ -144,6 +145,9 @@ namespace Evernus
 
         showSplashMessage(tr("Clearing old wallet entries..."), splash);
         deleteOldWalletEntries();
+
+        showSplashMessage(tr("Clearing old market orders..."), splash);
+        deleteOldMarketOrders();
 
         showSplashMessage(tr("Setting up IGB service..."), splash);
         auto igbService = new IGBService{*mCharacterOrderProvider,
@@ -1777,14 +1781,26 @@ namespace Evernus
         {
             const auto journalDt = QDateTime::currentDateTimeUtc().addDays(
                 -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
-            mWalletJournalEntryRepository->deleteOldEntires(journalDt);
+            mWalletJournalEntryRepository->deleteOldEntries(journalDt);
         }
 
         if (settings.value(WalletSettings::deleteOldTransactionsKey, WalletSettings::deleteOldTransactionsDefault).toBool())
         {
             const auto transactionDt = QDateTime::currentDateTimeUtc().addDays(
                 -settings.value(WalletSettings::oldJournalDaysKey, WalletSettings::oldJournalDaysDefault).toInt());
-            mWalletTransactionRepository->deleteOldEntires(transactionDt);
+            mWalletTransactionRepository->deleteOldEntries(transactionDt);
+        }
+    }
+
+    void EvernusApplication::deleteOldMarketOrders()
+    {
+        QSettings settings;
+        if (settings.value(OrderSettings::deleteOldMarketOrdersKey, OrderSettings::deleteOldMarketOrdersDefault).toBool())
+        {
+            const auto oldDt = QDateTime::currentDateTimeUtc().addDays(
+                -settings.value(OrderSettings::oldMarketOrderDaysKey, OrderSettings::oldMarketOrderDaysDefault).toInt());
+            mMarketOrderRepository->deleteOldEntries(oldDt);
+            mCorpMarketOrderRepository->deleteOldEntries(oldDt);
         }
     }
 

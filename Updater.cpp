@@ -33,6 +33,7 @@
 #include "EvernusApplication.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
+#include "OrderSettings.h"
 #include "PathSettings.h"
 
 #include "Updater.h"
@@ -289,6 +290,9 @@ namespace Evernus
 
     void Updater::migrateTo123(const ExternalOrderRepository &externalOrderRepo) const
     {
+        QSettings settings;
+        settings.setValue(OrderSettings::deleteOldMarketOrdersKey, false);
+
         externalOrderRepo.exec(QString{"DROP INDEX IF EXISTS %1_type_id_location"}.arg(externalOrderRepo.getTableName()));
     }
 }

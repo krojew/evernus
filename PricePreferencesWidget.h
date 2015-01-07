@@ -47,7 +47,6 @@ namespace Evernus
         QCheckBox *mAutoAddCustomCostBtn = nullptr;
         QCheckBox *mShareCustomCostsBtn = nullptr;
         QSpinBox *mPriceMaxAgeEdit = nullptr;
-        QSpinBox *mMarketOrderMaxAgeEdit = nullptr;
         QComboBox *mPlotNumberFormatEdit = nullptr;
         QCheckBox *mCombineCorpAndCharPlotsBtn = nullptr;
         QCheckBox *mRefreshPricesWithOrdersBtn = nullptr;

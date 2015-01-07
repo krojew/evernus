@@ -153,6 +153,7 @@ qt5_wrap_cpp(
     MarketOrderWidget.h
     MenuBarWidget.h
     NetworkPreferencesWidget.h
+    OrderPreferencesWidget.h
     PathPreferencesWidget.h
     PreferencesDialog.h
     PricePreferencesWidget.h
@@ -537,6 +538,9 @@ add_executable(
     OrderScript.h
     OrderScriptRepository.cpp
     OrderScriptRepository.h
+    OrderSettings.h
+    OrderPreferencesWidget.cpp
+    OrderPreferencesWidget.h
     PathPreferencesWidget.cpp
     PathPreferencesWidget.h
     PathSettings.h

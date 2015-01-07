@@ -101,6 +101,7 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_state ON %1(character_id, state)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_last_seen ON %1(character_id, last_seen)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_last_seen ON %1(last_seen)"}.arg(getTableName()));
 
         try
         {
@@ -123,6 +124,7 @@ namespace Evernus
         exec(QString{"DROP INDEX IF EXISTS %1_character_type"}.arg(getTableName()));
         exec(QString{"DROP INDEX IF EXISTS %1_character_last_seen"}.arg(getTableName()));
         exec(QString{"DROP INDEX IF EXISTS %1_corporation_last_seen"}.arg(getTableName()));
+        exec(QString{"DROP INDEX IF EXISTS %1_last_seen"}.arg(getTableName()));
     }
 
     void MarketOrderRepository::copyDataWithoutCorporationIdFrom(const QString &table) const
@@ -417,6 +419,14 @@ namespace Evernus
 
         for (const auto &id : ids)
             query.addBindValue(id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
+    void MarketOrderRepository::deleteOldEntries(const QDateTime &from) const
+    {
+        auto query = prepare(QString{"DELETE FROM %1 WHERE last_seen < ?"}.arg(getTableName()));
+        query.bindValue(0, from);
 
         DatabaseUtils::execQuery(query);
     }

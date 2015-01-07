@@ -95,6 +95,7 @@ namespace Evernus
 
         void archive(const std::vector<MarketOrder::IdType> &ids) const;
         void fulfill(const std::vector<MarketOrder::IdType> &ids) const;
+        void deleteOldEntries(const QDateTime &from) const;
 
     private:
         bool mCorp = false;

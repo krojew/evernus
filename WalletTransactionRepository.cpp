@@ -116,7 +116,7 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
-    void WalletTransactionRepository::deleteOldEntires(const QDateTime &from) const
+    void WalletTransactionRepository::deleteOldEntries(const QDateTime &from) const
     {
         auto query = prepare(QString{"DELETE FROM %1 WHERE timestamp < ?"}.arg(getTableName()));
         query.bindValue(0, from);

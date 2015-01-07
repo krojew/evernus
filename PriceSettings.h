@@ -37,7 +37,6 @@ namespace Evernus
         const auto priceDeltaDefault = 0.01;
         const auto priceMaxAgeDefault = 1;
         const auto importLogWaitTimeDefault = 1000;
-        const auto marketOrderMaxAgeDefault = 7;
         const auto copyModeDefault = CopyMode::DontCopy;
         const auto priceAltImportDefault = true;
         const auto autoAddCustomItemCostDefault = false;
@@ -54,7 +53,6 @@ namespace Evernus
         const auto priceAltImportKey = "prices/import/alt";
         const auto priceMaxAgeKey = "prices/maxAge";
         const auto importLogWaitTimeKey = "prices/import/logWaitTime";
-        const auto marketOrderMaxAgeKey = "prices/orders/maxAge";
         const auto autoAddCustomItemCostKey = "prices/orders/autoAddCustomItemCost";
         const auto costDataSourceKey = "prices/dataSource";
         const auto costSourceStationKey = "prices/costSourceStation";

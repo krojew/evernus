@@ -2420,9 +2420,8 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Czas między importami:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="81"/>
         <source> min</source>
-        <translation> min</translation>
+        <translation type="vanished"> min</translation>
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="84"/>
@@ -2480,6 +2479,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
+        <location filename="../ImportPreferencesWidget.cpp" line="81"/>
         <location filename="../ImportPreferencesWidget.cpp" line="148"/>
         <source>min</source>
         <translation>min</translation>
@@ -3054,7 +3054,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MainWindow.cpp" line="826"/>
         <source>Market analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>Analiza rynku</translation>
     </message>
     <message>
         <source>Market uploader: unknown</source>
@@ -3296,47 +3296,47 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="65"/>
         <source>Don&apos;t refresh existing up-to-date data</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie aktualizuj istniejących aktualnych danych</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="74"/>
         <source>Don&apos;t save imported orders (huge performance gain)</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie zapisuj zaimportowanych zleceń (duży skok wydajności)</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="83"/>
         <source>Region:</source>
-        <translation type="unfinished"></translation>
+        <translation>Region:</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="125"/>
         <source>Importing data for analysis...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importowanie danych do analizy...</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="127"/>
         <source>Making %1 CREST order requests...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tworzenie %1 zapytań CREST o zlecenia...</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="128"/>
         <source>Making %1 CREST history requests...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tworzenie %1 zapytań CREST o historię...</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="166"/>
         <source>Waiting for %1 order server replies...</source>
-        <translation type="unfinished"></translation>
+        <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="197"/>
         <source>Saving %1 imported orders...</source>
-        <translation type="unfinished">Zapisywanie %1 zaimportowanych zleceń...</translation>
+        <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="221"/>
         <source>Waiting for %1 history server replies...</source>
-        <translation type="unfinished"></translation>
+        <translation>Oczekiwanie na %1 odpowiedzi z historią...</translation>
     </message>
 </context>
 <context>
@@ -3713,108 +3713,108 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarketOrderBuyModel</name>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="83"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="84"/>
         <source>No price data -&gt; Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation>Brak danych o cenach -&gt; Zaimporuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży.</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="89"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="90"/>
         <source>You have been overbid. Current price is %1 (%2 different from yours).
 Click the icon for details.</source>
         <translation>Twoja cena została przebita. Aktualna cena to %1 (różnica: %2).
 Kliknij na ikonę, aby zobaczyć więcej.</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="98"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="99"/>
         <source>Price data is too old (valid on %1).
 Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation>Dane o cenie są za stare (akutalizacja: %1).
 Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży.</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="102"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="103"/>
         <source>Your price was best on %1</source>
         <translation>Twoja cena była najlepsza: %1</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="215"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="216"/>
         <source>Active</source>
         <translation>Aktywne</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="216"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="217"/>
         <source>Closed</source>
         <translation>Zamknięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="217"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="218"/>
         <source>Fulfilled</source>
         <translation>Zakończone</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="218"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="219"/>
         <source>Cancelled</source>
         <translation>Anulowane</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="219"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="220"/>
         <source>Pending</source>
         <translation>Oczekujące</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="220"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="221"/>
         <source>Character Deleted</source>
         <translation>Usunięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="226"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="227"/>
         <source>Expired</source>
         <translation>Wygasłe</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="238"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="239"/>
         <source>No price data</source>
         <translation>Brak danych o cenie</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="243"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="244"/>
         <source>Data too old</source>
         <translation>Dane za stare</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="265"/>
-        <location filename="../MarketOrderBuyModel.cpp" line="427"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="266"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="428"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="267"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="268"/>
         <source>System</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="269"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="270"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="271"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="272"/>
         <source>%1 jumps</source>
         <translation>%1 skoków</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="280"/>
-        <location filename="../MarketOrderBuyModel.cpp" line="284"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="281"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="285"/>
         <source>unknown</source>
         <translation>nieznany</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="287"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="288"/>
         <source>today</source>
         <translation>dziś</translation>
     </message>
     <message numerus="yes">
-        <location filename="../MarketOrderBuyModel.cpp" line="287"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="288"/>
         <source>%n day(s)</source>
         <translation>
             <numerusform>%n dzień</numerusform>
@@ -3823,57 +3823,57 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         </translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="393"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="394"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="395"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="396"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="397"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="398"/>
         <source>Status</source>
         <translation>Stan</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="399"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="400"/>
         <source>Price</source>
         <translation>Cena</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="401"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="402"/>
         <source>Price status</source>
         <translation>Stan ceny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="403"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="404"/>
         <source>Price difference</source>
         <translation>Różnica cen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="405"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="406"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="407"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="408"/>
         <source>Total</source>
         <translation>Suma</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="409"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="410"/>
         <source>Delta</source>
         <translation>Zmiana</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="411"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="412"/>
         <source>Order margin</source>
         <translation>Marża zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="413"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="414"/>
         <source>Best margin</source>
         <translation>Najlepsza marża</translation>
     </message>
@@ -3882,37 +3882,37 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Marża</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="415"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="416"/>
         <source>Range</source>
         <translation>Zasięg</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="417"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="418"/>
         <source>Min. quantity</source>
         <translation>Min. ilość</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="419"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="420"/>
         <source>ETA</source>
         <translation>ETA</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="421"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="422"/>
         <source>Time left</source>
         <translation>Pozostały czas</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="423"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="424"/>
         <source>Order age</source>
         <translation>Wiek zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="425"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="426"/>
         <source>First issued</source>
         <translation>Wystawiono</translation>
     </message>
     <message>
-        <location filename="../MarketOrderBuyModel.cpp" line="429"/>
+        <location filename="../MarketOrderBuyModel.cpp" line="430"/>
         <source>Owner</source>
         <translation>Właściciel</translation>
     </message>
@@ -4080,82 +4080,82 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderSellModel</name>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="88"/>
+        <location filename="../MarketOrderSellModel.cpp" line="89"/>
         <source>No price data -&gt; Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation>Brak danych o cenach -&gt; Zaimporuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży.</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="94"/>
+        <location filename="../MarketOrderSellModel.cpp" line="95"/>
         <source>You have been undercut. Current price is %1 (%2 different from yours).
 Click the icon for details.</source>
         <translation>Twoja cena została podcięta. Aktualna cena to %1 (różnica: %2).
 Kliknij na ikonę, aby zobaczyć więcej.</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="103"/>
+        <location filename="../MarketOrderSellModel.cpp" line="104"/>
         <source>Price data is too old (valid on %1).
 Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation>Dane o cenie są za stare (akutalizacja: %1).
 Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży.</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="107"/>
+        <location filename="../MarketOrderSellModel.cpp" line="108"/>
         <source>Your price was best on %1</source>
         <translation>Twoja cena była najlepsza: %1</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="260"/>
+        <location filename="../MarketOrderSellModel.cpp" line="261"/>
         <source>Active</source>
         <translation>Aktywne</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="261"/>
+        <location filename="../MarketOrderSellModel.cpp" line="262"/>
         <source>Closed</source>
         <translation>Zamknięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="262"/>
+        <location filename="../MarketOrderSellModel.cpp" line="263"/>
         <source>Fulfilled</source>
         <translation>Zakończone</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="263"/>
+        <location filename="../MarketOrderSellModel.cpp" line="264"/>
         <source>Cancelled</source>
         <translation>Anulowane</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="264"/>
+        <location filename="../MarketOrderSellModel.cpp" line="265"/>
         <source>Pending</source>
         <translation>Oczekujące</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="265"/>
+        <location filename="../MarketOrderSellModel.cpp" line="266"/>
         <source>Character Deleted</source>
         <translation>Usunięte</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="271"/>
+        <location filename="../MarketOrderSellModel.cpp" line="272"/>
         <source>Expired</source>
         <translation>Wygasłe</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="290"/>
+        <location filename="../MarketOrderSellModel.cpp" line="291"/>
         <source>No price data</source>
         <translation>Brak danych o cenie</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="295"/>
+        <location filename="../MarketOrderSellModel.cpp" line="296"/>
         <source>Data too old</source>
         <translation>Dane za stare</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="360"/>
-        <location filename="../MarketOrderSellModel.cpp" line="364"/>
+        <location filename="../MarketOrderSellModel.cpp" line="361"/>
+        <location filename="../MarketOrderSellModel.cpp" line="365"/>
         <source>unknown</source>
         <translation>nieznany</translation>
     </message>
     <message numerus="yes">
-        <location filename="../MarketOrderSellModel.cpp" line="367"/>
+        <location filename="../MarketOrderSellModel.cpp" line="368"/>
         <source>%n day(s)</source>
         <translation>
             <numerusform>%n dzień</numerusform>
@@ -4164,112 +4164,112 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         </translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="367"/>
+        <location filename="../MarketOrderSellModel.cpp" line="368"/>
         <source>today</source>
         <translation>dziś</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="488"/>
+        <location filename="../MarketOrderSellModel.cpp" line="489"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="490"/>
+        <location filename="../MarketOrderSellModel.cpp" line="491"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="492"/>
+        <location filename="../MarketOrderSellModel.cpp" line="493"/>
         <source>Status</source>
         <translation>Stan</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="494"/>
+        <location filename="../MarketOrderSellModel.cpp" line="495"/>
         <source>Custom cost</source>
         <translation>Koszt własny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="496"/>
+        <location filename="../MarketOrderSellModel.cpp" line="497"/>
         <source>Price</source>
         <translation>Cena</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="498"/>
+        <location filename="../MarketOrderSellModel.cpp" line="499"/>
         <source>Price status</source>
         <translation>Stan ceny</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="500"/>
+        <location filename="../MarketOrderSellModel.cpp" line="501"/>
         <source>Price difference</source>
         <translation>Różnica cen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="502"/>
+        <location filename="../MarketOrderSellModel.cpp" line="503"/>
         <source>Price difference, %1</source>
         <translation>Różnica cen, %1</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="504"/>
+        <location filename="../MarketOrderSellModel.cpp" line="505"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="506"/>
+        <location filename="../MarketOrderSellModel.cpp" line="507"/>
         <source>Total</source>
         <translation>Suma</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="508"/>
+        <location filename="../MarketOrderSellModel.cpp" line="509"/>
         <source>Delta</source>
         <translation>Zmiana</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="510"/>
+        <location filename="../MarketOrderSellModel.cpp" line="511"/>
         <source>Margin</source>
         <translation>Marża</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="512"/>
+        <location filename="../MarketOrderSellModel.cpp" line="513"/>
         <source>Profit</source>
         <translation>Zysk</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="514"/>
+        <location filename="../MarketOrderSellModel.cpp" line="515"/>
         <source>Total profit</source>
         <translation>Całkowity zysk</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="516"/>
+        <location filename="../MarketOrderSellModel.cpp" line="517"/>
         <source>Profit per item</source>
         <translation>Zysk jednostkowy</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="518"/>
+        <location filename="../MarketOrderSellModel.cpp" line="519"/>
         <source>ETA</source>
         <translation>ETA</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="520"/>
+        <location filename="../MarketOrderSellModel.cpp" line="521"/>
         <source>Time left</source>
         <translation>Pozostały czas</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="522"/>
+        <location filename="../MarketOrderSellModel.cpp" line="523"/>
         <source>Order age</source>
         <translation>Wiek zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="524"/>
+        <location filename="../MarketOrderSellModel.cpp" line="525"/>
         <source>First issued</source>
         <translation>Wystawiono</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="526"/>
+        <location filename="../MarketOrderSellModel.cpp" line="527"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="528"/>
+        <location filename="../MarketOrderSellModel.cpp" line="529"/>
         <source>Owner</source>
         <translation>Właściciel</translation>
     </message>
@@ -4561,6 +4561,25 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
 </context>
 <context>
+    <name>Evernus::OrderPreferencesWidget</name>
+    <message>
+        <location filename="../OrderPreferencesWidget.cpp" line="40"/>
+        <source>Max. market order age:</source>
+        <translation>Maks. wiek zleceń:</translation>
+    </message>
+    <message>
+        <location filename="../OrderPreferencesWidget.cpp" line="43"/>
+        <location filename="../OrderPreferencesWidget.cpp" line="55"/>
+        <source> days</source>
+        <translation> dni</translation>
+    </message>
+    <message>
+        <location filename="../OrderPreferencesWidget.cpp" line="48"/>
+        <source>Delete old entries</source>
+        <translation>Usuń stare wpisy</translation>
+    </message>
+</context>
+<context>
     <name>Evernus::PathPreferencesWidget</name>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="39"/>
@@ -4612,47 +4631,52 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::PreferencesDialog</name>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="62"/>
+        <location filename="../PreferencesDialog.cpp" line="63"/>
         <source>General</source>
         <translation>Ogólne</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="67"/>
+        <location filename="../PreferencesDialog.cpp" line="69"/>
         <source>Synchronization</source>
         <translation>Synchronizacja</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="63"/>
+        <location filename="../PreferencesDialog.cpp" line="64"/>
         <source>Paths</source>
         <translation>Ścieżki</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="64"/>
+        <location filename="../PreferencesDialog.cpp" line="65"/>
         <source>Sounds</source>
         <translation>Dźwięki</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="65"/>
+        <location filename="../PreferencesDialog.cpp" line="66"/>
         <source>Prices</source>
         <translation>Ceny</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="66"/>
+        <location filename="../PreferencesDialog.cpp" line="67"/>
+        <source>Orders</source>
+        <translation>Zlecenia</translation>
+    </message>
+    <message>
+        <location filename="../PreferencesDialog.cpp" line="68"/>
         <source>Network</source>
         <translation>Sieć</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="68"/>
+        <location filename="../PreferencesDialog.cpp" line="70"/>
         <source>In-Game Browser</source>
         <translation>Przeglądarka IGB</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="69"/>
+        <location filename="../PreferencesDialog.cpp" line="71"/>
         <source>Web Service</source>
         <translation>Usługa sieciowa</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="70"/>
+        <location filename="../PreferencesDialog.cpp" line="72"/>
         <source>Wallet</source>
         <translation>Portfel</translation>
     </message>
@@ -4661,27 +4685,27 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Uploader</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="71"/>
+        <location filename="../PreferencesDialog.cpp" line="73"/>
         <source>LMeve</source>
         <translation>LMeve</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="88"/>
+        <location filename="../PreferencesDialog.cpp" line="90"/>
         <source>Import</source>
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="92"/>
+        <location filename="../PreferencesDialog.cpp" line="94"/>
         <source>Character</source>
         <translation>Postać</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="93"/>
+        <location filename="../PreferencesDialog.cpp" line="95"/>
         <source>Assets</source>
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="94"/>
+        <location filename="../PreferencesDialog.cpp" line="96"/>
         <source>Contracts</source>
         <translation>Kontrakty</translation>
     </message>
@@ -4690,17 +4714,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Kontrakt</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="95"/>
+        <location filename="../PreferencesDialog.cpp" line="97"/>
         <source>Corporation</source>
         <translation>Korporacja</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="96"/>
+        <location filename="../PreferencesDialog.cpp" line="98"/>
         <source>Source</source>
         <translation>Źródło</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="121"/>
+        <location filename="../PreferencesDialog.cpp" line="123"/>
         <source>Preferences</source>
         <translation>Ustawienia</translation>
     </message>
@@ -4776,67 +4800,65 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Maks. wiek cen:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="120"/>
         <source>Max. market order age:</source>
-        <translation>Maks. wiek zleceń:</translation>
+        <translation type="vanished">Maks. wiek zleceń:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="123"/>
         <source> days</source>
-        <translation> dni</translation>
+        <translation type="vanished"> dni</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="129"/>
+        <location filename="../PricePreferencesWidget.cpp" line="122"/>
         <source>Plot number format:</source>
         <translation>Format liczb na wykresach:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="130"/>
+        <location filename="../PricePreferencesWidget.cpp" line="123"/>
         <source>beautified scientific</source>
         <translation>upiększony naukowy</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="131"/>
+        <location filename="../PricePreferencesWidget.cpp" line="124"/>
         <source>scientific</source>
         <translation>naukowy</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="132"/>
+        <location filename="../PricePreferencesWidget.cpp" line="125"/>
         <source>fixed</source>
         <translation>dziesiętny</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="134"/>
+        <location filename="../PricePreferencesWidget.cpp" line="127"/>
         <source>Combine character and corporation journal in statistics</source>
         <translation>Połącz dzienniki korporacji i postaci w statystykach</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="139"/>
+        <location filename="../PricePreferencesWidget.cpp" line="132"/>
         <source>Refresh prices after order import</source>
         <translation>Odśwież ceny po imporcie zleceń</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="143"/>
+        <location filename="../PricePreferencesWidget.cpp" line="136"/>
         <source>Auto-copy non-overbid prices with price helper</source>
         <translation>Auto. kopiowanie nieprzebitych cen</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="147"/>
+        <location filename="../PricePreferencesWidget.cpp" line="140"/>
         <source>Fast Price Copy</source>
         <translation>Szybkie kopiowanie ceny</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="155"/>
+        <location filename="../PricePreferencesWidget.cpp" line="148"/>
         <source>Enabled</source>
         <translation>Włączone</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="159"/>
+        <location filename="../PricePreferencesWidget.cpp" line="152"/>
         <source>Shourtcut:</source>
         <translation>Skrót klawiszowy:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="165"/>
+        <location filename="../PricePreferencesWidget.cpp" line="158"/>
         <source>Fast Price Copy allows you to update your orders in a very fast manner. Simply assign a keyboard shortcut, select an order in any market order view and press the shortcut to copy the updated price and automatically jump to the next order on the list. You can do this even when Evernus doesn&apos;t have the input focus - the keyboard shortcut works system-wide. You can use this to update your prices without ever leaving Eve client.</source>
         <translation>Możesz użyć szybkiego kopiowania ceny do znacznie szybszej aktualizacji zleceń. Ustaw wybrany skrót klawiszowy, wybierz zlecenie na jakimkolwiek widoku zleceń i użyj skrótu do skopiowania nowej ceny i automatycznego przeskoczenia do kolejnego zlecenia. Możesz to robić nawet, gdy Evernus nie jest na pierwszym tle - skrót działa w całym systemie. Możesz użyć tej metody do aktualizacji cen bez wychodzenia z klienta Eve.</translation>
     </message>
@@ -4846,32 +4868,32 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="43"/>
         <source>Regions</source>
-        <translation type="unfinished"></translation>
+        <translation>Regiony</translation>
     </message>
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="62"/>
         <source>Select all</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaznacz wszystkie</translation>
     </message>
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="66"/>
         <source>Deselect all</source>
-        <translation type="unfinished"></translation>
+        <translation>Odznacz wszystkie</translation>
     </message>
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="70"/>
         <source>Select without wormholes</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaznacz bez WH</translation>
     </message>
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="83"/>
         <source>Types</source>
-        <translation type="unfinished"></translation>
+        <translation>Typy</translation>
     </message>
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="118"/>
         <source>Select regions and types</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz regiony i typy</translation>
     </message>
 </context>
 <context>
@@ -5273,20 +5295,20 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../TradeableTypesTreeModel.cpp" line="217"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
 </context>
 <context>
     <name>Evernus::Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="159"/>
-        <location filename="../Updater.cpp" line="170"/>
-        <location filename="../Updater.cpp" line="180"/>
+        <location filename="../Updater.cpp" line="160"/>
+        <location filename="../Updater.cpp" line="171"/>
+        <location filename="../Updater.cpp" line="181"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="159"/>
+        <location filename="../Updater.cpp" line="160"/>
         <source>Error contacting update server: %1</source>
         <translation>Błąd odpytywania serwera akutalizacji: %1</translation>
     </message>
@@ -5295,10 +5317,10 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="119"/>
-        <location filename="../Updater.cpp" line="227"/>
-        <location filename="../Updater.cpp" line="234"/>
-        <location filename="../Updater.cpp" line="246"/>
+        <location filename="../Updater.cpp" line="120"/>
+        <location filename="../Updater.cpp" line="228"/>
+        <location filename="../Updater.cpp" line="235"/>
+        <location filename="../Updater.cpp" line="247"/>
         <source>Update</source>
         <translation>Aktualizacja</translation>
     </message>
@@ -5310,56 +5332,56 @@ Please click on &quot;Import all&quot; after the update.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="227"/>
+        <location filename="../Updater.cpp" line="228"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania wszystkich danych.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="234"/>
+        <location filename="../Updater.cpp" line="235"/>
         <source>This update requires re-importing all item prices.</source>
         <translation>Ta aktualizacja wymaga ponownego zaimportowania cen przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="246"/>
+        <location filename="../Updater.cpp" line="247"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania dziennika i transakcji korporacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="119"/>
+        <location filename="../Updater.cpp" line="120"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation>Wystąpił błąd podczas akutalizacji.
 Kopia zapasowa bazay danych została zapisana jako %1. Zajrzyj do pomocy online w celu uzyskania informacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="170"/>
+        <location filename="../Updater.cpp" line="171"/>
         <source>Error parsing response from the update server: %1</source>
         <translation>Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="180"/>
+        <location filename="../Updater.cpp" line="181"/>
         <source>Missing update version information!</source>
         <translation>Brak informacji o wersji!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="193"/>
+        <location filename="../Updater.cpp" line="194"/>
         <source>No update found</source>
         <translation>Brak aktualizacji</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="193"/>
+        <location filename="../Updater.cpp" line="194"/>
         <source>Your current version is up-to-date.</source>
         <translation>Twoja wersja jest najbardziej aktualna.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="199"/>
+        <location filename="../Updater.cpp" line="200"/>
         <source>Update found</source>
         <translation>Znaleziono aktualizację</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="199"/>
+        <location filename="../Updater.cpp" line="200"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation>Znaleziono nową wersję: %1

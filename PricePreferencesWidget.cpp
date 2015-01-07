@@ -116,13 +116,6 @@ namespace Evernus
         mPriceMaxAgeEdit->setSuffix("h");
         mPriceMaxAgeEdit->setValue(settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toUInt());
 
-        mMarketOrderMaxAgeEdit = new QSpinBox{this};
-        pricesLayout->addRow(tr("Max. market order age:"), mMarketOrderMaxAgeEdit);
-        mMarketOrderMaxAgeEdit->setMinimum(1);
-        mMarketOrderMaxAgeEdit->setMaximum(365);
-        mMarketOrderMaxAgeEdit->setSuffix(tr(" days"));
-        mMarketOrderMaxAgeEdit->setValue(settings.value(PriceSettings::marketOrderMaxAgeKey, PriceSettings::marketOrderMaxAgeDefault).toUInt());
-
         const auto plotNumberFormat = settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString();
 
         mPlotNumberFormatEdit = new QComboBox{this};
@@ -187,7 +180,6 @@ namespace Evernus
 #endif
         settings.setValue(PriceSettings::importLogWaitTimeKey, mImportLogWaitTimeEdit->value());
         settings.setValue(PriceSettings::priceMaxAgeKey, mPriceMaxAgeEdit->value());
-        settings.setValue(PriceSettings::marketOrderMaxAgeKey, mMarketOrderMaxAgeEdit->value());
         settings.setValue(UISettings::plotNumberFormatKey, mPlotNumberFormatEdit->currentData());
         settings.setValue(PriceSettings::combineCorpAndCharPlotsKey, mCombineCorpAndCharPlotsBtn->isChecked());
         settings.setValue(PriceSettings::refreshPricesWithOrdersKey, mRefreshPricesWithOrdersBtn->isChecked());

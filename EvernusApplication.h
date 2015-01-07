@@ -328,6 +328,7 @@ namespace Evernus
         void precacheCacheTimers();
         void precacheUpdateTimers();
         void deleteOldWalletEntries();
+        void deleteOldMarketOrders();
 
         void importCharacter(Character::IdType id, uint parentTask, const Key &key);
         void importExternalOrders(const std::string &importerName, const ExternalOrderImporter::TypeLocationPairs &target);
