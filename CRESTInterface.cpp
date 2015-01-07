@@ -258,7 +258,7 @@ namespace Evernus
     template<class T>
     void CRESTInterface::checkAuth(T &&continuation) const
     {
-        if (mExpiry < QDateTime::currentDateTime())
+        if (mExpiry < QDateTime::currentDateTime() || mAccessToken.isEmpty())
         {
             mPendingRequests.emplace_back(std::forward<T>(continuation));
             if (mPendingRequests.size() == 1)
@@ -280,8 +280,22 @@ namespace Evernus
         connect(reply, &QNetworkReply::finished, this, [=] {
             reply->deleteLater();
 
-            if (reply->error() != QNetworkReply::NoError)
+            const auto error = reply->error();
+            if (error != QNetworkReply::NoError)
             {
+                if (error == QNetworkReply::AuthenticationRequiredError && !mAccessToken.isEmpty())
+                {
+                    // expired token?
+                    mAccessToken.clear();
+                    checkAuth([=](const QString &error) {
+                        if (error.isEmpty())
+                            asyncGet(url, accept, continuation);
+                        else
+                            continuation(QJsonDocument{}, error);
+                    });
+                    return;
+                }
+
                 continuation(QJsonDocument{}, reply->errorString());
                 return;
             }
