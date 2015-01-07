@@ -78,7 +78,7 @@ namespace Evernus
         autoImportBoxLayout->addRow(tr("Auto-import time:"), mAutoImportTimeEdit);
         mAutoImportTimeEdit->setMinimum(5);
         mAutoImportTimeEdit->setMaximum(24 * 60);
-        mAutoImportTimeEdit->setSuffix(tr(" min"));
+        mAutoImportTimeEdit->setSuffix(tr("min"));
         mAutoImportTimeEdit->setValue(settings.value(ImportSettings::autoImportTimeKey, ImportSettings::autoImportTimerDefault).toInt());
 
         mEmailNotificationBtn = new QCheckBox{tr("Enable email notifications"), this};
