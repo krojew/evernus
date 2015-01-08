@@ -42,6 +42,7 @@ namespace Evernus
         item->setTypeId(record.value("type_id").toUInt());
         item->setLocationId((locationId.isNull()) ? (ItemData::LocationIdType{}) : (locationId.value<ItemData::LocationIdType::value_type>()));
         item->setQuantity(record.value("quantity").toUInt());
+        item->setRawQuantity(record.value("raw_quantity").toInt());
         item->setNew(false);
 
         return item;
@@ -55,7 +56,8 @@ namespace Evernus
             "parent_id BIGINT NULL REFERENCES %1(id) ON UPDATE CASCADE ON DELETE CASCADE,"
             "type_id INTEGER NOT NULL,"
             "location_id BIGINT NULL,"
-            "quantity INTEGER NOT NULL"
+            "quantity INTEGER NOT NULL,"
+            "raw_quantity INTEGER NOT NULL"
         ")"}.arg(getTableName()).arg(assetRepo.getTableName()).arg(assetRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(asset_list_id)"}.arg(getTableName()).arg(assetRepo.getTableName()));
@@ -127,6 +129,7 @@ namespace Evernus
         map["type_id"] << entity.getTypeId();
         map["location_id"] << ((locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));
         map["quantity"] << entity.getQuantity();
+        map["raw_quantity"] << entity.getRawQuantity();
 
         for (const auto &item : entity)
             fillProperties(*item, map);
@@ -140,7 +143,8 @@ namespace Evernus
             << "parent_id"
             << "type_id"
             << "location_id"
-            << "quantity";
+            << "quantity"
+            << "raw_quantity";
     }
 
     void ItemRepository::bindValues(const Item &entity, QSqlQuery &query) const
@@ -156,6 +160,7 @@ namespace Evernus
         query.bindValue(":type_id", entity.getTypeId());
         query.bindValue(":location_id", (locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));
         query.bindValue(":quantity", entity.getQuantity());
+        query.bindValue(":raw_quantity", entity.getRawQuantity());
     }
 
     void ItemRepository::bindPositionalValues(const Item &entity, QSqlQuery &query) const
@@ -171,5 +176,6 @@ namespace Evernus
         query.addBindValue(entity.getTypeId());
         query.addBindValue((locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));
         query.addBindValue(entity.getQuantity());
+        query.addBindValue(entity.getRawQuantity());
     }
 }

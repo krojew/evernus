@@ -54,6 +54,9 @@ namespace Evernus
         uint getQuantity() const noexcept;
         void setQuantity(uint value) noexcept;
 
+        int getRawQuantity() const noexcept;
+        void setRawQuantity(int value) noexcept;
+
         ItemData getItemData() const &;
         ItemData &&getItemData() && noexcept;
         void setItemData(const ItemData &data);

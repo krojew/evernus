@@ -30,11 +30,14 @@ namespace Evernus
     class MarketOrderRepository;
     class OrderScriptRepository;
     class MarketGroupRepository;
+    class UpdateTimerRepository;
     class FilterTextRepository;
+    class CacheTimerRepository;
     class CharacterRepository;
     class ItemCostRepository;
     class CorpKeyRepository;
     class EveTypeRepository;
+    class ItemRepository;
     class KeyRepository;
 
     class RepositoryProvider
@@ -65,5 +68,8 @@ namespace Evernus
         virtual const ExternalOrderRepository &getExternalOrderRepository() const noexcept = 0;
         virtual const EveTypeRepository &getEveTypeRepository() const noexcept = 0;
         virtual const MarketGroupRepository &getMarketGroupRepository() const noexcept = 0;
+        virtual const CacheTimerRepository &getCacheTimerRepository() const noexcept = 0;
+        virtual const UpdateTimerRepository &getUpdateTimerRepository() const noexcept = 0;
+        virtual const ItemRepository &getItemRepository() const noexcept = 0;
     };
 }

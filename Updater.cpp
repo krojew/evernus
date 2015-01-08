@@ -31,6 +31,8 @@
 #include "UpdateTimerRepository.h"
 #include "CacheTimerRepository.h"
 #include "EvernusApplication.h"
+#include "RepositoryProvider.h"
+#include "ItemRepository.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
 #include "OrderSettings.h"
@@ -40,18 +42,7 @@
 
 namespace Evernus
 {
-    void Updater::performVersionMigration(const CacheTimerRepository &cacheTimerRepo,
-                                          const UpdateTimerRepository &updateTimerRepo,
-                                          const Repository<Character> &characterRepo,
-                                          const ExternalOrderRepository &externalOrderRepo,
-                                          const MarketOrderRepository &characterOrderRepo,
-                                          const MarketOrderRepository &corporationOrderRepo,
-                                          const WalletJournalEntryRepository &walletJournalRepo,
-                                          const WalletJournalEntryRepository &corpWalletJournalRepo,
-                                          const WalletTransactionRepository &walletTransactionRepo,
-                                          const WalletTransactionRepository &corpWalletTransactionRepo,
-                                          const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
-                                          const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const
+    void Updater::performVersionMigration(const RepositoryProvider &provider) const
     {
         QSettings settings;
 
@@ -64,6 +55,20 @@ namespace Evernus
         const auto minorVersion = curVersion[1].toUInt();
 
         qDebug() << "Update from" << majorVersion << "." << minorVersion;
+
+        const auto &characterRepo = provider.getCharacterRepository();
+        const auto &cacheTimerRepo = provider.getCacheTimerRepository();
+        const auto &characterOrderRepo = provider.getMarketOrderRepository();
+        const auto &corporationOrderRepo = provider.getCorpMarketOrderRepository();
+        const auto &walletJournalRepo = provider.getWalletJournalEntryRepository();
+        const auto &corpWalletJournalRepo = provider.getCorpWalletJournalEntryRepository();
+        const auto &walletTransactionRepo = provider.getWalletTransactionRepository();
+        const auto &corpWalletTransactionRepo = provider.getCorpWalletTransactionRepository();
+        const auto &updateTimerRepo = provider.getUpdateTimerRepository();
+        const auto &orderValueSnapshotRepo = provider.getMarketOrderValueSnapshotRepository();
+        const auto &corpOrderValueSnapshotRepo = provider.getCorpMarketOrderValueSnapshotRepository();
+        const auto &externalOrderRepo = provider.getExternalOrderRepository();
+        const auto &itemRepo = provider.getItemRepository();
 
         const auto dbBak = DatabaseUtils::backupDatabase(characterRepo.getDatabase());
 
@@ -111,7 +116,7 @@ namespace Evernus
                         migrateTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
                     }
 
-                    migrateTo123(externalOrderRepo);
+                    migrateTo123(externalOrderRepo, itemRepo);
                 }
             }
         }
@@ -288,11 +293,12 @@ namespace Evernus
         updateShots(corpOrderValueSnapshotRepo);
     }
 
-    void Updater::migrateTo123(const ExternalOrderRepository &externalOrderRepo) const
+    void Updater::migrateTo123(const ExternalOrderRepository &externalOrderRepo, const ItemRepository &itemRepo) const
     {
         QSettings settings;
         settings.setValue(OrderSettings::deleteOldMarketOrdersKey, false);
 
         externalOrderRepo.exec(QString{"DROP INDEX IF EXISTS %1_type_id_location"}.arg(externalOrderRepo.getTableName()));
+        itemRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN raw_quantity INTEGER NOT NULL DEFAULT 0"}.arg(itemRepo.getTableName()));
     }
 }

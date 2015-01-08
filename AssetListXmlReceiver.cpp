@@ -77,5 +77,7 @@ namespace Evernus
             mCurrentElement->setLocationId(convert<ItemData::LocationIdType::value_type>(value.toString()));
         else if (localName == "quantity")
             mCurrentElement->setQuantity(convert<uint>(value.toString()));
+        else if (localName == "rawQuantity")
+            mCurrentElement->setRawQuantity(convert<int>(value.toString()));
     }
 }

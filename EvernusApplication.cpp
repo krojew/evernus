@@ -189,18 +189,7 @@ namespace Evernus
 
         showSplashMessage(tr("Loading..."), splash);
 
-        Updater::getInstance().performVersionMigration(*mCacheTimerRepository,
-                                                       *mUpdateTimerRepository,
-                                                       *mCharacterRepository,
-                                                       *mExternalOrderRepository,
-                                                       *mMarketOrderRepository,
-                                                       *mCorpMarketOrderRepository,
-                                                       *mWalletJournalEntryRepository,
-                                                       *mCorpWalletJournalEntryRepository,
-                                                       *mWalletTransactionRepository,
-                                                       *mCorpWalletTransactionRepository,
-                                                       *mMarketOrderValueSnapshotRepository,
-                                                       *mCorpMarketOrderValueSnapshotRepository);
+        Updater::getInstance().performVersionMigration(*this);
 
         settings.setValue(versionKey, applicationVersion());
 
@@ -646,6 +635,21 @@ namespace Evernus
     const MarketGroupRepository &EvernusApplication::getMarketGroupRepository() const noexcept
     {
         return *mMarketGroupRepository;
+    }
+
+    const CacheTimerRepository &EvernusApplication::getCacheTimerRepository() const noexcept
+    {
+        return *mCacheTimerRepository;
+    }
+
+    const UpdateTimerRepository &EvernusApplication::getUpdateTimerRepository() const noexcept
+    {
+        return *mUpdateTimerRepository;
+    }
+
+    const ItemRepository &EvernusApplication::getItemRepository() const noexcept
+    {
+        return *mItemRepository;
     }
 
     std::vector<std::shared_ptr<LMeveTask>> EvernusApplication::getTasks(Character::IdType characterId) const
@@ -2288,6 +2292,12 @@ namespace Evernus
 
     double EvernusApplication::getTotalItemSellValue(const Item &item, quint64 locationId) const
     {
+        const auto magicBPCQuantity = -2;
+
+        // return 0 for BPC
+        if (item.getRawQuantity() == magicBPCQuantity && mDataProvider->getTypeName(item.getTypeId()).endsWith("Blueprint"))
+            return 0.;
+
         QSettings settings;
         const auto throwOnUnavailable
             = settings.value(ImportSettings::updateOnlyFullAssetValueKey, ImportSettings::updateOnlyFullAssetValueDefault).toBool();

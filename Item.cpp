@@ -79,6 +79,16 @@ namespace Evernus
         mData.mQuantity = value;
     }
 
+    int Item::getRawQuantity() const noexcept
+    {
+        return mData.mRawQuantity;
+    }
+
+    void Item::setRawQuantity(int value) noexcept
+    {
+        mData.mRawQuantity = value;
+    }
+
     ItemData Item::getItemData() const &
     {
         return mData;

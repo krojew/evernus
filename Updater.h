@@ -28,6 +28,8 @@ namespace Evernus
     class MarketOrderRepository;
     class UpdateTimerRepository;
     class CacheTimerRepository;
+    class RepositoryProvider;
+    class ItemRepository;
     class ExternalOrder;
     class Character;
 
@@ -37,18 +39,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        void performVersionMigration(const CacheTimerRepository &cacheTimerRepo,
-                                     const UpdateTimerRepository &updateTimerRepo,
-                                     const Repository<Character> &characterRepo,
-                                     const ExternalOrderRepository &externalOrderRepo,
-                                     const MarketOrderRepository &characterOrderRepo,
-                                     const MarketOrderRepository &corporationOrderRepo,
-                                     const WalletJournalEntryRepository &walletJournalRepo,
-                                     const WalletJournalEntryRepository &corpWalletJournalRepo,
-                                     const WalletTransactionRepository &walletTransactionRepo,
-                                     const WalletTransactionRepository &corpWalletTransactionRepo,
-                                     const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
-                                     const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const;
+        void performVersionMigration(const RepositoryProvider &provider) const;
 
         static Updater &getInstance();
 
@@ -82,6 +73,7 @@ namespace Evernus
         void migrateTo113() const;
         void migrateTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
                           const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const;
-        void migrateTo123(const ExternalOrderRepository &externalOrderRepo) const;
+        void migrateTo123(const ExternalOrderRepository &externalOrderRepo,
+                          const ItemRepository &itemRepo) const;
     };
 }

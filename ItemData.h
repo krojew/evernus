@@ -29,5 +29,6 @@ namespace Evernus
         TypeIdType mTypeId = 0;
         LocationIdType mLocationId;
         uint mQuantity = 0;
+        int mRawQuantity = 0;
     };
 }
