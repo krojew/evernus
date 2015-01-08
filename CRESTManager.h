@@ -65,6 +65,9 @@ namespace Evernus
     public slots:
         void fetchToken();
 
+    private slots:
+        void handleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors);
+
     private:
         static const QString loginUrl;
         static const QString redirectUrl;

@@ -17,6 +17,7 @@
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QApplication>
+#include <QMessageBox>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QUrlQuery>
@@ -200,7 +201,11 @@ namespace Evernus
             url.setQuery(query);
 
             mAuthView = std::make_unique<QWebView>();
-            mAuthView->page()->networkAccessManager()->setCookieJar(new PersistentCookieJar{CRESTSettings::cookiesKey});
+
+            auto nam = mAuthView->page()->networkAccessManager();
+            nam->setCookieJar(new PersistentCookieJar{CRESTSettings::cookiesKey});
+            connect(nam, &QNetworkAccessManager::sslErrors, this, &CRESTManager::handleSslErrors);
+
             mAuthView->setWindowModality(Qt::ApplicationModal);
             mAuthView->setWindowTitle(tr("CREST Authentication"));
             mAuthView->installEventFilter(this);
@@ -306,5 +311,17 @@ namespace Evernus
                                    QDateTime::currentDateTime().addSecs(doc.object().value("expires_in").toInt() - 10));
             });
         }
+    }
+
+    void CRESTManager::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
+    {
+        QStringList errorStrings;
+        for (const auto &error : errors)
+            errorStrings << error.errorString();
+
+        const auto ret = QMessageBox::question(mAuthView.get(), tr("CREST error"), tr(
+            "EVE login page certificate contains errors:\n%1\nAre you sure you wish to proceed (doing so can compromise your account security)?").arg(errorStrings.join("\n")));
+        if (ret == QMessageBox::Yes)
+            reply->ignoreSslErrors();
     }
 }
