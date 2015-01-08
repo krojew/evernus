@@ -28,6 +28,7 @@ namespace Evernus
         const auto mainWindowAlwaysOnTopDefault = false;
         const auto ignoreExistingOrdersDefault = true;
         const auto dontSaveLargeOrdersDefault = true;
+        const auto useUTCDatesDefault = false;
 
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
@@ -45,5 +46,6 @@ namespace Evernus
         const auto mainWindowAlwaysOnTopKey = "ui/mainWindow/alwaysOnTop";
         const auto ignoreExistingOrdersKey = "ui/analysis/ignoreExisting";
         const auto dontSaveLargeOrdersKey = "ui/analysis/dontSaveOrders";
+        const auto useUTCDatesKey = "ui/global/useUTCDates";
     }
 }

@@ -75,10 +75,14 @@ namespace Evernus
         generalGroupLayout->addWidget(mOmitCurrencySymbolBtn);
         mOmitCurrencySymbolBtn->setChecked(settings.value(UISettings::omitCurrencySymbolKey, UISettings::omitCurrencySymbolDefault).toBool());
 
+        mUseUTCDatesBtn = new QCheckBox{tr("Force UTC date/time (requires restart)"), this};
+        generalGroupLayout->addWidget(mUseUTCDatesBtn);
+        mUseUTCDatesBtn->setChecked(settings.value(UISettings::useUTCDatesKey, UISettings::useUTCDatesDefault).toBool());
+
         auto dtFormatLayout = new QHBoxLayout{};
         generalGroupLayout->addLayout(dtFormatLayout);
 
-        dtFormatLayout->addWidget(new QLabel{tr("Date/time format:"), this});
+        dtFormatLayout->addWidget(new QLabel{tr("Date/time format (requires restart):"), this});
 
         mDateFormEdit
             = new QLineEdit{settings.value(UISettings::dateTimeFormatKey, locale().dateTimeFormat(QLocale::ShortFormat)).toString(), this};
@@ -95,6 +99,7 @@ namespace Evernus
         settings.setValue(UpdaterSettings::autoUpdateKey, mAutoUpdateBtn->isChecked());
         settings.setValue(UISettings::usePackagedVolumeKey, mUsePackagedVolumeBtn->isChecked());
         settings.setValue(UISettings::omitCurrencySymbolKey, mOmitCurrencySymbolBtn->isChecked());
+        settings.setValue(UISettings::useUTCDatesKey, mUseUTCDatesBtn->isChecked());
         settings.setValue(UISettings::dateTimeFormatKey, mDateFormEdit->text());
     }
 }

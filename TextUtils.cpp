@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QCoreApplication>
+#include <QDateTime>
 #include <QSettings>
 #include <QLocale>
 
@@ -48,7 +49,9 @@ namespace Evernus
         QString dateTimeToString(const QDateTime &dt, const QLocale &locale)
         {
             QSettings settings;
-            return locale.toString(dt, settings.value(UISettings::dateTimeFormatKey, locale.dateTimeFormat(QLocale::ShortFormat)).toString());
+
+            const auto useUTC = settings.value(UISettings::useUTCDatesKey, UISettings::useUTCDatesDefault).toBool();
+            return locale.toString((useUTC) ? (dt.toUTC()) : (dt), settings.value(UISettings::dateTimeFormatKey, locale.dateTimeFormat(QLocale::ShortFormat)).toString());
         }
 
         QString currencyToString(double value, const QLocale &locale)
