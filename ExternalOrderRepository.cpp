@@ -261,29 +261,6 @@ namespace Evernus
         return result;
     }
 
-    ExternalOrderImporter::TypeLocationPairs ExternalOrderRepository
-    ::fetchDistinctTypesAndRegions(const QDateTime &from) const
-    {
-        ExternalOrderImporter::TypeLocationPairs result;
-
-        auto query = prepare(QString{"SELECT DISTINCT type_id, region_id FROM %1 WHERE update_time >= ?"}.arg(getTableName()));
-        query.bindValue(0, from);
-
-        DatabaseUtils::execQuery(query);
-
-        const auto size = query.size();
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-        {
-            result.emplace(query.value(0).value<ExternalOrderImporter::TypeLocationPair::first_type>(),
-                           query.value(1).value<ExternalOrderImporter::TypeLocationPair::second_type>());
-        }
-
-        return result;
-    }
-
     void ExternalOrderRepository::removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const
     {
         if (set.empty())

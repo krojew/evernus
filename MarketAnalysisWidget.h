@@ -80,7 +80,6 @@ namespace Evernus
 
         CRESTManager mManager;
 
-        QCheckBox *mIgnoreExistingOrdersBtn = nullptr;
         QCheckBox *mDontSaveBtn = nullptr;
         QComboBox *mRegionCombo = nullptr;
         QStackedWidget *mDataStack = nullptr;

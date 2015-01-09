@@ -70,15 +70,6 @@ namespace Evernus
 
         QSettings settings;
 
-        mIgnoreExistingOrdersBtn = new QCheckBox{tr("Don't refresh existing up-to-date data"), this};
-        toolBarLayout->addWidget(mIgnoreExistingOrdersBtn);
-        mIgnoreExistingOrdersBtn->setChecked(
-            settings.value(UISettings::ignoreExistingOrdersKey, UISettings::ignoreExistingOrdersDefault).toBool());
-        connect(mIgnoreExistingOrdersBtn, &QCheckBox::toggled, [](auto checked) {
-            QSettings settings;
-            settings.setValue(UISettings::ignoreExistingOrdersKey, checked);
-        });
-
         mDontSaveBtn = new QCheckBox{tr("Don't save imported orders (huge performance gain)"), this};
         toolBarLayout->addWidget(mDontSaveBtn);
         mDontSaveBtn->setChecked(
@@ -142,15 +133,6 @@ namespace Evernus
             return;
         }
 
-        ExternalOrderImporter::TypeLocationPairs ignored;
-        if (mIgnoreExistingOrdersBtn->isChecked())
-        {
-            QSettings settings;
-            const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
-
-            ignored = mOrderRepo.fetchDistinctTypesAndRegions(QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge));
-        }
-
         mPreparingRequests = true;
         BOOST_SCOPE_EXIT(this_) {
             this_->mPreparingRequests = false;
@@ -166,9 +148,6 @@ namespace Evernus
 
         for (const auto &pair : pairs)
         {
-            if (ignored.find(pair) != std::end(ignored))
-                continue;
-
             ++mOrderRequestCount;
             ++mHistoryRequestCount;
 
