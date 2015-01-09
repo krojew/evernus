@@ -12,9 +12,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QStackedWidget>
+#include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QHeaderView>
 #include <QPushButton>
+#include <QTableView>
 #include <QComboBox>
 #include <QCheckBox>
 #include <QSettings>
@@ -25,6 +29,7 @@
 
 #include "ExternalOrderRepository.h"
 #include "RegionTypeSelectDialog.h"
+#include "CharacterRepository.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "TaskManager.h"
@@ -41,6 +46,7 @@ namespace Evernus
                                                const ExternalOrderRepository &orderRepo,
                                                const EveTypeRepository &typeRepo,
                                                const MarketGroupRepository &groupRepo,
+                                               const CharacterRepository &characterRepo,
                                                QWidget *parent)
         : QWidget(parent)
         , mDataProvider(dataProvider)
@@ -48,14 +54,16 @@ namespace Evernus
         , mOrderRepo(orderRepo)
         , mTypeRepo(typeRepo)
         , mGroupRepo(groupRepo)
+        , mCharacterRepo(characterRepo)
         , mManager(std::move(crestClientId), std::move(crestClientSecret), mDataProvider)
+        , mTypeDataModel(mDataProvider)
     {
         auto mainLayout = new QVBoxLayout{this};
 
         auto toolBarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolBarLayout);
 
-        auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import order"), this};
+        auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import orders"), this};
         toolBarLayout->addWidget(importFromWeb);
         importFromWeb->setFlat(true);
         connect(importFromWeb, &QPushButton::clicked, this, &MarketAnalysisWidget::prepareOrderImport);
@@ -82,14 +90,40 @@ namespace Evernus
 
         toolBarLayout->addWidget(new QLabel{tr("Region:"), this});
 
-        auto regionCombo = new QComboBox{this};
-        toolBarLayout->addWidget(regionCombo);
+        mRegionCombo = new QComboBox{this};
+        toolBarLayout->addWidget(mRegionCombo);
 
         const auto regions = mDataProvider.getRegions();
         for (const auto &region : regions)
-            regionCombo->addItem(region.second, region.first);
+            mRegionCombo->addItem(region.second, region.first);
+
+        connect(mRegionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(showForCurrentRegion()));
 
         toolBarLayout->addStretch();
+
+        mDataStack = new QStackedWidget{this};
+        mainLayout->addWidget(mDataStack);
+
+        auto waitingLabel = new QLabel{tr("Calculating data..."), this};
+        mDataStack->addWidget(waitingLabel);
+        waitingLabel->setAlignment(Qt::AlignCenter);
+
+        mTypeViewProxy.setSortRole(Qt::UserRole);
+        mTypeViewProxy.setSourceModel(&mTypeDataModel);
+
+        mTypeDataView = new QTableView{this};
+        mDataStack->addWidget(mTypeDataView);
+        mTypeDataView->setSortingEnabled(true);
+        mTypeDataView->setAlternatingRowColors(true);
+        mTypeDataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        mTypeDataView->setModel(&mTypeViewProxy);
+
+        mDataStack->setCurrentWidget(mTypeDataView);
+    }
+
+    void MarketAnalysisWidget::setCharacter(Character::IdType id)
+    {
+        mTypeDataModel.setCharacter(mCharacterRepo.find(id));
     }
 
     void MarketAnalysisWidget::prepareOrderImport()
@@ -103,7 +137,10 @@ namespace Evernus
     void MarketAnalysisWidget::importData(const ExternalOrderImporter::TypeLocationPairs &pairs)
     {
         if (pairs.empty())
+        {
+            QMessageBox::information(this, tr("Order import"), tr("Please select at least one region and type."));
             return;
+        }
 
         ExternalOrderImporter::TypeLocationPairs ignored;
         if (mIgnoreExistingOrdersBtn->isChecked())
@@ -149,12 +186,28 @@ namespace Evernus
             mTaskManager.endTask(mOrderSubtask);
         if (mHistoryRequestCount == 0)
             mTaskManager.endTask(mHistorySubtask);
+
+        checkCompletion();
     }
 
     void MarketAnalysisWidget::storeOrders()
     {
         emit updateExternalOrders(mOrders);
+
         mTaskManager.endTask(mOrderSubtask);
+        checkCompletion();
+    }
+
+    void MarketAnalysisWidget::showForCurrentRegion()
+    {
+        const auto region = mRegionCombo->currentData().toUInt();
+        if (region != 0)
+        {
+            mDataStack->setCurrentIndex(waitingLabelIndex);
+            mDataStack->repaint();
+            mTypeDataModel.setData(mOrders, mHistory[region], region);
+            mDataStack->setCurrentWidget(mTypeDataView);
+        }
     }
 
     void MarketAnalysisWidget::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)
@@ -163,7 +216,8 @@ namespace Evernus
 
         qDebug() << mOrderRequestCount << " order remaining; error:" << errorText;
 
-        mTaskManager.updateTask(mOrderSubtask, tr("Waiting for %1 order server replies...").arg(mOrderRequestCount));
+        if ((mOrderRequestCount % 10) == 0)
+            mTaskManager.updateTask(mOrderSubtask, tr("Waiting for %1 order server replies...").arg(mOrderRequestCount));
 
         if (!errorText.isEmpty())
         {
@@ -200,6 +254,7 @@ namespace Evernus
                     else
                     {
                         mTaskManager.endTask(mOrderSubtask);
+                        checkCompletion();
                     }
                 }
                 else
@@ -218,7 +273,8 @@ namespace Evernus
 
         qDebug() << mHistoryRequestCount << " history remaining; error:" << errorText;
 
-        mTaskManager.updateTask(mHistorySubtask, tr("Waiting for %1 history server replies...").arg(mHistoryRequestCount));
+        if ((mHistoryRequestCount % 10) == 0)
+            mTaskManager.updateTask(mHistorySubtask, tr("Waiting for %1 history server replies...").arg(mHistoryRequestCount));
 
         if (!errorText.isEmpty())
         {
@@ -244,6 +300,7 @@ namespace Evernus
                 if (mAggregatedHistoryErrors.isEmpty())
                 {
                     mTaskManager.endTask(mHistorySubtask);
+                    checkCompletion();
                 }
                 else
                 {
@@ -252,5 +309,11 @@ namespace Evernus
                 }
             }
         }
+    }
+
+    void MarketAnalysisWidget::checkCompletion()
+    {
+        if (mOrderRequestCount == 0 && mHistoryRequestCount == 0)
+            showForCurrentRegion();
     }
 }

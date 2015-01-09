@@ -14,21 +14,25 @@
  */
 #pragma once
 
-#include <unordered_map>
-
+#include <QSortFilterProxyModel>
 #include <QWidget>
 
+#include "TypeAggregatedMarketDataModel.h"
 #include "ExternalOrderImporter.h"
 #include "ExternalOrder.h"
 #include "TaskConstants.h"
 #include "CRESTManager.h"
 
+class QStackedWidget;
+class QTableView;
+class QComboBox;
 class QCheckBox;
 
 namespace Evernus
 {
     class ExternalOrderRepository;
     class MarketGroupRepository;
+    class CharacterRepository;
     class EveTypeRepository;
     class EveDataProvider;
     class TaskManager;
@@ -46,11 +50,15 @@ namespace Evernus
                              const ExternalOrderRepository &orderRepo,
                              const EveTypeRepository &typeRepo,
                              const MarketGroupRepository &groupRepo,
+                             const CharacterRepository &characterRepo,
                              QWidget *parent = nullptr);
         virtual ~MarketAnalysisWidget() = default;
 
     signals:
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
+
+    public slots:
+        void setCharacter(Character::IdType id);
 
     private slots:
         void prepareOrderImport();
@@ -58,17 +66,25 @@ namespace Evernus
         void importData(const ExternalOrderImporter::TypeLocationPairs &pairs);
         void storeOrders();
 
+        void showForCurrentRegion();
+
     private:
+        static const auto waitingLabelIndex = 0;
+
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
         const ExternalOrderRepository &mOrderRepo;
         const EveTypeRepository &mTypeRepo;
         const MarketGroupRepository &mGroupRepo;
+        const CharacterRepository &mCharacterRepo;
 
         CRESTManager mManager;
 
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;
         QCheckBox *mDontSaveBtn = nullptr;
+        QComboBox *mRegionCombo = nullptr;
+        QStackedWidget *mDataStack = nullptr;
+        QTableView *mTypeDataView = nullptr;
 
         uint mOrderRequestCount = 0, mHistoryRequestCount = 0;
         bool mPreparingRequests = false;
@@ -77,12 +93,16 @@ namespace Evernus
         uint mHistorySubtask = TaskConstants::invalidTask;
 
         std::vector<ExternalOrder> mOrders;
-        std::unordered_map<uint, std::unordered_map<EveType::IdType, std::map<QDate, MarketHistoryEntry>>>
-        mHistory;
+        std::unordered_map<uint, TypeAggregatedMarketDataModel::HistoryMap> mHistory;
 
         QStringList mAggregatedOrderErrors, mAggregatedHistoryErrors;
 
+        TypeAggregatedMarketDataModel mTypeDataModel;
+        QSortFilterProxyModel mTypeViewProxy;
+
         void processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText);
         void processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText);
+
+        void checkCompletion();
     };
 }

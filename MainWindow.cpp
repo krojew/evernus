@@ -821,6 +821,7 @@ namespace Evernus
                                                           mRepositoryProvider.getExternalOrderRepository(),
                                                           mRepositoryProvider.getEveTypeRepository(),
                                                           mRepositoryProvider.getMarketGroupRepository(),
+                                                          mRepositoryProvider.getCharacterRepository(),
                                                           this};
         connect(marketAnalysisTab, &MarketAnalysisWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
         addTab(marketAnalysisTab, tr("Market analysis"));
