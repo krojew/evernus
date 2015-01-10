@@ -67,6 +67,7 @@ namespace Evernus
         void storeOrders();
 
         void showForCurrentRegion();
+        void showForCurrentRegionAndSolarSystem();
 
     private:
         static const auto waitingLabelIndex = 0;
@@ -82,6 +83,7 @@ namespace Evernus
 
         QCheckBox *mDontSaveBtn = nullptr;
         QComboBox *mRegionCombo = nullptr;
+        QComboBox *mSolarSystemCombo = nullptr;
         QStackedWidget *mDataStack = nullptr;
         QTableView *mTypeDataView = nullptr;
 
@@ -103,5 +105,7 @@ namespace Evernus
         void processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText);
 
         void checkCompletion();
+
+        void fillSolarSystems(uint regionId);
     };
 }

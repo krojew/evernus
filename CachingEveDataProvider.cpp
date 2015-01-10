@@ -442,9 +442,9 @@ namespace Evernus
         return mConstellationCache[regionId];
     }
 
-    const std::vector<EveDataProvider::MapLocation> &CachingEveDataProvider::getSolarSystems(uint constellationId) const
+    const std::vector<EveDataProvider::MapLocation> &CachingEveDataProvider::getSolarSystemsForConstellation(uint constellationId) const
     {
-        if (mSolarSystemCache.find(constellationId) == std::end(mSolarSystemCache))
+        if (mConstellationSolarSystemCache.find(constellationId) == std::end(mConstellationSolarSystemCache))
         {
             QSqlQuery query{mEveDb};
             query.prepare("SELECT solarSystemID, solarSystemName FROM mapSolarSystems WHERE constellationID = ? ORDER BY solarSystemName");
@@ -452,7 +452,7 @@ namespace Evernus
 
             DatabaseUtils::execQuery(query);
 
-            auto &systems = mSolarSystemCache[constellationId];
+            auto &systems = mConstellationSolarSystemCache[constellationId];
 
             const auto size = query.size();
             if (size > 0)
@@ -462,7 +462,30 @@ namespace Evernus
                 systems.emplace_back(std::make_pair(query.value(0).toUInt(), query.value(1).toString()));
         }
 
-        return mSolarSystemCache[constellationId];
+        return mConstellationSolarSystemCache[constellationId];
+    }
+
+    const std::vector<EveDataProvider::MapLocation> &CachingEveDataProvider::getSolarSystemsForRegion(uint regionId) const
+    {
+        if (mRegionSolarSystemCache.find(regionId) == std::end(mRegionSolarSystemCache))
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT solarSystemID, solarSystemName FROM mapSolarSystems WHERE regionID = ? ORDER BY solarSystemName");
+            query.bindValue(0, regionId);
+
+            DatabaseUtils::execQuery(query);
+
+            auto &systems = mRegionSolarSystemCache[regionId];
+
+            const auto size = query.size();
+            if (size > 0)
+                systems.reserve(size);
+
+            while (query.next())
+                systems.emplace_back(std::make_pair(query.value(0).toUInt(), query.value(1).toString()));
+        }
+
+        return mRegionSolarSystemCache[regionId];
     }
 
     const std::vector<EveDataProvider::Station> &CachingEveDataProvider::getStations(uint solarSystemId) const

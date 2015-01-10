@@ -83,12 +83,24 @@ namespace Evernus
 
         mRegionCombo = new QComboBox{this};
         toolBarLayout->addWidget(mRegionCombo);
+        mRegionCombo->setEditable(true);
+        mRegionCombo->setInsertPolicy(QComboBox::NoInsert);
 
         const auto regions = mDataProvider.getRegions();
         for (const auto &region : regions)
             mRegionCombo->addItem(region.second, region.first);
 
         connect(mRegionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(showForCurrentRegion()));
+
+        toolBarLayout->addWidget(new QLabel{tr("Limit to solar system:"), this});
+
+        mSolarSystemCombo = new QComboBox{this};
+        toolBarLayout->addWidget(mSolarSystemCombo);
+        mSolarSystemCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        mSolarSystemCombo->setEditable(true);
+        mSolarSystemCombo->setInsertPolicy(QComboBox::NoInsert);
+        fillSolarSystems(mRegionCombo->currentData().toUInt());
+        connect(mSolarSystemCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(showForCurrentRegionAndSolarSystem()));
 
         toolBarLayout->addStretch();
 
@@ -184,7 +196,25 @@ namespace Evernus
         {
             mDataStack->setCurrentIndex(waitingLabelIndex);
             mDataStack->repaint();
+
+            fillSolarSystems(region);
             mTypeDataModel.setData(mOrders, mHistory[region], region);
+
+            mDataStack->setCurrentWidget(mTypeDataView);
+        }
+    }
+
+    void MarketAnalysisWidget::showForCurrentRegionAndSolarSystem()
+    {
+        const auto region = mRegionCombo->currentData().toUInt();
+        if (region != 0)
+        {
+            mDataStack->setCurrentIndex(waitingLabelIndex);
+            mDataStack->repaint();
+
+            const auto system = mSolarSystemCombo->currentData().toUInt();
+            mTypeDataModel.setData(mOrders, mHistory[region], region, system);
+
             mDataStack->setCurrentWidget(mTypeDataView);
         }
     }
@@ -294,5 +324,20 @@ namespace Evernus
     {
         if (mOrderRequestCount == 0 && mHistoryRequestCount == 0)
             showForCurrentRegion();
+    }
+
+    void MarketAnalysisWidget::fillSolarSystems(uint regionId)
+    {
+        mSolarSystemCombo->blockSignals(true);
+        mSolarSystemCombo->clear();
+
+        mSolarSystemCombo->addItem(tr("- all -"));
+
+        const auto &systems = mDataProvider.getSolarSystemsForRegion(regionId);
+        for (const auto &system : systems)
+            mSolarSystemCombo->addItem(system.second, system.first);
+
+        mSolarSystemCombo->setCurrentIndex(0);
+        mSolarSystemCombo->blockSignals(false);
     }
 }

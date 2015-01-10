@@ -49,7 +49,7 @@ namespace Evernus
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
-        void setData(const std::vector<ExternalOrder> &orders, const HistoryMap &history, uint region);
+        void setData(const std::vector<ExternalOrder> &orders, const HistoryMap &history, uint region, uint solarSystem = 0);
         void setCharacter(const std::shared_ptr<Character> &character);
 
         static int getScoreColumn() noexcept;

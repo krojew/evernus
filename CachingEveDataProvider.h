@@ -80,7 +80,8 @@ namespace Evernus
 
         virtual const std::vector<MapLocation> &getRegions() const override;
         virtual const std::vector<MapLocation> &getConstellations(uint regionId) const override;
-        virtual const std::vector<MapLocation> &getSolarSystems(uint constellationId) const override;
+        virtual const std::vector<MapLocation> &getSolarSystemsForConstellation(uint constellationId) const override;
+        virtual const std::vector<MapLocation> &getSolarSystemsForRegion(uint regionId) const override;
         virtual const std::vector<Station> &getStations(uint solarSystemId) const override;
 
         virtual double getSolarSystemSecurityStatus(uint solarSystemId) const override;
@@ -147,7 +148,7 @@ namespace Evernus
         mutable std::unordered_map<uint, double> mSecurityStatuses;
 
         mutable std::vector<MapLocation> mRegionCache;
-        mutable std::unordered_map<uint, std::vector<MapLocation>> mConstellationCache, mSolarSystemCache;
+        mutable std::unordered_map<uint, std::vector<MapLocation>> mConstellationCache, mConstellationSolarSystemCache, mRegionSolarSystemCache;
         mutable std::unordered_map<uint, std::vector<Station>> mStationCache;
 
         mutable std::unordered_map<uint, QString> mRegionNameCache;

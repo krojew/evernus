@@ -96,7 +96,7 @@ namespace Evernus
             }
         case LocationNode::Type::Constellation:
             {
-                const auto &systems = mDataProvider.getSolarSystems(node->mId);
+                const auto &systems = mDataProvider.getSolarSystemsForConstellation(node->mId);
                 auto &target = mSolarSystems[node->mId];
 
                 target.reserve(systems.size());
