@@ -14,9 +14,9 @@
  */
 #pragma once
 
-#include <QSortFilterProxyModel>
 #include <QWidget>
 
+#include "TypeAggregatedMarketDataFilterProxyModel.h"
 #include "TypeAggregatedMarketDataModel.h"
 #include "ExternalOrderImporter.h"
 #include "ExternalOrder.h"
@@ -27,6 +27,7 @@ class QStackedWidget;
 class QTableView;
 class QComboBox;
 class QCheckBox;
+class QLineEdit;
 
 namespace Evernus
 {
@@ -69,6 +70,8 @@ namespace Evernus
         void showForCurrentRegion();
         void showForCurrentRegionAndSolarSystem();
 
+        void applyFilter();
+
     private:
         static const auto waitingLabelIndex = 0;
 
@@ -86,6 +89,10 @@ namespace Evernus
         QComboBox *mSolarSystemCombo = nullptr;
         QStackedWidget *mDataStack = nullptr;
         QTableView *mTypeDataView = nullptr;
+        QLineEdit *mMinVolumeEdit = nullptr;
+        QLineEdit *mMaxVolumeEdit = nullptr;
+        QLineEdit *mMinMarginEdit = nullptr;
+        QLineEdit *mMaxMarginEdit = nullptr;
 
         uint mOrderRequestCount = 0, mHistoryRequestCount = 0;
         bool mPreparingRequests = false;
@@ -99,7 +106,7 @@ namespace Evernus
         QStringList mAggregatedOrderErrors, mAggregatedHistoryErrors;
 
         TypeAggregatedMarketDataModel mTypeDataModel;
-        QSortFilterProxyModel mTypeViewProxy;
+        TypeAggregatedMarketDataFilterProxyModel mTypeViewProxy;
 
         void processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText);
         void processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText);

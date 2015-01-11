@@ -12,8 +12,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <boost/scope_exit.hpp>
+
 #include <QStackedWidget>
-#include <QMessageBox>
+#include <QIntValidator>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
@@ -21,19 +23,18 @@
 #include <QTableView>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QLineEdit>
 #include <QSettings>
 #include <QLabel>
 #include <QDebug>
 
-#include <boost/scope_exit.hpp>
-
 #include "ExternalOrderRepository.h"
 #include "RegionTypeSelectDialog.h"
+#include "MarketAnalysisSettings.h"
 #include "CharacterRepository.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "TaskManager.h"
-#include "UISettings.h"
 
 #include "MarketAnalysisWidget.h"
 
@@ -57,6 +58,7 @@ namespace Evernus
         , mCharacterRepo(characterRepo)
         , mManager(std::move(crestClientId), std::move(crestClientSecret), mDataProvider)
         , mTypeDataModel(mDataProvider)
+        , mTypeViewProxy(TypeAggregatedMarketDataModel::getVolumeColumn(), TypeAggregatedMarketDataModel::getMarginColumn())
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -73,10 +75,10 @@ namespace Evernus
         mDontSaveBtn = new QCheckBox{tr("Don't save imported orders (huge performance gain)"), this};
         toolBarLayout->addWidget(mDontSaveBtn);
         mDontSaveBtn->setChecked(
-            settings.value(UISettings::dontSaveLargeOrdersKey, UISettings::dontSaveLargeOrdersDefault).toBool());
+            settings.value(MarketAnalysisSettings::dontSaveLargeOrdersKey, MarketAnalysisSettings::dontSaveLargeOrdersDefault).toBool());
         connect(mDontSaveBtn, &QCheckBox::toggled, [](auto checked) {
             QSettings settings;
-            settings.setValue(UISettings::dontSaveLargeOrdersKey, checked);
+            settings.setValue(MarketAnalysisSettings::dontSaveLargeOrdersKey, checked);
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Region:"), this});
@@ -101,6 +103,49 @@ namespace Evernus
         mSolarSystemCombo->setInsertPolicy(QComboBox::NoInsert);
         fillSolarSystems(mRegionCombo->currentData().toUInt());
         connect(mSolarSystemCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(showForCurrentRegionAndSolarSystem()));
+
+        auto minVolumeValidator = new QIntValidator{this};
+        minVolumeValidator->setBottom(0);
+
+        toolBarLayout->addWidget(new QLabel{tr("Volume:"), this});
+
+        auto value = settings.value(MarketAnalysisSettings::minVolumeFilterKey);
+
+        mMinVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinVolumeEdit);
+        mMinVolumeEdit->setValidator(minVolumeValidator);
+
+        toolBarLayout->addWidget(new QLabel{"-", this});
+
+        value = settings.value(MarketAnalysisSettings::maxVolumeFilterKey);
+
+        mMaxVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxVolumeEdit);
+        mMaxVolumeEdit->setValidator(minVolumeValidator);
+
+        auto minMarginValidator = new QIntValidator{this};
+
+        toolBarLayout->addWidget(new QLabel{tr("Margin:"), this});
+
+        value = settings.value(MarketAnalysisSettings::minMarginFilterKey);
+
+        mMinMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinMarginEdit);
+        mMinMarginEdit->setValidator(minMarginValidator);
+        mMinMarginEdit->setPlaceholderText(locale().percent());
+
+        toolBarLayout->addWidget(new QLabel{"-", this});
+
+        value = settings.value(MarketAnalysisSettings::maxMarginFilterKey);
+
+        mMaxMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxMarginEdit);
+        mMaxMarginEdit->setValidator(minMarginValidator);
+        mMaxMarginEdit->setPlaceholderText(locale().percent());
+
+        auto filterBtn = new QPushButton{tr("Filter"), this};
+        toolBarLayout->addWidget(filterBtn);
+        connect(filterBtn, &QPushButton::clicked, this, &MarketAnalysisWidget::applyFilter);
 
         toolBarLayout->addStretch();
 
@@ -139,12 +184,6 @@ namespace Evernus
 
     void MarketAnalysisWidget::importData(const ExternalOrderImporter::TypeLocationPairs &pairs)
     {
-        if (pairs.empty())
-        {
-            QMessageBox::information(this, tr("Order import"), tr("Please select at least one region and type."));
-            return;
-        }
-
         mPreparingRequests = true;
         BOOST_SCOPE_EXIT(this_) {
             this_->mPreparingRequests = false;
@@ -217,6 +256,19 @@ namespace Evernus
 
             mDataStack->setCurrentWidget(mTypeDataView);
         }
+    }
+
+    void MarketAnalysisWidget::applyFilter()
+    {
+        const auto minFilter = mMinVolumeEdit->text();
+        const auto maxFilter = mMaxVolumeEdit->text();
+        const auto minMargin = mMinMarginEdit->text();
+        const auto maxMargin = mMaxMarginEdit->text();
+
+        mTypeViewProxy.setFilter((minFilter.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (minFilter.toUInt()),
+                                 (maxFilter.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (maxFilter.toUInt()),
+                                 (minMargin.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::MarginValueType{}) : (minMargin.toDouble()),
+                                 (maxMargin.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::MarginValueType{}) : (maxMargin.toDouble()));
     }
 
     void MarketAnalysisWidget::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)

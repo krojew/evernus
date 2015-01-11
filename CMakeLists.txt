@@ -471,6 +471,7 @@ add_executable(
     MarginToolDialog.cpp
     MarginToolDialog.h
     MarginToolSettings.h
+    MarketAnalysisSettings.h
     MarketAnalysisWidget.h
     MarketAnalysisWidget.cpp
     MarketBrowserWidget.cpp
@@ -666,6 +667,8 @@ add_executable(
     TimerTypes.h
     TradeableTypesTreeModel.cpp
     TradeableTypesTreeModel.h
+    TypeAggregatedMarketDataFilterProxyModel.cpp
+    TypeAggregatedMarketDataFilterProxyModel.h
     TypeAggregatedMarketDataModel.cpp
     TypeAggregatedMarketDataModel.h
     UISettings.h

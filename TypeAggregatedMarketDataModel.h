@@ -53,6 +53,8 @@ namespace Evernus
         void setCharacter(const std::shared_ptr<Character> &character);
 
         static int getScoreColumn() noexcept;
+        static int getVolumeColumn() noexcept;
+        static int getMarginColumn() noexcept;
 
     private:
         enum

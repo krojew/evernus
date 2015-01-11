@@ -14,6 +14,7 @@
  */
 #include <QRegularExpression>
 #include <QDialogButtonBox>
+#include <QMessageBox>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -108,6 +109,12 @@ namespace Evernus
                     result.emplace(type,
                                    region->data(Qt::UserRole).value<ExternalOrderImporter::TypeLocationPair::second_type>());
                 }
+            }
+
+            if (result.empty())
+            {
+                QMessageBox::information(this, tr("Order import"), tr("Please select at least one region and type."));
+                return;
             }
 
             emit selected(result);

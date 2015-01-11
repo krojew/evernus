@@ -3078,7 +3078,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>LMeve</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="826"/>
+        <location filename="../MainWindow.cpp" line="827"/>
         <source>Market analysis</source>
         <translation>Analiza rynku</translation>
     </message>
@@ -3315,14 +3315,13 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarketAnalysisWidget</name>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="59"/>
-        <source>Import order</source>
-        <translation type="unfinished"></translation>
+        <source>Don&apos;t refresh existing up-to-date data</source>
+        <translation type="vanished">Nie aktualizuj istniejących aktualnych danych</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="66"/>
-        <source>Don&apos;t refresh existing up-to-date data</source>
-        <translation>Nie aktualizuj istniejących aktualnych danych</translation>
+        <location filename="../MarketAnalysisWidget.cpp" line="68"/>
+        <source>Import orders</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="75"/>
@@ -3335,34 +3334,74 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Region:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="134"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="97"/>
+        <source>Limit to solar system:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="110"/>
+        <source>Volume:</source>
+        <translation type="unfinished">Wolumen:</translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="128"/>
+        <source>Margin:</source>
+        <translation type="unfinished">Marża:</translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="146"/>
+        <source>Filter</source>
+        <translation type="unfinished">Filtr</translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="155"/>
+        <source>Calculating data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="189"/>
+        <source>Order import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="189"/>
+        <source>Please select at least one region and type.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="201"/>
         <source>Importing data for analysis...</source>
         <translation>Importowanie danych do analizy...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="136"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="203"/>
         <source>Making %1 CREST order requests...</source>
         <translation>Tworzenie %1 zapytań CREST o zlecenia...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="137"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="204"/>
         <source>Making %1 CREST history requests...</source>
         <translation>Tworzenie %1 zapytań CREST o historię...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="186"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="287"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="217"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="318"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="242"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="344"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi z historią...</translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="392"/>
+        <source>- all -</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5336,37 +5375,41 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::TypeAggregatedMarketDataModel</name>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="38"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="109"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="40"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="111"/>
         <source>Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="42"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="113"/>
         <source>5% volume buy price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="44"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="115"/>
         <source>5% volume sell price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="46"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="117"/>
         <source>Difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="48"/>
-        <source>Volume</source>
-        <translation type="unfinished">Wolumen</translation>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="119"/>
+        <source>30-day avg. volume</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="50"/>
+        <source>Volume</source>
+        <translation type="obsolete">Wolumen</translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="121"/>
         <source>Margin</source>
         <translation type="unfinished">Marża</translation>
     </message>
