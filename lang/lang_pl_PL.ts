@@ -3319,87 +3319,82 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Nie aktualizuj istniejących aktualnych danych</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="68"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="69"/>
         <source>Import orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="75"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="76"/>
         <source>Don&apos;t save imported orders (huge performance gain)</source>
         <translation>Nie zapisuj zaimportowanych zleceń (duży skok wydajności)</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="84"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="85"/>
         <source>Region:</source>
         <translation>Region:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="97"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="98"/>
         <source>Limit to solar system:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="110"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="111"/>
         <source>Volume:</source>
         <translation type="unfinished">Wolumen:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="128"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="129"/>
         <source>Margin:</source>
         <translation type="unfinished">Marża:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="146"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="147"/>
         <source>Filter</source>
         <translation type="unfinished">Filtr</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="155"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="153"/>
+        <source>Double-click an item for additional information.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="158"/>
         <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="189"/>
-        <source>Order import</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="189"/>
-        <source>Please select at least one region and type.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="201"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="199"/>
         <source>Importing data for analysis...</source>
         <translation>Importowanie danych do analizy...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="203"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="201"/>
         <source>Making %1 CREST order requests...</source>
         <translation>Tworzenie %1 zapytań CREST o zlecenia...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="204"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="202"/>
         <source>Making %1 CREST history requests...</source>
         <translation>Tworzenie %1 zapytań CREST o historię...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="287"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="297"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="318"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="328"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="344"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="354"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi z historią...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="392"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="402"/>
         <source>- all -</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4940,32 +4935,42 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::RegionTypeSelectDialog</name>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="43"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="44"/>
         <source>Regions</source>
         <translation>Regiony</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="62"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="63"/>
         <source>Select all</source>
         <translation>Zaznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="66"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="67"/>
         <source>Deselect all</source>
         <translation>Odznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="70"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="71"/>
         <source>Select without wormholes</source>
         <translation>Zaznacz bez WH</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="83"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="84"/>
         <source>Types</source>
         <translation>Typy</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="118"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="116"/>
+        <source>Order import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionTypeSelectDialog.cpp" line="116"/>
+        <source>Please select at least one region and type.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionTypeSelectDialog.cpp" line="125"/>
         <source>Select regions and types</source>
         <translation>Wybierz regiony i typy</translation>
     </message>
@@ -5370,6 +5375,14 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <location filename="../TradeableTypesTreeModel.cpp" line="217"/>
         <source>Name</source>
         <translation>Nazwa</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::TypeAggregatedDetailsWidget</name>
+    <message>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="32"/>
+        <source>History</source>
+        <translation type="unfinished">Historia</translation>
     </message>
 </context>
 <context>

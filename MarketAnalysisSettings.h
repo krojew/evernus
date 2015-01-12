@@ -19,11 +19,13 @@ namespace Evernus
     namespace MarketAnalysisSettings
     {
         const auto dontSaveLargeOrdersDefault = true;
+        const auto smaDaysDefault = 20;
 
         const auto dontSaveLargeOrdersKey = "marketAnalysis/dontSaveOrders";
         const auto minVolumeFilterKey = "marketAnalysis/filter/minVolume";
         const auto maxVolumeFilterKey = "marketAnalysis/filter/maxVolume";
         const auto minMarginFilterKey = "marketAnalysis/filter/minMargin";
         const auto maxMarginFilterKey = "marketAnalysis/filter/maxMargin";
+        const auto smaDaysKey = "marketAnalysis/smaDays";
     }
 }

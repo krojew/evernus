@@ -28,6 +28,7 @@
 #include <QLabel>
 #include <QDebug>
 
+#include "TypeAggregatedDetailsWidget.h"
 #include "ExternalOrderRepository.h"
 #include "RegionTypeSelectDialog.h"
 #include "MarketAnalysisSettings.h"
@@ -65,7 +66,7 @@ namespace Evernus
         auto toolBarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolBarLayout);
 
-        auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import orders"), this};
+        auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import data"), this};
         toolBarLayout->addWidget(importFromWeb);
         importFromWeb->setFlat(true);
         connect(importFromWeb, &QPushButton::clicked, this, &MarketAnalysisWidget::prepareOrderImport);
@@ -143,11 +144,13 @@ namespace Evernus
         mMaxMarginEdit->setValidator(minMarginValidator);
         mMaxMarginEdit->setPlaceholderText(locale().percent());
 
-        auto filterBtn = new QPushButton{tr("Filter"), this};
+        auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
         connect(filterBtn, &QPushButton::clicked, this, &MarketAnalysisWidget::applyFilter);
 
         toolBarLayout->addStretch();
+
+        mainLayout->addWidget(new QLabel{tr("Double-click an item for additional information."), this});
 
         mDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mDataStack);
@@ -165,6 +168,7 @@ namespace Evernus
         mTypeDataView->setAlternatingRowColors(true);
         mTypeDataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         mTypeDataView->setModel(&mTypeViewProxy);
+        connect(mTypeDataView, &QTableView::doubleClicked, this, &MarketAnalysisWidget::showDetails);
 
         mDataStack->setCurrentWidget(mTypeDataView);
     }
@@ -230,7 +234,7 @@ namespace Evernus
 
     void MarketAnalysisWidget::showForCurrentRegion()
     {
-        const auto region = mRegionCombo->currentData().toUInt();
+        const auto region = getCurrentRegion();
         if (region != 0)
         {
             mDataStack->setCurrentIndex(waitingLabelIndex);
@@ -245,7 +249,7 @@ namespace Evernus
 
     void MarketAnalysisWidget::showForCurrentRegionAndSolarSystem()
     {
-        const auto region = mRegionCombo->currentData().toUInt();
+        const auto region = getCurrentRegion();
         if (region != 0)
         {
             mDataStack->setCurrentIndex(waitingLabelIndex);
@@ -269,6 +273,22 @@ namespace Evernus
                                  (maxFilter.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (maxFilter.toUInt()),
                                  (minMargin.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::MarginValueType{}) : (minMargin.toDouble()),
                                  (maxMargin.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::MarginValueType{}) : (maxMargin.toDouble()));
+    }
+
+    void MarketAnalysisWidget::showDetails(const QModelIndex &item)
+    {
+        const auto id = mTypeDataModel.getTypeId(mTypeViewProxy.mapToSource(item));
+        const auto region = getCurrentRegion();
+        const auto &history = mHistory[region];
+        const auto it = history.find(id);
+
+        if (it != std::end(history))
+        {
+            auto widget = new TypeAggregatedDetailsWidget{it->second, this, Qt::Window};
+            widget->setWindowTitle(tr("%1 in %2").arg(mDataProvider.getTypeName(id)).arg(mDataProvider.getRegionName(region)));
+            widget->show();
+            connect(this, &MarketAnalysisWidget::preferencesChanged, widget, &TypeAggregatedDetailsWidget::handleNewPreferences);
+        }
     }
 
     void MarketAnalysisWidget::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)
@@ -391,5 +411,10 @@ namespace Evernus
 
         mSolarSystemCombo->setCurrentIndex(0);
         mSolarSystemCombo->blockSignals(false);
+    }
+
+    uint MarketAnalysisWidget::getCurrentRegion() const
+    {
+        return mRegionCombo->currentData().toUInt();
     }
 }

@@ -824,6 +824,7 @@ namespace Evernus
                                                           mRepositoryProvider.getCharacterRepository(),
                                                           this};
         connect(marketAnalysisTab, &MarketAnalysisWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
+        connect(this, &MainWindow::preferencesChanged, marketAnalysisTab, &MarketAnalysisWidget::preferencesChanged);
         addTab(marketAnalysisTab, tr("Market analysis"));
 
         QSettings settings;

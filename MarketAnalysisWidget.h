@@ -57,6 +57,7 @@ namespace Evernus
 
     signals:
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
+        void preferencesChanged();
 
     public slots:
         void setCharacter(Character::IdType id);
@@ -71,6 +72,8 @@ namespace Evernus
         void showForCurrentRegionAndSolarSystem();
 
         void applyFilter();
+
+        void showDetails(const QModelIndex &item);
 
     private:
         static const auto waitingLabelIndex = 0;
@@ -114,5 +117,7 @@ namespace Evernus
         void checkCompletion();
 
         void fillSolarSystems(uint regionId);
+
+        uint getCurrentRegion() const;
     };
 }

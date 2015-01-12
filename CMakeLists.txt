@@ -188,6 +188,7 @@ qt5_wrap_cpp(
     SyncPreferencesWidget.h
     TextFilterWidget.h
     TradeableTypesTreeModel.h
+    TypeAggregatedDetailsWidget.h
     TypeAggregatedMarketDataModel.h
     Updater.h
     WalletEntryFilterWidget.h
@@ -667,6 +668,8 @@ add_executable(
     TimerTypes.h
     TradeableTypesTreeModel.cpp
     TradeableTypesTreeModel.h
+    TypeAggregatedDetailsWidget.cpp
+    TypeAggregatedDetailsWidget.h
     TypeAggregatedMarketDataFilterProxyModel.cpp
     TypeAggregatedMarketDataFilterProxyModel.h
     TypeAggregatedMarketDataModel.cpp

@@ -94,9 +94,9 @@ namespace Evernus
 
         auto graph = std::make_unique<QCPBars>(mPlot->xAxis, mPlot->yAxis2);
         mVolumeGraph = graph.get();
+        mPlot->addPlottable(mVolumeGraph);
         graph.release();
 
-        mPlot->addPlottable(mVolumeGraph);
         mVolumeGraph->setName(tr("Volume"));
         mVolumeGraph->setPen(QPen{Qt::cyan});
         mVolumeGraph->setBrush(Qt::cyan);

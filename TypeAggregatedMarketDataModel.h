@@ -52,6 +52,8 @@ namespace Evernus
         void setData(const std::vector<ExternalOrder> &orders, const HistoryMap &history, uint region, uint solarSystem = 0);
         void setCharacter(const std::shared_ptr<Character> &character);
 
+        EveType::IdType getTypeId(const QModelIndex &index) const;
+
         static int getScoreColumn() noexcept;
         static int getVolumeColumn() noexcept;
         static int getMarginColumn() noexcept;

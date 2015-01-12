@@ -237,6 +237,14 @@ namespace Evernus
         endResetModel();
     }
 
+    EveType::IdType TypeAggregatedMarketDataModel::getTypeId(const QModelIndex &index) const
+    {
+        if (!index.isValid())
+            return EveType::invalidId;
+
+        return mData[index.row()].mId;
+    }
+
     int TypeAggregatedMarketDataModel::getScoreColumn() noexcept
     {
         return scoreColumn;
