@@ -232,7 +232,7 @@ namespace Evernus
         macdDivergenceGraph.release();
 
         mMACDDivergenceGraph->setName(tr("MACD Divergence"));
-        mMACDDivergenceGraph->setPen(QPen{Qt::darkGray});
+        mMACDDivergenceGraph->setPen(QPen{Qt::gray});
         mMACDDivergenceGraph->setBrush(Qt::gray);
         mMACDDivergenceGraph->setWidth(dayWidth);
 
