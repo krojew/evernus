@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <memory>
+#include <cmath>
 
 #include <boost/circular_buffer.hpp>
 
@@ -53,7 +54,7 @@ namespace Evernus
         mFromEdit = new QDateEdit{this};
         toolBarLayout->addWidget(mFromEdit);
         mFromEdit->setCalendarPopup(true);
-        mFromEdit->setDate(current.addDays(-30));
+        mFromEdit->setDate(current.addDays(-90));
         connect(mFromEdit, &QDateEdit::dateChanged, this, [=](const QDate &date) {
             if (date > mToEdit->date())
                 mToEdit->setDate(date);
@@ -169,6 +170,14 @@ namespace Evernus
         mSMAGraph = mHistoryPlot->addGraph();
         mSMAGraph->setPen(Qt::DashLine);
         mSMAGraph->setName(tr("SMA"));
+
+        mBollingerUpperGraph = mHistoryPlot->addGraph();
+        mBollingerUpperGraph->setPen(QPen{Qt::darkRed, 0., Qt::DashLine});
+        mBollingerUpperGraph->setName(tr("Bollinger upper band"));
+
+        mBollingerLowerGraph = mHistoryPlot->addGraph();
+        mBollingerLowerGraph->setPen(QPen{Qt::darkGreen, 0., Qt::DashLine});
+        mBollingerLowerGraph->setName(tr("Bollinger lower band"));
 
         auto rsiAxisRect = new QCPAxisRect{mHistoryPlot};
         mHistoryPlot->plotLayout()->addElement(1, 0, rsiAxisRect);
@@ -287,12 +296,12 @@ namespace Evernus
         settings.setValue(MarketAnalysisSettings::macdSlowDaysKey, macdSlowDays);
         settings.setValue(MarketAnalysisSettings::macdEmaDaysKey, macdEmaDays);
 
-        boost::circular_buffer<double> smaBuffer(smaDays, prevAvg);
-        auto smaSum = smaDays * prevAvg;
+        boost::circular_buffer<double> smaBuffer(smaDays, prevAvg), sqrSmaBuffer(smaDays, prevAvg * prevAvg);
+        auto smaSum = smaDays * prevAvg, sqrSmaSum = smaDays * prevAvg * prevAvg;
         auto prevUEma = 0., prevDEma = 0.;
         auto prevMacdFastEma = prevAvg, prevMacdSlowEma = prevAvg, prevMacdEma = 0.;
 
-        QVector<double> dates, volumes, open, high, low, close, sma, rsi, macd, macdAvg, macdDivergence;
+        QVector<double> dates, volumes, open, high, low, close, sma, rsi, macd, macdAvg, macdDivergence, bollingerUp, bollingerLow;
         dates.reserve(size);
         volumes.reserve(size);
         open.reserve(size);
@@ -304,6 +313,8 @@ namespace Evernus
         macd.reserve(size);
         macdAvg.reserve(size);
         macdDivergence.reserve(size);
+        bollingerUp.reserve(size);
+        bollingerLow.reserve(size);
 
         for (auto date = start, end = mToEdit->date(); date <= end; date = date.addDays(1))
         {
@@ -341,7 +352,9 @@ namespace Evernus
             smaBuffer.push_back(prevAvg);
             smaSum += prevAvg;
 
-            sma << (smaSum / smaDays);
+            const auto avg = smaSum / smaDays;
+
+            sma << avg;
 
             prevUEma = rsiEmaAlpha * u + (1. - rsiEmaAlpha) * prevUEma;
             prevDEma = rsiEmaAlpha * d + (1. - rsiEmaAlpha) * prevDEma;
@@ -366,6 +379,16 @@ namespace Evernus
             macdAvg << prevMacdEma;
 
             macdDivergence << (curMacd - prevMacdEma);
+
+            sqrSmaSum -= sqrSmaBuffer.front();
+            sqrSmaBuffer.pop_front();
+            sqrSmaBuffer.push_back(prevAvg * prevAvg);
+            sqrSmaSum += prevAvg * prevAvg;
+
+            const auto stdDev2 = 2. * std::sqrtf(sqrSmaSum / smaDays - avg * avg);
+
+            bollingerUp << (avg + stdDev2);
+            bollingerLow << (avg - stdDev2);
         }
 
         mHistoryValuesGraph->setData(dates, open, high, low, close);
@@ -375,6 +398,8 @@ namespace Evernus
         mMACDGraph->setData(dates, macd);
         mMACDEMAGraph->setData(dates, macdAvg);
         mMACDDivergenceGraph->setData(dates, macdDivergence);
+        mBollingerUpperGraph->setData(dates, bollingerUp);
+        mBollingerLowerGraph->setData(dates, bollingerLow);
 
         mHistoryPlot->xAxis->setTickVector(dates);
 

@@ -65,5 +65,7 @@ namespace Evernus
         QCPGraph *mMACDGraph = nullptr;
         QCPGraph *mMACDEMAGraph = nullptr;
         QCPBars *mMACDDivergenceGraph = nullptr;
+        QCPGraph *mBollingerUpperGraph = nullptr;
+        QCPGraph *mBollingerLowerGraph = nullptr;
     };
 }
