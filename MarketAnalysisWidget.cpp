@@ -89,9 +89,15 @@ namespace Evernus
         mRegionCombo->setEditable(true);
         mRegionCombo->setInsertPolicy(QComboBox::NoInsert);
 
+        const auto lastRegion = settings.value(MarketAnalysisSettings::lastRegionKey).toUInt();
+
         const auto regions = mDataProvider.getRegions();
         for (const auto &region : regions)
+        {
             mRegionCombo->addItem(region.second, region.first);
+            if (region.first == lastRegion)
+                mRegionCombo->setCurrentIndex(mRegionCombo->count() - 1);
+        }
 
         connect(mRegionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(showForCurrentRegion()));
 
@@ -237,6 +243,9 @@ namespace Evernus
         const auto region = getCurrentRegion();
         if (region != 0)
         {
+            QSettings settings;
+            settings.setValue(MarketAnalysisSettings::lastRegionKey, region);
+
             mDataStack->setCurrentIndex(waitingLabelIndex);
             mDataStack->repaint();
 

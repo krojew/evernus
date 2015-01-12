@@ -27,5 +27,6 @@ namespace Evernus
         const auto minMarginFilterKey = "marketAnalysis/filter/minMargin";
         const auto maxMarginFilterKey = "marketAnalysis/filter/maxMargin";
         const auto smaDaysKey = "marketAnalysis/smaDays";
+        const auto lastRegionKey = "marketAnalysis/lastRegion";
     }
 }
