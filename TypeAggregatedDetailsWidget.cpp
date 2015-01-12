@@ -49,12 +49,13 @@ namespace Evernus
 
         toolBarLayout->addWidget(new QLabel{tr("From:"), this});
 
-        const auto current = QDate::currentDate();
+        const auto current = QDate::currentDate().addDays(-1);
 
         mFromEdit = new QDateEdit{this};
         toolBarLayout->addWidget(mFromEdit);
         mFromEdit->setCalendarPopup(true);
         mFromEdit->setDate(current.addDays(-90));
+        mFromEdit->setMaximumDate(current);
         connect(mFromEdit, &QDateEdit::dateChanged, this, [=](const QDate &date) {
             if (date > mToEdit->date())
                 mToEdit->setDate(date);
@@ -66,6 +67,7 @@ namespace Evernus
         toolBarLayout->addWidget(mToEdit);
         mToEdit->setCalendarPopup(true);
         mToEdit->setDate(current);
+        mToEdit->setMaximumDate(current);
         connect(mToEdit, &QDateEdit::dateChanged, this, [=](const QDate &date) {
             if (date < mFromEdit->date())
                 mFromEdit->setDate(date);
