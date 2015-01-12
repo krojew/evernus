@@ -53,11 +53,17 @@ namespace Evernus
         QDateEdit *mFromEdit = nullptr;
         QDateEdit *mToEdit = nullptr;
         QSpinBox *mSMADaysEdit = nullptr;
+        QSpinBox *mMACDFastDaysEdit = nullptr;
+        QSpinBox *mMACDSlowDaysEdit = nullptr;
+        QSpinBox *mMACDEMADaysEdit = nullptr;
         QCustomPlot *mHistoryPlot = nullptr;
 
         QCPFinancial *mHistoryValuesGraph = nullptr;
         QCPBars *mHistoryVolumeGraph = nullptr;
         QCPGraph *mSMAGraph = nullptr;
         QCPGraph *mRSIGraph = nullptr;
+        QCPGraph *mMACDGraph = nullptr;
+        QCPGraph *mMACDEMAGraph = nullptr;
+        QCPBars *mMACDDivergenceGraph = nullptr;
     };
 }

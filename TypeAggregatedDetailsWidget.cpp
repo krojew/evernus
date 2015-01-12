@@ -18,9 +18,11 @@
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QScrollArea>
 #include <QPushButton>
 #include <QDateEdit>
 #include <QSettings>
+#include <QCheckBox>
 #include <QSpinBox>
 #include <QLabel>
 
@@ -77,17 +79,44 @@ namespace Evernus
         mSMADaysEdit->setMinimum(2);
         mSMADaysEdit->setValue(settings.value(MarketAnalysisSettings::smaDaysKey, MarketAnalysisSettings::smaDaysDefault).toInt());
 
+        toolBarLayout->addWidget(new QLabel{tr("MACD days:"), this});
+
+        mMACDFastDaysEdit = new QSpinBox{this};
+        toolBarLayout->addWidget(mMACDFastDaysEdit);
+        mMACDFastDaysEdit->setMinimum(2);
+        mMACDFastDaysEdit->setValue(settings.value(MarketAnalysisSettings::macdFastDaysKey, MarketAnalysisSettings::macdFastDaysDefault).toInt());
+
+        mMACDSlowDaysEdit = new QSpinBox{this};
+        toolBarLayout->addWidget(mMACDSlowDaysEdit);
+        mMACDSlowDaysEdit->setMinimum(2);
+        mMACDSlowDaysEdit->setValue(settings.value(MarketAnalysisSettings::macdSlowDaysKey, MarketAnalysisSettings::macdSlowDaysDefault).toInt());
+
+        mMACDEMADaysEdit = new QSpinBox{this};
+        toolBarLayout->addWidget(mMACDEMADaysEdit);
+        mMACDEMADaysEdit->setMinimum(2);
+        mMACDEMADaysEdit->setValue(settings.value(MarketAnalysisSettings::macdEmaDaysKey, MarketAnalysisSettings::macdEmaDaysDefault).toInt());
+
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
         connect(filterBtn, &QPushButton::clicked, this, &TypeAggregatedDetailsWidget::applyFilter);
 
+        const auto showLegend = settings.value(MarketAnalysisSettings::showLegendKey, MarketAnalysisSettings::showLegendDefault).toBool();
+
+        auto legendBtn = new QCheckBox{tr("Show legend"), this};
+        toolBarLayout->addWidget(legendBtn);
+        legendBtn->setChecked(showLegend);
+
         toolBarLayout->addStretch();
+
+        auto scrollArea = new QScrollArea{this};
+        mainLayout->addWidget(scrollArea);
+        scrollArea->setWidgetResizable(true);
 
         const auto widgetLocale = locale();
 
         mHistoryPlot = new QCustomPlot{this};
-        mainLayout->addWidget(mHistoryPlot);
-        mHistoryPlot->setMinimumSize(500, 300);
+        scrollArea->setWidget(mHistoryPlot);
+        mHistoryPlot->axisRect(0)->setMinimumSize(500, 300);
         mHistoryPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
         mHistoryPlot->xAxis->setAutoTicks(false);
         mHistoryPlot->xAxis->setAutoTickLabels(true);
@@ -100,6 +129,15 @@ namespace Evernus
         mHistoryPlot->yAxis->setLabel("ISK");
         mHistoryPlot->yAxis2->setVisible(true);
         mHistoryPlot->yAxis2->setLabel(tr("Volume"));
+        mHistoryPlot->legend->setVisible(showLegend);
+
+        connect(legendBtn, &QCheckBox::stateChanged, this, [=](bool checked) {
+            QSettings settings;
+            settings.setValue(MarketAnalysisSettings::showLegendKey, checked);
+
+            mHistoryPlot->legend->setVisible(checked);
+            mHistoryPlot->replot();
+        });
 
         auto locale = mHistoryPlot->locale();
         locale.setNumberOptions(0);
@@ -130,10 +168,12 @@ namespace Evernus
 
         mSMAGraph = mHistoryPlot->addGraph();
         mSMAGraph->setPen(Qt::DashLine);
+        mSMAGraph->setName(tr("SMA"));
 
         auto rsiAxisRect = new QCPAxisRect{mHistoryPlot};
         mHistoryPlot->plotLayout()->addElement(1, 0, rsiAxisRect);
         rsiAxisRect->setMaximumSize(QWIDGETSIZE_MAX, 200);
+        rsiAxisRect->setMinimumSize(500, 100);
         rsiAxisRect->setRangeDrag(Qt::Horizontal);
         rsiAxisRect->setRangeZoom(Qt::Horizontal);
         rsiAxisRect->axis(QCPAxis::atBottom)->setLayer("axes");
@@ -168,6 +208,40 @@ namespace Evernus
 
         mRSIGraph = mHistoryPlot->addGraph(rsiAxisRect->axis(QCPAxis::atBottom), rsiAxisRect->axis(QCPAxis::atLeft));
         mRSIGraph->setPen(QPen{Qt::blue});
+        mRSIGraph->setName(tr("RSI"));
+
+        auto macdAxisRect = new QCPAxisRect{mHistoryPlot};
+        mHistoryPlot->plotLayout()->addElement(2, 0, macdAxisRect);
+        macdAxisRect->setMaximumSize(QWIDGETSIZE_MAX, 200);
+        macdAxisRect->setMinimumSize(500, 100);
+        macdAxisRect->axis(QCPAxis::atBottom)->setLayer("axes");
+        macdAxisRect->axis(QCPAxis::atBottom)->setTickLabelType(QCPAxis::ltDateTime);
+        macdAxisRect->axis(QCPAxis::atBottom)->setDateTimeFormat(widgetLocale.dateFormat(QLocale::NarrowFormat));
+        macdAxisRect->axis(QCPAxis::atLeft)->setLabel(tr("MACD"));
+        macdAxisRect->axis(QCPAxis::atBottom)->grid()->setLayer("grid");
+        macdAxisRect->setMarginGroup(QCP::msLeft | QCP::msRight, marginGroup);
+
+        connect(mHistoryPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), macdAxisRect->axis(QCPAxis::atBottom), SLOT(setRange(QCPRange)));
+        connect(macdAxisRect->axis(QCPAxis::atBottom), SIGNAL(rangeChanged(QCPRange)), mHistoryPlot->xAxis, SLOT(setRange(QCPRange)));
+        connect(rsiAxisRect->axis(QCPAxis::atBottom), SIGNAL(rangeChanged(QCPRange)), macdAxisRect->axis(QCPAxis::atBottom), SLOT(setRange(QCPRange)));
+        connect(macdAxisRect->axis(QCPAxis::atBottom), SIGNAL(rangeChanged(QCPRange)), rsiAxisRect->axis(QCPAxis::atBottom), SLOT(setRange(QCPRange)));
+
+        auto macdDivergenceGraph = std::make_unique<QCPBars>(macdAxisRect->axis(QCPAxis::atBottom), macdAxisRect->axis(QCPAxis::atLeft));
+        mMACDDivergenceGraph = macdDivergenceGraph.get();
+        mHistoryPlot->addPlottable(mMACDDivergenceGraph);
+        macdDivergenceGraph.release();
+
+        mMACDDivergenceGraph->setName(tr("MACD Divergence"));
+        mMACDDivergenceGraph->setPen(QPen{Qt::darkGray});
+        mMACDDivergenceGraph->setBrush(Qt::gray);
+        mMACDDivergenceGraph->setWidth(dayWidth);
+
+        mMACDGraph = mHistoryPlot->addGraph(macdAxisRect->axis(QCPAxis::atBottom), macdAxisRect->axis(QCPAxis::atLeft));
+        mMACDGraph->setPen(QPen{Qt::darkGreen});
+        mMACDGraph->setName(tr("MACD"));
+        mMACDEMAGraph = mHistoryPlot->addGraph(macdAxisRect->axis(QCPAxis::atBottom), macdAxisRect->axis(QCPAxis::atLeft));
+        mMACDEMAGraph->setPen(QPen{Qt::red});
+        mMACDEMAGraph->setName(tr("MACD Signal"));
 
         applyFilter();
     }
@@ -198,17 +272,27 @@ namespace Evernus
         }
 
         const auto smaDays = mSMADaysEdit->value();
+        const auto macdFastDays = mMACDFastDaysEdit->value();
+        const auto macdSlowDays = mMACDSlowDaysEdit->value();
+        const auto macdEmaDays = mMACDEMADaysEdit->value();
         const auto rsiDays = 14;
         const auto rsiEmaAlpha = 1. / rsiDays;
+        const auto macdFastEmaAlpha = 1. / macdFastDays;
+        const auto macdSlowEmaAlpha = 1. / macdSlowDays;
+        const auto macdEmaAlpha = 1. / macdEmaDays;
 
         QSettings settings;
         settings.setValue(MarketAnalysisSettings::smaDaysKey, smaDays);
+        settings.setValue(MarketAnalysisSettings::macdFastDaysKey, macdFastDays);
+        settings.setValue(MarketAnalysisSettings::macdSlowDaysKey, macdSlowDays);
+        settings.setValue(MarketAnalysisSettings::macdEmaDaysKey, macdEmaDays);
 
         boost::circular_buffer<double> smaBuffer(smaDays, prevAvg);
         auto smaSum = smaDays * prevAvg;
         auto prevUEma = 0., prevDEma = 0.;
+        auto prevMacdFastEma = prevAvg, prevMacdSlowEma = prevAvg, prevMacdEma = 0.;
 
-        QVector<double> dates, volumes, open, high, low, close, sma, rsi;
+        QVector<double> dates, volumes, open, high, low, close, sma, rsi, macd, macdAvg, macdDivergence;
         dates.reserve(size);
         volumes.reserve(size);
         open.reserve(size);
@@ -217,6 +301,9 @@ namespace Evernus
         close.reserve(size);
         sma.reserve(size);
         rsi.reserve(size);
+        macd.reserve(size);
+        macdAvg.reserve(size);
+        macdDivergence.reserve(size);
 
         for (auto date = start, end = mToEdit->date(); date <= end; date = date.addDays(1))
         {
@@ -256,8 +343,8 @@ namespace Evernus
 
             sma << (smaSum / smaDays);
 
-            prevUEma = rsiEmaAlpha * u + (1 - rsiEmaAlpha) * prevUEma;
-            prevDEma = rsiEmaAlpha * d + (1 - rsiEmaAlpha) * prevDEma;
+            prevUEma = rsiEmaAlpha * u + (1. - rsiEmaAlpha) * prevUEma;
+            prevDEma = rsiEmaAlpha * d + (1. - rsiEmaAlpha) * prevDEma;
 
             if (qFuzzyIsNull(prevDEma))
             {
@@ -268,18 +355,34 @@ namespace Evernus
                 const auto rs = prevUEma / prevDEma;
                 rsi << (100. - 100. / (1. + rs));
             }
+
+            prevMacdFastEma = macdFastEmaAlpha * prevAvg + (1. - macdFastEmaAlpha) * prevMacdFastEma;
+            prevMacdSlowEma = macdSlowEmaAlpha * prevAvg + (1. - macdSlowEmaAlpha) * prevMacdSlowEma;
+
+            const auto curMacd = prevMacdFastEma - prevMacdSlowEma;
+            macd << curMacd;
+
+            prevMacdEma = macdEmaAlpha * curMacd + (1. - macdEmaAlpha) * prevMacdEma;
+            macdAvg << prevMacdEma;
+
+            macdDivergence << (curMacd - prevMacdEma);
         }
 
         mHistoryValuesGraph->setData(dates, open, high, low, close);
         mHistoryVolumeGraph->setData(dates, volumes);
         mSMAGraph->setData(dates, sma);
         mRSIGraph->setData(dates, rsi);
+        mMACDGraph->setData(dates, macd);
+        mMACDEMAGraph->setData(dates, macdAvg);
+        mMACDDivergenceGraph->setData(dates, macdDivergence);
 
         mHistoryPlot->xAxis->setTickVector(dates);
 
         mHistoryPlot->xAxis->rescale();
         mHistoryPlot->yAxis->rescale();
         mHistoryPlot->yAxis2->rescale();
+        mMACDGraph->keyAxis()->rescale();
+        mMACDGraph->valueAxis()->rescale();
         mHistoryPlot->replot();
     }
 }

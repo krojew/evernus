@@ -20,6 +20,10 @@ namespace Evernus
     {
         const auto dontSaveLargeOrdersDefault = true;
         const auto smaDaysDefault = 20;
+        const auto macdFastDaysDefault = 5;
+        const auto macdSlowDaysDefault = 15;
+        const auto macdEmaDaysDefault = 5;
+        const auto showLegendDefault = true;
 
         const auto dontSaveLargeOrdersKey = "marketAnalysis/dontSaveOrders";
         const auto minVolumeFilterKey = "marketAnalysis/filter/minVolume";
@@ -28,5 +32,9 @@ namespace Evernus
         const auto maxMarginFilterKey = "marketAnalysis/filter/maxMargin";
         const auto smaDaysKey = "marketAnalysis/smaDays";
         const auto lastRegionKey = "marketAnalysis/lastRegion";
+        const auto macdFastDaysKey = "marketAnalysis/macd/fastDays";
+        const auto macdSlowDaysKey = "marketAnalysis/macd/slowDays";
+        const auto macdEmaDaysKey = "marketAnalysis/macd/emaDays";
+        const auto showLegendKey = "marketAnalysis/showLegend";
     }
 }
