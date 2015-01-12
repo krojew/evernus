@@ -168,7 +168,7 @@ namespace Evernus
                 entry.mHighPrice = itemObject.value("highPrice").toDouble();
                 entry.mLowPrice = itemObject.value("lowPrice").toDouble();
                 entry.mOrders = itemObject.value("orderCount").toInt();
-                entry.mVolume = itemObject.value("volume").toInt();
+                entry.mVolume = static_cast<quint64>(itemObject.value("volume").toDouble());
 
                 history.emplace(std::move(date), std::move(entry));
             }

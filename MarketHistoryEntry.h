@@ -14,12 +14,14 @@
  */
 #pragma once
 
+#include <QtGlobal>
+
 namespace Evernus
 {
     struct MarketHistoryEntry
     {
         uint mOrders = 0;
-        uint mVolume = 0;
+        quint64 mVolume = 0;
         double mLowPrice = 0.;
         double mHighPrice = 0.;
         double mAvgPrice = 0.;
