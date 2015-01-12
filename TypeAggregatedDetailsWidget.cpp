@@ -83,6 +83,8 @@ namespace Evernus
 
         toolBarLayout->addStretch();
 
+        const auto widgetLocale = locale();
+
         mHistoryPlot = new QCustomPlot{this};
         mainLayout->addWidget(mHistoryPlot);
         mHistoryPlot->setMinimumSize(500, 300);
@@ -92,7 +94,7 @@ namespace Evernus
         mHistoryPlot->xAxis->setTickLabelRotation(60);
         mHistoryPlot->xAxis->setSubTickCount(0);
         mHistoryPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
-        mHistoryPlot->xAxis->setDateTimeFormat(locale().dateFormat(QLocale::NarrowFormat));
+        mHistoryPlot->xAxis->setDateTimeFormat(widgetLocale.dateFormat(QLocale::NarrowFormat));
         mHistoryPlot->xAxis->grid()->setVisible(false);
         mHistoryPlot->yAxis->setNumberPrecision(2);
         mHistoryPlot->yAxis->setLabel("ISK");
@@ -129,6 +131,44 @@ namespace Evernus
         mSMAGraph = mHistoryPlot->addGraph();
         mSMAGraph->setPen(Qt::DashLine);
 
+        auto rsiAxisRect = new QCPAxisRect{mHistoryPlot};
+        mHistoryPlot->plotLayout()->addElement(1, 0, rsiAxisRect);
+        rsiAxisRect->setMaximumSize(QWIDGETSIZE_MAX, 200);
+        rsiAxisRect->setRangeDrag(Qt::Horizontal);
+        rsiAxisRect->setRangeZoom(Qt::Horizontal);
+        rsiAxisRect->axis(QCPAxis::atBottom)->setLayer("axes");
+        rsiAxisRect->axis(QCPAxis::atBottom)->setTickLabelType(QCPAxis::ltDateTime);
+        rsiAxisRect->axis(QCPAxis::atBottom)->setDateTimeFormat(widgetLocale.dateFormat(QLocale::NarrowFormat));
+        rsiAxisRect->axis(QCPAxis::atLeft)->setRange(0., 100.);
+        rsiAxisRect->axis(QCPAxis::atLeft)->setLabel(tr("RSI (14 days)"));
+        rsiAxisRect->axis(QCPAxis::atBottom)->grid()->setLayer("grid");
+
+        connect(mHistoryPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), rsiAxisRect->axis(QCPAxis::atBottom), SLOT(setRange(QCPRange)));
+        connect(rsiAxisRect->axis(QCPAxis::atBottom), SIGNAL(rangeChanged(QCPRange)), mHistoryPlot->xAxis, SLOT(setRange(QCPRange)));
+
+        auto marginGroup = new QCPMarginGroup{mHistoryPlot};
+        mHistoryPlot->axisRect()->setMarginGroup(QCP::msLeft | QCP::msRight, marginGroup);
+        rsiAxisRect->setMarginGroup(QCP::msLeft | QCP::msRight, marginGroup);
+
+        auto overboughtLine = new QCPItemStraightLine{mHistoryPlot};
+        mHistoryPlot->addItem(overboughtLine);
+        overboughtLine->setClipAxisRect(rsiAxisRect);
+        overboughtLine->point1->setAxes(rsiAxisRect->axis(QCPAxis::atBottom), rsiAxisRect->axis(QCPAxis::atLeft));
+        overboughtLine->point2->setAxes(rsiAxisRect->axis(QCPAxis::atBottom), rsiAxisRect->axis(QCPAxis::atLeft));
+        overboughtLine->point1->setCoords(0., 70.);
+        overboughtLine->point2->setCoords(1000000000000., 70.);
+
+        auto oversoldLine = new QCPItemStraightLine{mHistoryPlot};
+        mHistoryPlot->addItem(oversoldLine);
+        oversoldLine->setClipAxisRect(rsiAxisRect);
+        oversoldLine->point1->setAxes(rsiAxisRect->axis(QCPAxis::atBottom), rsiAxisRect->axis(QCPAxis::atLeft));
+        oversoldLine->point2->setAxes(rsiAxisRect->axis(QCPAxis::atBottom), rsiAxisRect->axis(QCPAxis::atLeft));
+        oversoldLine->point1->setCoords(0., 30.);
+        oversoldLine->point2->setCoords(1000000000000., 30.);
+
+        mRSIGraph = mHistoryPlot->addGraph(rsiAxisRect->axis(QCPAxis::atBottom), rsiAxisRect->axis(QCPAxis::atLeft));
+        mRSIGraph->setPen(QPen{Qt::blue});
+
         applyFilter();
     }
 
@@ -158,14 +198,17 @@ namespace Evernus
         }
 
         const auto smaDays = mSMADaysEdit->value();
+        const auto rsiDays = 14;
+        const auto rsiEmaAlpha = 1. / rsiDays;
 
         QSettings settings;
         settings.setValue(MarketAnalysisSettings::smaDaysKey, smaDays);
 
         boost::circular_buffer<double> smaBuffer(smaDays, prevAvg);
         auto smaSum = smaDays * prevAvg;
+        auto prevUEma = 0., prevDEma = 0.;
 
-        QVector<double> dates, volumes, open, high, low, close, sma;
+        QVector<double> dates, volumes, open, high, low, close, sma, rsi;
         dates.reserve(size);
         volumes.reserve(size);
         open.reserve(size);
@@ -173,10 +216,13 @@ namespace Evernus
         low.reserve(size);
         close.reserve(size);
         sma.reserve(size);
+        rsi.reserve(size);
 
         for (auto date = start, end = mToEdit->date(); date <= end; date = date.addDays(1))
         {
             dates << QDateTime{date}.toMSecsSinceEpoch() / 1000.;
+
+            auto u = 0., d = 0.;
 
             const auto it = mHistory.find(date);
             if (it == std::end(mHistory))
@@ -191,6 +237,9 @@ namespace Evernus
             }
             else
             {
+                u = std::max(0., it->second.mAvgPrice - prevAvg);
+                d = std::max(0., prevAvg - it->second.mAvgPrice);
+
                 volumes << it->second.mVolume;
                 open << std::max(std::min(prevAvg, it->second.mHighPrice), it->second.mLowPrice);
                 high << it->second.mHighPrice;
@@ -206,15 +255,31 @@ namespace Evernus
             smaSum += prevAvg;
 
             sma << (smaSum / smaDays);
+
+            prevUEma = rsiEmaAlpha * u + (1 - rsiEmaAlpha) * prevUEma;
+            prevDEma = rsiEmaAlpha * d + (1 - rsiEmaAlpha) * prevDEma;
+
+            if (qFuzzyIsNull(prevDEma))
+            {
+                rsi << 100.;
+            }
+            else
+            {
+                const auto rs = prevUEma / prevDEma;
+                rsi << (100. - 100. / (1. + rs));
+            }
         }
 
         mHistoryValuesGraph->setData(dates, open, high, low, close);
         mHistoryVolumeGraph->setData(dates, volumes);
         mSMAGraph->setData(dates, sma);
+        mRSIGraph->setData(dates, rsi);
 
         mHistoryPlot->xAxis->setTickVector(dates);
 
-        mHistoryPlot->rescaleAxes();
+        mHistoryPlot->xAxis->rescale();
+        mHistoryPlot->yAxis->rescale();
+        mHistoryPlot->yAxis2->rescale();
         mHistoryPlot->replot();
     }
 }
