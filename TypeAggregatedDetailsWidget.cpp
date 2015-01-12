@@ -246,7 +246,7 @@ namespace Evernus
         mMACDDivergenceGraph->setWidth(dayWidth);
 
         mMACDGraph = mHistoryPlot->addGraph(macdAxisRect->axis(QCPAxis::atBottom), macdAxisRect->axis(QCPAxis::atLeft));
-        mMACDGraph->setPen(QPen{Qt::darkGreen});
+        mMACDGraph->setPen(QPen{Qt::darkYellow});
         mMACDGraph->setName(tr("MACD"));
         mMACDEMAGraph = mHistoryPlot->addGraph(macdAxisRect->axis(QCPAxis::atBottom), macdAxisRect->axis(QCPAxis::atLeft));
         mMACDEMAGraph->setPen(QPen{Qt::red});
