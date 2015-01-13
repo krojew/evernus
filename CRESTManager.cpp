@@ -12,7 +12,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QRegularExpression>
 #include <QDesktopWidget>
 #include <QNetworkReply>
 #include <QJsonDocument>
@@ -91,8 +90,6 @@ namespace Evernus
 
                 std::vector<ExternalOrder> orders;
                 auto appendOrders = [=, &orders](const QJsonObject &object) {
-                    QRegularExpression idRe{"/(\\d+)/$"};
-
                     const auto items = object.value("items").toArray();
                     for (const auto &item : items)
                     {
@@ -105,11 +102,10 @@ namespace Evernus
 
                         ExternalOrder order;
 
-                        // TODO: replace when ids become available
-                        order.setId(idRe.match(itemObject.value("href").toString()).captured(1).toULongLong());
+                        order.setId(itemObject.value("id_str").toString().toULongLong());
                         order.setType((itemObject.value("buy").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
                         order.setTypeId(typeId);
-                        order.setStationId(idRe.match(location.value("href").toString()).captured(1).toUInt());
+                        order.setStationId(location.value("id_str").toString().toUInt());
                         //TODO: replace when available
                         order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));
                         order.setRegionId(regionId);
@@ -125,8 +121,7 @@ namespace Evernus
 
                         order.setUpdateTime(QDateTime::currentDateTimeUtc());
                         order.setPrice(itemObject.value("price").toDouble());
-                        // TODO: replace when available
-                        order.setVolumeEntered(itemObject.value("volume").toInt());
+                        order.setVolumeEntered(itemObject.value("volumeEntered").toInt());
                         order.setVolumeRemaining(itemObject.value("volume").toInt());
                         order.setMinVolume(itemObject.value("minVolume").toInt());
                         order.setIssued(issued);
@@ -168,7 +163,7 @@ namespace Evernus
                 entry.mHighPrice = itemObject.value("highPrice").toDouble();
                 entry.mLowPrice = itemObject.value("lowPrice").toDouble();
                 entry.mOrders = itemObject.value("orderCount").toInt();
-                entry.mVolume = static_cast<quint64>(itemObject.value("volume").toDouble());
+                entry.mVolume = itemObject.value("volume_str").toString().toULongLong();
 
                 history.emplace(std::move(date), std::move(entry));
             }
