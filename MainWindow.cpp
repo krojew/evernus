@@ -16,6 +16,7 @@
 
 #include <QNetworkInterface>
 #include <QDesktopServices>
+#include <QDesktopWidget>
 #include <QApplication>
 #include <QCloseEvent>
 #include <QMessageBox>
@@ -477,7 +478,18 @@ namespace Evernus
         const auto size = settings.value(settingsSizeKey, QSize{600, 400}).toSize();
 
         resize(size);
-        move(pos);
+
+        const auto desktop = QApplication::desktop();
+        const auto screenCount = desktop->screenCount();
+
+        for (auto i = 0; i < screenCount; ++i)
+        {
+            if (desktop->screenGeometry(i).contains(pos))
+            {
+                move(pos);
+                break;
+            }
+        }
 
         mShowMaximized = settings.value(settingsMaximizedKey, false).toBool();
     }
