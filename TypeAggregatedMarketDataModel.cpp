@@ -130,7 +130,7 @@ namespace Evernus
         return static_cast<int>(mData.size());
     }
 
-    void TypeAggregatedMarketDataModel::setData(const std::vector<ExternalOrder> &orders, const HistoryMap &history, uint region, uint solarSystem)
+    void TypeAggregatedMarketDataModel::setOrderData(const std::vector<ExternalOrder> &orders, const HistoryMap &history, uint region, uint solarSystem)
     {
         beginResetModel();
 

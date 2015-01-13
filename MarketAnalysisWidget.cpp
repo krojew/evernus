@@ -250,7 +250,7 @@ namespace Evernus
             mDataStack->repaint();
 
             fillSolarSystems(region);
-            mTypeDataModel.setData(mOrders, mHistory[region], region);
+            mTypeDataModel.setOrderData(mOrders, mHistory[region], region);
 
             mDataStack->setCurrentWidget(mTypeDataView);
         }
@@ -265,7 +265,7 @@ namespace Evernus
             mDataStack->repaint();
 
             const auto system = mSolarSystemCombo->currentData().toUInt();
-            mTypeDataModel.setData(mOrders, mHistory[region], region, system);
+            mTypeDataModel.setOrderData(mOrders, mHistory[region], region, system);
 
             mDataStack->setCurrentWidget(mTypeDataView);
         }
