@@ -43,5 +43,6 @@ namespace Evernus
         const auto omitCurrencySymbolKey = "ui/global/omitCurrencySymbol";
         const auto mainWindowAlwaysOnTopKey = "ui/mainWindow/alwaysOnTop";
         const auto useUTCDatesKey = "ui/global/useUTCDates";
+        const auto lastCharacterKey = "ui/global/lastCharacter";
     }
 }

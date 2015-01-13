@@ -15,8 +15,10 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QComboBox>
+#include <QSettings>
 
 #include "CharacterRepository.h"
+#include "UISettings.h"
 
 #include "MenuBarWidget.h"
 
@@ -52,8 +54,20 @@ namespace Evernus
     void MenuBarWidget::refreshCharacters()
     {
         const auto index = mCharacterCombo->currentIndex();
-        const auto prevId = (index == -1) ? (Character::invalidId) : (mCharacterCombo->currentData().value<Character::IdType>());
+        auto prevId = Character::invalidId;
         auto emitPrevious = false;
+
+        if (index == -1)
+        {
+            QSettings settings;
+            const auto lastCharacter = settings.value(UISettings::lastCharacterKey);
+            if (lastCharacter.isValid())
+                prevId = lastCharacter.value<Character::IdType>();
+        }
+        else
+        {
+            prevId = mCharacterCombo->currentData().value<Character::IdType>();
+        }
 
         mCharacterCombo->blockSignals(true);
         mCharacterCombo->clear();
@@ -74,13 +88,17 @@ namespace Evernus
 
         mCharacterCombo->blockSignals(false);
 
-        if (!emitPrevious)
+        if (!emitPrevious || index == -1)
             QMetaObject::invokeMethod(this, "changeCharacter", Qt::QueuedConnection, Q_ARG(int, mCharacterCombo->currentIndex()));
     }
 
     void MenuBarWidget::changeCharacter(int index)
     {
         const auto id = (index == -1) ? (Character::invalidId) : (mCharacterCombo->currentData().value<Character::IdType>());
+
+        QSettings settings;
+        settings.setValue(UISettings::lastCharacterKey, id);
+
         emit currentCharacterChanged(id);
     }
 }
