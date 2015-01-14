@@ -2441,7 +2441,10 @@ namespace Evernus
             }
 
             if (pendingContractItemRequests == 0)
-                emit (this->*Signal)();
+            {
+                emit(this->*Signal)();
+                emit taskEnded(task, QString{});
+            }
         }
     }
 
