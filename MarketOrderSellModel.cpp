@@ -215,10 +215,10 @@ namespace Evernus
                 {
                     const double elapsed = data->getFirstSeen().daysTo(QDateTime::currentDateTimeUtc());
                     if (elapsed <= 0.)
-                        return -1.;
+                        return std::numeric_limits<double>::max();
 
                     const auto movement = (data->getVolumeEntered() - data->getVolumeRemaining()) / elapsed;
-                    return (movement > 0.) ? (data->getVolumeRemaining() / movement) : (-1.);
+                    return (movement > 0.) ? (data->getVolumeRemaining() / movement) : (std::numeric_limits<double>::max());
                 }
             case timeLeftColumn:
                 {
