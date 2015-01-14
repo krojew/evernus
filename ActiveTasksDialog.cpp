@@ -95,6 +95,12 @@ namespace Evernus
         setWindowTitle(tr("Active Tasks"));
     }
 
+    void ActiveTasksDialog::done(int r)
+    {
+        clearIfCompleted();
+        QDialog::done(r);
+    }
+
     void ActiveTasksDialog::addNewTaskInfo(uint taskId, const QString &description)
     {
         if (mTaskItems.empty())
@@ -107,7 +113,6 @@ namespace Evernus
             mTaskbarProgress->setMaximum(1);
             mTaskbarProgress->setVisible(true);
 #endif
-            mTaskWidget->clear();
         }
         else
         {
@@ -211,6 +216,12 @@ namespace Evernus
         }
     }
 
+    void ActiveTasksDialog::closeEvent(QCloseEvent *event)
+    {
+        clearIfCompleted();
+        QDialog::closeEvent(event);
+    }
+
     void ActiveTasksDialog::autoCloseSave(bool enabled)
     {
         QSettings settings;
@@ -225,5 +236,11 @@ namespace Evernus
         item->setExpanded(true);
 
         mTaskItems[taskId] = item;
+    }
+
+    void ActiveTasksDialog::clearIfCompleted()
+    {
+        if (mTaskItems.empty())
+            mTaskWidget->clear();
     }
 }

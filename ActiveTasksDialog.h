@@ -46,10 +46,15 @@ namespace Evernus
         virtual ~ActiveTasksDialog() = default;
 
     public slots:
+        virtual void done(int r) override;
+
         void addNewTaskInfo(uint taskId, const QString &description);
         void addNewSubTaskInfo(uint taskId, uint parentTask, const QString &description);
         void setTaskInfo(uint taskId, const QString &description);
         void endTask(uint taskId, const QString &error = QString{});
+
+    protected:
+        virtual void closeEvent(QCloseEvent *event) override;
 
     private slots:
         void autoCloseSave(bool enabled);
@@ -76,5 +81,6 @@ namespace Evernus
         bool mHadError = false;
 
         void fillTaskItem(uint taskId, QTreeWidgetItem *item, const QString &description);
+        void clearIfCompleted();
     };
 }
