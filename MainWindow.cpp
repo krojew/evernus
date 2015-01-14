@@ -269,15 +269,34 @@ namespace Evernus
 
     void MainWindow::refreshAssets()
     {
-        if (mCurrentCharacterId != Character::invalidId)
+        QSettings settings;
+        if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
+        {
+            enumerateEnabledCharacters([this](auto id) {
+                emit importAssets(id);
+            });
+        }
+        else if (mCurrentCharacterId != Character::invalidId)
+        {
             emit importAssets(mCurrentCharacterId);
+        }
     }
 
     void MainWindow::refreshContracts()
     {
-        if (mCurrentCharacterId != Character::invalidId)
+        QSettings settings;
+        if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
         {
-            QSettings settings;
+            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
+            enumerateEnabledCharacters([corp, this](auto id) {
+                if (corp)
+                    emit importCorpContracts(id);
+
+                emit importContracts(id);
+            });
+        }
+        else if (mCurrentCharacterId != Character::invalidId)
+        {
             if (settings.value(ImportSettings::updateCorpDataKey).toBool())
                 emit importCorpContracts(mCurrentCharacterId);
 
@@ -287,9 +306,19 @@ namespace Evernus
 
     void MainWindow::refreshWalletJournal()
     {
-        if (mCurrentCharacterId != Character::invalidId)
+        QSettings settings;
+        if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
         {
-            QSettings settings;
+            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
+            enumerateEnabledCharacters([corp, this](auto id) {
+                if (corp)
+                    emit importCorpWalletJournal(id);
+
+                emit importWalletJournal(id);
+            });
+        }
+        else if (mCurrentCharacterId != Character::invalidId)
+        {
             if (settings.value(ImportSettings::updateCorpDataKey).toBool())
                 emit importCorpWalletJournal(mCurrentCharacterId);
 
@@ -299,9 +328,19 @@ namespace Evernus
 
     void MainWindow::refreshWalletTransactions()
     {
-        if (mCurrentCharacterId != Character::invalidId)
+        QSettings settings;
+        if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
         {
-            QSettings settings;
+            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
+            enumerateEnabledCharacters([corp, this](auto id) {
+                if (corp)
+                    emit importCorpWalletTransactions(id);
+
+                emit importWalletTransactions(id);
+            });
+        }
+        else if (mCurrentCharacterId != Character::invalidId)
+        {
             if (settings.value(ImportSettings::updateCorpDataKey).toBool())
                 emit importCorpWalletTransactions(mCurrentCharacterId);
 
@@ -311,9 +350,19 @@ namespace Evernus
 
     void MainWindow::refreshMarketOrdersFromAPI()
     {
-        if (mCurrentCharacterId != Character::invalidId)
+        QSettings settings;
+        if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
         {
-            QSettings settings;
+            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
+            enumerateEnabledCharacters([corp, this](auto id) {
+                if (corp)
+                    emit importCorpMarketOrdersFromAPI(id);
+
+                emit importMarketOrdersFromAPI(id);
+            });
+        }
+        else if (mCurrentCharacterId != Character::invalidId)
+        {
             if (settings.value(ImportSettings::updateCorpDataKey).toBool())
                 emit importCorpMarketOrdersFromAPI(mCurrentCharacterId);
 
@@ -323,9 +372,19 @@ namespace Evernus
 
     void MainWindow::refreshMarketOrdersFromLogs()
     {
-        if (mCurrentCharacterId != Character::invalidId)
+        QSettings settings;
+        if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
         {
-            QSettings settings;
+            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
+            enumerateEnabledCharacters([corp, this](auto id) {
+                if (corp)
+                    emit importCorpMarketOrdersFromLogs(id);
+
+                emit importMarketOrdersFromLogs(id);
+            });
+        }
+        else if (mCurrentCharacterId != Character::invalidId)
+        {
             if (settings.value(ImportSettings::updateCorpDataKey).toBool())
                 emit importCorpMarketOrdersFromLogs(mCurrentCharacterId);
 
@@ -902,15 +961,29 @@ namespace Evernus
     {
         mCharactersMenu->clear();
 
-        auto characters = mRepositoryProvider.getCharacterRepository().getEnabledQuery();
+        const auto &repo = mRepositoryProvider.getCharacterRepository();
+        const auto idName = repo.getIdColumn();
+
+        auto characters = repo.getEnabledQuery();
         while (characters.next())
         {
-            const auto id = characters.value("id").value<Character::IdType>();
+            const auto id = characters.value(idName).value<Character::IdType>();
             auto action = mCharactersMenu->addAction(characters.value("name").toString());
 
             connect(action, &QAction::triggered, this, [id, this] {
                 mMenuWidget->setCurrentCharacter(id);
             });
         }
+    }
+
+    template<class T>
+    void MainWindow::enumerateEnabledCharacters(T &&func) const
+    {
+        const auto &repo = mRepositoryProvider.getCharacterRepository();
+        const auto idName = repo.getIdColumn();
+        auto query = repo.getEnabledQuery();
+
+        while (query.next())
+            std::forward<T>(func)(query.value(idName).value<Character::IdType>());
     }
 }

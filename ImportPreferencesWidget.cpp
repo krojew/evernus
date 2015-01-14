@@ -45,6 +45,10 @@ namespace Evernus
         generalBoxLayout->addWidget(mIgnoreCachedBtn);
         mIgnoreCachedBtn->setChecked(settings.value(ImportSettings::ignoreCachedImportKey, ImportSettings::ignoreCachedImportDefault).toBool());
 
+        mAllCharactersBtn = new QCheckBox{tr("Import data for all characters with one click"), this};
+        generalBoxLayout->addWidget(mAllCharactersBtn);
+        mAllCharactersBtn->setChecked(settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool());
+
         auto timersBox = new QGroupBox{tr("Data age"), this};
         mainLayout->addWidget(timersBox);
 
@@ -125,6 +129,7 @@ namespace Evernus
     {
         QSettings settings;
         settings.setValue(ImportSettings::ignoreCachedImportKey, mIgnoreCachedBtn->isChecked());
+        settings.setValue(ImportSettings::importAllCharactersKey, mAllCharactersBtn->isChecked());
         settings.setValue(ImportSettings::maxCharacterAgeKey, mCharacterTimerEdit->value());
         settings.setValue(ImportSettings::maxAssetListAgeKey, mAssetListTimerEdit->value());
         settings.setValue(ImportSettings::maxWalletAgeKey, mWalletTimerEdit->value());

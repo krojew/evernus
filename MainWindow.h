@@ -230,5 +230,8 @@ namespace Evernus
 
         void setUpAutoImportTimer();
         void refreshCharactersMenu();
+
+        template<class T>
+        void enumerateEnabledCharacters(T &&func) const;
     };
 }
