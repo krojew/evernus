@@ -19,6 +19,7 @@
 
 class QSortFilterProxyModel;
 class QItemSelection;
+class QCheckBox;
 class QLabel;
 
 namespace Evernus
@@ -60,6 +61,7 @@ namespace Evernus
         QSortFilterProxyModel *mFilterModel = nullptr;
 
         WalletEntryFilterWidget *mFilter = nullptr;
+        QCheckBox *mCombineBtn = nullptr;
 
         WalletTransactionView *mView = nullptr;
 

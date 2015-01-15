@@ -18,6 +18,7 @@
 #include <QVBoxLayout>
 #include <QClipboard>
 #include <QSettings>
+#include <QCheckBox>
 #include <QLabel>
 #include <QDebug>
 #include <QFont>
@@ -30,6 +31,7 @@
 #include "ButtonWithTimer.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
+#include "UISettings.h"
 #include "FlowLayout.h"
 #include "TextUtils.h"
 
@@ -62,6 +64,18 @@ namespace Evernus
         mFilter = new WalletEntryFilterWidget{QStringList{} << tr("all") << tr("buy") << tr("sell"), filterRepo, this};
         toolBarLayout->addWidget(mFilter, 1);
         connect(mFilter, &WalletEntryFilterWidget::filterChanged, this, &WalletTransactionsWidget::updateFilter);
+
+        QSettings settings;
+
+        mCombineBtn = new QCheckBox{tr("Combine for all characters"), this};
+        toolBarLayout->addWidget(mCombineBtn);
+        mCombineBtn->setChecked(settings.value(UISettings::combineTransactionsKey, UISettings::combineTransactionsDefault).toBool());
+        connect(mCombineBtn, &QCheckBox::toggled, this, [=](bool checked) {
+            QSettings settings;
+            settings.setValue(UISettings::combineTransactionsKey, checked);
+
+            mModel.setCombineCharacters(checked);
+        });
 
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);
@@ -138,7 +152,7 @@ namespace Evernus
 
     void WalletTransactionsWidget::updateFilter(const QDate &from, const QDate &to, const QString &filter, int type)
     {
-        mModel.setFilter(getCharacterId(), from, to, static_cast<EntryType>(type));
+        mModel.setFilter(getCharacterId(), from, to, static_cast<EntryType>(type), mCombineBtn->isChecked());
         mFilterModel->setFilterWildcard(filter);
 
         updateInfo();
@@ -155,7 +169,7 @@ namespace Evernus
         mFilter->setFilter(fromDate, tillDate, QString{}, static_cast<int>(EntryType::All));
         mFilter->blockSignals(false);
 
-        mModel.setFilter(id, fromDate, tillDate, EntryType::All);
+        mModel.setFilter(id, fromDate, tillDate, EntryType::All, mCombineBtn->isChecked());
 
         mView->setCharacter(id);
         mView->header()->resizeSections(QHeaderView::ResizeToContents);

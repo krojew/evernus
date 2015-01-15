@@ -177,7 +177,7 @@ namespace Evernus
                     range.mTo = QDateTime::currentDateTimeUtc();
 
                 mTransactionModel.setFilter(
-                    mCharacterId, range.mFrom.date(), range.mTo.date(), mOrderModel->getOrderTypeFilter(index), order->getTypeId());
+                    mCharacterId, range.mFrom.date(), range.mTo.date(), mOrderModel->getOrderTypeFilter(index), false, order->getTypeId());
             }
 
             if (mExternalOrderModel)

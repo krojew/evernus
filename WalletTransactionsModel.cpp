@@ -45,8 +45,11 @@ namespace Evernus
             << tr("Quantity")
             << tr("Item")
             << tr("Price")
+            << tr("Character")
             << tr("Client")
             << tr("Location");
+
+        connect(&mDataProvider, &EveDataProvider::namesChanged, this, &WalletTransactionsModel::updateNames);
     }
 
     Qt::ItemFlags WalletTransactionsModel::flags(const QModelIndex &index) const
@@ -86,6 +89,8 @@ namespace Evernus
         case Qt::UserRole:
             if (column == typeIdColumn)
                 return mDataProvider.getTypeName(mData[row][typeIdColumn].value<EveType::IdType>());
+            if (column == characterColumn)
+                return mDataProvider.getGenericName(mData[row][characterColumn].value<Character::IdType>());
 
             return mData[row][column];
         case Qt::DisplayRole:
@@ -110,6 +115,8 @@ namespace Evernus
 
                     return TextUtils::currencyToString(price, QLocale{});
                 }
+            case characterColumn:
+                return mDataProvider.getGenericName(mData[row][characterColumn].value<Character::IdType>());
             }
 
             return mData[row][column];
@@ -209,14 +216,22 @@ namespace Evernus
         return mTotalProfit;
     }
 
-    void WalletTransactionsModel::setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, EveType::IdType typeId)
+    void WalletTransactionsModel
+    ::setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, bool combineCharacters, EveType::IdType typeId)
     {
         mCharacterId = id;
         mFrom = from;
         mTill = till;
         mType = type;
         mTypeId = typeId;
+        mCombineCharacters = combineCharacters;
 
+        reset();
+    }
+
+    void WalletTransactionsModel::setCombineCharacters(bool flag)
+    {
+        mCombineCharacters = flag;
         reset();
     }
 
@@ -231,52 +246,65 @@ namespace Evernus
         mTotalProfit = 0.;
 
         mData.clear();
-        if (mCharacterId != Character::invalidId)
+        if (mCharacterId != Character::invalidId || mCombineCharacters)
         {
             try
             {
-                const auto entries = (mCorp) ?
-                                     (mTransactionsRepository.fetchForCorporationInRange(mCharacterRepository.getCorporationId(mCharacterId),
-                                                                                         QDateTime{mFrom}.toUTC(),
-                                                                                         QDateTime{mTill}.addDays(1).toUTC(),
-                                                                                         mType,
-                                                                                         mTypeId)) :
-                                     (mTransactionsRepository.fetchForCharacterInRange(mCharacterId,
-                                                                                       QDateTime{mFrom}.toUTC(),
-                                                                                       QDateTime{mTill}.addDays(1).toUTC(),
-                                                                                       mType,
-                                                                                       mTypeId));
-                mData.reserve(entries.size());
-
-                for (const auto &entry : entries)
+                WalletTransactionRepository::EntityList entries;
+                if (mCombineCharacters)
                 {
-                    mData.emplace_back();
-                    auto &data = mData.back();
+                    const auto idName = mCharacterRepository.getIdColumn();
+                    auto query = mCharacterRepository.getEnabledQuery();
 
-                    data
-                        << entry->isIgnored()
-                        << entry->getTimestamp()
-                        << static_cast<int>(entry->getType())
-                        << entry->getQuantity()
-                        << entry->getTypeId()
-                        << entry->getPrice()
-                        << entry->getClientName()
-                        << mDataProvider.getLocationName(entry->getLocationId())
-                        << entry->getId();
-
-                    mTotalQuantity += entry->getQuantity();
-                    mTotalSize += mDataProvider.getTypeVolume(entry->getTypeId());
-
-                    if (entry->getType() == WalletTransaction::Type::Buy)
+                    while (query.next())
                     {
-                        mTotalCost += entry->getPrice();
+                        const auto id = query.value(idName).value<Character::IdType>();
+
+                        WalletTransactionRepository::EntityList newEntries;
+                        if (mCorp)
+                        {
+                            newEntries = mTransactionsRepository.fetchForCorporationInRange(mCharacterRepository.getCorporationId(id),
+                                                                                            QDateTime{mFrom}.toUTC(),
+                                                                                            QDateTime{mTill}.addDays(1).toUTC(),
+                                                                                            mType,
+                                                                                            mTypeId);
+                        }
+                        else
+                        {
+                            newEntries = mTransactionsRepository.fetchForCharacterInRange(id,
+                                                                                          QDateTime{mFrom}.toUTC(),
+                                                                                          QDateTime{mTill}.addDays(1).toUTC(),
+                                                                                          mType,
+                                                                                          mTypeId);
+                        }
+
+                        entries.reserve(entries.size() + newEntries.size());
+                                        entries.insert(std::end(entries),
+                                                       std::make_move_iterator(std::begin(newEntries)),
+                                                       std::make_move_iterator(std::end(newEntries)));
+                    }
+                }
+                else
+                {
+                    if (mCorp)
+                    {
+                        entries = mTransactionsRepository.fetchForCorporationInRange(mCharacterRepository.getCorporationId(mCharacterId),
+                                                                                     QDateTime{mFrom}.toUTC(),
+                                                                                     QDateTime{mTill}.addDays(1).toUTC(),
+                                                                                     mType,
+                                                                                     mTypeId);
                     }
                     else
                     {
-                        mTotalIncome += entry->getPrice();
-                        mTotalProfit += entry->getPrice() - mItemCostProvider.fetchForCharacterAndType(mCharacterId, entry->getTypeId())->getCost();
+                        entries = mTransactionsRepository.fetchForCharacterInRange(mCharacterId,
+                                                                                   QDateTime{mFrom}.toUTC(),
+                                                                                   QDateTime{mTill}.addDays(1).toUTC(),
+                                                                                   mType,
+                                                                                   mTypeId);
                     }
                 }
+
+                processData(entries);
             }
             catch (const CharacterRepository::NotFoundException &)
             {
@@ -291,5 +319,46 @@ namespace Evernus
         beginResetModel();
         mData.clear();
         endResetModel();
+    }
+
+    void WalletTransactionsModel::updateNames()
+    {
+        emit dataChanged(index(0, characterColumn), index(rowCount() - 1, characterColumn), QVector<int>{} << Qt::UserRole << Qt::DisplayRole);
+    }
+
+    void WalletTransactionsModel::processData(const WalletTransactionRepository::EntityList &entries)
+    {
+        mData.reserve(entries.size());
+
+        for (const auto &entry : entries)
+        {
+            mData.emplace_back();
+            auto &data = mData.back();
+
+            data
+                << entry->isIgnored()
+                << entry->getTimestamp()
+                << static_cast<int>(entry->getType())
+                << entry->getQuantity()
+                << entry->getTypeId()
+                << entry->getPrice()
+                << entry->getCharacterId()
+                << entry->getClientName()
+                << mDataProvider.getLocationName(entry->getLocationId())
+                << entry->getId();
+
+            mTotalQuantity += entry->getQuantity();
+            mTotalSize += mDataProvider.getTypeVolume(entry->getTypeId());
+
+            if (entry->getType() == WalletTransaction::Type::Buy)
+            {
+                mTotalCost += entry->getPrice();
+            }
+            else
+            {
+                mTotalIncome += entry->getPrice();
+                mTotalProfit += entry->getPrice() - mItemCostProvider.fetchForCharacterAndType(mCharacterId, entry->getTypeId())->getCost();
+            }
+        }
     }
 }

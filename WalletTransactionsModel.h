@@ -62,19 +62,29 @@ namespace Evernus
         double getTotalCost() const noexcept;
         double getTotalProfit() const noexcept;
 
-        void setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, EveType::IdType typeId = EveType::invalidId);
+        void setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, bool combineCharacters, EveType::IdType typeId = EveType::invalidId);
+        void setCombineCharacters(bool flag);
 
         void reset();
         void clear();
 
+    private slots:
+        void updateNames();
+
     private:
-        static const auto ignoredColumn = 0;
-        static const auto timestampColumn = 1;
-        static const auto typeColumn = 2;
-        static const auto quantityColumn = 3;
-        static const auto typeIdColumn = 4;
-        static const auto priceColumn = 5;
-        static const auto idColumn = 8;
+        enum
+        {
+            ignoredColumn,
+            timestampColumn,
+            typeColumn,
+            quantityColumn,
+            typeIdColumn,
+            priceColumn,
+            characterColumn,
+            clientColumn,
+            locationColumn,
+            idColumn
+        };
 
         const WalletTransactionRepository &mTransactionsRepository;
         const CharacterRepository &mCharacterRepository;
@@ -85,6 +95,7 @@ namespace Evernus
         QDate mFrom, mTill;
         EntryType mType = EntryType::All;
         EveType::IdType mTypeId = EveType::invalidId;
+        bool mCombineCharacters = false;
 
         std::vector<QVariantList> mData;
 
@@ -97,5 +108,7 @@ namespace Evernus
         double mTotalIncome = 0.;
         double mTotalCost = 0.;
         double mTotalProfit = 0.;
+
+        void processData(const WalletTransactionRepository::EntityList &entries);
     };
 }
