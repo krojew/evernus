@@ -42,7 +42,7 @@ namespace Evernus
         mToEdit->setCalendarPopup(true);
         connect(mToEdit, &QDateEdit::dateChanged, this, &DateRangeWidget::toChanged);
 
-        auto presetBtn = new QPushButton{QIcon{":/images/calendar_view_month.png"}, tr("Quick date"), this};
+        auto presetBtn = new QPushButton{QIcon{":/images/calendar_view_month.png"}, tr("Quick date  "), this};
         mainLayout->addWidget(presetBtn);
         presetBtn->setFlat(true);
 
