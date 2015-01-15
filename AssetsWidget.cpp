@@ -17,6 +17,7 @@
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QCheckBox>
 #include <QGroupBox>
 #include <QSettings>
 #include <QAction>
@@ -33,6 +34,7 @@
 #include "ImportSettings.h"
 #include "AssetProvider.h"
 #include "StationView.h"
+#include "UISettings.h"
 #include "AssetList.h"
 #include "TextUtils.h"
 
@@ -74,11 +76,26 @@ namespace Evernus
         toolBarLayout->addWidget(filterEdit, 1);
         connect(filterEdit, &TextFilterWidget::filterEntered, this, &AssetsWidget::applyWildcard);
 
+        QSettings settings;
+
+        auto combineBtn = new QCheckBox{tr("Combine for all characters"), this};
+        toolBarLayout->addWidget(combineBtn);
+        combineBtn->setChecked(settings.value(UISettings::combineAssetsKey, UISettings::combineAssetsDefault).toBool());
+        connect(combineBtn, &QCheckBox::toggled, this, [=](bool checked) {
+            QSettings settings;
+            settings.setValue(UISettings::combineAssetsKey, checked);
+
+            mModel.setCombineCharacters(checked);
+            resetModel();
+        });
+
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);
 
         auto assetLayout = new QHBoxLayout{};
         mainLayout->addLayout(assetLayout);
+
+        mModel.setCombineCharacters(combineBtn->isChecked());
 
         mModelProxy = new LeafFilterProxyModel{this};
         mModelProxy->setSourceModel(&mModel);
@@ -101,7 +118,6 @@ namespace Evernus
 
         auto stationGroupLayout = new QVBoxLayout{stationGroup};
 
-        QSettings settings;
         const auto useCustomStation
             = settings.value(ImportSettings::useCustomAssetStationKey, ImportSettings::useCustomAssetStationDefault).toBool();
 
@@ -195,11 +211,21 @@ namespace Evernus
         mSetDestinationAct->setEnabled(enable);
     }
 
+    void AssetsWidget::setCombine(int state)
+    {
+        QSettings settings;
+    }
+
     void AssetsWidget::handleNewCharacter(Character::IdType id)
     {
         qDebug() << "Switching assets to" << id;
 
         mModel.setCharacter(id);
+        resetModel();
+    }
+
+    void AssetsWidget::resetModel()
+    {
         mModel.reset();
         mAssetView->expandAll();
         mAssetView->header()->resizeSections(QHeaderView::ResizeToContents);
@@ -220,21 +246,34 @@ namespace Evernus
     {
         ExternalOrderImporter::TypeLocationPairs target;
 
-        const auto assets = mAssetProvider.fetchAssetsForCharacter(getCharacterId());
-        for (const auto &item : *assets)
-        {
-            if (mCustomStationId == 0)
+        auto buildImportTargetFromList = [&target, this](const auto &assets) {
+            for (const auto &item : *assets)
             {
-                const auto locationId = item->getLocationId();
-                if (!locationId)
-                    continue;
+                if (mCustomStationId == 0)
+                {
+                    const auto locationId = item->getLocationId();
+                    if (!locationId)
+                        continue;
 
-                buildImportTarget(target, *item, *locationId);
+                    buildImportTarget(target, *item, *locationId);
+                }
+                else
+                {
+                    buildImportTarget(target, *item, mCustomStationId);
+                }
             }
-            else
-            {
-                buildImportTarget(target, *item, mCustomStationId);
-            }
+        };
+
+        if (mModel.isCombiningCharacters())
+        {
+            const auto list = mAssetProvider.fetchAllAssets();
+            for (const auto &assets : list)
+                buildImportTargetFromList(assets);
+        }
+        else
+        {
+            const auto assets = mAssetProvider.fetchAssetsForCharacter(getCharacterId());
+            buildImportTargetFromList(assets);
         }
 
         return target;
@@ -242,7 +281,7 @@ namespace Evernus
 
     void AssetsWidget::buildImportTarget(ExternalOrderImporter::TypeLocationPairs &target, const Item &item, quint64 locationId)
     {
-        target.emplace(std::make_pair(item.getTypeId(), locationId));
+        target.insert(std::make_pair(item.getTypeId(), locationId));
         for (const auto &child : item)
             buildImportTarget(target, *child, locationId);
     }

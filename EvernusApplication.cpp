@@ -240,6 +240,19 @@ namespace Evernus
         return assets;
     }
 
+    std::vector<std::shared_ptr<AssetList>> EvernusApplication::fetchAllAssets() const
+    {
+        std::vector<std::shared_ptr<AssetList>> result;
+
+        const auto idName = mCharacterRepository->getIdColumn();
+        auto query = mCharacterRepository->getEnabledQuery();
+
+        while (query.next())
+            result.emplace_back(fetchAssetsForCharacter(query.value(idName).value<Character::IdType>()));
+
+        return result;
+    }
+
     QDateTime EvernusApplication::getLocalCacheTimer(Character::IdType id, TimerType type) const
     {
         CharacterTimerMap::const_iterator it;

@@ -95,6 +95,7 @@ namespace Evernus
         virtual void registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer) override;
 
         virtual std::shared_ptr<AssetList> fetchAssetsForCharacter(Character::IdType id) const override;
+        virtual std::vector<std::shared_ptr<AssetList>> fetchAllAssets() const override;
 
         virtual QDateTime getLocalCacheTimer(Character::IdType id, TimerType type) const override;
         virtual void setUtcCacheTimer(Character::IdType id, TimerType type, const QDateTime &dt) override;

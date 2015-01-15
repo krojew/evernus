@@ -27,6 +27,8 @@ namespace Evernus
         const auto omitCurrencySymbolDefault = false;
         const auto mainWindowAlwaysOnTopDefault = false;
         const auto useUTCDatesDefault = false;
+        const auto combineStatisticsDefault = false;
+        const auto combineAssetsDefault = false;
 
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
@@ -44,5 +46,7 @@ namespace Evernus
         const auto mainWindowAlwaysOnTopKey = "ui/mainWindow/alwaysOnTop";
         const auto useUTCDatesKey = "ui/global/useUTCDates";
         const auto lastCharacterKey = "ui/global/lastCharacter";
+        const auto combineStatisticsKey = "ui/combine/statistics";
+        const auto combineAssetsKey = "ui/combine/assets";
     }
 }

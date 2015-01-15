@@ -695,9 +695,17 @@ namespace Evernus
         auto widget = new QWidget{this};
         auto mainLayout = new QVBoxLayout{widget};
 
+        QSettings settings;
+
         mCombineStatsBtn = new QCheckBox{tr("Combine statistics for all characters"), this};
         mainLayout->addWidget(mCombineStatsBtn);
-        connect(mCombineStatsBtn, &QCheckBox::toggled, this, &StatisticsWidget::updateData);
+        mCombineStatsBtn->setChecked(settings.value(UISettings::combineStatisticsKey, UISettings::combineStatisticsDefault).toBool());
+        connect(mCombineStatsBtn, &QCheckBox::toggled, this, [=](bool checked) {
+            QSettings settings;
+            settings.setValue(UISettings::combineStatisticsKey, checked);
+
+            updateData();
+        });
 
         auto balanceGroup = new QGroupBox{tr("Balance"), this};
         mainLayout->addWidget(balanceGroup);

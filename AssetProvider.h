@@ -29,5 +29,6 @@ namespace Evernus
         virtual ~AssetProvider() = default;
 
         virtual std::shared_ptr<AssetList> fetchAssetsForCharacter(Character::IdType id) const = 0;
+        virtual std::vector<std::shared_ptr<AssetList>> fetchAllAssets() const = 0;
     };
 }

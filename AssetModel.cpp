@@ -134,7 +134,10 @@ namespace Evernus
             << tr("Unit volume")
             << tr("Total volume")
             << tr("Local unit sell price")
-            << tr("Local total sell price"));
+            << tr("Local total sell price")
+            << tr("Owner"));
+
+        connect(&mDataProvider, &EveDataProvider::namesChanged, this, &AssetModel::updateNames);
     }
 
     int AssetModel::columnCount(const QModelIndex &parent) const
@@ -162,6 +165,12 @@ namespace Evernus
                 return item->decoration();
             break;
         case Qt::UserRole:
+            if (column == ownerColumn)
+            {
+                const auto id = item->data(ownerColumn).value<Character::IdType>();
+                return (id == Character::invalidId) ? (QVariant{}) : (mDataProvider.getGenericName(id));
+            }
+
             return item->data(column);
         case Qt::DisplayRole:
             switch (column) {
@@ -179,6 +188,11 @@ namespace Evernus
                 break;
             case totalPriceColumn:
                 return TextUtils::currencyToString(item->data(totalPriceColumn).toDouble(), locale);
+            case ownerColumn:
+                {
+                    const auto id = item->data(ownerColumn).value<Character::IdType>();
+                    return (id == Character::invalidId) ? (QVariant{}) : (mDataProvider.getGenericName(id));
+                }
             }
             return item->data(column);
         case Qt::FontRole:
@@ -219,7 +233,7 @@ namespace Evernus
     QModelIndex AssetModel::index(int row, int column, const QModelIndex &parent) const
     {
         if (!hasIndex(row, column, parent))
-             return QModelIndex();
+             return QModelIndex{};
 
          const TreeItem *parentItem = nullptr;
 
@@ -273,6 +287,16 @@ namespace Evernus
         mCustomStationId = id;
     }
 
+    void AssetModel::setCombineCharacters(bool flag)
+    {
+        mCombineCharacters = flag;
+    }
+
+    bool AssetModel::isCombiningCharacters() const
+    {
+        return mCombineCharacters;
+    }
+
     void AssetModel::reset()
     {
         beginResetModel();
@@ -283,56 +307,16 @@ namespace Evernus
         mTotalAssets = 0;
         mTotalVolume = mTotalSellPrice = 0.;
 
-        if (mCharacterId != Character::invalidId)
+        if (mCombineCharacters)
+        {
+            const auto assets = mAssetProvider.fetchAllAssets();
+            for (const auto &list : assets)
+                fillAssets(list);
+        }
+        else if (mCharacterId != Character::invalidId)
         {
             const auto assets = mAssetProvider.fetchAssetsForCharacter(mCharacterId);
-            for (const auto &item : *assets)
-            {
-                auto id = item->getLocationId();
-                if (!id)
-                    id = LocationId{};
-
-                TreeItem *locationItem = nullptr;
-
-                const auto it = mLocationItems.find(*id);
-                if (it == std::end(mLocationItems))
-                {
-                    auto treeItem = std::make_unique<TreeItem>();
-                    treeItem->setData(QVariantList{}
-                        << mDataProvider.getLocationName(*id)
-                        << 0
-                        << QString{}
-                        << 0.
-                        << QString{}
-                        << 0.);
-                    treeItem->setLocationId(*id);
-                    locationItem = treeItem.get();
-
-                    mLocationItems[*id] = locationItem;
-                    mRootItem.appendChild(std::move(treeItem));
-                }
-                else
-                {
-                    locationItem = mLocationItems[*id];
-                }
-
-                const auto locationId = (mCustomStationId == 0) ? (*id) : (mCustomStationId);
-
-                auto treeItem = createTreeItemForItem(*item, locationId);
-
-                const auto curAssets = mTotalAssets;
-                const auto curVolume = mTotalVolume;
-                const auto curSellPrice = mTotalSellPrice;
-
-                buildItemMap(*item, *treeItem, locationId);
-                locationItem->appendChild(std::move(treeItem));
-
-                auto data = locationItem->data();
-                data[quantityColumn] = data[quantityColumn].toUInt() + mTotalAssets - curAssets;
-                data[totalVolumeColumn] = data[totalVolumeColumn].toDouble() + mTotalVolume - curVolume;
-                data[totalPriceColumn] = data[totalPriceColumn].toDouble() + mTotalSellPrice - curSellPrice;
-                locationItem->setData(data);
-            }
+            fillAssets(assets);
         }
 
         endResetModel();
@@ -359,7 +343,22 @@ namespace Evernus
         return (item != nullptr) ? (item->locationId()) : (LocationId{});
     }
 
-    void AssetModel::buildItemMap(const Item &item, TreeItem &treeItem, LocationId locationId)
+    void AssetModel::updateNames()
+    {
+        std::function<void(TreeItem &, const QModelIndex &, int)> updateOwner = [=, &updateOwner](TreeItem &item, const QModelIndex &parent, int row) {
+            const auto thisIndex = index(row, ownerColumn, parent);
+
+            emit dataChanged(thisIndex, thisIndex, QVector<int>{} << Qt::UserRole << Qt::DisplayRole);
+
+            const auto childCount = item.childCount();
+            for (auto i = 0; i < childCount; ++i)
+                updateOwner(*item.child(i), index(row, 0, parent), i);
+        };
+
+        updateOwner(mRootItem, QModelIndex{}, 0);
+    }
+
+    void AssetModel::buildItemMap(const Item &item, TreeItem &treeItem, LocationId locationId, Character::IdType ownerId)
     {
         const auto quantity = item.getQuantity();
         const auto typeId = item.getTypeId();
@@ -370,15 +369,15 @@ namespace Evernus
 
         for (const auto &child : item)
         {
-            auto childItem = createTreeItemForItem(*child, locationId);
-            buildItemMap(*child, *childItem, locationId);
+            auto childItem = createTreeItemForItem(*child, locationId, ownerId);
+            buildItemMap(*child, *childItem, locationId, ownerId);
 
             treeItem.appendChild(std::move(childItem));
         }
     }
 
     std::unique_ptr<AssetModel::TreeItem> AssetModel
-    ::createTreeItemForItem(const Item &item, LocationId locationId) const
+    ::createTreeItemForItem(const Item &item, LocationId locationId, Character::IdType ownerId) const
     {
         const auto typeId = item.getTypeId();
         const auto volume = mDataProvider.getTypeVolume(typeId);
@@ -394,6 +393,7 @@ namespace Evernus
             << (volume * quantity)
             << sellPrice->getPrice()
             << (sellPrice->getPrice() * quantity)
+            << ownerId
         );
         treeItem->setPriceTimestamp(sellPrice->getUpdateTime());
         treeItem->setLocationId(locationId);
@@ -402,5 +402,57 @@ namespace Evernus
             treeItem->setDecoration(metaIcon);
 
         return treeItem;
+    }
+
+    void AssetModel::fillAssets(const std::shared_ptr<AssetList> &assets)
+    {
+        for (const auto &item : *assets)
+        {
+            auto id = item->getLocationId();
+            if (!id)
+                id = LocationId{};
+
+            TreeItem *locationItem = nullptr;
+
+            const auto it = mLocationItems.find(*id);
+            if (it == std::end(mLocationItems))
+            {
+                auto treeItem = std::make_unique<TreeItem>();
+                treeItem->setData(QVariantList{}
+                    << mDataProvider.getLocationName(*id)
+                    << 0
+                    << QString{}
+                    << 0.
+                    << QString{}
+                    << 0.
+                    << Character::invalidId);
+                treeItem->setLocationId(*id);
+                locationItem = treeItem.get();
+
+                mLocationItems[*id] = locationItem;
+                mRootItem.appendChild(std::move(treeItem));
+            }
+            else
+            {
+                locationItem = mLocationItems[*id];
+            }
+
+            const auto locationId = (mCustomStationId == 0) ? (*id) : (mCustomStationId);
+
+            auto treeItem = createTreeItemForItem(*item, locationId, assets->getCharacterId());
+
+            const auto curAssets = mTotalAssets;
+            const auto curVolume = mTotalVolume;
+            const auto curSellPrice = mTotalSellPrice;
+
+            buildItemMap(*item, *treeItem, locationId, assets->getCharacterId());
+            locationItem->appendChild(std::move(treeItem));
+
+            auto data = locationItem->data();
+            data[quantityColumn] = data[quantityColumn].toUInt() + mTotalAssets - curAssets;
+            data[totalVolumeColumn] = data[totalVolumeColumn].toDouble() + mTotalVolume - curVolume;
+            data[totalPriceColumn] = data[totalPriceColumn].toDouble() + mTotalSellPrice - curSellPrice;
+            locationItem->setData(data);
+        }
     }
 }

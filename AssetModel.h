@@ -49,6 +49,9 @@ namespace Evernus
         void setCharacter(Character::IdType id);
         void setCustomStation(quint64 id);
 
+        void setCombineCharacters(bool flag);
+        bool isCombiningCharacters() const;
+
         void reset();
 
         uint getTotalAssets() const noexcept;
@@ -56,6 +59,9 @@ namespace Evernus
         double getTotalSellPrice() const noexcept;
 
         LocationId getAssetLocationId(const QModelIndex &index) const;
+
+    private slots:
+        void updateNames();
 
     private:
         class TreeItem
@@ -98,18 +104,25 @@ namespace Evernus
             TreeItem *mParentItem = nullptr;
         };
 
-        static const auto typeColumn = 0;
-        static const auto quantityColumn = 1;
-        static const auto unitVolumeColumn = 2;
-        static const auto totalVolumeColumn = 3;
-        static const auto unitPriceColumn = 4;
-        static const auto totalPriceColumn = 5;
+        enum
+        {
+            typeColumn,
+            quantityColumn,
+            unitVolumeColumn,
+            totalVolumeColumn,
+            unitPriceColumn,
+            totalPriceColumn,
+            ownerColumn,
+
+            numColumns
+        };
 
         const AssetProvider &mAssetProvider;
         const EveDataProvider &mDataProvider;
 
         Character::IdType mCharacterId = Character::invalidId;
         quint64 mCustomStationId = 0;
+        bool mCombineCharacters = false;
 
         TreeItem mRootItem;
 
@@ -119,8 +132,9 @@ namespace Evernus
 
         std::unordered_map<LocationId, TreeItem *> mLocationItems;
 
-        void buildItemMap(const Item &item, TreeItem &treeItem, LocationId locationId);
+        void buildItemMap(const Item &item, TreeItem &treeItem, LocationId locationId, Character::IdType ownerId);
 
-        std::unique_ptr<TreeItem> createTreeItemForItem(const Item &item, LocationId locationId) const;
+        std::unique_ptr<TreeItem> createTreeItemForItem(const Item &item, LocationId locationId, Character::IdType ownerId) const;
+        void fillAssets(const std::shared_ptr<AssetList> &assets);
     };
 }

@@ -66,6 +66,8 @@ namespace Evernus
         void setDestinationForCurrent();
         void handleSelection(const QItemSelection &selected);
 
+        void setCombine(int state);
+
     private:
         const AssetProvider &mAssetProvider;
 
@@ -83,6 +85,7 @@ namespace Evernus
 
         virtual void handleNewCharacter(Character::IdType id) override;
 
+        void resetModel();
         void setNewInfo();
 
         ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
