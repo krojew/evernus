@@ -18,6 +18,7 @@
 #include "WalletJournalModel.h"
 
 class QSortFilterProxyModel;
+class QCheckBox;
 
 namespace Evernus
 {
@@ -56,6 +57,7 @@ namespace Evernus
         QSortFilterProxyModel *mFilterModel = nullptr;
 
         WalletEntryFilterWidget *mFilter = nullptr;
+        QCheckBox *mCombineBtn = nullptr;
 
         StyledTreeView *mView = nullptr;
 

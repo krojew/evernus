@@ -15,6 +15,8 @@
 #include <QSortFilterProxyModel>
 #include <QHeaderView>
 #include <QVBoxLayout>
+#include <QCheckBox>
+#include <QSettings>
 #include <QDebug>
 
 #include "WalletEntryFilterWidget.h"
@@ -23,6 +25,7 @@
 #include "ButtonWithTimer.h"
 #include "StyledTreeView.h"
 #include "ImportSettings.h"
+#include "UISettings.h"
 
 #include "WalletJournalWidget.h"
 
@@ -53,6 +56,18 @@ namespace Evernus
         toolBarLayout->addWidget(mFilter, 1);
         connect(mFilter, &WalletEntryFilterWidget::filterChanged, this, &WalletJournalWidget::updateFilter);
 
+        QSettings settings;
+
+        mCombineBtn = new QCheckBox{tr("Combine for all characters"), this};
+        toolBarLayout->addWidget(mCombineBtn);
+        mCombineBtn->setChecked(settings.value(UISettings::combineJournalKey, UISettings::combineJournalDefault).toBool());
+        connect(mCombineBtn, &QCheckBox::toggled, this, [=](bool checked) {
+            QSettings settings;
+            settings.setValue(UISettings::combineJournalKey, checked);
+
+            mModel.setCombineCharacters(checked);
+        });
+
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);
 
@@ -76,7 +91,7 @@ namespace Evernus
 
     void WalletJournalWidget::updateFilter(const QDate &from, const QDate &to, const QString &filter, int type)
     {
-        mModel.setFilter(getCharacterId(), from, to, static_cast<EntryType>(type));
+        mModel.setFilter(getCharacterId(), from, to, static_cast<EntryType>(type), mCombineBtn->isChecked());
         mFilterModel->setFilterWildcard(filter);
     }
 
@@ -91,7 +106,7 @@ namespace Evernus
         mFilter->setFilter(fromDate, tillDate, QString{}, static_cast<int>(EntryType::All));
         mFilter->blockSignals(false);
 
-        mModel.setFilter(id, fromDate, tillDate, EntryType::All);
+        mModel.setFilter(id, fromDate, tillDate, EntryType::All, mCombineBtn->isChecked());
 
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
     }

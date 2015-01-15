@@ -29,6 +29,7 @@ namespace Evernus
         const auto useUTCDatesDefault = false;
         const auto combineStatisticsDefault = false;
         const auto combineAssetsDefault = false;
+        const auto combineJournalDefault = false;
 
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
@@ -48,5 +49,6 @@ namespace Evernus
         const auto lastCharacterKey = "ui/global/lastCharacter";
         const auto combineStatisticsKey = "ui/combine/statistics";
         const auto combineAssetsKey = "ui/combine/assets";
+        const auto combineJournalKey = "ui/combine/journal";
     }
 }

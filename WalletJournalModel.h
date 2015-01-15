@@ -49,7 +49,8 @@ namespace Evernus
         virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
-        void setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type);
+        void setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, bool combineCharacters);
+        void setCombineCharacters(bool flag);
 
         void reset();
 
@@ -67,11 +68,14 @@ namespace Evernus
         Character::IdType mCharacterId = Character::invalidId;
         QDate mFrom, mTill;
         EntryType mType = EntryType::All;
+        bool mCombineCharacters = false;
 
         std::vector<QVariantList> mData;
 
         QStringList mColumns;
 
         bool mCorp = false;
+
+        void processData(const WalletJournalEntryRepository::EntityList &entries);
     };
 }

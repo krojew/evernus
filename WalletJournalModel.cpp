@@ -143,13 +143,20 @@ namespace Evernus
         return 0;
     }
 
-    void WalletJournalModel::setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type)
+    void WalletJournalModel::setFilter(Character::IdType id, const QDate &from, const QDate &till, EntryType type, bool combineCharacters)
     {
         mCharacterId = id;
         mFrom = from;
         mTill = till;
         mType = type;
+        mCombineCharacters = combineCharacters;
 
+        reset();
+    }
+
+    void WalletJournalModel::setCombineCharacters(bool flag)
+    {
+        mCombineCharacters = flag;
         reset();
     }
 
@@ -158,43 +165,61 @@ namespace Evernus
         beginResetModel();
 
         mData.clear();
-        if (mCharacterId != Character::invalidId)
+        if (mCharacterId != Character::invalidId || mCombineCharacters)
         {
             try
             {
-                const auto entries = (mCorp) ?
-                                     (mJournalRepository.fetchForCorporationInRange(mCharacterRepository.getCorporationId(mCharacterId),
-                                                                                    QDateTime{mFrom}.toUTC(),
-                                                                                    QDateTime{mTill}.addDays(1).toUTC(),
-                                                                                    mType)) :
-                                     (mJournalRepository.fetchForCharacterInRange(mCharacterId,
-                                                                                  QDateTime{mFrom}.toUTC(),
-                                                                                  QDateTime{mTill}.addDays(1).toUTC(),
-                                                                                  mType));
-                mData.reserve(entries.size());
-
-                QRegularExpression re{"^DESC: "};
-
-                for (const auto &entry : entries)
+                WalletJournalEntryRepository::EntityList entries;
+                if (mCombineCharacters)
                 {
-                    const auto argName = entry->getArgName();
-                    auto reason = entry->getReason();
+                    const auto idName = mCharacterRepository.getIdColumn();
+                    auto query = mCharacterRepository.getEnabledQuery();
 
-                    mData.emplace_back();
-                    auto &data = mData.back();
+                    while (query.next())
+                    {
+                        const auto id = query.value(idName).value<Character::IdType>();
 
-                    data
-                        << entry->isIgnored()
-                        << entry->getTimestamp()
-                        << mDataProvider.getRefTypeName(entry->getRefTypeId())
-                        << entry->getOwnerName1()
-                        << entry->getOwnerName2()
-                        << ((argName) ? (*argName) : (QVariant{}))
-                        << entry->getAmount()
-                        << entry->getBalance()
-                        << ((reason) ? (reason->remove(re)) : (QVariant{}))
-                        << entry->getId();
+                        WalletJournalEntryRepository::EntityList newEntries;
+                        if (mCorp)
+                        {
+                            newEntries = mJournalRepository.fetchForCorporationInRange(mCharacterRepository.getCorporationId(id),
+                                                                                       QDateTime{mFrom}.toUTC(),
+                                                                                       QDateTime{mTill}.addDays(1).toUTC(),
+                                                                                       mType);
+                        }
+                        else
+                        {
+                            newEntries = mJournalRepository.fetchForCharacterInRange(id,
+                                                                                     QDateTime{mFrom}.toUTC(),
+                                                                                     QDateTime{mTill}.addDays(1).toUTC(),
+                                                                                     mType);
+                        }
+
+                        entries.reserve(entries.size() + newEntries.size());
+                        entries.insert(std::end(entries),
+                                       std::make_move_iterator(std::begin(newEntries)),
+                                       std::make_move_iterator(std::end(newEntries)));
+                    }
                 }
+                else
+                {
+                    if (mCorp)
+                    {
+                        entries = mJournalRepository.fetchForCorporationInRange(mCharacterRepository.getCorporationId(mCharacterId),
+                                                                                QDateTime{mFrom}.toUTC(),
+                                                                                QDateTime{mTill}.addDays(1).toUTC(),
+                                                                                mType);
+                    }
+                    else
+                    {
+                        entries = mJournalRepository.fetchForCharacterInRange(mCharacterId,
+                                                                              QDateTime{mFrom}.toUTC(),
+                                                                              QDateTime{mTill}.addDays(1).toUTC(),
+                                                                              mType);
+                    }
+                }
+
+                processData(entries);
             }
             catch (const CharacterRepository::NotFoundException &)
             {
@@ -202,5 +227,33 @@ namespace Evernus
         }
 
         endResetModel();
+    }
+
+    void WalletJournalModel::processData(const WalletJournalEntryRepository::EntityList &entries)
+    {
+        mData.reserve(entries.size());
+
+        QRegularExpression re{"^DESC: "};
+
+        for (const auto &entry : entries)
+        {
+            const auto argName = entry->getArgName();
+            auto reason = entry->getReason();
+
+            mData.emplace_back();
+            auto &data = mData.back();
+
+            data
+                << entry->isIgnored()
+                << entry->getTimestamp()
+                << mDataProvider.getRefTypeName(entry->getRefTypeId())
+                << entry->getOwnerName1()
+                << entry->getOwnerName2()
+                << ((argName) ? (*argName) : (QVariant{}))
+                << entry->getAmount()
+                << entry->getBalance()
+                << ((reason) ? (reason->remove(re)) : (QVariant{}))
+                << entry->getId();
+        }
     }
 }
