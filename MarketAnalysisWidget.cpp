@@ -29,9 +29,9 @@
 #include <QDebug>
 
 #include "TypeAggregatedDetailsWidget.h"
-#include "ExternalOrderRepository.h"
 #include "RegionTypeSelectDialog.h"
 #include "MarketAnalysisSettings.h"
+#include "MarketOrderRepository.h"
 #include "CharacterRepository.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
@@ -45,7 +45,7 @@ namespace Evernus
                                                QByteArray crestClientSecret,
                                                const EveDataProvider &dataProvider,
                                                TaskManager &taskManager,
-                                               const ExternalOrderRepository &orderRepo,
+                                               const MarketOrderRepository &orderRepo,
                                                const EveTypeRepository &typeRepo,
                                                const MarketGroupRepository &groupRepo,
                                                const CharacterRepository &characterRepo,
@@ -80,6 +80,15 @@ namespace Evernus
         connect(mDontSaveBtn, &QCheckBox::toggled, [](auto checked) {
             QSettings settings;
             settings.setValue(MarketAnalysisSettings::dontSaveLargeOrdersKey, checked);
+        });
+
+        mIgnoreExistingOrdersBtn = new QCheckBox{tr("Ignore types with existing orders"), this};
+        toolBarLayout->addWidget(mIgnoreExistingOrdersBtn);
+        mIgnoreExistingOrdersBtn->setChecked(
+            settings.value(MarketAnalysisSettings::ignoreExistingOrdersKey, MarketAnalysisSettings::ignoreExistingOrdersDefault).toBool());
+        connect(mIgnoreExistingOrdersBtn, &QCheckBox::toggled, [](auto checked) {
+            QSettings settings;
+            settings.setValue(MarketAnalysisSettings::ignoreExistingOrdersKey, checked);
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Region:"), this});
@@ -207,8 +216,19 @@ namespace Evernus
         mOrderSubtask = mTaskManager.startTask(mainTask, tr("Making %1 CREST order requests...").arg(pairs.size()));
         mHistorySubtask = mTaskManager.startTask(mainTask, tr("Making %1 CREST history requests...").arg(pairs.size()));
 
+        MarketOrderRepository::TypeLocationPairs ignored;
+        if (mIgnoreExistingOrdersBtn->isChecked())
+        {
+            const auto temp = mOrderRepo.fetchActiveTypes();
+            for (const auto &pair : temp)
+                ignored.insert(std::make_pair(pair.first, mDataProvider.getStationRegionId(pair.second)));
+        }
+
         for (const auto &pair : pairs)
         {
+            if (ignored.find(pair) != std::end(ignored))
+                continue;
+
             ++mOrderRequestCount;
             ++mHistoryRequestCount;
 
@@ -220,7 +240,7 @@ namespace Evernus
             });
         }
 
-        qDebug() << "Making" << mOrderRequestCount << "CREST order and history requests...";
+        qDebug() << "Making" << mOrderRequestCount << mHistoryRequestCount << "CREST order and history requests...";
 
         if (mOrderRequestCount == 0)
             mTaskManager.endTask(mOrderSubtask);

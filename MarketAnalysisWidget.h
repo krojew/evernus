@@ -31,7 +31,7 @@ class QLineEdit;
 
 namespace Evernus
 {
-    class ExternalOrderRepository;
+    class MarketOrderRepository;
     class MarketGroupRepository;
     class CharacterRepository;
     class EveTypeRepository;
@@ -48,7 +48,7 @@ namespace Evernus
                              QByteArray crestClientSecret,
                              const EveDataProvider &dataProvider,
                              TaskManager &taskManager,
-                             const ExternalOrderRepository &orderRepo,
+                             const MarketOrderRepository &orderRepo,
                              const EveTypeRepository &typeRepo,
                              const MarketGroupRepository &groupRepo,
                              const CharacterRepository &characterRepo,
@@ -80,7 +80,7 @@ namespace Evernus
 
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
-        const ExternalOrderRepository &mOrderRepo;
+        const MarketOrderRepository &mOrderRepo;
         const EveTypeRepository &mTypeRepo;
         const MarketGroupRepository &mGroupRepo;
         const CharacterRepository &mCharacterRepo;
@@ -88,6 +88,7 @@ namespace Evernus
         CRESTManager mManager;
 
         QCheckBox *mDontSaveBtn = nullptr;
+        QCheckBox *mIgnoreExistingOrdersBtn = nullptr;
         QComboBox *mRegionCombo = nullptr;
         QComboBox *mSolarSystemCombo = nullptr;
         QStackedWidget *mDataStack = nullptr;

@@ -17,6 +17,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include <boost/functional/hash.hpp>
+
 #include "MarketOrder.h"
 #include "Repository.h"
 
@@ -61,10 +63,13 @@ namespace Evernus
             Volume
         };
 
-        typedef std::unordered_map<MarketOrder::IdType, OrderState> OrderStateMap;
-        typedef std::unordered_set<MarketOrder::IdType> OrderIdList;
+        using OrderStateMap = std::unordered_map<MarketOrder::IdType, OrderState>;
+        using OrderIdList = std::unordered_set<MarketOrder::IdType>;
 
-        typedef std::vector<std::pair<quint64, SingleAggrData>> CustomAggregatedData;
+        using CustomAggregatedData = std::vector<std::pair<quint64, SingleAggrData>>;
+
+        using TypeLocationPair = std::pair<EveType::IdType, quint64>;
+        using TypeLocationPairs = std::unordered_set<TypeLocationPair, boost::hash<TypeLocationPair>>;
 
         MarketOrderRepository(bool corp, const QSqlDatabase &db);
         virtual ~MarketOrderRepository() = default;
@@ -92,6 +97,8 @@ namespace Evernus
         EntityList fetchForCorporation(uint corporationId, MarketOrder::Type type) const;
         EntityList fetchArchivedForCharacter(Character::IdType characterId) const;
         EntityList fetchArchivedForCorporation(uint corporationId) const;
+
+        TypeLocationPairs fetchActiveTypes() const;
 
         void archive(const std::vector<MarketOrder::IdType> &ids) const;
         void fulfill(const std::vector<MarketOrder::IdType> &ids) const;

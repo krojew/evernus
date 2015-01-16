@@ -19,6 +19,7 @@ namespace Evernus
     namespace MarketAnalysisSettings
     {
         const auto dontSaveLargeOrdersDefault = true;
+        const auto ignoreExistingOrdersDefault = true;
         const auto smaDaysDefault = 20;
         const auto macdFastDaysDefault = 5;
         const auto macdSlowDaysDefault = 15;
@@ -36,5 +37,6 @@ namespace Evernus
         const auto macdSlowDaysKey = "marketAnalysis/macd/slowDays";
         const auto macdEmaDaysKey = "marketAnalysis/macd/emaDays";
         const auto showLegendKey = "marketAnalysis/showLegend";
+        const auto ignoreExistingOrdersKey = "marketAnalysis/ignoreExistingOrders";
     }
 }

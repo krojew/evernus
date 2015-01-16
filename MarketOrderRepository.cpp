@@ -380,6 +380,21 @@ namespace Evernus
         return result;
     }
 
+    MarketOrderRepository::TypeLocationPairs MarketOrderRepository::fetchActiveTypes() const
+    {
+        auto query = prepare(QString{"SELECT type_id, location_id FROM %1 WHERE state = ?"}.arg(getTableName()));
+        query.bindValue(0, static_cast<int>(MarketOrder::State::Active));
+
+        DatabaseUtils::execQuery(query);
+
+        TypeLocationPairs result;
+
+        while (query.next())
+            result.insert(std::make_pair(query.value(0).value<EveType::IdType>(), query.value(1).toULongLong()));
+
+        return result;
+    }
+
     void MarketOrderRepository::archive(const std::vector<MarketOrder::IdType> &ids) const
     {
         QStringList list;

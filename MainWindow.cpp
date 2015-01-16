@@ -889,7 +889,7 @@ namespace Evernus
                                                           std::move(crestClientSecret),
                                                           mEveDataProvider,
                                                           taskManager,
-                                                          mRepositoryProvider.getExternalOrderRepository(),
+                                                          mRepositoryProvider.getMarketOrderRepository(),
                                                           mRepositoryProvider.getEveTypeRepository(),
                                                           mRepositoryProvider.getMarketGroupRepository(),
                                                           mRepositoryProvider.getCharacterRepository(),
