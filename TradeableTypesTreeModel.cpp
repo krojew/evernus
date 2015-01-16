@@ -113,13 +113,9 @@ namespace Evernus
             groupItems.emplace_back(std::move(item));
         }
 
-        const auto types = typeRepo.fetchAll();
+        const auto types = typeRepo.fetchAllTradeable();
         for (const auto &type : types)
         {
-            const auto groupId = type->getMarketGroupId();
-            if (!groupId)
-                continue;
-
             const auto it = groupItemMap.find(*groupId);
             if (it == std::end(groupItemMap))
                 continue;

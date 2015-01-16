@@ -65,6 +65,21 @@ namespace Evernus
         return result;
     }
 
+    EveTypeRepository::EntityList EveTypeRepository::fetchAllTradeable() const
+    {
+        EntityList out;
+
+        auto result = exec(QString{"SELECT * FROM %1 WHERE marketGroupID IS NOT NULL"}.arg(getTableName()));
+        const auto size = result.size();
+        if (size != -1)
+            out.reserve(size);
+
+        while (result.next())
+            out.emplace_back(populate(result.record()));
+
+        return out;
+    }
+
     QStringList EveTypeRepository::getColumns() const
     {
         return QStringList{}

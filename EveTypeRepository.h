@@ -34,6 +34,7 @@ namespace Evernus
         virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         std::unordered_map<EveType::IdType, QString> fetchAllTradeableNames() const;
+        EntityList fetchAllTradeable() const;
 
     private:
         virtual QStringList getColumns() const override;
