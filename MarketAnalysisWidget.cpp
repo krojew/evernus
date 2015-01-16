@@ -25,6 +25,7 @@
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QSettings>
+#include <QAction>
 #include <QLabel>
 #include <QDebug>
 
@@ -165,7 +166,7 @@ namespace Evernus
 
         toolBarLayout->addStretch();
 
-        mainLayout->addWidget(new QLabel{tr("Double-click an item for additional information."), this});
+        mainLayout->addWidget(new QLabel{tr("Double-click an item or use the right-click menu for additional information."), this});
 
         mDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mDataStack);
@@ -183,9 +184,22 @@ namespace Evernus
         mTypeDataView->setAlternatingRowColors(true);
         mTypeDataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         mTypeDataView->setModel(&mTypeViewProxy);
+        mTypeDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
         connect(mTypeDataView, &QTableView::doubleClicked, this, &MarketAnalysisWidget::showDetails);
+        connect(mTypeDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &MarketAnalysisWidget::selectType);
 
         mDataStack->setCurrentWidget(mTypeDataView);
+
+        mShowDetailsAct = new QAction{tr("Show details"), this};
+        mShowDetailsAct->setEnabled(false);
+        mTypeDataView->addAction(mShowDetailsAct);
+        connect(mShowDetailsAct, &QAction::triggered, this, &MarketAnalysisWidget::showDetailsForCurrent);
+
+        mShowInEveAct = new QAction{tr("Show in EVE"), this};
+        mShowInEveAct->setEnabled(false);
+        mTypeDataView->addAction(mShowInEveAct);
+        connect(mShowInEveAct, &QAction::triggered, this, &MarketAnalysisWidget::showInEveForCurrent);
     }
 
     void MarketAnalysisWidget::setCharacter(Character::IdType id)
@@ -318,6 +332,25 @@ namespace Evernus
             widget->show();
             connect(this, &MarketAnalysisWidget::preferencesChanged, widget, &TypeAggregatedDetailsWidget::handleNewPreferences);
         }
+    }
+
+    void MarketAnalysisWidget::selectType(const QItemSelection &selected)
+    {
+        const auto enabled = !selected.isEmpty();
+        mShowDetailsAct->setEnabled(enabled);
+        mShowInEveAct->setEnabled(enabled);
+    }
+
+    void MarketAnalysisWidget::showDetailsForCurrent()
+    {
+        showDetails(mTypeDataView->currentIndex());
+    }
+
+    void MarketAnalysisWidget::showInEveForCurrent()
+    {
+        const auto id = mTypeDataModel.getTypeId(mTypeViewProxy.mapToSource(mTypeDataView->currentIndex()));
+        if (id != EveType::invalidId)
+            emit showInEve(id);
     }
 
     void MarketAnalysisWidget::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)

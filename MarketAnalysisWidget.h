@@ -59,6 +59,8 @@ namespace Evernus
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
         void preferencesChanged();
 
+        void showInEve(EveType::IdType id);
+
     public slots:
         void setCharacter(Character::IdType id);
 
@@ -74,6 +76,10 @@ namespace Evernus
         void applyFilter();
 
         void showDetails(const QModelIndex &item);
+        void selectType(const QItemSelection &selected);
+
+        void showDetailsForCurrent();
+        void showInEveForCurrent();
 
     private:
         static const auto waitingLabelIndex = 0;
@@ -86,6 +92,9 @@ namespace Evernus
         const CharacterRepository &mCharacterRepo;
 
         CRESTManager mManager;
+
+        QAction *mShowDetailsAct = nullptr;
+        QAction *mShowInEveAct = nullptr;
 
         QCheckBox *mDontSaveBtn = nullptr;
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;

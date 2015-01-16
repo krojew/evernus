@@ -895,6 +895,7 @@ namespace Evernus
                                                           mRepositoryProvider.getCharacterRepository(),
                                                           this};
         connect(marketAnalysisTab, &MarketAnalysisWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
+        connect(marketAnalysisTab, &MarketAnalysisWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::preferencesChanged, marketAnalysisTab, &MarketAnalysisWidget::preferencesChanged);
         addTab(marketAnalysisTab, tr("Market analysis"));
 
