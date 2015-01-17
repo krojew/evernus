@@ -18,6 +18,7 @@
 
 #include <QDialogButtonBox>
 #include <QStringBuilder>
+#include <QDesktopWidget>
 #include <QApplication>
 #include <QRadioButton>
 #include <QTableWidget>
@@ -127,7 +128,9 @@ namespace Evernus
         setMaximumWidth(510);
         setNewWindowFlags(alwaysOnTop);
 
-        move(settings.value(settingsPosKey).toPoint());
+        const auto pos = settings.value(settingsPosKey).toPoint();
+        if (QApplication::desktop()->screenGeometry(this).contains(pos))
+            move(pos);
     }
 
     void MarginToolDialog::setCharacter(Character::IdType id)
