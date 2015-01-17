@@ -188,4 +188,12 @@ namespace Evernus
 
         return order;
     }
+
+    std::shared_ptr<ExternalOrder> ExternalOrder::nullOrder()
+    {
+        auto ptr = std::make_shared<ExternalOrder>();
+        ptr->setUpdateTime(QDateTime::currentDateTimeUtc());
+
+        return ptr;
+    }
 }

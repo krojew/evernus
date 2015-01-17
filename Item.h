@@ -22,6 +22,8 @@
 
 namespace Evernus
 {
+    class EveDataProvider;
+
     class Item
         : public Entity<ItemData::IdType>
     {
@@ -70,6 +72,8 @@ namespace Evernus
         size_t getChildCount() const noexcept;
 
         void addItem(std::unique_ptr<Item> &&item);
+
+        bool isBPC(const EveDataProvider &dataProvider) const noexcept;
 
         Item &operator =(const Item &other);
         Item &operator =(Item &&) = default;

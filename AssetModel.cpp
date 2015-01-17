@@ -382,7 +382,7 @@ namespace Evernus
         const auto typeId = item.getTypeId();
         const auto volume = mDataProvider.getTypeVolume(typeId);
         const auto quantity = item.getQuantity();
-        const auto sellPrice = mDataProvider.getTypeSellPrice(typeId, locationId);
+        const auto sellPrice = (item.isBPC(mDataProvider)) ? (ExternalOrder::nullOrder()) : (mDataProvider.getTypeSellPrice(typeId, locationId));
         const auto metaIcon = IconUtils::getIconForMetaGroup(mDataProvider.getTypeMetaGroupName(typeId));
 
         auto treeItem = std::make_unique<TreeItem>();

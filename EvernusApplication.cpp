@@ -2305,10 +2305,8 @@ namespace Evernus
 
     double EvernusApplication::getTotalItemSellValue(const Item &item, quint64 locationId) const
     {
-        const auto magicBPCQuantity = -2;
-
         // return 0 for BPC
-        if (item.getRawQuantity() == magicBPCQuantity && mDataProvider->getTypeName(item.getTypeId()).endsWith("Blueprint"))
+        if (item.isBPC(*mDataProvider))
             return 0.;
 
         QSettings settings;

@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "EveDataProvider.h"
+
 #include "Item.h"
 
 namespace Evernus
@@ -141,6 +143,12 @@ namespace Evernus
         item->setParentId(getId());
         item->setListId(getListId());
         mContents.emplace_back(std::move(item));
+    }
+
+    bool Item::isBPC(const EveDataProvider &dataProvider) const noexcept
+    {
+        const auto magicBPCQuantity = -2;
+        return mData.mRawQuantity == magicBPCQuantity && dataProvider.getTypeName(mData.mTypeId).endsWith("Blueprint");
     }
 
     Item &Item::operator =(const Item &other)
