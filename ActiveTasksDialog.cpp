@@ -14,6 +14,7 @@
  */
 #include <QDialogButtonBox>
 #include <QProgressBar>
+#include <QCloseEvent>
 #include <QTreeWidget>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -97,8 +98,11 @@ namespace Evernus
 
     void ActiveTasksDialog::done(int r)
     {
-        clearIfCompleted();
-        QDialog::done(r);
+        if (mTaskItems.empty())
+        {
+            mTaskWidget->clear();
+            QDialog::done(r);
+        }
     }
 
     void ActiveTasksDialog::addNewTaskInfo(uint taskId, const QString &description)
@@ -218,8 +222,15 @@ namespace Evernus
 
     void ActiveTasksDialog::closeEvent(QCloseEvent *event)
     {
-        clearIfCompleted();
-        QDialog::closeEvent(event);
+        if (mTaskItems.empty())
+        {
+            mTaskWidget->clear();
+            QDialog::closeEvent(event);
+        }
+        else
+        {
+            event->ignore();
+        }
     }
 
     void ActiveTasksDialog::autoCloseSave(bool enabled)
@@ -236,11 +247,5 @@ namespace Evernus
         item->setExpanded(true);
 
         mTaskItems[taskId] = item;
-    }
-
-    void ActiveTasksDialog::clearIfCompleted()
-    {
-        if (mTaskItems.empty())
-            mTaskWidget->clear();
     }
 }

@@ -81,6 +81,5 @@ namespace Evernus
         bool mHadError = false;
 
         void fillTaskItem(uint taskId, QTreeWidgetItem *item, const QString &description);
-        void clearIfCompleted();
     };
 }
