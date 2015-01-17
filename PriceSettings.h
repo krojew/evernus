@@ -38,7 +38,7 @@ namespace Evernus
         const auto priceMaxAgeDefault = 1;
         const auto importLogWaitTimeDefault = 1000;
         const auto copyModeDefault = CopyMode::DontCopy;
-        const auto priceAltImportDefault = true;
+        const auto priceAltImportDefault = false;
         const auto autoAddCustomItemCostDefault = false;
         const auto costDataSourceDefault = DataSource::Orders;
         const auto shareCostsDefault = false;
