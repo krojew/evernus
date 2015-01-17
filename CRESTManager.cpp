@@ -52,7 +52,7 @@ namespace Evernus
         QSettings settings;
         mRefreshToken = mCrypt.decryptToString(settings.value(CRESTSettings::refreshTokenKey).toByteArray());
 
-        connect(&mInterface, &CRESTInterface::tokenRequested, this, &CRESTManager::fetchToken);
+        connect(&mInterface, &CRESTInterface::tokenRequested, this, &CRESTManager::fetchToken, Qt::QueuedConnection);
         connect(this, &CRESTManager::tokenError, &mInterface, &CRESTInterface::handleTokenError);
         connect(this, &CRESTManager::acquiredToken, &mInterface, &CRESTInterface::updateTokenAndContinue);
     }
