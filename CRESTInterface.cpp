@@ -283,7 +283,7 @@ namespace Evernus
             const auto error = reply->error();
             if (error != QNetworkReply::NoError)
             {
-                if (error == QNetworkReply::AuthenticationRequiredError && !mAccessToken.isEmpty())
+                if (error == QNetworkReply::AuthenticationRequiredError)
                 {
                     // expired token?
                     mAccessToken.clear();
