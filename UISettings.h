@@ -21,6 +21,7 @@ namespace Evernus
         const auto autoCloseTasksDefault = true;
         const auto autoCopyPriceFromInfoDefault = true;
         const auto minimizeToTrayDefault = false;
+        const auto minimizeByMarginToolDefault = true;
         const auto translationPath =  "/trans";
         const auto plotNumberFormatDefault = "f";
         const auto usePackagedVolumeDefault = false;
@@ -37,6 +38,7 @@ namespace Evernus
         const auto marketOrderStateFilterKey = "ui/orders/stateFilter";
         const auto marketOrderPriceStatusFilterKey = "ui/orders/priceStatusFilter";
         const auto minimizeToTrayKey = "ui/mainWindow/minimizeToTray";
+        const auto minimizeByMarginToolKey = "ui/mainWindow/minimizeByMarginTool";
         const auto languageKey = "ui/global/language";
         const auto dateTimeFormatKey = "ui/global/dateTimeFormat";
         const auto plotNumberFormatKey = "ui/plot/numberFormat";

@@ -164,7 +164,9 @@ namespace Evernus
 
     void MainWindow::showMarginTool()
     {
-        showMinimized();
+        QSettings settings;
+        if (settings.value(UISettings::minimizeByMarginToolKey, UISettings::minimizeByMarginToolDefault).toBool())
+            showMinimized();
 
         if (mMarginToolDialog.isNull())
         {

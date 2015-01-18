@@ -38,6 +38,7 @@ namespace Evernus
     private:
         LanguageComboBox *mLanguageEdit = nullptr;
         QCheckBox *mMinimizeToTrayBtn = nullptr;
+        QCheckBox *mMinimizeByMarginToolBtn = nullptr;
         QCheckBox *mAutoUpdateBtn = nullptr;
         QCheckBox *mUsePackagedVolumeBtn = nullptr;
         QCheckBox *mOmitCurrencySymbolBtn = nullptr;

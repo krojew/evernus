@@ -63,6 +63,10 @@ namespace Evernus
         generalGroupLayout->addWidget(mMinimizeToTrayBtn);
         mMinimizeToTrayBtn->setChecked(settings.value(UISettings::minimizeToTrayKey, UISettings::minimizeToTrayDefault).toBool());
 
+        mMinimizeByMarginToolBtn = new QCheckBox{tr("Minimize when opening the Margin Tool"), this};
+        generalGroupLayout->addWidget(mMinimizeByMarginToolBtn);
+        mMinimizeByMarginToolBtn->setChecked(settings.value(UISettings::minimizeByMarginToolKey, UISettings::minimizeByMarginToolDefault).toBool());
+
         mAutoUpdateBtn = new QCheckBox{tr("Check for updates on startup"), this};
         generalGroupLayout->addWidget(mAutoUpdateBtn);
         mAutoUpdateBtn->setChecked(settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool());
@@ -96,6 +100,7 @@ namespace Evernus
         QSettings settings;
         settings.setValue(UISettings::languageKey, mLanguageEdit->currentData(Qt::UserRole));
         settings.setValue(UISettings::minimizeToTrayKey, mMinimizeToTrayBtn->isChecked());
+        settings.setValue(UISettings::minimizeByMarginToolKey, mMinimizeByMarginToolBtn->isChecked());
         settings.setValue(UpdaterSettings::autoUpdateKey, mAutoUpdateBtn->isChecked());
         settings.setValue(UISettings::usePackagedVolumeKey, mUsePackagedVolumeBtn->isChecked());
         settings.setValue(UISettings::omitCurrencySymbolKey, mOmitCurrencySymbolBtn->isChecked());
