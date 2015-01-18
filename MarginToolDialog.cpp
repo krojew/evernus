@@ -795,6 +795,9 @@ namespace Evernus
         mWatcher.removePaths(mWatcher.directories());
 
         const auto logPath = PathUtils::getMarketLogsPath();
+
+        qDebug() << "Using market log path:" << logPath;
+
         if (logPath.isEmpty())
         {
             QMessageBox::warning(this,
