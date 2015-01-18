@@ -166,7 +166,7 @@ namespace Evernus
 
         toolBarLayout->addStretch();
 
-        mainLayout->addWidget(new QLabel{tr("Double-click an item or use the right-click menu for additional information."), this});
+        mainLayout->addWidget(new QLabel{tr("Double-click an item for additional information. \"Show in EVE\" is available via the right-click menu."), this});
 
         mDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mDataStack);
