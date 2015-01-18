@@ -22,6 +22,7 @@
 #include <QUrlQuery>
 #include <QWebFrame>
 #include <QSettings>
+#include <QWebPage>
 #include <QDebug>
 
 #include "PersistentCookieJar.h"
@@ -195,7 +196,7 @@ namespace Evernus
 
             url.setQuery(query);
 
-            mAuthView = std::make_unique<QWebView>();
+            mAuthView = std::make_unique<CRESTAuthWidget>();
 
             auto nam = mAuthView->page()->networkAccessManager();
             nam->setCookieJar(new PersistentCookieJar{CRESTSettings::cookiesKey});

@@ -99,6 +99,7 @@ qt5_wrap_cpp(
     ContractWidget.h
     CorpImportPreferencesWidget.h
     CorpKeyEditDialog.h
+    CRESTAuthWidget.h
     CRESTExternalOrderImporter.h
     CRESTInterface.h
     CRESTManager.h
@@ -336,6 +337,8 @@ add_executable(
     CorpWalletSnapshot.h
     CorpWalletSnapshotRepository.cpp
     CorpWalletSnapshotRepository.h
+    CRESTAuthWidget.cpp
+    CRESTAuthWidget.h
     CRESTExternalOrderImporter.cpp
     CRESTExternalOrderImporter.h
     CRESTInterface.cpp

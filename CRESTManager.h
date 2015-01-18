@@ -19,10 +19,10 @@
 #include <memory>
 #include <map>
 
-#include <QWebView>
 #include <QDate>
 
 #include "MarketHistoryEntry.h"
+#include "CRESTAuthWidget.h"
 #include "CRESTInterface.h"
 #include "SimpleCrypt.h"
 #include "EveType.h"
@@ -85,6 +85,6 @@ namespace Evernus
 
         QNetworkAccessManager mNetworkManager;
 
-        std::unique_ptr<QWebView> mAuthView;
+        std::unique_ptr<CRESTAuthWidget> mAuthView;
     };
 }
