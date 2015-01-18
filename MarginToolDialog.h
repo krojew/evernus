@@ -62,6 +62,8 @@ namespace Evernus
         void copyBuyPrice();
         void copySellPrice();
 
+        void handleNewPreferences();
+
     private slots:
         void toggleAlwaysOnTop(int state);
 
@@ -130,6 +132,8 @@ namespace Evernus
         QWidget *createDataSourceTab();
 
         void updateInfo(double buy, double sell, bool updatePriceEdits);
+
+        void setUpWatcher();
 
         static void fillSampleData(QTableWidget &table, double revenue, double cos, int multiplier);
 

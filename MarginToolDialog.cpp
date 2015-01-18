@@ -103,24 +103,7 @@ namespace Evernus
             emit quit();
         });
 
-        const auto logPath = PathUtils::getMarketLogsPath();
-        if (logPath.isEmpty())
-        {
-            QMessageBox::warning(this,
-                                 tr("Margin tool error"),
-                                 tr("Could not determine market log path. Please enter log path in settings."));
-        }
-        else if (!mWatcher.addPath(logPath))
-        {
-            QMessageBox::warning(this,
-                                 tr("Margin tool error"),
-                                 tr("Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again."));
-        }
-        else
-        {
-            mKnownFiles = getKnownFiles(logPath);
-        }
-
+        setUpWatcher();
         connect(&mWatcher, &QFileSystemWatcher::directoryChanged, this, &MarginToolDialog::refreshData);
 
         setWindowTitle(tr("Margin tool"));
@@ -165,6 +148,11 @@ namespace Evernus
     {
         auto clipboard = QApplication::clipboard();
         clipboard->setText(QString::number(mSellPrice, 'f', 2));
+    }
+
+    void MarginToolDialog::handleNewPreferences()
+    {
+        setUpWatcher();
     }
 
     void MarginToolDialog::toggleAlwaysOnTop(int state)
@@ -799,6 +787,29 @@ namespace Evernus
         }
         catch (const Repository<Character>::NotFoundException &)
         {
+        }
+    }
+
+    void MarginToolDialog::setUpWatcher()
+    {
+        mWatcher.removePaths(mWatcher.directories());
+
+        const auto logPath = PathUtils::getMarketLogsPath();
+        if (logPath.isEmpty())
+        {
+            QMessageBox::warning(this,
+                                 tr("Margin tool error"),
+                                 tr("Could not determine market log path. Please enter log path in settings."));
+        }
+        else if (!mWatcher.addPath(logPath))
+        {
+            QMessageBox::warning(this,
+                                 tr("Margin tool error"),
+                                 tr("Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again."));
+        }
+        else
+        {
+            mKnownFiles = getKnownFiles(logPath);
         }
     }
 

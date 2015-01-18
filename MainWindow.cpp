@@ -177,6 +177,7 @@ namespace Evernus
             connect(mMenuWidget, &MenuBarWidget::currentCharacterChanged, mMarginToolDialog, &MarginToolDialog::setCharacter);
             connect(mMarginToolDialog, &MarginToolDialog::hidden, this, &MainWindow::showNormal);
             connect(mMarginToolDialog, &MarginToolDialog::quit, this, &MainWindow::close);
+            connect(this, &MainWindow::preferencesChanged, mMarginToolDialog, &MarginToolDialog::handleNewPreferences);
         }
 
         mMarginToolDialog->showNormal();
