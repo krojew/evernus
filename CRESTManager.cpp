@@ -190,7 +190,7 @@ namespace Evernus
 
             QUrlQuery query;
             query.addQueryItem("response_type", "code");
-            query.addQueryItem("redirect_uri", "http://" + redirectDomain + "/crest.php");
+            query.addQueryItem("redirect_uri", "http://" + redirectDomain + "/crest-authentication/");
             query.addQueryItem("client_id", mClientId);
             query.addQueryItem("scope", "publicData");
 
@@ -242,14 +242,19 @@ namespace Evernus
                 {
                     qDebug() << "Error refreshing token:" << reply->errorString();
 
-                    if (object.value("error") == "invalid_token")
+                    const auto error = object.value("error").toString();
+
+                    qDebug() << "Returned error:" << error;
+
+                    if (error == "invalid_token" || error == "invalid_client")
                     {
                         mRefreshToken.clear();
                         fetchToken();
                     }
                     else
                     {
-                        emit tokenError(reply->errorString());
+                        const auto desc = object.value("error_description").toString();
+                        emit tokenError((desc.isEmpty()) ? (reply->errorString()) : (desc));
                     }
 
                     return;
