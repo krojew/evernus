@@ -358,6 +358,39 @@
     </message>
 </context>
 <context>
+    <name>Evernus::CRESTAuthWidget</name>
+    <message>
+        <location filename="../CRESTAuthWidget.cpp" line="43"/>
+        <source>Toggle external browser</source>
+        <translation>Przełącz przeglądarkę</translation>
+    </message>
+    <message>
+        <location filename="../CRESTAuthWidget.cpp" line="67"/>
+        <source>To authorize inside the browser, use the following link and paste the resulting code below: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
+        <translation>Aby uwierzytelnić się przez przeglądarkę, użynij podanego linku i wklej poniżej wynikowy kod: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../CRESTAuthWidget.cpp" line="79"/>
+        <source>paste the resulting code here</source>
+        <translation>wklej wynikowy kod tutaj</translation>
+    </message>
+    <message>
+        <location filename="../CRESTAuthWidget.cpp" line="81"/>
+        <source>Authorize</source>
+        <translation>Uwierzytelnij</translation>
+    </message>
+    <message>
+        <location filename="../CRESTAuthWidget.cpp" line="97"/>
+        <source>CREST Authentication</source>
+        <translation>Uwierzytelnianie CREST</translation>
+    </message>
+    <message>
+        <location filename="../CRESTAuthWidget.cpp" line="98"/>
+        <source>The supplied code is invalid. Please make sure all character were copied or use internal browser authorization.</source>
+        <translation>Wprowadzony kod jest nieprawidłowy. Upewnij się, że skopiowałeś wszystkie znaki, lub użyj wewnętrznej przeglądarki.</translation>
+    </message>
+</context>
+<context>
     <name>Evernus::CRESTExternalOrderImporter</name>
     <message>
         <source>CREST authorization failed.</source>
@@ -432,22 +465,22 @@
         <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="249"/>
+        <location filename="../CRESTManager.cpp" line="316"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="302"/>
+        <location filename="../CRESTManager.cpp" line="262"/>
         <source>Empty access token!</source>
         <translation>Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="318"/>
+        <location filename="../CRESTManager.cpp" line="278"/>
         <source>CREST error</source>
         <translation>Błąd CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="318"/>
+        <location filename="../CRESTManager.cpp" line="278"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
@@ -2028,7 +2061,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="66"/>
         <source>Minimize when opening the Margin Tool</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimalizuj przy otwieraniu narżędzia marży</translation>
     </message>
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="70"/>
@@ -3352,7 +3385,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="86"/>
         <source>Ignore types with existing orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoruj typy z istniejącymi zleceniami</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="95"/>
@@ -3395,7 +3428,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="169"/>
         <source>Double-click an item for additional information. &quot;Show in EVE&quot; is available via the right-click menu.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kliknij dwukrotnie na przedmiot, aby zobaczyć dodatkowe informacje. &quot;Pokaż w EVE&quot; jest dostępne w menu kontekstowym.</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="174"/>
@@ -3405,12 +3438,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="194"/>
         <source>Show details</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż szczegóły</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="199"/>
         <source>Show in EVE</source>
-        <translation type="unfinished">Pokaż w EVE</translation>
+        <translation>Pokaż w EVE</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="228"/>

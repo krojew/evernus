@@ -15,11 +15,12 @@
 #pragma once
 
 #include <QWidget>
+#include <QUrl>
 
+class QStackedWidget;
 class QLineEdit;
 class QWebView;
 class QWebPage;
-class QUrl;
 
 namespace Evernus
 {
@@ -29,14 +30,22 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit CRESTAuthWidget(QWidget *parent = nullptr);
+        explicit CRESTAuthWidget(const QUrl &url, QWidget *parent = nullptr);
 
         QWebPage *page() const;
 
-        void setUrl(const QUrl &url);
+    signals:
+        void acquiredCode(const QByteArray &code);
+
+    private slots:
+        void applyCode();
 
     private:
+        QUrl mAuthUrl;
+
         QLineEdit *mUrlEdit = nullptr;
+        QStackedWidget *mAuthWidgetStack = nullptr;
         QWebView *mView = nullptr;
+        QLineEdit *mCodeEdit = nullptr;
     };
 }

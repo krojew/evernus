@@ -70,7 +70,7 @@ namespace Evernus
 
     private:
         static const QString loginUrl;
-        static const QString redirectUrl;
+        static const QString redirectDomain;
 
         const EveDataProvider &mDataProvider;
 
@@ -86,5 +86,7 @@ namespace Evernus
         QNetworkAccessManager mNetworkManager;
 
         std::unique_ptr<CRESTAuthWidget> mAuthView;
+
+        void processAuthorizationCode(const QByteArray &code);
     };
 }

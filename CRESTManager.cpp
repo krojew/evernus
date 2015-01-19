@@ -40,7 +40,7 @@ namespace Evernus
     const QString CRESTManager::loginUrl = "https://login-tq.eveonline.com";
 #endif
 
-    const QString CRESTManager::redirectUrl = "evernus.com";
+    const QString CRESTManager::redirectDomain = "evernus.com";
 
     CRESTManager
     ::CRESTManager(QByteArray clientId, QByteArray clientSecret, const EveDataProvider &dataProvider, QObject *parent)
@@ -190,13 +190,13 @@ namespace Evernus
 
             QUrlQuery query;
             query.addQueryItem("response_type", "code");
-            query.addQueryItem("redirect_uri", "http://" + redirectUrl);
+            query.addQueryItem("redirect_uri", "http://" + redirectDomain + "/crest.php");
             query.addQueryItem("client_id", mClientId);
             query.addQueryItem("scope", "publicData");
 
             url.setQuery(query);
 
-            mAuthView = std::make_unique<CRESTAuthWidget>();
+            mAuthView = std::make_unique<CRESTAuthWidget>(url);
 
             auto nam = mAuthView->page()->networkAccessManager();
             nam->setCookieJar(new PersistentCookieJar{CRESTSettings::cookiesKey});
@@ -208,54 +208,14 @@ namespace Evernus
             mAuthView->adjustSize();
             mAuthView->move(QApplication::desktop()->screenGeometry(QApplication::activeWindow()).center() -
                             mAuthView->rect().center());
-            mAuthView->setUrl(url);
             mAuthView->show();
 
+            connect(mAuthView.get(), &CRESTAuthWidget::acquiredCode, this, &CRESTManager::processAuthorizationCode);
             connect(mAuthView->page()->mainFrame(), &QWebFrame::urlChanged, [=](const QUrl &url) {
-                if (url.host() == redirectUrl)
+                if (url.host() == redirectDomain)
                 {
-                    mAuthView->removeEventFilter(this);
-                    mAuthView->close();
-
-                    qDebug() << "Requesting access token...";
-
                     QUrlQuery query{url};
-                    QByteArray data = "grant_type=authorization_code&code=";
-                    data.append(query.queryItemValue("code"));
-
-                    QNetworkRequest request{loginUrl + "/oauth/token"};
-                    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-                    request.setRawHeader(
-                        "Authorization", (mClientId + ":" + mClientSecret).toBase64());
-
-                    auto reply = mNetworkManager.post(request, data);
-                    connect(reply, &QNetworkReply::finished, this, [=] {
-                        reply->deleteLater();
-
-                        if (reply->error() != QNetworkReply::NoError)
-                        {
-                            qDebug() << "Error requesting access token:" << reply->errorString();
-                            emit tokenError(reply->errorString());
-                            return;
-                        }
-
-                        const auto doc = QJsonDocument::fromJson(reply->readAll());
-                        const auto object = doc.object();
-
-                        mRefreshToken = object.value("refresh_token").toString();
-                        if (mRefreshToken.isEmpty())
-                        {
-                            qDebug() << "Empty refresh token!";
-                            emit tokenError(tr("Empty refresh token!"));
-                            return;
-                        }
-
-                        QSettings settings;
-                        settings.setValue(CRESTSettings::refreshTokenKey, mCrypt.encryptToByteArray(mRefreshToken));
-
-                        emit acquiredToken(object.value("access_token").toString(),
-                                           QDateTime::currentDateTime().addSecs(object.value("expires_in").toInt() - 10));
-                    });
+                    processAuthorizationCode(query.queryItemValue("code").toLatin1());
                 }
             });
         }
@@ -319,5 +279,49 @@ namespace Evernus
             "EVE login page certificate contains errors:\n%1\nAre you sure you wish to proceed (doing so can compromise your account security)?").arg(errorStrings.join("\n")));
         if (ret == QMessageBox::Yes)
             reply->ignoreSslErrors();
+    }
+
+    void CRESTManager::processAuthorizationCode(const QByteArray &code)
+    {
+        mAuthView->removeEventFilter(this);
+        mAuthView->close();
+
+        qDebug() << "Requesting access token...";
+
+        QByteArray data = "grant_type=authorization_code&code=" + code;
+
+        QNetworkRequest request{loginUrl + "/oauth/token"};
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+        request.setRawHeader(
+            "Authorization", (mClientId + ":" + mClientSecret).toBase64());
+
+        auto reply = mNetworkManager.post(request, data);
+        connect(reply, &QNetworkReply::finished, this, [=] {
+            reply->deleteLater();
+
+            if (reply->error() != QNetworkReply::NoError)
+            {
+                qDebug() << "Error requesting access token:" << reply->errorString();
+                emit tokenError(reply->errorString());
+                return;
+            }
+
+            const auto doc = QJsonDocument::fromJson(reply->readAll());
+            const auto object = doc.object();
+
+            mRefreshToken = object.value("refresh_token").toString();
+            if (mRefreshToken.isEmpty())
+            {
+                qDebug() << "Empty refresh token!";
+                emit tokenError(tr("Empty refresh token!"));
+                return;
+            }
+
+            QSettings settings;
+            settings.setValue(CRESTSettings::refreshTokenKey, mCrypt.encryptToByteArray(mRefreshToken));
+
+            emit acquiredToken(object.value("access_token").toString(),
+                               QDateTime::currentDateTime().addSecs(object.value("expires_in").toInt() - 10));
+        });
     }
 }

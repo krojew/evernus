@@ -12,19 +12,24 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QStackedWidget>
+#include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QPushButton>
 #include <QLineEdit>
 #include <QWebFrame>
 #include <QWebView>
 #include <QWebPage>
+#include <QLabel>
 
 #include "CRESTAuthWidget.h"
 
 namespace Evernus
 {
-    CRESTAuthWidget::CRESTAuthWidget(QWidget *parent)
+    CRESTAuthWidget::CRESTAuthWidget(const QUrl &url, QWidget *parent)
         : QWidget(parent)
+        , mAuthUrl(url)
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -35,12 +40,47 @@ namespace Evernus
         urlLayout->addWidget(mUrlEdit);
         mUrlEdit->setReadOnly(true);
 
+        auto useExternalBtn = new QPushButton{tr("Toggle external browser"), this};
+        urlLayout->addWidget(useExternalBtn);
+        connect(useExternalBtn, &QPushButton::clicked, this, [=] {
+            mAuthWidgetStack->setCurrentIndex(mAuthWidgetStack->currentIndex() ^ 1);
+            adjustSize();
+        });
+
+        mAuthWidgetStack = new QStackedWidget{this};
+        mainLayout->addWidget(mAuthWidgetStack);
+
         mView = new QWebView{this};
-        mainLayout->addWidget(mView);
+        mAuthWidgetStack->addWidget(mView);
         connect(mView->page()->mainFrame(), &QWebFrame::urlChanged, [=](const QUrl &url) {
             mUrlEdit->setText(url.toString());
             mUrlEdit->setCursorPosition(0);
         });
+        mView->setUrl(mAuthUrl);
+
+        auto externalAuthWidget = new QWidget{this};
+        mAuthWidgetStack->addWidget(externalAuthWidget);
+
+        auto externalAuthLayout = new QVBoxLayout{externalAuthWidget};
+
+        auto infoLabel = new QLabel{
+            tr("To authorize inside the browser, use the following link and paste the resulting code below: <a href='%1'>%1</a>").arg(url.toString()),
+            this};
+        externalAuthLayout->addWidget(infoLabel);
+        infoLabel->setWordWrap(true);
+        infoLabel->setOpenExternalLinks(true);
+        infoLabel->setTextFormat(Qt::RichText);
+
+        auto codeLayout = new QHBoxLayout{};
+        externalAuthLayout->addLayout(codeLayout);
+
+        mCodeEdit = new QLineEdit{this};
+        codeLayout->addWidget(mCodeEdit);
+        mCodeEdit->setPlaceholderText(tr("paste the resulting code here"));
+
+        auto authBtn = new QPushButton{tr("Authorize"), this};
+        codeLayout->addWidget(authBtn);
+        connect(authBtn, &QPushButton::clicked, this, &CRESTAuthWidget::applyCode);
     }
 
     QWebPage *CRESTAuthWidget::page() const
@@ -48,8 +88,17 @@ namespace Evernus
         return mView->page();
     }
 
-    void CRESTAuthWidget::setUrl(const QUrl &url)
+    void CRESTAuthWidget::applyCode()
     {
-        mView->setUrl(url);
+        const auto code = mCodeEdit->text().toLatin1();
+        if (code.isEmpty())
+        {
+            QMessageBox::warning(this,
+                                 tr("CREST Authentication"),
+                                 tr("The supplied code is invalid. Please make sure all character were copied or use internal browser authorization."));
+            return;
+        }
+
+        emit acquiredCode(code);
     }
 }
