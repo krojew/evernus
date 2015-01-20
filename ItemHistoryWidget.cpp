@@ -218,7 +218,9 @@ namespace Evernus
 
                 auto &value = values[entry->getTimestamp().toLocalTime().date()];
 
-                const auto amount = entry->getPrice();
+                const auto volume = entry->getQuantity();
+                const auto amount = entry->getPrice() * volume;
+
                 if (entry->getType() == Evernus::WalletTransaction::Type::Buy)
                 {
                     value.first -= amount;
@@ -230,7 +232,6 @@ namespace Evernus
                     mTotalIncome += amount;
                 }
 
-                const auto volume = entry->getQuantity();
                 value.second += volume;
                 totalVolume += volume;
             }

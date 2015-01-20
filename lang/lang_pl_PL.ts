@@ -465,22 +465,22 @@
         <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="316"/>
+        <location filename="../CRESTManager.cpp" line="321"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="262"/>
+        <location filename="../CRESTManager.cpp" line="267"/>
         <source>Empty access token!</source>
         <translation>Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="278"/>
+        <location filename="../CRESTManager.cpp" line="283"/>
         <source>CREST error</source>
         <translation>Błąd CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="278"/>
+        <location filename="../CRESTManager.cpp" line="283"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
