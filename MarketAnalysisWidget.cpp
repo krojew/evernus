@@ -307,13 +307,19 @@ namespace Evernus
 
     void MarketAnalysisWidget::applyFilter()
     {
-        const auto minFilter = mMinVolumeEdit->text();
-        const auto maxFilter = mMaxVolumeEdit->text();
+        const auto minVolume = mMinVolumeEdit->text();
+        const auto maxVolume = mMaxVolumeEdit->text();
         const auto minMargin = mMinMarginEdit->text();
         const auto maxMargin = mMaxMarginEdit->text();
 
-        mTypeViewProxy.setFilter((minFilter.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (minFilter.toUInt()),
-                                 (maxFilter.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (maxFilter.toUInt()),
+        QSettings settings;
+        settings.setValue(MarketAnalysisSettings::minVolumeFilterKey, minVolume);
+        settings.setValue(MarketAnalysisSettings::maxVolumeFilterKey, maxVolume);
+        settings.setValue(MarketAnalysisSettings::minMarginFilterKey, minMargin);
+        settings.setValue(MarketAnalysisSettings::maxMarginFilterKey, maxMargin);
+
+        mTypeViewProxy.setFilter((minVolume.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (minVolume.toUInt()),
+                                 (maxVolume.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (maxVolume.toUInt()),
                                  (minMargin.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::MarginValueType{}) : (minMargin.toDouble()),
                                  (maxMargin.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::MarginValueType{}) : (maxMargin.toDouble()));
     }
