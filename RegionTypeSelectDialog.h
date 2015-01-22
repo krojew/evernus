@@ -42,7 +42,13 @@ namespace Evernus
     signals:
         void selected(const ExternalOrderImporter::TypeLocationPairs &pairs);
 
+    public slots:
+        virtual void accept() override;
+
     private:
+        static const QString settingsRegionsKey;
+        static const QString settingsTypesKey;
+
         QListWidget *mRegionList = nullptr;
         QTreeView *mTypeView = nullptr;
 

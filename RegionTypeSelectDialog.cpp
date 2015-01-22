@@ -22,6 +22,7 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include <QTreeView>
+#include <QSettings>
 
 #include "EveDataProvider.h"
 
@@ -29,6 +30,9 @@
 
 namespace Evernus
 {
+    const QString RegionTypeSelectDialog::settingsRegionsKey = "regionTypeSelect/regions";
+    const QString RegionTypeSelectDialog::settingsTypesKey = "regionTypeSelect/types";
+
     RegionTypeSelectDialog::RegionTypeSelectDialog(const EveDataProvider &dataProvider,
                                                    const EveTypeRepository &typeRepo,
                                                    const MarketGroupRepository &groupRepo,
@@ -50,11 +54,17 @@ namespace Evernus
         regionLayout->addWidget(mRegionList);
         mRegionList->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
+        QSettings settings;
+        const auto selectedRegions = settings.value(settingsRegionsKey).toList();
+
         const auto &regions = dataProvider.getRegions();
         for (const auto &region : regions)
         {
             auto item = new QListWidgetItem{region.second, mRegionList};
             item->setData(Qt::UserRole, region.first);
+
+            if (selectedRegions.contains(region.first))
+                item->setSelected(true);
         }
 
         auto regionBtnsLayout = new QGridLayout{};
@@ -96,32 +106,40 @@ namespace Evernus
 
         auto buttonBox = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel};
         mainLayout->addWidget(buttonBox);
-        connect(buttonBox, &QDialogButtonBox::accepted, this, [=] {
-            ExternalOrderImporter::TypeLocationPairs result;
-
-            const auto regions = mRegionList->selectedItems();
-            const auto types = mTypeModel.getSelectedTypes();
-
-            for (const auto region : regions)
-            {
-                for (const auto type : types)
-                {
-                    result.emplace(type,
-                                   region->data(Qt::UserRole).value<ExternalOrderImporter::TypeLocationPair::second_type>());
-                }
-            }
-
-            if (result.empty())
-            {
-                QMessageBox::information(this, tr("Order import"), tr("Please select at least one region and type."));
-                return;
-            }
-
-            emit selected(result);
-            accept();
-        });
+        connect(buttonBox, &QDialogButtonBox::accepted, this, &RegionTypeSelectDialog::accept);
         connect(buttonBox, &QDialogButtonBox::rejected, this, &RegionTypeSelectDialog::reject);
 
         setWindowTitle(tr("Select regions and types"));
+    }
+
+    void RegionTypeSelectDialog::accept()
+    {
+        ExternalOrderImporter::TypeLocationPairs result;
+
+        const auto regions = mRegionList->selectedItems();
+        const auto types = mTypeModel.getSelectedTypes();
+
+        QVariantList selectedRegions;
+
+        for (const auto region : regions)
+        {
+            const auto regionId = region->data(Qt::UserRole).value<ExternalOrderImporter::TypeLocationPair::second_type>();
+            for (const auto type : types)
+                result.emplace(type, regionId);
+
+            selectedRegions << regionId;
+        }
+
+        if (result.empty())
+        {
+            QMessageBox::information(this, tr("Order import"), tr("Please select at least one region and type."));
+            return;
+        }
+
+        QSettings settings;
+        settings.setValue(settingsRegionsKey, selectedRegions);
+
+        emit selected(result);
+        QDialog::accept();
     }
 }

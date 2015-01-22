@@ -3461,27 +3461,27 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Tworzenie %1 zapytań CREST o historię...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="331"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="337"/>
         <source>%1 in %2</source>
         <translation>%1 w %2</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="363"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="369"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="394"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="400"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="420"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="426"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi z historią...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="468"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="474"/>
         <source>- all -</source>
         <translation>- wszystkie -</translation>
     </message>
@@ -5022,42 +5022,42 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::RegionTypeSelectDialog</name>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="44"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="48"/>
         <source>Regions</source>
         <translation>Regiony</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="63"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="73"/>
         <source>Select all</source>
         <translation>Zaznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="67"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="77"/>
         <source>Deselect all</source>
         <translation>Odznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="71"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="81"/>
         <source>Select without wormholes</source>
         <translation>Zaznacz bez WH</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="84"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="94"/>
         <source>Types</source>
         <translation>Typy</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="116"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="135"/>
         <source>Order import</source>
         <translation>Importowanie zleceń</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="116"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="135"/>
         <source>Please select at least one region and type.</source>
         <translation>Wybierz przynajmniej jeden region i typ.</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="125"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="112"/>
         <source>Select regions and types</source>
         <translation>Wybierz regiony i typy</translation>
     </message>
