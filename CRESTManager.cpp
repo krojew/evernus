@@ -34,6 +34,21 @@
 
 namespace Evernus
 {
+    namespace
+    {
+        struct OrderState
+        {
+            enum class State
+            {
+                Empty,
+                GotResponse,
+            } mState = State::Empty;
+
+            std::vector<ExternalOrder> mOrders;
+            QString mError;
+        };
+    }
+
 #ifdef EVERNUS_CREST_SISI
     const QString CRESTManager::loginUrl = "https://sisilogin.testeveonline.com";
 #else
@@ -75,69 +90,70 @@ namespace Evernus
                                          EveType::IdType typeId,
                                          const Callback<std::vector<ExternalOrder>> &callback) const
     {
-        mInterface.fetchBuyMarketOrders(regionId, typeId, [=](QJsonDocument &&buyData, const QString &error) {
+        auto state = std::make_shared<OrderState>();
+        auto ifaceCallback = [=](QJsonDocument &&data, const QString &error) {
             if (!error.isEmpty())
             {
-                callback(std::vector<ExternalOrder>{}, error);
+                if (!state->mError.isEmpty())
+                    callback(std::vector<ExternalOrder>{}, QString{"%1\n%2"}.arg(state->mError).arg(error));
+                else if (state->mState == OrderState::State::GotResponse)
+                    callback(std::vector<ExternalOrder>{}, error);
+                else
+                    state->mError = error;
+
                 return;
             }
 
-            mInterface.fetchSellMarketOrders(regionId, typeId, [=](QJsonDocument &&sellData, const QString &error) {
-                if (!error.isEmpty())
-                {
-                    callback(std::vector<ExternalOrder>{}, error);
-                    return;
-                }
+            const auto items = data.object().value("items").toArray();
+            state->mOrders.reserve(state->mOrders.size() + items.size());
 
-                std::vector<ExternalOrder> orders;
-                auto appendOrders = [=, &orders](const QJsonObject &object) {
-                    const auto items = object.value("items").toArray();
-                    for (const auto &item : items)
-                    {
-                        const auto itemObject = item.toObject();
-                        const auto location = itemObject.value("location").toObject();
-                        const auto range = itemObject.value("range").toString();
+            for (const auto &item : items)
+            {
+                const auto itemObject = item.toObject();
+                const auto location = itemObject.value("location").toObject();
+                const auto range = itemObject.value("range").toString();
 
-                        auto issued = QDateTime::fromString(itemObject.value("issued").toString(), Qt::ISODate);
-                        issued.setTimeSpec(Qt::UTC);
+                auto issued = QDateTime::fromString(itemObject.value("issued").toString(), Qt::ISODate);
+                issued.setTimeSpec(Qt::UTC);
 
-                        ExternalOrder order;
+                ExternalOrder order;
 
-                        order.setId(itemObject.value("id_str").toString().toULongLong());
-                        order.setType((itemObject.value("buy").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
-                        order.setTypeId(typeId);
-                        order.setStationId(location.value("id_str").toString().toUInt());
-                        //TODO: replace when available
-                        order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));
-                        order.setRegionId(regionId);
+                order.setId(itemObject.value("id_str").toString().toULongLong());
+                order.setType((itemObject.value("buy").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
+                order.setTypeId(typeId);
+                order.setStationId(location.value("id_str").toString().toUInt());
+                //TODO: replace when available
+                order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));
+                order.setRegionId(regionId);
 
-                        if (range == "station")
-                            order.setRange(-1);
-                        else if (range == "system")
-                            order.setRange(0);
-                        else if (range == "region")
-                            order.setRange(32767);
-                        else
-                            order.setRange(range.toShort());
+                if (range == "station")
+                    order.setRange(-1);
+                else if (range == "system")
+                    order.setRange(0);
+                else if (range == "region")
+                    order.setRange(32767);
+                else
+                    order.setRange(range.toShort());
 
-                        order.setUpdateTime(QDateTime::currentDateTimeUtc());
-                        order.setPrice(itemObject.value("price").toDouble());
-                        order.setVolumeEntered(itemObject.value("volumeEntered").toInt());
-                        order.setVolumeRemaining(itemObject.value("volume").toInt());
-                        order.setMinVolume(itemObject.value("minVolume").toInt());
-                        order.setIssued(issued);
-                        order.setDuration(itemObject.value("duration").toInt());
+                order.setUpdateTime(QDateTime::currentDateTimeUtc());
+                order.setPrice(itemObject.value("price").toDouble());
+                order.setVolumeEntered(itemObject.value("volumeEntered").toInt());
+                order.setVolumeRemaining(itemObject.value("volume").toInt());
+                order.setMinVolume(itemObject.value("minVolume").toInt());
+                order.setIssued(issued);
+                order.setDuration(itemObject.value("duration").toInt());
 
-                        orders.emplace_back(std::move(order));
-                    }
-                };
+                state->mOrders.emplace_back(std::move(order));
+            }
 
-                appendOrders(buyData.object());
-                appendOrders(sellData.object());
+            if (state->mState == OrderState::State::GotResponse)
+                callback(std::move(state->mOrders), QString{});
+            else
+                state->mState = OrderState::State::GotResponse;
+        };
 
-                callback(std::move(orders), QString{});
-            });
-        });
+        mInterface.fetchBuyMarketOrders(regionId, typeId, ifaceCallback);
+        mInterface.fetchSellMarketOrders(regionId, typeId, ifaceCallback);
     }
 
     void CRESTManager::fetchMarketHistory(uint regionId,
