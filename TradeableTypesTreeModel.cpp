@@ -321,4 +321,11 @@ namespace Evernus
     {
         return mSelectedSet;
     }
+
+    void TradeableTypesTreeModel::selectTypes(const TypeSet &types)
+    {
+        beginResetModel();
+        mSelectedSet = types;
+        endResetModel();
+    }
 }

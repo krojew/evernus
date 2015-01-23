@@ -50,6 +50,7 @@ namespace Evernus
         virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
         TypeSet getSelectedTypes() const;
+        void selectTypes(const TypeSet &types);
 
     private:
         class TypeItem

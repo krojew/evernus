@@ -96,6 +96,14 @@ namespace Evernus
 
         auto typeLayout = new QVBoxLayout{typesGroup};
 
+        const auto selectedTypes = settings.value(settingsTypesKey).toList();
+        TradeableTypesTreeModel::TypeSet types;
+
+        for (const auto &type : selectedTypes)
+            types.emplace(type.value<EveType::IdType>());
+
+        mTypeModel.selectTypes(types);
+
         mTypeProxy.setSourceModel(&mTypeModel);
         mTypeProxy.sort(0);
 
@@ -119,7 +127,10 @@ namespace Evernus
         const auto regions = mRegionList->selectedItems();
         const auto types = mTypeModel.getSelectedTypes();
 
-        QVariantList selectedRegions;
+        QVariantList selectedRegions, selectedTypes;
+
+        for (const auto type : types)
+            selectedTypes << type;
 
         for (const auto region : regions)
         {
@@ -138,6 +149,7 @@ namespace Evernus
 
         QSettings settings;
         settings.setValue(settingsRegionsKey, selectedRegions);
+        settings.setValue(settingsTypesKey, selectedTypes);
 
         emit selected(result);
         QDialog::accept();

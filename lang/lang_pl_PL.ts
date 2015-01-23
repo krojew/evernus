@@ -5047,17 +5047,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Typy</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="135"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="146"/>
         <source>Order import</source>
         <translation>Importowanie zleceń</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="135"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="146"/>
         <source>Please select at least one region and type.</source>
         <translation>Wybierz przynajmniej jeden region i typ.</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="112"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="120"/>
         <source>Select regions and types</source>
         <translation>Wybierz regiony i typy</translation>
     </message>
