@@ -556,6 +556,13 @@ namespace Evernus
         else
             info.mTargetPrice = info.mOrderPrice;
 
+        if (settings.value(PriceSettings::limitSellCopyToCostKey, PriceSettings::limitSellCopyToCostDefault).toBool())
+        {
+            const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, order->getTypeId());
+            if (!cost->isNew() && info.mTargetPrice < cost->getCost())
+                info.mTargetPrice = cost->getCost();
+        }
+
         return info;
     }
 

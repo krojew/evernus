@@ -16,7 +16,6 @@
 #include <QApplication>
 #include <QHeaderView>
 #include <QVBoxLayout>
-#include <QClipboard>
 #include <QSettings>
 #include <QCheckBox>
 #include <QLabel>

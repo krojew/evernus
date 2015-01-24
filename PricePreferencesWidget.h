@@ -51,6 +51,7 @@ namespace Evernus
         QCheckBox *mCombineCorpAndCharPlotsBtn = nullptr;
         QCheckBox *mRefreshPricesWithOrdersBtn = nullptr;
         QCheckBox *mCopyNonOverbidBtn = nullptr;
+        QCheckBox *mLimitSellCopyToCostBtn = nullptr;
         QCheckBox *mFPCBtn = nullptr;
         QKeySequenceEdit *mFPCShortcutEdit = nullptr;
 

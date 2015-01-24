@@ -137,6 +137,10 @@ namespace Evernus
         pricesLayout->addRow(mCopyNonOverbidBtn);
         mCopyNonOverbidBtn->setChecked(settings.value(PriceSettings::copyNonOverbidPriceKey, PriceSettings::copyNonOverbidPriceDefault).toBool());
 
+        mLimitSellCopyToCostBtn = new QCheckBox{tr("Limit sell price copy to item cost"), this};
+        pricesLayout->addRow(mLimitSellCopyToCostBtn);
+        mLimitSellCopyToCostBtn->setChecked(settings.value(PriceSettings::limitSellCopyToCostKey, PriceSettings::limitSellCopyToCostDefault).toBool());
+
         auto fpcGroup = new QGroupBox{tr("Fast Price Copy"), this};
         mainLayout->addWidget(fpcGroup);
 
@@ -184,6 +188,7 @@ namespace Evernus
         settings.setValue(PriceSettings::combineCorpAndCharPlotsKey, mCombineCorpAndCharPlotsBtn->isChecked());
         settings.setValue(PriceSettings::refreshPricesWithOrdersKey, mRefreshPricesWithOrdersBtn->isChecked());
         settings.setValue(PriceSettings::copyNonOverbidPriceKey, mCopyNonOverbidBtn->isChecked());
+        settings.setValue(PriceSettings::limitSellCopyToCostKey, mLimitSellCopyToCostBtn->isChecked());
         settings.setValue(PriceSettings::fpcKey, mFPCBtn->isChecked());
         settings.setValue(PriceSettings::fpcShourtcutKey, mFPCShortcutEdit->keySequence().toString());
     }
