@@ -16,6 +16,7 @@
 #include <QIntValidator>
 #include <QVBoxLayout>
 #include <QFormLayout>
+#include <QMessageBox>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QLabel>
@@ -82,8 +83,15 @@ namespace Evernus
 
     void CorpKeyEditDialog::accept()
     {
+        const auto charId = mCharacterEdit->currentData().value<Character::IdType>();
+        if (charId == Character::IdType{})
+        {
+            QMessageBox::warning(this, tr("Invalid character"), tr("Please select a valid character."));
+            return;
+        }
+
         mCorpKey.setId(mIdEdit->text().toInt());
-        mCorpKey.setCharacterId(mCharacterEdit->currentData().value<Character::IdType>());
+        mCorpKey.setCharacterId(charId);
         mCorpKey.setCode(mCodeEdit->text().trimmed());
 
         QDialog::accept();
