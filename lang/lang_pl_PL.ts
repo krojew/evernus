@@ -451,7 +451,7 @@
 <context>
     <name>Evernus::CRESTManager</name>
     <message>
-        <location filename="../CRESTManager.cpp" line="68"/>
+        <location filename="../CRESTManager.cpp" line="83"/>
         <source>CREST authorization failed.</source>
         <translation>Autoryzacja CREST nie powiodła się.</translation>
     </message>
@@ -460,27 +460,27 @@
         <translation type="vanished">Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="206"/>
+        <location filename="../CRESTManager.cpp" line="222"/>
         <source>CREST Authentication</source>
         <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="321"/>
+        <location filename="../CRESTManager.cpp" line="337"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="267"/>
+        <location filename="../CRESTManager.cpp" line="283"/>
         <source>Empty access token!</source>
         <translation>Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="283"/>
+        <location filename="../CRESTManager.cpp" line="299"/>
         <source>CREST error</source>
         <translation>Błąd CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="283"/>
+        <location filename="../CRESTManager.cpp" line="299"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
@@ -1278,34 +1278,44 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::CorpKeyEditDialog</name>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="43"/>
+        <location filename="../CorpKeyEditDialog.cpp" line="44"/>
         <source>Character:</source>
         <translation>Postać:</translation>
     </message>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="61"/>
+        <location filename="../CorpKeyEditDialog.cpp" line="62"/>
         <source>Key ID:</source>
         <translation>Key ID:</translation>
     </message>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="65"/>
+        <location filename="../CorpKeyEditDialog.cpp" line="66"/>
         <source>Verification Code:</source>
         <translation>Verification Code:</translation>
     </message>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="67"/>
+        <location filename="../CorpKeyEditDialog.cpp" line="68"/>
         <source>To create a predefined corporation key, use the following link:</source>
         <translation>Aby otworzyć klucz z predefiniowanymi uprawnieniami, kliknij w poniższy link:</translation>
     </message>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="73"/>
+        <location filename="../CorpKeyEditDialog.cpp" line="74"/>
         <source>Corporation keys require character keys added first.</source>
         <translation>Klucze korporacji wymagają wcześniej dodanego klucza postaci.</translation>
     </message>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="80"/>
+        <location filename="../CorpKeyEditDialog.cpp" line="81"/>
         <source>Corporation Key Edit</source>
         <translation>Edycja klucza korporacji</translation>
+    </message>
+    <message>
+        <location filename="../CorpKeyEditDialog.cpp" line="89"/>
+        <source>Invalid character</source>
+        <translation>Nieprawidłowa postać</translation>
+    </message>
+    <message>
+        <location filename="../CorpKeyEditDialog.cpp" line="89"/>
+        <source>Please select a valid character.</source>
+        <translation>Wybierz prawidłową postać.</translation>
     </message>
 </context>
 <context>
@@ -5000,21 +5010,26 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="140"/>
+        <source>Limit sell price copy to item cost</source>
+        <translation>Ogranicz kopiowaną cenę sprzedaży do własnego kosztu</translation>
+    </message>
+    <message>
+        <location filename="../PricePreferencesWidget.cpp" line="144"/>
         <source>Fast Price Copy</source>
         <translation>Szybkie kopiowanie ceny</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="148"/>
+        <location filename="../PricePreferencesWidget.cpp" line="152"/>
         <source>Enabled</source>
         <translation>Włączone</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="152"/>
+        <location filename="../PricePreferencesWidget.cpp" line="156"/>
         <source>Shourtcut:</source>
         <translation>Skrót klawiszowy:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="158"/>
+        <location filename="../PricePreferencesWidget.cpp" line="162"/>
         <source>Fast Price Copy allows you to update your orders in a very fast manner. Simply assign a keyboard shortcut, select an order in any market order view and press the shortcut to copy the updated price and automatically jump to the next order on the list. You can do this even when Evernus doesn&apos;t have the input focus - the keyboard shortcut works system-wide. You can use this to update your prices without ever leaving Eve client.</source>
         <translation>Możesz użyć szybkiego kopiowania ceny do znacznie szybszej aktualizacji zleceń. Ustaw wybrany skrót klawiszowy, wybierz zlecenie na jakimkolwiek widoku zleceń i użyj skrótu do skopiowania nowej ceny i automatycznego przeskoczenia do kolejnego zlecenia. Możesz to robić nawet, gdy Evernus nie jest na pierwszym tle - skrót działa w całym systemie. Możesz użyć tej metody do aktualizacji cen bez wychodzenia z klienta Eve.</translation>
     </message>
@@ -5911,57 +5926,57 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletTransactionsWidget</name>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="64"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="63"/>
         <source>all</source>
         <translation>wszystko</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="64"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="63"/>
         <source>buy</source>
         <translation>kupno</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="64"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="63"/>
         <source>sell</source>
         <translation>sprzedaż</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="70"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="69"/>
         <source>Combine for all characters</source>
         <translation>Połącz dla wszystkich postaci</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="100"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="99"/>
         <source>Total transactions:</source>
         <translation>Transakcje:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="106"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="105"/>
         <source>Total quantity:</source>
         <translation>Całkowita ilość:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="112"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="111"/>
         <source>Total size:</source>
         <translation>Całkowita objętość:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="118"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="117"/>
         <source>Total income:</source>
         <translation>Całkowity zysk:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="125"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="124"/>
         <source>Total cost:</source>
         <translation>Całkowity koszt:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="132"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="131"/>
         <source>Total balance:</source>
         <translation>Całkowity bilans:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="138"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="137"/>
         <source>Total profit based on costs:</source>
         <translation>Całkowity zysk na podst. kosztów:</translation>
     </message>
