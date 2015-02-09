@@ -339,11 +339,13 @@ namespace Evernus
             mData.emplace_back();
             auto &data = mData.back();
 
+            const auto quantity = entry->getQuantity();
+
             data
                 << entry->isIgnored()
                 << entry->getTimestamp()
                 << static_cast<int>(entry->getType())
-                << entry->getQuantity()
+                << quantity
                 << entry->getTypeId()
                 << entry->getPrice()
                 << entry->getCharacterId()
@@ -351,17 +353,18 @@ namespace Evernus
                 << mDataProvider.getLocationName(entry->getLocationId())
                 << entry->getId();
 
-            mTotalQuantity += entry->getQuantity();
-            mTotalSize += mDataProvider.getTypeVolume(entry->getTypeId());
+            mTotalQuantity += quantity;
+            mTotalSize += mDataProvider.getTypeVolume(entry->getTypeId()) * quantity;
 
             if (entry->getType() == WalletTransaction::Type::Buy)
             {
-                mTotalCost += entry->getPrice();
+                mTotalCost += entry->getPrice() * quantity;
             }
             else
             {
-                mTotalIncome += entry->getPrice();
-                mTotalProfit += entry->getPrice() - mItemCostProvider.fetchForCharacterAndType(mCharacterId, entry->getTypeId())->getCost();
+                mTotalIncome += entry->getPrice() * quantity;
+                mTotalProfit +=
+                    (entry->getPrice() - mItemCostProvider.fetchForCharacterAndType(mCharacterId, entry->getTypeId())->getCost()) * quantity;
             }
         }
     }
