@@ -140,6 +140,10 @@ namespace Evernus
 
                 return font;
             }
+            break;
+        case Qt::TextAlignmentRole:
+            if (column == priceColumn)
+                return Qt::AlignRight;
         }
 
         return QVariant{};

@@ -112,6 +112,10 @@ namespace Evernus
 
                 return font;
             }
+            break;
+        case Qt::TextAlignmentRole:
+            if (column == amountColumn || column == balanceColumn)
+                return Qt::AlignRight;
         }
 
         return QVariant{};
