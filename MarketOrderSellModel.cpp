@@ -471,10 +471,19 @@ namespace Evernus
             }
             break;
         case Qt::TextAlignmentRole:
-            if (column == priceStatusColumn)
+            switch (column) {
+            case priceStatusColumn:
                 return Qt::AlignHCenter;
-            if (column == volumeColumn || column == deltaColumn)
+            case priceColumn:
+            case priceDifferenceColumn:
+            case totalColumn:
+            case volumeColumn:
+            case deltaColumn:
+            case profitColumn:
+            case totalProfitColumn:
+            case profitPerItemColumn:
                 return Qt::AlignRight;
+            }
         }
 
         return QVariant{};
