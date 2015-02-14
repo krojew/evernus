@@ -314,7 +314,7 @@ namespace Evernus
         QNetworkRequest request{loginUrl + "/oauth/token"};
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
         request.setRawHeader(
-            "Authorization", (mClientId + ":" + mClientSecret).toBase64());
+            "Authorization", "Basic " + (mClientId + ":" + mClientSecret).toBase64());
 
         auto reply = mNetworkManager.post(request, data);
         connect(reply, &QNetworkReply::finished, this, [=] {
