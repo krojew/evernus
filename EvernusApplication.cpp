@@ -2110,9 +2110,14 @@ namespace Evernus
                 if (order.second.mLastSeen.isNull() || order.second.mDelta != 0)
                 {
                     if (order.second.mExpiry < curDt)
+                    {
                         toArchive.emplace_back(order.first);
+                    }
                     else
+                    {
                         toFulfill.emplace_back(order.first);
+                        mPendingAutoCostOrders.emplace(order.first);
+                    }
                 }
             }
 
