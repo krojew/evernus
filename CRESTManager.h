@@ -88,5 +88,7 @@ namespace Evernus
         std::unique_ptr<CRESTAuthWidget> mAuthView;
 
         void processAuthorizationCode(const QByteArray &code);
+
+        QNetworkRequest getAuthRequest() const;
     };
 }

@@ -242,12 +242,7 @@ namespace Evernus
             QByteArray data = "grant_type=refresh_token&refresh_token=";
             data.append(mRefreshToken);
 
-            QNetworkRequest request{loginUrl + "/oauth/token"};
-            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-            request.setRawHeader(
-                "Authorization", "Basic " + (mClientId + ":" + mClientSecret).toBase64());
-
-            auto reply = mNetworkManager.post(request, data);
+            auto reply = mNetworkManager.post(getAuthRequest(), data);
             connect(reply, &QNetworkReply::finished, this, [=] {
                 reply->deleteLater();
 
@@ -311,12 +306,7 @@ namespace Evernus
 
         QByteArray data = "grant_type=authorization_code&code=" + code;
 
-        QNetworkRequest request{loginUrl + "/oauth/token"};
-        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-        request.setRawHeader(
-            "Authorization", "Basic " + (mClientId + ":" + mClientSecret).toBase64());
-
-        auto reply = mNetworkManager.post(request, data);
+        auto reply = mNetworkManager.post(getAuthRequest(), data);
         connect(reply, &QNetworkReply::finished, this, [=] {
             reply->deleteLater();
 
@@ -344,5 +334,15 @@ namespace Evernus
             emit acquiredToken(object.value("access_token").toString(),
                                QDateTime::currentDateTime().addSecs(object.value("expires_in").toInt() - 10));
         });
+    }
+
+    QNetworkRequest CRESTManager::getAuthRequest() const
+    {
+        QNetworkRequest request{loginUrl + "/oauth/token"};
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+        request.setRawHeader(
+            "Authorization", "Basic " + (mClientId + ":" + mClientSecret).toBase64());
+
+        return request;
     }
 }
