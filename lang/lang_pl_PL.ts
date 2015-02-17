@@ -465,22 +465,22 @@
         <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="337"/>
+        <location filename="../CRESTManager.cpp" line="327"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="283"/>
+        <location filename="../CRESTManager.cpp" line="278"/>
         <source>Empty access token!</source>
         <translation>Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="299"/>
+        <location filename="../CRESTManager.cpp" line="294"/>
         <source>CREST error</source>
         <translation>Błąd CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="299"/>
+        <location filename="../CRESTManager.cpp" line="294"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
@@ -1543,8 +1543,8 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../EvernusApplication.cpp" line="774"/>
         <location filename="../EvernusApplication.cpp" line="780"/>
-        <location filename="../EvernusApplication.cpp" line="2194"/>
-        <location filename="../EvernusApplication.cpp" line="2232"/>
+        <location filename="../EvernusApplication.cpp" line="2199"/>
+        <location filename="../EvernusApplication.cpp" line="2237"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -1598,7 +1598,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation>Synchronizowanie z LMeve...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2430"/>
+        <location filename="../EvernusApplication.cpp" line="2435"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
@@ -1702,12 +1702,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2195"/>
+        <location filename="../EvernusApplication.cpp" line="2200"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2199"/>
+        <location filename="../EvernusApplication.cpp" line="2204"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1716,14 +1716,14 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2202"/>
+        <location filename="../EvernusApplication.cpp" line="2207"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2232"/>
+        <location filename="../EvernusApplication.cpp" line="2237"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
