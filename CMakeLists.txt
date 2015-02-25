@@ -5,7 +5,7 @@ project(Evernus)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_NAME "evernus")
 set(MAJOR_VERSION "1")
-set(MINOR_VERSION "26")
+set(MINOR_VERSION "27")
 
 find_package(Boost REQUIRED)
 find_package(Qt5Gui REQUIRED)
