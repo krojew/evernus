@@ -2494,6 +2494,7 @@ namespace Evernus
         while (future.wait_for(std::chrono::seconds{0}) != std::future_status::ready)
             processEvents(QEventLoop::ExcludeUserInputEvents);
 
+        future.get();
         qDebug() << "Done.";
     }
 
