@@ -196,6 +196,26 @@ namespace Evernus
         mCorporationId = id;
     }
 
+    QString MarketOrder::getNotes() const &
+    {
+        return mNotes;
+    }
+
+    QString &&MarketOrder::getNotes() && noexcept
+    {
+        return std::move(mNotes);
+    }
+
+    void MarketOrder::setNotes(const QString &notes)
+    {
+        mNotes = notes;
+    }
+
+    void MarketOrder::setNotes(QString &&notes)
+    {
+        mNotes = std::move(notes);
+    }
+
     bool MarketOrder::isArchived() const
     {
         return !mLastSeen.isNull();

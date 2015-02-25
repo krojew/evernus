@@ -105,6 +105,11 @@ namespace Evernus
         quint64 getCorporationId() const noexcept;
         void setCorporationId(quint64 id) noexcept;
 
+        QString getNotes() const &;
+        QString &&getNotes() && noexcept;
+        void setNotes(const QString &notes);
+        void setNotes(QString &&notes);
+
         bool isArchived() const;
 
         MarketOrder &operator =(const MarketOrder &) = default;
@@ -130,5 +135,6 @@ namespace Evernus
         QDateTime mIssued;
         QDateTime mFirstSeen, mLastSeen;
         quint64 mCorporationId = 0;
+        QString mNotes;
     };
 }

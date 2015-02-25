@@ -245,6 +245,12 @@ namespace Evernus
 
         connect(this, &MarketOrderWidget::characterChanged, &mSellModel, &MarketOrderSellModel::setCharacter);
         connect(this, &MarketOrderWidget::characterChanged, &mBuyModel, &MarketOrderBuyModel::setCharacter);
+
+        connect(mSellView, &MarketOrderViewWithTransactions::notesChanged, this, &MarketOrderWidget::setOrderNotes);
+        connect(mBuyView, &MarketOrderViewWithTransactions::notesChanged, this, &MarketOrderWidget::setOrderNotes);
+        connect(mArchiveView, &MarketOrderViewWithTransactions::notesChanged, this, &MarketOrderWidget::setOrderNotes);
+        connect(mCombinedSellView, &MarketOrderView::notesChanged, this, &MarketOrderWidget::setOrderNotes);
+        connect(mCombinedBuyView, &MarketOrderView::notesChanged, this, &MarketOrderWidget::setOrderNotes);
     }
 
     void MarketOrderWidget::updateData()
@@ -295,6 +301,11 @@ namespace Evernus
     void MarketOrderWidget::changeFPCExecutor()
     {
         emit fpcExecutorChanged(sender());
+    }
+
+    void MarketOrderWidget::setOrderNotes(MarketOrder::IdType id, const QString &notes)
+    {
+        mOrderProvider.setOrderNotes(id, notes);
     }
 
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)

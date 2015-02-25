@@ -17,6 +17,7 @@
 #include <QWidget>
 
 #include "MarketOrderFilterProxyModel.h"
+#include "MarketOrder.h"
 #include "EveType.h"
 
 class QItemSelectionModel;
@@ -65,6 +66,8 @@ namespace Evernus
 
         void itemSelected();
 
+        void notesChanged(MarketOrder::IdType id, const QString &notes);
+
     public slots:
         void executeFPC();
 
@@ -81,6 +84,8 @@ namespace Evernus
 
         void handleReset();
 
+        void changeNotesForCurrent();
+
     private:
         StyledTreeView *mView = nullptr;
         MarketOrdersInfoWidget *mInfoWidget = nullptr;
@@ -91,6 +96,7 @@ namespace Evernus
         QAction *mRemoveOrderAct = nullptr;
         QAction *mShowExternalOrdersAct = nullptr;
         QAction *mShowInEveAct = nullptr;
+        QAction *mChangeNotesAct = nullptr;
         QActionGroup *mLookupGroup = nullptr;
 
         void lookupOnWeb(const QString &baseUrl) const;

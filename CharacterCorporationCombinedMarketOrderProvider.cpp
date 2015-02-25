@@ -112,6 +112,15 @@ namespace Evernus
         mBuyOrders.clear();
     }
 
+    void CharacterCorporationCombinedMarketOrderProvider::setOrderNotes(MarketOrder::IdType id, const QString &notes)
+    {
+        mCharOrderProvider.setOrderNotes(id, notes);
+        mCorpOrderProvider.setOrderNotes(id, notes);
+
+        mSellOrders.clear();
+        mBuyOrders.clear();
+    }
+
     void CharacterCorporationCombinedMarketOrderProvider::clearOrdersForCharacter(Character::IdType id) const
     {
         mSellOrders.erase(id);

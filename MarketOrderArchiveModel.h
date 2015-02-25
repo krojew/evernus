@@ -56,17 +56,23 @@ namespace Evernus
         void updateNames();
 
     private:
-        static const auto lastSeenColumn = 0;
-        static const auto typeColumn = 1;
-        static const auto nameColumn = 2;
-        static const auto groupColumn = 3;
-        static const auto statusColumn = 4;
-        static const auto customCostColumn = 5;
-        static const auto priceColumn = 6;
-        static const auto volumeColumn = 7;
-        static const auto profitColumn = 8;
-        static const auto stationColumn = 9;
-        static const auto ownerColumn = 10;
+        enum
+        {
+            lastSeenColumn,
+            typeColumn,
+            nameColumn,
+            groupColumn,
+            statusColumn,
+            customCostColumn,
+            priceColumn,
+            volumeColumn,
+            profitColumn,
+            stationColumn,
+            notesColumn,
+            ownerColumn,
+
+            numColumns
+        };
 
         MarketOrderProvider &mOrderProvider;
         const ItemCostProvider &mItemCostProvider;

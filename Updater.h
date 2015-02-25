@@ -75,5 +75,7 @@ namespace Evernus
                           const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const;
         void migrateTo123(const ExternalOrderRepository &externalOrderRepo,
                           const ItemRepository &itemRepo) const;
+        void migrateTo127(const MarketOrderRepository &characterOrderRepo,
+                          const MarketOrderRepository &corporationOrderRepo) const;
     };
 }

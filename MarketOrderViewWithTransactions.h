@@ -22,6 +22,7 @@
 #include "MarketOrderFilterProxyModel.h"
 #include "WalletTransactionsModel.h"
 #include "ExternalOrderModel.h"
+#include "MarketOrder.h"
 
 class QItemSelection;
 
@@ -81,6 +82,8 @@ namespace Evernus
         void showInEve(EveType::IdType id);
 
         void itemSelected();
+
+        void notesChanged(MarketOrder::IdType id, const QString &notes);
 
     private slots:
         void selectOrder(const QItemSelection &selected);

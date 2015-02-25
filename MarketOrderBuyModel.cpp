@@ -197,6 +197,8 @@ namespace Evernus
                 return data->getFirstSeen();
             case stationColumn:
                 return mDataProvider.getLocationName(data->getStationId());
+            case notesColumn:
+                return data->getNotes();
             case ownerColumn:
                 return getCharacterName(data->getCharacterId());
             }
@@ -309,6 +311,8 @@ namespace Evernus
                     return TextUtils::dateTimeToString(data->getFirstSeen().toLocalTime(), locale);
                 case stationColumn:
                     return mDataProvider.getLocationName(data->getStationId());
+                case notesColumn:
+                    return data->getNotes();
                 case ownerColumn:
                     return getCharacterName(data->getCharacterId());
                 }
@@ -432,6 +436,8 @@ namespace Evernus
                 return tr("First issued");
             case stationColumn:
                 return tr("Station");
+            case notesColumn:
+                return tr("Notes");
             case ownerColumn:
                 return tr("Owner");
             }

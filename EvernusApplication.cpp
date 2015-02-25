@@ -109,11 +109,11 @@ namespace Evernus
         createDbSchema();
 
         mCharacterOrderProvider = std::make_unique<CachingMarketOrderProvider>(*mMarketOrderRepository);
-        connect(mCharacterOrderProvider.get(), &CachingMarketOrderProvider::orderDeleted,
+        connect(mCharacterOrderProvider.get(), &CachingMarketOrderProvider::orderChanged,
                 this, &EvernusApplication::scheduleMarketOrderChange);
 
         mCorpOrderProvider = std::make_unique<CachingMarketOrderProvider>(*mCorpMarketOrderRepository);
-        connect(mCorpOrderProvider.get(), &CachingMarketOrderProvider::orderDeleted,
+        connect(mCorpOrderProvider.get(), &CachingMarketOrderProvider::orderChanged,
                 this, &EvernusApplication::scheduleCorpMarketOrderChange);
 
         mCombinedOrderProvider

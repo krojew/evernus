@@ -121,6 +121,7 @@ int main(int argc, char *argv[])
         qRegisterMetaType<Evernus::MarketLogExternalOrderImporterThread::ExternalOrderList>("ExternalOrderList");
         qRegisterMetaType<Evernus::EveType::IdType>("EveType::IdType");
         qRegisterMetaType<Evernus::Character::IdType>("Character::IdType");
+        qRegisterMetaType<Evernus::MarketOrder::IdType>("MarketOrder::IdType");
         qRegisterMetaType<Evernus::MarketOrderFilterProxyModel::StatusFilters>("MarketOrderFilterProxyModel::StatusFilters");
         qRegisterMetaType<Evernus::MarketOrderFilterProxyModel::StatusFilters>("StatusFilters");
         qRegisterMetaType<Evernus::MarketOrderFilterProxyModel::PriceStatusFilters>("MarketOrderFilterProxyModel::PriceStatusFilters");

@@ -66,6 +66,8 @@ namespace Evernus
         marketOrder->setFirstSeen(firstSeen);
         marketOrder->setLastSeen(lastSeen);
         marketOrder->setCorporationId(record.value("corporation_id").toULongLong());
+        if (!record.value("notes").isNull())
+            marketOrder->setNotes(record.value("notes").toString());
         marketOrder->setNew(false);
 
         return marketOrder;
@@ -92,7 +94,8 @@ namespace Evernus
             "issued DATETIME NOT NULL,"
             "first_seen DATETIME NOT NULL,"
             "last_seen DATETIME NULL,"
-            "corporation_id BIGINT NOT NULL"
+            "corporation_id BIGINT NOT NULL,"
+            "notes TEXT NULL"
         ")"}.arg(getTableName()).arg(
             (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
 
@@ -446,6 +449,15 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    void MarketOrderRepository::setNotes(MarketOrder::IdType id, const QString &notes) const
+    {
+        auto query = prepare(QString{"UPDATE %1 SET notes = ? WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
+        query.bindValue(0, notes);
+        query.bindValue(1, id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     QStringList MarketOrderRepository::getColumns() const
     {
         return QStringList{}
@@ -467,7 +479,8 @@ namespace Evernus
             << "issued"
             << "first_seen"
             << "last_seen"
-            << "corporation_id";
+            << "corporation_id"
+            << "notes";
     }
 
     void MarketOrderRepository::bindValues(const MarketOrder &entity, QSqlQuery &query) const
@@ -493,6 +506,7 @@ namespace Evernus
         query.bindValue(":first_seen", entity.getFirstSeen());
         query.bindValue(":last_seen", entity.getLastSeen());
         query.bindValue(":corporation_id", entity.getCorporationId());
+        query.bindValue(":notes", entity.getNotes());
     }
 
     void MarketOrderRepository::bindPositionalValues(const MarketOrder &entity, QSqlQuery &query) const
@@ -518,5 +532,6 @@ namespace Evernus
         query.addBindValue(entity.getFirstSeen());
         query.addBindValue(entity.getLastSeen());
         query.addBindValue(entity.getCorporationId());
+        query.addBindValue(entity.getNotes());
     }
 }

@@ -87,36 +87,41 @@ namespace Evernus
                     }
                 }
 
-                if (minorVersion < 23)
+                if (minorVersion < 27)
                 {
-                    if (minorVersion < 16)
+                    if (minorVersion < 23)
                     {
-                        if (minorVersion < 13)
+                        if (minorVersion < 16)
                         {
-                            if (minorVersion < 11)
+                            if (minorVersion < 13)
                             {
-                                if (minorVersion < 9)
+                                if (minorVersion < 11)
                                 {
-                                    if (minorVersion < 8)
-                                        migrateTo18(externalOrderRepo);
+                                    if (minorVersion < 9)
+                                    {
+                                        if (minorVersion < 8)
+                                            migrateTo18(externalOrderRepo);
 
-                                    migrateTo19(characterRepo,
-                                                walletJournalRepo,
-                                                corpWalletJournalRepo,
-                                                walletTransactionRepo,
-                                                corpWalletTransactionRepo);
+                                        migrateTo19(characterRepo,
+                                                    walletJournalRepo,
+                                                    corpWalletJournalRepo,
+                                                    walletTransactionRepo,
+                                                    corpWalletTransactionRepo);
+                                    }
+
+                                    migrateTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
                                 }
 
-                                migrateTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
+                                migrateTo113();
                             }
 
-                            migrateTo113();
+                            migrateTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
                         }
 
-                        migrateTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
+                        migrateTo123(externalOrderRepo, itemRepo);
                     }
 
-                    migrateTo123(externalOrderRepo, itemRepo);
+                    migrateTo127(characterOrderRepo, corporationOrderRepo);
                 }
             }
         }
@@ -300,5 +305,13 @@ namespace Evernus
 
         externalOrderRepo.exec(QString{"DROP INDEX IF EXISTS %1_type_id_location"}.arg(externalOrderRepo.getTableName()));
         itemRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN raw_quantity INTEGER NOT NULL DEFAULT 0"}.arg(itemRepo.getTableName()));
+    }
+
+    void Updater::migrateTo127(const MarketOrderRepository &characterOrderRepo,
+                               const MarketOrderRepository &corporationOrderRepo) const
+    {
+        const QString sql = "ALTER TABLE %1 ADD COLUMN notes TEXT NULL DEFAULT NULL";
+        characterOrderRepo.exec(sql.arg(characterOrderRepo.getTableName()));
+        corporationOrderRepo.exec(sql.arg(corporationOrderRepo.getTableName()));
     }
 }

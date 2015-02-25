@@ -40,5 +40,7 @@ namespace Evernus
         virtual OrderList getArchivedOrdersForCorporation(quint64 corporationId, const QDateTime &from, const QDateTime &to) const = 0;
 
         virtual void removeOrder(MarketOrder::IdType id) = 0;
+
+        virtual void setOrderNotes(MarketOrder::IdType id, const QString &notes) = 0;
     };
 }

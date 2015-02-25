@@ -81,6 +81,7 @@ namespace Evernus
             orderAgeColumn,
             firstSeenColumn,
             stationColumn,
+            notesColumn,
             ownerColumn,
 
             numColumns

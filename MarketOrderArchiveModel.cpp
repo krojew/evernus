@@ -49,7 +49,7 @@ namespace Evernus
 
     int MarketOrderArchiveModel::columnCount(const QModelIndex &parent) const
     {
-        return (mCorp) ? (11) : (10);
+        return (mCorp) ? (numColumns) : (numColumns - 1);
     }
 
     QVariant MarketOrderArchiveModel::data(const QModelIndex &index, int role) const
@@ -101,6 +101,8 @@ namespace Evernus
                 break;
             case stationColumn:
                 return mDataProvider.getLocationName(data->getStationId());
+            case notesColumn:
+                return data->getNotes();
             case ownerColumn:
                 return mDataProvider.getGenericName(data->getCharacterId());
             }
@@ -158,6 +160,8 @@ namespace Evernus
                     break;
                 case stationColumn:
                     return mDataProvider.getLocationName(data->getStationId());
+                case notesColumn:
+                    return data->getNotes();
                 case ownerColumn:
                     return mDataProvider.getGenericName(data->getCharacterId());
                 }
@@ -234,6 +238,8 @@ namespace Evernus
                 return tr("Profit");
             case stationColumn:
                 return tr("Station");
+            case notesColumn:
+                return tr("Notes");
             case ownerColumn:
                 return tr("Owner");
             }

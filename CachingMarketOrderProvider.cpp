@@ -99,16 +99,20 @@ namespace Evernus
 
     void CachingMarketOrderProvider::removeOrder(MarketOrder::IdType id)
     {
-        mSellOrders.clear();
-        mBuyOrders.clear();
-        mArchivedOrders.clear();
-        mCorpSellOrders.clear();
-        mCorpBuyOrders.clear();
-        mCorpArchivedOrders.clear();
+        clearAll();
 
         mOrderRepo.remove(id);
 
-        emit orderDeleted();
+        emit orderChanged();
+    }
+
+    void CachingMarketOrderProvider::setOrderNotes(MarketOrder::IdType id, const QString &notes)
+    {
+        clearAll();
+
+        mOrderRepo.setNotes(id, notes);
+
+        emit orderChanged();
     }
 
     void CachingMarketOrderProvider::clearOrdersForCharacter(Character::IdType id) const
@@ -128,6 +132,16 @@ namespace Evernus
     void CachingMarketOrderProvider::clearArchived() const
     {
         mArchivedOrders.clear();
+        mCorpArchivedOrders.clear();
+    }
+
+    void CachingMarketOrderProvider::clearAll()
+    {
+        mSellOrders.clear();
+        mBuyOrders.clear();
+        mArchivedOrders.clear();
+        mCorpSellOrders.clear();
+        mCorpBuyOrders.clear();
         mCorpArchivedOrders.clear();
     }
 }

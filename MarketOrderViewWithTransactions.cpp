@@ -61,6 +61,7 @@ namespace Evernus
         connect(mOrderView, &MarketOrderView::showExternalOrders, this, &MarketOrderViewWithTransactions::showExternalOrders);
         connect(mOrderView, &MarketOrderView::showInEve, this, &MarketOrderViewWithTransactions::showInEve);
         connect(mOrderView, &MarketOrderView::itemSelected, this, &MarketOrderViewWithTransactions::itemSelected);
+        connect(mOrderView, &MarketOrderView::notesChanged, this, &MarketOrderViewWithTransactions::notesChanged);
         connect(mOrderView->getSelectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &MarketOrderViewWithTransactions::selectOrder);
 

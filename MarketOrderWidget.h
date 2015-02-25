@@ -87,6 +87,8 @@ namespace Evernus
 
         void changeFPCExecutor();
 
+        void setOrderNotes(MarketOrder::IdType id, const QString &notes);
+
     private:
         static const QString settingsLastTabkey;
 

@@ -15,6 +15,7 @@
 #include <QDesktopServices>
 #include <QApplication>
 #include <QActionGroup>
+#include <QInputDialog>
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QClipboard>
@@ -73,6 +74,11 @@ namespace Evernus
         mShowInEveAct->setEnabled(false);
         mView->addAction(mShowInEveAct);
         connect(mShowInEveAct, &QAction::triggered, this, &MarketOrderView::showInEveForCurrent);
+
+        mChangeNotesAct = new QAction{tr("Change notes"), this};
+        mChangeNotesAct->setEnabled(false);
+        mView->addAction(mChangeNotesAct);
+        connect(mChangeNotesAct, &QAction::triggered, this, &MarketOrderView::changeNotesForCurrent);
 
         if (mInfoWidget != nullptr)
             mainLayout->addWidget(mInfoWidget);
@@ -155,6 +161,17 @@ namespace Evernus
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
     }
 
+    void MarketOrderView::changeNotesForCurrent()
+    {
+        const auto order = mSource->getOrder(mProxy.mapToSource(mView->currentIndex()));
+        if (order != nullptr)
+        {
+            const auto text = QInputDialog::getText(this, tr("Notes"), tr("Notes:"), QLineEdit::Normal, order->getNotes());
+            if (!text.isNull())
+                emit notesChanged(order->getId(), text);
+        }
+    }
+
     void MarketOrderView::executeFPC()
     {
         if (mSource != nullptr)
@@ -216,6 +233,7 @@ namespace Evernus
         mRemoveOrderAct->setEnabled(enable);
         mShowExternalOrdersAct->setEnabled(enable);
         mShowInEveAct->setEnabled(enable);
+        mChangeNotesAct->setEnabled(enable);
         mLookupGroup->setEnabled(enable);
 
         emit itemSelected();

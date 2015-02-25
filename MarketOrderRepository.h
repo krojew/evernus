@@ -104,6 +104,8 @@ namespace Evernus
         void fulfill(const std::vector<MarketOrder::IdType> &ids) const;
         void deleteOldEntries(const QDateTime &from) const;
 
+        void setNotes(MarketOrder::IdType id, const QString &notes) const;
+
     private:
         bool mCorp = false;
 

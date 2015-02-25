@@ -41,12 +41,14 @@ namespace Evernus
 
         virtual void removeOrder(MarketOrder::IdType id) override;
 
+        virtual void setOrderNotes(MarketOrder::IdType id, const QString &notes) override;
+
         void clearOrdersForCharacter(Character::IdType id) const;
         void clearOrdersForCorporation(uint id) const;
         void clearArchived() const;
 
     signals:
-        void orderDeleted();
+        void orderChanged();
 
     private:
         typedef std::unordered_map<Character::IdType, OrderList> MarketOrderMap;
@@ -61,5 +63,7 @@ namespace Evernus
         mutable CorpMarketOrderMap mCorpSellOrders;
         mutable CorpMarketOrderMap mCorpBuyOrders;
         mutable CorpMarketOrderMap mCorpArchivedOrders;
+
+        void clearAll();
     };
 }
