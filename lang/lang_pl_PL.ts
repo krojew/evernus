@@ -10,6 +10,38 @@
     </message>
 </context>
 <context>
+    <name>CRESTManager</name>
+    <message>
+        <location filename="../CRESTManager.cpp" line="227"/>
+        <source>CREST Authentication</source>
+        <translation type="unfinished">Uwierzytelnianie CREST</translation>
+    </message>
+    <message>
+        <location filename="../CRESTManager.cpp" line="283"/>
+        <source>Empty access token!</source>
+        <translation type="unfinished">Pusty token dostępu!</translation>
+    </message>
+    <message>
+        <location filename="../CRESTManager.cpp" line="299"/>
+        <source>CREST error</source>
+        <translation type="unfinished">Błąd CREST</translation>
+    </message>
+    <message>
+        <location filename="../CRESTManager.cpp" line="299"/>
+        <source>EVE login page certificate contains errors:
+%1
+Are you sure you wish to proceed (doing so can compromise your account security)?</source>
+        <translation type="unfinished">Certyfikat strony logowania EVE zawiera błędy:
+%1
+Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?</translation>
+    </message>
+    <message>
+        <location filename="../CRESTManager.cpp" line="332"/>
+        <source>Empty refresh token!</source>
+        <translation type="unfinished">Pusty token odświeżania!</translation>
+    </message>
+</context>
+<context>
     <name>DatabaseUtils</name>
     <message>
         <location filename="../DatabaseUtils.cpp" line="40"/>
@@ -460,31 +492,26 @@
         <translation type="vanished">Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="222"/>
         <source>CREST Authentication</source>
-        <translation>Uwierzytelnianie CREST</translation>
+        <translation type="vanished">Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="327"/>
         <source>Empty refresh token!</source>
-        <translation>Pusty token odświeżania!</translation>
+        <translation type="vanished">Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="278"/>
         <source>Empty access token!</source>
-        <translation>Pusty token dostępu!</translation>
+        <translation type="vanished">Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="294"/>
         <source>CREST error</source>
-        <translation>Błąd CREST</translation>
+        <translation type="vanished">Błąd CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="294"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
-        <translation>Certyfikat strony logowania EVE zawiera błędy:
+        <translation type="vanished">Certyfikat strony logowania EVE zawiera błędy:
 %1
 Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?</translation>
     </message>

@@ -160,7 +160,11 @@ namespace Evernus
                                           EveType::IdType typeId,
                                           const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const
     {
+#ifdef Q_OS_WIN
         mInterface.fetchMarketHistory(regionId, typeId, [=](QJsonDocument &&data, const QString &error) {
+#else
+        mInterface.fetchMarketHistory(regionId, typeId, [=, callback = callback](QJsonDocument &&data, const QString &error) {
+#endif
             if (!error.isEmpty())
             {
                 callback(std::map<QDate, MarketHistoryEntry>{}, error);
