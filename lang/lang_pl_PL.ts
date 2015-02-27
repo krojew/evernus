@@ -1178,72 +1178,72 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::ContractWidget</name>
     <message>
-        <location filename="../ContractWidget.cpp" line="81"/>
+        <location filename="../ContractWidget.cpp" line="82"/>
         <source>Issued</source>
         <translation>Wystawione</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="87"/>
+        <location filename="../ContractWidget.cpp" line="89"/>
         <source>Assigned</source>
         <translation>Przypisane</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="117"/>
+        <location filename="../ContractWidget.cpp" line="120"/>
         <source>O</source>
         <translation>Z</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="119"/>
+        <location filename="../ContractWidget.cpp" line="122"/>
         <source>D</source>
         <translation>U</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="121"/>
+        <location filename="../ContractWidget.cpp" line="124"/>
         <source>C</source>
         <translation>Zak</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="123"/>
+        <location filename="../ContractWidget.cpp" line="126"/>
         <source>F</source>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="125"/>
+        <location filename="../ContractWidget.cpp" line="128"/>
         <source>Ci</source>
         <translation>Zw</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="127"/>
+        <location filename="../ContractWidget.cpp" line="130"/>
         <source>Cc</source>
         <translation>Za</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="129"/>
+        <location filename="../ContractWidget.cpp" line="132"/>
         <source>Ca</source>
         <translation>An</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="131"/>
+        <location filename="../ContractWidget.cpp" line="134"/>
         <source>Rj</source>
         <translation>Od</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="133"/>
+        <location filename="../ContractWidget.cpp" line="136"/>
         <source>Re</source>
         <translation>Odb</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="135"/>
+        <location filename="../ContractWidget.cpp" line="138"/>
         <source>Ip</source>
         <translation>Wt</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="137"/>
+        <location filename="../ContractWidget.cpp" line="140"/>
         <source>Status filter</source>
         <translation>Filtr stanu</translation>
     </message>
     <message>
-        <location filename="../ContractWidget.cpp" line="137"/>
+        <location filename="../ContractWidget.cpp" line="140"/>
         <source>Status filter [%1]  </source>
         <translation>Filtr stanu [%1]  </translation>
     </message>

@@ -55,6 +55,7 @@ namespace Evernus
         toolBarLayout->addWidget(&importBtn);
 
         auto statusesWidget = new ContractStatusesWidget{this};
+        const auto currentFilter = statusesWidget->getStatusFilter();
         connect(statusesWidget, &ContractStatusesWidget::filterChanged, this, &ContractWidget::setStatusFilter);
 
         auto filterStatusAction = new QWidgetAction{this};
@@ -63,7 +64,7 @@ namespace Evernus
         auto filterStatusMenu = new QMenu{this};
         filterStatusMenu->addAction(filterStatusAction);
 
-        mStatusFilterBtn = new QPushButton{QIcon{":/images/flag_blue.png"}, getStatusFilterButtonText(statusesWidget->getStatusFilter()), this};
+        mStatusFilterBtn = new QPushButton{QIcon{":/images/flag_blue.png"}, getStatusFilterButtonText(currentFilter), this};
         toolBarLayout->addWidget(mStatusFilterBtn);
         mStatusFilterBtn->setFlat(true);
         mStatusFilterBtn->setMenu(filterStatusMenu);
@@ -80,12 +81,14 @@ namespace Evernus
         auto issuedView = new ContractView{(corp) ? ("corpIssuedContractsView") : ("issuedContractsView"), this};
         tabs->addTab(issuedView, tr("Issued"));
         issuedView->setModel(&mIssuedModel);
+        issuedView->setStatusFilter(currentFilter);
         connect(filterEdit, &TextFilterWidget::filterEntered, issuedView, &ContractView::setFilterWildcard);
         connect(statusesWidget, &ContractStatusesWidget::filterChanged, issuedView, &ContractView::setStatusFilter);
 
         auto assignedView = new ContractView{(corp) ? ("corpAssignedContractsView") : ("assignedContractsView"), this};
         tabs->addTab(assignedView, tr("Assigned"));
         assignedView->setModel(&mAssignedModel);
+        assignedView->setStatusFilter(currentFilter);
         connect(filterEdit, &TextFilterWidget::filterEntered, assignedView, &ContractView::setFilterWildcard);
         connect(statusesWidget, &ContractStatusesWidget::filterChanged, assignedView, &ContractView::setStatusFilter);
     }
