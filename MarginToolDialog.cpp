@@ -348,7 +348,7 @@ namespace Evernus
                 if (station == 0)
                     buy = 0.;
                 else
-                    buy = mDataProvider.getTypeBuyPrice(typeId, station)->getPrice() - priceDelta;
+                    buy = mDataProvider.getTypeBuyPrice(typeId, station)->getPrice();
             }
 
             mNameLabel->setText(name);
