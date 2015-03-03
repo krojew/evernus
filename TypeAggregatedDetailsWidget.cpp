@@ -103,6 +103,10 @@ namespace Evernus
         toolBarLayout->addWidget(filterBtn);
         connect(filterBtn, &QPushButton::clicked, this, &TypeAggregatedDetailsWidget::applyFilter);
 
+        auto addTrendLineBtn = new QPushButton{tr("Add trend line"), this};
+        toolBarLayout->addWidget(addTrendLineBtn);
+        connect(addTrendLineBtn, &QPushButton::clicked, this, &TypeAggregatedDetailsWidget::addTrendLine);
+
         const auto showLegend = settings.value(MarketAnalysisSettings::showLegendKey, MarketAnalysisSettings::showLegendDefault).toBool();
 
         auto legendBtn = new QCheckBox{tr("Show legend"), this};
@@ -393,6 +397,8 @@ namespace Evernus
             bollingerLow << (avg - stdDev2);
         }
 
+        deleteTrendLine();
+
         mHistoryValuesGraph->setData(dates, open, high, low, close);
         mHistoryVolumeGraph->setData(dates, volumes);
         mSMAGraph->setData(dates, sma);
@@ -411,5 +417,58 @@ namespace Evernus
         mMACDGraph->keyAxis()->rescale();
         mMACDGraph->valueAxis()->rescale();
         mHistoryPlot->replot();
+    }
+
+    void TypeAggregatedDetailsWidget::addTrendLine()
+    {
+        deleteTrendLine();
+
+        const auto start = mFromEdit->date();
+        const auto end = mToEdit->date();
+
+        auto sumXY = 0., sumX = 0., sumY = 0., sumX2 = 0.;
+
+        for (auto date = start; date <= end; date = date.addDays(1))
+        {
+            const auto x = date.toJulianDay() - start.toJulianDay();
+            sumX += x;
+            sumX2 += x * x;
+
+            const auto it = mHistory.find(date);
+            if (it != std::end(mHistory))
+            {
+                sumXY += x * it->second.mAvgPrice;
+                sumY += it->second.mAvgPrice;
+            }
+        }
+
+        const auto n = start.daysTo(end) + 1;
+        if (n == 0)
+            return;
+
+        const auto div = sumX2 - sumX * sumX / n;
+        if (qFuzzyIsNull(div))
+            return;
+
+        const auto a = (sumXY - sumX * sumY / n) / div;
+        const auto b = (sumY - a * sumX) / n;
+
+        auto linearFunc = [=](auto x) {
+            return a * x + b;
+        };
+
+        mTrendLine = new QCPItemLine{mHistoryPlot};
+
+        mTrendLine->start->setCoords(QDateTime{start}.toMSecsSinceEpoch() / 1000., linearFunc(0.));
+        const auto x = QDateTime{end}.toMSecsSinceEpoch() / 1000.;
+        mTrendLine->end->setCoords(x, linearFunc(end.toJulianDay() - start.toJulianDay()));
+
+        mHistoryPlot->replot();
+    }
+
+    void TypeAggregatedDetailsWidget::deleteTrendLine() noexcept
+    {
+        delete mTrendLine;
+        mTrendLine = nullptr;
     }
 }

@@ -23,6 +23,7 @@
 
 class QCPFinancial;
 class QCustomPlot;
+class QCPItemLine;
 class QDateEdit;
 class QSpinBox;
 class QCPGraph;
@@ -46,6 +47,7 @@ namespace Evernus
 
     private slots:
         void applyFilter();
+        void addTrendLine();
 
     private:
         History mHistory;
@@ -67,5 +69,9 @@ namespace Evernus
         QCPBars *mMACDDivergenceGraph = nullptr;
         QCPGraph *mBollingerUpperGraph = nullptr;
         QCPGraph *mBollingerLowerGraph = nullptr;
+
+        QCPItemLine *mTrendLine = nullptr;
+
+        void deleteTrendLine() noexcept;
     };
 }

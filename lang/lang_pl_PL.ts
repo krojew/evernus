@@ -2306,9 +2306,8 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Port:</translation>
     </message>
     <message>
-        <location filename="../IGBPreferencesWidget.cpp" line="54"/>
         <source>Scan delay:</source>
-        <translation>Opóźnienie skanowania:</translation>
+        <translation type="vanished">Opóźnienie skanowania:</translation>
     </message>
 </context>
 <context>
@@ -5563,59 +5562,64 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Zastosuj</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="108"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="106"/>
+        <source>Add trend line</source>
+        <translation>Dodaj linię trendu</translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="112"/>
         <source>Show legend</source>
         <translation>Pokaż legendę</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="134"/>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="157"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="138"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="161"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="167"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="171"/>
         <source>Value</source>
         <translation>Wartość</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="174"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="178"/>
         <source>SMA</source>
         <translation>SMA</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="178"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="182"/>
         <source>Bollinger upper band</source>
         <translation>Górna wstęga Bollingera</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="182"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="186"/>
         <source>Bollinger lower band</source>
         <translation>Dolna wstęga Bollingera</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="194"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="198"/>
         <source>RSI (14 days)</source>
         <translation>RSI (14 dni)</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="222"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="226"/>
         <source>RSI</source>
         <translation>RSI</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="231"/>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="252"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="235"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="256"/>
         <source>MACD</source>
         <translation>MACD</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="245"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="249"/>
         <source>MACD Divergence</source>
         <translation>Rozbieżność MACD</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="255"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="259"/>
         <source>MACD Signal</source>
         <translation>Sygnał MACD</translation>
     </message>
