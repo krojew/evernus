@@ -453,7 +453,7 @@ namespace Evernus
         const auto a = (sumXY - sumX * sumY / n) / div;
         const auto b = (sumY - a * sumX) / n;
 
-        auto linearFunc = [=](auto x) {
+        auto linearFunc = [=](double x) {
             return a * x + b;
         };
 
