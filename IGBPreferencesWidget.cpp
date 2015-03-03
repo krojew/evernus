@@ -50,11 +50,6 @@ namespace Evernus
         mPortEdit->setMaximum(std::numeric_limits<quint16>::max());
         mPortEdit->setValue(settings.value(IGBSettings::portKey, IGBSettings::portDefault).toInt());
 
-        mScanDelayEdit = new QSpinBox{this};
-        mainGroupLayout->addRow(tr("Scan delay:"), mScanDelayEdit);
-        mScanDelayEdit->setMinimum(2);
-        mScanDelayEdit->setValue(settings.value(IGBSettings::scanDelayKey, IGBSettings::scanDelayDefault).toInt());
-
         mainLayout->addStretch();
     }
 
@@ -63,6 +58,5 @@ namespace Evernus
         QSettings settings;
         settings.setValue(IGBSettings::enabledKey, mEnabledBtn->isChecked());
         settings.setValue(IGBSettings::portKey, mPortEdit->value());
-        settings.setValue(IGBSettings::scanDelayKey, mScanDelayEdit->value());
     }
 }

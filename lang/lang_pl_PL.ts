@@ -12,33 +12,28 @@
 <context>
     <name>CRESTManager</name>
     <message>
-        <location filename="../CRESTManager.cpp" line="227"/>
         <source>CREST Authentication</source>
-        <translation type="unfinished">Uwierzytelnianie CREST</translation>
+        <translation type="obsolete">Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="283"/>
         <source>Empty access token!</source>
-        <translation type="unfinished">Pusty token dostępu!</translation>
+        <translation type="obsolete">Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="299"/>
         <source>CREST error</source>
-        <translation type="unfinished">Błąd CREST</translation>
+        <translation type="obsolete">Błąd CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="299"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
-        <translation type="unfinished">Certyfikat strony logowania EVE zawiera błędy:
+        <translation type="obsolete">Certyfikat strony logowania EVE zawiera błędy:
 %1
 Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="332"/>
         <source>Empty refresh token!</source>
-        <translation type="unfinished">Pusty token odświeżania!</translation>
+        <translation type="obsolete">Pusty token odświeżania!</translation>
     </message>
 </context>
 <context>
@@ -492,26 +487,31 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
     </message>
     <message>
+        <location filename="../CRESTManager.cpp" line="226"/>
         <source>CREST Authentication</source>
-        <translation type="vanished">Uwierzytelnianie CREST</translation>
+        <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
+        <location filename="../CRESTManager.cpp" line="331"/>
         <source>Empty refresh token!</source>
-        <translation type="vanished">Pusty token odświeżania!</translation>
+        <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
+        <location filename="../CRESTManager.cpp" line="282"/>
         <source>Empty access token!</source>
-        <translation type="vanished">Pusty token dostępu!</translation>
+        <translation>Pusty token dostępu!</translation>
     </message>
     <message>
+        <location filename="../CRESTManager.cpp" line="298"/>
         <source>CREST error</source>
-        <translation type="vanished">Błąd CREST</translation>
+        <translation>Błąd CREST</translation>
     </message>
     <message>
+        <location filename="../CRESTManager.cpp" line="298"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
-        <translation type="vanished">Certyfikat strony logowania EVE zawiera błędy:
+        <translation>Certyfikat strony logowania EVE zawiera błędy:
 %1
 Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?</translation>
     </message>
@@ -2339,7 +2339,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Aktualne zlecenie:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="101"/>
+        <location filename="../IGBService.cpp" line="96"/>
         <source>Sell orders:</source>
         <translation>Zlecenia sprzedaży:</translation>
     </message>
@@ -2418,68 +2418,63 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Aktualna pozycja:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="96"/>
         <source>Auto-import at end</source>
-        <translation>Automatyczny import na końcu</translation>
+        <translation type="vanished">Automatyczny import na końcu</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="102"/>
+        <location filename="../IGBService.cpp" line="97"/>
         <source>Buy orders:</source>
         <translation>Zlecenia kupna:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="92"/>
         <source>Scan delay:</source>
-        <translation>Opóźnienie skanowania:</translation>
+        <translation type="vanished">Opóźnienie skanowania:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="93"/>
         <source>Start Scan</source>
-        <translation>Rozpocznij skanowanie</translation>
+        <translation type="vanished">Rozpocznij skanowanie</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="94"/>
         <source>Stop Scan</source>
-        <translation>Zakończ skanowanie</translation>
+        <translation type="vanished">Zakończ skanowanie</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="95"/>
         <source>Stop at end</source>
-        <translation>Zatrzymaj na końcu</translation>
+        <translation type="vanished">Zatrzymaj na końcu</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="103"/>
+        <location filename="../IGBService.cpp" line="98"/>
         <source>Limit to current station, if available</source>
         <translation>Ogranicz do akutalnej stacji, jeśli dostępne</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="99"/>
+        <location filename="../IGBService.cpp" line="94"/>
         <source>Favorite items:</source>
         <translation>Ulubione przedmioty:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="109"/>
+        <location filename="../IGBService.cpp" line="104"/>
         <source>Please select a category from the menu.</source>
         <translation>Wybierz kategorię z menu.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="214"/>
-        <location filename="../IGBService.cpp" line="320"/>
+        <location filename="../IGBService.cpp" line="209"/>
+        <location filename="../IGBService.cpp" line="315"/>
         <source>Character not found!</source>
         <translation>Postać nie znaleziona!</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="470"/>
+        <location filename="../IGBService.cpp" line="463"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="470"/>
+        <location filename="../IGBService.cpp" line="463"/>
         <source>You have to open Evernus in EVE In-Game Browser first.</source>
         <translation>Najpierw musisz otworzyć Evernusa w przeglądarce w EVE.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="378"/>
+        <location filename="../IGBService.cpp" line="372"/>
         <source>Website trust is required. Please add it to Trusted Sites.</source>
         <translation>Wymagane jest zaufanie stronie. Dodaj stronę do zaufanych (Trusted Sites).</translation>
     </message>
