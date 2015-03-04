@@ -27,6 +27,7 @@ class QComboBox;
 class QCheckBox;
 class QSpinBox;
 class QCPBars;
+class QLabel;
 
 namespace Evernus
 {
@@ -126,6 +127,12 @@ namespace Evernus
         QTextEdit *mAggrScriptEdit = nullptr;
         QRadioButton *mScriptForEachModeBtn = nullptr;
         QTableView *mAggrView = nullptr;
+        QLabel *mJournalIncomeLabel = nullptr;
+        QLabel *mJournalOutcomeLabel = nullptr;
+        QLabel *mJournalBalanceLabel = nullptr;
+        QLabel *mTransactionsIncomeLabel = nullptr;
+        QLabel *mTransactionsOutcomeLabel = nullptr;
+        QLabel *mTransactionsBalanceLabel = nullptr;
 
         Character::IdType mCharacterId = Character::invalidId;
 

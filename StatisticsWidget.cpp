@@ -48,6 +48,7 @@
 #include "CharacterRepository.h"
 #include "PriceSettings.h"
 #include "UISettings.h"
+#include "TextUtils.h"
 
 #include "qcustomplot.h"
 
@@ -418,8 +419,10 @@ namespace Evernus
                                                                           QDateTime{mJournalPlot->getTo().addDays(1)},
                                                                           WalletJournalEntryRepository::EntryType::All));
 
+        auto totalIncome = 0., totalOutcome = 0.;
+
         QHash<QDate, std::pair<double, double>> values;
-        const auto valueAdder = [&values](const auto &entries) {
+        const auto valueAdder = [&values, &totalIncome, &totalOutcome](const auto &entries) {
             for (const auto &entry : entries)
             {
                 if (entry->isIgnored())
@@ -429,9 +432,15 @@ namespace Evernus
 
                 const auto amount = entry->getAmount();
                 if (amount < 0.)
+                {
+                    totalOutcome -= amount;
                     value.first -= amount;
+                }
                 else
+                {
+                    totalIncome += amount;
                     value.second += amount;
+                }
             }
         };
 
@@ -469,6 +478,12 @@ namespace Evernus
 
         mJournalPlot->getPlot().rescaleAxes();
         mJournalPlot->getPlot().replot();
+
+        const auto loc = locale();
+
+        mJournalIncomeLabel->setText(TextUtils::currencyToString(totalIncome, loc));
+        mJournalOutcomeLabel->setText(TextUtils::currencyToString(totalOutcome, loc));
+        mJournalBalanceLabel->setText(TextUtils::currencyToString(totalIncome - totalOutcome, loc));
     }
 
     void StatisticsWidget::updateTransactionData()
@@ -483,8 +498,10 @@ namespace Evernus
                                                                               QDateTime{mTransactionPlot->getTo().addDays(1)},
                                                                               WalletTransactionRepository::EntryType::All));
 
+        auto totalIncome = 0., totalOutcome = 0.;
+
         QHash<QDate, std::pair<double, double>> values;
-        const auto valueAdder = [&values](const auto &entries) {
+        const auto valueAdder = [&values, &totalIncome, &totalOutcome](const auto &entries) {
             for (const auto &entry : entries)
             {
                 if (entry->isIgnored())
@@ -494,9 +511,15 @@ namespace Evernus
 
                 const auto amount = entry->getPrice();
                 if (entry->getType() == Evernus::WalletTransaction::Type::Buy)
+                {
+                    totalOutcome += amount;
                     value.first += amount;
+                }
                 else
+                {
+                    totalIncome += amount;
                     value.second += amount;
+                }
             }
         };
 
@@ -534,6 +557,12 @@ namespace Evernus
 
         mTransactionPlot->getPlot().rescaleAxes();
         mTransactionPlot->getPlot().replot();
+
+        const auto loc = locale();
+
+        mTransactionsIncomeLabel->setText(TextUtils::currencyToString(totalIncome, loc));
+        mTransactionsOutcomeLabel->setText(TextUtils::currencyToString(totalOutcome, loc));
+        mTransactionsBalanceLabel->setText(TextUtils::currencyToString(totalIncome - totalOutcome, loc));
     }
 
     void StatisticsWidget::updateData()
@@ -725,6 +754,32 @@ namespace Evernus
         journalLayout->addWidget(mJournalPlot);
         connect(mJournalPlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateJournalData);
 
+        QFont font;
+        font.setBold(true);
+
+        auto journalSummaryLayout = new QHBoxLayout{};
+        journalLayout->addLayout(journalSummaryLayout);
+
+        journalSummaryLayout->addWidget(new QLabel{tr("Total income:"), this}, 0, Qt::AlignRight);
+
+        mJournalIncomeLabel = new QLabel{"-", this};
+        journalSummaryLayout->addWidget(mJournalIncomeLabel, 0, Qt::AlignLeft);
+        mJournalIncomeLabel->setFont(font);
+
+        journalSummaryLayout->addWidget(new QLabel{tr("Total cost:"), this}, 0, Qt::AlignRight);
+
+        mJournalOutcomeLabel = new QLabel{"-", this};
+        journalSummaryLayout->addWidget(mJournalOutcomeLabel, 0, Qt::AlignLeft);
+        mJournalOutcomeLabel->setFont(font);
+
+        journalSummaryLayout->addWidget(new QLabel{tr("Balance:"), this}, 0, Qt::AlignRight);
+
+        mJournalBalanceLabel = new QLabel{"-", this};
+        journalSummaryLayout->addWidget(mJournalBalanceLabel, 0, Qt::AlignLeft);
+        mJournalBalanceLabel->setFont(font);
+
+        journalSummaryLayout->addStretch();
+
         auto transactionGroup = new QGroupBox{tr("Wallet transactions"), this};
         mainLayout->addWidget(transactionGroup);
 
@@ -733,6 +788,29 @@ namespace Evernus
         mTransactionPlot = createPlot();
         transactionLayout->addWidget(mTransactionPlot);
         connect(mTransactionPlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateTransactionData);
+
+        auto transactionSummaryLayout = new QHBoxLayout{};
+        transactionLayout->addLayout(transactionSummaryLayout);
+
+        transactionSummaryLayout->addWidget(new QLabel{tr("Total income:"), this}, 0, Qt::AlignRight);
+
+        mTransactionsIncomeLabel = new QLabel{"-", this};
+        transactionSummaryLayout->addWidget(mTransactionsIncomeLabel, 0, Qt::AlignLeft);
+        mTransactionsIncomeLabel->setFont(font);
+
+        transactionSummaryLayout->addWidget(new QLabel{tr("Total cost:"), this}, 0, Qt::AlignRight);
+
+        mTransactionsOutcomeLabel = new QLabel{"-", this};
+        transactionSummaryLayout->addWidget(mTransactionsOutcomeLabel, 0, Qt::AlignLeft);
+        mTransactionsOutcomeLabel->setFont(font);
+
+        transactionSummaryLayout->addWidget(new QLabel{tr("Balance:"), this}, 0, Qt::AlignRight);
+
+        mTransactionsBalanceLabel = new QLabel{"-", this};
+        transactionSummaryLayout->addWidget(mTransactionsBalanceLabel, 0, Qt::AlignLeft);
+        mTransactionsBalanceLabel->setFont(font);
+
+        transactionSummaryLayout->addStretch();
 
         mainLayout->addStretch();
 
