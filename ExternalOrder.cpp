@@ -181,6 +181,11 @@ namespace Evernus
         {
             const auto altEveDateFormat = "yyyy-MM-dd";
             dt = QDateTime::fromString(values[issuedColumn], altEveDateFormat);
+            if (!dt.isValid())
+            {
+                // thank CCP
+                dt = QDateTime::currentDateTimeUtc();
+            }
         }
         dt.setTimeSpec(Qt::UTC);
 
