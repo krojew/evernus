@@ -74,6 +74,11 @@ namespace Evernus
         }
     }
 
+    void CRESTExternalOrderImporter::handleNewPreferences()
+    {
+        mManager.handleNewPreferences();
+    }
+
     void CRESTExternalOrderImporter::processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const
     {
         --mRequestCount;

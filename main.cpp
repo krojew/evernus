@@ -139,10 +139,12 @@ int main(int argc, char *argv[])
         const auto crestId = parser.value(crestIdArg).toLatin1();
         const auto crestSecret = parser.value(crestSecretArg).toLatin1();
 
-        app.registerImporter(Evernus::ExternalOrderImporterNames::webImporter,
-                             std::make_unique<Evernus::CRESTExternalOrderImporter>(crestId,
+        auto crestImporter = std::make_unique<Evernus::CRESTExternalOrderImporter>(crestId,
                                                                                    crestSecret,
-                                                                                   app.getDataProvider()));
+                                                                                   app.getDataProvider());
+        auto crestImporterPtr = crestImporter.get();
+
+        app.registerImporter(Evernus::ExternalOrderImporterNames::webImporter, std::move(crestImporter));
         app.registerImporter(Evernus::ExternalOrderImporterNames::logImporter,
                              std::make_unique<Evernus::MarketLogExternalOrderImporter>());
 
@@ -207,6 +209,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(lMeveTasksChanged()), SIGNAL(lMeveTasksChanged()));
             mainWnd.connect(&app, SIGNAL(charactersChanged()), SLOT(updateIskData()));
             mainWnd.connect(&app, SIGNAL(openMarginTool()), SLOT(showMarginTool()));
+            crestImporterPtr->connect(&mainWnd, SIGNAL(preferencesChanged()), SLOT(handleNewPreferences()));
             mainWnd.showAsSaved();
 
             return app.exec();

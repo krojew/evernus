@@ -207,6 +207,11 @@ namespace Evernus
         mTypeDataModel.setCharacter(mCharacterRepo.find(id));
     }
 
+    void MarketAnalysisWidget::handleNewPreferences()
+    {
+        mManager.handleNewPreferences();
+    }
+
     void MarketAnalysisWidget::prepareOrderImport()
     {
         RegionTypeSelectDialog dlg{mDataProvider, mTypeRepo, mGroupRepo, this};
@@ -363,7 +368,7 @@ namespace Evernus
     {
         --mOrderRequestCount;
 
-        qDebug() << mOrderRequestCount << " order remaining; error:" << errorText;
+        qDebug() << mOrderRequestCount << " orders remaining; error:" << errorText;
 
         if ((mOrderRequestCount % 10) == 0)
             mTaskManager.updateTask(mOrderSubtask, tr("Waiting for %1 order server replies...").arg(mOrderRequestCount));
