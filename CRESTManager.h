@@ -65,6 +65,8 @@ namespace Evernus
     public slots:
         void fetchToken();
 
+        void handleNewPreferences();
+
     private slots:
         void handleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors);
 
@@ -79,7 +81,8 @@ namespace Evernus
 
         SimpleCrypt mCrypt;
 
-        CRESTInterface mInterface;
+        std::vector<CRESTInterface *> mInterfaces;
+        mutable size_t mCurrentInterface = 0;
 
         QString mRefreshToken;
 
@@ -87,8 +90,12 @@ namespace Evernus
 
         std::unique_ptr<CRESTAuthWidget> mAuthView;
 
+        bool mFetchingToken = false;
+
         void processAuthorizationCode(const QByteArray &code);
 
         QNetworkRequest getAuthRequest() const;
+
+        const CRESTInterface &selectNextInterface() const;
     };
 }

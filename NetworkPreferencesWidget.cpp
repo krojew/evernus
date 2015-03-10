@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <limits>
+#include <thread>
 
 #include <QNetworkProxy>
 #include <QRadioButton>
@@ -26,6 +27,7 @@
 #include <QLabel>
 
 #include "NetworkSettings.h"
+#include "CRESTSettings.h"
 
 #include "NetworkPreferencesWidget.h"
 
@@ -109,6 +111,16 @@ namespace Evernus
         providerLayout->addWidget(mProviderHostEdit);
         connect(customProviderBtn, &QRadioButton::toggled, mProviderHostEdit, &QWidget::setEnabled);
 
+        auto crestGroup = new QGroupBox{tr("CREST"), this};
+        mainLayout->addWidget(crestGroup);
+
+        auto crestGroupLayout = new QFormLayout{crestGroup};
+
+        mCRESTThreadsEdit = new QSpinBox{this};
+        crestGroupLayout->addRow(tr("Max. threads:"), mCRESTThreadsEdit);
+        mCRESTThreadsEdit->setValue(settings.value(
+            CRESTSettings::maxThreadsKey, std::thread::hardware_concurrency() * CRESTSettings::maxThreadsMultiplier).toUInt());
+
         mainLayout->addStretch();
 
         if (useProxy)
@@ -155,6 +167,8 @@ namespace Evernus
 
         settings.setValue(NetworkSettings::useCustomProviderKey, !mUseDefaultProviderBtn->isChecked());
         settings.setValue(NetworkSettings::providerHostKey, mProviderHostEdit->text());
+
+        settings.setValue(CRESTSettings::maxThreadsKey, mCRESTThreadsEdit->value());
 
         if (useProxy)
         {

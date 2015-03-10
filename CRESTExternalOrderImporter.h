@@ -39,6 +39,9 @@ namespace Evernus
 
         virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
 
+    public slots:
+        void handleNewPreferences();
+
     private:
         const EveDataProvider &mDataProvider;
 

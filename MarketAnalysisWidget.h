@@ -64,6 +64,8 @@ namespace Evernus
     public slots:
         void setCharacter(Character::IdType id);
 
+        void handleNewPreferences();
+
     private slots:
         void prepareOrderImport();
 
