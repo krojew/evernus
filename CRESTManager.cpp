@@ -12,8 +12,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <thread>
-
 #include <QDesktopWidget>
 #include <QNetworkReply>
 #include <QJsonDocument>
@@ -332,8 +330,7 @@ namespace Evernus
         QSettings settings;
 
         // IO bound
-        const auto maxInterfaces = settings.value(
-            CRESTSettings::maxThreadsKey, std::thread::hardware_concurrency() * CRESTSettings::maxThreadsMultiplier).toUInt();
+        const auto maxInterfaces = settings.value(CRESTSettings::maxThreadsKey, CRESTSettings::maxThreadsDefault).toUInt();
         mInterfaces.reserve(maxInterfaces);
 
         for (auto i = 0u; i < maxInterfaces; ++i)

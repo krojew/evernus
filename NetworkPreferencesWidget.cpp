@@ -13,7 +13,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <limits>
-#include <thread>
 
 #include <QNetworkProxy>
 #include <QRadioButton>
@@ -118,8 +117,7 @@ namespace Evernus
 
         mCRESTThreadsEdit = new QSpinBox{this};
         crestGroupLayout->addRow(tr("Max. threads:"), mCRESTThreadsEdit);
-        mCRESTThreadsEdit->setValue(settings.value(
-            CRESTSettings::maxThreadsKey, std::thread::hardware_concurrency() * CRESTSettings::maxThreadsMultiplier).toUInt());
+        mCRESTThreadsEdit->setValue(settings.value(CRESTSettings::maxThreadsKey, CRESTSettings::maxThreadsDefault).toUInt());
 
         mainLayout->addStretch();
 
