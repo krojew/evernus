@@ -91,7 +91,7 @@ struct QxtFifoNode {
         next = NULL;
 #endif
     }
-   
+
     QByteArray content;
     QBasicAtomicPointer<QxtFifoNode> next;
 };
@@ -183,11 +183,6 @@ qint64 QxtFifo::readData ( char * data, qint64 maxSize )
             memcpy(writePos, node->content.constData(), step);
             qxt_d().head.QXT_EXCHANGE_(node->next);
             delete node;
-#if QT_VERSION >=  0x50000
-            node = qxt_d().head.load();
-#else
-            node = qxt_d().head;
-#endif
         }
         writePos += step;
         bytes -= step;
