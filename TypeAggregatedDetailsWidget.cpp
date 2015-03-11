@@ -391,7 +391,7 @@ namespace Evernus
             sqrSmaBuffer.push_back(prevAvg * prevAvg);
             sqrSmaSum += prevAvg * prevAvg;
 
-            const auto stdDev2 = 2. * std::sqrtf(sqrSmaSum / smaDays - avg * avg);
+            const auto stdDev2 = 2. * std::sqrt(sqrSmaSum / smaDays - avg * avg);
 
             bollingerUp << (avg + stdDev2);
             bollingerLow << (avg - stdDev2);
