@@ -562,7 +562,7 @@ namespace Evernus
 
         OrderInfo info;
         info.mOrderPrice = order->getPrice();
-        info.mMarketPrice = price->getPrice();
+        info.mMarketPrice = (price->isNew()) ? (info.mOrderPrice) : (price->getPrice());
         info.mOrderLocalTimestamp = mCacheTimerProvider.getLocalUpdateTimer(mCharacterId, TimerType::MarketOrders);
         info.mMarketLocalTimestamp = price->getUpdateTime().toLocalTime();
 
