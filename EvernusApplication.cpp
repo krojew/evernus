@@ -788,8 +788,12 @@ namespace Evernus
                         }
                         else
                         {
-                            for (const auto id : characters)
-                                importCharacter(id, charListSubtask, *key);
+                            std::vector<uint> charTasks(characters.size());
+                            for (auto i = 0u; i < characters.size(); ++i)
+                                charTasks[i] = startTask(charListSubtask, getCharacterImportMessage(characters[i]));
+
+                            for (auto i = 0u; i < characters.size(); ++i)
+                                importCharacter(characters[i], charTasks[i], *key);
                         }
                     }
                     else
@@ -807,7 +811,8 @@ namespace Evernus
 
         try
         {
-            importCharacter(id, parentTask, *getCharacterKey(id));
+            const auto charSubtask = startTask(parentTask, getCharacterImportMessage(id));
+            importCharacter(id, charSubtask, *getCharacterKey(id));
         }
         catch (const KeyRepository::NotFoundException &)
         {
@@ -1821,13 +1826,12 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::importCharacter(Character::IdType id, uint parentTask, const Key &key)
+    void EvernusApplication::importCharacter(Character::IdType id, uint task, const Key &key)
     {
-        const auto charSubtask = startTask(parentTask, tr("Fetching character %1...").arg(id));
-        if (!checkImportAndEndTask(id, TimerType::Character, charSubtask))
+        if (!checkImportAndEndTask(id, TimerType::Character, task))
             return;
 
-        mAPIManager.fetchCharacter(key, id, [charSubtask, id, this](auto &&data, const auto &error) {
+        mAPIManager.fetchCharacter(key, id, [task, id, this](auto &&data, const auto &error) {
             if (error.isEmpty())
             {
                 try
@@ -1877,7 +1881,7 @@ namespace Evernus
                 QMetaObject::invokeMethod(this, "scheduleCharacterUpdate", Qt::QueuedConnection);
             }
 
-            emit taskEnded(charSubtask, error);
+            emit taskEnded(task, error);
         });
     }
 
@@ -2502,5 +2506,10 @@ namespace Evernus
     {
         splash.showMessage(message, Qt::AlignBottom | Qt::AlignRight, Qt::white);
         processEvents();
+    }
+
+    QString EvernusApplication::getCharacterImportMessage(Character::IdType id)
+    {
+        return tr("Fetching character %1...").arg(id);
     }
 }

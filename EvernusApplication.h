@@ -334,7 +334,7 @@ namespace Evernus
         void deleteOldWalletEntries();
         void deleteOldMarketOrders();
 
-        void importCharacter(Character::IdType id, uint parentTask, const Key &key);
+        void importCharacter(Character::IdType id, uint task, const Key &key);
         void importExternalOrders(const std::string &importerName, const ExternalOrderImporter::TypeLocationPairs &target);
         void importMarketOrdersFromLogs(Character::IdType id, uint task, bool corp);
         void importMarketOrders(Character::IdType id, MarketOrders &orders, bool corp);
@@ -374,5 +374,6 @@ namespace Evernus
         void asyncExecute(Func &&func, Args && ...args);
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
+        static QString getCharacterImportMessage(Character::IdType id);
     };
 }
