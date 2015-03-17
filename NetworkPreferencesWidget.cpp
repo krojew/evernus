@@ -119,6 +119,12 @@ namespace Evernus
         crestGroupLayout->addRow(tr("Max. threads:"), mCRESTThreadsEdit);
         mCRESTThreadsEdit->setValue(settings.value(CRESTSettings::maxThreadsKey, CRESTSettings::maxThreadsDefault).toUInt());
 
+        auto infoLabel = new QLabel{tr(
+            "This value affects the speed of importing data via CREST. "
+            "Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors."), this};
+        crestGroupLayout->addRow(infoLabel);
+        infoLabel->setWordWrap(true);
+
         mainLayout->addStretch();
 
         if (useProxy)
