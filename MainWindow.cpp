@@ -745,6 +745,7 @@ namespace Evernus
         connect(this, &MainWindow::externalOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::conquerableStationsChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, orderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::charactersChanged, orderTab, &MarketOrderWidget::updateCharacters);
 
         auto journalTab = new WalletJournalWidget{mRepositoryProvider.getWalletJournalEntryRepository(),
                                                   mRepositoryProvider.getCharacterRepository(),
@@ -768,6 +769,7 @@ namespace Evernus
         addTab(transactionsTab, tr("Character transactions"));
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
+        connect(this, &MainWindow::charactersChanged, transactionsTab, &WalletTransactionsWidget::updateCharacters);
 
         auto contractsTab = new ContractWidget{cacheTimerProvider,
                                                mEveDataProvider,
@@ -804,6 +806,7 @@ namespace Evernus
         connect(this, &MainWindow::externalOrdersChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::conquerableStationsChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, corpOrderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::charactersChanged, corpOrderTab, &MarketOrderWidget::updateCharacters);
 
         auto corpJournalTab = new WalletJournalWidget{mRepositoryProvider.getCorpWalletJournalEntryRepository(),
                                                       mRepositoryProvider.getCharacterRepository(),
@@ -827,6 +830,7 @@ namespace Evernus
         addTab(corpTransactionsTab, tr("Corporation transactions"));
         connect(corpTransactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importCorpWalletTransactions);
         connect(this, &MainWindow::corpWalletTransactionsChanged, corpTransactionsTab, &WalletTransactionsWidget::updateData);
+        connect(this, &MainWindow::charactersChanged, corpTransactionsTab, &WalletTransactionsWidget::updateCharacters);
 
         auto corpContractsTab = new ContractWidget{cacheTimerProvider,
                                                    mEveDataProvider,

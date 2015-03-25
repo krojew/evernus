@@ -53,6 +53,7 @@ namespace Evernus
 
     public slots:
         void updateData();
+        void updateCharacters();
 
         void updateFilter(const QDate &from, const QDate &to, const QString &filter, int type);
 

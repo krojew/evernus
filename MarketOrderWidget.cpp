@@ -263,6 +263,13 @@ namespace Evernus
         expandAll();
     }
 
+    void MarketOrderWidget::updateCharacters()
+    {
+        mSellView->updateCharacters();
+        mBuyView->updateCharacters();
+        mArchiveView->updateCharacters();
+    }
+
     void MarketOrderWidget::changeGrouping()
     {
         mSellModel.setGrouping(static_cast<MarketOrderModel::Grouping>(mGroupingCombo->currentData().toInt()));

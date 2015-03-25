@@ -19,8 +19,10 @@
 #include <QClipboard>
 #include <QSettings>
 #include <QAction>
+#include <QMenu>
 
 #include "WalletTransactionsModel.h"
+#include "CharacterRepository.h"
 #include "ItemCostProvider.h"
 #include "PriceSettings.h"
 #include "TextUtils.h"
@@ -29,16 +31,23 @@
 
 namespace Evernus
 {
-    WalletTransactionView::WalletTransactionView(ItemCostProvider &itemCostProvider, QWidget *parent)
+    WalletTransactionView::WalletTransactionView(ItemCostProvider &itemCostProvider,
+                                                 const CharacterRepository &characterRepository,
+                                                 QWidget *parent)
         : StyledTreeView{parent}
         , mItemCostProvider{itemCostProvider}
+        , mCharacterRepository{characterRepository}
     {
         initialize();
     }
 
-    WalletTransactionView::WalletTransactionView(const QString &objectName, ItemCostProvider &itemCostProvider, QWidget *parent)
+    WalletTransactionView::WalletTransactionView(const QString &objectName,
+                                                 ItemCostProvider &itemCostProvider,
+                                                 const CharacterRepository &characterRepository,
+                                                 QWidget *parent)
         : StyledTreeView{objectName, parent}
         , mItemCostProvider{itemCostProvider}
+        , mCharacterRepository{characterRepository}
     {
         initialize();
     }
@@ -78,6 +87,18 @@ namespace Evernus
         mCharacterId = id;
     }
 
+    void WalletTransactionView::updateCharacters()
+    {
+        mCharsMenu->clear();
+
+        auto characters = mCharacterRepository.getEnabledQuery();
+        while (characters.next())
+        {
+            auto action = mCharsMenu->addAction(characters.value("name").toString(), this, SLOT(addItemCostForCharacter()));
+            action->setData(characters.value("id"));
+        }
+    }
+
     void WalletTransactionView::selectTransaction(const QItemSelection &selected)
     {
         if (selected.isEmpty())
@@ -100,35 +121,12 @@ namespace Evernus
         }
     }
 
-    void WalletTransactionView::addItemCost()
+    void WalletTransactionView::addItemCostForCharacter()
     {
-        const auto selection = selectionModel()->selectedIndexes();
+        const auto action = qobject_cast<const QAction *>(sender());
+        Q_ASSERT(action != nullptr);
 
-        struct ItemData
-        {
-            uint mQuantity;
-            double mPrice;
-        };
-
-        std::unordered_map<EveType::IdType, ItemData> aggrData;
-        for (const auto &index : selection)
-        {
-            if (index.column() != 0)
-                continue;
-
-            const auto mappedIndex = (mProxy != nullptr) ? (mProxy->mapToSource(index)) : (index);
-            const auto row = mappedIndex.row();
-
-            auto &data = aggrData[mModel->getTypeId(row)];
-
-            const auto quantity = mModel->getQuantity(row);
-
-            data.mQuantity += quantity;
-            data.mPrice += quantity * mModel->getPrice(row);
-        }
-
-        for (const auto &data : aggrData)
-            mItemCostProvider.setForCharacterAndType(mCharacterId, data.first, data.second.mPrice / data.second.mQuantity);
+        addItemCost(action->data().value<Character::IdType>());
     }
 
     void WalletTransactionView::copySuggestedPrice() const
@@ -158,8 +156,18 @@ namespace Evernus
         addAction(separator);
 
         auto addCostAct = new QAction{tr("Add to item costs"), this};
-        connect(addCostAct, &QAction::triggered, this, &WalletTransactionView::addItemCost);
+        connect(addCostAct, &QAction::triggered, this, [=] {
+            addItemCost(mCharacterId);
+        });
 
+        addAction(addCostAct);
+
+        addCostAct = new QAction{tr("Add to item costs for:"), this};
+
+        mCharsMenu = new QMenu{this};
+        updateCharacters();
+
+        addCostAct->setMenu(mCharsMenu);
         addAction(addCostAct);
 
         mCopySuggestedPriceAct = new QAction{getDefaultCopySuggestedPriceText(), this};
@@ -167,6 +175,37 @@ namespace Evernus
         connect(mCopySuggestedPriceAct, &QAction::triggered, this, &WalletTransactionView::copySuggestedPrice);
 
         addAction(mCopySuggestedPriceAct);
+    }
+
+    void WalletTransactionView::addItemCost(Character::IdType characterId)
+    {
+        const auto selection = selectionModel()->selectedIndexes();
+
+        struct ItemData
+        {
+            uint mQuantity;
+            double mPrice;
+        };
+
+        std::unordered_map<EveType::IdType, ItemData> aggrData;
+        for (const auto &index : selection)
+        {
+            if (index.column() != 0)
+                continue;
+
+            const auto mappedIndex = (mProxy != nullptr) ? (mProxy->mapToSource(index)) : (index);
+            const auto row = mappedIndex.row();
+
+            auto &data = aggrData[mModel->getTypeId(row)];
+
+            const auto quantity = mModel->getQuantity(row);
+
+            data.mQuantity += quantity;
+            data.mPrice += quantity * mModel->getPrice(row);
+        }
+
+        for (const auto &data : aggrData)
+            mItemCostProvider.setForCharacterAndType(characterId, data.first, data.second.mPrice / data.second.mQuantity);
     }
 
     QString WalletTransactionView::getDefaultCopySuggestedPriceText()

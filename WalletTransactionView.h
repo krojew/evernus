@@ -22,6 +22,7 @@ class QAbstractProxyModel;
 namespace Evernus
 {
     class WalletTransactionsModel;
+    class CharacterRepository;
     class ItemCostProvider;
 
     class WalletTransactionView
@@ -30,8 +31,12 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit WalletTransactionView(ItemCostProvider &itemCostProvider, QWidget *parent = nullptr);
-        WalletTransactionView(const QString &objectName, ItemCostProvider &itemCostProvider, QWidget *parent = nullptr);
+        WalletTransactionView(ItemCostProvider &itemCostProvider,
+                              const CharacterRepository &characterRepository,
+                              QWidget *parent = nullptr);
+        WalletTransactionView(const QString &objectName, ItemCostProvider &itemCostProvider,
+                              const CharacterRepository &characterRepository,
+                              QWidget *parent = nullptr);
         virtual ~WalletTransactionView() = default;
 
         virtual void setModel(QAbstractItemModel *model) override;
@@ -40,16 +45,21 @@ namespace Evernus
 
         void setCharacter(Character::IdType id);
 
+    public slots:
+        void updateCharacters();
+
     private slots:
         void selectTransaction(const QItemSelection &selected);
 
-        void addItemCost();
+        void addItemCostForCharacter();
         void copySuggestedPrice() const;
 
     private:
         ItemCostProvider &mItemCostProvider;
+        const CharacterRepository &mCharacterRepository;
 
         QAction *mCopySuggestedPriceAct = nullptr;
+        QMenu *mCharsMenu = nullptr;
 
         QAbstractProxyModel *mProxy = nullptr;
         WalletTransactionsModel *mModel = nullptr;
@@ -61,6 +71,7 @@ namespace Evernus
         double getSuggestedPrice(double price) const;
 
         void initialize();
+        void addItemCost(Character::IdType characterId);
 
         static QString getDefaultCopySuggestedPriceText();
     };

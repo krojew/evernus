@@ -69,6 +69,7 @@ namespace Evernus
 
     public slots:
         void executeFPC();
+        void updateCharacters();
 
     signals:
         void statusFilterChanged(const MarketOrderFilterProxyModel::StatusFilters &filter);

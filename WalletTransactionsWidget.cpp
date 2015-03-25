@@ -85,7 +85,10 @@ namespace Evernus
         mFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
         mFilterModel->setSourceModel(&mModel);
 
-        mView = new WalletTransactionView{(corp) ? ("corpTransactionsView") : ("transactionsView"), itemCostProvider, this};
+        mView = new WalletTransactionView{(corp) ? ("corpTransactionsView") : ("transactionsView"),
+                                          itemCostProvider,
+                                          characterRepository,
+                                          this};
         mainLayout->addWidget(mView, 1);
         mView->setModels(mFilterModel, &mModel);
         mView->sortByColumn(1, Qt::DescendingOrder);
@@ -147,6 +150,11 @@ namespace Evernus
         mModel.reset();
 
         updateInfo();
+    }
+
+    void WalletTransactionsWidget::updateCharacters()
+    {
+        mView->updateCharacters();
     }
 
     void WalletTransactionsWidget::updateFilter(const QDate &from, const QDate &to, const QString &filter, int type)

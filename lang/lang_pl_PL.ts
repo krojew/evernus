@@ -3138,37 +3138,37 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Zlecenia postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="779"/>
+        <location filename="../MainWindow.cpp" line="781"/>
         <source>Character contracts</source>
         <translation>Kontrakty postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="794"/>
+        <location filename="../MainWindow.cpp" line="796"/>
         <source>Corporation orders</source>
         <translation>Zlecenia korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="838"/>
+        <location filename="../MainWindow.cpp" line="842"/>
         <source>Corporation contracts</source>
         <translation>Kontrakty korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="849"/>
+        <location filename="../MainWindow.cpp" line="853"/>
         <source>Item history</source>
         <translation>Historia przedmiotów</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="862"/>
+        <location filename="../MainWindow.cpp" line="866"/>
         <source>Market browser</source>
         <translation>Rynek</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="883"/>
+        <location filename="../MainWindow.cpp" line="887"/>
         <source>LMeve</source>
         <translation>LMeve</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="904"/>
+        <location filename="../MainWindow.cpp" line="908"/>
         <source>Market analysis</source>
         <translation>Analiza rynku</translation>
     </message>
@@ -3185,22 +3185,22 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Wysyłanie zleceń:</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="756"/>
+        <location filename="../MainWindow.cpp" line="757"/>
         <source>Character journal</source>
         <translation>Dziennik postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="815"/>
+        <location filename="../MainWindow.cpp" line="818"/>
         <source>Corporation journal</source>
         <translation>Dziennik korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="768"/>
+        <location filename="../MainWindow.cpp" line="769"/>
         <source>Character transactions</source>
         <translation>Transakcje postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="827"/>
+        <location filename="../MainWindow.cpp" line="830"/>
         <source>Corporation transactions</source>
         <translation>Transakcje korporacji</translation>
     </message>
@@ -3217,7 +3217,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Transakcje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="874"/>
+        <location filename="../MainWindow.cpp" line="878"/>
         <source>Item costs</source>
         <translation>Koszty</translation>
     </message>
@@ -4582,7 +4582,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderViewWithTransactions.cpp" line="87"/>
+        <location filename="../MarketOrderViewWithTransactions.cpp" line="90"/>
         <source>Transactions</source>
         <translation>Transakcje</translation>
     </message>
@@ -4682,7 +4682,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Historia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="298"/>
+        <location filename="../MarketOrderWidget.cpp" line="305"/>
         <source>Script error</source>
         <translation>Błąd skryptu</translation>
     </message>
@@ -5939,17 +5939,22 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletTransactionView</name>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="97"/>
+        <location filename="../WalletTransactionView.cpp" line="118"/>
         <source>Copy suggested price: %1</source>
         <translation>Skopiuj sugerowaną cenę: %1</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="160"/>
+        <location filename="../WalletTransactionView.cpp" line="158"/>
         <source>Add to item costs</source>
         <translation>Dodaj do własnych kosztów</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="174"/>
+        <location filename="../WalletTransactionView.cpp" line="165"/>
+        <source>Add to item costs for:</source>
+        <translation>Dodaj do własnych kosztów dla:</translation>
+    </message>
+    <message>
+        <location filename="../WalletTransactionView.cpp" line="213"/>
         <source>Copy suggested price</source>
         <translation>Skopiuj sugerowaną cenę</translation>
     </message>
@@ -6035,37 +6040,37 @@ Czy chcesz ściągnąć ją teraz?</translation>
         <translation>Połącz dla wszystkich postaci</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="99"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="102"/>
         <source>Total transactions:</source>
         <translation>Transakcje:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="105"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="108"/>
         <source>Total quantity:</source>
         <translation>Całkowita ilość:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="111"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="114"/>
         <source>Total size:</source>
         <translation>Całkowita objętość:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="117"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="120"/>
         <source>Total income:</source>
         <translation>Całkowity zysk:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="124"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="127"/>
         <source>Total cost:</source>
         <translation>Całkowity koszt:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="131"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="134"/>
         <source>Total balance:</source>
         <translation>Całkowity bilans:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionsWidget.cpp" line="137"/>
+        <location filename="../WalletTransactionsWidget.cpp" line="140"/>
         <source>Total profit based on costs:</source>
         <translation>Całkowity zysk na podst. kosztów:</translation>
     </message>

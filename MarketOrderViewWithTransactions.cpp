@@ -83,7 +83,10 @@ namespace Evernus
             tabs->addTab(mExternalOrderView, tr("Market orders"));
         }
 
-        mTransactionsView = new WalletTransactionView{objectName + "-transactions", mCostProvider, this};
+        mTransactionsView = new WalletTransactionView{objectName + "-transactions",
+                                                      mCostProvider,
+                                                      mCharacterRepo,
+                                                      this};
         tabs->addTab(mTransactionsView, tr("Transactions"));
         mTransactionsView->setModels(&mTransactionProxyModel, &mTransactionModel);
         mTransactionsView->sortByColumn(1, Qt::DescendingOrder);
@@ -157,6 +160,11 @@ namespace Evernus
     void MarketOrderViewWithTransactions::executeFPC()
     {
         mOrderView->executeFPC();
+    }
+
+    void MarketOrderViewWithTransactions::updateCharacters()
+    {
+        mTransactionsView->updateCharacters();
     }
 
     void MarketOrderViewWithTransactions::selectOrder(const QItemSelection &selected)

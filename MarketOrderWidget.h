@@ -73,6 +73,7 @@ namespace Evernus
 
     public slots:
         void updateData();
+        void updateCharacters();
 
     private slots:
         void changeGrouping();
