@@ -59,6 +59,8 @@ namespace Evernus
         const CharacterRepository &mCharacterRepository;
 
         QAction *mCopySuggestedPriceAct = nullptr;
+        QAction *mAddItemCostAct = nullptr;
+        QAction *mAddItemCostForAct = nullptr;
         QMenu *mCharsMenu = nullptr;
 
         QAbstractProxyModel *mProxy = nullptr;

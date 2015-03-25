@@ -107,6 +107,8 @@ namespace Evernus
 
             mCopySuggestedPriceAct->setText(getDefaultCopySuggestedPriceText());
             mCopySuggestedPriceAct->setEnabled(false);
+            mAddItemCostAct->setEnabled(false);
+            mAddItemCostForAct->setEnabled(false);
         }
         else
         {
@@ -118,6 +120,8 @@ namespace Evernus
             mCopySuggestedPriceAct->setText(tr("Copy suggested price: %1").arg(TextUtils::currencyToString(price, locale())));
 
             mCopySuggestedPriceAct->setEnabled(true);
+            mAddItemCostAct->setEnabled(true);
+            mAddItemCostForAct->setEnabled(true);
         }
     }
 
@@ -155,20 +159,22 @@ namespace Evernus
 
         addAction(separator);
 
-        auto addCostAct = new QAction{tr("Add to item costs"), this};
-        connect(addCostAct, &QAction::triggered, this, [=] {
+        mAddItemCostAct = new QAction{tr("Add to item costs"), this};
+        mAddItemCostAct->setEnabled(false);
+        connect(mAddItemCostAct, &QAction::triggered, this, [=] {
             addItemCost(mCharacterId);
         });
 
-        addAction(addCostAct);
+        addAction(mAddItemCostAct);
 
-        addCostAct = new QAction{tr("Add to item costs for:"), this};
+        mAddItemCostForAct = new QAction{tr("Add to item costs for:"), this};
+        mAddItemCostForAct->setEnabled(false);
 
         mCharsMenu = new QMenu{this};
         updateCharacters();
 
-        addCostAct->setMenu(mCharsMenu);
-        addAction(addCostAct);
+        mAddItemCostForAct->setMenu(mCharsMenu);
+        addAction(mAddItemCostForAct);
 
         mCopySuggestedPriceAct = new QAction{getDefaultCopySuggestedPriceText(), this};
         mCopySuggestedPriceAct->setEnabled(false);

@@ -5939,22 +5939,22 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>Evernus::WalletTransactionView</name>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="118"/>
+        <location filename="../WalletTransactionView.cpp" line="120"/>
         <source>Copy suggested price: %1</source>
         <translation>Skopiuj sugerowaną cenę: %1</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="158"/>
+        <location filename="../WalletTransactionView.cpp" line="162"/>
         <source>Add to item costs</source>
         <translation>Dodaj do własnych kosztów</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="165"/>
+        <location filename="../WalletTransactionView.cpp" line="170"/>
         <source>Add to item costs for:</source>
         <translation>Dodaj do własnych kosztów dla:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="213"/>
+        <location filename="../WalletTransactionView.cpp" line="219"/>
         <source>Copy suggested price</source>
         <translation>Skopiuj sugerowaną cenę</translation>
     </message>
