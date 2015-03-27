@@ -199,6 +199,7 @@ namespace Evernus
             overbidObj.setPrototype(ScriptUtils::wrapExternalOrder(mEngine, *overbidOrder));
             overbidObj.setProperty("diff", diff);
             overbidObj.setProperty("diffRatio", diff / order.getPrice());
+            overbidObj.setProperty("normalizedDiff", (type == MarketOrderModel::Type::Buy) ? (-diff) : (diff));
 
             scriptOrder.setProperty("overbid", overbidObj);
         }
