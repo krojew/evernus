@@ -61,6 +61,11 @@ namespace Evernus
             orderObject.setProperty("range", order.getRange());
             orderObject.setProperty("updateTime", engine.newDate(order.getUpdateTime()));
             orderObject.setProperty("price", order.getPrice());
+            orderObject.setProperty("volumeEntered", order.getVolumeEntered());
+            orderObject.setProperty("volumeRemaining", order.getVolumeRemaining());
+            orderObject.setProperty("minVolume", order.getMinVolume());
+            orderObject.setProperty("issued", engine.newDate(order.getIssued()));
+            orderObject.setProperty("duration", engine.newDate(order.getDuration()));
 
             return orderObject;
         }
