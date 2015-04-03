@@ -52,7 +52,7 @@ elseif(WIN32)
     set(ADDITIONAL_LIBS Qt5::WinExtras)
 endif()
 
-set(TRANSLATIONS lang/lang_pl_PL.ts)
+set(TRANSLATIONS lang/lang_pl_PL.ts lang/lang_de_DE.ts)
 set_source_files_properties(${TRANSLATIONS} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/trans")
 
 add_definitions(-DQXT_STATIC)

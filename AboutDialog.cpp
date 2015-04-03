@@ -37,6 +37,7 @@ namespace Evernus
         auto aboutLabel = new QLabel{tr(
             "<strong>%1</strong><br />%2<br /><br />"
             "Created by <strong><a href='http://evewho.com/pilot/Pete+Butcher'>Pete Butcher</a></strong><br />"
+            "German translation by <strong><a href='http://evewho.com/pilot/Hel+O%27Ween'>Hel O'Ween</a></strong><br />"
             "All donations are welcome :)<br /><br />"
             "<a href='%3'>%3</a><br />"
             "Twitter: <a href='http://twitter.com/evernusproject'>@evernusproject</a><br />"

@@ -43,6 +43,7 @@
         <file>images/world.png</file>
         <file>images/wrench.png</file>
 
+        <file>images/flags/de_DE.png</file>
         <file>images/flags/en_US.png</file>
         <file>images/flags/pl_PL.png</file>
 
