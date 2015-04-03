@@ -1611,7 +1611,13 @@ namespace Evernus
 
         mTranslator.load(locale, "lang", "_", applicationDirPath() + UISettings::translationPath);
         mQtTranslator.load(locale, "qt", "_", applicationDirPath() + UISettings::translationPath);
+        mQtBaseTranslator.load(locale, "qtbase", "_", applicationDirPath() + UISettings::translationPath);
+        mQtScriptTranslator.load(locale, "qtscript", "_", applicationDirPath() + UISettings::translationPath);
+        mQtXmlPatternsTranslator.load(locale, "qtxmlpatterns", "_", applicationDirPath() + UISettings::translationPath);
 
+        installTranslator(&mQtXmlPatternsTranslator);
+        installTranslator(&mQtScriptTranslator);
+        installTranslator(&mQtBaseTranslator);
         installTranslator(&mQtTranslator);
         installTranslator(&mTranslator);
     }

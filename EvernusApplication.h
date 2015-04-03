@@ -314,7 +314,7 @@ namespace Evernus
         mCharacterItemCostCache;
         mutable std::unordered_map<EveType::IdType, ItemCostRepository::EntityPtr> mTypeItemCostCache;
 
-        QTranslator mTranslator, mQtTranslator;
+        QTranslator mTranslator, mQtTranslator, mQtBaseTranslator, mQtScriptTranslator, mQtXmlPatternsTranslator;
 
         QxtHttpSessionManager mIGBSessionManager, mHttpSessionManager;
         QxtSmtp mSmtp;
