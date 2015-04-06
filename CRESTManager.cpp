@@ -287,6 +287,7 @@ namespace Evernus
                             if (error == "invalid_token" || error == "invalid_client")
                             {
                                 mRefreshToken.clear();
+                                mFetchingToken = false;
                                 fetchToken();
                             }
                             else
