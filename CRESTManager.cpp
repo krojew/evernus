@@ -104,6 +104,12 @@ namespace Evernus
                 return;
             }
 
+            if (!state->mError.isEmpty())
+            {
+                callback(std::vector<ExternalOrder>{}, state->mError);
+                return;
+            }
+
             const auto items = data.object().value("items").toArray();
             state->mOrders.reserve(state->mOrders.size() + items.size());
 
