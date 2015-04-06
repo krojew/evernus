@@ -107,22 +107,19 @@ namespace Evernus
                        std::make_move_iterator(std::begin(orders)),
                        std::make_move_iterator(std::end(orders)));
 
-        if (mRequestCount == 0)
+        if (mRequestCount == 0 && !mPreparingRequests)
         {
-            if (!mPreparingRequests)
+            if (mAggregatedErrors.isEmpty())
             {
-                if (mAggregatedErrors.isEmpty())
-                {
-                    emit externalOrdersChanged(mResult);
-                }
-                else
-                {
-                    emit error(mAggregatedErrors.join("\n"));
-                    mAggregatedErrors.clear();
-                }
-
-                mResult.clear();
+                emit externalOrdersChanged(mResult);
             }
+            else
+            {
+                emit error(mAggregatedErrors.join("\n"));
+                mAggregatedErrors.clear();
+            }
+
+            mResult.clear();
         }
     }
 }
