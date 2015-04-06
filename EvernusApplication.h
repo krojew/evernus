@@ -375,5 +375,7 @@ namespace Evernus
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
         static QString getCharacterImportMessage(Character::IdType id);
+
+        static void setProxySettings();
     };
 }

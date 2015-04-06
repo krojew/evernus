@@ -19,6 +19,7 @@
 
 #include <QStandardPaths>
 #include <QSplashScreen>
+#include <QNetworkProxy>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QSettings>
@@ -28,6 +29,7 @@
 #include "ExternalOrderImporterNames.h"
 #include "LanguageSelectDialog.h"
 #include "UpdaterSettings.h"
+#include "NetworkSettings.h"
 #include "ImportSettings.h"
 #include "WalletSettings.h"
 #include "PriceSettings.h"
@@ -89,6 +91,8 @@ namespace Evernus
         {
             updateTranslator(lang);
         }
+
+        setProxySettings();
 
 #ifdef EVERNUS_DROPBOX_ENABLED
         if (settings.value(SyncSettings::enabledOnStartupKey, SyncSettings::enabledOnStartupDefault).toBool())
@@ -1386,6 +1390,8 @@ namespace Evernus
         QSettings settings;
         updateTranslator(settings.value(UISettings::languageKey).toString());
 
+        setProxySettings();
+
         mIGBSessionManager.shutdown();
         mIGBSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
 
@@ -2517,5 +2523,27 @@ namespace Evernus
     QString EvernusApplication::getCharacterImportMessage(Character::IdType id)
     {
         return tr("Fetching character %1...").arg(id);
+    }
+
+    void EvernusApplication::setProxySettings()
+    {
+        QSettings settings;
+        if (settings.value(NetworkSettings::useProxyKey, NetworkSettings::useProxyDefault).toBool())
+        {
+            SimpleCrypt crypt{NetworkSettings::cryptKey};
+
+            const auto proxyType = settings.value(NetworkSettings::proxyTypeKey).toInt();
+            const auto proxyHost = settings.value(NetworkSettings::proxyHostKey).toString();
+            const quint16 proxyPort = settings.value(NetworkSettings::proxyPortKey).toUInt();
+            const auto proxyUser = settings.value(NetworkSettings::proxyUserKey).toString();
+            const auto proxyPassword = crypt.decryptToString(settings.value(NetworkSettings::proxyPasswordKey).toString());
+
+            QNetworkProxy proxy{static_cast<QNetworkProxy::ProxyType>(proxyType), proxyHost, proxyPort, proxyUser, proxyPassword};
+            QNetworkProxy::setApplicationProxy(proxy);
+        }
+        else
+        {
+            QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
+        }
     }
 }

@@ -34,7 +34,7 @@ namespace Evernus
 {
     NetworkPreferencesWidget::NetworkPreferencesWidget(QWidget *parent)
         : QWidget(parent)
-        , mCrypt(Q_UINT64_C(0x468c4a0e33a6fe01))
+        , mCrypt{NetworkSettings::cryptKey}
     {
         QSettings settings;
 
@@ -173,15 +173,5 @@ namespace Evernus
         settings.setValue(NetworkSettings::providerHostKey, mProviderHostEdit->text());
 
         settings.setValue(CRESTSettings::maxThreadsKey, mCRESTThreadsEdit->value());
-
-        if (useProxy)
-        {
-            QNetworkProxy proxy{static_cast<QNetworkProxy::ProxyType>(proxyType), proxyHost, proxyPort, proxyUser, proxyPassword};
-            QNetworkProxy::setApplicationProxy(proxy);
-        }
-        else
-        {
-            QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
-        }
     }
 }

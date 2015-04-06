@@ -22,6 +22,8 @@ namespace Evernus
         const auto useCustomProviderDefault = false;
         const auto defaultAPIProvider = "https://api.eveonline.com";
 
+        const auto cryptKey = Q_UINT64_C(0x468c4a0e33a6fe01);
+
         const auto useProxyKey = "network/useProxy";
         const auto proxyTypeKey = "network/proxy/type";
         const auto proxyHostKey = "network/proxy/host";
