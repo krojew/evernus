@@ -89,16 +89,14 @@ namespace Evernus
 
         if (!errorText.isEmpty())
         {
+            mAggregatedErrors << errorText;
+
             if (mRequestCount == 0)
             {
                 mResult.clear();
                 emit error(mAggregatedErrors.join("\n"));
 
                 mAggregatedErrors.clear();
-            }
-            else
-            {
-                mAggregatedErrors << errorText;
             }
 
             return;

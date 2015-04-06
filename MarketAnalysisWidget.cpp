@@ -375,15 +375,13 @@ namespace Evernus
 
         if (!errorText.isEmpty())
         {
+            mAggregatedOrderErrors << errorText;
+
             if (mOrderRequestCount == 0)
             {
                 mOrders.clear();
                 mTaskManager.endTask(mOrderSubtask, mAggregatedOrderErrors.join("\n"));
                 mAggregatedOrderErrors.clear();
-            }
-            else
-            {
-                mAggregatedOrderErrors << errorText;
             }
 
             return;
