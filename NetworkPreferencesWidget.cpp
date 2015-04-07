@@ -34,7 +34,7 @@ namespace Evernus
 {
     NetworkPreferencesWidget::NetworkPreferencesWidget(QWidget *parent)
         : QWidget(parent)
-        , mCrypt{NetworkSettings::cryptKey}
+        , mCrypt(NetworkSettings::cryptKey)
     {
         QSettings settings;
 
