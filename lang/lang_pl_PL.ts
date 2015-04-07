@@ -176,6 +176,91 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <source>Setting up HTTP service...</source>
         <translation type="obsolete">Włączanie usługi HTTP...</translation>
     </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="54"/>
+        <source>Proxy</source>
+        <translation>Proxy</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="59"/>
+        <source>No proxy</source>
+        <translation>Brak proxy</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="62"/>
+        <source>Custom proxy</source>
+        <translation>Własne proxy</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="72"/>
+        <source>Type:</source>
+        <translation>Typ:</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
+        <source>SOCKS5</source>
+        <translation>SOCKS5</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
+        <source>HTTP</source>
+        <translation>HTTP</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="77"/>
+        <source>Host:</source>
+        <translation>Serwer:</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="80"/>
+        <source>Port:</source>
+        <translation>Port:</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="86"/>
+        <source>User:</source>
+        <translation>Użytkownik:</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="89"/>
+        <source>Password:</source>
+        <translation>Hasło:</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="92"/>
+        <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
+        <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="96"/>
+        <source>API provider</source>
+        <translation>Dostawca API</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="101"/>
+        <source>Use default provider</source>
+        <translation>Domyślny</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="106"/>
+        <source>Use custom provider</source>
+        <translation>Własny</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="113"/>
+        <source>CREST</source>
+        <translation>CREST</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="119"/>
+        <source>Max. threads:</source>
+        <translation>Maks. ilość wątków:</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="122"/>
+        <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
+        <translation>Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
+    </message>
 </context>
 <context>
     <name>Evernus::APIInterface</name>
@@ -217,12 +302,16 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Autor: &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Wszelkie podarunki są mile widziane:)&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../AboutDialog.cpp" line="37"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Created by &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;All donations are welcome :)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;Forum topic: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;</source>
-        <translation>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Autor: &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Wszelkie podarunki są mile widziane:)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;Forum: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;</translation>
+        <translation type="vanished">&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Autor: &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Wszelkie podarunki są mile widziane:)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;Forum: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../AboutDialog.cpp" line="53"/>
+        <location filename="../AboutDialog.cpp" line="37"/>
+        <source>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Created by &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;German translation by &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Hel+O%27Ween&apos;&gt;Hel O&apos;Ween&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;All donations are welcome :)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;Forum topic: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;</source>
+        <translation>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Autor: &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Niemieckie tłumaczenie: &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Hel+O%27Ween&apos;&gt;Hel O&apos;Ween&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Wszelkie podarunki są mile widziane:)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;Forum: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../AboutDialog.cpp" line="54"/>
         <source>About</source>
         <translation>O programie</translation>
     </message>
@@ -487,27 +576,27 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="233"/>
+        <location filename="../CRESTManager.cpp" line="239"/>
         <source>CREST Authentication</source>
         <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="389"/>
+        <location filename="../CRESTManager.cpp" line="396"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="299"/>
+        <location filename="../CRESTManager.cpp" line="306"/>
         <source>Empty access token!</source>
         <translation>Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="352"/>
+        <location filename="../CRESTManager.cpp" line="359"/>
         <source>CREST error</source>
         <translation>Błąd CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="352"/>
+        <location filename="../CRESTManager.cpp" line="359"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
@@ -1496,112 +1585,99 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::EvernusApplication</name>
     <message>
-        <location filename="../EvernusApplication.cpp" line="103"/>
-        <location filename="../EvernusApplication.cpp" line="190"/>
+        <location filename="../EvernusApplication.cpp" line="107"/>
+        <location filename="../EvernusApplication.cpp" line="194"/>
         <source>Loading...</source>
         <translation>Ładowanie...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="105"/>
+        <location filename="../EvernusApplication.cpp" line="109"/>
         <source>Creating databases...</source>
         <translation>Tworzenie baz danych...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="108"/>
+        <location filename="../EvernusApplication.cpp" line="112"/>
         <source>Creating schemas...</source>
         <translation>Tworzenie modelu danych...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="136"/>
+        <location filename="../EvernusApplication.cpp" line="140"/>
         <source>Precaching ref types...</source>
         <translation>Odczyt typów...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="139"/>
+        <location filename="../EvernusApplication.cpp" line="143"/>
         <source>Precaching timers...</source>
         <translation>Odczyt czasów...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="143"/>
+        <location filename="../EvernusApplication.cpp" line="147"/>
         <source>Precaching jump map...</source>
         <translation>Odczyt mapy skoków...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="146"/>
+        <location filename="../EvernusApplication.cpp" line="150"/>
         <source>Clearing old wallet entries...</source>
         <translation>Czyszczenie starych wpisów portfela...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="149"/>
+        <location filename="../EvernusApplication.cpp" line="153"/>
         <source>Clearing old market orders...</source>
         <translation>Czyszczenie starych zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="152"/>
+        <location filename="../EvernusApplication.cpp" line="156"/>
         <source>Setting up IGB service...</source>
         <translation>Włączanie usługi IGB...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="173"/>
+        <location filename="../EvernusApplication.cpp" line="177"/>
         <source>Setting up HTTP service...</source>
         <translation>Włączanie usługi HTTP...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="317"/>
-        <location filename="../EvernusApplication.cpp" line="363"/>
+        <location filename="../EvernusApplication.cpp" line="321"/>
+        <location filename="../EvernusApplication.cpp" line="367"/>
         <source>Unknown cache timer type: %1</source>
         <translation>Nieznany typ czasu cache: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="433"/>
+        <location filename="../EvernusApplication.cpp" line="437"/>
         <source>Unknown update timer type: %1</source>
         <translation>Nieznany typ czasu aktualizacji: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="748"/>
+        <location filename="../EvernusApplication.cpp" line="752"/>
         <source>Fetching characters...</source>
         <translation>Pobieranie postaci...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="761"/>
+        <location filename="../EvernusApplication.cpp" line="765"/>
         <source>Fetching characters for key %1...</source>
         <translation>Pobieranie postaci dla klucza %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="774"/>
-        <location filename="../EvernusApplication.cpp" line="780"/>
-        <location filename="../EvernusApplication.cpp" line="2209"/>
-        <location filename="../EvernusApplication.cpp" line="2247"/>
+        <location filename="../EvernusApplication.cpp" line="778"/>
+        <location filename="../EvernusApplication.cpp" line="784"/>
+        <location filename="../EvernusApplication.cpp" line="2215"/>
+        <location filename="../EvernusApplication.cpp" line="2253"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="774"/>
+        <location filename="../EvernusApplication.cpp" line="778"/>
         <source>An error occurred while updating character key information: %1. Data sync should work, but character tab will display incorrect information.</source>
         <translation>Wystąpił błąd aktualizacji informacji o kluczu postaci: %1 Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="780"/>
+        <location filename="../EvernusApplication.cpp" line="784"/>
         <source>An error occurred while updating character key information. Data sync should work, but character tab will display incorrect information.</source>
         <translation>Wystąpił błąd aktualizacji informacji o kluczu postaci Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="829"/>
+        <location filename="../EvernusApplication.cpp" line="833"/>
         <source>Fetching assets for character %1...</source>
         <translation>Pobieranie aktywów dla postaci: %1...</translation>
-    </message>
-    <message>
-        <location filename="../EvernusApplication.cpp" line="864"/>
-        <location filename="../EvernusApplication.cpp" line="924"/>
-        <location filename="../EvernusApplication.cpp" line="985"/>
-        <location filename="../EvernusApplication.cpp" line="1041"/>
-        <location filename="../EvernusApplication.cpp" line="1066"/>
-        <location filename="../EvernusApplication.cpp" line="1133"/>
-        <location filename="../EvernusApplication.cpp" line="1193"/>
-        <location filename="../EvernusApplication.cpp" line="1250"/>
-        <location filename="../EvernusApplication.cpp" line="1275"/>
-        <source>Key not found!</source>
-        <translation>Klucz nie znaleziony!</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="868"/>
@@ -1609,70 +1685,83 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <location filename="../EvernusApplication.cpp" line="989"/>
         <location filename="../EvernusApplication.cpp" line="1045"/>
         <location filename="../EvernusApplication.cpp" line="1070"/>
+        <location filename="../EvernusApplication.cpp" line="1137"/>
         <location filename="../EvernusApplication.cpp" line="1197"/>
         <location filename="../EvernusApplication.cpp" line="1254"/>
+        <location filename="../EvernusApplication.cpp" line="1279"/>
+        <source>Key not found!</source>
+        <translation>Klucz nie znaleziony!</translation>
+    </message>
+    <message>
+        <location filename="../EvernusApplication.cpp" line="872"/>
+        <location filename="../EvernusApplication.cpp" line="932"/>
+        <location filename="../EvernusApplication.cpp" line="993"/>
+        <location filename="../EvernusApplication.cpp" line="1049"/>
+        <location filename="../EvernusApplication.cpp" line="1074"/>
+        <location filename="../EvernusApplication.cpp" line="1201"/>
+        <location filename="../EvernusApplication.cpp" line="1258"/>
         <source>Character not found!</source>
         <translation>Postać nie znaleziona!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="876"/>
+        <location filename="../EvernusApplication.cpp" line="880"/>
         <source>Fetching contracts for character %1...</source>
         <translation>Pobieranie kontraktów dla postaci: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1498"/>
+        <location filename="../EvernusApplication.cpp" line="1504"/>
         <source>Synchronizing with LMeve...</source>
         <translation>Synchronizowanie z LMeve...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2445"/>
+        <location filename="../EvernusApplication.cpp" line="2451"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="936"/>
+        <location filename="../EvernusApplication.cpp" line="940"/>
         <source>Fetching wallet journal for character %1...</source>
         <translation>Pobieranie dziennika dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="945"/>
+        <location filename="../EvernusApplication.cpp" line="949"/>
         <source>Fetching wallet journal for character %1 (this may take a while)...</source>
         <translation>Pobieranie dziennika dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="997"/>
+        <location filename="../EvernusApplication.cpp" line="1001"/>
         <source>Fetching wallet transactions for character %1...</source>
         <translation>Pobieranie transakcji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1009"/>
+        <location filename="../EvernusApplication.cpp" line="1013"/>
         <source>Fetching wallet transactions for character %1 (this may take a while)...</source>
         <translation>Pobieranie transakcji dla postaci %1 (może zajać sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1053"/>
-        <location filename="../EvernusApplication.cpp" line="1078"/>
+        <location filename="../EvernusApplication.cpp" line="1057"/>
+        <location filename="../EvernusApplication.cpp" line="1082"/>
         <source>Fetching market orders for character %1...</source>
         <translation>Pobieranie zleceń dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1090"/>
+        <location filename="../EvernusApplication.cpp" line="1094"/>
         <source>Fetching corporation contracts for character %1...</source>
         <translation>Pobieranie kontraktów korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1205"/>
+        <location filename="../EvernusApplication.cpp" line="1209"/>
         <source>Fetching corporation wallet transactions for character %1...</source>
         <translation>Pobieranie transakcji korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1218"/>
+        <location filename="../EvernusApplication.cpp" line="1222"/>
         <source>Fetching corporation wallet transactions for character %1 (this may take a while)...</source>
         <translation>Pobieranie transakcji korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1262"/>
-        <location filename="../EvernusApplication.cpp" line="1283"/>
+        <location filename="../EvernusApplication.cpp" line="1266"/>
+        <location filename="../EvernusApplication.cpp" line="1287"/>
         <source>Fetching corporation market orders for character %1...</source>
         <translation>Pobieranie zleceń korporacji dla postaci %1...</translation>
     </message>
@@ -1693,48 +1782,48 @@ Czy chcesz kontynuować?
 Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialność za jakąkolwiek karę CPP może na Ciebie nałożyć, jeśli zmienią swoją politykę.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1359"/>
+        <location filename="../EvernusApplication.cpp" line="1363"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1591"/>
+        <location filename="../EvernusApplication.cpp" line="1597"/>
         <source>SMTP Error</source>
         <translation>Błąd SMTP</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1591"/>
-        <location filename="../EvernusApplication.cpp" line="1599"/>
+        <location filename="../EvernusApplication.cpp" line="1597"/>
+        <location filename="../EvernusApplication.cpp" line="1605"/>
         <source>Error sending email: %1</source>
         <translation>Błąd wysyłania maila: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1599"/>
+        <location filename="../EvernusApplication.cpp" line="1605"/>
         <source>Mail Error</source>
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1915"/>
+        <location filename="../EvernusApplication.cpp" line="1921"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1929"/>
+        <location filename="../EvernusApplication.cpp" line="1935"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1940"/>
+        <location filename="../EvernusApplication.cpp" line="1946"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2210"/>
+        <location filename="../EvernusApplication.cpp" line="2216"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2214"/>
+        <location filename="../EvernusApplication.cpp" line="2220"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1743,69 +1832,69 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2217"/>
+        <location filename="../EvernusApplication.cpp" line="2223"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2247"/>
+        <location filename="../EvernusApplication.cpp" line="2253"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1141"/>
+        <location filename="../EvernusApplication.cpp" line="1145"/>
         <source>Fetching corporation wallet journal for character %1...</source>
         <translation>Pobieranie dziennika korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1153"/>
+        <location filename="../EvernusApplication.cpp" line="1157"/>
         <source>Fetching corporation wallet journal for character %1 (this may take a while)...</source>
         <translation>Pobieranie dziennika korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1295"/>
+        <location filename="../EvernusApplication.cpp" line="1299"/>
         <source>Fetching conquerable stations...</source>
         <translation>Pobieranie stacji graczy...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1412"/>
+        <location filename="../EvernusApplication.cpp" line="1418"/>
         <source>Select Mentat directory</source>
         <translation>Wybierz katalog Mentat</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1422"/>
+        <location filename="../EvernusApplication.cpp" line="1428"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1422"/>
+        <location filename="../EvernusApplication.cpp" line="1428"/>
         <source>Error opening %1</source>
         <translation>Błąd otwierania %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1426"/>
+        <location filename="../EvernusApplication.cpp" line="1432"/>
         <source>Importing order history...</source>
         <translation>Importowanie historii zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1472"/>
+        <location filename="../EvernusApplication.cpp" line="1478"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importowanie historii zleceń: %1 przetworzonych</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1477"/>
+        <location filename="../EvernusApplication.cpp" line="1483"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2519"/>
+        <location filename="../EvernusApplication.cpp" line="2525"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1904"/>
+        <location filename="../EvernusApplication.cpp" line="1910"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>
@@ -2338,7 +2427,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Aktualne zlecenie:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="96"/>
+        <location filename="../IGBService.cpp" line="95"/>
         <source>Sell orders:</source>
         <translation>Zlecenia sprzedaży:</translation>
     </message>
@@ -2397,22 +2486,21 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Ulubione</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="83"/>
         <source>Trade Advisor</source>
-        <translation>Trade Advisor</translation>
+        <translation type="vanished">Trade Advisor</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="89"/>
+        <location filename="../IGBService.cpp" line="88"/>
         <source>Show Previous Entry</source>
         <translation>Poprzednia pozycja</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="90"/>
+        <location filename="../IGBService.cpp" line="89"/>
         <source>Show Next Entry</source>
         <translation>Następna pozycja</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="91"/>
+        <location filename="../IGBService.cpp" line="90"/>
         <source>Current entry:</source>
         <translation>Aktualna pozycja:</translation>
     </message>
@@ -2421,7 +2509,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Automatyczny import na końcu</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="97"/>
+        <location filename="../IGBService.cpp" line="96"/>
         <source>Buy orders:</source>
         <translation>Zlecenia kupna:</translation>
     </message>
@@ -2442,38 +2530,38 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Zatrzymaj na końcu</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="98"/>
+        <location filename="../IGBService.cpp" line="97"/>
         <source>Limit to current station, if available</source>
         <translation>Ogranicz do akutalnej stacji, jeśli dostępne</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="94"/>
+        <location filename="../IGBService.cpp" line="93"/>
         <source>Favorite items:</source>
         <translation>Ulubione przedmioty:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="104"/>
+        <location filename="../IGBService.cpp" line="103"/>
         <source>Please select a category from the menu.</source>
         <translation>Wybierz kategorię z menu.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="209"/>
-        <location filename="../IGBService.cpp" line="315"/>
+        <location filename="../IGBService.cpp" line="208"/>
+        <location filename="../IGBService.cpp" line="314"/>
         <source>Character not found!</source>
         <translation>Postać nie znaleziona!</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="463"/>
+        <location filename="../IGBService.cpp" line="456"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="463"/>
+        <location filename="../IGBService.cpp" line="456"/>
         <source>You have to open Evernus in EVE In-Game Browser first.</source>
         <translation>Najpierw musisz otworzyć Evernusa w przeglądarce w EVE.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="372"/>
+        <location filename="../IGBService.cpp" line="370"/>
         <source>Website trust is required. Please add it to Trusted Sites.</source>
         <translation>Wymagane jest zaufanie stronie. Dodaj stronę do zaufanych (Trusted Sites).</translation>
     </message>
@@ -3502,17 +3590,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="405"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="403"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="431"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="429"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi z historią...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="479"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="477"/>
         <source>- all -</source>
         <translation>- wszystkie -</translation>
     </message>
@@ -4698,89 +4786,72 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::NetworkPreferencesWidget</name>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="54"/>
         <source>Proxy</source>
-        <translation>Proxy</translation>
+        <translation type="vanished">Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="59"/>
         <source>No proxy</source>
-        <translation>Brak proxy</translation>
+        <translation type="vanished">Brak proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="62"/>
         <source>Custom proxy</source>
-        <translation>Własne proxy</translation>
+        <translation type="vanished">Własne proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="72"/>
         <source>Type:</source>
-        <translation>Typ:</translation>
+        <translation type="vanished">Typ:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
         <source>SOCKS5</source>
-        <translation>SOCKS5</translation>
+        <translation type="vanished">SOCKS5</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
         <source>HTTP</source>
-        <translation>HTTP</translation>
+        <translation type="vanished">HTTP</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="77"/>
         <source>Host:</source>
-        <translation>Serwer:</translation>
+        <translation type="vanished">Serwer:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="80"/>
         <source>Port:</source>
-        <translation>Port:</translation>
+        <translation type="vanished">Port:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="86"/>
         <source>User:</source>
-        <translation>Użytkownik:</translation>
+        <translation type="vanished">Użytkownik:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="89"/>
         <source>Password:</source>
-        <translation>Hasło:</translation>
+        <translation type="vanished">Hasło:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="92"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
-        <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
+        <translation type="vanished">Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="96"/>
         <source>API provider</source>
-        <translation>Dostawca API</translation>
+        <translation type="vanished">Dostawca API</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="101"/>
         <source>Use default provider</source>
-        <translation>Domyślny</translation>
+        <translation type="vanished">Domyślny</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="106"/>
         <source>Use custom provider</source>
-        <translation>Własny</translation>
+        <translation type="vanished">Własny</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="113"/>
         <source>CREST</source>
-        <translation>CREST</translation>
+        <translation type="vanished">CREST</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="119"/>
         <source>Max. threads:</source>
-        <translation>Maks. ilość wątków:</translation>
+        <translation type="vanished">Maks. ilość wątków:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="122"/>
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
-        <translation>Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
+        <translation type="vanished">Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
     </message>
 </context>
 <context>
