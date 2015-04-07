@@ -39,8 +39,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>DatabaseUtils</name>
     <message>
-        <location filename="../DatabaseUtils.cpp" line="40"/>
         <source>Error crating DB object!</source>
+        <translation type="vanished">Błąd tworzenia obiektu bazy danych!</translation>
+    </message>
+    <message>
+        <location filename="../DatabaseUtils.cpp" line="40"/>
+        <source>Error creating DB object!</source>
         <translation>Błąd tworzenia obiektu bazy danych!</translation>
     </message>
     <message>
@@ -177,89 +181,72 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="obsolete">Włączanie usługi HTTP...</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="54"/>
         <source>Proxy</source>
-        <translation>Proxy</translation>
+        <translation type="vanished">Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="59"/>
         <source>No proxy</source>
-        <translation>Brak proxy</translation>
+        <translation type="vanished">Brak proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="62"/>
         <source>Custom proxy</source>
-        <translation>Własne proxy</translation>
+        <translation type="vanished">Własne proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="72"/>
         <source>Type:</source>
-        <translation>Typ:</translation>
+        <translation type="vanished">Typ:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
         <source>SOCKS5</source>
-        <translation>SOCKS5</translation>
+        <translation type="vanished">SOCKS5</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
         <source>HTTP</source>
-        <translation>HTTP</translation>
+        <translation type="vanished">HTTP</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="77"/>
         <source>Host:</source>
-        <translation>Serwer:</translation>
+        <translation type="vanished">Serwer:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="80"/>
         <source>Port:</source>
-        <translation>Port:</translation>
+        <translation type="vanished">Port:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="86"/>
         <source>User:</source>
-        <translation>Użytkownik:</translation>
+        <translation type="vanished">Użytkownik:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="89"/>
         <source>Password:</source>
-        <translation>Hasło:</translation>
+        <translation type="vanished">Hasło:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="92"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
-        <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
+        <translation type="vanished">Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="96"/>
         <source>API provider</source>
-        <translation>Dostawca API</translation>
+        <translation type="vanished">Dostawca API</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="101"/>
         <source>Use default provider</source>
-        <translation>Domyślny</translation>
+        <translation type="vanished">Domyślny</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="106"/>
         <source>Use custom provider</source>
-        <translation>Własny</translation>
+        <translation type="vanished">Własny</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="113"/>
         <source>CREST</source>
-        <translation>CREST</translation>
+        <translation type="vanished">CREST</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="119"/>
         <source>Max. threads:</source>
-        <translation>Maks. ilość wątków:</translation>
+        <translation type="vanished">Maks. ilość wątków:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="122"/>
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
-        <translation>Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
+        <translation type="vanished">Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
     </message>
 </context>
 <context>
@@ -502,8 +489,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <location filename="../CRESTAuthWidget.cpp" line="98"/>
-        <source>The supplied code is invalid. Please make sure all character were copied or use internal browser authorization.</source>
+        <source>The supplied code is invalid. Please make sure all characters were copied or use internal browser authorization.</source>
         <translation>Wprowadzony kod jest nieprawidłowy. Upewnij się, że skopiowałeś wszystkie znaki, lub użyj wewnętrznej przeglądarki.</translation>
+    </message>
+    <message>
+        <source>The supplied code is invalid. Please make sure all character were copied or use internal browser authorization.</source>
+        <translation type="vanished">Wprowadzony kod jest nieprawidłowy. Upewnij się, że skopiowałeś wszystkie znaki, lub użyj wewnętrznej przeglądarki.</translation>
     </message>
 </context>
 <context>
@@ -1382,8 +1373,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="42"/>
-        <source>Make value snapshots form corporation data</source>
+        <source>Make value snapshots from corporation data</source>
         <translation>Zapisuj wartości do statystyk na bazie danych korporacji</translation>
+    </message>
+    <message>
+        <source>Make value snapshots form corporation data</source>
+        <translation type="vanished">Zapisuj wartości do statystyk na bazie danych korporacji</translation>
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="47"/>
@@ -4786,72 +4781,89 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::NetworkPreferencesWidget</name>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="54"/>
         <source>Proxy</source>
-        <translation type="vanished">Proxy</translation>
+        <translation>Proxy</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="59"/>
         <source>No proxy</source>
-        <translation type="vanished">Brak proxy</translation>
+        <translation>Brak proxy</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="62"/>
         <source>Custom proxy</source>
-        <translation type="vanished">Własne proxy</translation>
+        <translation>Własne proxy</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="72"/>
         <source>Type:</source>
-        <translation type="vanished">Typ:</translation>
+        <translation>Typ:</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
         <source>SOCKS5</source>
-        <translation type="vanished">SOCKS5</translation>
+        <translation>SOCKS5</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
         <source>HTTP</source>
-        <translation type="vanished">HTTP</translation>
+        <translation>HTTP</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="77"/>
         <source>Host:</source>
-        <translation type="vanished">Serwer:</translation>
+        <translation>Serwer:</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="80"/>
         <source>Port:</source>
-        <translation type="vanished">Port:</translation>
+        <translation>Port:</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="86"/>
         <source>User:</source>
-        <translation type="vanished">Użytkownik:</translation>
+        <translation>Użytkownik:</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="89"/>
         <source>Password:</source>
-        <translation type="vanished">Hasło:</translation>
+        <translation>Hasło:</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="92"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
-        <translation type="vanished">Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
+        <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="96"/>
         <source>API provider</source>
-        <translation type="vanished">Dostawca API</translation>
+        <translation>Dostawca API</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="101"/>
         <source>Use default provider</source>
-        <translation type="vanished">Domyślny</translation>
+        <translation>Domyślny</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="106"/>
         <source>Use custom provider</source>
-        <translation type="vanished">Własny</translation>
+        <translation>Własny</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="113"/>
         <source>CREST</source>
-        <translation type="vanished">CREST</translation>
+        <translation>CREST</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="119"/>
         <source>Max. threads:</source>
-        <translation type="vanished">Maks. ilość wątków:</translation>
+        <translation>Maks. ilość wątków:</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="122"/>
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
-        <translation type="vanished">Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
+        <translation>Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
     </message>
 </context>
 <context>
@@ -4890,8 +4902,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Ścieżka logów handlu</translation>
     </message>
     <message>
-        <location filename="../PathPreferencesWidget.cpp" line="44"/>
         <source>You can specify custom market logs path or leave empty to use the default one. Custom path is required on *nix systems.</source>
+        <translation type="vanished">Możesz ustawić własną ścieżkę do logów handlu, lub zostawić puste, aby użyć domyślnej. Własna ścieżka jest wymagana w systemach *nix.</translation>
+    </message>
+    <message>
+        <location filename="../PathPreferencesWidget.cpp" line="44"/>
+        <source>You can specify custom market logs path or leave it empty to use the default one. Custom path is required on *nix systems.</source>
         <translation>Możesz ustawić własną ścieżkę do logów handlu, lub zostawić puste, aby użyć domyślnej. Własna ścieżka jest wymagana w systemach *nix.</translation>
     </message>
     <message>
@@ -5162,8 +5178,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="156"/>
-        <source>Shourtcut:</source>
+        <source>Shortcut:</source>
         <translation>Skrót klawiszowy:</translation>
+    </message>
+    <message>
+        <source>Shourtcut:</source>
+        <translation type="vanished">Skrót klawiszowy:</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="162"/>

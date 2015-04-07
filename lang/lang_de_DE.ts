@@ -12,9 +12,13 @@
 <context>
     <name>DatabaseUtils</name>
     <message>
-        <location filename="../DatabaseUtils.cpp" line="40"/>
         <source>Error crating DB object!</source>
         <translatorcomment>#TYPO# There&apos;s a spelling error in the original text.</translatorcomment>
+        <translation type="vanished">Fehler beim Erstellen des DB Objekts!</translation>
+    </message>
+    <message>
+        <location filename="../DatabaseUtils.cpp" line="40"/>
+        <source>Error creating DB object!</source>
         <translation>Fehler beim Erstellen des DB Objekts!</translation>
     </message>
     <message>
@@ -31,89 +35,72 @@
 <context>
     <name>Evernus</name>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="54"/>
         <source>Proxy</source>
-        <translation type="unfinished">Proxy</translation>
+        <translation type="obsolete">Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="59"/>
         <source>No proxy</source>
-        <translation type="unfinished">Kein Proxy</translation>
+        <translation type="obsolete">Kein Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="62"/>
         <source>Custom proxy</source>
-        <translation type="unfinished">Benutzerdefinierter Proxy</translation>
+        <translation type="obsolete">Benutzerdefinierter Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="72"/>
         <source>Type:</source>
-        <translation type="unfinished">Typ:</translation>
+        <translation type="obsolete">Typ:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
         <source>SOCKS5</source>
-        <translation type="unfinished">SOCKS5</translation>
+        <translation type="obsolete">SOCKS5</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
         <source>HTTP</source>
-        <translation type="unfinished">HTTP</translation>
+        <translation type="obsolete">HTTP</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="77"/>
         <source>Host:</source>
-        <translation type="unfinished">Host:</translation>
+        <translation type="obsolete">Host:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="80"/>
         <source>Port:</source>
-        <translation type="unfinished">Port:</translation>
+        <translation type="obsolete">Port:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="86"/>
         <source>User:</source>
-        <translation type="unfinished">Benutzer:</translation>
+        <translation type="obsolete">Benutzer:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="89"/>
         <source>Password:</source>
-        <translation type="unfinished">Paßwort:</translation>
+        <translation type="obsolete">Paßwort:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="92"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
-        <translation type="unfinished">Warnung: Paßwörter werden mit einer schwacher Verschlüsselung gespeichert - benutze keine sensiblen Paßwörter.</translation>
+        <translation type="obsolete">Warnung: Paßwörter werden mit einer schwacher Verschlüsselung gespeichert - benutze keine sensiblen Paßwörter.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="96"/>
         <source>API provider</source>
-        <translation type="unfinished">API Anbieter</translation>
+        <translation type="obsolete">API Anbieter</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="101"/>
         <source>Use default provider</source>
-        <translation type="unfinished">Standardanbieter benutzen</translation>
+        <translation type="obsolete">Standardanbieter benutzen</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="106"/>
         <source>Use custom provider</source>
-        <translation type="unfinished">Benutzerdefinierten Anbieter benutzen</translation>
+        <translation type="obsolete">Benutzerdefinierten Anbieter benutzen</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="113"/>
         <source>CREST</source>
-        <translation type="unfinished">CREST</translation>
+        <translation type="obsolete">CREST</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="119"/>
         <source>Max. threads:</source>
-        <translation type="unfinished">Max. Threads:</translation>
+        <translation type="obsolete">Max. Threads:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="122"/>
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
-        <translation type="unfinished">Dieser Wert beeinflußt die Geschwindigkeit des Datenimports via CREST. Ein höherer Wert erhöht die Geschwindigkeit, ist er jedoch zu hoch, kann die Geschwindigkeit sogar sinken oder Fehler verursachen.</translation>
+        <translation type="obsolete">Dieser Wert beeinflußt die Geschwindigkeit des Datenimports via CREST. Ein höherer Wert erhöht die Geschwindigkeit, ist er jedoch zu hoch, kann die Geschwindigkeit sogar sinken oder Fehler verursachen.</translation>
     </message>
 </context>
 <context>
@@ -158,7 +145,7 @@
     <message>
         <location filename="../AboutDialog.cpp" line="37"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Created by &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;German translation by &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Hel+O%27Ween&apos;&gt;Hel O&apos;Ween&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;All donations are welcome :)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;Forum topic: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Erstellt von &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Deutsch von: &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Hel+O%27Ween&apos;&gt;Hel O&apos;Ween&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Jede Spende ist willkommen :)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;Forumsbeitrag: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../AboutDialog.cpp" line="54"/>
@@ -341,9 +328,13 @@
     </message>
     <message>
         <location filename="../CRESTAuthWidget.cpp" line="98"/>
+        <source>The supplied code is invalid. Please make sure all characters were copied or use internal browser authorization.</source>
+        <translation>Der angegeben Code ist ungültig. Bitte stelle sicher das alle Zeichen kopiert wurden oder verwende die interne Browseranmeldung.</translation>
+    </message>
+    <message>
         <source>The supplied code is invalid. Please make sure all character were copied or use internal browser authorization.</source>
         <translatorcomment>#TYPO#  There&apos;s an &quot;s&quot; missing at the end of &quot;character(s)&quot;</translatorcomment>
-        <translation>Der angegeben Code ist ungültig. Bitte stelle sicher das alle Zeichen kopiert wurden oder verwende die interne Browseranmeldung.</translation>
+        <translation type="vanished">Der angegeben Code ist ungültig. Bitte stelle sicher das alle Zeichen kopiert wurden oder verwende die interne Browseranmeldung.</translation>
     </message>
 </context>
 <context>
@@ -1161,9 +1152,13 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="42"/>
+        <source>Make value snapshots from corporation data</source>
+        <translation>Erstelle Wertemomentaufnahme anhand Corporation Daten</translation>
+    </message>
+    <message>
         <source>Make value snapshots form corporation data</source>
         <translatorcomment>#TYPO# &quot;form&quot; -&gt; &quot;from&quot;</translatorcomment>
-        <translation>Erstelle Wertemomentaufnahme anhand Corporation Daten</translation>
+        <translation type="vanished">Erstelle Wertemomentaufnahme anhand Corporation Daten</translation>
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="47"/>
@@ -4389,72 +4384,89 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::NetworkPreferencesWidget</name>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="54"/>
         <source>Proxy</source>
-        <translation type="vanished">Proxy</translation>
+        <translation>Proxy</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="59"/>
         <source>No proxy</source>
-        <translation type="vanished">Kein Proxy</translation>
+        <translation>Kein Proxy</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="62"/>
         <source>Custom proxy</source>
-        <translation type="vanished">Benutzerdefinierter Proxy</translation>
+        <translation>Benutzerdefinierter Proxy</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="72"/>
         <source>Type:</source>
-        <translation type="vanished">Typ:</translation>
+        <translation>Typ:</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
         <source>SOCKS5</source>
-        <translation type="vanished">SOCKS5</translation>
+        <translation>SOCKS5</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
         <source>HTTP</source>
-        <translation type="vanished">HTTP</translation>
+        <translation>HTTP</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="77"/>
         <source>Host:</source>
-        <translation type="vanished">Host:</translation>
+        <translation>Host:</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="80"/>
         <source>Port:</source>
-        <translation type="vanished">Port:</translation>
+        <translation>Port:</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="86"/>
         <source>User:</source>
-        <translation type="vanished">Benutzer:</translation>
+        <translation>Benutzer:</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="89"/>
         <source>Password:</source>
-        <translation type="vanished">Paßwort:</translation>
+        <translation>Paßwort:</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="92"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
-        <translation type="vanished">Warnung: Paßwörter werden mit einer schwacher Verschlüsselung gespeichert - benutze keine sensiblen Paßwörter.</translation>
+        <translation>Warnung: Paßwörter werden mit einer schwacher Verschlüsselung gespeichert - benutze keine sensiblen Paßwörter.</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="96"/>
         <source>API provider</source>
-        <translation type="vanished">API Anbieter</translation>
+        <translation>API Anbieter</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="101"/>
         <source>Use default provider</source>
-        <translation type="vanished">Standardanbieter benutzen</translation>
+        <translation>Standardanbieter benutzen</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="106"/>
         <source>Use custom provider</source>
-        <translation type="vanished">Benutzerdefinierten Anbieter benutzen</translation>
+        <translation>Benutzerdefinierten Anbieter benutzen</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="113"/>
         <source>CREST</source>
-        <translation type="vanished">CREST</translation>
+        <translation>CREST</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="119"/>
         <source>Max. threads:</source>
-        <translation type="vanished">Max. Threads:</translation>
+        <translation>Max. Threads:</translation>
     </message>
     <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="122"/>
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
-        <translation type="vanished">Dieser Wert beeinflußt die Geschwindigkeit des Datenimports via CREST. Ein höherer Wert erhöht die Geschwindigkeit, ist er jedoch zu hoch, kann die Geschwindigkeit sogar sinken oder Fehler verursachen.</translation>
+        <translation>Dieser Wert beeinflußt die Geschwindigkeit des Datenimports via CREST. Ein höherer Wert erhöht die Geschwindigkeit, ist er jedoch zu hoch, kann die Geschwindigkeit sogar sinken oder Fehler verursachen.</translation>
     </message>
 </context>
 <context>
@@ -4489,9 +4501,13 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation>Verzeichnis Markt Logs</translation>
     </message>
     <message>
-        <location filename="../PathPreferencesWidget.cpp" line="44"/>
         <source>You can specify custom market logs path or leave empty to use the default one. Custom path is required on *nix systems.</source>
         <translatorcomment>#TYPO# There&apos;s an &quot;a&quot; and &quot;it&quot; missing: You can specify *a* custom ... or leave *it* empty ...</translatorcomment>
+        <translation type="vanished">Du kannst ein benutzerdefiniertes Verzeichnis für die Markt Logs angeben (notwendig für *nix Systeme) oder das Standardverzeichnis verwenden.</translation>
+    </message>
+    <message>
+        <location filename="../PathPreferencesWidget.cpp" line="44"/>
+        <source>You can specify custom market logs path or leave it empty to use the default one. Custom path is required on *nix systems.</source>
         <translation>Du kannst ein benutzerdefiniertes Verzeichnis für die Markt Logs angeben (notwendig für *nix Systeme) oder das Standardverzeichnis verwenden.</translation>
     </message>
     <message>
@@ -4722,9 +4738,13 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="156"/>
+        <source>Shortcut:</source>
+        <translation>Schnellzugriff:</translation>
+    </message>
+    <message>
         <source>Shourtcut:</source>
         <translatorcomment>#TYPO#</translatorcomment>
-        <translation>Schnellzugriff:</translation>
+        <translation type="vanished">Schnellzugriff:</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="162"/>
