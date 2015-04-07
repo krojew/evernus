@@ -861,6 +861,7 @@ namespace Evernus
         mAggrLimitEdit = new QSpinBox{this};
         simgpleConfigLayout->addWidget(mAggrLimitEdit);
         mAggrLimitEdit->setValue(10);
+        mAggrLimitEdit->setMaximum(10000);
         mAggrLimitEdit->setSpecialValueText(tr("none"));
 
         mAggrIncludeActiveBtn = new QCheckBox{tr("Include active"), this};
