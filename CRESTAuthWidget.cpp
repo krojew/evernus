@@ -95,7 +95,7 @@ namespace Evernus
         {
             QMessageBox::warning(this,
                                  tr("CREST Authentication"),
-                                 tr("The supplied code is invalid. Please make sure all character were copied or use internal browser authorization."));
+                                 tr("The supplied code is invalid. Please make sure all characters were copied or use internal browser authorization."));
             return;
         }
 

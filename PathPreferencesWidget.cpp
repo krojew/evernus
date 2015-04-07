@@ -42,7 +42,7 @@ namespace Evernus
         auto marketLogGroupLayout = new QFormLayout{marketLogGroup};
 
         auto infoLabel = new QLabel{tr(
-            "You can specify custom market logs path or leave empty to use the default one. Custom path is required on *nix systems."), this};
+            "You can specify custom market logs path or leave it empty to use the default one. Custom path is required on *nix systems."), this};
         infoLabel->setWordWrap(true);
 
         marketLogGroupLayout->addRow(infoLabel);

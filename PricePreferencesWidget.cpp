@@ -153,7 +153,7 @@ namespace Evernus
         fpcSettingsLayout->addWidget(mFPCBtn);
         mFPCBtn->setChecked(settings.value(PriceSettings::fpcKey, PriceSettings::fpcDefault).toBool());
 
-        fpcSettingsLayout->addWidget(new QLabel{tr("Shourtcut:"), this}, 0, Qt::AlignBaseline | Qt::AlignRight);
+        fpcSettingsLayout->addWidget(new QLabel{tr("Shortcut:"), this}, 0, Qt::AlignBaseline | Qt::AlignRight);
 
         mFPCShortcutEdit = new QKeySequenceEdit{QKeySequence::fromString(
             settings.value(PriceSettings::fpcShourtcutKey).toString()), this};

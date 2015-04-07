@@ -37,7 +37,7 @@ namespace Evernus
         void createDb(QSqlDatabase &db, const QString &name)
         {
             if (!db.isValid())
-                throw std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error crating DB object!").toStdString()};
+                throw std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error creating DB object!").toStdString()};
 
             const auto dbPath = getDbPath();
 
