@@ -34,3 +34,4 @@ qrc_evernus.cpp
 trans/lang_*
 x64/*
 Version.h
+trans/*
