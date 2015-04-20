@@ -77,5 +77,6 @@ namespace Evernus
                           const ItemRepository &itemRepo) const;
         void migrateTo127(const MarketOrderRepository &characterOrderRepo,
                           const MarketOrderRepository &corporationOrderRepo) const;
+        void migrateTo130() const;
     };
 }

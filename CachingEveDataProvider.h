@@ -43,6 +43,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        static const QString systemDistanceCacheFileName;
+
         CachingEveDataProvider(const EveTypeRepository &eveTypeRepository,
                                const MetaGroupRepository &metaGroupRepository,
                                const ExternalOrderRepository &externalOrderRepository,
@@ -99,12 +101,13 @@ namespace Evernus
 
         std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const;
 
+        static QDir getCacheDir();
+
     private:
         typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
         typedef std::pair<EveType::IdType, uint> TypeRegionPair;
 
         static const QString nameCacheFileName;
-        static const QString systemDistanceCacheFileName;
 
         const EveTypeRepository &mEveTypeRepository;
         const MetaGroupRepository &mMetaGroupRepository;
@@ -172,6 +175,5 @@ namespace Evernus
         uint getDistance(uint startSystem, uint endSystem) const;
 
         static double getPackagedVolume(const EveType &type);
-        static QDir getCacheDir();
     };
 }

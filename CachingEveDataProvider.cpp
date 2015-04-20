@@ -873,23 +873,18 @@ namespace Evernus
         const auto &jumpMap = jIt->second;
 
         std::unordered_set<uint> visited;
-        std::queue<uint> candidates;
+        std::queue<std::pair<uint, uint>> candidates;
 
         visited.emplace(startSystem);
-        candidates.emplace(startSystem);
-
-        auto depth = 0u;
-        auto incrementNode = 0u, lastParentNode = startSystem;
+        candidates.emplace(std::make_pair(startSystem, 0u));
 
         while (!candidates.empty())
         {
             const auto current = candidates.front();
             candidates.pop();
 
-            if (current == incrementNode)
-                ++depth;
-
-            if (current == endSystem)
+            const auto depth = current.second;
+            if (current.first == endSystem)
             {
                 mSystemDistances[key] = depth;
                 mSystemDistances[qMakePair(endSystem, startSystem)] = depth;
@@ -897,27 +892,13 @@ namespace Evernus
                 return depth;
             }
 
-            const auto children = jumpMap.equal_range(current);
-
-            if (current == lastParentNode)
-            {
-                if (children.first == children.second)
-                {
-                    if (!candidates.empty())
-                        lastParentNode = candidates.front();
-                }
-                else
-                {
-                    lastParentNode = incrementNode = children.first->second;
-                }
-            }
-
+            const auto children = jumpMap.equal_range(current.first);
             for (auto it = children.first; it != children.second; ++it)
             {
                 if (visited.find(it->second) == std::end(visited))
                 {
                     visited.emplace(it->second);
-                    candidates.emplace(it->second);
+                    candidates.emplace(std::make_pair(it->second, depth + 1));
                 }
             }
         }

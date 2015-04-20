@@ -27,6 +27,7 @@
 #include "WalletJournalEntryRepository.h"
 #include "WalletTransactionRepository.h"
 #include "ExternalOrderRepository.h"
+#include "CachingEveDataProvider.h"
 #include "MarketOrderRepository.h"
 #include "UpdateTimerRepository.h"
 #include "CacheTimerRepository.h"
@@ -87,41 +88,46 @@ namespace Evernus
                     }
                 }
 
-                if (minorVersion < 27)
+                if (minorVersion < 30)
                 {
-                    if (minorVersion < 23)
+                    if (minorVersion < 27)
                     {
-                        if (minorVersion < 16)
+                        if (minorVersion < 23)
                         {
-                            if (minorVersion < 13)
+                            if (minorVersion < 16)
                             {
-                                if (minorVersion < 11)
+                                if (minorVersion < 13)
                                 {
-                                    if (minorVersion < 9)
+                                    if (minorVersion < 11)
                                     {
-                                        if (minorVersion < 8)
-                                            migrateTo18(externalOrderRepo);
+                                        if (minorVersion < 9)
+                                        {
+                                            if (minorVersion < 8)
+                                                migrateTo18(externalOrderRepo);
 
-                                        migrateTo19(characterRepo,
-                                                    walletJournalRepo,
-                                                    corpWalletJournalRepo,
-                                                    walletTransactionRepo,
-                                                    corpWalletTransactionRepo);
+                                            migrateTo19(characterRepo,
+                                                        walletJournalRepo,
+                                                        corpWalletJournalRepo,
+                                                        walletTransactionRepo,
+                                                        corpWalletTransactionRepo);
+                                        }
+
+                                        migrateTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
                                     }
 
-                                    migrateTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
+                                    migrateTo113();
                                 }
 
-                                migrateTo113();
+                                migrateTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
                             }
 
-                            migrateTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
+                            migrateTo123(externalOrderRepo, itemRepo);
                         }
 
-                        migrateTo123(externalOrderRepo, itemRepo);
+                        migrateTo127(characterOrderRepo, corporationOrderRepo);
                     }
 
-                    migrateTo127(characterOrderRepo, corporationOrderRepo);
+                    migrateTo130();
                 }
             }
         }
@@ -313,5 +319,10 @@ namespace Evernus
         const QString sql = "ALTER TABLE %1 ADD COLUMN notes TEXT NULL DEFAULT NULL";
         characterOrderRepo.exec(sql.arg(characterOrderRepo.getTableName()));
         corporationOrderRepo.exec(sql.arg(corporationOrderRepo.getTableName()));
+    }
+
+    void Updater::migrateTo130() const
+    {
+        QFile::remove(CachingEveDataProvider::getCacheDir().filePath(CachingEveDataProvider::systemDistanceCacheFileName));
     }
 }
