@@ -4868,7 +4868,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="129"/>
         <source>Max. requests per second:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mask. ilość zapytań na sekundę:</translation>
     </message>
 </context>
 <context>

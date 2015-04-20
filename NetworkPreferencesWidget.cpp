@@ -125,6 +125,11 @@ namespace Evernus
         crestGroupLayout->addRow(infoLabel);
         infoLabel->setWordWrap(true);
 
+        mCRESTRateLimitEdit = new QSpinBox{this};
+        crestGroupLayout->addRow(tr("Max. requests per second:"), mCRESTRateLimitEdit);
+        mCRESTRateLimitEdit->setRange(1, 10000);
+        mCRESTRateLimitEdit->setValue(settings.value(CRESTSettings::rateLimitKey, CRESTSettings::rateLimitDefault).toUInt());
+
         mainLayout->addStretch();
 
         if (useProxy)
@@ -173,5 +178,6 @@ namespace Evernus
         settings.setValue(NetworkSettings::providerHostKey, mProviderHostEdit->text());
 
         settings.setValue(CRESTSettings::maxThreadsKey, mCRESTThreadsEdit->value());
+        settings.setValue(CRESTSettings::rateLimitKey, mCRESTRateLimitEdit->value());
     }
 }

@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <stdexcept>
+#include <thread>
 
 #include <QCoreApplication>
 #include <QNetworkRequest>
@@ -23,6 +24,9 @@
 #include <QUrlQuery>
 #include <QSettings>
 #include <QDebug>
+#include <QTimer>
+
+#include "CRESTSettings.h"
 
 #include "CRESTInterface.h"
 
@@ -36,6 +40,15 @@ namespace Evernus
 
     const QString CRESTInterface::regionsUrlName = "regions";
     const QString CRESTInterface::itemTypesUrlName = "itemTypes";
+
+    RateLimiter CRESTInterface::mCRESTLimiter;
+
+    CRESTInterface::CRESTInterface(QObject *parent)
+        : QObject{parent}
+    {
+        QSettings settings;
+        mCRESTLimiter.setRate(settings.value(CRESTSettings::rateLimitKey, CRESTSettings::rateLimitDefault).toFloat());
+    }
 
     void CRESTInterface::fetchBuyMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const
     {
@@ -117,6 +130,11 @@ namespace Evernus
         };
 
         checkAuth(fetcher);
+    }
+
+    void CRESTInterface::setRateLimit(float rate)
+    {
+        mCRESTLimiter.setRate(rate);
     }
 
     void CRESTInterface::updateTokenAndContinue(QString token, const QDateTime &expiry)
@@ -275,38 +293,44 @@ namespace Evernus
     {
         qDebug() << "CREST request:" << url;
 
-        auto reply = mNetworkManager.get(prepareRequest(url, accept));
+        const auto wait = std::chrono::duration_cast<std::chrono::milliseconds>(mCRESTLimiter.acquire());
+        QTimer::singleShot(wait.count(), [=] {
+            auto reply = mNetworkManager.get(prepareRequest(url, accept));
 
-        connect(reply, &QNetworkReply::finished, this, [=] {
-            reply->deleteLater();
+            connect(reply, &QNetworkReply::finished, this, [=] {
+                reply->deleteLater();
 
-            const auto error = reply->error();
-            if (error != QNetworkReply::NoError)
-            {
-                if (error == QNetworkReply::AuthenticationRequiredError)
+                const auto error = reply->error();
+                if (error != QNetworkReply::NoError)
                 {
-                    // expired token?
-                    mAccessToken.clear();
-                    checkAuth([=](const QString &error) {
-                        if (error.isEmpty())
-                            asyncGet(url, accept, continuation);
-                        else
-                            continuation(QJsonDocument{}, error);
-                    });
+                    if (error == QNetworkReply::AuthenticationRequiredError)
+                    {
+                        // expired token?
+                        mAccessToken.clear();
+                        checkAuth([=](const QString &error) {
+                            if (error.isEmpty())
+                                asyncGet(url, accept, continuation);
+                            else
+                                continuation(QJsonDocument{}, error);
+                        });
+                        return;
+                    }
+
+                    continuation(QJsonDocument{}, reply->errorString());
                     return;
                 }
 
-                continuation(QJsonDocument{}, reply->errorString());
-                return;
-            }
-
-            continuation(QJsonDocument::fromJson(reply->readAll()), QString{});
+                continuation(QJsonDocument::fromJson(reply->readAll()), QString{});
+            });
         });
     }
 
     QJsonDocument CRESTInterface::syncGet(const QUrl &url, const QByteArray &accept) const
     {
         qDebug() << "CREST request:" << url;
+
+        const auto wait = mCRESTLimiter.acquire();
+        std::this_thread::sleep_for(wait);
 
         auto reply = mNetworkManager.get(prepareRequest(url, accept));
 

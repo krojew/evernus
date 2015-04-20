@@ -23,6 +23,7 @@
 #include <QHash>
 #include <QUrl>
 
+#include "RateLimiter.h"
 #include "EveType.h"
 
 class QJsonDocument;
@@ -37,12 +38,14 @@ namespace Evernus
     public:
         using Callback = std::function<void (QJsonDocument &&data, const QString &error)>;
 
-        using QObject::QObject;
+        explicit CRESTInterface(QObject *parent = nullptr);
         virtual ~CRESTInterface() = default;
 
         void fetchBuyMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
         void fetchSellMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
         void fetchMarketHistory(uint regionId, EveType::IdType typeId, const Callback &callback) const;
+
+        static void setRateLimit(float rate);
 
     public slots:
         void updateTokenAndContinue(QString token, const QDateTime &expiry);
@@ -58,6 +61,8 @@ namespace Evernus
 
         static const QString regionsUrlName;
         static const QString itemTypesUrlName;
+
+        static RateLimiter mCRESTLimiter;
 
         mutable QNetworkAccessManager mNetworkManager;
         mutable QHash<QString, QString> mEndpoints;

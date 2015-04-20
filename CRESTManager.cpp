@@ -340,6 +340,9 @@ namespace Evernus
         const auto maxInterfaces = settings.value(CRESTSettings::maxThreadsKey, CRESTSettings::maxThreadsDefault).toUInt();
         mInterfaces.reserve(maxInterfaces);
 
+        const auto rate = settings.value(CRESTSettings::rateLimitKey, CRESTSettings::rateLimitDefault).toFloat();
+        CRESTInterface::setRateLimit(rate);
+
         for (auto i = 0u; i < maxInterfaces; ++i)
         {
             mInterfaces.emplace_back(new CRESTInterface{this});

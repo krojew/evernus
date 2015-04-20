@@ -4471,7 +4471,7 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="129"/>
         <source>Max. requests per second:</source>
-        <translation type="unfinished"></translation>
+        <translation>Max. Anfragen pro Sekunde:</translation>
     </message>
 </context>
 <context>
