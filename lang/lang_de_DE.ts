@@ -353,13 +353,13 @@
 <context>
     <name>Evernus::CRESTInterface</name>
     <message>
-        <location filename="../CRESTInterface.cpp" line="202"/>
+        <location filename="../CRESTInterface.cpp" line="220"/>
         <source>Missing CREST regions url!</source>
         <translatorcomment>#NOTE# Not sure if it makes sense to translate &quot;regions&quot; here, as it&apos;s meant as part of an API method, not a descriptive term. Better use: &quot;Fehlende CREST Regions URL&quot;</translatorcomment>
         <translation>Fehlende CREST Regionen URL!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="246"/>
+        <location filename="../CRESTInterface.cpp" line="264"/>
         <source>Missing CREST item types url!</source>
         <translatorcomment>#NOTE# Same as with &quot;regions&quot;. I&apos;d rather go with &quot;Fehlende CREST Item Types URL&quot;</translatorcomment>
         <translation>Fehlende CREST Gegenstandsarten URL!</translation>
@@ -383,19 +383,19 @@
         <translation>Leeres Access Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="359"/>
+        <location filename="../CRESTManager.cpp" line="362"/>
         <source>CREST error</source>
         <translation>CREST Fehler</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="359"/>
+        <location filename="../CRESTManager.cpp" line="362"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
         <translation>Das Zertifikat der EVE Loginseite enthielt Fehler: %1. Bist du sicher das du weitermachen willst (dies kann die Sicherheit deines EVE Accounts gefährden)?</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="396"/>
+        <location filename="../CRESTManager.cpp" line="399"/>
         <source>Empty refresh token!</source>
         <translation>Leeres Refresh Token!</translation>
     </message>
@@ -4468,6 +4468,11 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
         <translation>Dieser Wert beeinflußt die Geschwindigkeit des Datenimports via CREST. Ein höherer Wert erhöht die Geschwindigkeit, ist er jedoch zu hoch, kann die Geschwindigkeit sogar sinken oder Fehler verursachen.</translation>
     </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="129"/>
+        <source>Max. requests per second:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Evernus::OrderPreferencesWidget</name>
@@ -5008,63 +5013,63 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation>Limit:</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="864"/>
+        <location filename="../StatisticsWidget.cpp" line="865"/>
         <source>none</source>
         <translation>keine</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="866"/>
+        <location filename="../StatisticsWidget.cpp" line="867"/>
         <source>Include active</source>
         <translation>Aktive einschließen</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="869"/>
+        <location filename="../StatisticsWidget.cpp" line="870"/>
         <source>Include expired/cancelled</source>
         <translation>Abgelaufene/Abgebrochene einschließen</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="872"/>
-        <location filename="../StatisticsWidget.cpp" line="903"/>
+        <location filename="../StatisticsWidget.cpp" line="873"/>
+        <location filename="../StatisticsWidget.cpp" line="904"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="879"/>
+        <location filename="../StatisticsWidget.cpp" line="880"/>
         <source>Script processing</source>
         <translation>Skriptverarbeitung</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="895"/>
+        <location filename="../StatisticsWidget.cpp" line="896"/>
         <source>see the online help to learn how to use script processing</source>
         <translation>Konsultiere die Onlinhilfe, um zu erfahren wie die Skriptverarbeitung verwendet werden kann</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="908"/>
+        <location filename="../StatisticsWidget.cpp" line="909"/>
         <source>Save script...</source>
         <translation>Skript speichern...</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="912"/>
+        <location filename="../StatisticsWidget.cpp" line="913"/>
         <source>Load script...</source>
         <translation>Skript laden...</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="916"/>
+        <location filename="../StatisticsWidget.cpp" line="917"/>
         <source>Delete script...</source>
         <translation>Skript löschen...</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="920"/>
+        <location filename="../StatisticsWidget.cpp" line="921"/>
         <source>Mode</source>
         <translation>Modus</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="925"/>
+        <location filename="../StatisticsWidget.cpp" line="926"/>
         <source>For each</source>
         <translation>Für alle</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="929"/>
+        <location filename="../StatisticsWidget.cpp" line="930"/>
         <source>Aggregate</source>
         <translation>Zusammenfassen</translation>
     </message>
@@ -5709,6 +5714,14 @@ Please click on &quot;Import all&quot; after the update.</source>
         <location filename="../MarketOrder.cpp" line="240"/>
         <source>Unknown</source>
         <translation>Unbekannt</translation>
+    </message>
+</context>
+<context>
+    <name>RateLimiter</name>
+    <message>
+        <location filename="../RateLimiter.cpp" line="37"/>
+        <source>Rate must be greater than 0!</source>
+        <translation>Frequenz muss größer als 0 sein!</translation>
     </message>
 </context>
 <context>

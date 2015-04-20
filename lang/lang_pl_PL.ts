@@ -533,12 +533,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Autoryzacja CREST nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="202"/>
+        <location filename="../CRESTInterface.cpp" line="220"/>
         <source>Missing CREST regions url!</source>
         <translation>Brak adresu regionów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="246"/>
+        <location filename="../CRESTInterface.cpp" line="264"/>
         <source>Missing CREST item types url!</source>
         <translation>Brak adresu typów w CREST!</translation>
     </message>
@@ -572,7 +572,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="396"/>
+        <location filename="../CRESTManager.cpp" line="399"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
@@ -582,12 +582,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation>Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="359"/>
+        <location filename="../CRESTManager.cpp" line="362"/>
         <source>CREST error</source>
         <translation>Błąd CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="359"/>
+        <location filename="../CRESTManager.cpp" line="362"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
@@ -4865,6 +4865,11 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
         <translation>Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
     </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="129"/>
+        <source>Max. requests per second:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Evernus::OrderPreferencesWidget</name>
@@ -5463,63 +5468,63 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Limit:</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="864"/>
+        <location filename="../StatisticsWidget.cpp" line="865"/>
         <source>none</source>
         <translation>brak</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="866"/>
+        <location filename="../StatisticsWidget.cpp" line="867"/>
         <source>Include active</source>
         <translation>Uwzględnij aktywne</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="869"/>
+        <location filename="../StatisticsWidget.cpp" line="870"/>
         <source>Include expired/cancelled</source>
         <translation>Uwzględnij wygasłe/anulowane</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="872"/>
-        <location filename="../StatisticsWidget.cpp" line="903"/>
+        <location filename="../StatisticsWidget.cpp" line="873"/>
+        <location filename="../StatisticsWidget.cpp" line="904"/>
         <source>Apply</source>
         <translation>Zastosuj</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="879"/>
+        <location filename="../StatisticsWidget.cpp" line="880"/>
         <source>Script processing</source>
         <translation>Przetwarzanie skryptem</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="895"/>
+        <location filename="../StatisticsWidget.cpp" line="896"/>
         <source>see the online help to learn how to use script processing</source>
         <translation>zajrzyj do pomocy online, aby się dowiedzieć jak używać skryptów</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="908"/>
+        <location filename="../StatisticsWidget.cpp" line="909"/>
         <source>Save script...</source>
         <translation>Zapisz skrypt...</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="912"/>
+        <location filename="../StatisticsWidget.cpp" line="913"/>
         <source>Load script...</source>
         <translation>Załaduj skrypt...</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="916"/>
+        <location filename="../StatisticsWidget.cpp" line="917"/>
         <source>Delete script...</source>
         <translation>Usuń skrypt...</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="920"/>
+        <location filename="../StatisticsWidget.cpp" line="921"/>
         <source>Mode</source>
         <translation>Tryb</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="925"/>
+        <location filename="../StatisticsWidget.cpp" line="926"/>
         <source>For each</source>
         <translation>Dla każdego</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="929"/>
+        <location filename="../StatisticsWidget.cpp" line="930"/>
         <source>Aggregate</source>
         <translation>Agregacja</translation>
     </message>
@@ -6229,6 +6234,18 @@ Czy chcesz ściągnąć ją teraz?</translation>
         <location filename="../MarketOrder.cpp" line="240"/>
         <source>Unknown</source>
         <translation>Nieznane</translation>
+    </message>
+</context>
+<context>
+    <name>RateLimiter</name>
+    <message>
+        <source>Rate must be grater than 0!</source>
+        <translation type="vanished">Częstotliwość musi być większa niż 0!</translation>
+    </message>
+    <message>
+        <location filename="../RateLimiter.cpp" line="37"/>
+        <source>Rate must be greater than 0!</source>
+        <translation>Częstotliwość musi być większa niż 0!</translation>
     </message>
 </context>
 <context>

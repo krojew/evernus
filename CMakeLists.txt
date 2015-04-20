@@ -629,6 +629,8 @@ add_executable(
     qxtwebevent.h
     qxtwebslotservice.cpp
     qxtwebslotservice.h
+    RateLimiter.cpp
+    RateLimiter.h
     RefType.cpp
     RefType.h
     RefTypeRepository.cpp
