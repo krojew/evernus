@@ -14,18 +14,22 @@
  */
 #pragma once
 
-#include <QNetworkCookieJar>
+#include <QObject>
+
+class QNetworkReply;
 
 namespace Evernus
 {
-    class PersistentCookieJar
-        : public QNetworkCookieJar
+    class ReplyTimeout
+        : public QObject
     {
-    public:
-        explicit PersistentCookieJar(QString configKey, QObject *parent = nullptr);
-        virtual ~PersistentCookieJar();
+        Q_OBJECT
 
-    private:
-        QString mConfigKey;
+    public:
+        ReplyTimeout(QNetworkReply &reply, int timeout);
+        virtual ~ReplyTimeout() = default;
+
+    private slots:
+        void timeout();
     };
 }

@@ -22,9 +22,7 @@
 #include <QDate>
 
 #include "MarketHistoryEntry.h"
-#include "CRESTAuthWidget.h"
 #include "CRESTInterface.h"
-#include "SimpleCrypt.h"
 #include "EveType.h"
 
 namespace Evernus
@@ -41,13 +39,9 @@ namespace Evernus
         template<class T>
         using Callback = std::function<void (T &&data, const QString &error)>;
 
-        CRESTManager(QByteArray clientId,
-                     QByteArray clientSecret,
-                     const EveDataProvider &dataProvider,
+        CRESTManager(const EveDataProvider &dataProvider,
                      QObject *parent = nullptr);
         virtual ~CRESTManager() = default;
-
-        virtual bool eventFilter(QObject *watched, QEvent *event) override;
 
         void fetchMarketOrders(uint regionId,
                                EveType::IdType typeId,
@@ -56,45 +50,14 @@ namespace Evernus
                                 EveType::IdType typeId,
                                 const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const;
 
-        bool hasClientCredentials() const;
-
-    signals:
-        void tokenError(const QString &error);
-        void acquiredToken(const QString &accessToken, const QDateTime &expiry);
-
     public slots:
-        void fetchToken();
-
         void handleNewPreferences();
 
-    private slots:
-        void handleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors);
-
     private:
-        static const QString loginUrl;
-        static const QString redirectDomain;
-
         const EveDataProvider &mDataProvider;
-
-        const QByteArray mClientId;
-        const QByteArray mClientSecret;
-
-        SimpleCrypt mCrypt;
 
         std::vector<CRESTInterface *> mInterfaces;
         mutable size_t mCurrentInterface = 0;
-
-        QString mRefreshToken;
-
-        QNetworkAccessManager mNetworkManager;
-
-        std::unique_ptr<CRESTAuthWidget> mAuthView;
-
-        bool mFetchingToken = false;
-
-        void processAuthorizationCode(const QByteArray &code);
-
-        QNetworkRequest getAuthRequest() const;
 
         const CRESTInterface &selectNextInterface() const;
     };

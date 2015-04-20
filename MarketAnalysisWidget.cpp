@@ -42,9 +42,7 @@
 
 namespace Evernus
 {
-    MarketAnalysisWidget::MarketAnalysisWidget(QByteArray crestClientId,
-                                               QByteArray crestClientSecret,
-                                               const EveDataProvider &dataProvider,
+    MarketAnalysisWidget::MarketAnalysisWidget(const EveDataProvider &dataProvider,
                                                TaskManager &taskManager,
                                                const MarketOrderRepository &orderRepo,
                                                const EveTypeRepository &typeRepo,
@@ -58,7 +56,7 @@ namespace Evernus
         , mTypeRepo(typeRepo)
         , mGroupRepo(groupRepo)
         , mCharacterRepo(characterRepo)
-        , mManager(std::move(crestClientId), std::move(crestClientSecret), mDataProvider)
+        , mManager(mDataProvider)
         , mTypeDataModel(mDataProvider)
         , mTypeViewProxy(TypeAggregatedMarketDataModel::getVolumeColumn(), TypeAggregatedMarketDataModel::getMarginColumn())
     {

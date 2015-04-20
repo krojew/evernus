@@ -12,18 +12,23 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include <QNetworkReply>
+#include <QTimer>
 
-#include <QtGlobal>
+#include "ReplyTimeout.h"
 
 namespace Evernus
 {
-    namespace CRESTSettings
+    ReplyTimeout::ReplyTimeout(QNetworkReply &reply, int timeout)
+        : QObject{&reply}
     {
-        const auto maxThreadsKey = "crest/maxThreads";
-        const auto rateLimitKey = "crest/rateLimit";
+        QTimer::singleShot(timeout, this, SLOT(timeout()));
+    }
 
-        const auto maxThreadsDefault = 20u;
-        const auto rateLimitDefault = 150u;
+    void ReplyTimeout::timeout()
+    {
+        auto reply = static_cast<QNetworkReply *>(parent());
+        if (reply->isRunning())
+            reply->close();
     }
 }

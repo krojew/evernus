@@ -47,13 +47,6 @@ namespace Evernus
 
         static void setRateLimit(float rate);
 
-    public slots:
-        void updateTokenAndContinue(QString token, const QDateTime &expiry);
-        void handleTokenError(const QString &error);
-
-    signals:
-        void tokenRequested() const;
-
     private:
         using RegionOrderUrlMap = QHash<uint, QUrl>;
 
@@ -63,14 +56,9 @@ namespace Evernus
         static const QString itemTypesUrlName;
 
         static RateLimiter mCRESTLimiter;
+        static QHash<QString, QString> mEndpoints;
 
         mutable QNetworkAccessManager mNetworkManager;
-        mutable QHash<QString, QString> mEndpoints;
-
-        mutable QString mAccessToken;
-        mutable QDateTime mExpiry;
-
-        mutable std::vector<std::function<void (const QString &)>> mPendingRequests;
 
         mutable RegionOrderUrlMap mRegionBuyOrdersUrls, mRegionSellOrdersUrls;
         mutable QHash<QPair<uint, QString>, std::vector<std::function<void (const QUrl &, const QString &)>>>
@@ -92,14 +80,7 @@ namespace Evernus
         void getOrders(QUrl regionUrl, EveType::IdType typeId, T &&continuation) const;
 
         template<class T>
-        void checkAuth(T &&continuation) const;
-
-        template<class T>
-        void fetchAccessToken(const T &continuation) const;
-
-        template<class T>
         void asyncGet(const QUrl &url, const QByteArray &accept, T &&continuation) const;
-        QJsonDocument syncGet(const QUrl &url, const QByteArray &accept) const;
 
         QNetworkRequest prepareRequest(const QUrl &url, const QByteArray &accept) const;
     };
