@@ -26,7 +26,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        ReplyTimeout(QNetworkReply &reply, int timeout);
+        ReplyTimeout(QNetworkReply &reply, int timeout = 30000);
         virtual ~ReplyTimeout() = default;
 
     private slots:

@@ -231,7 +231,7 @@ namespace Evernus
             auto reply = mNetworkManager.get(prepareRequest(url, accept));
             Q_ASSERT(reply != nullptr);
 
-            new ReplyTimeout{*reply, 30000};
+            new ReplyTimeout{*reply};
 
             connect(reply, &QNetworkReply::finished, this, [=] {
                 reply->deleteLater();
