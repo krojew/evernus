@@ -16,11 +16,13 @@
 
 #include <QStackedWidget>
 #include <QIntValidator>
+#include <QApplication>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QPushButton>
 #include <QTableView>
+#include <QClipboard>
 #include <QComboBox>
 #include <QCheckBox>
 #include <QLineEdit>
@@ -200,6 +202,12 @@ namespace Evernus
         mShowInEveAct->setEnabled(false);
         mTypeDataView->addAction(mShowInEveAct);
         connect(mShowInEveAct, &QAction::triggered, this, &MarketAnalysisWidget::showInEveForCurrent);
+
+        mCopyRowsAct = new QAction{tr("&Copy"), this};
+        mCopyRowsAct->setEnabled(false);
+        mCopyRowsAct->setShortcut(QKeySequence::Copy);
+        connect(mCopyRowsAct, &QAction::triggered, this, &MarketAnalysisWidget::copyRows);
+        mTypeDataView->addAction(mCopyRowsAct);
     }
 
     void MarketAnalysisWidget::setCharacter(Character::IdType id)
@@ -350,6 +358,7 @@ namespace Evernus
         const auto enabled = !selected.isEmpty();
         mShowDetailsAct->setEnabled(enabled);
         mShowInEveAct->setEnabled(enabled);
+        mCopyRowsAct->setEnabled(enabled);
     }
 
     void MarketAnalysisWidget::showDetailsForCurrent()
@@ -362,6 +371,30 @@ namespace Evernus
         const auto id = mTypeDataModel.getTypeId(mTypeViewProxy.mapToSource(mTypeDataView->currentIndex()));
         if (id != EveType::invalidId)
             emit showInEve(id);
+    }
+
+    void MarketAnalysisWidget::copyRows() const
+    {
+        const auto indexes = mTypeDataView->selectionModel()->selectedIndexes();
+        if (indexes.isEmpty())
+            return;
+
+        QString result;
+
+        auto prevRow = indexes.first().row();
+        for (const auto &index : indexes)
+        {
+            if (prevRow != index.row())
+            {
+                prevRow = index.row();
+                result.append('\n');
+            }
+
+            result.append(mTypeViewProxy.data(index).toString());
+            result.append('\t');
+        }
+
+        QApplication::clipboard()->setText(result);
     }
 
     void MarketAnalysisWidget::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)

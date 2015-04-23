@@ -83,6 +83,8 @@ namespace Evernus
         void showDetailsForCurrent();
         void showInEveForCurrent();
 
+        void copyRows() const;
+
     private:
         static const auto waitingLabelIndex = 0;
 
@@ -97,6 +99,7 @@ namespace Evernus
 
         QAction *mShowDetailsAct = nullptr;
         QAction *mShowInEveAct = nullptr;
+        QAction *mCopyRowsAct = nullptr;
 
         QCheckBox *mDontSaveBtn = nullptr;
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;
