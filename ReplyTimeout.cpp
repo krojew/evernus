@@ -28,7 +28,6 @@ namespace Evernus
     void ReplyTimeout::timeout()
     {
         auto reply = static_cast<QNetworkReply *>(parent());
-        if (reply->isRunning())
-            reply->close();
+        reply->abort();
     }
 }
