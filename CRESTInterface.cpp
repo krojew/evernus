@@ -24,6 +24,8 @@
 #include <QSettings>
 #include <QDebug>
 
+#include "ReplyTimeout.h"
+
 #include "CRESTInterface.h"
 
 namespace Evernus
@@ -276,6 +278,9 @@ namespace Evernus
         qDebug() << "CREST request:" << url;
 
         auto reply = mNetworkManager.get(prepareRequest(url, accept));
+        Q_ASSERT(reply != nullptr);
+
+        new ReplyTimeout{*reply};
 
         connect(reply, &QNetworkReply::finished, this, [=] {
             reply->deleteLater();
@@ -309,6 +314,9 @@ namespace Evernus
         qDebug() << "CREST request:" << url;
 
         auto reply = mNetworkManager.get(prepareRequest(url, accept));
+        Q_ASSERT(reply != nullptr);
+
+        new ReplyTimeout{*reply};
 
         QEventLoop loop;
         connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);

@@ -181,6 +181,7 @@ qt5_wrap_cpp(
     qxtwebcontent.h
     qxtwebslotservice.h
     RegionTypeSelectDialog.h
+    ReplyTimeout.h
     ScriptOrderProcessingModel.h
     SellMarketOrdersInfoWidget.h
     SoundPreferencesWidget.h
@@ -635,8 +636,10 @@ add_executable(
     RefTypeRepository.h
     RefTypeXmlReceiver.cpp
     RefTypeXmlReceiver.h
-    RegionTypeSelectDialog.h
     RegionTypeSelectDialog.cpp
+    RegionTypeSelectDialog.h
+    ReplyTimeout.cpp
+    ReplyTimeout.h
     Repository.h
     RepositoryProvider.h
     ScriptOrderProcessingModel.cpp
