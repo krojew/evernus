@@ -17,6 +17,7 @@
 #include <QSettings>
 
 #include "NetworkSettings.h"
+#include "ReplyTimeout.h"
 #include "CorpKey.h"
 #include "Key.h"
 
@@ -210,6 +211,9 @@ namespace Evernus
                           QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
 
         auto reply = mNetworkManager.get(request);
+
+        new ReplyTimeout{*reply};
+
         connect(reply, &QNetworkReply::finished, this, &APIInterface::processReply, Qt::QueuedConnection);
         connect(reply, &QNetworkReply::sslErrors, this, &APIInterface::processSslErrors);
 
