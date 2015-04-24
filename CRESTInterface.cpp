@@ -46,7 +46,7 @@ namespace Evernus
     QHash<QString, QString> CRESTInterface::mEndpoints;
 
     CRESTInterface::CRESTInterface(QObject *parent)
-        : QObject{parent}
+        : QObject(parent)
     {
         QSettings settings;
         mCRESTLimiter.setRate(settings.value(CRESTSettings::rateLimitKey, CRESTSettings::rateLimitDefault).toFloat());
