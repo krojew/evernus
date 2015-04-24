@@ -14,7 +14,9 @@
  */
 #pragma once
 
-#include <QObject>
+#include <chrono>
+
+#include <QTimer>
 
 class QNetworkReply;
 
@@ -26,10 +28,17 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        ReplyTimeout(QNetworkReply &reply, int timeout = 30000);
+        explicit ReplyTimeout(QNetworkReply &reply);
         virtual ~ReplyTimeout() = default;
 
     private slots:
-        void timeout();
+        void checkTimeout();
+
+    private:
+        // Single timer for all instances was introduced, because creating too many single shot timers reached resource
+        // limit on Windows.
+        static QTimer mTimer;
+
+        std::chrono::time_point<std::chrono::steady_clock> mStartTime = std::chrono::steady_clock::now();
     };
 }
