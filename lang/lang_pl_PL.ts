@@ -260,15 +260,14 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="69"/>
         <source>Error</source>
-        <translation type="unfinished">Błąd</translation>
+        <translation type="obsolete">Błąd</translation>
     </message>
 </context>
 <context>
     <name>Evernus::APIInterface</name>
     <message>
-        <location filename="../APIInterface.cpp" line="183"/>
+        <location filename="../APIInterface.cpp" line="184"/>
         <source>Encountered SSL errors:
 
 %1</source>
@@ -540,6 +539,11 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <source>CREST authorization failed.</source>
         <translation type="vanished">Autoryzacja CREST nie powiodła się.</translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="69"/>
+        <source>Error</source>
+        <translation>Błąd</translation>
     </message>
     <message>
         <location filename="../CRESTInterface.cpp" line="168"/>

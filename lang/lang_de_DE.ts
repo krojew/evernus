@@ -114,15 +114,14 @@
         <translation type="obsolete">Dieser Wert beeinflußt die Geschwindigkeit des Datenimports via CREST. Ein höherer Wert erhöht die Geschwindigkeit, ist er jedoch zu hoch, kann die Geschwindigkeit sogar sinken oder Fehler verursachen.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="69"/>
         <source>Error</source>
-        <translation type="unfinished">Fehler</translation>
+        <translation type="obsolete">Fehler</translation>
     </message>
 </context>
 <context>
     <name>Evernus::APIInterface</name>
     <message>
-        <location filename="../APIInterface.cpp" line="183"/>
+        <location filename="../APIInterface.cpp" line="184"/>
         <source>Encountered SSL errors:
 
 %1</source>
@@ -361,6 +360,11 @@
 </context>
 <context>
     <name>Evernus::CRESTInterface</name>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="69"/>
+        <source>Error</source>
+        <translation>Fehler</translation>
+    </message>
     <message>
         <location filename="../CRESTInterface.cpp" line="168"/>
         <source>Missing CREST regions url!</source>
