@@ -13,21 +13,30 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QNetworkReply>
-#include <QTimer>
 
 #include "ReplyTimeout.h"
 
 namespace Evernus
 {
-    ReplyTimeout::ReplyTimeout(QNetworkReply &reply, int timeout)
+    QTimer ReplyTimeout::mTimer;
+
+    ReplyTimeout::ReplyTimeout(QNetworkReply &reply)
         : QObject{&reply}
     {
-        QTimer::singleShot(timeout, this, SLOT(timeout()));
+        if (!mTimer.isActive())
+            mTimer.start(5000);
+
+        connect(&mTimer, &QTimer::timeout, this, &ReplyTimeout::checkTimeout);
     }
 
-    void ReplyTimeout::timeout()
+    void ReplyTimeout::checkTimeout()
     {
-        auto reply = static_cast<QNetworkReply *>(parent());
-        reply->abort();
+        auto delta = std::chrono::steady_clock::now() - mStartTime;
+        if (std::chrono::duration_cast<std::chrono::seconds>(delta).count() >= 30)
+        {
+            auto reply = static_cast<QNetworkReply *>(parent());
+            if (reply->isRunning())
+                reply->abort();
+        }
     }
 }
