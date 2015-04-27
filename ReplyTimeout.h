@@ -39,6 +39,6 @@ namespace Evernus
         // limit on Windows.
         static QTimer mTimer;
 
-        std::chrono::time_point<std::chrono::steady_clock> mStartTime = std::chrono::steady_clock::now();
+        std::chrono::system_clock::time_point mStartTime = std::chrono::steady_clock::now();
     };
 }
