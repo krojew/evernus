@@ -186,7 +186,7 @@ namespace Evernus
                              << Qt::DisplayRole);
     }
 
-    QVariant ContractModel::contractData(const QModelIndex &index, int role = Qt::DisplayRole) const
+    QVariant ContractModel::contractData(const QModelIndex &index, int role) const
     {
         const auto &contract = mContracts[index.row()];
 
