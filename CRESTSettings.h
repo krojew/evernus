@@ -25,6 +25,6 @@ namespace Evernus
         const auto maxThreadsKey = "crest/maxThreads";
 
         const auto cryptKey = Q_UINT64_C(0x5739578fe03aac1b);
-        const auto maxThreadsDefault = 20;
+        const auto maxThreadsDefault = 10;
     }
 }
