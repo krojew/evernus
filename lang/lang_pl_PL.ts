@@ -1010,82 +1010,82 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::ContractModel</name>
     <message>
-        <location filename="../ContractModel.cpp" line="256"/>
+        <location filename="../ContractModel.cpp" line="260"/>
         <source>Item Exchange</source>
         <translation>Wymiana</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="258"/>
+        <location filename="../ContractModel.cpp" line="262"/>
         <source>Courier</source>
         <translation>Kurier</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="260"/>
+        <location filename="../ContractModel.cpp" line="264"/>
         <source>Auction</source>
         <translation>Aukcja</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="266"/>
+        <location filename="../ContractModel.cpp" line="270"/>
         <source>Outstanding</source>
         <translation>Zaległy</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="268"/>
+        <location filename="../ContractModel.cpp" line="272"/>
         <source>Deleted</source>
         <translation>Usunięty</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="272"/>
+        <location filename="../ContractModel.cpp" line="276"/>
         <source>Failed</source>
         <translation>Nieukończony</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="274"/>
+        <location filename="../ContractModel.cpp" line="278"/>
         <source>Completed by Issuer</source>
         <translation>Ukończony przez wystawiającego</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="276"/>
+        <location filename="../ContractModel.cpp" line="280"/>
         <source>Completed by Contractor</source>
         <translation>Ukończony przez akceptującego</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="278"/>
+        <location filename="../ContractModel.cpp" line="282"/>
         <source>Cancelled</source>
         <translation>Anulowany</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="280"/>
+        <location filename="../ContractModel.cpp" line="284"/>
         <source>Rejected</source>
         <translation>Odrzucony</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="282"/>
+        <location filename="../ContractModel.cpp" line="286"/>
         <source>Reversed</source>
         <translation>Odbity</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="284"/>
+        <location filename="../ContractModel.cpp" line="288"/>
         <source>In Progress</source>
         <translation>W trakcie</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="290"/>
+        <location filename="../ContractModel.cpp" line="294"/>
         <source>yes</source>
         <translation>tak</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="290"/>
+        <location filename="../ContractModel.cpp" line="294"/>
         <source>no</source>
         <translation>nie</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="294"/>
+        <location filename="../ContractModel.cpp" line="298"/>
         <source>Private</source>
         <translation>Prywatny</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="296"/>
+        <location filename="../ContractModel.cpp" line="300"/>
         <source>Public</source>
         <translation>Publiczny</translation>
     </message>
@@ -1156,7 +1156,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="79"/>
-        <location filename="../ContractModel.cpp" line="270"/>
+        <location filename="../ContractModel.cpp" line="274"/>
         <source>Completed</source>
         <translation>Zakończony</translation>
     </message>

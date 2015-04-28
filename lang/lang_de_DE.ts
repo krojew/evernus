@@ -864,7 +864,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../ContractModel.cpp" line="79"/>
-        <location filename="../ContractModel.cpp" line="270"/>
+        <location filename="../ContractModel.cpp" line="274"/>
         <source>Completed</source>
         <translation>Abgeschlossen</translation>
     </message>
@@ -899,82 +899,82 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>Volumen</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="256"/>
+        <location filename="../ContractModel.cpp" line="260"/>
         <source>Item Exchange</source>
         <translation>Gegenstandstausch</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="258"/>
+        <location filename="../ContractModel.cpp" line="262"/>
         <source>Courier</source>
         <translation>Kurier</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="260"/>
+        <location filename="../ContractModel.cpp" line="264"/>
         <source>Auction</source>
         <translation>Auktion</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="266"/>
+        <location filename="../ContractModel.cpp" line="270"/>
         <source>Outstanding</source>
         <translation>Ausstehend</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="268"/>
+        <location filename="../ContractModel.cpp" line="272"/>
         <source>Deleted</source>
         <translation>Gelöscht</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="272"/>
+        <location filename="../ContractModel.cpp" line="276"/>
         <source>Failed</source>
         <translation>Fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="274"/>
+        <location filename="../ContractModel.cpp" line="278"/>
         <source>Completed by Issuer</source>
         <translation>Abgeschlossen durch Aussteller</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="276"/>
+        <location filename="../ContractModel.cpp" line="280"/>
         <source>Completed by Contractor</source>
         <translation>Abgeschlossen durch Auftragnehmer</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="278"/>
+        <location filename="../ContractModel.cpp" line="282"/>
         <source>Cancelled</source>
         <translation>Abgebrochen</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="280"/>
+        <location filename="../ContractModel.cpp" line="284"/>
         <source>Rejected</source>
         <translation>Abgelehnt</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="282"/>
+        <location filename="../ContractModel.cpp" line="286"/>
         <source>Reversed</source>
         <translation>Aufgehoben</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="284"/>
+        <location filename="../ContractModel.cpp" line="288"/>
         <source>In Progress</source>
         <translation>In Bearbeitung</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="290"/>
+        <location filename="../ContractModel.cpp" line="294"/>
         <source>yes</source>
         <translation>ja</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="290"/>
+        <location filename="../ContractModel.cpp" line="294"/>
         <source>no</source>
         <translation>nein</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="294"/>
+        <location filename="../ContractModel.cpp" line="298"/>
         <source>Private</source>
         <translation>Privat</translation>
     </message>
     <message>
-        <location filename="../ContractModel.cpp" line="296"/>
+        <location filename="../ContractModel.cpp" line="300"/>
         <source>Public</source>
         <translation>Öffentlich</translation>
     </message>

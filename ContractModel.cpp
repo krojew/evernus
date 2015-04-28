@@ -164,6 +164,10 @@ namespace Evernus
         mContracts = getContracts();
         for (const auto &contract : mContracts)
         {
+            const auto status = contract->getStatus();
+            if (status != Contract::Status::InProgress && status != Contract::Status::Outstanding)
+                continue;
+
             mTotalPrice += contract->getPrice();
             mTotalReward += contract->getReward();
             mTotalCollateral += contract->getCollateral();
