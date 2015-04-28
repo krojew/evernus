@@ -28,6 +28,7 @@
 #include "WalletTransactionRepository.h"
 #include "ExternalOrderRepository.h"
 #include "CachingEveDataProvider.h"
+#include "RegionTypeSelectDialog.h"
 #include "MarketOrderRepository.h"
 #include "UpdateTimerRepository.h"
 #include "CacheTimerRepository.h"
@@ -324,5 +325,8 @@ namespace Evernus
     void Updater::migrateTo130() const
     {
         QFile::remove(CachingEveDataProvider::getCacheDir().filePath(CachingEveDataProvider::systemDistanceCacheFileName));
+
+        QSettings settings;
+        settings.remove(RegionTypeSelectDialog::settingsTypesKey);
     }
 }

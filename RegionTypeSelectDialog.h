@@ -33,6 +33,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        static const QString settingsTypesKey;
+
         RegionTypeSelectDialog(const EveDataProvider &dataProvider,
                                const EveTypeRepository &typeRepo,
                                const MarketGroupRepository &groupRepo,
@@ -47,7 +49,6 @@ namespace Evernus
 
     private:
         static const QString settingsRegionsKey;
-        static const QString settingsTypesKey;
 
         QListWidget *mRegionList = nullptr;
         QTreeView *mTypeView = nullptr;
