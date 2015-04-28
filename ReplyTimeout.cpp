@@ -32,7 +32,7 @@ namespace Evernus
     void ReplyTimeout::checkTimeout()
     {
         auto delta = std::chrono::steady_clock::now() - mStartTime;
-        if (std::chrono::duration_cast<std::chrono::seconds>(delta).count() >= 30)
+        if (std::chrono::duration_cast<std::chrono::seconds>(delta).count() >= 120)
         {
             auto reply = static_cast<QNetworkReply *>(parent());
             if (reply->isRunning())
