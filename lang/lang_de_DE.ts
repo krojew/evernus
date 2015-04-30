@@ -4477,6 +4477,11 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
         <translation>Dieser Wert beeinflußt die Geschwindigkeit des Datenimports via CREST. Ein höherer Wert erhöht die Geschwindigkeit, ist er jedoch zu hoch, kann die Geschwindigkeit sogar sinken oder Fehler verursachen.</translation>
     </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="134"/>
+        <source>Max. reply time:</source>
+        <translation>Max. Antwortzeit:</translation>
+    </message>
 </context>
 <context>
     <name>Evernus::OrderPreferencesWidget</name>
@@ -5335,77 +5340,77 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="136"/>
-        <location filename="../Updater.cpp" line="244"/>
-        <location filename="../Updater.cpp" line="251"/>
-        <location filename="../Updater.cpp" line="263"/>
+        <location filename="../Updater.cpp" line="137"/>
+        <location filename="../Updater.cpp" line="245"/>
+        <location filename="../Updater.cpp" line="252"/>
+        <location filename="../Updater.cpp" line="264"/>
         <source>Update</source>
         <translation>Update</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="136"/>
+        <location filename="../Updater.cpp" line="137"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation>Während des Updateprozess ist ein Fehler aufgetreten.
 Ein Backup der Datenbank wurde als %1 gespeichert. Bitte schaue in der Onlinehilfe nach was in dieser Situation zu tun ist.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="176"/>
-        <location filename="../Updater.cpp" line="187"/>
-        <location filename="../Updater.cpp" line="197"/>
+        <location filename="../Updater.cpp" line="177"/>
+        <location filename="../Updater.cpp" line="188"/>
+        <location filename="../Updater.cpp" line="198"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="176"/>
+        <location filename="../Updater.cpp" line="177"/>
         <source>Error contacting update server: %1</source>
         <translation>Fehler beim Verbinden mit dem Updateserver: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="187"/>
+        <location filename="../Updater.cpp" line="188"/>
         <source>Error parsing response from the update server: %1</source>
         <translation>Fehler beim Auswerten der Antwort des Updateservers: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="197"/>
+        <location filename="../Updater.cpp" line="198"/>
         <source>Missing update version information!</source>
         <translation>Fehlende Update-Versionsinformationen!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="210"/>
+        <location filename="../Updater.cpp" line="211"/>
         <source>No update found</source>
         <translation>Kein Update vorhanden</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="210"/>
+        <location filename="../Updater.cpp" line="211"/>
         <source>Your current version is up-to-date.</source>
         <translation>Deine Version ist aktuell.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="216"/>
+        <location filename="../Updater.cpp" line="217"/>
         <source>Update found</source>
         <translation>Update gefunden</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="216"/>
+        <location filename="../Updater.cpp" line="217"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation>Eine neue Version ist verfügbar: %1
 Willst Du sie nun herunterladen?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="244"/>
+        <location filename="../Updater.cpp" line="245"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation>Diese Update erfordert den Reimport aller Daten. Bitte klicke nach dem Update auf &quot;Alle importieren&quot;.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="251"/>
+        <location filename="../Updater.cpp" line="252"/>
         <source>This update requires re-importing all item prices.</source>
         <translation>Diese Update erfordert den Reimport aller Artikelpreise.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="263"/>
+        <location filename="../Updater.cpp" line="264"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation>Diese Update erfordert den Reimport aller Corporation Transaktionen und Logbücher.</translation>
     </message>

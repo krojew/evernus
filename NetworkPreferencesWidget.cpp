@@ -125,6 +125,18 @@ namespace Evernus
         crestGroupLayout->addRow(infoLabel);
         infoLabel->setWordWrap(true);
 
+        auto miscGroup = new QGroupBox{this};
+        mainLayout->addWidget(miscGroup);
+
+        auto miscGroupLayout = new QFormLayout{miscGroup};
+
+        mMaxReplyTimeEdit = new QSpinBox{this};
+        miscGroupLayout->addRow(tr("Max. reply time:"), mMaxReplyTimeEdit);
+        mMaxReplyTimeEdit->setMaximum(1000);
+        mMaxReplyTimeEdit->setSuffix("s");
+        mMaxReplyTimeEdit->setValue(
+            settings.value(NetworkSettings::maxReplyTimeKey, NetworkSettings::maxReplyTimeDefault).toUInt());
+
         mainLayout->addStretch();
 
         if (useProxy)
@@ -173,5 +185,7 @@ namespace Evernus
         settings.setValue(NetworkSettings::providerHostKey, mProviderHostEdit->text());
 
         settings.setValue(CRESTSettings::maxThreadsKey, mCRESTThreadsEdit->value());
+
+        settings.setValue(NetworkSettings::maxReplyTimeKey, mMaxReplyTimeEdit->value());
     }
 }

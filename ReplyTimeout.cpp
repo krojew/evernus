@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QNetworkReply>
+#include <QSettings>
 
 #include "ReplyTimeout.h"
 
@@ -23,6 +24,10 @@ namespace Evernus
     ReplyTimeout::ReplyTimeout(QNetworkReply &reply)
         : QObject{&reply}
     {
+        QSettings settings;
+        mMaxTime = settings.value(NetworkSettings::maxReplyTimeKey, NetworkSettings::maxReplyTimeDefault)
+            .value<std::chrono::seconds::rep>();
+
         if (!mTimer.isActive())
             mTimer.start(5000);
 
@@ -32,7 +37,7 @@ namespace Evernus
     void ReplyTimeout::checkTimeout()
     {
         auto delta = std::chrono::steady_clock::now() - mStartTime;
-        if (std::chrono::duration_cast<std::chrono::seconds>(delta).count() >= 120)
+        if (std::chrono::duration_cast<std::chrono::seconds>(delta).count() >= mMaxTime)
         {
             auto reply = static_cast<QNetworkReply *>(parent());
             if (reply->isRunning())

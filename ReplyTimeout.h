@@ -18,6 +18,8 @@
 
 #include <QTimer>
 
+#include "NetworkSettings.h"
+
 class QNetworkReply;
 
 namespace Evernus
@@ -40,5 +42,6 @@ namespace Evernus
         static QTimer mTimer;
 
         std::chrono::steady_clock::time_point mStartTime = std::chrono::steady_clock::now();
+        std::chrono::seconds::rep mMaxTime = NetworkSettings::maxReplyTimeDefault;
     };
 }

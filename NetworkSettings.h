@@ -21,6 +21,7 @@ namespace Evernus
         const auto useProxyDefault = false;
         const auto useCustomProviderDefault = false;
         const auto defaultAPIProvider = "https://api.eveonline.com";
+        const auto maxReplyTimeDefault = 120;
 
         const auto cryptKey = Q_UINT64_C(0x468c4a0e33a6fe01);
 
@@ -32,5 +33,6 @@ namespace Evernus
         const auto proxyPasswordKey = "network/proxy/password";
         const auto useCustomProviderKey = "network/useCustomProvider";
         const auto providerHostKey = "network/provider/host";
+        const auto maxReplyTimeKey = "network/maxReplyTime";
     }
 }

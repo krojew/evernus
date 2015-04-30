@@ -4874,6 +4874,11 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
         <translation>Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
     </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="134"/>
+        <source>Max. reply time:</source>
+        <translation>Maks. czas odpowiedzi:</translation>
+    </message>
 </context>
 <context>
     <name>Evernus::OrderPreferencesWidget</name>
@@ -5802,14 +5807,14 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="176"/>
-        <location filename="../Updater.cpp" line="187"/>
-        <location filename="../Updater.cpp" line="197"/>
+        <location filename="../Updater.cpp" line="177"/>
+        <location filename="../Updater.cpp" line="188"/>
+        <location filename="../Updater.cpp" line="198"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="176"/>
+        <location filename="../Updater.cpp" line="177"/>
         <source>Error contacting update server: %1</source>
         <translation>Błąd odpytywania serwera akutalizacji: %1</translation>
     </message>
@@ -5818,10 +5823,10 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="136"/>
-        <location filename="../Updater.cpp" line="244"/>
-        <location filename="../Updater.cpp" line="251"/>
-        <location filename="../Updater.cpp" line="263"/>
+        <location filename="../Updater.cpp" line="137"/>
+        <location filename="../Updater.cpp" line="245"/>
+        <location filename="../Updater.cpp" line="252"/>
+        <location filename="../Updater.cpp" line="264"/>
         <source>Update</source>
         <translation>Aktualizacja</translation>
     </message>
@@ -5833,56 +5838,56 @@ Please click on &quot;Import all&quot; after the update.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="244"/>
+        <location filename="../Updater.cpp" line="245"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania wszystkich danych.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="251"/>
+        <location filename="../Updater.cpp" line="252"/>
         <source>This update requires re-importing all item prices.</source>
         <translation>Ta aktualizacja wymaga ponownego zaimportowania cen przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="263"/>
+        <location filename="../Updater.cpp" line="264"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania dziennika i transakcji korporacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="136"/>
+        <location filename="../Updater.cpp" line="137"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation>Wystąpił błąd podczas akutalizacji.
 Kopia zapasowa bazay danych została zapisana jako %1. Zajrzyj do pomocy online w celu uzyskania informacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="187"/>
+        <location filename="../Updater.cpp" line="188"/>
         <source>Error parsing response from the update server: %1</source>
         <translation>Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="197"/>
+        <location filename="../Updater.cpp" line="198"/>
         <source>Missing update version information!</source>
         <translation>Brak informacji o wersji!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="210"/>
+        <location filename="../Updater.cpp" line="211"/>
         <source>No update found</source>
         <translation>Brak aktualizacji</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="210"/>
+        <location filename="../Updater.cpp" line="211"/>
         <source>Your current version is up-to-date.</source>
         <translation>Twoja wersja jest najbardziej aktualna.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="216"/>
+        <location filename="../Updater.cpp" line="217"/>
         <source>Update found</source>
         <translation>Znaleziono aktualizację</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="216"/>
+        <location filename="../Updater.cpp" line="217"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation>Znaleziono nową wersję: %1
