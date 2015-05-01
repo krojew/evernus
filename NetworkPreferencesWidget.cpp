@@ -132,7 +132,7 @@ namespace Evernus
 
         mMaxReplyTimeEdit = new QSpinBox{this};
         miscGroupLayout->addRow(tr("Max. reply time:"), mMaxReplyTimeEdit);
-        mMaxReplyTimeEdit->setMaximum(1000);
+        mMaxReplyTimeEdit->setMaximum(10000);
         mMaxReplyTimeEdit->setSuffix("s");
         mMaxReplyTimeEdit->setValue(
             settings.value(NetworkSettings::maxReplyTimeKey, NetworkSettings::maxReplyTimeDefault).toUInt());
