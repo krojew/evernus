@@ -5581,11 +5581,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../SyncDialog.cpp" line="101"/>
         <location filename="../SyncDialog.cpp" line="162"/>
-        <location filename="../SyncDialog.cpp" line="200"/>
-        <location filename="../SyncDialog.cpp" line="253"/>
-        <location filename="../SyncDialog.cpp" line="269"/>
-        <location filename="../SyncDialog.cpp" line="291"/>
-        <location filename="../SyncDialog.cpp" line="299"/>
+        <location filename="../SyncDialog.cpp" line="191"/>
+        <location filename="../SyncDialog.cpp" line="213"/>
+        <location filename="../SyncDialog.cpp" line="266"/>
+        <location filename="../SyncDialog.cpp" line="282"/>
+        <location filename="../SyncDialog.cpp" line="304"/>
+        <location filename="../SyncDialog.cpp" line="312"/>
         <source>Synchronization</source>
         <translation>Synchronizacja</translation>
     </message>
@@ -5600,27 +5601,32 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Błąd: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="201"/>
+        <location filename="../SyncDialog.cpp" line="192"/>
+        <source>Your local database is newer than cloud one. Do you wish to replace your local copy?</source>
+        <translation>Twoja lokalna baza danych jest nowsza niż zdalna. Czy chcesz zastąpić swoją lokalną kopię?</translation>
+    </message>
+    <message>
+        <location filename="../SyncDialog.cpp" line="214"/>
         <source>Something modified cloud data since last synchronization. Do you wish to overwrite it?</source>
         <translation>Dane w chmurze zostały zmodyfikowane od ostatniej synchronizacji. Czy chcesz je zastąpić?</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="253"/>
+        <location filename="../SyncDialog.cpp" line="266"/>
         <source>Couldn&apos;t open file for writing! Synchronization failed.</source>
         <translation>Nie udało się otworzyć pliku do zapisu! Synchronizacja nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="269"/>
+        <location filename="../SyncDialog.cpp" line="282"/>
         <source>Couldn&apos;t write destination file! Synchronization failed.</source>
-        <translation>Nie udało się zapisać docelowego pliku! Synchronizacja nie powiodła się!</translation>
+        <translation>Nie udało się zapisać docelowego pliku! Synchronizacja nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="291"/>
+        <location filename="../SyncDialog.cpp" line="304"/>
         <source>Couldn&apos;t open remote file! Synchronization failed.</source>
         <translation>Nie udało się otworzyć zdalnego pliku! Synchronizacja nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="299"/>
+        <location filename="../SyncDialog.cpp" line="312"/>
         <source>Couldn&apos;t open local file! Synchronization failed.</source>
         <translation>Nie udało się otworzyć lokalnego pliku! Synchronizacja nie powiodła się.</translation>
     </message>

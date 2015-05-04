@@ -184,6 +184,19 @@ namespace Evernus
             QFileInfo currentInfo{getMainDbPath()};
             if (currentInfo.lastModified() > info.modified())
             {
+                QSettings settings;
+                if (settings.value(SyncSettings::firstSyncKey, true).toBool())
+                {
+                    const auto ret = QMessageBox::question(this,
+                                                           tr("Synchronization"),
+                                                           tr("Your local database is newer than cloud one. Do you wish to replace your local copy?"));
+                    if (ret == QMessageBox::Yes)
+                    {
+                        downloadFiles();
+                        return;
+                    }
+                }
+
                 mLastSyncTime = QDateTime::currentDateTimeUtc();
                 QMetaObject::invokeMethod(this, "accept", Qt::QueuedConnection);
             }
@@ -305,13 +318,17 @@ namespace Evernus
             const auto data = qCompress(localMainDb.readAll(), 9);
 
             mainDb.setFlushThreshold(data.size() + 1);
-            mainDb.write(data);
+            if (mainDb.write(data) == data.size())
+            {
+                QSettings settings;
+                settings.setValue(SyncSettings::firstSyncKey, false);
+
+                mLastSyncTime = mainDb.metadata().modified();
+            }
         });
         mCancelBtn->setEnabled(true);
 
         mainDb.close();
-
-        mLastSyncTime = mainDb.metadata().modified();
 
         QMetaObject::invokeMethod(this, "accept", Qt::QueuedConnection);
     }

@@ -5126,11 +5126,12 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
     <message>
         <location filename="../SyncDialog.cpp" line="101"/>
         <location filename="../SyncDialog.cpp" line="162"/>
-        <location filename="../SyncDialog.cpp" line="200"/>
-        <location filename="../SyncDialog.cpp" line="253"/>
-        <location filename="../SyncDialog.cpp" line="269"/>
-        <location filename="../SyncDialog.cpp" line="291"/>
-        <location filename="../SyncDialog.cpp" line="299"/>
+        <location filename="../SyncDialog.cpp" line="191"/>
+        <location filename="../SyncDialog.cpp" line="213"/>
+        <location filename="../SyncDialog.cpp" line="266"/>
+        <location filename="../SyncDialog.cpp" line="282"/>
+        <location filename="../SyncDialog.cpp" line="304"/>
+        <location filename="../SyncDialog.cpp" line="312"/>
         <source>Synchronization</source>
         <translation>Synchronisation</translation>
     </message>
@@ -5145,27 +5146,32 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation>Fehler: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="201"/>
+        <location filename="../SyncDialog.cpp" line="192"/>
+        <source>Your local database is newer than cloud one. Do you wish to replace your local copy?</source>
+        <translation>Ihre lokale Datenbank ist neuer als eine Wolke. Möchten Sie Ihre lokale Kopie ersetzen möchten?</translation>
+    </message>
+    <message>
+        <location filename="../SyncDialog.cpp" line="214"/>
         <source>Something modified cloud data since last synchronization. Do you wish to overwrite it?</source>
         <translation>Die Daten in der Cloud wurden seit der letzten Synchronisation geändert. Sollen die Daten überschrieben werden?</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="253"/>
+        <location filename="../SyncDialog.cpp" line="266"/>
         <source>Couldn&apos;t open file for writing! Synchronization failed.</source>
         <translation>Konnte die Datei nicht zum Schreiben öffnen! Synchronisation fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="269"/>
+        <location filename="../SyncDialog.cpp" line="282"/>
         <source>Couldn&apos;t write destination file! Synchronization failed.</source>
         <translation>Konnte in die Zieldatei nicht Schreiben! Synchronisation fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="291"/>
+        <location filename="../SyncDialog.cpp" line="304"/>
         <source>Couldn&apos;t open remote file! Synchronization failed.</source>
         <translation>Konnte die Datei in der Cloud nicht öffnen! Synchronisation fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="299"/>
+        <location filename="../SyncDialog.cpp" line="312"/>
         <source>Couldn&apos;t open local file! Synchronization failed.</source>
         <translation>Konnte die lokale Datei nicht öffnen! Synchronisation fehlgeschlagen.</translation>
     </message>
