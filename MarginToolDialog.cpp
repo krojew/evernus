@@ -576,7 +576,15 @@ namespace Evernus
 
         connect(mDontCopyBtn, &QRadioButton::toggled, this, &MarginToolDialog::saveCopyMode);
         connect(mCopySellBtn, &QRadioButton::toggled, this, &MarginToolDialog::saveCopyMode);
+        connect(mCopySellBtn, &QRadioButton::toggled, this, [=](bool checked) {
+            if (checked)
+                copySellPrice();
+        });
         connect(mCopyBuyBtn, &QRadioButton::toggled, this, &MarginToolDialog::saveCopyMode);
+        connect(mCopyBuyBtn, &QRadioButton::toggled, this, [=](bool checked) {
+            if (checked)
+                copyBuyPrice();
+        });
 
         auto taxesGroup = new QGroupBox{this};
         mainLayout->addWidget(taxesGroup);
