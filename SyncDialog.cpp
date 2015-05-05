@@ -318,17 +318,16 @@ namespace Evernus
             const auto data = qCompress(localMainDb.readAll(), 9);
 
             mainDb.setFlushThreshold(data.size() + 1);
-            if (mainDb.write(data) == data.size())
-            {
-                QSettings settings;
-                settings.setValue(SyncSettings::firstSyncKey, false);
-
-                mLastSyncTime = mainDb.metadata().modified();
-            }
+            mainDb.write(data);
         });
         mCancelBtn->setEnabled(true);
 
         mainDb.close();
+
+        QSettings settings;
+        settings.setValue(SyncSettings::firstSyncKey, false);
+
+        mLastSyncTime = mainDb.metadata().modified();
 
         QMetaObject::invokeMethod(this, "accept", Qt::QueuedConnection);
     }
