@@ -134,7 +134,7 @@ namespace Evernus
 
         void buildItemMap(const Item &item, TreeItem &treeItem, LocationId locationId, Character::IdType ownerId);
 
-        std::unique_ptr<TreeItem> createTreeItemForItem(const Item &item, LocationId locationId, Character::IdType ownerId) const;
+        std::unique_ptr<TreeItem> createTreeItemForItem(const Item &item, LocationId locationId, Character::IdType ownerId);
         void fillAssets(const std::shared_ptr<AssetList> &assets);
     };
 }

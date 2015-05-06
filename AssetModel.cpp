@@ -360,13 +360,6 @@ namespace Evernus
 
     void AssetModel::buildItemMap(const Item &item, TreeItem &treeItem, LocationId locationId, Character::IdType ownerId)
     {
-        const auto quantity = item.getQuantity();
-        const auto typeId = item.getTypeId();
-
-        mTotalAssets += quantity;
-        mTotalVolume += mDataProvider.getTypeVolume(typeId) * quantity;
-        mTotalSellPrice += mDataProvider.getTypeSellPrice(typeId, locationId)->getPrice() * quantity;
-
         for (const auto &child : item)
         {
             auto childItem = createTreeItemForItem(*child, locationId, ownerId);
@@ -377,13 +370,17 @@ namespace Evernus
     }
 
     std::unique_ptr<AssetModel::TreeItem> AssetModel
-    ::createTreeItemForItem(const Item &item, LocationId locationId, Character::IdType ownerId) const
+    ::createTreeItemForItem(const Item &item, LocationId locationId, Character::IdType ownerId)
     {
         const auto typeId = item.getTypeId();
         const auto volume = mDataProvider.getTypeVolume(typeId);
         const auto quantity = item.getQuantity();
         const auto sellPrice = (item.isBPC(mDataProvider)) ? (ExternalOrder::nullOrder()) : (mDataProvider.getTypeSellPrice(typeId, locationId));
         const auto metaIcon = IconUtils::getIconForMetaGroup(mDataProvider.getTypeMetaGroupName(typeId));
+
+        mTotalAssets += quantity;
+        mTotalVolume += volume * quantity;
+        mTotalSellPrice += sellPrice->getPrice() * quantity;
 
         auto treeItem = std::make_unique<TreeItem>();
         treeItem->setData(QVariantList{}
