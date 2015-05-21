@@ -137,7 +137,7 @@ namespace Evernus
                        for (auto it = std::begin(orders); it != std::end(orders);)
                        {
                            const auto price = mDataProvider.getTypeSellPrice((*it)->getTypeId(), (*it)->getStationId());
-                           if (price->isNew() || price->getPrice() > (*it)->getPrice())
+                           if (price->isNew() || price->getPrice() >= (*it)->getPrice())
                                it = orders.erase(it);
                            else
                                ++it;
@@ -150,7 +150,7 @@ namespace Evernus
                        for (auto it = std::begin(orders); it != std::end(orders);)
                        {
                            const auto price = mDataProvider.getTypeBuyPrice((*it)->getTypeId(), (*it)->getStationId(), (*it)->getRange());
-                           if (price->isNew() || price->getPrice() < (*it)->getPrice())
+                           if (price->isNew() || price->getPrice() <= (*it)->getPrice())
                                it = orders.erase(it);
                            else
                                ++it;
