@@ -16,7 +16,9 @@
 #include <QDateTime>
 #include <QSettings>
 #include <QLocale>
+#include <QColor>
 
+#include "PriceSettings.h"
 #include "UISettings.h"
 
 #include "TextUtils.h"
@@ -61,6 +63,28 @@ namespace Evernus
             const auto omitSymbol
                 = settings.value(UISettings::omitCurrencySymbolKey, UISettings::omitCurrencySymbolDefault).toBool();
             return (omitSymbol) ? (locale.toString(value, 'f', 2)) : (locale.toCurrencyString(value, "ISK"));
+        }
+
+        QColor getMarginColor(double margin)
+        {
+            QSettings settings;
+            if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
+                return QColor{Qt::red};
+            if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
+                return QColor{0xff, 0xa5, 0x00};
+
+            return QColor{Qt::green};
+        }
+
+        QString getMarginStyleSheet(double margin)
+        {
+            QSettings settings;
+            if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
+                return "color: red;";
+            if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
+                return "color: orange;";
+
+            return "color: green;";
         }
     }
 }

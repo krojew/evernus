@@ -775,12 +775,7 @@ namespace Evernus
                     mRevenueLabel->setText(TextUtils::currencyToString(revenue, curLocale));
                     mCostOfSalesLabel->setText(TextUtils::currencyToString(cos, curLocale));
 
-                    if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
-                        mMarginLabel->setStyleSheet("color: red;");
-                    else if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
-                        mMarginLabel->setStyleSheet("color: orange;");
-                    else
-                        mMarginLabel->setStyleSheet("color: green;");
+                    mMarginLabel->setStyleSheet(TextUtils::getMarginStyleSheet(margin));
 
                     auto clipboard = QApplication::clipboard();
 

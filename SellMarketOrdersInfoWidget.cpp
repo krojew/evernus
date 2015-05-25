@@ -12,12 +12,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QSettings>
 #include <QLabel>
 #include <QFont>
 
 #include "MarketOrderSellModel.h"
-#include "PriceSettings.h"
 #include "FlowLayout.h"
 #include "PriceUtils.h"
 #include "TextUtils.h"
@@ -69,12 +67,6 @@ namespace Evernus
         mTotalCostLabel->setText(TextUtils::currencyToString(cost, curLocale));
         mTotalMarginLabel->setText(QString{"%1%2"}.arg(curLocale.toString(margin, 'f', 2)).arg(curLocale.percent()));
 
-        QSettings settings;
-        if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
-            mTotalMarginLabel->setStyleSheet("color: red;");
-        else if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
-            mTotalMarginLabel->setStyleSheet("color: #ffa500;");
-        else
-            mTotalMarginLabel->setStyleSheet("color: green;");
+        mTotalMarginLabel->setStyleSheet(TextUtils::getMarginStyleSheet(margin));
     }
 }

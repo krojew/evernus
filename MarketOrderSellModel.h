@@ -73,6 +73,7 @@ namespace Evernus
             totalColumn,
             deltaColumn,
             marginColumn,
+            newMarginColumn,
             profitColumn,
             totalProfitColumn,
             profitPerItemColumn,
@@ -105,5 +106,8 @@ namespace Evernus
         virtual void handleOrderRemoval(const MarketOrder &order) override;
 
         QString getCharacterName(Character::IdType id) const;
+
+        double getMargin(const MarketOrder &order) const;
+        double getNewMargin(const MarketOrder &order) const;
     };
 }

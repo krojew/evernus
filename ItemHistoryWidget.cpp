@@ -26,7 +26,6 @@
 
 #include "WalletTransactionRepository.h"
 #include "EveDataProvider.h"
-#include "PriceSettings.h"
 #include "UISettings.h"
 #include "TextUtils.h"
 
@@ -281,15 +280,7 @@ namespace Evernus
 
     void ItemHistoryWidget::setMarginColor()
     {
-        const auto margin = getMargin();
-
-        QSettings settings;
-        if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
-            mTotalMarginLabel->setStyleSheet("color: red;");
-        else if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
-            mTotalMarginLabel->setStyleSheet("color: orange;");
-        else
-            mTotalMarginLabel->setStyleSheet("color: green;");
+        mTotalMarginLabel->setStyleSheet(TextUtils::getMarginStyleSheet(getMargin()));
     }
 
     double ItemHistoryWidget::getMargin() const noexcept

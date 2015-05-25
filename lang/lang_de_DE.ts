@@ -2472,48 +2472,48 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::ItemHistoryWidget</name>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="55"/>
+        <location filename="../ItemHistoryWidget.cpp" line="54"/>
         <source>Item type:</source>
         <translation>Artikeltyp:</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="64"/>
+        <location filename="../ItemHistoryWidget.cpp" line="63"/>
         <source>Combine for all characters</source>
         <translation>Für alle Charaktere zusammenfassen</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="84"/>
-        <location filename="../ItemHistoryWidget.cpp" line="100"/>
+        <location filename="../ItemHistoryWidget.cpp" line="83"/>
+        <location filename="../ItemHistoryWidget.cpp" line="99"/>
         <source>Volume</source>
         <translation>Volumen</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="106"/>
+        <location filename="../ItemHistoryWidget.cpp" line="105"/>
         <source>Balance</source>
         <translation>Kontostand</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="117"/>
+        <location filename="../ItemHistoryWidget.cpp" line="116"/>
         <source>Total income:</source>
         <translation>Einkünfte gesamt:</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="123"/>
+        <location filename="../ItemHistoryWidget.cpp" line="122"/>
         <source>Total cost:</source>
         <translation>Kosten gesamt:</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="129"/>
+        <location filename="../ItemHistoryWidget.cpp" line="128"/>
         <source>Balance:</source>
         <translation>Kontostand:</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="135"/>
+        <location filename="../ItemHistoryWidget.cpp" line="134"/>
         <source>Margin:</source>
         <translation>Marge:</translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="141"/>
+        <location filename="../ItemHistoryWidget.cpp" line="140"/>
         <source>Total volume:</source>
         <translation>Volumen gesamt:</translation>
     </message>
@@ -2622,62 +2622,62 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>Preisdaten sind zu alt (gültig am %1).</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="217"/>
+        <location filename="../LMeveTaskModel.cpp" line="210"/>
         <source>Item</source>
         <translation>Artikel</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="219"/>
+        <location filename="../LMeveTaskModel.cpp" line="212"/>
         <source>Activity</source>
         <translation>Aktivität</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="221"/>
+        <location filename="../LMeveTaskModel.cpp" line="214"/>
         <source>Runs</source>
         <translation>Durchläufe</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="223"/>
+        <location filename="../LMeveTaskModel.cpp" line="216"/>
         <source>Runs completed and in progress</source>
         <translation>Fertige und in Arbeit befindliche Durchläufe</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="225"/>
+        <location filename="../LMeveTaskModel.cpp" line="218"/>
         <source>Runs completed</source>
         <translation>Fertige Durchläufe</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="227"/>
+        <location filename="../LMeveTaskModel.cpp" line="220"/>
         <source>Jobs completed and in progress</source>
         <translation>Fertige und in Bearbeitung befindliche Aufträge</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="229"/>
+        <location filename="../LMeveTaskModel.cpp" line="222"/>
         <source>Successful jobs</source>
         <translation>Erfolgreiche Aufträge</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="231"/>
+        <location filename="../LMeveTaskModel.cpp" line="224"/>
         <source>Jobs completed</source>
         <translation>Fertige Aufträge</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="233"/>
+        <location filename="../LMeveTaskModel.cpp" line="226"/>
         <source>Custom cost</source>
         <translation>Benutzerdefinierte Kosten</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="235"/>
+        <location filename="../LMeveTaskModel.cpp" line="228"/>
         <source>Sell price</source>
         <translation>Verkaufspreis</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="237"/>
+        <location filename="../LMeveTaskModel.cpp" line="230"/>
         <source>Profit</source>
         <translation>Profit</translation>
     </message>
     <message>
-        <location filename="../LMeveTaskModel.cpp" line="239"/>
+        <location filename="../LMeveTaskModel.cpp" line="232"/>
         <source>Margin</source>
         <translation>Marge</translation>
     </message>
@@ -3121,18 +3121,18 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>Ursprungsstation</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="812"/>
-        <location filename="../MarginToolDialog.cpp" line="818"/>
+        <location filename="../MarginToolDialog.cpp" line="807"/>
+        <location filename="../MarginToolDialog.cpp" line="813"/>
         <source>Margin tool error</source>
         <translation>Fehler Margenrechner</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="813"/>
+        <location filename="../MarginToolDialog.cpp" line="808"/>
         <source>Could not determine market log path. Please enter log path in settings.</source>
         <translation>Konnte das Verzeichnis für Markt Logs nicht bestimmen. Bitte das Verzeichnis in Einstellungen angeben.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="819"/>
+        <location filename="../MarginToolDialog.cpp" line="814"/>
         <source>Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again.</source>
         <translation>Konnte Überwachung der Markt Logs nicht starten. Stelle sicher das dieses Verzeichnis existiert (exportiere z.B. einige Logs) und versuche es erneut.</translation>
     </message>
@@ -4016,58 +4016,58 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation>Dein Preis war der Beste am %1</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="263"/>
+        <location filename="../MarketOrderSellModel.cpp" line="259"/>
         <source>Active</source>
         <translation>Aktiv</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="264"/>
+        <location filename="../MarketOrderSellModel.cpp" line="260"/>
         <source>Closed</source>
         <translation>Geschlossen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="265"/>
+        <location filename="../MarketOrderSellModel.cpp" line="261"/>
         <source>Fulfilled</source>
         <translation>Ausgeführt</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="266"/>
+        <location filename="../MarketOrderSellModel.cpp" line="262"/>
         <source>Cancelled</source>
         <translation>Abgebrochen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="267"/>
+        <location filename="../MarketOrderSellModel.cpp" line="263"/>
         <source>Pending</source>
         <translation>Ausstehend</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="268"/>
+        <location filename="../MarketOrderSellModel.cpp" line="264"/>
         <source>Character Deleted</source>
         <translation>Character gelöscht</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="274"/>
+        <location filename="../MarketOrderSellModel.cpp" line="270"/>
         <source>Expired</source>
         <translation>Abgelaufen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="293"/>
+        <location filename="../MarketOrderSellModel.cpp" line="289"/>
         <source>No price data</source>
         <translation>Keine Preisdaten</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="298"/>
+        <location filename="../MarketOrderSellModel.cpp" line="294"/>
         <source>Data too old</source>
         <translation>Daten zu alt</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="363"/>
-        <location filename="../MarketOrderSellModel.cpp" line="367"/>
+        <location filename="../MarketOrderSellModel.cpp" line="355"/>
+        <location filename="../MarketOrderSellModel.cpp" line="359"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
     <message numerus="yes">
-        <location filename="../MarketOrderSellModel.cpp" line="370"/>
+        <location filename="../MarketOrderSellModel.cpp" line="362"/>
         <source>%n day(s)</source>
         <translation>
             <numerusform>%n Tag</numerusform>
@@ -4075,117 +4075,122 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         </translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="370"/>
+        <location filename="../MarketOrderSellModel.cpp" line="362"/>
         <source>today</source>
         <translation>Heute</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="502"/>
+        <location filename="../MarketOrderSellModel.cpp" line="484"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="504"/>
+        <location filename="../MarketOrderSellModel.cpp" line="486"/>
         <source>Group</source>
         <translation>Gruppe</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="506"/>
+        <location filename="../MarketOrderSellModel.cpp" line="488"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="508"/>
+        <location filename="../MarketOrderSellModel.cpp" line="490"/>
         <source>Custom cost</source>
         <translation>Benutzerdefinierte Kosten</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="510"/>
+        <location filename="../MarketOrderSellModel.cpp" line="492"/>
         <source>Price</source>
         <translation>Preis</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="512"/>
+        <location filename="../MarketOrderSellModel.cpp" line="494"/>
         <source>Price status</source>
         <translation>Preisstatus</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="514"/>
+        <location filename="../MarketOrderSellModel.cpp" line="496"/>
         <source>Price difference</source>
         <translation>Preisdifferenz</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="516"/>
+        <location filename="../MarketOrderSellModel.cpp" line="498"/>
         <source>Price difference, %1</source>
         <translation>Preisdifferenz, %1</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="518"/>
+        <location filename="../MarketOrderSellModel.cpp" line="500"/>
         <source>Volume</source>
         <translation>Volumen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="520"/>
+        <location filename="../MarketOrderSellModel.cpp" line="502"/>
         <source>Total</source>
         <translation>Gesamt</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="522"/>
+        <location filename="../MarketOrderSellModel.cpp" line="504"/>
         <source>Delta</source>
         <translation>Delta</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="524"/>
+        <location filename="../MarketOrderSellModel.cpp" line="506"/>
         <source>Margin</source>
         <translation>Marge</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="526"/>
+        <location filename="../MarketOrderSellModel.cpp" line="508"/>
+        <source>Best margin</source>
+        <translation type="unfinished">Beste Marge</translation>
+    </message>
+    <message>
+        <location filename="../MarketOrderSellModel.cpp" line="510"/>
         <source>Profit</source>
         <translation>Profit</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="528"/>
+        <location filename="../MarketOrderSellModel.cpp" line="512"/>
         <source>Total profit</source>
         <translation>Profit gesamt</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="530"/>
+        <location filename="../MarketOrderSellModel.cpp" line="514"/>
         <source>Profit per item</source>
         <translation>Profit pro Artikel</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="532"/>
+        <location filename="../MarketOrderSellModel.cpp" line="516"/>
         <source>ETA</source>
         <translation>ETA</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="534"/>
+        <location filename="../MarketOrderSellModel.cpp" line="518"/>
         <source>Time left</source>
         <translation>Restlaufzeit</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="536"/>
+        <location filename="../MarketOrderSellModel.cpp" line="520"/>
         <source>Order age</source>
         <translation>Auftragsalter</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="538"/>
+        <location filename="../MarketOrderSellModel.cpp" line="522"/>
         <source>First issued</source>
         <translation>Erstmals erstellt</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="540"/>
+        <location filename="../MarketOrderSellModel.cpp" line="524"/>
         <source>Station</source>
         <translation>Station</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="542"/>
+        <location filename="../MarketOrderSellModel.cpp" line="526"/>
         <source>Notes</source>
         <translation>Notiz</translation>
     </message>
     <message>
-        <location filename="../MarketOrderSellModel.cpp" line="544"/>
+        <location filename="../MarketOrderSellModel.cpp" line="528"/>
         <source>Owner</source>
         <translation>Besitzer</translation>
     </message>
@@ -4812,17 +4817,17 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::SellMarketOrdersInfoWidget</name>
     <message>
-        <location filename="../SellMarketOrdersInfoWidget.cpp" line="38"/>
+        <location filename="../SellMarketOrdersInfoWidget.cpp" line="36"/>
         <source>Total income:</source>
         <translation>Einkünfte gesamt:</translation>
     </message>
     <message>
-        <location filename="../SellMarketOrdersInfoWidget.cpp" line="45"/>
+        <location filename="../SellMarketOrdersInfoWidget.cpp" line="43"/>
         <source>Total cost:</source>
         <translation>Kosten gesamt:</translation>
     </message>
     <message>
-        <location filename="../SellMarketOrdersInfoWidget.cpp" line="52"/>
+        <location filename="../SellMarketOrdersInfoWidget.cpp" line="50"/>
         <source>Total margin:</source>
         <translation>Marge gesamt:</translation>
     </message>
@@ -5308,37 +5313,37 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::TypeAggregatedMarketDataModel</name>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="109"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="107"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="111"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="109"/>
         <source>Score</source>
         <translation>Score</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="113"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="111"/>
         <source>5% volume buy price</source>
         <translation>5% Spanne Kaufpreis</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="115"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="113"/>
         <source>5% volume sell price</source>
         <translation>5% Spanne Verkaufspreis</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="117"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="115"/>
         <source>Difference</source>
         <translation>Differenz</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="119"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="117"/>
         <source>30-day avg. volume</source>
         <translation>30 Tage Durchschnittsvolumen</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="121"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="119"/>
         <source>Margin</source>
         <translation>Marge</translation>
     </message>
@@ -5734,17 +5739,17 @@ Please click on &quot;Import all&quot; after the update.</source>
 <context>
     <name>TextUtils</name>
     <message>
-        <location filename="../TextUtils.cpp" line="41"/>
+        <location filename="../TextUtils.cpp" line="43"/>
         <source>%02dmin</source>
         <translation>%02d Min</translation>
     </message>
     <message>
-        <location filename="../TextUtils.cpp" line="44"/>
+        <location filename="../TextUtils.cpp" line="46"/>
         <source>%02dh %02dmin</source>
         <translation>%02d St %02d Min</translation>
     </message>
     <message>
-        <location filename="../TextUtils.cpp" line="46"/>
+        <location filename="../TextUtils.cpp" line="48"/>
         <source>%dd %02dh</source>
         <translation>%d Tg %02d St</translation>
     </message>

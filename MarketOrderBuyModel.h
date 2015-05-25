@@ -96,7 +96,5 @@ namespace Evernus
         double getMargin(const MarketOrder &order) const;
         double getNewMargin(const MarketOrder &order) const;
         QString getCharacterName(Character::IdType id) const;
-
-        static QColor getMarginColor(double margin);
     };
 }

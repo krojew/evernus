@@ -174,13 +174,9 @@ namespace Evernus
             case deltaColumn:
                 return data->getDelta();
             case marginColumn:
-                if (mCharacter)
-                {
-                    const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    return PriceUtils::getMargin(cost->getCost(), data->getPrice(), taxes);
-                }
-                break;
+                return getMargin(*data);
+            case newMarginColumn:
+                return getNewMargin(*data);
             case profitColumn:
                 if (mCharacter)
                 {
@@ -319,13 +315,9 @@ namespace Evernus
                         return locale.toString(data->getDelta());
                     break;
                 case marginColumn:
-                    if (mCharacter)
-                    {
-                        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        return QString{"%1%2"}.arg(locale.toString(PriceUtils::getMargin(cost->getCost(), data->getPrice(), taxes), 'f', 2)).arg(locale.percent());
-                    }
-                    break;
+                    return QString{"%1%2"}.arg(locale.toString(getMargin(*data), 'f', 2)).arg(locale.percent());
+                case newMarginColumn:
+                    return QString{"%1%2"}.arg(locale.toString(getNewMargin(*data), 'f', 2)).arg(locale.percent());
                 case profitColumn:
                     if (mCharacter)
                     {
@@ -455,19 +447,9 @@ namespace Evernus
             case priceStatusColumn:
                 return QColor{Qt::darkRed};
             case marginColumn:
-                {
-                    const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    const auto margin = PriceUtils::getMargin(cost->getCost(), data->getPrice(), taxes);
-
-                    QSettings settings;
-                    if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
-                        return QColor{Qt::red};
-                    if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
-                        return QColor{0xff, 0xa5, 0x00};
-
-                    return QColor{Qt::green};
-                }
+                return TextUtils::getMarginColor(getMargin(*data));
+            case newMarginColumn:
+                return TextUtils::getMarginColor(getNewMargin(*data));
             case profitColumn:
             case totalProfitColumn:
             case profitPerItemColumn:
@@ -522,6 +504,8 @@ namespace Evernus
                 return tr("Delta");
             case marginColumn:
                 return tr("Margin");
+            case newMarginColumn:
+                return tr("Best margin");
             case profitColumn:
                 return tr("Profit");
             case totalProfitColumn:
@@ -688,5 +672,35 @@ namespace Evernus
     QString MarketOrderSellModel::getCharacterName(Character::IdType id) const
     {
         return mDataProvider.getGenericName(id);
+    }
+
+    double MarketOrderSellModel::getMargin(const MarketOrder &order) const
+    {
+        if (!mCharacter)
+            return 0.;
+
+        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, order.getTypeId());
+        return PriceUtils::getMargin(cost->getCost(), order.getPrice(), taxes);
+    }
+
+    double MarketOrderSellModel::getNewMargin(const MarketOrder &order) const
+    {
+        if (!mCharacter)
+            return 0.;
+
+        QSettings settings;
+        const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+
+        auto newPrice = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getStationId())->getPrice();
+        if (qFuzzyIsNull(newPrice))
+            newPrice = order.getPrice();
+        else
+            newPrice -= delta;
+
+        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, order.getTypeId());
+
+        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        return PriceUtils::getMargin(cost->getCost(), newPrice, taxes);
     }
 }

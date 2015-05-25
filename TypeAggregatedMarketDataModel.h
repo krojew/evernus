@@ -87,6 +87,5 @@ namespace Evernus
         std::shared_ptr<Character> mCharacter;
 
         double getMargin(const TypeData &data) const;
-        static QColor getMarginColor(double margin);
     };
 }

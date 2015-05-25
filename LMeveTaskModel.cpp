@@ -181,14 +181,7 @@ namespace Evernus
             if (column == marginColumn)
             {
                 const auto margin = getMargin(*data);
-
-                QSettings settings;
-                if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
-                    return QColor{Qt::red};
-                if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
-                    return QColor{0xff, 0xa5, 0x00};
-
-                return QColor{Qt::green};
+                return TextUtils::getMarginColor(margin);
             }
             break;
         case Qt::BackgroundRole:

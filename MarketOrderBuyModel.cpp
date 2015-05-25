@@ -374,9 +374,9 @@ namespace Evernus
             case priceStatusColumn:
                 return QColor{Qt::darkRed};
             case marginColumn:
-                return getMarginColor(getMargin(*data));
+                return TextUtils::getMarginColor(getMargin(*data));
             case newMarginColumn:
-                return getMarginColor(getNewMargin(*data));
+                return TextUtils::getMarginColor(getNewMargin(*data));
             }
             break;
         case Qt::TextAlignmentRole:
@@ -595,16 +595,5 @@ namespace Evernus
     QString MarketOrderBuyModel::getCharacterName(Character::IdType id) const
     {
         return mDataProvider.getGenericName(id);
-    }
-
-    QColor MarketOrderBuyModel::getMarginColor(double margin)
-    {
-        QSettings settings;
-        if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
-            return QColor{Qt::red};
-        if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
-            return QColor{0xff, 0xa5, 0x00};
-
-        return QColor{Qt::green};
     }
 }

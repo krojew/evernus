@@ -16,7 +16,6 @@
 #include <functional>
 #include <set>
 
-#include <QSettings>
 #include <QLocale>
 #include <QColor>
 
@@ -24,7 +23,6 @@
 
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
-#include "PriceSettings.h"
 #include "PriceUtils.h"
 #include "TextUtils.h"
 
@@ -94,7 +92,7 @@ namespace Evernus
             break;
         case Qt::ForegroundRole:
             if (column == marginColumn)
-                return getMarginColor(getMargin(data));
+                return TextUtils::getMarginColor(getMargin(data));
         }
 
         return QVariant{};
@@ -267,16 +265,5 @@ namespace Evernus
 
         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
         return PriceUtils::getMargin(data.mBuyPrice, data.mSellPrice, taxes);
-    }
-
-    QColor TypeAggregatedMarketDataModel::getMarginColor(double margin)
-    {
-        QSettings settings;
-        if (margin < settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble())
-            return QColor{Qt::red};
-        if (margin < settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble())
-            return QColor{0xff, 0xa5, 0x00};
-
-        return QColor{Qt::green};
     }
 }
