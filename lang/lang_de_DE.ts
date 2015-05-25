@@ -4142,7 +4142,7 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="508"/>
         <source>Best margin</source>
-        <translation type="unfinished">Beste Marge</translation>
+        <translation>Beste Marge</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="510"/>

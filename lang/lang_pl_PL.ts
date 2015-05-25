@@ -4511,7 +4511,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="508"/>
         <source>Best margin</source>
-        <translation type="unfinished">Najlepsza marża</translation>
+        <translation>Najlepsza marża</translation>
     </message>
     <message>
         <location filename="../MarketOrderSellModel.cpp" line="510"/>
