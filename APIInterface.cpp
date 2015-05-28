@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QCoreApplication>
+#include <QMessageBox>
 #include <QUrlQuery>
 #include <QSettings>
 
@@ -181,7 +182,10 @@ namespace Evernus
         for (const auto &error : errors)
             errorTexts << error.errorString();
 
-        emit generalError(tr("Encountered SSL errors:\n\n%1").arg(errorTexts.join("\n")));
+        const auto ret = QMessageBox::question(nullptr, tr("API error"), tr(
+            "Encountered SSL errors:\n%1\nAre you sure you wish to proceed (doing so can compromise your account security)?").arg(errorTexts.join("\n")));
+        if (ret == QMessageBox::Yes)
+            qobject_cast<QNetworkReply*>(sender())->ignoreSslErrors(errors);
     }
 
     template<class Key>
