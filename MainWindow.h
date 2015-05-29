@@ -134,7 +134,6 @@ namespace Evernus
         void showPreferences();
         void showMarginTool();
         void showAbout();
-        void showError(const QString &info);
         void openHelp();
         void checkForUpdates();
         void showColumnHelp();

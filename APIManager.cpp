@@ -69,7 +69,6 @@ namespace Evernus
         : QObject{}
         , mCacheTimerProvider{cacheTimerProvider}
     {
-        connect(&mInterface, &APIInterface::generalError, this, &APIManager::generalError);
     }
 
     void APIManager::fetchCharacterList(const Key &key, const Callback<CharacterList> &callback) const

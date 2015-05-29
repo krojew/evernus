@@ -78,9 +78,6 @@ namespace Evernus
                                 const Callback &callback) const;
         void fetchGenericName(quint64 id, const Callback &callback) const;
 
-    signals:
-        void generalError(const QString &info);
-
     private slots:
         void processReply();
         void processSslErrors(const QList<QSslError> &errors);

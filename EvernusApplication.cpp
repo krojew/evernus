@@ -203,8 +203,6 @@ namespace Evernus
         connect(&mSmtp, &QxtSmtp::finished, &mSmtp, &QxtSmtp::disconnectFromHost);
         setSmtpSettings();
 
-        connect(&mAPIManager, &APIManager::generalError, this, &EvernusApplication::apiError);
-
         if (settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool())
             Updater::getInstance().checkForUpdates(true);
     }

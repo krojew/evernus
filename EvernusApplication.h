@@ -158,8 +158,6 @@ namespace Evernus
         void taskInfoChanged(uint taskId, const QString &text);
         void taskEnded(uint taskId, const QString &error);
 
-        void apiError(const QString &info);
-
         void conquerableStationsChanged();
         void charactersChanged();
         void assetsChanged();

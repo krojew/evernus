@@ -190,12 +190,6 @@ namespace Evernus
         dlg.exec();
     }
 
-    void MainWindow::showError(const QString &info)
-    {
-        qCritical() << info;
-        QMessageBox::warning(this, tr("Error"), info);
-    }
-
     void MainWindow::openHelp()
     {
         QDesktopServices::openUrl(QUrl{"http://evernus.com/help"});

@@ -94,9 +94,6 @@ namespace Evernus
 
         void fetchGenericName(quint64 id, const Callback<QString> &callback) const;
 
-    signals:
-        void generalError(const QString &info);
-
     private:
         CacheTimerProvider &mCacheTimerProvider;
 
