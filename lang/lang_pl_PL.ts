@@ -259,18 +259,6 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 
 %1</translation>
     </message>
-    <message>
-        <location filename="../APIInterface.cpp" line="185"/>
-        <source>API error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../APIInterface.cpp" line="185"/>
-        <source>Encountered SSL errors:
-%1
-Are you sure you wish to proceed (doing so can compromise your account security)?</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Evernus::APIManager</name>
@@ -544,12 +532,12 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Autoryzacja CREST nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="204"/>
+        <location filename="../CRESTInterface.cpp" line="210"/>
         <source>Missing CREST regions url!</source>
         <translation>Brak adresu regionów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="248"/>
+        <location filename="../CRESTInterface.cpp" line="254"/>
         <source>Missing CREST item types url!</source>
         <translation>Brak adresu typów w CREST!</translation>
     </message>
@@ -4805,94 +4793,99 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::NetworkPreferencesWidget</name>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="54"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="55"/>
         <source>Proxy</source>
         <translation>Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="59"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="60"/>
         <source>No proxy</source>
         <translation>Brak proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="62"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="63"/>
         <source>Custom proxy</source>
         <translation>Własne proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="72"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
         <source>Type:</source>
         <translation>Typ:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
         <source>SOCKS5</source>
         <translation>SOCKS5</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="75"/>
         <source>HTTP</source>
         <translation>HTTP</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="77"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="78"/>
         <source>Host:</source>
         <translation>Serwer:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="80"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="81"/>
         <source>Port:</source>
         <translation>Port:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="86"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="87"/>
         <source>User:</source>
         <translation>Użytkownik:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="89"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="90"/>
         <source>Password:</source>
         <translation>Hasło:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="92"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="93"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
         <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="96"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="97"/>
         <source>API provider</source>
         <translation>Dostawca API</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="101"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="102"/>
         <source>Use default provider</source>
         <translation>Domyślny</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="106"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="107"/>
         <source>Use custom provider</source>
         <translation>Własny</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="113"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="114"/>
         <source>CREST</source>
         <translation>CREST</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="119"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="120"/>
         <source>Max. threads:</source>
         <translation>Maks. ilość wątków:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="122"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="123"/>
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
         <translation>Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="134"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="135"/>
         <source>Max. reply time:</source>
         <translation>Maks. czas odpowiedzi:</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="141"/>
+        <source>Ignore certificate errors</source>
+        <translation>Ignoruj błędy certyfikatów</translation>
     </message>
 </context>
 <context>
@@ -6264,6 +6257,23 @@ Czy chcesz ściągnąć ją teraz?</translation>
         <location filename="../MarketOrder.cpp" line="240"/>
         <source>Unknown</source>
         <translation>Nieznane</translation>
+    </message>
+</context>
+<context>
+    <name>SecurityHelper</name>
+    <message>
+        <location filename="../SecurityHelper.cpp" line="48"/>
+        <source>Security error</source>
+        <translation>Błąd bezpieczeństwa</translation>
+    </message>
+    <message>
+        <location filename="../SecurityHelper.cpp" line="49"/>
+        <source>Encountered SSL errors:
+%1
+Are you sure you wish to proceed (doing so can compromise your account security)?</source>
+        <translation>Napotkano błędy SSL:
+%1
+Czy chcesz kontynuować (może to wpłynąć negatywnie na bezpieczeństwo konta)?</translation>
     </message>
 </context>
 <context>

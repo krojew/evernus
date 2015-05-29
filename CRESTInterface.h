@@ -48,6 +48,9 @@ namespace Evernus
         void updateTokenAndContinue(QString token, const QDateTime &expiry);
         void handleTokenError(const QString &error);
 
+    private slots:
+        void processSslErrors(const QList<QSslError> &errors);
+
     signals:
         void tokenRequested() const;
 

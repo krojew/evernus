@@ -19,6 +19,7 @@
 #include "SimpleCrypt.h"
 
 class QRadioButton;
+class QCheckBox;
 class QComboBox;
 class QLineEdit;
 class QSpinBox;
@@ -52,5 +53,6 @@ namespace Evernus
 
         QSpinBox *mCRESTThreadsEdit = nullptr;
         QSpinBox *mMaxReplyTimeEdit = nullptr;
+        QCheckBox *mIgnoreSslErrors = nullptr;
     };
 }

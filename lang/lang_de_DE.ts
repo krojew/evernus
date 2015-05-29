@@ -113,18 +113,6 @@
 
 %1</translation>
     </message>
-    <message>
-        <location filename="../APIInterface.cpp" line="185"/>
-        <source>API error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../APIInterface.cpp" line="185"/>
-        <source>Encountered SSL errors:
-%1
-Are you sure you wish to proceed (doing so can compromise your account security)?</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Evernus::APIManager</name>
@@ -364,13 +352,13 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::CRESTInterface</name>
     <message>
-        <location filename="../CRESTInterface.cpp" line="204"/>
+        <location filename="../CRESTInterface.cpp" line="210"/>
         <source>Missing CREST regions url!</source>
         <translatorcomment>#NOTE# Not sure if it makes sense to translate &quot;regions&quot; here, as it&apos;s meant as part of an API method, not a descriptive term. Better use: &quot;Fehlende CREST Regions URL&quot;</translatorcomment>
         <translation>Fehlende CREST Regionen URL!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="248"/>
+        <location filename="../CRESTInterface.cpp" line="254"/>
         <source>Missing CREST item types url!</source>
         <translatorcomment>#NOTE# Same as with &quot;regions&quot;. I&apos;d rather go with &quot;Fehlende CREST Item Types URL&quot;</translatorcomment>
         <translation>Fehlende CREST Gegenstandsarten URL!</translation>
@@ -4408,94 +4396,99 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::NetworkPreferencesWidget</name>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="54"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="55"/>
         <source>Proxy</source>
         <translation>Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="59"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="60"/>
         <source>No proxy</source>
         <translation>Kein Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="62"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="63"/>
         <source>Custom proxy</source>
         <translation>Benutzerdefinierter Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="72"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
         <source>Type:</source>
         <translation>Typ:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
         <source>SOCKS5</source>
         <translation>SOCKS5</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="75"/>
         <source>HTTP</source>
         <translation>HTTP</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="77"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="78"/>
         <source>Host:</source>
         <translation>Host:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="80"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="81"/>
         <source>Port:</source>
         <translation>Port:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="86"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="87"/>
         <source>User:</source>
         <translation>Benutzer:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="89"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="90"/>
         <source>Password:</source>
         <translation>Paßwort:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="92"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="93"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
         <translation>Warnung: Paßwörter werden mit einer schwacher Verschlüsselung gespeichert - benutze keine sensiblen Paßwörter.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="96"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="97"/>
         <source>API provider</source>
         <translation>API Anbieter</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="101"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="102"/>
         <source>Use default provider</source>
         <translation>Standardanbieter benutzen</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="106"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="107"/>
         <source>Use custom provider</source>
         <translation>Benutzerdefinierten Anbieter benutzen</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="113"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="114"/>
         <source>CREST</source>
         <translation>CREST</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="119"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="120"/>
         <source>Max. threads:</source>
         <translation>Max. Threads:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="122"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="123"/>
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
         <translation>Dieser Wert beeinflußt die Geschwindigkeit des Datenimports via CREST. Ein höherer Wert erhöht die Geschwindigkeit, ist er jedoch zu hoch, kann die Geschwindigkeit sogar sinken oder Fehler verursachen.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="134"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="135"/>
         <source>Max. reply time:</source>
         <translation>Max. Antwortzeit:</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="141"/>
+        <source>Ignore certificate errors</source>
+        <translation>Ignorieren Zertifikatfehler</translation>
     </message>
 </context>
 <context>
@@ -5744,6 +5737,23 @@ Please click on &quot;Import all&quot; after the update.</source>
         <location filename="../MarketOrder.cpp" line="240"/>
         <source>Unknown</source>
         <translation>Unbekannt</translation>
+    </message>
+</context>
+<context>
+    <name>SecurityHelper</name>
+    <message>
+        <location filename="../SecurityHelper.cpp" line="48"/>
+        <source>Security error</source>
+        <translation>Sicherheitsfehler</translation>
+    </message>
+    <message>
+        <location filename="../SecurityHelper.cpp" line="49"/>
+        <source>Encountered SSL errors:
+%1
+Are you sure you wish to proceed (doing so can compromise your account security)?</source>
+        <translation>Angetroffen SSL-Fehler:
+%1
+Sind Sie sicher, dass Sie den Vorgang fortsetzen (dabei können Ihre Kontosicherheit gefährden) möchten?</translation>
     </message>
 </context>
 <context>

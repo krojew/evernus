@@ -646,6 +646,8 @@ add_executable(
     ScriptOrderProcessingModel.h
     ScriptUtils.cpp
     ScriptUtils.h
+    SecurityHelper.cpp
+    SecurityHelper.h
     SellMarketOrdersInfoWidget.cpp
     SellMarketOrdersInfoWidget.h
     SimpleCrypt.cpp

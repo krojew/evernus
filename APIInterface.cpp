@@ -13,11 +13,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QCoreApplication>
-#include <QMessageBox>
 #include <QUrlQuery>
 #include <QSettings>
 
 #include "NetworkSettings.h"
+#include "SecurityHelper.h"
 #include "ReplyTimeout.h"
 #include "CorpKey.h"
 #include "Key.h"
@@ -178,14 +178,7 @@ namespace Evernus
 
     void APIInterface::processSslErrors(const QList<QSslError> &errors)
     {
-        QStringList errorTexts;
-        for (const auto &error : errors)
-            errorTexts << error.errorString();
-
-        const auto ret = QMessageBox::question(nullptr, tr("API error"), tr(
-            "Encountered SSL errors:\n%1\nAre you sure you wish to proceed (doing so can compromise your account security)?").arg(errorTexts.join("\n")));
-        if (ret == QMessageBox::Yes)
-            qobject_cast<QNetworkReply*>(sender())->ignoreSslErrors(errors);
+        SecurityHelper::handleSslErrors(errors, *qobject_cast<QNetworkReply *>(sender()));
     }
 
     template<class Key>

@@ -19,6 +19,7 @@
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QGroupBox>
+#include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QSettings>
@@ -137,6 +138,11 @@ namespace Evernus
         mMaxReplyTimeEdit->setValue(
             settings.value(NetworkSettings::maxReplyTimeKey, NetworkSettings::maxReplyTimeDefault).toUInt());
 
+        mIgnoreSslErrors = new QCheckBox{tr("Ignore certificate errors"), this};
+        miscGroupLayout->addRow(mIgnoreSslErrors);
+        mIgnoreSslErrors->setChecked(
+            settings.value(NetworkSettings::ignoreSslErrorsKey, NetworkSettings::ignoreSslErrorsDefault).toBool());
+
         mainLayout->addStretch();
 
         if (useProxy)
@@ -187,5 +193,6 @@ namespace Evernus
         settings.setValue(CRESTSettings::maxThreadsKey, mCRESTThreadsEdit->value());
 
         settings.setValue(NetworkSettings::maxReplyTimeKey, mMaxReplyTimeEdit->value());
+        settings.setValue(NetworkSettings::ignoreSslErrorsKey, mIgnoreSslErrors->isChecked());
     }
 }

@@ -24,6 +24,7 @@
 #include <QSettings>
 #include <QDebug>
 
+#include "SecurityHelper.h"
 #include "ReplyTimeout.h"
 
 #include "CRESTInterface.h"
@@ -175,6 +176,11 @@ namespace Evernus
         mPendingRequests.clear();
     }
 
+    void CRESTInterface::processSslErrors(const QList<QSslError> &errors)
+    {
+        SecurityHelper::handleSslErrors(errors, *qobject_cast<QNetworkReply *>(sender()));
+    }
+
     template<class T>
     void CRESTInterface::getRegionBuyOrdersUrl(uint regionId, T &&continuation) const
     {
@@ -282,6 +288,7 @@ namespace Evernus
 
         new ReplyTimeout{*reply};
 
+        connect(reply, &QNetworkReply::sslErrors, this, &CRESTInterface::processSslErrors);
         connect(reply, &QNetworkReply::finished, this, [=] {
             reply->deleteLater();
 
@@ -320,6 +327,7 @@ namespace Evernus
 
         QEventLoop loop;
         connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+        connect(reply, &QNetworkReply::sslErrors, this, &CRESTInterface::processSslErrors);
 
         loop.exec(QEventLoop::ExcludeUserInputEvents);
 
