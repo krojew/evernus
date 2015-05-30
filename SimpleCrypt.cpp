@@ -26,6 +26,7 @@
     */
     #include "SimpleCrypt.h"
     #include <QByteArray>
+    #include <QDataStream>
     #include <QtDebug>
     #include <QtGlobal>
     #include <QDateTime>

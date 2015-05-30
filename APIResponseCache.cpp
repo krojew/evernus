@@ -16,6 +16,7 @@
 
 #include <QStringBuilder>
 #include <QStandardPaths>
+#include <QDataStream>
 #include <QSaveFile>
 #include <QBuffer>
 #include <QDebug>

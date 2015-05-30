@@ -248,6 +248,188 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
         <translation type="vanished">Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
     </message>
+    <message>
+        <source>Unknown cache timer type: %1</source>
+        <translation type="obsolete">Nieznany typ czasu cache: %1</translation>
+    </message>
+    <message>
+        <source>Unknown update timer type: %1</source>
+        <translation type="obsolete">Nieznany typ czasu aktualizacji: %1</translation>
+    </message>
+    <message>
+        <source>Fetching characters...</source>
+        <translation type="obsolete">Pobieranie postaci...</translation>
+    </message>
+    <message>
+        <source>Fetching characters for key %1...</source>
+        <translation type="obsolete">Pobieranie postaci dla klucza %1...</translation>
+    </message>
+    <message>
+        <source>Evernus</source>
+        <translation type="obsolete">Evernus</translation>
+    </message>
+    <message>
+        <source>An error occurred while updating character key information: %1. Data sync should work, but character tab will display incorrect information.</source>
+        <translation type="obsolete">Wystąpił błąd aktualizacji informacji o kluczu postaci: %1 Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
+    </message>
+    <message>
+        <source>An error occurred while updating character key information. Data sync should work, but character tab will display incorrect information.</source>
+        <translation type="obsolete">Wystąpił błąd aktualizacji informacji o kluczu postaci Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
+    </message>
+    <message>
+        <source>Fetching assets for character %1...</source>
+        <translation type="obsolete">Pobieranie aktywów dla postaci: %1...</translation>
+    </message>
+    <message>
+        <source>Key not found!</source>
+        <translation type="obsolete">Klucz nie znaleziony!</translation>
+    </message>
+    <message>
+        <source>Character not found!</source>
+        <translation type="obsolete">Postać nie znaleziona!</translation>
+    </message>
+    <message>
+        <source>Fetching contracts for character %1...</source>
+        <translation type="obsolete">Pobieranie kontraktów dla postaci: %1...</translation>
+    </message>
+    <message>
+        <source>Fetching wallet journal for character %1...</source>
+        <translation type="obsolete">Pobieranie dziennika dla postaci %1...</translation>
+    </message>
+    <message>
+        <source>Fetching wallet journal for character %1 (this may take a while)...</source>
+        <translation type="obsolete">Pobieranie dziennika dla postaci %1 (może zająć sporo czasu)...</translation>
+    </message>
+    <message>
+        <source>Fetching wallet transactions for character %1...</source>
+        <translation type="obsolete">Pobieranie transakcji dla postaci %1...</translation>
+    </message>
+    <message>
+        <source>Fetching wallet transactions for character %1 (this may take a while)...</source>
+        <translation type="obsolete">Pobieranie transakcji dla postaci %1 (może zajać sporo czasu)...</translation>
+    </message>
+    <message>
+        <source>Fetching market orders for character %1...</source>
+        <translation type="obsolete">Pobieranie zleceń dla postaci %1...</translation>
+    </message>
+    <message>
+        <source>Fetching corporation contracts for character %1...</source>
+        <translation type="obsolete">Pobieranie kontraktów korporacji dla postaci %1...</translation>
+    </message>
+    <message>
+        <source>Fetching corporation wallet journal for character %1...</source>
+        <translation type="obsolete">Pobieranie dziennika korporacji dla postaci %1...</translation>
+    </message>
+    <message>
+        <source>Fetching corporation wallet journal for character %1 (this may take a while)...</source>
+        <translation type="obsolete">Pobieranie dziennika korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
+    </message>
+    <message>
+        <source>Fetching corporation wallet transactions for character %1...</source>
+        <translation type="obsolete">Pobieranie transakcji korporacji dla postaci %1...</translation>
+    </message>
+    <message>
+        <source>Fetching corporation wallet transactions for character %1 (this may take a while)...</source>
+        <translation type="obsolete">Pobieranie transakcji korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
+    </message>
+    <message>
+        <source>Fetching corporation market orders for character %1...</source>
+        <translation type="obsolete">Pobieranie zleceń korporacji dla postaci %1...</translation>
+    </message>
+    <message>
+        <source>Fetching conquerable stations...</source>
+        <translation type="obsolete">Pobieranie stacji graczy...</translation>
+    </message>
+    <message>
+        <source>Saving %1 imported orders...</source>
+        <translation type="obsolete">Zapisywanie %1 zaimportowanych zleceń...</translation>
+    </message>
+    <message>
+        <source>Select Mentat directory</source>
+        <translation type="obsolete">Wybierz katalog Mentat</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="obsolete">Błąd</translation>
+    </message>
+    <message>
+        <source>Error opening %1</source>
+        <translation type="obsolete">Błąd otwierania %1</translation>
+    </message>
+    <message>
+        <source>Importing order history...</source>
+        <translation type="obsolete">Importowanie historii zleceń...</translation>
+    </message>
+    <message>
+        <source>Importing order history: %1 processed</source>
+        <translation type="obsolete">Importowanie historii zleceń: %1 przetworzonych</translation>
+    </message>
+    <message>
+        <source>Importing order history: storing %1 orders (this may take a while)</source>
+        <translation type="obsolete">Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
+    </message>
+    <message>
+        <source>Synchronizing with LMeve...</source>
+        <translation type="obsolete">Synchronizowanie z LMeve...</translation>
+    </message>
+    <message>
+        <source>SMTP Error</source>
+        <translation type="obsolete">Błąd SMTP</translation>
+    </message>
+    <message>
+        <source>Error sending email: %1</source>
+        <translation type="obsolete">Błąd wysyłania maila: %1</translation>
+    </message>
+    <message>
+        <source>Mail Error</source>
+        <translation type="obsolete">Błąd maila</translation>
+    </message>
+    <message>
+        <source>Importing item prices...</source>
+        <translation type="obsolete">Importowanie cen...</translation>
+    </message>
+    <message>
+        <source>Cannot determine market logs path!</source>
+        <translation type="obsolete">Nie udało się znaleźć ścieżki logów handlu!</translation>
+    </message>
+    <message>
+        <source>No market logs found!</source>
+        <translation type="obsolete">Nie znaleizono logów handlu!</translation>
+    </message>
+    <message>
+        <source>Could not open market log file!</source>
+        <translation type="obsolete">Nie udało się otworzyć pliku z logami!</translation>
+    </message>
+    <message>
+        <source>[Evernus] Market orders fulfilled</source>
+        <translation type="obsolete">[Evernus] Zakończone zlecenia</translation>
+    </message>
+    <message>
+        <source>The following orders have changed their status:
+
+</source>
+        <translation type="obsolete">Poniższe zlecenia zmieniły stan:
+
+</translation>
+    </message>
+    <message>
+        <source>    %1 x%2 [%3]
+</source>
+        <translation type="obsolete">    %1 x%2 [%3]
+</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t find character for order import!</source>
+        <translation type="obsolete">Nie znaleziono postaci podczas importowania zleceń!</translation>
+    </message>
+    <message>
+        <source>Fetching contract items for contract %1...</source>
+        <translation type="obsolete">Pobieranie przedmiotów kontraktu: %1...</translation>
+    </message>
+    <message>
+        <source>Fetching character %1...</source>
+        <translation type="obsolete">Pobieranie postaci %1...</translation>
+    </message>
 </context>
 <context>
     <name>Evernus::APIInterface</name>
@@ -258,6 +440,10 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Wystąpiły błędy SSL:
 
 %1</translation>
+    </message>
+    <message>
+        <source>CREST error</source>
+        <translation type="obsolete">Błąd CREST</translation>
     </message>
 </context>
 <context>
@@ -276,7 +462,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::APIResponseCache</name>
     <message>
-        <location filename="../APIResponseCache.cpp" line="53"/>
+        <location filename="../APIResponseCache.cpp" line="54"/>
         <source>Cannot create cache path.</source>
         <translation>Błąd tworzenia katalogu cache.</translation>
     </message>
@@ -1579,183 +1765,183 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::EvernusApplication</name>
     <message>
-        <location filename="../EvernusApplication.cpp" line="107"/>
-        <location filename="../EvernusApplication.cpp" line="194"/>
+        <location filename="../EvernusApplication.cpp" line="114"/>
+        <location filename="../EvernusApplication.cpp" line="201"/>
         <source>Loading...</source>
         <translation>Ładowanie...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="109"/>
+        <location filename="../EvernusApplication.cpp" line="116"/>
         <source>Creating databases...</source>
         <translation>Tworzenie baz danych...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="112"/>
+        <location filename="../EvernusApplication.cpp" line="119"/>
         <source>Creating schemas...</source>
         <translation>Tworzenie modelu danych...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="140"/>
+        <location filename="../EvernusApplication.cpp" line="147"/>
         <source>Precaching ref types...</source>
         <translation>Odczyt typów...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="143"/>
+        <location filename="../EvernusApplication.cpp" line="150"/>
         <source>Precaching timers...</source>
         <translation>Odczyt czasów...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="147"/>
+        <location filename="../EvernusApplication.cpp" line="154"/>
         <source>Precaching jump map...</source>
         <translation>Odczyt mapy skoków...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="150"/>
+        <location filename="../EvernusApplication.cpp" line="157"/>
         <source>Clearing old wallet entries...</source>
         <translation>Czyszczenie starych wpisów portfela...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="153"/>
+        <location filename="../EvernusApplication.cpp" line="160"/>
         <source>Clearing old market orders...</source>
         <translation>Czyszczenie starych zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="156"/>
+        <location filename="../EvernusApplication.cpp" line="163"/>
         <source>Setting up IGB service...</source>
         <translation>Włączanie usługi IGB...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="177"/>
+        <location filename="../EvernusApplication.cpp" line="184"/>
         <source>Setting up HTTP service...</source>
         <translation>Włączanie usługi HTTP...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="319"/>
-        <location filename="../EvernusApplication.cpp" line="365"/>
+        <location filename="../EvernusApplication.cpp" line="326"/>
+        <location filename="../EvernusApplication.cpp" line="372"/>
         <source>Unknown cache timer type: %1</source>
         <translation>Nieznany typ czasu cache: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="435"/>
+        <location filename="../EvernusApplication.cpp" line="442"/>
         <source>Unknown update timer type: %1</source>
         <translation>Nieznany typ czasu aktualizacji: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="750"/>
+        <location filename="../EvernusApplication.cpp" line="757"/>
         <source>Fetching characters...</source>
         <translation>Pobieranie postaci...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="763"/>
+        <location filename="../EvernusApplication.cpp" line="770"/>
         <source>Fetching characters for key %1...</source>
         <translation>Pobieranie postaci dla klucza %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="776"/>
-        <location filename="../EvernusApplication.cpp" line="782"/>
-        <location filename="../EvernusApplication.cpp" line="2213"/>
-        <location filename="../EvernusApplication.cpp" line="2251"/>
+        <location filename="../EvernusApplication.cpp" line="783"/>
+        <location filename="../EvernusApplication.cpp" line="789"/>
+        <location filename="../EvernusApplication.cpp" line="2220"/>
+        <location filename="../EvernusApplication.cpp" line="2258"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="776"/>
+        <location filename="../EvernusApplication.cpp" line="783"/>
         <source>An error occurred while updating character key information: %1. Data sync should work, but character tab will display incorrect information.</source>
         <translation>Wystąpił błąd aktualizacji informacji o kluczu postaci: %1 Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="782"/>
+        <location filename="../EvernusApplication.cpp" line="789"/>
         <source>An error occurred while updating character key information. Data sync should work, but character tab will display incorrect information.</source>
         <translation>Wystąpił błąd aktualizacji informacji o kluczu postaci Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="831"/>
+        <location filename="../EvernusApplication.cpp" line="838"/>
         <source>Fetching assets for character %1...</source>
         <translation>Pobieranie aktywów dla postaci: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="866"/>
-        <location filename="../EvernusApplication.cpp" line="926"/>
-        <location filename="../EvernusApplication.cpp" line="987"/>
-        <location filename="../EvernusApplication.cpp" line="1043"/>
-        <location filename="../EvernusApplication.cpp" line="1068"/>
-        <location filename="../EvernusApplication.cpp" line="1135"/>
-        <location filename="../EvernusApplication.cpp" line="1195"/>
-        <location filename="../EvernusApplication.cpp" line="1252"/>
-        <location filename="../EvernusApplication.cpp" line="1277"/>
+        <location filename="../EvernusApplication.cpp" line="873"/>
+        <location filename="../EvernusApplication.cpp" line="933"/>
+        <location filename="../EvernusApplication.cpp" line="994"/>
+        <location filename="../EvernusApplication.cpp" line="1050"/>
+        <location filename="../EvernusApplication.cpp" line="1075"/>
+        <location filename="../EvernusApplication.cpp" line="1142"/>
+        <location filename="../EvernusApplication.cpp" line="1202"/>
+        <location filename="../EvernusApplication.cpp" line="1259"/>
+        <location filename="../EvernusApplication.cpp" line="1284"/>
         <source>Key not found!</source>
         <translation>Klucz nie znaleziony!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="870"/>
-        <location filename="../EvernusApplication.cpp" line="930"/>
-        <location filename="../EvernusApplication.cpp" line="991"/>
-        <location filename="../EvernusApplication.cpp" line="1047"/>
-        <location filename="../EvernusApplication.cpp" line="1072"/>
-        <location filename="../EvernusApplication.cpp" line="1199"/>
-        <location filename="../EvernusApplication.cpp" line="1256"/>
+        <location filename="../EvernusApplication.cpp" line="877"/>
+        <location filename="../EvernusApplication.cpp" line="937"/>
+        <location filename="../EvernusApplication.cpp" line="998"/>
+        <location filename="../EvernusApplication.cpp" line="1054"/>
+        <location filename="../EvernusApplication.cpp" line="1079"/>
+        <location filename="../EvernusApplication.cpp" line="1206"/>
+        <location filename="../EvernusApplication.cpp" line="1263"/>
         <source>Character not found!</source>
         <translation>Postać nie znaleziona!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="878"/>
+        <location filename="../EvernusApplication.cpp" line="885"/>
         <source>Fetching contracts for character %1...</source>
         <translation>Pobieranie kontraktów dla postaci: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1502"/>
+        <location filename="../EvernusApplication.cpp" line="1509"/>
         <source>Synchronizing with LMeve...</source>
         <translation>Synchronizowanie z LMeve...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2449"/>
+        <location filename="../EvernusApplication.cpp" line="2456"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="938"/>
+        <location filename="../EvernusApplication.cpp" line="945"/>
         <source>Fetching wallet journal for character %1...</source>
         <translation>Pobieranie dziennika dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="947"/>
+        <location filename="../EvernusApplication.cpp" line="954"/>
         <source>Fetching wallet journal for character %1 (this may take a while)...</source>
         <translation>Pobieranie dziennika dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="999"/>
+        <location filename="../EvernusApplication.cpp" line="1006"/>
         <source>Fetching wallet transactions for character %1...</source>
         <translation>Pobieranie transakcji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1011"/>
+        <location filename="../EvernusApplication.cpp" line="1018"/>
         <source>Fetching wallet transactions for character %1 (this may take a while)...</source>
         <translation>Pobieranie transakcji dla postaci %1 (może zajać sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1055"/>
-        <location filename="../EvernusApplication.cpp" line="1080"/>
+        <location filename="../EvernusApplication.cpp" line="1062"/>
+        <location filename="../EvernusApplication.cpp" line="1087"/>
         <source>Fetching market orders for character %1...</source>
         <translation>Pobieranie zleceń dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1092"/>
+        <location filename="../EvernusApplication.cpp" line="1099"/>
         <source>Fetching corporation contracts for character %1...</source>
         <translation>Pobieranie kontraktów korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1207"/>
+        <location filename="../EvernusApplication.cpp" line="1214"/>
         <source>Fetching corporation wallet transactions for character %1...</source>
         <translation>Pobieranie transakcji korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1220"/>
+        <location filename="../EvernusApplication.cpp" line="1227"/>
         <source>Fetching corporation wallet transactions for character %1 (this may take a while)...</source>
         <translation>Pobieranie transakcji korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1264"/>
-        <location filename="../EvernusApplication.cpp" line="1285"/>
+        <location filename="../EvernusApplication.cpp" line="1271"/>
+        <location filename="../EvernusApplication.cpp" line="1292"/>
         <source>Fetching corporation market orders for character %1...</source>
         <translation>Pobieranie zleceń korporacji dla postaci %1...</translation>
     </message>
@@ -1776,48 +1962,48 @@ Czy chcesz kontynuować?
 Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialność za jakąkolwiek karę CPP może na Ciebie nałożyć, jeśli zmienią swoją politykę.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1361"/>
+        <location filename="../EvernusApplication.cpp" line="1368"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1595"/>
+        <location filename="../EvernusApplication.cpp" line="1602"/>
         <source>SMTP Error</source>
         <translation>Błąd SMTP</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1595"/>
-        <location filename="../EvernusApplication.cpp" line="1603"/>
+        <location filename="../EvernusApplication.cpp" line="1602"/>
+        <location filename="../EvernusApplication.cpp" line="1610"/>
         <source>Error sending email: %1</source>
         <translation>Błąd wysyłania maila: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1603"/>
+        <location filename="../EvernusApplication.cpp" line="1610"/>
         <source>Mail Error</source>
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1919"/>
+        <location filename="../EvernusApplication.cpp" line="1926"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1933"/>
+        <location filename="../EvernusApplication.cpp" line="1940"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1944"/>
+        <location filename="../EvernusApplication.cpp" line="1951"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2214"/>
+        <location filename="../EvernusApplication.cpp" line="2221"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2218"/>
+        <location filename="../EvernusApplication.cpp" line="2225"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1826,69 +2012,69 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2221"/>
+        <location filename="../EvernusApplication.cpp" line="2228"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2251"/>
+        <location filename="../EvernusApplication.cpp" line="2258"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1143"/>
+        <location filename="../EvernusApplication.cpp" line="1150"/>
         <source>Fetching corporation wallet journal for character %1...</source>
         <translation>Pobieranie dziennika korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1155"/>
+        <location filename="../EvernusApplication.cpp" line="1162"/>
         <source>Fetching corporation wallet journal for character %1 (this may take a while)...</source>
         <translation>Pobieranie dziennika korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1297"/>
+        <location filename="../EvernusApplication.cpp" line="1304"/>
         <source>Fetching conquerable stations...</source>
         <translation>Pobieranie stacji graczy...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1416"/>
+        <location filename="../EvernusApplication.cpp" line="1423"/>
         <source>Select Mentat directory</source>
         <translation>Wybierz katalog Mentat</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1426"/>
+        <location filename="../EvernusApplication.cpp" line="1433"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1426"/>
+        <location filename="../EvernusApplication.cpp" line="1433"/>
         <source>Error opening %1</source>
         <translation>Błąd otwierania %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1430"/>
+        <location filename="../EvernusApplication.cpp" line="1437"/>
         <source>Importing order history...</source>
         <translation>Importowanie historii zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1476"/>
+        <location filename="../EvernusApplication.cpp" line="1483"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importowanie historii zleceń: %1 przetworzonych</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1481"/>
+        <location filename="../EvernusApplication.cpp" line="1488"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2523"/>
+        <location filename="../EvernusApplication.cpp" line="2530"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1908"/>
+        <location filename="../EvernusApplication.cpp" line="1915"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>

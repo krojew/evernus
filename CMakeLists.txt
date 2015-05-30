@@ -786,6 +786,7 @@ if(APPLE)
     endforeach()
 
     install(FILES iconfile.icns DESTINATION "${BUNDLE_PATH}/Contents/Resources/")
+    install(FILES "cert.pem" DESTINATION "${BUNDLE_PATH}/Contents/MacOS/")
 
     find_path(MACDEPLOYQT_PATH macdeployqt PATH_SUFFIXES bin)
     if(NOT MACDEPLOYQT_PATH)
