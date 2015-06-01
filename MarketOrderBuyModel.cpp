@@ -328,7 +328,7 @@ namespace Evernus
             }
             break;
         case Qt::BackgroundRole:
-            if (column == priceColumn)
+            if (column == priceColumn && data->getState() == MarketOrder::State::Active)
             {
                 const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
                 if (!price->isNew())
