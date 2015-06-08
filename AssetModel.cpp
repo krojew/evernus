@@ -436,11 +436,11 @@ namespace Evernus
 
             const auto locationId = (mCustomStationId == 0) ? (*id) : (mCustomStationId);
 
-            auto treeItem = createTreeItemForItem(*item, locationId, assets->getCharacterId());
-
             const auto curAssets = mTotalAssets;
             const auto curVolume = mTotalVolume;
             const auto curSellPrice = mTotalSellPrice;
+
+            auto treeItem = createTreeItemForItem(*item, locationId, assets->getCharacterId());
 
             buildItemMap(*item, *treeItem, locationId, assets->getCharacterId());
             locationItem->appendChild(std::move(treeItem));
