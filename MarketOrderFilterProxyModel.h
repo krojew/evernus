@@ -78,6 +78,7 @@ namespace Evernus
 
     protected:
         virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
+        virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
 
     private:
         const EveDataProvider &mDataProvider;

@@ -118,6 +118,26 @@ namespace Evernus
         return acceptsStatus(*order) && acceptsPriceStatus(*order) && acceptsByScript(*order);
     }
 
+    bool MarketOrderFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+    {
+        const auto role = sortRole();
+        const auto l = (left.model() != nullptr) ? (left.model()->data(left, role)) : (QVariant{});
+        const auto r = (right.model() != nullptr) ? (right.model()->data(right, role)) : (QVariant{});
+
+        // volume?
+        if (static_cast<QMetaType::Type>(l.type()) == QMetaType::QVariantList &&
+            static_cast<QMetaType::Type>(r.type()) == QMetaType::QVariantList)
+        {
+            const auto ll = l.toList();
+            const auto rl = r.toList();
+
+            if (ll.size() == 2 && rl.size() == 2)
+                return (ll[0].toDouble() / ll[1].toDouble()) < (rl[0].toDouble() / rl[1].toDouble());
+        }
+
+        return LeafFilterProxyModel::lessThan(left, right);
+    }
+
     bool MarketOrderFilterProxyModel::acceptsStatus(const MarketOrder &order) const
     {
         const auto type = static_cast<MarketOrderModel *>(sourceModel())->getType();
