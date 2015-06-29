@@ -68,7 +68,7 @@ namespace Evernus
                                        const ItemCostProvider &itemCostProvider,
                                        EveDataProvider &dataProvider,
                                        QWidget *parent)
-        : QDialog(parent)
+        : QDialog(parent, Qt::Dialog | Qt::WindowMinimizeButtonHint)
         , mCharacterRepository(characterRepository)
         , mItemCostProvider(itemCostProvider)
         , mDataProvider(dataProvider)
