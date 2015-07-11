@@ -2011,6 +2011,15 @@ namespace Evernus
                     order.setType((values[typeColumn] == "True") ? (MarketOrder::Type::Buy) : (MarketOrder::Type::Sell));
 
                     auto issued = QDateTime::fromString(values[issuedColumn], "yyyy-MM-dd HH:mm:ss.zzz");
+                    if (!issued.isValid())
+                    {
+                        issued = QDateTime::fromString(values[issuedColumn], "yyyy-MM-dd");
+                        if (!issued.isValid())
+                        {
+                            // thank CCP
+                            issued = QDateTime::currentDateTimeUtc();
+                        }
+                    }
                     issued.setTimeSpec(Qt::UTC);
 
                     order.setIssued(issued);
