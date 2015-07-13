@@ -21,7 +21,7 @@ namespace Evernus
         return mGroupId;
     }
 
-    void EveType::setGroupId(uint id)
+    void EveType::setGroupId(uint id) noexcept
     {
         mGroupId = id;
     }
@@ -136,13 +136,43 @@ namespace Evernus
         mMarketGroup = id;
     }
 
-    double EveType::getChanceOfDuplicating() const noexcept
+    uint EveType::getGraphicId() const noexcept
     {
-        return mChanceOfDuplicating;
+        return mGraphicId;
     }
 
-    void EveType::setChanceOfDuplicating(double value) noexcept
+    void EveType::setGraphicId(uint id) noexcept
     {
-        mChanceOfDuplicating = value;
+        mGraphicId = id;
+    }
+
+    uint EveType::getIconId() const noexcept
+    {
+        return mIconId;
+    }
+
+    void EveType::setIconId(uint id) noexcept
+    {
+        mIconId = id;
+    }
+
+    double EveType::getRadius() const noexcept
+    {
+        return mRadius;
+    }
+
+    void EveType::setRadius(double value) noexcept
+    {
+        mRadius = value;
+    }
+
+    uint EveType::getSoundId() const noexcept
+    {
+        return mSoundId;
+    }
+
+    void EveType::setSoundId(uint id) noexcept
+    {
+        mSoundId = id;
     }
 }

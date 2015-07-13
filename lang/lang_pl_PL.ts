@@ -1653,8 +1653,8 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../EvernusApplication.cpp" line="783"/>
         <location filename="../EvernusApplication.cpp" line="789"/>
-        <location filename="../EvernusApplication.cpp" line="2220"/>
-        <location filename="../EvernusApplication.cpp" line="2258"/>
+        <location filename="../EvernusApplication.cpp" line="2229"/>
+        <location filename="../EvernusApplication.cpp" line="2267"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -1708,7 +1708,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation>Synchronizowanie z LMeve...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2456"/>
+        <location filename="../EvernusApplication.cpp" line="2465"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
@@ -1812,12 +1812,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2221"/>
+        <location filename="../EvernusApplication.cpp" line="2230"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2225"/>
+        <location filename="../EvernusApplication.cpp" line="2234"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1826,14 +1826,14 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2228"/>
+        <location filename="../EvernusApplication.cpp" line="2237"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2258"/>
+        <location filename="../EvernusApplication.cpp" line="2267"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
@@ -1883,7 +1883,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2530"/>
+        <location filename="../EvernusApplication.cpp" line="2539"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>

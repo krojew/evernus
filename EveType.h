@@ -39,7 +39,7 @@ namespace Evernus
         virtual ~EveType() = default;
 
         uint getGroupId() const noexcept;
-        void setGroupId(uint id);
+        void setGroupId(uint id) noexcept;
 
         QString getName() const &;
         QString &&getName() && noexcept;
@@ -73,8 +73,17 @@ namespace Evernus
         MarketGroupIdType getMarketGroupId() const;
         void setMarketGroupId(const MarketGroupIdType &id);
 
-        double getChanceOfDuplicating() const noexcept;
-        void setChanceOfDuplicating(double value) noexcept;
+        uint getGraphicId() const noexcept;
+        void setGraphicId(uint id) noexcept;
+
+        uint getIconId() const noexcept;
+        void setIconId(uint id) noexcept;
+
+        double getRadius() const noexcept;
+        void setRadius(double value) noexcept;
+
+        uint getSoundId() const noexcept;
+        void setSoundId(uint id) noexcept;
 
         EveType &operator =(const EveType &) = default;
         EveType &operator =(EveType &&) = default;
@@ -91,6 +100,9 @@ namespace Evernus
         double mBasePrice = 0.;
         bool mPublished = true;
         MarketGroupIdType mMarketGroup;
-        double mChanceOfDuplicating = 0.;
+        uint mGraphicId = 0;
+        uint mIconId = 0;
+        double mRadius = 0.;
+        uint mSoundId = 0;
     };
 }
