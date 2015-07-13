@@ -5821,14 +5821,14 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="182"/>
-        <location filename="../Updater.cpp" line="193"/>
-        <location filename="../Updater.cpp" line="203"/>
+        <location filename="../Updater.cpp" line="183"/>
+        <location filename="../Updater.cpp" line="194"/>
+        <location filename="../Updater.cpp" line="204"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="182"/>
+        <location filename="../Updater.cpp" line="183"/>
         <source>Error contacting update server: %1</source>
         <translation>Błąd odpytywania serwera akutalizacji: %1</translation>
     </message>
@@ -5837,10 +5837,10 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="142"/>
-        <location filename="../Updater.cpp" line="250"/>
-        <location filename="../Updater.cpp" line="257"/>
-        <location filename="../Updater.cpp" line="269"/>
+        <location filename="../Updater.cpp" line="143"/>
+        <location filename="../Updater.cpp" line="251"/>
+        <location filename="../Updater.cpp" line="258"/>
+        <location filename="../Updater.cpp" line="270"/>
         <source>Update</source>
         <translation>Aktualizacja</translation>
     </message>
@@ -5852,56 +5852,56 @@ Please click on &quot;Import all&quot; after the update.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="250"/>
+        <location filename="../Updater.cpp" line="251"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania wszystkich danych.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="257"/>
+        <location filename="../Updater.cpp" line="258"/>
         <source>This update requires re-importing all item prices.</source>
         <translation>Ta aktualizacja wymaga ponownego zaimportowania cen przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="269"/>
+        <location filename="../Updater.cpp" line="270"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania dziennika i transakcji korporacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="142"/>
+        <location filename="../Updater.cpp" line="143"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation>Wystąpił błąd podczas akutalizacji.
 Kopia zapasowa bazay danych została zapisana jako %1. Zajrzyj do pomocy online w celu uzyskania informacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="193"/>
+        <location filename="../Updater.cpp" line="194"/>
         <source>Error parsing response from the update server: %1</source>
         <translation>Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="203"/>
+        <location filename="../Updater.cpp" line="204"/>
         <source>Missing update version information!</source>
         <translation>Brak informacji o wersji!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="216"/>
+        <location filename="../Updater.cpp" line="217"/>
         <source>No update found</source>
         <translation>Brak aktualizacji</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="216"/>
+        <location filename="../Updater.cpp" line="217"/>
         <source>Your current version is up-to-date.</source>
         <translation>Twoja wersja jest najbardziej aktualna.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="222"/>
+        <location filename="../Updater.cpp" line="223"/>
         <source>Update found</source>
         <translation>Znaleziono aktualizację</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="222"/>
+        <location filename="../Updater.cpp" line="223"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation>Znaleziono nową wersję: %1
