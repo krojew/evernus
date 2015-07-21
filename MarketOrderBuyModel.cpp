@@ -151,7 +151,13 @@ namespace Evernus
                     return (price->getPrice() > data->getPrice()) ? (0) : (3);
                 }
             case priceDifferenceColumn:
-                return mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange())->getPrice() - data->getPrice();
+                {
+                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
+                    if (price->isNew())
+                        break;
+
+                    return price->getPrice() - data->getPrice();
+                }
             case volumeColumn:
                 return QVariantList{} << data->getVolumeRemaining() << data->getVolumeEntered();
             case totalColumn:
@@ -247,7 +253,13 @@ namespace Evernus
                     }
                     break;
                 case priceDifferenceColumn:
-                    return TextUtils::currencyToString(mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange())->getPrice() - data->getPrice(), locale);
+                    {
+                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
+                        if (price->isNew())
+                            break;
+
+                        return TextUtils::currencyToString(price->getPrice() - data->getPrice(), locale);
+                    }
                 case volumeColumn:
                     return QString{"%1/%2"}.arg(locale.toString(data->getVolumeRemaining())).arg(locale.toString(data->getVolumeEntered()));
                 case totalColumn:
