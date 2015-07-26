@@ -47,7 +47,10 @@ namespace Evernus
         type->setBasePrice(record.value("basePrice").toDouble());
         type->setPublished(record.value("published").toInt() != 0);
         type->setMarketGroupId((marketGroupId.isNull()) ? (EveType::MarketGroupIdType{}) : (marketGroupId.value<MarketGroup::IdType>()));
-        type->setChanceOfDuplicating(record.value("chanceOfDuplicating").toDouble());
+        type->setGraphicId(record.value("graphicID").toUInt());
+        type->setIconId(record.value("iconID").toUInt());
+        type->setRadius(record.value("radius").toDouble());
+        type->setSoundId(record.value("soundID").toUInt());
         type->setNew(false);
 
         return type;
@@ -95,7 +98,10 @@ namespace Evernus
             << "basePrice"
             << "published"
             << "marketGroupID"
-            << "chanceOfDuplicating";
+            << "graphicID"
+            << "iconID"
+            << "radius"
+            << "soundID";
     }
 
     void EveTypeRepository::bindValues(const EveType &entity, QSqlQuery &query) const

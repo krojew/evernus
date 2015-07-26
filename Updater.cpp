@@ -39,6 +39,7 @@
 #include "PriceSettings.h"
 #include "OrderSettings.h"
 #include "PathSettings.h"
+#include "Version.h"
 
 #include "Updater.h"
 
@@ -50,13 +51,16 @@ namespace Evernus
 
         const auto curVersion
             = settings.value(EvernusApplication::versionKey, QCoreApplication::applicationVersion()).toString().split('.');
-        if (curVersion.size() != 2)
+        if (curVersion.size() != 2 || (curVersion[0] == version::majorStr() && curVersion[1] == version::minorStr()))
+        {
+            qDebug() << "Not updating from" << curVersion;
             return;
+        }
 
         const auto majorVersion = curVersion[0].toUInt();
         const auto minorVersion = curVersion[1].toUInt();
 
-        qDebug() << "Update from" << majorVersion << "." << minorVersion;
+        qDebug() << "Update from" << curVersion;
 
         const auto &characterRepo = provider.getCharacterRepository();
         const auto &cacheTimerRepo = provider.getCacheTimerRepository();
@@ -89,53 +93,50 @@ namespace Evernus
                     }
                 }
 
-                if (minorVersion < 32)
+                if (minorVersion < 30)
                 {
-                    if (minorVersion < 30)
+                    if (minorVersion < 27)
                     {
-                        if (minorVersion < 27)
+                        if (minorVersion < 23)
                         {
-                            if (minorVersion < 23)
+                            if (minorVersion < 16)
                             {
-                                if (minorVersion < 16)
+                                if (minorVersion < 13)
                                 {
-                                    if (minorVersion < 13)
+                                    if (minorVersion < 11)
                                     {
-                                        if (minorVersion < 11)
+                                        if (minorVersion < 9)
                                         {
-                                            if (minorVersion < 9)
-                                            {
-                                                if (minorVersion < 8)
-                                                    migrateTo18(externalOrderRepo);
+                                            if (minorVersion < 8)
+                                                migrateTo18(externalOrderRepo);
 
-                                                migrateTo19(characterRepo,
-                                                            walletJournalRepo,
-                                                            corpWalletJournalRepo,
-                                                            walletTransactionRepo,
-                                                            corpWalletTransactionRepo);
-                                            }
-
-                                            migrateTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
+                                            migrateTo19(characterRepo,
+                                                        walletJournalRepo,
+                                                        corpWalletJournalRepo,
+                                                        walletTransactionRepo,
+                                                        corpWalletTransactionRepo);
                                         }
 
-                                        migrateTo113();
+                                        migrateTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
                                     }
 
-                                    migrateTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
+                                    migrateTo113();
                                 }
 
-                                migrateTo123(externalOrderRepo, itemRepo);
+                                migrateTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
                             }
 
-                            migrateTo127(characterOrderRepo, corporationOrderRepo);
+                            migrateTo123(externalOrderRepo, itemRepo);
                         }
 
-                        migrateTo130();
+                        migrateTo127(characterOrderRepo, corporationOrderRepo);
                     }
 
-                    migrateTo132();
+                    migrateTo130();
                 }
             }
+
+            settings.remove(RegionTypeSelectDialog::settingsTypesKey);
         }
         catch (...)
         {
@@ -330,14 +331,5 @@ namespace Evernus
     void Updater::migrateTo130() const
     {
         QFile::remove(CachingEveDataProvider::getCacheDir().filePath(CachingEveDataProvider::systemDistanceCacheFileName));
-
-        QSettings settings;
-        settings.remove(RegionTypeSelectDialog::settingsTypesKey);
-    }
-
-    void Updater::migrateTo132() const
-    {
-        QSettings settings;
-        settings.remove(RegionTypeSelectDialog::settingsTypesKey);
     }
 }

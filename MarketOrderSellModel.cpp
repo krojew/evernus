@@ -158,7 +158,13 @@ namespace Evernus
                     return (price->getPrice() < data->getPrice()) ? (0) : (3);
                 }
             case priceDifferenceColumn:
-                return mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice();
+                {
+                    const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId());
+                    if (price->isNew())
+                        break;
+
+                    return price->getPrice() - data->getPrice();
+                }
             case priceDifferencePercentColumn:
                 {
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
@@ -295,7 +301,13 @@ namespace Evernus
                     }
                     break;
                 case priceDifferenceColumn:
-                    return TextUtils::currencyToString(mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice(), locale);
+                    {
+                        const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId());
+                        if (price->isNew())
+                            break;
+
+                        return TextUtils::currencyToString(price->getPrice() - data->getPrice(), locale);
+                    }
                 case priceDifferencePercentColumn:
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
