@@ -48,8 +48,15 @@ elseif(WIN32)
     find_package(Qt5WinExtras REQUIRED)
 
     set(ADDITIONAL_SRC evernus.rc qxtglobalshortcut_win.cpp)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /MP")
     set(ADDITIONAL_LIBS Qt5::WinExtras)
+
+    if(MSVC_VERSION LESS 1800) # < VS2013
+        message(FATAL_ERROR "Too old compiler, VS 2013 with CTP from November 2013 or newer required.")
+    elseif( MSVC_VERSION EQUAL 1800 ) # VS2013
+        message("VS 2013: Using CTP compiler from November 2013, make sure you have it.")
+        set(CMAKE_GENERATOR_TOOLSET "v120_CTP_Nov2013" CACHE STRING "Platform Toolset" FORCE)
+    endif() # > VS2013
 endif()
 
 set(TRANSLATIONS lang/lang_pl_PL.ts lang/lang_de_DE.ts)
