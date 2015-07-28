@@ -19,6 +19,7 @@
 #include <QDomDocument>
 #include <QMessageBox>
 #include <QSettings>
+#include <QProcess>
 #include <QDebug>
 #include <QUrl>
 
@@ -219,10 +220,31 @@ namespace Evernus
             return;
         }
 
+        const QUrl downloadUrl{"http://evernus.com/download"};
+
+#ifndef Q_OS_WIN
         const auto ret = QMessageBox::question(
             nullptr, tr("Update found"), tr("A new version is available: %1\nDo you wish to download it now?").arg(nextVersionString));
         if (ret == QMessageBox::Yes)
-            QDesktopServices::openUrl(QUrl{"http://evernus.com/download"});
+            QDesktopServices::openUrl(downloadUrl);
+#else
+        const auto ret = QMessageBox::question(
+            nullptr, tr("Update found"), tr("A new version is available: %1\nDo you wish to launch the updater?").arg(nextVersionString));
+        if (ret == QMessageBox::Yes)
+        {
+            qDebug() << "Starting maintenance tool...";
+            if (QProcess::startDetached("MaintenanceTool.exe"))
+            {
+                QCoreApplication::exit();
+            }
+            else
+            {
+                qDebug() << "Failed.";
+                if (QMessageBox::question(nullptr, tr("Update found"), tr("Couldn't launch updater. Download manually?")) == QMessageBox::Yes)
+                    QDesktopServices::openUrl(downloadUrl);
+            }
+        }
+#endif
     }
 
     void Updater::migrateTo03() const
