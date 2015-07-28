@@ -43,6 +43,7 @@
 #include "MarketOrderView.h"
 #include "EveDataProvider.h"
 #include "DatabaseUtils.h"
+#include "Defines.h"
 
 #include "MarketBrowserWidget.h"
 
@@ -783,7 +784,13 @@ namespace Evernus
         view->setModel(knownItemsProxy);
         connect(view->selectionModel(), &QItemSelectionModel::currentChanged, this, [knownItemsProxy, this](const auto &index) {
             if (index.isValid())
+            {
+#if EVERNUS_VS_TEMPLATE_LAMBDA_HACK
+                showOrdersForType(knownItemsProxy->data(index, Qt::UserRole).value<Evernus::EveType::IdType>());
+#else
                 showOrdersForType(knownItemsProxy->data(index, Qt::UserRole).template value<Evernus::EveType::IdType>());
+#endif
+            }
         });
 
         return knownItemsTab;

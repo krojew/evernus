@@ -19,6 +19,8 @@
 #include <QJsonValue>
 #include <QVariant>
 
+#include "Defines.h"
+
 #include "LMeveTask.h"
 
 namespace Evernus
@@ -40,10 +42,18 @@ namespace Evernus
         };
 
         set("characterID", [this](const auto &value) {
+#if EVERNUS_VS_TEMPLATE_LAMBDA_HACK
+            setCharacterId(value.value<Evernus::Character::IdType>());
+#else
             setCharacterId(value.template value<Evernus::Character::IdType>());
+#endif
         });
         set("typeID", [this](const auto &value) {
+#if EVERNUS_VS_TEMPLATE_LAMBDA_HACK
+            setTypeId(value.value<Evernus::EveType::IdType>());
+#else
             setTypeId(value.template value<Evernus::EveType::IdType>());
+#endif
         });
         set("activityName", [this](const auto &value) {
             setActivity(value.toString());
