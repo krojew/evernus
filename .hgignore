@@ -35,3 +35,4 @@ trans/lang_*
 x64/*
 Version.h
 trans/*
+.vs/*
