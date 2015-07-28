@@ -22,6 +22,7 @@
 #include <QProcess>
 #include <QDebug>
 #include <QUrl>
+#include <QDir>
 
 #include "CorpMarketOrderValueSnapshotRepository.h"
 #include "MarketOrderValueSnapshotRepository.h"
@@ -233,7 +234,7 @@ namespace Evernus
         if (ret == QMessageBox::Yes)
         {
             qDebug() << "Starting maintenance tool...";
-            if (QProcess::startDetached("MaintenanceTool.exe"))
+            if (QProcess::startDetached(QDir{QCoreApplication::applicationDirPath()}.filePath("../MaintenanceTool.exe")))
             {
                 QCoreApplication::exit();
             }
