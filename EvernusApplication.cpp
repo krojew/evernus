@@ -891,7 +891,7 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            mAPIManager.fetchContracts(*key, id, [key, task, id, this](auto &&data, const auto &error) {
+            mAPIManager.fetchContracts(*key, id, [key, task, id, this](Contracts &&data, const QString &error) {
                 if (error.isEmpty())
                 {
                     const auto it = std::remove_if(std::begin(data), std::end(data), [](const auto &contract) {
