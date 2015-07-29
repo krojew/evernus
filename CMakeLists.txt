@@ -112,7 +112,6 @@ qt5_wrap_cpp(
     CRESTManager.h
     DateFilteredPlotWidget.h
     DateRangeWidget.h
-    Defines.h
     DeviationSourceWidget.h
     EveDataProvider.h
     EvernusApplication.h
@@ -361,6 +360,7 @@ add_executable(
     DateFilteredPlotWidget.h
     DateRangeWidget.cpp
     DateRangeWidget.h
+    Defines.h
     DeviationSourceWidget.cpp
     DeviationSourceWidget.h
     Entity.h
