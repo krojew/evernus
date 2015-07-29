@@ -894,7 +894,7 @@ namespace Evernus
             mAPIManager.fetchContracts(*key, id, [key, task, id, this](Contracts &&data, const QString &error) {
                 if (error.isEmpty())
                 {
-                    const auto it = std::remove_if(std::begin(data), std::end(data), [](const auto &contract) {
+                    const auto it = std::remove_if(std::begin(data), std::end(data), [](const Contract &contract) {
                         return contract.isForCorp();
                     });
 
