@@ -234,7 +234,7 @@ namespace Evernus
         if (ret == QMessageBox::Yes)
         {
             qDebug() << "Starting maintenance tool...";
-            if (QProcess::startDetached(QDir{QCoreApplication::applicationDirPath()}.filePath("../MaintenanceTool.exe")))
+            if (QProcess::startDetached(QDir{QCoreApplication::applicationDirPath()}.filePath("../MaintenanceTool.exe"), QStringList()))
             {
                 QCoreApplication::exit();
             }
