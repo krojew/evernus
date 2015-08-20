@@ -928,7 +928,7 @@ namespace Evernus
 
         action = mViewTabsMenu->addAction(tr("Toggle corporation tabs"));
         action->setCheckable(true);
-        connect(action, &QAction::triggered, this, [=](auto checked) {
+        connect(action, &QAction::triggered, this, [=](bool checked) {
             toggleDefaultTabs(checked, TabType::Corp);
         });
     }
