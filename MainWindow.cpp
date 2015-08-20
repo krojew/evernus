@@ -663,7 +663,7 @@ namespace Evernus
                                            mRepositoryProvider.getCorpKeyRepository(),
                                            cacheTimerProvider,
                                            this};
-        addTab(charTab, tr("Character"));
+        addTab(charTab, tr("Character"), TabType::Character);
         connect(charTab, &CharacterWidget::importFromAPI, this, &MainWindow::importCharacter);
         connect(charTab, &CharacterWidget::importAll, this, &MainWindow::refreshAll);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::updateData);
@@ -686,7 +686,7 @@ namespace Evernus
                                              mRepositoryProvider.getCharacterRepository(),
                                              mEveDataProvider,
                                              this};
-        addTab(statsTab, tr("Statistics"));
+        addTab(statsTab, tr("Statistics"), TabType::Other);
         connect(this, &MainWindow::charactersChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::externalOrdersChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::assetsChanged, statsTab, &StatisticsWidget::updateBalanceData);
@@ -703,7 +703,7 @@ namespace Evernus
                                           cacheTimerProvider,
                                           mRepositoryProvider.getFilterTextRepository(),
                                           this};
-        addTab(assetsTab, tr("Assets"));
+        addTab(assetsTab, tr("Assets"), TabType::Other);
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
@@ -725,7 +725,7 @@ namespace Evernus
                                               mRepositoryProvider.getExternalOrderRepository(),
                                               false,
                                               this};
-        addTab(orderTab, tr("Character orders"));
+        addTab(orderTab, tr("Character orders"), TabType::Character);
         connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importMarketOrdersFromAPI);
         connect(orderTab, &MarketOrderWidget::importFromLogs, this, &MainWindow::importMarketOrdersFromLogs);
         connect(orderTab, &MarketOrderWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
@@ -748,7 +748,7 @@ namespace Evernus
                                                   mEveDataProvider,
                                                   false,
                                                   this};
-        addTab(journalTab, tr("Character journal"));
+        addTab(journalTab, tr("Character journal"), TabType::Character);
         connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
         connect(this, &MainWindow::walletJournalChanged, journalTab, &WalletJournalWidget::updateData);
 
@@ -760,7 +760,7 @@ namespace Evernus
                                                             mItemCostProvider,
                                                             false,
                                                             this};
-        addTab(transactionsTab, tr("Character transactions"));
+        addTab(transactionsTab, tr("Character transactions"), TabType::Character);
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
         connect(this, &MainWindow::charactersChanged, transactionsTab, &WalletTransactionsWidget::updateCharacters);
@@ -772,7 +772,7 @@ namespace Evernus
                                                mRepositoryProvider.getCharacterRepository(),
                                                false,
                                                this};
-        addTab(contractsTab, tr("Character contracts"));
+        addTab(contractsTab, tr("Character contracts"), TabType::Character);
         connect(contractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importContracts);
         connect(this, &MainWindow::contractsChanged, contractsTab, &ContractWidget::updateData);
 
@@ -787,7 +787,7 @@ namespace Evernus
                                                   mRepositoryProvider.getExternalOrderRepository(),
                                                   true,
                                                   this};
-        addTab(corpOrderTab, tr("Corporation orders"));
+        addTab(corpOrderTab, tr("Corporation orders"), TabType::Corp);
         connect(corpOrderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importCorpMarketOrdersFromAPI);
         connect(corpOrderTab, &MarketOrderWidget::importFromLogs, this, &MainWindow::importCorpMarketOrdersFromLogs);
         connect(corpOrderTab, &MarketOrderWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
@@ -809,7 +809,7 @@ namespace Evernus
                                                       mEveDataProvider,
                                                       true,
                                                       this};
-        addTab(corpJournalTab, tr("Corporation journal"));
+        addTab(corpJournalTab, tr("Corporation journal"), TabType::Corp);
         connect(corpJournalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importCorpWalletJournal);
         connect(this, &MainWindow::corpWalletJournalChanged, corpJournalTab, &WalletJournalWidget::updateData);
 
@@ -821,7 +821,7 @@ namespace Evernus
                                                                 mItemCostProvider,
                                                                 true,
                                                                 this};
-        addTab(corpTransactionsTab, tr("Corporation transactions"));
+        addTab(corpTransactionsTab, tr("Corporation transactions"), TabType::Corp);
         connect(corpTransactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importCorpWalletTransactions);
         connect(this, &MainWindow::corpWalletTransactionsChanged, corpTransactionsTab, &WalletTransactionsWidget::updateData);
         connect(this, &MainWindow::charactersChanged, corpTransactionsTab, &WalletTransactionsWidget::updateCharacters);
@@ -833,7 +833,7 @@ namespace Evernus
                                                    mRepositoryProvider.getCharacterRepository(),
                                                    true,
                                                    this};
-        addTab(corpContractsTab, tr("Corporation contracts"));
+        addTab(corpContractsTab, tr("Corporation contracts"), TabType::Corp);
         connect(corpContractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importCorpContracts);
         connect(this, &MainWindow::corpContractsChanged, corpContractsTab, &ContractWidget::updateData);
 
@@ -844,7 +844,7 @@ namespace Evernus
         connect(this, &MainWindow::walletTransactionsChanged, itemHistoryTab, &ItemHistoryWidget::updateData);
         connect(this, &MainWindow::corpWalletTransactionsChanged, itemHistoryTab, &ItemHistoryWidget::updateData);
         connect(this, &MainWindow::preferencesChanged, itemHistoryTab, &ItemHistoryWidget::handleNewPreferences);
-        addTab(itemHistoryTab, tr("Item history"));
+        addTab(itemHistoryTab, tr("Item history"), TabType::Other);
 
         auto marketBrowserTab = new MarketBrowserWidget{mRepositoryProvider.getExternalOrderRepository(),
                                                         mRepositoryProvider.getMarketOrderRepository(),
@@ -857,7 +857,7 @@ namespace Evernus
                                                         mEveDataProvider,
                                                         mItemCostProvider,
                                                         this};
-        mMarketBrowserTab = addTab(marketBrowserTab, tr("Market browser"));
+        mMarketBrowserTab = addTab(marketBrowserTab, tr("Market browser"), TabType::Other);
         connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(marketBrowserTab, &MarketBrowserWidget::externalOrdersChanged, this, &MainWindow::externalOrdersChanged);
@@ -869,7 +869,7 @@ namespace Evernus
         connect(this, &MainWindow::itemVolumeChanged, marketBrowserTab, &MarketBrowserWidget::updateData);
 
         auto itemCostTab = new ItemCostWidget{mItemCostProvider, mEveDataProvider, this};
-        addTab(itemCostTab, tr("Item costs"));
+        addTab(itemCostTab, tr("Item costs"), TabType::Other);
         connect(this, &MainWindow::itemCostsChanged, itemCostTab, &ItemCostWidget::updateData);
 
         auto lmEveTab = new LMeveWidget{cacheTimerProvider,
@@ -878,7 +878,7 @@ namespace Evernus
                                         mItemCostProvider,
                                         mRepositoryProvider.getCharacterRepository(),
                                         this};
-        addTab(lmEveTab, tr("LMeve"));
+        addTab(lmEveTab, tr("LMeve"), TabType::Other);
         connect(lmEveTab, &LMeveWidget::openPreferences, this, &MainWindow::showPreferences);
         connect(lmEveTab, &LMeveWidget::syncLMeve, this, &MainWindow::syncLMeve);
         connect(lmEveTab, &LMeveWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
@@ -899,7 +899,7 @@ namespace Evernus
         connect(marketAnalysisTab, &MarketAnalysisWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::preferencesChanged, marketAnalysisTab, &MarketAnalysisWidget::preferencesChanged);
         connect(this, &MainWindow::preferencesChanged, marketAnalysisTab, &MarketAnalysisWidget::handleNewPreferences);
-        addTab(marketAnalysisTab, tr("Market analysis"));
+        addTab(marketAnalysisTab, tr("Market analysis"), TabType::Other);
 
         QSettings settings;
 
@@ -909,6 +909,28 @@ namespace Evernus
             if (!settings.value(QString{UISettings::tabShowStateKey}.arg(i), true).toBool())
                 actions[i]->setChecked(false);
         }
+
+        mViewTabsMenu->addSeparator();
+
+        auto toggleDefaultTabs = [=](auto checked, auto type) {
+            for (const auto action : actions)
+            {
+                if (static_cast<TabType>(action->data().toInt()) == type)
+                    action->setChecked(checked);
+            }
+        };
+
+        auto action = mViewTabsMenu->addAction(tr("Toggle character tabs"));
+        action->setCheckable(true);
+        connect(action, &QAction::triggered, this, [=](auto checked) {
+            toggleDefaultTabs(checked, TabType::Character);
+        });
+
+        action = mViewTabsMenu->addAction(tr("Toggle corporation tabs"));
+        action->setCheckable(true);
+        connect(action, &QAction::triggered, this, [=](auto checked) {
+            toggleDefaultTabs(checked, TabType::Corp);
+        });
     }
 
     void MainWindow::createStatusBar()
@@ -928,7 +950,7 @@ namespace Evernus
         return scroll;
     }
 
-    int MainWindow::addTab(QWidget *widget, const QString &label)
+    int MainWindow::addTab(QWidget *widget, const QString &label, TabType type)
     {
         const auto index = mMainTabs->addTab(createMainViewTab(widget), label);
         mTabWidgets[index] = widget;
@@ -936,6 +958,7 @@ namespace Evernus
         auto action = mViewTabsMenu->addAction(label);
         action->setCheckable(true);
         action->setChecked(true);
+        action->setData(static_cast<int>(type));
         connect(action, &QAction::toggled, this, [index, this](bool checked) {
             mMainTabs->setTabEnabled(index, checked);
             mMainTabs->setElideMode(mMainTabs->elideMode());    // hack to refresh layout, since there is no api to do that

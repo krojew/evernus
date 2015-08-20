@@ -8,6 +8,7 @@ set(MAJOR_VERSION "1")
 set(MINOR_VERSION "33")
 
 find_package(Boost REQUIRED)
+find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
@@ -41,7 +42,7 @@ if(APPLE)
 elseif(UNIX)
     find_package(X11 REQUIRED)
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -pthread -stdlib=libc++ -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -stdlib=libc++ -pthread -g")
     set(ADDITIONAL_SRC qxtglobalshortcut_x11.cpp)
     set(ADDITIONAL_LIBS ${X11_LIBRARIES})
 elseif(WIN32)
@@ -219,7 +220,10 @@ qt5_add_resources(
 
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TRANSLATIONS})
 
-include_directories(${Boost_INCLUDE_DIRS} ${Qt5Gui_PRIVATE_INCLUDE_DIRS})
+include_directories(
+    ${Boost_INCLUDE_DIRS}
+    ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
+)
 
 add_executable(
     ${PROJECT_NAME}
@@ -770,6 +774,7 @@ endif()
 target_link_libraries(
     ${PROJECT_NAME}
     ${Boost_LIBRARIES}
+    Qt5::Core
     Qt5::Gui
     Qt5::Multimedia
     Qt5::Network

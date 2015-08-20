@@ -169,6 +169,13 @@ namespace Evernus
         virtual void closeEvent(QCloseEvent *event) override;
 
     private:
+        enum class TabType
+        {
+            Other,
+            Character,
+            Corp,
+        };
+
         static const QString settingsMaximizedKey;
         static const QString settingsPosKey;
         static const QString settingsSizeKey;
@@ -225,7 +232,7 @@ namespace Evernus
         void createStatusBar();
 
         QWidget *createMainViewTab(QWidget *content);
-        int addTab(QWidget *widget, const QString &label);
+        int addTab(QWidget *widget, const QString &label, TabType type);
 
         void setUpAutoImportTimer();
         void refreshCharactersMenu();
