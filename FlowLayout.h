@@ -1,7 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
-** Contact: http://www.qt-project.org/legal
+** Copyright (C) 2015 The Qt Company Ltd.
+** Contact: http://www.qt.io/licensing/
 **
 ** This file is part of the examples of the Qt Toolkit.
 **
@@ -17,8 +17,8 @@
 **     notice, this list of conditions and the following disclaimer in
 **     the documentation and/or other materials provided with the
 **     distribution.
-**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
-**     of its contributors may be used to endorse or promote products derived
+**   * Neither the name of The Qt Company Ltd nor the names of its
+**     contributors may be used to endorse or promote products derived
 **     from this software without specific prior written permission.
 **
 **
@@ -51,18 +51,18 @@ public:
     explicit FlowLayout(int margin = -1, int hSpacing = -1, int vSpacing = -1);
     ~FlowLayout();
 
-    void addItem(QLayoutItem *item);
+    void addItem(QLayoutItem *item) Q_DECL_OVERRIDE;
     int horizontalSpacing() const;
     int verticalSpacing() const;
-    Qt::Orientations expandingDirections() const;
-    bool hasHeightForWidth() const;
-    int heightForWidth(int) const;
-    int count() const;
-    QLayoutItem *itemAt(int index) const;
-    QSize minimumSize() const;
-    void setGeometry(const QRect &rect);
-    QSize sizeHint() const;
-    QLayoutItem *takeAt(int index);
+    Qt::Orientations expandingDirections() const Q_DECL_OVERRIDE;
+    bool hasHeightForWidth() const Q_DECL_OVERRIDE;
+    int heightForWidth(int) const Q_DECL_OVERRIDE;
+    int count() const Q_DECL_OVERRIDE;
+    QLayoutItem *itemAt(int index) const Q_DECL_OVERRIDE;
+    QSize minimumSize() const Q_DECL_OVERRIDE;
+    void setGeometry(const QRect &rect) Q_DECL_OVERRIDE;
+    QSize sizeHint() const Q_DECL_OVERRIDE;
+    QLayoutItem *takeAt(int index) Q_DECL_OVERRIDE;
 
 private:
     int doLayout(const QRect &rect, bool testOnly) const;

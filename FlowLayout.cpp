@@ -1,7 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
-** Contact: http://www.qt-project.org/legal
+** Copyright (C) 2015 The Qt Company Ltd.
+** Contact: http://www.qt.io/licensing/
 **
 ** This file is part of the examples of the Qt Toolkit.
 **
@@ -17,8 +17,8 @@
 **     notice, this list of conditions and the following disclaimer in
 **     the documentation and/or other materials provided with the
 **     distribution.
-**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
-**     of its contributors may be used to endorse or promote products derived
+**   * Neither the name of The Qt Company Ltd nor the names of its
+**     contributors may be used to endorse or promote products derived
 **     from this software without specific prior written permission.
 **
 **
@@ -41,6 +41,7 @@
 #include <QtWidgets>
 
 #include "FlowLayout.h"
+
 FlowLayout::FlowLayout(QWidget *parent, int margin, int hSpacing, int vSpacing)
     : QLayout(parent), m_hSpace(hSpacing), m_vSpace(vSpacing)
 {
@@ -167,11 +168,13 @@ int FlowLayout::doLayout(const QRect &rect, bool testOnly) const
             lineHeight = 0;
         }
 
+        const auto lineDelta = qMax(lineHeight, item->sizeHint().height());
+
         if (!testOnly)
-            item->setGeometry(QRect(QPoint(x, y), item->sizeHint()));
+            item->setGeometry(QRect(QPoint(x, y + (lineDelta - item->sizeHint().height()) / 2), item->sizeHint()));
 
         x = nextX;
-        lineHeight = qMax(lineHeight, item->sizeHint().height());
+        lineHeight = lineDelta;
     }
     return y + lineHeight - rect.y() + bottom;
 }
