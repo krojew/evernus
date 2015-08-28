@@ -31,6 +31,10 @@ namespace Evernus
         const auto maxVolumeFilterKey = "marketAnalysis/filter/maxVolume";
         const auto minMarginFilterKey = "marketAnalysis/filter/minMargin";
         const auto maxMarginFilterKey = "marketAnalysis/filter/maxMargin";
+        const auto minBuyPriceFilterKey = "marketAnalysis/filter/minBuyPrice";
+        const auto maxBuyPriceFilterKey = "marketAnalysis/filter/maxBuyPrice";
+        const auto minSellPriceFilterKey = "marketAnalysis/filter/minSellPrice";
+        const auto maxSellPriceFilterKey = "marketAnalysis/filter/maxSellPrice";
         const auto smaDaysKey = "marketAnalysis/smaDays";
         const auto lastRegionKey = "marketAnalysis/lastRegion";
         const auto macdFastDaysKey = "marketAnalysis/macd/fastDays";

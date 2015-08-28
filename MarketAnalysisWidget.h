@@ -111,6 +111,10 @@ namespace Evernus
         QLineEdit *mMaxVolumeEdit = nullptr;
         QLineEdit *mMinMarginEdit = nullptr;
         QLineEdit *mMaxMarginEdit = nullptr;
+        QLineEdit *mMinBuyPriceEdit = nullptr;
+        QLineEdit *mMaxBuyPriceEdit = nullptr;
+        QLineEdit *mMinSellPriceEdit = nullptr;
+        QLineEdit *mMaxSellPriceEdit = nullptr;
 
         uint mOrderRequestCount = 0, mHistoryRequestCount = 0;
         bool mPreparingRequests = false;

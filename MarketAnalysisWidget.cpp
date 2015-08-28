@@ -14,10 +14,10 @@
  */
 #include <boost/scope_exit.hpp>
 
+#include <QDoubleValidator>
 #include <QStackedWidget>
 #include <QIntValidator>
 #include <QApplication>
-#include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QPushButton>
@@ -39,6 +39,7 @@
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "TaskManager.h"
+#include "FlowLayout.h"
 
 #include "MarketAnalysisWidget.h"
 
@@ -62,11 +63,14 @@ namespace Evernus
         , mCharacterRepo(characterRepo)
         , mManager(std::move(crestClientId), std::move(crestClientSecret), mDataProvider)
         , mTypeDataModel(mDataProvider)
-        , mTypeViewProxy(TypeAggregatedMarketDataModel::getVolumeColumn(), TypeAggregatedMarketDataModel::getMarginColumn())
+        , mTypeViewProxy(TypeAggregatedMarketDataModel::getVolumeColumn(),
+                         TypeAggregatedMarketDataModel::getMarginColumn(),
+                         TypeAggregatedMarketDataModel::getBuyPriceColumn(),
+                         TypeAggregatedMarketDataModel::getSellPriceColumn())
     {
         auto mainLayout = new QVBoxLayout{this};
 
-        auto toolBarLayout = new QHBoxLayout{};
+        auto toolBarLayout = new FlowLayout{};
         mainLayout->addLayout(toolBarLayout);
 
         auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import data"), this};
@@ -123,8 +127,8 @@ namespace Evernus
         fillSolarSystems(mRegionCombo->currentData().toUInt());
         connect(mSolarSystemCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(showForCurrentRegionAndSolarSystem()));
 
-        auto minVolumeValidator = new QIntValidator{this};
-        minVolumeValidator->setBottom(0);
+        auto volumeValidator = new QIntValidator{this};
+        volumeValidator->setBottom(0);
 
         toolBarLayout->addWidget(new QLabel{tr("Volume:"), this});
 
@@ -132,7 +136,7 @@ namespace Evernus
 
         mMinVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
         toolBarLayout->addWidget(mMinVolumeEdit);
-        mMinVolumeEdit->setValidator(minVolumeValidator);
+        mMinVolumeEdit->setValidator(volumeValidator);
 
         toolBarLayout->addWidget(new QLabel{"-", this});
 
@@ -140,9 +144,9 @@ namespace Evernus
 
         mMaxVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
         toolBarLayout->addWidget(mMaxVolumeEdit);
-        mMaxVolumeEdit->setValidator(minVolumeValidator);
+        mMaxVolumeEdit->setValidator(volumeValidator);
 
-        auto minMarginValidator = new QIntValidator{this};
+        auto marginValidator = new QIntValidator{this};
 
         toolBarLayout->addWidget(new QLabel{tr("Margin:"), this});
 
@@ -150,7 +154,7 @@ namespace Evernus
 
         mMinMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
         toolBarLayout->addWidget(mMinMarginEdit);
-        mMinMarginEdit->setValidator(minMarginValidator);
+        mMinMarginEdit->setValidator(marginValidator);
         mMinMarginEdit->setPlaceholderText(locale().percent());
 
         toolBarLayout->addWidget(new QLabel{"-", this});
@@ -159,14 +163,49 @@ namespace Evernus
 
         mMaxMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
         toolBarLayout->addWidget(mMaxMarginEdit);
-        mMaxMarginEdit->setValidator(minMarginValidator);
+        mMaxMarginEdit->setValidator(marginValidator);
         mMaxMarginEdit->setPlaceholderText(locale().percent());
+
+        auto priceValidator = new QDoubleValidator{this};
+        priceValidator->setBottom(0.);
+
+        auto lblblblb = new QLabel{tr("Buy price:"), this};
+        toolBarLayout->addWidget(lblblblb);
+        toolBarLayout->setAlignment(lblblblb, Qt::AlignRight | Qt::AlignVCenter);
+
+        value = settings.value(MarketAnalysisSettings::minBuyPriceFilterKey);
+
+        mMinBuyPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinBuyPriceEdit);
+        mMinBuyPriceEdit->setValidator(priceValidator);
+
+        toolBarLayout->addWidget(new QLabel{"-", this});
+
+        value = settings.value(MarketAnalysisSettings::maxBuyPriceFilterKey);
+
+        mMaxBuyPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxBuyPriceEdit);
+        mMaxBuyPriceEdit->setValidator(priceValidator);
+
+        toolBarLayout->addWidget(new QLabel{tr("Sell price:"), this});
+
+        value = settings.value(MarketAnalysisSettings::minSellPriceFilterKey);
+
+        mMinSellPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinSellPriceEdit);
+        mMinSellPriceEdit->setValidator(priceValidator);
+
+        toolBarLayout->addWidget(new QLabel{"-", this});
+
+        value = settings.value(MarketAnalysisSettings::maxSellPriceFilterKey);
+
+        mMaxSellPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxSellPriceEdit);
+        mMaxSellPriceEdit->setValidator(priceValidator);
 
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
         connect(filterBtn, &QPushButton::clicked, this, &MarketAnalysisWidget::applyFilter);
-
-        toolBarLayout->addStretch();
 
         mainLayout->addWidget(new QLabel{tr("Double-click an item for additional information. \"Show in EVE\" is available via the right-click menu."), this});
 
@@ -324,17 +363,29 @@ namespace Evernus
         const auto maxVolume = mMaxVolumeEdit->text();
         const auto minMargin = mMinMarginEdit->text();
         const auto maxMargin = mMaxMarginEdit->text();
+        const auto minBuyPrice = mMinBuyPriceEdit->text();
+        const auto maxBuyPrice = mMaxBuyPriceEdit->text();
+        const auto minSellPrice = mMinSellPriceEdit->text();
+        const auto maxSellPrice = mMaxSellPriceEdit->text();
 
         QSettings settings;
         settings.setValue(MarketAnalysisSettings::minVolumeFilterKey, minVolume);
         settings.setValue(MarketAnalysisSettings::maxVolumeFilterKey, maxVolume);
         settings.setValue(MarketAnalysisSettings::minMarginFilterKey, minMargin);
         settings.setValue(MarketAnalysisSettings::maxMarginFilterKey, maxMargin);
+        settings.setValue(MarketAnalysisSettings::minBuyPriceFilterKey, minBuyPrice);
+        settings.setValue(MarketAnalysisSettings::maxBuyPriceFilterKey, maxBuyPrice);
+        settings.setValue(MarketAnalysisSettings::minSellPriceFilterKey, minSellPrice);
+        settings.setValue(MarketAnalysisSettings::maxSellPriceFilterKey, maxSellPrice);
 
         mTypeViewProxy.setFilter((minVolume.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (minVolume.toUInt()),
                                  (maxVolume.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (maxVolume.toUInt()),
                                  (minMargin.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::MarginValueType{}) : (minMargin.toDouble()),
-                                 (maxMargin.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::MarginValueType{}) : (maxMargin.toDouble()));
+                                 (maxMargin.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::MarginValueType{}) : (maxMargin.toDouble()),
+                                 (minBuyPrice.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::PriceValueType{}) : (minBuyPrice.toDouble()),
+                                 (maxBuyPrice.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::PriceValueType{}) : (maxBuyPrice.toDouble()),
+                                 (minSellPrice.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::PriceValueType{}) : (minSellPrice.toDouble()),
+                                 (maxSellPrice.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::PriceValueType{}) : (maxSellPrice.toDouble()));
     }
 
     void MarketAnalysisWidget::showDetails(const QModelIndex &item)

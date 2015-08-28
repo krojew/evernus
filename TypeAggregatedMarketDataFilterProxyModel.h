@@ -26,11 +26,23 @@ namespace Evernus
     public:
         using VolumeValueType = boost::optional<uint>;
         using MarginValueType = boost::optional<double>;
+        using PriceValueType = boost::optional<double>;
 
-        TypeAggregatedMarketDataFilterProxyModel(int volumeColumn, int marginColumn, QObject *parent = nullptr);
+        TypeAggregatedMarketDataFilterProxyModel(int volumeColumn,
+                                                 int marginColumn,
+                                                 int buyPriceColumn,
+                                                 int sellPriceColumn,
+                                                 QObject *parent = nullptr);
         virtual ~TypeAggregatedMarketDataFilterProxyModel() = default;
 
-        void setFilter(VolumeValueType minVolume, VolumeValueType maxVolume, MarginValueType minMargin, MarginValueType maxMargin);
+        void setFilter(VolumeValueType minVolume,
+                       VolumeValueType maxVolume,
+                       MarginValueType minMargin,
+                       MarginValueType maxMargin,
+                       PriceValueType minBuyPrice,
+                       PriceValueType maxBuyPrice,
+                       PriceValueType minSellPrice,
+                       PriceValueType maxSellPrice);
 
     protected:
         virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
@@ -38,8 +50,12 @@ namespace Evernus
     private:
         int mVolumeColumn = 0;
         int mMarginColumn = 0;
+        int mBuyPriceColumn = 0;
+        int mSellPriceColumn = 0;
 
         VolumeValueType mMinVolume, mMaxVolume;
         MarginValueType mMinMargin, mMaxMargin;
+        PriceValueType mMinBuyPrice, mMaxBuyPrice;
+        PriceValueType mMinSellPrice, mMaxSellPrice;
     };
 }

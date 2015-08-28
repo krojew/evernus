@@ -16,20 +16,36 @@
 
 namespace Evernus
 {
-    TypeAggregatedMarketDataFilterProxyModel::TypeAggregatedMarketDataFilterProxyModel(int volumeColumn, int marginColumn, QObject *parent)
+    TypeAggregatedMarketDataFilterProxyModel::TypeAggregatedMarketDataFilterProxyModel(int volumeColumn,
+                                                                                       int marginColumn,
+                                                                                       int buyPriceColumn,
+                                                                                       int sellPriceColumn,
+                                                                                       QObject *parent)
         : QSortFilterProxyModel{parent}
         , mVolumeColumn{volumeColumn}
         , mMarginColumn{marginColumn}
+        , mBuyPriceColumn{buyPriceColumn}
+        , mSellPriceColumn{sellPriceColumn}
     {
     }
 
-    void TypeAggregatedMarketDataFilterProxyModel
-    ::setFilter(VolumeValueType minVolume, VolumeValueType maxVolume, MarginValueType minMargin, MarginValueType maxMargin)
+    void TypeAggregatedMarketDataFilterProxyModel::setFilter(VolumeValueType minVolume,
+                                                             VolumeValueType maxVolume,
+                                                             MarginValueType minMargin,
+                                                             MarginValueType maxMargin,
+                                                             PriceValueType minBuyPrice,
+                                                             PriceValueType maxBuyPrice,
+                                                             PriceValueType minSellPrice,
+                                                             PriceValueType maxSellPrice)
     {
         mMinVolume = std::move(minVolume);
         mMaxVolume = std::move(maxVolume);
         mMinMargin = std::move(minMargin);
         mMaxMargin = std::move(maxMargin);
+        mMinBuyPrice = std::move(minBuyPrice);
+        mMaxBuyPrice = std::move(maxBuyPrice);
+        mMinSellPrice = std::move(minSellPrice);
+        mMaxSellPrice = std::move(maxSellPrice);
 
         invalidateFilter();
     }
@@ -42,23 +58,30 @@ namespace Evernus
         const auto source = sourceModel();
         if (source != nullptr)
         {
-            if (mMinVolume || mMaxVolume)
-            {
-                const auto volume = source->data(source->index(sourceRow, mVolumeColumn, sourceParent), Qt::UserRole).toUInt();
-                if (mMinVolume && volume < *mMinVolume)
-                    return false;
-                if (mMaxVolume && volume > *mMaxVolume)
-                    return false;
-            }
+            auto checkLimit = [&](auto column, auto min, auto max) {
+                if (min || max)
+                {
+                    using Type = std::remove_reference_t<decltype(*min)>;
 
-            if (mMinMargin || mMaxMargin)
-            {
-                const auto margin = source->data(source->index(sourceRow, mMarginColumn, sourceParent), Qt::UserRole).toDouble();
-                if (mMinMargin && margin < *mMinMargin)
-                    return false;
-                if (mMaxMargin && margin > *mMaxMargin)
-                    return false;
-            }
+                    const auto value
+                        = source->data(source->index(sourceRow, column, sourceParent), Qt::UserRole).template value<Type>();
+                    if (min && value < *min)
+                        return false;
+                    if (max && value > *max)
+                        return false;
+                }
+
+                return true;
+            };
+
+            if (!checkLimit(mVolumeColumn, mMinVolume, mMaxVolume))
+                return false;
+            if (!checkLimit(mMarginColumn, mMinMargin, mMaxMargin))
+                return false;
+            if (!checkLimit(mBuyPriceColumn, mMinBuyPrice, mMaxBuyPrice))
+                return false;
+            if (!checkLimit(mSellPriceColumn, mMinSellPrice, mMaxSellPrice))
+                return false;
         }
 
         return true;

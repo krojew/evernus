@@ -57,6 +57,8 @@ namespace Evernus
         static int getScoreColumn() noexcept;
         static int getVolumeColumn() noexcept;
         static int getMarginColumn() noexcept;
+        static int getBuyPriceColumn() noexcept;
+        static int getSellPriceColumn() noexcept;
 
     private:
         enum

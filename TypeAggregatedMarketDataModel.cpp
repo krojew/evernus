@@ -258,6 +258,16 @@ namespace Evernus
         return marginColumn;
     }
 
+    int TypeAggregatedMarketDataModel::getBuyPriceColumn() noexcept
+    {
+        return buyPriceColumn;
+    }
+
+    int TypeAggregatedMarketDataModel::getSellPriceColumn() noexcept
+    {
+        return sellPriceColumn;
+    }
+
     double TypeAggregatedMarketDataModel::getMargin(const TypeData &data) const
     {
         if (!mCharacter || qFuzzyIsNull(data.mSellPrice))
