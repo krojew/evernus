@@ -169,9 +169,7 @@ namespace Evernus
         auto priceValidator = new QDoubleValidator{this};
         priceValidator->setBottom(0.);
 
-        auto lblblblb = new QLabel{tr("Buy price:"), this};
-        toolBarLayout->addWidget(lblblblb);
-        toolBarLayout->setAlignment(lblblblb, Qt::AlignRight | Qt::AlignVCenter);
+        toolBarLayout->addWidget(new QLabel{tr("Buy price:"), this});
 
         value = settings.value(MarketAnalysisSettings::minBuyPriceFilterKey);
 
