@@ -3256,12 +3256,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MainWindow.cpp" line="923"/>
         <source>Toggle character tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Zakładki postaci</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="929"/>
         <source>Toggle corporation tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Zakładki korporacji</translation>
     </message>
     <message>
         <source>Market uploader: unknown</source>

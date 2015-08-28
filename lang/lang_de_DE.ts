@@ -2957,12 +2957,12 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../MainWindow.cpp" line="923"/>
         <source>Toggle character tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Charakter Registerkarten</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="929"/>
         <source>Toggle corporation tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Körperschaftsteuer Registerkarten</translation>
     </message>
 </context>
 <context>
