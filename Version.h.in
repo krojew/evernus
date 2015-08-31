@@ -5,6 +5,8 @@ namespace version {
 constexpr const char *majorStr() { return MAJOR; }
 constexpr const char *minorStr() { return MINOR; }
 constexpr const char *fullStr() { return MAJOR "." MINOR; }
+
+constexpr const char *dbTableName() { return "version"; }
 }
 
 #undef MINOR

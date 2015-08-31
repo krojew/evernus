@@ -5374,91 +5374,98 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="145"/>
-        <location filename="../Updater.cpp" line="274"/>
-        <location filename="../Updater.cpp" line="281"/>
-        <location filename="../Updater.cpp" line="293"/>
+        <location filename="../Updater.cpp" line="296"/>
+        <location filename="../Updater.cpp" line="327"/>
+        <location filename="../Updater.cpp" line="334"/>
+        <location filename="../Updater.cpp" line="346"/>
         <source>Update</source>
         <translation>Update</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="145"/>
+        <location filename="../Updater.cpp" line="296"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation>Während des Updateprozess ist ein Fehler aufgetreten.
 Ein Backup der Datenbank wurde als %1 gespeichert. Bitte schaue in der Onlinehilfe nach was in dieser Situation zu tun ist.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="185"/>
-        <location filename="../Updater.cpp" line="196"/>
-        <location filename="../Updater.cpp" line="206"/>
+        <location filename="../Updater.cpp" line="112"/>
+        <location filename="../Updater.cpp" line="123"/>
+        <location filename="../Updater.cpp" line="133"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="185"/>
+        <location filename="../Updater.cpp" line="112"/>
         <source>Error contacting update server: %1</source>
         <translation>Fehler beim Verbinden mit dem Updateserver: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="196"/>
+        <location filename="../Updater.cpp" line="123"/>
         <source>Error parsing response from the update server: %1</source>
         <translation>Fehler beim Auswerten der Antwort des Updateservers: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="206"/>
+        <location filename="../Updater.cpp" line="133"/>
         <source>Missing update version information!</source>
         <translation>Fehlende Update-Versionsinformationen!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="219"/>
+        <location filename="../Updater.cpp" line="146"/>
         <source>No update found</source>
         <translation>Kein Update vorhanden</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="219"/>
+        <location filename="../Updater.cpp" line="146"/>
         <source>Your current version is up-to-date.</source>
         <translation>Deine Version ist aktuell.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="228"/>
-        <location filename="../Updater.cpp" line="233"/>
-        <location filename="../Updater.cpp" line="244"/>
+        <location filename="../Updater.cpp" line="155"/>
+        <location filename="../Updater.cpp" line="160"/>
+        <location filename="../Updater.cpp" line="171"/>
         <source>Update found</source>
         <translation>Update gefunden</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="228"/>
+        <location filename="../Updater.cpp" line="155"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation>Eine neue Version ist verfügbar: %1
 Willst Du sie nun herunterladen?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="233"/>
+        <location filename="../Updater.cpp" line="160"/>
         <source>A new version is available: %1
 Do you wish to launch the updater?</source>
         <translation>Eine neue Version ist verfügbar: %1
 Wollen Sie den Updater starten möchten?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="244"/>
+        <location filename="../Updater.cpp" line="171"/>
         <source>Couldn&apos;t launch updater. Download manually?</source>
         <translation>Lässt sich nicht starten Updater. Manuell herunterladen?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="274"/>
+        <location filename="../Updater.cpp" line="280"/>
+        <location filename="../Updater.cpp" line="286"/>
+        <location filename="../Updater.cpp" line="292"/>
+        <source>Error updating db version: %1</source>
+        <translation>Fehler beim Aktualisieren der Datenbankversion: %1</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="327"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation>Diese Update erfordert den Reimport aller Daten. Bitte klicke nach dem Update auf &quot;Alle importieren&quot;.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="281"/>
+        <location filename="../Updater.cpp" line="334"/>
         <source>This update requires re-importing all item prices.</source>
         <translation>Diese Update erfordert den Reimport aller Artikelpreise.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="293"/>
+        <location filename="../Updater.cpp" line="346"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation>Diese Update erfordert den Reimport aller Corporation Transaktionen und Logbücher.</translation>
     </message>

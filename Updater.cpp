@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <stdexcept>
+
 #include <QDesktopServices>
 #include <QCoreApplication>
 #include <QNetworkRequest>
@@ -53,101 +55,26 @@ namespace Evernus
 
         const auto curVersion
             = settings.value(EvernusApplication::versionKey, QCoreApplication::applicationVersion()).toString().split('.');
+        const auto coreMajorVersion = curVersion[0].toUInt();
+        const auto coreMinorVersion = curVersion[1].toUInt();
+
         if (curVersion.size() != 2 || (curVersion[0] == version::majorStr() && curVersion[1] == version::minorStr()))
+            qDebug() << "Not updating core from" << curVersion;
+        else
+            updateCore(coreMajorVersion, coreMinorVersion);
+
+        auto dbMajorVersion = coreMajorVersion;
+        auto dbMinorVersion = coreMinorVersion;
+
+        const auto db = provider.getKeyRepository().getDatabase();
+        auto query = db.exec(QString{"SELECT major, minor FROM %1"}.arg(version::dbTableName()));
+        if (query.next())
         {
-            qDebug() << "Not updating from" << curVersion;
-            return;
+            dbMajorVersion = query.value(0).toUInt();
+            dbMinorVersion = query.value(1).toUInt();
         }
 
-        const auto majorVersion = curVersion[0].toUInt();
-        const auto minorVersion = curVersion[1].toUInt();
-
-        qDebug() << "Update from" << curVersion;
-
-        const auto &characterRepo = provider.getCharacterRepository();
-        const auto &cacheTimerRepo = provider.getCacheTimerRepository();
-        const auto &characterOrderRepo = provider.getMarketOrderRepository();
-        const auto &corporationOrderRepo = provider.getCorpMarketOrderRepository();
-        const auto &walletJournalRepo = provider.getWalletJournalEntryRepository();
-        const auto &corpWalletJournalRepo = provider.getCorpWalletJournalEntryRepository();
-        const auto &walletTransactionRepo = provider.getWalletTransactionRepository();
-        const auto &corpWalletTransactionRepo = provider.getCorpWalletTransactionRepository();
-        const auto &updateTimerRepo = provider.getUpdateTimerRepository();
-        const auto &orderValueSnapshotRepo = provider.getMarketOrderValueSnapshotRepository();
-        const auto &corpOrderValueSnapshotRepo = provider.getCorpMarketOrderValueSnapshotRepository();
-        const auto &externalOrderRepo = provider.getExternalOrderRepository();
-        const auto &itemRepo = provider.getItemRepository();
-
-        const auto dbBak = DatabaseUtils::backupDatabase(characterRepo.getDatabase());
-
-        try
-        {
-            if (majorVersion < 2)
-            {
-                if (majorVersion == 0)
-                {
-                    if (minorVersion < 5)
-                    {
-                        if (minorVersion < 3)
-                            migrateTo03();
-
-                        migrateTo05(cacheTimerRepo, characterRepo, characterOrderRepo, corporationOrderRepo);
-                    }
-                }
-
-                if (minorVersion < 30)
-                {
-                    if (minorVersion < 27)
-                    {
-                        if (minorVersion < 23)
-                        {
-                            if (minorVersion < 16)
-                            {
-                                if (minorVersion < 13)
-                                {
-                                    if (minorVersion < 11)
-                                    {
-                                        if (minorVersion < 9)
-                                        {
-                                            if (minorVersion < 8)
-                                                migrateTo18(externalOrderRepo);
-
-                                            migrateTo19(characterRepo,
-                                                        walletJournalRepo,
-                                                        corpWalletJournalRepo,
-                                                        walletTransactionRepo,
-                                                        corpWalletTransactionRepo);
-                                        }
-
-                                        migrateTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
-                                    }
-
-                                    migrateTo113();
-                                }
-
-                                migrateTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
-                            }
-
-                            migrateTo123(externalOrderRepo, itemRepo);
-                        }
-
-                        migrateTo127(characterOrderRepo, corporationOrderRepo);
-                    }
-
-                    migrateTo130();
-                }
-            }
-
-            settings.remove(RegionTypeSelectDialog::settingsTypesKey);
-        }
-        catch (...)
-        {
-            QMessageBox::critical(nullptr, tr("Update"), tr(
-                "An error occurred during the update process.\n"
-                "Database backup was saved as %1. Please read online help how to deal with this situation.").arg(dbBak));
-
-            throw;
-        }
+        updateDatabase(dbMajorVersion, dbMinorVersion, provider);
     }
 
     Updater &Updater::getInstance()
@@ -248,16 +175,142 @@ namespace Evernus
 #endif
     }
 
-    void Updater::migrateTo03() const
+    void Updater::updateCore(uint majorVersion, uint minorVersion) const
+    {
+        qDebug() << "Update core from" << majorVersion << "." << minorVersion;
+
+        if (majorVersion < 2)
+        {
+            if (majorVersion == 0)
+            {
+                if (minorVersion < 3)
+                    migrateCoreTo03();
+            }
+
+            if (minorVersion < 30)
+            {
+                if (minorVersion < 13)
+                    migrateCoreTo113();
+
+                migrateCoreTo130();
+            }
+        }
+
+        QSettings settings;
+        settings.remove(RegionTypeSelectDialog::settingsTypesKey);
+    }
+
+    void Updater
+    ::updateDatabase(uint majorVersion, uint minorVersion, const RepositoryProvider &provider) const
+    {
+        qDebug() << "Update db from" << majorVersion << "." << minorVersion;
+
+        const auto &characterRepo = provider.getCharacterRepository();
+        const auto &cacheTimerRepo = provider.getCacheTimerRepository();
+        const auto &characterOrderRepo = provider.getMarketOrderRepository();
+        const auto &corporationOrderRepo = provider.getCorpMarketOrderRepository();
+        const auto &walletJournalRepo = provider.getWalletJournalEntryRepository();
+        const auto &corpWalletJournalRepo = provider.getCorpWalletJournalEntryRepository();
+        const auto &walletTransactionRepo = provider.getWalletTransactionRepository();
+        const auto &corpWalletTransactionRepo = provider.getCorpWalletTransactionRepository();
+        const auto &updateTimerRepo = provider.getUpdateTimerRepository();
+        const auto &orderValueSnapshotRepo = provider.getMarketOrderValueSnapshotRepository();
+        const auto &corpOrderValueSnapshotRepo = provider.getCorpMarketOrderValueSnapshotRepository();
+        const auto &externalOrderRepo = provider.getExternalOrderRepository();
+        const auto &itemRepo = provider.getItemRepository();
+
+        const auto dbBak = DatabaseUtils::backupDatabase(characterRepo.getDatabase());
+
+        try
+        {
+            if (majorVersion < 2)
+            {
+                if (majorVersion == 0)
+                {
+                    if (minorVersion < 5)
+                        migrateDatabaseTo05(cacheTimerRepo, characterRepo, characterOrderRepo, corporationOrderRepo);
+                }
+
+                if (minorVersion < 27)
+                {
+                    if (minorVersion < 23)
+                    {
+                        if (minorVersion < 16)
+                        {
+                            if (minorVersion < 11)
+                            {
+                                if (minorVersion < 9)
+                                {
+                                    if (minorVersion < 8)
+                                        migrateDatabaseTo18(externalOrderRepo);
+
+                                    migrateDatabaseTo19(characterRepo,
+                                                walletJournalRepo,
+                                                corpWalletJournalRepo,
+                                                walletTransactionRepo,
+                                                corpWalletTransactionRepo);
+                                }
+
+                                migrateDatabaseTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
+                            }
+
+                            migrateDatabaseTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
+                        }
+
+                        migrateDatabaseTo123(externalOrderRepo, itemRepo);
+                    }
+
+                    migrateDatabaseTo127(characterOrderRepo, corporationOrderRepo);
+                }
+            }
+
+            const auto curVersion = QCoreApplication::applicationVersion().split('.');
+            const auto db = provider.getKeyRepository().getDatabase();
+
+            db.exec(QString{R"(
+                CREATE TABLE IF NOT EXISTS %1 (
+                    major INTEGER NOT NULL,
+                    minor INTEGER NOT NULL,
+                    PRIMARY KEY (major, minor)
+                )
+            )"}.arg(version::dbTableName()));
+
+            const auto error = db.lastError();
+            if (error.isValid())
+                throw std::runtime_error{tr("Error updating db version: %1").arg(error.text()).toStdString()};
+
+            db.exec(QString{"DELETE FROM %1"}.arg(version::dbTableName()));
+
+            QSqlQuery query{db};
+            if (!query.prepare(QString{"REPLACE INTO %1 (major, minor) VALUES (? ,?)"}.arg(version::dbTableName())))
+                throw std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()};
+
+            query.bindValue(0, curVersion[0]);
+            query.bindValue(1, curVersion[1]);
+
+            if (!query.exec())
+                throw std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()};
+        }
+        catch (...)
+        {
+            QMessageBox::critical(nullptr, tr("Update"), tr(
+                "An error occurred during the update process.\n"
+                "Database backup was saved as %1. Please read online help how to deal with this situation.").arg(dbBak));
+
+            throw;
+        }
+    }
+
+    void Updater::migrateCoreTo03() const
     {
         QSettings settings;
         settings.setValue(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault);
     }
 
-    void Updater::migrateTo05(const CacheTimerRepository &cacheTimerRepo,
-                              const Repository<Character> &characterRepo,
-                              const MarketOrderRepository &characterOrderRepo,
-                              const MarketOrderRepository &corporationOrderRepo) const
+    void Updater::migrateDatabaseTo05(const CacheTimerRepository &cacheTimerRepo,
+                                      const Repository<Character> &characterRepo,
+                                      const MarketOrderRepository &characterOrderRepo,
+                                      const MarketOrderRepository &corporationOrderRepo) const
     {
         cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
         cacheTimerRepo.create(characterRepo);
@@ -276,7 +329,7 @@ namespace Evernus
             "Please click on \"Import all\" after the update."));
     }
 
-    void Updater::migrateTo18(const ExternalOrderRepository &externalOrderRepo) const
+    void Updater::migrateDatabaseTo18(const ExternalOrderRepository &externalOrderRepo) const
     {
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all item prices."));
 
@@ -284,11 +337,11 @@ namespace Evernus
         externalOrderRepo.create();
     }
 
-    void Updater::migrateTo19(const Repository<Character> &characterRepo,
-                              const WalletJournalEntryRepository &walletJournalRepo,
-                              const WalletJournalEntryRepository &corpWalletJournalRepo,
-                              const WalletTransactionRepository &walletTransactionRepo,
-                              const WalletTransactionRepository &corpWalletTransactionRepo) const
+    void Updater::migrateDatabaseTo19(const Repository<Character> &characterRepo,
+                                      const WalletJournalEntryRepository &walletJournalRepo,
+                                      const WalletJournalEntryRepository &corpWalletJournalRepo,
+                                      const WalletTransactionRepository &walletTransactionRepo,
+                                      const WalletTransactionRepository &corpWalletTransactionRepo) const
     {
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all corporation transactions and journal."));
 
@@ -301,9 +354,9 @@ namespace Evernus
         walletTransactionRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(walletTransactionRepo.getTableName()));
     }
 
-    void Updater::migrateTo111(const CacheTimerRepository &cacheTimerRepo,
-                               const UpdateTimerRepository &updateTimerRepo,
-                               const Repository<Character> &characterRepo) const
+    void Updater::migrateDatabaseTo111(const CacheTimerRepository &cacheTimerRepo,
+                                       const UpdateTimerRepository &updateTimerRepo,
+                                       const Repository<Character> &characterRepo) const
     {
         cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
         cacheTimerRepo.create(characterRepo);
@@ -311,7 +364,7 @@ namespace Evernus
         updateTimerRepo.create(characterRepo);
     }
 
-    void Updater::migrateTo113() const
+    void Updater::migrateCoreTo113() const
     {
         QSettings settings;
         settings.setValue(ImportSettings::ignoreCachedImportKey, false);
@@ -319,8 +372,8 @@ namespace Evernus
                           settings.value("rpices/combineCorpAndCharPlots", PriceSettings::combineCorpAndCharPlotsDefault));
     }
 
-    void Updater::migrateTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
-                               const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const
+    void Updater::migrateDatabaseTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
+                                       const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const
     {
         const auto updateShots = [](const auto &repo) {
             auto query = repo.prepare(QString{
@@ -334,7 +387,7 @@ namespace Evernus
         updateShots(corpOrderValueSnapshotRepo);
     }
 
-    void Updater::migrateTo123(const ExternalOrderRepository &externalOrderRepo, const ItemRepository &itemRepo) const
+    void Updater::migrateDatabaseTo123(const ExternalOrderRepository &externalOrderRepo, const ItemRepository &itemRepo) const
     {
         QSettings settings;
         settings.setValue(OrderSettings::deleteOldMarketOrdersKey, false);
@@ -343,7 +396,7 @@ namespace Evernus
         itemRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN raw_quantity INTEGER NOT NULL DEFAULT 0"}.arg(itemRepo.getTableName()));
     }
 
-    void Updater::migrateTo127(const MarketOrderRepository &characterOrderRepo,
+    void Updater::migrateDatabaseTo127(const MarketOrderRepository &characterOrderRepo,
                                const MarketOrderRepository &corporationOrderRepo) const
     {
         const QString sql = "ALTER TABLE %1 ADD COLUMN notes TEXT NULL DEFAULT NULL";
@@ -351,7 +404,7 @@ namespace Evernus
         corporationOrderRepo.exec(sql.arg(corporationOrderRepo.getTableName()));
     }
 
-    void Updater::migrateTo130() const
+    void Updater::migrateCoreTo130() const
     {
         QFile::remove(CachingEveDataProvider::getCacheDir().filePath(CachingEveDataProvider::systemDistanceCacheFileName));
     }

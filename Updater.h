@@ -56,27 +56,30 @@ namespace Evernus
 
         void finishCheck(bool quiet) const;
 
-        void migrateTo03() const;
-        void migrateTo05(const CacheTimerRepository &cacheTimerRepo,
-                         const Repository<Character> &characterRepo,
-                         const MarketOrderRepository &characterOrderRepo,
-                         const MarketOrderRepository &corporationOrderRepo) const;
-        void migrateTo18(const ExternalOrderRepository &externalOrderRepo) const;
-        void migrateTo19(const Repository<Character> &characterRepo,
-                         const WalletJournalEntryRepository &walletJournalRepo,
-                         const WalletJournalEntryRepository &corpWalletJournalRepo,
-                         const WalletTransactionRepository &walletTransactionRepo,
-                         const WalletTransactionRepository &corpWalletTransactionRepo) const;
-        void migrateTo111(const CacheTimerRepository &cacheTimerRepo,
-                          const UpdateTimerRepository &updateTimerRepo,
-                          const Repository<Character> &characterRepo) const;
-        void migrateTo113() const;
-        void migrateTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
-                          const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const;
-        void migrateTo123(const ExternalOrderRepository &externalOrderRepo,
-                          const ItemRepository &itemRepo) const;
-        void migrateTo127(const MarketOrderRepository &characterOrderRepo,
-                          const MarketOrderRepository &corporationOrderRepo) const;
-        void migrateTo130() const;
+        void updateCore(uint prevMajor, uint prevMinor) const;
+        void updateDatabase(uint prevMajor, uint prevMinor, const RepositoryProvider &provider) const;
+
+        void migrateCoreTo03() const;
+        void migrateDatabaseTo05(const CacheTimerRepository &cacheTimerRepo,
+                                 const Repository<Character> &characterRepo,
+                                 const MarketOrderRepository &characterOrderRepo,
+                                 const MarketOrderRepository &corporationOrderRepo) const;
+        void migrateDatabaseTo18(const ExternalOrderRepository &externalOrderRepo) const;
+        void migrateDatabaseTo19(const Repository<Character> &characterRepo,
+                                 const WalletJournalEntryRepository &walletJournalRepo,
+                                 const WalletJournalEntryRepository &corpWalletJournalRepo,
+                                 const WalletTransactionRepository &walletTransactionRepo,
+                                 const WalletTransactionRepository &corpWalletTransactionRepo) const;
+        void migrateDatabaseTo111(const CacheTimerRepository &cacheTimerRepo,
+                                  const UpdateTimerRepository &updateTimerRepo,
+                                  const Repository<Character> &characterRepo) const;
+        void migrateCoreTo113() const;
+        void migrateDatabaseTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
+                                  const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const;
+        void migrateDatabaseTo123(const ExternalOrderRepository &externalOrderRepo,
+                                  const ItemRepository &itemRepo) const;
+        void migrateDatabaseTo127(const MarketOrderRepository &characterOrderRepo,
+                                  const MarketOrderRepository &corporationOrderRepo) const;
+        void migrateCoreTo130() const;
     };
 }
