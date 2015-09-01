@@ -436,13 +436,14 @@ namespace Evernus
             if (prevRow != index.row())
             {
                 prevRow = index.row();
-                result.append('\n');
+                result[result.size() - 1] = '\n';
             }
 
             result.append(mTypeViewProxy.data(index).toString());
             result.append('\t');
         }
 
+        result.chop(1);
         QApplication::clipboard()->setText(result);
     }
 
