@@ -29,6 +29,7 @@
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
 #include "CRESTSettings.h"
+#include "ReplyTimeout.h"
 
 #include "CRESTManager.h"
 
@@ -69,6 +70,7 @@ namespace Evernus
         mRefreshToken = mCrypt.decryptToString(settings.value(CRESTSettings::refreshTokenKey).toByteArray());
 
         handleNewPreferences();
+        fetchEndpoints();
     }
 
     bool CRESTManager::eventFilter(QObject *watched, QEvent *event)
@@ -90,14 +92,20 @@ namespace Evernus
                                          EveType::IdType typeId,
                                          const Callback<std::vector<ExternalOrder>> &callback) const
     {
+        if (!canUseCREST())
+        {
+            callback(std::vector<ExternalOrder>(), getMissingEnpointsError());
+            return;
+        }
+
         auto state = std::make_shared<OrderState>();
         auto ifaceCallback = [=](QJsonDocument &&data, const QString &error) {
             if (!error.isEmpty())
             {
                 if (!state->mError.isEmpty())
-                    callback(std::vector<ExternalOrder>{}, QString{"%1\n%2"}.arg(state->mError).arg(error));
+                    callback(std::vector<ExternalOrder>(), QString{"%1\n%2"}.arg(state->mError).arg(error));
                 else if (state->mState == OrderState::State::GotResponse)
-                    callback(std::vector<ExternalOrder>{}, error);
+                    callback(std::vector<ExternalOrder>(), error);
                 else
                     state->mError = error;
 
@@ -106,7 +114,7 @@ namespace Evernus
 
             if (!state->mError.isEmpty())
             {
-                callback(std::vector<ExternalOrder>{}, state->mError);
+                callback(std::vector<ExternalOrder>(), state->mError);
                 return;
             }
 
@@ -166,6 +174,12 @@ namespace Evernus
                                           EveType::IdType typeId,
                                           const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const
     {
+        if (!canUseCREST())
+        {
+            callback(std::map<QDate, MarketHistoryEntry>(), getMissingEnpointsError());
+            return;
+        }
+
 #ifdef Q_OS_WIN
         selectNextInterface().fetchMarketHistory(regionId, typeId, [=](QJsonDocument &&data, const QString &error) {
 #else
@@ -173,7 +187,7 @@ namespace Evernus
 #endif
             if (!error.isEmpty())
             {
-                callback(std::map<QDate, MarketHistoryEntry>{}, error);
+                callback(std::map<QDate, MarketHistoryEntry>(), error);
                 return;
             }
 
@@ -362,6 +376,57 @@ namespace Evernus
             reply->ignoreSslErrors();
     }
 
+    void CRESTManager::fetchEndpoints()
+    {
+        qDebug() << "Fetching CREST endpoints...";
+
+        QNetworkRequest request{CRESTInterface::crestUrl};
+        request.setHeader(QNetworkRequest::UserAgentHeader,
+                          QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
+        request.setRawHeader("Accept", "application/vnd.ccp.eve.Api-v3+json");
+
+        auto reply = mNetworkManager.get(request);
+        Q_ASSERT(reply != nullptr);
+
+        new ReplyTimeout{*reply};
+
+        connect(reply, &QNetworkReply::finished, this, [=] {
+            reply->deleteLater();
+
+            const auto error = reply->error();
+            qDebug() << "Got CREST endpoints: " << error;
+
+            if (error != QNetworkReply::NoError)
+            {
+                QMessageBox::warning(nullptr, tr("CREST error"), tr("Error fetching CREST endpoints!"));
+                return;
+            }
+
+            const auto json = QJsonDocument::fromJson(reply->readAll());
+
+            std::function<void (const QJsonObject &)> addEndpoints = [=, &addEndpoints](const QJsonObject &object) {
+                for (auto it = std::begin(object); it != std::end(object); ++it)
+                {
+                    const auto value = it.value().toObject();
+                    if (value.contains("href"))
+                    {
+                        qDebug() << "Endpoint:" << it.key() << "->" << it.value();
+                        mEndpoints[it.key()] = value.value("href").toString();
+                    }
+                    else
+                    {
+                        addEndpoints(value);
+                    }
+                }
+            };
+
+            addEndpoints(json.object());
+
+            for (const auto interface : mInterfaces)
+                interface->setEndpoints(mEndpoints);
+        });
+    }
+
     void CRESTManager::processAuthorizationCode(const QByteArray &code)
     {
         try
@@ -435,5 +500,15 @@ namespace Evernus
         mCurrentInterface = (mCurrentInterface + 1) % mInterfaces.size();
 
         return interface;
+    }
+
+    bool CRESTManager::canUseCREST() const
+    {
+        return !mEndpoints.isEmpty();
+    }
+
+    QString CRESTManager::getMissingEnpointsError()
+    {
+        return tr("CREST endpoint map is empty. Please wait a while.");
     }
 }

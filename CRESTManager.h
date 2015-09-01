@@ -92,10 +92,17 @@ namespace Evernus
 
         bool mFetchingToken = false;
 
+        CRESTInterface::EndpointMap mEndpoints;
+
+        void fetchEndpoints();
         void processAuthorizationCode(const QByteArray &code);
 
         QNetworkRequest getAuthRequest() const;
 
         const CRESTInterface &selectNextInterface() const;
+
+        bool canUseCREST() const;
+
+        static QString getMissingEnpointsError();
     };
 }

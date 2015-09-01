@@ -532,12 +532,17 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Autoryzacja CREST nie powiodła się.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="210"/>
+        <location filename="../CRESTInterface.cpp" line="138"/>
+        <source>Empty CREST endpoint map. Please wait until endpoints have been fetched.</source>
+        <translation>Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="188"/>
         <source>Missing CREST regions url!</source>
         <translation>Brak adresu regionów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="254"/>
+        <location filename="../CRESTInterface.cpp" line="232"/>
         <source>Missing CREST item types url!</source>
         <translation>Brak adresu typów w CREST!</translation>
     </message>
@@ -557,7 +562,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::CRESTManager</name>
     <message>
-        <location filename="../CRESTManager.cpp" line="83"/>
+        <location filename="../CRESTManager.cpp" line="85"/>
         <source>CREST authorization failed.</source>
         <translation>Autoryzacja CREST nie powiodła się.</translation>
     </message>
@@ -566,27 +571,38 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="239"/>
+        <location filename="../CRESTManager.cpp" line="253"/>
         <source>CREST Authentication</source>
         <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="396"/>
+        <location filename="../CRESTManager.cpp" line="401"/>
+        <source>Error fetching CREST endpoints!</source>
+        <translation>Błąd pobierania punktów wejścia CREST!</translation>
+    </message>
+    <message>
+        <location filename="../CRESTManager.cpp" line="461"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="306"/>
+        <location filename="../CRESTManager.cpp" line="512"/>
+        <source>CREST endpoint map is empty. Please wait a while.</source>
+        <translation>Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
+    </message>
+    <message>
+        <location filename="../CRESTManager.cpp" line="320"/>
         <source>Empty access token!</source>
         <translation>Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="359"/>
+        <location filename="../CRESTManager.cpp" line="373"/>
+        <location filename="../CRESTManager.cpp" line="401"/>
         <source>CREST error</source>
         <translation>Błąd CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="359"/>
+        <location filename="../CRESTManager.cpp" line="373"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
@@ -3607,22 +3623,22 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>%1 w %2</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="456"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="457"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="485"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="486"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="511"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="512"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi z historią...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="559"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="560"/>
         <source>- all -</source>
         <translation>- wszystkie -</translation>
     </message>

@@ -122,6 +122,11 @@ namespace Evernus
         checkAuth(fetcher);
     }
 
+    void CRESTInterface::setEndpoints(EndpointMap endpoints)
+    {
+        mEndpoints = std::move(endpoints);
+    }
+
     void CRESTInterface::updateTokenAndContinue(QString token, const QDateTime &expiry)
     {
         mAccessToken = std::move(token);
@@ -129,41 +134,14 @@ namespace Evernus
 
         if (mEndpoints.isEmpty())
         {
-            qDebug() << "Fetching CREST endpoints...";
-
-            try
-            {
-                const auto json = syncGet(crestUrl, "application/vnd.ccp.eve.Api-v3+json");
-                std::function<void (const QJsonObject &)> addEndpoints = [=, &addEndpoints](const QJsonObject &object) {
-                    for (auto it = std::begin(object); it != std::end(object); ++it)
-                    {
-                        const auto value = it.value().toObject();
-                        if (value.contains("href"))
-                        {
-                            qDebug() << "Endpoint:" << it.key() << "->" << it.value();
-                            mEndpoints[it.key()] = value.value("href").toString();
-                        }
-                        else
-                        {
-                            addEndpoints(value);
-                        }
-                    }
-                };
-
-                addEndpoints(json.object());
-            }
-            catch (const std::exception &e)
-            {
-                for (const auto &request : mPendingRequests)
-                    request(e.what());
-
-                mPendingRequests.clear();
-                return;
-            }
+            for (const auto &request : mPendingRequests)
+                request(tr("Empty CREST endpoint map. Please wait until endpoints have been fetched."));
         }
-
-        for (const auto &request : mPendingRequests)
-            request(QString{});
+        else
+        {
+            for (const auto &request : mPendingRequests)
+                request(QString{});
+        }
 
         mPendingRequests.clear();
     }

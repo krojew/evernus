@@ -36,6 +36,9 @@ namespace Evernus
 
     public:
         using Callback = std::function<void (QJsonDocument &&data, const QString &error)>;
+        using EndpointMap = QHash<QString, QString>;
+
+        static const QString crestUrl;
 
         using QObject::QObject;
         virtual ~CRESTInterface() = default;
@@ -43,6 +46,8 @@ namespace Evernus
         void fetchBuyMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
         void fetchSellMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
         void fetchMarketHistory(uint regionId, EveType::IdType typeId, const Callback &callback) const;
+
+        void setEndpoints(EndpointMap endpoints);
 
     public slots:
         void updateTokenAndContinue(QString token, const QDateTime &expiry);
@@ -57,13 +62,11 @@ namespace Evernus
     private:
         using RegionOrderUrlMap = QHash<uint, QUrl>;
 
-        static const QString crestUrl;
-
         static const QString regionsUrlName;
         static const QString itemTypesUrlName;
 
         mutable QNetworkAccessManager mNetworkManager;
-        mutable QHash<QString, QString> mEndpoints;
+        EndpointMap mEndpoints;
 
         mutable QString mAccessToken;
         mutable QDateTime mExpiry;

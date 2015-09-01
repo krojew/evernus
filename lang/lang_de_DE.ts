@@ -352,13 +352,18 @@
 <context>
     <name>Evernus::CRESTInterface</name>
     <message>
-        <location filename="../CRESTInterface.cpp" line="210"/>
+        <location filename="../CRESTInterface.cpp" line="138"/>
+        <source>Empty CREST endpoint map. Please wait until endpoints have been fetched.</source>
+        <translation>Leere CREST Endpunkt Karte. Bitte warten Sie, bis Endpunkte wurden geholt.</translation>
+    </message>
+    <message>
+        <location filename="../CRESTInterface.cpp" line="188"/>
         <source>Missing CREST regions url!</source>
         <translatorcomment>#NOTE# Not sure if it makes sense to translate &quot;regions&quot; here, as it&apos;s meant as part of an API method, not a descriptive term. Better use: &quot;Fehlende CREST Regions URL&quot;</translatorcomment>
         <translation>Fehlende CREST Regionen URL!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="254"/>
+        <location filename="../CRESTInterface.cpp" line="232"/>
         <source>Missing CREST item types url!</source>
         <translatorcomment>#NOTE# Same as with &quot;regions&quot;. I&apos;d rather go with &quot;Fehlende CREST Item Types URL&quot;</translatorcomment>
         <translation>Fehlende CREST Gegenstandsarten URL!</translation>
@@ -367,36 +372,47 @@
 <context>
     <name>Evernus::CRESTManager</name>
     <message>
-        <location filename="../CRESTManager.cpp" line="83"/>
+        <location filename="../CRESTManager.cpp" line="85"/>
         <source>CREST authorization failed.</source>
         <translation>CREST-Authentifizierung fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="239"/>
+        <location filename="../CRESTManager.cpp" line="253"/>
         <source>CREST Authentication</source>
         <translation>CREST Authentifizierung</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="306"/>
+        <location filename="../CRESTManager.cpp" line="320"/>
         <source>Empty access token!</source>
         <translation>Leeres Access Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="359"/>
+        <location filename="../CRESTManager.cpp" line="373"/>
+        <location filename="../CRESTManager.cpp" line="401"/>
         <source>CREST error</source>
         <translation>CREST Fehler</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="359"/>
+        <location filename="../CRESTManager.cpp" line="373"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
         <translation>Das Zertifikat der EVE Loginseite enthielt Fehler: %1. Bist du sicher das du weitermachen willst (dies kann die Sicherheit deines EVE Accounts gefährden)?</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="396"/>
+        <location filename="../CRESTManager.cpp" line="401"/>
+        <source>Error fetching CREST endpoints!</source>
+        <translation>Fehler beim Abrufen der CREST Endpunkte!</translation>
+    </message>
+    <message>
+        <location filename="../CRESTManager.cpp" line="461"/>
         <source>Empty refresh token!</source>
         <translation>Leeres Refresh Token!</translation>
+    </message>
+    <message>
+        <location filename="../CRESTManager.cpp" line="512"/>
+        <source>CREST endpoint map is empty. Please wait a while.</source>
+        <translation>CREST Endpunkt Karte ist leer. Bitte warten Sie eine Weile.</translation>
     </message>
 </context>
 <context>
@@ -3247,22 +3263,22 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>%1 in %2</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="456"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="457"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Warte auf %1 Serverantworten für Aufträge...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="485"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="486"/>
         <source>Saving %1 imported orders...</source>
         <translation>Speichere %1 importierte Aufträge...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="511"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="512"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Warte auf %1 Serverantworten für Historie...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="559"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="560"/>
         <source>- all -</source>
         <translation>- alle -</translation>
     </message>
