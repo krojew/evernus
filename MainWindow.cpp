@@ -912,7 +912,7 @@ namespace Evernus
 
         mViewTabsMenu->addSeparator();
 
-        auto toggleDefaultTabs = [=](auto checked, auto type) {
+        auto toggleDefaultTabs = [=](bool checked, TabType type) {
             for (const auto action : actions)
             {
                 if (static_cast<TabType>(action->data().toInt()) == type)
@@ -922,7 +922,7 @@ namespace Evernus
 
         auto action = mViewTabsMenu->addAction(tr("Toggle character tabs"));
         action->setCheckable(true);
-        connect(action, &QAction::triggered, this, [=](auto checked) {
+        connect(action, &QAction::triggered, this, [=](bool checked) {
             toggleDefaultTabs(checked, TabType::Character);
         });
 

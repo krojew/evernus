@@ -58,7 +58,7 @@ namespace Evernus
         const auto source = sourceModel();
         if (source != nullptr)
         {
-            auto checkLimit = [&](auto column, auto min, auto max) {
+            auto checkLimit = [source](auto column, auto min, auto max) {
                 if (min || max)
                 {
                     using Type = std::remove_reference_t<decltype(*min)>;
