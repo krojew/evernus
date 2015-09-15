@@ -681,6 +681,40 @@ namespace Evernus
             mOrderScriptRepository.remove(name);
     }
 
+    void StatisticsWidget::updateBalanceTooltip(QMouseEvent *event)
+    {
+        auto getValue = [=](const auto graph) {
+            const auto x = graph->keyAxis()->pixelToCoord(event->pos().x());
+            const auto data = graph->data();
+            const auto b = data->lowerBound(x);
+
+            if (b == std::end(*data))
+                return 0.;
+
+            const auto a = (b.key() == x || b == std::begin(*data)) ? (b) : (std::prev(b));
+            const auto coeff = (qFuzzyCompare(a.key(), b.key())) ? (1.) : (x - a.key()) / (b.key() - a.key());
+            return b->value * coeff + a->value * (1 - coeff);
+        };
+
+        const auto sellOrdersValue = getValue(mBalancePlot->getPlot().graph(sellOrdersGraph));
+        const auto buyOrdersValue = getValue(mBalancePlot->getPlot().graph(buyOrdersGraph));
+        const auto corpWalletValue = getValue(mBalancePlot->getPlot().graph(corpWalletBalanceGraph));
+        const auto walletValue = getValue(mBalancePlot->getPlot().graph(walletBalanceGraph));
+        const auto assetValue = getValue(mBalancePlot->getPlot().graph(assetValueGraph));
+        const auto totalValue = getValue(mBalancePlot->getPlot().graph(totalValueGraph));
+
+        const auto loc = locale();
+        mBalancePlot->setToolTip(
+            tr("Assets: %1\nWallet: %2\nCorp. wallet: %3\nBuy orders: %4\nSell orders: %5\nTotal: %6")
+                .arg(TextUtils::currencyToString(assetValue, loc))
+                .arg(TextUtils::currencyToString(walletValue, loc))
+                .arg(TextUtils::currencyToString(corpWalletValue, loc))
+                .arg(TextUtils::currencyToString(buyOrdersValue, loc))
+                .arg(TextUtils::currencyToString(sellOrdersValue, loc))
+                .arg(TextUtils::currencyToString(totalValue, loc))
+        );
+    }
+
     void StatisticsWidget::updateGraphAndLegend()
     {
         auto assetGraph = mBalancePlot->getPlot().addGraph();
@@ -744,6 +778,7 @@ namespace Evernus
         mBalancePlot = createPlot();
         balanceLayout->addWidget(mBalancePlot);
         connect(mBalancePlot, &DateFilteredPlotWidget::filterChanged, this, &StatisticsWidget::updateBalanceData);
+        connect(mBalancePlot, &DateFilteredPlotWidget::mouseMove, this, &StatisticsWidget::updateBalanceTooltip);
 
         auto journalGroup = new QGroupBox{tr("Wallet journal"), this};
         mainLayout->addWidget(journalGroup);

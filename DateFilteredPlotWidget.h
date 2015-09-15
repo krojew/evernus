@@ -42,6 +42,8 @@ namespace Evernus
     signals:
         void filterChanged();
 
+        void mouseMove(QMouseEvent *event);
+
     public slots:
         void saveBalancePlot();
 

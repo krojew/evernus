@@ -84,6 +84,8 @@ namespace Evernus
         void loadScript();
         void deleteScript();
 
+        void updateBalanceTooltip(QMouseEvent *event);
+
     private:
         enum
         {

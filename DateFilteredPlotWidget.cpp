@@ -76,6 +76,7 @@ namespace Evernus
         mPlot->xAxis->setSubTickCount(0);
         mPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
         mPlot->xAxis->setDateTimeFormat(locale().dateFormat(QLocale::NarrowFormat));
+        connect(mPlot, &QCustomPlot::mouseMove, this, &DateFilteredPlotWidget::mouseMove);
         connect(legendBtn, &QCheckBox::stateChanged, this, [this](bool checked) {
             mPlot->legend->setVisible(checked);
             mPlot->replot();
