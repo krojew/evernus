@@ -25,6 +25,7 @@
 #include "AssetsImportPreferencesWidget.h"
 #include "ImportSourcePreferencesWidget.h"
 #include "CorpImportPreferencesWidget.h"
+#include "StatisticsPreferencesWidget.h"
 #include "NetworkPreferencesWidget.h"
 #include "GeneralPreferencesWidget.h"
 #include "WalletPreferencesWidget.h"
@@ -65,6 +66,7 @@ namespace Evernus
         categories.emplace_back(std::make_pair(tr("Sounds"), new SoundPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Prices"), new PricePreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Orders"), new OrderPreferencesWidget{this}));
+        categories.emplace_back(std::make_pair(tr("Statistics"), new StatisticsPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Network"), new NetworkPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Synchronization"), new SyncPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("In-Game Browser"), new IGBPreferencesWidget{this}));

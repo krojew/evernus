@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <QColor>
+
 namespace Evernus
 {
     namespace UISettings
@@ -32,6 +34,12 @@ namespace Evernus
         const auto combineAssetsDefault = false;
         const auto combineJournalDefault = false;
         const auto combineTransactionsDefault = false;
+        const QColor statisticsAssetPlotColorDefault = Qt::blue;
+        const QColor statisticsWalletPlotColorDefault = Qt::red;
+        const QColor statisticsCorpWalletPlotColorDefault = Qt::cyan;
+        const QColor statisticsBuyOrderPlotColorDefault = Qt::yellow;
+        const QColor statisticsSellOrderPlotColorDefault = Qt::magenta;
+        const QColor statisticsTotalPlotColorDefault = Qt::green;
 
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
@@ -54,5 +62,11 @@ namespace Evernus
         const auto combineAssetsKey = "ui/combine/assets";
         const auto combineJournalKey = "ui/combine/journal";
         const auto combineTransactionsKey = "ui/combine/transactions";
+        const auto statisticsAssetPlotColorKey = "ui/appearance/statistics/assetColor";
+        const auto statisticsWalletPlotColorKey = "ui/appearance/statistics/walletColor";
+        const auto statisticsCorpWalletPlotColorKey = "ui/appearance/statistics/corpWalletColor";
+        const auto statisticsBuyOrderPlotColorKey = "ui/appearance/statistics/buyOrderColor";
+        const auto statisticsSellOrderPlotColorKey = "ui/appearance/statistics/sellOrderColor";
+        const auto statisticsTotalPlotColorKey = "ui/appearance/statistics/totalColor";
     }
 }

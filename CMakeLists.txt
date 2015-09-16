@@ -100,6 +100,7 @@ qt5_wrap_cpp(
     CharacterModel.h
     CharacterImportPreferencesWidget.h
     CharacterWidget.h
+    ColorButton.h
     ContractModel.h
     ContractImportPreferencesWidget.h
     ContractStatusesWidget.h
@@ -195,6 +196,7 @@ qt5_wrap_cpp(
     SoundPreferencesWidget.h
     StationModel.h
     StationView.h
+    StatisticsPreferencesWidget.h
     StatisticsWidget.h
     StyledTreeView.h
     SyncDialog.h
@@ -298,6 +300,8 @@ add_executable(
     CharacterRepository.h
     CharacterWidget.cpp
     CharacterWidget.h
+    ColorButton.cpp
+    ColorButton.h
     CommonScriptAPI.cpp
     CommonScriptAPI.h
     ConquerableStation.cpp
@@ -671,6 +675,8 @@ add_executable(
     StationModel.h
     StationView.cpp
     StationView.h
+    StatisticsPreferencesWidget.cpp
+    StatisticsPreferencesWidget.h
     StatisticsWidget.cpp
     StatisticsWidget.h
     StyledTreeView.cpp

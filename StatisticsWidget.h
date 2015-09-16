@@ -144,6 +144,7 @@ namespace Evernus
         QString mLastLoadedScript;
 
         void updateGraphAndLegend();
+        void updateGraphColors();
 
         QWidget *createBasicStatisticsWidget();
         QWidget *createAdvancedStatisticsWidget();

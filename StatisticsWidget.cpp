@@ -583,6 +583,7 @@ namespace Evernus
 
         updateJournalData();
         updateTransactionData();
+        updateGraphColors();
 
         mBalancePlot->getPlot().replot();
         mJournalPlot->getPlot().replot();
@@ -719,27 +720,21 @@ namespace Evernus
     {
         auto assetGraph = mBalancePlot->getPlot().addGraph();
         assetGraph->setName(tr("Asset value"));
-        assetGraph->setPen(QPen{Qt::blue});
 
         auto walletGraph = mBalancePlot->getPlot().addGraph();
         walletGraph->setName(tr("Wallet balance"));
-        walletGraph->setPen(QPen{Qt::red});
 
         auto corpWalletGraph = mBalancePlot->getPlot().addGraph();
         corpWalletGraph->setName(tr("Corp. wallet balance"));
-        corpWalletGraph->setPen(QPen{Qt::cyan});
 
         auto buyGraph = mBalancePlot->getPlot().addGraph();
         buyGraph->setName(tr("Buy order value"));
-        buyGraph->setPen(QPen{Qt::yellow});
 
         auto sellGraph = mBalancePlot->getPlot().addGraph();
         sellGraph->setName(tr("Sell order value"));
-        sellGraph->setPen(QPen{Qt::magenta});
 
         auto totalGraph = mBalancePlot->getPlot().addGraph();
         totalGraph->setName(tr("Total value"));
-        totalGraph->setPen(QPen{Qt::green});
 
         mBalancePlot->getPlot().legend->setVisible(true);
 
@@ -751,6 +746,33 @@ namespace Evernus
 
         mJournalPlot->getPlot().legend->setVisible(true);
         mTransactionPlot->getPlot().legend->setVisible(true);
+
+        updateGraphColors();
+    }
+
+    void StatisticsWidget::updateGraphColors()
+    {
+        const auto sellOrdersValue = mBalancePlot->getPlot().graph(sellOrdersGraph);
+        const auto buyOrdersValue = mBalancePlot->getPlot().graph(buyOrdersGraph);
+        const auto corpWalletValue = mBalancePlot->getPlot().graph(corpWalletBalanceGraph);
+        const auto walletValue = mBalancePlot->getPlot().graph(walletBalanceGraph);
+        const auto assetValue = mBalancePlot->getPlot().graph(assetValueGraph);
+        const auto totalValue = mBalancePlot->getPlot().graph(totalValueGraph);
+
+        QSettings settings;
+
+        sellOrdersValue->setPen(
+            settings.value(UISettings::statisticsSellOrderPlotColorKey, UISettings::statisticsSellOrderPlotColorDefault).value<QColor>());
+        buyOrdersValue->setPen(
+            settings.value(UISettings::statisticsBuyOrderPlotColorKey, UISettings::statisticsBuyOrderPlotColorDefault).value<QColor>());
+        corpWalletValue->setPen(
+            settings.value(UISettings::statisticsCorpWalletPlotColorKey, UISettings::statisticsCorpWalletPlotColorDefault).value<QColor>());
+        walletValue->setPen(
+            settings.value(UISettings::statisticsWalletPlotColorKey, UISettings::statisticsWalletPlotColorDefault).value<QColor>());
+        assetValue->setPen(
+            settings.value(UISettings::statisticsAssetPlotColorKey, UISettings::statisticsAssetPlotColorDefault).value<QColor>());
+        totalValue->setPen(
+            settings.value(UISettings::statisticsTotalPlotColorKey, UISettings::statisticsTotalPlotColorDefault).value<QColor>());
     }
 
     QWidget *StatisticsWidget::createBasicStatisticsWidget()
