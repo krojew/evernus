@@ -138,5 +138,8 @@ namespace Evernus
         void fillSolarSystems(uint regionId);
 
         uint getCurrentRegion() const;
+
+        QWidget *createRegionAnalysisWidget();
+        QWidget *createInterRegionAnalysisWidget();
     };
 }

@@ -18,11 +18,13 @@
 #include <QStackedWidget>
 #include <QIntValidator>
 #include <QApplication>
+#include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QPushButton>
 #include <QTableView>
 #include <QClipboard>
+#include <QTabWidget>
 #include <QComboBox>
 #include <QCheckBox>
 #include <QLineEdit>
@@ -70,7 +72,7 @@ namespace Evernus
     {
         auto mainLayout = new QVBoxLayout{this};
 
-        auto toolBarLayout = new FlowLayout{};
+        auto toolBarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolBarLayout);
 
         auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import data"), this};
@@ -98,153 +100,13 @@ namespace Evernus
             settings.setValue(MarketAnalysisSettings::ignoreExistingOrdersKey, checked);
         });
 
-        toolBarLayout->addWidget(new QLabel{tr("Region:"), this});
+        toolBarLayout->addStretch();
 
-        mRegionCombo = new QComboBox{this};
-        toolBarLayout->addWidget(mRegionCombo);
-        mRegionCombo->setEditable(true);
-        mRegionCombo->setInsertPolicy(QComboBox::NoInsert);
+        auto tabs = new QTabWidget{this};
+        mainLayout->addWidget(tabs);
 
-        const auto lastRegion = settings.value(MarketAnalysisSettings::lastRegionKey).toUInt();
-
-        const auto regions = mDataProvider.getRegions();
-        for (const auto &region : regions)
-        {
-            mRegionCombo->addItem(region.second, region.first);
-            if (region.first == lastRegion)
-                mRegionCombo->setCurrentIndex(mRegionCombo->count() - 1);
-        }
-
-        connect(mRegionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(showForCurrentRegion()));
-
-        toolBarLayout->addWidget(new QLabel{tr("Limit to solar system:"), this});
-
-        mSolarSystemCombo = new QComboBox{this};
-        toolBarLayout->addWidget(mSolarSystemCombo);
-        mSolarSystemCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-        mSolarSystemCombo->setEditable(true);
-        mSolarSystemCombo->setInsertPolicy(QComboBox::NoInsert);
-        fillSolarSystems(mRegionCombo->currentData().toUInt());
-        connect(mSolarSystemCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(showForCurrentRegionAndSolarSystem()));
-
-        auto volumeValidator = new QIntValidator{this};
-        volumeValidator->setBottom(0);
-
-        toolBarLayout->addWidget(new QLabel{tr("Volume:"), this});
-
-        auto value = settings.value(MarketAnalysisSettings::minVolumeFilterKey);
-
-        mMinVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMinVolumeEdit);
-        mMinVolumeEdit->setValidator(volumeValidator);
-
-        toolBarLayout->addWidget(new QLabel{"-", this});
-
-        value = settings.value(MarketAnalysisSettings::maxVolumeFilterKey);
-
-        mMaxVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMaxVolumeEdit);
-        mMaxVolumeEdit->setValidator(volumeValidator);
-
-        auto marginValidator = new QIntValidator{this};
-
-        toolBarLayout->addWidget(new QLabel{tr("Margin:"), this});
-
-        value = settings.value(MarketAnalysisSettings::minMarginFilterKey);
-
-        mMinMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMinMarginEdit);
-        mMinMarginEdit->setValidator(marginValidator);
-        mMinMarginEdit->setPlaceholderText(locale().percent());
-
-        toolBarLayout->addWidget(new QLabel{"-", this});
-
-        value = settings.value(MarketAnalysisSettings::maxMarginFilterKey);
-
-        mMaxMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMaxMarginEdit);
-        mMaxMarginEdit->setValidator(marginValidator);
-        mMaxMarginEdit->setPlaceholderText(locale().percent());
-
-        auto priceValidator = new QDoubleValidator{this};
-        priceValidator->setBottom(0.);
-
-        toolBarLayout->addWidget(new QLabel{tr("Buy price:"), this});
-
-        value = settings.value(MarketAnalysisSettings::minBuyPriceFilterKey);
-
-        mMinBuyPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMinBuyPriceEdit);
-        mMinBuyPriceEdit->setValidator(priceValidator);
-
-        toolBarLayout->addWidget(new QLabel{"-", this});
-
-        value = settings.value(MarketAnalysisSettings::maxBuyPriceFilterKey);
-
-        mMaxBuyPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMaxBuyPriceEdit);
-        mMaxBuyPriceEdit->setValidator(priceValidator);
-
-        toolBarLayout->addWidget(new QLabel{tr("Sell price:"), this});
-
-        value = settings.value(MarketAnalysisSettings::minSellPriceFilterKey);
-
-        mMinSellPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMinSellPriceEdit);
-        mMinSellPriceEdit->setValidator(priceValidator);
-
-        toolBarLayout->addWidget(new QLabel{"-", this});
-
-        value = settings.value(MarketAnalysisSettings::maxSellPriceFilterKey);
-
-        mMaxSellPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMaxSellPriceEdit);
-        mMaxSellPriceEdit->setValidator(priceValidator);
-
-        auto filterBtn = new QPushButton{tr("Apply"), this};
-        toolBarLayout->addWidget(filterBtn);
-        connect(filterBtn, &QPushButton::clicked, this, &MarketAnalysisWidget::applyFilter);
-
-        mainLayout->addWidget(new QLabel{tr("Double-click an item for additional information. \"Show in EVE\" is available via the right-click menu."), this});
-
-        mDataStack = new QStackedWidget{this};
-        mainLayout->addWidget(mDataStack);
-
-        auto waitingLabel = new QLabel{tr("Calculating data..."), this};
-        mDataStack->addWidget(waitingLabel);
-        waitingLabel->setAlignment(Qt::AlignCenter);
-
-        mTypeViewProxy.setSortRole(Qt::UserRole);
-        mTypeViewProxy.setSourceModel(&mTypeDataModel);
-
-        mTypeDataView = new QTableView{this};
-        mDataStack->addWidget(mTypeDataView);
-        mTypeDataView->setSortingEnabled(true);
-        mTypeDataView->setAlternatingRowColors(true);
-        mTypeDataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        mTypeDataView->setModel(&mTypeViewProxy);
-        mTypeDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
-        connect(mTypeDataView, &QTableView::doubleClicked, this, &MarketAnalysisWidget::showDetails);
-        connect(mTypeDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
-                this, &MarketAnalysisWidget::selectType);
-
-        mDataStack->setCurrentWidget(mTypeDataView);
-
-        mShowDetailsAct = new QAction{tr("Show details"), this};
-        mShowDetailsAct->setEnabled(false);
-        mTypeDataView->addAction(mShowDetailsAct);
-        connect(mShowDetailsAct, &QAction::triggered, this, &MarketAnalysisWidget::showDetailsForCurrent);
-
-        mShowInEveAct = new QAction{tr("Show in EVE"), this};
-        mShowInEveAct->setEnabled(false);
-        mTypeDataView->addAction(mShowInEveAct);
-        connect(mShowInEveAct, &QAction::triggered, this, &MarketAnalysisWidget::showInEveForCurrent);
-
-        mCopyRowsAct = new QAction{tr("&Copy"), this};
-        mCopyRowsAct->setEnabled(false);
-        mCopyRowsAct->setShortcut(QKeySequence::Copy);
-        connect(mCopyRowsAct, &QAction::triggered, this, &MarketAnalysisWidget::copyRows);
-        mTypeDataView->addAction(mCopyRowsAct);
+        tabs->addTab(createRegionAnalysisWidget(), tr("Region"));
+        tabs->addTab(createInterRegionAnalysisWidget(), tr("Inter-Region"));
     }
 
     void MarketAnalysisWidget::setCharacter(Character::IdType id)
@@ -570,5 +432,173 @@ namespace Evernus
     uint MarketAnalysisWidget::getCurrentRegion() const
     {
         return mRegionCombo->currentData().toUInt();
+    }
+
+    QWidget *MarketAnalysisWidget::createRegionAnalysisWidget()
+    {
+        auto container = new QWidget{this};
+        auto mainLayout = new QVBoxLayout{container};
+
+        auto toolBarLayout = new FlowLayout{};
+        mainLayout->addLayout(toolBarLayout);
+
+        toolBarLayout->addWidget(new QLabel{tr("Region:"), this});
+
+        mRegionCombo = new QComboBox{this};
+        toolBarLayout->addWidget(mRegionCombo);
+        mRegionCombo->setEditable(true);
+        mRegionCombo->setInsertPolicy(QComboBox::NoInsert);
+
+        QSettings settings;
+        const auto lastRegion = settings.value(MarketAnalysisSettings::lastRegionKey).toUInt();
+
+        const auto regions = mDataProvider.getRegions();
+        for (const auto &region : regions)
+        {
+            mRegionCombo->addItem(region.second, region.first);
+            if (region.first == lastRegion)
+                mRegionCombo->setCurrentIndex(mRegionCombo->count() - 1);
+        }
+
+        connect(mRegionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(showForCurrentRegion()));
+
+        toolBarLayout->addWidget(new QLabel{tr("Limit to solar system:"), this});
+
+        mSolarSystemCombo = new QComboBox{this};
+        toolBarLayout->addWidget(mSolarSystemCombo);
+        mSolarSystemCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+        mSolarSystemCombo->setEditable(true);
+        mSolarSystemCombo->setInsertPolicy(QComboBox::NoInsert);
+        fillSolarSystems(mRegionCombo->currentData().toUInt());
+        connect(mSolarSystemCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(showForCurrentRegionAndSolarSystem()));
+
+        auto volumeValidator = new QIntValidator{this};
+        volumeValidator->setBottom(0);
+
+        toolBarLayout->addWidget(new QLabel{tr("Volume:"), this});
+
+        auto value = settings.value(MarketAnalysisSettings::minVolumeFilterKey);
+
+        mMinVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinVolumeEdit);
+        mMinVolumeEdit->setValidator(volumeValidator);
+
+        toolBarLayout->addWidget(new QLabel{"-", this});
+
+        value = settings.value(MarketAnalysisSettings::maxVolumeFilterKey);
+
+        mMaxVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxVolumeEdit);
+        mMaxVolumeEdit->setValidator(volumeValidator);
+
+        auto marginValidator = new QIntValidator{this};
+
+        toolBarLayout->addWidget(new QLabel{tr("Margin:"), this});
+
+        value = settings.value(MarketAnalysisSettings::minMarginFilterKey);
+
+        mMinMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinMarginEdit);
+        mMinMarginEdit->setValidator(marginValidator);
+        mMinMarginEdit->setPlaceholderText(locale().percent());
+
+        toolBarLayout->addWidget(new QLabel{"-", this});
+
+        value = settings.value(MarketAnalysisSettings::maxMarginFilterKey);
+
+        mMaxMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxMarginEdit);
+        mMaxMarginEdit->setValidator(marginValidator);
+        mMaxMarginEdit->setPlaceholderText(locale().percent());
+
+        auto priceValidator = new QDoubleValidator{this};
+        priceValidator->setBottom(0.);
+
+        toolBarLayout->addWidget(new QLabel{tr("Buy price:"), this});
+
+        value = settings.value(MarketAnalysisSettings::minBuyPriceFilterKey);
+
+        mMinBuyPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinBuyPriceEdit);
+        mMinBuyPriceEdit->setValidator(priceValidator);
+
+        toolBarLayout->addWidget(new QLabel{"-", this});
+
+        value = settings.value(MarketAnalysisSettings::maxBuyPriceFilterKey);
+
+        mMaxBuyPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxBuyPriceEdit);
+        mMaxBuyPriceEdit->setValidator(priceValidator);
+
+        toolBarLayout->addWidget(new QLabel{tr("Sell price:"), this});
+
+        value = settings.value(MarketAnalysisSettings::minSellPriceFilterKey);
+
+        mMinSellPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinSellPriceEdit);
+        mMinSellPriceEdit->setValidator(priceValidator);
+
+        toolBarLayout->addWidget(new QLabel{"-", this});
+
+        value = settings.value(MarketAnalysisSettings::maxSellPriceFilterKey);
+
+        mMaxSellPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxSellPriceEdit);
+        mMaxSellPriceEdit->setValidator(priceValidator);
+
+        auto filterBtn = new QPushButton{tr("Apply"), this};
+        toolBarLayout->addWidget(filterBtn);
+        connect(filterBtn, &QPushButton::clicked, this, &MarketAnalysisWidget::applyFilter);
+
+        mainLayout->addWidget(new QLabel{tr("Double-click an item for additional information. \"Show in EVE\" is available via the right-click menu."), this});
+
+        mDataStack = new QStackedWidget{this};
+        mainLayout->addWidget(mDataStack);
+
+        auto waitingLabel = new QLabel{tr("Calculating data..."), this};
+        mDataStack->addWidget(waitingLabel);
+        waitingLabel->setAlignment(Qt::AlignCenter);
+
+        mTypeViewProxy.setSortRole(Qt::UserRole);
+        mTypeViewProxy.setSourceModel(&mTypeDataModel);
+
+        mTypeDataView = new QTableView{this};
+        mDataStack->addWidget(mTypeDataView);
+        mTypeDataView->setSortingEnabled(true);
+        mTypeDataView->setAlternatingRowColors(true);
+        mTypeDataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        mTypeDataView->setModel(&mTypeViewProxy);
+        mTypeDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
+        connect(mTypeDataView, &QTableView::doubleClicked, this, &MarketAnalysisWidget::showDetails);
+        connect(mTypeDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &MarketAnalysisWidget::selectType);
+
+        mDataStack->setCurrentWidget(mTypeDataView);
+
+        mShowDetailsAct = new QAction{tr("Show details"), this};
+        mShowDetailsAct->setEnabled(false);
+        mTypeDataView->addAction(mShowDetailsAct);
+        connect(mShowDetailsAct, &QAction::triggered, this, &MarketAnalysisWidget::showDetailsForCurrent);
+
+        mShowInEveAct = new QAction{tr("Show in EVE"), this};
+        mShowInEveAct->setEnabled(false);
+        mTypeDataView->addAction(mShowInEveAct);
+        connect(mShowInEveAct, &QAction::triggered, this, &MarketAnalysisWidget::showInEveForCurrent);
+
+        mCopyRowsAct = new QAction{tr("&Copy"), this};
+        mCopyRowsAct->setEnabled(false);
+        mCopyRowsAct->setShortcut(QKeySequence::Copy);
+        connect(mCopyRowsAct, &QAction::triggered, this, &MarketAnalysisWidget::copyRows);
+        mTypeDataView->addAction(mCopyRowsAct);
+
+        return container;
+    }
+
+    QWidget *MarketAnalysisWidget::createInterRegionAnalysisWidget()
+    {
+        auto container = new QWidget{this};
+        auto mainLayout = new QVBoxLayout{container};
+
+        return container;
     }
 }
