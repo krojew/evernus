@@ -19,6 +19,7 @@
 #include <memory>
 #include <map>
 
+#include <QTimer>
 #include <QDate>
 
 #include "MarketHistoryEntry.h"
@@ -93,6 +94,7 @@ namespace Evernus
         bool mFetchingToken = false;
 
         CRESTInterface::EndpointMap mEndpoints;
+        QTimer mEndpointTimer;
 
         void fetchEndpoints();
         void processAuthorizationCode(const QByteArray &code);
@@ -101,7 +103,7 @@ namespace Evernus
 
         const CRESTInterface &selectNextInterface() const;
 
-        bool canUseCREST() const;
+        bool hasEndpoints() const;
 
         static QString getMissingEnpointsError();
     };

@@ -71,6 +71,14 @@ namespace Evernus
 
         handleNewPreferences();
         fetchEndpoints();
+
+        connect(&mEndpointTimer, &QTimer::timeout, this, [=] {
+            if (hasEndpoints())
+                mEndpointTimer.stop();
+            else
+                fetchEndpoints();
+        });
+        mEndpointTimer.start(10 * 1000);
     }
 
     bool CRESTManager::eventFilter(QObject *watched, QEvent *event)
@@ -92,7 +100,7 @@ namespace Evernus
                                          EveType::IdType typeId,
                                          const Callback<std::vector<ExternalOrder>> &callback) const
     {
-        if (!canUseCREST())
+        if (!hasEndpoints())
         {
             callback(std::vector<ExternalOrder>(), getMissingEnpointsError());
             return;
@@ -174,7 +182,7 @@ namespace Evernus
                                           EveType::IdType typeId,
                                           const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const
     {
-        if (!canUseCREST())
+        if (!hasEndpoints())
         {
             callback(std::map<QDate, MarketHistoryEntry>(), getMissingEnpointsError());
             return;
@@ -502,7 +510,7 @@ namespace Evernus
         return interface;
     }
 
-    bool CRESTManager::canUseCREST() const
+    bool CRESTManager::hasEndpoints() const
     {
         return !mEndpoints.isEmpty();
     }

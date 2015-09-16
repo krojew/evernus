@@ -562,7 +562,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::CRESTManager</name>
     <message>
-        <location filename="../CRESTManager.cpp" line="85"/>
+        <location filename="../CRESTManager.cpp" line="93"/>
         <source>CREST authorization failed.</source>
         <translation>Autoryzacja CREST nie powiodła się.</translation>
     </message>
@@ -571,38 +571,38 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="253"/>
+        <location filename="../CRESTManager.cpp" line="261"/>
         <source>CREST Authentication</source>
         <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="401"/>
+        <location filename="../CRESTManager.cpp" line="409"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Błąd pobierania punktów wejścia CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="461"/>
+        <location filename="../CRESTManager.cpp" line="469"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="512"/>
+        <location filename="../CRESTManager.cpp" line="520"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="320"/>
+        <location filename="../CRESTManager.cpp" line="328"/>
         <source>Empty access token!</source>
         <translation>Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="373"/>
-        <location filename="../CRESTManager.cpp" line="401"/>
+        <location filename="../CRESTManager.cpp" line="381"/>
+        <location filename="../CRESTManager.cpp" line="409"/>
         <source>CREST error</source>
         <translation>Błąd CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="373"/>
+        <location filename="../CRESTManager.cpp" line="381"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>

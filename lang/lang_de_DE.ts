@@ -372,45 +372,45 @@
 <context>
     <name>Evernus::CRESTManager</name>
     <message>
-        <location filename="../CRESTManager.cpp" line="85"/>
+        <location filename="../CRESTManager.cpp" line="93"/>
         <source>CREST authorization failed.</source>
         <translation>CREST-Authentifizierung fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="253"/>
+        <location filename="../CRESTManager.cpp" line="261"/>
         <source>CREST Authentication</source>
         <translation>CREST Authentifizierung</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="320"/>
+        <location filename="../CRESTManager.cpp" line="328"/>
         <source>Empty access token!</source>
         <translation>Leeres Access Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="373"/>
-        <location filename="../CRESTManager.cpp" line="401"/>
+        <location filename="../CRESTManager.cpp" line="381"/>
+        <location filename="../CRESTManager.cpp" line="409"/>
         <source>CREST error</source>
         <translation>CREST Fehler</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="373"/>
+        <location filename="../CRESTManager.cpp" line="381"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
         <translation>Das Zertifikat der EVE Loginseite enthielt Fehler: %1. Bist du sicher das du weitermachen willst (dies kann die Sicherheit deines EVE Accounts gefährden)?</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="401"/>
+        <location filename="../CRESTManager.cpp" line="409"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Fehler beim Abrufen der CREST Endpunkte!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="461"/>
+        <location filename="../CRESTManager.cpp" line="469"/>
         <source>Empty refresh token!</source>
         <translation>Leeres Refresh Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="512"/>
+        <location filename="../CRESTManager.cpp" line="520"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>CREST Endpunkt Karte ist leer. Bitte warten Sie eine Weile.</translation>
     </message>
