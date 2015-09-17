@@ -106,6 +106,49 @@ namespace Evernus
             settings.setValue(MarketAnalysisSettings::ignoreExistingOrdersKey, checked);
         });
 
+        const auto discardBogusOrders = settings.value(MarketAnalysisSettings::discardBogusOrdersKey, MarketAnalysisSettings::discardBogusOrdersDefault).toBool();
+        mTypeDataModel.discardBogusOrders(discardBogusOrders);
+        mInterRegionDataModel.discardBogusOrders(discardBogusOrders);
+
+        auto discardBogusOrdersBtn = new QCheckBox{tr("Discard bogus orders (causes recalculation)"), this};
+        toolBarLayout->addWidget(discardBogusOrdersBtn);
+        discardBogusOrdersBtn->setChecked(discardBogusOrders);
+        connect(discardBogusOrdersBtn, &QCheckBox::toggled, this, [=](bool checked) {
+            QSettings settings;
+            settings.setValue(MarketAnalysisSettings::discardBogusOrdersKey, checked);
+
+            mTypeDataModel.discardBogusOrders(checked);
+            mInterRegionDataModel.discardBogusOrders(checked);
+
+            mRefreshedInterRegionData = false;
+
+            showForCurrentRegion();
+            applyInterRegionFilter();
+        });
+
+        toolBarLayout->addWidget(new QLabel{tr("Bogus order threshold:"), this});
+
+        auto thresholdValidator = new QDoubleValidator{this};
+        thresholdValidator->setBottom(0.);
+
+        const auto bogusThreshold = settings.value(MarketAnalysisSettings::bogusOrderThresholdKey, MarketAnalysisSettings::bogusOrderThresholdDefault).toString();
+        const auto bogusThresholdValue = bogusThreshold.toDouble();
+
+        mTypeDataModel.setBogusOrderThreshold(bogusThresholdValue);
+        mInterRegionDataModel.setBogusOrderThreshold(bogusThresholdValue);
+
+        auto bogusThresholdEdit = new QLineEdit{bogusThreshold, this};
+        toolBarLayout->addWidget(bogusThresholdEdit);
+        bogusThresholdEdit->setValidator(thresholdValidator);
+        connect(bogusThresholdEdit, &QLineEdit::textEdited, this, [this](const auto &text) {
+            QSettings settings;
+            settings.setValue(MarketAnalysisSettings::bogusOrderThresholdKey, text);
+
+            const auto value = text.toDouble();
+            mTypeDataModel.setBogusOrderThreshold(value);
+            mInterRegionDataModel.setBogusOrderThreshold(value);
+        });
+
         toolBarLayout->addStretch();
 
         auto tabs = new QTabWidget{this};
@@ -144,6 +187,7 @@ namespace Evernus
 
         mOrders.clear();
         mHistory.clear();
+        mInterRegionDataModel.reset();
 
         const auto mainTask = mTaskManager.startTask(tr("Importing data for analysis..."));
 

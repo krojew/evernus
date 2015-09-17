@@ -55,8 +55,12 @@ namespace Evernus
 
         void setOrderData(const std::vector<ExternalOrder> &orders, const HistoryRegionMap &history);
         void setCharacter(const std::shared_ptr<Character> &character);
+        void discardBogusOrders(bool flag);
+        void setBogusOrderThreshold(double value);
 
         EveType::IdType getTypeId(const QModelIndex &index) const;
+
+        void reset();
 
         static int getSrcRegionColumn();
         static int getDstRegionColumn();
@@ -96,6 +100,9 @@ namespace Evernus
         std::vector<TypeData> mData;
 
         std::shared_ptr<Character> mCharacter;
+
+        bool mDiscardBogusOrders = true;
+        double mBogusOrderThreshold = 0.9;
 
         double getMargin(const TypeData &data) const;
     };

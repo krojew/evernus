@@ -178,9 +178,11 @@ namespace Evernus
             usedTypes.insert(typeId);
         }
 
-        auto calcPercentile = [](const auto &orders, uint maxVolume) {
+        auto calcPercentile = [this](const auto &orders, uint maxVolume, auto avgPrice30) {
             if (maxVolume == 0)
                 maxVolume = 1;
+
+            const auto nullAvg = qFuzzyIsNull(avgPrice30);
 
             auto it = std::begin(orders);
             auto volume = 0u;
@@ -188,16 +190,27 @@ namespace Evernus
 
             while (volume < maxVolume && it != std::end(orders))
             {
-                const auto orderVolume = it->get().getVolumeRemaining();
-                const auto add = std::min(orderVolume, maxVolume - volume);
+                const auto price = it->get().getPrice();
+                if (!mDiscardBogusOrders || nullAvg || fabs((price - avgPrice30) / avgPrice30) < mBogusOrderThreshold)
+                {
+                    const auto orderVolume = it->get().getVolumeRemaining();
+                    const auto add = std::min(orderVolume, maxVolume - volume);
 
-                volume += add;
-                result += it->get().getPrice() * add;
+                    volume += add;
+                    result += price * add;
+                }
+                else if (!nullAvg)
+                {
+                    maxVolume -= std::min(it->get().getVolumeRemaining(), maxVolume - volume);
+                }
 
                 ++it;
             }
 
-            return result / maxVolume;
+            if (maxVolume == 0) // all bogus orders?
+                return std::begin(orders)->get().getPrice();
+
+            return  result / maxVolume;
         };
 
         const auto historyLimit = QDate::currentDate().addDays(-30);
@@ -205,9 +218,7 @@ namespace Evernus
         for (const auto type : usedTypes)
         {
             TypeData data;
-            data.mId = type;
-            data.mBuyPrice = calcPercentile(buyOrders[type], buyVolumes[type] * 0.05);
-            data.mSellPrice = calcPercentile(sellOrders[type], sellVolumes[type] * 0.05);
+            auto avgPrice30 = 0.;
 
             const auto typeHistory = history.find(type);
             if (typeHistory != std::end(history))
@@ -218,10 +229,16 @@ namespace Evernus
                         break;
 
                     data.mVolume += timePoint.second.mVolume;
+                    avgPrice30 += timePoint.second.mAvgPrice;
                 }
 
                 data.mVolume /= 30;
+                avgPrice30 /= 30.;
             }
+
+            data.mId = type;
+            data.mBuyPrice = calcPercentile(buyOrders[type], buyVolumes[type] * 0.05, avgPrice30);
+            data.mSellPrice = calcPercentile(sellOrders[type], sellVolumes[type] * 0.05, avgPrice30);
 
             mData.emplace_back(std::move(data));
         }
@@ -234,6 +251,16 @@ namespace Evernus
         beginResetModel();
         mCharacter = character;
         endResetModel();
+    }
+
+    void TypeAggregatedMarketDataModel::discardBogusOrders(bool flag)
+    {
+        mDiscardBogusOrders = flag;
+    }
+
+    void TypeAggregatedMarketDataModel::setBogusOrderThreshold(double value)
+    {
+        mBogusOrderThreshold = value;
     }
 
     EveType::IdType TypeAggregatedMarketDataModel::getTypeId(const QModelIndex &index) const

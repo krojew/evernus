@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <cmath>
 #include <set>
 
 #include <QLocale>
@@ -189,9 +190,11 @@ namespace Evernus
             }
         }
 
-        auto calcPercentile = [](const auto &orders, uint maxVolume) {
+        auto calcPercentile = [this](const auto &orders, uint maxVolume, auto avgPrice30) {
             if (maxVolume == 0)
                 maxVolume = 1;
+
+            const auto nullAvg = qFuzzyIsNull(avgPrice30);
 
             auto it = std::begin(orders);
             auto volume = 0u;
@@ -199,16 +202,27 @@ namespace Evernus
 
             while (volume < maxVolume && it != std::end(orders))
             {
-                const auto orderVolume = it->get().getVolumeRemaining();
-                const auto add = std::min(orderVolume, maxVolume - volume);
+                const auto price = it->get().getPrice();
+                if (!mDiscardBogusOrders || nullAvg || fabs((price - avgPrice30) / avgPrice30) < mBogusOrderThreshold)
+                {
+                    const auto orderVolume = it->get().getVolumeRemaining();
+                    const auto add = std::min(orderVolume, maxVolume - volume);
 
-                volume += add;
-                result += it->get().getPrice() * add;
+                    volume += add;
+                    result += price * add;
+                }
+                else if (!nullAvg)
+                {
+                    maxVolume -= std::min(it->get().getVolumeRemaining(), maxVolume - volume);
+                }
 
                 ++it;
             }
 
-            return result / maxVolume;
+            if (maxVolume == 0) // all bogus orders?
+                return std::begin(orders)->get().getPrice();
+
+            return  result / maxVolume;
         };
 
         const auto historyLimit = QDate::currentDate().addDays(-30);
@@ -227,8 +241,7 @@ namespace Evernus
             for (const auto type : regionHistory.second)
             {
                 AggrTypeData data;
-                data.mBuyPrice = calcPercentile(buyOrders[regionHistory.first][type.first], buyVolumes[regionHistory.first][type.first] * 0.05);
-                data.mSellPrice = calcPercentile(sellOrders[regionHistory.first][type.first], sellVolumes[regionHistory.first][type.first] * 0.05);
+                auto avgPrice30 = 0.;
 
                 for (const auto &timePoint : boost::adaptors::reverse(type.second))
                 {
@@ -236,9 +249,18 @@ namespace Evernus
                         break;
 
                     data.mVolume += timePoint.second.mVolume;
+                    avgPrice30 += timePoint.second.mAvgPrice;
                 }
 
+                avgPrice30 /= 30.;
+
                 data.mVolume /= 30;
+                data.mBuyPrice = calcPercentile(buyOrders[regionHistory.first][type.first],
+                                                buyVolumes[regionHistory.first][type.first] * 0.05,
+                                                avgPrice30);
+                data.mSellPrice = calcPercentile(sellOrders[regionHistory.first][type.first],
+                                                 sellVolumes[regionHistory.first][type.first] * 0.05,
+                                                 avgPrice30);
 
                 aggrTypeData[regionHistory.first].emplace(type.first, std::move(data));
             }
@@ -282,12 +304,29 @@ namespace Evernus
         endResetModel();
     }
 
+    void InterRegionMarketDataModel::discardBogusOrders(bool flag)
+    {
+        mDiscardBogusOrders = flag;
+    }
+
+    void InterRegionMarketDataModel::setBogusOrderThreshold(double value)
+    {
+        mBogusOrderThreshold = value;
+    }
+
     EveType::IdType InterRegionMarketDataModel::getTypeId(const QModelIndex &index) const
     {
         if (!index.isValid())
             return EveType::invalidId;
 
         return mData[index.row()].mId;
+    }
+
+    void InterRegionMarketDataModel::reset()
+    {
+        beginResetModel();
+        mData.clear();
+        endResetModel();
     }
 
     int InterRegionMarketDataModel::getSrcRegionColumn()

@@ -25,6 +25,8 @@ namespace Evernus
         const auto macdSlowDaysDefault = 15;
         const auto macdEmaDaysDefault = 5;
         const auto showLegendDefault = true;
+        const auto discardBogusOrdersDefault = true;
+        const auto bogusOrderThresholdDefault = 0.9;
 
         const auto dontSaveLargeOrdersKey = "marketAnalysis/dontSaveOrders";
         const auto minVolumeFilterKey = "marketAnalysis/filter/minVolume";
@@ -42,5 +44,7 @@ namespace Evernus
         const auto macdEmaDaysKey = "marketAnalysis/macd/emaDays";
         const auto showLegendKey = "marketAnalysis/showLegend";
         const auto ignoreExistingOrdersKey = "marketAnalysis/ignoreExistingOrders";
+        const auto discardBogusOrdersKey = "marketAnalysis/discardBogusOrders";
+        const auto bogusOrderThresholdKey = "marketAnalysis/bogusOrderThreshold";
     }
 }
