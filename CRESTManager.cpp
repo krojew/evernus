@@ -366,6 +366,7 @@ namespace Evernus
         for (auto i = 0u; i < maxInterfaces; ++i)
         {
             mInterfaces.emplace_back(new CRESTInterface{this});
+            mInterfaces.back()->setEndpoints(mEndpoints);
 
             connect(mInterfaces.back(), &CRESTInterface::tokenRequested, this, &CRESTManager::fetchToken, Qt::QueuedConnection);
             connect(this, &CRESTManager::acquiredToken, mInterfaces.back(), &CRESTInterface::updateTokenAndContinue);
