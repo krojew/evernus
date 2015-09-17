@@ -2746,37 +2746,37 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="122"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="124"/>
         <source>Score</source>
-        <translation type="unfinished">Wynik</translation>
+        <translation>Wynik</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="126"/>
         <source>Source</source>
-        <translation type="unfinished">Źródło</translation>
+        <translation>Źródło</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="128"/>
         <source>5% volume source price (b/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceny 5% źródła (k/s)</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="132"/>
         <source>5% volume destination price (b/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceny 5% celu (k/s)</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="134"/>
         <source>Best difference</source>
-        <translation type="unfinished"></translation>
+        <translation>Najlepsza różnica</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="136"/>
         <source>30-day avg. min. volume</source>
-        <translation type="unfinished"></translation>
+        <translation>MInimalny średni 30-dniowy wolumen</translation>
     </message>
     <message>
         <source>5% volume buy price</source>
@@ -2785,7 +2785,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="130"/>
         <source>Destination</source>
-        <translation type="unfinished"></translation>
+        <translation>Cel</translation>
     </message>
     <message>
         <source>5% volume sell price</source>
@@ -2802,7 +2802,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="138"/>
         <source>Margin</source>
-        <translation type="unfinished">Marża</translation>
+        <translation>Marża</translation>
     </message>
 </context>
 <context>
@@ -3592,7 +3592,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="113"/>
         <source>Discard bogus orders (causes recalculation)</source>
-        <translation type="unfinished"></translation>
+        <translation>Odrzuć fałszywe zlecenia (powoduje przeliczenie danych)</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="574"/>
@@ -3685,17 +3685,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="129"/>
         <source>Bogus order threshold:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tolerancja fałszywych zleceń:</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="157"/>
         <source>Region</source>
-        <translation type="unfinished">Region</translation>
+        <translation>Region</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="158"/>
         <source>Inter-Region</source>
-        <translation type="unfinished"></translation>
+        <translation>Między regionami</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="194"/>
@@ -3738,27 +3738,27 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="744"/>
         <source>Source region:</source>
-        <translation type="unfinished"></translation>
+        <translation>Źródłowy region:</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="783"/>
         <source>- multiple -</source>
-        <translation type="unfinished"></translation>
+        <translation>- wiele -</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="851"/>
         <source>&quot;Show in EVE&quot; is available via the right-click menu.</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;Pokaż w EVE&quot; jest dostępne w menu kontekstowym.</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="748"/>
         <source>Destination region:</source>
-        <translation type="unfinished"></translation>
+        <translation>Docelowy region:</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="793"/>
         <source>- none -</source>
-        <translation type="unfinished">- brak -</translation>
+        <translation>- brak -</translation>
     </message>
 </context>
 <context>
