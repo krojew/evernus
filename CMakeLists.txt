@@ -132,6 +132,7 @@ qt5_wrap_cpp(
     IGBService.h
     ImportPreferencesWidget.h
     ImportSourcePreferencesWidget.h
+    InterRegionMarketDataModel.h
     ItemCostEditDialog.h
     ItemCostModel.h
     ItemCostWidget.h
@@ -431,6 +432,10 @@ add_executable(
     ImportSettings.h
     ImportSourcePreferencesWidget.cpp
     ImportSourcePreferencesWidget.h
+    InterRegionMarketDataFilterProxyModel.cpp
+    InterRegionMarketDataFilterProxyModel.h
+    InterRegionMarketDataModel.cpp
+    InterRegionMarketDataModel.h
     IssuedContractModel.cpp
     IssuedContractModel.h
     Item.cpp

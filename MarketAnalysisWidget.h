@@ -17,12 +17,15 @@
 #include <QWidget>
 
 #include "TypeAggregatedMarketDataFilterProxyModel.h"
+#include "InterRegionMarketDataFilterProxyModel.h"
 #include "TypeAggregatedMarketDataModel.h"
+#include "InterRegionMarketDataModel.h"
 #include "ExternalOrderImporter.h"
 #include "ExternalOrder.h"
 #include "TaskConstants.h"
 #include "CRESTManager.h"
 
+class QAbstractItemView;
 class QStackedWidget;
 class QTableView;
 class QComboBox;
@@ -75,18 +78,22 @@ namespace Evernus
         void showForCurrentRegion();
         void showForCurrentRegionAndSolarSystem();
 
-        void applyFilter();
+        void applyRegionFilter();
+        void applyInterRegionFilter();
 
         void showDetails(const QModelIndex &item);
-        void selectType(const QItemSelection &selected);
+        void selectRegionType(const QItemSelection &selected);
+        void selectInterRegionType(const QItemSelection &selected);
 
         void showDetailsForCurrent();
-        void showInEveForCurrent();
+        void showInEveForCurrentRegion();
+        void showInEveForCurrentInterRegion();
 
-        void copyRows() const;
+        void copyRows(const QAbstractItemView &view, const QAbstractItemModel &model) const;
 
     private:
         static const auto waitingLabelIndex = 0;
+        static const auto allRegionsIndex = 0;
 
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
@@ -98,15 +105,17 @@ namespace Evernus
         CRESTManager mManager;
 
         QAction *mShowDetailsAct = nullptr;
-        QAction *mShowInEveAct = nullptr;
-        QAction *mCopyRowsAct = nullptr;
+        QAction *mShowInEveRegionAct = nullptr;
+        QAction *mShowInEveInterRegionAct = nullptr;
+        QAction *mCopyRegionRowsAct = nullptr;
+        QAction *mCopyInterRegionRowsAct = nullptr;
 
         QCheckBox *mDontSaveBtn = nullptr;
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;
         QComboBox *mRegionCombo = nullptr;
         QComboBox *mSolarSystemCombo = nullptr;
-        QStackedWidget *mDataStack = nullptr;
-        QTableView *mTypeDataView = nullptr;
+        QStackedWidget *mRegionDataStack = nullptr;
+        QTableView *mRegionTypeDataView = nullptr;
         QLineEdit *mMinVolumeEdit = nullptr;
         QLineEdit *mMaxVolumeEdit = nullptr;
         QLineEdit *mMinMarginEdit = nullptr;
@@ -115,6 +124,11 @@ namespace Evernus
         QLineEdit *mMaxBuyPriceEdit = nullptr;
         QLineEdit *mMinSellPriceEdit = nullptr;
         QLineEdit *mMaxSellPriceEdit = nullptr;
+
+        QComboBox *mSourceRegionCombo = nullptr;
+        QComboBox *mDestRegionCombo = nullptr;
+        QStackedWidget *mInterRegionDataStack = nullptr;
+        QTableView *mInterRegionTypeDataView = nullptr;
 
         uint mOrderRequestCount = 0, mHistoryRequestCount = 0;
         bool mPreparingRequests = false;
@@ -129,6 +143,10 @@ namespace Evernus
 
         TypeAggregatedMarketDataModel mTypeDataModel;
         TypeAggregatedMarketDataFilterProxyModel mTypeViewProxy;
+
+        InterRegionMarketDataModel mInterRegionDataModel;
+        InterRegionMarketDataFilterProxyModel mInterRegionViewProxy;
+        bool mRefreshedInterRegionData = false;
 
         void processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText);
         void processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText);

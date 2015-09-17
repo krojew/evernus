@@ -14,6 +14,7 @@
  */
 #include <boost/scope_exit.hpp>
 
+#include <QStandardItemModel>
 #include <QDoubleValidator>
 #include <QStackedWidget>
 #include <QIntValidator>
@@ -69,6 +70,9 @@ namespace Evernus
                          TypeAggregatedMarketDataModel::getMarginColumn(),
                          TypeAggregatedMarketDataModel::getBuyPriceColumn(),
                          TypeAggregatedMarketDataModel::getSellPriceColumn())
+        , mInterRegionDataModel(mDataProvider)
+        , mInterRegionViewProxy(InterRegionMarketDataModel::getSrcRegionColumn(),
+                                InterRegionMarketDataModel::getDstRegionColumn())
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -111,7 +115,9 @@ namespace Evernus
 
     void MarketAnalysisWidget::setCharacter(Character::IdType id)
     {
-        mTypeDataModel.setCharacter(mCharacterRepo.find(id));
+        const auto character = mCharacterRepo.find(id);
+        mTypeDataModel.setCharacter(character);
+        mInterRegionDataModel.setCharacter(character);
     }
 
     void MarketAnalysisWidget::handleNewPreferences()
@@ -192,13 +198,13 @@ namespace Evernus
             QSettings settings;
             settings.setValue(MarketAnalysisSettings::lastRegionKey, region);
 
-            mDataStack->setCurrentIndex(waitingLabelIndex);
-            mDataStack->repaint();
+            mRegionDataStack->setCurrentIndex(waitingLabelIndex);
+            mRegionDataStack->repaint();
 
             fillSolarSystems(region);
             mTypeDataModel.setOrderData(mOrders, mHistory[region], region);
 
-            mDataStack->setCurrentWidget(mTypeDataView);
+            mRegionDataStack->setCurrentWidget(mRegionTypeDataView);
         }
     }
 
@@ -207,17 +213,17 @@ namespace Evernus
         const auto region = getCurrentRegion();
         if (region != 0)
         {
-            mDataStack->setCurrentIndex(waitingLabelIndex);
-            mDataStack->repaint();
+            mRegionDataStack->setCurrentIndex(waitingLabelIndex);
+            mRegionDataStack->repaint();
 
             const auto system = mSolarSystemCombo->currentData().toUInt();
             mTypeDataModel.setOrderData(mOrders, mHistory[region], region, system);
 
-            mDataStack->setCurrentWidget(mTypeDataView);
+            mRegionDataStack->setCurrentWidget(mRegionTypeDataView);
         }
     }
 
-    void MarketAnalysisWidget::applyFilter()
+    void MarketAnalysisWidget::applyRegionFilter()
     {
         const auto minVolume = mMinVolumeEdit->text();
         const auto maxVolume = mMaxVolumeEdit->text();
@@ -248,6 +254,49 @@ namespace Evernus
                                  (maxSellPrice.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::PriceValueType{}) : (maxSellPrice.toDouble()));
     }
 
+    void MarketAnalysisWidget::applyInterRegionFilter()
+    {
+        InterRegionMarketDataFilterProxyModel::RegionList srcRegions, dstRegions;
+
+        auto fillRegions = [](const auto model, auto &list) {
+            if (model->item(allRegionsIndex)->checkState() == Qt::Checked)
+            {
+                for (auto i = allRegionsIndex + 1; i < model->rowCount(); ++i)
+                    list.emplace(model->item(i)->data().toUInt());
+            }
+            else
+            {
+                for (auto i = allRegionsIndex + 1; i < model->rowCount(); ++i)
+                {
+                    if (model->item(i)->checkState() == Qt::Checked)
+                        list.emplace(model->item(i)->data().toUInt());
+                }
+            }
+        };
+
+        if (!mRefreshedInterRegionData)
+        {
+            qDebug() << "Recomputing inter-region data...";
+
+            mInterRegionDataStack->setCurrentIndex(waitingLabelIndex);
+            mInterRegionDataStack->repaint();
+
+            mInterRegionDataModel.setOrderData(mOrders, mHistory);
+        }
+
+        fillRegions(static_cast<const QStandardItemModel *>(mSourceRegionCombo->model()), srcRegions);
+        fillRegions(static_cast<const QStandardItemModel *>(mDestRegionCombo->model()), dstRegions);
+
+        mInterRegionViewProxy.setFilter(srcRegions, dstRegions);
+        mInterRegionTypeDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+
+        if (!mRefreshedInterRegionData)
+        {
+            mInterRegionDataStack->setCurrentWidget(mInterRegionTypeDataView);
+            mRefreshedInterRegionData = true;
+        }
+    }
+
     void MarketAnalysisWidget::showDetails(const QModelIndex &item)
     {
         const auto id = mTypeDataModel.getTypeId(mTypeViewProxy.mapToSource(item));
@@ -264,29 +313,43 @@ namespace Evernus
         }
     }
 
-    void MarketAnalysisWidget::selectType(const QItemSelection &selected)
+    void MarketAnalysisWidget::selectRegionType(const QItemSelection &selected)
     {
         const auto enabled = !selected.isEmpty();
         mShowDetailsAct->setEnabled(enabled);
-        mShowInEveAct->setEnabled(enabled);
-        mCopyRowsAct->setEnabled(enabled);
+        mShowInEveRegionAct->setEnabled(enabled);
+        mCopyRegionRowsAct->setEnabled(enabled);
+    }
+
+    void MarketAnalysisWidget::selectInterRegionType(const QItemSelection &selected)
+    {
+        const auto enabled = !selected.isEmpty();
+        mShowInEveInterRegionAct->setEnabled(enabled);
+        mCopyInterRegionRowsAct->setEnabled(enabled);
     }
 
     void MarketAnalysisWidget::showDetailsForCurrent()
     {
-        showDetails(mTypeDataView->currentIndex());
+        showDetails(mRegionTypeDataView->currentIndex());
     }
 
-    void MarketAnalysisWidget::showInEveForCurrent()
+    void MarketAnalysisWidget::showInEveForCurrentRegion()
     {
-        const auto id = mTypeDataModel.getTypeId(mTypeViewProxy.mapToSource(mTypeDataView->currentIndex()));
+        const auto id = mTypeDataModel.getTypeId(mTypeViewProxy.mapToSource(mRegionTypeDataView->currentIndex()));
         if (id != EveType::invalidId)
             emit showInEve(id);
     }
 
-    void MarketAnalysisWidget::copyRows() const
+    void MarketAnalysisWidget::showInEveForCurrentInterRegion()
     {
-        const auto indexes = mTypeDataView->selectionModel()->selectedIndexes();
+        const auto id = mInterRegionDataModel.getTypeId(mInterRegionViewProxy.mapToSource(mInterRegionTypeDataView->currentIndex()));
+        if (id != EveType::invalidId)
+            emit showInEve(id);
+    }
+
+    void MarketAnalysisWidget::copyRows(const QAbstractItemView &view, const QAbstractItemModel &model) const
+    {
+        const auto indexes = view.selectionModel()->selectedIndexes();
         if (indexes.isEmpty())
             return;
 
@@ -301,7 +364,7 @@ namespace Evernus
                 result[result.size() - 1] = '\n';
             }
 
-            result.append(mTypeViewProxy.data(index).toString());
+            result.append(model.data(index).toString());
             result.append('\t');
         }
 
@@ -411,7 +474,10 @@ namespace Evernus
     void MarketAnalysisWidget::checkCompletion()
     {
         if (mOrderRequestCount == 0 && mHistoryRequestCount == 0)
+        {
             showForCurrentRegion();
+            mRefreshedInterRegionData = false;
+        }
     }
 
     void MarketAnalysisWidget::fillSolarSystems(uint regionId)
@@ -548,48 +614,50 @@ namespace Evernus
 
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
-        connect(filterBtn, &QPushButton::clicked, this, &MarketAnalysisWidget::applyFilter);
+        connect(filterBtn, &QPushButton::clicked, this, &MarketAnalysisWidget::applyRegionFilter);
 
         mainLayout->addWidget(new QLabel{tr("Double-click an item for additional information. \"Show in EVE\" is available via the right-click menu."), this});
 
-        mDataStack = new QStackedWidget{this};
-        mainLayout->addWidget(mDataStack);
+        mRegionDataStack = new QStackedWidget{this};
+        mainLayout->addWidget(mRegionDataStack);
 
         auto waitingLabel = new QLabel{tr("Calculating data..."), this};
-        mDataStack->addWidget(waitingLabel);
+        mRegionDataStack->addWidget(waitingLabel);
         waitingLabel->setAlignment(Qt::AlignCenter);
 
         mTypeViewProxy.setSortRole(Qt::UserRole);
         mTypeViewProxy.setSourceModel(&mTypeDataModel);
 
-        mTypeDataView = new QTableView{this};
-        mDataStack->addWidget(mTypeDataView);
-        mTypeDataView->setSortingEnabled(true);
-        mTypeDataView->setAlternatingRowColors(true);
-        mTypeDataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        mTypeDataView->setModel(&mTypeViewProxy);
-        mTypeDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
-        connect(mTypeDataView, &QTableView::doubleClicked, this, &MarketAnalysisWidget::showDetails);
-        connect(mTypeDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
-                this, &MarketAnalysisWidget::selectType);
+        mRegionTypeDataView = new QTableView{this};
+        mRegionDataStack->addWidget(mRegionTypeDataView);
+        mRegionTypeDataView->setSortingEnabled(true);
+        mRegionTypeDataView->setAlternatingRowColors(true);
+        mRegionTypeDataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        mRegionTypeDataView->setModel(&mTypeViewProxy);
+        mRegionTypeDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
+        connect(mRegionTypeDataView, &QTableView::doubleClicked, this, &MarketAnalysisWidget::showDetails);
+        connect(mRegionTypeDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &MarketAnalysisWidget::selectRegionType);
 
-        mDataStack->setCurrentWidget(mTypeDataView);
+        mRegionDataStack->setCurrentWidget(mRegionTypeDataView);
 
         mShowDetailsAct = new QAction{tr("Show details"), this};
         mShowDetailsAct->setEnabled(false);
-        mTypeDataView->addAction(mShowDetailsAct);
+        mRegionTypeDataView->addAction(mShowDetailsAct);
         connect(mShowDetailsAct, &QAction::triggered, this, &MarketAnalysisWidget::showDetailsForCurrent);
 
-        mShowInEveAct = new QAction{tr("Show in EVE"), this};
-        mShowInEveAct->setEnabled(false);
-        mTypeDataView->addAction(mShowInEveAct);
-        connect(mShowInEveAct, &QAction::triggered, this, &MarketAnalysisWidget::showInEveForCurrent);
+        mShowInEveRegionAct = new QAction{tr("Show in EVE"), this};
+        mShowInEveRegionAct->setEnabled(false);
+        mRegionTypeDataView->addAction(mShowInEveRegionAct);
+        connect(mShowInEveRegionAct, &QAction::triggered, this, &MarketAnalysisWidget::showInEveForCurrentRegion);
 
-        mCopyRowsAct = new QAction{tr("&Copy"), this};
-        mCopyRowsAct->setEnabled(false);
-        mCopyRowsAct->setShortcut(QKeySequence::Copy);
-        connect(mCopyRowsAct, &QAction::triggered, this, &MarketAnalysisWidget::copyRows);
-        mTypeDataView->addAction(mCopyRowsAct);
+        mCopyRegionRowsAct = new QAction{tr("&Copy"), this};
+        mCopyRegionRowsAct->setEnabled(false);
+        mCopyRegionRowsAct->setShortcut(QKeySequence::Copy);
+        connect(mCopyRegionRowsAct, &QAction::triggered, this, [=] {
+            copyRows(*mRegionTypeDataView, mTypeViewProxy);
+        });
+        mRegionTypeDataView->addAction(mCopyRegionRowsAct);
 
         return container;
     }
@@ -598,6 +666,120 @@ namespace Evernus
     {
         auto container = new QWidget{this};
         auto mainLayout = new QVBoxLayout{container};
+
+        auto toolBarLayout = new FlowLayout{};
+        mainLayout->addLayout(toolBarLayout);
+
+        auto createRegionCombo = [=] {
+            auto combo = new QComboBox{this};
+            combo->setEditable(true);
+            combo->setInsertPolicy(QComboBox::NoInsert);
+
+            return combo;
+        };
+
+        toolBarLayout->addWidget(new QLabel{tr("Source region:"), this});
+        mSourceRegionCombo = createRegionCombo();
+        toolBarLayout->addWidget(mSourceRegionCombo);
+
+        toolBarLayout->addWidget(new QLabel{tr("Destination region:"), this});
+        mDestRegionCombo = createRegionCombo();
+        toolBarLayout->addWidget(mDestRegionCombo);
+
+        auto fillRegionCombo = [this](auto combo) {
+            auto model = new QStandardItemModel{this};
+
+            const auto regions = mDataProvider.getRegions();
+            for (const auto &region : regions)
+            {
+                auto item = new QStandardItem{region.second};
+                item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+                item->setCheckState(Qt::Checked);
+                item->setData(region.first);
+
+                model->appendRow(item);
+            }
+
+            combo->setModel(model);
+
+            connect(model, &QStandardItemModel::itemChanged, this, [=] {
+                if (model->item(allRegionsIndex)->checkState() == Qt::Checked)
+                {
+                    combo->setCurrentText(tr("- all -"));
+                    return;
+                }
+
+                auto hasChecked = false;
+                for (auto i = allRegionsIndex + 1; i < model->rowCount(); ++i)
+                {
+                    const auto item = model->item(i);
+                    if (item->checkState() == Qt::Checked)
+                    {
+                        if (hasChecked)
+                        {
+                            combo->setCurrentText(tr("- multiple -"));
+                            return;
+                        }
+
+                        hasChecked = true;
+                        combo->setCurrentText(item->text());
+                    }
+                }
+
+                if (!hasChecked)
+                    combo->setCurrentText(tr("- none -"));
+            }, Qt::QueuedConnection);
+
+            auto item = new QStandardItem{tr("- all -")};
+            item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+            item->setCheckState(Qt::Checked);
+
+            model->insertRow(allRegionsIndex, item);
+            combo->setCurrentText(tr("- all -"));
+        };
+
+        fillRegionCombo(mSourceRegionCombo);
+        fillRegionCombo(mDestRegionCombo);
+
+        auto filterBtn = new QPushButton{tr("Apply"), this};
+        toolBarLayout->addWidget(filterBtn);
+        connect(filterBtn, &QPushButton::clicked, this, &MarketAnalysisWidget::applyInterRegionFilter);
+
+        toolBarLayout->addWidget(new QLabel{tr("\"Show in EVE\" is available via the right-click menu."), this});
+
+        mInterRegionDataStack = new QStackedWidget{this};
+        mainLayout->addWidget(mInterRegionDataStack);
+
+        auto waitingLabel = new QLabel{tr("Calculating data..."), this};
+        mInterRegionDataStack->addWidget(waitingLabel);
+        waitingLabel->setAlignment(Qt::AlignCenter);
+
+        mInterRegionViewProxy.setSortRole(Qt::UserRole);
+        mInterRegionViewProxy.setSourceModel(&mInterRegionDataModel);
+
+        mInterRegionTypeDataView = new QTableView{this};
+        mInterRegionDataStack->addWidget(mInterRegionTypeDataView);
+        mInterRegionTypeDataView->setSortingEnabled(true);
+        mInterRegionTypeDataView->setAlternatingRowColors(true);
+        mInterRegionTypeDataView->setModel(&mInterRegionViewProxy);
+        mInterRegionTypeDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
+        connect(mInterRegionTypeDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &MarketAnalysisWidget::selectInterRegionType);
+
+        mInterRegionDataStack->setCurrentWidget(mInterRegionTypeDataView);
+
+        mShowInEveInterRegionAct = new QAction{tr("Show in EVE"), this};
+        mShowInEveInterRegionAct->setEnabled(false);
+        mInterRegionTypeDataView->addAction(mShowInEveInterRegionAct);
+        connect(mShowInEveInterRegionAct, &QAction::triggered, this, &MarketAnalysisWidget::showInEveForCurrentInterRegion);
+
+        mCopyInterRegionRowsAct = new QAction{tr("&Copy"), this};
+        mCopyInterRegionRowsAct->setEnabled(false);
+        mCopyInterRegionRowsAct->setShortcut(QKeySequence::Copy);
+        connect(mCopyInterRegionRowsAct, &QAction::triggered, this, [=] {
+            copyRows(*mInterRegionTypeDataView, mInterRegionViewProxy);
+        });
+        mInterRegionTypeDataView->addAction(mCopyInterRegionRowsAct);
 
         return container;
     }
