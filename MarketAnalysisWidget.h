@@ -116,8 +116,8 @@ namespace Evernus
         QComboBox *mSolarSystemCombo = nullptr;
         QStackedWidget *mRegionDataStack = nullptr;
         QTableView *mRegionTypeDataView = nullptr;
-        QLineEdit *mMinVolumeEdit = nullptr;
-        QLineEdit *mMaxVolumeEdit = nullptr;
+        QLineEdit *mMinRegionVolumeEdit = nullptr;
+        QLineEdit *mMaxRegionVolumeEdit = nullptr;
         QLineEdit *mMinMarginEdit = nullptr;
         QLineEdit *mMaxMarginEdit = nullptr;
         QLineEdit *mMinBuyPriceEdit = nullptr;
@@ -127,6 +127,8 @@ namespace Evernus
 
         QComboBox *mSourceRegionCombo = nullptr;
         QComboBox *mDestRegionCombo = nullptr;
+        QLineEdit *mMinInterRegionVolumeEdit = nullptr;
+        QLineEdit *mMaxInterRegionVolumeEdit = nullptr;
         QStackedWidget *mInterRegionDataStack = nullptr;
         QTableView *mInterRegionTypeDataView = nullptr;
 

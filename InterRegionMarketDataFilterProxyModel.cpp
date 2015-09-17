@@ -16,18 +16,26 @@
 
 namespace Evernus
 {
-    InterRegionMarketDataFilterProxyModel
-    ::InterRegionMarketDataFilterProxyModel(int srcRegionColumn, int dstRegionColumn, QObject *parent)
+    InterRegionMarketDataFilterProxyModel::InterRegionMarketDataFilterProxyModel(int srcRegionColumn,
+                                                                                 int dstRegionColumn,
+                                                                                 int volumeColumn,
+                                                                                 QObject *parent)
         : QSortFilterProxyModel{parent}
         , mSrcRegionColumn{srcRegionColumn}
         , mDstRegionColumn{dstRegionColumn}
+        , mVolumeColumn{volumeColumn}
     {
     }
 
-    void InterRegionMarketDataFilterProxyModel::setFilter(RegionList srcRegions, RegionList dstRegions)
+    void InterRegionMarketDataFilterProxyModel::setFilter(RegionList srcRegions,
+                                                          RegionList dstRegions,
+                                                          VolumeValueType minVolume,
+                                                          VolumeValueType maxVolume)
     {
         mSrcRegions = std::move(srcRegions);
         mDstRegions = std::move(dstRegions);
+        mMinVolume = std::move(minVolume);
+        mMaxVolume = std::move(maxVolume);
 
         invalidateFilter();
     }
@@ -50,6 +58,25 @@ namespace Evernus
             };
 
             if (!checkRegion(mSrcRegionColumn, mSrcRegions) || !checkRegion(mDstRegionColumn, mDstRegions))
+                return false;
+
+            auto checkLimit = [source, sourceRow, &sourceParent](auto column, auto min, auto max) {
+                if (min || max)
+                {
+                    using Type = std::remove_reference_t<decltype(*min)>;
+
+                    const auto value
+                        = source->data(source->index(sourceRow, column, sourceParent), Qt::UserRole).template value<Type>();
+                    if (min && value < *min)
+                        return false;
+                    if (max && value > *max)
+                        return false;
+                }
+
+                return true;
+            };
+
+            if (!checkLimit(mVolumeColumn, mMinVolume, mMaxVolume))
                 return false;
         }
 

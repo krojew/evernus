@@ -60,6 +60,7 @@ namespace Evernus
 
         static int getSrcRegionColumn();
         static int getDstRegionColumn();
+        static int getVolumeColumn();
 
     private:
         enum

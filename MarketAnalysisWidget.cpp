@@ -72,7 +72,8 @@ namespace Evernus
                          TypeAggregatedMarketDataModel::getSellPriceColumn())
         , mInterRegionDataModel(mDataProvider)
         , mInterRegionViewProxy(InterRegionMarketDataModel::getSrcRegionColumn(),
-                                InterRegionMarketDataModel::getDstRegionColumn())
+                                InterRegionMarketDataModel::getDstRegionColumn(),
+                                InterRegionMarketDataModel::getVolumeColumn())
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -225,8 +226,8 @@ namespace Evernus
 
     void MarketAnalysisWidget::applyRegionFilter()
     {
-        const auto minVolume = mMinVolumeEdit->text();
-        const auto maxVolume = mMaxVolumeEdit->text();
+        const auto minVolume = mMinRegionVolumeEdit->text();
+        const auto maxVolume = mMaxRegionVolumeEdit->text();
         const auto minMargin = mMinMarginEdit->text();
         const auto maxMargin = mMaxMarginEdit->text();
         const auto minBuyPrice = mMinBuyPriceEdit->text();
@@ -287,7 +288,18 @@ namespace Evernus
         fillRegions(static_cast<const QStandardItemModel *>(mSourceRegionCombo->model()), srcRegions);
         fillRegions(static_cast<const QStandardItemModel *>(mDestRegionCombo->model()), dstRegions);
 
-        mInterRegionViewProxy.setFilter(srcRegions, dstRegions);
+        const auto minVolume = mMinInterRegionVolumeEdit->text();
+        const auto maxVolume = mMaxInterRegionVolumeEdit->text();
+
+        QSettings settings;
+        settings.setValue(MarketAnalysisSettings::minVolumeFilterKey, minVolume);
+        settings.setValue(MarketAnalysisSettings::maxVolumeFilterKey, maxVolume);
+
+        mInterRegionViewProxy.setFilter(srcRegions,
+                                        dstRegions,
+                                        (minVolume.isEmpty()) ? (InterRegionMarketDataFilterProxyModel::VolumeValueType{}) : (minVolume.toUInt()),
+                                        (maxVolume.isEmpty()) ? (InterRegionMarketDataFilterProxyModel::VolumeValueType{}) : (maxVolume.toUInt()));
+
         mInterRegionTypeDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 
         if (!mRefreshedInterRegionData)
@@ -545,17 +557,17 @@ namespace Evernus
 
         auto value = settings.value(MarketAnalysisSettings::minVolumeFilterKey);
 
-        mMinVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMinVolumeEdit);
-        mMinVolumeEdit->setValidator(volumeValidator);
+        mMinRegionVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinRegionVolumeEdit);
+        mMinRegionVolumeEdit->setValidator(volumeValidator);
 
         toolBarLayout->addWidget(new QLabel{"-", this});
 
         value = settings.value(MarketAnalysisSettings::maxVolumeFilterKey);
 
-        mMaxVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMaxVolumeEdit);
-        mMaxVolumeEdit->setValidator(volumeValidator);
+        mMaxRegionVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxRegionVolumeEdit);
+        mMaxRegionVolumeEdit->setValidator(volumeValidator);
 
         auto marginValidator = new QIntValidator{this};
 
@@ -740,6 +752,26 @@ namespace Evernus
 
         fillRegionCombo(mSourceRegionCombo);
         fillRegionCombo(mDestRegionCombo);
+
+        auto volumeValidator = new QIntValidator{this};
+        volumeValidator->setBottom(0);
+
+        toolBarLayout->addWidget(new QLabel{tr("Volume:"), this});
+
+        QSettings settings;
+        auto value = settings.value(MarketAnalysisSettings::minVolumeFilterKey);
+
+        mMinInterRegionVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinInterRegionVolumeEdit);
+        mMinInterRegionVolumeEdit->setValidator(volumeValidator);
+
+        toolBarLayout->addWidget(new QLabel{"-", this});
+
+        value = settings.value(MarketAnalysisSettings::maxVolumeFilterKey);
+
+        mMaxInterRegionVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxInterRegionVolumeEdit);
+        mMaxInterRegionVolumeEdit->setValidator(volumeValidator);
 
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);

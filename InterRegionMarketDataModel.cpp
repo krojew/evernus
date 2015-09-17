@@ -300,6 +300,11 @@ namespace Evernus
         return dstRegionColumn;
     }
 
+    int InterRegionMarketDataModel::getVolumeColumn()
+    {
+        return volumeColumn;
+    }
+
     double InterRegionMarketDataModel::getMargin(const TypeData &data) const
     {
         if (!mCharacter || qFuzzyIsNull(data.mDstSellPrice))

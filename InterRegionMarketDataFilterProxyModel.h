@@ -16,6 +16,8 @@
 
 #include <unordered_set>
 
+#include <boost/optional.hpp>
+
 #include <QSortFilterProxyModel>
 
 namespace Evernus
@@ -24,12 +26,20 @@ namespace Evernus
         : public QSortFilterProxyModel
     {
     public:
+        using VolumeValueType = boost::optional<uint>;
+
         using RegionList = std::unordered_set<uint>;
 
-        InterRegionMarketDataFilterProxyModel(int srcRegionColumn, int dstRegionColumn, QObject *parent = nullptr);
+        InterRegionMarketDataFilterProxyModel(int srcRegionColumn,
+                                              int dstRegionColumn,
+                                              int volumeColumn,
+                                              QObject *parent = nullptr);
         virtual ~InterRegionMarketDataFilterProxyModel() = default;
 
-        void setFilter(RegionList srcRegions, RegionList dstRegions);
+        void setFilter(RegionList srcRegions,
+                       RegionList dstRegions,
+                       VolumeValueType minVolume,
+                       VolumeValueType maxVolume);
 
     protected:
         virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
@@ -37,8 +47,11 @@ namespace Evernus
     private:
         int mSrcRegionColumn = 0;
         int mDstRegionColumn = 0;
+        int mVolumeColumn = 0;
 
         RegionList mSrcRegions;
         RegionList mDstRegions;
+
+        VolumeValueType mMinVolume, mMaxVolume;
     };
 }
