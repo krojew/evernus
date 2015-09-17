@@ -27,19 +27,23 @@ namespace Evernus
     {
     public:
         using VolumeValueType = boost::optional<uint>;
+        using MarginValueType = boost::optional<double>;
 
         using RegionList = std::unordered_set<uint>;
 
         InterRegionMarketDataFilterProxyModel(int srcRegionColumn,
                                               int dstRegionColumn,
                                               int volumeColumn,
+                                              int marginColumn,
                                               QObject *parent = nullptr);
         virtual ~InterRegionMarketDataFilterProxyModel() = default;
 
         void setFilter(RegionList srcRegions,
                        RegionList dstRegions,
                        VolumeValueType minVolume,
-                       VolumeValueType maxVolume);
+                       VolumeValueType maxVolume,
+                       MarginValueType minMargin,
+                       MarginValueType maxMargin);
 
     protected:
         virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
@@ -48,10 +52,12 @@ namespace Evernus
         int mSrcRegionColumn = 0;
         int mDstRegionColumn = 0;
         int mVolumeColumn = 0;
+        int mMarginColumn = 0;
 
         RegionList mSrcRegions;
         RegionList mDstRegions;
 
         VolumeValueType mMinVolume, mMaxVolume;
+        MarginValueType mMinMargin, mMaxMargin;
     };
 }

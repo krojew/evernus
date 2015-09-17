@@ -118,8 +118,8 @@ namespace Evernus
         QTableView *mRegionTypeDataView = nullptr;
         QLineEdit *mMinRegionVolumeEdit = nullptr;
         QLineEdit *mMaxRegionVolumeEdit = nullptr;
-        QLineEdit *mMinMarginEdit = nullptr;
-        QLineEdit *mMaxMarginEdit = nullptr;
+        QLineEdit *mMinRegionMarginEdit = nullptr;
+        QLineEdit *mMaxRegionMarginEdit = nullptr;
         QLineEdit *mMinBuyPriceEdit = nullptr;
         QLineEdit *mMaxBuyPriceEdit = nullptr;
         QLineEdit *mMinSellPriceEdit = nullptr;
@@ -129,6 +129,8 @@ namespace Evernus
         QComboBox *mDestRegionCombo = nullptr;
         QLineEdit *mMinInterRegionVolumeEdit = nullptr;
         QLineEdit *mMaxInterRegionVolumeEdit = nullptr;
+        QLineEdit *mMinInterRegionMarginEdit = nullptr;
+        QLineEdit *mMaxInterRegionMarginEdit = nullptr;
         QStackedWidget *mInterRegionDataStack = nullptr;
         QTableView *mInterRegionTypeDataView = nullptr;
 

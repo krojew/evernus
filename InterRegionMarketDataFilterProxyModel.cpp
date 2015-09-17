@@ -19,23 +19,29 @@ namespace Evernus
     InterRegionMarketDataFilterProxyModel::InterRegionMarketDataFilterProxyModel(int srcRegionColumn,
                                                                                  int dstRegionColumn,
                                                                                  int volumeColumn,
+                                                                                 int marginColumn,
                                                                                  QObject *parent)
         : QSortFilterProxyModel{parent}
         , mSrcRegionColumn{srcRegionColumn}
         , mDstRegionColumn{dstRegionColumn}
         , mVolumeColumn{volumeColumn}
+        , mMarginColumn{marginColumn}
     {
     }
 
     void InterRegionMarketDataFilterProxyModel::setFilter(RegionList srcRegions,
                                                           RegionList dstRegions,
                                                           VolumeValueType minVolume,
-                                                          VolumeValueType maxVolume)
+                                                          VolumeValueType maxVolume,
+                                                          MarginValueType minMargin,
+                                                          MarginValueType maxMargin)
     {
         mSrcRegions = std::move(srcRegions);
         mDstRegions = std::move(dstRegions);
         mMinVolume = std::move(minVolume);
         mMaxVolume = std::move(maxVolume);
+        mMinMargin = std::move(minMargin);
+        mMaxMargin = std::move(maxMargin);
 
         invalidateFilter();
     }
@@ -77,6 +83,8 @@ namespace Evernus
             };
 
             if (!checkLimit(mVolumeColumn, mMinVolume, mMaxVolume))
+                return false;
+            if (!checkLimit(mMarginColumn, mMinMargin, mMaxMargin))
                 return false;
         }
 

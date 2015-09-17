@@ -73,7 +73,8 @@ namespace Evernus
         , mInterRegionDataModel(mDataProvider)
         , mInterRegionViewProxy(InterRegionMarketDataModel::getSrcRegionColumn(),
                                 InterRegionMarketDataModel::getDstRegionColumn(),
-                                InterRegionMarketDataModel::getVolumeColumn())
+                                InterRegionMarketDataModel::getVolumeColumn(),
+                                InterRegionMarketDataModel::getMarginColumn())
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -228,8 +229,8 @@ namespace Evernus
     {
         const auto minVolume = mMinRegionVolumeEdit->text();
         const auto maxVolume = mMaxRegionVolumeEdit->text();
-        const auto minMargin = mMinMarginEdit->text();
-        const auto maxMargin = mMaxMarginEdit->text();
+        const auto minMargin = mMinRegionMarginEdit->text();
+        const auto maxMargin = mMaxRegionMarginEdit->text();
         const auto minBuyPrice = mMinBuyPriceEdit->text();
         const auto maxBuyPrice = mMaxBuyPriceEdit->text();
         const auto minSellPrice = mMinSellPriceEdit->text();
@@ -290,15 +291,21 @@ namespace Evernus
 
         const auto minVolume = mMinInterRegionVolumeEdit->text();
         const auto maxVolume = mMaxInterRegionVolumeEdit->text();
+        const auto minMargin = mMinInterRegionMarginEdit->text();
+        const auto maxMargin = mMaxInterRegionMarginEdit->text();
 
         QSettings settings;
         settings.setValue(MarketAnalysisSettings::minVolumeFilterKey, minVolume);
         settings.setValue(MarketAnalysisSettings::maxVolumeFilterKey, maxVolume);
+        settings.setValue(MarketAnalysisSettings::minMarginFilterKey, minMargin);
+        settings.setValue(MarketAnalysisSettings::maxMarginFilterKey, maxMargin);
 
         mInterRegionViewProxy.setFilter(srcRegions,
                                         dstRegions,
                                         (minVolume.isEmpty()) ? (InterRegionMarketDataFilterProxyModel::VolumeValueType{}) : (minVolume.toUInt()),
-                                        (maxVolume.isEmpty()) ? (InterRegionMarketDataFilterProxyModel::VolumeValueType{}) : (maxVolume.toUInt()));
+                                        (maxVolume.isEmpty()) ? (InterRegionMarketDataFilterProxyModel::VolumeValueType{}) : (maxVolume.toUInt()),
+                                        (minMargin.isEmpty()) ? (InterRegionMarketDataFilterProxyModel::MarginValueType{}) : (minMargin.toDouble()),
+                                        (maxMargin.isEmpty()) ? (InterRegionMarketDataFilterProxyModel::MarginValueType{}) : (maxMargin.toDouble()));
 
         mInterRegionTypeDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 
@@ -575,19 +582,19 @@ namespace Evernus
 
         value = settings.value(MarketAnalysisSettings::minMarginFilterKey);
 
-        mMinMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMinMarginEdit);
-        mMinMarginEdit->setValidator(marginValidator);
-        mMinMarginEdit->setPlaceholderText(locale().percent());
+        mMinRegionMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinRegionMarginEdit);
+        mMinRegionMarginEdit->setValidator(marginValidator);
+        mMinRegionMarginEdit->setPlaceholderText(locale().percent());
 
         toolBarLayout->addWidget(new QLabel{"-", this});
 
         value = settings.value(MarketAnalysisSettings::maxMarginFilterKey);
 
-        mMaxMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMaxMarginEdit);
-        mMaxMarginEdit->setValidator(marginValidator);
-        mMaxMarginEdit->setPlaceholderText(locale().percent());
+        mMaxRegionMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxRegionMarginEdit);
+        mMaxRegionMarginEdit->setValidator(marginValidator);
+        mMaxRegionMarginEdit->setPlaceholderText(locale().percent());
 
         auto priceValidator = new QDoubleValidator{this};
         priceValidator->setBottom(0.);
@@ -772,6 +779,26 @@ namespace Evernus
         mMaxInterRegionVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
         toolBarLayout->addWidget(mMaxInterRegionVolumeEdit);
         mMaxInterRegionVolumeEdit->setValidator(volumeValidator);
+
+        auto marginValidator = new QIntValidator{this};
+
+        toolBarLayout->addWidget(new QLabel{tr("Margin:"), this});
+
+        value = settings.value(MarketAnalysisSettings::minMarginFilterKey);
+
+        mMinInterRegionMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinInterRegionMarginEdit);
+        mMinInterRegionMarginEdit->setValidator(marginValidator);
+        mMinInterRegionMarginEdit->setPlaceholderText(locale().percent());
+
+        toolBarLayout->addWidget(new QLabel{"-", this});
+
+        value = settings.value(MarketAnalysisSettings::maxMarginFilterKey);
+
+        mMaxInterRegionMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxInterRegionMarginEdit);
+        mMaxInterRegionMarginEdit->setValidator(marginValidator);
+        mMaxInterRegionMarginEdit->setPlaceholderText(locale().percent());
 
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
