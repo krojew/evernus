@@ -554,6 +554,7 @@ add_executable(
     MarketOrderVolumeItemDelegate.h
     MarketOrderWidget.cpp
     MarketOrderWidget.h
+    MathUtils.h
     MenuBarWidget.cpp
     MenuBarWidget.h
     MetaGroup.cpp

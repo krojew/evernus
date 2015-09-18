@@ -5996,32 +5996,32 @@ Suma: %6</translation>
 <context>
     <name>Evernus::TypeAggregatedMarketDataModel</name>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="107"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="108"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="109"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="110"/>
         <source>Score</source>
         <translation>Wynik</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="111"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="112"/>
         <source>5% volume buy price</source>
         <translation>Cena kupna 5%</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="113"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="114"/>
         <source>5% volume sell price</source>
         <translation>Cena sprzedaży 5%</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="115"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="116"/>
         <source>Difference</source>
         <translation>Różnica</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="117"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="118"/>
         <source>30-day avg. volume</source>
         <translation>Średni 30-dniowy wolumen</translation>
     </message>
@@ -6030,7 +6030,7 @@ Suma: %6</translation>
         <translation type="obsolete">Wolumen</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="119"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="120"/>
         <source>Margin</source>
         <translation>Marża</translation>
     </message>

@@ -24,6 +24,7 @@
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
 #include "PriceUtils.h"
+#include "MathUtils.h"
 #include "TextUtils.h"
 
 #include "TypeAggregatedMarketDataModel.h"
@@ -178,41 +179,6 @@ namespace Evernus
             usedTypes.insert(typeId);
         }
 
-        auto calcPercentile = [this](const auto &orders, uint maxVolume, auto avgPrice30) {
-            if (maxVolume == 0)
-                maxVolume = 1;
-
-            const auto nullAvg = qFuzzyIsNull(avgPrice30);
-
-            auto it = std::begin(orders);
-            auto volume = 0u;
-            auto result = 0.;
-
-            while (volume < maxVolume && it != std::end(orders))
-            {
-                const auto price = it->get().getPrice();
-                if (!mDiscardBogusOrders || nullAvg || fabs((price - avgPrice30) / avgPrice30) < mBogusOrderThreshold)
-                {
-                    const auto orderVolume = it->get().getVolumeRemaining();
-                    const auto add = std::min(orderVolume, maxVolume - volume);
-
-                    volume += add;
-                    result += price * add;
-                }
-                else if (!nullAvg)
-                {
-                    maxVolume -= std::min(it->get().getVolumeRemaining(), maxVolume - volume);
-                }
-
-                ++it;
-            }
-
-            if (maxVolume == 0) // all bogus orders?
-                return std::begin(orders)->get().getPrice();
-
-            return  result / maxVolume;
-        };
-
         const auto historyLimit = QDate::currentDate().addDays(-30);
 
         for (const auto type : usedTypes)
@@ -237,8 +203,16 @@ namespace Evernus
             }
 
             data.mId = type;
-            data.mBuyPrice = calcPercentile(buyOrders[type], buyVolumes[type] * 0.05, avgPrice30);
-            data.mSellPrice = calcPercentile(sellOrders[type], sellVolumes[type] * 0.05, avgPrice30);
+            data.mBuyPrice = MathUtils::calcPercentile(buyOrders[type],
+                                                       buyVolumes[type] * 0.05,
+                                                       avgPrice30,
+                                                       mDiscardBogusOrders,
+                                                       mBogusOrderThreshold);
+            data.mSellPrice = MathUtils::calcPercentile(sellOrders[type],
+                                                        sellVolumes[type] * 0.05,
+                                                        avgPrice30,
+                                                        mDiscardBogusOrders,
+                                                        mBogusOrderThreshold);
 
             mData.emplace_back(std::move(data));
         }
