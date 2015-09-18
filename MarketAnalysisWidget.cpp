@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_set>
+
 #include <boost/scope_exit.hpp>
 
 #include <QStandardItemModel>
@@ -749,7 +751,14 @@ namespace Evernus
         mDestRegionCombo = createRegionCombo();
         toolBarLayout->addWidget(mDestRegionCombo);
 
-        auto fillRegionCombo = [this](auto combo) {
+        auto fillRegionCombo = [this](auto combo, const auto savedKey) {
+            std::unordered_set<uint> saved;
+            QSettings settings;
+
+            const auto savedList = settings.value(savedKey).toList();
+            for (const auto &value : savedList)
+                saved.emplace(value.toUInt());
+
             auto model = new QStandardItemModel{this};
 
             const auto regions = mDataProvider.getRegions();
@@ -757,8 +766,8 @@ namespace Evernus
             {
                 auto item = new QStandardItem{region.second};
                 item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-                item->setCheckState(Qt::Checked);
                 item->setData(region.first);
+                item->setCheckState((saved.find(region.first) != std::end(saved)) ? (Qt::Checked) : (Qt::Unchecked));
 
                 model->appendRow(item);
             }
@@ -766,6 +775,17 @@ namespace Evernus
             combo->setModel(model);
 
             connect(model, &QStandardItemModel::itemChanged, this, [=] {
+                QVariantList saved;
+                for (auto i = 0; i < model->rowCount(); ++i)
+                {
+                    const auto item = model->item(i);
+                    if (item->checkState() == Qt::Checked)
+                        saved.append(item->data().toUInt());
+                }
+
+                QSettings settings;
+                settings.setValue(savedKey, saved);
+
                 if (model->item(allRegionsIndex)->checkState() == Qt::Checked)
                 {
                     combo->setCurrentText(tr("- all -"));
@@ -795,18 +815,17 @@ namespace Evernus
 
             auto item = new QStandardItem{tr("- all -")};
             item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-            item->setCheckState(Qt::Checked);
+            item->setCheckState((saved.empty() || saved.find(0) != std::end(saved)) ? (Qt::Checked) : (Qt::Unchecked));
 
             model->insertRow(allRegionsIndex, item);
             combo->setCurrentText(tr("- all -"));
         };
 
-        fillRegionCombo(mSourceRegionCombo);
-        fillRegionCombo(mDestRegionCombo);
+        fillRegionCombo(mSourceRegionCombo, MarketAnalysisSettings::srcRegionKey);
+        fillRegionCombo(mDestRegionCombo, MarketAnalysisSettings::dstRegionKey);
 
         auto volumeValidator = new QIntValidator{this};
         volumeValidator->setBottom(0);
-
         toolBarLayout->addWidget(new QLabel{tr("Volume:"), this});
 
         QSettings settings;
