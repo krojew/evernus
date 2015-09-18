@@ -93,6 +93,13 @@ namespace Evernus
 
         QSettings settings;
 
+        auto list = settings.value(MarketAnalysisSettings::srcStationKey).toList();
+        if (list.size() == 4)
+            mSrcStation = list[3].toUInt();
+        list = settings.value(MarketAnalysisSettings::dstStationKey).toList();
+        if (list.size() == 4)
+            mDstStation = list[3].toUInt();
+
         mDontSaveBtn = new QCheckBox{tr("Don't save imported orders (huge performance gain)"), this};
         toolBarLayout->addWidget(mDontSaveBtn);
         mDontSaveBtn->setChecked(
@@ -774,24 +781,17 @@ namespace Evernus
             return combo;
         };
 
-        QSettings settings;
+        
 
-        auto getStationName = [this, &settings](const auto key) {
-            const auto list = settings.value(key).toList();
-            if (list.size() == 4)
-            {
-                const auto id = list[3].toUInt();
-                return mDataProvider.getLocationName(id);
-            }
-
-            return tr("- any station -");
+        auto getStationName = [this](auto id) {
+            return (id != 0) ? (mDataProvider.getLocationName(id)) : (tr("- any station -"));
         };
 
         toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
         mSourceRegionCombo = createRegionCombo();
         toolBarLayout->addWidget(mSourceRegionCombo);
 
-        auto stationBtn = new QPushButton{getStationName(MarketAnalysisSettings::srcStationKey), this};
+        auto stationBtn = new QPushButton{getStationName(mSrcStation), this};
         toolBarLayout->addWidget(stationBtn);
         connect(stationBtn, &QPushButton::clicked, this, [=] {
             changeStation(mSrcStation, *stationBtn, MarketAnalysisSettings::srcStationKey);
@@ -801,7 +801,7 @@ namespace Evernus
         mDestRegionCombo = createRegionCombo();
         toolBarLayout->addWidget(mDestRegionCombo);
 
-        stationBtn = new QPushButton{getStationName(MarketAnalysisSettings::dstStationKey), this};
+        stationBtn = new QPushButton{getStationName(mDstStation), this};
         toolBarLayout->addWidget(stationBtn);
         connect(stationBtn, &QPushButton::clicked, this, [=] {
             changeStation(mDstStation, *stationBtn, MarketAnalysisSettings::dstStationKey);
@@ -884,6 +884,7 @@ namespace Evernus
         volumeValidator->setBottom(0);
         toolBarLayout->addWidget(new QLabel{tr("Volume:"), this});
 
+        QSettings settings;
         auto value = settings.value(MarketAnalysisSettings::minVolumeFilterKey);
 
         mMinInterRegionVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
