@@ -26,6 +26,7 @@
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QPushButton>
+#include <QMessageBox>
 #include <QTableView>
 #include <QClipboard>
 #include <QTabWidget>
@@ -42,6 +43,7 @@
 #include "MarketAnalysisSettings.h"
 #include "MarketOrderRepository.h"
 #include "CharacterRepository.h"
+#include "StationSelectDialog.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
 #include "TaskManager.h"
@@ -324,14 +326,7 @@ namespace Evernus
         };
 
         if (!mRefreshedInterRegionData)
-        {
-            qDebug() << "Recomputing inter-region data...";
-
-            mInterRegionDataStack->setCurrentIndex(waitingLabelIndex);
-            mInterRegionDataStack->repaint();
-
-            mInterRegionDataModel.setOrderData(mOrders, mHistory);
-        }
+            recalculateInterRegionData();
 
         fillRegions(static_cast<const QStandardItemModel *>(mSourceRegionCombo->model()), srcRegions);
         fillRegions(static_cast<const QStandardItemModel *>(mDestRegionCombo->model()), dstRegions);
@@ -546,6 +541,41 @@ namespace Evernus
         }
     }
 
+    void MarketAnalysisWidget::changeStation(quint64 &destination, QPushButton &btn, const QString &settingName)
+    {
+        StationSelectDialog dlg{mDataProvider, this};
+
+        QSettings settings;
+        dlg.selectPath(settings.value(settingName).toList());
+
+        if (dlg.exec() != QDialog::Accepted)
+            return;
+
+        settings.setValue(settingName, dlg.getSelectedPath());
+
+        destination = dlg.getStationId();
+        if (destination == 0)
+            btn.setText(tr("- any station -"));
+        else
+            btn.setText(mDataProvider.getLocationName(destination));
+
+        if (QMessageBox::question(this, tr("Station change"), tr("Changing station requires data recalculation. Do you wish to do it now?")) == QMessageBox::No)
+            return;
+
+        recalculateInterRegionData();
+        mInterRegionDataStack->setCurrentWidget(mInterRegionTypeDataView);
+    }
+
+    void MarketAnalysisWidget::recalculateInterRegionData()
+    {
+        qDebug() << "Recomputing inter-region data...";
+
+        mInterRegionDataStack->setCurrentIndex(waitingLabelIndex);
+        mInterRegionDataStack->repaint();
+
+        mInterRegionDataModel.setOrderData(mOrders, mHistory, mSrcStation, mDstStation);
+    }
+
     void MarketAnalysisWidget::fillSolarSystems(uint regionId)
     {
         mSolarSystemCombo->blockSignals(true);
@@ -744,13 +774,38 @@ namespace Evernus
             return combo;
         };
 
-        toolBarLayout->addWidget(new QLabel{tr("Source region:"), this});
+        QSettings settings;
+
+        auto getStationName = [this, &settings](const auto key) {
+            const auto list = settings.value(key).toList();
+            if (list.size() == 4)
+            {
+                const auto id = list[3].toUInt();
+                return mDataProvider.getLocationName(id);
+            }
+
+            return tr("- any station -");
+        };
+
+        toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
         mSourceRegionCombo = createRegionCombo();
         toolBarLayout->addWidget(mSourceRegionCombo);
 
-        toolBarLayout->addWidget(new QLabel{tr("Destination region:"), this});
+        auto stationBtn = new QPushButton{getStationName(MarketAnalysisSettings::srcStationKey), this};
+        toolBarLayout->addWidget(stationBtn);
+        connect(stationBtn, &QPushButton::clicked, this, [=] {
+            changeStation(mSrcStation, *stationBtn, MarketAnalysisSettings::srcStationKey);
+        });
+
+        toolBarLayout->addWidget(new QLabel{tr("Destination:"), this});
         mDestRegionCombo = createRegionCombo();
         toolBarLayout->addWidget(mDestRegionCombo);
+
+        stationBtn = new QPushButton{getStationName(MarketAnalysisSettings::dstStationKey), this};
+        toolBarLayout->addWidget(stationBtn);
+        connect(stationBtn, &QPushButton::clicked, this, [=] {
+            changeStation(mDstStation, *stationBtn, MarketAnalysisSettings::dstStationKey);
+        });
 
         auto fillRegionCombo = [this](auto combo, const auto savedKey) {
             std::unordered_set<uint> saved;
@@ -829,7 +884,6 @@ namespace Evernus
         volumeValidator->setBottom(0);
         toolBarLayout->addWidget(new QLabel{tr("Volume:"), this});
 
-        QSettings settings;
         auto value = settings.value(MarketAnalysisSettings::minVolumeFilterKey);
 
         mMinInterRegionVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};

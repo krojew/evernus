@@ -27,6 +27,7 @@
 
 class QAbstractItemView;
 class QStackedWidget;
+class QPushButton;
 class QTableView;
 class QComboBox;
 class QCheckBox;
@@ -152,10 +153,15 @@ namespace Evernus
         InterRegionMarketDataFilterProxyModel mInterRegionViewProxy;
         bool mRefreshedInterRegionData = false;
 
+        quint64 mSrcStation = 0;
+        quint64 mDstStation = 0;
+
         void processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText);
         void processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText);
 
         void checkCompletion();
+        void changeStation(quint64 &destination, QPushButton &btn, const QString &settingName);
+        void recalculateInterRegionData();
 
         void fillSolarSystems(uint regionId);
 

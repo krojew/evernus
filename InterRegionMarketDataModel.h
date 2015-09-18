@@ -53,7 +53,10 @@ namespace Evernus
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
-        void setOrderData(const std::vector<ExternalOrder> &orders, const HistoryRegionMap &history);
+        void setOrderData(const std::vector<ExternalOrder> &orders,
+                          const HistoryRegionMap &history,
+                          quint64 srcStation,
+                          quint64 dstStation);
         void setCharacter(const std::shared_ptr<Character> &character);
         void discardBogusOrders(bool flag);
         void setBogusOrderThreshold(double value);

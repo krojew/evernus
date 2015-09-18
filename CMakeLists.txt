@@ -196,6 +196,7 @@ qt5_wrap_cpp(
     SellMarketOrdersInfoWidget.h
     SoundPreferencesWidget.h
     StationModel.h
+    StationSelectDialog.h
     StationView.h
     StatisticsPreferencesWidget.h
     StatisticsWidget.h
@@ -679,6 +680,8 @@ add_executable(
     SoundSettings.h
     StationModel.cpp
     StationModel.h
+    StationSelectDialog.cpp
+    StationSelectDialog.h
     StationView.cpp
     StationView.h
     StatisticsPreferencesWidget.cpp

@@ -148,7 +148,10 @@ namespace Evernus
         return static_cast<int>(mData.size());
     }
 
-    void InterRegionMarketDataModel::setOrderData(const std::vector<ExternalOrder> &orders, const HistoryRegionMap &history)
+    void InterRegionMarketDataModel::setOrderData(const std::vector<ExternalOrder> &orders,
+                                                  const HistoryRegionMap &history,
+                                                  quint64 srcStation,
+                                                  quint64 dstStation)
     {
         beginResetModel();
 
@@ -177,10 +180,21 @@ namespace Evernus
 
         QEventLoop loop;
 
+        const auto srcRegionId = (srcStation == 0) ? (0u) : (mDataProvider.getStationRegionId(srcStation));
+        const auto dstRegionId = (dstStation == 0) ? (0u) : (mDataProvider.getStationRegionId(dstStation));
+
         for (const auto &order : orders)
         {
             const auto typeId = order.getTypeId();
             const auto regionId = order.getRegionId();
+            const auto stationId = order.getStationId();
+
+            if ((srcRegionId != 0 && srcRegionId == regionId && stationId != srcStation) ||
+                (dstRegionId != 0 && dstRegionId == regionId && stationId != dstStation))
+            {
+                continue;
+            }
+
             if (order.getType() == ExternalOrder::Type::Buy)
             {
                 buyOrders[regionId][typeId].insert(std::cref(order));
@@ -244,11 +258,14 @@ namespace Evernus
 
         for (const auto srcRegion : aggrTypeData)
         {
+            if (srcRegionId != 0 && srcRegion.first != srcRegionId)
+                continue;
+
             for (const auto type : srcRegion.second)
             {
                 for (const auto dstRegion : aggrTypeData)
                 {
-                    if (dstRegion.first == srcRegion.first)
+                    if ((dstRegionId != 0 && dstRegion.first != dstRegionId) || (dstRegion.first == srcRegion.first))
                         continue;
 
                     const auto dstData = dstRegion.second.find(type.first);

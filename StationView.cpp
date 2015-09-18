@@ -61,7 +61,7 @@ namespace Evernus
         }
     }
 
-    quint64 StationView::getStationId() const
+    quint64 StationView::getStationId() const noexcept
     {
         return mCurrentStationId;
     }

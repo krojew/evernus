@@ -14,37 +14,32 @@
  */
 #pragma once
 
-#include <QColumnView>
+#include <QDialog>
 
-#include "StationModel.h"
+class QRadioButton;
 
 namespace Evernus
 {
     class EveDataProvider;
+    class StationView;
 
-    class StationView
-        : public QColumnView
+    class StationSelectDialog
+        : public QDialog
     {
         Q_OBJECT
 
     public:
-        explicit StationView(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
-        virtual ~StationView() = default;
+        explicit StationSelectDialog(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
+        virtual ~StationSelectDialog() = default;
 
         QVariantList getSelectedPath() const;
         void selectPath(const QVariantList &path);
 
-        quint64 getStationId() const noexcept;
-
-    signals:
-        void stationChanged(quint64 id);
-
-    private slots:
-        void selectStation(const QModelIndex &index);
+        quint64 getStationId() const;
 
     private:
-        quint64 mCurrentStationId = 0;
-
-        StationModel mStationModel;
+        StationView *mStationView = nullptr;
+        QRadioButton *mAnyStationBtn = nullptr;
+        QRadioButton *mCustomStationBtn = nullptr;
     };
 }

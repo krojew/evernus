@@ -48,5 +48,7 @@ namespace Evernus
         const auto bogusOrderThresholdKey = "marketAnalysis/bogusOrderThreshold";
         const auto srcRegionKey = "marketAnalysis/interRegion/srcRegion";
         const auto dstRegionKey = "marketAnalysis/interRegion/dstRegion";
+        const auto srcStationKey = "marketAnalysis/interRegion/srcStation";
+        const auto dstStationKey = "marketAnalysis/interRegion/dstStation";
     }
 }
