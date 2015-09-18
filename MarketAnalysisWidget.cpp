@@ -21,6 +21,7 @@
 #include <QStackedWidget>
 #include <QIntValidator>
 #include <QApplication>
+#include <QProgressBar>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
@@ -872,9 +873,20 @@ namespace Evernus
         mInterRegionDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mInterRegionDataStack);
 
+        auto waitingWidget = new QWidget{this};
+
+        auto waitingLayout = new QVBoxLayout{waitingWidget};
+        waitingLayout->setAlignment(Qt::AlignCenter);
+
         auto waitingLabel = new QLabel{tr("Calculating data..."), this};
-        mInterRegionDataStack->addWidget(waitingLabel);
+        waitingLayout->addWidget(waitingLabel);
         waitingLabel->setAlignment(Qt::AlignCenter);
+
+        auto waitingProgress = new QProgressBar{this};
+        waitingLayout->addWidget(waitingProgress);
+        waitingProgress->setRange(0, 0);
+
+        mInterRegionDataStack->addWidget(waitingWidget);
 
         mInterRegionViewProxy.setSortRole(Qt::UserRole);
         mInterRegionViewProxy.setSourceModel(&mInterRegionDataModel);

@@ -15,6 +15,7 @@
 #include <cmath>
 #include <set>
 
+#include <QEventLoop>
 #include <QLocale>
 #include <QColor>
 
@@ -174,6 +175,8 @@ namespace Evernus
 
         RegionMap<TypeMap<uint>> sellVolumes, buyVolumes;
 
+        QEventLoop loop;
+
         for (const auto &order : orders)
         {
             const auto typeId = order.getTypeId();
@@ -188,6 +191,8 @@ namespace Evernus
                 sellOrders[regionId][typeId].insert(std::cref(order));
                 sellVolumes[regionId][typeId] += order.getVolumeRemaining();
             }
+
+            loop.processEvents(QEventLoop::ExcludeUserInputEvents);
         }
 
         auto calcPercentile = [this](const auto &orders, uint maxVolume, auto avgPrice30) {
@@ -263,6 +268,8 @@ namespace Evernus
                                                  avgPrice30);
 
                 aggrTypeData[regionHistory.first].emplace(type.first, std::move(data));
+
+                loop.processEvents(QEventLoop::ExcludeUserInputEvents);
             }
         }
 
@@ -290,6 +297,8 @@ namespace Evernus
                     data.mDstRegion = dstRegion.first;
 
                     mData.emplace_back(std::move(data));
+
+                    loop.processEvents(QEventLoop::ExcludeUserInputEvents);
                 }
             }
         }
