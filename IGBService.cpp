@@ -28,6 +28,7 @@
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
+#include "OrderSettings.h"
 #include "PriceSettings.h"
 #include "IGBSettings.h"
 #include "PriceUtils.h"
@@ -106,10 +107,10 @@ namespace Evernus
     void IGBService::active(QxtWebRequestEvent *event)
     {
         showOrders(event,
-                   [event, this] {
+                   [=] {
                        return mOrderProvider.getSellOrders(getCharacterId(event));
                    },
-                   [event, this] {
+                   [=] {
                        return mOrderProvider.getBuyOrders(getCharacterId(event));
                    },
                    MarketOrder::State::Active,
@@ -119,10 +120,10 @@ namespace Evernus
     void IGBService::fulfilled(QxtWebRequestEvent *event)
     {
         showOrders(event,
-                   [event, this] {
+                   [=] {
                        return mOrderProvider.getSellOrders(getCharacterId(event));
                    },
-                   [event, this] {
+                   [=] {
                        return mOrderProvider.getBuyOrders(getCharacterId(event));
                    },
                    MarketOrder::State::Fulfilled,
@@ -132,11 +133,17 @@ namespace Evernus
     void IGBService::overbid(QxtWebRequestEvent *event)
     {
         showOrders(event,
-                   [event, this] {
+                   [=] {
+                       QSettings settings;
+                       const auto stationOnly
+                           = settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool();
+
                        auto orders = mOrderProvider.getSellOrders(getCharacterId(event));
                        for (auto it = std::begin(orders); it != std::end(orders);)
                        {
-                           const auto price = mDataProvider.getTypeSellPrice((*it)->getTypeId(), (*it)->getStationId());
+                           const auto price = (stationOnly) ?
+                                              (mDataProvider.getTypeStationSellPrice((*it)->getTypeId(), (*it)->getStationId())) :
+                                              (mDataProvider.getTypeRegionSellPrice((*it)->getTypeId(), mDataProvider.getStationRegionId((*it)->getStationId())));
                            if (price->isNew() || price->getPrice() >= (*it)->getPrice())
                                it = orders.erase(it);
                            else
@@ -145,7 +152,7 @@ namespace Evernus
 
                        return orders;
                    },
-                   [event, this] {
+                   [=] {
                        auto orders = mOrderProvider.getBuyOrders(getCharacterId(event));
                        for (auto it = std::begin(orders); it != std::end(orders);)
                        {
@@ -174,7 +181,7 @@ namespace Evernus
             const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
             showOrders(event,
-                       [event, min, delta, &character, &taxes, this] {
+                       [=, &character, &taxes] {
                            auto orders = mOrderProvider.getSellOrders(character->getId());
                            for (auto it = std::begin(orders); it != std::end(orders);)
                            {
@@ -187,11 +194,17 @@ namespace Evernus
 
                            return orders;
                        },
-                       [event, min, delta, &character, &taxes, this] {
+                       [=, &character, &taxes] {
+                           QSettings settings;
+                           const auto stationOnly
+                               = settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool();
+
                            auto orders = mOrderProvider.getBuyOrders(character->getId());
                            for (auto it = std::begin(orders); it != std::end(orders);)
                            {
-                               const auto price = mDataProvider.getTypeSellPrice((*it)->getTypeId(), (*it)->getStationId());
+                               const auto price = (stationOnly) ?
+                                                  (mDataProvider.getTypeStationSellPrice((*it)->getTypeId(), (*it)->getStationId())) :
+                                                  (mDataProvider.getTypeRegionSellPrice((*it)->getTypeId(), mDataProvider.getStationRegionId((*it)->getStationId())));
                                if (price->isNew() || PriceUtils::getMargin((*it)->getPrice(), price->getPrice() - delta, taxes) > min)
                                    it = orders.erase(it);
                                else
@@ -212,10 +225,10 @@ namespace Evernus
     void IGBService::corpActive(QxtWebRequestEvent *event)
     {
         showOrders(event,
-                   [event, this] {
+                   [=] {
                        return mCorpOrderProvider.getSellOrdersForCorporation(getCorporationId(event));
                    },
-                   [event, this] {
+                   [=] {
                        return mCorpOrderProvider.getBuyOrdersForCorporation(getCorporationId(event));
                    },
                    MarketOrder::State::Active,
@@ -225,10 +238,10 @@ namespace Evernus
     void IGBService::corpFulfilled(QxtWebRequestEvent *event)
     {
         showOrders(event,
-                   [event, this] {
+                   [=] {
                        return mCorpOrderProvider.getSellOrdersForCorporation(getCorporationId(event));
                    },
-                   [event, this] {
+                   [=] {
                        return mCorpOrderProvider.getBuyOrdersForCorporation(getCorporationId(event));
                    },
                    MarketOrder::State::Fulfilled,
@@ -238,11 +251,17 @@ namespace Evernus
     void IGBService::corpOverbid(QxtWebRequestEvent *event)
     {
         showOrders(event,
-                   [event, this] {
+                   [=] {
+                       QSettings settings;
+                       const auto stationOnly
+                           = settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool();
+
                        auto orders = mCorpOrderProvider.getSellOrdersForCorporation(getCorporationId(event));
                        for (auto it = std::begin(orders); it != std::end(orders);)
                        {
-                           const auto price = mDataProvider.getTypeSellPrice((*it)->getTypeId(), (*it)->getStationId());
+                           const auto price = (stationOnly) ?
+                                              (mDataProvider.getTypeStationSellPrice((*it)->getTypeId(), (*it)->getStationId())) :
+                                              (mDataProvider.getTypeRegionSellPrice((*it)->getTypeId(), mDataProvider.getStationRegionId((*it)->getStationId())));
                            if (price->isNew() || price->getPrice() > (*it)->getPrice())
                                it = orders.erase(it);
                            else
@@ -251,7 +270,7 @@ namespace Evernus
 
                        return orders;
                    },
-                   [event, this] {
+                   [=] {
                        auto orders = mCorpOrderProvider.getBuyOrdersForCorporation(getCorporationId(event));
                        for (auto it = std::begin(orders); it != std::end(orders);)
                        {
@@ -280,7 +299,7 @@ namespace Evernus
             const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
             showOrders(event,
-                       [event, min, delta, &character, &taxes, this] {
+                       [=, &character, &taxes] {
                            auto orders = mCorpOrderProvider.getSellOrdersForCorporation(character->getCorporationId());
                            for (auto it = std::begin(orders); it != std::end(orders);)
                            {
@@ -293,11 +312,17 @@ namespace Evernus
 
                            return orders;
                        },
-                       [event, min, delta, &character, &taxes, this] {
+                       [=, &character, &taxes] {
+                           QSettings settings;
+                           const auto stationOnly
+                               = settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool();
+
                            auto orders = mCorpOrderProvider.getBuyOrdersForCorporation(character->getCorporationId());
                            for (auto it = std::begin(orders); it != std::end(orders);)
                            {
-                               const auto price = mDataProvider.getTypeSellPrice((*it)->getTypeId(), (*it)->getStationId());
+                               const auto price = (stationOnly) ?
+                                                  (mDataProvider.getTypeStationSellPrice((*it)->getTypeId(), (*it)->getStationId())) :
+                                                  (mDataProvider.getTypeRegionSellPrice((*it)->getTypeId(), mDataProvider.getStationRegionId((*it)->getStationId())));
                                if (price->isNew() || PriceUtils::getMargin((*it)->getPrice(), price->getPrice() - delta, taxes) > min)
                                    it = orders.erase(it);
                                else

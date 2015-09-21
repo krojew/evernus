@@ -50,7 +50,8 @@ namespace Evernus
         virtual QString getGenericName(quint64 id) const = 0;
 
         virtual double getTypeVolume(EveType::IdType id) const = 0;
-        virtual std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId) const = 0;
+        virtual std::shared_ptr<ExternalOrder> getTypeStationSellPrice(EveType::IdType id, quint64 stationId) const = 0;
+        virtual std::shared_ptr<ExternalOrder> getTypeRegionSellPrice(EveType::IdType id, uint regionId) const = 0;
         virtual std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId, int range = -1) const = 0;
 
         virtual void updateExternalOrders(const std::vector<ExternalOrder> &orders) = 0;

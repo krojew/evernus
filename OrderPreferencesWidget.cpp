@@ -58,6 +58,10 @@ namespace Evernus
         mOldMarketOrdersDaysEdit->setValue(settings.value(OrderSettings::oldMarketOrderDaysKey, OrderSettings::oldMarketOrderDaysDefault).toUInt());
         mOldMarketOrdersDaysEdit->setEnabled(mDeleteOldMarketOrdersBtn->isChecked());
 
+        mLimitSellToStationBtn = new QCheckBox{tr("Limit sell order price checking to station"), this};
+        mainGroupLayout->addRow(mLimitSellToStationBtn);
+        mLimitSellToStationBtn->setChecked(settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool());
+
         mainLayout->addStretch();
     }
 
@@ -67,5 +71,6 @@ namespace Evernus
         settings.setValue(OrderSettings::marketOrderMaxAgeKey, mMarketOrderMaxAgeEdit->value());
         settings.setValue(OrderSettings::deleteOldMarketOrdersKey, mDeleteOldMarketOrdersBtn->isChecked());
         settings.setValue(OrderSettings::oldMarketOrderDaysKey, mOldMarketOrdersDaysEdit->value());
+        settings.setValue(OrderSettings::limitSellToStationKey, mLimitSellToStationBtn->isChecked());
     }
 }

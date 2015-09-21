@@ -42,6 +42,10 @@ namespace Evernus
                                            uint stationId,
                                            const Repository<MarketOrder> &orderRepo,
                                            const Repository<MarketOrder> &corpOrderRepo) const;
+        EntityPtr findSellByTypeAndRegion(ExternalOrder::TypeIdType typeId,
+                                          uint regionId,
+                                          const Repository<MarketOrder> &orderRepo,
+                                          const Repository<MarketOrder> &corpOrderRepo) const;
         EntityList findBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId,
                                           uint regionId,
                                           const Repository<MarketOrder> &orderRepo,

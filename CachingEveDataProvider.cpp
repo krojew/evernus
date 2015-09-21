@@ -202,9 +202,31 @@ namespace Evernus
         return (mUsePackagedVolume) ? (getPackagedVolume(*result)) : (result->getVolume());
     }
 
-    std::shared_ptr<ExternalOrder> CachingEveDataProvider::getTypeSellPrice(EveType::IdType id, quint64 stationId) const
+    std::shared_ptr<ExternalOrder> CachingEveDataProvider::getTypeStationSellPrice(EveType::IdType id, quint64 stationId) const
     {
         return getTypeSellPrice(id, stationId, true);
+    }
+
+    std::shared_ptr<ExternalOrder> CachingEveDataProvider::getTypeRegionSellPrice(EveType::IdType id, uint regionId) const
+    {
+        const auto key = std::make_pair(id, regionId);
+        const auto it = mRegionSellPrices.find(key);
+        if (it != std::end(mRegionSellPrices))
+            return it->second;
+
+        std::shared_ptr<ExternalOrder> result;
+
+        try
+        {
+            result = mExternalOrderRepository.findSellByTypeAndRegion(id, regionId, mMarketOrderRepository, mCorpMarketOrderRepository);
+        }
+        catch (const ExternalOrderRepository::NotFoundException &)
+        {
+            result = std::make_shared<ExternalOrder>();
+        }
+
+        mRegionSellPrices.emplace(key, result);
+        return result;
     }
 
     std::shared_ptr<ExternalOrder> CachingEveDataProvider::getTypeBuyPrice(EveType::IdType id, quint64 stationId, int range) const
@@ -715,7 +737,7 @@ namespace Evernus
 
     void CachingEveDataProvider::clearExternalOrderCaches()
     {
-        mSellPrices.clear();
+        mStationSellPrices.clear();
         mBuyPrices.clear();
         mTypeRegionOrderCache.clear();
     }
@@ -734,8 +756,8 @@ namespace Evernus
     std::shared_ptr<ExternalOrder> CachingEveDataProvider::getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
     {
         const auto key = std::make_pair(id, stationId);
-        const auto it = mSellPrices.find(key);
-        if (it != std::end(mSellPrices))
+        const auto it = mStationSellPrices.find(key);
+        if (it != std::end(mStationSellPrices))
             return it->second;
 
         std::shared_ptr<ExternalOrder> result;
@@ -752,7 +774,7 @@ namespace Evernus
             result = std::make_shared<ExternalOrder>();
         }
 
-        mSellPrices.emplace(key, result);
+        mStationSellPrices.emplace(key, result);
         return result;
     }
 

@@ -572,7 +572,7 @@ namespace Evernus
 
         QSettings settings;
 
-        const auto price = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getStationId());
+        const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId());
         if (price->isNew())
             return 100.;
 
@@ -588,7 +588,7 @@ namespace Evernus
 
         QSettings settings;
 
-        const auto price = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getStationId());
+        const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId());
         if (price->isNew())
             return 100.;
 

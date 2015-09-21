@@ -67,7 +67,8 @@ namespace Evernus
         virtual QString getGenericName(quint64 id) const override;
 
         virtual double getTypeVolume(EveType::IdType id) const override;
-        virtual std::shared_ptr<ExternalOrder> getTypeSellPrice(EveType::IdType id, quint64 stationId) const override;
+        virtual std::shared_ptr<ExternalOrder> getTypeStationSellPrice(EveType::IdType id, quint64 stationId) const override;
+        virtual std::shared_ptr<ExternalOrder> getTypeRegionSellPrice(EveType::IdType id, uint regionId) const override;
         virtual std::shared_ptr<ExternalOrder> getTypeBuyPrice(EveType::IdType id, quint64 stationId, int range = -1) const override;
 
         virtual void updateExternalOrders(const std::vector<ExternalOrder> &orders) override;
@@ -126,7 +127,9 @@ namespace Evernus
         mutable std::unordered_map<EveType::IdType, EveTypeRepository::EntityPtr> mTypeCache;
 
         mutable std::unordered_map<TypeLocationPair, ExternalOrderRepository::EntityPtr, boost::hash<TypeLocationPair>>
-        mSellPrices;
+        mStationSellPrices;
+        mutable std::unordered_map<TypeLocationPair, ExternalOrderRepository::EntityPtr, boost::hash<TypeLocationPair>>
+        mRegionSellPrices;
         mutable std::unordered_map<TypeLocationPair, ExternalOrderRepository::EntityPtr, boost::hash<TypeLocationPair>>
         mBuyPrices;
 

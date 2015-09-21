@@ -88,14 +88,14 @@ namespace Evernus
                     return mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getCost();
                 break;
             case priceColumn:
-                return getAdjustedPrice(mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice());
+                return getAdjustedPrice(mDataProvider.getTypeStationSellPrice(data->getTypeId(), mStationId)->getPrice());
             case profitColumn:
                 if (mCharacter)
                 {
-                    return getAdjustedPrice(mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice()) -
+                    return getAdjustedPrice(mDataProvider.getTypeStationSellPrice(data->getTypeId(), mStationId)->getPrice()) -
                            mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getCost();
                 }
-                return getAdjustedPrice(mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice());
+                return getAdjustedPrice(mDataProvider.getTypeStationSellPrice(data->getTypeId(), mStationId)->getPrice());
             case marginColumn:
                 return getMargin(*data);
             }
@@ -142,7 +142,7 @@ namespace Evernus
                     break;
                 case priceColumn:
                     {
-                        const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId);
+                        const auto price = mDataProvider.getTypeStationSellPrice(data->getTypeId(), mStationId);
                         if (price->isNew())
                             return tr("unknown");
 
@@ -154,7 +154,7 @@ namespace Evernus
                         if (mCharacter)
                             cost = mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getCost();
 
-                        return TextUtils::currencyToString(getAdjustedPrice(mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId)->getPrice()) - cost, locale);
+                        return TextUtils::currencyToString(getAdjustedPrice(mDataProvider.getTypeStationSellPrice(data->getTypeId(), mStationId)->getPrice()) - cost, locale);
                     }
                 case marginColumn:
                     return QString{"%1%2"}.arg(locale.toString(getMargin(*data), 'f', 2)).arg(locale.percent());
@@ -164,7 +164,7 @@ namespace Evernus
         case Qt::ToolTipRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId);
+                const auto price = mDataProvider.getTypeStationSellPrice(data->getTypeId(), mStationId);
                 if (!price->isNew())
                 {
                     QSettings settings;
@@ -187,7 +187,7 @@ namespace Evernus
         case Qt::BackgroundRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), mStationId);
+                const auto price = mDataProvider.getTypeStationSellPrice(data->getTypeId(), mStationId);
                 if (!price->isNew())
                 {
                     QSettings settings;
@@ -289,7 +289,7 @@ namespace Evernus
         if (!mCharacter)
             return 0.;
 
-        const auto price = mDataProvider.getTypeSellPrice(task.getTypeId(), mStationId);
+        const auto price = mDataProvider.getTypeStationSellPrice(task.getTypeId(), mStationId);
         if (price->isNew())
             return 100.;
 

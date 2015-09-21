@@ -19,6 +19,7 @@
 #include "CommonScriptAPI.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
+#include "OrderSettings.h"
 #include "ExternalOrder.h"
 #include "MarketOrder.h"
 #include "ScriptUtils.h"
@@ -171,14 +172,24 @@ namespace Evernus
         if (type == MarketOrderModel::Type::Neither)
             return true;
 
-        const auto price = (type == MarketOrderModel::Type::Buy) ?
-                           (mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId(), order.getRange())) :
-                           (mDataProvider.getTypeSellPrice(order.getTypeId(), order.getStationId()));
+        QSettings settings;
+        std::shared_ptr<ExternalOrder> price;
+
+        if (type == MarketOrderModel::Type::Buy)
+        {
+           price = mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId(), order.getRange());
+        }
+        else
+        {
+           if (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool())
+               price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId());
+           else
+               price = mDataProvider.getTypeRegionSellPrice(order.getTypeId(), mDataProvider.getStationRegionId(order.getStationId()));
+        }
 
         if (price->isNew())
             return mPriceStatusFilter & NoData;
 
-        QSettings settings;
         const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
         const auto tooOld = price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge);
 
@@ -205,7 +216,12 @@ namespace Evernus
             overbidOrder = mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId(), order.getRange());
             break;
         case MarketOrderModel::Type::Sell:
-            overbidOrder = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getStationId());
+            {
+                QSettings settings;
+                overbidOrder = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
+                               (mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId())) :
+                               (mDataProvider.getTypeRegionSellPrice(order.getTypeId(), mDataProvider.getStationRegionId(order.getStationId())));
+            }
             break;
         default:
             break;

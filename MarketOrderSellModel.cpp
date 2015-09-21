@@ -84,7 +84,11 @@ namespace Evernus
         case Qt::ToolTipRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId());
+                QSettings settings;
+
+                const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
+                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
+                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
                 if (price->isNew())
                     return tr("No price data -> Please import prices from Orders/Assets tab or by using Margin tool.");
 
@@ -97,7 +101,6 @@ namespace Evernus
                         .arg(TextUtils::currencyToString(price->getPrice() - data->getPrice(), locale));
                 }
 
-                QSettings settings;
                 const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
                 if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                 {
@@ -111,14 +114,17 @@ namespace Evernus
         case Qt::DecorationRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId());
+                QSettings settings;
+
+                const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
+                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
+                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
                 if (price->isNew())
                     return QIcon{":/images/error.png"};
 
                 if (price->getPrice() < data->getPrice())
                     return QIcon{":/images/exclamation.png"};
 
-                QSettings settings;
                 const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
                 if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                     return QIcon{":/images/error.png"};
@@ -146,11 +152,14 @@ namespace Evernus
                 return data->getPrice();
             case priceStatusColumn:
                 {
-                    const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId());
+                    QSettings settings;
+
+                    const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
+                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
+                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
                     if (price->isNew())
                         return 1;
 
-                    QSettings settings;
                     const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
                     if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                         return 2;
@@ -159,7 +168,11 @@ namespace Evernus
                 }
             case priceDifferenceColumn:
                 {
-                    const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId());
+                    QSettings settings;
+
+                    const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
+                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
+                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
                     if (price->isNew())
                         break;
 
@@ -171,7 +184,12 @@ namespace Evernus
                     if (cost->isNew() || qFuzzyIsNull(cost->getCost()))
                         break;
 
-                    return (mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice()) / cost->getCost();
+                    QSettings settings;
+                    const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
+                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
+                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
+
+                    return (price->getPrice() - data->getPrice()) / cost->getCost();
                 }
             case volumeColumn:
                 return QVariantList{} << data->getVolumeRemaining() << data->getVolumeEntered();
@@ -290,11 +308,14 @@ namespace Evernus
                     return TextUtils::currencyToString(data->getPrice(), locale);
                 case priceStatusColumn:
                     {
-                        const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId());
+                        QSettings settings;
+
+                        const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
+                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
+                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
                         if (price->isNew())
                             return tr("No price data");
 
-                        QSettings settings;
                         const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
                         if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                             return tr("Data too old");
@@ -302,7 +323,11 @@ namespace Evernus
                     break;
                 case priceDifferenceColumn:
                     {
-                        const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId());
+                        QSettings settings;
+
+                        const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
+                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
+                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
                         if (price->isNew())
                             break;
 
@@ -314,8 +339,14 @@ namespace Evernus
                         if (cost->isNew() || qFuzzyIsNull(cost->getCost()))
                             break;
 
+                        QSettings settings;
+
+                        const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
+                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
+                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
+
                         return QString{"%1%2"}
-                            .arg(locale.toString(100. * (mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId())->getPrice() - data->getPrice()) / cost->getCost(), 'f', 2))
+                            .arg(locale.toString(100. * (price->getPrice() - data->getPrice()) / cost->getCost(), 'f', 2))
                             .arg(locale.percent());
                     }
                 case volumeColumn:
@@ -414,13 +445,16 @@ namespace Evernus
         case Qt::BackgroundRole:
             if (column == priceColumn && data->getState() == MarketOrder::State::Active)
             {
-                const auto price = mDataProvider.getTypeSellPrice(data->getTypeId(), data->getStationId());
+                QSettings settings;
+
+                const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
+                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
+                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
                 if (!price->isNew())
                 {
                     if (price->getPrice() < data->getPrice())
                         return QColor{255, 192, 192};
 
-                    QSettings settings;
                     const auto maxAge = settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toInt();
                     if (price->getUpdateTime() < QDateTime::currentDateTimeUtc().addSecs(-3600 * maxAge))
                         return QColor{255, 255, 192};
@@ -553,7 +587,9 @@ namespace Evernus
 
         QSettings settings;
 
-        const auto price = mDataProvider.getTypeSellPrice(order->getTypeId(), order->getStationId());
+        const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
+                           (mDataProvider.getTypeStationSellPrice(order->getTypeId(), order->getStationId())) :
+                           (mDataProvider.getTypeRegionSellPrice(order->getTypeId(), mDataProvider.getStationRegionId(order->getStationId())));
         const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
         OrderInfo info;
@@ -704,7 +740,10 @@ namespace Evernus
         QSettings settings;
         const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
-        auto newPrice = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getStationId())->getPrice();
+        const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
+                           (mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId())) :
+                           (mDataProvider.getTypeRegionSellPrice(order.getTypeId(), mDataProvider.getStationRegionId(order.getStationId())));
+        auto newPrice = price->getPrice();
         if (qFuzzyIsNull(newPrice))
             newPrice = order.getPrice();
         else

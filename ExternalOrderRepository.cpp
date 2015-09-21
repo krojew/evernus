@@ -111,6 +111,29 @@ namespace Evernus
         return populate(query.record());
     }
 
+    ExternalOrderRepository::EntityPtr ExternalOrderRepository::findSellByTypeAndRegion(ExternalOrder::TypeIdType typeId,
+                                                                                        uint regionId,
+                                                                                        const Repository<MarketOrder> &orderRepo,
+                                                                                        const Repository<MarketOrder> &corpOrderRepo) const
+    {
+        auto query = prepare(QString{
+            "SELECT * FROM %1 WHERE type = ? AND type_id = ? AND region_id = ? AND id NOT IN "
+            "(SELECT id FROM %2 WHERE state = ? UNION SELECT id FROM %3 WHERE state = ?) "
+            "ORDER BY value ASC LIMIT 1"}
+            .arg(getTableName()).arg(orderRepo.getTableName()).arg(corpOrderRepo.getTableName()));
+        query.addBindValue(static_cast<int>(ExternalOrder::Type::Sell));
+        query.addBindValue(typeId);
+        query.addBindValue(regionId);
+        query.addBindValue(static_cast<int>(MarketOrder::State::Active));
+        query.addBindValue(static_cast<int>(MarketOrder::State::Active));
+
+        DatabaseUtils::execQuery(query);
+        if (!query.next())
+            throw NotFoundException{};
+
+        return populate(query.record());
+    }
+
     ExternalOrderRepository::EntityList ExternalOrderRepository::findBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId,
                                                                                         uint regionId,
                                                                                         const Repository<MarketOrder> &orderRepo,

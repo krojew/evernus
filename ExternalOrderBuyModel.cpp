@@ -362,7 +362,7 @@ namespace Evernus
             return (mMedianPrice == 0.) ? (0.) : ((order.getPrice() - mMedianPrice) / mMedianPrice);
         case DeviationSourceType::Best:
             {
-                const auto value = mDataProvider.getTypeSellPrice(order.getTypeId(), order.getStationId())->getPrice();
+                const auto value = mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId())->getPrice();
                 return (value == 0.) ? (0.) : ((order.getPrice() - value) / value);
             }
         case DeviationSourceType::Cost:
