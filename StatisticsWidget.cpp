@@ -684,7 +684,7 @@ namespace Evernus
 
     void StatisticsWidget::updateBalanceTooltip(QMouseEvent *event)
     {
-        auto getValue = [=](const auto graph) {
+        auto getValue = [=](const QCPGraph *graph) {
             const auto x = graph->keyAxis()->pixelToCoord(event->pos().x());
             const auto data = graph->data();
             const auto b = data->lowerBound(x);

@@ -316,7 +316,7 @@ namespace Evernus
     {
         InterRegionMarketDataFilterProxyModel::RegionList srcRegions, dstRegions;
 
-        auto fillRegions = [](const auto model, auto &list) {
+        auto fillRegions = [](const QStandardItemModel *model, InterRegionMarketDataFilterProxyModel::RegionList &list) {
             if (model->item(allRegionsIndex)->checkState() == Qt::Checked)
             {
                 for (auto i = allRegionsIndex + 1; i < model->rowCount(); ++i)
