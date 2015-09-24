@@ -2439,37 +2439,37 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="123"/>
         <source>Name</source>
-        <translation type="unfinished">Name</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="125"/>
         <source>Score</source>
-        <translation type="unfinished">Score</translation>
+        <translation>Score</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="127"/>
         <source>Source</source>
-        <translation type="unfinished">Quelle</translation>
+        <translation>Quelle</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="129"/>
         <source>5% volume source price (b/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>5% Volumen Quellpreis (b/s)</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="133"/>
         <source>5% volume destination price (b/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>5% Volumen Zielpreis (b/s)</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="135"/>
         <source>Best difference</source>
-        <translation type="unfinished"></translation>
+        <translation>Beste Differenz</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="137"/>
         <source>30-day avg. min. volume</source>
-        <translation type="unfinished"></translation>
+        <translation>30 Tage Durchschnitt Min. Volumen</translation>
     </message>
     <message>
         <source>5% volume buy price</source>
@@ -2478,7 +2478,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="131"/>
         <source>Destination</source>
-        <translation type="unfinished"></translation>
+        <translation>Ziel</translation>
     </message>
     <message>
         <source>5% volume sell price</source>
@@ -2495,7 +2495,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="139"/>
         <source>Margin</source>
-        <translation type="unfinished">Marge</translation>
+        <translation>Marge</translation>
     </message>
 </context>
 <context>
@@ -2573,7 +2573,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../ItemHistoryWidget.cpp" line="105"/>
         <source>Balance</source>
-        <translation>Kontostand</translation>
+        <translation>Differenz</translation>
     </message>
     <message>
         <location filename="../ItemHistoryWidget.cpp" line="116"/>
@@ -3234,7 +3234,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="169"/>
         <source>Region</source>
-        <translation type="unfinished">Region</translation>
+        <translation>Region</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="89"/>
@@ -3254,22 +3254,22 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="141"/>
         <source>Bogus order threshold:</source>
-        <translation type="unfinished"></translation>
+        <translation>Schwellenwert für unsinnige Aufträge:</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="170"/>
         <source>Inter-Region</source>
-        <translation type="unfinished"></translation>
+        <translation>Interregional</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="569"/>
         <source>Station change</source>
-        <translation type="unfinished"></translation>
+        <translation>Stationswechsel</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="569"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein Stationswechesel erfordert eine Datenneuberechnung. Möchtest Du dies nun tun?</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="614"/>
@@ -3341,37 +3341,37 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <location filename="../MarketAnalysisWidget.cpp" line="565"/>
         <location filename="../MarketAnalysisWidget.cpp" line="787"/>
         <source>- any station -</source>
-        <translation type="unfinished"></translation>
+        <translation>- beliebige Station -</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="790"/>
         <source>Source:</source>
-        <translation type="unfinished"></translation>
+        <translation>Quelle:</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="800"/>
         <source>Destination:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ziel:</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="859"/>
         <source>- multiple -</source>
-        <translation type="unfinished"></translation>
+        <translation>- mehrere -</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="926"/>
         <source>&quot;Show in EVE&quot; is available via the right-click menu.</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;In EVE anzeigen&quot; ist via Rechtsklickmenü verfügbar.</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="125"/>
         <source>Discard bogus orders (causes recalculation)</source>
-        <translation type="unfinished"></translation>
+        <translation>Unsinnsaufträge verwerfen (startet Neuberechnung)</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="869"/>
         <source>- none -</source>
-        <translation type="unfinished">- keine -</translation>
+        <translation>- keine -</translation>
     </message>
     <message>
         <source>Copy &amp;rows</source>
@@ -3457,7 +3457,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="126"/>
         <source>Navigator</source>
-        <translation>navigator</translation>
+        <translation>Navigator</translation>
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="134"/>
@@ -5032,17 +5032,17 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
     <message>
         <location filename="../StationSelectDialog.cpp" line="30"/>
         <source>Any station</source>
-        <translation type="unfinished"></translation>
+        <translation>Beliebige Station</translation>
     </message>
     <message>
         <location filename="../StationSelectDialog.cpp" line="34"/>
         <source>Custom station</source>
-        <translation type="unfinished">Benutzerdefinierte Station</translation>
+        <translation>Benutzerdefinierte Station</translation>
     </message>
     <message>
         <location filename="../StationSelectDialog.cpp" line="47"/>
         <source>Select station</source>
-        <translation type="unfinished"></translation>
+        <translation>Station auswählen</translation>
     </message>
 </context>
 <context>
