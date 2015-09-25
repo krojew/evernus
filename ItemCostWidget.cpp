@@ -86,6 +86,8 @@ namespace Evernus
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
 
         mAddBtn->setDisabled(mCharacterId == Character::invalidId);
+        mEditBtn->setDisabled(true);
+        mRemoveBtn->setDisabled(true);
     }
 
     void ItemCostWidget::updateData()
