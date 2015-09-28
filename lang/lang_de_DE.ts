@@ -5478,7 +5478,7 @@ Wert gesamt: %6</translation>
 <context>
     <name>Evernus::TradeableTypesTreeModel</name>
     <message>
-        <location filename="../TradeableTypesTreeModel.cpp" line="213"/>
+        <location filename="../TradeableTypesTreeModel.cpp" line="235"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>

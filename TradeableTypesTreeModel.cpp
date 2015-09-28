@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <unordered_map>
+#include <unordered_set>
 
 #include "MarketGroupRepository.h"
 #include "EveTypeRepository.h"
@@ -113,6 +114,8 @@ namespace Evernus
             groupItems.emplace_back(std::move(item));
         }
 
+        std::unordered_set<MarketGroup::IdType> groupsWithTypes;
+
         const auto types = typeRepo.fetchAllTradeable();
         for (const auto &type : types)
         {
@@ -120,12 +123,34 @@ namespace Evernus
             if (it == std::end(groupItemMap))
                 continue;
 
-            it->second->addChild(std::make_unique<TypeItem>(type->getName(), type->getId()));
+            auto groupItem = it->second;
+            groupItem->addChild(std::make_unique<TypeItem>(type->getName(), type->getId()));
+
+            do {
+                const auto group = groupMap[groupItem];
+                if (groupsWithTypes.find(group->getId()) != std::end(groupsWithTypes))
+                    break;
+
+                groupsWithTypes.emplace(group->getId());
+
+                if (group->getParentId())
+                {
+                    const auto it = groupItemMap.find(*group->getParentId());
+                    groupItem = (it != std::end(groupItemMap)) ? (it->second) : (nullptr);
+                }
+                else
+                {
+                    break;
+                }
+            } while (groupItem != nullptr);
         }
 
         for (auto &groupItem : groupItems)
         {
             const auto group = groupMap[groupItem.get()];
+            if (groupsWithTypes.find(group->getId()) == std::end(groupsWithTypes))
+                continue;
+
             if (group->getParentId())
             {
                 const auto it = groupItemMap.find(*group->getParentId());
