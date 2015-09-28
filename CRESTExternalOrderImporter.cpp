@@ -85,7 +85,8 @@ namespace Evernus
 
         qDebug() << "Got reply," << mRequestCount << "remaining.";
 
-        emit statusChanged(tr("CREST import: waiting for %1 server replies").arg(mRequestCount));
+        if ((mRequestCount % 10) == 0)
+            emit statusChanged(tr("CREST import: waiting for %1 server replies").arg(mRequestCount));
 
         if (!errorText.isEmpty())
         {

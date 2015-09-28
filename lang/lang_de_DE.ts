@@ -348,7 +348,7 @@
         <translation>Evernus wurde ohne CREST-Unterstützung erstellt. Du kannst manuell CREST ID und CREST Secret via Kommandozeile angeben: --crest-id and --crest-secret</translation>
     </message>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="88"/>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="89"/>
         <source>CREST import: waiting for %1 server replies</source>
         <translation>CREST Iimport: warte auf %1 Serverantworten</translation>
     </message>
@@ -5478,7 +5478,7 @@ Wert gesamt: %6</translation>
 <context>
     <name>Evernus::TradeableTypesTreeModel</name>
     <message>
-        <location filename="../TradeableTypesTreeModel.cpp" line="235"/>
+        <location filename="../TradeableTypesTreeModel.cpp" line="238"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>

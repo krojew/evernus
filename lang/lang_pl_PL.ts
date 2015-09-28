@@ -524,7 +524,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="88"/>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="89"/>
         <source>CREST import: waiting for %1 server replies</source>
         <translation>Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
     </message>
@@ -5945,7 +5945,7 @@ Suma: %6</translation>
 <context>
     <name>Evernus::TradeableTypesTreeModel</name>
     <message>
-        <location filename="../TradeableTypesTreeModel.cpp" line="235"/>
+        <location filename="../TradeableTypesTreeModel.cpp" line="238"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
