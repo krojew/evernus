@@ -2748,37 +2748,37 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::InterRegionMarketDataModel</name>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="123"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="125"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="125"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="127"/>
         <source>Score</source>
         <translation>Wynik</translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="127"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="129"/>
         <source>Source</source>
         <translation>Źródło</translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="129"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="131"/>
         <source>5% volume source price (b/s)</source>
         <translation>Ceny 5% źródła (k/s)</translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="133"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="135"/>
         <source>5% volume destination price (b/s)</source>
         <translation>Ceny 5% celu (k/s)</translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="135"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="137"/>
         <source>Best difference</source>
         <translation>Najlepsza różnica</translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="137"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="139"/>
         <source>30-day avg. min. volume</source>
         <translation>MInimalny średni 30-dniowy wolumen</translation>
     </message>
@@ -2787,7 +2787,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="obsolete">Cena kupna 5%</translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="131"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="133"/>
         <source>Destination</source>
         <translation>Cel</translation>
     </message>
@@ -2804,7 +2804,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="obsolete">Średni 30-dniowy wolumen</translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="139"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="141"/>
         <source>Margin</source>
         <translation>Marża</translation>
     </message>
@@ -3599,24 +3599,24 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Odrzuć fałszywe zlecenia (powoduje przeliczenie danych)</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="614"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="622"/>
         <source>Region:</source>
         <translation>Region:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="634"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="642"/>
         <source>Limit to solar system:</source>
         <translation>Ogranicz do systemu:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="647"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="885"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="655"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="893"/>
         <source>Volume:</source>
         <translation>Wolumen:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="665"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="904"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="673"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="912"/>
         <source>Margin:</source>
         <translation>Marża:</translation>
     </message>
@@ -3630,18 +3630,18 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Importuj dane</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="686"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="694"/>
         <source>Buy price:</source>
         <translation>Cena kupna:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="702"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="710"/>
         <source>Sell price:</source>
         <translation>Cena sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="718"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="922"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="726"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="930"/>
         <source>Apply</source>
         <translation>Zastosuj</translation>
     </message>
@@ -3650,24 +3650,24 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Kliknij dwukrotnie na przedmiot, aby zobaczyć dodatkowe infoormacje.</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="722"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="730"/>
         <source>Double-click an item for additional information. &quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation>Kliknij dwukrotnie na przedmiot, aby zobaczyć dodatkowe informacje. &quot;Pokaż w EVE&quot; jest dostępne w menu kontekstowym.</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="727"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="936"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="735"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="944"/>
         <source>Calculating data...</source>
         <translation>Obliczanie danych...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="747"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="755"/>
         <source>Show details</source>
         <translation>Pokaż szczegóły</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="752"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="960"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="760"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="968"/>
         <source>Show in EVE</source>
         <translation>Pokaż w EVE</translation>
     </message>
@@ -3676,13 +3676,13 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="obsolete">Kopiuj wie&amp;rsze</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="757"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="965"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="765"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="973"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiuj</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="204"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="212"/>
         <source>Importing data for analysis...</source>
         <translation>Importowanie danych do analizy...</translation>
     </message>
@@ -3692,60 +3692,65 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Tolerancja fałszywych zleceń:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="169"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="165"/>
+        <source>Use skills for difference calculation</source>
+        <translation>Uwzględnij umiejętności przy obliczaniu różnic</translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="177"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="170"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="178"/>
         <source>Inter-Region</source>
         <translation>Między regionami</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="206"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="214"/>
         <source>Making %1 CREST order requests...</source>
         <translation>Tworzenie %1 zapytań CREST o zlecenia...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="207"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="215"/>
         <source>Making %1 CREST history requests...</source>
         <translation>Tworzenie %1 zapytań CREST o historię...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="378"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="386"/>
         <source>%1 in %2</source>
         <translation>%1 w %2</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="450"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="458"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="479"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="487"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="505"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="513"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi z historią...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="569"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="577"/>
         <source>Station change</source>
         <translation>Zmiana stacji</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="569"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="577"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation>Zmiana stacji wymaga ponownego przeliczenia danych. Zrobić to teraz?</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="591"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="847"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="872"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="877"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="599"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="855"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="880"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="885"/>
         <source>- all -</source>
         <translation>- wszystkie -</translation>
     </message>
@@ -3754,28 +3759,28 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Źródłowy region:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="565"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="787"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="573"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="795"/>
         <source>- any station -</source>
         <translation>- dowolna stacja -</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="790"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="798"/>
         <source>Source:</source>
         <translation>Źródło:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="800"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="808"/>
         <source>Destination:</source>
         <translation>Cel:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="859"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="867"/>
         <source>- multiple -</source>
         <translation>- wiele -</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="926"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="934"/>
         <source>&quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation>&quot;Pokaż w EVE&quot; jest dostępne w menu kontekstowym.</translation>
     </message>
@@ -3784,7 +3789,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Docelowy region:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="869"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="877"/>
         <source>- none -</source>
         <translation>- brak -</translation>
     </message>
@@ -6047,32 +6052,32 @@ Suma: %6</translation>
 <context>
     <name>Evernus::TypeAggregatedMarketDataModel</name>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="108"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="110"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="110"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="112"/>
         <source>Score</source>
         <translation>Wynik</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="112"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="114"/>
         <source>5% volume buy price</source>
         <translation>Cena kupna 5%</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="114"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="116"/>
         <source>5% volume sell price</source>
         <translation>Cena sprzedaży 5%</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="116"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="118"/>
         <source>Difference</source>
         <translation>Różnica</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="118"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="120"/>
         <source>30-day avg. volume</source>
         <translation>Średni 30-dniowy wolumen</translation>
     </message>
@@ -6081,7 +6086,7 @@ Suma: %6</translation>
         <translation type="obsolete">Wolumen</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="120"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="122"/>
         <source>Margin</source>
         <translation>Marża</translation>
     </message>

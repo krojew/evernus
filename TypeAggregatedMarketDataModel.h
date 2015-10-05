@@ -82,6 +82,7 @@ namespace Evernus
             EveType::IdType mId = EveType::invalidId;
             double mBuyPrice = 0.;
             double mSellPrice = 0.;
+            double mDifference = 0.;
             uint mVolume = 0;
         };
 

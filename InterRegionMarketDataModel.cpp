@@ -15,11 +15,13 @@
 #include <set>
 
 #include <QEventLoop>
+#include <QSettings>
 #include <QLocale>
 #include <QColor>
 
 #include <boost/range/adaptor/reversed.hpp>
 
+#include "MarketAnalysisSettings.h"
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
 #include "PriceUtils.h"
@@ -58,7 +60,7 @@ namespace Evernus
                 case nameColumn:
                     return mDataProvider.getTypeName(data.mId);
                 case scoreColumn:
-                    return locale.toString((data.mDstSellPrice - data.mSrcBuyPrice) * data.mVolume, 'f', 0);
+                    return locale.toString(data.mDifference * data.mVolume, 'f', 0);
                 case srcRegionColumn:
                     return mDataProvider.getRegionName(data.mSrcRegion);
                 case srcPriceColumn:
@@ -68,7 +70,7 @@ namespace Evernus
                 case dstPriceColumn:
                     return QString{"%1 / %2"}.arg(TextUtils::currencyToString(data.mDstBuyPrice, locale)).arg(TextUtils::currencyToString(data.mDstSellPrice, locale));
                 case differenceColumn:
-                    return TextUtils::currencyToString(data.mDstSellPrice - data.mSrcBuyPrice, locale);
+                    return TextUtils::currencyToString(data.mDifference, locale);
                 case volumeColumn:
                     return locale.toString(data.mVolume);
                 case marginColumn:
@@ -81,7 +83,7 @@ namespace Evernus
             case nameColumn:
                 return mDataProvider.getTypeName(data.mId);
             case scoreColumn:
-                return (data.mDstSellPrice - data.mSrcBuyPrice) * data.mVolume;
+                return data.mDifference * data.mVolume;
             case srcRegionColumn:
                 return mDataProvider.getRegionName(data.mSrcRegion);
             case srcPriceColumn:
@@ -91,7 +93,7 @@ namespace Evernus
             case dstPriceColumn:
                 return (data.mDstBuyPrice + data.mDstSellPrice) / 2.;
             case differenceColumn:
-                return data.mDstSellPrice - data.mSrcBuyPrice;
+                return data.mDifference;
             case volumeColumn:
                 return data.mVolume;
             case marginColumn:
@@ -256,6 +258,15 @@ namespace Evernus
             }
         }
 
+        PriceUtils::Taxes taxes;
+
+        QSettings settings;
+        const auto useSkillsForDifference = mCharacter && settings.value(
+            MarketAnalysisSettings::useSkillsForDifferenceKey, MarketAnalysisSettings::useSkillsForDifferenceDefault).toBool();
+
+        if (useSkillsForDifference)
+            taxes = PriceUtils::calculateTaxes(*mCharacter);
+
         for (const auto srcRegion : aggrTypeData)
         {
             if (srcRegionId != 0 && srcRegion.first != srcRegionId)
@@ -281,6 +292,11 @@ namespace Evernus
                     data.mVolume = std::min(type.second.mVolume, dstData->second.mVolume);
                     data.mSrcRegion = srcRegion.first;
                     data.mDstRegion = dstRegion.first;
+
+                    if (useSkillsForDifference)
+                        data.mDifference = PriceUtils::getRevenue(data.mDstSellPrice, taxes) - PriceUtils::getCoS(data.mSrcBuyPrice, taxes);
+                    else
+                        data.mDifference = data.mDstSellPrice - data.mSrcBuyPrice;
 
                     mData.emplace_back(std::move(data));
 

@@ -93,6 +93,7 @@ namespace Evernus
             double mSrcSellPrice = 0.;
             double mDstBuyPrice = 0.;
             double mDstSellPrice = 0.;
+            double mDifference = 0.;
             uint mVolume = 0;
             uint mSrcRegion = 0;
             uint mDstRegion = 0;

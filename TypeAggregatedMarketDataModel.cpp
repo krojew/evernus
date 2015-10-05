@@ -16,11 +16,13 @@
 #include <functional>
 #include <set>
 
+#include <QSettings>
 #include <QLocale>
 #include <QColor>
 
 #include <boost/range/adaptor/reversed.hpp>
 
+#include "MarketAnalysisSettings.h"
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
 #include "PriceUtils.h"
@@ -59,13 +61,13 @@ namespace Evernus
                 case nameColumn:
                     return mDataProvider.getTypeName(data.mId);
                 case scoreColumn:
-                    return locale.toString((data.mSellPrice - data.mBuyPrice) * data.mVolume, 'f', 0);
+                    return locale.toString(data.mDifference * data.mVolume, 'f', 0);
                 case buyPriceColumn:
                     return TextUtils::currencyToString(data.mBuyPrice, locale);
                 case sellPriceColumn:
                     return TextUtils::currencyToString(data.mSellPrice, locale);
                 case differenceColumn:
-                    return TextUtils::currencyToString(data.mSellPrice - data.mBuyPrice, locale);
+                    return TextUtils::currencyToString(data.mDifference, locale);
                 case volumeColumn:
                     return locale.toString(data.mVolume);
                 case marginColumn:
@@ -78,13 +80,13 @@ namespace Evernus
             case nameColumn:
                 return mDataProvider.getTypeName(data.mId);
             case scoreColumn:
-                return (data.mSellPrice - data.mBuyPrice) * data.mVolume;
+                return data.mDifference * data.mVolume;
             case buyPriceColumn:
                 return data.mBuyPrice;
             case sellPriceColumn:
                 return data.mSellPrice;
             case differenceColumn:
-                return data.mSellPrice - data.mBuyPrice;
+                return data.mDifference;
             case volumeColumn:
                 return data.mVolume;
             case marginColumn:
@@ -180,6 +182,14 @@ namespace Evernus
         }
 
         const auto historyLimit = QDate::currentDate().addDays(-30);
+        PriceUtils::Taxes taxes;
+
+        QSettings settings;
+        const auto useSkillsForDifference = mCharacter && settings.value(
+            MarketAnalysisSettings::useSkillsForDifferenceKey, MarketAnalysisSettings::useSkillsForDifferenceDefault).toBool();
+
+        if (useSkillsForDifference)
+            taxes = PriceUtils::calculateTaxes(*mCharacter);
 
         for (const auto type : usedTypes)
         {
@@ -213,6 +223,11 @@ namespace Evernus
                                                         avgPrice30,
                                                         mDiscardBogusOrders,
                                                         mBogusOrderThreshold);
+
+            if (useSkillsForDifference)
+                data.mDifference = PriceUtils::getRevenue(data.mSellPrice, taxes) - PriceUtils::getCoS(data.mBuyPrice, taxes);
+            else
+                data.mDifference = data.mSellPrice - data.mBuyPrice;
 
             mData.emplace_back(std::move(data));
         }

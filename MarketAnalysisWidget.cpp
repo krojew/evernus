@@ -83,7 +83,7 @@ namespace Evernus
     {
         auto mainLayout = new QVBoxLayout{this};
 
-        auto toolBarLayout = new QHBoxLayout{};
+        auto toolBarLayout = new FlowLayout{};
         mainLayout->addLayout(toolBarLayout);
 
         auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import data"), this};
@@ -143,7 +143,8 @@ namespace Evernus
         auto thresholdValidator = new QDoubleValidator{this};
         thresholdValidator->setBottom(0.);
 
-        const auto bogusThreshold = settings.value(MarketAnalysisSettings::bogusOrderThresholdKey, MarketAnalysisSettings::bogusOrderThresholdDefault).toString();
+        const auto bogusThreshold
+            = settings.value(MarketAnalysisSettings::bogusOrderThresholdKey, MarketAnalysisSettings::bogusOrderThresholdDefault).toString();
         const auto bogusThresholdValue = bogusThreshold.toDouble();
 
         mTypeDataModel.setBogusOrderThreshold(bogusThresholdValue);
@@ -161,7 +162,14 @@ namespace Evernus
             mInterRegionDataModel.setBogusOrderThreshold(value);
         });
 
-        toolBarLayout->addStretch();
+        auto skillsDiffBtn = new QCheckBox{tr("Use skills for difference calculation"), this};
+        toolBarLayout->addWidget(skillsDiffBtn);
+        skillsDiffBtn->setChecked(
+            settings.value(MarketAnalysisSettings::useSkillsForDifferenceKey, MarketAnalysisSettings::useSkillsForDifferenceDefault).toBool());
+        connect(skillsDiffBtn, &QCheckBox::toggled, [](auto checked) {
+            QSettings settings;
+            settings.setValue(MarketAnalysisSettings::useSkillsForDifferenceKey, checked);
+        });
 
         auto tabs = new QTabWidget{this};
         mainLayout->addWidget(tabs);
@@ -781,7 +789,7 @@ namespace Evernus
             return combo;
         };
 
-        
+
 
         auto getStationName = [this](auto id) {
             return (id != 0) ? (mDataProvider.getLocationName(id)) : (tr("- any station -"));

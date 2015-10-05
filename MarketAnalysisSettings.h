@@ -27,6 +27,7 @@ namespace Evernus
         const auto showLegendDefault = true;
         const auto discardBogusOrdersDefault = true;
         const auto bogusOrderThresholdDefault = 0.9;
+        const auto useSkillsForDifferenceDefault = false;
 
         const auto dontSaveLargeOrdersKey = "marketAnalysis/dontSaveOrders";
         const auto minVolumeFilterKey = "marketAnalysis/filter/minVolume";
@@ -50,5 +51,6 @@ namespace Evernus
         const auto dstRegionKey = "marketAnalysis/interRegion/dstRegion";
         const auto srcStationKey = "marketAnalysis/interRegion/srcStation";
         const auto dstStationKey = "marketAnalysis/interRegion/dstStation";
+        const auto useSkillsForDifferenceKey = "marketAnalysis/useSkillsForDifference";
     }
 }
