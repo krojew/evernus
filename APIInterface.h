@@ -51,6 +51,7 @@ namespace Evernus
         void fetchWalletJournal(const Key &key,
                                 Character::IdType characterId,
                                 WalletJournalEntry::IdType fromId,
+                                int accountKey,
                                 const Callback &callback) const;
         void fetchWalletTransactions(const Key &key,
                                      Character::IdType characterId,
@@ -65,6 +66,7 @@ namespace Evernus
         void fetchWalletJournal(const CorpKey &key,
                                 Character::IdType characterId,
                                 WalletJournalEntry::IdType fromId,
+                                int accountKey,
                                 const Callback &callback) const;
         void fetchWalletTransactions(const CorpKey &key,
                                      Character::IdType characterId,

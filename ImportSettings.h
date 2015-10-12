@@ -58,6 +58,7 @@ namespace Evernus
         const auto makeCorpSnapshotsDefault = true;
         const auto useCustomAssetStationDefault = false;
         const auto importAllCharactersDefault = true;
+        const auto corpWalletDivisionDefault = 1000;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
@@ -90,5 +91,6 @@ namespace Evernus
         const auto useCustomAssetStationKey = "import/assets/useCustomStation";
         const auto customAssetStationKey = "import/assets/customStation";
         const auto importAllCharactersKey = "import/allCharacters";
+        const auto corpWalletDivisionKey = "import/corp/walletDivision";
     }
 }

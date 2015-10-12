@@ -34,6 +34,7 @@ namespace Evernus
 
     signals:
         void settingsInvalidated();
+        void clearCorpWalletData();
 
     private slots:
         void setCurrentPage(QTreeWidgetItem *current, QTreeWidgetItem *previous);

@@ -154,6 +154,8 @@ namespace Evernus
     void MainWindow::showPreferences()
     {
         PreferencesDialog dlg{this};
+        connect(&dlg, &PreferencesDialog::clearCorpWalletData, this, &MainWindow::clearCorpWalletData);
+
         dlg.exec();
 
         setUpAutoImportTimer();

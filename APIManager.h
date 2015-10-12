@@ -67,6 +67,7 @@ namespace Evernus
                                 quint64 corpId,
                                 WalletJournalEntry::IdType fromId,
                                 WalletJournalEntry::IdType tillId,
+                                int accountKey,
                                 const Callback<WalletJournal> &callback) const;
         void fetchWalletTransactions(const Key &key,
                                      Character::IdType characterId,
@@ -95,6 +96,8 @@ namespace Evernus
         void fetchGenericName(quint64 id, const Callback<QString> &callback) const;
 
     private:
+        static constexpr int defaultWalletAccountKey = 1000;
+
         CacheTimerProvider &mCacheTimerProvider;
 
         APIInterface mInterface;
@@ -109,6 +112,7 @@ namespace Evernus
                                 quint64 corpId,
                                 WalletJournalEntry::IdType fromId,
                                 WalletJournalEntry::IdType tillId,
+                                int accountKey,
                                 std::shared_ptr<WalletJournal> &&journal,
                                 const Callback<WalletJournal> &callback,
                                 const QString &rowsetName,

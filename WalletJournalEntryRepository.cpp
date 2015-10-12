@@ -135,6 +135,11 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    void WalletJournalEntryRepository::deleteAll() const
+    {
+        exec(QString{"DELETE FROM %1"}.arg(getTableName()));
+    }
+
     WalletJournalEntryRepository::EntityList WalletJournalEntryRepository
     ::fetchInRange(const QDateTime &from, const QDateTime &till, EntryType type) const
     {

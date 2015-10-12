@@ -17,6 +17,7 @@
 #include <QWidget>
 
 class QCheckBox;
+class QComboBox;
 
 namespace Evernus
 {
@@ -29,6 +30,9 @@ namespace Evernus
         explicit CorpImportPreferencesWidget(QWidget *parent = nullptr);
         virtual ~CorpImportPreferencesWidget() = default;
 
+    signals:
+        void clearCorpWalletData();
+
     public slots:
         void applySettings();
 
@@ -36,5 +40,6 @@ namespace Evernus
         QCheckBox *mUpdateCorpDataBtn = nullptr;
         QCheckBox *mMakeCorpSnapshotsBtn = nullptr;
         QCheckBox *mShowCorpOrdersWithCharacterBtn = nullptr;
+        QComboBox *mWalletDivisionCombo = nullptr;
     };
 }

@@ -208,6 +208,8 @@ namespace Evernus
 
         void syncLMeve(Character::IdType id);
 
+        void clearCorpWalletData();
+
     private slots:
         void scheduleCharacterUpdate();
         void updateCharacters();

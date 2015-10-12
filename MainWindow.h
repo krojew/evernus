@@ -129,6 +129,8 @@ namespace Evernus
 
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
 
+        void clearCorpWalletData();
+
     public slots:
         void showCharacterManagement();
         void showPreferences();

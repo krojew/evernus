@@ -207,6 +207,7 @@ namespace Evernus
                            0,
                            fromId,
                            tillId,
+                           defaultWalletAccountKey,
                            std::make_shared<WalletJournal>(),
                            callback,
                            "transactions",
@@ -219,6 +220,7 @@ namespace Evernus
                                         quint64 corpId,
                                         WalletJournalEntry::IdType fromId,
                                         WalletJournalEntry::IdType tillId,
+                                        int accountKey,
                                         const Callback<WalletJournal> &callback) const
     {
         fetchWalletJournal(key,
@@ -226,6 +228,7 @@ namespace Evernus
                            corpId,
                            fromId,
                            tillId,
+                           accountKey,
                            std::make_shared<WalletJournal>(),
                            callback,
                            "entries",
@@ -330,13 +333,14 @@ namespace Evernus
                                         quint64 corpId,
                                         WalletJournalEntry::IdType fromId,
                                         WalletJournalEntry::IdType tillId,
+                                        int accountKey,
                                         std::shared_ptr<WalletJournal> &&journal,
                                         const Callback<WalletJournal> &callback,
                                         const QString &rowsetName,
                                         TimerType timerType,
                                         bool retry) const
     {
-        mInterface.fetchWalletJournal(key, characterId, fromId,
+        mInterface.fetchWalletJournal(key, characterId, fromId, accountKey,
                                       [=](const QString &response, const QString &error) mutable {
             try
             {
@@ -381,6 +385,7 @@ namespace Evernus
                                        corpId,
                                        nextFromId,
                                        tillId,
+                                       accountKey,
                                        std::move(journal),
                                        callback,
                                        rowsetName,
@@ -405,6 +410,7 @@ namespace Evernus
                                        corpId,
                                        fromId,
                                        tillId,
+                                       accountKey,
                                        std::move(journal),
                                        callback,
                                        rowsetName,
