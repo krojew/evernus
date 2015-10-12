@@ -44,6 +44,7 @@ namespace Evernus
 
         void setIgnored(WalletTransaction::IdType id, bool ignored) const;
         void deleteOldEntries(const QDateTime &from) const;
+        void deleteAll() const;
 
         EntityList fetchInRange(const QDateTime &from,
                                 const QDateTime &till,

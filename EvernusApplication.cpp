@@ -1229,7 +1229,10 @@ namespace Evernus
             if (maxId == WalletTransaction::invalidId)
                 emit taskInfoChanged(task, tr("Fetching corporation wallet transactions for character %1 (this may take a while)...").arg(id));
 
-            mAPIManager.fetchWalletTransactions(*key, id, corpId, WalletTransaction::invalidId, maxId,
+            QSettings settings;
+            const auto accountKey = settings.value(ImportSettings::corpWalletDivisionKey, ImportSettings::corpWalletDivisionDefault).toInt();
+
+            mAPIManager.fetchWalletTransactions(*key, id, corpId, WalletTransaction::invalidId, maxId, accountKey,
                                                 [task, id, corpId, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
@@ -1537,7 +1540,9 @@ namespace Evernus
     void EvernusApplication::clearCorpWalletData()
     {
         mCorpWalletJournalEntryRepository->deleteAll();
+        mCorpWalletTransactionRepository->deleteAll();
         emit corpWalletJournalChanged();
+        emit corpWalletTransactionsChanged();
     }
 
     void EvernusApplication::scheduleCharacterUpdate()

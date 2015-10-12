@@ -56,6 +56,7 @@ namespace Evernus
         void fetchWalletTransactions(const Key &key,
                                      Character::IdType characterId,
                                      WalletTransaction::IdType fromId,
+                                     int accountKey,
                                      const Callback &callback) const;
         void fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback &callback) const;
         void fetchContracts(const Key &key, Character::IdType characterId, const Callback &callback) const;
@@ -71,6 +72,7 @@ namespace Evernus
         void fetchWalletTransactions(const CorpKey &key,
                                      Character::IdType characterId,
                                      WalletTransaction::IdType fromId,
+                                     int accountKey,
                                      const Callback &callback) const;
         void fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback &callback) const;
         void fetchContracts(const CorpKey &key, Character::IdType characterId, const Callback &callback) const;

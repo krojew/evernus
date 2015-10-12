@@ -78,10 +78,12 @@ namespace Evernus
     void APIInterface::fetchWalletTransactions(const Key &key,
                                                Character::IdType characterId,
                                                WalletTransaction::IdType fromId,
+                                               int accountKey,
                                                const Callback &callback) const
     {
         QueryParams params{std::make_pair("characterID", QString::number(characterId))};
         params.emplace_back("rowCount", rowLimit);
+        params.emplace_back("accountKey", QString::number(accountKey));
         if (fromId != WalletJournalEntry::invalidId)
             params.emplace_back("fromID", QString::number(fromId));
 
@@ -128,10 +130,12 @@ namespace Evernus
     void APIInterface::fetchWalletTransactions(const CorpKey &key,
                                                Character::IdType characterId,
                                                WalletTransaction::IdType fromId,
+                                               int accountKey,
                                                const Callback &callback) const
     {
         QueryParams params{std::make_pair("characterID", QString::number(characterId))};
         params.emplace_back("rowCount", rowLimit);
+        params.emplace_back("accountKey", QString::number(accountKey));
         if (fromId != WalletJournalEntry::invalidId)
             params.emplace_back("fromID", QString::number(fromId));
 

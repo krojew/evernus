@@ -79,6 +79,7 @@ namespace Evernus
                                      quint64 corpId,
                                      WalletTransaction::IdType fromId,
                                      WalletTransaction::IdType tillId,
+                                     int accountKey,
                                      const Callback<WalletTransactions> &callback) const;
         void fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const;
         void fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback<MarketOrders> &callback) const;
@@ -125,6 +126,7 @@ namespace Evernus
                                      quint64 corpId,
                                      WalletTransaction::IdType fromId,
                                      WalletTransaction::IdType tillId,
+                                     int accountKey,
                                      std::shared_ptr<WalletTransactions> &&transactions,
                                      const Callback<WalletTransactions> &callback,
                                      TimerType timerType,

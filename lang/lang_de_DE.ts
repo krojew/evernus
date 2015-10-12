@@ -121,12 +121,12 @@
 <context>
     <name>Evernus::APIManager</name>
     <message>
-        <location filename="../APIManager.cpp" line="609"/>
+        <location filename="../APIManager.cpp" line="615"/>
         <source>Invalid XML document received!</source>
         <translation>Ungültiges XML Dokument erhalten!</translation>
     </message>
     <message>
-        <location filename="../APIManager.cpp" line="632"/>
+        <location filename="../APIManager.cpp" line="638"/>
         <source>No XML document received!</source>
         <translation>Kein XML Dokument erhalten!</translation>
     </message>
@@ -1501,8 +1501,8 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../EvernusApplication.cpp" line="783"/>
         <location filename="../EvernusApplication.cpp" line="789"/>
-        <location filename="../EvernusApplication.cpp" line="2238"/>
-        <location filename="../EvernusApplication.cpp" line="2276"/>
+        <location filename="../EvernusApplication.cpp" line="2243"/>
+        <location filename="../EvernusApplication.cpp" line="2281"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -1529,8 +1529,8 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <location filename="../EvernusApplication.cpp" line="1075"/>
         <location filename="../EvernusApplication.cpp" line="1142"/>
         <location filename="../EvernusApplication.cpp" line="1205"/>
-        <location filename="../EvernusApplication.cpp" line="1262"/>
-        <location filename="../EvernusApplication.cpp" line="1287"/>
+        <location filename="../EvernusApplication.cpp" line="1265"/>
+        <location filename="../EvernusApplication.cpp" line="1290"/>
         <source>Key not found!</source>
         <translation>Key nicht gefunden!</translation>
     </message>
@@ -1541,7 +1541,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <location filename="../EvernusApplication.cpp" line="1054"/>
         <location filename="../EvernusApplication.cpp" line="1079"/>
         <location filename="../EvernusApplication.cpp" line="1209"/>
-        <location filename="../EvernusApplication.cpp" line="1266"/>
+        <location filename="../EvernusApplication.cpp" line="1269"/>
         <source>Character not found!</source>
         <translation>Charakter nicht gefunden!</translation>
     </message>
@@ -1602,100 +1602,100 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>Hole Corporation Konto-Transaktionen für Charakter %1 (dies kann eine Weile dauern)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1274"/>
-        <location filename="../EvernusApplication.cpp" line="1295"/>
+        <location filename="../EvernusApplication.cpp" line="1277"/>
+        <location filename="../EvernusApplication.cpp" line="1298"/>
         <source>Fetching corporation market orders for character %1...</source>
         <translation>Hole Corporation Marktaufträge für Charakter %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1307"/>
+        <location filename="../EvernusApplication.cpp" line="1310"/>
         <source>Fetching conquerable stations...</source>
         <translation>Hole Stationsliste...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1371"/>
+        <location filename="../EvernusApplication.cpp" line="1374"/>
         <source>Saving %1 imported orders...</source>
         <translation>Speichere %1 importierte Aufträge...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1426"/>
+        <location filename="../EvernusApplication.cpp" line="1429"/>
         <source>Select Mentat directory</source>
         <translation>Wäher Mentat-Verzeichnis aus</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1436"/>
+        <location filename="../EvernusApplication.cpp" line="1439"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1436"/>
+        <location filename="../EvernusApplication.cpp" line="1439"/>
         <source>Error opening %1</source>
         <translation>Fehler beim Öffnen von %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1440"/>
+        <location filename="../EvernusApplication.cpp" line="1443"/>
         <source>Importing order history...</source>
         <translation>Importiere Auftragshistorie...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1486"/>
+        <location filename="../EvernusApplication.cpp" line="1489"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importiere Auftragshistorie: %1 verarbeitet</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1491"/>
+        <location filename="../EvernusApplication.cpp" line="1494"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translatorcomment>#NOTE# Seems you&apos;re missing the &quot;...&quot; at the end of this phrase, denoting a time-consuming activity like you&apos;ve did with similar phrases.</translatorcomment>
         <translation>Importiere Auftragshistorie: speichere %1 Aufträge (dies kann eine Weile dauern)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1512"/>
+        <location filename="../EvernusApplication.cpp" line="1515"/>
         <source>Synchronizing with LMeve...</source>
         <translation>Synchronisiere mit LMeve...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1611"/>
+        <location filename="../EvernusApplication.cpp" line="1616"/>
         <source>SMTP Error</source>
         <translation>SMTP Fehler</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1611"/>
-        <location filename="../EvernusApplication.cpp" line="1619"/>
+        <location filename="../EvernusApplication.cpp" line="1616"/>
+        <location filename="../EvernusApplication.cpp" line="1624"/>
         <source>Error sending email: %1</source>
         <translation>Fehler beim Emailversnad: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1619"/>
+        <location filename="../EvernusApplication.cpp" line="1624"/>
         <source>Mail Error</source>
         <translation>Emailfehler</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1924"/>
+        <location filename="../EvernusApplication.cpp" line="1929"/>
         <source>Importing item prices...</source>
         <translation>Importiere Warenpreise...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1935"/>
+        <location filename="../EvernusApplication.cpp" line="1940"/>
         <source>Cannot determine market logs path!</source>
         <translation>Verzeichnis mit Mark Logs nicht gefunden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1949"/>
+        <location filename="../EvernusApplication.cpp" line="1954"/>
         <source>No market logs found!</source>
         <translation>Keine Mark Logs gefunden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1960"/>
+        <location filename="../EvernusApplication.cpp" line="1965"/>
         <source>Could not open market log file!</source>
         <translation>Markt Log konnte nicht geöffnet werden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2239"/>
+        <location filename="../EvernusApplication.cpp" line="2244"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Ausgeführte Marktaufträge</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2243"/>
+        <location filename="../EvernusApplication.cpp" line="2248"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1704,24 +1704,24 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2246"/>
+        <location filename="../EvernusApplication.cpp" line="2251"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x %2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2276"/>
+        <location filename="../EvernusApplication.cpp" line="2281"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Charakter für Auftragsimport nicht gefunden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2474"/>
+        <location filename="../EvernusApplication.cpp" line="2479"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Hole Vertragsgegenstände für Vertrag %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2548"/>
+        <location filename="../EvernusApplication.cpp" line="2553"/>
         <source>Fetching character %1...</source>
         <translation>Hole Charakter %1...</translation>
     </message>

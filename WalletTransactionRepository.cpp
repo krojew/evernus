@@ -124,6 +124,11 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    void WalletTransactionRepository::deleteAll() const
+    {
+        exec(QString{"DELETE FROM %1"}.arg(getTableName()));
+    }
+
     WalletTransactionRepository::EntityList WalletTransactionRepository
     ::fetchInRange(const QDateTime &from,
                    const QDateTime &till,
