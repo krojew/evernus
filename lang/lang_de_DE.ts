@@ -1927,54 +1927,54 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::ExternalOrderView</name>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="70"/>
+        <location filename="../ExternalOrderView.cpp" line="69"/>
         <source>Total cost:</source>
         <translation>Kosten gesamt:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="76"/>
+        <location filename="../ExternalOrderView.cpp" line="75"/>
         <source>Total volume:</source>
         <translation>Volumen gesamt:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="82"/>
+        <location filename="../ExternalOrderView.cpp" line="81"/>
         <source>Total size:</source>
         <translation>Größe gesamt:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="88"/>
+        <location filename="../ExternalOrderView.cpp" line="87"/>
         <source>Min. price:</source>
         <translation>Tiefstpreis:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="94"/>
+        <location filename="../ExternalOrderView.cpp" line="93"/>
         <source>Median price:</source>
         <translation>Durchschnittspreis:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="100"/>
+        <location filename="../ExternalOrderView.cpp" line="99"/>
         <source>Max. price:</source>
         <translation>Höchstpreis:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="106"/>
+        <location filename="../ExternalOrderView.cpp" line="105"/>
         <source>Custom cost:</source>
         <translation>Benutzerdefinierte Kosten:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="195"/>
+        <location filename="../ExternalOrderView.cpp" line="194"/>
         <source>Copy suggested price: %1</source>
         <translation>Vorgeschlagegen Preis kopieren: %1</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="211"/>
-        <location filename="../ExternalOrderView.cpp" line="217"/>
+        <location filename="../ExternalOrderView.cpp" line="210"/>
+        <location filename="../ExternalOrderView.cpp" line="216"/>
         <source>N/A</source>
         <translatorcomment>#NOTE# Although Linguist complains about missing interpunktion, this is the equivalent German abbreviation.</translatorcomment>
         <translation>k.A.</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="240"/>
+        <location filename="../ExternalOrderView.cpp" line="238"/>
         <source>Copy suggested price</source>
         <translation>Vorgeschlagegen Preis kopieren</translation>
     </message>
@@ -2310,23 +2310,23 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>Bitte eine Kategorie aus dem Menü auswählen.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="221"/>
-        <location filename="../IGBService.cpp" line="339"/>
+        <location filename="../IGBService.cpp" line="220"/>
+        <location filename="../IGBService.cpp" line="337"/>
         <source>Character not found!</source>
         <translation>Charakter nicht gefunden!</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="395"/>
+        <location filename="../IGBService.cpp" line="393"/>
         <source>Website trust is required. Please add it to Trusted Sites.</source>
         <translation>Bitte füge die Webseite der Liste der vertrauten Seiten hinzu.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="481"/>
+        <location filename="../IGBService.cpp" line="479"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="481"/>
+        <location filename="../IGBService.cpp" line="479"/>
         <source>You have to open Evernus in EVE In-Game Browser first.</source>
         <translation>Du mußt Evernus zuerst im EVE-Browser öffnen.</translation>
     </message>
@@ -3127,154 +3127,154 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>Margenrechner</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="449"/>
+        <location filename="../MarginToolDialog.cpp" line="447"/>
         <source>export market logs in game</source>
         <translation>Aus dem Spiel exportierte Markt Logs</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="458"/>
+        <location filename="../MarginToolDialog.cpp" line="456"/>
         <source>Sell:</source>
         <translation>Verkauf:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="459"/>
+        <location filename="../MarginToolDialog.cpp" line="457"/>
         <source>Buy:</source>
         <translation>Kauf:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="460"/>
+        <location filename="../MarginToolDialog.cpp" line="458"/>
         <source>Profit:</source>
         <translation>Profit:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="461"/>
+        <location filename="../MarginToolDialog.cpp" line="459"/>
         <source>Revenue:</source>
         <translation>Umsatz:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="462"/>
+        <location filename="../MarginToolDialog.cpp" line="460"/>
         <source>Cost of sales:</source>
         <translation>Unkosten:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="463"/>
+        <location filename="../MarginToolDialog.cpp" line="461"/>
         <source>Buyout:</source>
         <translation>Sofortkauf:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="477"/>
-        <location filename="../MarginToolDialog.cpp" line="492"/>
+        <location filename="../MarginToolDialog.cpp" line="475"/>
+        <location filename="../MarginToolDialog.cpp" line="490"/>
         <source>Copy to clipboard</source>
         <translation>In die Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="513"/>
+        <location filename="../MarginToolDialog.cpp" line="511"/>
         <source>Buy orders:</source>
         <translation>Kaufaufträge:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="518"/>
+        <location filename="../MarginToolDialog.cpp" line="516"/>
         <source>Sell orders:</source>
         <translation>Verkaufsaufträge:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="523"/>
+        <location filename="../MarginToolDialog.cpp" line="521"/>
         <source>Buy volume/movement:</source>
         <translation>Volumen/Momentum Ankauf:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="528"/>
+        <location filename="../MarginToolDialog.cpp" line="526"/>
         <source>Sell volume/movement:</source>
         <translation>Volumen/Momentum Verkauf:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="541"/>
+        <location filename="../MarginToolDialog.cpp" line="539"/>
         <source>Margin:</source>
         <translation>Marge:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="547"/>
+        <location filename="../MarginToolDialog.cpp" line="545"/>
         <source>Markup:</source>
         <translation>Aufschlag:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="552"/>
+        <location filename="../MarginToolDialog.cpp" line="550"/>
         <source>Autocopy</source>
         <translation>Autokopie</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="562"/>
+        <location filename="../MarginToolDialog.cpp" line="560"/>
         <source>Nothing</source>
         <translation>Nichts</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="567"/>
+        <location filename="../MarginToolDialog.cpp" line="565"/>
         <source>Sell price</source>
         <translation>Verkaufspreis</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="572"/>
+        <location filename="../MarginToolDialog.cpp" line="570"/>
         <source>Buy price</source>
         <translation>Kaufpreis</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="594"/>
+        <location filename="../MarginToolDialog.cpp" line="592"/>
         <source>Broker fee:</source>
         <translation>Maklergebühr:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="599"/>
+        <location filename="../MarginToolDialog.cpp" line="597"/>
         <source>Sales tax:</source>
         <translation>Verkaufssteuer:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="604"/>
+        <location filename="../MarginToolDialog.cpp" line="602"/>
         <source>Sample data</source>
         <translation>Beispieldaten</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="615"/>
+        <location filename="../MarginToolDialog.cpp" line="613"/>
         <source>If you experience problems with importing orders, adjust margin tool settings in the Preferences.</source>
         <translation>Wenn Problem beim Import von Aufträgen auftreten, ändere die Margenrechner-Parameter in Einstellungen.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="627"/>
+        <location filename="../MarginToolDialog.cpp" line="625"/>
         <source>Preferred source</source>
         <translation>Bevorzugte Quelle</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="637"/>
+        <location filename="../MarginToolDialog.cpp" line="635"/>
         <source>Orders only</source>
         <translation>Nur AUfträge</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="641"/>
+        <location filename="../MarginToolDialog.cpp" line="639"/>
         <source>Prefer custom item costs (if available)</source>
         <translation>Bevorzuge benutzerdefinierte Kosten für Gegenstände (falls verfügbar)</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="645"/>
+        <location filename="../MarginToolDialog.cpp" line="643"/>
         <source>Custom station</source>
         <translation>Benutzerdefinierte Station</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="649"/>
+        <location filename="../MarginToolDialog.cpp" line="647"/>
         <source>Source station</source>
         <translation>Ursprungsstation</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="807"/>
-        <location filename="../MarginToolDialog.cpp" line="813"/>
+        <location filename="../MarginToolDialog.cpp" line="803"/>
+        <location filename="../MarginToolDialog.cpp" line="809"/>
         <source>Margin tool error</source>
         <translation>Fehler Margenrechner</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="808"/>
+        <location filename="../MarginToolDialog.cpp" line="804"/>
         <source>Could not determine market log path. Please enter log path in settings.</source>
         <translation>Konnte das Verzeichnis für Markt Logs nicht bestimmen. Bitte das Verzeichnis in Einstellungen angeben.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="814"/>
+        <location filename="../MarginToolDialog.cpp" line="810"/>
         <source>Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again.</source>
         <translation>Konnte Überwachung der Markt Logs nicht starten. Stelle sicher das dieses Verzeichnis existiert (exportiere z.B. einige Logs) und versuche es erneut.</translation>
     </message>
@@ -4938,67 +4938,72 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation>* Aktiviert auch den Import von Konto-Transaktionen.</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="105"/>
+        <location filename="../PricePreferencesWidget.cpp" line="114"/>
+        <source>Add random:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PricePreferencesWidget.cpp" line="123"/>
         <source>Price delta:</source>
         <translation>Preisdelta:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="113"/>
+        <location filename="../PricePreferencesWidget.cpp" line="126"/>
         <source>Max. price age:</source>
         <translation>Max. Alter Preise:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="122"/>
+        <location filename="../PricePreferencesWidget.cpp" line="135"/>
         <source>Plot number format:</source>
         <translation>Zahlenformat Diagram:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="123"/>
+        <location filename="../PricePreferencesWidget.cpp" line="136"/>
         <source>beautified scientific</source>
         <translation>Leserliche wissenschaftliche Darstellung</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="124"/>
+        <location filename="../PricePreferencesWidget.cpp" line="137"/>
         <source>scientific</source>
         <translation>Wissenschaftliche Darstellung</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="125"/>
+        <location filename="../PricePreferencesWidget.cpp" line="138"/>
         <source>fixed</source>
         <translation>Fest</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="127"/>
+        <location filename="../PricePreferencesWidget.cpp" line="140"/>
         <source>Combine character and corporation journal in statistics</source>
         <translation>In Statistiken Charakter und Corporation Logbuch zusammenfassen</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="132"/>
+        <location filename="../PricePreferencesWidget.cpp" line="145"/>
         <source>Refresh prices after order import</source>
         <translation>Preise nach Auftragsimport aktualisieren</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="136"/>
+        <location filename="../PricePreferencesWidget.cpp" line="149"/>
         <source>Auto-copy non-overbid prices with price helper</source>
         <translation>Automatisch nicht überbotene Preise mit dem Preishelfer kopieren</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="140"/>
+        <location filename="../PricePreferencesWidget.cpp" line="153"/>
         <source>Limit sell price copy to item cost</source>
         <translation>Kopie des Verkauspreis auf Artikelkosten beschränken</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="144"/>
+        <location filename="../PricePreferencesWidget.cpp" line="157"/>
         <source>Fast Price Copy</source>
         <translation>Schnellkopie Preis</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="152"/>
+        <location filename="../PricePreferencesWidget.cpp" line="165"/>
         <source>Enabled</source>
         <translation>Aktivieren</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="156"/>
+        <location filename="../PricePreferencesWidget.cpp" line="169"/>
         <source>Shortcut:</source>
         <translation>Schnellzugriff:</translation>
     </message>
@@ -5008,7 +5013,7 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation type="vanished">Schnellzugriff:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="162"/>
+        <location filename="../PricePreferencesWidget.cpp" line="175"/>
         <source>Fast Price Copy allows you to update your orders in a very fast manner. Simply assign a keyboard shortcut, select an order in any market order view and press the shortcut to copy the updated price and automatically jump to the next order on the list. You can do this even when Evernus doesn&apos;t have the input focus - the keyboard shortcut works system-wide. You can use this to update your prices without ever leaving Eve client.</source>
         <translation>&quot;Schnellkopie Preis&quot; erlaubt es dir deine Aufträge sehr schnell zu aktualisieren. Ordne der Funktion ein Tastaturkürzel zu, wähle einen Auftrag in einer beliebigen Marktansicht aus, drück das Tastenkürzel, um den aktualisierten Preis zu kopieren und automatisch zum nächsten Auftrag in der Liste zu springen. Das funktioniert, selbst wenn Evernus nicht im Vordergrund ist, da das Tastenkürzel systemweit gilt. So kannst du deine Aufträge aktualisieren ohne jemals EVE zu verlassen.</translation>
     </message>
@@ -5878,22 +5883,22 @@ Please click on &quot;Import all&quot; after the update.</source>
 <context>
     <name>Evernus::WalletTransactionView</name>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="120"/>
+        <location filename="../WalletTransactionView.cpp" line="119"/>
         <source>Copy suggested price: %1</source>
         <translation>Vorgeschlagegen Preis kopieren: %1</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="162"/>
+        <location filename="../WalletTransactionView.cpp" line="160"/>
         <source>Add to item costs</source>
         <translation>Zu Kosten hinzufügen</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="170"/>
+        <location filename="../WalletTransactionView.cpp" line="168"/>
         <source>Add to item costs for:</source>
         <translation>Zu den Kosten für Gegenstand hinzufügen:</translation>
     </message>
     <message>
-        <location filename="../WalletTransactionView.cpp" line="219"/>
+        <location filename="../WalletTransactionView.cpp" line="217"/>
         <source>Copy suggested price</source>
         <translation>Vorgeschlagegen Preis kopieren</translation>
     </message>

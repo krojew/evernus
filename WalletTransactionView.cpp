@@ -17,14 +17,13 @@
 #include <QSortFilterProxyModel>
 #include <QApplication>
 #include <QClipboard>
-#include <QSettings>
 #include <QAction>
 #include <QMenu>
 
 #include "WalletTransactionsModel.h"
 #include "CharacterRepository.h"
 #include "ItemCostProvider.h"
-#include "PriceSettings.h"
+#include "PriceUtils.h"
 #include "TextUtils.h"
 
 #include "WalletTransactionView.h"
@@ -141,8 +140,7 @@ namespace Evernus
 
     double WalletTransactionView::getSuggestedPrice(double price) const
     {
-        QSettings settings;
-        const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+        const auto priceDelta = PriceUtils::getPriceDelta();
 
         if (mModel->getType(mCurrentTransaction.row()) == WalletTransaction::Type::Buy)
             price += priceDelta;

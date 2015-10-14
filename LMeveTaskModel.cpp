@@ -300,7 +300,6 @@ namespace Evernus
 
     double LMeveTaskModel::getAdjustedPrice(double price)
     {
-        QSettings settings;
-        return price - settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+        return price - PriceUtils::getPriceDelta();
     }
 }

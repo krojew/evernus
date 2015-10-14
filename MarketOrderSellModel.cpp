@@ -590,7 +590,6 @@ namespace Evernus
         const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
                            (mDataProvider.getTypeStationSellPrice(order->getTypeId(), order->getStationId())) :
                            (mDataProvider.getTypeRegionSellPrice(order->getTypeId(), mDataProvider.getStationRegionId(order->getStationId())));
-        const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
         OrderInfo info;
         info.mOrderPrice = order->getPrice();
@@ -599,7 +598,7 @@ namespace Evernus
         info.mMarketLocalTimestamp = price->getUpdateTime().toLocalTime();
 
         if (info.mMarketPrice < info.mOrderPrice || settings.value(PriceSettings::copyNonOverbidPriceKey, PriceSettings::copyNonOverbidPriceDefault).toBool())
-            info.mTargetPrice = info.mMarketPrice - priceDelta;
+            info.mTargetPrice = info.mMarketPrice - PriceUtils::getPriceDelta();
         else
             info.mTargetPrice = info.mOrderPrice;
 
@@ -738,7 +737,6 @@ namespace Evernus
             return 0.;
 
         QSettings settings;
-        const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
         const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
                            (mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId())) :
@@ -747,7 +745,7 @@ namespace Evernus
         if (qFuzzyIsNull(newPrice))
             newPrice = order.getPrice();
         else
-            newPrice -= delta;
+            newPrice -= PriceUtils::getPriceDelta();
 
         const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, order.getTypeId());
 

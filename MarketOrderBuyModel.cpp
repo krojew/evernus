@@ -468,7 +468,6 @@ namespace Evernus
         QSettings settings;
 
         const auto price = mDataProvider.getTypeBuyPrice(order->getTypeId(), order->getStationId(), order->getRange());
-        const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
         OrderInfo info;
         info.mOrderPrice = order->getPrice();
@@ -477,7 +476,7 @@ namespace Evernus
         info.mMarketLocalTimestamp = price->getUpdateTime().toLocalTime();
 
         if (info.mMarketPrice > info.mOrderPrice || settings.value(PriceSettings::copyNonOverbidPriceKey, PriceSettings::copyNonOverbidPriceDefault).toBool())
-            info.mTargetPrice = info.mMarketPrice + priceDelta;
+            info.mTargetPrice = info.mMarketPrice + PriceUtils::getPriceDelta();
         else
             info.mTargetPrice = info.mOrderPrice;
 
@@ -570,15 +569,12 @@ namespace Evernus
         if (!mCharacter)
             return 0.;
 
-        QSettings settings;
-
         const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId());
         if (price->isNew())
             return 100.;
 
-        const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-        return PriceUtils::getMargin(order.getPrice(), price->getPrice() - delta, taxes);
+        return PriceUtils::getMargin(order.getPrice(), price->getPrice() - PriceUtils::getPriceDelta(), taxes);
     }
 
     double MarketOrderBuyModel::getNewMargin(const MarketOrder &order) const
@@ -586,13 +582,11 @@ namespace Evernus
         if (!mCharacter)
             return 0.;
 
-        QSettings settings;
-
         const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId());
         if (price->isNew())
             return 100.;
 
-        const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+        const auto delta = PriceUtils::getPriceDelta();
 
         auto newPrice = mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId(), order.getRange())->getPrice();
         if (newPrice < 0.01)

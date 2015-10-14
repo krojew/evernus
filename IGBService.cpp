@@ -178,7 +178,6 @@ namespace Evernus
 
             QSettings settings;
             const auto min = settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble();
-            const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
             showOrders(event,
                        [=, &character, &taxes] {
@@ -205,7 +204,7 @@ namespace Evernus
                                const auto price = (stationOnly) ?
                                                   (mDataProvider.getTypeStationSellPrice((*it)->getTypeId(), (*it)->getStationId())) :
                                                   (mDataProvider.getTypeRegionSellPrice((*it)->getTypeId(), mDataProvider.getStationRegionId((*it)->getStationId())));
-                               if (price->isNew() || PriceUtils::getMargin((*it)->getPrice(), price->getPrice() - delta, taxes) > min)
+                               if (price->isNew() || PriceUtils::getMargin((*it)->getPrice(), price->getPrice() - PriceUtils::getPriceDelta(), taxes) > min)
                                    it = orders.erase(it);
                                else
                                    ++it;
@@ -296,7 +295,6 @@ namespace Evernus
 
             QSettings settings;
             const auto min = settings.value(PriceSettings::minMarginKey, PriceSettings::minMarginDefault).toDouble();
-            const auto delta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
 
             showOrders(event,
                        [=, &character, &taxes] {
@@ -323,7 +321,7 @@ namespace Evernus
                                const auto price = (stationOnly) ?
                                                   (mDataProvider.getTypeStationSellPrice((*it)->getTypeId(), (*it)->getStationId())) :
                                                   (mDataProvider.getTypeRegionSellPrice((*it)->getTypeId(), mDataProvider.getStationRegionId((*it)->getStationId())));
-                               if (price->isNew() || PriceUtils::getMargin((*it)->getPrice(), price->getPrice() - delta, taxes) > min)
+                               if (price->isNew() || PriceUtils::getMargin((*it)->getPrice(), price->getPrice() - PriceUtils::getPriceDelta(), taxes) > min)
                                    it = orders.erase(it);
                                else
                                    ++it;

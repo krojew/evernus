@@ -35,6 +35,7 @@ namespace Evernus
         const auto minMarginDefault = 10.;
         const auto preferredMarginDefault = 30.;
         const auto priceDeltaDefault = 0.01;
+        const auto priceDeltaRandomDefault = 0.;
         const auto priceMaxAgeDefault = 1;
         const auto importLogWaitTimeDefault = 1000;
         const auto copyModeDefault = CopyMode::DontCopy;
@@ -51,6 +52,7 @@ namespace Evernus
         const auto preferredMarginKey = "prices/margin/preferred";
         const auto copyModeKey = "prices/copyMode";
         const auto priceDeltaKey = "prices/delta";
+        const auto priceDeltaRandomKey = "prices/deltaRandom";
         const auto priceAltImportKey = "prices/import/alt";
         const auto priceMaxAgeKey = "prices/maxAge";
         const auto importLogWaitTimeKey = "prices/import/logWaitTime";

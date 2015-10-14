@@ -17,7 +17,6 @@
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QClipboard>
-#include <QSettings>
 #include <QLocale>
 #include <QAction>
 #include <QLabel>
@@ -28,7 +27,7 @@
 #include "ItemCostProvider.h"
 #include "StyledTreeView.h"
 #include "ExternalOrder.h"
-#include "PriceSettings.h"
+#include "PriceUtils.h"
 #include "TextUtils.h"
 
 #include "ExternalOrderView.h"
@@ -222,8 +221,7 @@ namespace Evernus
 
     double ExternalOrderView::getSuggestedPrice() const
     {
-        QSettings settings;
-        const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+        const auto priceDelta = PriceUtils::getPriceDelta();
         const auto &order = mSource->getOrder(mCurrentOrder.row());
         auto price = 0.;
 

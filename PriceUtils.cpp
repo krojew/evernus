@@ -12,8 +12,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <random>
 #include <cmath>
 
+#include <QSettings>
+
+#include "PriceSettings.h"
 #include "Character.h"
 
 #include "PriceUtils.h"
@@ -47,6 +51,26 @@ namespace Evernus
             const auto realCost = PriceUtils::getCoS(cost, taxes);
             const auto realPrice = PriceUtils::getRevenue(price, taxes);
             return 100. * (realPrice - realCost) / realPrice;
+        }
+
+        double getPriceDelta()
+        {
+            QSettings settings;
+
+            const auto priceDeltaRandom
+                = settings.value(PriceSettings::priceDeltaRandomKey, PriceSettings::priceDeltaRandomDefault).toDouble();
+            auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+
+            if (!qFuzzyIsNull(priceDeltaRandom))
+            {
+                std::random_device rd;
+                std::mt19937 gen{rd()};
+                std::uniform_real_distribution<> dis(0., priceDeltaRandom);
+
+                priceDelta += dis(gen);
+            }
+
+            return priceDelta;
         }
     }
 }

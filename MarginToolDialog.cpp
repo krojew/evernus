@@ -331,8 +331,6 @@ namespace Evernus
 
             mDataProvider.updateExternalOrders(parsedOrders);
 
-            const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
-
             if (settings.value(PathSettings::deleteLogsKey, PathSettings::deleteLogsDefault).toBool())
                 file.remove();
 
@@ -340,7 +338,7 @@ namespace Evernus
             {
                 const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, typeId);
                 if (!cost->isNew())
-                    buy = cost->getCost() - priceDelta;
+                    buy = cost->getCost() - PriceUtils::getPriceDelta();
             }
             else if (mStationSourceBtn->isChecked())
             {
@@ -690,9 +688,7 @@ namespace Evernus
 
     void MarginToolDialog::updateInfo(double buy, double sell, bool updatePriceEdits)
     {
-        QSettings settings;
-
-        const auto priceDelta = settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble();
+        const auto priceDelta = PriceUtils::getPriceDelta();
         auto curLocale = locale();
 
         try

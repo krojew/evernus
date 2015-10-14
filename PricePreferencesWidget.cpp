@@ -101,13 +101,26 @@ namespace Evernus
 
         auto pricesLayout = new QFormLayout{pricesGroup};
 
+        auto priceDeltaLayout = new QHBoxLayout{};
+
         mPriceDeltaEdit = new QDoubleSpinBox{this};
-        pricesLayout->addRow(tr("Price delta:"), mPriceDeltaEdit);
+        priceDeltaLayout->addWidget(mPriceDeltaEdit);
         mPriceDeltaEdit->setSingleStep(0.01);
         mPriceDeltaEdit->setMinimum(0.01);
         mPriceDeltaEdit->setMaximum(100000000.);
         mPriceDeltaEdit->setSuffix(" ISK");
         mPriceDeltaEdit->setValue(settings.value(PriceSettings::priceDeltaKey, PriceSettings::priceDeltaDefault).toDouble());
+
+        priceDeltaLayout->addWidget(new QLabel{tr("Add random:")});
+
+        mPriceDeltaRandomEdit = new QDoubleSpinBox{this};
+        priceDeltaLayout->addWidget(mPriceDeltaRandomEdit);
+        mPriceDeltaRandomEdit->setSingleStep(0.01);
+        mPriceDeltaRandomEdit->setMaximum(100000000.);
+        mPriceDeltaRandomEdit->setSuffix(" ISK");
+        mPriceDeltaRandomEdit->setValue(settings.value(PriceSettings::priceDeltaRandomKey, PriceSettings::priceDeltaRandomDefault).toDouble());
+
+        pricesLayout->addRow(tr("Price delta:"), priceDeltaLayout);
 
         mPriceMaxAgeEdit = new QSpinBox{this};
         pricesLayout->addRow(tr("Max. price age:"), mPriceMaxAgeEdit);
@@ -177,6 +190,7 @@ namespace Evernus
         settings.setValue(PriceSettings::minMarginKey, mMinMarginEdit->value());
         settings.setValue(PriceSettings::preferredMarginKey, mPreferredMarginEdit->value());
         settings.setValue(PriceSettings::priceDeltaKey, mPriceDeltaEdit->value());
+        settings.setValue(PriceSettings::priceDeltaRandomKey, mPriceDeltaRandomEdit->value());
         settings.setValue(PriceSettings::autoAddCustomItemCostKey, mAutoAddCustomCostBtn->isChecked());
         settings.setValue(PriceSettings::shareCostsKey, mShareCustomCostsBtn->isChecked());
 #ifdef Q_OS_WIN
