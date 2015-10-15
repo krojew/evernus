@@ -33,6 +33,7 @@
 #include "CacheTimerProvider.h"
 #include "APIUtils.h"
 #include "CorpKey.h"
+#include "Defines.h"
 #include "Item.h"
 
 #include "APIManager.h"
@@ -78,7 +79,7 @@ namespace Evernus
 
         mPendingCharacterListRequests.emplace(key.getId());
 
-        mInterface.fetchCharacterList(key, [key, callback, this](const QString &response, const QString &error) {
+        mInterface.fetchCharacterList(key, [=](const QString &response, const QString &error) {
             mPendingCharacterListRequests.erase(key.getId());
 
             try
@@ -102,7 +103,7 @@ namespace Evernus
 
         mPendingCharacterRequests.emplace(characterId);
 
-        mInterface.fetchCharacter(key, characterId, [key, callback, characterId, this](const QString &response, const QString &error) {
+        mInterface.fetchCharacter(key, characterId, [=](const QString &response, const QString &error) {
             mPendingCharacterRequests.erase(characterId);
 
             try
@@ -132,7 +133,7 @@ namespace Evernus
 
         mPendingAssetsRequests.emplace(characterId);
 
-        mInterface.fetchAssets(key, characterId, [key, characterId, callback, this](const QString &response, const QString &error) {
+        mInterface.fetchAssets(key, characterId, [=](const QString &response, const QString &error) {
             mPendingAssetsRequests.erase(characterId);
 
             try
@@ -157,10 +158,10 @@ namespace Evernus
 
     void APIManager::fetchConquerableStationList(const Callback<ConquerableStationList> &callback) const
     {
-#ifdef Q_OS_WIN
-        mInterface.fetchConquerableStationList([callback, this](const QString &response, const QString &error) {
+#if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
+        mInterface.fetchConquerableStationList([=, callback = callback](const QString &response, const QString &error) {
 #else
-        mInterface.fetchConquerableStationList([callback = callback, this](const QString &response, const QString &error) {
+        mInterface.fetchConquerableStationList([=](const QString &response, const QString &error) {
 #endif
             try
             {
@@ -178,10 +179,10 @@ namespace Evernus
 
     void APIManager::fetchRefTypes(const Callback<RefTypeList> &callback) const
     {
-#ifdef Q_OS_WIN
-        mInterface.fetchRefTypes([callback, this](const QString &response, const QString &error) {
+#if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
+        mInterface.fetchRefTypes([=, callback = callback](const QString &response, const QString &error) {
 #else
-        mInterface.fetchRefTypes([callback = callback, this](const QString &response, const QString &error) {
+        mInterface.fetchRefTypes([=](const QString &response, const QString &error) {
 #endif
             try
             {
@@ -312,10 +313,10 @@ namespace Evernus
 
     void APIManager::fetchGenericName(quint64 id, const Callback<QString> &callback) const
     {
-#ifdef Q_OS_WIN
-        mInterface.fetchGenericName(id, [callback, this](const QString &response, const QString &error) {
+#if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
+        mInterface.fetchGenericName(id, [=, callback = callback](const QString &response, const QString &error) {
 #else
-        mInterface.fetchGenericName(id, [callback = callback, this](const QString &response, const QString &error) {
+        mInterface.fetchGenericName(id, [=](const QString &response, const QString &error) {
 #endif
             try
             {
@@ -518,10 +519,10 @@ namespace Evernus
     template<class Key>
     void APIManager::doFetchMarketOrders(const Key &key, Character::IdType characterId, const Callback<MarketOrders> &callback, TimerType timerType) const
     {
-#ifdef Q_OS_WIN
-        mInterface.fetchMarketOrders(key, characterId, [callback, characterId, timerType, this](const QString &response, const QString &error) {
+#if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
+        mInterface.fetchMarketOrders(key, characterId, [=, callback = callback](const QString &response, const QString &error) {
 #else
-        mInterface.fetchMarketOrders(key, characterId, [callback = callback, characterId, timerType, this](const QString &response, const QString &error) {
+        mInterface.fetchMarketOrders(key, characterId, [=](const QString &response, const QString &error) {
 #endif
             try
             {
@@ -543,7 +544,7 @@ namespace Evernus
     template<class Key>
     void APIManager::doFetchContracts(const Key &key, Character::IdType characterId, const Callback<Contracts> &callback, TimerType timerType) const
     {
-        mInterface.fetchContracts(key, characterId, [callback, characterId, timerType, this](const QString &response, const QString &error) {
+        mInterface.fetchContracts(key, characterId, [=](const QString &response, const QString &error) {
             try
             {
                 handlePotentialError(response, error);
@@ -567,7 +568,7 @@ namespace Evernus
                                           Contract::IdType contractId,
                                           const Callback<ContractItemList> &callback) const
     {
-        mInterface.fetchContractItems(key, characterId, contractId, [contractId, callback, this](const QString &response, const QString &error) {
+        mInterface.fetchContractItems(key, characterId, contractId, [=](const QString &response, const QString &error) {
             try
             {
                 handlePotentialError(response, error);

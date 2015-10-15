@@ -26,6 +26,7 @@
 
 #include "SecurityHelper.h"
 #include "ReplyTimeout.h"
+#include "Defines.h"
 
 #include "CRESTInterface.h"
 
@@ -44,10 +45,10 @@ namespace Evernus
     {
         qDebug() << "Fetching buy orders for" << regionId << "and" << typeId;
 
-#ifdef Q_OS_WIN
-        auto fetcher = [=](const QString &error) {
-#else
+#if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
         auto fetcher = [=, callback = callback](const auto &error) {
+#else
+        auto fetcher = [=](const QString &error) {
 #endif
             if (!error.isEmpty())
             {
@@ -75,10 +76,10 @@ namespace Evernus
     {
         qDebug() << "Fetching sell orders for" << regionId << "and" << typeId;
 
-#ifdef Q_OS_WIN
-        auto fetcher = [=](const QString &error) {
-#else
+#if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
         auto fetcher = [=, callback = callback](const auto &error) {
+#else
+        auto fetcher = [=](const QString &error) {
 #endif
             if (!error.isEmpty())
             {

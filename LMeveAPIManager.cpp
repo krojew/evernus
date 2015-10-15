@@ -20,6 +20,8 @@
 #include <QJsonArray>
 #include <QDebug>
 
+#include "Defines.h"
+
 #include "LMeveAPIManager.h"
 
 namespace Evernus
@@ -31,10 +33,10 @@ namespace Evernus
 
         mPendingTaskRequests.emplace(characterId);
 
-#ifdef Q_OS_WIN
-        mInterface.fetchTasks(characterId, [callback, characterId, this](const QByteArray &response, const QString &error) {
+#if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
+        mInterface.fetchTasks(characterId, [=, callback = callback](const QByteArray &response, const QString &error) {
 #else
-        mInterface.fetchTasks(characterId, [callback = callback, characterId, this](const QByteArray &response, const QString &error) {
+        mInterface.fetchTasks(characterId, [=](const QByteArray &response, const QString &error) {
 #endif
             try
             {

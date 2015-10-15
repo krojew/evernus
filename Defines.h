@@ -19,3 +19,9 @@
 #else
 #   define EVERNUS_VS_TEMPLATE_LAMBDA_HACK 0
 #endif
+
+#ifndef _MSC_VER
+#   define EVERNUS_CLANG_LAMBDA_CAPTURE_BUG 1
+#else
+#   define EVERNUS_CLANG_LAMBDA_CAPTURE_BUG 0
+#endif

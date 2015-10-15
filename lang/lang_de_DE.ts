@@ -2,6 +2,17 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de_DE">
 <context>
+    <name>APIManager</name>
+    <message>
+        <source>Invalid XML document received!</source>
+        <translation type="obsolete">Ungültiges XML Dokument erhalten!</translation>
+    </message>
+    <message>
+        <source>No XML document received!</source>
+        <translation type="obsolete">Kein XML Dokument erhalten!</translation>
+    </message>
+</context>
+<context>
     <name>APIXmlReceiver</name>
     <message>
         <location filename="../APIXmlReceiver.cpp" line="105"/>
@@ -121,12 +132,12 @@
 <context>
     <name>Evernus::APIManager</name>
     <message>
-        <location filename="../APIManager.cpp" line="615"/>
+        <location filename="../APIManager.cpp" line="616"/>
         <source>Invalid XML document received!</source>
         <translation>Ungültiges XML Dokument erhalten!</translation>
     </message>
     <message>
-        <location filename="../APIManager.cpp" line="638"/>
+        <location filename="../APIManager.cpp" line="639"/>
         <source>No XML document received!</source>
         <translation>Kein XML Dokument erhalten!</translation>
     </message>
@@ -356,18 +367,18 @@
 <context>
     <name>Evernus::CRESTInterface</name>
     <message>
-        <location filename="../CRESTInterface.cpp" line="138"/>
+        <location filename="../CRESTInterface.cpp" line="139"/>
         <source>Empty CREST endpoint map. Please wait until endpoints have been fetched.</source>
         <translation>Leere CREST Endpunkt Karte. Bitte warten Sie, bis Endpunkte wurden geholt.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="188"/>
+        <location filename="../CRESTInterface.cpp" line="189"/>
         <source>Missing CREST regions url!</source>
         <translatorcomment>#NOTE# Not sure if it makes sense to translate &quot;regions&quot; here, as it&apos;s meant as part of an API method, not a descriptive term. Better use: &quot;Fehlende CREST Regions URL&quot;</translatorcomment>
         <translation>Fehlende CREST Regionen URL!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="232"/>
+        <location filename="../CRESTInterface.cpp" line="233"/>
         <source>Missing CREST item types url!</source>
         <translatorcomment>#NOTE# Same as with &quot;regions&quot;. I&apos;d rather go with &quot;Fehlende CREST Item Types URL&quot;</translatorcomment>
         <translation>Fehlende CREST Gegenstandsarten URL!</translation>
@@ -376,45 +387,45 @@
 <context>
     <name>Evernus::CRESTManager</name>
     <message>
-        <location filename="../CRESTManager.cpp" line="93"/>
+        <location filename="../CRESTManager.cpp" line="94"/>
         <source>CREST authorization failed.</source>
         <translation>CREST-Authentifizierung fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="261"/>
+        <location filename="../CRESTManager.cpp" line="262"/>
         <source>CREST Authentication</source>
         <translation>CREST Authentifizierung</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="328"/>
+        <location filename="../CRESTManager.cpp" line="329"/>
         <source>Empty access token!</source>
         <translation>Leeres Access Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="383"/>
-        <location filename="../CRESTManager.cpp" line="411"/>
+        <location filename="../CRESTManager.cpp" line="384"/>
+        <location filename="../CRESTManager.cpp" line="412"/>
         <source>CREST error</source>
         <translation>CREST Fehler</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="383"/>
+        <location filename="../CRESTManager.cpp" line="384"/>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
         <translation>Das Zertifikat der EVE Loginseite enthielt Fehler: %1. Bist du sicher das du weitermachen willst (dies kann die Sicherheit deines EVE Accounts gefährden)?</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="411"/>
+        <location filename="../CRESTManager.cpp" line="412"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Fehler beim Abrufen der CREST Endpunkte!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="471"/>
+        <location filename="../CRESTManager.cpp" line="472"/>
         <source>Empty refresh token!</source>
         <translation>Leeres Refresh Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="522"/>
+        <location filename="../CRESTManager.cpp" line="523"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>CREST Endpunkt Karte ist leer. Bitte warten Sie eine Weile.</translation>
     </message>
@@ -2706,19 +2717,19 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::LMeveAPIManager</name>
     <message>
-        <location filename="../LMeveAPIManager.cpp" line="59"/>
+        <location filename="../LMeveAPIManager.cpp" line="61"/>
         <source>Unexpected object received!</source>
         <translatorcomment>#NOTE# I suppose these are internat error messages and therefore not meant for public consumption, translation doesn&apos;t really make sense. Leave them &quot;as is&quot; or use &quot;Unerwartetes Objekt empfangen&quot;</translatorcomment>
         <translation>Unexpected object received!</translation>
     </message>
     <message>
-        <location filename="../LMeveAPIManager.cpp" line="63"/>
+        <location filename="../LMeveAPIManager.cpp" line="65"/>
         <source>Expected task array!</source>
         <translatorcomment>#NOTE# Leave &quot;as is&quot; or use &quot;Aufgabenmenge erwartet&quot;</translatorcomment>
         <translation>Expected task array!</translation>
     </message>
     <message>
-        <location filename="../LMeveAPIManager.cpp" line="88"/>
+        <location filename="../LMeveAPIManager.cpp" line="90"/>
         <source>Empty response from server!</source>
         <translatorcomment>#NOTE# Leave &quot;as is&quot; or use &quot;Leere Serverantwort erhalten!&quot;</translatorcomment>
         <translation>Empty response from server!</translation>

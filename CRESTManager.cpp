@@ -30,6 +30,7 @@
 #include "ExternalOrder.h"
 #include "CRESTSettings.h"
 #include "ReplyTimeout.h"
+#include "Defines.h"
 
 #include "CRESTManager.h"
 
@@ -188,10 +189,10 @@ namespace Evernus
             return;
         }
 
-#ifdef Q_OS_WIN
-        selectNextInterface().fetchMarketHistory(regionId, typeId, [=](QJsonDocument &&data, const QString &error) {
-#else
+#if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
         selectNextInterface().fetchMarketHistory(regionId, typeId, [=, callback = callback](QJsonDocument &&data, const QString &error) {
+#else
+        selectNextInterface().fetchMarketHistory(regionId, typeId, [=](QJsonDocument &&data, const QString &error) {
 #endif
             if (!error.isEmpty())
             {
