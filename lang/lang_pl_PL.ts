@@ -3478,138 +3478,138 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarginToolDialog</name>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="447"/>
+        <location filename="../MarginToolDialog.cpp" line="448"/>
         <source>export market logs in game</source>
         <translation>wyeksportuj logi z gry</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="456"/>
+        <location filename="../MarginToolDialog.cpp" line="457"/>
         <source>Sell:</source>
         <translation>Sprzedaż:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="457"/>
+        <location filename="../MarginToolDialog.cpp" line="458"/>
         <source>Buy:</source>
         <translation>Kupno:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="458"/>
+        <location filename="../MarginToolDialog.cpp" line="459"/>
         <source>Profit:</source>
         <translation>Zysk:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="459"/>
+        <location filename="../MarginToolDialog.cpp" line="460"/>
         <source>Revenue:</source>
         <translation>Dochód:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="460"/>
+        <location filename="../MarginToolDialog.cpp" line="461"/>
         <source>Cost of sales:</source>
         <translation>Koszt sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="461"/>
+        <location filename="../MarginToolDialog.cpp" line="462"/>
         <source>Buyout:</source>
         <translation>Wykup:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="475"/>
-        <location filename="../MarginToolDialog.cpp" line="490"/>
+        <location filename="../MarginToolDialog.cpp" line="476"/>
+        <location filename="../MarginToolDialog.cpp" line="491"/>
         <source>Copy to clipboard</source>
         <translation>Skopiuj do schowka</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="511"/>
+        <location filename="../MarginToolDialog.cpp" line="512"/>
         <source>Buy orders:</source>
         <translation>Zlecenia kupna:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="516"/>
+        <location filename="../MarginToolDialog.cpp" line="517"/>
         <source>Sell orders:</source>
         <translation>Zlecenia sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="521"/>
+        <location filename="../MarginToolDialog.cpp" line="522"/>
         <source>Buy volume/movement:</source>
         <translation>Wolumen kupna:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="526"/>
+        <location filename="../MarginToolDialog.cpp" line="527"/>
         <source>Sell volume/movement:</source>
         <translation>Wolumen sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="539"/>
+        <location filename="../MarginToolDialog.cpp" line="540"/>
         <source>Margin:</source>
         <translation>Marża:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="545"/>
+        <location filename="../MarginToolDialog.cpp" line="546"/>
         <source>Markup:</source>
         <translation>Narzut:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="550"/>
+        <location filename="../MarginToolDialog.cpp" line="551"/>
         <source>Autocopy</source>
         <translation>Auto. kopiowanie</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="560"/>
+        <location filename="../MarginToolDialog.cpp" line="561"/>
         <source>Nothing</source>
         <translation>Nic</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="565"/>
+        <location filename="../MarginToolDialog.cpp" line="566"/>
         <source>Sell price</source>
         <translation>Cena sprzedaży</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="570"/>
+        <location filename="../MarginToolDialog.cpp" line="571"/>
         <source>Buy price</source>
         <translation>Cena kupna</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="592"/>
+        <location filename="../MarginToolDialog.cpp" line="593"/>
         <source>Broker fee:</source>
         <translation>Broker fee:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="597"/>
+        <location filename="../MarginToolDialog.cpp" line="598"/>
         <source>Sales tax:</source>
         <translation>Podatek od sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="602"/>
+        <location filename="../MarginToolDialog.cpp" line="603"/>
         <source>Sample data</source>
         <translation>Przykładowe dane</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="613"/>
+        <location filename="../MarginToolDialog.cpp" line="614"/>
         <source>If you experience problems with importing orders, adjust margin tool settings in the Preferences.</source>
         <translation>Jeśli naptokasz problem z importem zleceń, dostosuj ustawienia narzędzia marży.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="625"/>
+        <location filename="../MarginToolDialog.cpp" line="626"/>
         <source>Preferred source</source>
         <translation>Preferowane źródło</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="635"/>
+        <location filename="../MarginToolDialog.cpp" line="636"/>
         <source>Orders only</source>
         <translation>Tylko zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="639"/>
+        <location filename="../MarginToolDialog.cpp" line="640"/>
         <source>Prefer custom item costs (if available)</source>
         <translation>Własne koszty (jeśli dostępne)</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="643"/>
+        <location filename="../MarginToolDialog.cpp" line="644"/>
         <source>Custom station</source>
         <translation>Wybrana stacja</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="647"/>
+        <location filename="../MarginToolDialog.cpp" line="648"/>
         <source>Source station</source>
         <translation>Stacja źródłowa</translation>
     </message>
@@ -3634,18 +3634,18 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Wyjdź z aplikacji</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="803"/>
-        <location filename="../MarginToolDialog.cpp" line="809"/>
+        <location filename="../MarginToolDialog.cpp" line="804"/>
+        <location filename="../MarginToolDialog.cpp" line="810"/>
         <source>Margin tool error</source>
         <translation>Błąd narzędzia</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="804"/>
+        <location filename="../MarginToolDialog.cpp" line="805"/>
         <source>Could not determine market log path. Please enter log path in settings.</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu. Wpisz ścieżkę ręcznie w ustawieniach.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="810"/>
+        <location filename="../MarginToolDialog.cpp" line="811"/>
         <source>Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again.</source>
         <translation>Nie udało się rozpocząć obserwacji katalogu z logami. Upewnij się, że katalog istnieje (np. wyeksportuj logi) i spróbuj ponownie.</translation>
     </message>

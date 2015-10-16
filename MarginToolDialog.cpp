@@ -418,6 +418,7 @@ namespace Evernus
     {
         auto table = new QTableWidget{this};
         table->setColumnCount(3);
+        table->setAlternatingRowColors(true);
         table->setRowCount(static_cast<int>(std::log10(samples)));
         table->setHorizontalHeaderLabels(QStringList{} << "Volume" << "Cost" << "Profit");
         table->verticalHeader()->hide();
