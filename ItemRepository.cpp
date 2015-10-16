@@ -21,9 +21,15 @@
 
 namespace Evernus
 {
+    ItemRepository::ItemRepository(bool corp, const QSqlDatabase &db)
+        : Repository{db}
+        , mCorp{corp}
+    {
+    }
+
     QString ItemRepository::getTableName() const
     {
-        return "items";
+        return (mCorp) ? ("corp_items") : ("items");
     }
 
     QString ItemRepository::getIdColumn() const

@@ -14,39 +14,34 @@
  */
 #pragma once
 
-#include <QHash>
+#include <vector>
 
+#include "CorpAssetValueSnapshot.h"
 #include "Repository.h"
-#include "Item.h"
 
 namespace Evernus
 {
-    class AssetList;
+    class Character;
 
-    class ItemRepository
-        : public Repository<Item>
+    class CorpAssetValueSnapshotRepository
+        : public Repository<CorpAssetValueSnapshot>
     {
     public:
-        typedef QHash<QString, QVariantList> PropertyMap;
-
-        ItemRepository(bool corp, const QSqlDatabase &db);
-        virtual ~ItemRepository() = default;
+        using Repository::Repository;
+        virtual ~CorpAssetValueSnapshotRepository() = default;
 
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
 
         virtual EntityPtr populate(const QSqlRecord &record) const override;
 
-        void create(const Repository<AssetList> &assetRepo) const;
-        void batchStore(const PropertyMap &map) const;
+        void create() const;
 
-        static void fillProperties(const Item &entity, PropertyMap &map);
+        EntityList fetchRange(quint64 corporationId, const QDateTime &from, const QDateTime &to) const;
 
     private:
-        bool mCorp = false;
-
         virtual QStringList getColumns() const override;
-        virtual void bindValues(const Item &entity, QSqlQuery &query) const override;
-        virtual void bindPositionalValues(const Item &entity, QSqlQuery &query) const override;
+        virtual void bindValues(const CorpAssetValueSnapshot &entity, QSqlQuery &query) const override;
+        virtual void bindPositionalValues(const CorpAssetValueSnapshot &entity, QSqlQuery &query) const override;
     };
 }

@@ -43,6 +43,7 @@
 #include "PriceSettings.h"
 #include "OrderSettings.h"
 #include "PathSettings.h"
+#include "UISettings.h"
 #include "Version.h"
 
 #include "Updater.h"
@@ -187,12 +188,17 @@ namespace Evernus
                     migrateCoreTo03();
             }
 
-            if (minorVersion < 30)
+            if (minorVersion < 36)
             {
-                if (minorVersion < 13)
-                    migrateCoreTo113();
+                if (minorVersion < 30)
+                {
+                    if (minorVersion < 13)
+                        migrateCoreTo113();
 
-                migrateCoreTo130();
+                    migrateCoreTo130();
+                }
+
+                migrateCoreTo136();
             }
         }
 
@@ -407,5 +413,11 @@ namespace Evernus
     void Updater::migrateCoreTo130() const
     {
         QFile::remove(CachingEveDataProvider::getCacheDir().filePath(CachingEveDataProvider::systemDistanceCacheFileName));
+    }
+
+    void Updater::migrateCoreTo136() const
+    {
+        QSettings settings;
+        settings.remove(UISettings::tabShowStateParentKey);
     }
 }

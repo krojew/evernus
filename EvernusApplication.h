@@ -24,6 +24,7 @@
 #include "CharacterCorporationCombinedMarketOrderProvider.h"
 #include "CorpMarketOrderValueSnapshotRepository.h"
 #include "MarketOrderValueSnapshotRepository.h"
+#include "CorpAssetValueSnapshotRepository.h"
 #include "ExternalOrderImporterRegistry.h"
 #include "ConquerableStationRepository.h"
 #include "AssetValueSnapshotRepository.h"
@@ -97,6 +98,9 @@ namespace Evernus
         virtual std::shared_ptr<AssetList> fetchAssetsForCharacter(Character::IdType id) const override;
         virtual std::vector<std::shared_ptr<AssetList>> fetchAllAssets() const override;
 
+        virtual std::shared_ptr<AssetList> fetchCorpAssetsForCharacter(Character::IdType id) const override;
+        virtual std::vector<std::shared_ptr<AssetList>> fetchAllCorpAssets() const override;
+
         virtual QDateTime getLocalCacheTimer(Character::IdType id, TimerType type) const override;
         virtual void setUtcCacheTimer(Character::IdType id, TimerType type, const QDateTime &dt) override;
 
@@ -167,6 +171,7 @@ namespace Evernus
         void walletTransactionsChanged();
         void marketOrdersChanged();
         void contractsChanged();
+        void corpAssetsChanged();
         void corpWalletJournalChanged();
         void corpWalletTransactionsChanged();
         void corpMarketOrdersChanged();
@@ -189,6 +194,7 @@ namespace Evernus
         void refreshWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshMarketOrdersFromLogs(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshCorpAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpContracts(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
@@ -229,24 +235,24 @@ namespace Evernus
         void showMailError(int mailID, int errorCode, const QByteArray &message);
 
     private:
-        typedef std::pair<Character::IdType, EveType::IdType> CharacterTypePair;
-
-        typedef std::unordered_map<Character::IdType, QDateTime> CharacterTimerMap;
-
-        typedef std::function<WalletTransactionRepository::EntityList (const QDateTime &, const QDateTime &, EveType::IdType)> TransactionFetcher;
+        using CharacterTypePair =std::pair<Character::IdType, EveType::IdType>;
+        using CharacterTimerMap = std::unordered_map<Character::IdType, QDateTime>;
+        using TransactionFetcher = std::function<WalletTransactionRepository::EntityList (const QDateTime &, const QDateTime &, EveType::IdType)>;
+        using CharacterAssetMap = std::unordered_map<Character::IdType, AssetListRepository::EntityPtr>;
 
         QSqlDatabase mMainDb, mEveDb;
 
         std::unique_ptr<KeyRepository> mKeyRepository;
         std::unique_ptr<CorpKeyRepository> mCorpKeyRepository;
         std::unique_ptr<CharacterRepository> mCharacterRepository;
-        std::unique_ptr<ItemRepository> mItemRepository;
-        std::unique_ptr<AssetListRepository> mAssetListRepository;
+        std::unique_ptr<ItemRepository> mItemRepository, mCorpItemRepository;
+        std::unique_ptr<AssetListRepository> mAssetListRepository, mCorpAssetListRepository;
         std::unique_ptr<ConquerableStationRepository> mConquerableStationRepository;
         std::unique_ptr<WalletSnapshotRepository> mWalletSnapshotRepository;
         std::unique_ptr<CorpWalletSnapshotRepository> mCorpWalletSnapshotRepository;
         std::unique_ptr<ExternalOrderRepository> mExternalOrderRepository;
         std::unique_ptr<AssetValueSnapshotRepository> mAssetValueSnapshotRepository;
+        std::unique_ptr<CorpAssetValueSnapshotRepository> mCorpAssetValueSnapshotRepository;
         std::unique_ptr<WalletJournalEntryRepository> mWalletJournalEntryRepository, mCorpWalletJournalEntryRepository;
         std::unique_ptr<RefTypeRepository> mRefTypeRepository;
         std::unique_ptr<CacheTimerRepository> mCacheTimerRepository;
@@ -280,7 +286,7 @@ namespace Evernus
 
         std::unordered_map<std::string, ImporterPtr> mExternalOrderImporters;
 
-        mutable std::unordered_map<Character::IdType, AssetListRepository::EntityPtr> mCharacterAssets;
+        mutable CharacterAssetMap mCharacterAssets, mCorpAssets;
 
         CharacterTimerMap mCharacterUtcCacheTimes;
         CharacterTimerMap mAssetsUtcCacheTimes;
@@ -288,6 +294,7 @@ namespace Evernus
         CharacterTimerMap mWalletTransactionsUtcCacheTimes;
         CharacterTimerMap mMarketOrdersUtcCacheTimes;
         CharacterTimerMap mContractsUtcCacheTimes;
+        CharacterTimerMap mCorpAssetsUtcCacheTimes;
         CharacterTimerMap mCorpWalletJournalUtcCacheTimes;
         CharacterTimerMap mCorpWalletTransactionsUtcCacheTimes;
         CharacterTimerMap mCorpMarketOrdersUtcCacheTimes;
@@ -300,6 +307,7 @@ namespace Evernus
         CharacterTimerMap mWalletTransactionsUtcUpdateTimes;
         CharacterTimerMap mMarketOrdersUtcUpdateTimes;
         CharacterTimerMap mContractsUtcUpdateTimes;
+        CharacterTimerMap mCorpAssetsUtcUpdateTimes;
         CharacterTimerMap mCorpWalletJournalUtcUpdateTimes;
         CharacterTimerMap mCorpWalletTransactionsUtcUpdateTimes;
         CharacterTimerMap mCorpMarketOrdersUtcUpdateTimes;
@@ -345,6 +353,9 @@ namespace Evernus
         void finishExternalOrderImportTask(const QString &info);
 
         void computeAssetListSellValue(const AssetList &list) const;
+        void computeCorpAssetListSellValue(const AssetList &list) const;
+
+        double getTotalAssetListValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;
 
         void saveUpdateTimer(TimerType timer, CharacterTimerMap &map, Character::IdType characterId) const;
@@ -357,6 +368,9 @@ namespace Evernus
 
         bool shouldImport(Character::IdType id, TimerType type) const;
         bool checkImportAndEndTask(Character::IdType id, TimerType type, uint task);
+
+        std::vector<std::shared_ptr<AssetList>> doFetchAllAssets(CharacterAssetMap &assetMap,
+                                                                 const AssetListRepository &assetRepo) const;
 
         template<void (EvernusApplication::* Signal)(), class Key>
         void handleIncomingContracts(const Key &key,
@@ -377,5 +391,9 @@ namespace Evernus
         static QString getCharacterImportMessage(Character::IdType id);
 
         static void setProxySettings();
+
+        static std::shared_ptr<AssetList> doFetchAssetsForCharacter(CharacterAssetMap &assetMap,
+                                                                    const AssetListRepository &assetRepo,
+                                                                    Character::IdType id);
     };
 }

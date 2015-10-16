@@ -29,5 +29,6 @@ namespace Evernus
         Contracts,
         CorpContracts,
         LMeveTasks,
+        CorpAssetList,
     };
 }

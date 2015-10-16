@@ -23,15 +23,16 @@
 
 namespace Evernus
 {
-    AssetListRepository::AssetListRepository(const QSqlDatabase &db, const ItemRepository &itemRepository)
+    AssetListRepository::AssetListRepository(bool corp, const QSqlDatabase &db, const ItemRepository &itemRepository)
         : Repository{db}
         , mItemRepository{itemRepository}
+        , mCorp{corp}
     {
     }
 
     QString AssetListRepository::getTableName() const
     {
-        return "asset_lists";
+        return (mCorp) ? ("corp_asset_lists") : ("asset_lists");
     }
 
     QString AssetListRepository::getIdColumn() const

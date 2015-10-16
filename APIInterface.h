@@ -46,6 +46,7 @@ namespace Evernus
         void fetchCharacterList(const Key &key, const Callback &callback) const;
         void fetchCharacter(const Key &key, Character::IdType characterId, const Callback &callback) const;
         void fetchAssets(const Key &key, Character::IdType characterId, const Callback &callback) const;
+        void fetchAssets(const CorpKey &key, const Callback &callback) const;
         void fetchConquerableStationList(const Callback &callback) const;
         void fetchRefTypes(const Callback &callback) const;
         void fetchWalletJournal(const Key &key,

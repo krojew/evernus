@@ -156,6 +156,29 @@ namespace Evernus
         });
     }
 
+    void APIManager::fetchAssets(const CorpKey &key, Character::IdType characterId, const Callback<AssetList> &callback) const
+    {
+        mInterface.fetchAssets(key, [=](const QString &response, const QString &error) {
+            try
+            {
+                handlePotentialError(response, error);
+
+                AssetList assets{parseResults<AssetList::ItemType, std::unique_ptr<AssetList::ItemType::element_type>>(response, "assets")};
+                assets.setCharacterId(characterId);
+
+                mCacheTimerProvider.setUtcCacheTimer(characterId,
+                                                     TimerType::CorpAssetList,
+                                                     APIUtils::getCachedUntil(response));
+
+                callback(std::move(assets), QString{});
+            }
+            catch (const std::exception &e)
+            {
+                callback(AssetList{}, e.what());
+            }
+        });
+    }
+
     void APIManager::fetchConquerableStationList(const Callback<ConquerableStationList> &callback) const
     {
 #if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG

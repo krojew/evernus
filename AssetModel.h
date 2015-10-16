@@ -36,7 +36,10 @@ namespace Evernus
     public:
         using LocationId = ItemData::LocationIdType::value_type;
 
-        AssetModel(const AssetProvider &assetProvider, const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        AssetModel(const AssetProvider &assetProvider,
+                   const EveDataProvider &dataProvider,
+                   bool corp,
+                   QObject *parent = nullptr);
         virtual ~AssetModel() = default;
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
@@ -123,6 +126,7 @@ namespace Evernus
         Character::IdType mCharacterId = Character::invalidId;
         quint64 mCustomStationId = 0;
         bool mCombineCharacters = false;
+        bool mCorp = false;
 
         TreeItem mRootItem;
 

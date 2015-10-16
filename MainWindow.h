@@ -93,6 +93,7 @@ namespace Evernus
         void corpWalletTransactionsChanged();
         void corpMarketOrdersChanged();
         void corpContractsChanged();
+        void corpAssetsChanged();
         void itemCostsChanged();
         void itemVolumeChanged();
         void lMeveTasksChanged();
@@ -111,6 +112,7 @@ namespace Evernus
         void importWalletTransactions(Character::IdType id);
         void importMarketOrdersFromAPI(Character::IdType id);
         void importMarketOrdersFromLogs(Character::IdType id);
+        void importCorpAssets(Character::IdType id);
         void importCorpContracts(Character::IdType id);
         void importCorpWalletJournal(Character::IdType id);
         void importCorpWalletTransactions(Character::IdType id);

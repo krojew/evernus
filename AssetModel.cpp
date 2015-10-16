@@ -123,10 +123,14 @@ namespace Evernus
         return mParentItem;
     }
 
-    AssetModel::AssetModel(const AssetProvider &assetProvider, const EveDataProvider &nameProvider, QObject *parent)
+    AssetModel::AssetModel(const AssetProvider &assetProvider,
+                           const EveDataProvider &nameProvider,
+                           bool corp,
+                           QObject *parent)
         : QAbstractItemModel(parent)
         , mAssetProvider(assetProvider)
         , mDataProvider(nameProvider)
+        , mCorp(corp)
     {
         mRootItem.setData(QVariantList{}
             << tr("Name")
@@ -309,13 +313,15 @@ namespace Evernus
 
         if (mCombineCharacters)
         {
-            const auto assets = mAssetProvider.fetchAllAssets();
+            const auto assets = (mCorp) ? (mAssetProvider.fetchAllCorpAssets()) : (mAssetProvider.fetchAllAssets());
             for (const auto &list : assets)
                 fillAssets(list);
         }
         else if (mCharacterId != Character::invalidId)
         {
-            const auto assets = mAssetProvider.fetchAssetsForCharacter(mCharacterId);
+            const auto assets = (mCorp) ?
+                                (mAssetProvider.fetchCorpAssetsForCharacter(mCharacterId)) :
+                                (mAssetProvider.fetchAssetsForCharacter(mCharacterId));
             fillAssets(assets);
         }
 

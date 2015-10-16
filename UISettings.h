@@ -54,6 +54,7 @@ namespace Evernus
         const auto headerStateKey = "ui/header/state/%1";
         const auto usePackagedVolumeKey = "ui/global/usePackagedVolume";
         const auto tabShowStateKey = "ui/mainWindow/tabShowState/%1";
+        const auto tabShowStateParentKey = "ui/mainWindow/tabShowState";
         const auto omitCurrencySymbolKey = "ui/global/omitCurrencySymbol";
         const auto mainWindowAlwaysOnTopKey = "ui/mainWindow/alwaysOnTop";
         const auto useUTCDatesKey = "ui/global/useUTCDates";

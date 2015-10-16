@@ -226,40 +226,22 @@ namespace Evernus
 
     std::shared_ptr<AssetList> EvernusApplication::fetchAssetsForCharacter(Character::IdType id) const
     {
-        if (id == Character::invalidId)
-            return std::make_shared<AssetList>();
-
-        const auto it = mCharacterAssets.find(id);
-        if (it != std::end(mCharacterAssets))
-            return it->second;
-
-        AssetListRepository::EntityPtr assets;
-
-        try
-        {
-            assets = mAssetListRepository->fetchForCharacter(id);
-        }
-        catch (const AssetListRepository::NotFoundException &)
-        {
-            assets = std::make_shared<AssetList>();
-            assets->setCharacterId(id);
-        }
-
-        mCharacterAssets.emplace(id, assets);
-        return assets;
+        return doFetchAssetsForCharacter(mCharacterAssets, *mAssetListRepository, id);
     }
 
     std::vector<std::shared_ptr<AssetList>> EvernusApplication::fetchAllAssets() const
     {
-        std::vector<std::shared_ptr<AssetList>> result;
+        return doFetchAllAssets(mCharacterAssets, *mAssetListRepository);
+    }
 
-        const auto idName = mCharacterRepository->getIdColumn();
-        auto query = mCharacterRepository->getEnabledQuery();
+    std::shared_ptr<AssetList> EvernusApplication::fetchCorpAssetsForCharacter(Character::IdType id) const
+    {
+        return doFetchAssetsForCharacter(mCorpAssets, *mCorpAssetListRepository, id);
+    }
 
-        while (query.next())
-            result.emplace_back(fetchAssetsForCharacter(query.value(idName).value<Character::IdType>()));
-
-        return result;
+    std::vector<std::shared_ptr<AssetList>> EvernusApplication::fetchAllCorpAssets() const
+    {
+        return doFetchAllAssets(mCorpAssets, *mCorpAssetListRepository);
     }
 
     QDateTime EvernusApplication::getLocalCacheTimer(Character::IdType id, TimerType type) const
@@ -295,6 +277,11 @@ namespace Evernus
         case TimerType::Contracts:
             it = mContractsUtcCacheTimes.find(id);
             if (it == std::end(mContractsUtcCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
+        case TimerType::CorpAssetList:
+            it = mCorpAssetsUtcCacheTimes.find(id);
+            if (it == std::end(mCorpAssetsUtcCacheTimes))
                 return QDateTime::currentDateTime();
             break;
         case TimerType::CorpWalletJournal:
@@ -352,6 +339,9 @@ namespace Evernus
             break;
         case TimerType::Contracts:
             mContractsUtcCacheTimes[id] = dt;
+            break;
+        case TimerType::CorpAssetList:
+            mCorpAssetsUtcCacheTimes[id] = dt;
             break;
         case TimerType::CorpWalletJournal:
             mCorpWalletJournalUtcCacheTimes[id] = dt;
@@ -416,6 +406,11 @@ namespace Evernus
         case TimerType::Contracts:
             it = mContractsUtcUpdateTimes.find(id);
             if (it == std::end(mContractsUtcUpdateTimes))
+                return QDateTime{};
+            break;
+        case TimerType::CorpAssetList:
+            it = mCorpAssetsUtcUpdateTimes.find(id);
+            if (it == std::end(mCorpAssetsUtcUpdateTimes))
                 return QDateTime{};
             break;
         case TimerType::CorpWalletJournal:
@@ -1092,6 +1087,53 @@ namespace Evernus
         emit taskEnded(task, QString{});
     }
 
+    void EvernusApplication::refreshCorpAssets(Character::IdType id, uint parentTask)
+    {
+        qDebug() << "Refreshing corp assets: " << id;
+
+        const auto assetSubtask = startTask(parentTask, tr("Fetching corporation assets for character %1...").arg(id));
+        processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        if (!checkImportAndEndTask(id, TimerType::CorpAssetList, assetSubtask))
+            return;
+
+        try
+        {
+            const auto key = getCorpKey(id);
+            mAPIManager.fetchAssets(*key, id, [assetSubtask, id, this](auto &&data, const auto &error) {
+                if (error.isEmpty())
+                {
+                    mCorpAssetListRepository->deleteForCharacter(id);
+
+                    const auto it = mCorpAssets.find(id);
+                    if (it != std::end(mCorpAssets))
+                        *it->second = data;
+
+                    mCorpAssetListRepository->store(data);
+
+                    QSettings settings;
+
+                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, Evernus::ImportSettings::autoUpdateAssetValueDefault).toBool())
+                        computeCorpAssetListSellValue(data);
+
+                    saveUpdateTimer(Evernus::TimerType::CorpAssetList, mCorpAssetsUtcUpdateTimes, id);
+
+                    emit corpAssetsChanged();
+                }
+
+                emit taskEnded(assetSubtask, error);
+            });
+        }
+        catch (const CorpKeyRepository::NotFoundException &)
+        {
+            emit taskEnded(assetSubtask, tr("Key not found!"));
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            emit taskEnded(assetSubtask, tr("Character not found!"));
+        }
+    }
+
     void EvernusApplication::refreshCorpContracts(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing corp contracts: " << id;
@@ -1673,13 +1715,16 @@ namespace Evernus
         mKeyRepository.reset(new KeyRepository{mMainDb});
         mCorpKeyRepository.reset(new CorpKeyRepository{mMainDb});
         mCharacterRepository.reset(new CharacterRepository{mMainDb});
-        mItemRepository.reset(new ItemRepository{mMainDb});
-        mAssetListRepository.reset(new AssetListRepository{mMainDb, *mItemRepository});
+        mItemRepository.reset(new ItemRepository{false, mMainDb});
+        mCorpItemRepository.reset(new ItemRepository{true, mMainDb});
+        mAssetListRepository.reset(new AssetListRepository{false, mMainDb, *mItemRepository});
+        mCorpAssetListRepository.reset(new AssetListRepository{true, mMainDb, *mCorpItemRepository});
         mConquerableStationRepository.reset(new ConquerableStationRepository{mMainDb});
         mWalletSnapshotRepository.reset(new WalletSnapshotRepository{mMainDb});
         mCorpWalletSnapshotRepository.reset(new CorpWalletSnapshotRepository{mMainDb});
         mExternalOrderRepository.reset(new ExternalOrderRepository{mMainDb});
         mAssetValueSnapshotRepository.reset(new AssetValueSnapshotRepository{mMainDb});
+        mCorpAssetValueSnapshotRepository.reset(new CorpAssetValueSnapshotRepository{mMainDb});
         mWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{false, mMainDb});
         mCorpWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{true, mMainDb});
         mRefTypeRepository.reset(new RefTypeRepository{mMainDb});
@@ -1712,11 +1757,14 @@ namespace Evernus
         mCharacterRepository->create(*mKeyRepository);
         mCorpKeyRepository->create(*mCharacterRepository);
         mAssetListRepository->create(*mCharacterRepository);
+        mCorpAssetListRepository->create(*mCharacterRepository);
         mItemRepository->create(*mAssetListRepository);
+        mCorpItemRepository->create(*mCorpAssetListRepository);
         mConquerableStationRepository->create();
         mWalletSnapshotRepository->create(*mCharacterRepository);
         mCorpWalletSnapshotRepository->create();
         mAssetValueSnapshotRepository->create(*mCharacterRepository);
+        mCorpAssetValueSnapshotRepository->create();
         mWalletJournalEntryRepository->create(*mCharacterRepository);
         mCorpWalletJournalEntryRepository->create(*mCharacterRepository);
         mExternalOrderRepository->create();
@@ -1765,6 +1813,9 @@ namespace Evernus
             case TimerType::MarketOrders:
                 mMarketOrdersUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
                 break;
+            case TimerType::CorpAssetList:
+                mCorpAssetsUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
+                break;
             case TimerType::CorpWalletJournal:
                 mCorpWalletJournalUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
                 break;
@@ -1807,6 +1858,9 @@ namespace Evernus
                 break;
             case TimerType::Contracts:
                 mContractsUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
+                break;
+            case TimerType::CorpAssetList:
+                mCorpAssetsUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
                 break;
             case TimerType::CorpWalletJournal:
                 mCorpWalletJournalUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
@@ -2330,19 +2384,9 @@ namespace Evernus
     {
         try
         {
-            auto value = 0.;
-            for (const auto &item : list)
-            {
-                const auto locationId = item->getLocationId();
-                if (!locationId)
-                    continue;
-
-                value += getTotalItemSellValue(*item, *locationId);
-            }
-
             AssetValueSnapshot snapshot;
             snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
-            snapshot.setBalance(value);
+            snapshot.setBalance(getTotalAssetListValue(list));
             snapshot.setCharacterId(list.getCharacterId());
 
             mAssetValueSnapshotRepository->store(snapshot);
@@ -2350,6 +2394,40 @@ namespace Evernus
         catch (const ExternalOrderRepository::NotFoundException &)
         {
         }
+    }
+
+    void EvernusApplication::computeCorpAssetListSellValue(const AssetList &list) const
+    {
+        try
+        {
+            CorpAssetValueSnapshot snapshot;
+            snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
+            snapshot.setBalance(getTotalAssetListValue(list));
+            snapshot.setCorporationId(mCharacterRepository->getCorporationId(list.getCharacterId()));
+
+            mCorpAssetValueSnapshotRepository->store(snapshot);
+        }
+        catch (const ExternalOrderRepository::NotFoundException &)
+        {
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+        }
+    }
+
+    double EvernusApplication::getTotalAssetListValue(const AssetList &list) const
+    {
+        auto value = 0.;
+        for (const auto &item : list)
+        {
+            const auto locationId = item->getLocationId();
+            if (!locationId)
+                continue;
+
+            value += getTotalItemSellValue(*item, *locationId);
+        }
+
+        return value;
     }
 
     double EvernusApplication::getTotalItemSellValue(const Item &item, quint64 locationId) const
@@ -2450,6 +2528,20 @@ namespace Evernus
             QMetaObject::invokeMethod(this, "taskEnded", Qt::QueuedConnection, Q_ARG(uint, task), Q_ARG(QString, QString{}));
 
         return ret;
+    }
+
+    std::vector<std::shared_ptr<AssetList>> EvernusApplication::doFetchAllAssets(CharacterAssetMap &assetMap,
+                                                                                 const AssetListRepository &assetRepo) const
+    {
+        std::vector<std::shared_ptr<AssetList>> result;
+
+        const auto idName = mCharacterRepository->getIdColumn();
+        auto query = mCharacterRepository->getEnabledQuery();
+
+        while (query.next())
+            result.emplace_back(doFetchAssetsForCharacter(assetMap, assetRepo, query.value(idName).value<Character::IdType>()));
+
+        return result;
     }
 
     template<void (EvernusApplication::* Signal)(), class Key>
@@ -2573,5 +2665,32 @@ namespace Evernus
         {
             QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
         }
+    }
+
+    std::shared_ptr<AssetList> EvernusApplication::doFetchAssetsForCharacter(CharacterAssetMap &assetMap,
+                                                                             const AssetListRepository &assetRepo,
+                                                                             Character::IdType id)
+    {
+        if (id == Character::invalidId)
+           return std::make_shared<AssetList>();
+
+       const auto it = assetMap.find(id);
+       if (it != std::end(assetMap))
+           return it->second;
+
+       AssetListRepository::EntityPtr assets;
+
+       try
+       {
+           assets = assetRepo.fetchForCharacter(id);
+       }
+       catch (const AssetListRepository::NotFoundException &)
+       {
+           assets = std::make_shared<AssetList>();
+           assets->setCharacterId(id);
+       }
+
+       assetMap.emplace(id, assets);
+       return assets;
     }
 }

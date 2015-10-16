@@ -43,6 +43,7 @@ namespace Evernus
                      const EveDataProvider &dataProvider,
                      const CacheTimerProvider &cacheTimerProvider,
                      const FilterTextRepository &filterRepo,
+                     bool corp,
                      QWidget *parent = nullptr);
         virtual ~AssetsWidget() = default;
 
@@ -80,6 +81,7 @@ namespace Evernus
         LeafFilterProxyModel *mModelProxy = nullptr;
 
         quint64 mCustomStationId = 0;
+        bool mCorp = false;
 
         QAction *mSetDestinationAct = nullptr;
 

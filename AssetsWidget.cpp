@@ -46,13 +46,15 @@ namespace Evernus
                                const EveDataProvider &dataProvider,
                                const CacheTimerProvider &cacheTimerProvider,
                                const FilterTextRepository &filterRepo,
+                               bool corp,
                                QWidget *parent)
-        : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::AssetList),
-                               std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::AssetList),
+        : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, (corp) ? (TimerType::CorpAssetList) : (TimerType::AssetList)),
+                               std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, (corp) ? (TimerType::CorpAssetList) : (TimerType::AssetList)),
                                ImportSettings::maxAssetListAgeKey,
                                parent)
         , mAssetProvider(assetProvider)
-        , mModel(mAssetProvider, dataProvider)
+        , mModel(mAssetProvider, dataProvider, corp)
+        , mCorp(corp)
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -266,13 +268,16 @@ namespace Evernus
 
         if (mModel.isCombiningCharacters())
         {
-            const auto list = mAssetProvider.fetchAllAssets();
+            const auto list = (mCorp) ? (mAssetProvider.fetchAllCorpAssets()) : (mAssetProvider.fetchAllAssets());
             for (const auto &assets : list)
                 buildImportTargetFromList(assets);
         }
         else
         {
-            const auto assets = mAssetProvider.fetchAssetsForCharacter(getCharacterId());
+            const auto assets = (mCorp) ?
+                                (mAssetProvider.fetchCorpAssetsForCharacter(getCharacterId())) :
+                                (mAssetProvider.fetchAssetsForCharacter(getCharacterId()));
+
             buildImportTargetFromList(assets);
         }
 

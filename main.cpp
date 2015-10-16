@@ -173,6 +173,7 @@ int main(int argc, char *argv[])
             app.connect(&mainWnd, SIGNAL(importWalletTransactions(Character::IdType)), SLOT(refreshWalletTransactions(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importMarketOrdersFromAPI(Character::IdType)), SLOT(refreshMarketOrdersFromAPI(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importMarketOrdersFromLogs(Character::IdType)), SLOT(refreshMarketOrdersFromLogs(Character::IdType)));
+            app.connect(&mainWnd, SIGNAL(importCorpAssets(Character::IdType)), SLOT(refreshCorpAssets(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importCorpContracts(Character::IdType)), SLOT(refreshCorpContracts(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importCorpWalletJournal(Character::IdType)), SLOT(refreshCorpWalletJournal(Character::IdType)));
             app.connect(&mainWnd, SIGNAL(importCorpWalletTransactions(Character::IdType)), SLOT(refreshCorpWalletTransactions(Character::IdType)));
@@ -200,6 +201,7 @@ int main(int argc, char *argv[])
             mainWnd.connect(&app, SIGNAL(walletTransactionsChanged()), SIGNAL(walletTransactionsChanged()));
             mainWnd.connect(&app, SIGNAL(marketOrdersChanged()), SIGNAL(marketOrdersChanged()));
             mainWnd.connect(&app, SIGNAL(contractsChanged()), SIGNAL(contractsChanged()));
+            mainWnd.connect(&app, SIGNAL(corpAssetsChanged()), SIGNAL(corpAssetsChanged()));
             mainWnd.connect(&app, SIGNAL(corpWalletJournalChanged()), SIGNAL(corpWalletJournalChanged()));
             mainWnd.connect(&app, SIGNAL(corpWalletTransactionsChanged()), SIGNAL(corpWalletTransactionsChanged()));
             mainWnd.connect(&app, SIGNAL(corpMarketOrdersChanged()), SIGNAL(corpMarketOrdersChanged()));

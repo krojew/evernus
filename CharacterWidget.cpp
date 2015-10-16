@@ -290,6 +290,7 @@ namespace Evernus
         {
             mCorpKeyRepository.fetchForCharacter(id);
 
+            checker(TimerType::CorpAssetList, ImportSettings::maxAssetListAgeKey, tr("Corp. asset list: %1"));
             checker(TimerType::CorpMarketOrders, ImportSettings::maxMarketOrdersAgeKey, tr("Corp. market orders: %1"));
             checker(TimerType::CorpWalletJournal, ImportSettings::maxWalletAgeKey, tr("Corp. wallet journal: %1"));
             checker(TimerType::CorpWalletTransactions, ImportSettings::maxWalletAgeKey, tr("Corp. wallet transactions: %1"));

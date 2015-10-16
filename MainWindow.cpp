@@ -271,7 +271,11 @@ namespace Evernus
         QSettings settings;
         if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
         {
-            enumerateEnabledCharacters([this](auto id) {
+            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
+            enumerateEnabledCharacters([corp, this](auto id) {
+                if (corp)
+                    emit importCorpAssets(id);
+
                 emit importAssets(id);
             });
         }
@@ -704,8 +708,9 @@ namespace Evernus
                                           mEveDataProvider,
                                           cacheTimerProvider,
                                           mRepositoryProvider.getFilterTextRepository(),
+                                          false,
                                           this};
-        addTab(assetsTab, tr("Assets"), TabType::Other);
+        addTab(assetsTab, tr("Assets"), TabType::Character);
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
@@ -777,6 +782,23 @@ namespace Evernus
         addTab(contractsTab, tr("Character contracts"), TabType::Character);
         connect(contractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importContracts);
         connect(this, &MainWindow::contractsChanged, contractsTab, &ContractWidget::updateData);
+
+        auto corpAssetsTab = new AssetsWidget{assetProvider,
+                                              mEveDataProvider,
+                                              cacheTimerProvider,
+                                              mRepositoryProvider.getFilterTextRepository(),
+                                              true,
+                                              this};
+        addTab(corpAssetsTab, tr("Corporation assets"), TabType::Corp);
+        connect(corpAssetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importCorpAssets);
+        connect(corpAssetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
+        connect(corpAssetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
+        connect(corpAssetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setDestinationInEve);
+        connect(this, &MainWindow::conquerableStationsChanged, corpAssetsTab, &AssetsWidget::updateData);
+        connect(this, &MainWindow::corpAssetsChanged, corpAssetsTab, &AssetsWidget::updateData);
+        connect(this, &MainWindow::externalOrdersChanged, corpAssetsTab, &AssetsWidget::updateData);
+        connect(this, &MainWindow::externalOrdersChangedWithMarketOrders, corpAssetsTab, &AssetsWidget::updateData);
+        connect(this, &MainWindow::itemVolumeChanged, corpAssetsTab, &AssetsWidget::updateData);
 
         auto corpOrderTab = new MarketOrderWidget{corpOrderProvider,
                                                   corpOrderProvider,

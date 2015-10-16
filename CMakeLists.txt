@@ -339,6 +339,10 @@ add_executable(
     ContractView.h
     ContractWidget.cpp
     ContractWidget.h
+    CorpAssetValueSnapshot.cpp
+    CorpAssetValueSnapshot.h
+    CorpAssetValueSnapshotRepository.cpp
+    CorpAssetValueSnapshotRepository.h
     CorpImportPreferencesWidget.cpp
     CorpImportPreferencesWidget.h
     CorpKey.cpp
