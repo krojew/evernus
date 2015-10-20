@@ -71,6 +71,11 @@ namespace Evernus
         mItemData = data;
     }
 
+    void AssetModel::TreeItem::addData(const QVariant &data)
+    {
+        mItemData << data;
+    }
+
     QDateTime AssetModel::TreeItem::priceTimestamp() const
     {
         return mPriceTimestamp;
@@ -125,12 +130,11 @@ namespace Evernus
 
     AssetModel::AssetModel(const AssetProvider &assetProvider,
                            const EveDataProvider &nameProvider,
-                           bool corp,
+                           bool showOwner,
                            QObject *parent)
         : QAbstractItemModel(parent)
         , mAssetProvider(assetProvider)
         , mDataProvider(nameProvider)
-        , mCorp(corp)
     {
         mRootItem.setData(QVariantList{}
             << tr("Name")
@@ -138,8 +142,10 @@ namespace Evernus
             << tr("Unit volume")
             << tr("Total volume")
             << tr("Local unit sell price")
-            << tr("Local total sell price")
-            << tr("Owner"));
+            << tr("Local total sell price"));
+
+        if (showOwner)
+            mRootItem.addData(tr("Owner"));
 
         connect(&mDataProvider, &EveDataProvider::namesChanged, this, &AssetModel::updateNames);
     }
@@ -313,16 +319,13 @@ namespace Evernus
 
         if (mCombineCharacters)
         {
-            const auto assets = (mCorp) ? (mAssetProvider.fetchAllCorpAssets()) : (mAssetProvider.fetchAllAssets());
+            const auto assets = mAssetProvider.fetchAllAssets();
             for (const auto &list : assets)
                 fillAssets(list);
         }
         else if (mCharacterId != Character::invalidId)
         {
-            const auto assets = (mCorp) ?
-                                (mAssetProvider.fetchCorpAssetsForCharacter(mCharacterId)) :
-                                (mAssetProvider.fetchAssetsForCharacter(mCharacterId));
-            fillAssets(assets);
+            fillAssets(mAssetProvider.fetchAssetsForCharacter(mCharacterId));
         }
 
         endResetModel();

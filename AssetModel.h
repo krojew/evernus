@@ -38,7 +38,7 @@ namespace Evernus
 
         AssetModel(const AssetProvider &assetProvider,
                    const EveDataProvider &dataProvider,
-                   bool corp,
+                   bool showOwner,
                    QObject *parent = nullptr);
         virtual ~AssetModel() = default;
 
@@ -84,6 +84,7 @@ namespace Evernus
             QVariant data(int column) const;
             QVariantList data() const;
             void setData(const QVariantList &data);
+            void addData(const QVariant &data);
 
             QDateTime priceTimestamp() const;
             void setPriceTimestamp(const QDateTime &dt);
@@ -126,7 +127,6 @@ namespace Evernus
         Character::IdType mCharacterId = Character::invalidId;
         quint64 mCustomStationId = 0;
         bool mCombineCharacters = false;
-        bool mCorp = false;
 
         TreeItem mRootItem;
 

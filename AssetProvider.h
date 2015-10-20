@@ -25,13 +25,12 @@ namespace Evernus
     class AssetProvider
     {
     public:
+        using AssetPtr = std::shared_ptr<AssetList>;
+
         AssetProvider() = default;
         virtual ~AssetProvider() = default;
 
-        virtual std::shared_ptr<AssetList> fetchAssetsForCharacter(Character::IdType id) const = 0;
-        virtual std::vector<std::shared_ptr<AssetList>> fetchAllAssets() const = 0;
-
-        virtual std::shared_ptr<AssetList> fetchCorpAssetsForCharacter(Character::IdType id) const = 0;
-        virtual std::vector<std::shared_ptr<AssetList>> fetchAllCorpAssets() const = 0;
+        virtual AssetPtr fetchAssetsForCharacter(Character::IdType id) const = 0;
+        virtual std::vector<AssetPtr> fetchAllAssets() const = 0;
     };
 }

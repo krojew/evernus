@@ -275,6 +275,8 @@ add_executable(
     CacheTimerProvider.h
     CacheTimerRepository.cpp
     CacheTimerRepository.h
+    CachingAssetProvider.cpp
+    CachingAssetProvider.h
     CachingContractProvider.cpp
     CachingContractProvider.h
     CachingEveDataProvider.cpp

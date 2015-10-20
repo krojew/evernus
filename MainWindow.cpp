@@ -79,10 +79,11 @@ namespace Evernus
     const QString MainWindow::settingsSizeKey = "mainWindow/size";
 
     MainWindow::MainWindow(const RepositoryProvider &repositoryProvider,
-                           MarketOrderProvider &orderProvider,
+                           MarketOrderProvider &charOrderProvider,
                            MarketOrderProvider &corpOrderProvider,
-                           const AssetProvider &assetProvider,
-                           const ContractProvider &contractProvider,
+                           const AssetProvider &charAssetProvider,
+                           const AssetProvider &corpAssetProvider,
+                           const ContractProvider &charContractProvider,
                            const ContractProvider &corpContractProvider,
                            EveDataProvider &eveDataProvider,
                            const CacheTimerProvider &cacheTimerProvider,
@@ -101,10 +102,11 @@ namespace Evernus
     {
         readSettings();
         createMenu();
-        createMainView(orderProvider,
+        createMainView(charOrderProvider,
                        corpOrderProvider,
-                       assetProvider,
-                       contractProvider,
+                       charAssetProvider,
+                       corpAssetProvider,
+                       charContractProvider,
                        corpContractProvider,
                        lMeveDataProvider,
                        cacheTimerProvider,
@@ -644,10 +646,11 @@ namespace Evernus
         toggleTopmost();
     }
 
-    void MainWindow::createMainView(MarketOrderProvider &orderProvider,
+    void MainWindow::createMainView(MarketOrderProvider &charOrderProvider,
                                     MarketOrderProvider &corpOrderProvider,
-                                    const AssetProvider &assetProvider,
-                                    const ContractProvider &contractProvider,
+                                    const AssetProvider &charAssetProvider,
+                                    const AssetProvider &corpAssetProvider,
+                                    const ContractProvider &charContractProvider,
                                     const ContractProvider &corpContractProvider,
                                     const LMeveDataProvider &lMeveDataProvider,
                                     const CacheTimerProvider &cacheTimerProvider,
@@ -704,7 +707,7 @@ namespace Evernus
         connect(this, &MainWindow::corpWalletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
         connect(this, &MainWindow::preferencesChanged, statsTab, &StatisticsWidget::handleNewPreferences);
 
-        auto assetsTab = new AssetsWidget{assetProvider,
+        auto assetsTab = new AssetsWidget{charAssetProvider,
                                           mEveDataProvider,
                                           cacheTimerProvider,
                                           mRepositoryProvider.getFilterTextRepository(),
@@ -721,7 +724,7 @@ namespace Evernus
         connect(this, &MainWindow::externalOrdersChangedWithMarketOrders, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::itemVolumeChanged, assetsTab, &AssetsWidget::updateData);
 
-        auto orderTab = new MarketOrderWidget{orderProvider,
+        auto orderTab = new MarketOrderWidget{charOrderProvider,
                                               corpOrderProvider,
                                               cacheTimerProvider,
                                               mEveDataProvider,
@@ -774,7 +777,7 @@ namespace Evernus
 
         auto contractsTab = new ContractWidget{cacheTimerProvider,
                                                mEveDataProvider,
-                                               contractProvider,
+                                               charContractProvider,
                                                mRepositoryProvider.getFilterTextRepository(),
                                                mRepositoryProvider.getCharacterRepository(),
                                                false,
@@ -783,7 +786,7 @@ namespace Evernus
         connect(contractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importContracts);
         connect(this, &MainWindow::contractsChanged, contractsTab, &ContractWidget::updateData);
 
-        auto corpAssetsTab = new AssetsWidget{assetProvider,
+        auto corpAssetsTab = new AssetsWidget{corpAssetProvider,
                                               mEveDataProvider,
                                               cacheTimerProvider,
                                               mRepositoryProvider.getFilterTextRepository(),
@@ -876,7 +879,7 @@ namespace Evernus
                                                         mRepositoryProvider.getCharacterRepository(),
                                                         mRepositoryProvider.getFavoriteItemRepository(),
                                                         mRepositoryProvider.getLocationBookmarkRepository(),
-                                                        orderProvider,
+                                                        charOrderProvider,
                                                         corpOrderProvider,
                                                         mEveDataProvider,
                                                         mItemCostProvider,

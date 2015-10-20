@@ -53,8 +53,7 @@ namespace Evernus
                                ImportSettings::maxAssetListAgeKey,
                                parent)
         , mAssetProvider(assetProvider)
-        , mModel(mAssetProvider, dataProvider, corp)
-        , mCorp(corp)
+        , mModel(mAssetProvider, dataProvider, !corp)
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -268,17 +267,13 @@ namespace Evernus
 
         if (mModel.isCombiningCharacters())
         {
-            const auto list = (mCorp) ? (mAssetProvider.fetchAllCorpAssets()) : (mAssetProvider.fetchAllAssets());
+            const auto list = mAssetProvider.fetchAllAssets();
             for (const auto &assets : list)
                 buildImportTargetFromList(assets);
         }
         else
         {
-            const auto assets = (mCorp) ?
-                                (mAssetProvider.fetchCorpAssetsForCharacter(getCharacterId())) :
-                                (mAssetProvider.fetchAssetsForCharacter(getCharacterId()));
-
-            buildImportTargetFromList(assets);
+            buildImportTargetFromList(mAssetProvider.fetchAssetsForCharacter(getCharacterId()));
         }
 
         return target;

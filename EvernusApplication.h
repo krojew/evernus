@@ -44,6 +44,7 @@
 #include "UpdateTimerRepository.h"
 #include "OrderScriptRepository.h"
 #include "qxthttpsessionmanager.h"
+#include "CachingAssetProvider.h"
 #include "CacheTimerRepository.h"
 #include "FilterTextRepository.h"
 #include "CharacterRepository.h"
@@ -61,7 +62,6 @@
 #include "ItemCostProvider.h"
 #include "LMeveAPIManager.h"
 #include "ItemRepository.h"
-#include "AssetProvider.h"
 #include "TaskConstants.h"
 #include "KeyRepository.h"
 #include "TaskManager.h"
@@ -78,7 +78,6 @@ namespace Evernus
     class EvernusApplication
         : public QApplication
         , public ExternalOrderImporterRegistry
-        , public AssetProvider
         , public CacheTimerProvider
         , public ItemCostProvider
         , public RepositoryProvider
@@ -94,12 +93,6 @@ namespace Evernus
         virtual ~EvernusApplication() = default;
 
         virtual void registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer) override;
-
-        virtual std::shared_ptr<AssetList> fetchAssetsForCharacter(Character::IdType id) const override;
-        virtual std::vector<std::shared_ptr<AssetList>> fetchAllAssets() const override;
-
-        virtual std::shared_ptr<AssetList> fetchCorpAssetsForCharacter(Character::IdType id) const override;
-        virtual std::vector<std::shared_ptr<AssetList>> fetchAllCorpAssets() const override;
 
         virtual QDateTime getLocalCacheTimer(Character::IdType id, TimerType type) const override;
         virtual void setUtcCacheTimer(Character::IdType id, TimerType type, const QDateTime &dt) override;
@@ -153,6 +146,9 @@ namespace Evernus
 
         const ContractProvider &getContractProvider() const noexcept;
         const ContractProvider &getCorpContractProvider() const noexcept;
+
+        const AssetProvider &getAssetProvider() const noexcept;
+        const AssetProvider &getCorpAssetProvider() const noexcept;
 
         EveDataProvider &getDataProvider() noexcept;
 
@@ -238,7 +234,6 @@ namespace Evernus
         using CharacterTypePair =std::pair<Character::IdType, EveType::IdType>;
         using CharacterTimerMap = std::unordered_map<Character::IdType, QDateTime>;
         using TransactionFetcher = std::function<WalletTransactionRepository::EntityList (const QDateTime &, const QDateTime &, EveType::IdType)>;
-        using CharacterAssetMap = std::unordered_map<Character::IdType, AssetListRepository::EntityPtr>;
 
         QSqlDatabase mMainDb, mEveDb;
 
@@ -286,7 +281,7 @@ namespace Evernus
 
         std::unordered_map<std::string, ImporterPtr> mExternalOrderImporters;
 
-        mutable CharacterAssetMap mCharacterAssets, mCorpAssets;
+        std::unique_ptr<CachingAssetProvider> mCharacterAssetProvider, mCorpAssetProvider;
 
         CharacterTimerMap mCharacterUtcCacheTimes;
         CharacterTimerMap mAssetsUtcCacheTimes;
@@ -369,9 +364,6 @@ namespace Evernus
         bool shouldImport(Character::IdType id, TimerType type) const;
         bool checkImportAndEndTask(Character::IdType id, TimerType type, uint task);
 
-        std::vector<std::shared_ptr<AssetList>> doFetchAllAssets(CharacterAssetMap &assetMap,
-                                                                 const AssetListRepository &assetRepo) const;
-
         template<void (EvernusApplication::* Signal)(), class Key>
         void handleIncomingContracts(const Key &key,
                                      const Contracts &data,
@@ -391,9 +383,5 @@ namespace Evernus
         static QString getCharacterImportMessage(Character::IdType id);
 
         static void setProxySettings();
-
-        static std::shared_ptr<AssetList> doFetchAssetsForCharacter(CharacterAssetMap &assetMap,
-                                                                    const AssetListRepository &assetRepo,
-                                                                    Character::IdType id);
     };
 }

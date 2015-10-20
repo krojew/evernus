@@ -58,10 +58,11 @@ namespace Evernus
 
     public:
         MainWindow(const RepositoryProvider &repositoryProvider,
-                   MarketOrderProvider &orderProvider,
+                   MarketOrderProvider &charOrderProvider,
                    MarketOrderProvider &corpOrderProvider,
-                   const AssetProvider &assetProvider,
-                   const ContractProvider &contractProvider,
+                   const AssetProvider &charAssetProvider,
+                   const AssetProvider &corpAssetProvider,
+                   const ContractProvider &charContractProvider,
                    const ContractProvider &corpContractProvider,
                    EveDataProvider &eveDataProvider,
                    const CacheTimerProvider &cacheTimerProvider,
@@ -223,10 +224,11 @@ namespace Evernus
         void writeSettings();
 
         void createMenu();
-        void createMainView(MarketOrderProvider &orderProvider,
+        void createMainView(MarketOrderProvider &charOrderProvider,
                             MarketOrderProvider &corpOrderProvider,
-                            const AssetProvider &assetProvider,
-                            const ContractProvider &contractProvider,
+                            const AssetProvider &charAssetProvider,
+                            const AssetProvider &corpAssetProvider,
+                            const ContractProvider &charContractProvider,
                             const ContractProvider &corpContractProvider,
                             const LMeveDataProvider &lMeveDataProvider,
                             const CacheTimerProvider &cacheTimerProvider,

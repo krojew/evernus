@@ -58,7 +58,6 @@ namespace Evernus
     EvernusApplication::EvernusApplication(int &argc, char *argv[])
         : QApplication(argc, argv)
         , ExternalOrderImporterRegistry()
-        , AssetProvider()
         , CacheTimerProvider()
         , ItemCostProvider()
         , RepositoryProvider()
@@ -118,6 +117,11 @@ namespace Evernus
 
         showSplashMessage(tr("Creating schemas..."), splash);
         createDbSchema();
+
+        mCharacterAssetProvider = std::make_unique<CachingAssetProvider>(*mCharacterRepository,
+                                                                         *mAssetListRepository);
+        mCorpAssetProvider = std::make_unique<CachingAssetProvider>(*mCharacterRepository,
+                                                                    *mCorpAssetListRepository);
 
         mCharacterOrderProvider = std::make_unique<CachingMarketOrderProvider>(*mMarketOrderRepository);
         connect(mCharacterOrderProvider.get(), &CachingMarketOrderProvider::orderChanged,
@@ -222,26 +226,6 @@ namespace Evernus
         connect(importer.get(), &ExternalOrderImporter::error, this, &EvernusApplication::showPriceImportError, Qt::QueuedConnection);
         connect(importer.get(), &ExternalOrderImporter::externalOrdersChanged, this, &EvernusApplication::finishExternalOrderImport, Qt::QueuedConnection);
         mExternalOrderImporters.emplace(name, std::move(importer));
-    }
-
-    std::shared_ptr<AssetList> EvernusApplication::fetchAssetsForCharacter(Character::IdType id) const
-    {
-        return doFetchAssetsForCharacter(mCharacterAssets, *mAssetListRepository, id);
-    }
-
-    std::vector<std::shared_ptr<AssetList>> EvernusApplication::fetchAllAssets() const
-    {
-        return doFetchAllAssets(mCharacterAssets, *mAssetListRepository);
-    }
-
-    std::shared_ptr<AssetList> EvernusApplication::fetchCorpAssetsForCharacter(Character::IdType id) const
-    {
-        return doFetchAssetsForCharacter(mCorpAssets, *mCorpAssetListRepository, id);
-    }
-
-    std::vector<std::shared_ptr<AssetList>> EvernusApplication::fetchAllCorpAssets() const
-    {
-        return doFetchAllAssets(mCorpAssets, *mCorpAssetListRepository);
     }
 
     QDateTime EvernusApplication::getLocalCacheTimer(Character::IdType id, TimerType type) const
@@ -740,6 +724,16 @@ namespace Evernus
         return *mCorpContractProvider;
     }
 
+    const AssetProvider &EvernusApplication::getAssetProvider() const noexcept
+    {
+        return *mCharacterAssetProvider;
+    }
+
+    const AssetProvider &EvernusApplication::getCorpAssetProvider() const noexcept
+    {
+        return *mCorpAssetProvider;
+    }
+
     EveDataProvider &EvernusApplication::getDataProvider() noexcept
     {
         return *mDataProvider;
@@ -843,11 +837,7 @@ namespace Evernus
                 if (error.isEmpty())
                 {
                     mAssetListRepository->deleteForCharacter(id);
-
-                    const auto it = mCharacterAssets.find(id);
-                    if (it != std::end(mCharacterAssets))
-                        *it->second = data;
-
+                    mCharacterAssetProvider->setForCharacter(id, data);
                     mAssetListRepository->store(data);
 
                     QSettings settings;
@@ -1104,11 +1094,7 @@ namespace Evernus
                 if (error.isEmpty())
                 {
                     mCorpAssetListRepository->deleteForCharacter(id);
-
-                    const auto it = mCorpAssets.find(id);
-                    if (it != std::end(mCorpAssets))
-                        *it->second = data;
-
+                    mCorpAssetProvider->setForCharacter(id, data);
                     mCorpAssetListRepository->store(data);
 
                     QSettings settings;
@@ -1431,8 +1417,9 @@ namespace Evernus
         QSettings settings;
         if (settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool())
         {
-            for (const auto &list : mCharacterAssets)
-                computeAssetListSellValue(*list.second);
+            const auto assets = mCharacterAssetProvider->fetchAllAssets();
+            for (const auto &list : assets)
+                computeAssetListSellValue(*list);
         }
 
         emit externalOrdersChanged();
@@ -2530,20 +2517,6 @@ namespace Evernus
         return ret;
     }
 
-    std::vector<std::shared_ptr<AssetList>> EvernusApplication::doFetchAllAssets(CharacterAssetMap &assetMap,
-                                                                                 const AssetListRepository &assetRepo) const
-    {
-        std::vector<std::shared_ptr<AssetList>> result;
-
-        const auto idName = mCharacterRepository->getIdColumn();
-        auto query = mCharacterRepository->getEnabledQuery();
-
-        while (query.next())
-            result.emplace_back(doFetchAssetsForCharacter(assetMap, assetRepo, query.value(idName).value<Character::IdType>()));
-
-        return result;
-    }
-
     template<void (EvernusApplication::* Signal)(), class Key>
     void EvernusApplication::handleIncomingContracts(const Key &key,
                                                      const Contracts &data,
@@ -2665,32 +2638,5 @@ namespace Evernus
         {
             QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
         }
-    }
-
-    std::shared_ptr<AssetList> EvernusApplication::doFetchAssetsForCharacter(CharacterAssetMap &assetMap,
-                                                                             const AssetListRepository &assetRepo,
-                                                                             Character::IdType id)
-    {
-        if (id == Character::invalidId)
-           return std::make_shared<AssetList>();
-
-       const auto it = assetMap.find(id);
-       if (it != std::end(assetMap))
-           return it->second;
-
-       AssetListRepository::EntityPtr assets;
-
-       try
-       {
-           assets = assetRepo.fetchForCharacter(id);
-       }
-       catch (const AssetListRepository::NotFoundException &)
-       {
-           assets = std::make_shared<AssetList>();
-           assets->setCharacterId(id);
-       }
-
-       assetMap.emplace(id, assets);
-       return assets;
     }
 }

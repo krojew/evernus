@@ -81,7 +81,6 @@ namespace Evernus
         LeafFilterProxyModel *mModelProxy = nullptr;
 
         quint64 mCustomStationId = 0;
-        bool mCorp = false;
 
         QAction *mSetDestinationAct = nullptr;
 
