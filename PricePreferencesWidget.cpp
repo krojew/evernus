@@ -21,7 +21,6 @@
 #include <QSettings>
 #include <QGroupBox>
 #include <QCheckBox>
-#include <QComboBox>
 #include <QSpinBox>
 #include <QLabel>
 
@@ -129,19 +128,6 @@ namespace Evernus
         mPriceMaxAgeEdit->setSuffix("h");
         mPriceMaxAgeEdit->setValue(settings.value(PriceSettings::priceMaxAgeKey, PriceSettings::priceMaxAgeDefault).toUInt());
 
-        const auto plotNumberFormat = settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString();
-
-        mPlotNumberFormatEdit = new QComboBox{this};
-        pricesLayout->addRow(tr("Plot number format:"), mPlotNumberFormatEdit);
-        addPlotFormat(tr("beautified scientific"), "gbc", plotNumberFormat);
-        addPlotFormat(tr("scientific"), "g", plotNumberFormat);
-        addPlotFormat(tr("fixed"), "f", plotNumberFormat);
-
-        mCombineCorpAndCharPlotsBtn = new QCheckBox{tr("Combine character and corporation journal in statistics"), this};
-        pricesLayout->addRow(mCombineCorpAndCharPlotsBtn);
-        mCombineCorpAndCharPlotsBtn->setChecked(
-            settings.value(PriceSettings::combineCorpAndCharPlotsKey, PriceSettings::combineCorpAndCharPlotsDefault).toBool());
-
         mRefreshPricesWithOrdersBtn = new QCheckBox{tr("Refresh prices after order import"), this};
         pricesLayout->addRow(mRefreshPricesWithOrdersBtn);
         mRefreshPricesWithOrdersBtn->setChecked(settings.value(PriceSettings::refreshPricesWithOrdersKey).toBool());
@@ -198,19 +184,10 @@ namespace Evernus
 #endif
         settings.setValue(PriceSettings::importLogWaitTimeKey, mImportLogWaitTimeEdit->value());
         settings.setValue(PriceSettings::priceMaxAgeKey, mPriceMaxAgeEdit->value());
-        settings.setValue(UISettings::plotNumberFormatKey, mPlotNumberFormatEdit->currentData());
-        settings.setValue(PriceSettings::combineCorpAndCharPlotsKey, mCombineCorpAndCharPlotsBtn->isChecked());
         settings.setValue(PriceSettings::refreshPricesWithOrdersKey, mRefreshPricesWithOrdersBtn->isChecked());
         settings.setValue(PriceSettings::copyNonOverbidPriceKey, mCopyNonOverbidBtn->isChecked());
         settings.setValue(PriceSettings::limitSellCopyToCostKey, mLimitSellCopyToCostBtn->isChecked());
         settings.setValue(PriceSettings::fpcKey, mFPCBtn->isChecked());
         settings.setValue(PriceSettings::fpcShourtcutKey, mFPCShortcutEdit->keySequence().toString());
-    }
-
-    void PricePreferencesWidget::addPlotFormat(const QString &text, const QString &value, const QString &curValue)
-    {
-        mPlotNumberFormatEdit->addItem(text, value);
-        if (curValue == value)
-            mPlotNumberFormatEdit->setCurrentIndex(mPlotNumberFormatEdit->count() - 1);
     }
 }

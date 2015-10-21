@@ -16,6 +16,9 @@
 
 #include <QWidget>
 
+class QCheckBox;
+class QComboBox;
+
 namespace Evernus
 {
     class ColorButton;
@@ -36,11 +39,16 @@ namespace Evernus
         void resetPlotColors();
 
     private:
+        QCheckBox *mCombineCorpAndCharPlotsBtn = nullptr;
+
+        QComboBox *mPlotNumberFormatEdit = nullptr;
         ColorButton *mAssetPlotColorBtn = nullptr;
         ColorButton *mWalletPlotColorBtn = nullptr;
         ColorButton *mCorpWalletPlotColorBtn = nullptr;
         ColorButton *mBuyOrdersPlotColorBtn = nullptr;
         ColorButton *mSellOrdersPlotColorBtn = nullptr;
         ColorButton *mTotalPlotColorBtn = nullptr;
+
+        void addPlotFormat(const QString &text, const QString &value, const QString &curValue);
     };
 }

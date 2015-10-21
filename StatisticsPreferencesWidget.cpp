@@ -16,7 +16,10 @@
 #include <QFormLayout>
 #include <QSettings>
 #include <QGroupBox>
+#include <QCheckBox>
+#include <QComboBox>
 
+#include "PriceSettings.h"
 #include "ColorButton.h"
 #include "UISettings.h"
 
@@ -29,12 +32,31 @@ namespace Evernus
     {
         auto mainLayout = new QVBoxLayout{this};
 
+        auto mainGroup = new QGroupBox{this};
+        mainLayout->addWidget(mainGroup);
+
+        auto mainGroupLayout = new QVBoxLayout{mainGroup};
+
+        QSettings settings;
+
+        mCombineCorpAndCharPlotsBtn = new QCheckBox{tr("Combine character and corporation journal in statistics"), this};
+        mainGroupLayout->addWidget(mCombineCorpAndCharPlotsBtn);
+        mCombineCorpAndCharPlotsBtn->setChecked(
+            settings.value(PriceSettings::combineCorpAndCharPlotsKey, PriceSettings::combineCorpAndCharPlotsDefault).toBool());
+
         auto appearanceGroup = new QGroupBox{tr("Appearance"), this};
         mainLayout->addWidget(appearanceGroup);
 
         auto appearanceGroupLayout = new QFormLayout{appearanceGroup};
 
-        QSettings settings;
+        const auto plotNumberFormat
+            = settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString();
+
+        mPlotNumberFormatEdit = new QComboBox{this};
+        appearanceGroupLayout->addRow(tr("Plot number format:"), mPlotNumberFormatEdit);
+        addPlotFormat(tr("beautified scientific"), "gbc", plotNumberFormat);
+        addPlotFormat(tr("scientific"), "g", plotNumberFormat);
+        addPlotFormat(tr("fixed"), "f", plotNumberFormat);
 
         mAssetPlotColorBtn = new ColorButton{
             settings.value(UISettings::statisticsAssetPlotColorKey, UISettings::statisticsAssetPlotColorDefault).value<QColor>(),
@@ -77,6 +99,8 @@ namespace Evernus
     void StatisticsPreferencesWidget::applySettings()
     {
         QSettings settings;
+        settings.setValue(PriceSettings::combineCorpAndCharPlotsKey, mCombineCorpAndCharPlotsBtn->isChecked());
+        settings.setValue(UISettings::plotNumberFormatKey, mPlotNumberFormatEdit->currentData());
         settings.setValue(UISettings::statisticsAssetPlotColorKey, mAssetPlotColorBtn->getColor());
         settings.setValue(UISettings::statisticsWalletPlotColorKey, mWalletPlotColorBtn->getColor());
         settings.setValue(UISettings::statisticsCorpWalletPlotColorKey, mCorpWalletPlotColorBtn->getColor());
@@ -93,5 +117,12 @@ namespace Evernus
         mBuyOrdersPlotColorBtn->setColor(UISettings::statisticsBuyOrderPlotColorDefault);
         mSellOrdersPlotColorBtn->setColor(UISettings::statisticsSellOrderPlotColorDefault);
         mTotalPlotColorBtn->setColor(UISettings::statisticsTotalPlotColorDefault);
+    }
+
+    void StatisticsPreferencesWidget::addPlotFormat(const QString &text, const QString &value, const QString &curValue)
+    {
+        mPlotNumberFormatEdit->addItem(text, value);
+        if (curValue == value)
+            mPlotNumberFormatEdit->setCurrentIndex(mPlotNumberFormatEdit->count() - 1);
     }
 }

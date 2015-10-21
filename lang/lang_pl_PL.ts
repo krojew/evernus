@@ -1665,133 +1665,133 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::EvernusApplication</name>
     <message>
-        <location filename="../EvernusApplication.cpp" line="114"/>
-        <location filename="../EvernusApplication.cpp" line="206"/>
+        <location filename="../EvernusApplication.cpp" line="113"/>
+        <location filename="../EvernusApplication.cpp" line="205"/>
         <source>Loading...</source>
         <translation>Ładowanie...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="116"/>
+        <location filename="../EvernusApplication.cpp" line="115"/>
         <source>Creating databases...</source>
         <translation>Tworzenie baz danych...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="119"/>
+        <location filename="../EvernusApplication.cpp" line="118"/>
         <source>Creating schemas...</source>
         <translation>Tworzenie modelu danych...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="152"/>
+        <location filename="../EvernusApplication.cpp" line="151"/>
         <source>Precaching ref types...</source>
         <translation>Odczyt typów...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="155"/>
+        <location filename="../EvernusApplication.cpp" line="154"/>
         <source>Precaching timers...</source>
         <translation>Odczyt czasów...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="159"/>
+        <location filename="../EvernusApplication.cpp" line="158"/>
         <source>Precaching jump map...</source>
         <translation>Odczyt mapy skoków...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="162"/>
+        <location filename="../EvernusApplication.cpp" line="161"/>
         <source>Clearing old wallet entries...</source>
         <translation>Czyszczenie starych wpisów portfela...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="165"/>
+        <location filename="../EvernusApplication.cpp" line="164"/>
         <source>Clearing old market orders...</source>
         <translation>Czyszczenie starych zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="168"/>
+        <location filename="../EvernusApplication.cpp" line="167"/>
         <source>Setting up IGB service...</source>
         <translation>Włączanie usługi IGB...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="189"/>
+        <location filename="../EvernusApplication.cpp" line="188"/>
         <source>Setting up HTTP service...</source>
         <translation>Włączanie usługi HTTP...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="298"/>
-        <location filename="../EvernusApplication.cpp" line="347"/>
+        <location filename="../EvernusApplication.cpp" line="297"/>
+        <location filename="../EvernusApplication.cpp" line="346"/>
         <source>Unknown cache timer type: %1</source>
         <translation>Nieznany typ czasu cache: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="422"/>
+        <location filename="../EvernusApplication.cpp" line="421"/>
         <source>Unknown update timer type: %1</source>
         <translation>Nieznany typ czasu aktualizacji: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="747"/>
+        <location filename="../EvernusApplication.cpp" line="746"/>
         <source>Fetching characters...</source>
         <translation>Pobieranie postaci...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="760"/>
+        <location filename="../EvernusApplication.cpp" line="759"/>
         <source>Fetching characters for key %1...</source>
         <translation>Pobieranie postaci dla klucza %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="773"/>
-        <location filename="../EvernusApplication.cpp" line="779"/>
+        <location filename="../EvernusApplication.cpp" line="772"/>
+        <location filename="../EvernusApplication.cpp" line="778"/>
         <location filename="../EvernusApplication.cpp" line="2284"/>
         <location filename="../EvernusApplication.cpp" line="2322"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="773"/>
+        <location filename="../EvernusApplication.cpp" line="772"/>
         <source>An error occurred while updating character key information: %1. Data sync should work, but character tab will display incorrect information.</source>
         <translation>Wystąpił błąd aktualizacji informacji o kluczu postaci: %1 Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="779"/>
+        <location filename="../EvernusApplication.cpp" line="778"/>
         <source>An error occurred while updating character key information. Data sync should work, but character tab will display incorrect information.</source>
         <translation>Wystąpił błąd aktualizacji informacji o kluczu postaci Synchronizacja danych powinna działać ale zakładka postaci będzie pokazywała nieprawidłowe informacje.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="828"/>
+        <location filename="../EvernusApplication.cpp" line="827"/>
         <source>Fetching assets for character %1...</source>
         <translation>Pobieranie aktywów dla postaci: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="859"/>
-        <location filename="../EvernusApplication.cpp" line="919"/>
-        <location filename="../EvernusApplication.cpp" line="980"/>
-        <location filename="../EvernusApplication.cpp" line="1036"/>
-        <location filename="../EvernusApplication.cpp" line="1061"/>
-        <location filename="../EvernusApplication.cpp" line="1116"/>
-        <location filename="../EvernusApplication.cpp" line="1171"/>
-        <location filename="../EvernusApplication.cpp" line="1234"/>
-        <location filename="../EvernusApplication.cpp" line="1294"/>
-        <location filename="../EvernusApplication.cpp" line="1319"/>
+        <location filename="../EvernusApplication.cpp" line="858"/>
+        <location filename="../EvernusApplication.cpp" line="918"/>
+        <location filename="../EvernusApplication.cpp" line="979"/>
+        <location filename="../EvernusApplication.cpp" line="1035"/>
+        <location filename="../EvernusApplication.cpp" line="1060"/>
+        <location filename="../EvernusApplication.cpp" line="1115"/>
+        <location filename="../EvernusApplication.cpp" line="1170"/>
+        <location filename="../EvernusApplication.cpp" line="1233"/>
+        <location filename="../EvernusApplication.cpp" line="1293"/>
+        <location filename="../EvernusApplication.cpp" line="1318"/>
         <source>Key not found!</source>
         <translation>Klucz nie znaleziony!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="863"/>
-        <location filename="../EvernusApplication.cpp" line="923"/>
-        <location filename="../EvernusApplication.cpp" line="984"/>
-        <location filename="../EvernusApplication.cpp" line="1040"/>
-        <location filename="../EvernusApplication.cpp" line="1065"/>
-        <location filename="../EvernusApplication.cpp" line="1120"/>
-        <location filename="../EvernusApplication.cpp" line="1238"/>
-        <location filename="../EvernusApplication.cpp" line="1298"/>
+        <location filename="../EvernusApplication.cpp" line="862"/>
+        <location filename="../EvernusApplication.cpp" line="922"/>
+        <location filename="../EvernusApplication.cpp" line="983"/>
+        <location filename="../EvernusApplication.cpp" line="1039"/>
+        <location filename="../EvernusApplication.cpp" line="1064"/>
+        <location filename="../EvernusApplication.cpp" line="1119"/>
+        <location filename="../EvernusApplication.cpp" line="1237"/>
+        <location filename="../EvernusApplication.cpp" line="1297"/>
         <source>Character not found!</source>
         <translation>Postać nie znaleziona!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="871"/>
+        <location filename="../EvernusApplication.cpp" line="870"/>
         <source>Fetching contracts for character %1...</source>
         <translation>Pobieranie kontraktów dla postaci: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1085"/>
+        <location filename="../EvernusApplication.cpp" line="1084"/>
         <source>Fetching corporation assets for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1806,49 +1806,49 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="931"/>
+        <location filename="../EvernusApplication.cpp" line="930"/>
         <source>Fetching wallet journal for character %1...</source>
         <translation>Pobieranie dziennika dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="940"/>
+        <location filename="../EvernusApplication.cpp" line="939"/>
         <source>Fetching wallet journal for character %1 (this may take a while)...</source>
         <translation>Pobieranie dziennika dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="992"/>
+        <location filename="../EvernusApplication.cpp" line="991"/>
         <source>Fetching wallet transactions for character %1...</source>
         <translation>Pobieranie transakcji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1004"/>
+        <location filename="../EvernusApplication.cpp" line="1003"/>
         <source>Fetching wallet transactions for character %1 (this may take a while)...</source>
         <translation>Pobieranie transakcji dla postaci %1 (może zajać sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1048"/>
-        <location filename="../EvernusApplication.cpp" line="1073"/>
+        <location filename="../EvernusApplication.cpp" line="1047"/>
+        <location filename="../EvernusApplication.cpp" line="1072"/>
         <source>Fetching market orders for character %1...</source>
         <translation>Pobieranie zleceń dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1128"/>
+        <location filename="../EvernusApplication.cpp" line="1127"/>
         <source>Fetching corporation contracts for character %1...</source>
         <translation>Pobieranie kontraktów korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1246"/>
+        <location filename="../EvernusApplication.cpp" line="1245"/>
         <source>Fetching corporation wallet transactions for character %1...</source>
         <translation>Pobieranie transakcji korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1259"/>
+        <location filename="../EvernusApplication.cpp" line="1258"/>
         <source>Fetching corporation wallet transactions for character %1 (this may take a while)...</source>
         <translation>Pobieranie transakcji korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1306"/>
-        <location filename="../EvernusApplication.cpp" line="1327"/>
+        <location filename="../EvernusApplication.cpp" line="1305"/>
+        <location filename="../EvernusApplication.cpp" line="1326"/>
         <source>Fetching corporation market orders for character %1...</source>
         <translation>Pobieranie zleceń korporacji dla postaci %1...</translation>
     </message>
@@ -1869,7 +1869,7 @@ Czy chcesz kontynuować?
 Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialność za jakąkolwiek karę CPP może na Ciebie nałożyć, jeśli zmienią swoją politykę.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1403"/>
+        <location filename="../EvernusApplication.cpp" line="1402"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
@@ -1931,17 +1931,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1179"/>
+        <location filename="../EvernusApplication.cpp" line="1178"/>
         <source>Fetching corporation wallet journal for character %1...</source>
         <translation>Pobieranie dziennika korporacji dla postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1191"/>
+        <location filename="../EvernusApplication.cpp" line="1190"/>
         <source>Fetching corporation wallet journal for character %1 (this may take a while)...</source>
         <translation>Pobieranie dziennika korporacji dla postaci %1 (może zająć sporo czasu)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1339"/>
+        <location filename="../EvernusApplication.cpp" line="1338"/>
         <source>Fetching conquerable stations...</source>
         <translation>Pobieranie stacji graczy...</translation>
     </message>
@@ -5429,57 +5429,52 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished"> dni</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="135"/>
         <source>Plot number format:</source>
-        <translation>Format liczb na wykresach:</translation>
+        <translation type="vanished">Format liczb na wykresach:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="136"/>
         <source>beautified scientific</source>
-        <translation>upiększony naukowy</translation>
+        <translation type="vanished">upiększony naukowy</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="137"/>
         <source>scientific</source>
-        <translation>naukowy</translation>
+        <translation type="vanished">naukowy</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="138"/>
         <source>fixed</source>
-        <translation>dziesiętny</translation>
+        <translation type="vanished">dziesiętny</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="140"/>
         <source>Combine character and corporation journal in statistics</source>
-        <translation>Połącz dzienniki korporacji i postaci w statystykach</translation>
+        <translation type="vanished">Połącz dzienniki korporacji i postaci w statystykach</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="145"/>
+        <location filename="../PricePreferencesWidget.cpp" line="132"/>
         <source>Refresh prices after order import</source>
         <translation>Odśwież ceny po imporcie zleceń</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="149"/>
+        <location filename="../PricePreferencesWidget.cpp" line="136"/>
         <source>Auto-copy non-overbid prices with price helper</source>
         <translation>Auto. kopiowanie nieprzebitych cen</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="153"/>
+        <location filename="../PricePreferencesWidget.cpp" line="140"/>
         <source>Limit sell price copy to item cost</source>
         <translation>Ogranicz kopiowaną cenę sprzedaży do własnego kosztu</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="157"/>
+        <location filename="../PricePreferencesWidget.cpp" line="144"/>
         <source>Fast Price Copy</source>
         <translation>Szybkie kopiowanie ceny</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="165"/>
+        <location filename="../PricePreferencesWidget.cpp" line="152"/>
         <source>Enabled</source>
         <translation>Włączone</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="169"/>
+        <location filename="../PricePreferencesWidget.cpp" line="156"/>
         <source>Shortcut:</source>
         <translation>Skrót klawiszowy:</translation>
     </message>
@@ -5488,7 +5483,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Skrót klawiszowy:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="175"/>
+        <location filename="../PricePreferencesWidget.cpp" line="162"/>
         <source>Fast Price Copy allows you to update your orders in a very fast manner. Simply assign a keyboard shortcut, select an order in any market order view and press the shortcut to copy the updated price and automatically jump to the next order on the list. You can do this even when Evernus doesn&apos;t have the input focus - the keyboard shortcut works system-wide. You can use this to update your prices without ever leaving Eve client.</source>
         <translation>Możesz użyć szybkiego kopiowania ceny do znacznie szybszej aktualizacji zleceń. Ustaw wybrany skrót klawiszowy, wybierz zlecenie na jakimkolwiek widoku zleceń i użyj skrótu do skopiowania nowej ceny i automatycznego przeskoczenia do kolejnego zlecenia. Możesz to robić nawet, gdy Evernus nie jest na pierwszym tle - skrót działa w całym systemie. Możesz użyć tej metody do aktualizacji cen bez wychodzenia z klienta Eve.</translation>
     </message>
@@ -5599,42 +5594,67 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::StatisticsPreferencesWidget</name>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="32"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="41"/>
+        <source>Combine character and corporation journal in statistics</source>
+        <translation type="unfinished">Połącz dzienniki korporacji i postaci w statystykach</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="46"/>
         <source>Appearance</source>
         <translation>Wygląd</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="43"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="55"/>
+        <source>Plot number format:</source>
+        <translation type="unfinished">Format liczb na wykresach:</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="56"/>
+        <source>beautified scientific</source>
+        <translation type="unfinished">upiększony naukowy</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="57"/>
+        <source>scientific</source>
+        <translation type="unfinished">naukowy</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="58"/>
+        <source>fixed</source>
+        <translation type="unfinished">dziesiętny</translation>
+    </message>
+    <message>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="64"/>
         <source>Asset value plot color:</source>
         <translation>Kolor aktywów:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="48"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="69"/>
         <source>Wallet balance plot color:</source>
         <translation>Kolor portfela:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="53"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="74"/>
         <source>Corp. wallet balance plot color:</source>
         <translation>Kolor portfela korporacji:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="58"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="79"/>
         <source>Buy order value plot color:</source>
         <translation>Kolor zleceń kupna:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="63"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="84"/>
         <source>Sell order value plot color:</source>
         <translation>Kolor zleceń sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="68"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="89"/>
         <source>Total value plot color:</source>
         <translation>Kolor sumy:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="70"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="91"/>
         <source>Reset to default</source>
         <translation>Przywróć ustawienia domyślne</translation>
     </message>

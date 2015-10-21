@@ -18,7 +18,6 @@
 
 class QKeySequenceEdit;
 class QDoubleSpinBox;
-class QComboBox;
 class QCheckBox;
 class QSpinBox;
 
@@ -48,14 +47,10 @@ namespace Evernus
         QCheckBox *mAutoAddCustomCostBtn = nullptr;
         QCheckBox *mShareCustomCostsBtn = nullptr;
         QSpinBox *mPriceMaxAgeEdit = nullptr;
-        QComboBox *mPlotNumberFormatEdit = nullptr;
-        QCheckBox *mCombineCorpAndCharPlotsBtn = nullptr;
         QCheckBox *mRefreshPricesWithOrdersBtn = nullptr;
         QCheckBox *mCopyNonOverbidBtn = nullptr;
         QCheckBox *mLimitSellCopyToCostBtn = nullptr;
         QCheckBox *mFPCBtn = nullptr;
         QKeySequenceEdit *mFPCShortcutEdit = nullptr;
-
-        void addPlotFormat(const QString &text, const QString &value, const QString &curValue);
     };
 }
