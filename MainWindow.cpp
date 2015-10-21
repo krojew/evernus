@@ -696,6 +696,9 @@ namespace Evernus
                                              mEveDataProvider,
                                              this};
         addTab(statsTab, tr("Statistics"), TabType::Other);
+        connect(statsTab, &StatisticsWidget::makeSnapshots, this, [=] {
+            makeValueSnapshots(mCurrentCharacterId);
+        });
         connect(this, &MainWindow::charactersChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::externalOrdersChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::assetsChanged, statsTab, &StatisticsWidget::updateBalanceData);
@@ -703,6 +706,7 @@ namespace Evernus
         connect(this, &MainWindow::walletJournalChanged, statsTab, &StatisticsWidget::updateJournalData);
         connect(this, &MainWindow::corpWalletJournalChanged, statsTab, &StatisticsWidget::updateJournalData);
         connect(this, &MainWindow::corpWalletJournalChanged, statsTab, &StatisticsWidget::updateBalanceData);
+        connect(this, &MainWindow::snapshotsTaken, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::walletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
         connect(this, &MainWindow::corpWalletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
         connect(this, &MainWindow::preferencesChanged, statsTab, &StatisticsWidget::handleNewPreferences);

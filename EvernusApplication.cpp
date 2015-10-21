@@ -29,6 +29,7 @@
 
 #include "ExternalOrderImporterNames.h"
 #include "LanguageSelectDialog.h"
+#include "StatisticsSettings.h"
 #include "UpdaterSettings.h"
 #include "NetworkSettings.h"
 #include "ImportSettings.h"
@@ -842,8 +843,11 @@ namespace Evernus
 
                     QSettings settings;
 
-                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, Evernus::ImportSettings::autoUpdateAssetValueDefault).toBool())
-                        computeAssetListSellValue(data);
+                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, Evernus::ImportSettings::autoUpdateAssetValueDefault).toBool() &&
+                        settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsKey).toBool())
+                    {
+                        computeAssetListSellValueSnapshot(data);
+                    }
 
                     saveUpdateTimer(Evernus::TimerType::AssetList, mAssetsUtcUpdateTimes, id);
 
@@ -942,29 +946,34 @@ namespace Evernus
                                            [task, id, this](const auto &data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    std::vector<Evernus::WalletSnapshot> snapshots;
-                    snapshots.reserve(data.size());
-
-                    QSet<QDateTime> usedSnapshots;
-
-                    for (auto &entry : data)
+                    QSettings settings;
+                    if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
                     {
-                        const auto timestamp = entry.getTimestamp();
+                        std::vector<Evernus::WalletSnapshot> snapshots;
+                        snapshots.reserve(data.size());
 
-                        if (!usedSnapshots.contains(timestamp))
+                        QSet<QDateTime> usedSnapshots;
+
+                        for (auto &entry : data)
                         {
-                            Evernus::WalletSnapshot snapshot;
-                            snapshot.setTimestamp(timestamp);
-                            snapshot.setBalance(entry.getBalance());
-                            snapshot.setCharacterId(entry.getCharacterId());
+                            const auto timestamp = entry.getTimestamp();
 
-                            snapshots.emplace_back(std::move(snapshot));
-                            usedSnapshots << timestamp;
+                            if (!usedSnapshots.contains(timestamp))
+                            {
+                                Evernus::WalletSnapshot snapshot;
+                                snapshot.setTimestamp(timestamp);
+                                snapshot.setBalance(entry.getBalance());
+                                snapshot.setCharacterId(entry.getCharacterId());
+
+                                snapshots.emplace_back(std::move(snapshot));
+                                usedSnapshots << timestamp;
+                            }
                         }
+
+                        asyncBatchStore(*mWalletSnapshotRepository, snapshots, false);
                     }
 
                     asyncBatchStore(*mWalletJournalEntryRepository, data, true);
-                    asyncBatchStore(*mWalletSnapshotRepository, snapshots, false);
 
                     saveUpdateTimer(Evernus::TimerType::WalletJournal, mWalletJournalUtcUpdateTimes, id);
 
@@ -1099,8 +1108,11 @@ namespace Evernus
 
                     QSettings settings;
 
-                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, Evernus::ImportSettings::autoUpdateAssetValueDefault).toBool())
-                        computeCorpAssetListSellValue(data);
+                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, Evernus::ImportSettings::autoUpdateAssetValueDefault).toBool() &&
+                        settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsKey).toBool())
+                    {
+                        computeCorpAssetListSellValueSnapshot(data);
+                    }
 
                     saveUpdateTimer(Evernus::TimerType::CorpAssetList, mCorpAssetsUtcUpdateTimes, id);
 
@@ -1196,29 +1208,34 @@ namespace Evernus
                                            [task, id, this](auto &&data, const auto &error) {
                 if (error.isEmpty())
                 {
-                    std::vector<Evernus::CorpWalletSnapshot> snapshots;
-                    snapshots.reserve(data.size());
-
-                    QSet<QDateTime> usedSnapshots;
-
-                    for (auto &entry : data)
+                    QSettings settings;
+                    if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
                     {
-                        const auto timestamp = entry.getTimestamp();
+                        std::vector<Evernus::CorpWalletSnapshot> snapshots;
+                        snapshots.reserve(data.size());
 
-                        if (!usedSnapshots.contains(timestamp))
+                        QSet<QDateTime> usedSnapshots;
+
+                        for (auto &entry : data)
                         {
-                            Evernus::CorpWalletSnapshot snapshot;
-                            snapshot.setTimestamp(timestamp);
-                            snapshot.setBalance(entry.getBalance());
-                            snapshot.setCorporationId(entry.getCorporationId());
+                            const auto timestamp = entry.getTimestamp();
 
-                            snapshots.emplace_back(std::move(snapshot));
-                            usedSnapshots << timestamp;
+                            if (!usedSnapshots.contains(timestamp))
+                            {
+                                Evernus::CorpWalletSnapshot snapshot;
+                                snapshot.setTimestamp(timestamp);
+                                snapshot.setBalance(entry.getBalance());
+                                snapshot.setCorporationId(entry.getCorporationId());
+
+                                snapshots.emplace_back(std::move(snapshot));
+                                usedSnapshots << timestamp;
+                            }
                         }
+
+                        asyncBatchStore(*mCorpWalletSnapshotRepository, snapshots, false);
                     }
 
                     asyncBatchStore(*mCorpWalletJournalEntryRepository, data, true);
-                    asyncBatchStore(*mCorpWalletSnapshotRepository, snapshots, false);
 
                     saveUpdateTimer(Evernus::TimerType::CorpWalletJournal, mCorpWalletJournalUtcUpdateTimes, id);
 
@@ -1419,7 +1436,7 @@ namespace Evernus
         {
             const auto assets = mCharacterAssetProvider->fetchAllAssets();
             for (const auto &list : assets)
-                computeAssetListSellValue(*list);
+                computeAssetListSellValueSnapshot(*list);
         }
 
         emit externalOrdersChanged();
@@ -1574,6 +1591,47 @@ namespace Evernus
         emit corpWalletTransactionsChanged();
     }
 
+    void EvernusApplication::makeValueSnapshots(Character::IdType id)
+    {
+        qDebug() << "Making all value snapshots for" << id;
+
+        const auto time = QDateTime::currentDateTimeUtc();
+
+        auto assets = mCharacterAssetProvider->fetchAssetsForCharacter(id);
+        if (assets)
+            computeAssetListSellValueSnapshot(*assets);
+
+        assets = mCorpAssetProvider->fetchAssetsForCharacter(id);
+        if (assets)
+            computeCorpAssetListSellValueSnapshot(*assets);
+
+        const auto charData = mCharacterRepository->find(id);
+        if (charData)
+            createWalletSnapshot(id, charData->getISK());
+
+        auto orderData = mMarketOrderRepository->getAggregatedData(id);
+
+        MarketOrderValueSnapshot orderSnapshot;
+        orderSnapshot.setTimestamp(time);
+        orderSnapshot.setCharacterId(id);
+        orderSnapshot.setBuyValue(orderData.mBuyData.mPriceSum);
+        orderSnapshot.setSellValue(orderData.mSellData.mPriceSum);
+
+        mMarketOrderValueSnapshotRepository->store(orderSnapshot);
+
+        orderData = mCorpMarketOrderRepository->getAggregatedData(id);
+
+        CorpMarketOrderValueSnapshot corpOrderSnapshot;
+        corpOrderSnapshot.setTimestamp(time);
+        corpOrderSnapshot.setCorporationId(mCharacterRepository->getCorporationId(id));
+        corpOrderSnapshot.setBuyValue(orderData.mBuyData.mPriceSum);
+        corpOrderSnapshot.setSellValue(orderData.mSellData.mPriceSum);
+
+        mCorpMarketOrderValueSnapshotRepository->store(corpOrderSnapshot);
+
+        emit snapshotsTaken();
+    }
+
     void EvernusApplication::scheduleCharacterUpdate()
     {
         if (mCharacterUpdateScheduled)
@@ -1586,7 +1644,6 @@ namespace Evernus
     void EvernusApplication::updateCharacters()
     {
         mCharacterUpdateScheduled = false;
-
         emit charactersChanged();
     }
 
@@ -1602,7 +1659,6 @@ namespace Evernus
     void EvernusApplication::updateMarketOrders()
     {
         mMarketOrderUpdateScheduled = false;
-
         emit marketOrdersChanged();
     }
 
@@ -1618,7 +1674,6 @@ namespace Evernus
     void EvernusApplication::updateCorpMarketOrders()
     {
         mCorpMarketOrderUpdateScheduled = false;
-
         emit corpMarketOrdersChanged();
     }
 
@@ -1906,11 +1961,12 @@ namespace Evernus
         mAPIManager.fetchCharacter(key, id, [task, id, this](auto &&data, const auto &error) {
             if (error.isEmpty())
             {
+                QSettings settings;
+
                 try
                 {
                     const auto prevData = mCharacterRepository->find(data.getId());
 
-                    QSettings settings;
                     if (!settings.value(Evernus::ImportSettings::importSkillsKey, Evernus::ImportSettings::importSkillsDefault).toBool())
                     {
                         data.setOrderAmountSkills(prevData->getOrderAmountSkills());
@@ -1942,11 +1998,8 @@ namespace Evernus
                     mCacheTimerRepository->store(timer);
                 }
 
-                Evernus::WalletSnapshot snapshot;
-                snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
-                snapshot.setBalance(data.getISK());
-                snapshot.setCharacterId(data.getId());
-                mWalletSnapshotRepository->store(snapshot);
+                if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
+                    createWalletSnapshot(data.getId(), data.getISK());
 
                 saveUpdateTimer(Evernus::TimerType::Character, mCharacterUtcUpdateTimes, id);
 
@@ -2128,7 +2181,8 @@ namespace Evernus
 
             QSettings settings;
             const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool();
-            const auto makeCorpSnapshot = settings.value(ImportSettings::makeCorpSnapshotsKey, ImportSettings::makeCorpSnapshotsDefault).toBool();
+            const auto makeSnapshot = settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool();
+            const auto makeCorpSnapshot = makeSnapshot && settings.value(ImportSettings::makeCorpSnapshotsKey, ImportSettings::makeCorpSnapshotsDefault).toBool();
             const auto emailNotification = settings.value(ImportSettings::autoImportEnabledKey, ImportSettings::autoImportEnabledDefault).toBool() &&
                                            settings.value(ImportSettings::emailNotificationsEnabledKey, ImportSettings::emailNotificationsEnabledDefault).toBool();
 
@@ -2215,26 +2269,29 @@ namespace Evernus
 
             if (!corp)
             {
-                MarketOrderValueSnapshot snapshot;
-                snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
-                snapshot.setCharacterId(id);
-
-                double buy = 0., sell = 0.;
-                for (const auto &order : orders)
+                if (makeSnapshot)
                 {
-                    if (order.getState() != MarketOrder::State::Active)
-                        continue;
+                    MarketOrderValueSnapshot snapshot;
+                    snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
+                    snapshot.setCharacterId(id);
 
-                    if (order.getType() == MarketOrder::Type::Buy)
-                        buy += order.getEscrow();
-                    else
-                        sell += order.getPrice() * order.getVolumeRemaining();
+                    double buy = 0., sell = 0.;
+                    for (const auto &order : orders)
+                    {
+                        if (order.getState() != MarketOrder::State::Active)
+                            continue;
+
+                        if (order.getType() == MarketOrder::Type::Buy)
+                            buy += order.getEscrow();
+                        else
+                            sell += order.getPrice() * order.getVolumeRemaining();
+                    }
+
+                    snapshot.setBuyValue(buy);
+                    snapshot.setSellValue(sell);
+
+                    mMarketOrderValueSnapshotRepository->store(snapshot);
                 }
-
-                snapshot.setBuyValue(buy);
-                snapshot.setSellValue(sell);
-
-                mMarketOrderValueSnapshotRepository->store(snapshot);
             }
             else if (makeCorpSnapshot)
             {
@@ -2367,7 +2424,7 @@ namespace Evernus
         emit taskEnded(task, info);
     }
 
-    void EvernusApplication::computeAssetListSellValue(const AssetList &list) const
+    void EvernusApplication::computeAssetListSellValueSnapshot(const AssetList &list) const
     {
         try
         {
@@ -2383,7 +2440,7 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::computeCorpAssetListSellValue(const AssetList &list) const
+    void EvernusApplication::computeCorpAssetListSellValueSnapshot(const AssetList &list) const
     {
         try
         {
@@ -2497,6 +2554,16 @@ namespace Evernus
         mSmtp.setPassword(crypt.decryptToByteArray(settings.value(ImportSettings::smtpPasswordKey).toString()));
         mSmtp.setStartTlsDisabled(static_cast<ImportSettings::SmtpConnectionSecurity>(
             settings.value(ImportSettings::smtpConnectionSecurityKey).toInt()) != ImportSettings::SmtpConnectionSecurity::STARTTLS);
+    }
+
+    void EvernusApplication::createWalletSnapshot(Character::IdType characterId, double balance)
+    {
+        WalletSnapshot snapshot;
+        snapshot.setTimestamp(QDateTime::currentDateTimeUtc());
+        snapshot.setBalance(balance);
+        snapshot.setCharacterId(characterId);
+
+        mWalletSnapshotRepository->store(snapshot);
     }
 
     bool EvernusApplication::shouldImport(Character::IdType id, TimerType type) const

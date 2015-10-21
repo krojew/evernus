@@ -44,6 +44,11 @@ namespace Evernus
         mCombineCorpAndCharPlotsBtn->setChecked(
             settings.value(StatisticsSettings::combineCorpAndCharPlotsKey, StatisticsSettings::combineCorpAndCharPlotsDefault).toBool());
 
+        mAutomaticSnapshotsBtn = new QCheckBox{tr("Take automatic value snapshots"), this};
+        mainGroupLayout->addWidget(mAutomaticSnapshotsBtn);
+        mAutomaticSnapshotsBtn->setChecked(
+            settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool());
+
         auto appearanceGroup = new QGroupBox{tr("Appearance"), this};
         mainLayout->addWidget(appearanceGroup);
 
@@ -100,6 +105,7 @@ namespace Evernus
     {
         QSettings settings;
         settings.setValue(StatisticsSettings::combineCorpAndCharPlotsKey, mCombineCorpAndCharPlotsBtn->isChecked());
+        settings.setValue(StatisticsSettings::automaticSnapshotsKey, mAutomaticSnapshotsBtn->isChecked());
         settings.setValue(UISettings::plotNumberFormatKey, mPlotNumberFormatEdit->currentData());
         settings.setValue(StatisticsSettings::statisticsAssetPlotColorKey, mAssetPlotColorBtn->getColor());
         settings.setValue(StatisticsSettings::statisticsWalletPlotColorKey, mWalletPlotColorBtn->getColor());

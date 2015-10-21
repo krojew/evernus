@@ -64,6 +64,9 @@ namespace Evernus
                          QWidget *parent = nullptr);
         virtual ~StatisticsWidget() = default;
 
+    signals:
+        void makeSnapshots();
+
     public slots:
         void setCharacter(Character::IdType id);
         void updateBalanceData();

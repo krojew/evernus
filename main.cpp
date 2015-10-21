@@ -213,6 +213,8 @@ int main(int argc, char *argv[])
                              &app, &Evernus::EvernusApplication::updateExternalOrdersAndAssetValue);
             QObject::connect(&mainWnd, &Evernus::MainWindow::clearCorpWalletData,
                              &app, &Evernus::EvernusApplication::clearCorpWalletData);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::makeValueSnapshots,
+                             &app, &Evernus::EvernusApplication::makeValueSnapshots);
             QObject::connect(&app, static_cast<void (Evernus::EvernusApplication::*)(uint, const QString &)>(&Evernus::EvernusApplication::taskStarted),
                              &mainWnd, &Evernus::MainWindow::addNewTaskInfo);
             QObject::connect(&app, static_cast<void (Evernus::EvernusApplication::*)(uint, uint, const QString &)>(&Evernus::EvernusApplication::taskStarted),
@@ -259,6 +261,8 @@ int main(int argc, char *argv[])
                              &mainWnd, &Evernus::MainWindow::updateIskData);
             QObject::connect(&app, &Evernus::EvernusApplication::openMarginTool,
                              &mainWnd, &Evernus::MainWindow::showMarginTool);
+            QObject::connect(&app, &Evernus::EvernusApplication::snapshotsTaken,
+                             &mainWnd, &Evernus::MainWindow::snapshotsTaken);
             QObject::connect(&mainWnd, &Evernus::MainWindow::preferencesChanged,
                              crestImporterPtr, &Evernus::CRESTExternalOrderImporter::handleNewPreferences);
             mainWnd.showAsSaved();

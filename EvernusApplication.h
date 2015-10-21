@@ -176,6 +176,8 @@ namespace Evernus
         void itemVolumeChanged();
         void lMeveTasksChanged();
 
+        void snapshotsTaken();
+
         void openMarginTool();
 
         void showInEve(EveType::IdType id);
@@ -211,6 +213,8 @@ namespace Evernus
         void syncLMeve(Character::IdType id);
 
         void clearCorpWalletData();
+
+        void makeValueSnapshots(Character::IdType id);
 
     private slots:
         void scheduleCharacterUpdate();
@@ -347,8 +351,8 @@ namespace Evernus
 
         void finishExternalOrderImportTask(const QString &info);
 
-        void computeAssetListSellValue(const AssetList &list) const;
-        void computeCorpAssetListSellValue(const AssetList &list) const;
+        void computeAssetListSellValueSnapshot(const AssetList &list) const;
+        void computeCorpAssetListSellValueSnapshot(const AssetList &list) const;
 
         double getTotalAssetListValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;
@@ -360,6 +364,8 @@ namespace Evernus
                               const TransactionFetcher &transFetcher);
 
         void setSmtpSettings();
+
+        void createWalletSnapshot(Character::IdType characterId, double balance);
 
         bool shouldImport(Character::IdType id, TimerType type) const;
         bool checkImportAndEndTask(Character::IdType id, TimerType type, uint task);

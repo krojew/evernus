@@ -40,6 +40,7 @@ namespace Evernus
 
     private:
         QCheckBox *mCombineCorpAndCharPlotsBtn = nullptr;
+        QCheckBox *mAutomaticSnapshotsBtn = nullptr;
 
         QComboBox *mPlotNumberFormatEdit = nullptr;
         ColorButton *mAssetPlotColorBtn = nullptr;

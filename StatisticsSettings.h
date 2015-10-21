@@ -28,6 +28,7 @@ namespace Evernus
         const QColor statisticsSellOrderPlotColorDefault = Qt::magenta;
         const QColor statisticsTotalPlotColorDefault = Qt::green;
         const auto combineStatisticsDefault = false;
+        const auto automaticSnapshotsDefault = true;
 
         const auto combineCorpAndCharPlotsKey = "prices/combineCorpAndCharPlots";
         const auto statisticsAssetPlotColorKey = "ui/appearance/statistics/assetColor";
@@ -37,5 +38,6 @@ namespace Evernus
         const auto statisticsSellOrderPlotColorKey = "ui/appearance/statistics/sellOrderColor";
         const auto statisticsTotalPlotColorKey = "ui/appearance/statistics/totalColor";
         const auto combineStatisticsKey = "ui/combine/statistics";
+        const auto automaticSnapshotsKey = "statistics/automaticSnapshots";
     }
 }

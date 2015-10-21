@@ -780,10 +780,13 @@ namespace Evernus
         auto widget = new QWidget{this};
         auto mainLayout = new QVBoxLayout{widget};
 
+        auto toolBarLayout = new QHBoxLayout{};
+        mainLayout->addLayout(toolBarLayout);
+
         QSettings settings;
 
         mCombineStatsBtn = new QCheckBox{tr("Combine statistics for all characters"), this};
-        mainLayout->addWidget(mCombineStatsBtn);
+        toolBarLayout->addWidget(mCombineStatsBtn);
         mCombineStatsBtn->setChecked(settings.value(StatisticsSettings::combineStatisticsKey, StatisticsSettings::combineStatisticsDefault).toBool());
         connect(mCombineStatsBtn, &QCheckBox::toggled, this, [=](bool checked) {
             QSettings settings;
@@ -791,6 +794,12 @@ namespace Evernus
 
             updateData();
         });
+
+        auto makeSnapshotBtn = new QPushButton{tr("Make snapshot"), this};
+        toolBarLayout->addWidget(makeSnapshotBtn);
+        connect(makeSnapshotBtn, &QPushButton::clicked, this, &StatisticsWidget::makeSnapshots);
+
+        toolBarLayout->addStretch();
 
         auto balanceGroup = new QGroupBox{tr("Balance"), this};
         mainLayout->addWidget(balanceGroup);

@@ -99,6 +99,8 @@ namespace Evernus
         void itemVolumeChanged();
         void lMeveTasksChanged();
 
+        void snapshotsTaken();
+
         void preferencesChanged();
 
         void newTaskInfoAdded(uint taskId, const QString &description);
@@ -133,6 +135,8 @@ namespace Evernus
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
 
         void clearCorpWalletData();
+
+        void makeValueSnapshots(Character::IdType id);
 
     public slots:
         void showCharacterManagement();
