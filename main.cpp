@@ -165,54 +165,102 @@ int main(int argc, char *argv[])
                                         crestId,
                                         crestSecret};
 
-            app.connect(&mainWnd, SIGNAL(refreshCharacters()), SLOT(refreshCharacters()));
-            app.connect(&mainWnd, SIGNAL(refreshConquerableStations()), SLOT(refreshConquerableStations()));
-            app.connect(&mainWnd, SIGNAL(importCharacter(Character::IdType)), SLOT(refreshCharacter(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importAssets(Character::IdType)), SLOT(refreshAssets(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importContracts(Character::IdType)), SLOT(refreshContracts(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importWalletJournal(Character::IdType)), SLOT(refreshWalletJournal(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importWalletTransactions(Character::IdType)), SLOT(refreshWalletTransactions(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importMarketOrdersFromAPI(Character::IdType)), SLOT(refreshMarketOrdersFromAPI(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importMarketOrdersFromLogs(Character::IdType)), SLOT(refreshMarketOrdersFromLogs(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importCorpAssets(Character::IdType)), SLOT(refreshCorpAssets(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importCorpContracts(Character::IdType)), SLOT(refreshCorpContracts(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importCorpWalletJournal(Character::IdType)), SLOT(refreshCorpWalletJournal(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importCorpWalletTransactions(Character::IdType)), SLOT(refreshCorpWalletTransactions(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importCorpMarketOrdersFromAPI(Character::IdType)), SLOT(refreshCorpMarketOrdersFromAPI(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importCorpMarketOrdersFromLogs(Character::IdType)), SLOT(refreshCorpMarketOrdersFromLogs(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(importExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &)));
-            app.connect(&mainWnd, SIGNAL(importExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)), SLOT(refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &)));
-            app.connect(&mainWnd, SIGNAL(preferencesChanged()), SLOT(handleNewPreferences()));
-            app.connect(&mainWnd, SIGNAL(importFromMentat()), SLOT(importFromMentat()));
-            app.connect(&mainWnd, SIGNAL(syncLMeve(Character::IdType)), SLOT(syncLMeve(Character::IdType)));
-            app.connect(&mainWnd, SIGNAL(showInEve(EveType::IdType)), SIGNAL(showInEve(EveType::IdType)));
-            app.connect(&mainWnd, SIGNAL(setDestinationInEve(quint64)), SIGNAL(setDestinationInEve(quint64)));
-            app.connect(&mainWnd, SIGNAL(updateExternalOrders(const std::vector<ExternalOrder> &)), SLOT(updateExternalOrdersAndAssetValue(const std::vector<ExternalOrder> &)));
-            app.connect(&mainWnd, SIGNAL(clearCorpWalletData()), SLOT(clearCorpWalletData()));
-            mainWnd.connect(&app, SIGNAL(taskStarted(uint, const QString &)), SLOT(addNewTaskInfo(uint, const QString &)));
-            mainWnd.connect(&app, SIGNAL(taskStarted(uint, uint, const QString &)), SIGNAL(newSubTaskInfoAdded(uint, uint, const QString &)));
-            mainWnd.connect(&app, SIGNAL(taskInfoChanged(uint, const QString &)), SIGNAL(taskInfoChanged(uint, const QString &)));
-            mainWnd.connect(&app, SIGNAL(taskEnded(uint, const QString &)), SIGNAL(taskEnded(uint, const QString &)));
-            mainWnd.connect(&app, SIGNAL(conquerableStationsChanged()), SIGNAL(conquerableStationsChanged()));
-            mainWnd.connect(&app, SIGNAL(charactersChanged()), SLOT(updateCharacters()));
-            mainWnd.connect(&app, SIGNAL(assetsChanged()), SIGNAL(assetsChanged()));
-            mainWnd.connect(&app, SIGNAL(externalOrdersChanged()), SIGNAL(externalOrdersChanged()));
-            mainWnd.connect(&app, SIGNAL(externalOrdersChangedWithMarketOrders()), SIGNAL(externalOrdersChangedWithMarketOrders()));
-            mainWnd.connect(&app, SIGNAL(walletJournalChanged()), SIGNAL(walletJournalChanged()));
-            mainWnd.connect(&app, SIGNAL(walletTransactionsChanged()), SIGNAL(walletTransactionsChanged()));
-            mainWnd.connect(&app, SIGNAL(marketOrdersChanged()), SIGNAL(marketOrdersChanged()));
-            mainWnd.connect(&app, SIGNAL(contractsChanged()), SIGNAL(contractsChanged()));
-            mainWnd.connect(&app, SIGNAL(corpAssetsChanged()), SIGNAL(corpAssetsChanged()));
-            mainWnd.connect(&app, SIGNAL(corpWalletJournalChanged()), SIGNAL(corpWalletJournalChanged()));
-            mainWnd.connect(&app, SIGNAL(corpWalletTransactionsChanged()), SIGNAL(corpWalletTransactionsChanged()));
-            mainWnd.connect(&app, SIGNAL(corpMarketOrdersChanged()), SIGNAL(corpMarketOrdersChanged()));
-            mainWnd.connect(&app, SIGNAL(corpContractsChanged()), SIGNAL(corpContractsChanged()));
-            mainWnd.connect(&app, SIGNAL(itemCostsChanged()), SIGNAL(itemCostsChanged()));
-            mainWnd.connect(&app, SIGNAL(itemVolumeChanged()), SIGNAL(itemVolumeChanged()));
-            mainWnd.connect(&app, SIGNAL(lMeveTasksChanged()), SIGNAL(lMeveTasksChanged()));
-            mainWnd.connect(&app, SIGNAL(charactersChanged()), SLOT(updateIskData()));
-            mainWnd.connect(&app, SIGNAL(openMarginTool()), SLOT(showMarginTool()));
-            crestImporterPtr->connect(&mainWnd, SIGNAL(preferencesChanged()), SLOT(handleNewPreferences()));
+            QObject::connect(&mainWnd, &Evernus::MainWindow::refreshCharacters,
+                             &app, &Evernus::EvernusApplication::refreshCharacters);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::refreshConquerableStations,
+                             &app, &Evernus::EvernusApplication::refreshConquerableStations);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCharacter,
+                             &app, [&app](auto id) { app.refreshCharacter(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importAssets,
+                             &app, [&app](auto id) { app.refreshAssets(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importContracts,
+                             &app, [&app](auto id) { app.refreshContracts(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importWalletJournal,
+                             &app, [&app](auto id) { app.refreshWalletJournal(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importWalletTransactions,
+                             &app, [&app](auto id) { app.refreshWalletTransactions(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importMarketOrdersFromAPI,
+                             &app, [&app](auto id) { app.refreshMarketOrdersFromAPI(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importMarketOrdersFromLogs,
+                             &app, [&app](auto id) { app.refreshMarketOrdersFromLogs(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCorpAssets,
+                             &app, [&app](auto id) { app.refreshCorpAssets(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCorpContracts,
+                             &app, [&app](auto id) { app.refreshCorpContracts(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCorpWalletJournal,
+                             &app, [&app](auto id) { app.refreshCorpWalletJournal(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCorpWalletTransactions,
+                             &app, [&app](auto id) { app.refreshCorpWalletTransactions(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCorpMarketOrdersFromAPI,
+                             &app, [&app](auto id) { app.refreshCorpMarketOrdersFromAPI(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCorpMarketOrdersFromLogs,
+                             &app, [&app](auto id) { app.refreshCorpMarketOrdersFromLogs(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importExternalOrdersFromWeb,
+                             &app, &Evernus::EvernusApplication::refreshExternalOrdersFromWeb);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importExternalOrdersFromFile,
+                             &app, &Evernus::EvernusApplication::refreshExternalOrdersFromFile);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::preferencesChanged,
+                             &app, &Evernus::EvernusApplication::handleNewPreferences);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importFromMentat,
+                             &app, &Evernus::EvernusApplication::importFromMentat);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::syncLMeve,
+                             &app, &Evernus::EvernusApplication::syncLMeve);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::showInEve,
+                             &app, &Evernus::EvernusApplication::showInEve);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::setDestinationInEve,
+                             &app, &Evernus::EvernusApplication::setDestinationInEve);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::updateExternalOrders,
+                             &app, &Evernus::EvernusApplication::updateExternalOrdersAndAssetValue);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::clearCorpWalletData,
+                             &app, &Evernus::EvernusApplication::clearCorpWalletData);
+            QObject::connect(&app, static_cast<void (Evernus::EvernusApplication::*)(uint, const QString &)>(&Evernus::EvernusApplication::taskStarted),
+                             &mainWnd, &Evernus::MainWindow::addNewTaskInfo);
+            QObject::connect(&app, static_cast<void (Evernus::EvernusApplication::*)(uint, uint, const QString &)>(&Evernus::EvernusApplication::taskStarted),
+                             &mainWnd, &Evernus::MainWindow::newSubTaskInfoAdded);
+            QObject::connect(&app, &Evernus::EvernusApplication::taskInfoChanged,
+                             &mainWnd, &Evernus::MainWindow::taskInfoChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::taskEnded,
+                             &mainWnd, &Evernus::MainWindow::taskEnded);
+            QObject::connect(&app, &Evernus::EvernusApplication::conquerableStationsChanged,
+                             &mainWnd, &Evernus::MainWindow::conquerableStationsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::charactersChanged,
+                             &mainWnd, &Evernus::MainWindow::updateCharacters);
+            QObject::connect(&app, &Evernus::EvernusApplication::assetsChanged,
+                             &mainWnd, &Evernus::MainWindow::assetsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::externalOrdersChanged,
+                             &mainWnd, &Evernus::MainWindow::externalOrdersChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::externalOrdersChangedWithMarketOrders,
+                             &mainWnd, &Evernus::MainWindow::externalOrdersChangedWithMarketOrders);
+            QObject::connect(&app, &Evernus::EvernusApplication::walletJournalChanged,
+                             &mainWnd, &Evernus::MainWindow::walletJournalChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::walletTransactionsChanged,
+                             &mainWnd, &Evernus::MainWindow::walletTransactionsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::marketOrdersChanged,
+                             &mainWnd, &Evernus::MainWindow::marketOrdersChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::contractsChanged,
+                             &mainWnd, &Evernus::MainWindow::contractsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::corpAssetsChanged,
+                             &mainWnd, &Evernus::MainWindow::corpAssetsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::corpWalletJournalChanged,
+                             &mainWnd, &Evernus::MainWindow::corpWalletJournalChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::corpWalletTransactionsChanged,
+                             &mainWnd, &Evernus::MainWindow::corpWalletTransactionsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::corpMarketOrdersChanged,
+                             &mainWnd, &Evernus::MainWindow::corpMarketOrdersChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::corpContractsChanged,
+                             &mainWnd, &Evernus::MainWindow::corpContractsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::itemCostsChanged,
+                             &mainWnd, &Evernus::MainWindow::itemCostsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::itemVolumeChanged,
+                             &mainWnd, &Evernus::MainWindow::itemVolumeChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::lMeveTasksChanged,
+                             &mainWnd, &Evernus::MainWindow::lMeveTasksChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::charactersChanged,
+                             &mainWnd, &Evernus::MainWindow::updateIskData);
+            QObject::connect(&app, &Evernus::EvernusApplication::openMarginTool,
+                             &mainWnd, &Evernus::MainWindow::showMarginTool);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::preferencesChanged,
+                             crestImporterPtr, &Evernus::CRESTExternalOrderImporter::handleNewPreferences);
             mainWnd.showAsSaved();
 
             return app.exec();
