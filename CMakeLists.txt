@@ -42,7 +42,7 @@ if(APPLE)
 elseif(UNIX)
     find_package(X11 REQUIRED)
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -stdlib=libc++ -pthread -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -pthread -g")
     set(ADDITIONAL_SRC qxtglobalshortcut_x11.cpp)
     set(ADDITIONAL_LIBS ${X11_LIBRARIES})
 elseif(WIN32)
