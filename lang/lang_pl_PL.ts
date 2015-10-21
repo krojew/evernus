@@ -5348,17 +5348,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::PricePreferencesWidget</name>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="42"/>
+        <location filename="../PricePreferencesWidget.cpp" line="41"/>
         <source>Margins</source>
         <translation>Marże</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="50"/>
+        <location filename="../PricePreferencesWidget.cpp" line="49"/>
         <source>Minimum:</source>
         <translation>Minimum:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="57"/>
+        <location filename="../PricePreferencesWidget.cpp" line="56"/>
         <source>Preferred:</source>
         <translation>Preferowana:</translation>
     </message>
@@ -5371,52 +5371,52 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Automatycznie dodaj koszty przy wypełnionym zleceniu kupna</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="64"/>
+        <location filename="../PricePreferencesWidget.cpp" line="63"/>
         <source>Import log wait timer:</source>
         <translation>Czas oczekiwania na import logu handlu:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="73"/>
+        <location filename="../PricePreferencesWidget.cpp" line="72"/>
         <source>Use alternative margin import method*</source>
         <translation>Użyj alternatywnej metody impotu*</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="77"/>
+        <location filename="../PricePreferencesWidget.cpp" line="76"/>
         <source>* Gives faster results, but can sometimes be incorrect. If the price fluctuates after a few imports, turn it off.</source>
         <translation>* Wyniki otrzymywane są szybciej, lecz czasem mogą być nieprawidłowe. Jeśli podczas importu cena się wacha, wyłącz alternatywny import.</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="82"/>
+        <location filename="../PricePreferencesWidget.cpp" line="81"/>
         <source>Costs</source>
         <translation>Koszty</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="87"/>
+        <location filename="../PricePreferencesWidget.cpp" line="86"/>
         <source>Auto add custom item costs on fulfilled buy order*</source>
         <translation>Automatycznie dodaj koszty przy wypełnionym zleceniu kupna*</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="91"/>
+        <location filename="../PricePreferencesWidget.cpp" line="90"/>
         <source>Share costs between characters</source>
         <translation>Współdziel koszty między postaciami</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="95"/>
+        <location filename="../PricePreferencesWidget.cpp" line="94"/>
         <source>* Also turns on importing wallet transactions.</source>
         <translation>* Włącza importowanie transakcji.</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="114"/>
+        <location filename="../PricePreferencesWidget.cpp" line="113"/>
         <source>Add random:</source>
         <translation>Dodaj losowo:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="123"/>
+        <location filename="../PricePreferencesWidget.cpp" line="122"/>
         <source>Price delta:</source>
         <translation>Zmiana ceny:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="126"/>
+        <location filename="../PricePreferencesWidget.cpp" line="125"/>
         <source>Max. price age:</source>
         <translation>Maks. wiek cen:</translation>
     </message>
@@ -5449,32 +5449,32 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Połącz dzienniki korporacji i postaci w statystykach</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="132"/>
+        <location filename="../PricePreferencesWidget.cpp" line="131"/>
         <source>Refresh prices after order import</source>
         <translation>Odśwież ceny po imporcie zleceń</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="136"/>
+        <location filename="../PricePreferencesWidget.cpp" line="135"/>
         <source>Auto-copy non-overbid prices with price helper</source>
         <translation>Auto. kopiowanie nieprzebitych cen</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="140"/>
+        <location filename="../PricePreferencesWidget.cpp" line="139"/>
         <source>Limit sell price copy to item cost</source>
         <translation>Ogranicz kopiowaną cenę sprzedaży do własnego kosztu</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="144"/>
+        <location filename="../PricePreferencesWidget.cpp" line="143"/>
         <source>Fast Price Copy</source>
         <translation>Szybkie kopiowanie ceny</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="152"/>
+        <location filename="../PricePreferencesWidget.cpp" line="151"/>
         <source>Enabled</source>
         <translation>Włączone</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="156"/>
+        <location filename="../PricePreferencesWidget.cpp" line="155"/>
         <source>Shortcut:</source>
         <translation>Skrót klawiszowy:</translation>
     </message>
@@ -5483,7 +5483,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Skrót klawiszowy:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="162"/>
+        <location filename="../PricePreferencesWidget.cpp" line="161"/>
         <source>Fast Price Copy allows you to update your orders in a very fast manner. Simply assign a keyboard shortcut, select an order in any market order view and press the shortcut to copy the updated price and automatically jump to the next order on the list. You can do this even when Evernus doesn&apos;t have the input focus - the keyboard shortcut works system-wide. You can use this to update your prices without ever leaving Eve client.</source>
         <translation>Możesz użyć szybkiego kopiowania ceny do znacznie szybszej aktualizacji zleceń. Ustaw wybrany skrót klawiszowy, wybierz zlecenie na jakimkolwiek widoku zleceń i użyj skrótu do skopiowania nowej ceny i automatycznego przeskoczenia do kolejnego zlecenia. Możesz to robić nawet, gdy Evernus nie jest na pierwszym tle - skrót działa w całym systemie. Możesz użyć tej metody do aktualizacji cen bez wychodzenia z klienta Eve.</translation>
     </message>
@@ -5594,67 +5594,67 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::StatisticsPreferencesWidget</name>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="41"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="42"/>
         <source>Combine character and corporation journal in statistics</source>
         <translation type="unfinished">Połącz dzienniki korporacji i postaci w statystykach</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="46"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="47"/>
         <source>Appearance</source>
         <translation>Wygląd</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="55"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="56"/>
         <source>Plot number format:</source>
         <translation type="unfinished">Format liczb na wykresach:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="56"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="57"/>
         <source>beautified scientific</source>
         <translation type="unfinished">upiększony naukowy</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="57"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="58"/>
         <source>scientific</source>
         <translation type="unfinished">naukowy</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="58"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="59"/>
         <source>fixed</source>
         <translation type="unfinished">dziesiętny</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="64"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="65"/>
         <source>Asset value plot color:</source>
         <translation>Kolor aktywów:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="69"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="70"/>
         <source>Wallet balance plot color:</source>
         <translation>Kolor portfela:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="74"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="75"/>
         <source>Corp. wallet balance plot color:</source>
         <translation>Kolor portfela korporacji:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="79"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="80"/>
         <source>Buy order value plot color:</source>
         <translation>Kolor zleceń kupna:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="84"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="85"/>
         <source>Sell order value plot color:</source>
         <translation>Kolor zleceń sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="89"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="90"/>
         <source>Total value plot color:</source>
         <translation>Kolor sumy:</translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="91"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="92"/>
         <source>Reset to default</source>
         <translation>Przywróć ustawienia domyślne</translation>
     </message>
@@ -6197,14 +6197,14 @@ Suma: %6</translation>
 <context>
     <name>Evernus::Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="113"/>
-        <location filename="../Updater.cpp" line="124"/>
-        <location filename="../Updater.cpp" line="134"/>
+        <location filename="../Updater.cpp" line="114"/>
+        <location filename="../Updater.cpp" line="125"/>
+        <location filename="../Updater.cpp" line="135"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="113"/>
+        <location filename="../Updater.cpp" line="114"/>
         <source>Error contacting update server: %1</source>
         <translation>Błąd odpytywania serwera akutalizacji: %1</translation>
     </message>
@@ -6213,10 +6213,10 @@ Suma: %6</translation>
         <translation type="vanished">Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="302"/>
-        <location filename="../Updater.cpp" line="333"/>
-        <location filename="../Updater.cpp" line="340"/>
-        <location filename="../Updater.cpp" line="352"/>
+        <location filename="../Updater.cpp" line="303"/>
+        <location filename="../Updater.cpp" line="334"/>
+        <location filename="../Updater.cpp" line="341"/>
+        <location filename="../Updater.cpp" line="353"/>
         <source>Update</source>
         <translation>Aktualizacja</translation>
     </message>
@@ -6228,77 +6228,77 @@ Please click on &quot;Import all&quot; after the update.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="161"/>
+        <location filename="../Updater.cpp" line="162"/>
         <source>A new version is available: %1
 Do you wish to launch the updater?</source>
         <translation>Znaleziono nową wersję: %1
 Czy chcesz rozpocząć aktualizację?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="172"/>
+        <location filename="../Updater.cpp" line="173"/>
         <source>Couldn&apos;t launch updater. Download manually?</source>
         <translation>Nie udało się rozpocząć aktualizacji. Pobrać ręcznie?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="286"/>
-        <location filename="../Updater.cpp" line="292"/>
-        <location filename="../Updater.cpp" line="298"/>
+        <location filename="../Updater.cpp" line="287"/>
+        <location filename="../Updater.cpp" line="293"/>
+        <location filename="../Updater.cpp" line="299"/>
         <source>Error updating db version: %1</source>
         <translation>Błąd aktualizacji wersji bazy danych: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="333"/>
+        <location filename="../Updater.cpp" line="334"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania wszystkich danych.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="340"/>
+        <location filename="../Updater.cpp" line="341"/>
         <source>This update requires re-importing all item prices.</source>
         <translation>Ta aktualizacja wymaga ponownego zaimportowania cen przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="352"/>
+        <location filename="../Updater.cpp" line="353"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania dziennika i transakcji korporacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="302"/>
+        <location filename="../Updater.cpp" line="303"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation>Wystąpił błąd podczas akutalizacji.
 Kopia zapasowa bazay danych została zapisana jako %1. Zajrzyj do pomocy online w celu uzyskania informacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="124"/>
+        <location filename="../Updater.cpp" line="125"/>
         <source>Error parsing response from the update server: %1</source>
         <translation>Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="134"/>
+        <location filename="../Updater.cpp" line="135"/>
         <source>Missing update version information!</source>
         <translation>Brak informacji o wersji!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="147"/>
+        <location filename="../Updater.cpp" line="148"/>
         <source>No update found</source>
         <translation>Brak aktualizacji</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="147"/>
+        <location filename="../Updater.cpp" line="148"/>
         <source>Your current version is up-to-date.</source>
         <translation>Twoja wersja jest najbardziej aktualna.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="156"/>
-        <location filename="../Updater.cpp" line="161"/>
-        <location filename="../Updater.cpp" line="172"/>
+        <location filename="../Updater.cpp" line="157"/>
+        <location filename="../Updater.cpp" line="162"/>
+        <location filename="../Updater.cpp" line="173"/>
         <source>Update found</source>
         <translation>Znaleziono aktualizację</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="156"/>
+        <location filename="../Updater.cpp" line="157"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation>Znaleziono nową wersję: %1

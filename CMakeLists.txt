@@ -692,6 +692,7 @@ add_executable(
     StationView.h
     StatisticsPreferencesWidget.cpp
     StatisticsPreferencesWidget.h
+    StatisticsSettings.h
     StatisticsWidget.cpp
     StatisticsWidget.h
     StyledTreeView.cpp

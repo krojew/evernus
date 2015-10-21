@@ -46,7 +46,7 @@
 #include "OrderScriptRepository.h"
 #include "NumberFormatDelegate.h"
 #include "CharacterRepository.h"
-#include "PriceSettings.h"
+#include "StatisticsSettings.h"
 #include "UISettings.h"
 #include "TextUtils.h"
 
@@ -447,7 +447,7 @@ namespace Evernus
         valueAdder(entries);
 
         QSettings settings;
-        if (settings.value(PriceSettings::combineCorpAndCharPlotsKey, PriceSettings::combineCorpAndCharPlotsDefault).toBool())
+        if (settings.value(StatisticsSettings::combineCorpAndCharPlotsKey, StatisticsSettings::combineCorpAndCharPlotsDefault).toBool())
         {
             try
             {
@@ -526,7 +526,7 @@ namespace Evernus
         valueAdder(entries);
 
         QSettings settings;
-        if (settings.value(PriceSettings::combineCorpAndCharPlotsKey, PriceSettings::combineCorpAndCharPlotsDefault).toBool())
+        if (settings.value(StatisticsSettings::combineCorpAndCharPlotsKey, StatisticsSettings::combineCorpAndCharPlotsDefault).toBool())
         {
             try
             {
@@ -762,17 +762,17 @@ namespace Evernus
         QSettings settings;
 
         sellOrdersValue->setPen(
-            settings.value(UISettings::statisticsSellOrderPlotColorKey, UISettings::statisticsSellOrderPlotColorDefault).value<QColor>());
+            settings.value(StatisticsSettings::statisticsSellOrderPlotColorKey, StatisticsSettings::statisticsSellOrderPlotColorDefault).value<QColor>());
         buyOrdersValue->setPen(
-            settings.value(UISettings::statisticsBuyOrderPlotColorKey, UISettings::statisticsBuyOrderPlotColorDefault).value<QColor>());
+            settings.value(StatisticsSettings::statisticsBuyOrderPlotColorKey, StatisticsSettings::statisticsBuyOrderPlotColorDefault).value<QColor>());
         corpWalletValue->setPen(
-            settings.value(UISettings::statisticsCorpWalletPlotColorKey, UISettings::statisticsCorpWalletPlotColorDefault).value<QColor>());
+            settings.value(StatisticsSettings::statisticsCorpWalletPlotColorKey, StatisticsSettings::statisticsCorpWalletPlotColorDefault).value<QColor>());
         walletValue->setPen(
-            settings.value(UISettings::statisticsWalletPlotColorKey, UISettings::statisticsWalletPlotColorDefault).value<QColor>());
+            settings.value(StatisticsSettings::statisticsWalletPlotColorKey, StatisticsSettings::statisticsWalletPlotColorDefault).value<QColor>());
         assetValue->setPen(
-            settings.value(UISettings::statisticsAssetPlotColorKey, UISettings::statisticsAssetPlotColorDefault).value<QColor>());
+            settings.value(StatisticsSettings::statisticsAssetPlotColorKey, StatisticsSettings::statisticsAssetPlotColorDefault).value<QColor>());
         totalValue->setPen(
-            settings.value(UISettings::statisticsTotalPlotColorKey, UISettings::statisticsTotalPlotColorDefault).value<QColor>());
+            settings.value(StatisticsSettings::statisticsTotalPlotColorKey, StatisticsSettings::statisticsTotalPlotColorDefault).value<QColor>());
     }
 
     QWidget *StatisticsWidget::createBasicStatisticsWidget()
@@ -784,10 +784,10 @@ namespace Evernus
 
         mCombineStatsBtn = new QCheckBox{tr("Combine statistics for all characters"), this};
         mainLayout->addWidget(mCombineStatsBtn);
-        mCombineStatsBtn->setChecked(settings.value(UISettings::combineStatisticsKey, UISettings::combineStatisticsDefault).toBool());
+        mCombineStatsBtn->setChecked(settings.value(StatisticsSettings::combineStatisticsKey, StatisticsSettings::combineStatisticsDefault).toBool());
         connect(mCombineStatsBtn, &QCheckBox::toggled, this, [=](bool checked) {
             QSettings settings;
-            settings.setValue(UISettings::combineStatisticsKey, checked);
+            settings.setValue(StatisticsSettings::combineStatisticsKey, checked);
 
             updateData();
         });

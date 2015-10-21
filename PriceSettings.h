@@ -43,7 +43,6 @@ namespace Evernus
         const auto autoAddCustomItemCostDefault = false;
         const auto costDataSourceDefault = DataSource::Orders;
         const auto shareCostsDefault = false;
-        const auto combineCorpAndCharPlotsDefault = false;
         const auto copyNonOverbidPriceDefault = false;
         const auto fpcDefault = false;
         const auto limitSellCopyToCostDefault = false;
@@ -61,7 +60,6 @@ namespace Evernus
         const auto costSourceStationKey = "prices/costSourceStation";
         const auto shareCostsKey = "prices/shareCosts";
         const auto refreshPricesWithOrdersKey = "prices/orders/autoRefresh";
-        const auto combineCorpAndCharPlotsKey = "prices/combineCorpAndCharPlots";
         const auto copyNonOverbidPriceKey = "prices/orders/copyNonOverbid";
         const auto fpcKey = "prices/fpc/enabled";
         const auto fpcShourtcutKey = "prices/fpc/shortcut";

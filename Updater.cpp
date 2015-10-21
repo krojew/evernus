@@ -38,6 +38,7 @@
 #include "CacheTimerRepository.h"
 #include "EvernusApplication.h"
 #include "RepositoryProvider.h"
+#include "StatisticsSettings.h"
 #include "ItemRepository.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
@@ -374,8 +375,8 @@ namespace Evernus
     {
         QSettings settings;
         settings.setValue(ImportSettings::ignoreCachedImportKey, false);
-        settings.setValue(PriceSettings::combineCorpAndCharPlotsKey,
-                          settings.value("rpices/combineCorpAndCharPlots", PriceSettings::combineCorpAndCharPlotsDefault));
+        settings.setValue(StatisticsSettings::combineCorpAndCharPlotsKey,
+                          settings.value("rpices/combineCorpAndCharPlots", StatisticsSettings::combineCorpAndCharPlotsDefault));
     }
 
     void Updater::migrateDatabaseTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,

@@ -19,7 +19,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-#include "PriceSettings.h"
+#include "StatisticsSettings.h"
 #include "ColorButton.h"
 #include "UISettings.h"
 
@@ -42,7 +42,7 @@ namespace Evernus
         mCombineCorpAndCharPlotsBtn = new QCheckBox{tr("Combine character and corporation journal in statistics"), this};
         mainGroupLayout->addWidget(mCombineCorpAndCharPlotsBtn);
         mCombineCorpAndCharPlotsBtn->setChecked(
-            settings.value(PriceSettings::combineCorpAndCharPlotsKey, PriceSettings::combineCorpAndCharPlotsDefault).toBool());
+            settings.value(StatisticsSettings::combineCorpAndCharPlotsKey, StatisticsSettings::combineCorpAndCharPlotsDefault).toBool());
 
         auto appearanceGroup = new QGroupBox{tr("Appearance"), this};
         mainLayout->addWidget(appearanceGroup);
@@ -59,32 +59,32 @@ namespace Evernus
         addPlotFormat(tr("fixed"), "f", plotNumberFormat);
 
         mAssetPlotColorBtn = new ColorButton{
-            settings.value(UISettings::statisticsAssetPlotColorKey, UISettings::statisticsAssetPlotColorDefault).value<QColor>(),
+            settings.value(StatisticsSettings::statisticsAssetPlotColorKey, StatisticsSettings::statisticsAssetPlotColorDefault).value<QColor>(),
             this
         };
         appearanceGroupLayout->addRow(tr("Asset value plot color:"), mAssetPlotColorBtn);
         mWalletPlotColorBtn = new ColorButton{
-            settings.value(UISettings::statisticsWalletPlotColorKey, UISettings::statisticsWalletPlotColorDefault).value<QColor>(),
+            settings.value(StatisticsSettings::statisticsWalletPlotColorKey, StatisticsSettings::statisticsWalletPlotColorDefault).value<QColor>(),
             this
         };
         appearanceGroupLayout->addRow(tr("Wallet balance plot color:"), mWalletPlotColorBtn);
         mCorpWalletPlotColorBtn = new ColorButton{
-            settings.value(UISettings::statisticsCorpWalletPlotColorKey, UISettings::statisticsCorpWalletPlotColorDefault).value<QColor>(),
+            settings.value(StatisticsSettings::statisticsCorpWalletPlotColorKey, StatisticsSettings::statisticsCorpWalletPlotColorDefault).value<QColor>(),
             this
         };
         appearanceGroupLayout->addRow(tr("Corp. wallet balance plot color:"), mCorpWalletPlotColorBtn);
         mBuyOrdersPlotColorBtn = new ColorButton{
-            settings.value(UISettings::statisticsBuyOrderPlotColorKey, UISettings::statisticsBuyOrderPlotColorDefault).value<QColor>(),
+            settings.value(StatisticsSettings::statisticsBuyOrderPlotColorKey, StatisticsSettings::statisticsBuyOrderPlotColorDefault).value<QColor>(),
             this
         };
         appearanceGroupLayout->addRow(tr("Buy order value plot color:"), mBuyOrdersPlotColorBtn);
         mSellOrdersPlotColorBtn = new ColorButton{
-            settings.value(UISettings::statisticsSellOrderPlotColorKey, UISettings::statisticsSellOrderPlotColorDefault).value<QColor>(),
+            settings.value(StatisticsSettings::statisticsSellOrderPlotColorKey, StatisticsSettings::statisticsSellOrderPlotColorDefault).value<QColor>(),
             this
         };
         appearanceGroupLayout->addRow(tr("Sell order value plot color:"), mSellOrdersPlotColorBtn);
         mTotalPlotColorBtn = new ColorButton{
-            settings.value(UISettings::statisticsTotalPlotColorKey, UISettings::statisticsTotalPlotColorDefault).value<QColor>(),
+            settings.value(StatisticsSettings::statisticsTotalPlotColorKey, StatisticsSettings::statisticsTotalPlotColorDefault).value<QColor>(),
             this
         };
         appearanceGroupLayout->addRow(tr("Total value plot color:"), mTotalPlotColorBtn);
@@ -99,24 +99,24 @@ namespace Evernus
     void StatisticsPreferencesWidget::applySettings()
     {
         QSettings settings;
-        settings.setValue(PriceSettings::combineCorpAndCharPlotsKey, mCombineCorpAndCharPlotsBtn->isChecked());
+        settings.setValue(StatisticsSettings::combineCorpAndCharPlotsKey, mCombineCorpAndCharPlotsBtn->isChecked());
         settings.setValue(UISettings::plotNumberFormatKey, mPlotNumberFormatEdit->currentData());
-        settings.setValue(UISettings::statisticsAssetPlotColorKey, mAssetPlotColorBtn->getColor());
-        settings.setValue(UISettings::statisticsWalletPlotColorKey, mWalletPlotColorBtn->getColor());
-        settings.setValue(UISettings::statisticsCorpWalletPlotColorKey, mCorpWalletPlotColorBtn->getColor());
-        settings.setValue(UISettings::statisticsBuyOrderPlotColorKey, mBuyOrdersPlotColorBtn->getColor());
-        settings.setValue(UISettings::statisticsSellOrderPlotColorKey, mSellOrdersPlotColorBtn->getColor());
-        settings.setValue(UISettings::statisticsTotalPlotColorKey, mTotalPlotColorBtn->getColor());
+        settings.setValue(StatisticsSettings::statisticsAssetPlotColorKey, mAssetPlotColorBtn->getColor());
+        settings.setValue(StatisticsSettings::statisticsWalletPlotColorKey, mWalletPlotColorBtn->getColor());
+        settings.setValue(StatisticsSettings::statisticsCorpWalletPlotColorKey, mCorpWalletPlotColorBtn->getColor());
+        settings.setValue(StatisticsSettings::statisticsBuyOrderPlotColorKey, mBuyOrdersPlotColorBtn->getColor());
+        settings.setValue(StatisticsSettings::statisticsSellOrderPlotColorKey, mSellOrdersPlotColorBtn->getColor());
+        settings.setValue(StatisticsSettings::statisticsTotalPlotColorKey, mTotalPlotColorBtn->getColor());
     }
 
     void StatisticsPreferencesWidget::resetPlotColors()
     {
-        mAssetPlotColorBtn->setColor(UISettings::statisticsAssetPlotColorDefault);
-        mWalletPlotColorBtn->setColor(UISettings::statisticsWalletPlotColorDefault);
-        mCorpWalletPlotColorBtn->setColor(UISettings::statisticsCorpWalletPlotColorDefault);
-        mBuyOrdersPlotColorBtn->setColor(UISettings::statisticsBuyOrderPlotColorDefault);
-        mSellOrdersPlotColorBtn->setColor(UISettings::statisticsSellOrderPlotColorDefault);
-        mTotalPlotColorBtn->setColor(UISettings::statisticsTotalPlotColorDefault);
+        mAssetPlotColorBtn->setColor(StatisticsSettings::statisticsAssetPlotColorDefault);
+        mWalletPlotColorBtn->setColor(StatisticsSettings::statisticsWalletPlotColorDefault);
+        mCorpWalletPlotColorBtn->setColor(StatisticsSettings::statisticsCorpWalletPlotColorDefault);
+        mBuyOrdersPlotColorBtn->setColor(StatisticsSettings::statisticsBuyOrderPlotColorDefault);
+        mSellOrdersPlotColorBtn->setColor(StatisticsSettings::statisticsSellOrderPlotColorDefault);
+        mTotalPlotColorBtn->setColor(StatisticsSettings::statisticsTotalPlotColorDefault);
     }
 
     void StatisticsPreferencesWidget::addPlotFormat(const QString &text, const QString &value, const QString &curValue)
