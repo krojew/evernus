@@ -46,8 +46,9 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         CRESTManager mManager;
-        mutable uint mRequestCount = 0;
+        mutable size_t mRequestCount = 0;
         mutable bool mPreparingRequests = false;
+        mutable uint mRequestBatchCounter = 0;
 
         mutable std::vector<ExternalOrder> mResult;
         mutable QStringList mAggregatedErrors;

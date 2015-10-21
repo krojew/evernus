@@ -17,6 +17,7 @@
 #include <boost/scope_exit.hpp>
 
 #include "EveDataProvider.h"
+#include "MathUtils.h"
 
 #include "CRESTExternalOrderImporter.h"
 
@@ -82,11 +83,15 @@ namespace Evernus
     void CRESTExternalOrderImporter::processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const
     {
         --mRequestCount;
+        ++mRequestBatchCounter;
 
         qDebug() << "Got reply," << mRequestCount << "remaining.";
 
-        if ((mRequestCount % 10) == 0)
+        if (mRequestBatchCounter >= MathUtils::batchSize(mRequestCount))
+        {
+            mRequestBatchCounter = 0;
             emit statusChanged(tr("CREST import: waiting for %1 server replies").arg(mRequestCount));
+        }
 
         if (!errorText.isEmpty())
         {

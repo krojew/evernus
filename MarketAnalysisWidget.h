@@ -135,7 +135,8 @@ namespace Evernus
         QStackedWidget *mInterRegionDataStack = nullptr;
         QTableView *mInterRegionTypeDataView = nullptr;
 
-        uint mOrderRequestCount = 0, mHistoryRequestCount = 0;
+        size_t mOrderRequestCount = 0, mHistoryRequestCount = 0;
+        uint mOrderBatchCounter = 0, mHistoryBatchCounter = 0;
         bool mPreparingRequests = false;
 
         uint mOrderSubtask = TaskConstants::invalidTask;

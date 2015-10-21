@@ -48,6 +48,7 @@
 #include "PriceSettings.h"
 #include "TaskManager.h"
 #include "FlowLayout.h"
+#include "MathUtils.h"
 
 #include "MarketAnalysisWidget.h"
 
@@ -451,11 +452,15 @@ namespace Evernus
     void MarketAnalysisWidget::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)
     {
         --mOrderRequestCount;
+        ++mOrderBatchCounter;
 
         qDebug() << mOrderRequestCount << " orders remaining; error:" << errorText;
 
-        if ((mOrderRequestCount % 10) == 0)
+        if (mOrderBatchCounter >= MathUtils::batchSize(mOrderRequestCount))
+        {
+            mOrderBatchCounter = 0;
             mTaskManager.updateTask(mOrderSubtask, tr("Waiting for %1 order server replies...").arg(mOrderRequestCount));
+        }
 
         if (!errorText.isEmpty())
         {
@@ -506,11 +511,15 @@ namespace Evernus
     ::processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText)
     {
         --mHistoryRequestCount;
+        ++mHistoryBatchCounter;
 
         qDebug() << mHistoryRequestCount << " history remaining; error:" << errorText;
 
-        if ((mHistoryRequestCount % 10) == 0)
+        if (mHistoryBatchCounter >= MathUtils::batchSize(mHistoryRequestCount))
+        {
+            mHistoryBatchCounter = 0;
             mTaskManager.updateTask(mHistorySubtask, tr("Waiting for %1 history server replies...").arg(mHistoryRequestCount));
+        }
 
         if (!errorText.isEmpty())
         {
