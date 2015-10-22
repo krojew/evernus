@@ -13,8 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <unordered_set>
-
-#include <boost/scope_exit.hpp>
+#include <future>
 
 #include <QStandardItemModel>
 #include <QDoubleValidator>
@@ -35,6 +34,7 @@
 #include <QLineEdit>
 #include <QSettings>
 #include <QAction>
+#include <QThread>
 #include <QLabel>
 #include <QDebug>
 
@@ -48,12 +48,61 @@
 #include "PriceSettings.h"
 #include "TaskManager.h"
 #include "FlowLayout.h"
-#include "MathUtils.h"
 
 #include "MarketAnalysisWidget.h"
 
 namespace Evernus
 {
+    class MarketAnalysisWidget::FetcherThread
+        : public QThread
+    {
+    public:
+        FetcherThread(QByteArray crestClientId,
+                      QByteArray crestClientSecret,
+                      const EveDataProvider &dataProvider,
+                      QObject *parent)
+            : QThread{parent}
+            , mCrestClientId{std::move(crestClientId)}
+            , mCrestClientSecret{std::move(crestClientSecret)}
+            , mDataProvider{dataProvider}
+        {
+        }
+
+        virtual ~FetcherThread() = default;
+
+        // warning: this will live only while the thread is running
+        MarketAnalysisDataFetcher *getFetcher() const noexcept
+        {
+            return mDataFetcher.get();
+        }
+
+        std::future<void> getFuture()
+        {
+            return mPromise.get_future();
+        }
+
+    protected:
+        virtual void run() override
+        {
+            mDataFetcher = std::make_unique<MarketAnalysisDataFetcher>(std::move(mCrestClientId),
+                                                                       std::move(mCrestClientSecret),
+                                                                       mDataProvider);
+            mPromise.set_value();
+
+            QThread::run();
+            mDataFetcher.reset();
+        }
+
+    private:
+        QByteArray mCrestClientId;
+        QByteArray mCrestClientSecret;
+        const EveDataProvider &mDataProvider;
+
+        std::unique_ptr<MarketAnalysisDataFetcher> mDataFetcher;
+
+        std::promise<void> mPromise;
+    };
+
     MarketAnalysisWidget::MarketAnalysisWidget(QByteArray crestClientId,
                                                QByteArray crestClientSecret,
                                                const EveDataProvider &dataProvider,
@@ -70,7 +119,8 @@ namespace Evernus
         , mTypeRepo(typeRepo)
         , mGroupRepo(groupRepo)
         , mCharacterRepo(characterRepo)
-        , mManager(std::move(crestClientId), std::move(crestClientSecret), mDataProvider)
+        , mOrders(std::make_shared<MarketAnalysisDataFetcher::OrderResultType::element_type>())
+        , mHistory(std::make_shared<MarketAnalysisDataFetcher::HistoryResultType::element_type>())
         , mTypeDataModel(mDataProvider)
         , mTypeViewProxy(TypeAggregatedMarketDataModel::getVolumeColumn(),
                          TypeAggregatedMarketDataModel::getMarginColumn(),
@@ -82,6 +132,25 @@ namespace Evernus
                                 InterRegionMarketDataModel::getVolumeColumn(),
                                 InterRegionMarketDataModel::getMarginColumn())
     {
+        mFetcherThread = new FetcherThread{std::move(crestClientId), std::move(crestClientSecret), mDataProvider, this};
+        const auto future = mFetcherThread->getFuture();
+
+        mFetcherThread->start();
+        future.wait();
+
+        mDataFetcher = mFetcherThread->getFetcher();
+
+        connect(this, &MarketAnalysisWidget::handleNewPreferences,
+                mDataFetcher, &MarketAnalysisDataFetcher::handleNewPreferences);
+        connect(mDataFetcher, &MarketAnalysisDataFetcher::orderStatusUpdated,
+                this, &MarketAnalysisWidget::updateOrderTask);
+        connect(mDataFetcher, &MarketAnalysisDataFetcher::historyStatusUpdated,
+                this, &MarketAnalysisWidget::updateHistoryTask);
+        connect(mDataFetcher, &MarketAnalysisDataFetcher::orderImportEnded,
+                this, &MarketAnalysisWidget::endOrderTask);
+        connect(mDataFetcher, &MarketAnalysisDataFetcher::historyImportEnded,
+                this, &MarketAnalysisWidget::endHistoryTask);
+
         auto mainLayout = new QVBoxLayout{this};
 
         auto toolBarLayout = new FlowLayout{};
@@ -179,16 +248,17 @@ namespace Evernus
         tabs->addTab(createInterRegionAnalysisWidget(), tr("Inter-Region"));
     }
 
+    MarketAnalysisWidget::~MarketAnalysisWidget()
+    {
+        mFetcherThread->quit();
+        mFetcherThread->wait();
+    }
+
     void MarketAnalysisWidget::setCharacter(Character::IdType id)
     {
         const auto character = mCharacterRepo.find(id);
         mTypeDataModel.setCharacter(character);
         mInterRegionDataModel.setCharacter(character);
-    }
-
-    void MarketAnalysisWidget::handleNewPreferences()
-    {
-        mManager.handleNewPreferences();
     }
 
     void MarketAnalysisWidget::prepareOrderImport()
@@ -201,13 +271,8 @@ namespace Evernus
 
     void MarketAnalysisWidget::importData(const ExternalOrderImporter::TypeLocationPairs &pairs)
     {
-        mPreparingRequests = true;
-        BOOST_SCOPE_EXIT(this_) {
-            this_->mPreparingRequests = false;
-        } BOOST_SCOPE_EXIT_END
-
-        mOrders.clear();
-        mHistory.clear();
+        mOrders = std::make_shared<MarketAnalysisDataFetcher::OrderResultType::element_type>();
+        mHistory = std::make_shared<MarketAnalysisDataFetcher::HistoryResultType::element_type>();
         mInterRegionDataModel.reset();
 
         const auto mainTask = mTaskManager.startTask(tr("Importing data for analysis..."));
@@ -223,35 +288,16 @@ namespace Evernus
                 ignored.insert(std::make_pair(pair.first, mDataProvider.getStationRegionId(pair.second)));
         }
 
-        for (const auto &pair : pairs)
-        {
-            if (ignored.find(pair) != std::end(ignored))
-                continue;
-
-            ++mOrderRequestCount;
-            ++mHistoryRequestCount;
-
-            mManager.fetchMarketOrders(pair.second, pair.first, [this](auto &&orders, const auto &error) {
-                processOrders(std::move(orders), error);
-            });
-            mManager.fetchMarketHistory(pair.second, pair.first, [pair, this](auto &&history, const auto &error) {
-                processHistory(pair.second, pair.first, std::move(history), error);
-            });
-        }
-
-        qDebug() << "Making" << mOrderRequestCount << mHistoryRequestCount << "CREST order and history requests...";
-
-        if (mOrderRequestCount == 0)
-            mTaskManager.endTask(mOrderSubtask);
-        if (mHistoryRequestCount == 0)
-            mTaskManager.endTask(mHistorySubtask);
-
-        checkCompletion();
+        QMetaObject::invokeMethod(mDataFetcher,
+                                  "importData",
+                                  Qt::QueuedConnection,
+                                  Q_ARG(ExternalOrderImporter::TypeLocationPairs, pairs),
+                                  Q_ARG(MarketOrderRepository::TypeLocationPairs, ignored));
     }
 
     void MarketAnalysisWidget::storeOrders()
     {
-        emit updateExternalOrders(mOrders);
+        emit updateExternalOrders(*mOrders);
 
         mTaskManager.endTask(mOrderSubtask);
         checkCompletion();
@@ -269,7 +315,7 @@ namespace Evernus
             mRegionDataStack->repaint();
 
             fillSolarSystems(region);
-            mTypeDataModel.setOrderData(mOrders, mHistory[region], region);
+            mTypeDataModel.setOrderData(*mOrders, (*mHistory)[region], region);
 
             mRegionDataStack->setCurrentWidget(mRegionTypeDataView);
         }
@@ -284,7 +330,7 @@ namespace Evernus
             mRegionDataStack->repaint();
 
             const auto system = mSolarSystemCombo->currentData().toUInt();
-            mTypeDataModel.setOrderData(mOrders, mHistory[region], region, system);
+            mTypeDataModel.setOrderData(*mOrders, (*mHistory)[region], region, system);
 
             mRegionDataStack->setCurrentWidget(mRegionTypeDataView);
         }
@@ -378,7 +424,7 @@ namespace Evernus
     {
         const auto id = mTypeDataModel.getTypeId(mTypeViewProxy.mapToSource(item));
         const auto region = getCurrentRegion();
-        const auto &history = mHistory[region];
+        const auto &history = (*mHistory)[region];
         const auto it = history.find(id);
 
         if (it != std::end(history))
@@ -449,116 +495,59 @@ namespace Evernus
         QApplication::clipboard()->setText(result);
     }
 
-    void MarketAnalysisWidget::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)
+    void MarketAnalysisWidget::updateOrderTask(const QString &text)
     {
-        --mOrderRequestCount;
-        ++mOrderBatchCounter;
-
-        qDebug() << mOrderRequestCount << " orders remaining; error:" << errorText;
-
-        if (mOrderBatchCounter >= MathUtils::batchSize(mOrderRequestCount))
-        {
-            mOrderBatchCounter = 0;
-            mTaskManager.updateTask(mOrderSubtask, tr("Waiting for %1 order server replies...").arg(mOrderRequestCount));
-        }
-
-        if (!errorText.isEmpty())
-        {
-            mAggregatedOrderErrors << errorText;
-
-            if (mOrderRequestCount == 0)
-            {
-                mOrders.clear();
-                mTaskManager.endTask(mOrderSubtask, mAggregatedOrderErrors.join("\n"));
-                mAggregatedOrderErrors.clear();
-            }
-
-            return;
-        }
-
-        mOrders.reserve(mOrders.size() + orders.size());
-        mOrders.insert(std::end(mOrders),
-                       std::make_move_iterator(std::begin(orders)),
-                       std::make_move_iterator(std::end(orders)));
-
-        if (mOrderRequestCount == 0)
-        {
-            if (!mPreparingRequests)
-            {
-                if (mAggregatedOrderErrors.isEmpty())
-                {
-                    if (!mDontSaveBtn->isChecked())
-                    {
-                        mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(mOrders.size()));
-                        QMetaObject::invokeMethod(this, "storeOrders", Qt::QueuedConnection);
-                    }
-                    else
-                    {
-                        mTaskManager.endTask(mOrderSubtask);
-                        checkCompletion();
-                    }
-                }
-                else
-                {
-                    mTaskManager.endTask(mOrderSubtask, mAggregatedOrderErrors.join("\n"));
-                    mAggregatedOrderErrors.clear();
-                }
-            }
-        }
+        mTaskManager.updateTask(mOrderSubtask, text);
     }
 
-    void MarketAnalysisWidget
-    ::processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText)
+    void MarketAnalysisWidget::updateHistoryTask(const QString &text)
     {
-        --mHistoryRequestCount;
-        ++mHistoryBatchCounter;
+        mTaskManager.updateTask(mHistorySubtask, text);
+    }
 
-        qDebug() << mHistoryRequestCount << " history remaining; error:" << errorText;
+    void MarketAnalysisWidget::endOrderTask(const MarketAnalysisDataFetcher::OrderResultType &orders, const QString &error)
+    {
+        Q_ASSERT(orders);
+        mOrders = orders;
 
-        if (mHistoryBatchCounter >= MathUtils::batchSize(mHistoryRequestCount))
+        if (error.isEmpty())
         {
-            mHistoryBatchCounter = 0;
-            mTaskManager.updateTask(mHistorySubtask, tr("Waiting for %1 history server replies...").arg(mHistoryRequestCount));
-        }
-
-        if (!errorText.isEmpty())
-        {
-            if (mHistoryRequestCount == 0)
+            if (!mDontSaveBtn->isChecked())
             {
-                mTaskManager.endTask(mHistorySubtask, mAggregatedHistoryErrors.join("\n"));
-                mAggregatedHistoryErrors.clear();
+                mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(mOrders->size()));
+                QMetaObject::invokeMethod(this, "storeOrders", Qt::QueuedConnection);
             }
             else
             {
-                mAggregatedHistoryErrors << errorText;
+                mTaskManager.endTask(mOrderSubtask);
+                checkCompletion();
             }
-
-            return;
         }
-
-        mHistory[regionId][typeId] = std::move(history);
-
-        if (mHistoryRequestCount == 0)
+        else
         {
-            if (!mPreparingRequests)
-            {
-                if (mAggregatedHistoryErrors.isEmpty())
-                {
-                    mTaskManager.endTask(mHistorySubtask);
-                    checkCompletion();
-                }
-                else
-                {
-                    mTaskManager.endTask(mHistorySubtask, mAggregatedHistoryErrors.join("\n"));
-                    mAggregatedHistoryErrors.clear();
-                }
-            }
+            mTaskManager.endTask(mOrderSubtask, error);
+        }
+    }
+
+    void MarketAnalysisWidget::endHistoryTask(const MarketAnalysisDataFetcher::HistoryResultType &history, const QString &error)
+    {
+        Q_ASSERT(history);
+        mHistory = history;
+
+        if (error.isEmpty())
+        {
+            mTaskManager.endTask(mHistorySubtask);
+            checkCompletion();
+        }
+        else
+        {
+            mTaskManager.endTask(mHistorySubtask, error);
         }
     }
 
     void MarketAnalysisWidget::checkCompletion()
     {
-        if (mOrderRequestCount == 0 && mHistoryRequestCount == 0)
+        if (!mDataFetcher->hasPendingOrderRequests() && !mDataFetcher->hasPendingHistoryRequests())
         {
             showForCurrentRegion();
             mRefreshedInterRegionData = false;
@@ -597,7 +586,7 @@ namespace Evernus
         mInterRegionDataStack->setCurrentIndex(waitingLabelIndex);
         mInterRegionDataStack->repaint();
 
-        mInterRegionDataModel.setOrderData(mOrders, mHistory, mSrcStation, mDstStation);
+        mInterRegionDataModel.setOrderData(*mOrders, *mHistory, mSrcStation, mDstStation);
     }
 
     void MarketAnalysisWidget::fillSolarSystems(uint regionId)

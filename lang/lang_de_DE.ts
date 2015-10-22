@@ -3308,151 +3308,164 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
 </context>
 <context>
+    <name>Evernus::MarketAnalysisDataFetcher</name>
+    <message>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="89"/>
+        <source>Waiting for %1 order server replies...</source>
+        <translation type="unfinished">Warte auf %1 Serverantworten für Aufträge...</translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="128"/>
+        <source>Waiting for %1 history server replies...</source>
+        <translation type="unfinished">Warte auf %1 Serverantworten für Historie...</translation>
+    </message>
+</context>
+<context>
     <name>Evernus::MarketAnalysisWidget</name>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="178"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="247"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="90"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="159"/>
         <source>Import data</source>
         <translation>Importiere Daten</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="104"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="173"/>
         <source>Don&apos;t save imported orders (huge performance gain)</source>
         <translation>Importierte Aufträge nicht speichern (großer Performancezugewinn)</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="113"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="182"/>
         <source>Ignore types with existing orders</source>
         <translation>Ignoriere Artikel mit bestehenden Aufträgen</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="142"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="211"/>
         <source>Bogus order threshold:</source>
         <translation>Schwellenwert für unsinnige Aufträge:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="166"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="235"/>
         <source>Use skills for difference calculation</source>
         <translation>Verwenden Sie Skills für Differenzberechnung</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="179"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="248"/>
         <source>Inter-Region</source>
         <translation>Interregional</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="586"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="575"/>
         <source>Station change</source>
         <translation>Stationswechsel</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="586"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="575"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation>Ein Stationswechesel erfordert eine Datenneuberechnung. Möchtest Du dies nun tun?</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="631"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="620"/>
         <source>Region:</source>
         <translation>Region:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="651"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="640"/>
         <source>Limit to solar system:</source>
         <translation>Begrenze auf Sternensystem:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="664"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="902"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="653"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="891"/>
         <source>Volume:</source>
         <translation>Volumen:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="682"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="921"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="671"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="910"/>
         <source>Margin:</source>
         <translation>Marge:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="703"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="692"/>
         <source>Buy price:</source>
         <translation>Kaufpreis:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="719"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="708"/>
         <source>Sell price:</source>
         <translation>Verkaufspreis:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="735"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="939"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="724"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="928"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="739"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="728"/>
         <source>Double-click an item for additional information. &quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation>Zusatzinformationen zu einem Gegenstand mit Doppelklick. &quot;In EVE anzeigen&quot; ist via Rechtsklickmenü verfügbar.</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="744"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="953"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="733"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="942"/>
         <source>Calculating data...</source>
         <translation>Berechene Daten...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="764"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="753"/>
         <source>Show details</source>
         <translation>Details anzeigen</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="769"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="977"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="758"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="966"/>
         <source>Show in EVE</source>
         <translation>In EVE anzeigen</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="774"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="982"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="763"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="971"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopieren</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="582"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="804"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="571"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="793"/>
         <source>- any station -</source>
         <translation>- beliebige Station -</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="807"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="796"/>
         <source>Source:</source>
         <translation>Quelle:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="817"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="806"/>
         <source>Destination:</source>
         <translation>Ziel:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="876"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="865"/>
         <source>- multiple -</source>
         <translation>- mehrere -</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="943"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="932"/>
         <source>&quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation>&quot;In EVE anzeigen&quot; ist via Rechtsklickmenü verfügbar.</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="126"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="195"/>
         <source>Discard bogus orders (causes recalculation)</source>
         <translation>Unsinnsaufträge verwerfen (startet Neuberechnung)</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="886"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="875"/>
         <source>- none -</source>
         <translation>- keine -</translation>
     </message>
@@ -3461,45 +3474,43 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="obsolete">&amp;Zeilen kopieren</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="213"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="278"/>
         <source>Importing data for analysis...</source>
         <translation>Importiere Daten zur Analyse...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="215"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="280"/>
         <source>Making %1 CREST order requests...</source>
         <translation>Erstelle %1 CREST Auftragsanfragen...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="216"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="281"/>
         <source>Making %1 CREST history requests...</source>
         <translation>Erstelle %1 CREST Historieanfragen...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="387"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="433"/>
         <source>%1 in %2</source>
         <translation>%1 in %2</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="462"/>
         <source>Waiting for %1 order server replies...</source>
-        <translation>Warte auf %1 Serverantworten für Aufträge...</translation>
+        <translation type="vanished">Warte auf %1 Serverantworten für Aufträge...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="492"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="517"/>
         <source>Saving %1 imported orders...</source>
         <translation>Speichere %1 importierte Aufträge...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="521"/>
         <source>Waiting for %1 history server replies...</source>
-        <translation>Warte auf %1 Serverantworten für Historie...</translation>
+        <translation type="vanished">Warte auf %1 Serverantworten für Historie...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="608"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="864"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="889"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="894"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="597"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="853"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="878"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="883"/>
         <source>- all -</source>
         <translation>- alle -</translation>
     </message>
@@ -6176,49 +6187,49 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen (dabei können Ihre Kontosicher
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="59"/>
+        <location filename="../main.cpp" line="61"/>
         <source>Evernus EVE Online trade tool</source>
         <translation>Evernus EVE Online Trade Tool</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="63"/>
+        <location filename="../main.cpp" line="65"/>
         <source>CREST client id.</source>
         <translation>CREST Client ID.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="65"/>
+        <location filename="../main.cpp" line="67"/>
         <source>CREST client secret.</source>
         <translation>CREST Client Secret.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="80"/>
-        <location filename="../main.cpp" line="95"/>
+        <location filename="../main.cpp" line="82"/>
+        <location filename="../main.cpp" line="97"/>
         <source>Already running</source>
         <translation>Läuft bereits</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="80"/>
+        <location filename="../main.cpp" line="82"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation>Evernus scheint schon zu laufen. Is das nicht der Fall, entferne bitte &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="95"/>
+        <location filename="../main.cpp" line="97"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation>Evernus wurde letztes Mal wahrscheinlich nicht korrekt beendet. Möchtest du einen Aufräumversuch starten?</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="104"/>
-        <location filename="../main.cpp" line="275"/>
+        <location filename="../main.cpp" line="106"/>
+        <location filename="../main.cpp" line="282"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="105"/>
+        <location filename="../main.cpp" line="107"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation>Konnte &apos;%1&apos; nicht entfernen!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="284"/>
+        <location filename="../main.cpp" line="291"/>
         <source>Initialization error</source>
         <translation>Fehler beim Initialisieren</translation>
     </message>

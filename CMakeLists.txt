@@ -149,6 +149,7 @@ qt5_wrap_cpp(
     LocationBookmarkSelectDialog.h
     MainWindow.h
     MarginToolDialog.h
+    MarketAnalysisDataFetcher.h
     MarketAnalysisWidget.h
     MarketBrowserWidget.h
     MarketLogExternalOrderImporter.h
@@ -507,6 +508,8 @@ add_executable(
     MarginToolDialog.cpp
     MarginToolDialog.h
     MarginToolSettings.h
+    MarketAnalysisDataFetcher.cpp
+    MarketAnalysisDataFetcher.h
     MarketAnalysisSettings.h
     MarketAnalysisWidget.h
     MarketAnalysisWidget.cpp

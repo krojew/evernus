@@ -20,10 +20,10 @@
 #include "InterRegionMarketDataFilterProxyModel.h"
 #include "TypeAggregatedMarketDataModel.h"
 #include "InterRegionMarketDataModel.h"
+#include "MarketAnalysisDataFetcher.h"
 #include "ExternalOrderImporter.h"
 #include "ExternalOrder.h"
 #include "TaskConstants.h"
-#include "CRESTManager.h"
 
 class QAbstractItemView;
 class QStackedWidget;
@@ -57,7 +57,7 @@ namespace Evernus
                              const MarketGroupRepository &groupRepo,
                              const CharacterRepository &characterRepo,
                              QWidget *parent = nullptr);
-        virtual ~MarketAnalysisWidget() = default;
+        virtual ~MarketAnalysisWidget();
 
     signals:
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
@@ -65,10 +65,10 @@ namespace Evernus
 
         void showInEve(EveType::IdType id);
 
+        void handleNewPreferences();
+
     public slots:
         void setCharacter(Character::IdType id);
-
-        void handleNewPreferences();
 
     private slots:
         void prepareOrderImport();
@@ -92,9 +92,17 @@ namespace Evernus
 
         void copyRows(const QAbstractItemView &view, const QAbstractItemModel &model) const;
 
+        void updateOrderTask(const QString &text);
+        void updateHistoryTask(const QString &text);
+
+        void endOrderTask(const MarketAnalysisDataFetcher::OrderResultType &orders, const QString &error);
+        void endHistoryTask(const MarketAnalysisDataFetcher::HistoryResultType &history, const QString &error);
+
     private:
         static const auto waitingLabelIndex = 0;
         static const auto allRegionsIndex = 0;
+
+        class FetcherThread;
 
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
@@ -102,8 +110,6 @@ namespace Evernus
         const EveTypeRepository &mTypeRepo;
         const MarketGroupRepository &mGroupRepo;
         const CharacterRepository &mCharacterRepo;
-
-        CRESTManager mManager;
 
         QAction *mShowDetailsAct = nullptr;
         QAction *mShowInEveRegionAct = nullptr;
@@ -135,17 +141,11 @@ namespace Evernus
         QStackedWidget *mInterRegionDataStack = nullptr;
         QTableView *mInterRegionTypeDataView = nullptr;
 
-        size_t mOrderRequestCount = 0, mHistoryRequestCount = 0;
-        uint mOrderBatchCounter = 0, mHistoryBatchCounter = 0;
-        bool mPreparingRequests = false;
-
         uint mOrderSubtask = TaskConstants::invalidTask;
         uint mHistorySubtask = TaskConstants::invalidTask;
 
-        std::vector<ExternalOrder> mOrders;
-        std::unordered_map<uint, TypeAggregatedMarketDataModel::HistoryMap> mHistory;
-
-        QStringList mAggregatedOrderErrors, mAggregatedHistoryErrors;
+        MarketAnalysisDataFetcher::OrderResultType mOrders;
+        MarketAnalysisDataFetcher::HistoryResultType mHistory;
 
         TypeAggregatedMarketDataModel mTypeDataModel;
         TypeAggregatedMarketDataFilterProxyModel mTypeViewProxy;
@@ -157,8 +157,8 @@ namespace Evernus
         quint64 mSrcStation = 0;
         quint64 mDstStation = 0;
 
-        void processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText);
-        void processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText);
+        FetcherThread *mFetcherThread = nullptr;
+        MarketAnalysisDataFetcher *mDataFetcher = nullptr;
 
         void checkCompletion();
         void changeStation(quint64 &destination, QPushButton &btn, const QString &settingName);
