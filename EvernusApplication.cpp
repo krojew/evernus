@@ -559,6 +559,11 @@ namespace Evernus
         return *mAssetValueSnapshotRepository;
     }
 
+    const CorpAssetValueSnapshotRepository &EvernusApplication::getCorpAssetValueSnapshotRepository() const noexcept
+    {
+        return *mCorpAssetValueSnapshotRepository;
+    }
+
     const WalletJournalEntryRepository &EvernusApplication::getWalletJournalEntryRepository() const noexcept
     {
         return *mWalletJournalEntryRepository;

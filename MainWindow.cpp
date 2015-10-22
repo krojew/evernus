@@ -681,18 +681,7 @@ namespace Evernus
         connect(this, &MainWindow::walletTransactionsChanged, charTab, &CharacterWidget::updateTimerList);
         connect(this, &MainWindow::marketOrdersChanged, charTab, &CharacterWidget::updateMarketData);
 
-        auto statsTab = new StatisticsWidget{mRepositoryProvider.getAssetValueSnapshotRepository(),
-                                             mRepositoryProvider.getWalletSnapshotRepository(),
-                                             mRepositoryProvider.getCorpWalletSnapshotRepository(),
-                                             mRepositoryProvider.getMarketOrderValueSnapshotRepository(),
-                                             mRepositoryProvider.getCorpMarketOrderValueSnapshotRepository(),
-                                             mRepositoryProvider.getWalletJournalEntryRepository(),
-                                             mRepositoryProvider.getWalletTransactionRepository(),
-                                             mRepositoryProvider.getCorpWalletJournalEntryRepository(),
-                                             mRepositoryProvider.getCorpWalletTransactionRepository(),
-                                             mRepositoryProvider.getMarketOrderRepository(),
-                                             mRepositoryProvider.getOrderScriptRepository(),
-                                             mRepositoryProvider.getCharacterRepository(),
+        auto statsTab = new StatisticsWidget{mRepositoryProvider,
                                              mEveDataProvider,
                                              this};
         addTab(statsTab, tr("Statistics"), TabType::Other);

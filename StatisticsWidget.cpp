@@ -36,6 +36,7 @@
 
 #include "CorpMarketOrderValueSnapshotRepository.h"
 #include "MarketOrderValueSnapshotRepository.h"
+#include "CorpAssetValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
 #include "AssetValueSnapshotRepository.h"
 #include "CorpWalletSnapshotRepository.h"
@@ -46,6 +47,7 @@
 #include "OrderScriptRepository.h"
 #include "NumberFormatDelegate.h"
 #include "CharacterRepository.h"
+#include "RepositoryProvider.h"
 #include "StatisticsSettings.h"
 #include "UISettings.h"
 #include "TextUtils.h"
@@ -56,33 +58,23 @@
 
 namespace Evernus
 {
-    StatisticsWidget::StatisticsWidget(const AssetValueSnapshotRepository &assetSnapshotRepo,
-                                       const WalletSnapshotRepository &walletSnapshotRepo,
-                                       const CorpWalletSnapshotRepository &corpWalletSnapshotRepo,
-                                       const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
-                                       const CorpMarketOrderValueSnapshotRepository &corpMarketOrderSnapshotRepo,
-                                       const WalletJournalEntryRepository &journalRepo,
-                                       const WalletTransactionRepository &transactionRepo,
-                                       const WalletJournalEntryRepository &corpJournalRepo,
-                                       const WalletTransactionRepository &corpTransactionRepo,
-                                       const MarketOrderRepository &orderRepo,
-                                       const OrderScriptRepository &orderScriptRepo,
-                                       const CharacterRepository &characterRepo,
+    StatisticsWidget::StatisticsWidget(const RepositoryProvider &repositoryProvider,
                                        const EveDataProvider &dataProvider,
                                        QWidget *parent)
         : QWidget(parent)
-        , mAssetSnapshotRepository(assetSnapshotRepo)
-        , mWalletSnapshotRepository(walletSnapshotRepo)
-        , mCorpWalletSnapshotRepository(corpWalletSnapshotRepo)
-        , mMarketOrderSnapshotRepository(marketOrderSnapshotRepo)
-        , mCorpMarketOrderSnapshotRepository(corpMarketOrderSnapshotRepo)
-        , mJournalRepository(journalRepo)
-        , mCorpJournalRepository(corpJournalRepo)
-        , mTransactionRepository(transactionRepo)
-        , mCorpTransactionRepository(corpTransactionRepo)
-        , mMarketOrderRepository(orderRepo)
-        , mOrderScriptRepository(orderScriptRepo)
-        , mCharacterRepository(characterRepo)
+        , mAssetSnapshotRepository(repositoryProvider.getAssetValueSnapshotRepository())
+        , mCorpAssetSnapshotRepository(repositoryProvider.getCorpAssetValueSnapshotRepository())
+        , mWalletSnapshotRepository(repositoryProvider.getWalletSnapshotRepository())
+        , mCorpWalletSnapshotRepository(repositoryProvider.getCorpWalletSnapshotRepository())
+        , mMarketOrderSnapshotRepository(repositoryProvider.getMarketOrderValueSnapshotRepository())
+        , mCorpMarketOrderSnapshotRepository(repositoryProvider.getCorpMarketOrderValueSnapshotRepository())
+        , mJournalRepository(repositoryProvider.getWalletJournalEntryRepository())
+        , mCorpJournalRepository(repositoryProvider.getCorpWalletJournalEntryRepository())
+        , mTransactionRepository(repositoryProvider.getWalletTransactionRepository())
+        , mCorpTransactionRepository(repositoryProvider.getCorpWalletTransactionRepository())
+        , mMarketOrderRepository(repositoryProvider.getMarketOrderRepository())
+        , mOrderScriptRepository(repositoryProvider.getOrderScriptRepository())
+        , mCharacterRepository(repositoryProvider.getCharacterRepository())
         , mAggrModel(mMarketOrderRepository, dataProvider)
         , mScriptModel(dataProvider)
     {
@@ -161,6 +153,7 @@ namespace Evernus
         auto assetGraph = mBalancePlot->getPlot().graph(assetValueGraph);
         auto walletGraph = mBalancePlot->getPlot().graph(walletBalanceGraph);
         auto corpWalletGraph = mBalancePlot->getPlot().graph(corpWalletBalanceGraph);
+        auto corpAssetGraph = mBalancePlot->getPlot().graph(corpAssetValueGraph);
         auto buyGraph = mBalancePlot->getPlot().graph(buyOrdersGraph);
         auto sellGraph = mBalancePlot->getPlot().graph(sellOrdersGraph);
         auto sumGraph = mBalancePlot->getPlot().graph(totalValueGraph);
@@ -168,6 +161,7 @@ namespace Evernus
         auto assetValues = std::make_unique<QCPDataMap>();
         auto walletValues = std::make_unique<QCPDataMap>();
         auto corpWalletValues = std::make_unique<QCPDataMap>();
+        auto corpAssetValues = std::make_unique<QCPDataMap>();
         auto buyValues = std::make_unique<QCPDataMap>();
         auto sellValues = std::make_unique<QCPDataMap>();;
 
@@ -346,11 +340,19 @@ namespace Evernus
             const auto walletShots = (combineStats) ?
                                      (mCorpWalletSnapshotRepository.fetchRange(from.toUTC(), to.toUTC())) :
                                      (mCorpWalletSnapshotRepository.fetchRange(corpId, from.toUTC(), to.toUTC()));
+            const auto assetShots = (combineStats) ?
+                                    (mCorpAssetSnapshotRepository.fetchRange(from.toUTC(), to.toUTC())) :
+                                    (mCorpAssetSnapshotRepository.fetchRange(corpId, from.toUTC(), to.toUTC()));
 
             if (!walletShots.empty())
             {
                 dataInserter(*corpWalletValues, walletShots);
                 *sumData = merger(*sumData, *corpWalletValues);
+            }
+            if (!assetShots.empty())
+            {
+                dataInserter(*corpAssetValues, assetShots);
+                *sumData = merger(*sumData, *corpAssetValues);
             }
 
             const auto corpOrderShots = mCorpMarketOrderSnapshotRepository.fetchRange(corpId, from.toUTC(), to.toUTC());
@@ -392,6 +394,9 @@ namespace Evernus
 
         corpWalletGraph->setData(corpWalletValues.get(), false);
         corpWalletValues.release();
+
+        corpAssetGraph->setData(corpAssetValues.get(), false);
+        corpAssetValues.release();
 
         buyGraph->setData(buyValues.get(), false);
         buyValues.release();
@@ -702,12 +707,14 @@ namespace Evernus
         const auto corpWalletValue = getValue(mBalancePlot->getPlot().graph(corpWalletBalanceGraph));
         const auto walletValue = getValue(mBalancePlot->getPlot().graph(walletBalanceGraph));
         const auto assetValue = getValue(mBalancePlot->getPlot().graph(assetValueGraph));
+        const auto corpAssetValue = getValue(mBalancePlot->getPlot().graph(corpAssetValueGraph));
         const auto totalValue = getValue(mBalancePlot->getPlot().graph(totalValueGraph));
 
         const auto loc = locale();
         mBalancePlot->setToolTip(
-            tr("Assets: %1\nWallet: %2\nCorp. wallet: %3\nBuy orders: %4\nSell orders: %5\nTotal: %6")
+            tr("Assets: %1\nCorp. assets: %2\nWallet: %3\nCorp. wallet: %4\nBuy orders: %5\nSell orders: %6\nTotal: %7")
                 .arg(TextUtils::currencyToString(assetValue, loc))
+                .arg(TextUtils::currencyToString(corpAssetValue, loc))
                 .arg(TextUtils::currencyToString(walletValue, loc))
                 .arg(TextUtils::currencyToString(corpWalletValue, loc))
                 .arg(TextUtils::currencyToString(buyOrdersValue, loc))
@@ -726,6 +733,9 @@ namespace Evernus
 
         auto corpWalletGraph = mBalancePlot->getPlot().addGraph();
         corpWalletGraph->setName(tr("Corp. wallet balance"));
+
+        auto corpAssetGraph = mBalancePlot->getPlot().addGraph();
+        corpAssetGraph->setName(tr("Corp. asset value"));
 
         auto buyGraph = mBalancePlot->getPlot().addGraph();
         buyGraph->setName(tr("Buy order value"));
@@ -757,6 +767,7 @@ namespace Evernus
         const auto corpWalletValue = mBalancePlot->getPlot().graph(corpWalletBalanceGraph);
         const auto walletValue = mBalancePlot->getPlot().graph(walletBalanceGraph);
         const auto assetValue = mBalancePlot->getPlot().graph(assetValueGraph);
+        const auto corpAssetValue = mBalancePlot->getPlot().graph(corpAssetValueGraph);
         const auto totalValue = mBalancePlot->getPlot().graph(totalValueGraph);
 
         QSettings settings;
@@ -771,6 +782,8 @@ namespace Evernus
             settings.value(StatisticsSettings::statisticsWalletPlotColorKey, StatisticsSettings::statisticsWalletPlotColorDefault).value<QColor>());
         assetValue->setPen(
             settings.value(StatisticsSettings::statisticsAssetPlotColorKey, StatisticsSettings::statisticsAssetPlotColorDefault).value<QColor>());
+        corpAssetValue->setPen(
+            settings.value(StatisticsSettings::statisticsCorpAssetPlotColorKey, StatisticsSettings::statisticsCorpAssetPlotColorDefault).value<QColor>());
         totalValue->setPen(
             settings.value(StatisticsSettings::statisticsTotalPlotColorKey, StatisticsSettings::statisticsTotalPlotColorDefault).value<QColor>());
     }

@@ -114,6 +114,7 @@ namespace Evernus
         virtual const WalletSnapshotRepository &getWalletSnapshotRepository() const noexcept override;
         virtual const CorpWalletSnapshotRepository &getCorpWalletSnapshotRepository() const noexcept override;
         virtual const AssetValueSnapshotRepository &getAssetValueSnapshotRepository() const noexcept override;
+        virtual const CorpAssetValueSnapshotRepository &getCorpAssetValueSnapshotRepository() const noexcept override;
         virtual const WalletJournalEntryRepository &getWalletJournalEntryRepository() const noexcept override;
         virtual const WalletTransactionRepository &getWalletTransactionRepository() const noexcept override;
         virtual const MarketOrderRepository &getMarketOrderRepository() const noexcept override;

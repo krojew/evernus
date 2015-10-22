@@ -22,6 +22,7 @@ namespace Evernus
     {
         const auto combineCorpAndCharPlotsDefault = false;
         const QColor statisticsAssetPlotColorDefault = Qt::blue;
+        const QColor statisticsCorpAssetPlotColorDefault = Qt::darkGray;
         const QColor statisticsWalletPlotColorDefault = Qt::red;
         const QColor statisticsCorpWalletPlotColorDefault = Qt::cyan;
         const QColor statisticsBuyOrderPlotColorDefault = Qt::yellow;
@@ -32,6 +33,7 @@ namespace Evernus
 
         const auto combineCorpAndCharPlotsKey = "prices/combineCorpAndCharPlots";
         const auto statisticsAssetPlotColorKey = "ui/appearance/statistics/assetColor";
+        const auto statisticsCorpAssetPlotColorKey = "ui/appearance/statistics/corpAssetColor";
         const auto statisticsWalletPlotColorKey = "ui/appearance/statistics/walletColor";
         const auto statisticsCorpWalletPlotColorKey = "ui/appearance/statistics/corpWalletColor";
         const auto statisticsBuyOrderPlotColorKey = "ui/appearance/statistics/buyOrderColor";

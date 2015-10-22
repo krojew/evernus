@@ -33,6 +33,7 @@ namespace Evernus
 {
     class CorpMarketOrderValueSnapshotRepository;
     class MarketOrderValueSnapshotRepository;
+    class CorpAssetValueSnapshotRepository;
     class WalletJournalEntryRepository;
     class AssetValueSnapshotRepository;
     class CorpWalletSnapshotRepository;
@@ -41,6 +42,7 @@ namespace Evernus
     class DateFilteredPlotWidget;
     class OrderScriptRepository;
     class CharacterRepository;
+    class RepositoryProvider;
 
     class StatisticsWidget
         : public QWidget
@@ -48,18 +50,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        StatisticsWidget(const AssetValueSnapshotRepository &assetSnapshotRepo,
-                         const WalletSnapshotRepository &walletSnapshotRepo,
-                         const CorpWalletSnapshotRepository &corpWalletSnapshotRepo,
-                         const MarketOrderValueSnapshotRepository &marketOrderSnapshotRepo,
-                         const CorpMarketOrderValueSnapshotRepository &corpMarketOrderSnapshotRepo,
-                         const WalletJournalEntryRepository &journalRepo,
-                         const WalletTransactionRepository &transactionRepo,
-                         const WalletJournalEntryRepository &corpJournalRepo,
-                         const WalletTransactionRepository &corpTransactionRepo,
-                         const MarketOrderRepository &orderRepo,
-                         const OrderScriptRepository &orderScriptRepo,
-                         const CharacterRepository &characterRepo,
+        StatisticsWidget(const RepositoryProvider &repositoryProvider,
                          const EveDataProvider &dataProvider,
                          QWidget *parent = nullptr);
         virtual ~StatisticsWidget() = default;
@@ -95,12 +86,14 @@ namespace Evernus
             assetValueGraph,
             walletBalanceGraph,
             corpWalletBalanceGraph,
+            corpAssetValueGraph,
             buyOrdersGraph,
             sellOrdersGraph,
             totalValueGraph,
         };
 
         const AssetValueSnapshotRepository &mAssetSnapshotRepository;
+        const CorpAssetValueSnapshotRepository &mCorpAssetSnapshotRepository;
         const WalletSnapshotRepository &mWalletSnapshotRepository;
         const CorpWalletSnapshotRepository &mCorpWalletSnapshotRepository;
         const MarketOrderValueSnapshotRepository &mMarketOrderSnapshotRepository;

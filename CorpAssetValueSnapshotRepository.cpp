@@ -56,6 +56,29 @@ namespace Evernus
     }
 
     CorpAssetValueSnapshotRepository::EntityList CorpAssetValueSnapshotRepository
+    ::fetchRange(const QDateTime &from, const QDateTime &to) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp ASC"}
+            .arg(getTableName()));
+
+        query.addBindValue(from);
+        query.addBindValue(to);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
+    CorpAssetValueSnapshotRepository::EntityList CorpAssetValueSnapshotRepository
     ::fetchRange(quint64 corporationId, const QDateTime &from, const QDateTime &to) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE corporation_id = ? AND timestamp BETWEEN ? AND ? ORDER BY timestamp ASC"}

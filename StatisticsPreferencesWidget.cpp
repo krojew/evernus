@@ -68,6 +68,11 @@ namespace Evernus
             this
         };
         appearanceGroupLayout->addRow(tr("Asset value plot color:"), mAssetPlotColorBtn);
+        mCorpAssetPlotColorBtn = new ColorButton{
+            settings.value(StatisticsSettings::statisticsCorpAssetPlotColorKey, StatisticsSettings::statisticsCorpAssetPlotColorDefault).value<QColor>(),
+            this
+        };
+        appearanceGroupLayout->addRow(tr("Corp. asset value plot color:"), mCorpAssetPlotColorBtn);
         mWalletPlotColorBtn = new ColorButton{
             settings.value(StatisticsSettings::statisticsWalletPlotColorKey, StatisticsSettings::statisticsWalletPlotColorDefault).value<QColor>(),
             this
@@ -108,6 +113,7 @@ namespace Evernus
         settings.setValue(StatisticsSettings::automaticSnapshotsKey, mAutomaticSnapshotsBtn->isChecked());
         settings.setValue(UISettings::plotNumberFormatKey, mPlotNumberFormatEdit->currentData());
         settings.setValue(StatisticsSettings::statisticsAssetPlotColorKey, mAssetPlotColorBtn->getColor());
+        settings.setValue(StatisticsSettings::statisticsCorpAssetPlotColorKey, mCorpAssetPlotColorBtn->getColor());
         settings.setValue(StatisticsSettings::statisticsWalletPlotColorKey, mWalletPlotColorBtn->getColor());
         settings.setValue(StatisticsSettings::statisticsCorpWalletPlotColorKey, mCorpWalletPlotColorBtn->getColor());
         settings.setValue(StatisticsSettings::statisticsBuyOrderPlotColorKey, mBuyOrdersPlotColorBtn->getColor());

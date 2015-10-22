@@ -44,6 +44,7 @@ namespace Evernus
 
         QComboBox *mPlotNumberFormatEdit = nullptr;
         ColorButton *mAssetPlotColorBtn = nullptr;
+        ColorButton *mCorpAssetPlotColorBtn = nullptr;
         ColorButton *mWalletPlotColorBtn = nullptr;
         ColorButton *mCorpWalletPlotColorBtn = nullptr;
         ColorButton *mBuyOrdersPlotColorBtn = nullptr;

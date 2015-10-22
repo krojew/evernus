@@ -37,6 +37,7 @@ namespace Evernus
 
         void create() const;
 
+        EntityList fetchRange(const QDateTime &from, const QDateTime &to) const;
         EntityList fetchRange(quint64 corporationId, const QDateTime &from, const QDateTime &to) const;
 
     private:
