@@ -839,7 +839,7 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            mAPIManager.fetchAssets(*key, id, [assetSubtask, id, this](auto &&data, const auto &error) {
+            mAPIManager.fetchAssets(*key, id, [assetSubtask, id, this](AssetList &&data, const QString &error) {
                 if (error.isEmpty())
                 {
                     mAssetListRepository->deleteForCharacter(id);
@@ -948,7 +948,7 @@ namespace Evernus
                 emit taskInfoChanged(task, tr("Fetching wallet journal for character %1 (this may take a while)...").arg(id));
 
             mAPIManager.fetchWalletJournal(*key, id, WalletJournalEntry::invalidId, maxId,
-                                           [task, id, this](const auto &data, const auto &error) {
+                                           [task, id, this](const WalletJournal &data, const QString &error) {
                 if (error.isEmpty())
                 {
                     QSettings settings;
@@ -1104,7 +1104,7 @@ namespace Evernus
         try
         {
             const auto key = getCorpKey(id);
-            mAPIManager.fetchAssets(*key, id, [assetSubtask, id, this](auto &&data, const auto &error) {
+            mAPIManager.fetchAssets(*key, id, [assetSubtask, id, this](AssetList &&data, const QString &error) {
                 if (error.isEmpty())
                 {
                     mCorpAssetListRepository->deleteForCharacter(id);
@@ -1210,7 +1210,7 @@ namespace Evernus
             const auto accountKey = settings.value(ImportSettings::corpWalletDivisionKey, ImportSettings::corpWalletDivisionDefault).toInt();
 
             mAPIManager.fetchWalletJournal(*key, id, mCharacterRepository->getCorporationId(id), WalletJournalEntry::invalidId, maxId, accountKey,
-                                           [task, id, this](auto &&data, const auto &error) {
+                                           [task, id, this](WalletJournal &&data, const QString &error) {
                 if (error.isEmpty())
                 {
                     QSettings settings;
@@ -1963,7 +1963,7 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::Character, task))
             return;
 
-        mAPIManager.fetchCharacter(key, id, [task, id, this](auto &&data, const auto &error) {
+        mAPIManager.fetchCharacter(key, id, [task, id, this](Character &&data, const QString &error) {
             if (error.isEmpty())
             {
                 QSettings settings;

@@ -67,7 +67,7 @@ namespace Evernus
         template<class T>
         size_t batchSize(T value)
         {
-            return std::max(1ul, std::min(static_cast<size_t>(exp(log(value) / 1.38629436112 - 1.)), 300ul));
+            return std::max(static_cast<size_t>(1u), std::min(static_cast<size_t>(exp(log(value) / 1.38629436112 - 1.)), static_cast<size_t>(300u)));
         }
     }
 }
