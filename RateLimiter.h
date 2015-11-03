@@ -14,18 +14,32 @@
  */
 #pragma once
 
-#include <QNetworkCookieJar>
+#include <chrono>
 
 namespace Evernus
 {
-    class PersistentCookieJar
-        : public QNetworkCookieJar
+    class RateLimiter
     {
     public:
-        explicit PersistentCookieJar(QString configKey, QObject *parent = nullptr);
-        virtual ~PersistentCookieJar();
+        RateLimiter() = default;
+        explicit RateLimiter(float rate);
+        RateLimiter(const RateLimiter &) = default;
+        RateLimiter(RateLimiter &&) = default;
+        ~RateLimiter() = default;
+
+        float getRate() const noexcept;
+        void setRate(float rate);
+
+        std::chrono::microseconds acquire(size_t permits = 1);
+
+        RateLimiter &operator =(const RateLimiter &) = default;
+        RateLimiter &operator =(RateLimiter &&) = default;
 
     private:
-        QString mConfigKey;
+        static constexpr auto scale = 1000000.f;
+
+        float mInterval = 1.f;
+
+        std::chrono::microseconds::rep mNextFree = 0;
     };
 }

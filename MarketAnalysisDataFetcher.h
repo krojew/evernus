@@ -42,10 +42,7 @@ namespace Evernus
         using OrderResultType = std::shared_ptr<std::vector<ExternalOrder>>;
         using HistoryResultType = std::shared_ptr<std::unordered_map<uint, TypeAggregatedMarketDataModel::HistoryMap>>;
 
-        MarketAnalysisDataFetcher(QByteArray crestClientId,
-                                  QByteArray crestClientSecret,
-                                  const EveDataProvider &dataProvider,
-                                  QObject *parent = nullptr);
+        explicit MarketAnalysisDataFetcher(const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~MarketAnalysisDataFetcher() = default;
 
         bool hasPendingOrderRequests() const noexcept;

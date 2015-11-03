@@ -18,11 +18,10 @@ find_package(Qt5Script REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
-find_package(Qt5WebKitWidgets REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
 if(${Qt5XmlPatterns_VERSION} VERSION_LESS "5.4.0")
-    message(WARNING "Qt version < 5.4 requires a patch to QXmlPatterns - see http://evernus.com/download/ for details.")
+    message(SEND_ERROR "Qt version >= 5.4 is required.")
 endif()
 
 configure_file(Version.h.in Version.h)
@@ -73,10 +72,6 @@ if(DEFINED EVERNUS_DROPBOX_APP_KEY AND DEFINED EVERNUS_DROPBOX_APP_SECRET)
     endif()
 endif()
 
-if(DEFINED EVERNUS_CREST_CLIENT_ID AND DEFINED EVERNUS_CREST_SECRET)
-    add_definitions(-DEVERNUS_CREST_CLIENT_ID=${EVERNUS_CREST_CLIENT_ID} -DEVERNUS_CREST_SECRET=${EVERNUS_CREST_SECRET})
-endif()
-
 if(DEFINED EVERNUS_CREST_SISI)
     add_definitions(-DEVERNUS_CREST_SISI)
 endif()
@@ -108,7 +103,6 @@ qt5_wrap_cpp(
     ContractWidget.h
     CorpImportPreferencesWidget.h
     CorpKeyEditDialog.h
-    CRESTAuthWidget.h
     CRESTExternalOrderImporter.h
     CRESTInterface.h
     CRESTManager.h
@@ -362,8 +356,6 @@ add_executable(
     CorpWalletSnapshot.h
     CorpWalletSnapshotRepository.cpp
     CorpWalletSnapshotRepository.h
-    CRESTAuthWidget.cpp
-    CRESTAuthWidget.h
     CRESTExternalOrderImporter.cpp
     CRESTExternalOrderImporter.h
     CRESTInterface.cpp
@@ -588,8 +580,6 @@ add_executable(
     PathSettings.h
     PathUtils.cpp
     PathUtils.h
-    PersistentCookieJar.cpp
-    PersistentCookieJar.h
     PreferencesDialog.cpp
     PreferencesDialog.h
     PricePreferencesWidget.cpp
@@ -662,6 +652,8 @@ add_executable(
     qxtwebevent.h
     qxtwebslotservice.cpp
     qxtwebslotservice.h
+    RateLimiter.cpp
+    RateLimiter.h
     RefType.cpp
     RefType.h
     RefTypeRepository.cpp
@@ -809,7 +801,6 @@ target_link_libraries(
     Qt5::Xml
     Qt5::XmlPatterns
     Qt5::Widgets
-    Qt5::WebKitWidgets
     ${ADDITIONAL_LIBS}
 )
 

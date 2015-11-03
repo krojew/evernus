@@ -23,6 +23,7 @@
 #include <QHash>
 #include <QUrl>
 
+#include "RateLimiter.h"
 #include "EveType.h"
 
 class QJsonDocument;
@@ -40,7 +41,7 @@ namespace Evernus
 
         static const QString crestUrl;
 
-        using QObject::QObject;
+        explicit CRESTInterface(QObject *parent = nullptr);
         virtual ~CRESTInterface() = default;
 
         void fetchBuyMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
@@ -49,15 +50,10 @@ namespace Evernus
 
         void setEndpoints(EndpointMap endpoints);
 
-    public slots:
-        void updateTokenAndContinue(QString token, const QDateTime &expiry);
-        void handleTokenError(const QString &error);
+        static void setRateLimit(float rate);
 
     private slots:
         void processSslErrors(const QList<QSslError> &errors);
-
-    signals:
-        void tokenRequested() const;
 
     private:
         using RegionOrderUrlMap = QHash<uint, QUrl>;
@@ -65,13 +61,10 @@ namespace Evernus
         static const QString regionsUrlName;
         static const QString itemTypesUrlName;
 
+        static RateLimiter mCRESTLimiter;
+
         mutable QNetworkAccessManager mNetworkManager;
         EndpointMap mEndpoints;
-
-        mutable QString mAccessToken;
-        mutable QDateTime mExpiry;
-
-        mutable std::vector<std::function<void (const QString &)>> mPendingRequests;
 
         mutable RegionOrderUrlMap mRegionBuyOrdersUrls, mRegionSellOrdersUrls;
         mutable QHash<QPair<uint, QString>, std::vector<std::function<void (const QUrl &, const QString &)>>>
@@ -93,14 +86,7 @@ namespace Evernus
         void getOrders(QUrl regionUrl, EveType::IdType typeId, T &&continuation) const;
 
         template<class T>
-        void checkAuth(T &&continuation) const;
-
-        template<class T>
-        void fetchAccessToken(const T &continuation) const;
-
-        template<class T>
         void asyncGet(const QUrl &url, const QByteArray &accept, T &&continuation) const;
-        QJsonDocument syncGet(const QUrl &url, const QByteArray &accept) const;
 
         QNetworkRequest prepareRequest(const QUrl &url, const QByteArray &accept) const;
     };

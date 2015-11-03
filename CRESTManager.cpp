@@ -20,12 +20,9 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QUrlQuery>
-#include <QWebFrame>
 #include <QSettings>
-#include <QWebPage>
 #include <QDebug>
 
-#include "PersistentCookieJar.h"
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
 #include "CRESTSettings.h"
@@ -51,25 +48,11 @@ namespace Evernus
         };
     }
 
-#ifdef EVERNUS_CREST_SISI
-    const QString CRESTManager::loginUrl = "https://sisilogin.testeveonline.com";
-#else
-    const QString CRESTManager::loginUrl = "https://login-tq.eveonline.com";
-#endif
-
-    const QString CRESTManager::redirectDomain = "evernus.com";
-
     CRESTManager
-    ::CRESTManager(QByteArray clientId, QByteArray clientSecret, const EveDataProvider &dataProvider, QObject *parent)
+    ::CRESTManager(const EveDataProvider &dataProvider, QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
-        , mClientId{std::move(clientId)}
-        , mClientSecret{std::move(clientSecret)}
-        , mCrypt{CRESTSettings::cryptKey}
     {
-        QSettings settings;
-        mRefreshToken = mCrypt.decryptToString(settings.value(CRESTSettings::refreshTokenKey).toByteArray());
-
         handleNewPreferences();
         fetchEndpoints();
 
@@ -80,21 +63,6 @@ namespace Evernus
                 fetchEndpoints();
         });
         mEndpointTimer.start(10 * 1000);
-    }
-
-    bool CRESTManager::eventFilter(QObject *watched, QEvent *event)
-    {
-        Q_ASSERT(event != nullptr);
-
-        if (watched == mAuthView.get() && event->type() == QEvent::Close)
-        {
-            mFetchingToken = false;
-
-            qDebug() << "Auth window closed.";
-            emit tokenError(tr("CREST authorization failed."));
-        }
-
-        return QObject::eventFilter(watched, event);
     }
 
     void CRESTManager::fetchMarketOrders(uint regionId,
@@ -222,141 +190,12 @@ namespace Evernus
         });
     }
 
-    bool CRESTManager::hasClientCredentials() const
-    {
-        return !mClientId.isEmpty() && !mClientSecret.isEmpty();
-    }
-
-    void CRESTManager::fetchToken()
-    {
-        if (mFetchingToken)
-            return;
-
-        mFetchingToken = true;
-
-        try
-        {
-            qDebug() << "Refreshing access token...";
-
-            if (mRefreshToken.isEmpty())
-            {
-                qDebug() << "No refresh token - requesting access.";
-
-                QUrl url{loginUrl + "/oauth/authorize"};
-
-                QUrlQuery query;
-                query.addQueryItem("response_type", "code");
-                query.addQueryItem("redirect_uri", "http://" + redirectDomain + "/crest-authentication/");
-                query.addQueryItem("client_id", mClientId);
-                query.addQueryItem("scope", "publicData");
-
-                url.setQuery(query);
-
-                mAuthView = std::make_unique<CRESTAuthWidget>(url);
-
-                auto nam = mAuthView->page()->networkAccessManager();
-                nam->setCookieJar(new PersistentCookieJar{CRESTSettings::cookiesKey});
-                connect(nam, &QNetworkAccessManager::sslErrors, this, &CRESTManager::handleSslErrors);
-
-                mAuthView->setWindowModality(Qt::ApplicationModal);
-                mAuthView->setWindowTitle(tr("CREST Authentication"));
-                mAuthView->installEventFilter(this);
-                mAuthView->adjustSize();
-                mAuthView->move(QApplication::desktop()->screenGeometry(QApplication::activeWindow()).center() -
-                                mAuthView->rect().center());
-                mAuthView->show();
-
-                connect(mAuthView.get(), &CRESTAuthWidget::acquiredCode, this, &CRESTManager::processAuthorizationCode);
-                connect(mAuthView->page()->mainFrame(), &QWebFrame::urlChanged, [=](const QUrl &url) {
-                    try
-                    {
-                        if (url.host() == redirectDomain)
-                        {
-                            QUrlQuery query{url};
-                            processAuthorizationCode(query.queryItemValue("code").toLatin1());
-                        }
-                    }
-                    catch (...)
-                    {
-                        mFetchingToken = false;
-                        throw;
-                    }
-                });
-            }
-            else
-            {
-                qDebug() << "Refreshing token...";
-
-                QByteArray data = "grant_type=refresh_token&refresh_token=";
-                data.append(mRefreshToken);
-
-                auto reply = mNetworkManager.post(getAuthRequest(), data);
-                connect(reply, &QNetworkReply::finished, this, [=] {
-                    try
-                    {
-                        reply->deleteLater();
-
-                        const auto doc = QJsonDocument::fromJson(reply->readAll());
-                        const auto object = doc.object();
-
-                        if (reply->error() != QNetworkReply::NoError)
-                        {
-                            qDebug() << "Error refreshing token:" << reply->errorString();
-
-                            const auto error = object.value("error").toString();
-
-                            qDebug() << "Returned error:" << error;
-
-                            if (error == "invalid_token" || error == "invalid_client")
-                            {
-                                mRefreshToken.clear();
-                                mFetchingToken = false;
-                                fetchToken();
-                            }
-                            else
-                            {
-                                const auto desc = object.value("error_description").toString();
-                                emit tokenError((desc.isEmpty()) ? (reply->errorString()) : (desc));
-                            }
-
-                            return;
-                        }
-
-                        const auto accessToken = object.value("access_token").toString();
-                        if (accessToken.isEmpty())
-                        {
-                            qDebug() << "Empty access token!";
-                            emit tokenError(tr("Empty access token!"));
-                            return;
-                        }
-
-                        emit acquiredToken(accessToken,
-                                           QDateTime::currentDateTime().addSecs(doc.object().value("expires_in").toInt() - 10));
-
-                        mFetchingToken = false;
-                    }
-                    catch (...)
-                    {
-                        mFetchingToken = false;
-                        throw;
-                    }
-                });
-            }
-        }
-        catch (...)
-        {
-            mFetchingToken = false;
-            throw;
-        }
-    }
-
     void CRESTManager::handleNewPreferences()
     {
         for (auto iface : mInterfaces)
             iface->deleteLater();
 
         mInterfaces.clear();
-        mCurrentInterface = 0;
 
         QSettings settings;
 
@@ -364,27 +203,14 @@ namespace Evernus
         const auto maxInterfaces = settings.value(CRESTSettings::maxThreadsKey, CRESTSettings::maxThreadsDefault).toUInt();
         mInterfaces.reserve(maxInterfaces);
 
+        const auto rate = settings.value(CRESTSettings::rateLimitKey, CRESTSettings::rateLimitDefault).toFloat();
+        CRESTInterface::setRateLimit(rate);
+
         for (auto i = 0u; i < maxInterfaces; ++i)
         {
             mInterfaces.emplace_back(new CRESTInterface{this});
             mInterfaces.back()->setEndpoints(mEndpoints);
-
-            connect(mInterfaces.back(), &CRESTInterface::tokenRequested, this, &CRESTManager::fetchToken, Qt::QueuedConnection);
-            connect(this, &CRESTManager::acquiredToken, mInterfaces.back(), &CRESTInterface::updateTokenAndContinue);
-            connect(this, &CRESTManager::tokenError, mInterfaces.back(), &CRESTInterface::handleTokenError);
         }
-    }
-
-    void CRESTManager::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
-    {
-        QStringList errorStrings;
-        for (const auto &error : errors)
-            errorStrings << error.errorString();
-
-        const auto ret = QMessageBox::question(mAuthView.get(), tr("CREST error"), tr(
-            "EVE login page certificate contains errors:\n%1\nAre you sure you wish to proceed (doing so can compromise your account security)?").arg(errorStrings.join("\n")));
-        if (ret == QMessageBox::Yes)
-            reply->ignoreSslErrors();
     }
 
     void CRESTManager::fetchEndpoints()
@@ -438,71 +264,9 @@ namespace Evernus
         });
     }
 
-    void CRESTManager::processAuthorizationCode(const QByteArray &code)
+    bool CRESTManager::hasEndpoints() const
     {
-        try
-        {
-            mAuthView->removeEventFilter(this);
-            mAuthView->close();
-
-            qDebug() << "Requesting access token...";
-
-            QByteArray data = "grant_type=authorization_code&code=" + code;
-
-            auto reply = mNetworkManager.post(getAuthRequest(), data);
-            connect(reply, &QNetworkReply::finished, this, [=] {
-                try
-                {
-                    reply->deleteLater();
-
-                    if (reply->error() != QNetworkReply::NoError)
-                    {
-                        qDebug() << "Error requesting access token:" << reply->errorString();
-                        emit tokenError(reply->errorString());
-                        return;
-                    }
-
-                    const auto doc = QJsonDocument::fromJson(reply->readAll());
-                    const auto object = doc.object();
-
-                    mRefreshToken = object.value("refresh_token").toString();
-                    if (mRefreshToken.isEmpty())
-                    {
-                        qDebug() << "Empty refresh token!";
-                        emit tokenError(tr("Empty refresh token!"));
-                        return;
-                    }
-
-                    QSettings settings;
-                    settings.setValue(CRESTSettings::refreshTokenKey, mCrypt.encryptToByteArray(mRefreshToken));
-
-                    emit acquiredToken(object.value("access_token").toString(),
-                                       QDateTime::currentDateTime().addSecs(object.value("expires_in").toInt() - 10));
-
-                    mFetchingToken = false;
-                }
-                catch (...)
-                {
-                    mFetchingToken = false;
-                    throw;
-                }
-            });
-        }
-        catch (...)
-        {
-            mFetchingToken = false;
-            throw;
-        }
-    }
-
-    QNetworkRequest CRESTManager::getAuthRequest() const
-    {
-        QNetworkRequest request{loginUrl + "/oauth/token"};
-        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-        request.setRawHeader(
-            "Authorization", "Basic " + (mClientId + ":" + mClientSecret).toBase64());
-
-        return request;
+        return !mEndpoints.isEmpty();
     }
 
     const CRESTInterface &CRESTManager::selectNextInterface() const
@@ -511,11 +275,6 @@ namespace Evernus
         mCurrentInterface = (mCurrentInterface + 1) % mInterfaces.size();
 
         return interface;
-    }
-
-    bool CRESTManager::hasEndpoints() const
-    {
-        return !mEndpoints.isEmpty();
     }
 
     QString CRESTManager::getMissingEnpointsError()

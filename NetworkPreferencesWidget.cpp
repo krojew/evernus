@@ -18,8 +18,8 @@
 #include <QRadioButton>
 #include <QVBoxLayout>
 #include <QFormLayout>
-#include <QGroupBox>
 #include <QCheckBox>
+#include <QGroupBox>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QSettings>
@@ -126,6 +126,11 @@ namespace Evernus
         crestGroupLayout->addRow(infoLabel);
         infoLabel->setWordWrap(true);
 
+        mCRESTRateLimitEdit = new QSpinBox{this};
+        crestGroupLayout->addRow(tr("Max. requests per second:"), mCRESTRateLimitEdit);
+        mCRESTRateLimitEdit->setRange(1, 10000);
+        mCRESTRateLimitEdit->setValue(settings.value(CRESTSettings::rateLimitKey, CRESTSettings::rateLimitDefault).toUInt());
+
         auto miscGroup = new QGroupBox{this};
         mainLayout->addWidget(miscGroup);
 
@@ -191,6 +196,7 @@ namespace Evernus
         settings.setValue(NetworkSettings::providerHostKey, mProviderHostEdit->text());
 
         settings.setValue(CRESTSettings::maxThreadsKey, mCRESTThreadsEdit->value());
+        settings.setValue(CRESTSettings::rateLimitKey, mCRESTRateLimitEdit->value());
 
         settings.setValue(NetworkSettings::maxReplyTimeKey, mMaxReplyTimeEdit->value());
         settings.setValue(NetworkSettings::ignoreSslErrorsKey, mIgnoreSslErrors->isChecked());

@@ -90,8 +90,6 @@ namespace Evernus
                            ItemCostProvider &itemCostProvider,
                            const LMeveDataProvider &lMeveDataProvider,
                            TaskManager &taskManager,
-                           QByteArray crestClientId,
-                           QByteArray crestClientSecret,
                            QWidget *parent,
                            Qt::WindowFlags flags)
         : QMainWindow{parent, flags}
@@ -110,9 +108,7 @@ namespace Evernus
                        corpContractProvider,
                        lMeveDataProvider,
                        cacheTimerProvider,
-                       taskManager,
-                       std::move(crestClientId),
-                       std::move(crestClientSecret));
+                       taskManager);
         createStatusBar();
 
         connect(mTrayIcon, &QSystemTrayIcon::activated, this, &MainWindow::activateTrayIcon);
@@ -654,9 +650,7 @@ namespace Evernus
                                     const ContractProvider &corpContractProvider,
                                     const LMeveDataProvider &lMeveDataProvider,
                                     const CacheTimerProvider &cacheTimerProvider,
-                                    TaskManager &taskManager,
-                                    QByteArray crestClientId,
-                                    QByteArray crestClientSecret)
+                                    TaskManager &taskManager)
     {
         mMainTabs = new QTabWidget{this};
         setCentralWidget(mMainTabs);
@@ -906,9 +900,7 @@ namespace Evernus
         connect(this, &MainWindow::externalOrdersChanged, lmEveTab, &LMeveWidget::updateData);
         connect(this, &MainWindow::lMeveTasksChanged, lmEveTab, &LMeveWidget::updateData);
 
-        auto marketAnalysisTab = new MarketAnalysisWidget{std::move(crestClientId),
-                                                          std::move(crestClientSecret),
-                                                          mEveDataProvider,
+        auto marketAnalysisTab = new MarketAnalysisWidget{mEveDataProvider,
                                                           taskManager,
                                                           mRepositoryProvider.getMarketOrderRepository(),
                                                           mRepositoryProvider.getEveTypeRepository(),

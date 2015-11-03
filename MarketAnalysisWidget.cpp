@@ -57,13 +57,9 @@ namespace Evernus
         : public QThread
     {
     public:
-        FetcherThread(QByteArray crestClientId,
-                      QByteArray crestClientSecret,
-                      const EveDataProvider &dataProvider,
+        FetcherThread(const EveDataProvider &dataProvider,
                       QObject *parent)
             : QThread{parent}
-            , mCrestClientId{std::move(crestClientId)}
-            , mCrestClientSecret{std::move(crestClientSecret)}
             , mDataProvider{dataProvider}
         {
         }
@@ -84,9 +80,7 @@ namespace Evernus
     protected:
         virtual void run() override
         {
-            mDataFetcher = std::make_unique<MarketAnalysisDataFetcher>(std::move(mCrestClientId),
-                                                                       std::move(mCrestClientSecret),
-                                                                       mDataProvider);
+            mDataFetcher = std::make_unique<MarketAnalysisDataFetcher>(mDataProvider);
             mPromise.set_value();
 
             QThread::run();
@@ -94,8 +88,6 @@ namespace Evernus
         }
 
     private:
-        QByteArray mCrestClientId;
-        QByteArray mCrestClientSecret;
         const EveDataProvider &mDataProvider;
 
         std::unique_ptr<MarketAnalysisDataFetcher> mDataFetcher;
@@ -103,9 +95,7 @@ namespace Evernus
         std::promise<void> mPromise;
     };
 
-    MarketAnalysisWidget::MarketAnalysisWidget(QByteArray crestClientId,
-                                               QByteArray crestClientSecret,
-                                               const EveDataProvider &dataProvider,
+    MarketAnalysisWidget::MarketAnalysisWidget(const EveDataProvider &dataProvider,
                                                TaskManager &taskManager,
                                                const MarketOrderRepository &orderRepo,
                                                const EveTypeRepository &typeRepo,
@@ -132,7 +122,7 @@ namespace Evernus
                                 InterRegionMarketDataModel::getVolumeColumn(),
                                 InterRegionMarketDataModel::getMarginColumn())
     {
-        mFetcherThread = new FetcherThread{std::move(crestClientId), std::move(crestClientSecret), mDataProvider, this};
+        mFetcherThread = new FetcherThread{mDataProvider, this};
         const auto future = mFetcherThread->getFuture();
 
         mFetcherThread->start();

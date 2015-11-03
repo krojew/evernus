@@ -23,23 +23,15 @@
 
 namespace Evernus
 {
-    CRESTExternalOrderImporter::CRESTExternalOrderImporter(QByteArray clientId, QByteArray clientSecret, const EveDataProvider &dataProvider, QObject *parent)
+    CRESTExternalOrderImporter::CRESTExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent)
         : ExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
-        , mManager{std::move(clientId), std::move(clientSecret), mDataProvider}
+        , mManager{mDataProvider}
     {
     }
 
     void CRESTExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
     {
-        if (!mManager.hasClientCredentials())
-        {
-            emit error(tr("Evernus has been compiled without CREST support. "
-                "You can manually specify CREST client id and secret via command line options: --crest-id and --crest-secret"));
-
-            return;
-        }
-
         if (target.empty())
         {
             emit externalOrdersChanged(std::vector<ExternalOrder>{});

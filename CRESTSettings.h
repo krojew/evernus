@@ -20,11 +20,10 @@ namespace Evernus
 {
     namespace CRESTSettings
     {
-        const auto cookiesKey = "crest/cookies";
-        const auto refreshTokenKey = "crest/refreshToken";
         const auto maxThreadsKey = "crest/maxThreads";
+        const auto rateLimitKey = "crest/rateLimit";
 
-        const auto cryptKey = Q_UINT64_C(0x5739578fe03aac1b);
-        const auto maxThreadsDefault = 10;
+        const auto maxThreadsDefault = 20u;
+        const auto rateLimitDefault = 150u;
     }
 }

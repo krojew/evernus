@@ -69,8 +69,6 @@ namespace Evernus
                    ItemCostProvider &itemCostProvider,
                    const LMeveDataProvider &lMeveDataProvider,
                    TaskManager &taskManager,
-                   QByteArray crestClientId,
-                   QByteArray crestClientSecret,
                    QWidget *parent = nullptr,
                    Qt::WindowFlags flags = 0);
         virtual ~MainWindow() = default;
@@ -236,9 +234,7 @@ namespace Evernus
                             const ContractProvider &corpContractProvider,
                             const LMeveDataProvider &lMeveDataProvider,
                             const CacheTimerProvider &cacheTimerProvider,
-                            TaskManager &taskManager,
-                            QByteArray crestClientId,
-                            QByteArray crestClientSecret);
+                            TaskManager &taskManager);
         void createStatusBar();
 
         QWidget *createMainViewTab(QWidget *content);

@@ -22,12 +22,10 @@
 
 namespace Evernus
 {
-    MarketAnalysisDataFetcher::MarketAnalysisDataFetcher(QByteArray crestClientId,
-                                                         QByteArray crestClientSecret,
-                                                         const EveDataProvider &dataProvider,
+    MarketAnalysisDataFetcher::MarketAnalysisDataFetcher(const EveDataProvider &dataProvider,
                                                          QObject *parent)
         : QObject{parent}
-        , mManager(std::move(crestClientId), std::move(crestClientSecret), dataProvider)
+        , mManager(dataProvider)
     {
     }
 
