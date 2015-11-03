@@ -972,7 +972,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CharacterWidget.cpp" line="293"/>
         <source>Corp. asset list: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywa korporacji: %1</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="294"/>
@@ -1779,7 +1779,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../EvernusApplication.cpp" line="1098"/>
         <source>Fetching corporation assets for character %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie aktywów korporacji dla postaci: %1...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="1566"/>
@@ -3369,7 +3369,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MainWindow.cpp" line="782"/>
         <source>Corporation assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywa korporacji</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="804"/>
@@ -3646,12 +3646,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisDataFetcher.cpp" line="87"/>
         <source>Waiting for %1 order server replies...</source>
-        <translation type="unfinished">Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
+        <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisDataFetcher.cpp" line="126"/>
         <source>Waiting for %1 history server replies...</source>
-        <translation type="unfinished">Oczekiwanie na %1 odpowiedzi z historią...</translation>
+        <translation>Oczekiwanie na %1 odpowiedzi z historią...</translation>
     </message>
 </context>
 <context>
@@ -5142,7 +5142,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="130"/>
         <source>Max. requests per second:</source>
-        <translation type="unfinished"></translation>
+        <translation>Maks. ilość zapytań na sekundę:</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="140"/>
@@ -5598,12 +5598,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="42"/>
         <source>Combine character and corporation journal in statistics</source>
-        <translation type="unfinished">Połącz dzienniki korporacji i postaci w statystykach</translation>
+        <translation>Połącz dzienniki korporacji i postaci w statystykach</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="47"/>
         <source>Take automatic value snapshots</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatycznie twórz znaczniki wartości</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="52"/>
@@ -5613,22 +5613,22 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="61"/>
         <source>Plot number format:</source>
-        <translation type="unfinished">Format liczb na wykresach:</translation>
+        <translation>Format liczb na wykresach:</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="62"/>
         <source>beautified scientific</source>
-        <translation type="unfinished">upiększony naukowy</translation>
+        <translation>upiększony naukowy</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="63"/>
         <source>scientific</source>
-        <translation type="unfinished">naukowy</translation>
+        <translation>naukowy</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="64"/>
         <source>fixed</source>
-        <translation type="unfinished">dziesiętny</translation>
+        <translation>dziesiętny</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="70"/>
@@ -5638,7 +5638,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="75"/>
         <source>Corp. asset value plot color:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolor aktywów korporacji:</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="80"/>
@@ -5757,12 +5757,18 @@ Corp. wallet: %4
 Buy orders: %5
 Sell orders: %6
 Total: %7</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywa: %1
+Aktywa kroporacji: %2
+Portfel: %3
+Portfel korporacji: %4
+Zlecenia kupna: %5
+Zlecenia sprzedaży: %6
+Suma: %7</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="738"/>
         <source>Corp. asset value</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywa korporacji</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="732"/>
@@ -5817,7 +5823,7 @@ Total: %7</source>
     <message>
         <location filename="../StatisticsWidget.cpp" line="811"/>
         <source>Make snapshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Zachowaj wartość</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="842"/>
@@ -6693,7 +6699,7 @@ Czy chcesz ściągnąć ją teraz?</translation>
     <message>
         <location filename="../RateLimiter.cpp" line="37"/>
         <source>Rate must be greater than 0!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość zapytań musi być większa niż 0!</translation>
     </message>
 </context>
 <context>

@@ -755,7 +755,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../CharacterWidget.cpp" line="293"/>
         <source>Corp. asset list: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Corp. Gegenstandsliste: %1</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="294"/>
@@ -1179,52 +1179,52 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="59"/>
         <source>Wallet division:</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto:</translation>
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="60"/>
         <source>Master Wallet</source>
-        <translation type="unfinished"></translation>
+        <translation>Master Wallet</translation>
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="61"/>
         <source>2nd Wallet Division</source>
-        <translation type="unfinished"></translation>
+        <translation>2nd Wallet Division</translation>
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="62"/>
         <source>3rd Wallet Division</source>
-        <translation type="unfinished"></translation>
+        <translation>3rd Wallet Division</translation>
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="63"/>
         <source>4th Wallet Division</source>
-        <translation type="unfinished"></translation>
+        <translation>4th Wallet Division</translation>
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="64"/>
         <source>5th Wallet Division</source>
-        <translation type="unfinished"></translation>
+        <translation>5th Wallet Division</translation>
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="65"/>
         <source>6th Wallet Division</source>
-        <translation type="unfinished"></translation>
+        <translation>6th Wallet Division</translation>
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="66"/>
         <source>7th Wallet Division</source>
-        <translation type="unfinished"></translation>
+        <translation>7th Wallet Division</translation>
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="71"/>
         <source>Wallet changed</source>
-        <translation type="unfinished"></translation>
+        <translation>Wallet verändert</translation>
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="72"/>
         <source>Do you wish to remove previous corporation wallet data?</source>
-        <translation type="unfinished"></translation>
+        <translation>Haben Sie zur vorherigen Corpkonto Daten entfernen möchten?</translation>
     </message>
     <message>
         <source>Make value snapshots form corporation data</source>
@@ -1583,7 +1583,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../EvernusApplication.cpp" line="1098"/>
         <source>Fetching corporation assets for character %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hole Corporation Gegenstände für Charakter %1...</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="1144"/>
@@ -3055,7 +3055,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../MainWindow.cpp" line="782"/>
         <source>Corporation assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Gegenstände - Corporation</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="804"/>
@@ -3298,12 +3298,12 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../MarketAnalysisDataFetcher.cpp" line="87"/>
         <source>Waiting for %1 order server replies...</source>
-        <translation type="unfinished">Warte auf %1 Serverantworten für Aufträge...</translation>
+        <translation>Warte auf %1 Serverantworten für Aufträge...</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisDataFetcher.cpp" line="126"/>
         <source>Waiting for %1 history server replies...</source>
-        <translation type="unfinished">Warte auf %1 Serverantworten für Historie...</translation>
+        <translation>Warte auf %1 Serverantworten für Historie...</translation>
     </message>
 </context>
 <context>
@@ -4737,7 +4737,7 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="130"/>
         <source>Max. requests per second:</source>
-        <translation type="unfinished"></translation>
+        <translation>Max. Anfragen pro Sekunde:</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="140"/>
@@ -4970,7 +4970,7 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="113"/>
         <source>Add random:</source>
-        <translation type="unfinished"></translation>
+        <translation>In zufälliger:</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="122"/>
@@ -5135,7 +5135,7 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="42"/>
         <source>Combine character and corporation journal in statistics</source>
-        <translation type="unfinished">In Statistiken Charakter und Corporation Logbuch zusammenfassen</translation>
+        <translation>In Statistiken Charakter und Corporation Logbuch zusammenfassen</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="47"/>
@@ -5150,22 +5150,22 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="61"/>
         <source>Plot number format:</source>
-        <translation type="unfinished">Zahlenformat Diagram:</translation>
+        <translation>Zahlenformat Diagram:</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="62"/>
         <source>beautified scientific</source>
-        <translation type="unfinished">Leserliche wissenschaftliche Darstellung</translation>
+        <translation>Leserliche wissenschaftliche Darstellung</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="63"/>
         <source>scientific</source>
-        <translation type="unfinished">Wissenschaftliche Darstellung</translation>
+        <translation>Wissenschaftliche Darstellung</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="64"/>
         <source>fixed</source>
-        <translation type="unfinished">Fest</translation>
+        <translation>Fest</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="70"/>
@@ -5175,7 +5175,7 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="75"/>
         <source>Corp. asset value plot color:</source>
-        <translation type="unfinished"></translation>
+        <translation>Corp. Artikelwert Farbe:</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="80"/>
@@ -5274,7 +5274,13 @@ Corp. wallet: %4
 Buy orders: %5
 Sell orders: %6
 Total: %7</source>
-        <translation type="unfinished"></translation>
+        <translation>Gegenstände: %1
+Corp. Gegenstände: %2
+Kontostand: %3
+Corp. Kontostand: %4
+Wert Kaufauftrag: %5
+Wert Verkaufsauftrag: %6
+Wert gesamt: %7</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="729"/>
@@ -5284,7 +5290,7 @@ Total: %7</source>
     <message>
         <location filename="../StatisticsWidget.cpp" line="738"/>
         <source>Corp. asset value</source>
-        <translation type="unfinished"></translation>
+        <translation>Corp. Artikelwert</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="732"/>
