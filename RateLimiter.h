@@ -36,7 +36,7 @@ namespace Evernus
         RateLimiter &operator =(RateLimiter &&) = default;
 
     private:
-        static constexpr auto scale = 1000000.f;
+        static const float scale;
 
         float mInterval = 1.f;
 

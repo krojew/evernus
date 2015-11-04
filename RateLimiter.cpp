@@ -21,6 +21,8 @@
 
 namespace Evernus
 {
+    const float RateLimiter::scale = 1000000.f;
+
     RateLimiter::RateLimiter(float rate)
     {
         setRate(rate);

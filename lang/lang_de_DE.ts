@@ -6167,7 +6167,7 @@ Please click on &quot;Import all&quot; after the update.</source>
 <context>
     <name>RateLimiter</name>
     <message>
-        <location filename="../RateLimiter.cpp" line="37"/>
+        <location filename="../RateLimiter.cpp" line="39"/>
         <source>Rate must be greater than 0!</source>
         <translation type="unfinished"></translation>
     </message>

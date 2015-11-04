@@ -6695,7 +6695,7 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>RateLimiter</name>
     <message>
-        <location filename="../RateLimiter.cpp" line="37"/>
+        <location filename="../RateLimiter.cpp" line="39"/>
         <source>Rate must be greater than 0!</source>
         <translation>Ilość zapytań musi być większa niż 0!</translation>
     </message>
