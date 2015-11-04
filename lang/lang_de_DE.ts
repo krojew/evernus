@@ -391,7 +391,7 @@
         <translation type="vanished">Leeres Access Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="238"/>
+        <location filename="../CRESTManager.cpp" line="239"/>
         <source>CREST error</source>
         <translation>CREST Fehler</translation>
     </message>
@@ -402,7 +402,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Das Zertifikat der EVE Loginseite enthielt Fehler: %1. Bist du sicher das du weitermachen willst (dies kann die Sicherheit deines EVE Accounts gefährden)?</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="238"/>
+        <location filename="../CRESTManager.cpp" line="239"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Fehler beim Abrufen der CREST Endpunkte!</translation>
     </message>
@@ -411,7 +411,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Leeres Refresh Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="282"/>
+        <location filename="../CRESTManager.cpp" line="283"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>CREST Endpunkt Karte ist leer. Bitte warten Sie eine Weile.</translation>
     </message>

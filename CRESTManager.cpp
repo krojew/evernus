@@ -196,6 +196,7 @@ namespace Evernus
             iface->deleteLater();
 
         mInterfaces.clear();
+        mCurrentInterface = 0;
 
         QSettings settings;
 

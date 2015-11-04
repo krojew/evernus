@@ -581,7 +581,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="238"/>
+        <location filename="../CRESTManager.cpp" line="239"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Błąd pobierania punktów wejścia CREST!</translation>
     </message>
@@ -590,7 +590,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="282"/>
+        <location filename="../CRESTManager.cpp" line="283"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
     </message>
@@ -599,7 +599,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="238"/>
+        <location filename="../CRESTManager.cpp" line="239"/>
         <source>CREST error</source>
         <translation>Błąd CREST</translation>
     </message>
