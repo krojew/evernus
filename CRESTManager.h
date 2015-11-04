@@ -57,15 +57,12 @@ namespace Evernus
     private:
         const EveDataProvider &mDataProvider;
 
-        std::vector<CRESTInterface *> mInterfaces;
-        mutable size_t mCurrentInterface = 0;
+        CRESTInterface mInterface;
 
         QNetworkAccessManager mNetworkManager;
 
         CRESTInterface::EndpointMap mEndpoints;
         QTimer mEndpointTimer;
-
-        const CRESTInterface &selectNextInterface() const;
 
         void fetchEndpoints();
         bool hasEndpoints() const;

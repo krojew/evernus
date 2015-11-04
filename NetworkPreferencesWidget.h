@@ -51,7 +51,6 @@ namespace Evernus
         QRadioButton *mUseDefaultProviderBtn = nullptr;
         QLineEdit *mProviderHostEdit = nullptr;
 
-        QSpinBox *mCRESTThreadsEdit = nullptr;
         QSpinBox *mCRESTRateLimitEdit = nullptr;
 
         QSpinBox *mMaxReplyTimeEdit = nullptr;

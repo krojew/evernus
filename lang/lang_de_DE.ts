@@ -391,7 +391,7 @@
         <translation type="vanished">Leeres Access Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="239"/>
+        <location filename="../CRESTManager.cpp" line="223"/>
         <source>CREST error</source>
         <translation>CREST Fehler</translation>
     </message>
@@ -402,7 +402,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Das Zertifikat der EVE Loginseite enthielt Fehler: %1. Bist du sicher das du weitermachen willst (dies kann die Sicherheit deines EVE Accounts gefährden)?</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="239"/>
+        <location filename="../CRESTManager.cpp" line="223"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Fehler beim Abrufen der CREST Endpunkte!</translation>
     </message>
@@ -411,7 +411,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Leeres Refresh Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="283"/>
+        <location filename="../CRESTManager.cpp" line="259"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>CREST Endpunkt Karte ist leer. Bitte warten Sie eine Weile.</translation>
     </message>
@@ -4725,27 +4725,25 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation>CREST</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="120"/>
         <source>Max. threads:</source>
-        <translation>Max. Threads:</translation>
+        <translation type="vanished">Max. Threads:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="123"/>
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
-        <translation>Dieser Wert beeinflußt die Geschwindigkeit des Datenimports via CREST. Ein höherer Wert erhöht die Geschwindigkeit, ist er jedoch zu hoch, kann die Geschwindigkeit sogar sinken oder Fehler verursachen.</translation>
+        <translation type="vanished">Dieser Wert beeinflußt die Geschwindigkeit des Datenimports via CREST. Ein höherer Wert erhöht die Geschwindigkeit, ist er jedoch zu hoch, kann die Geschwindigkeit sogar sinken oder Fehler verursachen.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="130"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="120"/>
         <source>Max. requests per second:</source>
         <translation>Max. Anfragen pro Sekunde:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="140"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="130"/>
         <source>Max. reply time:</source>
         <translation>Max. Antwortzeit:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="146"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="136"/>
         <source>Ignore certificate errors</source>
         <translation>Ignorieren Zertifikatfehler</translation>
     </message>

@@ -581,7 +581,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="239"/>
+        <location filename="../CRESTManager.cpp" line="223"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Błąd pobierania punktów wejścia CREST!</translation>
     </message>
@@ -590,7 +590,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="283"/>
+        <location filename="../CRESTManager.cpp" line="259"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
     </message>
@@ -599,7 +599,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="239"/>
+        <location filename="../CRESTManager.cpp" line="223"/>
         <source>CREST error</source>
         <translation>Błąd CREST</translation>
     </message>
@@ -5130,27 +5130,25 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>CREST</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="120"/>
         <source>Max. threads:</source>
-        <translation>Maks. ilość wątków:</translation>
+        <translation type="vanished">Maks. ilość wątków:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="123"/>
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
-        <translation>Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
+        <translation type="vanished">Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="130"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="120"/>
         <source>Max. requests per second:</source>
         <translation>Maks. ilość zapytań na sekundę:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="140"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="130"/>
         <source>Max. reply time:</source>
         <translation>Maks. czas odpowiedzi:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="146"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="136"/>
         <source>Ignore certificate errors</source>
         <translation>Ignoruj błędy certyfikatów</translation>
     </message>

@@ -116,16 +116,6 @@ namespace Evernus
 
         auto crestGroupLayout = new QFormLayout{crestGroup};
 
-        mCRESTThreadsEdit = new QSpinBox{this};
-        crestGroupLayout->addRow(tr("Max. threads:"), mCRESTThreadsEdit);
-        mCRESTThreadsEdit->setValue(settings.value(CRESTSettings::maxThreadsKey, CRESTSettings::maxThreadsDefault).toUInt());
-
-        auto infoLabel = new QLabel{tr(
-            "This value affects the speed of importing data via CREST. "
-            "Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors."), this};
-        crestGroupLayout->addRow(infoLabel);
-        infoLabel->setWordWrap(true);
-
         mCRESTRateLimitEdit = new QSpinBox{this};
         crestGroupLayout->addRow(tr("Max. requests per second:"), mCRESTRateLimitEdit);
         mCRESTRateLimitEdit->setRange(1, 10000);
@@ -195,7 +185,6 @@ namespace Evernus
         settings.setValue(NetworkSettings::useCustomProviderKey, !mUseDefaultProviderBtn->isChecked());
         settings.setValue(NetworkSettings::providerHostKey, mProviderHostEdit->text());
 
-        settings.setValue(CRESTSettings::maxThreadsKey, mCRESTThreadsEdit->value());
         settings.setValue(CRESTSettings::rateLimitKey, mCRESTRateLimitEdit->value());
 
         settings.setValue(NetworkSettings::maxReplyTimeKey, mMaxReplyTimeEdit->value());

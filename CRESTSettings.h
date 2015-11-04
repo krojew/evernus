@@ -20,10 +20,8 @@ namespace Evernus
 {
     namespace CRESTSettings
     {
-        const auto maxThreadsKey = "crest/maxThreads";
         const auto rateLimitKey = "crest/rateLimit";
 
-        const auto maxThreadsDefault = 20u;
         const auto rateLimitDefault = 150u;
     }
 }

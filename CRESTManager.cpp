@@ -143,8 +143,8 @@ namespace Evernus
                 state->mState = OrderState::State::GotResponse;
         };
 
-        selectNextInterface().fetchBuyMarketOrders(regionId, typeId, ifaceCallback);
-        selectNextInterface().fetchSellMarketOrders(regionId, typeId, ifaceCallback);
+        mInterface.fetchBuyMarketOrders(regionId, typeId, ifaceCallback);
+        mInterface.fetchSellMarketOrders(regionId, typeId, ifaceCallback);
     }
 
     void CRESTManager::fetchMarketHistory(uint regionId,
@@ -158,9 +158,9 @@ namespace Evernus
         }
 
 #if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
-        selectNextInterface().fetchMarketHistory(regionId, typeId, [=, callback = callback](QJsonDocument &&data, const QString &error) {
+        mInterface.fetchMarketHistory(regionId, typeId, [=, callback = callback](QJsonDocument &&data, const QString &error) {
 #else
-        selectNextInterface().fetchMarketHistory(regionId, typeId, [=](QJsonDocument &&data, const QString &error) {
+        mInterface.fetchMarketHistory(regionId, typeId, [=](QJsonDocument &&data, const QString &error) {
 #endif
             if (!error.isEmpty())
             {
@@ -192,26 +192,10 @@ namespace Evernus
 
     void CRESTManager::handleNewPreferences()
     {
-        for (auto iface : mInterfaces)
-            iface->deleteLater();
-
-        mInterfaces.clear();
-        mCurrentInterface = 0;
-
         QSettings settings;
-
-        // IO bound
-        const auto maxInterfaces = settings.value(CRESTSettings::maxThreadsKey, CRESTSettings::maxThreadsDefault).toUInt();
-        mInterfaces.reserve(maxInterfaces);
 
         const auto rate = settings.value(CRESTSettings::rateLimitKey, CRESTSettings::rateLimitDefault).toFloat();
         CRESTInterface::setRateLimit(rate);
-
-        for (auto i = 0u; i < maxInterfaces; ++i)
-        {
-            mInterfaces.emplace_back(new CRESTInterface{this});
-            mInterfaces.back()->setEndpoints(mEndpoints);
-        }
     }
 
     void CRESTManager::fetchEndpoints()
@@ -260,22 +244,13 @@ namespace Evernus
 
             addEndpoints(json.object());
 
-            for (const auto interface : mInterfaces)
-                interface->setEndpoints(mEndpoints);
+            mInterface.setEndpoints(mEndpoints);
         });
     }
 
     bool CRESTManager::hasEndpoints() const
     {
         return !mEndpoints.isEmpty();
-    }
-
-    const CRESTInterface &CRESTManager::selectNextInterface() const
-    {
-        const auto &interface = *mInterfaces[mCurrentInterface];
-        mCurrentInterface = (mCurrentInterface + 1) % mInterfaces.size();
-
-        return interface;
     }
 
     QString CRESTManager::getMissingEnpointsError()
