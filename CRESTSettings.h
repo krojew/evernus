@@ -14,8 +14,6 @@
  */
 #pragma once
 
-#include <QtGlobal>
-
 namespace Evernus
 {
     namespace CRESTSettings
