@@ -17,9 +17,12 @@
 #include <unordered_set>
 #include <functional>
 #include <vector>
+#include <chrono>
+#include <map>
 
 #include <QNetworkAccessManager>
 #include <QDateTime>
+#include <QTimer>
 #include <QHash>
 #include <QUrl>
 
@@ -54,6 +57,7 @@ namespace Evernus
 
     private slots:
         void processSslErrors(const QList<QSslError> &errors);
+        void processPendingRequests();
 
     private:
         using RegionOrderUrlMap = QHash<uint, QUrl>;
@@ -62,6 +66,7 @@ namespace Evernus
         static const QString itemTypesUrlName;
 
         static RateLimiter mCRESTLimiter;
+        static QTimer mRequestTimer;
 
         mutable QNetworkAccessManager mNetworkManager;
         EndpointMap mEndpoints;
@@ -69,6 +74,8 @@ namespace Evernus
         mutable RegionOrderUrlMap mRegionBuyOrdersUrls, mRegionSellOrdersUrls;
         mutable QHash<QPair<uint, QString>, std::vector<std::function<void (const QUrl &, const QString &)>>>
         mPendingRegionRequests;
+
+        mutable std::multimap<std::chrono::steady_clock::time_point, std::function<void ()>> mPendingRequests;
 
         template<class T>
         void getRegionBuyOrdersUrl(uint regionId, T &&continuation) const;

@@ -24,7 +24,6 @@
 #include <QUrlQuery>
 #include <QSettings>
 #include <QDebug>
-#include <QTimer>
 
 #include "SecurityHelper.h"
 #include "CRESTSettings.h"
@@ -45,12 +44,24 @@ namespace Evernus
     const QString CRESTInterface::itemTypesUrlName = "itemTypes";
 
     RateLimiter CRESTInterface::mCRESTLimiter;
+    
+    QTimer CRESTInterface::mRequestTimer;
 
     CRESTInterface::CRESTInterface(QObject *parent)
         : QObject(parent)
     {
         QSettings settings;
         mCRESTLimiter.setRate(settings.value(CRESTSettings::rateLimitKey, CRESTSettings::rateLimitDefault).toFloat());
+
+        if (!mRequestTimer.isActive())
+        {
+            const auto requestTimerInterval = 2;
+
+            mRequestTimer.setTimerType(Qt::PreciseTimer);
+            mRequestTimer.start(requestTimerInterval);
+        }
+
+        connect(&mRequestTimer, &QTimer::timeout, this, &CRESTInterface::processPendingRequests);
     }
 
     void CRESTInterface::fetchBuyMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const
@@ -105,6 +116,16 @@ namespace Evernus
     void CRESTInterface::processSslErrors(const QList<QSslError> &errors)
     {
         SecurityHelper::handleSslErrors(errors, *qobject_cast<QNetworkReply *>(sender()));
+    }
+
+    void CRESTInterface::processPendingRequests()
+    {
+        auto it = mPendingRequests.begin();
+        while (it != std::end(mPendingRequests) && it->first <= std::chrono::steady_clock::now())
+        {
+            it->second();
+            it = mPendingRequests.erase(it);
+        }
     }
 
     void CRESTInterface::setRateLimit(float rate)
@@ -197,10 +218,9 @@ namespace Evernus
     template<class T>
     void CRESTInterface::asyncGet(const QUrl &url, const QByteArray &accept, T &&continuation) const
     {
-        qDebug() << "CREST request:" << url;
+        auto request = [=] {
+            qDebug() << "CREST request:" << url;
 
-        const auto wait = std::chrono::duration_cast<std::chrono::milliseconds>(mCRESTLimiter.acquire());
-        QTimer::singleShot(wait.count(), [=] {
             auto reply = mNetworkManager.get(prepareRequest(url, accept));
             Q_ASSERT(reply != nullptr);
 
@@ -216,7 +236,13 @@ namespace Evernus
                 else
                     continuation(QJsonDocument::fromJson(reply->readAll()), QString{});
             });
-        });
+        };
+
+        const auto wait = std::chrono::duration_cast<std::chrono::milliseconds>(mCRESTLimiter.acquire());
+        if (wait.count() > 0)
+            mPendingRequests.emplace(std::chrono::steady_clock::now() + wait, std::move(request));
+        else
+            request();
     }
 
     QNetworkRequest CRESTInterface::prepareRequest(const QUrl &url, const QByteArray &accept) const
