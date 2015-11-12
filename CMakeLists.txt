@@ -819,7 +819,7 @@ if(APPLE)
 
     find_path(MACDEPLOYQT_PATH macdeployqt PATH_SUFFIXES bin)
     if(NOT MACDEPLOYQT_PATH)
-        message(FATAL_ERROR "Could not find macdeployqt for OSX bunding. You can point MACDEPLOYQT_PATH to it's path.")
+        message(FATAL_ERROR "Could not find macdeployqt for OSX bundling. You can point MACDEPLOYQT_PATH to it's path.")
     endif()
 
     # If macdeployqt is found just build and install.
@@ -829,6 +829,8 @@ if(APPLE)
     # OSX budle is ready.
     install(CODE "
             execute_process(COMMAND ${MACDEPLOYQT_PATH}/macdeployqt \"${BUNDLE_PATH}\" -verbose=2)
+            message(STATUS \"Creating dmg of app\")
+            execute_process(COMMAND hdiutil create -volname ${PROJECT_NAME} -srcfolder \"${BUNDLE_PATH}\" -ov -format UDZO \"${PROJECT_NAME}.dmg\")
             " COMPONENT Runtime
     )
 elseif(UNIX)
