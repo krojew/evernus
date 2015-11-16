@@ -57,6 +57,7 @@
 #include "ContractWidget.h"
 #include "ItemCostWidget.h"
 #include "ImportSettings.h"
+#include "ClickableLabel.h"
 #include "KeyRepository.h"
 #include "MenuBarWidget.h"
 #include "PriceSettings.h"
@@ -97,6 +98,8 @@ namespace Evernus
         , mItemCostProvider{itemCostProvider}
         , mEveDataProvider{eveDataProvider}
         , mTrayIcon{new QSystemTrayIcon{QIcon{":/images/main-icon.png"}, this}}
+        , mStatusActiveTasksThrobber{":/images/loader.gif"}
+        , mStatusActiveTasksDonePixmap{":/images/tick.png"}
     {
         readSettings();
         createMenu();
@@ -120,6 +123,8 @@ namespace Evernus
             QMetaObject::invokeMethod(this, "showCharacterManagement", Qt::QueuedConnection);
 
         setUpAutoImportTimer();
+
+        mStatusActiveTasksThrobber.start();
     }
 
     void MainWindow::showAsSaved()
@@ -128,6 +133,35 @@ namespace Evernus
             showMaximized();
         else
             show();
+    }
+
+    void MainWindow::showActiveTasks()
+    {
+        if (mActiveTasksDialog == nullptr)
+        {
+#ifdef Q_OS_WIN
+            if (mTaskbarButton == nullptr)
+            {
+                mTaskbarButton = new QWinTaskbarButton{this};
+                mTaskbarButton->setWindow(windowHandle());
+            }
+
+            mActiveTasksDialog = new ActiveTasksDialog{*mTaskbarButton, this};
+#else
+            mActiveTasksDialog = new ActiveTasksDialog{this};
+#endif
+            connect(this, &MainWindow::newTaskInfoAdded, mActiveTasksDialog, &ActiveTasksDialog::addNewTaskInfo);
+            connect(this, &MainWindow::newSubTaskInfoAdded, mActiveTasksDialog, &ActiveTasksDialog::addNewSubTaskInfo);
+            connect(this, &MainWindow::taskInfoChanged, mActiveTasksDialog, &ActiveTasksDialog::setTaskInfo);
+            connect(this, &MainWindow::taskEnded, mActiveTasksDialog, &ActiveTasksDialog::endTask);
+            connect(mActiveTasksDialog, &ActiveTasksDialog::taskCountChanged, this, &MainWindow::updateTasksStatus);
+            mActiveTasksDialog->setAttribute(Qt::WA_ShowWithoutActivating);
+            mActiveTasksDialog->show();
+        }
+        else
+        {
+            mActiveTasksDialog->show();
+        }
     }
 
     void MainWindow::showCharacterManagement()
@@ -208,33 +242,22 @@ namespace Evernus
 
     void MainWindow::addNewTaskInfo(uint taskId, const QString &description)
     {
-        if (mActiveTasksDialog == nullptr)
-        {
-#ifdef Q_OS_WIN
-            if (mTaskbarButton == nullptr)
-            {
-                mTaskbarButton = new QWinTaskbarButton{this};
-                mTaskbarButton->setWindow(windowHandle());
-            }
+        showActiveTasks();
+        emit newTaskInfoAdded(taskId, description);
+    }
 
-            mActiveTasksDialog = new ActiveTasksDialog{*mTaskbarButton, this};
-#else
-            mActiveTasksDialog = new ActiveTasksDialog{this};
-#endif
-            connect(this, &MainWindow::newTaskInfoAdded, mActiveTasksDialog, &ActiveTasksDialog::addNewTaskInfo);
-            connect(this, &MainWindow::newSubTaskInfoAdded, mActiveTasksDialog, &ActiveTasksDialog::addNewSubTaskInfo);
-            connect(this, &MainWindow::taskInfoChanged, mActiveTasksDialog, &ActiveTasksDialog::setTaskInfo);
-            connect(this, &MainWindow::taskEnded, mActiveTasksDialog, &ActiveTasksDialog::endTask);
-            mActiveTasksDialog->setAttribute(Qt::WA_ShowWithoutActivating);
-            mActiveTasksDialog->setModal(true);
-            mActiveTasksDialog->show();
+    void MainWindow::updateTasksStatus(size_t remaining)
+    {
+        if (remaining == 0)
+        {
+            mStatusActiveTasksBtn->setPixmap(mStatusActiveTasksDonePixmap);
+            mStatusActiveTasksBtn->setToolTip(tr("No active tasks"));
         }
         else
         {
-            mActiveTasksDialog->show();
+            mStatusActiveTasksBtn->setMovie(&mStatusActiveTasksThrobber);
+            mStatusActiveTasksBtn->setToolTip(tr("Active tasks: %1").arg(remaining));
         }
-
-        emit newTaskInfoAdded(taskId, description);
     }
 
     void MainWindow::updateIskData()
@@ -948,8 +971,14 @@ namespace Evernus
     void MainWindow::createStatusBar()
     {
         mStatusWalletLabel = new QLabel{this};
+        mStatusActiveTasksBtn = new ClickableLabel{this};
+        connect(mStatusActiveTasksBtn, &ClickableLabel::clicked, this, &MainWindow::showActiveTasks);
 
-        statusBar()->addPermanentWidget(mStatusWalletLabel);
+        updateTasksStatus(0);
+
+        auto bar = statusBar();
+        bar->addPermanentWidget(mStatusActiveTasksBtn);
+        bar->addPermanentWidget(mStatusWalletLabel);
     }
 
     QWidget *MainWindow::createMainViewTab(QWidget *content)

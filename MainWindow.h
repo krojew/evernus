@@ -19,7 +19,9 @@
 #include <QSystemTrayIcon>
 #include <QMainWindow>
 #include <QPointer>
+#include <QPixmap>
 #include <QTimer>
+#include <QMovie>
 
 #include "ExternalOrderImporter.h"
 #include "FPCController.h"
@@ -46,6 +48,7 @@ namespace Evernus
     class ItemCostProvider;
     class ContractProvider;
     class EveDataProvider;
+    class ClickableLabel;
     class MenuBarWidget;
     class AssetProvider;
     class TaskManager;
@@ -137,6 +140,7 @@ namespace Evernus
         void makeValueSnapshots(Character::IdType id);
 
     public slots:
+        void showActiveTasks();
         void showCharacterManagement();
         void showPreferences();
         void showMarginTool();
@@ -146,6 +150,7 @@ namespace Evernus
         void showColumnHelp();
 
         void addNewTaskInfo(uint taskId, const QString &description);
+        void updateTasksStatus(size_t remaining);
 
         void updateIskData();
         void updateCharacters();
@@ -207,6 +212,9 @@ namespace Evernus
         QPointer<MarginToolDialog> mMarginToolDialog;
 
         QLabel *mStatusWalletLabel = nullptr;
+        QMovie mStatusActiveTasksThrobber;
+        QPixmap mStatusActiveTasksDonePixmap;
+        ClickableLabel *mStatusActiveTasksBtn = nullptr;
 
         Character::IdType mCurrentCharacterId = Character::invalidId;
 

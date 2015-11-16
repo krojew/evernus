@@ -95,6 +95,7 @@ qt5_wrap_cpp(
     CharacterModel.h
     CharacterImportPreferencesWidget.h
     CharacterWidget.h
+    ClickableLabel.h
     ColorButton.h
     ContractModel.h
     ContractImportPreferencesWidget.h
@@ -299,6 +300,8 @@ add_executable(
     CharacterRepository.h
     CharacterWidget.cpp
     CharacterWidget.h
+    ClickableLabel.cpp
+    ClickableLabel.h
     ColorButton.cpp
     ColorButton.h
     CommonScriptAPI.cpp

@@ -18,7 +18,6 @@
 #include <QTreeWidget>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QPushButton>
 #include <QCheckBox>
 #include <QSettings>
 #include <QLabel>
@@ -87,8 +86,6 @@ namespace Evernus
         mainLayout->addWidget(btnBox);
         connect(btnBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-        mCloseBtn = btnBox->button(QDialogButtonBox::Close);
-
 #ifdef Q_OS_WIN
         mTaskbarProgress = taskbarButton.progress();
 #endif
@@ -99,10 +96,9 @@ namespace Evernus
     void ActiveTasksDialog::done(int r)
     {
         if (mTaskItems.empty())
-        {
             mTaskWidget->clear();
-            QDialog::done(r);
-        }
+
+        QDialog::done(r);
     }
 
     void ActiveTasksDialog::addNewTaskInfo(uint taskId, const QString &description)
@@ -128,7 +124,8 @@ namespace Evernus
 
         fillTaskItem(taskId, new QTreeWidgetItem{mTaskWidget}, description);
         mTaskWidget->resizeColumnToContents(0);
-        mCloseBtn->setEnabled(false);
+
+        emit taskCountChanged(mTaskItems.size());
     }
 
     void ActiveTasksDialog::addNewSubTaskInfo(uint taskId, uint parentTask, const QString &description)
@@ -149,6 +146,8 @@ namespace Evernus
         mTaskWidget->resizeColumnToContents(0);
 
         ++mSubTaskInfo[parentTask].mCount;
+
+        emit taskCountChanged(mTaskItems.size());
     }
 
     void ActiveTasksDialog::setTaskInfo(uint taskId, const QString &description)
@@ -192,6 +191,8 @@ namespace Evernus
         mTaskbarProgress->setValue(mTaskbarProgress->value() + 1);
 #endif
 
+        emit taskCountChanged(mTaskItems.size());
+
         if (parent != nullptr)
         {
             const auto it = mSubTaskInfo.find(parent->data(0, Qt::UserRole).toUInt());
@@ -212,11 +213,8 @@ namespace Evernus
             mTaskbarProgress->setVisible(false);
 #endif
 
-            mCloseBtn->setEnabled(true);
             if (mAutoCloseBtn->isChecked() && !mHadError)
-            {
                 QMetaObject::invokeMethod(this, "close", Qt::QueuedConnection);
-            }
         }
     }
 

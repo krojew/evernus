@@ -21,7 +21,6 @@
 class QTreeWidgetItem;
 class QProgressBar;
 class QTreeWidget;
-class QPushButton;
 class QCheckBox;
 
 #ifdef Q_OS_WIN
@@ -44,6 +43,9 @@ namespace Evernus
 #endif
 
         virtual ~ActiveTasksDialog() = default;
+
+    signals:
+        void taskCountChanged(size_t remaining);
 
     public slots:
         virtual void done(int r) override;
@@ -73,7 +75,6 @@ namespace Evernus
         QTreeWidget *mTaskWidget = nullptr;
         QProgressBar *mTotalProgressWidget = nullptr;
         QCheckBox *mAutoCloseBtn = nullptr;
-        QPushButton *mCloseBtn = nullptr;
 
         std::unordered_map<uint, QTreeWidgetItem *> mTaskItems;
         std::unordered_map<uint, SubTaskInfo> mSubTaskInfo;
