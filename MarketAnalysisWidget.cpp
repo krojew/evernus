@@ -265,10 +265,13 @@ namespace Evernus
         mHistory = std::make_shared<MarketAnalysisDataFetcher::HistoryResultType::element_type>();
         mInterRegionDataModel.reset();
 
-        const auto mainTask = mTaskManager.startTask(tr("Importing data for analysis..."));
+        if (!mDataFetcher->hasPendingOrderRequests() && !mDataFetcher->hasPendingHistoryRequests())
+        {
+            const auto mainTask = mTaskManager.startTask(tr("Importing data for analysis..."));
 
-        mOrderSubtask = mTaskManager.startTask(mainTask, tr("Making %1 CREST order requests...").arg(pairs.size()));
-        mHistorySubtask = mTaskManager.startTask(mainTask, tr("Making %1 CREST history requests...").arg(pairs.size()));
+            mOrderSubtask = mTaskManager.startTask(mainTask, tr("Making %1 CREST order requests...").arg(pairs.size()));
+            mHistorySubtask = mTaskManager.startTask(mainTask, tr("Making %1 CREST history requests...").arg(pairs.size()));
+        }
 
         MarketOrderRepository::TypeLocationPairs ignored;
         if (mIgnoreExistingOrdersBtn->isChecked())
