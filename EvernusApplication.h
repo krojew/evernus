@@ -14,8 +14,11 @@
  */
 #pragma once
 
+#include <unordered_set>
 #include <functional>
 #include <memory>
+
+#include <boost/functional/hash.hpp>
 
 #include <QApplication>
 #include <QSqlDatabase>
@@ -313,6 +316,9 @@ namespace Evernus
         CharacterTimerMap mCorpMarketOrdersUtcUpdateTimes;
         CharacterTimerMap mCorpContractsUtcUpdateTimes;
 
+        std::unordered_set<std::pair<Character::IdType, TimerType>, boost::hash<std::pair<Character::IdType, TimerType>>>
+        mPendingImports;
+
         std::unique_ptr<CachingMarketOrderProvider> mCharacterOrderProvider, mCorpOrderProvider;
         std::unique_ptr<CharacterCorporationCombinedMarketOrderProvider> mCombinedOrderProvider;
 
@@ -371,6 +377,9 @@ namespace Evernus
         bool shouldImport(Character::IdType id, TimerType type) const;
         bool checkImportAndEndTask(Character::IdType id, TimerType type, uint task);
 
+        void markImport(Character::IdType id, TimerType type);
+        void unmarkImport(Character::IdType id, TimerType type);
+
         template<void (EvernusApplication::* Signal)(), class Key>
         void handleIncomingContracts(const Key &key,
                                      const Contracts &data,
@@ -378,7 +387,7 @@ namespace Evernus
                                      const ContractItemRepository &itemRepo,
                                      uint task);
         template<void (EvernusApplication::* Signal)(), class Key>
-        void doRefreshMarketOrdersFromAPI(const Key &key, Character::IdType id, uint task);
+        void doRefreshMarketOrdersFromAPI(const Key &key, Character::IdType id, uint task, TimerType type);
 
         template<class T, class Data>
         void asyncBatchStore(const T &repo, const Data &data, bool hasId);

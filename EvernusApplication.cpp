@@ -839,7 +839,11 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            mAPIManager.fetchAssets(*key, id, [assetSubtask, id, this](AssetList &&data, const QString &error) {
+
+            markImport(id, TimerType::AssetList);
+            mAPIManager.fetchAssets(*key, id, [=](AssetList &&data, const QString &error) {
+                unmarkImport(id, TimerType::AssetList);
+
                 if (error.isEmpty())
                 {
                     mAssetListRepository->deleteForCharacter(id);
@@ -885,7 +889,11 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
+
+            markImport(id, TimerType::Contracts);
             mAPIManager.fetchContracts(*key, id, [key, task, id, this](Contracts &&data, const QString &error) {
+                unmarkImport(id, TimerType::Contracts);
+
                 if (error.isEmpty())
                 {
                     const auto it = std::remove_if(std::begin(data), std::end(data), [](const Contract &contract) {
@@ -1016,8 +1024,11 @@ namespace Evernus
             if (maxId == WalletTransaction::invalidId)
                 emit taskInfoChanged(task, tr("Fetching wallet transactions for character %1 (this may take a while)...").arg(id));
 
+            markImport(id, TimerType::WalletTransactions);
             mAPIManager.fetchWalletTransactions(*key, id, WalletTransaction::invalidId, maxId,
                                                 [task, id, this](const auto &data, const auto &error) {
+                unmarkImport(id, TimerType::WalletTransactions);
+
                 if (error.isEmpty())
                 {
                     asyncBatchStore(*mWalletTransactionRepository, data, true);
@@ -1067,7 +1078,7 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            doRefreshMarketOrdersFromAPI<&EvernusApplication::marketOrdersChanged>(*key, id, task);
+            doRefreshMarketOrdersFromAPI<&EvernusApplication::marketOrdersChanged>(*key, id, task, TimerType::MarketOrders);
         }
         catch (const KeyRepository::NotFoundException &)
         {
@@ -1104,7 +1115,11 @@ namespace Evernus
         try
         {
             const auto key = getCorpKey(id);
-            mAPIManager.fetchAssets(*key, id, [assetSubtask, id, this](AssetList &&data, const QString &error) {
+
+            markImport(id, TimerType::CorpAssetList);
+            mAPIManager.fetchAssets(*key, id, [=](AssetList &&data, const QString &error) {
+                unmarkImport(id, TimerType::CorpAssetList);
+
                 if (error.isEmpty())
                 {
                     mCorpAssetListRepository->deleteForCharacter(id);
@@ -1150,7 +1165,11 @@ namespace Evernus
         try
         {
             const auto key = getCorpKey(id);
+
+            markImport(id, TimerType::CorpContracts);
             mAPIManager.fetchContracts(*key, id, [key, task, id, this](auto &&data, const auto &error) {
+                unmarkImport(id, TimerType::CorpContracts);
+
                 if (error.isEmpty())
                 {
                     asyncBatchStore(*mCorpContractRepository, data, true);
@@ -1209,8 +1228,11 @@ namespace Evernus
             QSettings settings;
             const auto accountKey = settings.value(ImportSettings::corpWalletDivisionKey, ImportSettings::corpWalletDivisionDefault).toInt();
 
+            markImport(id, TimerType::CorpWalletJournal);
             mAPIManager.fetchWalletJournal(*key, id, mCharacterRepository->getCorporationId(id), WalletJournalEntry::invalidId, maxId, accountKey,
                                            [task, id, this](WalletJournal &&data, const QString &error) {
+                unmarkImport(id, TimerType::CorpWalletJournal);
+
                 if (error.isEmpty())
                 {
                     QSettings settings;
@@ -1282,8 +1304,11 @@ namespace Evernus
             QSettings settings;
             const auto accountKey = settings.value(ImportSettings::corpWalletDivisionKey, ImportSettings::corpWalletDivisionDefault).toInt();
 
+            markImport(id, TimerType::CorpWalletTransactions);
             mAPIManager.fetchWalletTransactions(*key, id, corpId, WalletTransaction::invalidId, maxId, accountKey,
                                                 [task, id, corpId, this](auto &&data, const auto &error) {
+                unmarkImport(id, TimerType::CorpWalletTransactions);
+
                 if (error.isEmpty())
                 {
                     asyncBatchStore(*mCorpWalletTransactionRepository, data, true);
@@ -1333,7 +1358,7 @@ namespace Evernus
         try
         {
             const auto key = getCorpKey(id);
-            doRefreshMarketOrdersFromAPI<&EvernusApplication::corpMarketOrdersChanged>(*key, id, task);
+            doRefreshMarketOrdersFromAPI<&EvernusApplication::corpMarketOrdersChanged>(*key, id, task, TimerType::CorpMarketOrders);
         }
         catch (const CorpKeyRepository::NotFoundException &)
         {
@@ -1963,7 +1988,10 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::Character, task))
             return;
 
+        markImport(id, TimerType::Character);
         mAPIManager.fetchCharacter(key, id, [task, id, this](Character &&data, const QString &error) {
+            unmarkImport(id, TimerType::Character);
+
             if (error.isEmpty())
             {
                 QSettings settings;
@@ -2573,6 +2601,9 @@ namespace Evernus
 
     bool EvernusApplication::shouldImport(Character::IdType id, TimerType type) const
     {
+        if (mPendingImports.find(std::make_pair(id, type)) != std::end(mPendingImports))
+            return false;
+
         QSettings settings;
         if (!settings.value(ImportSettings::ignoreCachedImportKey, ImportSettings::ignoreCachedImportDefault).toBool())
             return true;
@@ -2587,6 +2618,16 @@ namespace Evernus
             QMetaObject::invokeMethod(this, "taskEnded", Qt::QueuedConnection, Q_ARG(uint, task), Q_ARG(QString, QString{}));
 
         return ret;
+    }
+
+    void EvernusApplication::markImport(Character::IdType id, TimerType type)
+    {
+        mPendingImports.emplace(id, type);
+    }
+
+    void EvernusApplication::unmarkImport(Character::IdType id, TimerType type)
+    {
+        mPendingImports.erase(std::make_pair(id, type));
     }
 
     template<void (EvernusApplication::* Signal)(), class Key>
@@ -2646,9 +2687,13 @@ namespace Evernus
     }
 
     template<void (EvernusApplication::* Signal)(), class Key>
-    void EvernusApplication::doRefreshMarketOrdersFromAPI(const Key &key, Character::IdType id, uint task)
+    void EvernusApplication
+    ::doRefreshMarketOrdersFromAPI(const Key &key, Character::IdType id, uint task, TimerType type)
     {
+        markImport(id, type);
         mAPIManager.fetchMarketOrders(key, id, [=](MarketOrders &&data, const QString &error) {
+            unmarkImport(id, type);
+
             if (error.isEmpty())
             {
                 importMarketOrders(id, data, std::is_same<Key, CorpKey>());
