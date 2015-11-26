@@ -1027,7 +1027,7 @@ namespace Evernus
             markImport(id, TimerType::WalletTransactions);
             mAPIManager.fetchWalletTransactions(*key, id, WalletTransaction::invalidId, maxId,
                                                 [task, id, this](const auto &data, const auto &error) {
-                unmarkImport(id, TimerType::WalletTransactions);
+                unmarkImport(id, Evernus::TimerType::WalletTransactions);
 
                 if (error.isEmpty())
                 {
@@ -1168,7 +1168,7 @@ namespace Evernus
 
             markImport(id, TimerType::CorpContracts);
             mAPIManager.fetchContracts(*key, id, [key, task, id, this](auto &&data, const auto &error) {
-                unmarkImport(id, TimerType::CorpContracts);
+                unmarkImport(id, Evernus::TimerType::CorpContracts);
 
                 if (error.isEmpty())
                 {
@@ -1307,7 +1307,7 @@ namespace Evernus
             markImport(id, TimerType::CorpWalletTransactions);
             mAPIManager.fetchWalletTransactions(*key, id, corpId, WalletTransaction::invalidId, maxId, accountKey,
                                                 [task, id, corpId, this](auto &&data, const auto &error) {
-                unmarkImport(id, TimerType::CorpWalletTransactions);
+                unmarkImport(id, Evernus::TimerType::CorpWalletTransactions);
 
                 if (error.isEmpty())
                 {
