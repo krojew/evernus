@@ -3243,12 +3243,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MainWindow.cpp" line="254"/>
         <source>No active tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak aktywnych zadań</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="259"/>
         <source>Active tasks: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywne zadania: %1</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="498"/>

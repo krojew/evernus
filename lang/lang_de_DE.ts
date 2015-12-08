@@ -2904,12 +2904,12 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../MainWindow.cpp" line="254"/>
         <source>No active tasks</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine aktiven Aufgaben</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="259"/>
         <source>Active tasks: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktive Aufgaben: %1</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="268"/>
@@ -5148,7 +5148,7 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="47"/>
         <source>Take automatic value snapshots</source>
-        <translation type="unfinished"></translation>
+        <translation>Nehmen Sie automatische Snapshots Wert</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="52"/>
@@ -5353,7 +5353,7 @@ Wert gesamt: %7</translation>
     <message>
         <location filename="../StatisticsWidget.cpp" line="811"/>
         <source>Make snapshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Machen snapshot</translation>
     </message>
     <message>
         <location filename="../StatisticsWidget.cpp" line="817"/>
@@ -6179,7 +6179,7 @@ Please click on &quot;Import all&quot; after the update.</source>
     <message>
         <location filename="../RateLimiter.cpp" line="39"/>
         <source>Rate must be greater than 0!</source>
-        <translation type="unfinished"></translation>
+        <translation>Geschwindigkeit muss größer als 0 sein!</translation>
     </message>
 </context>
 <context>
