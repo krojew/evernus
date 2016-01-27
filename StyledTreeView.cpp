@@ -156,6 +156,10 @@ namespace Evernus
             if (indexes.isEmpty())
                 return;
 
+            QSettings settings;
+            const auto delim
+                = settings.value(UISettings::columnDelimiterKey, UISettings::columnDelimiterDefault).value<char>();
+
             QString result;
 
             auto prevRow = indexes.first().row();
@@ -173,7 +177,7 @@ namespace Evernus
                 else
                     result.append(data.toString());
 
-                result.append('\t');
+                result.append(delim);
             }
 
             QApplication::clipboard()->setText(result);

@@ -18,6 +18,7 @@
 
 class QCheckBox;
 class QLineEdit;
+class QComboBox;
 
 namespace Evernus
 {
@@ -44,5 +45,6 @@ namespace Evernus
         QCheckBox *mOmitCurrencySymbolBtn = nullptr;
         QCheckBox *mUseUTCDatesBtn = nullptr;
         QLineEdit *mDateFormEdit = nullptr;
+        QComboBox *mColumnDelimiterEdit = nullptr;
     };
 }

@@ -13,10 +13,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QVBoxLayout>
-#include <QHBoxLayout>
+#include <QFormLayout>
 #include <QLineEdit>
 #include <QGroupBox>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QSettings>
 #include <QLabel>
 
@@ -83,14 +84,21 @@ namespace Evernus
         generalGroupLayout->addWidget(mUseUTCDatesBtn);
         mUseUTCDatesBtn->setChecked(settings.value(UISettings::useUTCDatesKey, UISettings::useUTCDatesDefault).toBool());
 
-        auto dtFormatLayout = new QHBoxLayout{};
-        generalGroupLayout->addLayout(dtFormatLayout);
-
-        dtFormatLayout->addWidget(new QLabel{tr("Date/time format (requires restart):"), this});
+        auto uiLayout = new QFormLayout{};
+        generalGroupLayout->addLayout(uiLayout);
 
         mDateFormEdit
             = new QLineEdit{settings.value(UISettings::dateTimeFormatKey, locale().dateTimeFormat(QLocale::ShortFormat)).toString(), this};
-        dtFormatLayout->addWidget(mDateFormEdit, 1);
+        uiLayout->addRow(tr("Date/time format (requires restart):"), mDateFormEdit);
+
+        mColumnDelimiterEdit = new QComboBox{this};
+        mColumnDelimiterEdit->addItem(tr("Tab"), '\t');
+        mColumnDelimiterEdit->addItem(tr("Space"), ' ');
+        mColumnDelimiterEdit->addItem(tr(";"), ';');
+        mColumnDelimiterEdit->addItem(tr(","), ',');
+        mColumnDelimiterEdit->setCurrentIndex(mColumnDelimiterEdit->findData(
+            settings.value(UISettings::columnDelimiterKey, UISettings::columnDelimiterDefault).value<char>()));
+        uiLayout->addRow(tr("Column data delimiter:"), mColumnDelimiterEdit);
 
         mainLayout->addStretch();
     }
@@ -106,5 +114,6 @@ namespace Evernus
         settings.setValue(UISettings::omitCurrencySymbolKey, mOmitCurrencySymbolBtn->isChecked());
         settings.setValue(UISettings::useUTCDatesKey, mUseUTCDatesBtn->isChecked());
         settings.setValue(UISettings::dateTimeFormatKey, mDateFormEdit->text());
+        settings.setValue(UISettings::columnDelimiterKey, mColumnDelimiterEdit->currentData().value<char>());
     }
 }

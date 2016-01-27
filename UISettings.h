@@ -31,6 +31,7 @@ namespace Evernus
         const auto combineAssetsDefault = false;
         const auto combineJournalDefault = false;
         const auto combineTransactionsDefault = false;
+        const auto columnDelimiterDefault = '\t';
 
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
@@ -53,5 +54,6 @@ namespace Evernus
         const auto combineAssetsKey = "ui/combine/assets";
         const auto combineJournalKey = "ui/combine/journal";
         const auto combineTransactionsKey = "ui/combine/transactions";
+        const auto columnDelimiterKey = "ui/global/columnDelimiter";
     }
 }

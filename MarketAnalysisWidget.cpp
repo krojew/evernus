@@ -48,6 +48,7 @@
 #include "PriceSettings.h"
 #include "TaskManager.h"
 #include "FlowLayout.h"
+#include "UISettings.h"
 
 #include "MarketAnalysisWidget.h"
 
@@ -469,6 +470,10 @@ namespace Evernus
         if (indexes.isEmpty())
             return;
 
+        QSettings settings;
+        const auto delim
+            = settings.value(UISettings::columnDelimiterKey, UISettings::columnDelimiterDefault).value<char>();
+
         QString result;
 
         auto prevRow = indexes.first().row();
@@ -481,7 +486,7 @@ namespace Evernus
             }
 
             result.append(model.data(index).toString());
-            result.append('\t');
+            result.append(delim);
         }
 
         result.chop(1);
