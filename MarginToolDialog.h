@@ -81,7 +81,7 @@ namespace Evernus
 
         static const auto samples = 100000000;
 
-        static const QString settingsPosKey;
+        static const QString settingsGeometryKey;
 
         const Repository<Character> &mCharacterRepository;
         const ItemCostProvider &mItemCostProvider;

@@ -62,7 +62,7 @@
 
 namespace Evernus
 {
-    const QString MarginToolDialog::settingsPosKey = "marginTool/pos";
+    const QString MarginToolDialog::settingsGeometryKey = "marginTool/geometry";
 
     MarginToolDialog::MarginToolDialog(const Repository<Character> &characterRepository,
                                        const ItemCostProvider &itemCostProvider,
@@ -76,9 +76,12 @@ namespace Evernus
         QSettings settings;
 
         const auto alwaysOnTop
-            = settings.value(MarginToolSettings::alwaysOnTopKey, MarginToolSettings::alwaysOnTopDefault).toBool();
+            = settings.value(MarginToolSettings::alwaysOnTopKey, MarginToolSettings::alwaysOnTopDefault).toBool();             
 
         auto mainLayout = new QVBoxLayout{this};
+#ifdef Q_OS_OSX
+        mainLayout->setContentsMargins(10, 10, 10, 5);
+#endif
 
         auto tabs = new QTabWidget{this};
         mainLayout->addWidget(tabs);
@@ -108,12 +111,12 @@ namespace Evernus
 
         setWindowTitle(tr("Margin tool"));
         setAttribute(Qt::WA_DeleteOnClose);
+#ifndef Q_OS_OSX
         setMaximumWidth(510);
+#endif
         setNewWindowFlags(alwaysOnTop);
 
-        const auto pos = settings.value(settingsPosKey).toPoint();
-        if (QApplication::desktop()->screenGeometry(this).contains(pos))
-            move(pos);
+        restoreGeometry(settings.value(settingsGeometryKey).toByteArray());
     }
 
     void MarginToolDialog::setCharacter(Character::IdType id)
@@ -429,7 +432,7 @@ namespace Evernus
     void MarginToolDialog::savePosition() const
     {
         QSettings settings;
-        settings.setValue(settingsPosKey, pos());
+        settings.setValue(settingsGeometryKey, saveGeometry());
     }
 
     QWidget *MarginToolDialog::createMarginDataTab()
@@ -444,6 +447,10 @@ namespace Evernus
         auto tabWidget = new QWidget{this};
 
         auto mainLayout = new QVBoxLayout{tabWidget};
+#ifdef Q_OS_OSX
+        mainLayout->setContentsMargins(5, 0, 5, 5);
+        mainLayout->setSpacing(7);
+#endif
 
         mNameLabel = new QLabel{tr("export market logs in game"), this};
         mainLayout->addWidget(mNameLabel);
@@ -453,6 +460,9 @@ namespace Evernus
         mainLayout->addWidget(priceGroup);
 
         auto priceLayout = new QGridLayout{priceGroup};
+#ifdef Q_OS_OSX
+        priceLayout->setVerticalSpacing(0);
+#endif
 
         priceLayout->addWidget(new QLabel{tr("Sell:")}, 0, 0);
         priceLayout->addWidget(new QLabel{tr("Buy:")}, 1, 0);
@@ -622,6 +632,9 @@ namespace Evernus
     {
         auto tabWidget = new QWidget{this};
         auto mainLayout = new QVBoxLayout{tabWidget};
+#ifdef Q_OS_OSX
+        mainLayout->setContentsMargins(5, 5, 5, 5);
+#endif
 
         auto sourceGroup = new QGroupBox{tr("Preferred source"), this};
         mainLayout->addWidget(sourceGroup);
