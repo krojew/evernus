@@ -439,11 +439,10 @@ namespace Evernus
                 QSettings settings;
                 if (settings.value(ImportSettings::importPortraitKey, ImportSettings::importPortraitDefault).toBool())
                 {
-                    const auto portraitPath = getPortraitPath(id);
+                    const auto portrait = getPortraitPixmap(id);
 
-                    QFile portrait{portraitPath};
-                    if (portrait.exists())
-                        mPortrait->setPixmap(portraitPath);
+                    if (!portrait.isNull() && portrait.devicePixelRatio() >= devicePixelRatio())
+                        mPortrait->setPixmap(portrait);
                     else
                         downloadPortrait();
                 }
@@ -484,8 +483,12 @@ namespace Evernus
         {
             try
             {
-                auto download = new FileDownload{QUrl{QString{"https://image.eveonline.com/Character/%1_128.jpg"}.arg(id)},
-                                                 getPortraitPath(id),
+                const auto savePath = devicePixelRatio() >= 2 ? getPortraitHighResPath(id) : getPortraitPath(id);
+                const auto resolution = devicePixelRatio() >= 2 ? 256 : 128;
+                const auto sss = QString{"https://image.eveonline.com/Character/%1_%2.jpg"}.arg(id).arg(resolution);
+                QMessageBox::warning(this, tr("Will download"), sss);
+                auto download = new FileDownload{QUrl{sss},
+                                                 savePath,
                                                  this};
                 download->setProperty(downloadIdProperty, id);
                 connect(download, &FileDownload::finished, this, &CharacterWidget::downloadFinished);
@@ -505,9 +508,9 @@ namespace Evernus
         const auto it = mPortraitDownloads.find(id);
         Q_ASSERT(it != std::end(mPortraitDownloads));
 
-        QPixmap px{getPortraitPath(id)};
-        if (!px.isNull() && getCharacterId() == id)
-            mPortrait->setPixmap(px);
+        const auto portrait = getPortraitPixmap(id);
+        if (!portrait.isNull() && getCharacterId() == id)
+            mPortrait->setPixmap(portrait);
 
         mPortraitDownloads.erase(it);
     }
@@ -556,11 +559,31 @@ namespace Evernus
         return target;
     }
 
+    QPixmap CharacterWidget::getPortraitPixmap(Character::IdType id, int size)
+    {
+        return QIcon{getPortraitPath(id)}.pixmap(size);
+    }
+
     QString CharacterWidget::getPortraitPath(Character::IdType id)
+    {
+        return getPortraitLowResPath(id);
+    }
+
+    QString CharacterWidget::getPortraitLowResPath(Character::IdType id)
+    {
+        return getPortraitPathTemplate(id).arg("");
+    }
+
+    QString CharacterWidget::getPortraitHighResPath(Character::IdType id)
+    {
+        return getPortraitPathTemplate(id).arg("@2x");
+    }
+
+    QString CharacterWidget::getPortraitPathTemplate(Character::IdType id)
     {
         return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) %
             "/portrait/" %
             QString::number(id) %
-            ".jpg";
+            "%1.jpg";
     }
 }

@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
         QCoreApplication::setApplicationVersion(version::fullStr());
         QCoreApplication::setOrganizationDomain("evernus.com");
         QCoreApplication::setOrganizationName("evernus.com");
+        QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
 #ifdef Q_OS_WIN
         const auto serverName = QCoreApplication::applicationName() + ".socket";

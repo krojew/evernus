@@ -119,6 +119,11 @@ namespace Evernus
 
         QSpinBox *createSkillEdit(QSpinBox *&target, const QString &skillField);
 
+        static QPixmap getPortraitPixmap(Character::IdType id, int size = 128);
+        // Path is the same as LowResPath because QIcon will resolve it properly to HighRes if DPR is high
         static QString getPortraitPath(Character::IdType id);
+        static QString getPortraitLowResPath(Character::IdType id);
+        static QString getPortraitHighResPath(Character::IdType id);
+        static QString getPortraitPathTemplate(Character::IdType id);
     };
 }
