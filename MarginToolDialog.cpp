@@ -76,7 +76,7 @@ namespace Evernus
         QSettings settings;
 
         const auto alwaysOnTop
-            = settings.value(MarginToolSettings::alwaysOnTopKey, MarginToolSettings::alwaysOnTopDefault).toBool();             
+            = settings.value(MarginToolSettings::alwaysOnTopKey, MarginToolSettings::alwaysOnTopDefault).toBool();
 
         auto mainLayout = new QVBoxLayout{this};
 #ifdef Q_OS_OSX
