@@ -485,9 +485,8 @@ namespace Evernus
             {
                 const auto savePath = devicePixelRatio() >= 2 ? getPortraitHighResPath(id) : getPortraitPath(id);
                 const auto resolution = devicePixelRatio() >= 2 ? 256 : 128;
-                const auto sss = QString{"https://image.eveonline.com/Character/%1_%2.jpg"}.arg(id).arg(resolution);
-                QMessageBox::warning(this, tr("Will download"), sss);
-                auto download = new FileDownload{QUrl{sss},
+                auto download = new FileDownload{QUrl{QString{"https://image.eveonline.com/Character/%1_%2.jpg"}
+                                                      .arg(id).arg(resolution)},
                                                  savePath,
                                                  this};
                 download->setProperty(downloadIdProperty, id);
