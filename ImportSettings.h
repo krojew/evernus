@@ -39,6 +39,12 @@ namespace Evernus
             Logs
         };
 
+        enum class WebImporterType
+        {
+            CREST,
+            EveCentral,
+        };
+
         const auto importSkillsDefault = true;
         const auto importPortraitDefault = true;
         const auto importAssetsDefault = true;
@@ -59,6 +65,7 @@ namespace Evernus
         const auto useCustomAssetStationDefault = false;
         const auto importAllCharactersDefault = true;
         const auto corpWalletDivisionDefault = 1000;
+        const auto webImportTypeDefault = WebImporterType::EveCentral;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
@@ -92,5 +99,6 @@ namespace Evernus
         const auto customAssetStationKey = "import/assets/customStation";
         const auto importAllCharactersKey = "import/allCharacters";
         const auto corpWalletDivisionKey = "import/corp/walletDivision";
+        const auto webImportTypeKey = "import/source/webImporter";
     }
 }

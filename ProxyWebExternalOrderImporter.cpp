@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QSettings>
+
 #include "ProxyWebExternalOrderImporter.h"
 
 namespace Evernus
@@ -20,22 +22,46 @@ namespace Evernus
                                                                  QObject *parent)
         : ExternalOrderImporter{parent}
         , mCRESTImporter{std::make_unique<CRESTExternalOrderImporter>(dataProvider, parent)}
+        , mEveCentralImporter{std::make_unique<EveCentralExternalOrderImporter>(parent)}
     {
-        connect(mCRESTImporter.get(), &CRESTExternalOrderImporter::externalOrdersChanged,
-                this, &ProxyWebExternalOrderImporter::externalOrdersChanged);
-        connect(mCRESTImporter.get(), &CRESTExternalOrderImporter::error,
-                this, &ProxyWebExternalOrderImporter::error);
-        connect(mCRESTImporter.get(), &CRESTExternalOrderImporter::statusChanged,
-                this, &ProxyWebExternalOrderImporter::statusChanged);
+        setCurrentImporter();
+
+        connectImporter(*mCRESTImporter);
+        connectImporter(*mEveCentralImporter);
     }
 
     void ProxyWebExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
     {
-        mCRESTImporter->fetchExternalOrders(target);
+        if (mCurrentImporter == ImportSettings::WebImporterType::CREST)
+            mCRESTImporter->fetchExternalOrders(target);
+        else
+            mEveCentralImporter->fetchExternalOrders(target);
     }
 
     void ProxyWebExternalOrderImporter::handleNewPreferences()
     {
+        setCurrentImporter();
+
         mCRESTImporter->handleNewPreferences();
+        mEveCentralImporter->handleNewPreferences();
+    }
+
+    template<class T>
+    void ProxyWebExternalOrderImporter::connectImporter(T &importer)
+    {
+        connect(&importer, &T::externalOrdersChanged,
+                this, &ProxyWebExternalOrderImporter::externalOrdersChanged);
+        connect(&importer, &T::error,
+                this, &ProxyWebExternalOrderImporter::error);
+        connect(&importer, &T::statusChanged,
+                this, &ProxyWebExternalOrderImporter::statusChanged);
+    }
+
+    void ProxyWebExternalOrderImporter::setCurrentImporter()
+    {
+        QSettings settings;
+        mCurrentImporter
+            = static_cast<ImportSettings::WebImporterType>(
+                settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
     }
 }

@@ -2821,6 +2821,21 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>API</translation>
     </message>
     <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="58"/>
+        <source>Web importer:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="63"/>
+        <source>Eve-Central</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
+        <source>CREST</source>
+        <translation type="unfinished">CREST</translation>
+    </message>
+    <message>
         <source>File</source>
         <translation type="vanished">Plik</translation>
     </message>

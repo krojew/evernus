@@ -14,30 +14,24 @@
  */
 #pragma once
 
-#include <QWidget>
-
-class QComboBox;
+#include "ExternalOrderImporter.h"
 
 namespace Evernus
 {
-    class ImportSourcePreferencesWidget
-        : public QWidget
+    class EveDataProvider;
+
+    class EveCentralExternalOrderImporter
+        : public ExternalOrderImporter
     {
         Q_OBJECT
 
     public:
-        explicit ImportSourcePreferencesWidget(QWidget *parent = nullptr);
-        virtual ~ImportSourcePreferencesWidget() = default;
+        explicit EveCentralExternalOrderImporter(QObject *parent = nullptr);
+        virtual ~EveCentralExternalOrderImporter() = default;
+
+        virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
 
     public slots:
-        void applySettings();
-
-    private:
-        QComboBox *mPriceSourceCombo = nullptr;
-        QComboBox *mMarketOrderSourceCombo = nullptr;
-        QComboBox *mWebImporterTypeCombo = nullptr;
-
-        template<class T>
-        void addSourceItem(QComboBox &combo, const QString &text, T value, T current);
+        void handleNewPreferences();
     };
 }

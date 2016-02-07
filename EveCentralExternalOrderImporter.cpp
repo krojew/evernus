@@ -12,32 +12,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
-
-#include <QWidget>
-
-class QComboBox;
+#include "EveCentralExternalOrderImporter.h"
 
 namespace Evernus
 {
-    class ImportSourcePreferencesWidget
-        : public QWidget
+    EveCentralExternalOrderImporter::EveCentralExternalOrderImporter(QObject *parent)
+        : ExternalOrderImporter{parent}
     {
-        Q_OBJECT
+    }
 
-    public:
-        explicit ImportSourcePreferencesWidget(QWidget *parent = nullptr);
-        virtual ~ImportSourcePreferencesWidget() = default;
+    void EveCentralExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
+    {
+    }
 
-    public slots:
-        void applySettings();
-
-    private:
-        QComboBox *mPriceSourceCombo = nullptr;
-        QComboBox *mMarketOrderSourceCombo = nullptr;
-        QComboBox *mWebImporterTypeCombo = nullptr;
-
-        template<class T>
-        void addSourceItem(QComboBox &combo, const QString &text, T value, T current);
-    };
+    void EveCentralExternalOrderImporter::handleNewPreferences()
+    {
+    }
 }

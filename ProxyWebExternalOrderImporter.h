@@ -14,7 +14,9 @@
  */
 #pragma once
 
+#include "EveCentralExternalOrderImporter.h"
 #include "CRESTExternalOrderImporter.h"
+#include "ImportSettings.h"
 
 namespace Evernus
 {
@@ -37,5 +39,12 @@ namespace Evernus
 
     private:
         std::unique_ptr<CRESTExternalOrderImporter> mCRESTImporter;
+        std::unique_ptr<EveCentralExternalOrderImporter> mEveCentralImporter;
+
+        ImportSettings::WebImporterType mCurrentImporter = ImportSettings::WebImporterType::EveCentral;
+
+        template<class T>
+        void connectImporter(T &importer);
+        void setCurrentImporter();
     };
 }

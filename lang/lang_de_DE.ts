@@ -2517,6 +2517,21 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <source>API</source>
         <translation>API</translation>
     </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="58"/>
+        <source>Web importer:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="63"/>
+        <source>Eve-Central</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
+        <source>CREST</source>
+        <translation type="unfinished">CREST</translation>
+    </message>
 </context>
 <context>
     <name>Evernus::InterRegionMarketDataModel</name>
