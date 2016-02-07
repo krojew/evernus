@@ -22,9 +22,9 @@
 
 #include "MarketLogExternalOrderImporterThread.h"
 #include "MarketLogExternalOrderImporter.h"
+#include "ProxyWebExternalOrderImporter.h"
 #include "MarketOrderFilterProxyModel.h"
 #include "ExternalOrderImporterNames.h"
-#include "CRESTExternalOrderImporter.h"
 #include "MarketAnalysisDataFetcher.h"
 #include "ContractFilterProxyModel.h"
 #include "MarketOrderRepository.h"
@@ -118,10 +118,10 @@ int main(int argc, char *argv[])
 
         Evernus::EvernusApplication app{argc, argv};
 
-        auto crestImporter = std::make_unique<Evernus::CRESTExternalOrderImporter>(app.getDataProvider());
-        auto crestImporterPtr = crestImporter.get();
+        auto webImporter = std::make_unique<Evernus::ProxyWebExternalOrderImporter>(app.getDataProvider());
+        auto webImporterPtr = webImporter.get();
 
-        app.registerImporter(Evernus::ExternalOrderImporterNames::webImporter, std::move(crestImporter));
+        app.registerImporter(Evernus::ExternalOrderImporterNames::webImporter, std::move(webImporter));
         app.registerImporter(Evernus::ExternalOrderImporterNames::logImporter,
                              std::make_unique<Evernus::MarketLogExternalOrderImporter>());
 
@@ -239,7 +239,7 @@ int main(int argc, char *argv[])
             QObject::connect(&app, &Evernus::EvernusApplication::snapshotsTaken,
                              &mainWnd, &Evernus::MainWindow::snapshotsTaken);
             QObject::connect(&mainWnd, &Evernus::MainWindow::preferencesChanged,
-                             crestImporterPtr, &Evernus::CRESTExternalOrderImporter::handleNewPreferences);
+                             webImporterPtr, &Evernus::ProxyWebExternalOrderImporter::handleNewPreferences);
             mainWnd.showAsSaved();
 
             return app.exec();

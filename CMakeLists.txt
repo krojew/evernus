@@ -167,6 +167,7 @@ qt5_wrap_cpp(
     PathPreferencesWidget.h
     PreferencesDialog.h
     PricePreferencesWidget.h
+    ProxyWebExternalOrderImporter.h
     qcustomplot.h
     qdropbox.h
     qdropboxaccount.h
@@ -590,6 +591,8 @@ add_executable(
     PriceSettings.h
     PriceUtils.cpp
     PriceUtils.h
+    ProxyWebExternalOrderImporter.cpp
+    ProxyWebExternalOrderImporter.h
     qcustomplot.cpp
     qcustomplot.h
     qdropbox.cpp

@@ -995,22 +995,22 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation>Kontrakty korporacji: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="457"/>
+        <location filename="../CharacterWidget.cpp" line="456"/>
         <source>Character error</source>
         <translation>Błąd postaci</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="457"/>
+        <location filename="../CharacterWidget.cpp" line="456"/>
         <source>Character not found in DB. Refresh characters.</source>
         <translation>Postać nie została znaleziona w bazie danych. Odśwież postacie.</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="535"/>
+        <location filename="../CharacterWidget.cpp" line="537"/>
         <source>&lt;strong&gt;%1 of %2&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1 z %2&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="545"/>
+        <location filename="../CharacterWidget.cpp" line="547"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>
@@ -3499,179 +3499,179 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarginToolDialog</name>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="448"/>
+        <location filename="../MarginToolDialog.cpp" line="455"/>
         <source>export market logs in game</source>
         <translation>wyeksportuj logi z gry</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="457"/>
+        <location filename="../MarginToolDialog.cpp" line="467"/>
         <source>Sell:</source>
         <translation>Sprzedaż:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="458"/>
+        <location filename="../MarginToolDialog.cpp" line="468"/>
         <source>Buy:</source>
         <translation>Kupno:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="459"/>
+        <location filename="../MarginToolDialog.cpp" line="469"/>
         <source>Profit:</source>
         <translation>Zysk:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="460"/>
+        <location filename="../MarginToolDialog.cpp" line="470"/>
         <source>Revenue:</source>
         <translation>Dochód:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="461"/>
+        <location filename="../MarginToolDialog.cpp" line="471"/>
         <source>Cost of sales:</source>
         <translation>Koszt sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="462"/>
+        <location filename="../MarginToolDialog.cpp" line="472"/>
         <source>Buyout:</source>
         <translation>Wykup:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="476"/>
-        <location filename="../MarginToolDialog.cpp" line="491"/>
+        <location filename="../MarginToolDialog.cpp" line="486"/>
+        <location filename="../MarginToolDialog.cpp" line="501"/>
         <source>Copy to clipboard</source>
         <translation>Skopiuj do schowka</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="512"/>
+        <location filename="../MarginToolDialog.cpp" line="522"/>
         <source>Buy orders:</source>
         <translation>Zlecenia kupna:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="517"/>
+        <location filename="../MarginToolDialog.cpp" line="527"/>
         <source>Sell orders:</source>
         <translation>Zlecenia sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="522"/>
+        <location filename="../MarginToolDialog.cpp" line="532"/>
         <source>Buy volume/movement:</source>
         <translation>Wolumen kupna:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="527"/>
+        <location filename="../MarginToolDialog.cpp" line="537"/>
         <source>Sell volume/movement:</source>
         <translation>Wolumen sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="540"/>
+        <location filename="../MarginToolDialog.cpp" line="550"/>
         <source>Margin:</source>
         <translation>Marża:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="546"/>
+        <location filename="../MarginToolDialog.cpp" line="556"/>
         <source>Markup:</source>
         <translation>Narzut:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="551"/>
+        <location filename="../MarginToolDialog.cpp" line="561"/>
         <source>Autocopy</source>
         <translation>Auto. kopiowanie</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="561"/>
+        <location filename="../MarginToolDialog.cpp" line="571"/>
         <source>Nothing</source>
         <translation>Nic</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="566"/>
+        <location filename="../MarginToolDialog.cpp" line="576"/>
         <source>Sell price</source>
         <translation>Cena sprzedaży</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="571"/>
+        <location filename="../MarginToolDialog.cpp" line="581"/>
         <source>Buy price</source>
         <translation>Cena kupna</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="593"/>
+        <location filename="../MarginToolDialog.cpp" line="603"/>
         <source>Broker fee:</source>
         <translation>Broker fee:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="598"/>
+        <location filename="../MarginToolDialog.cpp" line="608"/>
         <source>Sales tax:</source>
         <translation>Podatek od sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="603"/>
+        <location filename="../MarginToolDialog.cpp" line="613"/>
         <source>Sample data</source>
         <translation>Przykładowe dane</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="614"/>
+        <location filename="../MarginToolDialog.cpp" line="624"/>
         <source>If you experience problems with importing orders, adjust margin tool settings in the Preferences.</source>
         <translation>Jeśli naptokasz problem z importem zleceń, dostosuj ustawienia narzędzia marży.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="626"/>
+        <location filename="../MarginToolDialog.cpp" line="639"/>
         <source>Preferred source</source>
         <translation>Preferowane źródło</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="636"/>
+        <location filename="../MarginToolDialog.cpp" line="649"/>
         <source>Orders only</source>
         <translation>Tylko zlecenia</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="640"/>
+        <location filename="../MarginToolDialog.cpp" line="653"/>
         <source>Prefer custom item costs (if available)</source>
         <translation>Własne koszty (jeśli dostępne)</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="644"/>
+        <location filename="../MarginToolDialog.cpp" line="657"/>
         <source>Custom station</source>
         <translation>Wybrana stacja</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="648"/>
+        <location filename="../MarginToolDialog.cpp" line="661"/>
         <source>Source station</source>
         <translation>Stacja źródłowa</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="91"/>
+        <location filename="../MarginToolDialog.cpp" line="94"/>
         <source>Always on top</source>
         <translation>Zawsze na wierzchu</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="85"/>
+        <location filename="../MarginToolDialog.cpp" line="88"/>
         <source>Margin data</source>
         <translation>Marża</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="86"/>
+        <location filename="../MarginToolDialog.cpp" line="89"/>
         <source>Data source</source>
         <translation>Źródło danych</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="98"/>
+        <location filename="../MarginToolDialog.cpp" line="101"/>
         <source>Quit application</source>
         <translation>Wyjdź z aplikacji</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="804"/>
-        <location filename="../MarginToolDialog.cpp" line="810"/>
+        <location filename="../MarginToolDialog.cpp" line="817"/>
+        <location filename="../MarginToolDialog.cpp" line="823"/>
         <source>Margin tool error</source>
         <translation>Błąd narzędzia</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="805"/>
+        <location filename="../MarginToolDialog.cpp" line="818"/>
         <source>Could not determine market log path. Please enter log path in settings.</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu. Wpisz ścieżkę ręcznie w ustawieniach.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="811"/>
+        <location filename="../MarginToolDialog.cpp" line="824"/>
         <source>Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again.</source>
         <translation>Nie udało się rozpocząć obserwacji katalogu z logami. Upewnij się, że katalog istnieje (np. wyeksportuj logi) i spróbuj ponownie.</translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="109"/>
+        <location filename="../MarginToolDialog.cpp" line="112"/>
         <source>Margin tool</source>
         <translation>Narzędzie marży</translation>
     </message>
@@ -6785,34 +6785,34 @@ Czy chcesz kontynuować (może to wpłynąć negatywnie na bezpieczeństwo konta
         <translation type="vanished">Tajny klucz klienta CREST.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="58"/>
-        <location filename="../main.cpp" line="73"/>
+        <location filename="../main.cpp" line="59"/>
+        <location filename="../main.cpp" line="74"/>
         <source>Already running</source>
         <translation>Już włączono</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="58"/>
+        <location filename="../main.cpp" line="59"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation>Evernus zdaje się już być włączony. Jeśli tak nie jest, usuń &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="73"/>
+        <location filename="../main.cpp" line="74"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation>Evernus prawdopodobnie nie został czysto zamknięty. Czy chcesz przeprowadzić próbę wyczyszczenia?</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="82"/>
-        <location filename="../main.cpp" line="249"/>
+        <location filename="../main.cpp" line="83"/>
+        <location filename="../main.cpp" line="250"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="83"/>
+        <location filename="../main.cpp" line="84"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation>Nie udało się usunać &apos;%1&apos;!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="258"/>
+        <location filename="../main.cpp" line="259"/>
         <source>Initialization error</source>
         <translation>Błąd inicjalizacji</translation>
     </message>
