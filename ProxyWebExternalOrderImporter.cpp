@@ -32,10 +32,10 @@ namespace Evernus
 
     void ProxyWebExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
     {
-        if (mCurrentImporter == ImportSettings::WebImporterType::CREST)
-            mCRESTImporter->fetchExternalOrders(target);
-        else
+        if (mCurrentImporter == ImportSettings::WebImporterType::EveCentral)
             mEveCentralImporter->fetchExternalOrders(target);
+        else
+            mCRESTImporter->fetchExternalOrders(target);
     }
 
     void ProxyWebExternalOrderImporter::handleNewPreferences()

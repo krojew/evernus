@@ -65,7 +65,7 @@ namespace Evernus
         const auto useCustomAssetStationDefault = false;
         const auto importAllCharactersDefault = true;
         const auto corpWalletDivisionDefault = 1000;
-        const auto webImportTypeDefault = WebImporterType::EveCentral;
+        const auto webImportTypeDefault = WebImporterType::CREST;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
