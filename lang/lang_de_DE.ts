@@ -352,7 +352,7 @@
         <translation type="vanished">Evernus wurde ohne CREST-Unterstützung erstellt. Du kannst manuell CREST ID und CREST Secret via Kommandozeile angeben: --crest-id and --crest-secret</translation>
     </message>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="85"/>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="76"/>
         <source>CREST import: waiting for %1 server replies</source>
         <translation>CREST Iimport: warte auf %1 Serverantworten</translation>
     </message>
@@ -1427,6 +1427,14 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
 </context>
 <context>
+    <name>Evernus::EveCentralExternalOrderImporter</name>
+    <message>
+        <location filename="../EveCentralExternalOrderImporter.cpp" line="115"/>
+        <source>Waiting for %1 eve-central replies...</source>
+        <translation>Warte auf %1 Eve-Central Serverantworten...</translation>
+    </message>
+</context>
+<context>
     <name>Evernus::EvernusApplication</name>
     <message>
         <location filename="../EvernusApplication.cpp" line="114"/>
@@ -2047,7 +2055,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="95"/>
         <source>Tab</source>
-        <translation type="unfinished">Tab</translation>
+        <translation>Tab</translation>
     </message>
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="96"/>
@@ -2525,12 +2533,12 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="63"/>
         <source>Eve-Central</source>
-        <translation type="unfinished"></translation>
+        <translation>Eve-Central</translation>
     </message>
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
         <source>CREST</source>
-        <translation type="unfinished">CREST</translation>
+        <translation>CREST</translation>
     </message>
 </context>
 <context>
@@ -3346,12 +3354,12 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::MarketAnalysisDataFetcher</name>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="87"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="81"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Warte auf %1 Serverantworten für Aufträge...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="126"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="114"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Warte auf %1 Serverantworten für Historie...</translation>
     </message>

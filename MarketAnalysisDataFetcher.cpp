@@ -16,8 +16,6 @@
 
 #include <QDebug>
 
-#include "MathUtils.h"
-
 #include "MarketAnalysisDataFetcher.h"
 
 namespace Evernus
@@ -31,12 +29,12 @@ namespace Evernus
 
     bool MarketAnalysisDataFetcher::hasPendingOrderRequests() const noexcept
     {
-        return mOrderRequestCount != 0;
+        return !mOrderCounter.isEmpty();
     }
 
     bool MarketAnalysisDataFetcher::hasPendingHistoryRequests() const noexcept
     {
-        return mHistoryRequestCount != 0;
+        return !mHistoryCounter.isEmpty();
     }
 
     void MarketAnalysisDataFetcher::importData(const ExternalOrderImporter::TypeLocationPairs &pairs,
@@ -50,13 +48,16 @@ namespace Evernus
             this_->mPreparingRequests = false;
         } BOOST_SCOPE_EXIT_END
 
+        mOrderCounter.resetBatchIfEmpty();
+        mHistoryCounter.resetBatchIfEmpty();
+
         for (const auto &pair : pairs)
         {
             if (ignored.find(pair) != std::end(ignored))
                 continue;
 
-            ++mOrderRequestCount;
-            ++mHistoryRequestCount;
+            mOrderCounter.incCount();
+            mHistoryCounter.incCount();
 
             mManager.fetchMarketOrders(pair.second, pair.first, [this](auto &&orders, const auto &error) {
                 processOrders(std::move(orders), error);
@@ -66,7 +67,7 @@ namespace Evernus
             });
         }
 
-        qDebug() << "Making" << mOrderRequestCount << mHistoryRequestCount << "CREST order and history requests...";
+        qDebug() << "Making" << mOrderCounter.getCount() << mHistoryCounter.getCount() << "CREST order and history requests...";
     }
 
     void MarketAnalysisDataFetcher::handleNewPreferences()
@@ -76,22 +77,16 @@ namespace Evernus
 
     void MarketAnalysisDataFetcher::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)
     {
-        --mOrderRequestCount;
-        ++mOrderBatchCounter;
+        if (mOrderCounter.advanceAndCheckBatch())
+            emit orderStatusUpdated(tr("Waiting for %1 order server replies...").arg(mOrderCounter.getCount()));
 
-        qDebug() << mOrderRequestCount << " orders remaining; error:" << errorText;
-
-        if (mOrderBatchCounter >= MathUtils::batchSize(mOrderRequestCount))
-        {
-            mOrderBatchCounter = 0;
-            emit orderStatusUpdated(tr("Waiting for %1 order server replies...").arg(mOrderRequestCount));
-        }
+        qDebug() << mOrderCounter.getCount() << " orders remaining; error:" << errorText;
 
         if (!errorText.isEmpty())
         {
             mAggregatedOrderErrors << errorText;
 
-            if (mOrderRequestCount == 0)
+            if (mOrderCounter.isEmpty())
             {
                 emit orderImportEnded(mOrders, mAggregatedOrderErrors.join("\n"));
                 mAggregatedOrderErrors.clear();
@@ -105,7 +100,7 @@ namespace Evernus
                         std::make_move_iterator(std::begin(orders)),
                         std::make_move_iterator(std::end(orders)));
 
-        if (mOrderRequestCount == 0 && !mPreparingRequests)
+        if (mOrderCounter.isEmpty() && !mPreparingRequests)
         {
             emit orderImportEnded(mOrders, mAggregatedOrderErrors.join("\n"));
             mAggregatedOrderErrors.clear();
@@ -115,22 +110,16 @@ namespace Evernus
     void MarketAnalysisDataFetcher
     ::processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText)
     {
-        --mHistoryRequestCount;
-        ++mHistoryBatchCounter;
+        if (mHistoryCounter.advanceAndCheckBatch())
+            emit historyStatusUpdated(tr("Waiting for %1 history server replies...").arg(mHistoryCounter.getCount()));
 
-        qDebug() << mHistoryRequestCount << " history remaining; error:" << errorText;
-
-        if (mHistoryBatchCounter >= MathUtils::batchSize(mHistoryRequestCount))
-        {
-            mHistoryBatchCounter = 0;
-            emit historyStatusUpdated(tr("Waiting for %1 history server replies...").arg(mHistoryRequestCount));
-        }
+        qDebug() << mHistoryCounter.getCount() << " history remaining; error:" << errorText;
 
         if (!errorText.isEmpty())
         {
             mAggregatedHistoryErrors << errorText;
 
-            if (mHistoryRequestCount == 0)
+            if (mHistoryCounter.isEmpty())
             {
                 emit historyImportEnded(mHistory, mAggregatedHistoryErrors.join("\n"));
                 mAggregatedHistoryErrors.clear();
@@ -141,7 +130,7 @@ namespace Evernus
 
         (*mHistory)[regionId][typeId] = std::move(history);
 
-        if (mHistoryRequestCount == 0 && !mPreparingRequests)
+        if (mHistoryCounter.isEmpty() && !mPreparingRequests)
         {
             emit historyImportEnded(mHistory, mAggregatedHistoryErrors.join("\n"));
             mAggregatedHistoryErrors.clear();

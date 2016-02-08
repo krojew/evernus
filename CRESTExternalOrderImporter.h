@@ -18,6 +18,7 @@
 #include <QStringList>
 
 #include "ExternalOrderImporter.h"
+#include "ProgressiveCounter.h"
 #include "ExternalOrder.h"
 #include "CRESTManager.h"
 
@@ -44,9 +45,8 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         CRESTManager mManager;
-        mutable size_t mRequestCount = 0;
+        mutable ProgressiveCounter mCounter;
         mutable bool mPreparingRequests = false;
-        mutable uint mRequestBatchCounter = 0;
 
         mutable std::vector<ExternalOrder> mResult;
         mutable QStringList mAggregatedErrors;

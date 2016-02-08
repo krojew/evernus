@@ -528,7 +528,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="85"/>
+        <location filename="../CRESTExternalOrderImporter.cpp" line="76"/>
         <source>CREST import: waiting for %1 server replies</source>
         <translation>Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
     </message>
@@ -1646,6 +1646,14 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <location filename="../DeviationSourceWidget.cpp" line="50"/>
         <source>Uses given fixed value as reference.</source>
         <translation>Używa ustalonej wartości jako odniesienia.</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::EveCentralExternalOrderImporter</name>
+    <message>
+        <location filename="../EveCentralExternalOrderImporter.cpp" line="115"/>
+        <source>Waiting for %1 eve-central replies...</source>
+        <translation>Oczekiwanie na %1 odpowiedzi eve-central...</translation>
     </message>
 </context>
 <context>
@@ -2823,17 +2831,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="58"/>
         <source>Web importer:</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer z sieci:</translation>
     </message>
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="63"/>
         <source>Eve-Central</source>
-        <translation type="unfinished"></translation>
+        <translation>Eve-Central</translation>
     </message>
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
         <source>CREST</source>
-        <translation type="unfinished">CREST</translation>
+        <translation>CREST</translation>
     </message>
     <message>
         <source>File</source>
@@ -3694,12 +3702,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarketAnalysisDataFetcher</name>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="87"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="81"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="126"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="114"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi z historią...</translation>
     </message>

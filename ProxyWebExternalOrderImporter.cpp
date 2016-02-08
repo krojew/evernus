@@ -22,7 +22,7 @@ namespace Evernus
                                                                  QObject *parent)
         : ExternalOrderImporter{parent}
         , mCRESTImporter{std::make_unique<CRESTExternalOrderImporter>(dataProvider, parent)}
-        , mEveCentralImporter{std::make_unique<EveCentralExternalOrderImporter>(parent)}
+        , mEveCentralImporter{std::make_unique<EveCentralExternalOrderImporter>(dataProvider, parent)}
     {
         setCurrentImporter();
 
@@ -43,7 +43,6 @@ namespace Evernus
         setCurrentImporter();
 
         mCRESTImporter->handleNewPreferences();
-        mEveCentralImporter->handleNewPreferences();
     }
 
     template<class T>

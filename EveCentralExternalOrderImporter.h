@@ -14,7 +14,12 @@
  */
 #pragma once
 
+#include <QNetworkAccessManager>
+#include <QStringList>
+
 #include "ExternalOrderImporter.h"
+#include "ProgressiveCounter.h"
+#include "ExternalOrder.h"
 
 namespace Evernus
 {
@@ -26,12 +31,21 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit EveCentralExternalOrderImporter(QObject *parent = nullptr);
+        explicit EveCentralExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~EveCentralExternalOrderImporter() = default;
 
         virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
 
-    public slots:
-        void handleNewPreferences();
+    private:
+        const EveDataProvider &mDataProvider;
+
+        mutable QNetworkAccessManager mNetworkManager;
+        mutable ProgressiveCounter mCounter;
+        mutable bool mPreparingRequests = false;
+
+        mutable std::vector<ExternalOrder> mResult;
+        mutable QStringList mAggregatedErrors;
+
+        void processResult(ExternalOrder::TypeIdType typeId, const QByteArray &result) const;
     };
 }

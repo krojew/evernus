@@ -17,7 +17,6 @@
 #include <boost/scope_exit.hpp>
 
 #include "EveDataProvider.h"
-#include "MathUtils.h"
 
 #include "CRESTExternalOrderImporter.h"
 
@@ -38,29 +37,28 @@ namespace Evernus
             return;
         }
 
-        mResult.clear();
-        mAggregatedErrors.clear();
-
         mPreparingRequests = true;
         BOOST_SCOPE_EXIT(this_) {
             this_->mPreparingRequests = false;
         } BOOST_SCOPE_EXIT_END
+
+        mCounter.resetBatchIfEmpty();
 
         for (const auto &pair : target)
         {
             const auto regionId = mDataProvider.getStationRegionId(pair.second);
             if (regionId != 0)
             {
-                ++mRequestCount;
+                mCounter.incCount();
                 mManager.fetchMarketOrders(regionId, pair.first, [this](auto &&orders, const auto &error) {
                     processResult(std::move(orders), error);
                 });
             }
         }
 
-        qDebug() << "Making" << mRequestCount << "CREST requests...";
+        qDebug() << "Making" << mCounter.getCount() << "CREST requests...";
 
-        if (mRequestCount == 0)
+        if (mCounter.isEmpty())
         {
             emit externalOrdersChanged(mResult);
             mResult.clear();
@@ -74,22 +72,16 @@ namespace Evernus
 
     void CRESTExternalOrderImporter::processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const
     {
-        --mRequestCount;
-        ++mRequestBatchCounter;
+        if (mCounter.advanceAndCheckBatch())
+            emit statusChanged(tr("CREST import: waiting for %1 server replies").arg(mCounter.getCount()));
 
-        qDebug() << "Got reply," << mRequestCount << "remaining.";
-
-        if (mRequestBatchCounter >= MathUtils::batchSize(mRequestCount))
-        {
-            mRequestBatchCounter = 0;
-            emit statusChanged(tr("CREST import: waiting for %1 server replies").arg(mRequestCount));
-        }
+        qDebug() << "Got reply," << mCounter.getCount() << "remaining.";
 
         if (!errorText.isEmpty())
         {
             mAggregatedErrors << errorText;
 
-            if (mRequestCount == 0)
+            if (mCounter.isEmpty())
             {
                 mResult.clear();
                 emit error(mAggregatedErrors.join("\n"));
@@ -105,7 +97,7 @@ namespace Evernus
                        std::make_move_iterator(std::begin(orders)),
                        std::make_move_iterator(std::end(orders)));
 
-        if (mRequestCount == 0 && !mPreparingRequests)
+        if (mCounter.isEmpty() && !mPreparingRequests)
         {
             if (mAggregatedErrors.isEmpty())
             {

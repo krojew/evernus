@@ -27,6 +27,7 @@
 #include "ExternalOrderImporter.h"
 #include "MarketOrderRepository.h"
 #include "MarketHistoryEntry.h"
+#include "ProgressiveCounter.h"
 #include "ExternalOrder.h"
 #include "CRESTManager.h"
 #include "EveType.h"
@@ -64,8 +65,7 @@ namespace Evernus
     private:
         CRESTManager mManager;
 
-        size_t mOrderRequestCount = 0, mHistoryRequestCount = 0;
-        uint mOrderBatchCounter = 0, mHistoryBatchCounter = 0;
+        ProgressiveCounter mOrderCounter, mHistoryCounter;
         bool mPreparingRequests = false;
 
         QStringList mAggregatedOrderErrors, mAggregatedHistoryErrors;

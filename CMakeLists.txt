@@ -594,6 +594,8 @@ add_executable(
     PriceSettings.h
     PriceUtils.cpp
     PriceUtils.h
+    ProgressiveCounter.cpp
+    ProgressiveCounter.h
     ProxyWebExternalOrderImporter.cpp
     ProxyWebExternalOrderImporter.h
     qcustomplot.cpp
