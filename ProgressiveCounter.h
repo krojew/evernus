@@ -27,6 +27,7 @@ namespace Evernus
         size_t getCount() const noexcept;
         void setCount(size_t count) noexcept;
         void incCount() noexcept;
+        void addCount(size_t count) noexcept;
 
         bool isEmpty() const noexcept;
         bool advanceAndCheckBatch() noexcept;

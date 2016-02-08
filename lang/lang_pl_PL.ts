@@ -1651,7 +1651,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::EveCentralExternalOrderImporter</name>
     <message>
-        <location filename="../EveCentralExternalOrderImporter.cpp" line="115"/>
+        <location filename="../EveCentralExternalOrderImporter.cpp" line="58"/>
         <source>Waiting for %1 eve-central replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi eve-central...</translation>
     </message>

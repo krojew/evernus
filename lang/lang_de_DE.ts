@@ -1429,7 +1429,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::EveCentralExternalOrderImporter</name>
     <message>
-        <location filename="../EveCentralExternalOrderImporter.cpp" line="115"/>
+        <location filename="../EveCentralExternalOrderImporter.cpp" line="58"/>
         <source>Waiting for %1 eve-central replies...</source>
         <translation>Warte auf %1 Eve-Central Serverantworten...</translation>
     </message>

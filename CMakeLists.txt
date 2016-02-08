@@ -111,6 +111,7 @@ qt5_wrap_cpp(
     DateRangeWidget.h
     DeviationSourceWidget.h
     EveCentralExternalOrderImporter.h
+    EveCentralManager.h
     EveDataProvider.h
     EvernusApplication.h
     ExternalOrderBuyModel.h
@@ -380,6 +381,8 @@ add_executable(
     Entity.h
     EveCentralExternalOrderImporter.cpp
     EveCentralExternalOrderImporter.h
+    EveCentralManager.cpp
+    EveCentralManager.h
     EveDataProvider.h
     EvernusApplication.cpp
     EvernusApplication.h

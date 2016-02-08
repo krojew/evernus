@@ -33,6 +33,11 @@ namespace Evernus
         ++mCount;
     }
 
+    void ProgressiveCounter::addCount(size_t count) noexcept
+    {
+        mCount += count;
+    }
+
     bool ProgressiveCounter::isEmpty() const noexcept
     {
         return mCount == 0;
