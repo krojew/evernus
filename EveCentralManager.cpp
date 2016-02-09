@@ -29,6 +29,8 @@
 
 namespace Evernus
 {
+    const QString EveCentralManager::baseUrl = "http://api.eve-central.com/api/quicklook";
+
     EveCentralManager::EveCentralManager(const EveDataProvider &dataProvider, QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
@@ -58,10 +60,8 @@ namespace Evernus
                 query.addQueryItem("regionlimit", QString::number(it->second));
             } while (++it != end);
 
-            QUrl url{"http://api.eve-central.com/api/quicklook"};
+            QUrl url{baseUrl};
             url.setQuery(query);
-
-            qDebug() << "Fetching" << url;
 
             ++counter;
 
@@ -69,19 +69,36 @@ namespace Evernus
             request.setHeader(QNetworkRequest::UserAgentHeader,
                               QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
 
-            auto reply = mNetworkManager.get(request);
-            connect(reply, &QNetworkReply::finished, this, [=] {
-                reply->deleteLater();
-
-                const auto replyError = reply->error();
-                if (replyError != QNetworkReply::NoError)
-                    callback(std::vector<ExternalOrder>(), reply->errorString());
-                else
-                    processResult(typeId, reply->readAll(), callback);
-            }, Qt::QueuedConnection);
+            makeMarketOrderRequest(typeId, request, callback);
         }
 
         return counter;
+    }
+
+    void EveCentralManager::fetchMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const
+    {
+        QNetworkRequest request{QUrl{QString{baseUrl + "?typeid=%1&regionlimit=%2"}.arg(typeId).arg(regionId)}};
+        request.setHeader(QNetworkRequest::UserAgentHeader,
+                          QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
+
+        makeMarketOrderRequest(typeId, request, callback);
+    }
+
+    void EveCentralManager
+    ::makeMarketOrderRequest(EveType::IdType typeId, const QNetworkRequest &request, const Callback &callback) const
+    {
+        qDebug() << "Fetching" << request.url();
+
+        auto reply = mNetworkManager.get(request);
+        connect(reply, &QNetworkReply::finished, this, [=] {
+            reply->deleteLater();
+
+            const auto replyError = reply->error();
+            if (replyError != QNetworkReply::NoError)
+                callback(std::vector<ExternalOrder>(), reply->errorString());
+            else
+                processResult(typeId, reply->readAll(), callback);
+        }, Qt::QueuedConnection);
     }
 
     void EveCentralManager

@@ -41,12 +41,16 @@ namespace Evernus
         virtual ~EveCentralManager() = default;
 
         size_t aggregateAndFetchMarketOrders(const TypeLocationPairs &target, const Callback &callback) const;
+        void fetchMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
 
     private:
+        static const QString baseUrl;
+
         const EveDataProvider &mDataProvider;
 
         mutable QNetworkAccessManager mNetworkManager;
 
+        void makeMarketOrderRequest(EveType::IdType typeId, const QNetworkRequest &request, const Callback &callback) const;
         void processResult(ExternalOrder::TypeIdType typeId, const QByteArray &data, const Callback &callback) const;
     };
 }

@@ -14,7 +14,10 @@
  */
 #include <boost/scope_exit.hpp>
 
+#include <QSettings>
 #include <QDebug>
+
+#include "ImportSettings.h"
 
 #include "MarketAnalysisDataFetcher.h"
 
@@ -23,7 +26,8 @@ namespace Evernus
     MarketAnalysisDataFetcher::MarketAnalysisDataFetcher(const EveDataProvider &dataProvider,
                                                          QObject *parent)
         : QObject{parent}
-        , mManager(dataProvider)
+        , mCRESTManager{dataProvider}
+        , mEveCentralManager{dataProvider}
     {
     }
 
@@ -51,6 +55,10 @@ namespace Evernus
         mOrderCounter.resetBatchIfEmpty();
         mHistoryCounter.resetBatchIfEmpty();
 
+        QSettings settings;
+        const auto webImporter = static_cast<ImportSettings::WebImporterType>(
+            settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
+
         for (const auto &pair : pairs)
         {
             if (ignored.find(pair) != std::end(ignored))
@@ -59,20 +67,30 @@ namespace Evernus
             mOrderCounter.incCount();
             mHistoryCounter.incCount();
 
-            mManager.fetchMarketOrders(pair.second, pair.first, [this](auto &&orders, const auto &error) {
-                processOrders(std::move(orders), error);
-            });
-            mManager.fetchMarketHistory(pair.second, pair.first, [pair, this](auto &&history, const auto &error) {
+            if (webImporter == ImportSettings::WebImporterType::EveCentral)
+            {
+                mEveCentralManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
+                    processOrders(std::move(orders), error);
+                });
+            }
+            else
+            {
+                mCRESTManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
+                    processOrders(std::move(orders), error);
+                });
+            }
+
+            mCRESTManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
                 processHistory(pair.second, pair.first, std::move(history), error);
             });
         }
 
-        qDebug() << "Making" << mOrderCounter.getCount() << mHistoryCounter.getCount() << "CREST order and history requests...";
+        qDebug() << "Making" << mOrderCounter.getCount() << mHistoryCounter.getCount() << "order and history requests...";
     }
 
     void MarketAnalysisDataFetcher::handleNewPreferences()
     {
-        mManager.handleNewPreferences();
+        mCRESTManager.handleNewPreferences();
     }
 
     void MarketAnalysisDataFetcher::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)

@@ -28,6 +28,7 @@
 #include "MarketOrderRepository.h"
 #include "MarketHistoryEntry.h"
 #include "ProgressiveCounter.h"
+#include "EveCentralManager.h"
 #include "ExternalOrder.h"
 #include "CRESTManager.h"
 #include "EveType.h"
@@ -63,7 +64,8 @@ namespace Evernus
         void handleNewPreferences();
 
     private:
-        CRESTManager mManager;
+        CRESTManager mCRESTManager;
+        EveCentralManager mEveCentralManager;
 
         ProgressiveCounter mOrderCounter, mHistoryCounter;
         bool mPreparingRequests = false;
