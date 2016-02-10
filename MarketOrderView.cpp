@@ -163,12 +163,29 @@ namespace Evernus
 
     void MarketOrderView::changeNotesForCurrent()
     {
-        const auto order = mSource->getOrder(mProxy.mapToSource(mView->currentIndex()));
-        if (order != nullptr)
+        const auto selection = getSelectionModel()->selectedRows();
+        if (selection.isEmpty())
+            return;
+
+        QString initialText;
+        if (selection.size() == 1)
         {
-            const auto text = QInputDialog::getText(this, tr("Notes"), tr("Notes:"), QLineEdit::Normal, order->getNotes());
-            if (!text.isNull())
-                emit notesChanged(order->getId(), text);
+            const auto order = mSource->getOrder(mProxy.mapToSource(selection.first()));
+            if (order == nullptr)
+                return;
+
+            initialText = order->getNotes();
+        }
+
+        const auto text = QInputDialog::getText(this, tr("Notes"), tr("Notes:"), QLineEdit::Normal, initialText);
+        if (!text.isNull())
+        {
+            for (const auto &index : selection)
+            {
+                const auto order = mSource->getOrder(mProxy.mapToSource(index));
+                if (order != nullptr)
+                    emit notesChanged(order->getId(), text);
+            }
         }
     }
 

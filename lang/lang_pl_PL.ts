@@ -4963,12 +4963,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Zmień notatki</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="169"/>
+        <location filename="../MarketOrderView.cpp" line="166"/>
         <source>Notes</source>
         <translation>Notatki</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="169"/>
+        <location filename="../MarketOrderView.cpp" line="166"/>
         <source>Notes:</source>
         <translation>Notatki:</translation>
     </message>

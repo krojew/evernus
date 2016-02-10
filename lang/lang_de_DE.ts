@@ -4616,12 +4616,12 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation>Artikel auf eve-central.com nachschauen</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="169"/>
+        <location filename="../MarketOrderView.cpp" line="166"/>
         <source>Notes</source>
         <translation>Notiz</translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="169"/>
+        <location filename="../MarketOrderView.cpp" line="166"/>
         <source>Notes:</source>
         <translation>Notiz:</translation>
     </message>
