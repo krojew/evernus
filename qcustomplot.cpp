@@ -659,7 +659,9 @@ void QCPScatterStyle::drawShape(QCPPainter *painter, double x, double y) const
     }
     case ssPixmap:
     {
-      painter->drawPixmap(x-mPixmap.width()*0.5, y-mPixmap.height()*0.5, mPixmap);
+      painter->drawPixmap(x-(mPixmap.width() /mPixmap.devicePixelRatio())*0.5,
+                          y-(mPixmap.height()/mPixmap.devicePixelRatio())*0.5,
+                          mPixmap);
       break;
     }
     case ssCustom:
@@ -6396,7 +6398,8 @@ void QCPAxisPainterPrivate::placeTickLabel(QCPPainter *painter, double position,
       CachedLabel *newCachedLabel = new CachedLabel;
       TickLabelData labelData = getTickLabelData(painter->font(), text);
       newCachedLabel->offset = getTickLabelDrawOffset(labelData)+labelData.rotatedTotalBounds.topLeft();
-      newCachedLabel->pixmap = QPixmap(labelData.rotatedTotalBounds.size());
+      newCachedLabel->pixmap = QPixmap(labelData.rotatedTotalBounds.size()*mParentPlot->devicePixelRatio());
+      newCachedLabel->pixmap.setDevicePixelRatio(mParentPlot->devicePixelRatio());
       newCachedLabel->pixmap.fill(Qt::transparent);
       QCPPainter cachePainter(&newCachedLabel->pixmap);
       cachePainter.setPen(painter->pen());
@@ -6410,18 +6413,18 @@ void QCPAxisPainterPrivate::placeTickLabel(QCPPainter *painter, double position,
     {
       if (QCPAxis::orientation(type) == Qt::Horizontal)
       {
-        if (labelAnchor.x()+cachedLabel->offset.x()+cachedLabel->pixmap.width() > viewportRect.right() ||
+        if (labelAnchor.x()+cachedLabel->offset.x()+(cachedLabel->pixmap.width()/cachedLabel->pixmap.devicePixelRatio()) > viewportRect.right() ||
             labelAnchor.x()+cachedLabel->offset.x() < viewportRect.left())
           return;
       } else
       {
-        if (labelAnchor.y()+cachedLabel->offset.y()+cachedLabel->pixmap.height() >viewportRect.bottom() ||
+        if (labelAnchor.y()+cachedLabel->offset.y()+(cachedLabel->pixmap.height()/cachedLabel->pixmap.devicePixelRatio()) > viewportRect.bottom() ||
             labelAnchor.y()+cachedLabel->offset.y() < viewportRect.top())
           return;
       }
     }
     painter->drawPixmap(labelAnchor+cachedLabel->offset, cachedLabel->pixmap);
-    finalSize = cachedLabel->pixmap.size();
+    finalSize = cachedLabel->pixmap.size()/cachedLabel->pixmap.devicePixelRatio();
   } else // label caching disabled, draw text directly on surface:
   {
     TickLabelData labelData = getTickLabelData(painter->font(), text);
@@ -6674,7 +6677,7 @@ void QCPAxisPainterPrivate::getMaxTickLabelSize(const QFont &font, const QString
   if (mParentPlot->plottingHints().testFlag(QCP::phCacheLabels) && mLabelCache.contains(text)) // label caching enabled and have cached label
   {
     const CachedLabel *cachedLabel = mLabelCache.object(text);
-    finalSize = cachedLabel->pixmap.size();
+    finalSize = cachedLabel->pixmap.size()/cachedLabel->pixmap.devicePixelRatio();
   } else // label caching disabled or no label with this text cached:
   {
     TickLabelData labelData = getTickLabelData(font, text);
@@ -9051,10 +9054,11 @@ QCustomPlot::QCustomPlot(QWidget *parent) :
   mCurrentLayer(0),
   mPlottingHints(QCP::phCacheLabels|QCP::phForceRepaint),
   mMultiSelectModifier(Qt::ControlModifier),
-  mPaintBuffer(size()),
+  mPaintBuffer(size()*devicePixelRatio()),
   mMouseEventElement(0),
   mReplotting(false)
 {
+  mPaintBuffer.setDevicePixelRatio(devicePixelRatio());
   setAttribute(Qt::WA_NoMousePropagation);
   setAttribute(Qt::WA_OpaquePaintEvent);
   setMouseTracking(true);
@@ -10681,7 +10685,8 @@ void QCustomPlot::paintEvent(QPaintEvent *event)
 void QCustomPlot::resizeEvent(QResizeEvent *event)
 {
   // resize and repaint the buffer:
-  mPaintBuffer = QPixmap(event->size());
+  mPaintBuffer = QPixmap(event->size()*devicePixelRatio());
+  mPaintBuffer.setDevicePixelRatio(devicePixelRatio());
   setViewport(rect());
   replot(rpQueued); // queued update is important here, to prevent painting issues in some contexts
 }
@@ -10945,9 +10950,9 @@ void QCustomPlot::drawBackground(QCPPainter *painter)
     if (mBackgroundScaled)
     {
       // check whether mScaledBackground needs to be updated:
-      QSize scaledSize(mBackgroundPixmap.size());
+      QSize scaledSize(mBackgroundPixmap.size()/mBackgroundPixmap.devicePixelRatio());
       scaledSize.scale(mViewport.size(), mBackgroundScaledMode);
-      if (mScaledBackgroundPixmap.size() != scaledSize)
+      if (mScaledBackgroundPixmap.size()/mScaledBackgroundPixmap.devicePixelRatio() != scaledSize)
         mScaledBackgroundPixmap = mBackgroundPixmap.scaled(mViewport.size(), mBackgroundScaledMode, Qt::SmoothTransformation);
       painter->drawPixmap(mViewport.topLeft(), mScaledBackgroundPixmap, QRect(0, 0, mViewport.width(), mViewport.height()) & mScaledBackgroundPixmap.rect());
     } else
