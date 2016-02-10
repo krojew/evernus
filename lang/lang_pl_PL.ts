@@ -2501,8 +2501,9 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Port:</translation>
     </message>
     <message>
+        <location filename="../IGBPreferencesWidget.cpp" line="54"/>
         <source>Scan delay:</source>
-        <translation type="vanished">Opóźnienie skanowania:</translation>
+        <translation>Opóźnienie skanowania:</translation>
     </message>
 </context>
 <context>
@@ -2533,7 +2534,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Aktualne zlecenie:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="96"/>
+        <location filename="../IGBService.cpp" line="100"/>
         <source>Sell orders:</source>
         <translation>Zlecenia sprzedaży:</translation>
     </message>
@@ -2615,59 +2616,63 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Automatyczny import na końcu</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="97"/>
+        <location filename="../IGBService.cpp" line="101"/>
         <source>Buy orders:</source>
         <translation>Zlecenia kupna:</translation>
     </message>
     <message>
+        <location filename="../IGBService.cpp" line="92"/>
         <source>Scan delay:</source>
-        <translation type="vanished">Opóźnienie skanowania:</translation>
+        <translation>Opóźnienie skanowania:</translation>
     </message>
     <message>
+        <location filename="../IGBService.cpp" line="93"/>
         <source>Start Scan</source>
-        <translation type="vanished">Rozpocznij skanowanie</translation>
+        <translation>Rozpocznij skanowanie</translation>
     </message>
     <message>
+        <location filename="../IGBService.cpp" line="94"/>
         <source>Stop Scan</source>
-        <translation type="vanished">Zakończ skanowanie</translation>
+        <translation>Zakończ skanowanie</translation>
     </message>
     <message>
+        <location filename="../IGBService.cpp" line="95"/>
         <source>Stop at end</source>
-        <translation type="vanished">Zatrzymaj na końcu</translation>
+        <translation>Zatrzymaj na końcu</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="98"/>
+        <location filename="../IGBService.cpp" line="102"/>
         <source>Limit to current station, if available</source>
         <translation>Ogranicz do akutalnej stacji, jeśli dostępne</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="94"/>
+        <location filename="../IGBService.cpp" line="98"/>
         <source>Favorite items:</source>
         <translation>Ulubione przedmioty:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="104"/>
+        <location filename="../IGBService.cpp" line="108"/>
         <source>Please select a category from the menu.</source>
         <translation>Wybierz kategorię z menu.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="220"/>
-        <location filename="../IGBService.cpp" line="337"/>
+        <location filename="../IGBService.cpp" line="224"/>
+        <location filename="../IGBService.cpp" line="341"/>
         <source>Character not found!</source>
         <translation>Postać nie znaleziona!</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="479"/>
+        <location filename="../IGBService.cpp" line="485"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="479"/>
+        <location filename="../IGBService.cpp" line="485"/>
         <source>You have to open Evernus in EVE In-Game Browser first.</source>
         <translation>Najpierw musisz otworzyć Evernusa w przeglądarce w EVE.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="393"/>
+        <location filename="../IGBService.cpp" line="398"/>
         <source>Website trust is required. Please add it to Trusted Sites.</source>
         <translation>Wymagane jest zaufanie stronie. Dodaj stronę do zaufanych (Trusted Sites).</translation>
     </message>

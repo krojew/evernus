@@ -2249,6 +2249,11 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <source>Port:</source>
         <translation>Port:</translation>
     </message>
+    <message>
+        <location filename="../IGBPreferencesWidget.cpp" line="54"/>
+        <source>Scan delay:</source>
+        <translation>Scan Verzögerung:</translation>
+    </message>
 </context>
 <context>
     <name>Evernus::IGBService</name>
@@ -2327,48 +2332,68 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>Aktueller Eintrag:</translation>
     </message>
     <message>
+        <location filename="../IGBService.cpp" line="92"/>
+        <source>Scan delay:</source>
+        <translation>Scan Verzögerung:</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="93"/>
+        <source>Start Scan</source>
+        <translation>Scan starten</translation>
+    </message>
+    <message>
         <location filename="../IGBService.cpp" line="94"/>
+        <source>Stop Scan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="95"/>
+        <source>Stop at end</source>
+        <translation>Stoppen Sie am Ende</translation>
+    </message>
+    <message>
+        <location filename="../IGBService.cpp" line="98"/>
         <source>Favorite items:</source>
         <translation>Favoriten:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="96"/>
+        <location filename="../IGBService.cpp" line="100"/>
         <source>Sell orders:</source>
         <translation>Verkaufsaufträge:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="97"/>
+        <location filename="../IGBService.cpp" line="101"/>
         <source>Buy orders:</source>
         <translation>Kaufaufträge:</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="98"/>
+        <location filename="../IGBService.cpp" line="102"/>
         <source>Limit to current station, if available</source>
         <translation>Auf diese Station begrenzen, falls möglich</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="104"/>
+        <location filename="../IGBService.cpp" line="108"/>
         <source>Please select a category from the menu.</source>
         <translation>Bitte eine Kategorie aus dem Menü auswählen.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="220"/>
-        <location filename="../IGBService.cpp" line="337"/>
+        <location filename="../IGBService.cpp" line="224"/>
+        <location filename="../IGBService.cpp" line="341"/>
         <source>Character not found!</source>
         <translation>Charakter nicht gefunden!</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="393"/>
+        <location filename="../IGBService.cpp" line="398"/>
         <source>Website trust is required. Please add it to Trusted Sites.</source>
         <translation>Bitte füge die Webseite der Liste der vertrauten Seiten hinzu.</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="479"/>
+        <location filename="../IGBService.cpp" line="485"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../IGBService.cpp" line="479"/>
+        <location filename="../IGBService.cpp" line="485"/>
         <source>You have to open Evernus in EVE In-Game Browser first.</source>
         <translation>Du mußt Evernus zuerst im EVE-Browser öffnen.</translation>
     </message>

@@ -89,6 +89,10 @@ namespace Evernus
         mOrderTemplate["prev-order-text"] = tr("Show Previous Entry");
         mOrderTemplate["next-order-text"] = tr("Show Next Entry");
         mOrderTemplate["current-order-text"] = tr("Current entry:");
+        mOrderTemplate["scan-delay-text"] = tr("Scan delay:");
+        mOrderTemplate["start-scan-text"] = tr("Start Scan");
+        mOrderTemplate["stop-scan-text"] = tr("Stop Scan");
+        mOrderTemplate["stop-at-end-text"] = tr("Stop at end");
 
         mFavoriteTemplate.copyArguments(mOrderTemplate);
         mFavoriteTemplate["favorite-text"] = tr("Favorite items:");
@@ -358,6 +362,7 @@ namespace Evernus
 
         mFavoriteTemplate["order-ids"] = idContainer.join(", ");
         mFavoriteTemplate["type-ids"] = typeIdContainer.join(", ");
+        mFavoriteTemplate["scan-delay"] = settings.value(IGBSettings::scanDelayKey, IGBSettings::scanDelayDefault).toString();
         mFavoriteTemplate["favorite-items"] = result;
 
         renderContent(event, mFavoriteTemplate.render());
@@ -437,6 +442,7 @@ namespace Evernus
             filterAndSort(buyFunc(), state, needsDelta), idContainer, typeIdContainer, stationId);
         mOrderTemplate["order-ids"] = idContainer.join(", ");
         mOrderTemplate["type-ids"] = typeIdContainer.join(", ");
+        mOrderTemplate["scan-delay"] = settings.value(IGBSettings::scanDelayKey, IGBSettings::scanDelayDefault).toString();
 
         renderContent(event, mOrderTemplate.render());
     }
