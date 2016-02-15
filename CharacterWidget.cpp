@@ -182,11 +182,15 @@ namespace Evernus
 
         mCorpStandingEdit = new QDoubleSpinBox{this};
         standingsLayout->addRow(tr("Corporation standing:"), mCorpStandingEdit);
+        mCorpStandingEdit->setMinimum(-10.0);
+        mCorpStandingEdit->setMaximum(10.0);
         mCorpStandingEdit->setSingleStep(0.01);
         connect(mCorpStandingEdit, SIGNAL(valueChanged(double)), SLOT(setCorpStanding(double)));
 
         mFactionStandingEdit = new QDoubleSpinBox{this};
         standingsLayout->addRow(tr("Faction standing:"), mFactionStandingEdit);
+        mFactionStandingEdit->setMinimum(-10.0);
+        mFactionStandingEdit->setMaximum(10.0);
         mFactionStandingEdit->setSingleStep(0.01);
         connect(mFactionStandingEdit, SIGNAL(valueChanged(double)), SLOT(setFactionStanding(double)));
 
