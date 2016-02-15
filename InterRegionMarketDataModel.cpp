@@ -215,9 +215,9 @@ namespace Evernus
 
         struct AggrTypeData
         {
-            double mBuyPrice;
-            double mSellPrice;
-            uint mVolume;
+            double mBuyPrice = 0.;
+            double mSellPrice = 0.;
+            uint mVolume = 0;
         };
 
         RegionMap<TypeMap<AggrTypeData>> aggrTypeData;
