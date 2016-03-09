@@ -623,177 +623,177 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>Ansehen Corporation:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="189"/>
+        <location filename="../CharacterWidget.cpp" line="191"/>
         <source>Faction standing:</source>
         <translation>Ansehen Fraktion:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="193"/>
+        <location filename="../CharacterWidget.cpp" line="197"/>
         <source>Trade skills</source>
         <translation>Handelsskills</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="198"/>
+        <location filename="../CharacterWidget.cpp" line="202"/>
         <source>Order amount skills</source>
         <translation>Skills Auftragsanzahl</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="203"/>
+        <location filename="../CharacterWidget.cpp" line="207"/>
         <source>Trade:</source>
         <translation>Trade:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="204"/>
+        <location filename="../CharacterWidget.cpp" line="208"/>
         <source>Retail:</source>
         <translation>Retail:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="205"/>
+        <location filename="../CharacterWidget.cpp" line="209"/>
         <source>Wholesale:</source>
         <translation>Wholesale:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="206"/>
+        <location filename="../CharacterWidget.cpp" line="210"/>
         <source>Tycoon:</source>
         <translation>Tycoon:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="208"/>
+        <location filename="../CharacterWidget.cpp" line="212"/>
         <source>Trade range skills</source>
         <translation>Skills Auftragsreichweite</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="213"/>
+        <location filename="../CharacterWidget.cpp" line="217"/>
         <source>Marketing:</source>
         <translation>Marketing:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="214"/>
+        <location filename="../CharacterWidget.cpp" line="218"/>
         <source>Procurement:</source>
         <translation>Procurement:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="215"/>
+        <location filename="../CharacterWidget.cpp" line="219"/>
         <source>Daytrading:</source>
         <translation>Daytrading:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="216"/>
+        <location filename="../CharacterWidget.cpp" line="220"/>
         <source>Visibility:</source>
         <translation>Visibility:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="218"/>
+        <location filename="../CharacterWidget.cpp" line="222"/>
         <source>Fee skills</source>
         <translation>Skills Gebühren</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="223"/>
+        <location filename="../CharacterWidget.cpp" line="227"/>
         <source>Accounting:</source>
         <translation>Accounting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="224"/>
+        <location filename="../CharacterWidget.cpp" line="228"/>
         <source>Broker relations:</source>
         <translation>Broker relations:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="225"/>
+        <location filename="../CharacterWidget.cpp" line="229"/>
         <source>Margin trading:</source>
         <translation>Margin Trading:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="227"/>
+        <location filename="../CharacterWidget.cpp" line="231"/>
         <source>Contracting skills</source>
         <translation>Skills Verträge</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="232"/>
+        <location filename="../CharacterWidget.cpp" line="236"/>
         <source>Contracting:</source>
         <translation>Contracting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="233"/>
+        <location filename="../CharacterWidget.cpp" line="237"/>
         <source>Corporation contracting:</source>
         <translation>Corporation Contracting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="275"/>
+        <location filename="../CharacterWidget.cpp" line="279"/>
         <source>never imported</source>
         <translation>niemals importiert</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="280"/>
+        <location filename="../CharacterWidget.cpp" line="284"/>
         <source>Character sheet: %1</source>
         <translation>Charakterblatt: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="281"/>
+        <location filename="../CharacterWidget.cpp" line="285"/>
         <source>Asset list: %1</source>
         <translation>Gegenstandsliste: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="282"/>
+        <location filename="../CharacterWidget.cpp" line="286"/>
         <source>Market orders: %1</source>
         <translation>Marktaufträge: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="283"/>
+        <location filename="../CharacterWidget.cpp" line="287"/>
         <source>Wallet journal: %1</source>
         <translation>Konto-Logbuch: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="284"/>
+        <location filename="../CharacterWidget.cpp" line="288"/>
         <source>Wallet transactions: %1</source>
         <translation>Konto-Transaktionen: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="287"/>
+        <location filename="../CharacterWidget.cpp" line="291"/>
         <source>Contracts: %1</source>
         <translation>Verträge: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="293"/>
+        <location filename="../CharacterWidget.cpp" line="297"/>
         <source>Corp. asset list: %1</source>
         <translation>Corp. Gegenstandsliste: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="294"/>
+        <location filename="../CharacterWidget.cpp" line="298"/>
         <source>Corp. market orders: %1</source>
         <translation>Corp. Marktaufträge: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="295"/>
+        <location filename="../CharacterWidget.cpp" line="299"/>
         <source>Corp. wallet journal: %1</source>
         <translation>Corp. Konto-Logbuch: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="296"/>
+        <location filename="../CharacterWidget.cpp" line="300"/>
         <source>Corp. wallet transactions: %1</source>
         <translation>Corp. Konto-Transaktionen: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="299"/>
+        <location filename="../CharacterWidget.cpp" line="303"/>
         <source>Corp. contracts: %1</source>
         <translation>Corp. Verträge: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="456"/>
+        <location filename="../CharacterWidget.cpp" line="460"/>
         <source>Character error</source>
         <translation>Fehler bei Charakter</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="456"/>
+        <location filename="../CharacterWidget.cpp" line="460"/>
         <source>Character not found in DB. Refresh characters.</source>
         <translation>Charakter nicht in der DB gefunden. Aktualisiere die Charaktere.</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="537"/>
+        <location filename="../CharacterWidget.cpp" line="541"/>
         <source>&lt;strong&gt;%1 of %2&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1 von %2&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="547"/>
+        <location filename="../CharacterWidget.cpp" line="551"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>
@@ -2053,27 +2053,32 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>Datums-/Zeitformat (Benötigt Neutstart):</translation>
     </message>
     <message>
-        <location filename="../GeneralPreferencesWidget.cpp" line="95"/>
+        <location filename="../GeneralPreferencesWidget.cpp" line="94"/>
+        <source>Apply date fromat to graphs (requires restart)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../GeneralPreferencesWidget.cpp" line="100"/>
         <source>Tab</source>
         <translation>Tab</translation>
     </message>
     <message>
-        <location filename="../GeneralPreferencesWidget.cpp" line="96"/>
+        <location filename="../GeneralPreferencesWidget.cpp" line="101"/>
         <source>Space</source>
         <translation>Space</translation>
     </message>
     <message>
-        <location filename="../GeneralPreferencesWidget.cpp" line="97"/>
+        <location filename="../GeneralPreferencesWidget.cpp" line="102"/>
         <source>;</source>
         <translation>;</translation>
     </message>
     <message>
-        <location filename="../GeneralPreferencesWidget.cpp" line="98"/>
+        <location filename="../GeneralPreferencesWidget.cpp" line="103"/>
         <source>,</source>
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../GeneralPreferencesWidget.cpp" line="101"/>
+        <location filename="../GeneralPreferencesWidget.cpp" line="106"/>
         <source>Column data delimiter:</source>
         <translation>Spaltentrennzeichen:</translation>
     </message>
@@ -5307,33 +5312,33 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation>Fortgeschritten</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="651"/>
+        <location filename="../StatisticsWidget.cpp" line="661"/>
         <source>Script error</source>
         <translation>Skriptfehler</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="657"/>
+        <location filename="../StatisticsWidget.cpp" line="667"/>
         <source>Save script</source>
         <translation>Skript speichern</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="657"/>
+        <location filename="../StatisticsWidget.cpp" line="667"/>
         <source>Enter script name:</source>
         <translation>Skriptnamen eingeben:</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="672"/>
+        <location filename="../StatisticsWidget.cpp" line="682"/>
         <source>Load script</source>
         <translation>Skript laden</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="672"/>
-        <location filename="../StatisticsWidget.cpp" line="689"/>
+        <location filename="../StatisticsWidget.cpp" line="682"/>
+        <location filename="../StatisticsWidget.cpp" line="699"/>
         <source>Select script:</source>
         <translation>Skript auswählen:</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="689"/>
+        <location filename="../StatisticsWidget.cpp" line="699"/>
         <source>Delete script</source>
         <translation>Skript löschen</translation>
     </message>
@@ -5352,7 +5357,7 @@ Wert Verkaufsauftrag: %5
 Wert gesamt: %6</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="719"/>
+        <location filename="../StatisticsWidget.cpp" line="729"/>
         <source>Assets: %1
 Corp. assets: %2
 Wallet: %3
@@ -5369,216 +5374,216 @@ Wert Verkaufsauftrag: %6
 Wert gesamt: %7</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="733"/>
+        <location filename="../StatisticsWidget.cpp" line="743"/>
         <source>Asset value</source>
         <translation>Artikelwert</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="742"/>
+        <location filename="../StatisticsWidget.cpp" line="752"/>
         <source>Corp. asset value</source>
         <translation>Corp. Artikelwert</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="736"/>
+        <location filename="../StatisticsWidget.cpp" line="746"/>
         <source>Wallet balance</source>
         <translation>Kontostand</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="739"/>
+        <location filename="../StatisticsWidget.cpp" line="749"/>
         <source>Corp. wallet balance</source>
         <translation>Corp. Kontostand</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="745"/>
+        <location filename="../StatisticsWidget.cpp" line="755"/>
         <source>Buy order value</source>
         <translation>Wert Kaufauftrag</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="748"/>
+        <location filename="../StatisticsWidget.cpp" line="758"/>
         <source>Sell order value</source>
         <translation>Wert Verkaufsauftrag</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="751"/>
+        <location filename="../StatisticsWidget.cpp" line="761"/>
         <source>Total value</source>
         <translation>Wert gesamt</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="755"/>
+        <location filename="../StatisticsWidget.cpp" line="765"/>
         <source>Incoming</source>
         <translation>Einnahmen</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="756"/>
+        <location filename="../StatisticsWidget.cpp" line="766"/>
         <source>Outgoing</source>
         <translation>Ausgaben</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="758"/>
+        <location filename="../StatisticsWidget.cpp" line="768"/>
         <source>Sell</source>
         <translation>Verkauf</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="759"/>
+        <location filename="../StatisticsWidget.cpp" line="769"/>
         <source>Buy</source>
         <translation>Kauf</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="805"/>
+        <location filename="../StatisticsWidget.cpp" line="815"/>
         <source>Combine statistics for all characters</source>
         <translation>Statistiken für alle Charaktere zusammenfassen</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="815"/>
+        <location filename="../StatisticsWidget.cpp" line="825"/>
         <source>Make snapshot</source>
         <translation>Machen snapshot</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="821"/>
+        <location filename="../StatisticsWidget.cpp" line="831"/>
         <source>Balance</source>
         <translation>Kontostand</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="831"/>
+        <location filename="../StatisticsWidget.cpp" line="841"/>
         <source>Wallet journal</source>
         <translation>Konto-Logbuch</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="846"/>
-        <location filename="../StatisticsWidget.cpp" line="878"/>
+        <location filename="../StatisticsWidget.cpp" line="856"/>
+        <location filename="../StatisticsWidget.cpp" line="888"/>
         <source>Total income:</source>
         <translation>Einkünfte gesamt:</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="852"/>
-        <location filename="../StatisticsWidget.cpp" line="884"/>
+        <location filename="../StatisticsWidget.cpp" line="862"/>
+        <location filename="../StatisticsWidget.cpp" line="894"/>
         <source>Total cost:</source>
         <translation>Kosten gesamt:</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="858"/>
-        <location filename="../StatisticsWidget.cpp" line="890"/>
+        <location filename="../StatisticsWidget.cpp" line="868"/>
+        <location filename="../StatisticsWidget.cpp" line="900"/>
         <source>Balance:</source>
         <translation>Kontostand:</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="866"/>
+        <location filename="../StatisticsWidget.cpp" line="876"/>
         <source>Wallet transactions</source>
         <translation>Konto-Transaktionen</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="908"/>
+        <location filename="../StatisticsWidget.cpp" line="918"/>
         <source>This tab allows you to create custom reports aggregating historic market order data.</source>
         <translation>Diese Register ermöglicht die Erstellung benutzerdefinierter Reporte zusammengefaßter historischer Marktdaten.</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="916"/>
+        <location filename="../StatisticsWidget.cpp" line="926"/>
         <source>Simple aggregation</source>
         <translation>Einfache Zusammenfassung</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="926"/>
+        <location filename="../StatisticsWidget.cpp" line="936"/>
         <source>Group by:</source>
         <translation>Gruppiere nach:</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="930"/>
+        <location filename="../StatisticsWidget.cpp" line="940"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="931"/>
+        <location filename="../StatisticsWidget.cpp" line="941"/>
         <source>Location</source>
         <translation>Standort</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="933"/>
+        <location filename="../StatisticsWidget.cpp" line="943"/>
         <source>Order by:</source>
         <translation>Sortieren nach:</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="937"/>
+        <location filename="../StatisticsWidget.cpp" line="947"/>
         <source>Id</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="938"/>
+        <location filename="../StatisticsWidget.cpp" line="948"/>
         <source>Count</source>
         <translation>Anzahl</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="939"/>
+        <location filename="../StatisticsWidget.cpp" line="949"/>
         <source>Price</source>
         <translation>Preis</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="940"/>
+        <location filename="../StatisticsWidget.cpp" line="950"/>
         <source>Volume</source>
         <translation>Volumen</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="942"/>
+        <location filename="../StatisticsWidget.cpp" line="952"/>
         <source>Limit:</source>
         <translation>Limit:</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="948"/>
+        <location filename="../StatisticsWidget.cpp" line="958"/>
         <source>none</source>
         <translation>keine</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="950"/>
+        <location filename="../StatisticsWidget.cpp" line="960"/>
         <source>Include active</source>
         <translation>Aktive einschließen</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="953"/>
+        <location filename="../StatisticsWidget.cpp" line="963"/>
         <source>Include expired/cancelled</source>
         <translation>Abgelaufene/Abgebrochene einschließen</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="956"/>
-        <location filename="../StatisticsWidget.cpp" line="987"/>
+        <location filename="../StatisticsWidget.cpp" line="966"/>
+        <location filename="../StatisticsWidget.cpp" line="997"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="963"/>
+        <location filename="../StatisticsWidget.cpp" line="973"/>
         <source>Script processing</source>
         <translation>Skriptverarbeitung</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="979"/>
+        <location filename="../StatisticsWidget.cpp" line="989"/>
         <source>see the online help to learn how to use script processing</source>
         <translation>Konsultiere die Onlinhilfe, um zu erfahren wie die Skriptverarbeitung verwendet werden kann</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="992"/>
+        <location filename="../StatisticsWidget.cpp" line="1002"/>
         <source>Save script...</source>
         <translation>Skript speichern...</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="996"/>
+        <location filename="../StatisticsWidget.cpp" line="1006"/>
         <source>Load script...</source>
         <translation>Skript laden...</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="1000"/>
+        <location filename="../StatisticsWidget.cpp" line="1010"/>
         <source>Delete script...</source>
         <translation>Skript löschen...</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="1004"/>
+        <location filename="../StatisticsWidget.cpp" line="1014"/>
         <source>Mode</source>
         <translation>Modus</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="1009"/>
+        <location filename="../StatisticsWidget.cpp" line="1019"/>
         <source>For each</source>
         <translation>Für alle</translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="1013"/>
+        <location filename="../StatisticsWidget.cpp" line="1023"/>
         <source>Aggregate</source>
         <translation>Zusammenfassen</translation>
     </message>
@@ -5748,12 +5753,12 @@ Wert gesamt: %7</translation>
         <translation>Trennlinie hinzufügen</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="112"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="113"/>
         <source>Show legend</source>
         <translation>Legende anzeigen</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="138"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="139"/>
         <location filename="../TypeAggregatedDetailsWidget.cpp" line="161"/>
         <source>Volume</source>
         <translation>Volumen</translation>

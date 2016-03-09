@@ -91,6 +91,11 @@ namespace Evernus
             = new QLineEdit{settings.value(UISettings::dateTimeFormatKey, locale().dateTimeFormat(QLocale::ShortFormat)).toString(), this};
         uiLayout->addRow(tr("Date/time format (requires restart):"), mDateFormEdit);
 
+        mApplyDateFormatToGraphsBtn = new QCheckBox{tr("Apply date fromat to graphs (requires restart)"), this};
+        uiLayout->addRow(mApplyDateFormatToGraphsBtn);
+        mApplyDateFormatToGraphsBtn->setChecked(
+            settings.value(UISettings::applyDateFormatToGraphsKey, UISettings::applyDateFormatToGraphsDefault).toBool());
+
         mColumnDelimiterEdit = new QComboBox{this};
         mColumnDelimiterEdit->addItem(tr("Tab"), '\t');
         mColumnDelimiterEdit->addItem(tr("Space"), ' ');
@@ -114,6 +119,7 @@ namespace Evernus
         settings.setValue(UISettings::omitCurrencySymbolKey, mOmitCurrencySymbolBtn->isChecked());
         settings.setValue(UISettings::useUTCDatesKey, mUseUTCDatesBtn->isChecked());
         settings.setValue(UISettings::dateTimeFormatKey, mDateFormEdit->text());
+        settings.setValue(UISettings::applyDateFormatToGraphsKey, mApplyDateFormatToGraphsBtn->isChecked());
         settings.setValue(UISettings::columnDelimiterKey, mColumnDelimiterEdit->currentData().value<char>());
     }
 }

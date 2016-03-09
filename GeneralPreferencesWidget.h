@@ -45,6 +45,7 @@ namespace Evernus
         QCheckBox *mOmitCurrencySymbolBtn = nullptr;
         QCheckBox *mUseUTCDatesBtn = nullptr;
         QLineEdit *mDateFormEdit = nullptr;
+        QCheckBox *mApplyDateFormatToGraphsBtn = nullptr;
         QComboBox *mColumnDelimiterEdit = nullptr;
     };
 }
