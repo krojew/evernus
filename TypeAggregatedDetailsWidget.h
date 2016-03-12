@@ -73,5 +73,6 @@ namespace Evernus
         QCPItemLine *mTrendLine = nullptr;
 
         void deleteTrendLine() noexcept;
+        void applyGraphFormats();
     };
 }

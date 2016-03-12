@@ -580,11 +580,21 @@ namespace Evernus
     void StatisticsWidget::handleNewPreferences()
     {
         QSettings settings;
-        const auto format = settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString();
+        const auto numberFormat
+            = settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString();
+        const auto dateFormat
+            = settings.value(UISettings::dateTimeFormatKey, mBalancePlot->getPlot().xAxis->dateTimeFormat()).toString();
 
-        mBalancePlot->getPlot().yAxis->setNumberFormat(format);
-        mJournalPlot->getPlot().yAxis->setNumberFormat(format);
-        mTransactionPlot->getPlot().yAxis->setNumberFormat(format);
+        mBalancePlot->getPlot().yAxis->setNumberFormat(numberFormat);
+        mJournalPlot->getPlot().yAxis->setNumberFormat(numberFormat);
+        mTransactionPlot->getPlot().yAxis->setNumberFormat(numberFormat);
+
+        if (settings.value(UISettings::applyDateFormatToGraphsKey, UISettings::applyDateFormatToGraphsDefault).toBool())
+        {
+            mBalancePlot->getPlot().xAxis->setDateTimeFormat(dateFormat);
+            mJournalPlot->getPlot().xAxis->setDateTimeFormat(dateFormat);
+            mTransactionPlot->getPlot().xAxis->setDateTimeFormat(dateFormat);
+        }
 
         updateJournalData();
         updateTransactionData();
@@ -1038,6 +1048,12 @@ namespace Evernus
         QSettings settings;
         plot->getPlot().yAxis->setNumberFormat(
             settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString());
+
+        if (settings.value(UISettings::applyDateFormatToGraphsKey, UISettings::applyDateFormatToGraphsDefault).toBool())
+        {
+            plot->getPlot().xAxis->setDateTimeFormat(
+                settings.value(UISettings::dateTimeFormatKey, plot->getPlot().xAxis->dateTimeFormat()).toString());
+        }
 
         return plot;
     }

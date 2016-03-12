@@ -107,7 +107,8 @@ namespace Evernus
         toolBarLayout->addWidget(addTrendLineBtn);
         connect(addTrendLineBtn, &QPushButton::clicked, this, &TypeAggregatedDetailsWidget::addTrendLine);
 
-        const auto showLegend = settings.value(MarketAnalysisSettings::showLegendKey, MarketAnalysisSettings::showLegendDefault).toBool();
+        const auto showLegend
+            = settings.value(MarketAnalysisSettings::showLegendKey, MarketAnalysisSettings::showLegendDefault).toBool();
 
         auto legendBtn = new QCheckBox{tr("Show legend"), this};
         toolBarLayout->addWidget(legendBtn);
@@ -150,8 +151,7 @@ namespace Evernus
         locale.setNumberOptions(0);
         mHistoryPlot->setLocale(locale);
 
-        mHistoryPlot->yAxis->setNumberFormat(
-            settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString());
+        applyGraphFormats();
 
         auto volumeGraph = std::make_unique<QCPBars>(mHistoryPlot->xAxis, mHistoryPlot->yAxis2);
         mHistoryVolumeGraph = volumeGraph.get();
@@ -263,10 +263,7 @@ namespace Evernus
 
     void TypeAggregatedDetailsWidget::handleNewPreferences()
     {
-        QSettings settings;
-        mHistoryPlot->yAxis->setNumberFormat(
-            settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString());
-
+        applyGraphFormats();
         mHistoryPlot->replot();
     }
 
@@ -470,5 +467,18 @@ namespace Evernus
     {
         delete mTrendLine;
         mTrendLine = nullptr;
+    }
+
+    void TypeAggregatedDetailsWidget::applyGraphFormats()
+    {
+        QSettings settings;
+        mHistoryPlot->yAxis->setNumberFormat(
+           settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString());
+
+        if (settings.value(UISettings::applyDateFormatToGraphsKey, UISettings::applyDateFormatToGraphsDefault).toBool())
+        {
+           mHistoryPlot->xAxis->setDateTimeFormat(
+               settings.value(UISettings::dateTimeFormatKey, mHistoryPlot->xAxis->dateTimeFormat()).toString());
+        }
     }
 }
