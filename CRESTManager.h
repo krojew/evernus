@@ -51,6 +51,9 @@ namespace Evernus
                                 EveType::IdType typeId,
                                 const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const;
 
+    signals:
+        void error(const QString &text);
+
     public slots:
         void handleNewPreferences();
 

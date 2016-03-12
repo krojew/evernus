@@ -16,7 +16,6 @@
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QApplication>
-#include <QMessageBox>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QUrlQuery>
@@ -215,12 +214,12 @@ namespace Evernus
         connect(reply, &QNetworkReply::finished, this, [=] {
             reply->deleteLater();
 
-            const auto error = reply->error();
-            qDebug() << "Got CREST endpoints: " << error;
+            const auto errorCode = reply->error();
+            qDebug() << "Got CREST endpoints: " << errorCode;
 
-            if (error != QNetworkReply::NoError)
+            if (errorCode != QNetworkReply::NoError)
             {
-                QMessageBox::warning(nullptr, tr("CREST error"), tr("Error fetching CREST endpoints!"));
+                emit error(tr("Error fetching CREST endpoints!"));
                 return;
             }
 

@@ -142,6 +142,10 @@ namespace Evernus
                 this, &MarketAnalysisWidget::endOrderTask);
         connect(mDataFetcher, &MarketAnalysisDataFetcher::historyImportEnded,
                 this, &MarketAnalysisWidget::endHistoryTask);
+        connect(mDataFetcher, &MarketAnalysisDataFetcher::genericError,
+                this, [=](const auto &text) {
+            QMessageBox::warning(this, tr("CREST error"), text);
+        });
 
         auto mainLayout = new QVBoxLayout{this};
 

@@ -1709,8 +1709,10 @@ namespace Evernus
 
     void EvernusApplication::showPriceImportError(const QString &info)
     {
-        Q_ASSERT(mCurrentExternalOrderImportTask != TaskConstants::invalidTask);
-        finishExternalOrderImportTask(info);
+        if (mCurrentExternalOrderImportTask == TaskConstants::invalidTask)      // generic error
+            QMessageBox::warning(activeWindow(), tr("Error"), info);
+        else
+            finishExternalOrderImportTask(info);
     }
 
     void EvernusApplication::showPriceImportStatus(const QString &info)

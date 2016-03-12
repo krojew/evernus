@@ -840,177 +840,177 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation>Reputacja u korporacji:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="189"/>
+        <location filename="../CharacterWidget.cpp" line="191"/>
         <source>Faction standing:</source>
         <translation>Reputacja u frakcji:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="193"/>
+        <location filename="../CharacterWidget.cpp" line="197"/>
         <source>Trade skills</source>
         <translation>Umiejętności handlu</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="198"/>
+        <location filename="../CharacterWidget.cpp" line="202"/>
         <source>Order amount skills</source>
         <translation>Ilość zleceń</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="203"/>
+        <location filename="../CharacterWidget.cpp" line="207"/>
         <source>Trade:</source>
         <translation>Trade:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="204"/>
+        <location filename="../CharacterWidget.cpp" line="208"/>
         <source>Retail:</source>
         <translation>Retail:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="205"/>
+        <location filename="../CharacterWidget.cpp" line="209"/>
         <source>Wholesale:</source>
         <translation>Wholesale:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="206"/>
+        <location filename="../CharacterWidget.cpp" line="210"/>
         <source>Tycoon:</source>
         <translation>Tycoon:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="208"/>
+        <location filename="../CharacterWidget.cpp" line="212"/>
         <source>Trade range skills</source>
         <translation>Zasięg</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="213"/>
+        <location filename="../CharacterWidget.cpp" line="217"/>
         <source>Marketing:</source>
         <translation>Marketing:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="214"/>
+        <location filename="../CharacterWidget.cpp" line="218"/>
         <source>Procurement:</source>
         <translation>Procurement:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="215"/>
+        <location filename="../CharacterWidget.cpp" line="219"/>
         <source>Daytrading:</source>
         <translation>Daytrading:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="216"/>
+        <location filename="../CharacterWidget.cpp" line="220"/>
         <source>Visibility:</source>
         <translation>Visibility:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="218"/>
+        <location filename="../CharacterWidget.cpp" line="222"/>
         <source>Fee skills</source>
         <translation>Podatki</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="223"/>
+        <location filename="../CharacterWidget.cpp" line="227"/>
         <source>Accounting:</source>
         <translation>Accounting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="224"/>
+        <location filename="../CharacterWidget.cpp" line="228"/>
         <source>Broker relations:</source>
         <translation>Broker relations:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="225"/>
+        <location filename="../CharacterWidget.cpp" line="229"/>
         <source>Margin trading:</source>
         <translation>Margin trading:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="227"/>
+        <location filename="../CharacterWidget.cpp" line="231"/>
         <source>Contracting skills</source>
         <translation>Kontrakty</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="232"/>
+        <location filename="../CharacterWidget.cpp" line="236"/>
         <source>Contracting:</source>
         <translation>Contracting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="233"/>
+        <location filename="../CharacterWidget.cpp" line="237"/>
         <source>Corporation contracting:</source>
         <translation>Corporation contracting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="275"/>
+        <location filename="../CharacterWidget.cpp" line="279"/>
         <source>never imported</source>
         <translation>nigdy nie zaimportowane</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="280"/>
+        <location filename="../CharacterWidget.cpp" line="284"/>
         <source>Character sheet: %1</source>
         <translation>Karta postaci: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="281"/>
+        <location filename="../CharacterWidget.cpp" line="285"/>
         <source>Asset list: %1</source>
         <translation>Aktywa: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="282"/>
+        <location filename="../CharacterWidget.cpp" line="286"/>
         <source>Market orders: %1</source>
         <translation>Zlecenia: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="283"/>
+        <location filename="../CharacterWidget.cpp" line="287"/>
         <source>Wallet journal: %1</source>
         <translation>Dziennik: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="284"/>
+        <location filename="../CharacterWidget.cpp" line="288"/>
         <source>Wallet transactions: %1</source>
         <translation>Transakcje: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="287"/>
+        <location filename="../CharacterWidget.cpp" line="291"/>
         <source>Contracts: %1</source>
         <translation>Kontrakty: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="293"/>
+        <location filename="../CharacterWidget.cpp" line="297"/>
         <source>Corp. asset list: %1</source>
         <translation>Aktywa korporacji: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="294"/>
+        <location filename="../CharacterWidget.cpp" line="298"/>
         <source>Corp. market orders: %1</source>
         <translation>Zlecenia korporacji: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="295"/>
+        <location filename="../CharacterWidget.cpp" line="299"/>
         <source>Corp. wallet journal: %1</source>
         <translation>Dziennik korporacji: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="296"/>
+        <location filename="../CharacterWidget.cpp" line="300"/>
         <source>Corp. wallet transactions: %1</source>
         <translation>Transakcje korporacji: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="299"/>
+        <location filename="../CharacterWidget.cpp" line="303"/>
         <source>Corp. contracts: %1</source>
         <translation>Kontrakty korporacji: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="456"/>
+        <location filename="../CharacterWidget.cpp" line="460"/>
         <source>Character error</source>
         <translation>Błąd postaci</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="456"/>
+        <location filename="../CharacterWidget.cpp" line="460"/>
         <source>Character not found in DB. Refresh characters.</source>
         <translation>Postać nie została znaleziona w bazie danych. Odśwież postacie.</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="537"/>
+        <location filename="../CharacterWidget.cpp" line="541"/>
         <source>&lt;strong&gt;%1 of %2&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1 z %2&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="547"/>
+        <location filename="../CharacterWidget.cpp" line="551"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>

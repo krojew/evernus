@@ -57,6 +57,8 @@ namespace Evernus
         void orderImportEnded(const OrderResultType &result, const QString &error);
         void historyImportEnded(const HistoryResultType &result, const QString &error);
 
+        void genericError(const QString &text);
+
     public slots:
         void importData(const ExternalOrderImporter::TypeLocationPairs &pairs,
                         const MarketOrderRepository::TypeLocationPairs &ignored);

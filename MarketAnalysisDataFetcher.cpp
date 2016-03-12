@@ -29,6 +29,7 @@ namespace Evernus
         , mCRESTManager{dataProvider}
         , mEveCentralManager{dataProvider}
     {
+        connect(&mCRESTManager, &CRESTManager::error, this, &MarketAnalysisDataFetcher::genericError);
     }
 
     bool MarketAnalysisDataFetcher::hasPendingOrderRequests() const noexcept
