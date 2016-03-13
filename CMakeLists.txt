@@ -107,6 +107,7 @@ qt5_wrap_cpp(
     CRESTExternalOrderImporter.h
     CRESTInterface.h
     CRESTManager.h
+    CRESTMessageBox.h
     DateFilteredPlotWidget.h
     DateRangeWidget.h
     DeviationSourceWidget.h
@@ -368,6 +369,8 @@ add_executable(
     CRESTInterface.h
     CRESTManager.cpp
     CRESTManager.h
+    CRESTMessageBox.cpp
+    CRESTMessageBox.h
     CRESTSettings.h
     DatabaseUtils.cpp
     DatabaseUtils.h

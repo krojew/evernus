@@ -32,6 +32,7 @@
 #include "StatisticsSettings.h"
 #include "UpdaterSettings.h"
 #include "NetworkSettings.h"
+#include "CRESTMessageBox.h"
 #include "ImportSettings.h"
 #include "WalletSettings.h"
 #include "PriceSettings.h"
@@ -1710,7 +1711,7 @@ namespace Evernus
     void EvernusApplication::showPriceImportError(const QString &info)
     {
         if (mCurrentExternalOrderImportTask == TaskConstants::invalidTask)      // generic error
-            QMessageBox::warning(activeWindow(), tr("Error"), info);
+            CRESTMessageBox::showMessage(info, activeWindow());
         else
             finishExternalOrderImportTask(info);
     }

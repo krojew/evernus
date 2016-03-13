@@ -45,6 +45,7 @@
 #include "CharacterRepository.h"
 #include "StationSelectDialog.h"
 #include "EveDataProvider.h"
+#include "CRESTMessageBox.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
 #include "TaskManager.h"
@@ -144,7 +145,7 @@ namespace Evernus
                 this, &MarketAnalysisWidget::endHistoryTask);
         connect(mDataFetcher, &MarketAnalysisDataFetcher::genericError,
                 this, [=](const auto &text) {
-            QMessageBox::warning(this, tr("CREST error"), text);
+            CRESTMessageBox::showMessage(text, this);
         });
 
         auto mainLayout = new QVBoxLayout{this};
