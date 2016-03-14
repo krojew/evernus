@@ -44,6 +44,7 @@ namespace Evernus
     signals:
         void externalOrdersChanged(const std::vector<ExternalOrder> &orders) const;
         void error(const QString &info) const;
+        void genericError(const QString &info) const;
         void statusChanged(const QString &status) const;
     };
 }

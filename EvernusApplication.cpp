@@ -226,6 +226,7 @@ namespace Evernus
 
         connect(importer.get(), &ExternalOrderImporter::statusChanged, this, &EvernusApplication::showPriceImportStatus, Qt::QueuedConnection);
         connect(importer.get(), &ExternalOrderImporter::error, this, &EvernusApplication::showPriceImportError, Qt::QueuedConnection);
+        connect(importer.get(), &ExternalOrderImporter::genericError, this, &EvernusApplication::showPriceImporterGenericError, Qt::QueuedConnection);
         connect(importer.get(), &ExternalOrderImporter::externalOrdersChanged, this, &EvernusApplication::finishExternalOrderImport, Qt::QueuedConnection);
         mExternalOrderImporters.emplace(name, std::move(importer));
     }
@@ -1710,10 +1711,13 @@ namespace Evernus
 
     void EvernusApplication::showPriceImportError(const QString &info)
     {
-        if (mCurrentExternalOrderImportTask == TaskConstants::invalidTask)      // generic error
-            CRESTMessageBox::showMessage(info, activeWindow());
-        else
-            finishExternalOrderImportTask(info);
+        Q_ASSERT(mCurrentExternalOrderImportTask != TaskConstants::invalidTask);
+        finishExternalOrderImportTask(info);
+    }
+
+    void EvernusApplication::showPriceImporterGenericError(const QString &info)
+    {
+        CRESTMessageBox::showMessage(info, activeWindow());
     }
 
     void EvernusApplication::showPriceImportStatus(const QString &info)

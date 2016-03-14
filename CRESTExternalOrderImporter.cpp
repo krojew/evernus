@@ -27,7 +27,7 @@ namespace Evernus
         , mDataProvider{dataProvider}
         , mManager{mDataProvider}
     {
-        connect(&mManager, &CRESTManager::error, this, &CRESTExternalOrderImporter::error);
+        connect(&mManager, &CRESTManager::error, this, &CRESTExternalOrderImporter::genericError);
     }
 
     void CRESTExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const

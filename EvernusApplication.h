@@ -231,6 +231,7 @@ namespace Evernus
         void updateCorpMarketOrders();
 
         void showPriceImportError(const QString &info);
+        void showPriceImporterGenericError(const QString &info);
         void showPriceImportStatus(const QString &info);
 
         void emitNewItemCosts();
