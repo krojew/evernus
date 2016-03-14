@@ -617,12 +617,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CRESTMessageBox.cpp" line="24"/>
         <source>CREST error</source>
-        <translation type="unfinished">Błąd CREST</translation>
+        <translation>Błąd CREST</translation>
     </message>
     <message>
         <location filename="../CRESTMessageBox.cpp" line="26"/>
         <source>Don&apos;t show again</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie pokazuj ponownie</translation>
     </message>
 </context>
 <context>

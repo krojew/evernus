@@ -421,12 +421,12 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../CRESTMessageBox.cpp" line="24"/>
         <source>CREST error</source>
-        <translation type="unfinished">CREST Fehler</translation>
+        <translation>CREST Fehler</translation>
     </message>
     <message>
         <location filename="../CRESTMessageBox.cpp" line="26"/>
         <source>Don&apos;t show again</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht mehr anzeigen</translation>
     </message>
 </context>
 <context>
