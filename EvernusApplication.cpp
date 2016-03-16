@@ -1791,6 +1791,12 @@ namespace Evernus
         if (!mEveDb.open())
             throw std::runtime_error{"Error opening Eve DB!"};
 
+        // disable syncing changes to the disk between
+        // each transaction. This means the database can become
+        // corrupted in the event of a power failure or OS crash
+        // but NOT in the event of an application error
+        mMainDb.exec("PRAGMA synchronous = OFF");
+
         mKeyRepository.reset(new KeyRepository{mMainDb});
         mCorpKeyRepository.reset(new CorpKeyRepository{mMainDb});
         mCharacterRepository.reset(new CharacterRepository{mMainDb});

@@ -27,11 +27,6 @@ namespace Evernus
     Repository<T>::Repository(const QSqlDatabase &db)
         : mDb{db}
     {
-        // disable syncing changes to the disk between
-        // each transaction. This means the database can become
-        // corrupted in the event of a power failure or OS crash
-        // but NOT in the event of an application error
-        mDb.exec("PRAGMA synchronous = OFF");
     }
 
     template<class T>
