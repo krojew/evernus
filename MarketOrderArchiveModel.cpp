@@ -47,9 +47,9 @@ namespace Evernus
             connect(&mDataProvider, &EveDataProvider::namesChanged, this, &MarketOrderArchiveModel::updateNames);
     }
 
-    int MarketOrderArchiveModel::columnCount(const QModelIndex &parent) const
+    int MarketOrderArchiveModel::columnCount(const QModelIndex & /* parent */) const
     {
-        return (mCorp) ? (numColumns) : (numColumns - 1);
+        return numColumns;
     }
 
     QVariant MarketOrderArchiveModel::data(const QModelIndex &index, int role) const
@@ -328,6 +328,22 @@ namespace Evernus
         {
             return OrderList{};
         }
+    }
+
+    MarketOrderTreeModel::OrderList MarketOrderArchiveModel::getOrdersForAllCharacters() const
+    {
+        auto characters = mCharacterRepository.getEnabledQuery();
+        const auto idName =  mCharacterRepository.getIdColumn();
+
+        OrderList list;
+
+        while (characters.next())
+        {
+            auto orders = getOrders(characters.value(idName).value<Character::IdType>());
+            list.insert(std::end(list), std::make_move_iterator(std::begin(orders)), std::make_move_iterator(std::end(orders)));
+        }
+
+        return list;
     }
 
     void MarketOrderArchiveModel::handleOrderRemoval(const MarketOrder &order)

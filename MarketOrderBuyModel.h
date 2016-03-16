@@ -21,7 +21,6 @@
 
 namespace Evernus
 {
-    class CharacterRepository;
     class MarketOrderProvider;
     class CacheTimerProvider;
 
@@ -86,13 +85,15 @@ namespace Evernus
         const CacheTimerProvider &mCacheTimerProvider;
         const CharacterRepository &mCharacterRepository;
 
-        std::unordered_map<Character::IdType, Repository<Character>::EntityPtr> mCharacters;
+        std::unordered_map<Character::IdType, CharacterRepository::EntityPtr> mCharacters;
 
         bool mCorp = false;
 
         virtual OrderList getOrders(Character::IdType characterId) const override;
+        virtual OrderList getOrdersForAllCharacters() const override;
 
         virtual void handleNewCharacter(Character::IdType characterId) override;
+        virtual void handleAllCharacters() override;
         virtual void handleOrderRemoval(const MarketOrder &order) override;
 
         double getMargin(const MarketOrder &order) const;

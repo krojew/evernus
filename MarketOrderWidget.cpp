@@ -17,6 +17,7 @@
 #include <QHBoxLayout>
 #include <QTabWidget>
 #include <QComboBox>
+#include <QCheckBox>
 #include <QGroupBox>
 #include <QSettings>
 #include <QLabel>
@@ -39,7 +40,8 @@
 
 namespace Evernus
 {
-    const QString MarketOrderWidget::settingsLastTabkey = "ui/orders/lastTab";
+    const QString MarketOrderWidget::settingsLastTabKey = "ui/orders/lastTab";
+    const QString MarketOrderWidget::settingsShowForAllKey = "ui/orders/showForAllCharacters";
 
     MarketOrderWidget::MarketOrderWidget(MarketOrderProvider &orderProvider,
                                          MarketOrderProvider &corpOrderProvider,
@@ -96,6 +98,22 @@ namespace Evernus
 
         auto stateFilter = new MarketOrderFilterWidget{filterRepo, this};
         toolBarLayout->addWidget(stateFilter);
+
+        QSettings settings;
+
+        mShowForAllCharacters = new QCheckBox{tr("Show for all characters"), this};
+        toolBarLayout->addWidget(mShowForAllCharacters);
+        connect(mShowForAllCharacters, &QCheckBox::stateChanged, this, [=](int state) {
+            const auto checked = state == Qt::Checked;
+
+            mSellModel.setAllCaracters(checked);
+            mBuyModel.setAllCaracters(checked);
+            mArchiveModel.setAllCaracters(checked);
+
+            QSettings settings;
+            settings.setValue(settingsShowForAllKey, checked);
+        });
+        mShowForAllCharacters->setChecked(settings.value(settingsShowForAllKey, false).toBool());
 
         toolBarLayout->addWidget(new QLabel{tr("Group by:"), this});
 
@@ -239,8 +257,7 @@ namespace Evernus
         connect(this, &MarketOrderWidget::characterChanged, mArchiveView, &MarketOrderViewWithTransactions::setCharacter);
         connect(stateFilter, &MarketOrderFilterWidget::textFilterChanged, mArchiveView, &MarketOrderViewWithTransactions::textFilterChanged);
 
-        QSettings settings;
-        mainTabs->setCurrentIndex(settings.value(settingsLastTabkey).toInt());
+        mainTabs->setCurrentIndex(settings.value(settingsLastTabKey).toInt());
         connect(mainTabs, &QTabWidget::currentChanged, this, &MarketOrderWidget::saveChosenTab);
 
         connect(this, &MarketOrderWidget::characterChanged, &mSellModel, &MarketOrderSellModel::setCharacter);
@@ -282,7 +299,7 @@ namespace Evernus
     void MarketOrderWidget::saveChosenTab(int index)
     {
         QSettings settings;
-        settings.setValue(settingsLastTabkey, index);
+        settings.setValue(settingsLastTabKey, index);
     }
 
     void MarketOrderWidget::prepareItemImportFromWeb()

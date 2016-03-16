@@ -17,12 +17,11 @@
 #include <unordered_map>
 
 #include "MarketOrderTreeModel.h"
-#include "Repository.h"
+#include "CharacterRepository.h"
 
 namespace Evernus
 {
     class MarketOrderProvider;
-    class CharacterRepository;
     class CacheTimerProvider;
     class ItemCostProvider;
 
@@ -97,14 +96,16 @@ namespace Evernus
 
         bool mCorp = false;
 
-        std::unordered_map<Character::IdType, Repository<Character>::EntityPtr> mCharacters;
+        std::unordered_map<Character::IdType, CharacterRepository::EntityPtr> mCharacters;
 
         mutable double mTotalCost = 0.;
         mutable double mTotalIncome = 0.;
 
         virtual OrderList getOrders(Character::IdType characterId) const override;
+        virtual OrderList getOrdersForAllCharacters() const override;
 
         virtual void handleNewCharacter(Character::IdType characterId) override;
+        virtual void handleAllCharacters() override;
         virtual void handleOrderRemoval(const MarketOrder &order) override;
 
         QString getCharacterName(Character::IdType id) const;

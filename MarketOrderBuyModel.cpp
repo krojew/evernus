@@ -51,7 +51,7 @@ namespace Evernus
 
     int MarketOrderBuyModel::columnCount(const QModelIndex &parent) const
     {
-        return (mCorp) ? (numColumns) : (numColumns - 1);
+        return numColumns;
     }
 
     QVariant MarketOrderBuyModel::data(const QModelIndex &index, int role) const
@@ -547,6 +547,18 @@ namespace Evernus
         }
     }
 
+    MarketOrderTreeModel::OrderList MarketOrderBuyModel::getOrdersForAllCharacters() const
+    {
+        OrderList list;
+        for (const auto &character : mCharacters)
+        {
+            auto orders = getOrders(character.first);
+            list.insert(std::end(list), std::make_move_iterator(std::begin(orders)), std::make_move_iterator(std::end(orders)));
+        }
+
+        return list;
+    }
+
     void MarketOrderBuyModel::handleNewCharacter(Character::IdType characterId)
     {
         try
@@ -556,6 +568,18 @@ namespace Evernus
         catch (const CharacterRepository::NotFoundException &)
         {
             mCharacters.erase(characterId);
+        }
+    }
+
+    void MarketOrderBuyModel::handleAllCharacters()
+    {
+        mCharacters.clear();
+
+        const auto characters = mCharacterRepository.fetchAll();
+        for (auto &character : characters)
+        {
+            if (character->isEnabled())
+                mCharacters[character->getId()] = std::move(character);
         }
     }
 

@@ -219,6 +219,18 @@ namespace Evernus
         reset();
     }
 
+    void MarketOrderTreeModel::setAllCaracters(bool all)
+    {
+        mAllCharacters = all;
+
+        if (mAllCharacters)
+            handleAllCharacters();
+        else
+            handleNewCharacter(mCharacterId);
+
+        reset();
+    }
+
     void MarketOrderTreeModel::setGrouping(Grouping grouping)
     {
         mGrouping = grouping;
@@ -229,7 +241,7 @@ namespace Evernus
     {
         beginResetModel();
 
-        const auto data = getOrders(mCharacterId);
+        const auto data = (mAllCharacters) ? (getOrdersForAllCharacters()) : (getOrders(mCharacterId));
 
         mRootItem.clearChildren();
 
@@ -293,6 +305,10 @@ namespace Evernus
     }
 
     void MarketOrderTreeModel::handleNewCharacter(Character::IdType /* characterId */)
+    {
+    }
+
+    void MarketOrderTreeModel::handleAllCharacters()
     {
     }
 

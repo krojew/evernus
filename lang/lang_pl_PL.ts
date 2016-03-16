@@ -5040,17 +5040,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MarketOrderWidget</name>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="74"/>
+        <location filename="../MarketOrderWidget.cpp" line="76"/>
         <source>File import</source>
         <translation>Importuj z pliku</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="84"/>
+        <location filename="../MarketOrderWidget.cpp" line="86"/>
         <source>Import prices from Web</source>
         <translation>Importuj ceny z sieci</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="85"/>
+        <location filename="../MarketOrderWidget.cpp" line="87"/>
         <source>Import prices from logs</source>
         <translation>Importuj ceny z logów</translation>
     </message>
@@ -5063,72 +5063,77 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Importuj ceny z cache</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="87"/>
+        <location filename="../MarketOrderWidget.cpp" line="89"/>
         <source>Import prices  </source>
         <translation>Importuj ceny  </translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="92"/>
+        <location filename="../MarketOrderWidget.cpp" line="94"/>
         <source>Open margin tool</source>
         <translation>Otwórz narzędzie marży</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="100"/>
+        <location filename="../MarketOrderWidget.cpp" line="104"/>
+        <source>Show for all characters</source>
+        <translation>Pokaż dla wszystkich postać</translation>
+    </message>
+    <message>
+        <location filename="../MarketOrderWidget.cpp" line="118"/>
         <source>Group by:</source>
         <translation>Grupuj po:</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="104"/>
+        <location filename="../MarketOrderWidget.cpp" line="122"/>
         <source>- none -</source>
         <translation>- brak -</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="105"/>
+        <location filename="../MarketOrderWidget.cpp" line="123"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="106"/>
+        <location filename="../MarketOrderWidget.cpp" line="124"/>
         <source>Group</source>
         <translation>Grupa</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="107"/>
+        <location filename="../MarketOrderWidget.cpp" line="125"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="128"/>
+        <location filename="../MarketOrderWidget.cpp" line="146"/>
         <source>Sell</source>
         <translation>Sprzedaż</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="152"/>
+        <location filename="../MarketOrderWidget.cpp" line="170"/>
         <source>Buy</source>
         <translation>Kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="164"/>
+        <location filename="../MarketOrderWidget.cpp" line="182"/>
         <source>Sell &amp;&amp; Buy</source>
         <translation>Sprzedaż i kupno</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="168"/>
+        <location filename="../MarketOrderWidget.cpp" line="186"/>
         <source>Sell orders</source>
         <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="187"/>
+        <location filename="../MarketOrderWidget.cpp" line="205"/>
         <source>Buy orders</source>
         <translation>Zlecenia kupna</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="207"/>
+        <location filename="../MarketOrderWidget.cpp" line="225"/>
         <source>History</source>
         <translation>Historia</translation>
     </message>
     <message>
-        <location filename="../MarketOrderWidget.cpp" line="305"/>
+        <location filename="../MarketOrderWidget.cpp" line="322"/>
         <source>Script error</source>
         <translation>Błąd skryptu</translation>
     </message>
