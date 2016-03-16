@@ -215,7 +215,7 @@ namespace Evernus
     {
         mCharacterId = id;
 
-        handleNewCharacter();
+        handleNewCharacter(mCharacterId);
         reset();
     }
 
@@ -229,7 +229,7 @@ namespace Evernus
     {
         beginResetModel();
 
-        const auto data = getOrders();
+        const auto data = getOrders(mCharacterId);
 
         mRootItem.clearChildren();
 
@@ -292,7 +292,7 @@ namespace Evernus
         return group;
     }
 
-    void MarketOrderTreeModel::handleNewCharacter()
+    void MarketOrderTreeModel::handleNewCharacter(Character::IdType /* characterId */)
     {
     }
 
