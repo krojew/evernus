@@ -14,13 +14,14 @@
  */
 #pragma once
 
+#include <unordered_map>
+
 #include "MarketOrderTreeModel.h"
-#include "Repository.h"
+#include "CharacterRepository.h"
 
 namespace Evernus
 {
     class MarketOrderProvider;
-    class CharacterRepository;
     class CacheTimerProvider;
     class ItemCostProvider;
 
@@ -95,19 +96,22 @@ namespace Evernus
 
         bool mCorp = false;
 
-        Repository<Character>::EntityPtr mCharacter;
+        std::unordered_map<Character::IdType, CharacterRepository::EntityPtr> mCharacters;
 
         mutable double mTotalCost = 0.;
         mutable double mTotalIncome = 0.;
 
-        virtual OrderList getOrders() const override;
+        virtual OrderList getOrders(Character::IdType characterId) const override;
+        virtual OrderList getOrdersForAllCharacters() const override;
 
-        virtual void handleNewCharacter() override;
+        virtual void handleNewCharacter(Character::IdType characterId) override;
+        virtual void handleAllCharacters() override;
         virtual void handleOrderRemoval(const MarketOrder &order) override;
 
         QString getCharacterName(Character::IdType id) const;
 
         double getMargin(const MarketOrder &order) const;
         double getNewMargin(const MarketOrder &order) const;
+        double getProfitForVolume(uint volume, const Character &character, const MarketOrder &order) const;
     };
 }

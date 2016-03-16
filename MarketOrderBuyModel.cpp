@@ -51,7 +51,7 @@ namespace Evernus
 
     int MarketOrderBuyModel::columnCount(const QModelIndex &parent) const
     {
-        return (mCorp) ? (numColumns) : (numColumns - 1);
+        return numColumns;
     }
 
     QVariant MarketOrderBuyModel::data(const QModelIndex &index, int role) const
@@ -472,7 +472,7 @@ namespace Evernus
         OrderInfo info;
         info.mOrderPrice = order->getPrice();
         info.mMarketPrice = (price->isNew()) ? (info.mOrderPrice) : (price->getPrice());
-        info.mOrderLocalTimestamp = mCacheTimerProvider.getLocalUpdateTimer(mCharacterId, TimerType::MarketOrders);
+        info.mOrderLocalTimestamp = mCacheTimerProvider.getLocalUpdateTimer(order->getCharacterId(), TimerType::MarketOrders);
         info.mMarketLocalTimestamp = price->getUpdateTime().toLocalTime();
 
         if (info.mMarketPrice > info.mOrderPrice || settings.value(PriceSettings::copyNonOverbidPriceKey, PriceSettings::copyNonOverbidPriceDefault).toBool())
@@ -533,13 +533,13 @@ namespace Evernus
         }
     }
 
-    MarketOrderTreeModel::OrderList MarketOrderBuyModel::getOrders() const
+    MarketOrderTreeModel::OrderList MarketOrderBuyModel::getOrders(Character::IdType characterId) const
     {
         try
         {
             return (mCorp) ?
-                   (mOrderProvider.getBuyOrdersForCorporation(mCharacterRepository.getCorporationId(mCharacterId))) :
-                   (mOrderProvider.getBuyOrders(mCharacterId));
+                   (mOrderProvider.getBuyOrdersForCorporation(mCharacterRepository.getCorporationId(characterId))) :
+                   (mOrderProvider.getBuyOrders(characterId));
         }
         catch (const CharacterRepository::NotFoundException &)
         {
@@ -547,15 +547,39 @@ namespace Evernus
         }
     }
 
-    void MarketOrderBuyModel::handleNewCharacter()
+    MarketOrderTreeModel::OrderList MarketOrderBuyModel::getOrdersForAllCharacters() const
+    {
+        OrderList list;
+        for (const auto &character : mCharacters)
+        {
+            auto orders = getOrders(character.first);
+            list.insert(std::end(list), std::make_move_iterator(std::begin(orders)), std::make_move_iterator(std::end(orders)));
+        }
+
+        return list;
+    }
+
+    void MarketOrderBuyModel::handleNewCharacter(Character::IdType characterId)
     {
         try
         {
-            mCharacter = mCharacterRepository.find(mCharacterId);
+            mCharacters[characterId] = mCharacterRepository.find(characterId);
         }
         catch (const CharacterRepository::NotFoundException &)
         {
-            mCharacter = std::make_shared<Character>();
+            mCharacters.erase(characterId);
+        }
+    }
+
+    void MarketOrderBuyModel::handleAllCharacters()
+    {
+        mCharacters.clear();
+
+        const auto characters = mCharacterRepository.fetchAll();
+        for (auto &character : characters)
+        {
+            if (character->isEnabled())
+                mCharacters[character->getId()] = std::move(character);
         }
     }
 
@@ -566,20 +590,22 @@ namespace Evernus
 
     double MarketOrderBuyModel::getMargin(const MarketOrder &order) const
     {
-        if (!mCharacter)
+        const auto character = mCharacters.find(order.getCharacterId());
+        if (character == std::end(mCharacters))
             return 0.;
 
         const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId());
         if (price->isNew())
             return 100.;
 
-        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        const auto taxes = PriceUtils::calculateTaxes(*character->second);
         return PriceUtils::getMargin(order.getPrice(), price->getPrice() - PriceUtils::getPriceDelta(), taxes);
     }
 
     double MarketOrderBuyModel::getNewMargin(const MarketOrder &order) const
     {
-        if (!mCharacter)
+        const auto character = mCharacters.find(order.getCharacterId());
+        if (character == std::end(mCharacters))
             return 0.;
 
         const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId());
@@ -588,13 +614,14 @@ namespace Evernus
 
         const auto delta = PriceUtils::getPriceDelta();
 
-        auto newPrice = mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId(), order.getRange())->getPrice();
+        auto newPrice
+            = mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId(), order.getRange())->getPrice();
         if (newPrice < 0.01)
             newPrice = order.getPrice();
         else
             newPrice += delta;
 
-        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        const auto taxes = PriceUtils::calculateTaxes(*character->second);
         return PriceUtils::getMargin(newPrice, price->getPrice() - delta, taxes);
     }
 

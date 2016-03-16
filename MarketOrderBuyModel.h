@@ -14,12 +14,13 @@
  */
 #pragma once
 
+#include <unordered_map>
+
 #include "MarketOrderTreeModel.h"
 #include "CharacterRepository.h"
 
 namespace Evernus
 {
-    class CharacterRepository;
     class MarketOrderProvider;
     class CacheTimerProvider;
 
@@ -84,13 +85,15 @@ namespace Evernus
         const CacheTimerProvider &mCacheTimerProvider;
         const CharacterRepository &mCharacterRepository;
 
-        Repository<Character>::EntityPtr mCharacter;
+        std::unordered_map<Character::IdType, CharacterRepository::EntityPtr> mCharacters;
 
         bool mCorp = false;
 
-        virtual OrderList getOrders() const override;
+        virtual OrderList getOrders(Character::IdType characterId) const override;
+        virtual OrderList getOrdersForAllCharacters() const override;
 
-        virtual void handleNewCharacter() override;
+        virtual void handleNewCharacter(Character::IdType characterId) override;
+        virtual void handleAllCharacters() override;
         virtual void handleOrderRemoval(const MarketOrder &order) override;
 
         double getMargin(const MarketOrder &order) const;

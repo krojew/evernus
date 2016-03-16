@@ -82,7 +82,8 @@ namespace Evernus
 
         QDateTime mFrom, mTo;
 
-        virtual OrderList getOrders() const override;
+        virtual OrderList getOrders(Character::IdType characterId) const override;
+        virtual OrderList getOrdersForAllCharacters() const override;
 
         virtual void handleOrderRemoval(const MarketOrder &order) override;
     };

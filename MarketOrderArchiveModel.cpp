@@ -47,9 +47,9 @@ namespace Evernus
             connect(&mDataProvider, &EveDataProvider::namesChanged, this, &MarketOrderArchiveModel::updateNames);
     }
 
-    int MarketOrderArchiveModel::columnCount(const QModelIndex &parent) const
+    int MarketOrderArchiveModel::columnCount(const QModelIndex & /* parent */) const
     {
-        return (mCorp) ? (numColumns) : (numColumns - 1);
+        return numColumns;
     }
 
     QVariant MarketOrderArchiveModel::data(const QModelIndex &index, int role) const
@@ -87,7 +87,7 @@ namespace Evernus
             case statusColumn:
                 return static_cast<int>(data->getState());
             case customCostColumn:
-                return mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId())->getCost();
+                return mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId())->getCost();
             case priceColumn:
                 return data->getPrice();
             case volumeColumn:
@@ -95,7 +95,7 @@ namespace Evernus
             case profitColumn:
                 if (data->getType() == MarketOrder::Type::Sell)
                 {
-                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                    const auto cost = mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId());
                     return (data->getVolumeEntered() - data->getVolumeRemaining()) * (data->getPrice() - cost->getCost());
                 }
                 break;
@@ -142,7 +142,7 @@ namespace Evernus
                     break;
                 case customCostColumn:
                     {
-                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId());
                         if (!cost->isNew())
                             return TextUtils::currencyToString(cost->getCost(), locale);
                     }
@@ -154,7 +154,7 @@ namespace Evernus
                 case profitColumn:
                     if (data->getType() == MarketOrder::Type::Sell)
                     {
-                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                        const auto cost = mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId());
                         return TextUtils::currencyToString((data->getVolumeEntered() - data->getVolumeRemaining()) * (data->getPrice() - cost->getCost()), locale);
                     }
                     break;
@@ -316,18 +316,34 @@ namespace Evernus
         }
     }
 
-    MarketOrderTreeModel::OrderList MarketOrderArchiveModel::getOrders() const
+    MarketOrderTreeModel::OrderList MarketOrderArchiveModel::getOrders(Character::IdType characterId) const
     {
         try
         {
             return (mCorp) ?
-                   (mOrderProvider.getArchivedOrdersForCorporation(mCharacterRepository.getCorporationId(mCharacterId), mFrom, mTo)) :
-                   (mOrderProvider.getArchivedOrders(mCharacterId, mFrom, mTo));
+                   (mOrderProvider.getArchivedOrdersForCorporation(mCharacterRepository.getCorporationId(characterId), mFrom, mTo)) :
+                   (mOrderProvider.getArchivedOrders(characterId, mFrom, mTo));
         }
         catch (const CharacterRepository::NotFoundException &)
         {
             return OrderList{};
         }
+    }
+
+    MarketOrderTreeModel::OrderList MarketOrderArchiveModel::getOrdersForAllCharacters() const
+    {
+        auto characters = mCharacterRepository.getEnabledQuery();
+        const auto idName =  mCharacterRepository.getIdColumn();
+
+        OrderList list;
+
+        while (characters.next())
+        {
+            auto orders = getOrders(characters.value(idName).value<Character::IdType>());
+            list.insert(std::end(list), std::make_move_iterator(std::begin(orders)), std::make_move_iterator(std::end(orders)));
+        }
+
+        return list;
     }
 
     void MarketOrderArchiveModel::handleOrderRemoval(const MarketOrder &order)

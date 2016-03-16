@@ -22,6 +22,7 @@
 
 class QPushButton;
 class QComboBox;
+class QCheckBox;
 
 namespace Evernus
 {
@@ -91,7 +92,8 @@ namespace Evernus
         void setOrderNotes(MarketOrder::IdType id, const QString &notes);
 
     private:
-        static const QString settingsLastTabkey;
+        static const QString settingsLastTabKey;
+        static const QString settingsShowForAllKey;
 
         MarketOrderProvider &mOrderProvider;
         const CharacterRepository &mCharacterRepository;
@@ -108,6 +110,7 @@ namespace Evernus
 
         QPushButton *mLogImportBtn = nullptr;
         QComboBox *mGroupingCombo = nullptr;
+        QCheckBox *mShowForAllCharacters = nullptr;
         DateRangeWidget *mArchiveRangeEdit = nullptr;
 
         bool mCorp = false;

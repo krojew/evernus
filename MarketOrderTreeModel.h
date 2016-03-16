@@ -47,6 +47,7 @@ namespace Evernus
         virtual const MarketOrder *getOrder(const QModelIndex &index) const override;
 
         void setCharacter(Character::IdType id);
+        void setAllCaracters(bool all);
         void setGrouping(Grouping grouping);
 
         void reset();
@@ -95,7 +96,6 @@ namespace Evernus
         double mTotalISK = 0.;
         double mTotalSize = 0.;
 
-        Character::IdType mCharacterId = Character::invalidId;
         Grouping mGrouping = Grouping::None;
 
         TreeItem mRootItem;
@@ -103,9 +103,14 @@ namespace Evernus
         QString getGroupName(EveType::IdType typeId) const;
 
     private:
-        virtual OrderList getOrders() const = 0;
+        Character::IdType mCharacterId = Character::invalidId;
+        bool mAllCharacters = false;
 
-        virtual void handleNewCharacter();
+        virtual OrderList getOrders(Character::IdType characterId) const = 0;
+        virtual OrderList getOrdersForAllCharacters() const = 0;
+
+        virtual void handleNewCharacter(Character::IdType characterId);
+        virtual void handleAllCharacters();
         virtual void handleOrderRemoval(const MarketOrder &order) = 0;
 
         quintptr getGroupingId(const MarketOrder &order) const;

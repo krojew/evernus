@@ -54,7 +54,7 @@ namespace Evernus
 
     int MarketOrderSellModel::columnCount(const QModelIndex &parent) const
     {
-        return (mCorp) ? (numColumns) : (numColumns - 1);
+        return numColumns;
     }
 
     QVariant MarketOrderSellModel::data(const QModelIndex &index, int role) const
@@ -76,9 +76,8 @@ namespace Evernus
             }
         }
 
-        Q_ASSERT(mCharacter);
-
         const auto data = item->getOrder();
+        const auto character = mCharacters.find(data->getCharacterId());
 
         switch (role) {
         case Qt::ToolTipRole:
@@ -147,7 +146,7 @@ namespace Evernus
             case statusColumn:
                 return static_cast<int>(data->getState());
             case customCostColumn:
-                return mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId())->getCost();
+                return mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId())->getCost();
             case priceColumn:
                 return data->getPrice();
             case priceStatusColumn:
@@ -180,7 +179,7 @@ namespace Evernus
                 }
             case priceDifferencePercentColumn:
                 {
-                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                    const auto cost = mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId());
                     if (cost->isNew() || qFuzzyIsNull(cost->getCost()))
                         break;
 
@@ -202,34 +201,16 @@ namespace Evernus
             case newMarginColumn:
                 return getNewMargin(*data);
             case profitColumn:
-                if (mCharacter)
-                {
-                    const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
-                    const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                    return data->getVolumeRemaining() * (realPrice - realCost);
-                }
+                if (character != std::end(mCharacters))
+                    return getProfitForVolume(data->getVolumeRemaining(), *character->second, *data);
                 break;
             case totalProfitColumn:
-                if (mCharacter)
-                {
-                    const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
-                    const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                    return data->getVolumeEntered() * (realPrice - realCost);
-                }
+                if (character != std::end(mCharacters))
+                    return getProfitForVolume(data->getVolumeEntered(), *character->second, *data);
                 break;
             case profitPerItemColumn:
-                if (mCharacter)
-                {
-                    const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-                    const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                    const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
-                    const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                    return realPrice - realCost;
-                }
+                if (character != std::end(mCharacters))
+                    return getProfitForVolume(1, *character->second, *data);
                 break;
             case etaColumn:
                 {
@@ -299,7 +280,8 @@ namespace Evernus
                     break;
                 case customCostColumn:
                     {
-                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                        const auto cost
+                            = mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId());
                         if (!cost->isNew())
                             return TextUtils::currencyToString(cost->getCost(), locale);
                     }
@@ -335,7 +317,8 @@ namespace Evernus
                     }
                 case priceDifferencePercentColumn:
                     {
-                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
+                        const auto cost
+                            = mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId());
                         if (cost->isNew() || qFuzzyIsNull(cost->getCost()))
                             break;
 
@@ -362,34 +345,16 @@ namespace Evernus
                 case newMarginColumn:
                     return QString{"%1%2"}.arg(locale.toString(getNewMargin(*data), 'f', 2)).arg(locale.percent());
                 case profitColumn:
-                    if (mCharacter)
-                    {
-                        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
-                        const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                        return TextUtils::currencyToString(data->getVolumeRemaining() * (realPrice - realCost), locale);
-                    }
+                    if (character != std::end(mCharacters))
+                        return TextUtils::currencyToString(getProfitForVolume(data->getVolumeRemaining(), *character->second, *data), locale);
                     break;
                 case totalProfitColumn:
-                    if (mCharacter)
-                    {
-                        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
-                        const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                        return TextUtils::currencyToString(data->getVolumeEntered() * (realPrice - realCost), locale);
-                    }
+                    if (character != std::end(mCharacters))
+                        return TextUtils::currencyToString(getProfitForVolume(data->getVolumeEntered(), *character->second, *data), locale);
                     break;
                 case profitPerItemColumn:
-                    if (mCharacter)
-                    {
-                        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-                        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, data->getTypeId());
-                        const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
-                        const auto realPrice = PriceUtils::getRevenue(data->getPrice(), taxes);
-                        return TextUtils::currencyToString(realPrice - realCost, locale);
-                    }
+                    if (character != std::end(mCharacters))
+                        return TextUtils::currencyToString(getProfitForVolume(1, *character->second, *data), locale);
                     break;
                 case etaColumn:
                     {
@@ -463,7 +428,8 @@ namespace Evernus
             else if (column == firstSeenColumn)
             {
                 QSettings settings;
-                const auto maxAge = settings.value(OrderSettings::marketOrderMaxAgeKey, OrderSettings::marketOrderMaxAgeDefault).toInt();
+                const auto maxAge
+                    = settings.value(OrderSettings::marketOrderMaxAgeKey, OrderSettings::marketOrderMaxAgeDefault).toInt();
                 if (data->getFirstSeen() < QDateTime::currentDateTimeUtc().addDays(-maxAge))
                     return QColor{255, 255, 192};
             }
@@ -594,7 +560,7 @@ namespace Evernus
         OrderInfo info;
         info.mOrderPrice = order->getPrice();
         info.mMarketPrice = (price->isNew()) ? (info.mOrderPrice) : (price->getPrice());
-        info.mOrderLocalTimestamp = mCacheTimerProvider.getLocalUpdateTimer(mCharacterId, TimerType::MarketOrders);
+        info.mOrderLocalTimestamp = mCacheTimerProvider.getLocalUpdateTimer(order->getCharacterId(), TimerType::MarketOrders);
         info.mMarketLocalTimestamp = price->getUpdateTime().toLocalTime();
 
         if (info.mMarketPrice < info.mOrderPrice || settings.value(PriceSettings::copyNonOverbidPriceKey, PriceSettings::copyNonOverbidPriceDefault).toBool())
@@ -604,7 +570,7 @@ namespace Evernus
 
         if (settings.value(PriceSettings::limitSellCopyToCostKey, PriceSettings::limitSellCopyToCostDefault).toBool())
         {
-            const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, order->getTypeId());
+            const auto cost = mItemCostProvider.fetchForCharacterAndType(order->getCharacterId(), order->getTypeId());
             if (!cost->isNew() && info.mTargetPrice < cost->getCost())
                 info.mTargetPrice = cost->getCost();
         }
@@ -672,25 +638,26 @@ namespace Evernus
         }
     }
 
-    MarketOrderTreeModel::OrderList MarketOrderSellModel::getOrders() const
+    MarketOrderTreeModel::OrderList MarketOrderSellModel::getOrders(Character::IdType characterId) const
     {
         mTotalCost = 0.;
         mTotalIncome = 0.;
 
-        if (!mCharacter)
+        const auto character = mCharacters.find(characterId);
+        if (character == std::end(mCharacters))
             return OrderList{};
 
         const auto orders = (mCorp) ?
-                            (mOrderProvider.getSellOrdersForCorporation(mCharacter->getCorporationId())) :
-                            (mOrderProvider.getSellOrders(mCharacterId));
+                            (mOrderProvider.getSellOrdersForCorporation(character->second->getCorporationId())) :
+                            (mOrderProvider.getSellOrders(characterId));
 
-        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        const auto taxes = PriceUtils::calculateTaxes(*character->second);
         for (const auto &order : orders)
         {
             if (order->getState() != MarketOrder::State::Active)
                 continue;
 
-            const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, order->getTypeId());
+            const auto cost = mItemCostProvider.fetchForCharacterAndType(characterId, order->getTypeId());
 
             mTotalCost += order->getVolumeEntered() * PriceUtils::getCoS(cost->getCost(), taxes);
             mTotalIncome += order->getVolumeEntered() * PriceUtils::getRevenue(order->getPrice(), taxes);
@@ -699,15 +666,48 @@ namespace Evernus
         return orders;
     }
 
-    void MarketOrderSellModel::handleNewCharacter()
+    MarketOrderTreeModel::OrderList MarketOrderSellModel::getOrdersForAllCharacters() const
+    {
+        auto totalCost = 0.;
+        auto totalIncome = 0.;
+
+        OrderList list;
+        for (const auto &character : mCharacters)
+        {
+            auto orders = getOrders(character.first);
+            list.insert(std::end(list), std::make_move_iterator(std::begin(orders)), std::make_move_iterator(std::end(orders)));
+
+            totalCost += mTotalCost;
+            totalIncome += mTotalIncome;
+        }
+
+        mTotalCost = totalCost;
+        mTotalIncome = totalIncome;
+
+        return list;
+    }
+
+    void MarketOrderSellModel::handleNewCharacter(Character::IdType characterId)
     {
         try
         {
-            mCharacter = mCharacterRepository.find(mCharacterId);
+            mCharacters[characterId] = mCharacterRepository.find(characterId);
         }
         catch (const CharacterRepository::NotFoundException &)
         {
-            mCharacter.reset();
+            mCharacters.erase(characterId);
+        }
+    }
+
+    void MarketOrderSellModel::handleAllCharacters()
+    {
+        mCharacters.clear();
+
+        const auto characters = mCharacterRepository.fetchAll();
+        for (auto &character : characters)
+        {
+            if (character->isEnabled())
+                mCharacters[character->getId()] = std::move(character);
         }
     }
 
@@ -723,17 +723,19 @@ namespace Evernus
 
     double MarketOrderSellModel::getMargin(const MarketOrder &order) const
     {
-        if (!mCharacter)
+        const auto character = mCharacters.find(order.getCharacterId());
+        if (character == std::end(mCharacters))
             return 0.;
 
-        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, order.getTypeId());
+        const auto taxes = PriceUtils::calculateTaxes(*character->second);
+        const auto cost = mItemCostProvider.fetchForCharacterAndType(order.getCharacterId(), order.getTypeId());
         return PriceUtils::getMargin(cost->getCost(), order.getPrice(), taxes);
     }
 
     double MarketOrderSellModel::getNewMargin(const MarketOrder &order) const
     {
-        if (!mCharacter)
+        const auto character = mCharacters.find(order.getCharacterId());
+        if (character == std::end(mCharacters))
             return 0.;
 
         QSettings settings;
@@ -747,9 +749,19 @@ namespace Evernus
         else
             newPrice -= PriceUtils::getPriceDelta();
 
-        const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, order.getTypeId());
+        const auto cost = mItemCostProvider.fetchForCharacterAndType(order.getCharacterId(), order.getTypeId());
 
-        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        const auto taxes = PriceUtils::calculateTaxes(*character->second);
         return PriceUtils::getMargin(cost->getCost(), newPrice, taxes);
+    }
+
+    double MarketOrderSellModel
+    ::getProfitForVolume(uint volume, const Character &character, const MarketOrder &order) const
+    {
+        const auto taxes = PriceUtils::calculateTaxes(character);
+        const auto cost = mItemCostProvider.fetchForCharacterAndType(character.getId(), order.getTypeId());
+        const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
+        const auto realPrice = PriceUtils::getRevenue(order.getPrice(), taxes);
+        return volume * (realPrice - realCost);
     }
 }
