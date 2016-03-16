@@ -61,7 +61,7 @@ namespace Evernus
         const auto curLocale = locale();
         const auto income = mModel.getTotalIncome();
         const auto cost = mModel.getTotalCost();
-        const auto margin = 100. * (income - cost) / income;
+        const auto margin = (qFuzzyIsNull(income)) ? (100.) : (100. * (income - cost) / income);
 
         mTotalIncomeLabel->setText(TextUtils::currencyToString(income, curLocale));
         mTotalCostLabel->setText(TextUtils::currencyToString(cost, curLocale));
