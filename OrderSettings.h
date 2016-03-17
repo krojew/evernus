@@ -22,10 +22,12 @@ namespace Evernus
         const auto deleteOldMarketOrdersDefault = true;
         const auto oldMarketOrderDaysDefault = 180;
         const auto limitSellToStationDefault = true;
+        const auto volumeWarningDefault = 0;
 
         const auto marketOrderMaxAgeKey = "prices/orders/maxAge"; // < 1.23 compatibility
         const auto deleteOldMarketOrdersKey = "orders/deleteOld";
         const auto oldMarketOrderDaysKey = "orders/oldDays";
         const auto limitSellToStationKey = "orders/limitSellToStation";
+        const auto volumeWarningKey = "orders/volumeWarning";
     }
 }

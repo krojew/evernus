@@ -1523,8 +1523,8 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../EvernusApplication.cpp" line="780"/>
         <location filename="../EvernusApplication.cpp" line="786"/>
-        <location filename="../EvernusApplication.cpp" line="2381"/>
-        <location filename="../EvernusApplication.cpp" line="2419"/>
+        <location filename="../EvernusApplication.cpp" line="2387"/>
+        <location filename="../EvernusApplication.cpp" line="2425"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -1699,32 +1699,32 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>Emailfehler</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2063"/>
+        <location filename="../EvernusApplication.cpp" line="2069"/>
         <source>Importing item prices...</source>
         <translation>Importiere Warenpreise...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2074"/>
+        <location filename="../EvernusApplication.cpp" line="2080"/>
         <source>Cannot determine market logs path!</source>
         <translation>Verzeichnis mit Mark Logs nicht gefunden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2088"/>
+        <location filename="../EvernusApplication.cpp" line="2094"/>
         <source>No market logs found!</source>
         <translation>Keine Mark Logs gefunden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2099"/>
+        <location filename="../EvernusApplication.cpp" line="2105"/>
         <source>Could not open market log file!</source>
         <translation>Markt Log konnte nicht geöffnet werden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2382"/>
+        <location filename="../EvernusApplication.cpp" line="2388"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Ausgeführte Marktaufträge</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2386"/>
+        <location filename="../EvernusApplication.cpp" line="2392"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -1733,24 +1733,24 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2389"/>
+        <location filename="../EvernusApplication.cpp" line="2395"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x %2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2419"/>
+        <location filename="../EvernusApplication.cpp" line="2425"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Charakter für Auftragsimport nicht gefunden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2664"/>
+        <location filename="../EvernusApplication.cpp" line="2670"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Hole Vertragsgegenstände für Vertrag %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2742"/>
+        <location filename="../EvernusApplication.cpp" line="2748"/>
         <source>Fetching character %1...</source>
         <translation>Hole Charakter %1...</translation>
     </message>
@@ -4889,6 +4889,11 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <location filename="../OrderPreferencesWidget.cpp" line="61"/>
         <source>Limit sell order price checking to station</source>
         <translation>Limit Verkaufsorder Preis überprüfen zu Station</translation>
+    </message>
+    <message>
+        <location filename="../OrderPreferencesWidget.cpp" line="66"/>
+        <source>Order volume warning (0 for none):</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -62,6 +62,12 @@ namespace Evernus
         mainGroupLayout->addRow(mLimitSellToStationBtn);
         mLimitSellToStationBtn->setChecked(settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool());
 
+        mVolumeWarningEdit = new QSpinBox{this};
+        mainGroupLayout->addRow(tr("Order volume warning (0 for none):"), mVolumeWarningEdit);
+        mVolumeWarningEdit->setRange(0, 100);
+        mVolumeWarningEdit->setSuffix(locale().percent());
+        mVolumeWarningEdit->setValue(settings.value(OrderSettings::volumeWarningKey, OrderSettings::volumeWarningDefault).toInt());
+
         mainLayout->addStretch();
     }
 
@@ -72,5 +78,6 @@ namespace Evernus
         settings.setValue(OrderSettings::deleteOldMarketOrdersKey, mDeleteOldMarketOrdersBtn->isChecked());
         settings.setValue(OrderSettings::oldMarketOrderDaysKey, mOldMarketOrdersDaysEdit->value());
         settings.setValue(OrderSettings::limitSellToStationKey, mLimitSellToStationBtn->isChecked());
+        settings.setValue(OrderSettings::volumeWarningKey, mVolumeWarningEdit->value());
     }
 }

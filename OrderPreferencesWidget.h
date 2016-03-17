@@ -38,5 +38,6 @@ namespace Evernus
         QCheckBox *mDeleteOldMarketOrdersBtn = nullptr;
         QSpinBox *mOldMarketOrdersDaysEdit = nullptr;
         QCheckBox *mLimitSellToStationBtn = nullptr;
+        QSpinBox *mVolumeWarningEdit = nullptr;
     };
 }
