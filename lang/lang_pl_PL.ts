@@ -3056,7 +3056,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ItemTypeSelectDialog</name>
     <message>
-        <location filename="../ItemTypeSelectDialog.cpp" line="47"/>
+        <location filename="../ItemTypeSelectDialog.cpp" line="74"/>
         <source>Select Item Type</source>
         <translation>Wybierz przedmiot</translation>
     </message>
@@ -3767,13 +3767,13 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="664"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="902"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="900"/>
         <source>Volume:</source>
         <translation>Wolumen:</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="682"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="921"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="919"/>
         <source>Margin:</source>
         <translation>Marża:</translation>
     </message>
@@ -3798,7 +3798,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="735"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="939"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="937"/>
         <source>Apply</source>
         <translation>Zastosuj</translation>
     </message>
@@ -3813,7 +3813,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="744"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="953"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="951"/>
         <source>Calculating data...</source>
         <translation>Obliczanie danych...</translation>
     </message>
@@ -3824,7 +3824,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="769"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="977"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="975"/>
         <source>Show in EVE</source>
         <translation>Pokaż w EVE</translation>
     </message>
@@ -3834,7 +3834,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="774"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="982"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="980"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiuj</translation>
     </message>
@@ -3912,9 +3912,9 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="608"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="864"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="889"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="894"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="862"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="887"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="892"/>
         <source>- all -</source>
         <translation>- wszystkie -</translation>
     </message>
@@ -3924,27 +3924,27 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="582"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="804"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="802"/>
         <source>- any station -</source>
         <translation>- dowolna stacja -</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="807"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="805"/>
         <source>Source:</source>
         <translation>Źródło:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="817"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="815"/>
         <source>Destination:</source>
         <translation>Cel:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="876"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="874"/>
         <source>- multiple -</source>
         <translation>- wiele -</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="943"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="941"/>
         <source>&quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation>&quot;Pokaż w EVE&quot; jest dostępne w menu kontekstowym.</translation>
     </message>
@@ -3953,7 +3953,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Docelowy region:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="886"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="884"/>
         <source>- none -</source>
         <translation>- brak -</translation>
     </message>
@@ -4125,7 +4125,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="327"/>
-        <location filename="../MarketBrowserWidget.cpp" line="946"/>
+        <location filename="../MarketBrowserWidget.cpp" line="953"/>
         <source>select an item</source>
         <translation>wybierz przedmiot</translation>
     </message>
@@ -4141,52 +4141,52 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Zlecenia kupna</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="595"/>
+        <location filename="../MarketBrowserWidget.cpp" line="602"/>
         <source>Add to favorites</source>
         <translation>Dodaj do ulubionych</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="750"/>
+        <location filename="../MarketBrowserWidget.cpp" line="757"/>
         <source>Add bookmark</source>
         <translation>Dodaj zakładkę</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="751"/>
+        <location filename="../MarketBrowserWidget.cpp" line="758"/>
         <source>Remove bookmark...</source>
         <translation>Usuń zakładkę...</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="779"/>
+        <location filename="../MarketBrowserWidget.cpp" line="786"/>
         <source>type in wildcard</source>
         <translation>wpisz wzór</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="803"/>
+        <location filename="../MarketBrowserWidget.cpp" line="810"/>
         <source>Deviation [median]  </source>
         <translation>Odchylenie [mediana]  </translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="805"/>
+        <location filename="../MarketBrowserWidget.cpp" line="812"/>
         <source>Deviation [best price]  </source>
         <translation>Odchylenie [najlepsza cena]  </translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="807"/>
+        <location filename="../MarketBrowserWidget.cpp" line="814"/>
         <source>Deviation [custom cost]  </source>
         <translation>Odchylenie [koszt własny]  </translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="809"/>
+        <location filename="../MarketBrowserWidget.cpp" line="816"/>
         <source>Deviation [fixed]  </source>
         <translation>Odchylenie [ustalona cena]  </translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="811"/>
+        <location filename="../MarketBrowserWidget.cpp" line="818"/>
         <source>Deviation  </source>
         <translation>Odchylenie  </translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="944"/>
+        <location filename="../MarketBrowserWidget.cpp" line="951"/>
         <source>%1 (%2m³)</source>
         <translation>%1 (%2m³)</translation>
     </message>
@@ -4198,7 +4198,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="453"/>
         <location filename="../MarketBrowserWidget.cpp" line="490"/>
-        <location filename="../MarketBrowserWidget.cpp" line="722"/>
+        <location filename="../MarketBrowserWidget.cpp" line="729"/>
         <source>(all)</source>
         <translation>(wszystko)</translation>
     </message>

@@ -2761,7 +2761,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::ItemTypeSelectDialog</name>
     <message>
-        <location filename="../ItemTypeSelectDialog.cpp" line="47"/>
+        <location filename="../ItemTypeSelectDialog.cpp" line="74"/>
         <source>Select Item Type</source>
         <translation>Artikeltyp auswählen</translation>
     </message>
@@ -3474,13 +3474,13 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="664"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="902"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="900"/>
         <source>Volume:</source>
         <translation>Volumen:</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="682"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="921"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="919"/>
         <source>Margin:</source>
         <translation>Marge:</translation>
     </message>
@@ -3496,7 +3496,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="735"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="939"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="937"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
@@ -3507,7 +3507,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="744"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="953"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="951"/>
         <source>Calculating data...</source>
         <translation>Berechene Daten...</translation>
     </message>
@@ -3518,39 +3518,39 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="769"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="977"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="975"/>
         <source>Show in EVE</source>
         <translation>In EVE anzeigen</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="774"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="982"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="980"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopieren</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="582"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="804"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="802"/>
         <source>- any station -</source>
         <translation>- beliebige Station -</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="807"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="805"/>
         <source>Source:</source>
         <translation>Quelle:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="817"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="815"/>
         <source>Destination:</source>
         <translation>Ziel:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="876"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="874"/>
         <source>- multiple -</source>
         <translation>- mehrere -</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="943"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="941"/>
         <source>&quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation>&quot;In EVE anzeigen&quot; ist via Rechtsklickmenü verfügbar.</translation>
     </message>
@@ -3560,7 +3560,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>Unsinnsaufträge verwerfen (startet Neuberechnung)</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="886"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="884"/>
         <source>- none -</source>
         <translation>- keine -</translation>
     </message>
@@ -3603,9 +3603,9 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="608"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="864"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="889"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="894"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="862"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="887"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="892"/>
         <source>- all -</source>
         <translation>- alle -</translation>
     </message>
@@ -3788,7 +3788,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="327"/>
-        <location filename="../MarketBrowserWidget.cpp" line="946"/>
+        <location filename="../MarketBrowserWidget.cpp" line="953"/>
         <source>select an item</source>
         <translation>Wähle einen Gegenstand</translation>
     </message>
@@ -3811,57 +3811,57 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="453"/>
         <location filename="../MarketBrowserWidget.cpp" line="490"/>
-        <location filename="../MarketBrowserWidget.cpp" line="722"/>
+        <location filename="../MarketBrowserWidget.cpp" line="729"/>
         <source>(all)</source>
         <translation>(alle)</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="595"/>
+        <location filename="../MarketBrowserWidget.cpp" line="602"/>
         <source>Add to favorites</source>
         <translation>Zu Favoriten hinzufügen</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="750"/>
+        <location filename="../MarketBrowserWidget.cpp" line="757"/>
         <source>Add bookmark</source>
         <translation>Lesezeichen hinzufügen</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="751"/>
+        <location filename="../MarketBrowserWidget.cpp" line="758"/>
         <source>Remove bookmark...</source>
         <translation>Lesezeichen entfernen...</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="779"/>
+        <location filename="../MarketBrowserWidget.cpp" line="786"/>
         <source>type in wildcard</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="803"/>
+        <location filename="../MarketBrowserWidget.cpp" line="810"/>
         <source>Deviation [median]  </source>
         <translation>Abweichung [Durchschnitt]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="805"/>
+        <location filename="../MarketBrowserWidget.cpp" line="812"/>
         <source>Deviation [best price]  </source>
         <translation>Abweichung [Bester Preis]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="807"/>
+        <location filename="../MarketBrowserWidget.cpp" line="814"/>
         <source>Deviation [custom cost]  </source>
         <translation>Abweichung [Benutzerdefinierte Kosten]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="809"/>
+        <location filename="../MarketBrowserWidget.cpp" line="816"/>
         <source>Deviation [fixed]  </source>
         <translation>Abweichung [Fest]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="811"/>
+        <location filename="../MarketBrowserWidget.cpp" line="818"/>
         <source>Deviation  </source>
         <translation>Abweichung</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="944"/>
+        <location filename="../MarketBrowserWidget.cpp" line="951"/>
         <source>%1 (%2m³)</source>
         <translation>%1 (%2m³)</translation>
     </message>

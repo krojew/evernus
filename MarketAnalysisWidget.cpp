@@ -798,8 +798,6 @@ namespace Evernus
             return combo;
         };
 
-
-
         auto getStationName = [this](auto id) {
             return (id != 0) ? (mDataProvider.getLocationName(id)) : (tr("- any station -"));
         };

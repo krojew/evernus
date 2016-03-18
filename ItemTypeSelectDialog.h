@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <unordered_set>
+
 #include <QDialog>
 
 #include "EveType.h"
@@ -30,12 +32,16 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        using TypeSet = std::unordered_set<EveType::IdType>;
+
         explicit ItemTypeSelectDialog(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
         virtual ~ItemTypeSelectDialog() = default;
 
-        EveType::IdType getSelectedType() const;
+        TypeSet getSelectedTypes() const;
 
     private:
         QComboBox *mTypeCombo = nullptr;
+
+        TypeSet mSelectedTypes;
     };
 }
