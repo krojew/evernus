@@ -547,8 +547,15 @@ namespace Evernus
         ItemTypeSelectDialog dlg{mDataProvider, this};
         if (dlg.exec() == QDialog::Accepted)
         {
-            FavoriteItem item{dlg.getSelectedType()};
-            mFavoriteItemRepo.store(item);
+            const auto selected = dlg.getSelectedTypes();
+
+            std::vector<FavoriteItem> items;
+            items.reserve(selected.size());
+
+            for (const auto id : selected)
+                items.emplace_back(id);
+
+            mFavoriteItemRepo.batchStore(items, true);
 
             fillFavoriteItemNames();
         }

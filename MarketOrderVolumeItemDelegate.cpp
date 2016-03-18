@@ -12,7 +12,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QSettings>
 #include <QPainter>
+
+#include "OrderSettings.h"
 
 #include "MarketOrderVolumeItemDelegate.h"
 
@@ -29,8 +32,12 @@ namespace Evernus
 
             const auto alpha = std::min(std::max(0., list[0].toDouble() / list[1].toDouble()), 1.);
 
-            const QColor brightColor{192, 255, 192};
-            const QColor darkColor{128, 255, 128};
+            QSettings settings;
+            const auto warning
+                = (settings.value(OrderSettings::volumeWarningKey, OrderSettings::volumeWarningDefault).toInt() / 100.) > alpha;
+
+            const QColor brightColor = (warning) ? (qRgb(255, 192, 192)) : (qRgb(192, 255, 192));
+            const QColor darkColor = (warning) ? (qRgb(255, 128, 128)) : (qRgb(128, 255, 128));
 
             painter->save();
 

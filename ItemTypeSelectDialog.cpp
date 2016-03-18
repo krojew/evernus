@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QStandardItemModel>
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
 #include <QComboBox>
@@ -31,13 +32,40 @@ namespace Evernus
         mTypeCombo = new QComboBox{this};
         mainLayout->addWidget(mTypeCombo);
 
+        auto model = new QStandardItemModel{this};
+
         const auto &types = dataProvider.getAllTradeableTypeNames();
         for (const auto &type : types)
-            mTypeCombo->addItem(type.second, type.first);
+        {
+            auto item = new QStandardItem{type.second};
+            item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+            item->setCheckState(Qt::Unchecked);
+            item->setData(type.first);
+
+            model->appendRow(item);
+        }
+
+        model->sort(0);
+
+        if (!types.empty())
+        {
+            auto item = model->item(0);
+            item->setCheckState(Qt::Checked); // auto check first, because the combo is not visible
+
+            mSelectedTypes.emplace(item->data().template value<TypeSet::value_type>());
+        }
+
+        connect(model, &QStandardItemModel::itemChanged, this, [=](const auto item) {
+            const auto id = item->data().template value<TypeSet::value_type>();
+            if (item->checkState() == Qt::Checked)
+                mSelectedTypes.emplace(id);
+            else
+                mSelectedTypes.erase(id);
+        });
 
         mTypeCombo->setEditable(true);
         mTypeCombo->setInsertPolicy(QComboBox::NoInsert);
-        mTypeCombo->model()->sort(0);
+        mTypeCombo->setModel(model);
 
         auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);
@@ -47,8 +75,8 @@ namespace Evernus
         setWindowTitle(tr("Select Item Type"));
     }
 
-    EveType::IdType ItemTypeSelectDialog::getSelectedType() const
+    ItemTypeSelectDialog::TypeSet ItemTypeSelectDialog::getSelectedTypes() const
     {
-        return mTypeCombo->currentData().value<EveType::IdType>();
+        return mSelectedTypes;
     }
 }
