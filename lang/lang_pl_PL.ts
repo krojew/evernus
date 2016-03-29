@@ -6200,94 +6200,94 @@ Suma: %7</translation>
         <translation type="obsolete">Historia</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="53"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="56"/>
         <source>From:</source>
         <translation>Od:</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="67"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="70"/>
         <source>To:</source>
         <translation>Do:</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="79"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="82"/>
         <source>Moving average days:</source>
         <translation>Dni średniej kroczącej:</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="88"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="91"/>
         <source>MACD days:</source>
         <translation>Dni MACD:</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="105"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="108"/>
         <source>Apply</source>
         <translation>Zastosuj</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="109"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="112"/>
         <source>Add trend line</source>
         <translation>Dodaj linię trendu</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="116"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="119"/>
         <source>Show legend</source>
         <translation>Pokaż legendę</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="142"/>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="164"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="145"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="167"/>
         <source>Volume</source>
         <translation>Wolumen</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="174"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="177"/>
         <source>Unusual volume</source>
         <translation>Nieprzeciętny wolumen</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="184"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="187"/>
         <source>Value</source>
         <translation>Wartość</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="191"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="194"/>
         <source>SMA</source>
         <translation>SMA</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="195"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="198"/>
         <source>Bollinger upper band</source>
         <translation>Górna wstęga Bollingera</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="199"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="202"/>
         <source>Bollinger lower band</source>
         <translation>Dolna wstęga Bollingera</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="211"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="214"/>
         <source>RSI (14 days)</source>
         <translation>RSI (14 dni)</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="239"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="242"/>
         <source>RSI</source>
         <translation>RSI</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="248"/>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="269"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="251"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="272"/>
         <source>MACD</source>
         <translation>MACD</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="262"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="265"/>
         <source>MACD Divergence</source>
         <translation>Rozbieżność MACD</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="272"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="275"/>
         <source>MACD Signal</source>
         <translation>Sygnał MACD</translation>
     </message>

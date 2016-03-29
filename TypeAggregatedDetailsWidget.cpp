@@ -15,10 +15,11 @@
 #include <memory>
 #include <cmath>
 
+#include <boost/accumulators/statistics/rolling_variance.hpp>
+#include <boost/accumulators/statistics/rolling_mean.hpp>
 #include <boost/accumulators/statistics/variance.hpp>
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/accumulators.hpp>
-#include <boost/circular_buffer.hpp>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -36,6 +37,8 @@
 #include "qcustomplot.h"
 
 #include "TypeAggregatedDetailsWidget.h"
+
+namespace ba = boost::accumulators;
 
 namespace Evernus
 {
@@ -312,8 +315,6 @@ namespace Evernus
         settings.setValue(MarketAnalysisSettings::macdSlowDaysKey, macdSlowDays);
         settings.setValue(MarketAnalysisSettings::macdEmaDaysKey, macdEmaDays);
 
-        boost::circular_buffer<double> smaBuffer(smaDays, prevAvg), sqrSmaBuffer(smaDays, prevAvg * prevAvg);
-        auto smaSum = smaDays * prevAvg, sqrSmaSum = smaDays * prevAvg * prevAvg;
         auto prevUEma = 0., prevDEma = 0.;
         auto prevMacdFastEma = prevAvg, prevMacdSlowEma = prevAvg, prevMacdEma = 0.;
 
@@ -332,7 +333,9 @@ namespace Evernus
         bollingerUp.reserve(size);
         bollingerLow.reserve(size);
 
-        boost::accumulators::accumulator_set<quint64, boost::accumulators::stats<boost::accumulators::tag::variance>> volAcc;
+        ba::accumulator_set<quint64, ba::stats<ba::tag::variance>> volAcc;
+        ba::accumulator_set<double, ba::stats<ba::tag::rolling_mean, ba::tag::rolling_variance>>
+        prcAcc(ba::tag::rolling_window::window_size = smaDays);
 
         for (auto date = start, end = mToEdit->date(); date <= end; date = date.addDays(1))
         {
@@ -344,6 +347,7 @@ namespace Evernus
             if (it == std::end(mHistory))
             {
                 volAcc(0.);
+                prcAcc(0.);
 
                 volumes << 0.;
                 open << 0.;
@@ -359,6 +363,7 @@ namespace Evernus
                 d = std::max(0., prevAvg - it->second.mAvgPrice);
 
                 volAcc(it->second.mVolume);
+                prcAcc(it->second.mAvgPrice);
 
                 volumes << it->second.mVolume;
                 open << std::max(std::min(prevAvg, it->second.mHighPrice), it->second.mLowPrice);
@@ -369,12 +374,7 @@ namespace Evernus
                 prevAvg = it->second.mAvgPrice;
             }
 
-            smaSum -= smaBuffer.front();
-            smaBuffer.pop_front();
-            smaBuffer.push_back(prevAvg);
-            smaSum += prevAvg;
-
-            const auto avg = smaSum / smaDays;
+            const auto avg = ba::rolling_mean(prcAcc);
 
             sma << avg;
 
@@ -402,19 +402,14 @@ namespace Evernus
 
             macdDivergence << (curMacd - prevMacdEma);
 
-            sqrSmaSum -= sqrSmaBuffer.front();
-            sqrSmaBuffer.pop_front();
-            sqrSmaBuffer.push_back(prevAvg * prevAvg);
-            sqrSmaSum += prevAvg * prevAvg;
-
-            const auto stdDev2 = 2. * std::sqrt(sqrSmaSum / smaDays - avg * avg);
+            const auto stdDev2 = 2. * std::sqrt(ba::rolling_variance(prcAcc));
 
             bollingerUp << (avg + stdDev2);
             bollingerLow << (avg - stdDev2);
         }
 
-        const quint64 volStdDev2 = 2 * std::sqrt(boost::accumulators::variance(volAcc));
-        const auto volMean = boost::accumulators::mean(volAcc);
+        const quint64 volStdDev2 = 2 * std::sqrt(ba::variance(volAcc));
+        const auto volMean = ba::mean(volAcc);
 
         QVector<double> volumeFlagDates, volumeFlags;
         for (auto date = start, end = mToEdit->date(); date <= end; date = date.addDays(1))
