@@ -15,6 +15,9 @@
 #include <memory>
 #include <cmath>
 
+#include <boost/accumulators/statistics/variance.hpp>
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/accumulators.hpp>
 #include <boost/circular_buffer.hpp>
 
 #include <QHBoxLayout>
@@ -162,6 +165,16 @@ namespace Evernus
         mHistoryVolumeGraph->setPen(QPen{Qt::cyan});
         mHistoryVolumeGraph->setBrush(Qt::cyan);
         mHistoryVolumeGraph->setWidth(dayWidth);
+
+        auto volumeFlagGraph = std::make_unique<QCPBars>(mHistoryPlot->xAxis, mHistoryPlot->yAxis2);
+        mHistoryVolumeFlagGraph = volumeFlagGraph.get();
+        mHistoryPlot->addPlottable(mHistoryVolumeFlagGraph);
+        volumeFlagGraph.release();
+
+        mHistoryVolumeFlagGraph->setName(tr("Unusual volume"));
+        mHistoryVolumeFlagGraph->setPen(QPen{Qt::red});
+        mHistoryVolumeFlagGraph->setBrush(Qt::NoBrush);
+        mHistoryVolumeFlagGraph->setWidth(dayWidth);
 
         auto valuesGraph = std::make_unique<QCPFinancial>(mHistoryPlot->xAxis, mHistoryPlot->yAxis);
         mHistoryValuesGraph = valuesGraph.get();
@@ -319,6 +332,8 @@ namespace Evernus
         bollingerUp.reserve(size);
         bollingerLow.reserve(size);
 
+        boost::accumulators::accumulator_set<quint64, boost::accumulators::stats<boost::accumulators::tag::variance>> volAcc;
+
         for (auto date = start, end = mToEdit->date(); date <= end; date = date.addDays(1))
         {
             dates << QDateTime{date}.toMSecsSinceEpoch() / 1000.;
@@ -328,6 +343,8 @@ namespace Evernus
             const auto it = mHistory.find(date);
             if (it == std::end(mHistory))
             {
+                volAcc(0.);
+
                 volumes << 0.;
                 open << 0.;
                 high << 0.;
@@ -340,6 +357,8 @@ namespace Evernus
             {
                 u = std::max(0., it->second.mAvgPrice - prevAvg);
                 d = std::max(0., prevAvg - it->second.mAvgPrice);
+
+                volAcc(it->second.mVolume);
 
                 volumes << it->second.mVolume;
                 open << std::max(std::min(prevAvg, it->second.mHighPrice), it->second.mLowPrice);
@@ -394,10 +413,28 @@ namespace Evernus
             bollingerLow << (avg - stdDev2);
         }
 
+        const quint64 volStdDev2 = 2 * std::sqrt(boost::accumulators::variance(volAcc));
+        const auto volMean = boost::accumulators::mean(volAcc);
+
+        QVector<double> volumeFlagDates, volumeFlags;
+        for (auto date = start, end = mToEdit->date(); date <= end; date = date.addDays(1))
+        {
+            const auto it = mHistory.find(date);
+            if (it == std::end(mHistory))
+                continue;
+
+            if (it->second.mVolume < volMean - volStdDev2 || it->second.mVolume > volMean + volStdDev2)
+            {
+                volumeFlagDates << QDateTime{date}.toMSecsSinceEpoch() / 1000.;
+                volumeFlags << volumes[start.daysTo(date)];
+            }
+        }
+
         deleteTrendLine();
 
         mHistoryValuesGraph->setData(dates, open, high, low, close);
         mHistoryVolumeGraph->setData(dates, volumes);
+        mHistoryVolumeFlagGraph->setData(volumeFlagDates, volumeFlags);
         mSMAGraph->setData(dates, sma);
         mRSIGraph->setData(dates, rsi);
         mMACDGraph->setData(dates, macd);

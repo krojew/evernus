@@ -2761,7 +2761,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::ItemTypeSelectDialog</name>
     <message>
-        <location filename="../ItemTypeSelectDialog.cpp" line="74"/>
+        <location filename="../ItemTypeSelectDialog.cpp" line="75"/>
         <source>Select Item Type</source>
         <translation>Artikeltyp auswählen</translation>
     </message>
@@ -5749,89 +5749,94 @@ Wert gesamt: %7</translation>
 <context>
     <name>Evernus::TypeAggregatedDetailsWidget</name>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="50"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="53"/>
         <source>From:</source>
         <translation>Von:</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="64"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="67"/>
         <source>To:</source>
         <translation>Bis:</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="76"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="79"/>
         <source>Moving average days:</source>
         <translation>Tage gleitender Durchschnitt:</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="85"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="88"/>
         <source>MACD days:</source>
         <translation>Tage MACD:</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="102"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="105"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="106"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="109"/>
         <source>Add trend line</source>
         <translation>Trennlinie hinzufügen</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="113"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="116"/>
         <source>Show legend</source>
         <translation>Legende anzeigen</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="139"/>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="161"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="142"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="164"/>
         <source>Volume</source>
         <translation>Volumen</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="171"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="174"/>
+        <source>Unusual volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="184"/>
         <source>Value</source>
         <translation>Wert</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="178"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="191"/>
         <source>SMA</source>
         <translation>SMA</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="182"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="195"/>
         <source>Bollinger upper band</source>
         <translation>Bollinger oberes Band</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="186"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="199"/>
         <source>Bollinger lower band</source>
         <translation>Bollinger unteres Band</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="198"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="211"/>
         <source>RSI (14 days)</source>
         <translation>RSI (14 Tage)</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="226"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="239"/>
         <source>RSI</source>
         <translation>RSI</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="235"/>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="256"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="248"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="269"/>
         <source>MACD</source>
         <translation>MACD</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="249"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="262"/>
         <source>MACD Divergence</source>
         <translation>MACD Divergenz</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="259"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="272"/>
         <source>MACD Signal</source>
         <translation>MACD Signal</translation>
     </message>

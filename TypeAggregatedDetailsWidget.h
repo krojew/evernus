@@ -62,6 +62,7 @@ namespace Evernus
 
         QCPFinancial *mHistoryValuesGraph = nullptr;
         QCPBars *mHistoryVolumeGraph = nullptr;
+        QCPBars *mHistoryVolumeFlagGraph = nullptr;
         QCPGraph *mSMAGraph = nullptr;
         QCPGraph *mRSIGraph = nullptr;
         QCPGraph *mMACDGraph = nullptr;
