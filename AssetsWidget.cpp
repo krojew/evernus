@@ -240,6 +240,7 @@ namespace Evernus
         mModel.reset();
         mAssetView->expandAll();
         mAssetView->header()->resizeSections(QHeaderView::ResizeToContents);
+        mAssetView->sortByColumn(0, Qt::AscendingOrder);
 
         setNewInfo();
     }

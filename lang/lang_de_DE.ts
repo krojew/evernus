@@ -302,22 +302,22 @@
         <translation>Für alle Charaktere zusammenfassen</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="120"/>
+        <location filename="../AssetsWidget.cpp" line="122"/>
         <source>Set destination in EVE</source>
         <translation>Ziel in EVE setzen</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="125"/>
+        <location filename="../AssetsWidget.cpp" line="127"/>
         <source>Price station</source>
         <translation>Stationspreis</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="133"/>
+        <location filename="../AssetsWidget.cpp" line="135"/>
         <source>Use asset location</source>
         <translation>Verwende Standort der Ware</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="143"/>
+        <location filename="../AssetsWidget.cpp" line="145"/>
         <source>Use custom station</source>
         <translatorcomment>#NOTE# Correct transaltion would be &quot;Verwende benutzerdefinierte Station&quot;, but this seems a tad long.</translatorcomment>
         <translation>Verwende andere Station</translation>

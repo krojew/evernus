@@ -464,22 +464,22 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation>Połącz dla wszystkich postaci</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="120"/>
+        <location filename="../AssetsWidget.cpp" line="122"/>
         <source>Set destination in EVE</source>
         <translation>Ustaw jako cel podróży</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="125"/>
+        <location filename="../AssetsWidget.cpp" line="127"/>
         <source>Price station</source>
         <translation>Stacja z cenami</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="133"/>
+        <location filename="../AssetsWidget.cpp" line="135"/>
         <source>Use asset location</source>
         <translation>Użyj stacji z przedmiotem</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="143"/>
+        <location filename="../AssetsWidget.cpp" line="145"/>
         <source>Use custom station</source>
         <translation>Użyj wybranej stacji</translation>
     </message>
