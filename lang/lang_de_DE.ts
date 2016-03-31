@@ -287,27 +287,37 @@
         <translation>Preisimport aus Logs</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="82"/>
+        <location filename="../AssetsWidget.cpp" line="76"/>
+        <source>Expand all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../AssetsWidget.cpp" line="80"/>
+        <source>Collapse all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../AssetsWidget.cpp" line="90"/>
         <source>Combine for all characters</source>
         <translation>Für alle Charaktere zusammenfassen</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="112"/>
+        <location filename="../AssetsWidget.cpp" line="120"/>
         <source>Set destination in EVE</source>
         <translation>Ziel in EVE setzen</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="117"/>
+        <location filename="../AssetsWidget.cpp" line="125"/>
         <source>Price station</source>
         <translation>Stationspreis</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="125"/>
+        <location filename="../AssetsWidget.cpp" line="133"/>
         <source>Use asset location</source>
         <translation>Verwende Standort der Ware</translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="135"/>
+        <location filename="../AssetsWidget.cpp" line="143"/>
         <source>Use custom station</source>
         <translatorcomment>#NOTE# Correct transaltion would be &quot;Verwende benutzerdefinierte Station&quot;, but this seems a tad long.</translatorcomment>
         <translation>Verwende andere Station</translation>

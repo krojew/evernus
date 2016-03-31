@@ -73,6 +73,14 @@ namespace Evernus
         importFromFile->setFlat(true);
         connect(importFromFile, &QPushButton::clicked, this, &AssetsWidget::prepareItemImportFromFile);
 
+        auto expandAll = new QPushButton{QIcon{":/images/arrow_out.png"}, tr("Expand all"), this};
+        toolBarLayout->addWidget(expandAll);
+        expandAll->setFlat(true);
+
+        auto collapseAll = new QPushButton{QIcon{":/images/arrow_in.png"}, tr("Collapse all"), this};
+        toolBarLayout->addWidget(collapseAll);
+        collapseAll->setFlat(true);
+
         auto filterEdit = new TextFilterWidget{filterRepo, this};
         toolBarLayout->addWidget(filterEdit, 1);
         connect(filterEdit, &TextFilterWidget::filterEntered, this, &AssetsWidget::applyWildcard);
@@ -108,6 +116,8 @@ namespace Evernus
         mAssetView->setModel(mModelProxy);
         connect(mAssetView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &AssetsWidget::handleSelection);
+        connect(expandAll, &QPushButton::clicked, mAssetView, &StyledTreeView::expandAll);
+        connect(collapseAll, &QPushButton::clicked, mAssetView, &StyledTreeView::collapseAll);
 
         mSetDestinationAct = new QAction{tr("Set destination in EVE"), this};
         mSetDestinationAct->setEnabled(false);
