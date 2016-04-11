@@ -32,21 +32,6 @@
 
 namespace Evernus
 {
-    namespace
-    {
-        struct OrderState
-        {
-            enum class State
-            {
-                Empty,
-                GotResponse,
-            } mState = State::Empty;
-
-            std::vector<ExternalOrder> mOrders;
-            QString mError;
-        };
-    }
-
     CRESTManager
     ::CRESTManager(const EveDataProvider &dataProvider, QObject *parent)
         : QObject{parent}
@@ -74,28 +59,17 @@ namespace Evernus
             return;
         }
 
-        auto state = std::make_shared<OrderState>();
         auto ifaceCallback = [=](QJsonDocument &&data, const QString &error) {
             if (!error.isEmpty())
             {
-                if (!state->mError.isEmpty())
-                    callback(std::vector<ExternalOrder>(), QString{"%1\n%2"}.arg(state->mError).arg(error));
-                else if (state->mState == OrderState::State::GotResponse)
-                    callback(std::vector<ExternalOrder>(), error);
-                else
-                    state->mError = error;
-
-                return;
-            }
-
-            if (!state->mError.isEmpty())
-            {
-                callback(std::vector<ExternalOrder>(), state->mError);
+                callback(std::vector<ExternalOrder>(), error);
                 return;
             }
 
             const auto items = data.object().value("items").toArray();
-            state->mOrders.reserve(state->mOrders.size() + items.size());
+
+            std::vector<ExternalOrder> orders;
+            orders.reserve(items.size());
 
             for (const auto &item : items)
             {
@@ -133,17 +107,13 @@ namespace Evernus
                 order.setIssued(issued);
                 order.setDuration(itemObject.value("duration").toInt());
 
-                state->mOrders.emplace_back(std::move(order));
+                orders.emplace_back(std::move(order));
             }
 
-            if (state->mState == OrderState::State::GotResponse)
-                callback(std::move(state->mOrders), QString{});
-            else
-                state->mState = OrderState::State::GotResponse;
+            callback(std::move(orders), QString{});
         };
 
-        mInterface.fetchBuyMarketOrders(regionId, typeId, ifaceCallback);
-        mInterface.fetchSellMarketOrders(regionId, typeId, ifaceCallback);
+        mInterface.fetchMarketOrders(regionId, typeId, ifaceCallback);
     }
 
     void CRESTManager::fetchMarketHistory(uint regionId,

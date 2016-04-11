@@ -35,7 +35,7 @@
 namespace Evernus
 {
 #ifdef EVERNUS_CREST_SISI
-    const QString CRESTInterface::crestUrl = "https://public-crest-sisi.testeveonline.com";
+    const QString CRESTInterface::crestUrl = "https://api-sisi.testeveonline.com";
 #else
     const QString CRESTInterface::crestUrl = "https://public-crest.eveonline.com";
 #endif
@@ -44,7 +44,7 @@ namespace Evernus
     const QString CRESTInterface::itemTypesUrlName = "itemTypes";
 
     RateLimiter CRESTInterface::mCRESTLimiter;
-    
+
     QTimer CRESTInterface::mRequestTimer;
 
     CRESTInterface::CRESTInterface(QObject *parent)
@@ -64,9 +64,9 @@ namespace Evernus
         connect(&mRequestTimer, &QTimer::timeout, this, &CRESTInterface::processPendingRequests);
     }
 
-    void CRESTInterface::fetchBuyMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const
+    void CRESTInterface::fetchMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const
     {
-        qDebug() << "Fetching buy orders for" << regionId << "and" << typeId;
+        qDebug() << "Fetching market orders for" << regionId << "and" << typeId;
 
         auto orderFetcher = [=](const QUrl &url, const QString &error) {
             if (!error.isEmpty())
@@ -78,24 +78,7 @@ namespace Evernus
             getOrders(url, typeId, callback);
         };
 
-        getRegionBuyOrdersUrl(regionId, orderFetcher);
-    }
-
-    void CRESTInterface::fetchSellMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const
-    {
-        qDebug() << "Fetching sell orders for" << regionId << "and" << typeId;
-
-        auto orderFetcher = [=](const QUrl &url, const QString &error) {
-            if (!error.isEmpty())
-            {
-                callback(QJsonDocument{}, error);
-                return;
-            }
-
-            getOrders(url, typeId, callback);
-        };
-
-        getRegionSellOrdersUrl(regionId, orderFetcher);
+        getRegionOrdersUrl(regionId, orderFetcher);
     }
 
     void CRESTInterface::fetchMarketHistory(uint regionId, EveType::IdType typeId, const Callback &callback) const
@@ -134,26 +117,11 @@ namespace Evernus
     }
 
     template<class T>
-    void CRESTInterface::getRegionBuyOrdersUrl(uint regionId, T &&continuation) const
+    void CRESTInterface::getRegionOrdersUrl(uint regionId, T &&continuation) const
     {
-        getRegionOrdersUrl(regionId, "marketBuyOrders", mRegionBuyOrdersUrls, std::forward<T>(continuation));
-    }
-
-    template<class T>
-    void CRESTInterface::getRegionSellOrdersUrl(uint regionId, T &&continuation) const
-    {
-        getRegionOrdersUrl(regionId, "marketSellOrders", mRegionSellOrdersUrls, std::forward<T>(continuation));
-    }
-
-    template<class T>
-    void CRESTInterface::getRegionOrdersUrl(uint regionId,
-                                            const QString &urlName,
-                                            RegionOrderUrlMap &map,
-                                            T &&continuation) const
-    {
-        if (map.contains(regionId))
+        if (mRegionOrdersUrls.contains(regionId))
         {
-            continuation(map[regionId], QString{});
+            continuation(mRegionOrdersUrls[regionId], QString{});
             return;
         }
 
@@ -163,6 +131,8 @@ namespace Evernus
             return;
         }
 
+        const QString urlName = "marketOrders";
+
         const auto pendingKey = qMakePair(regionId, urlName);
         if (mPendingRegionRequests.contains(pendingKey))
         {
@@ -170,11 +140,11 @@ namespace Evernus
             return;
         }
 
-        qDebug() << "Fetching region orders url:" << regionId << urlName;
+        qDebug() << "Fetching region orders url:" << regionId;
 
         mPendingRegionRequests[pendingKey].emplace_back(std::forward<T>(continuation));
 
-        auto saveUrl = [=, &map](const QJsonDocument &doc, const QString &error) {
+        auto saveUrl = [=](const QJsonDocument &doc, const QString &error) {
             if (!error.isEmpty())
             {
                 for (const auto &continuation : mPendingRegionRequests[pendingKey])
@@ -185,7 +155,7 @@ namespace Evernus
             }
 
             const QUrl href = doc.object().value(urlName).toObject().value("href").toString();
-            map[regionId] = href;
+            mRegionOrdersUrls[regionId] = href;
 
             qDebug() << "Region orders url:" << href;
 
