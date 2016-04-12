@@ -55,6 +55,7 @@
 #include "StationView.h"
 #include "Repository.h"
 #include "PriceUtils.h"
+#include "UISettings.h"
 #include "PathUtils.h"
 #include "TextUtils.h"
 
@@ -621,8 +622,26 @@ namespace Evernus
         m5SampleDataTable = createSampleTable();
         sampleLayout->addWidget(m5SampleDataTable);
 
+        auto helpLayout = new QHBoxLayout{};
+        mainLayout->addLayout(helpLayout);
+
+        auto hideSamplesBtn = new QCheckBox{tr("Show sample data"), this};
+        helpLayout->addWidget(hideSamplesBtn);
+        hideSamplesBtn->setChecked(
+            settings.value(UISettings::showMarginToolSampleDataKey, UISettings::showMarginToolSampleDataDefault).toBool());
+        sampleGroup->setVisible(hideSamplesBtn->isChecked());
+        connect(hideSamplesBtn, &QCheckBox::stateChanged, this, [=](auto state) {
+            const auto show = state == Qt::Checked;
+
+            sampleGroup->setVisible(show);
+            adjustSize();
+
+            QSettings settings;
+            settings.setValue(UISettings::showMarginToolSampleDataKey, show);
+        });
+
         auto helpLabel = new QLabel{tr("If you experience problems with importing orders, adjust margin tool settings in the Preferences."), this};
-        mainLayout->addWidget(helpLabel);
+        helpLayout->addWidget(helpLabel, 1);
         helpLabel->setWordWrap(true);
 
         return tabWidget;

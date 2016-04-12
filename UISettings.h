@@ -33,6 +33,7 @@ namespace Evernus
         const auto combineTransactionsDefault = false;
         const auto columnDelimiterDefault = '\t';
         const auto applyDateFormatToGraphsDefault = false;
+        const auto showMarginToolSampleDataDefault = true;
 
         const auto autoCloseTasksKey = "ui/tasks/autoClose";
         const auto autoCopyPriceFromInfoKey = "ui/price/copyFromInfo";
@@ -57,5 +58,6 @@ namespace Evernus
         const auto combineTransactionsKey = "ui/combine/transactions";
         const auto columnDelimiterKey = "ui/global/columnDelimiter";
         const auto applyDateFormatToGraphsKey = "ui/global/applyDateTimeFormatToGraphs";
+        const auto showMarginToolSampleDataKey = "ui/marginTool/showSamples";
     }
 }
