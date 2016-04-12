@@ -57,6 +57,9 @@ namespace Evernus
 
         typename T::IdType getLastInsertId() const;
 
+    protected:
+        const size_t maxSqliteBoundVariables = 999;
+
     private:
         QSqlDatabase mDb;
 

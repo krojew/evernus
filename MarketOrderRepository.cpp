@@ -401,7 +401,7 @@ namespace Evernus
     void MarketOrderRepository::archive(const std::vector<MarketOrder::IdType> &ids) const
     {
         QStringList list;
-        for (auto i = 0u; i < ids.size(); ++i)
+        for (auto i = 0u; i < std::min(maxSqliteBoundVariables - 1, ids.size()); ++i)
             list << "?";
 
         auto query = prepare(QString{"UPDATE %1 SET "
@@ -410,18 +410,17 @@ namespace Evernus
             "delta = 0 "
             "WHERE %2 IN (%3)"}.arg(getTableName()).arg(getIdColumn()).arg(list.join(", ")));
 
-        query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
-
-        for (const auto &id : ids)
-            query.addBindValue(id);
-
-        DatabaseUtils::execQuery(query);
+        for (auto it = std::begin(ids); it < std::end(ids); std::advance(it, maxSqliteBoundVariables - 1))
+        {
+            query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
+            execBoundValueBatch(query, it, std::min(std::next(it, maxSqliteBoundVariables - 1), std::end(ids)));
+        }
     }
 
     void MarketOrderRepository::fulfill(const std::vector<MarketOrder::IdType> &ids) const
     {
         QStringList list;
-        for (auto i = 0u; i < ids.size(); ++i)
+        for (auto i = 0u; i < std::min(maxSqliteBoundVariables - 2, ids.size()); ++i)
             list << "?";
 
         auto query = prepare(QString{"UPDATE %1 SET "
@@ -432,13 +431,13 @@ namespace Evernus
             "WHERE %2 IN (%3)"
         }.arg(getTableName()).arg(getIdColumn()).arg(list.join(", ")));
 
-        query.addBindValue(QDateTime::currentDateTimeUtc());
-        query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
+        for (auto it = std::begin(ids); it < std::end(ids); std::advance(it, maxSqliteBoundVariables - 2))
+        {
+            query.addBindValue(QDateTime::currentDateTimeUtc());
+            query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
 
-        for (const auto &id : ids)
-            query.addBindValue(id);
-
-        DatabaseUtils::execQuery(query);
+            execBoundValueBatch(query, it, std::min(std::next(it, maxSqliteBoundVariables - 2), std::end(ids)));
+        }
     }
 
     void MarketOrderRepository::deleteOldEntries(const QDateTime &from) const
@@ -533,5 +532,14 @@ namespace Evernus
         query.addBindValue(entity.getLastSeen());
         query.addBindValue(entity.getCorporationId());
         query.addBindValue(entity.getNotes());
+    }
+
+    template<class It>
+    void MarketOrderRepository::execBoundValueBatch(QSqlQuery &query, It begin, It end) const
+    {
+        for (auto it = begin; it != end; ++it)
+            query.addBindValue(*it);
+
+        DatabaseUtils::execQuery(query);
     }
 }
