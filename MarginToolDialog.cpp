@@ -42,11 +42,6 @@
 #include <QFile>
 #include <QDir>
 
-#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
-// see setNewWindowFlags()
-#   include <windows.h>
-#endif
-
 #include "MarginToolSettings.h"
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
@@ -401,13 +396,6 @@ namespace Evernus
 
     void MarginToolDialog::setNewWindowFlags(bool alwaysOnTop)
     {
-#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
-        // https://bugreports.qt-project.org/browse/QTBUG-30359
-        if (alwaysOnTop)
-            SetWindowPos(reinterpret_cast<HWND>(winId()), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-        else
-            SetWindowPos(reinterpret_cast<HWND>(winId()), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-#else
         auto flags = windowFlags();
         if (alwaysOnTop)
             flags |= Qt::WindowStaysOnTopHint;
@@ -415,7 +403,6 @@ namespace Evernus
             flags &= ~Qt::WindowStaysOnTopHint;
 
         setWindowFlags(flags);
-#endif
     }
 
     QTableWidget *MarginToolDialog::createSampleTable()
