@@ -267,6 +267,9 @@ namespace Evernus
             const auto volEnteredColumn = 5;
             const auto jumpsColumn = 13;
 
+            const auto ignoreMinVolume
+                = settings.value(PriceSettings::ignoreOrdersWithMinVolumeKey, PriceSettings::ignoreOrdersWithMinVolumeDefault).toBool();
+
             std::vector<ExternalOrder> parsedOrders;
 
             while (!file.atEnd())
@@ -277,6 +280,10 @@ namespace Evernus
                 if (values.count() >= logColumns)
                 {
                     ExternalOrder order = ExternalOrder::parseLogLine(values);
+
+                    if (ignoreMinVolume && order.getMinVolume() > 1)
+                        continue;
+
                     order.setUpdateTime(priceTime);
 
                     if (typeId == EveType::invalidId)

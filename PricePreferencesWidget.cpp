@@ -68,6 +68,11 @@ namespace Evernus
         mImportLogWaitTimeEdit->setSuffix("ms");
         mImportLogWaitTimeEdit->setValue(settings.value(PriceSettings::importLogWaitTimeKey, PriceSettings::importLogWaitTimeDefault).toUInt());
 
+        mIgnoreMinVolumeOrdersBtn = new QCheckBox{tr("Ignore orders with min. volume > 1"), this};
+        marginLayout->addWidget(mIgnoreMinVolumeOrdersBtn);
+        mIgnoreMinVolumeOrdersBtn->setChecked(settings.value(
+            PriceSettings::ignoreOrdersWithMinVolumeKey, PriceSettings::ignoreOrdersWithMinVolumeDefault).toBool());
+
 #ifdef Q_OS_WIN
         mAltImportBtn = new QCheckBox{tr("Use alternative margin import method*"), this};
         marginLayout->addWidget(mAltImportBtn);
@@ -179,6 +184,7 @@ namespace Evernus
         settings.setValue(PriceSettings::priceDeltaRandomKey, mPriceDeltaRandomEdit->value());
         settings.setValue(PriceSettings::autoAddCustomItemCostKey, mAutoAddCustomCostBtn->isChecked());
         settings.setValue(PriceSettings::shareCostsKey, mShareCustomCostsBtn->isChecked());
+        settings.setValue(PriceSettings::ignoreOrdersWithMinVolumeKey, mIgnoreMinVolumeOrdersBtn->isChecked());
 #ifdef Q_OS_WIN
         settings.setValue(PriceSettings::priceAltImportKey, mAltImportBtn->isChecked());
 #endif

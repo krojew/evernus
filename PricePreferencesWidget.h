@@ -40,6 +40,7 @@ namespace Evernus
         QDoubleSpinBox *mPreferredMarginEdit = nullptr;
         QDoubleSpinBox *mPriceDeltaEdit = nullptr;
         QDoubleSpinBox *mPriceDeltaRandomEdit = nullptr;
+        QCheckBox *mIgnoreMinVolumeOrdersBtn = nullptr;
 #ifdef Q_OS_WIN
         QCheckBox *mAltImportBtn = nullptr;
 #endif
