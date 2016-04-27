@@ -202,6 +202,7 @@ namespace Evernus
 
         mBrokersFeeBtn = new QCheckBox{tr("Enable"), this};
         brokersFeeLayout->addWidget(mBrokersFeeBtn);
+        connect(mBrokersFeeBtn, &QCheckBox::stateChanged, this, &CharacterWidget::setBrokersFee);
 
         mBrokersFeeEdit = new QDoubleSpinBox{this};
         brokersFeeLayout->addWidget(mBrokersFeeEdit);
@@ -378,6 +379,7 @@ namespace Evernus
         mCorpStandingEdit->blockSignals(true);
         mFactionStandingEdit->blockSignals(true);
         mBrokersFeeBtn->blockSignals(true);
+        mBrokersFeeEdit->blockSignals(true);
         mTradeSkillEdit->blockSignals(true);
         mRetailSkillEdit->blockSignals(true);
         mWholesaleSkillEdit->blockSignals(true);
@@ -514,6 +516,7 @@ namespace Evernus
         mCorpStandingEdit->blockSignals(false);
         mFactionStandingEdit->blockSignals(false);
         mBrokersFeeBtn->blockSignals(false);
+        mBrokersFeeEdit->blockSignals(false);
         mTradeSkillEdit->blockSignals(false);
         mRetailSkillEdit->blockSignals(false);
         mWholesaleSkillEdit->blockSignals(false);
