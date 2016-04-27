@@ -208,6 +208,7 @@ namespace Evernus
         mBrokersFeeEdit->setMaximum(100.);
         mBrokersFeeEdit->setSingleStep(0.01);
         mBrokersFeeEdit->setEnabled(false);
+        mBrokersFeeEdit->setSuffix(locale().percent());
         connect(mBrokersFeeEdit, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
                 this, &CharacterWidget::setBrokersFee);
         connect(mBrokersFeeBtn, &QCheckBox::stateChanged, mBrokersFeeEdit, &QDoubleSpinBox::setEnabled);
