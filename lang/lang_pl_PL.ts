@@ -869,12 +869,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CharacterWidget.cpp" line="201"/>
         <source>Custom broker&apos;s fee:</source>
-        <translation type="unfinished"></translation>
+        <translation>Własny broker fee:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="203"/>
         <source>Enable</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="215"/>
