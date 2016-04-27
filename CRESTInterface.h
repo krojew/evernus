@@ -47,8 +47,7 @@ namespace Evernus
         explicit CRESTInterface(QObject *parent = nullptr);
         virtual ~CRESTInterface() = default;
 
-        void fetchBuyMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
-        void fetchSellMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
+        void fetchMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
         void fetchMarketHistory(uint regionId, EveType::IdType typeId, const Callback &callback) const;
 
         void setEndpoints(EndpointMap endpoints);
@@ -71,23 +70,14 @@ namespace Evernus
         mutable QNetworkAccessManager mNetworkManager;
         EndpointMap mEndpoints;
 
-        mutable RegionOrderUrlMap mRegionBuyOrdersUrls, mRegionSellOrdersUrls;
+        mutable RegionOrderUrlMap mRegionOrdersUrls;
         mutable QHash<QPair<uint, QString>, std::vector<std::function<void (const QUrl &, const QString &)>>>
         mPendingRegionRequests;
 
         mutable std::multimap<std::chrono::steady_clock::time_point, std::function<void ()>> mPendingRequests;
 
         template<class T>
-        void getRegionBuyOrdersUrl(uint regionId, T &&continuation) const;
-
-        template<class T>
-        void getRegionSellOrdersUrl(uint regionId, T &&continuation) const;
-
-        template<class T>
-        void getRegionOrdersUrl(uint regionId,
-                                const QString &urlName,
-                                RegionOrderUrlMap &map,
-                                T &&continuation) const;
+        void getRegionOrdersUrl(uint regionId, T &&continuation) const;
 
         template<class T>
         void getOrders(QUrl regionUrl, EveType::IdType typeId, T &&continuation) const;

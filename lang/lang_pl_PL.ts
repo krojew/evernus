@@ -554,12 +554,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="162"/>
+        <location filename="../CRESTInterface.cpp" line="130"/>
         <source>Missing CREST regions url!</source>
         <translation>Brak adresu regionów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="206"/>
+        <location filename="../CRESTInterface.cpp" line="176"/>
         <source>Missing CREST item types url!</source>
         <translation>Brak adresu typów w CREST!</translation>
     </message>
@@ -591,7 +591,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="222"/>
+        <location filename="../CRESTManager.cpp" line="192"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Błąd pobierania punktów wejścia CREST!</translation>
     </message>
@@ -600,7 +600,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="257"/>
+        <location filename="../CRESTManager.cpp" line="227"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
     </message>

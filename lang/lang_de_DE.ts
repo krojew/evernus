@@ -374,13 +374,13 @@
         <translation type="vanished">Leere CREST Endpunkt Karte. Bitte warten Sie, bis Endpunkte wurden geholt.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="162"/>
+        <location filename="../CRESTInterface.cpp" line="130"/>
         <source>Missing CREST regions url!</source>
         <translatorcomment>#NOTE# Not sure if it makes sense to translate &quot;regions&quot; here, as it&apos;s meant as part of an API method, not a descriptive term. Better use: &quot;Fehlende CREST Regions URL&quot;</translatorcomment>
         <translation>Fehlende CREST Regionen URL!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="206"/>
+        <location filename="../CRESTInterface.cpp" line="176"/>
         <source>Missing CREST item types url!</source>
         <translatorcomment>#NOTE# Same as with &quot;regions&quot;. I&apos;d rather go with &quot;Fehlende CREST Item Types URL&quot;</translatorcomment>
         <translation>Fehlende CREST Gegenstandsarten URL!</translation>
@@ -411,7 +411,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Das Zertifikat der EVE Loginseite enthielt Fehler: %1. Bist du sicher das du weitermachen willst (dies kann die Sicherheit deines EVE Accounts gefährden)?</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="222"/>
+        <location filename="../CRESTManager.cpp" line="192"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Fehler beim Abrufen der CREST Endpunkte!</translation>
     </message>
@@ -420,7 +420,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Leeres Refresh Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="257"/>
+        <location filename="../CRESTManager.cpp" line="227"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>CREST Endpunkt Karte ist leer. Bitte warten Sie eine Weile.</translation>
     </message>
