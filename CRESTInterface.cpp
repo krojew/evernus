@@ -37,14 +37,14 @@ namespace Evernus
 #ifdef EVERNUS_CREST_SISI
     const QString CRESTInterface::crestUrl = "https://public-crest-sisi.testeveonline.com";
 #else
-    const QString CRESTInterface::crestUrl = "https://public-crest.eveonline.com";
+    const QString CRESTInterface::crestUrl = "https://crest-tq.eveonline.com";
 #endif
 
     const QString CRESTInterface::regionsUrlName = "regions";
     const QString CRESTInterface::itemTypesUrlName = "itemTypes";
 
     RateLimiter CRESTInterface::mCRESTLimiter;
-    
+
     QTimer CRESTInterface::mRequestTimer;
 
     CRESTInterface::CRESTInterface(QObject *parent)
