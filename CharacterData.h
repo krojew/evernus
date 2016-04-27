@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <boost/optional.hpp>
+
 #include <QString>
 
 namespace Evernus
@@ -61,6 +63,7 @@ namespace Evernus
         ISKType mISK = 0;
         float mCorpStanding = 0.f;
         float mFactionStanding = 0.f;
+        boost::optional<double> mBrokersFee;
 
         OrderAmountSkills mOrderAmountSkills;
         TradeRangeSkills mTradeRangeSkills;

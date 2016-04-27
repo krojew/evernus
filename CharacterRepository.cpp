@@ -48,6 +48,9 @@ namespace Evernus
         character->setFactionStanding(record.value("faction_standing").toFloat());
         character->setEnabled(record.value("enabled").toBool());
 
+        if (!record.value("brokers_fee").isNull())
+            character->setBrokersFee(record.value("brokers_fee").toDouble());
+
         CharacterData::OrderAmountSkills orderAmountSkills;
         orderAmountSkills.mTrade = record.value("trade_skill").toInt();
         orderAmountSkills.mRetail = record.value("retail_skill").toInt();
@@ -106,7 +109,8 @@ namespace Evernus
             "margin_trading_skill TINYINT NOT NULL,"
             "contracting_skill TINYINT NOT NULL,"
             "corporation_contracting_skill TINYINT NOT NULL,"
-            "enabled TINYINT NOT NULL"
+            "enabled TINYINT NOT NULL,"
+            "brokers_fee FLOAT NULL"
         ")"}.arg(getTableName()).arg(keyRepository.getTableName()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(key_id)"}.arg(getTableName()).arg(keyRepository.getTableName()));
@@ -131,6 +135,17 @@ namespace Evernus
             .arg(type)
             .arg(getIdColumn()));
         query.bindValue(0, value);
+        query.bindValue(1, id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
+    void CharacterRepository::updateBrokersFee(Character::IdType id, const boost::optional<double> &value) const
+    {
+        auto query = prepare(QString{"UPDATE %1 SET brokers_fee = ? WHERE %2 = ?"}
+            .arg(getTableName())
+            .arg(getIdColumn()));
+        query.bindValue(0, (value) ? (*value) : (QVariant{QVariant::Double}));
         query.bindValue(1, id);
 
         DatabaseUtils::execQuery(query);
@@ -235,7 +250,8 @@ namespace Evernus
             << "margin_trading_skill"
             << "contracting_skill"
             << "corporation_contracting_skill"
-            << "enabled";
+            << "enabled"
+            << "brokers_fee";
     }
 
     void CharacterRepository::bindValues(const Character &entity, QSqlQuery &query) const
@@ -275,6 +291,7 @@ namespace Evernus
         query.bindValue(":contracting_skill", contractSkills.mContracting);
         query.bindValue(":corporation_contracting_skill", contractSkills.mCorporationContracting);
         query.bindValue(":enabled", entity.isEnabled());
+        query.bindValue(":brokers_fee", (entity.getBrokersFee()) ? (*entity.getBrokersFee()) : (QVariant{QVariant::Double}));
     }
 
     void CharacterRepository::bindPositionalValues(const Character &entity, QSqlQuery &query) const
@@ -314,5 +331,6 @@ namespace Evernus
         query.addBindValue(contractSkills.mContracting);
         query.addBindValue(contractSkills.mCorporationContracting);
         query.addBindValue(entity.isEnabled());
+        query.addBindValue((entity.getBrokersFee()) ? (*entity.getBrokersFee()) : (QVariant{QVariant::Double}));
     }
 }

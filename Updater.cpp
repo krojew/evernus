@@ -238,36 +238,41 @@ namespace Evernus
                         migrateDatabaseTo05(cacheTimerRepo, characterRepo, characterOrderRepo, corporationOrderRepo);
                 }
 
-                if (minorVersion < 27)
+                if (minorVersion < 41)
                 {
-                    if (minorVersion < 23)
+                    if (minorVersion < 27)
                     {
-                        if (minorVersion < 16)
+                        if (minorVersion < 23)
                         {
-                            if (minorVersion < 11)
+                            if (minorVersion < 16)
                             {
-                                if (minorVersion < 9)
+                                if (minorVersion < 11)
                                 {
-                                    if (minorVersion < 8)
-                                        migrateDatabaseTo18(externalOrderRepo);
+                                    if (minorVersion < 9)
+                                    {
+                                        if (minorVersion < 8)
+                                            migrateDatabaseTo18(externalOrderRepo);
 
-                                    migrateDatabaseTo19(characterRepo,
-                                                walletJournalRepo,
-                                                corpWalletJournalRepo,
-                                                walletTransactionRepo,
-                                                corpWalletTransactionRepo);
+                                        migrateDatabaseTo19(characterRepo,
+                                                            walletJournalRepo,
+                                                            corpWalletJournalRepo,
+                                                            walletTransactionRepo,
+                                                            corpWalletTransactionRepo);
+                                    }
+
+                                    migrateDatabaseTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
                                 }
 
-                                migrateDatabaseTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
+                                migrateDatabaseTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
                             }
 
-                            migrateDatabaseTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
+                            migrateDatabaseTo123(externalOrderRepo, itemRepo);
                         }
 
-                        migrateDatabaseTo123(externalOrderRepo, itemRepo);
+                        migrateDatabaseTo127(characterOrderRepo, corporationOrderRepo);
                     }
 
-                    migrateDatabaseTo127(characterOrderRepo, corporationOrderRepo);
+                    migrateDatabaseTo141(characterRepo);
                 }
             }
 
@@ -409,6 +414,11 @@ namespace Evernus
         const QString sql = "ALTER TABLE %1 ADD COLUMN notes TEXT NULL DEFAULT NULL";
         characterOrderRepo.exec(sql.arg(characterOrderRepo.getTableName()));
         corporationOrderRepo.exec(sql.arg(corporationOrderRepo.getTableName()));
+    }
+
+    void Updater::migrateDatabaseTo141(const Repository<Character> &characterRepo) const
+    {
+        characterRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN brokers_fee FLOAT NULL DEFAULT NULL"}.arg(characterRepo.getTableName()));
     }
 
     void Updater::migrateCoreTo130() const

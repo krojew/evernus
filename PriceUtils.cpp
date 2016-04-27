@@ -28,10 +28,11 @@ namespace Evernus
     {
         Taxes calculateTaxes(const Character &character)
         {
+            const auto customBrokersFee = character.getBrokersFee();
             const auto feeSkills = character.getFeeSkills();
-            const auto brokerFee = (0.01 - 0.0005 * feeSkills.mBrokerRelations) /
-                                   std::exp(0.1 * character.getFactionStanding() + 0.04 * character.getCorpStanding());
-            const auto salesTax = 0.015 * (1. - feeSkills.mAccounting * 0.1);
+            const auto brokerFee = (customBrokersFee) ? (*customBrokersFee) : (0.03 - (feeSkills.mBrokerRelations * 0.001 +
+                0.0003 * character.getFactionStanding() + 0.0002 * character.getCorpStanding()));
+            const auto salesTax = 0.02 - feeSkills.mAccounting * 0.002;
 
             return Taxes{brokerFee, salesTax};
         }

@@ -22,6 +22,7 @@
 class QDoubleSpinBox;
 class QListWidget;
 class QGroupBox;
+class QCheckBox;
 class QSpinBox;
 class QLabel;
 
@@ -56,6 +57,7 @@ namespace Evernus
     private slots:
         void setCorpStanding(double value);
         void setFactionStanding(double value);
+        void setBrokersFee();
 
         void setSkillLevel(int level);
 
@@ -90,6 +92,9 @@ namespace Evernus
 
         QDoubleSpinBox *mCorpStandingEdit = nullptr;
         QDoubleSpinBox *mFactionStandingEdit = nullptr;
+
+        QCheckBox *mBrokersFeeBtn = nullptr;
+        QDoubleSpinBox *mBrokersFeeEdit = nullptr;
 
         QSpinBox *mTradeSkillEdit = nullptr;
         QSpinBox *mRetailSkillEdit = nullptr;

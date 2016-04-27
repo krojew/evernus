@@ -22,6 +22,7 @@
 #include <QMessageBox>
 #include <QListWidget>
 #include <QSettings>
+#include <QCheckBox>
 #include <QGroupBox>
 #include <QSpinBox>
 #include <QAction>
@@ -185,14 +186,31 @@ namespace Evernus
         mCorpStandingEdit->setMinimum(-10.0);
         mCorpStandingEdit->setMaximum(10.0);
         mCorpStandingEdit->setSingleStep(0.01);
-        connect(mCorpStandingEdit, SIGNAL(valueChanged(double)), SLOT(setCorpStanding(double)));
+        connect(mCorpStandingEdit, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                this, &CharacterWidget::setCorpStanding);
 
         mFactionStandingEdit = new QDoubleSpinBox{this};
         standingsLayout->addRow(tr("Faction standing:"), mFactionStandingEdit);
         mFactionStandingEdit->setMinimum(-10.0);
         mFactionStandingEdit->setMaximum(10.0);
         mFactionStandingEdit->setSingleStep(0.01);
-        connect(mFactionStandingEdit, SIGNAL(valueChanged(double)), SLOT(setFactionStanding(double)));
+        connect(mFactionStandingEdit, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                this, &CharacterWidget::setFactionStanding);
+
+        auto brokersFeeLayout = new QHBoxLayout{};
+        standingsLayout->addRow(tr("Custom broker's fee:"), brokersFeeLayout);
+
+        mBrokersFeeBtn = new QCheckBox{tr("Enable"), this};
+        brokersFeeLayout->addWidget(mBrokersFeeBtn);
+
+        mBrokersFeeEdit = new QDoubleSpinBox{this};
+        brokersFeeLayout->addWidget(mBrokersFeeEdit);
+        mBrokersFeeEdit->setMaximum(100.);
+        mBrokersFeeEdit->setSingleStep(0.01);
+        mBrokersFeeEdit->setEnabled(false);
+        connect(mBrokersFeeEdit, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                this, &CharacterWidget::setBrokersFee);
+        connect(mBrokersFeeBtn, &QCheckBox::stateChanged, mBrokersFeeEdit, &QDoubleSpinBox::setEnabled);
 
         auto skillsGroup = new QGroupBox{tr("Trade skills"), this};
         mainLayout->addWidget(skillsGroup);
@@ -333,6 +351,15 @@ namespace Evernus
         updateStanding("faction_standing", value);
     }
 
+    void CharacterWidget::setBrokersFee()
+    {
+        const auto id = getCharacterId();
+        Q_ASSERT(id != Character::invalidId);
+
+        mCharacterRepository.updateBrokersFee(id,
+            (mBrokersFeeBtn->isChecked()) ? (mBrokersFeeEdit->value()) : (boost::optional<double>{}));
+    }
+
     void CharacterWidget::setSkillLevel(int level)
     {
         const auto id = getCharacterId();
@@ -349,6 +376,7 @@ namespace Evernus
 
         mCorpStandingEdit->blockSignals(true);
         mFactionStandingEdit->blockSignals(true);
+        mBrokersFeeBtn->blockSignals(true);
         mTradeSkillEdit->blockSignals(true);
         mRetailSkillEdit->blockSignals(true);
         mWholesaleSkillEdit->blockSignals(true);
@@ -384,6 +412,10 @@ namespace Evernus
 
             mCorpStandingEdit->setValue(0.);
             mFactionStandingEdit->setValue(0.);
+
+            mBrokersFeeBtn->setChecked(false);
+            mBrokersFeeEdit->setValue(0.);
+            mBrokersFeeEdit->setEnabled(false);
 
             mTradeSkillEdit->setValue(0);
             mRetailSkillEdit->setValue(0);
@@ -426,6 +458,21 @@ namespace Evernus
                 mCorpStandingEdit->setValue(character->getCorpStanding());
                 mFactionStandingEdit->setValue(character->getFactionStanding());
 
+                const auto brokersFee = character->getBrokersFee();
+
+                if (brokersFee)
+                {
+                    mBrokersFeeBtn->setChecked(true);
+                    mBrokersFeeEdit->setValue(*brokersFee);
+                    mBrokersFeeEdit->setEnabled(true);
+                }
+                else
+                {
+                    mBrokersFeeBtn->setChecked(false);
+                    mBrokersFeeEdit->setValue(0.);
+                    mBrokersFeeEdit->setEnabled(false);
+                }
+
                 mTradeSkillEdit->setValue(orderAmountSkills.mTrade);
                 mRetailSkillEdit->setValue(orderAmountSkills.mRetail);
                 mWholesaleSkillEdit->setValue(orderAmountSkills.mWholesale);
@@ -465,6 +512,7 @@ namespace Evernus
 
         mCorpStandingEdit->blockSignals(false);
         mFactionStandingEdit->blockSignals(false);
+        mBrokersFeeBtn->blockSignals(false);
         mTradeSkillEdit->blockSignals(false);
         mRetailSkillEdit->blockSignals(false);
         mWholesaleSkillEdit->blockSignals(false);
