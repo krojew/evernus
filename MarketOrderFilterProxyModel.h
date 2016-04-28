@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <QScriptEngine>
+#include <QJSEngine>
 
 #include "LeafFilterProxyModel.h"
 
@@ -73,7 +73,6 @@ namespace Evernus
 
         void setTextFilter(const QString &text, bool script);
 
-    private slots:
         void unscheduleScriptError();
 
     protected:
@@ -86,10 +85,12 @@ namespace Evernus
         StatusFilters mStatusFilter = defaultStatusFilter;
         PriceStatusFilters mPriceStatusFilter = defaultPriceStatusFilter;
 
-        mutable QScriptEngine mEngine;
-        mutable QScriptValue mFilterFunction;
+        mutable QJSEngine mEngine;
+        mutable QJSValue mFilterFunction;
 
         mutable bool mScriptErrorScheduled = false;
+
+        mutable QStringList mExceptions;
 
         bool acceptsStatus(const MarketOrder &order) const;
         bool acceptsPriceStatus(const MarketOrder &order) const;

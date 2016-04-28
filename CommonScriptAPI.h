@@ -14,7 +14,7 @@
  */
 #pragma once
 
-class QScriptEngine;
+class QJSEngine;
 
 namespace Evernus
 {
@@ -22,6 +22,6 @@ namespace Evernus
 
     namespace CommonScriptAPI
     {
-        void insertAPI(QScriptEngine &engine, const EveDataProvider &dataProvider);
+        void insertAPI(QJSEngine &engine, const EveDataProvider &dataProvider);
     }
 }

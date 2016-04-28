@@ -14,7 +14,7 @@ find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
-find_package(Qt5Script REQUIRED)
+find_package(Qt5Qml REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
@@ -134,6 +134,7 @@ qt5_wrap_cpp(
     ItemHistoryWidget.h
     ItemNameModel.h
     ItemTypeSelectDialog.h
+    JSEveDataProvider.h
     KeyEditDialog.h
     LanguageSelectDialog.h
     LMeveAPIInterface.h
@@ -470,6 +471,8 @@ add_executable(
     ItemRepository.h
     ItemTypeSelectDialog.cpp
     ItemTypeSelectDialog.h
+    JSEveDataProvider.cpp
+    JSEveDataProvider.h
     Key.cpp
     Key.h
     KeyEditDialog.cpp
@@ -810,7 +813,7 @@ target_link_libraries(
     Qt5::Multimedia
     Qt5::Network
     Qt5::PrintSupport
-    Qt5::Script
+    Qt5::Qml
     Qt5::Sql
     Qt5::Xml
     Qt5::XmlPatterns

@@ -12,19 +12,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QJSEngine>
+#include "EveDataProvider.h"
 
 #include "JSEveDataProvider.h"
 
-#include "CommonScriptAPI.h"
-
 namespace Evernus
 {
-    namespace CommonScriptAPI
+    JSEveDataProvider::JSEveDataProvider(const EveDataProvider &provider, QObject *parent)
+        : QObject{parent}
+        , mProvider{provider}
     {
-        void insertAPI(QJSEngine &engine, const EveDataProvider &dataProvider)
-        {
-            engine.globalObject().setProperty("EveDataProvider", engine.newQObject(new JSEveDataProvider{dataProvider, &engine}));
-        }
+    }
+
+    QString JSEveDataProvider::getTypeName(quint32 id) const
+    {
+        return mProvider.getTypeName(id);
+    }
+
+    QString JSEveDataProvider::getLocationName(quint64 id) const
+    {
+        return mProvider.getLocationName(id);
     }
 }

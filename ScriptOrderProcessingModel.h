@@ -18,10 +18,6 @@
 
 #include "MarketOrderRepository.h"
 
-class QScriptContext;
-class QScriptEngine;
-class QScriptValue;
-
 namespace Evernus
 {
     class EveDataProvider;

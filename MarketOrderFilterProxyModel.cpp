@@ -79,27 +79,26 @@ namespace Evernus
     {
         if (script)
         {
-            mEngine.clearExceptions();
             mFilterFunction = mEngine.evaluate("(function process(order) {\nreturn " + text + ";\n})");
 
-            if (mEngine.hasUncaughtException())
-                emit scriptError(mEngine.uncaughtException().toString());
+            if (mFilterFunction.isError())
+                emit scriptError(mFilterFunction.toString());
 
             setFilterWildcard(QString{});
         }
         else
         {
-            mFilterFunction = QScriptValue{};
+            mFilterFunction = QJSValue{};
             setFilterWildcard(text);
         }
     }
 
     void MarketOrderFilterProxyModel::unscheduleScriptError()
     {
-        const auto error = mEngine.uncaughtException().toString();
+        const auto error = mExceptions.join('\n');
 
         mScriptErrorScheduled = false;
-        mEngine.clearExceptions();
+        mExceptions.clear();
 
         emit scriptError(error);
     }
@@ -203,7 +202,7 @@ namespace Evernus
 
     bool MarketOrderFilterProxyModel::acceptsByScript(const MarketOrder &order) const
     {
-        if (!mFilterFunction.isValid())
+        if (!mFilterFunction.isCallable())
             return true;
 
         auto scriptOrder = ScriptUtils::wrapMarketOrder(mEngine, order);
@@ -240,14 +239,15 @@ namespace Evernus
             scriptOrder.setProperty("overbid", overbidObj);
         }
 
-        auto result = mFilterFunction.call(QScriptValue{}, QScriptValueList{} << scriptOrder).toBool();
+        const auto result = mFilterFunction.call(QJSValueList{} << scriptOrder);
 
-        if (mEngine.hasUncaughtException() && !mScriptErrorScheduled)
+        if (result.isError() && !mScriptErrorScheduled)
         {
+            mExceptions << result.toString();
             mScriptErrorScheduled = true;
             QTimer::singleShot(0, this, SLOT(unscheduleScriptError()));
         }
 
-        return result;
+        return result.toBool();
     }
 }

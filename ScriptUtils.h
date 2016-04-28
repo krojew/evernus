@@ -14,8 +14,8 @@
  */
 #pragma once
 
-class QScriptEngine;
-class QScriptValue;
+class QJSEngine;
+class QJSValue;
 
 namespace Evernus
 {
@@ -24,7 +24,7 @@ namespace Evernus
 
     namespace ScriptUtils
     {
-        QScriptValue wrapMarketOrder(QScriptEngine &engine, const MarketOrder &order);
-        QScriptValue wrapExternalOrder(QScriptEngine &engine, const ExternalOrder &order);
+        QJSValue wrapMarketOrder(QJSEngine &engine, const MarketOrder &order);
+        QJSValue wrapExternalOrder(QJSEngine &engine, const ExternalOrder &order);
     }
 }

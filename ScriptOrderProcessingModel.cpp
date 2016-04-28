@@ -12,7 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QScriptEngine>
+#include <QJSEngine>
 
 #include "CommonScriptAPI.h"
 #include "EveDataProvider.h"
@@ -66,44 +66,45 @@ namespace Evernus
         mMaxColumns = 0;
         mData.clear();
 
-        QScriptEngine engine;
+        QJSEngine engine;
         CommonScriptAPI::insertAPI(engine, mDataProvider);
 
         if (mode == Mode::ForEach)
         {
             auto processFunction = engine.evaluate("(function process(order) {\n" + script + "\n})");
-            if (engine.hasUncaughtException())
+            if (processFunction.isError())
             {
                 endResetModel();
-                emit error(engine.uncaughtException().toString());
+                emit error(processFunction.toString());
                 return;
             }
 
             for (const auto &order : orders)
             {
                 const auto value
-                    = processFunction.call(QScriptValue{}, QScriptValueList{} << ScriptUtils::wrapMarketOrder(engine, *order)).toVariant().toList();
-                if (engine.hasUncaughtException())
+                    = processFunction.call(QJSValueList{} << ScriptUtils::wrapMarketOrder(engine, *order));
+                if (value.isError())
                 {
                     endResetModel();
-                    emit error(engine.uncaughtException().toString());
+                    emit error(value.toString());
                     return;
                 }
 
-                const auto size = value.size();
+                auto array = value.toVariant().toList();
+                const auto size = array.size();
                 if (size > mMaxColumns)
                     mMaxColumns = size;
 
-                mData.emplace_back(value);
+                mData.emplace_back(std::move(array));
             }
         }
         else
         {
             auto processFunction = engine.evaluate("(function process(orders) {\n" + script + "\n})");
-            if (engine.hasUncaughtException())
+            if (processFunction.isError())
             {
                 endResetModel();
-                emit error(engine.uncaughtException().toString());
+                emit error(processFunction.toString());
                 return;
             }
 
@@ -111,16 +112,18 @@ namespace Evernus
             for (auto i = 0u; i < orders.size(); ++i)
                 arguments.setProperty(i, ScriptUtils::wrapMarketOrder(engine, *orders[i]));
 
-            const auto value = processFunction.call(QScriptValue{}, QScriptValueList{} << arguments).toVariant().toList();
-            if (engine.hasUncaughtException())
+            const auto value = processFunction.call(QJSValueList{} << arguments);
+            if (value.isError())
             {
                 endResetModel();
-                emit error(engine.uncaughtException().toString());
+                emit error(value.toString());
                 return;
             }
 
-            mMaxColumns = value.size();
-            mData.emplace_back(value);
+            auto array = value.toVariant().toList();
+
+            mMaxColumns = array.size();
+            mData.emplace_back(std::move(array));
         }
 
         endResetModel();

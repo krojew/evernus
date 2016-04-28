@@ -12,7 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QScriptEngine>
+#include <QJSEngine>
 
 #include "ExternalOrder.h"
 #include "MarketOrder.h"
@@ -23,7 +23,7 @@ namespace Evernus
 {
     namespace ScriptUtils
     {
-        QScriptValue wrapMarketOrder(QScriptEngine &engine, const MarketOrder &order)
+        QJSValue wrapMarketOrder(QJSEngine &engine, const MarketOrder &order)
         {
             auto orderObject = engine.newObject();
             orderObject.setProperty("id", QString::number(order.getId()));
@@ -41,15 +41,15 @@ namespace Evernus
             orderObject.setProperty("escrow", order.getEscrow());
             orderObject.setProperty("price", order.getPrice());
             orderObject.setProperty("type", static_cast<int>(order.getType()));
-            orderObject.setProperty("issued", engine.newDate(order.getIssued()));
-            orderObject.setProperty("firstSeen", engine.newDate(order.getFirstSeen()));
-            orderObject.setProperty("lastSeen", engine.newDate(order.getLastSeen()));
+            orderObject.setProperty("issued", engine.toScriptValue(order.getIssued()));
+            orderObject.setProperty("firstSeen", engine.toScriptValue(order.getFirstSeen()));
+            orderObject.setProperty("lastSeen", engine.toScriptValue(order.getLastSeen()));
             orderObject.setProperty("corporationId", QString::number(order.getCorporationId()));
 
             return orderObject;
         }
 
-        QScriptValue wrapExternalOrder(QScriptEngine &engine, const ExternalOrder &order)
+        QJSValue wrapExternalOrder(QJSEngine &engine, const ExternalOrder &order)
         {
             auto orderObject = engine.newObject();
             orderObject.setProperty("id", QString::number(order.getId()));
@@ -59,13 +59,13 @@ namespace Evernus
             orderObject.setProperty("solarSystemId", order.getSolarSystemId());
             orderObject.setProperty("regionId", order.getRegionId());
             orderObject.setProperty("range", order.getRange());
-            orderObject.setProperty("updateTime", engine.newDate(order.getUpdateTime()));
+            orderObject.setProperty("updateTime", engine.toScriptValue(order.getUpdateTime()));
             orderObject.setProperty("price", order.getPrice());
             orderObject.setProperty("volumeEntered", order.getVolumeEntered());
             orderObject.setProperty("volumeRemaining", order.getVolumeRemaining());
             orderObject.setProperty("minVolume", order.getMinVolume());
-            orderObject.setProperty("issued", engine.newDate(order.getIssued()));
-            orderObject.setProperty("duration", engine.newDate(order.getDuration()));
+            orderObject.setProperty("issued", engine.toScriptValue(order.getIssued()));
+            orderObject.setProperty("duration", engine.toScriptValue(order.getDuration()));
 
             return orderObject;
         }
