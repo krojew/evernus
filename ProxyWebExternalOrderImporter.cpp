@@ -21,12 +21,14 @@ namespace Evernus
     ProxyWebExternalOrderImporter::ProxyWebExternalOrderImporter(const EveDataProvider &dataProvider,
                                                                  QObject *parent)
         : ExternalOrderImporter{parent}
-        , mCRESTImporter{std::make_unique<CRESTExternalOrderImporter>(dataProvider, parent)}
+        , mCRESTIndividualImporter{std::make_unique<CRESTIndividualExternalOrderImporter>(dataProvider, parent)}
+        , mCRESTWholeImporter{std::make_unique<CRESTWholeExternalOrderImporter>(dataProvider, parent)}
         , mEveCentralImporter{std::make_unique<EveCentralExternalOrderImporter>(dataProvider, parent)}
     {
         setCurrentImporter();
 
-        connectImporter(*mCRESTImporter);
+        connectImporter(*mCRESTIndividualImporter);
+        connectImporter(*mCRESTWholeImporter);
         connectImporter(*mEveCentralImporter);
     }
 
@@ -34,15 +36,18 @@ namespace Evernus
     {
         if (mCurrentImporter == ImportSettings::WebImporterType::EveCentral)
             mEveCentralImporter->fetchExternalOrders(target);
+        else if (mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Individual)
+            mCRESTIndividualImporter->fetchExternalOrders(target);
         else
-            mCRESTImporter->fetchExternalOrders(target);
+            mCRESTWholeImporter->fetchExternalOrders(target);
     }
 
     void ProxyWebExternalOrderImporter::handleNewPreferences()
     {
         setCurrentImporter();
 
-        mCRESTImporter->handleNewPreferences();
+        mCRESTIndividualImporter->handleNewPreferences();
+        mCRESTWholeImporter->handleNewPreferences();
     }
 
     template<class T>
@@ -59,8 +64,12 @@ namespace Evernus
     void ProxyWebExternalOrderImporter::setCurrentImporter()
     {
         QSettings settings;
+
         mCurrentImporter
             = static_cast<ImportSettings::WebImporterType>(
                 settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
+        mCurrentOrderImportType
+            = static_cast<ImportSettings::MarketOrderImportType>(
+                settings.value(ImportSettings::marketOrderImportTypeKey, static_cast<int>(ImportSettings::marketOrderImportTypeDefault)).toInt());
     }
 }

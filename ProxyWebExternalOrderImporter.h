@@ -14,8 +14,9 @@
  */
 #pragma once
 
+#include "CRESTIndividualExternalOrderImporter.h"
+#include "CRESTWholeExternalOrderImporter.h"
 #include "EveCentralExternalOrderImporter.h"
-#include "CRESTExternalOrderImporter.h"
 #include "ImportSettings.h"
 
 namespace Evernus
@@ -38,10 +39,12 @@ namespace Evernus
         void handleNewPreferences();
 
     private:
-        std::unique_ptr<CRESTExternalOrderImporter> mCRESTImporter;
+        std::unique_ptr<CRESTIndividualExternalOrderImporter> mCRESTIndividualImporter;
+        std::unique_ptr<CRESTWholeExternalOrderImporter> mCRESTWholeImporter;
         std::unique_ptr<EveCentralExternalOrderImporter> mEveCentralImporter;
 
-        ImportSettings::WebImporterType mCurrentImporter = ImportSettings::WebImporterType::EveCentral;
+        ImportSettings::WebImporterType mCurrentImporter = ImportSettings::webImportTypeDefault;
+        ImportSettings::MarketOrderImportType mCurrentOrderImportType = ImportSettings::marketOrderImportTypeDefault;
 
         template<class T>
         void connectImporter(T &importer);

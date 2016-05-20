@@ -538,9 +538,16 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="77"/>
         <source>CREST import: waiting for %1 server replies</source>
-        <translation>Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
+        <translation type="vanished">Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::CRESTIndividualExternalOrderImporter</name>
+    <message>
+        <location filename="../CRESTIndividualExternalOrderImporter.cpp" line="78"/>
+        <source>CREST import: waiting for %1 server replies</source>
+        <translation type="unfinished">Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
     </message>
 </context>
 <context>
@@ -554,12 +561,13 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="130"/>
+        <location filename="../CRESTInterface.cpp" line="161"/>
+        <location filename="../CRESTInterface.cpp" line="213"/>
         <source>Missing CREST regions url!</source>
         <translation>Brak adresu regionów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="176"/>
+        <location filename="../CRESTInterface.cpp" line="226"/>
         <source>Missing CREST item types url!</source>
         <translation>Brak adresu typów w CREST!</translation>
     </message>
@@ -591,7 +599,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="192"/>
+        <location filename="../CRESTManager.cpp" line="179"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Błąd pobierania punktów wejścia CREST!</translation>
     </message>
@@ -600,7 +608,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="227"/>
+        <location filename="../CRESTManager.cpp" line="252"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
     </message>
@@ -632,6 +640,14 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <location filename="../CRESTMessageBox.cpp" line="26"/>
         <source>Don&apos;t show again</source>
         <translation>Nie pokazuj ponownie</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::CRESTWholeExternalOrderImporter</name>
+    <message>
+        <location filename="../CRESTWholeExternalOrderImporter.cpp" line="84"/>
+        <source>CREST import: waiting for %1 server replies</source>
+        <translation type="unfinished">Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
     </message>
 </context>
 <context>
@@ -2884,6 +2900,21 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
         <source>CREST</source>
         <translation>CREST</translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="67"/>
+        <source>Market order import type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="72"/>
+        <source>Individual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="73"/>
+        <source>Whole</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File</source>

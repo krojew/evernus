@@ -26,15 +26,15 @@ namespace Evernus
 {
     class EveDataProvider;
 
-    class CRESTExternalOrderImporter
+    class CRESTIndividualExternalOrderImporter
         : public ExternalOrderImporter
     {
         Q_OBJECT
 
     public:
-        CRESTExternalOrderImporter(const EveDataProvider &dataProvider,
-                                   QObject *parent = nullptr);
-        virtual ~CRESTExternalOrderImporter() = default;
+        explicit CRESTIndividualExternalOrderImporter(const EveDataProvider &dataProvider,
+                                                      QObject *parent = nullptr);
+        virtual ~CRESTIndividualExternalOrderImporter() = default;
 
         virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
 
