@@ -94,6 +94,12 @@ namespace Evernus
 
             auto continuatingCallback = [=](auto &&document, const auto &error) {
                 JsonCallback worker = [&](auto &&document, const auto &error) {
+                    if (!error.isEmpty())
+                    {
+                        callback(QJsonDocument{}, true, error);
+                        return;
+                    }
+
                     const auto object = document.object();
                     const auto next = object["next"].toObject()["href"].toString();
 

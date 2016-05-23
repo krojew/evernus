@@ -52,10 +52,11 @@ namespace Evernus
             const auto regionId = mDataProvider.getStationRegionId(pair.second);
             if (regionId != 0)
             {
-                mCounter.incCount();
                 regions.insert(mDataProvider.getStationRegionId(pair.second));
             }
         }
+
+        mCounter.setCount(regions.size());
 
         for (const auto region : regions)
         {
@@ -89,7 +90,7 @@ namespace Evernus
         {
             mAggregatedErrors << errorText;
 
-            if (atEnd)
+            if (mCounter.isEmpty() && !mPreparingRequests)
             {
                 mResult.clear();
                 emit error(mAggregatedErrors.join("\n"));
