@@ -206,12 +206,6 @@ namespace Evernus
                 else
                     continuation(QJsonDocument::fromJson(reply->readAll()), QString{});
             });
-            connect(reply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), this, [=] {
-                reply->deleteLater();
-                reply->blockSignals(true);
-
-                continuation(QJsonDocument{}, reply->errorString());
-            });
         };
 
         const auto wait = std::chrono::duration_cast<std::chrono::milliseconds>(mCRESTLimiter.acquire());
