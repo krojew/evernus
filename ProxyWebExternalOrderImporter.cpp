@@ -34,12 +34,21 @@ namespace Evernus
 
     void ProxyWebExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
     {
+        const auto requestCountThreshold = 30u; // page count for Jita market; assuming targets are mostly in 1 station
+
         if (mCurrentImporter == ImportSettings::WebImporterType::EveCentral)
+        {
             mEveCentralImporter->fetchExternalOrders(target);
-        else if (mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Individual)
+        }
+        else if ((mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Individual) ||
+                 (mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Auto && target.size() < requestCountThreshold))
+        {
             mCRESTIndividualImporter->fetchExternalOrders(target);
+        }
         else
+        {
             mCRESTWholeImporter->fetchExternalOrders(target);
+        }
     }
 
     void ProxyWebExternalOrderImporter::handleNewPreferences()

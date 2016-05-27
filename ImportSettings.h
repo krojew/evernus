@@ -47,6 +47,7 @@ namespace Evernus
 
         enum class MarketOrderImportType
         {
+            Auto,
             Individual,
             Whole
         };
@@ -72,7 +73,7 @@ namespace Evernus
         const auto importAllCharactersDefault = true;
         const auto corpWalletDivisionDefault = 1000;
         const auto webImportTypeDefault = WebImporterType::CREST;
-        const auto marketOrderImportTypeDefault = MarketOrderImportType::Whole;
+        const auto marketOrderImportTypeDefault = MarketOrderImportType::Auto;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 

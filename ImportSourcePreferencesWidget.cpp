@@ -69,6 +69,7 @@ namespace Evernus
         const auto marketOrderImportType = static_cast<ImportSettings::MarketOrderImportType>(
             settings.value(ImportSettings::marketOrderImportTypeKey, static_cast<int>(ImportSettings::marketOrderImportTypeDefault)).toInt());
 
+        addSourceItem(*mMarketOrderImportTypeCombo, tr("Auto"), ImportSettings::MarketOrderImportType::Auto, marketOrderImportType);
         addSourceItem(*mMarketOrderImportTypeCombo, tr("Individual"), ImportSettings::MarketOrderImportType::Individual, marketOrderImportType);
         addSourceItem(*mMarketOrderImportTypeCombo, tr("Whole"), ImportSettings::MarketOrderImportType::Whole, marketOrderImportType);
 

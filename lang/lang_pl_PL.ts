@@ -2423,11 +2423,16 @@
     </message>
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="72"/>
-        <source>Individual</source>
+        <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="73"/>
+        <source>Individual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="74"/>
         <source>Whole</source>
         <translation type="unfinished"></translation>
     </message>
