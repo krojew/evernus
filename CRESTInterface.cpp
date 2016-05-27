@@ -92,27 +92,7 @@ namespace Evernus
                 return;
             }
 
-            auto continuatingCallback = [=](auto &&document, const auto &error) {
-                JsonCallback worker = [&](auto &&document, const auto &error) {
-                    if (!error.isEmpty())
-                    {
-                        callback(QJsonDocument{}, true, error);
-                        return;
-                    }
-
-                    const auto object = document.object();
-                    const auto next = object["next"].toObject()["href"].toString();
-
-                    callback(std::move(document), next.isEmpty(), QString{});
-
-                    if (!next.isEmpty())
-                        getOrders(url, worker);
-                };
-
-                worker(std::move(document), error);
-            };
-
-            getOrders(url, continuatingCallback);
+            fetchPaginatedOrders(callback, url);
         };
 
         getRegionMarketUrl(regionId, marketFetcher);
@@ -242,6 +222,27 @@ namespace Evernus
     void CRESTInterface::getOrders(QUrl regionUrl, T &&continuation) const
     {
         asyncGet(regionUrl, "application/vnd.ccp.eve.MarketOrderCollectionSlim-v1+json", std::forward<T>(continuation));
+    }
+
+    void CRESTInterface::fetchPaginatedOrders(const PaginatedCallback &callback, const QUrl &url) const
+    {
+        auto continuatingCallback = [=](auto &&document, const auto &error) {
+            if (!error.isEmpty())
+            {
+                callback(QJsonDocument{}, true, error);
+                return;
+            }
+
+            const auto object = document.object();
+            const auto next = object["next"].toObject()["href"].toString();
+
+            callback(std::move(document), next.isEmpty(), QString{});
+
+            if (!next.isEmpty())
+                fetchPaginatedOrders(callback, next);
+        };
+
+        getOrders(url, continuatingCallback);
     }
 
     template<class T>

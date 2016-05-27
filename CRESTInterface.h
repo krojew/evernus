@@ -92,6 +92,8 @@ namespace Evernus
         template<class T>
         void getOrders(QUrl regionUrl, T &&continuation) const;
 
+        void fetchPaginatedOrders(const PaginatedCallback &callback, const QUrl &url) const;
+
         template<class T>
         void asyncGet(const QUrl &url, const QByteArray &accept, T &&continuation) const;
 
