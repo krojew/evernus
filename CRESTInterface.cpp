@@ -162,13 +162,29 @@ namespace Evernus
             return;
         }
 
+        getRegionUrl(regionId, "marketOrders", std::forward<T>(continuation));
+    }
+
+    template<class T>
+    void CRESTInterface::getRegionMarketUrl(uint regionId, T &&continuation) const
+    {
+        if (mRegionMarketUrls.contains(regionId))
+        {
+            continuation(mRegionMarketUrls[regionId], QString{});
+            return;
+        }
+
+        getRegionUrl(regionId, "marketOrdersAll", std::forward<T>(continuation));
+    }
+
+    template<class T>
+    void CRESTInterface::getRegionUrl(uint regionId, const QString &urlName, T &&continuation) const
+    {
         if (!mEndpoints.contains(regionsUrlName))
         {
             continuation(QUrl{}, tr("Missing CREST regions url!"));
             return;
         }
-
-        const QString urlName = "marketOrders";
 
         const auto pendingKey = qMakePair(regionId, urlName);
         if (mPendingRegionRequests.contains(pendingKey))
@@ -203,25 +219,6 @@ namespace Evernus
         };
 
         asyncGet(QString{"%1%2/"}.arg(mEndpoints[regionsUrlName]).arg(regionId), "application/vnd.ccp.eve.Region-v1+json", saveUrl);
-    }
-
-    template<class T>
-    void CRESTInterface::getRegionMarketUrl(uint regionId, T &&continuation) const
-    {
-        if (mRegionMarketUrls.contains(regionId))
-        {
-            continuation(mRegionMarketUrls[regionId], QString{});
-            return;
-        }
-
-        if (!mEndpoints.contains(regionsUrlName))
-        {
-            continuation(QUrl{}, tr("Missing CREST regions url!"));
-            return;
-        }
-
-        // TODO: fetch when endpoint is known
-        continuation(QString{"%1/market/%2/orders/all"}.arg(crestUrl).arg(regionId), QString{});
     }
 
     template<class T>

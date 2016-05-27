@@ -85,6 +85,9 @@ namespace Evernus
         void getRegionMarketUrl(uint regionId, T &&continuation) const;
 
         template<class T>
+        void getRegionUrl(uint regionId, const QString &urlName, T &&continuation) const;
+
+        template<class T>
         void getOrders(QUrl regionUrl, EveType::IdType typeId, T &&continuation) const;
         template<class T>
         void getOrders(QUrl regionUrl, T &&continuation) const;
