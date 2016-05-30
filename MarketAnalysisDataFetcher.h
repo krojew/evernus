@@ -66,6 +66,8 @@ namespace Evernus
         void handleNewPreferences();
 
     private:
+        const EveDataProvider &mDataProvider;
+
         CRESTManager mCRESTManager;
         EveCentralManager mEveCentralManager;
 

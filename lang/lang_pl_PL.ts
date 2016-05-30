@@ -3790,12 +3790,14 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarketAnalysisDataFetcher</name>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="100"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="140"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="152"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="133"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="141"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="185"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi z historią...</translation>
     </message>

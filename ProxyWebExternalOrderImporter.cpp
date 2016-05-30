@@ -13,9 +13,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QSettings>
-#include <QDebug>
 
-#include "EveDataProvider.h"
+#include "CRESTUtils.h"
 
 #include "ProxyWebExternalOrderImporter.h"
 
@@ -40,24 +39,7 @@ namespace Evernus
     {
         if (mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Auto)
         {
-            std::unordered_set<uint> regions;
-            TypeLocationPairs typeRegions;
-
-            for (const auto &pair : target)
-            {
-                const auto regionId = mDataProvider.getStationRegionId(pair.second);
-
-                regions.insert(regionId);
-                typeRegions.insert(std::make_pair(pair.first, regionId));
-            }
-
-            const auto requestsPerRegion = 30; // assuming 30 requests typical worst case, as with The Forge
-            const auto serialFetchPenaltyFactor = 2;
-            const auto wholeImportScore = regions.size() * requestsPerRegion * serialFetchPenaltyFactor;
-
-            qDebug() << "Auto importer values:" << wholeImportScore << "vs" << typeRegions.size();
-
-            if (wholeImportScore < typeRegions.size())
+            if (CRESTUtils::useWholeMarketImport(target, mDataProvider))
                 mCRESTWholeImporter->fetchExternalOrders(target);
             else
                 mCRESTIndividualImporter->fetchExternalOrders(target);

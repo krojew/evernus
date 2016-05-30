@@ -3462,12 +3462,14 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::MarketAnalysisDataFetcher</name>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="100"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="140"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="152"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Warte auf %1 Serverantworten für Aufträge...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="133"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="141"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="185"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Warte auf %1 Serverantworten für Historie...</translation>
     </message>

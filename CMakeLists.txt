@@ -374,6 +374,8 @@ add_executable(
     CRESTMessageBox.cpp
     CRESTMessageBox.h
     CRESTSettings.h
+    CRESTUtils.cpp
+    CRESTUtils.h
     CRESTWholeExternalOrderImporter.cpp
     CRESTWholeExternalOrderImporter.h
     DatabaseUtils.cpp

@@ -14,29 +14,15 @@
  */
 #pragma once
 
-#include <cstddef>
+#include "ExternalOrderImporter.h"
 
 namespace Evernus
 {
-    class ProgressiveCounter final
+    class EveDataProvider;
+
+    namespace CRESTUtils
     {
-    public:
-        ProgressiveCounter() = default;
-        ~ProgressiveCounter() = default;
-
-        size_t getCount() const noexcept;
-        void setCount(size_t count) noexcept;
-        void incCount() noexcept;
-        void addCount(size_t count) noexcept;
-
-        bool isEmpty() const noexcept;
-        bool advanceAndCheckBatch() noexcept;
-
-        void reset() noexcept;
-        void resetBatch() noexcept;
-        void resetBatchIfEmpty() noexcept;
-
-    private:
-        size_t mCount = 0, mBatchCount = 0;
-    };
+        bool useWholeMarketImport(const ExternalOrderImporter::TypeLocationPairs &target,
+                                  const EveDataProvider &dataProvider);
+    }
 }
