@@ -39,6 +39,8 @@ namespace Evernus
         void handleNewPreferences();
 
     private:
+        const EveDataProvider &mDataProvider;
+
         std::unique_ptr<CRESTIndividualExternalOrderImporter> mCRESTIndividualImporter;
         std::unique_ptr<CRESTWholeExternalOrderImporter> mCRESTWholeImporter;
         std::unique_ptr<EveCentralExternalOrderImporter> mEveCentralImporter;

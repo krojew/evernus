@@ -13,6 +13,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QSettings>
+#include <QDebug>
+
+#include "EveDataProvider.h"
 
 #include "ProxyWebExternalOrderImporter.h"
 
@@ -21,9 +24,10 @@ namespace Evernus
     ProxyWebExternalOrderImporter::ProxyWebExternalOrderImporter(const EveDataProvider &dataProvider,
                                                                  QObject *parent)
         : ExternalOrderImporter{parent}
-        , mCRESTIndividualImporter{std::make_unique<CRESTIndividualExternalOrderImporter>(dataProvider, parent)}
-        , mCRESTWholeImporter{std::make_unique<CRESTWholeExternalOrderImporter>(dataProvider, parent)}
-        , mEveCentralImporter{std::make_unique<EveCentralExternalOrderImporter>(dataProvider, parent)}
+        , mDataProvider{dataProvider}
+        , mCRESTIndividualImporter{std::make_unique<CRESTIndividualExternalOrderImporter>(mDataProvider, parent)}
+        , mCRESTWholeImporter{std::make_unique<CRESTWholeExternalOrderImporter>(mDataProvider, parent)}
+        , mEveCentralImporter{std::make_unique<EveCentralExternalOrderImporter>(mDataProvider, parent)}
     {
         setCurrentImporter();
 
@@ -34,14 +38,33 @@ namespace Evernus
 
     void ProxyWebExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
     {
-        const auto requestCountThreshold = 30u; // page count for Jita market; assuming targets are mostly in 1 station
+        if (mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Auto)
+        {
+            std::unordered_set<uint> regions;
+            TypeLocationPairs typeRegions;
 
-        if (mCurrentImporter == ImportSettings::WebImporterType::EveCentral)
+            for (const auto &pair : target)
+            {
+                const auto regionId = mDataProvider.getStationRegionId(pair.second);
+
+                regions.insert(regionId);
+                typeRegions.insert(std::make_pair(pair.first, regionId));
+            }
+
+            const auto requestsPerRegion = 30; // assuming 30 requests typical worst case, as with The Forge
+
+            qDebug() << "Auto importer values:" << (regions.size() * requestsPerRegion) << "vs" << typeRegions.size();
+
+            if (regions.size() * requestsPerRegion < typeRegions.size())
+                mCRESTWholeImporter->fetchExternalOrders(target);
+            else
+                mCRESTIndividualImporter->fetchExternalOrders(target);
+        }
+        else if (mCurrentImporter == ImportSettings::WebImporterType::EveCentral)
         {
             mEveCentralImporter->fetchExternalOrders(target);
         }
-        else if ((mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Individual) ||
-                 (mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Auto && target.size() < requestCountThreshold))
+        else if (mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Individual)
         {
             mCRESTIndividualImporter->fetchExternalOrders(target);
         }
