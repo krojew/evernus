@@ -216,7 +216,6 @@ namespace Evernus
 
     ExternalOrder CRESTManager::getOrderFromJson(const QJsonObject &object, uint regionId) const
     {
-        const auto location = object.value("location").toObject();
         const auto range = object.value("range").toString();
 
         auto issued = QDateTime::fromString(object.value("issued").toString(), Qt::ISODate);
@@ -224,10 +223,18 @@ namespace Evernus
 
         ExternalOrder order;
 
-        order.setId(object.value("id_str").toString().toULongLong());
+        order.setId(object.value("id").toDouble()); // https://bugreports.qt.io/browse/QTBUG-28560
         order.setType((object.value("buy").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
-        order.setTypeId(object.value("type").toString().toUInt());
-        order.setStationId(location.value("id_str").toString().toUInt());
+
+        const auto type = object.value("type");
+        order.setTypeId((type.isObject()) ? (type.toObject().value("id").toInt()) : (type.toInt()));
+
+        const auto location = object.value("location");
+        if (location.isUndefined())
+            order.setStationId(object.value("stationID").toInt());
+        else
+            order.setStationId(location.toObject().value("id_str").toString().toUInt());
+
         //TODO: replace when available
         order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));
         order.setRegionId(regionId);

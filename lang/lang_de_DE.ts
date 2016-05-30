@@ -426,7 +426,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Leeres Refresh Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="257"/>
+        <location filename="../CRESTManager.cpp" line="264"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>CREST Endpunkt Karte ist leer. Bitte warten Sie eine Weile.</translation>
     </message>
