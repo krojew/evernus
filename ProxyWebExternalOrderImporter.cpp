@@ -52,10 +52,12 @@ namespace Evernus
             }
 
             const auto requestsPerRegion = 30; // assuming 30 requests typical worst case, as with The Forge
+            const auto serialFetchPenaltyFactor = 2;
+            const auto wholeImportScore = regions.size() * requestsPerRegion * serialFetchPenaltyFactor;
 
-            qDebug() << "Auto importer values:" << (regions.size() * requestsPerRegion) << "vs" << typeRegions.size();
+            qDebug() << "Auto importer values:" << wholeImportScore << "vs" << typeRegions.size();
 
-            if (regions.size() * requestsPerRegion < typeRegions.size())
+            if (wholeImportScore < typeRegions.size())
                 mCRESTWholeImporter->fetchExternalOrders(target);
             else
                 mCRESTIndividualImporter->fetchExternalOrders(target);
