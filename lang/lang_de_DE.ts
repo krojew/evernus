@@ -369,9 +369,8 @@
 <context>
     <name>Evernus::CRESTIndividualExternalOrderImporter</name>
     <message>
-        <location filename="../CRESTIndividualExternalOrderImporter.cpp" line="78"/>
         <source>CREST import: waiting for %1 server replies</source>
-        <translation type="unfinished">CREST Iimport: warte auf %1 Serverantworten</translation>
+        <translation type="obsolete">CREST Iimport: warte auf %1 Serverantworten</translation>
     </message>
 </context>
 <context>
@@ -418,7 +417,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Das Zertifikat der EVE Loginseite enthielt Fehler: %1. Bist du sicher das du weitermachen willst (dies kann die Sicherheit deines EVE Accounts gefährden)?</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="179"/>
+        <location filename="../CRESTManager.cpp" line="184"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Fehler beim Abrufen der CREST Endpunkte!</translation>
     </message>
@@ -427,7 +426,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Leeres Refresh Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="252"/>
+        <location filename="../CRESTManager.cpp" line="257"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>CREST Endpunkt Karte ist leer. Bitte warten Sie eine Weile.</translation>
     </message>
@@ -448,9 +447,8 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::CRESTWholeExternalOrderImporter</name>
     <message>
-        <location filename="../CRESTWholeExternalOrderImporter.cpp" line="85"/>
         <source>CREST import: waiting for %1 server replies</source>
-        <translation type="unfinished">CREST Iimport: warte auf %1 Serverantworten</translation>
+        <translation type="obsolete">CREST Iimport: warte auf %1 Serverantworten</translation>
     </message>
 </context>
 <context>
@@ -461,6 +459,14 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <location filename="../CachingEveDataProvider.cpp" line="181"/>
         <source>(unknown)</source>
         <translation>(unbekannt)</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::CallbackExternalOrderImporter</name>
+    <message>
+        <location filename="../CallbackExternalOrderImporter.cpp" line="24"/>
+        <source>CREST import: waiting for %1 server replies</source>
+        <translation type="unfinished">CREST Iimport: warte auf %1 Serverantworten</translation>
     </message>
 </context>
 <context>

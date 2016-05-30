@@ -24,7 +24,7 @@ namespace Evernus
 {
     CRESTIndividualExternalOrderImporter
     ::CRESTIndividualExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent)
-        : ExternalOrderImporter{parent}
+        : CallbackExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
         , mManager{mDataProvider}
     {
@@ -70,48 +70,5 @@ namespace Evernus
     void CRESTIndividualExternalOrderImporter::handleNewPreferences()
     {
         mManager.handleNewPreferences();
-    }
-
-    void CRESTIndividualExternalOrderImporter::processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const
-    {
-        if (mCounter.advanceAndCheckBatch())
-            emit statusChanged(tr("CREST import: waiting for %1 server replies").arg(mCounter.getCount()));
-
-        qDebug() << "Got reply," << mCounter.getCount() << "remaining.";
-
-        if (!errorText.isEmpty())
-        {
-            mAggregatedErrors << errorText;
-
-            if (mCounter.isEmpty())
-            {
-                mResult.clear();
-                emit error(mAggregatedErrors.join("\n"));
-
-                mAggregatedErrors.clear();
-            }
-
-            return;
-        }
-
-        mResult.reserve(mResult.size() + orders.size());
-        mResult.insert(std::end(mResult),
-                       std::make_move_iterator(std::begin(orders)),
-                       std::make_move_iterator(std::end(orders)));
-
-        if (mCounter.isEmpty() && !mPreparingRequests)
-        {
-            if (mAggregatedErrors.isEmpty())
-            {
-                emit externalOrdersChanged(mResult);
-            }
-            else
-            {
-                emit error(mAggregatedErrors.join("\n"));
-                mAggregatedErrors.clear();
-            }
-
-            mResult.clear();
-        }
     }
 }

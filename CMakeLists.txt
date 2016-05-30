@@ -87,6 +87,7 @@ qt5_wrap_cpp(
     ButtonWithTimer.h
     CachingEveDataProvider.h
     CachingMarketOrderProvider.h
+    CallbackExternalOrderImporter.h
     CharacterBoundWidget.h
     CharacterManagerDialog.h
     CharacterModel.h
@@ -282,6 +283,8 @@ add_executable(
     CachingEveDataProvider.h
     CachingMarketOrderProvider.cpp
     CachingMarketOrderProvider.h
+    CallbackExternalOrderImporter.cpp
+    CallbackExternalOrderImporter.h
     Character.cpp
     Character.h
     CharacterBoundWidget.cpp

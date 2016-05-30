@@ -17,9 +17,7 @@
 #include <QNetworkAccessManager>
 #include <QStringList>
 
-#include "ExternalOrderImporter.h"
-#include "ProgressiveCounter.h"
-#include "ExternalOrder.h"
+#include "CallbackExternalOrderImporter.h"
 #include "CRESTManager.h"
 
 namespace Evernus
@@ -27,7 +25,7 @@ namespace Evernus
     class EveDataProvider;
 
     class CRESTIndividualExternalOrderImporter
-        : public ExternalOrderImporter
+        : public CallbackExternalOrderImporter
     {
         Q_OBJECT
 
@@ -45,12 +43,5 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         CRESTManager mManager;
-        mutable ProgressiveCounter mCounter;
-        mutable bool mPreparingRequests = false;
-
-        mutable std::vector<ExternalOrder> mResult;
-        mutable QStringList mAggregatedErrors;
-
-        void processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const;
     };
 }

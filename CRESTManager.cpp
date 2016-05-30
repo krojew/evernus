@@ -124,25 +124,30 @@ namespace Evernus
         });
     }
 
-    void CRESTManager::fetchMarketOrders(uint regionId, const SingleItemCallback<ExternalOrder> &callback) const
+    void CRESTManager::fetchMarketOrders(uint regionId, const Callback<std::vector<ExternalOrder>> &callback) const
     {
         if (!hasEndpoints())
         {
-            callback(ExternalOrder{}, true, getMissingEnpointsError());
+            callback(std::vector<ExternalOrder>{}, getMissingEnpointsError());
             return;
         }
 
-        mInterface.fetchMarketOrders(regionId, [=](auto &&data, auto atEnd, const auto &error) {
+        auto orders = std::make_shared<std::vector<ExternalOrder>>();
+        mInterface.fetchMarketOrders(regionId, [=, orders = std::move(orders)](auto &&data, auto atEnd, const auto &error) {
             if (!error.isEmpty())
             {
-                callback(ExternalOrder{}, true, error);
+                callback(std::vector<ExternalOrder>{}, error);
                 return;
             }
 
             const auto items = data.object().value("items").toArray();
-            const auto size = items.size();
-            for (auto i = 0; i < size; ++i)
-                callback(getOrderFromJson(items[i].toObject(), regionId), atEnd && i == size - 1, QString{});
+            orders->reserve(orders->size() + items.size());
+
+            for (const auto &item : items)
+                orders->emplace_back(getOrderFromJson(item.toObject(), regionId));
+
+            if (atEnd)
+                callback(std::move(*orders), QString{});
         });
     }
 

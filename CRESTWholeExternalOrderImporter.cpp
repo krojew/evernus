@@ -23,7 +23,7 @@
 namespace Evernus
 {
     CRESTWholeExternalOrderImporter::CRESTWholeExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent)
-        : ExternalOrderImporter{parent}
+        : CallbackExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
         , mManager{mDataProvider}
     {
@@ -43,25 +43,22 @@ namespace Evernus
             this_->mPreparingRequests = false;
         } BOOST_SCOPE_EXIT_END
 
-        mCurrentTarget = target;
         mCounter.resetBatchIfEmpty();
 
         std::unordered_set<uint> regions;
-        for (const auto &pair : mCurrentTarget)
+        for (const auto &pair : target)
         {
             const auto regionId = mDataProvider.getStationRegionId(pair.second);
             if (regionId != 0)
-            {
                 regions.insert(mDataProvider.getStationRegionId(pair.second));
-            }
         }
 
         mCounter.setCount(regions.size());
 
         for (const auto region : regions)
         {
-            mManager.fetchMarketOrders(region, [=](auto &&order, auto atEnd, const auto &error) {
-                processOrder(std::move(order), atEnd, error);
+            mManager.fetchMarketOrders(region, [=](auto &&orders, const auto &error) {
+                processResult(std::move(orders), error);
             });
         }
 
@@ -77,46 +74,5 @@ namespace Evernus
     void CRESTWholeExternalOrderImporter::handleNewPreferences()
     {
         mManager.handleNewPreferences();
-    }
-
-    void CRESTWholeExternalOrderImporter::processOrder(ExternalOrder &&order, bool atEnd, const QString &errorText) const
-    {
-        if (atEnd && mCounter.advanceAndCheckBatch())
-            emit statusChanged(tr("CREST import: waiting for %1 server replies").arg(mCounter.getCount()));
-
-        qDebug() << "Got reply, filtering.";
-
-        if (!errorText.isEmpty())
-        {
-            mAggregatedErrors << errorText;
-
-            if (mCounter.isEmpty() && !mPreparingRequests)
-            {
-                mResult.clear();
-                emit error(mAggregatedErrors.join("\n"));
-
-                mAggregatedErrors.clear();
-            }
-
-            return;
-        }
-
-        if (mCurrentTarget.find(std::make_pair(order.getTypeId(), order.getStationId())) != std::end(mCurrentTarget))
-            mResult.emplace_back(std::move(order));
-
-        if (mCounter.isEmpty() && !mPreparingRequests)
-        {
-            if (mAggregatedErrors.isEmpty())
-            {
-                emit externalOrdersChanged(mResult);
-            }
-            else
-            {
-                emit error(mAggregatedErrors.join("\n"));
-                mAggregatedErrors.clear();
-            }
-
-            mResult.clear();
-        }
     }
 }

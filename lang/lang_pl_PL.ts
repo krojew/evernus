@@ -545,9 +545,8 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::CRESTIndividualExternalOrderImporter</name>
     <message>
-        <location filename="../CRESTIndividualExternalOrderImporter.cpp" line="78"/>
         <source>CREST import: waiting for %1 server replies</source>
-        <translation>Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
+        <translation type="vanished">Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
     </message>
 </context>
 <context>
@@ -598,7 +597,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="179"/>
+        <location filename="../CRESTManager.cpp" line="184"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Błąd pobierania punktów wejścia CREST!</translation>
     </message>
@@ -607,7 +606,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="252"/>
+        <location filename="../CRESTManager.cpp" line="257"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
     </message>
@@ -644,9 +643,8 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::CRESTWholeExternalOrderImporter</name>
     <message>
-        <location filename="../CRESTWholeExternalOrderImporter.cpp" line="85"/>
         <source>CREST import: waiting for %1 server replies</source>
-        <translation>Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
+        <translation type="vanished">Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
     </message>
 </context>
 <context>
@@ -676,6 +674,14 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <location filename="../CachingEveDataProvider.cpp" line="181"/>
         <source>(unknown)</source>
         <translation>(nieznane)</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::CallbackExternalOrderImporter</name>
+    <message>
+        <location filename="../CallbackExternalOrderImporter.cpp" line="24"/>
+        <source>CREST import: waiting for %1 server replies</source>
+        <translation type="unfinished">Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
     </message>
 </context>
 <context>
