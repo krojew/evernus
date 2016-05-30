@@ -40,6 +40,8 @@ namespace Evernus
             return;
         }
 
+        filterOrders(orders);
+
         mResult.reserve(mResult.size() + orders.size());
         mResult.insert(std::end(mResult),
                        std::make_move_iterator(std::begin(orders)),
@@ -59,5 +61,9 @@ namespace Evernus
 
             mResult.clear();
         }
+    }
+
+    void CallbackExternalOrderImporter::filterOrders(std::vector<ExternalOrder> & /* orders */) const
+    {
     }
 }

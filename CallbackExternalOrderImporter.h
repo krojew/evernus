@@ -37,5 +37,8 @@ namespace Evernus
         mutable QStringList mAggregatedErrors;
 
         void processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const;
+
+    private:
+        virtual void filterOrders(std::vector<ExternalOrder> &orders) const;
     };
 }

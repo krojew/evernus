@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
+
 #include <QDebug>
 
 #include <boost/scope_exit.hpp>
@@ -43,6 +45,7 @@ namespace Evernus
             this_->mPreparingRequests = false;
         } BOOST_SCOPE_EXIT_END
 
+        mCurrentTarget.clear();
         mCounter.resetBatchIfEmpty();
 
         std::unordered_set<uint> regions;
@@ -50,7 +53,10 @@ namespace Evernus
         {
             const auto regionId = mDataProvider.getStationRegionId(pair.second);
             if (regionId != 0)
-                regions.insert(mDataProvider.getStationRegionId(pair.second));
+            {
+                regions.insert(regionId);
+                mCurrentTarget.insert(std::make_pair(pair.first, regionId));
+            }
         }
 
         mCounter.setCount(regions.size());
@@ -74,5 +80,12 @@ namespace Evernus
     void CRESTWholeExternalOrderImporter::handleNewPreferences()
     {
         mManager.handleNewPreferences();
+    }
+
+    void CRESTWholeExternalOrderImporter::filterOrders(std::vector<ExternalOrder> &orders) const
+    {
+        orders.erase(std::remove_if(std::begin(orders), std::end(orders), [=](const auto &order) {
+            return mCurrentTarget.find(std::make_pair(order.getTypeId(), order.getRegionId())) == std::end(mCurrentTarget);
+        }), std::end(orders));
     }
 }

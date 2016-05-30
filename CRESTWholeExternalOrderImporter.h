@@ -38,7 +38,8 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         CRESTManager mManager;
+        mutable TypeLocationPairs mCurrentTarget;
 
-        void processOrder(ExternalOrder &&order, bool atEnd, const QString &errorText) const;
+        virtual void filterOrders(std::vector<ExternalOrder> &orders) const override;
     };
 }
