@@ -236,10 +236,10 @@ namespace Evernus
             const auto object = document.object();
             const auto next = object["next"].toObject()["href"].toString();
 
-            callback(std::move(document), next.isEmpty(), QString{});
-
             if (!next.isEmpty())
                 fetchPaginatedOrders(callback, next);
+
+            callback(std::move(document), next.isEmpty(), QString{});
         };
 
         getOrders(url, continuatingCallback);
