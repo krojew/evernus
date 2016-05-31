@@ -91,7 +91,7 @@ namespace Evernus
             = new QLineEdit{settings.value(UISettings::dateTimeFormatKey, locale().dateTimeFormat(QLocale::ShortFormat)).toString(), this};
         uiLayout->addRow(tr("Date/time format (requires restart):"), mDateFormEdit);
 
-        mApplyDateFormatToGraphsBtn = new QCheckBox{tr("Apply date fromat to graphs (requires restart)"), this};
+        mApplyDateFormatToGraphsBtn = new QCheckBox{tr("Apply date format to graphs (requires restart)"), this};
         uiLayout->addRow(mApplyDateFormatToGraphsBtn);
         mApplyDateFormatToGraphsBtn->setChecked(
             settings.value(UISettings::applyDateFormatToGraphsKey, UISettings::applyDateFormatToGraphsDefault).toBool());
