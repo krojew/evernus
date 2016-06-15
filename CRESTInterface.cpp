@@ -20,6 +20,7 @@
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QEventLoop>
 #include <QUrlQuery>
 #include <QSettings>
@@ -75,20 +76,27 @@ namespace Evernus
                 return;
             }
 
-            getOrders(url, typeId, callback);
+            getRegionData(url, typeId, "application/vnd.ccp.eve.MarketOrderCollection-v1+json", callback);
         };
 
-        getRegionOrdersUrl(regionId, orderFetcher);
+        getRegionUrl(regionId, mRegionOrdersUrls, mPendingRegionOrdersRequests, "marketOrders", orderFetcher);
     }
 
     void CRESTInterface::fetchMarketHistory(uint regionId, EveType::IdType typeId, const Callback &callback) const
     {
         qDebug() << "Fetching market history for" << regionId << "and" << typeId;
 
-        // TODO: use endpoint map, when available
-        asyncGet(QString{"%1/market/%2/types/%3/history/"}.arg(crestUrl).arg(regionId).arg(typeId),
-                 "application/vnd.ccp.eve.MarketTypeHistoryCollection-v1+json",
-                 callback);
+        auto historyFetcher = [=](const auto &url, const auto &error) {
+            if (!error.isEmpty())
+            {
+                callback(QJsonDocument{}, error);
+                return;
+            }
+
+            getRegionData(url, typeId, "application/vnd.ccp.eve.MarketTypeHistoryCollection-v1+json", callback);
+        };
+
+        getRegionUrl(regionId, mRegionHistoryUrls, mPendingRegionHistoryRequests, "marketHistory", historyFetcher);
     }
 
     void CRESTInterface::setEndpoints(EndpointMap endpoints)
@@ -117,11 +125,11 @@ namespace Evernus
     }
 
     template<class T>
-    void CRESTInterface::getRegionOrdersUrl(uint regionId, T &&continuation) const
+    void CRESTInterface::getRegionUrl(uint regionId, RegionUrlMap &urlMap, RegionUrlCallbackMap &callbackMap, const QString urlName, T &&continuation) const
     {
-        if (mRegionOrdersUrls.contains(regionId))
+        if (urlMap.contains(regionId))
         {
-            continuation(mRegionOrdersUrls[regionId], QString{});
+            continuation(urlMap[regionId], QString{});
             return;
         }
 
@@ -131,45 +139,87 @@ namespace Evernus
             return;
         }
 
-        const QString urlName = "marketOrders";
-
         const auto pendingKey = qMakePair(regionId, urlName);
-        if (mPendingRegionRequests.contains(pendingKey))
+        if (callbackMap.contains(pendingKey))
         {
-            mPendingRegionRequests[pendingKey].emplace_back(std::forward<T>(continuation));
+            callbackMap[pendingKey].emplace_back(std::forward<T>(continuation));
             return;
         }
 
-        qDebug() << "Fetching region orders url:" << regionId;
+        qDebug() << "Fetching region url:" << regionId << urlName;
 
-        mPendingRegionRequests[pendingKey].emplace_back(std::forward<T>(continuation));
+        callbackMap[pendingKey].emplace_back(std::forward<T>(continuation));
 
-        auto saveUrl = [=](const QJsonDocument &doc, const QString &error) {
+        auto notifyError = [=, &callbackMap](const auto &error) {
+            for (const auto &continuation : callbackMap[pendingKey])
+                continuation(QUrl{}, error);
+
+            callbackMap.remove(pendingKey);
+        };
+
+        auto extractUrl = [=, &urlMap, &callbackMap](const auto &doc, const auto &error) {
             if (!error.isEmpty())
             {
-                for (const auto &continuation : mPendingRegionRequests[pendingKey])
-                    continuation(QUrl{}, error);
-
-                mPendingRegionRequests.remove(pendingKey);
+                notifyError(error);
                 return;
             }
 
             const QUrl href = doc.object().value(urlName).toObject().value("href").toString();
-            mRegionOrdersUrls[regionId] = href;
+            urlMap[regionId] = href;
 
-            qDebug() << "Region orders url:" << href;
+            qDebug() << "Region url:" << href;
 
-            for (const auto &continuation : mPendingRegionRequests[pendingKey])
+            for (const auto &continuation : callbackMap[pendingKey])
                 continuation(href, QString{});
 
-            mPendingRegionRequests.remove(pendingKey);
+            callbackMap.remove(pendingKey);
         };
 
-        asyncGet(QString{"%1%2/"}.arg(mEndpoints[regionsUrlName]).arg(regionId), "application/vnd.ccp.eve.Region-v1+json", saveUrl);
+        if (mRegionUrls.contains(regionId))
+        {
+            asyncGet(mRegionUrls[regionId], "application/vnd.ccp.eve.Region-v1+json", extractUrl);
+        }
+        else
+        {
+            auto saveUrl = [=, &callbackMap](const QJsonDocument &doc, const QString &error) {
+                if (!error.isEmpty())
+                {
+                    notifyError(error);
+                    return;
+                }
+
+                QUrl href;
+
+                const auto items = doc.object().value("items").toArray();
+                for (const auto &item : items)
+                {
+                    const auto &itemObj = item.toObject();
+                    if (itemObj.value("id").toInt() == regionId)
+                    {
+                        href = itemObj.value("href").toString();
+                        break;
+                    }
+                }
+
+                qDebug() << "Region url:" << href;
+
+                if (href.isEmpty())
+                {
+                    notifyError(tr("Missing region URL for %1").arg(regionId));
+                    return;
+                }
+
+                mRegionUrls[regionId] = href;
+
+                asyncGet(href, "application/vnd.ccp.eve.Region-v1+json", extractUrl);
+            };
+
+            asyncGet(mEndpoints[regionsUrlName], "application/vnd.ccp.eve.RegionCollection-v1+json", saveUrl);
+        }
     }
 
     template<class T>
-    void CRESTInterface::getOrders(QUrl regionUrl, EveType::IdType typeId, T &&continuation) const
+    void CRESTInterface::getRegionData(QUrl regionUrl, EveType::IdType typeId, const QByteArray &accept, T &&continuation) const
     {
         if (!mEndpoints.contains(itemTypesUrlName))
         {
@@ -182,7 +232,7 @@ namespace Evernus
 
         regionUrl.setQuery(query);
 
-        asyncGet(regionUrl, "application/vnd.ccp.eve.MarketOrderCollection-v1+json", std::forward<T>(continuation));
+        asyncGet(regionUrl, accept, std::forward<T>(continuation));
     }
 
     template<class T>

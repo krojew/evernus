@@ -59,7 +59,8 @@ namespace Evernus
         void processPendingRequests();
 
     private:
-        using RegionOrderUrlMap = QHash<uint, QUrl>;
+        using RegionUrlCallbackMap = QHash<QPair<uint, QString>, std::vector<std::function<void (const QUrl &, const QString &)>>>;
+        using RegionUrlMap = QHash<uint, QUrl>;
 
         static const QString regionsUrlName;
         static const QString itemTypesUrlName;
@@ -70,17 +71,16 @@ namespace Evernus
         mutable QNetworkAccessManager mNetworkManager;
         EndpointMap mEndpoints;
 
-        mutable RegionOrderUrlMap mRegionOrdersUrls;
-        mutable QHash<QPair<uint, QString>, std::vector<std::function<void (const QUrl &, const QString &)>>>
-        mPendingRegionRequests;
+        mutable RegionUrlMap mRegionUrls, mRegionOrdersUrls, mRegionHistoryUrls;
+        mutable RegionUrlCallbackMap mPendingRegionOrdersRequests, mPendingRegionHistoryRequests;
 
         mutable std::multimap<std::chrono::steady_clock::time_point, std::function<void ()>> mPendingRequests;
 
         template<class T>
-        void getRegionOrdersUrl(uint regionId, T &&continuation) const;
+        void getRegionUrl(uint regionId, RegionUrlMap &urlMap, RegionUrlCallbackMap &callbackMap, const QString urlName, T &&continuation) const;
 
         template<class T>
-        void getOrders(QUrl regionUrl, EveType::IdType typeId, T &&continuation) const;
+        void getRegionData(QUrl regionUrl, EveType::IdType typeId, const QByteArray &accept, T &&continuation) const;
 
         template<class T>
         void asyncGet(const QUrl &url, const QByteArray &accept, T &&continuation) const;
