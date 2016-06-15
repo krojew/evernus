@@ -5873,17 +5873,17 @@ Wert gesamt: %7</translation>
 <context>
     <name>Evernus::T</name>
     <message>
-        <location filename="../CRESTInterface.cpp" line="173"/>
+        <location filename="../CRESTInterface.cpp" line="149"/>
         <source>Missing CREST regions url!</source>
         <translation type="unfinished">Fehlende CREST Regionen URL!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="243"/>
+        <location filename="../CRESTInterface.cpp" line="219"/>
         <source>Missing region URL for %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="261"/>
+        <location filename="../CRESTInterface.cpp" line="237"/>
         <source>Missing CREST item types url!</source>
         <translation type="unfinished">Fehlende CREST Gegenstandsarten URL!</translation>
     </message>
