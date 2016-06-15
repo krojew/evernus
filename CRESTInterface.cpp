@@ -96,7 +96,7 @@ namespace Evernus
             fetchPaginatedOrders(callback, url);
         };
 
-        getRegionMarketUrl(regionId, marketFetcher);
+        getRegionUrl(regionId, mRegionMarketUrls, mPendingRegionMarketRequests, "marketOrdersAll", marketFetcher);
     }
 
     void CRESTInterface::fetchMarketHistory(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const
@@ -142,31 +142,7 @@ namespace Evernus
     }
 
     template<class T>
-    void CRESTInterface::getRegionUrl(uint regionId, RegionUrlMap &urlMap, RegionUrlCallbackMap &callbackMap, const QString urlName, T &&continuation) const
-    {
-        if (urlMap.contains(regionId))
-        {
-            continuation(urlMap[regionId], QString{});
-            return;
-        }
-
-        getRegionUrl(regionId, "marketOrders", std::forward<T>(continuation));
-    }
-
-    template<class T>
-    void CRESTInterface::getRegionMarketUrl(uint regionId, T &&continuation) const
-    {
-        if (mRegionMarketUrls.contains(regionId))
-        {
-            continuation(mRegionMarketUrls[regionId], QString{});
-            return;
-        }
-
-        getRegionUrl(regionId, "marketOrdersAll", std::forward<T>(continuation));
-    }
-
-    template<class T>
-    void CRESTInterface::getRegionUrl(uint regionId, const QString &urlName, T &&continuation) const
+    void CRESTInterface::getRegionUrl(uint regionId, RegionUrlMap &urlMap, RegionUrlCallbackMap &callbackMap, const QString &urlName, T &&continuation) const
     {
         if (!mEndpoints.contains(regionsUrlName))
         {

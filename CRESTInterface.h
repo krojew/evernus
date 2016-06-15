@@ -76,17 +76,12 @@ namespace Evernus
         EndpointMap mEndpoints;
 
         mutable RegionUrlMap mRegionUrls, mRegionOrdersUrls, mRegionHistoryUrls, mRegionMarketUrls;
-        mutable RegionUrlCallbackMap mPendingRegionOrdersRequests, mPendingRegionHistoryRequests;
+        mutable RegionUrlCallbackMap mPendingRegionOrdersRequests, mPendingRegionHistoryRequests, mPendingRegionMarketRequests;
 
         mutable std::multimap<std::chrono::steady_clock::time_point, std::function<void ()>> mPendingRequests;
 
         template<class T>
-        void getRegionUrl(uint regionId, RegionUrlMap &urlMap, RegionUrlCallbackMap &callbackMap, const QString urlName, T &&continuation) const;
-        template<class T>
-        void getRegionMarketUrl(uint regionId, T &&continuation) const;
-
-        template<class T>
-        void getRegionUrl(uint regionId, const QString &urlName, T &&continuation) const;
+        void getRegionUrl(uint regionId, RegionUrlMap &urlMap, RegionUrlCallbackMap &callbackMap, const QString &urlName, T &&continuation) const;
 
         template<class T>
         void getRegionData(QUrl regionUrl, EveType::IdType typeId, const QByteArray &accept, T &&continuation) const;
