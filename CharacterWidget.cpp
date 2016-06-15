@@ -359,7 +359,7 @@ namespace Evernus
         Q_ASSERT(id != Character::invalidId);
 
         mCharacterRepository.updateBrokersFee(id,
-            (mBrokersFeeBtn->isChecked()) ? (mBrokersFeeEdit->value()) : (boost::optional<double>{}));
+            (mBrokersFeeBtn->isChecked()) ? (mBrokersFeeEdit->value() / 100.) : (boost::optional<double>{}));
     }
 
     void CharacterWidget::setSkillLevel(int level)
@@ -466,7 +466,7 @@ namespace Evernus
                 if (brokersFee)
                 {
                     mBrokersFeeBtn->setChecked(true);
-                    mBrokersFeeEdit->setValue(*brokersFee);
+                    mBrokersFeeEdit->setValue(*brokersFee * 100.);
                     mBrokersFeeEdit->setEnabled(true);
                 }
                 else
