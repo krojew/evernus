@@ -554,17 +554,17 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="137"/>
+        <location filename="../CRESTInterface.cpp" line="138"/>
         <source>Missing CREST regions url!</source>
         <translation>Brak adresu regionów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="207"/>
+        <location filename="../CRESTInterface.cpp" line="208"/>
         <source>Missing region URL for %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="225"/>
+        <location filename="../CRESTInterface.cpp" line="226"/>
         <source>Missing CREST item types url!</source>
         <translation>Brak adresu typów w CREST!</translation>
     </message>
