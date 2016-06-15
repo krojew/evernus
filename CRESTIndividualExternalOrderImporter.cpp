@@ -16,21 +16,22 @@
 
 #include <boost/scope_exit.hpp>
 
+#include "CRESTIndividualExternalOrderImporter.h"
 #include "EveDataProvider.h"
 
-#include "CRESTExternalOrderImporter.h"
 
 namespace Evernus
 {
-    CRESTExternalOrderImporter::CRESTExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent)
-        : ExternalOrderImporter{parent}
+    CRESTIndividualExternalOrderImporter
+    ::CRESTIndividualExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent)
+        : CallbackExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
         , mManager{mDataProvider}
     {
-        connect(&mManager, &CRESTManager::error, this, &CRESTExternalOrderImporter::genericError);
+        connect(&mManager, &CRESTManager::error, this, &CRESTIndividualExternalOrderImporter::genericError);
     }
 
-    void CRESTExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
+    void CRESTIndividualExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
     {
         if (target.empty())
         {
@@ -66,51 +67,8 @@ namespace Evernus
         }
     }
 
-    void CRESTExternalOrderImporter::handleNewPreferences()
+    void CRESTIndividualExternalOrderImporter::handleNewPreferences()
     {
         mManager.handleNewPreferences();
-    }
-
-    void CRESTExternalOrderImporter::processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const
-    {
-        if (mCounter.advanceAndCheckBatch())
-            emit statusChanged(tr("CREST import: waiting for %1 server replies").arg(mCounter.getCount()));
-
-        qDebug() << "Got reply," << mCounter.getCount() << "remaining.";
-
-        if (!errorText.isEmpty())
-        {
-            mAggregatedErrors << errorText;
-
-            if (mCounter.isEmpty())
-            {
-                mResult.clear();
-                emit error(mAggregatedErrors.join("\n"));
-
-                mAggregatedErrors.clear();
-            }
-
-            return;
-        }
-
-        mResult.reserve(mResult.size() + orders.size());
-        mResult.insert(std::end(mResult),
-                       std::make_move_iterator(std::begin(orders)),
-                       std::make_move_iterator(std::end(orders)));
-
-        if (mCounter.isEmpty() && !mPreparingRequests)
-        {
-            if (mAggregatedErrors.isEmpty())
-            {
-                emit externalOrdersChanged(mResult);
-            }
-            else
-            {
-                emit error(mAggregatedErrors.join("\n"));
-                mAggregatedErrors.clear();
-            }
-
-            mResult.clear();
-        }
     }
 }

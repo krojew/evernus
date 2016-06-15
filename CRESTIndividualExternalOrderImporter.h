@@ -17,24 +17,22 @@
 #include <QNetworkAccessManager>
 #include <QStringList>
 
-#include "ExternalOrderImporter.h"
-#include "ProgressiveCounter.h"
-#include "ExternalOrder.h"
+#include "CallbackExternalOrderImporter.h"
 #include "CRESTManager.h"
 
 namespace Evernus
 {
     class EveDataProvider;
 
-    class CRESTExternalOrderImporter
-        : public ExternalOrderImporter
+    class CRESTIndividualExternalOrderImporter
+        : public CallbackExternalOrderImporter
     {
         Q_OBJECT
 
     public:
-        CRESTExternalOrderImporter(const EveDataProvider &dataProvider,
-                                   QObject *parent = nullptr);
-        virtual ~CRESTExternalOrderImporter() = default;
+        explicit CRESTIndividualExternalOrderImporter(const EveDataProvider &dataProvider,
+                                                      QObject *parent = nullptr);
+        virtual ~CRESTIndividualExternalOrderImporter() = default;
 
         virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
 
@@ -45,12 +43,5 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         CRESTManager mManager;
-        mutable ProgressiveCounter mCounter;
-        mutable bool mPreparingRequests = false;
-
-        mutable std::vector<ExternalOrder> mResult;
-        mutable QStringList mAggregatedErrors;
-
-        void processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const;
     };
 }

@@ -65,7 +65,7 @@ namespace Evernus
         connect(&mRequestTimer, &QTimer::timeout, this, &CRESTInterface::processPendingRequests);
     }
 
-    void CRESTInterface::fetchMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const
+    void CRESTInterface::fetchMarketOrders(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching market orders for" << regionId << "and" << typeId;
 
@@ -82,7 +82,24 @@ namespace Evernus
         getRegionUrl(regionId, mRegionOrdersUrls, mPendingRegionOrdersRequests, "marketOrders", orderFetcher);
     }
 
-    void CRESTInterface::fetchMarketHistory(uint regionId, EveType::IdType typeId, const Callback &callback) const
+    void CRESTInterface::fetchMarketOrders(uint regionId, const PaginatedCallback &callback) const
+    {
+        qDebug() << "Fetching whole market for" << regionId;
+
+        auto marketFetcher = [=](const QUrl &url, const QString &error) {
+            if (!error.isEmpty())
+            {
+                callback(QJsonDocument{}, true, error);
+                return;
+            }
+
+            fetchPaginatedOrders(callback, url);
+        };
+
+        getRegionMarketUrl(regionId, marketFetcher);
+    }
+
+    void CRESTInterface::fetchMarketHistory(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching market history for" << regionId << "and" << typeId;
 
@@ -133,6 +150,24 @@ namespace Evernus
             return;
         }
 
+        getRegionUrl(regionId, "marketOrders", std::forward<T>(continuation));
+    }
+
+    template<class T>
+    void CRESTInterface::getRegionMarketUrl(uint regionId, T &&continuation) const
+    {
+        if (mRegionMarketUrls.contains(regionId))
+        {
+            continuation(mRegionMarketUrls[regionId], QString{});
+            return;
+        }
+
+        getRegionUrl(regionId, "marketOrdersAll", std::forward<T>(continuation));
+    }
+
+    template<class T>
+    void CRESTInterface::getRegionUrl(uint regionId, const QString &urlName, T &&continuation) const
+    {
         if (!mEndpoints.contains(regionsUrlName))
         {
             continuation(QUrl{}, tr("Missing CREST regions url!"));
@@ -233,6 +268,33 @@ namespace Evernus
         regionUrl.setQuery(query);
 
         asyncGet(regionUrl, accept, std::forward<T>(continuation));
+    }
+
+    template<class T>
+    void CRESTInterface::getOrders(QUrl regionUrl, T &&continuation) const
+    {
+        asyncGet(regionUrl, "application/vnd.ccp.eve.MarketOrderCollectionSlim-v1+json", std::forward<T>(continuation));
+    }
+
+    void CRESTInterface::fetchPaginatedOrders(const PaginatedCallback &callback, const QUrl &url) const
+    {
+        auto continuatingCallback = [=](auto &&document, const auto &error) {
+            if (!error.isEmpty())
+            {
+                callback(QJsonDocument{}, true, error);
+                return;
+            }
+
+            const auto object = document.object();
+            const auto next = object["next"].toObject()["href"].toString();
+
+            if (!next.isEmpty())
+                fetchPaginatedOrders(callback, next);
+
+            callback(std::move(document), next.isEmpty(), QString{});
+        };
+
+        getOrders(url, continuatingCallback);
     }
 
     template<class T>

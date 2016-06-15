@@ -14,29 +14,31 @@
  */
 #pragma once
 
-#include <cstddef>
+#include "ExternalOrderImporter.h"
+#include "ProgressiveCounter.h"
+#include "ExternalOrder.h"
 
 namespace Evernus
 {
-    class ProgressiveCounter final
+    class CallbackExternalOrderImporter
+        : public ExternalOrderImporter
     {
+        Q_OBJECT
+
     public:
-        ProgressiveCounter() = default;
-        ~ProgressiveCounter() = default;
+        using ExternalOrderImporter::ExternalOrderImporter;
+        virtual ~CallbackExternalOrderImporter() = default;
 
-        size_t getCount() const noexcept;
-        void setCount(size_t count) noexcept;
-        void incCount() noexcept;
-        void addCount(size_t count) noexcept;
+    protected:
+        mutable ProgressiveCounter mCounter;
+        mutable bool mPreparingRequests = false;
 
-        bool isEmpty() const noexcept;
-        bool advanceAndCheckBatch() noexcept;
+        mutable std::vector<ExternalOrder> mResult;
+        mutable QStringList mAggregatedErrors;
 
-        void reset() noexcept;
-        void resetBatch() noexcept;
-        void resetBatchIfEmpty() noexcept;
+        void processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const;
 
     private:
-        size_t mCount = 0, mBatchCount = 0;
+        virtual void filterOrders(std::vector<ExternalOrder> &orders) const;
     };
 }

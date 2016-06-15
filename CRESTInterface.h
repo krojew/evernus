@@ -39,7 +39,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        using Callback = std::function<void (QJsonDocument &&data, const QString &error)>;
+        using JsonCallback = std::function<void (QJsonDocument &&data, const QString &error)>;
+        using PaginatedCallback = std::function<void (QJsonDocument &&data, bool atEnd, const QString &error)>;
+
         using EndpointMap = QHash<QString, QString>;
 
         static const QString crestUrl;
@@ -47,8 +49,9 @@ namespace Evernus
         explicit CRESTInterface(QObject *parent = nullptr);
         virtual ~CRESTInterface() = default;
 
-        void fetchMarketOrders(uint regionId, EveType::IdType typeId, const Callback &callback) const;
-        void fetchMarketHistory(uint regionId, EveType::IdType typeId, const Callback &callback) const;
+        void fetchMarketOrders(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const;
+        void fetchMarketOrders(uint regionId, const PaginatedCallback &callback) const;
+        void fetchMarketHistory(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const;
 
         void setEndpoints(EndpointMap endpoints);
 
@@ -61,6 +64,7 @@ namespace Evernus
     private:
         using RegionUrlCallbackMap = QHash<QPair<uint, QString>, std::vector<std::function<void (const QUrl &, const QString &)>>>;
         using RegionUrlMap = QHash<uint, QUrl>;
+        using RegionUrlMap = QHash<uint, QUrl>;
 
         static const QString regionsUrlName;
         static const QString itemTypesUrlName;
@@ -71,16 +75,25 @@ namespace Evernus
         mutable QNetworkAccessManager mNetworkManager;
         EndpointMap mEndpoints;
 
-        mutable RegionUrlMap mRegionUrls, mRegionOrdersUrls, mRegionHistoryUrls;
+        mutable RegionUrlMap mRegionUrls, mRegionOrdersUrls, mRegionHistoryUrls, mRegionMarketUrls;
         mutable RegionUrlCallbackMap mPendingRegionOrdersRequests, mPendingRegionHistoryRequests;
 
         mutable std::multimap<std::chrono::steady_clock::time_point, std::function<void ()>> mPendingRequests;
 
         template<class T>
         void getRegionUrl(uint regionId, RegionUrlMap &urlMap, RegionUrlCallbackMap &callbackMap, const QString urlName, T &&continuation) const;
+        template<class T>
+        void getRegionMarketUrl(uint regionId, T &&continuation) const;
+
+        template<class T>
+        void getRegionUrl(uint regionId, const QString &urlName, T &&continuation) const;
 
         template<class T>
         void getRegionData(QUrl regionUrl, EveType::IdType typeId, const QByteArray &accept, T &&continuation) const;
+        template<class T>
+        void getOrders(QUrl regionUrl, T &&continuation) const;
+
+        void fetchPaginatedOrders(const PaginatedCallback &callback, const QUrl &url) const;
 
         template<class T>
         void asyncGet(const QUrl &url, const QByteArray &accept, T &&continuation) const;

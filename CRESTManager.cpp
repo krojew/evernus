@@ -18,6 +18,7 @@
 #include <QApplication>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QByteArray>
 #include <QUrlQuery>
 #include <QSettings>
 #include <QDebug>
@@ -72,43 +73,7 @@ namespace Evernus
             orders.reserve(items.size());
 
             for (const auto &item : items)
-            {
-                const auto itemObject = item.toObject();
-                const auto location = itemObject.value("location").toObject();
-                const auto range = itemObject.value("range").toString();
-
-                auto issued = QDateTime::fromString(itemObject.value("issued").toString(), Qt::ISODate);
-                issued.setTimeSpec(Qt::UTC);
-
-                ExternalOrder order;
-
-                order.setId(itemObject.value("id_str").toString().toULongLong());
-                order.setType((itemObject.value("buy").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
-                order.setTypeId(typeId);
-                order.setStationId(location.value("id_str").toString().toUInt());
-                //TODO: replace when available
-                order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));
-                order.setRegionId(regionId);
-
-                if (range == "station")
-                    order.setRange(-1);
-                else if (range == "system")
-                    order.setRange(0);
-                else if (range == "region")
-                    order.setRange(32767);
-                else
-                    order.setRange(range.toShort());
-
-                order.setUpdateTime(QDateTime::currentDateTimeUtc());
-                order.setPrice(itemObject.value("price").toDouble());
-                order.setVolumeEntered(itemObject.value("volumeEntered").toInt());
-                order.setVolumeRemaining(itemObject.value("volume").toInt());
-                order.setMinVolume(itemObject.value("minVolume").toInt());
-                order.setIssued(issued);
-                order.setDuration(itemObject.value("duration").toInt());
-
-                orders.emplace_back(std::move(order));
-            }
+                orders.emplace_back(getOrderFromJson(item.toObject(), regionId));
 
             callback(std::move(orders), QString{});
         };
@@ -159,6 +124,33 @@ namespace Evernus
         });
     }
 
+    void CRESTManager::fetchMarketOrders(uint regionId, const Callback<std::vector<ExternalOrder>> &callback) const
+    {
+        if (!hasEndpoints())
+        {
+            callback(std::vector<ExternalOrder>{}, getMissingEnpointsError());
+            return;
+        }
+
+        auto orders = std::make_shared<std::vector<ExternalOrder>>();
+        mInterface.fetchMarketOrders(regionId, [=, orders = std::move(orders)](auto &&data, auto atEnd, const auto &error) {
+            if (!error.isEmpty())
+            {
+                callback(std::vector<ExternalOrder>{}, error);
+                return;
+            }
+
+            const auto items = data.object().value("items").toArray();
+            orders->reserve(orders->size() + items.size());
+
+            for (const auto &item : items)
+                orders->emplace_back(getOrderFromJson(item.toObject(), regionId));
+
+            if (atEnd)
+                callback(std::move(*orders), QString{});
+        });
+    }
+
     void CRESTManager::handleNewPreferences()
     {
         QSettings settings;
@@ -169,7 +161,7 @@ namespace Evernus
 
     void CRESTManager::fetchEndpoints()
     {
-        qDebug() << "Fetching CREST endpoints...";
+        qDebug() << "Fetching CREST endpoints:" << CRESTInterface::crestUrl;
 
         QNetworkRequest request{CRESTInterface::crestUrl};
         request.setHeader(QNetworkRequest::UserAgentHeader,
@@ -220,6 +212,51 @@ namespace Evernus
     bool CRESTManager::hasEndpoints() const
     {
         return !mEndpoints.isEmpty();
+    }
+
+    ExternalOrder CRESTManager::getOrderFromJson(const QJsonObject &object, uint regionId) const
+    {
+        const auto range = object.value("range").toString();
+
+        auto issued = QDateTime::fromString(object.value("issued").toString(), Qt::ISODate);
+        issued.setTimeSpec(Qt::UTC);
+
+        ExternalOrder order;
+
+        order.setId(object.value("id").toDouble()); // https://bugreports.qt.io/browse/QTBUG-28560
+        order.setType((object.value("buy").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
+
+        const auto type = object.value("type");
+        order.setTypeId((type.isObject()) ? (type.toObject().value("id").toInt()) : (type.toInt()));
+
+        const auto location = object.value("location");
+        if (location.isUndefined())
+            order.setStationId(object.value("stationID").toInt());
+        else
+            order.setStationId(location.toObject().value("id_str").toString().toUInt());
+
+        //TODO: replace when available
+        order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));
+        order.setRegionId(regionId);
+
+        if (range == "station")
+            order.setRange(-1);
+        else if (range == "system")
+            order.setRange(0);
+        else if (range == "region")
+            order.setRange(32767);
+        else
+            order.setRange(range.toShort());
+
+        order.setUpdateTime(QDateTime::currentDateTimeUtc());
+        order.setPrice(object.value("price").toDouble());
+        order.setVolumeEntered(object.value("volumeEntered").toInt());
+        order.setVolumeRemaining(object.value("volume").toInt());
+        order.setMinVolume(object.value("minVolume").toInt());
+        order.setIssued(issued);
+        order.setDuration(object.value("duration").toInt());
+
+        return order;
     }
 
     QString CRESTManager::getMissingEnpointsError()

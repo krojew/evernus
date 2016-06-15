@@ -12,12 +12,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
+
 #include <boost/scope_exit.hpp>
 
 #include <QSettings>
 #include <QDebug>
 
 #include "ImportSettings.h"
+#include "CRESTUtils.h"
 
 #include "MarketAnalysisDataFetcher.h"
 
@@ -26,8 +29,9 @@ namespace Evernus
     MarketAnalysisDataFetcher::MarketAnalysisDataFetcher(const EveDataProvider &dataProvider,
                                                          QObject *parent)
         : QObject{parent}
-        , mCRESTManager{dataProvider}
-        , mEveCentralManager{dataProvider}
+        , mDataProvider{dataProvider}
+        , mCRESTManager{mDataProvider}
+        , mEveCentralManager{mDataProvider}
     {
         connect(&mCRESTManager, &CRESTManager::error, this, &MarketAnalysisDataFetcher::genericError);
     }
@@ -45,48 +49,96 @@ namespace Evernus
     void MarketAnalysisDataFetcher::importData(const ExternalOrderImporter::TypeLocationPairs &pairs,
                                                const MarketOrderRepository::TypeLocationPairs &ignored)
     {
-        mOrders = std::make_shared<OrderResultType::element_type>();
-        mHistory = std::make_shared<HistoryResultType::element_type>();
-
         mPreparingRequests = true;
         BOOST_SCOPE_EXIT(this_) {
             this_->mPreparingRequests = false;
         } BOOST_SCOPE_EXIT_END
 
-        mOrderCounter.resetBatchIfEmpty();
-        mHistoryCounter.resetBatchIfEmpty();
+        if (mOrderCounter.isEmpty())
+        {
+            mOrders = std::make_shared<OrderResultType::element_type>();
+            mOrderCounter.resetBatch();
+        }
+
+        if (mHistoryCounter.isEmpty())
+        {
+            mHistory = std::make_shared<HistoryResultType::element_type>();
+            mHistoryCounter.resetBatch();
+        }
 
         QSettings settings;
         const auto webImporter = static_cast<ImportSettings::WebImporterType>(
             settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
+        const auto marketImportType = static_cast<ImportSettings::MarketOrderImportType>(
+            settings.value(ImportSettings::marketOrderImportTypeKey, static_cast<int>(ImportSettings::marketOrderImportTypeDefault)).toInt());
+        auto useWholeMarketImport = marketImportType == ImportSettings::MarketOrderImportType::Whole;
 
-        for (const auto &pair : pairs)
+        if (!useWholeMarketImport && marketImportType == ImportSettings::MarketOrderImportType::Auto)
+            useWholeMarketImport = CRESTUtils::useWholeMarketImport(pairs, mDataProvider);
+
+        if (useWholeMarketImport)
         {
-            if (ignored.find(pair) != std::end(ignored))
-                continue;
-
-            mOrderCounter.incCount();
-            mHistoryCounter.incCount();
-
-            if (webImporter == ImportSettings::WebImporterType::EveCentral)
+            std::unordered_set<uint> regions;
+            for (const auto &pair : pairs)
             {
-                mEveCentralManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
+                if (ignored.find(pair) != std::end(ignored))
+                    continue;
+
+                mHistoryCounter.incCount();
+
+                mCRESTManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
+                    processHistory(pair.second, pair.first, std::move(history), error);
+                });
+
+                regions.insert(pair.second);
+            }
+
+            mOrderCounter.setCount(regions.size());
+
+            for (const auto region : regions)
+            {
+                mCRESTManager.fetchMarketOrders(region, [=](std::vector<ExternalOrder> &&orders, const QString &error) {
+                    orders.erase(std::remove_if(std::begin(orders), std::end(orders), [&](const auto &order) {
+                        return pairs.find(std::make_pair(order.getTypeId(), order.getRegionId())) == std::end(pairs);
+                    }), std::end(orders));
+
                     processOrders(std::move(orders), error);
                 });
             }
-            else
+        }
+        else
+        {
+            for (const auto &pair : pairs)
             {
-                mCRESTManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
-                    processOrders(std::move(orders), error);
+                if (ignored.find(pair) != std::end(ignored))
+                    continue;
+
+                mOrderCounter.incCount();
+                mHistoryCounter.incCount();
+
+                if (webImporter == ImportSettings::WebImporterType::EveCentral)
+                {
+                    mEveCentralManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
+                        processOrders(std::move(orders), error);
+                    });
+                }
+                else
+                {
+                    mCRESTManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
+                        processOrders(std::move(orders), error);
+                    });
+                }
+
+                mCRESTManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
+                    processHistory(pair.second, pair.first, std::move(history), error);
                 });
             }
-
-            mCRESTManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
-                processHistory(pair.second, pair.first, std::move(history), error);
-            });
         }
 
         qDebug() << "Making" << mOrderCounter.getCount() << mHistoryCounter.getCount() << "order and history requests...";
+
+        emit orderStatusUpdated(tr("Waiting for %1 order server replies...").arg(mOrderCounter.getCount()));
+        emit historyStatusUpdated(tr("Waiting for %1 history server replies...").arg(mHistoryCounter.getCount()));
     }
 
     void MarketAnalysisDataFetcher::handleNewPreferences()
@@ -99,7 +151,7 @@ namespace Evernus
         if (mOrderCounter.advanceAndCheckBatch())
             emit orderStatusUpdated(tr("Waiting for %1 order server replies...").arg(mOrderCounter.getCount()));
 
-        qDebug() << mOrderCounter.getCount() << " orders remaining; error:" << errorText;
+        qDebug() << mOrderCounter.getCount() << "orders remaining; error:" << errorText;
 
         if (!errorText.isEmpty())
         {
@@ -132,7 +184,7 @@ namespace Evernus
         if (mHistoryCounter.advanceAndCheckBatch())
             emit historyStatusUpdated(tr("Waiting for %1 history server replies...").arg(mHistoryCounter.getCount()));
 
-        qDebug() << mHistoryCounter.getCount() << " history remaining; error:" << errorText;
+        qDebug() << mHistoryCounter.getCount() << "history remaining; error:" << errorText;
 
         if (!errorText.isEmpty())
         {

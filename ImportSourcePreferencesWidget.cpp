@@ -63,6 +63,16 @@ namespace Evernus
         addSourceItem(*mWebImporterTypeCombo, tr("Eve-Central"), ImportSettings::WebImporterType::EveCentral, webImporterType);
         addSourceItem(*mWebImporterTypeCombo, tr("CREST"), ImportSettings::WebImporterType::CREST, webImporterType);
 
+        mMarketOrderImportTypeCombo = new QComboBox{this};
+        sourceGroupLayout->addRow(tr("Market order import type:"), mMarketOrderImportTypeCombo);
+
+        const auto marketOrderImportType = static_cast<ImportSettings::MarketOrderImportType>(
+            settings.value(ImportSettings::marketOrderImportTypeKey, static_cast<int>(ImportSettings::marketOrderImportTypeDefault)).toInt());
+
+        addSourceItem(*mMarketOrderImportTypeCombo, tr("Auto"), ImportSettings::MarketOrderImportType::Auto, marketOrderImportType);
+        addSourceItem(*mMarketOrderImportTypeCombo, tr("Individual"), ImportSettings::MarketOrderImportType::Individual, marketOrderImportType);
+        addSourceItem(*mMarketOrderImportTypeCombo, tr("Whole"), ImportSettings::MarketOrderImportType::Whole, marketOrderImportType);
+
         mainLayout->addStretch();
     }
 
@@ -72,6 +82,7 @@ namespace Evernus
         settings.setValue(ImportSettings::priceImportSourceKey, mPriceSourceCombo->currentData());
         settings.setValue(ImportSettings::marketOrderImportSourceKey, mMarketOrderSourceCombo->currentData());
         settings.setValue(ImportSettings::webImportTypeKey, mWebImporterTypeCombo->currentData());
+        settings.setValue(ImportSettings::marketOrderImportTypeKey, mMarketOrderImportTypeCombo->currentData());
     }
 
     template<class T>

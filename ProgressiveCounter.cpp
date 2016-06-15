@@ -62,6 +62,11 @@ namespace Evernus
         mCount = mBatchCount = 0;
     }
 
+    void ProgressiveCounter::resetBatch() noexcept
+    {
+        mBatchCount = 0;
+    }
+
     void ProgressiveCounter::resetBatchIfEmpty() noexcept
     {
         if (isEmpty())

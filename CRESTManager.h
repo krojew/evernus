@@ -26,6 +26,8 @@
 #include "CRESTInterface.h"
 #include "EveType.h"
 
+class QJsonObject;
+
 namespace Evernus
 {
     class EveDataProvider;
@@ -40,8 +42,7 @@ namespace Evernus
         template<class T>
         using Callback = std::function<void (T &&data, const QString &error)>;
 
-        CRESTManager(const EveDataProvider &dataProvider,
-                     QObject *parent = nullptr);
+        explicit CRESTManager(const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~CRESTManager() = default;
 
         void fetchMarketOrders(uint regionId,
@@ -50,6 +51,7 @@ namespace Evernus
         void fetchMarketHistory(uint regionId,
                                 EveType::IdType typeId,
                                 const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const;
+        void fetchMarketOrders(uint regionId, const Callback<std::vector<ExternalOrder>> &callback) const;
 
     signals:
         void error(const QString &text);
@@ -69,6 +71,8 @@ namespace Evernus
 
         void fetchEndpoints();
         bool hasEndpoints() const;
+
+        ExternalOrder getOrderFromJson(const QJsonObject &object, uint regionId) const;
 
         static QString getMissingEnpointsError();
     };

@@ -362,9 +362,15 @@
         <translation type="vanished">Evernus wurde ohne CREST-Unterstützung erstellt. Du kannst manuell CREST ID und CREST Secret via Kommandozeile angeben: --crest-id and --crest-secret</translation>
     </message>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="77"/>
         <source>CREST import: waiting for %1 server replies</source>
-        <translation>CREST Iimport: warte auf %1 Serverantworten</translation>
+        <translation type="vanished">CREST Iimport: warte auf %1 Serverantworten</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::CRESTIndividualExternalOrderImporter</name>
+    <message>
+        <source>CREST import: waiting for %1 server replies</source>
+        <translation type="obsolete">CREST Iimport: warte auf %1 Serverantworten</translation>
     </message>
 </context>
 <context>
@@ -374,18 +380,13 @@
         <translation type="vanished">Leere CREST Endpunkt Karte. Bitte warten Sie, bis Endpunkte wurden geholt.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="138"/>
+        <location filename="../CRESTInterface.cpp" line="165"/>
         <source>Missing CREST regions url!</source>
         <translatorcomment>#NOTE# Not sure if it makes sense to translate &quot;regions&quot; here, as it&apos;s meant as part of an API method, not a descriptive term. Better use: &quot;Fehlende CREST Regions URL&quot;</translatorcomment>
         <translation>Fehlende CREST Regionen URL!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="208"/>
-        <source>Missing region URL for %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTInterface.cpp" line="226"/>
+        <location filename="../CRESTInterface.cpp" line="209"/>
         <source>Missing CREST item types url!</source>
         <translatorcomment>#NOTE# Same as with &quot;regions&quot;. I&apos;d rather go with &quot;Fehlende CREST Item Types URL&quot;</translatorcomment>
         <translation>Fehlende CREST Gegenstandsarten URL!</translation>
@@ -416,7 +417,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Das Zertifikat der EVE Loginseite enthielt Fehler: %1. Bist du sicher das du weitermachen willst (dies kann die Sicherheit deines EVE Accounts gefährden)?</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="192"/>
+        <location filename="../CRESTManager.cpp" line="184"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Fehler beim Abrufen der CREST Endpunkte!</translation>
     </message>
@@ -425,7 +426,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Leeres Refresh Token!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="227"/>
+        <location filename="../CRESTManager.cpp" line="264"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>CREST Endpunkt Karte ist leer. Bitte warten Sie eine Weile.</translation>
     </message>
@@ -444,6 +445,13 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
 </context>
 <context>
+    <name>Evernus::CRESTWholeExternalOrderImporter</name>
+    <message>
+        <source>CREST import: waiting for %1 server replies</source>
+        <translation type="obsolete">CREST Iimport: warte auf %1 Serverantworten</translation>
+    </message>
+</context>
+<context>
     <name>Evernus::CachingEveDataProvider</name>
     <message>
         <location filename="../CachingEveDataProvider.cpp" line="156"/>
@@ -451,6 +459,14 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <location filename="../CachingEveDataProvider.cpp" line="181"/>
         <source>(unknown)</source>
         <translation>(unbekannt)</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::CallbackExternalOrderImporter</name>
+    <message>
+        <location filename="../CallbackExternalOrderImporter.cpp" line="24"/>
+        <source>CREST import: waiting for %1 server replies</source>
+        <translation type="unfinished">CREST Iimport: warte auf %1 Serverantworten</translation>
     </message>
 </context>
 <context>
@@ -2091,7 +2107,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="94"/>
-        <source>Apply date format to graphs (requires restart)</source>
+        <source>Apply date fromat to graphs (requires restart)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2606,6 +2622,26 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
         <source>CREST</source>
         <translation>CREST</translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="67"/>
+        <source>Market order import type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="72"/>
+        <source>Auto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="73"/>
+        <source>Individual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="74"/>
+        <source>Whole</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3426,12 +3462,14 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::MarketAnalysisDataFetcher</name>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="100"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="140"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="152"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Warte auf %1 Serverantworten für Aufträge...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="133"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="141"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="185"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Warte auf %1 Serverantworten für Historie...</translation>
     </message>

@@ -87,6 +87,7 @@ qt5_wrap_cpp(
     ButtonWithTimer.h
     CachingEveDataProvider.h
     CachingMarketOrderProvider.h
+    CallbackExternalOrderImporter.h
     CharacterBoundWidget.h
     CharacterManagerDialog.h
     CharacterModel.h
@@ -101,10 +102,11 @@ qt5_wrap_cpp(
     ContractWidget.h
     CorpImportPreferencesWidget.h
     CorpKeyEditDialog.h
-    CRESTExternalOrderImporter.h
+    CRESTIndividualExternalOrderImporter.h
     CRESTInterface.h
     CRESTManager.h
     CRESTMessageBox.h
+    CRESTWholeExternalOrderImporter.h
     DateFilteredPlotWidget.h
     DateRangeWidget.h
     DeviationSourceWidget.h
@@ -281,6 +283,8 @@ add_executable(
     CachingEveDataProvider.h
     CachingMarketOrderProvider.cpp
     CachingMarketOrderProvider.h
+    CallbackExternalOrderImporter.cpp
+    CallbackExternalOrderImporter.h
     Character.cpp
     Character.h
     CharacterBoundWidget.cpp
@@ -361,8 +365,8 @@ add_executable(
     CorpWalletSnapshot.h
     CorpWalletSnapshotRepository.cpp
     CorpWalletSnapshotRepository.h
-    CRESTExternalOrderImporter.cpp
-    CRESTExternalOrderImporter.h
+    CRESTIndividualExternalOrderImporter.cpp
+    CRESTIndividualExternalOrderImporter.h
     CRESTInterface.cpp
     CRESTInterface.h
     CRESTManager.cpp
@@ -370,6 +374,10 @@ add_executable(
     CRESTMessageBox.cpp
     CRESTMessageBox.h
     CRESTSettings.h
+    CRESTUtils.cpp
+    CRESTUtils.h
+    CRESTWholeExternalOrderImporter.cpp
+    CRESTWholeExternalOrderImporter.h
     DatabaseUtils.cpp
     DatabaseUtils.h
     DateFilteredPlotWidget.cpp

@@ -12,31 +12,34 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #pragma once
 
-#include <cstddef>
+#include "CallbackExternalOrderImporter.h"
+#include "CRESTManager.h"
 
 namespace Evernus
 {
-    class ProgressiveCounter final
+    class CRESTWholeExternalOrderImporter
+        : public CallbackExternalOrderImporter
     {
+        Q_OBJECT
+
     public:
-        ProgressiveCounter() = default;
-        ~ProgressiveCounter() = default;
+        explicit CRESTWholeExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        virtual ~CRESTWholeExternalOrderImporter() = default;
 
-        size_t getCount() const noexcept;
-        void setCount(size_t count) noexcept;
-        void incCount() noexcept;
-        void addCount(size_t count) noexcept;
+        virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
 
-        bool isEmpty() const noexcept;
-        bool advanceAndCheckBatch() noexcept;
-
-        void reset() noexcept;
-        void resetBatch() noexcept;
-        void resetBatchIfEmpty() noexcept;
+    public slots:
+        void handleNewPreferences();
 
     private:
-        size_t mCount = 0, mBatchCount = 0;
+        const EveDataProvider &mDataProvider;
+
+        CRESTManager mManager;
+        mutable TypeLocationPairs mCurrentTarget;
+
+        virtual void filterOrders(std::vector<ExternalOrder> &orders) const override;
     };
 }

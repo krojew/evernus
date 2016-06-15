@@ -538,9 +538,15 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../CRESTExternalOrderImporter.cpp" line="77"/>
         <source>CREST import: waiting for %1 server replies</source>
-        <translation>Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
+        <translation type="vanished">Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::CRESTIndividualExternalOrderImporter</name>
+    <message>
+        <source>CREST import: waiting for %1 server replies</source>
+        <translation type="vanished">Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
     </message>
 </context>
 <context>
@@ -554,17 +560,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="138"/>
+        <location filename="../CRESTInterface.cpp" line="165"/>
         <source>Missing CREST regions url!</source>
         <translation>Brak adresu regionów w CREST!</translation>
     </message>
     <message>
-        <location filename="../CRESTInterface.cpp" line="208"/>
-        <source>Missing region URL for %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTInterface.cpp" line="226"/>
+        <location filename="../CRESTInterface.cpp" line="209"/>
         <source>Missing CREST item types url!</source>
         <translation>Brak adresu typów w CREST!</translation>
     </message>
@@ -596,7 +597,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Uwierzytelnianie CREST</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="192"/>
+        <location filename="../CRESTManager.cpp" line="184"/>
         <source>Error fetching CREST endpoints!</source>
         <translation>Błąd pobierania punktów wejścia CREST!</translation>
     </message>
@@ -605,7 +606,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../CRESTManager.cpp" line="227"/>
+        <location filename="../CRESTManager.cpp" line="264"/>
         <source>CREST endpoint map is empty. Please wait a while.</source>
         <translation>Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
     </message>
@@ -640,6 +641,13 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
 </context>
 <context>
+    <name>Evernus::CRESTWholeExternalOrderImporter</name>
+    <message>
+        <source>CREST import: waiting for %1 server replies</source>
+        <translation type="vanished">Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
+    </message>
+</context>
+<context>
     <name>Evernus::CacheExternalOrderImporter</name>
     <message>
         <source>Couldn&apos;t determine Eve cache path.</source>
@@ -666,6 +674,14 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <location filename="../CachingEveDataProvider.cpp" line="181"/>
         <source>(unknown)</source>
         <translation>(nieznane)</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::CallbackExternalOrderImporter</name>
+    <message>
+        <location filename="../CallbackExternalOrderImporter.cpp" line="24"/>
+        <source>CREST import: waiting for %1 server replies</source>
+        <translation type="unfinished">Import CREST: oczekiwanie na %1 odpowiedzi serwera</translation>
     </message>
 </context>
 <context>
@@ -2334,12 +2350,8 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="94"/>
-        <source>Apply date format to graphs (requires restart)</source>
-        <translation>Zastosuj format daty do wykresów (wymaga restartu)</translation>
-    </message>
-    <message>
         <source>Apply date fromat to graphs (requires restart)</source>
-        <translation type="vanished">Zastosuj format daty do wykresów (wymaga restartu)</translation>
+        <translation>Zastosuj format daty do wykresów (wymaga restartu)</translation>
     </message>
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="100"/>
@@ -2893,6 +2905,26 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
         <source>CREST</source>
         <translation>CREST</translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="67"/>
+        <source>Market order import type:</source>
+        <translation>Typ importu zleceń:</translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="72"/>
+        <source>Auto</source>
+        <translation>Auto</translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="73"/>
+        <source>Individual</source>
+        <translation>Pojedyncze</translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="74"/>
+        <source>Whole</source>
+        <translation>Cały rynek</translation>
     </message>
     <message>
         <source>File</source>
@@ -3758,12 +3790,14 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::MarketAnalysisDataFetcher</name>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="100"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="140"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="152"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="133"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="141"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="185"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Oczekiwanie na %1 odpowiedzi z historią...</translation>
     </message>
