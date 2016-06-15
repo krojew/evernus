@@ -2086,7 +2086,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="94"/>
-        <source>Apply date fromat to graphs (requires restart)</source>
+        <source>Apply date format to graphs (requires restart)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

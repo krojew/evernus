@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pl_PL">
+<TS version="2.0" language="pl_PL">
 <context>
     <name>APIManager</name>
     <message>
@@ -51,7 +51,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <name>DatabaseUtils</name>
     <message>
         <source>Error crating DB object!</source>
-        <translation type="vanished">Błąd tworzenia obiektu bazy danych!</translation>
+        <translation>Błąd tworzenia obiektu bazy danych!</translation>
     </message>
     <message>
         <location filename="../DatabaseUtils.cpp" line="40"/>
@@ -73,84 +73,84 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <name>EveCacheBuffer</name>
     <message>
         <source>Error reading cache.</source>
-        <translation type="vanished">Błąd odczytu cache.</translation>
+        <translation>Błąd odczytu cache.</translation>
     </message>
     <message>
         <source>Cannot open buffer.</source>
-        <translation type="vanished">Nie można otworzyć bufora.</translation>
+        <translation>Nie można otworzyć bufora.</translation>
     </message>
 </context>
 <context>
     <name>EveCacheFile</name>
     <message>
         <source>Cannot open file.</source>
-        <translation type="vanished">Nie można otworzyć pliku.</translation>
+        <translation>Nie można otworzyć pliku.</translation>
     </message>
 </context>
 <context>
     <name>EveCacheFileParser</name>
     <message>
         <source>Invalid data in share map!</source>
-        <translation type="vanished">Nieprawidłowe dane w mapie dzielenia!</translation>
+        <translation>Nieprawidłowe dane w mapie dzielenia!</translation>
     </message>
     <message>
         <source>Didn&apos;t encounter a double 0x2d where should be one!</source>
-        <translation type="vanished">Nie znaleziono podwójnego 0x2d, gdzie powinien być!</translation>
+        <translation>Nie znaleziono podwójnego 0x2d, gdzie powinien być!</translation>
     </message>
     <message>
         <source>Unknown stream type!</source>
-        <translation type="vanished">Nieznany typ strumienia!</translation>
+        <translation>Nieznany typ strumienia!</translation>
     </message>
     <message>
         <source>Couldn&apos;t parse stream!</source>
-        <translation type="vanished">Nie udało się odczytać strumienia!</translation>
+        <translation>Nie udało się odczytać strumienia!</translation>
     </message>
     <message>
         <source>DB row not found!</source>
-        <translation type="vanished">Nie znaleziono wiersza bazy danych!</translation>
+        <translation>Nie znaleziono wiersza bazy danych!</translation>
     </message>
     <message>
         <source>Bad descriptor name!</source>
-        <translation type="vanished">Nieprawidłowa nazwa deskryptora!</translation>
+        <translation>Nieprawidłowa nazwa deskryptora!</translation>
     </message>
     <message>
         <source>Invalid row size!</source>
-        <translation type="vanished">Nieprawiłowy rozmiar wiersza!</translation>
+        <translation>Nieprawiłowy rozmiar wiersza!</translation>
     </message>
     <message>
         <source>Invalid row fields!</source>
-        <translation type="vanished">Nieprawidłowe pola wiersza!</translation>
+        <translation>Nieprawidłowe pola wiersza!</translation>
     </message>
     <message>
         <source>Invalid row field type!</source>
-        <translation type="vanished">Nieprawidłowy typ pola!</translation>
+        <translation>Nieprawidłowy typ pola!</translation>
     </message>
     <message>
         <source>Unknown ADO type!</source>
-        <translation type="vanished">Nieznany typ ADO!</translation>
+        <translation>Nieznany typ ADO!</translation>
     </message>
     <message>
         <source>Share index out of range!</source>
-        <translation type="vanished">Indeks dzielonego obiektu poza zakresem!</translation>
+        <translation>Indeks dzielonego obiektu poza zakresem!</translation>
     </message>
     <message>
         <source>No share at specified index found!</source>
-        <translation type="vanished">Brak dzielonego obiektu dla danego indeksu!</translation>
+        <translation>Brak dzielonego obiektu dla danego indeksu!</translation>
     </message>
     <message>
         <source>Share cursor out of range!</source>
-        <translation type="vanished">Kursor dzielonych obiektów poza zakresem!</translation>
+        <translation>Kursor dzielonych obiektów poza zakresem!</translation>
     </message>
     <message>
         <source>Share ID out of range!</source>
-        <translation type="vanished">Identyfikator dzielonego obiektu poza zakresem!</translation>
+        <translation>Identyfikator dzielonego obiektu poza zakresem!</translation>
     </message>
 </context>
 <context>
     <name>EveCacheManager</name>
     <message>
         <source>No cache files found!</source>
-        <translation type="vanished">Nie znaleziono plików cache!</translation>
+        <translation>Nie znaleziono plików cache!</translation>
     </message>
 </context>
 <context>
@@ -193,71 +193,71 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="vanished">Proxy</translation>
+        <translation>Proxy</translation>
     </message>
     <message>
         <source>No proxy</source>
-        <translation type="vanished">Brak proxy</translation>
+        <translation>Brak proxy</translation>
     </message>
     <message>
         <source>Custom proxy</source>
-        <translation type="vanished">Własne proxy</translation>
+        <translation>Własne proxy</translation>
     </message>
     <message>
         <source>Type:</source>
-        <translation type="vanished">Typ:</translation>
+        <translation>Typ:</translation>
     </message>
     <message>
         <source>SOCKS5</source>
-        <translation type="vanished">SOCKS5</translation>
+        <translation>SOCKS5</translation>
     </message>
     <message>
         <source>HTTP</source>
-        <translation type="vanished">HTTP</translation>
+        <translation>HTTP</translation>
     </message>
     <message>
         <source>Host:</source>
-        <translation type="vanished">Serwer:</translation>
+        <translation>Serwer:</translation>
     </message>
     <message>
         <source>Port:</source>
-        <translation type="vanished">Port:</translation>
+        <translation>Port:</translation>
     </message>
     <message>
         <source>User:</source>
-        <translation type="vanished">Użytkownik:</translation>
+        <translation>Użytkownik:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="vanished">Hasło:</translation>
+        <translation>Hasło:</translation>
     </message>
     <message>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
-        <translation type="vanished">Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
+        <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
         <source>API provider</source>
-        <translation type="vanished">Dostawca API</translation>
+        <translation>Dostawca API</translation>
     </message>
     <message>
         <source>Use default provider</source>
-        <translation type="vanished">Domyślny</translation>
+        <translation>Domyślny</translation>
     </message>
     <message>
         <source>Use custom provider</source>
-        <translation type="vanished">Własny</translation>
+        <translation>Własny</translation>
     </message>
     <message>
         <source>CREST</source>
-        <translation type="vanished">CREST</translation>
+        <translation>CREST</translation>
     </message>
     <message>
         <source>Max. threads:</source>
-        <translation type="vanished">Maks. ilość wątków:</translation>
+        <translation>Maks. ilość wątków:</translation>
     </message>
     <message>
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
-        <translation type="vanished">Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
+        <translation>Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
     </message>
     <message>
         <source>Custom station</source>
@@ -270,7 +270,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <source>Encountered SSL errors:
 
 %1</source>
-        <translation type="vanished">Wystąpiły błędy SSL:
+        <translation>Wystąpiły błędy SSL:
 
 %1</translation>
     </message>
@@ -300,11 +300,11 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <name>Evernus::AboutDialog</name>
     <message>
         <source>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Created by &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;All donations are welcome :)&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;</source>
-        <translation type="vanished">&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Autor: &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Wszelkie podarunki są mile widziane:)&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;</translation>
+        <translation>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Autor: &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Wszelkie podarunki są mile widziane:)&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;</translation>
     </message>
     <message>
         <source>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Created by &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;All donations are welcome :)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;Forum topic: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;</source>
-        <translation type="vanished">&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Autor: &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Wszelkie podarunki są mile widziane:)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;Forum: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;</translation>
+        <translation>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Autor: &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Wszelkie podarunki są mile widziane:)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;Forum: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../AboutDialog.cpp" line="37"/>
@@ -425,11 +425,11 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <source>Store total asset value on import/price import*</source>
-        <translation type="vanished">Zapisz całkowitą wartość aktywów przy imporcie/imporcie cen</translation>
+        <translation>Zapisz całkowitą wartość aktywów przy imporcie/imporcie cen</translation>
     </message>
     <message>
         <source>* Requires full price data to be present. If there is no stored value, try importing prices.</source>
-        <translation type="vanished">* Wymaga danych o wszystkich cenach. Jeśli wartość nie została zapisana, należy zaimportować ceny ręcznie.</translation>
+        <translation>* Wymaga danych o wszystkich cenach. Jeśli wartość nie została zapisana, należy zaimportować ceny ręcznie.</translation>
     </message>
 </context>
 <context>
@@ -446,7 +446,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <source>Import prices from cache</source>
-        <translation type="vanished">Importuj ceny z cache</translation>
+        <translation>Importuj ceny z cache</translation>
     </message>
     <message>
         <location filename="../AssetsWidget.cpp" line="76"/>
@@ -488,54 +488,54 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <name>Evernus::CRESTAuthWidget</name>
     <message>
         <source>Toggle external browser</source>
-        <translation type="vanished">Przełącz przeglądarkę</translation>
+        <translation>Przełącz przeglądarkę</translation>
     </message>
     <message>
         <source>To authorize inside the browser, use the following link and paste the resulting code below: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="vanished">Aby uwierzytelnić się przez przeglądarkę, użynij podanego linku i wklej poniżej wynikowy kod: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</translation>
+        <translation>Aby uwierzytelnić się przez przeglądarkę, użynij podanego linku i wklej poniżej wynikowy kod: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <source>paste the resulting code here</source>
-        <translation type="vanished">wklej wynikowy kod tutaj</translation>
+        <translation>wklej wynikowy kod tutaj</translation>
     </message>
     <message>
         <source>Authorize</source>
-        <translation type="vanished">Uwierzytelnij</translation>
+        <translation>Uwierzytelnij</translation>
     </message>
     <message>
         <source>CREST Authentication</source>
-        <translation type="vanished">Uwierzytelnianie CREST</translation>
+        <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
         <source>The supplied code is invalid. Please make sure all characters were copied or use internal browser authorization.</source>
-        <translation type="vanished">Wprowadzony kod jest nieprawidłowy. Upewnij się, że skopiowałeś wszystkie znaki, lub użyj wewnętrznej przeglądarki.</translation>
+        <translation>Wprowadzony kod jest nieprawidłowy. Upewnij się, że skopiowałeś wszystkie znaki, lub użyj wewnętrznej przeglądarki.</translation>
     </message>
     <message>
         <source>The supplied code is invalid. Please make sure all character were copied or use internal browser authorization.</source>
-        <translation type="vanished">Wprowadzony kod jest nieprawidłowy. Upewnij się, że skopiowałeś wszystkie znaki, lub użyj wewnętrznej przeglądarki.</translation>
+        <translation>Wprowadzony kod jest nieprawidłowy. Upewnij się, że skopiowałeś wszystkie znaki, lub użyj wewnętrznej przeglądarki.</translation>
     </message>
 </context>
 <context>
     <name>Evernus::CRESTExternalOrderImporter</name>
     <message>
         <source>CREST authorization failed.</source>
-        <translation type="vanished">Autoryzacja CREST nie powiodła się.</translation>
+        <translation>Autoryzacja CREST nie powiodła się.</translation>
     </message>
     <message>
         <source>Evernus has been compiled without CREST support. You can manually specify CREST client id and secret via command line options: --crest-id and --crest-secret</source>
-        <translation type="vanished">Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
+        <translation>Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
     </message>
     <message>
         <source>CREST Authentication</source>
-        <translation type="vanished">Uwierzytelnianie CREST</translation>
+        <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
         <source>Empty refresh token!</source>
-        <translation type="vanished">Pusty token odświeżania!</translation>
+        <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
         <source>Empty access token!</source>
-        <translation type="vanished">Pusty token dostępu!</translation>
+        <translation>Pusty token dostępu!</translation>
     </message>
     <message>
         <location filename="../CRESTExternalOrderImporter.cpp" line="77"/>
@@ -547,11 +547,11 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <name>Evernus::CRESTInterface</name>
     <message>
         <source>CREST authorization failed.</source>
-        <translation type="vanished">Autoryzacja CREST nie powiodła się.</translation>
+        <translation>Autoryzacja CREST nie powiodła się.</translation>
     </message>
     <message>
         <source>Empty CREST endpoint map. Please wait until endpoints have been fetched.</source>
-        <translation type="vanished">Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
+        <translation>Pusta mapa puntków wejścia CREST. Poczekaj chwilę, aż zostanie pobrana.</translation>
     </message>
     <message>
         <location filename="../CRESTInterface.cpp" line="130"/>
@@ -565,30 +565,30 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <source>CREST Authentication</source>
-        <translation type="vanished">Uwierzytelnianie CREST</translation>
+        <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
         <source>Empty refresh token!</source>
-        <translation type="vanished">Pusty token odświeżania!</translation>
+        <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
         <source>Empty access token!</source>
-        <translation type="vanished">Pusty token dostępu!</translation>
+        <translation>Pusty token dostępu!</translation>
     </message>
 </context>
 <context>
     <name>Evernus::CRESTManager</name>
     <message>
         <source>CREST authorization failed.</source>
-        <translation type="vanished">Autoryzacja CREST nie powiodła się.</translation>
+        <translation>Autoryzacja CREST nie powiodła się.</translation>
     </message>
     <message>
         <source>Evernus has been compiled without CREST support. You can manually specify CREST client id and secret via command line options: --crest-id and --crest-secret</source>
-        <translation type="vanished">Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
+        <translation>Evernus został skompilowany bez obsługi CREST. Możesz ręcznie wpisać identyfikator i klucz klienta CREST przez linię poleceń: --crest-id and --crest-secret</translation>
     </message>
     <message>
         <source>CREST Authentication</source>
-        <translation type="vanished">Uwierzytelnianie CREST</translation>
+        <translation>Uwierzytelnianie CREST</translation>
     </message>
     <message>
         <location filename="../CRESTManager.cpp" line="192"/>
@@ -597,7 +597,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <source>Empty refresh token!</source>
-        <translation type="vanished">Pusty token odświeżania!</translation>
+        <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
         <location filename="../CRESTManager.cpp" line="227"/>
@@ -606,17 +606,17 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <source>Empty access token!</source>
-        <translation type="vanished">Pusty token dostępu!</translation>
+        <translation>Pusty token dostępu!</translation>
     </message>
     <message>
         <source>CREST error</source>
-        <translation type="vanished">Błąd CREST</translation>
+        <translation>Błąd CREST</translation>
     </message>
     <message>
         <source>EVE login page certificate contains errors:
 %1
 Are you sure you wish to proceed (doing so can compromise your account security)?</source>
-        <translation type="vanished">Certyfikat strony logowania EVE zawiera błędy:
+        <translation>Certyfikat strony logowania EVE zawiera błędy:
 %1
 Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?</translation>
     </message>
@@ -638,19 +638,19 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <name>Evernus::CacheExternalOrderImporter</name>
     <message>
         <source>Couldn&apos;t determine Eve cache path.</source>
-        <translation type="vanished">Nie udało się odnaleźć ścieżki cache.</translation>
+        <translation>Nie udało się odnaleźć ścieżki cache.</translation>
     </message>
     <message>
         <source>Eve cache path doesn&apos;t exist.</source>
-        <translation type="vanished">Ścieżka cache nie istnieje.</translation>
+        <translation>Ścieżka cache nie istnieje.</translation>
     </message>
     <message>
         <source>Couldn&apos;t determine Eve cache path. Did you set it in the Preferences?</source>
-        <translation type="vanished">Nie udało się znaleźć ścieżki cache. Czy wpisałeś ścieżkę w ustawieniach?</translation>
+        <translation>Nie udało się znaleźć ścieżki cache. Czy wpisałeś ścieżkę w ustawieniach?</translation>
     </message>
     <message>
         <source>Cache import: processing %1 of %2</source>
-        <translation type="vanished">Import z cache: przetwarzanie %1  %2</translation>
+        <translation>Import z cache: przetwarzanie %1  %2</translation>
     </message>
 </context>
 <context>
@@ -714,7 +714,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <source>Keys</source>
-        <translation type="vanished">Klucze</translation>
+        <translation>Klucze</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="74"/>
@@ -1409,7 +1409,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <source>Status filter [%1]</source>
-        <translation type="vanished">Filtr stanu [%1]</translation>
+        <translation>Filtr stanu [%1]</translation>
     </message>
 </context>
 <context>
@@ -1481,7 +1481,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <source>Make value snapshots form corporation data</source>
-        <translation type="vanished">Zapisuj wartości do statystyk na bazie danych korporacji</translation>
+        <translation>Zapisuj wartości do statystyk na bazie danych korporacji</translation>
     </message>
     <message>
         <location filename="../CorpImportPreferencesWidget.cpp" line="50"/>
@@ -1594,7 +1594,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <source>Quick date</source>
-        <translation type="vanished">Szybki zakres</translation>
+        <translation>Szybki zakres</translation>
     </message>
     <message>
         <location filename="../DateRangeWidget.cpp" line="45"/>
@@ -1880,7 +1880,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
     <message>
         <source>Cache import</source>
-        <translation type="vanished">Import z cache</translation>
+        <translation>Import z cache</translation>
     </message>
     <message>
         <source>Warning! Reading cache is considered a gray area. CPP on one hand considers this a violation of the EULA, but on the other has stated they will only penalize when used in conjunction with illegal activities, like botting.
@@ -1888,7 +1888,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 Do wish to continue?
 
 By choosing &apos;Yes&apos; you accept all responsibility of any action CCP may impose upon you, should they choose to changetheir policy.</source>
-        <translation type="vanished">Uwaga! Odczyt cache jest uważany za szarą strefę. Z jednej strony CPP określiło, że łamie to zasady orkreślone w EULA; z drugiej stwierdzili, że będą karać graczy tylko, jeśli będzie to powiązane z niedozwolonymi czynnościami, np botami.
+        <translation>Uwaga! Odczyt cache jest uważany za szarą strefę. Z jednej strony CPP określiło, że łamie to zasady orkreślone w EULA; z drugiej stwierdzili, że będą karać graczy tylko, jeśli będzie to powiązane z niedozwolonymi czynnościami, np botami.
 
 Czy chcesz kontynuować?
 
@@ -2329,6 +2329,10 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="94"/>
+        <source>Apply date format to graphs (requires restart)</source>
+        <translation>Zastosuj format daty do wykresów (wymaga restartu)</translation>
+    </message>
+    <message>
         <source>Apply date fromat to graphs (requires restart)</source>
         <translation>Zastosuj format daty do wykresów (wymaga restartu)</translation>
     </message>
@@ -2359,7 +2363,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Date/time format:</source>
-        <translation type="vanished">Format daty/czasu:</translation>
+        <translation>Format daty/czasu:</translation>
     </message>
 </context>
 <context>
@@ -2547,7 +2551,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <name>Evernus::IGBService</name>
     <message>
         <source>Active Orders</source>
-        <translation type="vanished">Aktywne zlecenia</translation>
+        <translation>Aktywne zlecenia</translation>
     </message>
     <message>
         <location filename="../IGBService.cpp" line="83"/>
@@ -2556,19 +2560,19 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Fulfilled Orders</source>
-        <translation type="vanished">Zakończone zlecenia</translation>
+        <translation>Zakończone zlecenia</translation>
     </message>
     <message>
         <source>Show Previous Order</source>
-        <translation type="vanished">Poprzednie zlecenie</translation>
+        <translation>Poprzednie zlecenie</translation>
     </message>
     <message>
         <source>Show Next Order</source>
-        <translation type="vanished">Następne zlecenie</translation>
+        <translation>Następne zlecenie</translation>
     </message>
     <message>
         <source>Current order:</source>
-        <translation type="vanished">Aktualne zlecenie:</translation>
+        <translation>Aktualne zlecenie:</translation>
     </message>
     <message>
         <location filename="../IGBService.cpp" line="100"/>
@@ -2582,7 +2586,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Error setting up WebSocket server!</source>
-        <translation type="vanished">Błąd ustawiania serwera WebSocket!</translation>
+        <translation>Błąd ustawiania serwera WebSocket!</translation>
     </message>
     <message>
         <location filename="../IGBService.cpp" line="74"/>
@@ -2631,7 +2635,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Trade Advisor</source>
-        <translation type="vanished">Trade Advisor</translation>
+        <translation>Trade Advisor</translation>
     </message>
     <message>
         <location filename="../IGBService.cpp" line="89"/>
@@ -2650,7 +2654,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Auto-import at end</source>
-        <translation type="vanished">Automatyczny import na końcu</translation>
+        <translation>Automatyczny import na końcu</translation>
     </message>
     <message>
         <location filename="../IGBService.cpp" line="101"/>
@@ -2773,7 +2777,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source> min</source>
-        <translation type="vanished"> min</translation>
+        <translation> min</translation>
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="88"/>
@@ -2887,11 +2891,11 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>File</source>
-        <translation type="vanished">Plik</translation>
+        <translation>Plik</translation>
     </message>
     <message>
         <source>Cache</source>
-        <translation type="vanished">Cache</translation>
+        <translation>Cache</translation>
     </message>
 </context>
 <context>
@@ -3041,7 +3045,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Total outcome:</source>
-        <translation type="vanished">Całkowity koszt:</translation>
+        <translation>Całkowity koszt:</translation>
     </message>
     <message>
         <location filename="../ItemHistoryWidget.cpp" line="128"/>
@@ -3264,7 +3268,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Import prices from cache</source>
-        <translation type="vanished">Importuj ceny z cache</translation>
+        <translation>Importuj ceny z cache</translation>
     </message>
     <message>
         <location filename="../LMeveWidget.cpp" line="141"/>
@@ -3297,11 +3301,11 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <name>Evernus::MainWindow</name>
     <message>
         <source>Error</source>
-        <translation type="vanished">Błąd</translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <source>Market uploader: %1</source>
-        <translation type="vanished">Wysyłanie zleceń: %1</translation>
+        <translation>Wysyłanie zleceń: %1</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="618"/>
@@ -3513,15 +3517,15 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Market uploader: unknown</source>
-        <translation type="vanished">Wysyłanie zleceń: nieznane</translation>
+        <translation>Wysyłanie zleceń: nieznane</translation>
     </message>
     <message>
         <source>unknown</source>
-        <translation type="vanished">nieznane</translation>
+        <translation>nieznane</translation>
     </message>
     <message>
         <source>Market uploader:</source>
-        <translation type="vanished">Wysyłanie zleceń:</translation>
+        <translation>Wysyłanie zleceń:</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="771"/>
@@ -3545,15 +3549,15 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Orders</source>
-        <translation type="vanished">Zlecenia</translation>
+        <translation>Zlecenia</translation>
     </message>
     <message>
         <source>Journal</source>
-        <translation type="vanished">Dziennik</translation>
+        <translation>Dziennik</translation>
     </message>
     <message>
         <source>Transactions</source>
-        <translation type="vanished">Transakcje</translation>
+        <translation>Transakcje</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="909"/>
@@ -3763,7 +3767,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <name>Evernus::MarketAnalysisWidget</name>
     <message>
         <source>Don&apos;t refresh existing up-to-date data</source>
-        <translation type="vanished">Nie aktualizuj istniejących aktualnych danych</translation>
+        <translation>Nie aktualizuj istniejących aktualnych danych</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="170"/>
@@ -3829,7 +3833,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Double-click an item for additional information.</source>
-        <translation type="vanished">Kliknij dwukrotnie na przedmiot, aby zobaczyć dodatkowe infoormacje.</translation>
+        <translation>Kliknij dwukrotnie na przedmiot, aby zobaczyć dodatkowe infoormacje.</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="739"/>
@@ -3914,7 +3918,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Waiting for %1 order server replies...</source>
-        <translation type="vanished">Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
+        <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="528"/>
@@ -3923,7 +3927,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Waiting for %1 history server replies...</source>
-        <translation type="vanished">Oczekiwanie na %1 odpowiedzi z historią...</translation>
+        <translation>Oczekiwanie na %1 odpowiedzi z historią...</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="586"/>
@@ -3945,7 +3949,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Source region:</source>
-        <translation type="vanished">Źródłowy region:</translation>
+        <translation>Źródłowy region:</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="582"/>
@@ -3975,7 +3979,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Destination region:</source>
-        <translation type="vanished">Docelowy region:</translation>
+        <translation>Docelowy region:</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="884"/>
@@ -3997,7 +4001,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <source>Import prices from cache</source>
-        <translation type="vanished">Importuj ceny z cache</translation>
+        <translation>Importuj ceny z cache</translation>
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="91"/>
@@ -4528,7 +4532,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>Margin</source>
-        <translation type="vanished">Marża</translation>
+        <translation>Marża</translation>
     </message>
     <message>
         <location filename="../MarketOrderBuyModel.cpp" line="438"/>
@@ -5020,19 +5024,19 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>Active orders:</source>
-        <translation type="vanished">Aktywne zlecenia:</translation>
+        <translation>Aktywne zlecenia:</translation>
     </message>
     <message>
         <source>Total volume:</source>
-        <translation type="vanished">Całkowity wolumen:</translation>
+        <translation>Całkowity wolumen:</translation>
     </message>
     <message>
         <source>Total ISK in orders:</source>
-        <translation type="vanished">Całkowita inwestycja:</translation>
+        <translation>Całkowita inwestycja:</translation>
     </message>
     <message>
         <source>Total size:</source>
-        <translation type="vanished">Całkowita objętość:</translation>
+        <translation>Całkowita objętość:</translation>
     </message>
     <message>
         <location filename="../MarketOrderView.cpp" line="89"/>
@@ -5059,7 +5063,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>Add to item costs</source>
-        <translation type="vanished">Dodaj do własnych kosztów</translation>
+        <translation>Dodaj do własnych kosztów</translation>
     </message>
 </context>
 <context>
@@ -5085,7 +5089,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>Import prices from cache</source>
-        <translation type="vanished">Importuj ceny z cache</translation>
+        <translation>Importuj ceny z cache</translation>
     </message>
     <message>
         <location filename="../MarketOrderWidget.cpp" line="89"/>
@@ -5250,11 +5254,11 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>Max. threads:</source>
-        <translation type="vanished">Maks. ilość wątków:</translation>
+        <translation>Maks. ilość wątków:</translation>
     </message>
     <message>
         <source>This value affects the speed of importing data via CREST. Higher number gives more speed, but too high value can cause the speed to drop and/or create import errors.</source>
-        <translation type="vanished">Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
+        <translation>Ta wartość ma wpływ na szybkość importu danych przez CREST. Większy numer może dać lepszą szybkość ale zbyt duży może spowodować spadek szybkość i błędy importu.</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="120"/>
@@ -5307,7 +5311,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>Delete old entries</source>
-        <translation type="vanished">Usuń stare wpisy</translation>
+        <translation>Usuń stare wpisy</translation>
     </message>
 </context>
 <context>
@@ -5319,7 +5323,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>You can specify custom market logs path or leave empty to use the default one. Custom path is required on *nix systems.</source>
-        <translation type="vanished">Możesz ustawić własną ścieżkę do logów handlu, lub zostawić puste, aby użyć domyślnej. Własna ścieżka jest wymagana w systemach *nix.</translation>
+        <translation>Możesz ustawić własną ścieżkę do logów handlu, lub zostawić puste, aby użyć domyślnej. Własna ścieżka jest wymagana w systemach *nix.</translation>
     </message>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="44"/>
@@ -5348,19 +5352,19 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>Delete processed cache files</source>
-        <translation type="vanished">Usuń przetworzone pliki</translation>
+        <translation>Usuń przetworzone pliki</translation>
     </message>
     <message>
         <source>Setting the cache path is optional. When left blank, Evernus will try to guess the path itself.</source>
-        <translation type="vanished">Ustawienie ścieżki cache jest opcjonalne. Pusta ścieżka spowoduje próbę odgadnięcia.</translation>
+        <translation>Ustawienie ścieżki cache jest opcjonalne. Pusta ścieżka spowoduje próbę odgadnięcia.</translation>
     </message>
     <message>
         <source>Eve path</source>
-        <translation type="vanished">Ścieżka Eve</translation>
+        <translation>Ścieżka Eve</translation>
     </message>
     <message>
         <source>Eve cache path</source>
-        <translation type="vanished">Ścieżka cache Eve</translation>
+        <translation>Ścieżka cache Eve</translation>
     </message>
 </context>
 <context>
@@ -5422,7 +5426,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>Uploader</source>
-        <translation type="vanished">Uploader</translation>
+        <translation>Uploader</translation>
     </message>
     <message>
         <location filename="../PreferencesDialog.cpp" line="75"/>
@@ -5451,7 +5455,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>Contract</source>
-        <translation type="vanished">Kontrakt</translation>
+        <translation>Kontrakt</translation>
     </message>
     <message>
         <location filename="../PreferencesDialog.cpp" line="101"/>
@@ -5488,11 +5492,11 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>Prefer custom item costs over current prices</source>
-        <translation type="vanished">Preferuj własne koszty nad aktualnymi</translation>
+        <translation>Preferuj własne koszty nad aktualnymi</translation>
     </message>
     <message>
         <source>Auto add custom item costs on fulfilled buy order</source>
-        <translation type="vanished">Automatycznie dodaj koszty przy wypełnionym zleceniu kupna</translation>
+        <translation>Automatycznie dodaj koszty przy wypełnionym zleceniu kupna</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="63"/>
@@ -5551,31 +5555,31 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>Max. market order age:</source>
-        <translation type="vanished">Maks. wiek zleceń:</translation>
+        <translation>Maks. wiek zleceń:</translation>
     </message>
     <message>
         <source> days</source>
-        <translation type="vanished"> dni</translation>
+        <translation> dni</translation>
     </message>
     <message>
         <source>Plot number format:</source>
-        <translation type="vanished">Format liczb na wykresach:</translation>
+        <translation>Format liczb na wykresach:</translation>
     </message>
     <message>
         <source>beautified scientific</source>
-        <translation type="vanished">upiększony naukowy</translation>
+        <translation>upiększony naukowy</translation>
     </message>
     <message>
         <source>scientific</source>
-        <translation type="vanished">naukowy</translation>
+        <translation>naukowy</translation>
     </message>
     <message>
         <source>fixed</source>
-        <translation type="vanished">dziesiętny</translation>
+        <translation>dziesiętny</translation>
     </message>
     <message>
         <source>Combine character and corporation journal in statistics</source>
-        <translation type="vanished">Połącz dzienniki korporacji i postaci w statystykach</translation>
+        <translation>Połącz dzienniki korporacji i postaci w statystykach</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="136"/>
@@ -5609,7 +5613,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
     <message>
         <source>Shourtcut:</source>
-        <translation type="vanished">Skrót klawiszowy:</translation>
+        <translation>Skrót klawiszowy:</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="166"/>
@@ -5868,7 +5872,7 @@ Corp. wallet: %3
 Buy orders: %4
 Sell orders: %5
 Total: %6</source>
-        <translation type="vanished">Aktywa: %1
+        <translation>Aktywa: %1
 Portfel: %2
 Portfel korporacji: %3
 Zlecenia kupna: %4
@@ -6199,7 +6203,7 @@ Suma: %7</translation>
     </message>
     <message>
         <source>Enabled</source>
-        <translation type="vanished">Włączona</translation>
+        <translation>Włączona</translation>
     </message>
 </context>
 <context>
@@ -6380,7 +6384,7 @@ Suma: %7</translation>
     </message>
     <message>
         <source>Parsing response from the update server: %1</source>
-        <translation type="vanished">Błąd parsowania odpowiedzi serwera: %1</translation>
+        <translation>Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="308"/>
@@ -6394,7 +6398,7 @@ Suma: %7</translation>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.
 </source>
-        <translation type="vanished">Ta akutalizacja wymaga ponownego zaimportowania wszystkich danych.
+        <translation>Ta akutalizacja wymaga ponownego zaimportowania wszystkich danych.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
@@ -6479,37 +6483,37 @@ Czy chcesz ściągnąć ją teraz?</translation>
     <name>Evernus::Uploader</name>
     <message>
         <source>requesting endpoints</source>
-        <translation type="vanished">pobieranie punktów końcowych</translation>
+        <translation>pobieranie punktów końcowych</translation>
     </message>
     <message>
         <source>parsing endpoints</source>
-        <translation type="vanished">parsowanie punktów końcowych</translation>
+        <translation>parsowanie punktów końcowych</translation>
     </message>
     <message>
         <source>endpoint request error</source>
-        <translation type="vanished">błąd pobierania punktów końcowych</translation>
+        <translation>błąd pobierania punktów końcowych</translation>
     </message>
     <message>
         <source>idle</source>
-        <translation type="vanished">oczekuje</translation>
+        <translation>oczekuje</translation>
     </message>
 </context>
 <context>
     <name>Evernus::UploaderPreferencesWidget</name>
     <message>
         <source>Enabled</source>
-        <translation type="vanished">Włączony</translation>
+        <translation>Włączony</translation>
     </message>
 </context>
 <context>
     <name>Evernus::UploaderThread</name>
     <message>
         <source>uploading</source>
-        <translation type="vanished">wysyła</translation>
+        <translation>wysyła</translation>
     </message>
     <message>
         <source>idle</source>
-        <translation type="vanished">oczekuje</translation>
+        <translation>oczekuje</translation>
     </message>
 </context>
 <context>
@@ -6762,7 +6766,7 @@ Czy chcesz ściągnąć ją teraz?</translation>
     </message>
     <message>
         <source>Add to item costs</source>
-        <translation type="vanished">Dodaj do własnych kosztów</translation>
+        <translation>Dodaj do własnych kosztów</translation>
     </message>
 </context>
 <context>
@@ -6873,15 +6877,15 @@ Czy chcesz kontynuować (może to wpłynąć negatywnie na bezpieczeństwo konta
     <name>main</name>
     <message>
         <source>Evernus EVE Online trade tool</source>
-        <translation type="vanished">Evernus EVE Online - narzędzie handlu</translation>
+        <translation>Evernus EVE Online - narzędzie handlu</translation>
     </message>
     <message>
         <source>CREST client id.</source>
-        <translation type="vanished">Id klienta CREST.</translation>
+        <translation>Id klienta CREST.</translation>
     </message>
     <message>
         <source>CREST client secret.</source>
-        <translation type="vanished">Tajny klucz klienta CREST.</translation>
+        <translation>Tajny klucz klienta CREST.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="59"/>

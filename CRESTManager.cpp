@@ -174,7 +174,7 @@ namespace Evernus
         QNetworkRequest request{CRESTInterface::crestUrl};
         request.setHeader(QNetworkRequest::UserAgentHeader,
                           QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
-        request.setRawHeader("Accept", "application/vnd.ccp.eve.Api-v3+json");
+        request.setRawHeader("Accept", "application/vnd.ccp.eve.Api-v5+json");
 
         auto reply = mNetworkManager.get(request);
         Q_ASSERT(reply != nullptr);
