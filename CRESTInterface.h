@@ -64,7 +64,6 @@ namespace Evernus
     private:
         using RegionUrlCallbackMap = QHash<QPair<uint, QString>, std::vector<std::function<void (const QUrl &, const QString &)>>>;
         using RegionUrlMap = QHash<uint, QUrl>;
-        using RegionUrlMap = QHash<uint, QUrl>;
 
         static const QString regionsUrlName;
         static const QString itemTypesUrlName;
