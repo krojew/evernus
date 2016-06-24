@@ -83,7 +83,7 @@ namespace Evernus
             double mBuyPrice = 0.;
             double mSellPrice = 0.;
             double mDifference = 0.;
-            uint mVolume = 0;
+            double mVolume = 0;
         };
 
         const EveDataProvider &mDataProvider;
