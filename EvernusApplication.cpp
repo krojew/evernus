@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <future>
 
+#include <QCommandLineParser>
 #include <QSslConfiguration>
 #include <QStandardPaths>
 #include <QSplashScreen>
@@ -99,6 +100,23 @@ namespace Evernus
         {
             updateTranslator(lang);
         }
+
+        const auto forceVersionArg = QStringLiteral("force-version");
+        const auto noUpdateArg = QStringLiteral("no-update");
+
+        QCommandLineParser parser;
+        parser.setApplicationDescription(QCoreApplication::translate("main", "Evernus EVE Online trade tool"));
+        parser.addHelpOption();
+        parser.addVersionOption();
+        parser.addOptions({
+            { forceVersionArg, tr("Force specific version") },
+            { noUpdateArg, tr("Don't run internal updater") },
+        });
+
+        parser.process(*this);
+
+        if (parser.isSet(forceVersionArg))
+            setApplicationVersion(parser.value(forceVersionArg));
 
         setProxySettings();
 
@@ -206,7 +224,10 @@ namespace Evernus
 
         showSplashMessage(tr("Loading..."), splash);
 
-        Updater::getInstance().performVersionMigration(*this);
+        if (parser.isSet(noUpdateArg))
+            Updater::getInstance().updateDatabaseVersion(mMainDb);
+        else
+            Updater::getInstance().performVersionMigration(*this);
 
         settings.setValue(versionKey, applicationVersion());
 

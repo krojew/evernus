@@ -79,6 +79,35 @@ namespace Evernus
         updateDatabase(dbMajorVersion, dbMinorVersion, provider);
     }
 
+    void Updater::updateDatabaseVersion(const QSqlDatabase &db) const
+    {
+        const auto curVersion = QCoreApplication::applicationVersion().split('.');
+
+        db.exec(QString{ R"(
+                CREATE TABLE IF NOT EXISTS %1 (
+                    major INTEGER NOT NULL,
+                    minor INTEGER NOT NULL,
+                    PRIMARY KEY (major, minor)
+                )
+            )" }.arg(version::dbTableName()));
+
+        const auto error = db.lastError();
+        if (error.isValid())
+            throw std::runtime_error{ tr("Error updating db version: %1").arg(error.text()).toStdString() };
+
+        db.exec(QString{"DELETE FROM %1"}.arg(version::dbTableName()));
+
+        QSqlQuery query{ db };
+        if (!query.prepare(QString{"REPLACE INTO %1 (major, minor) VALUES (? ,?)"}.arg(version::dbTableName())))
+            throw std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()};
+
+        query.bindValue(0, curVersion[0]);
+        query.bindValue(1, curVersion[1]);
+
+        if (!query.exec())
+            throw std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()};
+    }
+
     Updater &Updater::getInstance()
     {
         static Updater updater;
@@ -276,32 +305,7 @@ namespace Evernus
                 }
             }
 
-            const auto curVersion = QCoreApplication::applicationVersion().split('.');
-            const auto db = provider.getKeyRepository().getDatabase();
-
-            db.exec(QString{R"(
-                CREATE TABLE IF NOT EXISTS %1 (
-                    major INTEGER NOT NULL,
-                    minor INTEGER NOT NULL,
-                    PRIMARY KEY (major, minor)
-                )
-            )"}.arg(version::dbTableName()));
-
-            const auto error = db.lastError();
-            if (error.isValid())
-                throw std::runtime_error{tr("Error updating db version: %1").arg(error.text()).toStdString()};
-
-            db.exec(QString{"DELETE FROM %1"}.arg(version::dbTableName()));
-
-            QSqlQuery query{db};
-            if (!query.prepare(QString{"REPLACE INTO %1 (major, minor) VALUES (? ,?)"}.arg(version::dbTableName())))
-                throw std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()};
-
-            query.bindValue(0, curVersion[0]);
-            query.bindValue(1, curVersion[1]);
-
-            if (!query.exec())
-                throw std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()};
+            updateDatabaseVersion(provider.getKeyRepository().getDatabase());
         }
         catch (...)
         {

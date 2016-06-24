@@ -16,6 +16,8 @@
 
 #include <QNetworkAccessManager>
 
+class QSqlDatabase;
+
 namespace Evernus
 {
     template<class T>
@@ -40,6 +42,7 @@ namespace Evernus
 
     public:
         void performVersionMigration(const RepositoryProvider &provider) const;
+        void updateDatabaseVersion(const QSqlDatabase &db) const;
 
         static Updater &getInstance();
 
