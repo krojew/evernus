@@ -514,7 +514,7 @@ namespace Evernus
 
                 auto &value = values[entry->getTimestamp().toLocalTime().date()];
 
-                const auto amount = entry->getPrice();
+                const auto amount = entry->getPrice() * entry->getQuantity();
                 if (entry->getType() == Evernus::WalletTransaction::Type::Buy)
                 {
                     totalOutcome += amount;
