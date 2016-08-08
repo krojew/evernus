@@ -46,6 +46,7 @@ namespace Evernus
         const auto copyNonOverbidPriceDefault = false;
         const auto fpcDefault = false;
         const auto limitSellCopyToCostDefault = false;
+        const auto limitSellCopyToTotalCostDefault = false;
         const auto ignoreOrdersWithMinVolumeDefault = false;
         const auto itemConstCostAddDefault = 0.;
         const auto itemRelativeCostAddDefault = 0.;
@@ -67,6 +68,7 @@ namespace Evernus
         const auto fpcKey = "prices/fpc/enabled";
         const auto fpcShourtcutKey = "prices/fpc/shortcut";
         const auto limitSellCopyToCostKey = "prices/orders/limitSellCopyToCost";
+        const auto limitSellCopyToTotalCostKey = "prices/orders/limitSellCopyToTotalCost";
         const auto ignoreOrdersWithMinVolumeKey = "prices/ignoreOrdersWithMinVolume";
         const auto itemConstCostAddKey = "prices/costs/constCost";
         const auto itemRelativeCostAddKey = "prices/costs/relativeCost";

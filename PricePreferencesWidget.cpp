@@ -143,7 +143,22 @@ namespace Evernus
 
         mLimitSellCopyToCostBtn = new QCheckBox{tr("Limit sell price copy to item cost"), this};
         pricesLayout->addRow(mLimitSellCopyToCostBtn);
-        mLimitSellCopyToCostBtn->setChecked(settings.value(PriceSettings::limitSellCopyToCostKey, PriceSettings::limitSellCopyToCostDefault).toBool());
+        mLimitSellCopyToCostBtn->setChecked(
+            settings.value(PriceSettings::limitSellCopyToCostKey, PriceSettings::limitSellCopyToCostDefault).toBool());
+
+        auto limitCopyLayout = new QHBoxLayout{};
+        pricesLayout->addRow(limitCopyLayout);
+
+        auto limitCopyLayoutMargins = limitCopyLayout->contentsMargins();
+        limitCopyLayoutMargins.setLeft(limitCopyLayoutMargins.left() + 20);
+        limitCopyLayout->setContentsMargins(limitCopyLayoutMargins);
+
+        mLimitSellCopyToTotalCostBtn = new QCheckBox{tr("Use total item costs"), this};
+        limitCopyLayout->addWidget(mLimitSellCopyToTotalCostBtn);
+        mLimitSellCopyToTotalCostBtn->setChecked(
+            settings.value(PriceSettings::limitSellCopyToTotalCostKey, PriceSettings::limitSellCopyToTotalCostDefault).toBool());
+        mLimitSellCopyToTotalCostBtn->setEnabled(mLimitSellCopyToCostBtn->isChecked());
+        connect(mLimitSellCopyToCostBtn, &QCheckBox::stateChanged, mLimitSellCopyToTotalCostBtn, &QCheckBox::setEnabled);
 
         auto fpcGroup = new QGroupBox{tr("Fast Price Copy"), this};
         mainLayout->addWidget(fpcGroup);
@@ -193,6 +208,7 @@ namespace Evernus
         settings.setValue(PriceSettings::refreshPricesWithOrdersKey, mRefreshPricesWithOrdersBtn->isChecked());
         settings.setValue(PriceSettings::copyNonOverbidPriceKey, mCopyNonOverbidBtn->isChecked());
         settings.setValue(PriceSettings::limitSellCopyToCostKey, mLimitSellCopyToCostBtn->isChecked());
+        settings.setValue(PriceSettings::limitSellCopyToTotalCostKey, mLimitSellCopyToTotalCostBtn->isChecked());
         settings.setValue(PriceSettings::fpcKey, mFPCBtn->isChecked());
         settings.setValue(PriceSettings::fpcShourtcutKey, mFPCShortcutEdit->keySequence().toString());
     }

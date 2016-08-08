@@ -571,8 +571,22 @@ namespace Evernus
         if (settings.value(PriceSettings::limitSellCopyToCostKey, PriceSettings::limitSellCopyToCostDefault).toBool())
         {
             const auto cost = mItemCostProvider.fetchForCharacterAndType(order->getCharacterId(), order->getTypeId());
-            if (!cost->isNew() && info.mTargetPrice < cost->getAdjustedCost())
-                info.mTargetPrice = cost->getAdjustedCost();
+            if (!cost->isNew())
+            {
+                if (settings.value(PriceSettings::limitSellCopyToTotalCostKey, PriceSettings::limitSellCopyToTotalCostDefault).toBool())
+                {
+                    const auto character = mCharacters.find(order->getCharacterId());
+                    const auto taxes = PriceUtils::calculateTaxes(*character->second);
+                    const auto realCost = PriceUtils::getCoS(cost->getAdjustedCost(), taxes);
+
+                    if (info.mTargetPrice < realCost)
+                        info.mTargetPrice = realCost;
+                }
+                else if (info.mTargetPrice < cost->getAdjustedCost())
+                {
+                    info.mTargetPrice = cost->getAdjustedCost();
+                }
+            }
         }
 
         return info;
