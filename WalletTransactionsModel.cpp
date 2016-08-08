@@ -364,7 +364,7 @@ namespace Evernus
             {
                 mTotalIncome += entry->getPrice() * quantity;
                 mTotalProfit +=
-                    (entry->getPrice() - mItemCostProvider.fetchForCharacterAndType(mCharacterId, entry->getTypeId())->getCost()) * quantity;
+                    (entry->getPrice() - mItemCostProvider.fetchForCharacterAndType(mCharacterId, entry->getTypeId())->getAdjustedCost()) * quantity;
             }
         }
     }

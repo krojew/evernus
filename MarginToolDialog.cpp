@@ -344,7 +344,7 @@ namespace Evernus
             {
                 const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, typeId);
                 if (!cost->isNew())
-                    buy = cost->getCost() - PriceUtils::getPriceDelta();
+                    buy = cost->getAdjustedCost() - PriceUtils::getPriceDelta();
             }
             else if (mStationSourceBtn->isChecked())
             {

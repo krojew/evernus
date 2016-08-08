@@ -367,7 +367,7 @@ namespace Evernus
             }
         case DeviationSourceType::Cost:
             {
-                const auto cost = mCostProvider.fetchForCharacterAndType(mCharacterId, order.getTypeId())->getCost();
+                const auto cost = mCostProvider.fetchForCharacterAndType(mCharacterId, order.getTypeId())->getAdjustedCost();
                 return (cost == 0.) ? (0.) : ((order.getPrice() - cost) / cost);
             }
         case DeviationSourceType::Fixed:

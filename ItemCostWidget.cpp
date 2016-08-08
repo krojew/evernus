@@ -12,15 +12,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QDoubleValidator>
+#include <QDoubleSpinBox>
 #include <QHeaderView>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLineEdit>
+#include <QSettings>
+#include <QLabel>
 
 #include "ItemCostEditDialog.h"
 #include "ItemCostProvider.h"
 #include "StyledTreeView.h"
+#include "PriceSettings.h"
 
 #include "ItemCostWidget.h"
 
@@ -60,6 +65,30 @@ namespace Evernus
         toolBarLayout->addWidget(deleteAllBtn);
         deleteAllBtn->setFlat(true);
         connect(deleteAllBtn, &QPushButton::clicked, this, &ItemCostWidget::deleteAllCost);
+
+        auto costValidator = new QDoubleValidator{this};
+        QSettings settings;
+
+        toolBarLayout->addWidget(new QLabel{tr("Constant added cost:"), this});
+
+        auto constCostEdit = new QLineEdit{
+            settings.value(PriceSettings::itemConstCostAddKey, PriceSettings::itemConstCostAddDefault).toString(), this};
+        toolBarLayout->addWidget(constCostEdit);
+        connect(constCostEdit, &QLineEdit::textEdited, this, [](const auto &text) {
+            QSettings settings;
+            settings.setValue(PriceSettings::itemConstCostAddKey, text.toDouble());
+        });
+
+        toolBarLayout->addWidget(new QLabel{tr("Relative added cost:"), this});
+
+        auto relCostEdit = new QDoubleSpinBox{this};
+        toolBarLayout->addWidget(relCostEdit);
+        relCostEdit->setValue(settings.value(PriceSettings::itemRelativeCostAddKey, PriceSettings::itemRelativeCostAddDefault).toDouble());
+        relCostEdit->setSuffix(locale().percent());
+        connect(relCostEdit, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, [](auto value) {
+            QSettings settings;
+            settings.setValue(PriceSettings::itemRelativeCostAddKey, value);
+        });
 
         mFilterEdit = new QLineEdit{this};
         toolBarLayout->addWidget(mFilterEdit, 1);

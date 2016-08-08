@@ -87,7 +87,7 @@ namespace Evernus
             case statusColumn:
                 return static_cast<int>(data->getState());
             case customCostColumn:
-                return mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId())->getCost();
+                return mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId())->getAdjustedCost();
             case priceColumn:
                 return data->getPrice();
             case volumeColumn:
@@ -96,7 +96,7 @@ namespace Evernus
                 if (data->getType() == MarketOrder::Type::Sell)
                 {
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId());
-                    return (data->getVolumeEntered() - data->getVolumeRemaining()) * (data->getPrice() - cost->getCost());
+                    return (data->getVolumeEntered() - data->getVolumeRemaining()) * (data->getPrice() - cost->getAdjustedCost());
                 }
                 break;
             case stationColumn:
@@ -144,7 +144,7 @@ namespace Evernus
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId());
                         if (!cost->isNew())
-                            return TextUtils::currencyToString(cost->getCost(), locale);
+                            return TextUtils::currencyToString(cost->getAdjustedCost(), locale);
                     }
                     break;
                 case priceColumn:
@@ -155,7 +155,7 @@ namespace Evernus
                     if (data->getType() == MarketOrder::Type::Sell)
                     {
                         const auto cost = mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId());
-                        return TextUtils::currencyToString((data->getVolumeEntered() - data->getVolumeRemaining()) * (data->getPrice() - cost->getCost()), locale);
+                        return TextUtils::currencyToString((data->getVolumeEntered() - data->getVolumeRemaining()) * (data->getPrice() - cost->getAdjustedCost()), locale);
                     }
                     break;
                 case stationColumn:

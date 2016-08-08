@@ -146,7 +146,7 @@ namespace Evernus
             case statusColumn:
                 return static_cast<int>(data->getState());
             case customCostColumn:
-                return mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId())->getCost();
+                return mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId())->getAdjustedCost();
             case priceColumn:
                 return data->getPrice();
             case priceStatusColumn:
@@ -180,7 +180,7 @@ namespace Evernus
             case priceDifferencePercentColumn:
                 {
                     const auto cost = mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId());
-                    if (cost->isNew() || qFuzzyIsNull(cost->getCost()))
+                    if (cost->isNew() || qFuzzyIsNull(cost->getAdjustedCost()))
                         break;
 
                     QSettings settings;
@@ -188,7 +188,7 @@ namespace Evernus
                                        (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
                                        (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
 
-                    return (price->getPrice() - data->getPrice()) / cost->getCost();
+                    return (price->getPrice() - data->getPrice()) / cost->getAdjustedCost();
                 }
             case volumeColumn:
                 return QVariantList{} << data->getVolumeRemaining() << data->getVolumeEntered();
@@ -283,7 +283,7 @@ namespace Evernus
                         const auto cost
                             = mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId());
                         if (!cost->isNew())
-                            return TextUtils::currencyToString(cost->getCost(), locale);
+                            return TextUtils::currencyToString(cost->getAdjustedCost(), locale);
                     }
                     break;
                 case priceColumn:
@@ -319,7 +319,7 @@ namespace Evernus
                     {
                         const auto cost
                             = mItemCostProvider.fetchForCharacterAndType(data->getCharacterId(), data->getTypeId());
-                        if (cost->isNew() || qFuzzyIsNull(cost->getCost()))
+                        if (cost->isNew() || qFuzzyIsNull(cost->getAdjustedCost()))
                             break;
 
                         QSettings settings;
@@ -329,7 +329,7 @@ namespace Evernus
                                            (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
 
                         return QString{"%1%2"}
-                            .arg(locale.toString(100. * (price->getPrice() - data->getPrice()) / cost->getCost(), 'f', 2))
+                            .arg(locale.toString(100. * (price->getPrice() - data->getPrice()) / cost->getAdjustedCost(), 'f', 2))
                             .arg(locale.percent());
                     }
                 case volumeColumn:
@@ -571,8 +571,8 @@ namespace Evernus
         if (settings.value(PriceSettings::limitSellCopyToCostKey, PriceSettings::limitSellCopyToCostDefault).toBool())
         {
             const auto cost = mItemCostProvider.fetchForCharacterAndType(order->getCharacterId(), order->getTypeId());
-            if (!cost->isNew() && info.mTargetPrice < cost->getCost())
-                info.mTargetPrice = cost->getCost();
+            if (!cost->isNew() && info.mTargetPrice < cost->getAdjustedCost())
+                info.mTargetPrice = cost->getAdjustedCost();
         }
 
         return info;
@@ -659,7 +659,7 @@ namespace Evernus
 
             const auto cost = mItemCostProvider.fetchForCharacterAndType(characterId, order->getTypeId());
 
-            mTotalCost += order->getVolumeEntered() * PriceUtils::getCoS(cost->getCost(), taxes);
+            mTotalCost += order->getVolumeEntered() * PriceUtils::getCoS(cost->getAdjustedCost(), taxes);
             mTotalIncome += order->getVolumeEntered() * PriceUtils::getRevenue(order->getPrice(), taxes);
         }
 
@@ -729,7 +729,7 @@ namespace Evernus
 
         const auto taxes = PriceUtils::calculateTaxes(*character->second);
         const auto cost = mItemCostProvider.fetchForCharacterAndType(order.getCharacterId(), order.getTypeId());
-        return PriceUtils::getMargin(cost->getCost(), order.getPrice(), taxes);
+        return PriceUtils::getMargin(cost->getAdjustedCost(), order.getPrice(), taxes);
     }
 
     double MarketOrderSellModel::getNewMargin(const MarketOrder &order) const
@@ -752,7 +752,7 @@ namespace Evernus
         const auto cost = mItemCostProvider.fetchForCharacterAndType(order.getCharacterId(), order.getTypeId());
 
         const auto taxes = PriceUtils::calculateTaxes(*character->second);
-        return PriceUtils::getMargin(cost->getCost(), newPrice, taxes);
+        return PriceUtils::getMargin(cost->getAdjustedCost(), newPrice, taxes);
     }
 
     double MarketOrderSellModel
@@ -760,7 +760,7 @@ namespace Evernus
     {
         const auto taxes = PriceUtils::calculateTaxes(character);
         const auto cost = mItemCostProvider.fetchForCharacterAndType(character.getId(), order.getTypeId());
-        const auto realCost = PriceUtils::getCoS(cost->getCost(), taxes);
+        const auto realCost = PriceUtils::getCoS(cost->getAdjustedCost(), taxes);
         const auto realPrice = PriceUtils::getRevenue(order.getPrice(), taxes);
         return volume * (realPrice - realCost);
     }

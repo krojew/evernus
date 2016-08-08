@@ -189,7 +189,7 @@ namespace Evernus
                            for (auto it = std::begin(orders); it != std::end(orders);)
                            {
                                const auto cost = mItemCostProvider.fetchForCharacterAndType(character->getId(), (*it)->getTypeId());
-                               if (PriceUtils::getMargin(cost->getCost(), (*it)->getPrice(), taxes) > min)
+                               if (PriceUtils::getMargin(cost->getAdjustedCost(), (*it)->getPrice(), taxes) > min)
                                    it = orders.erase(it);
                                else
                                    ++it;
@@ -306,7 +306,7 @@ namespace Evernus
                            for (auto it = std::begin(orders); it != std::end(orders);)
                            {
                                const auto cost = mItemCostProvider.fetchForCharacterAndType(character->getId(), (*it)->getTypeId());
-                               if (PriceUtils::getMargin(cost->getCost(), (*it)->getPrice(), taxes) > min)
+                               if (PriceUtils::getMargin(cost->getAdjustedCost(), (*it)->getPrice(), taxes) > min)
                                    it = orders.erase(it);
                                else
                                    ++it;

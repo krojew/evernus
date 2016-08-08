@@ -215,7 +215,7 @@ namespace Evernus
             if (cost->isNew())
                 mItemCostLabel->setText(tr("N/A"));
             else
-                mItemCostLabel->setText(TextUtils::currencyToString(cost->getCost(), locale()));
+                mItemCostLabel->setText(TextUtils::currencyToString(cost->getAdjustedCost(), locale()));
         }
     }
 

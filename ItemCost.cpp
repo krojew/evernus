@@ -12,6 +12,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QSettings>
+
+#include "PriceSettings.h"
+
 #include "ItemCost.h"
 
 namespace Evernus
@@ -34,6 +38,15 @@ namespace Evernus
     void ItemCost::setTypeId(EveType::IdType id)
     {
         mTypeId = id;
+    }
+
+    double ItemCost::getAdjustedCost() const noexcept
+    {
+        QSettings settings;
+        return
+            mCost *
+            (settings.value(PriceSettings::itemRelativeCostAddKey, PriceSettings::itemRelativeCostAddDefault).toDouble() / 100. + 1.) +
+            settings.value(PriceSettings::itemConstCostAddKey, PriceSettings::itemConstCostAddDefault).toDouble();
     }
 
     double ItemCost::getCost() const noexcept

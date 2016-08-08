@@ -36,6 +36,7 @@ namespace Evernus
         EveType::IdType getTypeId() const;
         void setTypeId(EveType::IdType id);
 
+        double getAdjustedCost() const noexcept;
         double getCost() const noexcept;
         void setCost(double cost) noexcept;
 

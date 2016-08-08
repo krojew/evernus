@@ -85,7 +85,7 @@ namespace Evernus
                 break;
             case costColumn:
                 if (mCharacter)
-                    return mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getCost();
+                    return mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getAdjustedCost();
                 break;
             case priceColumn:
                 return getAdjustedPrice(mDataProvider.getTypeStationSellPrice(data->getTypeId(), mStationId)->getPrice());
@@ -93,7 +93,7 @@ namespace Evernus
                 if (mCharacter)
                 {
                     return getAdjustedPrice(mDataProvider.getTypeStationSellPrice(data->getTypeId(), mStationId)->getPrice()) -
-                           mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getCost();
+                           mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getAdjustedCost();
                 }
                 return getAdjustedPrice(mDataProvider.getTypeStationSellPrice(data->getTypeId(), mStationId)->getPrice());
             case marginColumn:
@@ -137,7 +137,7 @@ namespace Evernus
                     {
                         const auto cost = mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId());
                         if (!cost->isNew())
-                            return TextUtils::currencyToString(cost->getCost(), locale);
+                            return TextUtils::currencyToString(cost->getAdjustedCost(), locale);
                     }
                     break;
                 case priceColumn:
@@ -152,7 +152,7 @@ namespace Evernus
                     {
                         auto cost = 0.;
                         if (mCharacter)
-                            cost = mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getCost();
+                            cost = mCostProvider.fetchForCharacterAndType(mCharacter->getId(), data->getTypeId())->getAdjustedCost();
 
                         return TextUtils::currencyToString(getAdjustedPrice(mDataProvider.getTypeStationSellPrice(data->getTypeId(), mStationId)->getPrice()) - cost, locale);
                     }
@@ -295,7 +295,7 @@ namespace Evernus
 
         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
         const auto cost = mCostProvider.fetchForCharacterAndType(mCharacter->getId(), task.getTypeId());
-        return PriceUtils::getMargin(cost->getCost(), getAdjustedPrice(price->getPrice()), taxes);
+        return PriceUtils::getMargin(cost->getAdjustedCost(), getAdjustedPrice(price->getPrice()), taxes);
     }
 
     double LMeveTaskModel::getAdjustedPrice(double price)
