@@ -400,43 +400,80 @@ namespace Evernus
 
     void MarketOrderRepository::archive(const std::vector<MarketOrder::IdType> &ids) const
     {
+        const auto maxBatchSize = maxSqliteBoundVariables - 1;
+        const auto batches = ids.size() / maxBatchSize;
+
         QStringList list;
-        for (auto i = 0u; i < std::min(maxSqliteBoundVariables - 1, ids.size()); ++i)
+        for (auto i = 0u; i < std::min(maxBatchSize, ids.size()); ++i)
             list << "?";
 
-        auto query = prepare(QString{"UPDATE %1 SET "
+        const auto baseQuery = QStringLiteral("UPDATE %1 SET "
             "last_seen = min(strftime('%Y-%m-%dT%H:%M:%f', first_seen, duration || ' days'), strftime('%Y-%m-%dT%H:%M:%f', 'now')),"
             "state = ?,"
             "delta = 0 "
-            "WHERE %2 IN (%3)"}.arg(getTableName()).arg(getIdColumn()).arg(list.join(", ")));
+            "WHERE %2 IN (%3)").arg(getTableName()).arg(getIdColumn());
+        auto query = prepare(baseQuery.arg(list.join(", ")));
 
-        for (auto it = std::begin(ids); it < std::end(ids); std::advance(it, maxSqliteBoundVariables - 1))
+        for (auto batch = 0u; batch < batches; ++batch)
         {
             query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
-            execBoundValueBatch(query, it, std::min(std::next(it, maxSqliteBoundVariables - 1), std::end(ids)));
+
+            const auto end = std::next(std::begin(ids), (batch + 1) * maxBatchSize);
+            execBoundValueBatch(query, std::next(std::begin(ids), batch * maxBatchSize), end);
+        }
+
+        const auto reminderBegin = std::next(std::begin(ids), batches * maxBatchSize);
+        if (reminderBegin != std::end(ids))
+        {
+            list.clear();
+            for (auto it = reminderBegin; it != std::end(ids); ++it)
+                list << "?";
+
+            query = prepare(baseQuery.arg(list.join(", ")));
+
+            query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
+            execBoundValueBatch(query, reminderBegin, std::end(ids));
         }
     }
 
     void MarketOrderRepository::fulfill(const std::vector<MarketOrder::IdType> &ids) const
     {
+        const auto maxBatchSize = maxSqliteBoundVariables - 2;
+        const auto batches = ids.size() / maxBatchSize;
+
         QStringList list;
-        for (auto i = 0u; i < std::min(maxSqliteBoundVariables - 2, ids.size()); ++i)
+        for (auto i = 0u; i < std::min(maxBatchSize, ids.size()); ++i)
             list << "?";
 
-        auto query = prepare(QString{"UPDATE %1 SET "
+        const auto baseQuery = QStringLiteral("UPDATE %1 SET "
             "last_seen = ?,"
             "state = ?,"
             "delta = volume_remaining,"
             "volume_remaining = 0 "
-            "WHERE %2 IN (%3)"
-        }.arg(getTableName()).arg(getIdColumn()).arg(list.join(", ")));
+            "WHERE %2 IN (%3)").arg(getTableName()).arg(getIdColumn());
+        auto query = prepare(baseQuery.arg(list.join(", ")));
 
-        for (auto it = std::begin(ids); it < std::end(ids); std::advance(it, maxSqliteBoundVariables - 2))
+        for (auto batch = 0u; batch < batches; ++batch)
         {
             query.addBindValue(QDateTime::currentDateTimeUtc());
             query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
 
-            execBoundValueBatch(query, it, std::min(std::next(it, maxSqliteBoundVariables - 2), std::end(ids)));
+            const auto end = std::next(std::begin(ids), (batch + 1) * maxBatchSize);
+            execBoundValueBatch(query, std::next(std::begin(ids), batch * maxBatchSize), end);
+        }
+
+        const auto reminderBegin = std::next(std::begin(ids), batches * maxBatchSize);
+        if (reminderBegin != std::end(ids))
+        {
+            list.clear();
+            for (auto it = reminderBegin; it != std::end(ids); ++it)
+                list << "?";
+
+            query = prepare(baseQuery.arg(list.join(", ")));
+
+            query.addBindValue(QDateTime::currentDateTimeUtc());
+            query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
+            execBoundValueBatch(query, reminderBegin, std::end(ids));
         }
     }
 
