@@ -199,10 +199,7 @@ namespace Evernus
             mTypeDataModel.discardBogusOrders(checked);
             mInterRegionDataModel.discardBogusOrders(checked);
 
-            mRefreshedInterRegionData = false;
-
-            showForCurrentRegion();
-            applyInterRegionFilter();
+            recalculateAllData();
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Bogus order threshold:"), this});
@@ -229,13 +226,15 @@ namespace Evernus
             mInterRegionDataModel.setBogusOrderThreshold(value);
         });
 
-        auto skillsDiffBtn = new QCheckBox{tr("Use skills for difference calculation"), this};
+        auto skillsDiffBtn = new QCheckBox{tr("Use skills and taxes for difference calculation (causes recalculation)"), this};
         toolBarLayout->addWidget(skillsDiffBtn);
         skillsDiffBtn->setChecked(
             settings.value(MarketAnalysisSettings::useSkillsForDifferenceKey, MarketAnalysisSettings::useSkillsForDifferenceDefault).toBool());
-        connect(skillsDiffBtn, &QCheckBox::toggled, [](auto checked) {
+        connect(skillsDiffBtn, &QCheckBox::toggled, [=](auto checked) {
             QSettings settings;
             settings.setValue(MarketAnalysisSettings::useSkillsForDifferenceKey, checked);
+
+            recalculateAllData();
         });
 
         auto tabs = new QTabWidget{this};
@@ -598,6 +597,14 @@ namespace Evernus
         mInterRegionDataStack->repaint();
 
         mInterRegionDataModel.setOrderData(*mOrders, *mHistory, mSrcStation, mDstStation);
+    }
+
+    void MarketAnalysisWidget::recalculateAllData()
+    {
+        mRefreshedInterRegionData = false;
+
+        showForCurrentRegion();
+        applyInterRegionFilter();
     }
 
     void MarketAnalysisWidget::fillSolarSystems(uint regionId)

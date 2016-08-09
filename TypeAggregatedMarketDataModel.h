@@ -84,6 +84,7 @@ namespace Evernus
             double mSellPrice = 0.;
             double mDifference = 0.;
             double mVolume = 0;
+            double mMargin = 0.;
         };
 
         const EveDataProvider &mDataProvider;
@@ -94,7 +95,5 @@ namespace Evernus
 
         bool mDiscardBogusOrders = true;
         double mBogusOrderThreshold = 0.9;
-
-        double getMargin(const TypeData &data) const;
     };
 }

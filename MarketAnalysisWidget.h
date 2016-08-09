@@ -161,6 +161,7 @@ namespace Evernus
         void checkCompletion();
         void changeStation(quint64 &destination, QPushButton &btn, const QString &settingName);
         void recalculateInterRegionData();
+        void recalculateAllData();
 
         void fillSolarSystems(uint regionId);
 

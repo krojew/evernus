@@ -71,7 +71,7 @@ namespace Evernus
                 case volumeColumn:
                     return locale.toString(data.mVolume);
                 case marginColumn:
-                    return QString{"%1%2"}.arg(locale.toString(getMargin(data), 'f', 2)).arg(locale.percent());
+                    return QString{"%1%2"}.arg(locale.toString(data.mMargin, 'f', 2)).arg(locale.percent());
                 }
             }
             break;
@@ -90,12 +90,12 @@ namespace Evernus
             case volumeColumn:
                 return data.mVolume;
             case marginColumn:
-                return getMargin(data);
+                return data.mMargin;
             }
             break;
         case Qt::ForegroundRole:
             if (column == marginColumn)
-                return TextUtils::getMarginColor(getMargin(data));
+                return TextUtils::getMarginColor(data.mMargin);
         }
 
         return QVariant{};
@@ -225,9 +225,18 @@ namespace Evernus
                                                         mBogusOrderThreshold);
 
             if (useSkillsForDifference)
-                data.mDifference = PriceUtils::getRevenue(data.mSellPrice, taxes) - PriceUtils::getCoS(data.mBuyPrice, taxes);
+            {
+                const auto realSellPrice = PriceUtils::getRevenue(data.mSellPrice, taxes);
+                const auto realBuyPrice = PriceUtils::getCoS(data.mBuyPrice, taxes);
+
+                data.mDifference = realSellPrice - realBuyPrice;
+                data.mMargin = (qFuzzyIsNull(realSellPrice)) ? (0.) : (100. * data.mDifference / realSellPrice);
+            }
             else
+            {
                 data.mDifference = data.mSellPrice - data.mBuyPrice;
+                data.mMargin = (qFuzzyIsNull(data.mSellPrice)) ? (0.) : (100. * data.mDifference / data.mSellPrice);
+            }
 
             mData.emplace_back(std::move(data));
         }
@@ -283,14 +292,5 @@ namespace Evernus
     int TypeAggregatedMarketDataModel::getSellPriceColumn() noexcept
     {
         return sellPriceColumn;
-    }
-
-    double TypeAggregatedMarketDataModel::getMargin(const TypeData &data) const
-    {
-        if (!mCharacter || qFuzzyIsNull(data.mSellPrice))
-            return 0.;
-
-        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-        return PriceUtils::getMargin(data.mBuyPrice, data.mSellPrice, taxes);
     }
 }

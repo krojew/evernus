@@ -74,7 +74,7 @@ namespace Evernus
                 case volumeColumn:
                     return locale.toString(data.mVolume);
                 case marginColumn:
-                    return QString{"%1%2"}.arg(locale.toString(getMargin(data), 'f', 2)).arg(locale.percent());
+                    return QString{"%1%2"}.arg(locale.toString(data.mMargin, 'f', 2)).arg(locale.percent());
                 }
             }
             break;
@@ -97,7 +97,7 @@ namespace Evernus
             case volumeColumn:
                 return data.mVolume;
             case marginColumn:
-                return getMargin(data);
+                return data.mMargin;
             }
             break;
         case Qt::UserRole + 1:
@@ -110,7 +110,7 @@ namespace Evernus
             break;
         case Qt::ForegroundRole:
             if (column == marginColumn)
-                return TextUtils::getMarginColor(getMargin(data));
+                return TextUtils::getMarginColor(data.mMargin);
         }
 
         return QVariant{};
@@ -294,9 +294,18 @@ namespace Evernus
                     data.mDstRegion = dstRegion.first;
 
                     if (useSkillsForDifference)
-                        data.mDifference = PriceUtils::getRevenue(data.mDstSellPrice, taxes) - PriceUtils::getCoS(data.mSrcBuyPrice, taxes);
+                    {
+                        const auto realSellPrice = PriceUtils::getRevenue(data.mDstSellPrice, taxes);
+                        const auto realBuyPrice = PriceUtils::getCoS(data.mSrcBuyPrice, taxes);
+
+                        data.mDifference = realSellPrice - realBuyPrice;
+                        data.mMargin = (qFuzzyIsNull(realSellPrice)) ? (0.) : (100. * data.mDifference / realSellPrice);
+                    }
                     else
+                    {
                         data.mDifference = data.mDstSellPrice - data.mSrcBuyPrice;
+                        data.mMargin = (qFuzzyIsNull(data.mDstSellPrice)) ? (0.) : (100. * data.mDifference / data.mDstSellPrice);
+                    }
 
                     mData.emplace_back(std::move(data));
 
@@ -358,14 +367,5 @@ namespace Evernus
     int InterRegionMarketDataModel::getMarginColumn()
     {
         return marginColumn;
-    }
-
-    double InterRegionMarketDataModel::getMargin(const TypeData &data) const
-    {
-        if (!mCharacter || qFuzzyIsNull(data.mDstSellPrice))
-            return 0.;
-
-        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-        return PriceUtils::getMargin(data.mSrcBuyPrice, data.mDstSellPrice, taxes);
     }
 }

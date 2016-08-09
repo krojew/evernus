@@ -97,6 +97,7 @@ namespace Evernus
             double mVolume = 0;
             uint mSrcRegion = 0;
             uint mDstRegion = 0;
+            double mMargin = 0.;
         };
 
         const EveDataProvider &mDataProvider;
@@ -107,7 +108,5 @@ namespace Evernus
 
         bool mDiscardBogusOrders = true;
         double mBogusOrderThreshold = 0.9;
-
-        double getMargin(const TypeData &data) const;
     };
 }
