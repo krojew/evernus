@@ -2853,32 +2853,37 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::ItemCostWidget</name>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="43"/>
+        <location filename="../ItemCostWidget.cpp" line="47"/>
         <source>Add...</source>
         <translation>Hinzufügen...</translation>
     </message>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="48"/>
+        <location filename="../ItemCostWidget.cpp" line="52"/>
         <source>Edit...</source>
         <translation>Bearbeiten...</translation>
     </message>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="54"/>
+        <location filename="../ItemCostWidget.cpp" line="58"/>
         <source>Remove</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="60"/>
+        <location filename="../ItemCostWidget.cpp" line="64"/>
         <source>Remove all</source>
         <translation>Alle löschen</translation>
     </message>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="65"/>
+        <location filename="../ItemCostWidget.cpp" line="72"/>
         <source>Constant added cost:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="69"/>
+        <location filename="../ItemCostWidget.cpp" line="82"/>
+        <source>Relative added cost:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ItemCostWidget.cpp" line="95"/>
         <source>type in wildcard and press Enter</source>
         <translation>Begriff eingeben und ENTER drücken</translation>
     </message>
@@ -5295,17 +5300,22 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation>Kopie des Verkauspreis auf Artikelkosten beschränken</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="148"/>
+        <location filename="../PricePreferencesWidget.cpp" line="156"/>
+        <source>Use total item costs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PricePreferencesWidget.cpp" line="163"/>
         <source>Fast Price Copy</source>
         <translation>Schnellkopie Preis</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="156"/>
+        <location filename="../PricePreferencesWidget.cpp" line="171"/>
         <source>Enabled</source>
         <translation>Aktivieren</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="160"/>
+        <location filename="../PricePreferencesWidget.cpp" line="175"/>
         <source>Shortcut:</source>
         <translation>Schnellzugriff:</translation>
     </message>
@@ -5315,7 +5325,7 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation type="vanished">Schnellzugriff:</translation>
     </message>
     <message>
-        <location filename="../PricePreferencesWidget.cpp" line="166"/>
+        <location filename="../PricePreferencesWidget.cpp" line="181"/>
         <source>Fast Price Copy allows you to update your orders in a very fast manner. Simply assign a keyboard shortcut, select an order in any market order view and press the shortcut to copy the updated price and automatically jump to the next order on the list. You can do this even when Evernus doesn&apos;t have the input focus - the keyboard shortcut works system-wide. You can use this to update your prices without ever leaving Eve client.</source>
         <translation>&quot;Schnellkopie Preis&quot; erlaubt es dir deine Aufträge sehr schnell zu aktualisieren. Ordne der Funktion ein Tastaturkürzel zu, wähle einen Auftrag in einer beliebigen Marktansicht aus, drück das Tastenkürzel, um den aktualisierten Preis zu kopieren und automatisch zum nächsten Auftrag in der Liste zu springen. Das funktioniert, selbst wenn Evernus nicht im Vordergrund ist, da das Tastenkürzel systemweit gilt. So kannst du deine Aufträge aktualisieren ohne jemals EVE zu verlassen.</translation>
     </message>

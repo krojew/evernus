@@ -113,7 +113,10 @@ namespace Evernus
         virtual void bindValues(const MarketOrder &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const MarketOrder &entity, QSqlQuery &query) const override;
 
-        template<class It>
-        void execBoundValueBatch(QSqlQuery &query, It begin, It end) const;
+        template<class Binder>
+        void execBoundValueBatch(size_t maxBatchSize,
+                                 const QString &baseQuery,
+                                 const std::vector<MarketOrder::IdType> &ids,
+                                 const Binder &valueBinder) const;
     };
 }

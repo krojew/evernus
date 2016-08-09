@@ -400,81 +400,30 @@ namespace Evernus
 
     void MarketOrderRepository::archive(const std::vector<MarketOrder::IdType> &ids) const
     {
-        const auto maxBatchSize = maxSqliteBoundVariables - 1;
-        const auto batches = ids.size() / maxBatchSize;
-
-        QStringList list;
-        for (auto i = 0u; i < std::min(maxBatchSize, ids.size()); ++i)
-            list << "?";
-
         const auto baseQuery = QStringLiteral("UPDATE %1 SET "
             "last_seen = min(strftime('%Y-%m-%dT%H:%M:%f', first_seen, duration || ' days'), strftime('%Y-%m-%dT%H:%M:%f', 'now')),"
             "state = ?,"
             "delta = 0 "
             "WHERE %2 IN (%3)").arg(getTableName()).arg(getIdColumn());
-        auto query = prepare(baseQuery.arg(list.join(", ")));
 
-        for (auto batch = 0u; batch < batches; ++batch)
-        {
+        execBoundValueBatch(maxSqliteBoundVariables - 1, baseQuery, ids, [](auto &query) {
             query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
-
-            const auto end = std::next(std::begin(ids), (batch + 1) * maxBatchSize);
-            execBoundValueBatch(query, std::next(std::begin(ids), batch * maxBatchSize), end);
-        }
-
-        const auto reminderBegin = std::next(std::begin(ids), batches * maxBatchSize);
-        if (reminderBegin != std::end(ids))
-        {
-            list.clear();
-            for (auto it = reminderBegin; it != std::end(ids); ++it)
-                list << "?";
-
-            query = prepare(baseQuery.arg(list.join(", ")));
-
-            query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
-            execBoundValueBatch(query, reminderBegin, std::end(ids));
-        }
+        });
     }
 
     void MarketOrderRepository::fulfill(const std::vector<MarketOrder::IdType> &ids) const
     {
-        const auto maxBatchSize = maxSqliteBoundVariables - 2;
-        const auto batches = ids.size() / maxBatchSize;
-
-        QStringList list;
-        for (auto i = 0u; i < std::min(maxBatchSize, ids.size()); ++i)
-            list << "?";
-
         const auto baseQuery = QStringLiteral("UPDATE %1 SET "
             "last_seen = ?,"
             "state = ?,"
             "delta = volume_remaining,"
             "volume_remaining = 0 "
             "WHERE %2 IN (%3)").arg(getTableName()).arg(getIdColumn());
-        auto query = prepare(baseQuery.arg(list.join(", ")));
 
-        for (auto batch = 0u; batch < batches; ++batch)
-        {
+        execBoundValueBatch(maxSqliteBoundVariables - 2, baseQuery, ids, [](auto &query) {
             query.addBindValue(QDateTime::currentDateTimeUtc());
             query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
-
-            const auto end = std::next(std::begin(ids), (batch + 1) * maxBatchSize);
-            execBoundValueBatch(query, std::next(std::begin(ids), batch * maxBatchSize), end);
-        }
-
-        const auto reminderBegin = std::next(std::begin(ids), batches * maxBatchSize);
-        if (reminderBegin != std::end(ids))
-        {
-            list.clear();
-            for (auto it = reminderBegin; it != std::end(ids); ++it)
-                list << "?";
-
-            query = prepare(baseQuery.arg(list.join(", ")));
-
-            query.addBindValue(QDateTime::currentDateTimeUtc());
-            query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
-            execBoundValueBatch(query, reminderBegin, std::end(ids));
-        }
+        });
     }
 
     void MarketOrderRepository::deleteOldEntries(const QDateTime &from) const
@@ -571,12 +520,46 @@ namespace Evernus
         query.addBindValue(entity.getNotes());
     }
 
-    template<class It>
-    void MarketOrderRepository::execBoundValueBatch(QSqlQuery &query, It begin, It end) const
+    template<class Binder>
+    void MarketOrderRepository::execBoundValueBatch(size_t maxBatchSize,
+                                                    const QString &baseQuery,
+                                                    const std::vector<MarketOrder::IdType> &ids,
+                                                    const Binder &valueBinder) const
     {
-        for (auto it = begin; it != end; ++it)
-            query.addBindValue(*it);
+        const auto batches = ids.size() / maxBatchSize;
 
-        DatabaseUtils::execQuery(query);
+        QStringList list;
+        for (auto i = 0u; i < std::min(maxBatchSize, ids.size()); ++i)
+            list << "?";
+
+        auto query = prepare(baseQuery.arg(list.join(", ")));
+
+        auto executeBatch = [&](auto begin, auto end) {
+            for (auto it = begin; it != end; ++it)
+                query.addBindValue(*it);
+
+            DatabaseUtils::execQuery(query);
+        };
+
+        for (auto batch = 0u; batch < batches; ++batch)
+        {
+            valueBinder(query);
+
+            const auto end = std::next(std::begin(ids), (batch + 1) * maxBatchSize);
+            executeBatch(std::next(std::begin(ids), batch * maxBatchSize), end);
+        }
+
+        const auto reminderBegin = std::next(std::begin(ids), batches * maxBatchSize);
+        if (reminderBegin != std::end(ids))
+        {
+            list.clear();
+            for (auto it = reminderBegin; it != std::end(ids); ++it)
+                list << "?";
+
+            query = prepare(baseQuery.arg(list.join(", ")));
+
+            valueBinder(query);
+            executeBatch(reminderBegin, std::end(ids));
+        }
     }
 }
