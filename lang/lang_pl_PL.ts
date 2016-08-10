@@ -3185,12 +3185,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ItemHistoriesWidget</name>
     <message>
-        <location filename="../ItemHistoriesWidget.cpp" line="35"/>
+        <location filename="../ItemHistoriesWidget.cpp" line="36"/>
         <source>Add new history</source>
         <translation>Dodaj nową historię</translation>
     </message>
     <message>
-        <location filename="../ItemHistoriesWidget.cpp" line="50"/>
+        <location filename="../ItemHistoriesWidget.cpp" line="58"/>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>

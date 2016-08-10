@@ -2890,12 +2890,12 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::ItemHistoriesWidget</name>
     <message>
-        <location filename="../ItemHistoriesWidget.cpp" line="35"/>
+        <location filename="../ItemHistoriesWidget.cpp" line="36"/>
         <source>Add new history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ItemHistoriesWidget.cpp" line="50"/>
+        <location filename="../ItemHistoriesWidget.cpp" line="58"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
