@@ -25,80 +25,79 @@
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="56"/>
         <source>Character keys</source>
-        <translation type="unfinished">Charakter Key</translation>
+        <translation>Charakter Key</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="57"/>
         <source>Corporation keys</source>
-        <translation type="unfinished">Corporation Key</translation>
+        <translation>Corporation Key</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="58"/>
         <source>Characters</source>
-        <translation type="unfinished">Charaktere</translation>
+        <translation>Charaktere</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="70"/>
         <location filename="../CharacterManagerDialog.cpp" line="170"/>
         <source>Key ID</source>
-        <translation type="unfinished">Key ID</translation>
+        <translation>Key ID</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="71"/>
         <source>Character</source>
-        <translation type="unfinished">Charakter</translation>
+        <translation>Charakter</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="72"/>
         <location filename="../CharacterManagerDialog.cpp" line="171"/>
         <source>Verification code</source>
-        <translation type="unfinished">Verification Code</translation>
+        <translation>Verification Code</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="74"/>
         <source>Character Manager</source>
-        <translation type="unfinished">Charakterverwaltung
-</translation>
+        <translation>Charakterverwaltung</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="213"/>
         <location filename="../CharacterManagerDialog.cpp" line="250"/>
         <source>Added keys</source>
-        <translation type="unfinished">Hinzugefügte Keys</translation>
+        <translation>Hinzugefügte Keys</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="227"/>
         <location filename="../CharacterManagerDialog.cpp" line="265"/>
         <source>Add...</source>
-        <translation type="unfinished">Hinzufügen...</translation>
+        <translation>Hinzufügen...</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="231"/>
         <location filename="../CharacterManagerDialog.cpp" line="269"/>
         <source>Edit...</source>
-        <translation type="unfinished">Bearbeiten...</translation>
+        <translation>Bearbeiten...</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="236"/>
         <location filename="../CharacterManagerDialog.cpp" line="274"/>
         <location filename="../CharacterManagerDialog.cpp" line="312"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="287"/>
         <source>Available characters</source>
-        <translation type="unfinished">Verfügbare Charaktere</translation>
+        <translation>Verfügbare Charaktere</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="303"/>
         <source>In order to manage characters, add keys first in the Keys tab.</source>
-        <translation type="unfinished">Um Charaktere zu verwalten, füge zuerst ihren Key im Register Keys hinzu.</translation>
+        <translation>Um Charaktere zu verwalten, füge zuerst ihren Key im Register Keys hinzu.</translation>
     </message>
     <message>
         <location filename="../CharacterManagerDialog.cpp" line="308"/>
         <source>Refresh</source>
-        <translation type="unfinished">Aktualisieren</translation>
+        <translation>Aktualisieren</translation>
     </message>
 </context>
 <context>
@@ -106,17 +105,17 @@
     <message>
         <location filename="../CharacterModel.cpp" line="43"/>
         <source>Id</source>
-        <translation type="unfinished">ID</translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../CharacterModel.cpp" line="45"/>
         <source>Name</source>
-        <translation type="unfinished">Name</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../CharacterModel.cpp" line="47"/>
         <source>Key id</source>
-        <translation type="unfinished">Key ID</translation>
+        <translation>Key ID</translation>
     </message>
 </context>
 <context>
@@ -124,42 +123,42 @@
     <message>
         <location filename="../CorpKeyEditDialog.cpp" line="44"/>
         <source>Character:</source>
-        <translation type="unfinished">Charakter:</translation>
+        <translation>Charakter:</translation>
     </message>
     <message>
         <location filename="../CorpKeyEditDialog.cpp" line="62"/>
         <source>Key ID:</source>
-        <translation type="unfinished">Key ID:</translation>
+        <translation>Key ID:</translation>
     </message>
     <message>
         <location filename="../CorpKeyEditDialog.cpp" line="66"/>
         <source>Verification Code:</source>
-        <translation type="unfinished">Verification Code:</translation>
+        <translation>Verification Code:</translation>
     </message>
     <message>
         <location filename="../CorpKeyEditDialog.cpp" line="68"/>
         <source>To create a predefined corporation key, use the following link:</source>
-        <translation type="unfinished">Benutze diesen Link, um einen voreingestellten Corporation Key zu erzeugen:</translation>
+        <translation>Benutze diesen Link, um einen voreingestellten Corporation Key zu erzeugen:</translation>
     </message>
     <message>
         <location filename="../CorpKeyEditDialog.cpp" line="74"/>
         <source>Corporation keys require character keys added first.</source>
-        <translation type="unfinished">Corporation Keys benötigen zuerst einen Charakter Key.</translation>
+        <translation>Corporation Keys benötigen zuerst einen Charakter Key.</translation>
     </message>
     <message>
         <location filename="../CorpKeyEditDialog.cpp" line="81"/>
         <source>Corporation Key Edit</source>
-        <translation type="unfinished">Corporation Key Bearbeiten</translation>
+        <translation>Corporation Key Bearbeiten</translation>
     </message>
     <message>
         <location filename="../CorpKeyEditDialog.cpp" line="89"/>
         <source>Invalid character</source>
-        <translation type="unfinished">Ungültiger Charakter</translation>
+        <translation>Ungültiger Charakter</translation>
     </message>
     <message>
         <location filename="../CorpKeyEditDialog.cpp" line="89"/>
         <source>Please select a valid character.</source>
-        <translation type="unfinished">Bitte gültigen Charakter auswählen.</translation>
+        <translation>Bitte gültigen Charakter auswählen.</translation>
     </message>
 </context>
 <context>
@@ -605,7 +604,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../CallbackExternalOrderImporter.cpp" line="24"/>
         <source>CREST import: waiting for %1 server replies</source>
-        <translation type="unfinished">CREST Iimport: warte auf %1 Serverantworten</translation>
+        <translation>CREST Iimport: warte auf %1 Serverantworten</translation>
     </message>
 </context>
 <context>
@@ -793,7 +792,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../CharacterWidget.cpp" line="203"/>
         <source>Enable</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktivieren</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="217"/>
@@ -2747,7 +2746,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="72"/>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto</translation>
     </message>
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="73"/>
@@ -2971,7 +2970,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../EvernusApplication.cpp" line="2691"/>
         <source>Fetching contract items for contract %1...</source>
-        <translation type="unfinished">Hole Vertragsgegenstände für Vertrag %1...</translation>
+        <translation>Hole Vertragsgegenstände für Vertrag %1...</translation>
     </message>
 </context>
 <context>
@@ -3709,7 +3708,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="229"/>
         <source>Use skills and taxes for difference calculation (causes recalculation)</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwenden Sie Skills für Differenzberechnung</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="812"/>
@@ -5917,17 +5916,17 @@ Wert gesamt: %7</translation>
     <message>
         <location filename="../CRESTInterface.cpp" line="149"/>
         <source>Missing CREST regions url!</source>
-        <translation type="unfinished">Fehlende CREST Regionen URL!</translation>
+        <translation>Fehlende CREST Regionen URL!</translation>
     </message>
     <message>
         <location filename="../CRESTInterface.cpp" line="219"/>
         <source>Missing region URL for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehlende CREST %1 Regionen URL</translation>
     </message>
     <message>
         <location filename="../CRESTInterface.cpp" line="237"/>
         <source>Missing CREST item types url!</source>
-        <translation type="unfinished">Fehlende CREST Gegenstandsarten URL!</translation>
+        <translation>Fehlende CREST Gegenstandsarten URL!</translation>
     </message>
 </context>
 <context>
@@ -6435,133 +6434,133 @@ Please click on &quot;Import all&quot; after the update.</source>
     <message>
         <location filename="../MarginToolDialog.cpp" line="84"/>
         <source>Margin data</source>
-        <translation type="unfinished">Margendaten</translation>
+        <translation>Margendaten</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="85"/>
         <source>Data source</source>
-        <translation type="unfinished">Datenquelle</translation>
+        <translation>Datenquelle</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="90"/>
         <source>Always on top</source>
-        <translation type="unfinished">Immer im Vordergrund</translation>
+        <translation>Immer im Vordergrund</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="97"/>
         <source>Quit application</source>
-        <translation type="unfinished">Anwendung verlassen</translation>
+        <translation>Anwendung verlassen</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="108"/>
         <source>Margin tool</source>
-        <translation type="unfinished">Margenrechner</translation>
+        <translation>Margenrechner</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="450"/>
         <source>export market logs in game</source>
-        <translation type="unfinished">Aus dem Spiel exportierte Markt Logs</translation>
+        <translation>Aus dem Spiel exportierte Markt Logs</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="462"/>
         <source>Sell:</source>
-        <translation type="unfinished">Verkauf:</translation>
+        <translation>Verkauf:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="463"/>
         <source>Buy:</source>
-        <translation type="unfinished">Kauf:</translation>
+        <translation>Kauf:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="464"/>
         <source>Profit:</source>
-        <translation type="unfinished">Profit:</translation>
+        <translation>Profit:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="465"/>
         <source>Revenue:</source>
-        <translation type="unfinished">Umsatz:</translation>
+        <translation>Umsatz:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="466"/>
         <source>Cost of sales:</source>
-        <translation type="unfinished">Unkosten:</translation>
+        <translation>Unkosten:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="467"/>
         <source>Buyout:</source>
-        <translation type="unfinished">Sofortkauf:</translation>
+        <translation>Sofortkauf:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="481"/>
         <location filename="../MarginToolDialog.cpp" line="496"/>
         <source>Copy to clipboard</source>
-        <translation type="unfinished">In die Zwischenablage kopieren</translation>
+        <translation>In die Zwischenablage kopieren</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="517"/>
         <source>Buy orders:</source>
-        <translation type="unfinished">Kaufaufträge:</translation>
+        <translation>Kaufaufträge:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="522"/>
         <source>Sell orders:</source>
-        <translation type="unfinished">Verkaufsaufträge:</translation>
+        <translation>Verkaufsaufträge:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="527"/>
         <source>Buy volume/movement:</source>
-        <translation type="unfinished">Volumen/Momentum Ankauf:</translation>
+        <translation>Volumen/Momentum Ankauf:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="532"/>
         <source>Sell volume/movement:</source>
-        <translation type="unfinished">Volumen/Momentum Verkauf:</translation>
+        <translation>Volumen/Momentum Verkauf:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="545"/>
         <source>Margin:</source>
-        <translation type="unfinished">Marge:</translation>
+        <translation>Marge:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="551"/>
         <source>Markup:</source>
-        <translation type="unfinished">Aufschlag:</translation>
+        <translation>Aufschlag:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="556"/>
         <source>Autocopy</source>
-        <translation type="unfinished">Autokopie</translation>
+        <translation>Autokopie</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="566"/>
         <source>Nothing</source>
-        <translation type="unfinished">Nichts</translation>
+        <translation>Nichts</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="571"/>
         <source>Sell price</source>
-        <translation type="unfinished">Verkaufspreis</translation>
+        <translation>Verkaufspreis</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="576"/>
         <source>Buy price</source>
-        <translation type="unfinished">Kaufpreis</translation>
+        <translation>Kaufpreis</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="598"/>
         <source>Broker fee:</source>
-        <translation type="unfinished">Maklergebühr:</translation>
+        <translation>Maklergebühr:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="603"/>
         <source>Sales tax:</source>
-        <translation type="unfinished">Verkaufssteuer:</translation>
+        <translation>Verkaufssteuer:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="608"/>
         <source>Sample data</source>
-        <translation type="unfinished">Beispieldaten</translation>
+        <translation>Beispieldaten</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="622"/>
@@ -6571,48 +6570,48 @@ Please click on &quot;Import all&quot; after the update.</source>
     <message>
         <location filename="../MarginToolDialog.cpp" line="637"/>
         <source>If you experience problems with importing orders, adjust margin tool settings in the Preferences.</source>
-        <translation type="unfinished">Wenn Problem beim Import von Aufträgen auftreten, ändere die Margenrechner-Parameter in Einstellungen.</translation>
+        <translation>Wenn Problem beim Import von Aufträgen auftreten, ändere die Margenrechner-Parameter in Einstellungen.</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="652"/>
         <source>Preferred source</source>
-        <translation type="unfinished">Bevorzugte Quelle</translation>
+        <translation>Bevorzugte Quelle</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="662"/>
         <source>Orders only</source>
-        <translation type="unfinished">Nur AUfträge</translation>
+        <translation>Nur AUfträge</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="666"/>
         <source>Prefer custom item costs (if available)</source>
-        <translation type="unfinished">Bevorzuge benutzerdefinierte Kosten für Gegenstände (falls verfügbar)</translation>
+        <translation>Bevorzuge benutzerdefinierte Kosten für Gegenstände (falls verfügbar)</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="670"/>
         <source>Custom station</source>
-        <translation type="unfinished">Benutzerdefinierte Station</translation>
+        <translation>Benutzerdefinierte Station</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="674"/>
         <source>Source station</source>
-        <translation type="unfinished">Ursprungsstation</translation>
+        <translation>Ursprungsstation</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="830"/>
         <location filename="../MarginToolDialog.cpp" line="836"/>
         <source>Margin tool error</source>
-        <translation type="unfinished">Fehler Margenrechner</translation>
+        <translation>Fehler Margenrechner</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="831"/>
         <source>Could not determine market log path. Please enter log path in settings.</source>
-        <translation type="unfinished">Konnte das Verzeichnis für Markt Logs nicht bestimmen. Bitte das Verzeichnis in Einstellungen angeben.</translation>
+        <translation>Konnte das Verzeichnis für Markt Logs nicht bestimmen. Bitte das Verzeichnis in Einstellungen angeben.</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="837"/>
         <source>Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again.</source>
-        <translation type="unfinished">Konnte Überwachung der Markt Logs nicht starten. Stelle sicher das dieses Verzeichnis existiert (exportiere z.B. einige Logs) und versuche es erneut.</translation>
+        <translation>Konnte Überwachung der Markt Logs nicht starten. Stelle sicher das dieses Verzeichnis existiert (exportiere z.B. einige Logs) und versuche es erneut.</translation>
     </message>
 </context>
 <context>
@@ -6703,65 +6702,65 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen (dabei können Ihre Kontosicher
         <location filename="../Updater.cpp" line="154"/>
         <location filename="../Updater.cpp" line="164"/>
         <source>Error</source>
-        <translation type="unfinished">Fehler</translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="143"/>
         <source>Error contacting update server: %1</source>
-        <translation type="unfinished">Fehler beim Verbinden mit dem Updateserver: %1</translation>
+        <translation>Fehler beim Verbinden mit dem Updateserver: %1</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="154"/>
         <source>Error parsing response from the update server: %1</source>
-        <translation type="unfinished">Fehler beim Auswerten der Antwort des Updateservers: %1</translation>
+        <translation>Fehler beim Auswerten der Antwort des Updateservers: %1</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="164"/>
         <source>Missing update version information!</source>
-        <translation type="unfinished">Fehlende Update-Versionsinformationen!</translation>
+        <translation>Fehlende Update-Versionsinformationen!</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="177"/>
         <source>No update found</source>
-        <translation type="unfinished">Kein Update vorhanden</translation>
+        <translation>Kein Update vorhanden</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="177"/>
         <source>Your current version is up-to-date.</source>
-        <translation type="unfinished">Deine Version ist aktuell.</translation>
+        <translation>Deine Version ist aktuell.</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="186"/>
         <location filename="../Updater.cpp" line="191"/>
         <location filename="../Updater.cpp" line="202"/>
         <source>Update found</source>
-        <translation type="unfinished">Update gefunden</translation>
+        <translation>Update gefunden</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="186"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
-        <translation type="unfinished">Eine neue Version ist verfügbar: %1
+        <translation>Eine neue Version ist verfügbar: %1
 Willst Du sie nun herunterladen?</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="191"/>
         <source>A new version is available: %1
 Do you wish to launch the updater?</source>
-        <translation type="unfinished">Eine neue Version ist verfügbar: %1
+        <translation>Eine neue Version ist verfügbar: %1
 Wollen Sie den Updater starten möchten?</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="202"/>
         <source>Couldn&apos;t launch updater. Download manually?</source>
-        <translation type="unfinished">Lässt sich nicht starten Updater. Manuell herunterladen?</translation>
+        <translation>Lässt sich nicht starten Updater. Manuell herunterladen?</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="96"/>
         <location filename="../Updater.cpp" line="102"/>
         <location filename="../Updater.cpp" line="108"/>
         <source>Error updating db version: %1</source>
-        <translation type="unfinished">Fehler beim Aktualisieren der Datenbankversion: %1</translation>
+        <translation>Fehler beim Aktualisieren der Datenbankversion: %1</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="312"/>
@@ -6769,30 +6768,30 @@ Wollen Sie den Updater starten möchten?</translation>
         <location filename="../Updater.cpp" line="350"/>
         <location filename="../Updater.cpp" line="362"/>
         <source>Update</source>
-        <translation type="unfinished">Update</translation>
+        <translation>Update</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="312"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
-        <translation type="unfinished">Während des Updateprozess ist ein Fehler aufgetreten.
+        <translation>Während des Updateprozess ist ein Fehler aufgetreten.
 Ein Backup der Datenbank wurde als %1 gespeichert. Bitte schaue in der Onlinehilfe nach was in dieser Situation zu tun ist.</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="343"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
-        <translation type="unfinished">Diese Update erfordert den Reimport aller Daten. Bitte klicke nach dem Update auf &quot;Alle importieren&quot;.</translation>
+        <translation>Diese Update erfordert den Reimport aller Daten. Bitte klicke nach dem Update auf &quot;Alle importieren&quot;.</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="350"/>
         <source>This update requires re-importing all item prices.</source>
-        <translation type="unfinished">Diese Update erfordert den Reimport aller Artikelpreise.</translation>
+        <translation>Diese Update erfordert den Reimport aller Artikelpreise.</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="362"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
-        <translation type="unfinished">Diese Update erfordert den Reimport aller Corporation Transaktionen und Logbücher.</translation>
+        <translation>Diese Update erfordert den Reimport aller Corporation Transaktionen und Logbücher.</translation>
     </message>
 </context>
 <context>
@@ -6848,7 +6847,7 @@ Please click on &quot;Import all&quot; after the update.</source>
     <message>
         <location filename="../APIManager.cpp" line="639"/>
         <source>Invalid XML document received!</source>
-        <translation type="unfinished">Ungültiges XML Dokument erhalten!</translation>
+        <translation>Ungültiges XML Dokument erhalten!</translation>
     </message>
 </context>
 </TS>
