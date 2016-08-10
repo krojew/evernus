@@ -133,6 +133,7 @@ qt5_wrap_cpp(
     ItemCostEditDialog.h
     ItemCostModel.h
     ItemCostWidget.h
+    ItemHistoriesWidget.h
     ItemHistoryWidget.h
     ItemNameModel.h
     ItemTypeSelectDialog.h
@@ -471,6 +472,8 @@ add_executable(
     ItemCostWidget.cpp
     ItemCostWidget.h
     ItemData.h
+    ItemHistoriesWidget.cpp
+    ItemHistoriesWidget.h
     ItemHistoryWidget.cpp
     ItemHistoryWidget.h
     ItemNameModel.cpp

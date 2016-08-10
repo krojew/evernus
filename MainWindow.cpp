@@ -46,11 +46,11 @@
 #include "WalletJournalWidget.h"
 #include "CharacterRepository.h"
 #include "MarketBrowserWidget.h"
+#include "ItemHistoriesWidget.h"
 #include "RepositoryProvider.h"
 #include "ActiveTasksDialog.h"
 #include "PreferencesDialog.h"
 #include "MarketOrderWidget.h"
-#include "ItemHistoryWidget.h"
 #include "MarginToolDialog.h"
 #include "StatisticsWidget.h"
 #include "CharacterWidget.h"
@@ -874,13 +874,13 @@ namespace Evernus
         connect(corpContractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importCorpContracts);
         connect(this, &MainWindow::corpContractsChanged, corpContractsTab, &ContractWidget::updateData);
 
-        auto itemHistoryTab = new ItemHistoryWidget{mRepositoryProvider.getWalletTransactionRepository(),
-                                                    mRepositoryProvider.getCorpWalletTransactionRepository(),
-                                                    mEveDataProvider,
-                                                    this};
-        connect(this, &MainWindow::walletTransactionsChanged, itemHistoryTab, &ItemHistoryWidget::updateData);
-        connect(this, &MainWindow::corpWalletTransactionsChanged, itemHistoryTab, &ItemHistoryWidget::updateData);
-        connect(this, &MainWindow::preferencesChanged, itemHistoryTab, &ItemHistoryWidget::handleNewPreferences);
+        auto itemHistoryTab = new ItemHistoriesWidget{mRepositoryProvider.getWalletTransactionRepository(),
+                                                      mRepositoryProvider.getCorpWalletTransactionRepository(),
+                                                      mEveDataProvider,
+                                                      this};
+        connect(this, &MainWindow::walletTransactionsChanged, itemHistoryTab, &ItemHistoriesWidget::updateData);
+        connect(this, &MainWindow::corpWalletTransactionsChanged, itemHistoryTab, &ItemHistoriesWidget::updateData);
+        connect(this, &MainWindow::preferencesChanged, itemHistoryTab, &ItemHistoriesWidget::handleNewPreferences);
         addTab(itemHistoryTab, tr("Item history"), TabType::Other);
 
         auto marketBrowserTab = new MarketBrowserWidget{mRepositoryProvider.getExternalOrderRepository(),
