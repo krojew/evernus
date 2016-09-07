@@ -29,8 +29,10 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit ProxyWebExternalOrderImporter(const EveDataProvider &dataProvider,
-                                               QObject *parent = nullptr);
+        ProxyWebExternalOrderImporter(QByteArray clientId,
+                                      QByteArray clientSecret,
+                                      const EveDataProvider &dataProvider,
+                                      QObject *parent = nullptr);
         virtual ~ProxyWebExternalOrderImporter() = default;
 
         virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;

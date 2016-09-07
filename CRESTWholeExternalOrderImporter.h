@@ -12,8 +12,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 #pragma once
+
+#include <QByteArray>
 
 #include "CallbackExternalOrderImporter.h"
 #include "CRESTManager.h"
@@ -26,7 +27,10 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit CRESTWholeExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        CRESTWholeExternalOrderImporter(QByteArray clientId,
+                                        QByteArray clientSecret,
+                                        const EveDataProvider &dataProvider,
+                                        QObject *parent = nullptr);
         virtual ~CRESTWholeExternalOrderImporter() = default;
 
         virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;

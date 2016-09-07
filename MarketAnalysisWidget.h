@@ -48,7 +48,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MarketAnalysisWidget(const EveDataProvider &dataProvider,
+        MarketAnalysisWidget(QByteArray clientId,
+                             QByteArray clientSecret,
+                             const EveDataProvider &dataProvider,
                              TaskManager &taskManager,
                              const MarketOrderRepository &orderRepo,
                              const EveTypeRepository &typeRepo,

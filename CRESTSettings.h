@@ -18,8 +18,10 @@ namespace Evernus
 {
     namespace CRESTSettings
     {
+        const auto refreshTokenKey = "crest/refreshToken";
         const auto rateLimitKey = "crest/rateLimit";
 
+        const auto cryptKey = Q_UINT64_C(0x45729ac96cbe229f);
         const auto rateLimitDefault = 150u;
     }
 }

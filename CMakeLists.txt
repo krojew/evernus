@@ -18,10 +18,15 @@ find_package(Qt5Qml REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
+find_package(Qt5WebEngineWidgets REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
 if(${Qt5XmlPatterns_VERSION} VERSION_LESS "5.4.0")
     message(SEND_ERROR "Qt version >= 5.4 is required.")
+endif()
+
+if(DEFINED EVERNUS_CREST_CLIENT_ID AND DEFINED EVERNUS_CREST_SECRET)
+    add_definitions(-DEVERNUS_CREST_CLIENT_ID=${EVERNUS_CREST_CLIENT_ID} -DEVERNUS_CREST_SECRET=${EVERNUS_CREST_SECRET})
 endif()
 
 configure_file(Version.h.in Version.h)
@@ -102,6 +107,7 @@ qt5_wrap_cpp(
     ContractWidget.h
     CorpImportPreferencesWidget.h
     CorpKeyEditDialog.h
+    CRESTAuthWidget.h
     CRESTIndividualExternalOrderImporter.h
     CRESTInterface.h
     CRESTManager.h
@@ -366,6 +372,8 @@ add_executable(
     CorpWalletSnapshot.h
     CorpWalletSnapshotRepository.cpp
     CorpWalletSnapshotRepository.h
+    CRESTAuthWidget.cpp
+    CRESTAuthWidget.h
     CRESTIndividualExternalOrderImporter.cpp
     CRESTIndividualExternalOrderImporter.h
     CRESTInterface.cpp
@@ -828,6 +836,7 @@ target_link_libraries(
     Qt5::Sql
     Qt5::Xml
     Qt5::XmlPatterns
+    Qt5::WebEngineWidgets
     Qt5::Widgets
     ${ADDITIONAL_LIBS}
 )

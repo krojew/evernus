@@ -60,9 +60,13 @@ namespace Evernus
         : public QThread
     {
     public:
-        FetcherThread(const EveDataProvider &dataProvider,
+        FetcherThread(QByteArray clientId,
+                      QByteArray clientSecret,
+                      const EveDataProvider &dataProvider,
                       QObject *parent)
             : QThread{parent}
+            , mClientId{std::move(clientId)}
+            , mClientSecret{std::move(clientSecret)}
             , mDataProvider{dataProvider}
         {
         }
@@ -83,7 +87,7 @@ namespace Evernus
     protected:
         virtual void run() override
         {
-            mDataFetcher = std::make_unique<MarketAnalysisDataFetcher>(mDataProvider);
+            mDataFetcher = std::make_unique<MarketAnalysisDataFetcher>(std::move(mClientId), std::move(mClientSecret), mDataProvider);
             mPromise.set_value();
 
             QThread::run();
@@ -91,6 +95,9 @@ namespace Evernus
         }
 
     private:
+        QByteArray mClientId;
+        QByteArray mClientSecret;
+
         const EveDataProvider &mDataProvider;
 
         std::unique_ptr<MarketAnalysisDataFetcher> mDataFetcher;
@@ -98,7 +105,9 @@ namespace Evernus
         std::promise<void> mPromise;
     };
 
-    MarketAnalysisWidget::MarketAnalysisWidget(const EveDataProvider &dataProvider,
+    MarketAnalysisWidget::MarketAnalysisWidget(QByteArray clientId,
+                                               QByteArray clientSecret,
+                                               const EveDataProvider &dataProvider,
                                                TaskManager &taskManager,
                                                const MarketOrderRepository &orderRepo,
                                                const EveTypeRepository &typeRepo,
@@ -125,7 +134,7 @@ namespace Evernus
                                 InterRegionMarketDataModel::getVolumeColumn(),
                                 InterRegionMarketDataModel::getMarginColumn())
     {
-        mFetcherThread = new FetcherThread{mDataProvider, this};
+        mFetcherThread = new FetcherThread{std::move(clientId), std::move(clientSecret), mDataProvider, this};
         const auto future = mFetcherThread->getFuture();
 
         mFetcherThread->start();

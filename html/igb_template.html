@@ -47,9 +47,7 @@
                 xhr.open("GET", "/update");
                 xhr.onload = function() {
                     var data = JSON.parse(xhr.responseText);
-                    if (data.message == "<?=open-market-message?>")
-                        showType(data.type);
-                    else if (data.message == "<?=set-destination-message?>")
+                    if (data.message == "<?=set-destination-message?>")
                         setDestination(data.id);
 
                     pollServer();

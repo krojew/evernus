@@ -116,9 +116,59 @@ namespace Evernus
         getRegionUrl(regionId, mRegionHistoryUrls, mPendingRegionHistoryRequests, "marketHistory", historyFetcher);
     }
 
+    void CRESTInterface::openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const
+    {
+        qDebug() << "Opening market details for" << typeId;
+
+        if (!mEndpoints.contains(itemTypesUrlName))
+        {
+            errorCallback(tr("Missing CREST item types url!"));
+            return;
+        }
+
+        auto opener = [=](const auto &error) {
+            if (!error.isEmpty())
+            {
+                errorCallback(error);
+            }
+            else
+            {
+                QJsonDocument json{QJsonObject{
+                    { "type", QJsonObject{
+                        { "href", QStringLiteral("%1%2/").arg(mEndpoints[itemTypesUrlName]).arg(typeId) },
+                        { "id", static_cast<qint64>(typeId) },
+                    } }
+                }};
+
+                post(QStringLiteral("%1/characters/%2/ui/openwindow/marketdetails/").arg(crestUrl).arg(charId), json.toJson(), std::move(errorCallback));
+            }
+        };
+
+        checkAuth(opener);
+    }
+
     void CRESTInterface::setEndpoints(EndpointMap endpoints)
     {
         mEndpoints = std::move(endpoints);
+    }
+
+    void CRESTInterface::updateTokenAndContinue(QString token, const QDateTime &expiry)
+    {
+        mAccessToken = std::move(token);
+        mExpiry = expiry;
+
+        for (const auto &request : mPendingAuthRequests)
+            request(QString{});
+
+        mPendingAuthRequests.clear();
+    }
+
+    void CRESTInterface::handleTokenError(const QString &error)
+    {
+        for (const auto &request : mPendingAuthRequests)
+            request(error);
+
+        mPendingAuthRequests.clear();
     }
 
     void CRESTInterface::processSslErrors(const QList<QSslError> &errors)
@@ -139,6 +189,21 @@ namespace Evernus
     void CRESTInterface::setRateLimit(float rate)
     {
         mCRESTLimiter.setRate(rate);
+    }
+
+    template<class T>
+    void CRESTInterface::checkAuth(T &&continuation) const
+    {
+        if (mExpiry < QDateTime::currentDateTime() || mAccessToken.isEmpty())
+        {
+            mPendingAuthRequests.emplace_back(std::forward<T>(continuation));
+            if (mPendingAuthRequests.size() == 1)
+                emit tokenRequested();
+        }
+        else
+        {
+            std::forward<T>(continuation)(QString{});
+        }
     }
 
     template<class T>
@@ -239,7 +304,7 @@ namespace Evernus
         }
 
         QUrlQuery query;
-        query.addQueryItem("type", QString{"%1%2/"}.arg(mEndpoints[itemTypesUrlName]).arg(typeId));
+        query.addQueryItem("type", QStringLiteral("%1%2/").arg(mEndpoints[itemTypesUrlName]).arg(typeId));
 
         regionUrl.setQuery(query);
 
@@ -290,17 +355,95 @@ namespace Evernus
 
                 const auto error = reply->error();
                 if (error != QNetworkReply::NoError)
-                    continuation(QJsonDocument{}, reply->errorString());
+                {
+                    if (error == QNetworkReply::AuthenticationRequiredError)
+                    {
+                        // expired token?
+                        tryAuthAndContinue([=](const auto &error) {
+                            if (error.isEmpty())
+                                asyncGet(url, accept, continuation);
+                            else
+                                continuation(QJsonDocument{}, error);
+                        });
+                    }
+                    else
+                    {
+                        continuation(QJsonDocument{}, reply->errorString());
+                    }
+                }
                 else
+                {
                     continuation(QJsonDocument::fromJson(reply->readAll()), QString{});
+                }
             });
         };
 
+        scheduleRequest(request);
+    }
+
+    template<class T>
+    void CRESTInterface::post(const QUrl &url, const QByteArray &data, T &&errorCallback) const
+    {
+        auto request = [=] {
+            qDebug() << "CREST request:" << url << ":" << data;
+
+            auto request = prepareRequest(url, "application/json");
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+            auto reply = mNetworkManager.post(request, data);
+            Q_ASSERT(reply != nullptr);
+
+            new ReplyTimeout{*reply};
+
+            connect(reply, &QNetworkReply::sslErrors, this, &CRESTInterface::processSslErrors);
+            connect(reply, &QNetworkReply::finished, this, [=] {
+                reply->deleteLater();
+
+                const auto error = reply->error();
+                if (error != QNetworkReply::NoError)
+                {
+                    if (error == QNetworkReply::AuthenticationRequiredError)
+                    {
+                        // expired token?
+                        tryAuthAndContinue([=](const auto &error) {
+                            if (error.isEmpty())
+                                post(url, data, errorCallback);
+                            else
+                                errorCallback(error);
+                        });
+                    }
+                    else
+                    {
+                        errorCallback(reply->errorString());
+                    }
+                }
+                else
+                {
+                    const auto errorText = reply->readAll();
+                    if (!errorText.isEmpty())
+                        errorCallback(errorText);
+                }
+            });
+        };
+
+        scheduleRequest(request);
+    }
+
+    template<class T>
+    void CRESTInterface::scheduleRequest(T &&request) const
+    {
         const auto wait = std::chrono::duration_cast<std::chrono::milliseconds>(mCRESTLimiter.acquire());
         if (wait.count() > 0)
             mPendingRequests.emplace(std::chrono::steady_clock::now() + wait, std::move(request));
         else
             request();
+    }
+
+    template<class T>
+    void CRESTInterface::tryAuthAndContinue(T &&continuation) const
+    {
+        mAccessToken.clear();
+        checkAuth(std::forward<T>(continuation));
     }
 
     QNetworkRequest CRESTInterface::prepareRequest(const QUrl &url, const QByteArray &accept) const
@@ -309,6 +452,7 @@ namespace Evernus
         request.setHeader(QNetworkRequest::UserAgentHeader,
                           QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
         request.setRawHeader("Accept", accept);
+        request.setRawHeader("Authorization", "Bearer " + mAccessToken.toLatin1());
 
         return request;
     }

@@ -24,10 +24,13 @@
 
 namespace Evernus
 {
-    CRESTWholeExternalOrderImporter::CRESTWholeExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent)
+    CRESTWholeExternalOrderImporter::CRESTWholeExternalOrderImporter(QByteArray clientId,
+                                                                     QByteArray clientSecret,
+                                                                     const EveDataProvider &dataProvider,
+                                                                     QObject *parent)
         : CallbackExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
-        , mManager{mDataProvider}
+        , mManager{std::move(clientId), std::move(clientSecret), mDataProvider}
     {
         connect(&mManager, &CRESTManager::error, this, &CRESTWholeExternalOrderImporter::genericError);
     }

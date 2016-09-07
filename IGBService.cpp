@@ -42,7 +42,6 @@ namespace Evernus
 {
     const QString IGBService::limitToStationsCookie = "limitToStations";
     const QString IGBService::orderHtmlTemplate = "<li><a class='order' id='order-%2' href='#' onclick='showOrder(%2);'>%1</a></li>";
-    const QString IGBService::openMarketMessage = "openMarket";
     const QString IGBService::setDestinationMessage = "setDestination";
 
     IGBService::IGBService(const MarketOrderProvider &orderProvider,
@@ -82,7 +81,6 @@ namespace Evernus
         mMainTemplate["favorite-link-text"] = tr("Favorite Items");
         mMainTemplate["open-margin-tool-link-text"] = tr("Open Margin Tool");
         mMainTemplate["port"] = settings.value(IGBSettings::portKey, IGBSettings::portDefault).toString();
-        mMainTemplate["open-market-message"] = openMarketMessage;
         mMainTemplate["set-destination-message"] = setDestinationMessage;
 
         mOrderTemplate["order-script"] = orderScript.readAll();
@@ -378,11 +376,6 @@ namespace Evernus
     void IGBService::update(QxtWebRequestEvent *event)
     {
         mPollingRequests.emplace_back(event);
-    }
-
-    void IGBService::showInEve(EveType::IdType id)
-    {
-        sendEventToIGB(QString{"{ message: '%1', type: %2 }"}.arg(openMarketMessage).arg(id).toLatin1());
     }
 
     void IGBService::setDestinationInEve(quint64 locationId)

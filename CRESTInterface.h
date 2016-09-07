@@ -27,6 +27,7 @@
 #include <QUrl>
 
 #include "RateLimiter.h"
+#include "Character.h"
 #include "EveType.h"
 
 class QJsonDocument;
@@ -41,6 +42,7 @@ namespace Evernus
     public:
         using JsonCallback = std::function<void (QJsonDocument &&data, const QString &error)>;
         using PaginatedCallback = std::function<void (QJsonDocument &&data, bool atEnd, const QString &error)>;
+        using ErrorCallback = std::function<void (const QString &error)>;
 
         using EndpointMap = QHash<QString, QString>;
 
@@ -53,9 +55,18 @@ namespace Evernus
         void fetchMarketOrders(uint regionId, const PaginatedCallback &callback) const;
         void fetchMarketHistory(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const;
 
+        void openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const;
+
         void setEndpoints(EndpointMap endpoints);
 
         static void setRateLimit(float rate);
+
+    public slots:
+        void updateTokenAndContinue(QString token, const QDateTime &expiry);
+        void handleTokenError(const QString &error);
+
+    signals:
+        void tokenRequested() const;
 
     private slots:
         void processSslErrors(const QList<QSslError> &errors);
@@ -78,6 +89,16 @@ namespace Evernus
         mutable RegionUrlCallbackMap mPendingRegionOrdersRequests, mPendingRegionHistoryRequests, mPendingRegionMarketRequests;
 
         mutable std::multimap<std::chrono::steady_clock::time_point, std::function<void ()>> mPendingRequests;
+        mutable std::vector<std::function<void (const QString &)>> mPendingAuthRequests;
+
+        mutable QString mAccessToken;
+        mutable QDateTime mExpiry;
+
+        template<class T>
+        void checkAuth(T &&continuation) const;
+
+        template<class T>
+        void fetchAccessToken(const T &continuation) const;
 
         template<class T>
         void getRegionUrl(uint regionId, RegionUrlMap &urlMap, RegionUrlCallbackMap &callbackMap, const QString &urlName, T &&continuation) const;
@@ -91,6 +112,14 @@ namespace Evernus
 
         template<class T>
         void asyncGet(const QUrl &url, const QByteArray &accept, T &&continuation) const;
+        template<class T>
+        void post(const QUrl &url, const QByteArray &data, T &&errorCallback) const;
+
+        template<class T>
+        void scheduleRequest(T &&request) const;
+
+        template<class T>
+        void tryAuthAndContinue(T &&continuation) const;
 
         QNetworkRequest prepareRequest(const QUrl &url, const QByteArray &accept) const;
     };

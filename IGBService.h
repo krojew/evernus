@@ -68,7 +68,6 @@ namespace Evernus
         void openMarginTool(QxtWebRequestEvent *event);
         void update(QxtWebRequestEvent *event);
 
-        void showInEve(EveType::IdType id);
         void setDestinationInEve(quint64 locationId);
 
     private:
@@ -76,7 +75,6 @@ namespace Evernus
 
         static const QString limitToStationsCookie;
         static const QString orderHtmlTemplate;
-        static const QString openMarketMessage;
         static const QString setDestinationMessage;
 
         const MarketOrderProvider &mOrderProvider, &mCorpOrderProvider;

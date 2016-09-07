@@ -79,7 +79,9 @@ namespace Evernus
     const QString MainWindow::settingsPosKey = "mainWindow/pos";
     const QString MainWindow::settingsSizeKey = "mainWindow/size";
 
-    MainWindow::MainWindow(const RepositoryProvider &repositoryProvider,
+    MainWindow::MainWindow(QByteArray clientId,
+                           QByteArray clientSecret,
+                           const RepositoryProvider &repositoryProvider,
                            MarketOrderProvider &charOrderProvider,
                            MarketOrderProvider &corpOrderProvider,
                            const AssetProvider &charAssetProvider,
@@ -103,7 +105,9 @@ namespace Evernus
     {
         readSettings();
         createMenu();
-        createMainView(charOrderProvider,
+        createMainView(std::move(clientId),
+                       std::move(clientSecret),
+                       charOrderProvider,
                        corpOrderProvider,
                        charAssetProvider,
                        corpAssetProvider,
@@ -517,6 +521,12 @@ namespace Evernus
 #endif
     }
 
+    void MainWindow::showInEve(EveType::IdType typeId)
+    {
+        if (mCurrentCharacterId != Character::invalidId)
+            emit openMarketInEve(typeId, mCurrentCharacterId);
+    }
+
     void MainWindow::changeEvent(QEvent *event)
     {
         QSettings settings;
@@ -665,7 +675,9 @@ namespace Evernus
         toggleTopmost();
     }
 
-    void MainWindow::createMainView(MarketOrderProvider &charOrderProvider,
+    void MainWindow::createMainView(QByteArray clientId,
+                                    QByteArray clientSecret,
+                                    MarketOrderProvider &charOrderProvider,
                                     MarketOrderProvider &corpOrderProvider,
                                     const AssetProvider &charAssetProvider,
                                     const AssetProvider &corpAssetProvider,
@@ -923,7 +935,9 @@ namespace Evernus
         connect(this, &MainWindow::externalOrdersChanged, lmEveTab, &LMeveWidget::updateData);
         connect(this, &MainWindow::lMeveTasksChanged, lmEveTab, &LMeveWidget::updateData);
 
-        auto marketAnalysisTab = new MarketAnalysisWidget{mEveDataProvider,
+        auto marketAnalysisTab = new MarketAnalysisWidget{std::move(clientId),
+                                                          std::move(clientSecret),
+                                                          mEveDataProvider,
                                                           taskManager,
                                                           mRepositoryProvider.getMarketOrderRepository(),
                                                           mRepositoryProvider.getEveTypeRepository(),

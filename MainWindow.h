@@ -60,7 +60,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MainWindow(const RepositoryProvider &repositoryProvider,
+        MainWindow(QByteArray clientId,
+                   QByteArray clientSecret,
+                   const RepositoryProvider &repositoryProvider,
                    MarketOrderProvider &charOrderProvider,
                    MarketOrderProvider &corpOrderProvider,
                    const AssetProvider &charAssetProvider,
@@ -130,8 +132,8 @@ namespace Evernus
 
         void syncLMeve(Character::IdType id);
 
-        void showInEve(EveType::IdType id);
         void setDestinationInEve(quint64 locationId);
+        void openMarketInEve(EveType::IdType typeId, Character::IdType charId);
 
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
 
@@ -175,6 +177,8 @@ namespace Evernus
         void showMarketBrowser();
 
         void performSync();
+
+        void showInEve(EveType::IdType typeId);
 
     protected:
         virtual void changeEvent(QEvent *event) override;
@@ -234,7 +238,9 @@ namespace Evernus
         void writeSettings();
 
         void createMenu();
-        void createMainView(MarketOrderProvider &charOrderProvider,
+        void createMainView(QByteArray clientId,
+                            QByteArray clientSecret,
+                            MarketOrderProvider &charOrderProvider,
                             MarketOrderProvider &corpOrderProvider,
                             const AssetProvider &charAssetProvider,
                             const AssetProvider &corpAssetProvider,

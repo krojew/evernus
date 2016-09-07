@@ -26,11 +26,13 @@
 
 namespace Evernus
 {
-    MarketAnalysisDataFetcher::MarketAnalysisDataFetcher(const EveDataProvider &dataProvider,
+    MarketAnalysisDataFetcher::MarketAnalysisDataFetcher(QByteArray clientId,
+                                                         QByteArray clientSecret,
+                                                         const EveDataProvider &dataProvider,
                                                          QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
-        , mCRESTManager{mDataProvider}
+        , mCRESTManager{std::move(clientId), std::move(clientSecret), mDataProvider}
         , mEveCentralManager{mDataProvider}
     {
         connect(&mCRESTManager, &CRESTManager::error, this, &MarketAnalysisDataFetcher::genericError);

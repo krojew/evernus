@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QCommandLineParser>
 #include <QApplication>
 #include <QLocalSocket>
 #include <QLocalServer>
@@ -118,7 +119,7 @@ int main(int argc, char *argv[])
 
         Evernus::EvernusApplication app{argc, argv};
 
-        auto webImporter = std::make_unique<Evernus::ProxyWebExternalOrderImporter>(app.getDataProvider());
+        auto webImporter = std::make_unique<Evernus::ProxyWebExternalOrderImporter>(app.getCRESTClientId(), app.getCRESTClientSecret(), app.getDataProvider());
         auto webImporterPtr = webImporter.get();
 
         app.registerImporter(Evernus::ExternalOrderImporterNames::webImporter, std::move(webImporter));
@@ -127,7 +128,9 @@ int main(int argc, char *argv[])
 
         try
         {
-            Evernus::MainWindow mainWnd{app,
+            Evernus::MainWindow mainWnd{app.getCRESTClientId(),
+                                        app.getCRESTClientSecret(),
+                                        app,
                                         app.getMarketOrderProvider(),
                                         app.getCorpMarketOrderProvider(),
                                         app.getAssetProvider(),
@@ -180,7 +183,7 @@ int main(int argc, char *argv[])
                              &app, &Evernus::EvernusApplication::importFromMentat);
             QObject::connect(&mainWnd, &Evernus::MainWindow::syncLMeve,
                              &app, &Evernus::EvernusApplication::syncLMeve);
-            QObject::connect(&mainWnd, &Evernus::MainWindow::showInEve,
+            QObject::connect(&mainWnd, &Evernus::MainWindow::openMarketInEve,
                              &app, &Evernus::EvernusApplication::showInEve);
             QObject::connect(&mainWnd, &Evernus::MainWindow::setDestinationInEve,
                              &app, &Evernus::EvernusApplication::setDestinationInEve);

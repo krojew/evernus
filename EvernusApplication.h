@@ -67,6 +67,7 @@
 #include "ItemRepository.h"
 #include "TaskConstants.h"
 #include "KeyRepository.h"
+#include "CRESTManager.h"
 #include "TaskManager.h"
 #include "APIManager.h"
 
@@ -145,6 +146,9 @@ namespace Evernus
         virtual void updateTask(uint taskId, const QString &description) override;
         virtual void endTask(uint taskId, const QString &error = QString{}) override;
 
+        QByteArray getCRESTClientId() const;
+        QByteArray getCRESTClientSecret() const;
+
         MarketOrderProvider &getMarketOrderProvider() const noexcept;
         MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
 
@@ -184,7 +188,6 @@ namespace Evernus
 
         void openMarginTool();
 
-        void showInEve(EveType::IdType id);
         void setDestinationInEve(quint64 locationId);
 
     public slots:
@@ -220,6 +223,8 @@ namespace Evernus
 
         void makeValueSnapshots(Character::IdType id);
 
+        void showInEve(EveType::IdType typeId, Character::IdType charId);
+
     private slots:
         void scheduleCharacterUpdate();
         void updateCharacters();
@@ -231,7 +236,7 @@ namespace Evernus
         void updateCorpMarketOrders();
 
         void showPriceImportError(const QString &info);
-        void showPriceImporterGenericError(const QString &info);
+        void showGenericError(const QString &info);
         void showPriceImportStatus(const QString &info);
 
         void emitNewItemCosts();
@@ -245,6 +250,9 @@ namespace Evernus
         using TransactionFetcher = std::function<WalletTransactionRepository::EntityList (const QDateTime &, const QDateTime &, EveType::IdType)>;
 
         QSqlDatabase mMainDb, mEveDb;
+
+        QByteArray mClientId;
+        QByteArray mClientSecret;
 
         std::unique_ptr<KeyRepository> mKeyRepository;
         std::unique_ptr<CorpKeyRepository> mCorpKeyRepository;
@@ -339,6 +347,8 @@ namespace Evernus
         std::unique_ptr<CachingEveDataProvider> mDataProvider;
 
         mutable std::unordered_map<Character::IdType, LMeveTaskRepository::EntityList> mLMeveTaskCache;
+
+        std::unique_ptr<CRESTManager> mCRESTManager;
 
         void updateTranslator(const QString &lang);
 

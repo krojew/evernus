@@ -19,11 +19,14 @@
 #include <memory>
 #include <map>
 
+#include <QNetworkAccessManager>
 #include <QTimer>
 #include <QDate>
 
 #include "MarketHistoryEntry.h"
+#include "CRESTAuthWidget.h"
 #include "CRESTInterface.h"
+#include "SimpleCrypt.h"
 #include "EveType.h"
 
 class QJsonObject;
@@ -42,8 +45,13 @@ namespace Evernus
         template<class T>
         using Callback = std::function<void (T &&data, const QString &error)>;
 
-        explicit CRESTManager(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        CRESTManager(QByteArray clientId,
+                     QByteArray clientSecret,
+                     const EveDataProvider &dataProvider,
+                     QObject *parent = nullptr);
         virtual ~CRESTManager() = default;
+
+        virtual bool eventFilter(QObject *watched, QEvent *event) override;
 
         void fetchMarketOrders(uint regionId,
                                EveType::IdType typeId,
@@ -53,14 +61,34 @@ namespace Evernus
                                 const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const;
         void fetchMarketOrders(uint regionId, const Callback<std::vector<ExternalOrder>> &callback) const;
 
+        void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
+
+        bool hasClientCredentials() const;
+
     signals:
-        void error(const QString &text);
+        void error(const QString &text) const;
+
+        void tokenError(const QString &error);
+        void acquiredToken(const QString &accessToken, const QDateTime &expiry);
 
     public slots:
+        void fetchToken();
+
         void handleNewPreferences();
 
     private:
+        static const QString loginUrl;
+        static const QString redirectDomain;
+
+        static QString mRefreshToken;
+        static bool mFetchingToken;
+
         const EveDataProvider &mDataProvider;
+
+        const QByteArray mClientId;
+        const QByteArray mClientSecret;
+
+        SimpleCrypt mCrypt;
 
         CRESTInterface mInterface;
 
@@ -68,6 +96,13 @@ namespace Evernus
 
         CRESTInterface::EndpointMap mEndpoints;
         QTimer mEndpointTimer;
+
+
+        std::unique_ptr<CRESTAuthWidget> mAuthView;
+
+        void processAuthorizationCode(const QByteArray &code);
+
+        QNetworkRequest getAuthRequest() const;
 
         void fetchEndpoints();
         bool hasEndpoints() const;
