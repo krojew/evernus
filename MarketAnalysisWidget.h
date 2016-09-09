@@ -38,6 +38,7 @@ namespace Evernus
     class MarketOrderRepository;
     class MarketGroupRepository;
     class CharacterRepository;
+    class AdjustableTableView;
     class EveTypeRepository;
     class EveDataProvider;
     class TaskManager;
@@ -122,7 +123,7 @@ namespace Evernus
         QComboBox *mRegionCombo = nullptr;
         QComboBox *mSolarSystemCombo = nullptr;
         QStackedWidget *mRegionDataStack = nullptr;
-        QTableView *mRegionTypeDataView = nullptr;
+        AdjustableTableView *mRegionTypeDataView = nullptr;
         QLineEdit *mMinRegionVolumeEdit = nullptr;
         QLineEdit *mMaxRegionVolumeEdit = nullptr;
         QLineEdit *mMinRegionMarginEdit = nullptr;
@@ -139,7 +140,7 @@ namespace Evernus
         QLineEdit *mMinInterRegionMarginEdit = nullptr;
         QLineEdit *mMaxInterRegionMarginEdit = nullptr;
         QStackedWidget *mInterRegionDataStack = nullptr;
-        QTableView *mInterRegionTypeDataView = nullptr;
+        AdjustableTableView *mInterRegionTypeDataView = nullptr;
 
         uint mOrderSubtask = TaskConstants::invalidTask;
         uint mHistorySubtask = TaskConstants::invalidTask;

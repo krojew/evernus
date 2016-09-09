@@ -44,6 +44,7 @@
 #include "MarketOrderRepository.h"
 #include "CharacterRepository.h"
 #include "StationSelectDialog.h"
+#include "AdjustableTableView.h"
 #include "EveDataProvider.h"
 #include "CRESTMessageBox.h"
 #include "ImportSettings.h"
@@ -770,13 +771,14 @@ namespace Evernus
         mTypeViewProxy.setSortRole(Qt::UserRole);
         mTypeViewProxy.setSourceModel(&mTypeDataModel);
 
-        mRegionTypeDataView = new QTableView{this};
+        mRegionTypeDataView = new AdjustableTableView{"marketAnalysisRegionView", this};
         mRegionDataStack->addWidget(mRegionTypeDataView);
         mRegionTypeDataView->setSortingEnabled(true);
         mRegionTypeDataView->setAlternatingRowColors(true);
         mRegionTypeDataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         mRegionTypeDataView->setModel(&mTypeViewProxy);
         mRegionTypeDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
+        mRegionTypeDataView->restoreHeaderState();
         connect(mRegionTypeDataView, &QTableView::doubleClicked, this, &MarketAnalysisWidget::showDetails);
         connect(mRegionTypeDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &MarketAnalysisWidget::selectRegionType);
@@ -983,12 +985,13 @@ namespace Evernus
         mInterRegionViewProxy.setSortRole(Qt::UserRole);
         mInterRegionViewProxy.setSourceModel(&mInterRegionDataModel);
 
-        mInterRegionTypeDataView = new QTableView{this};
+        mInterRegionTypeDataView = new AdjustableTableView{"marketAnalysisInterRegionView", this};
         mInterRegionDataStack->addWidget(mInterRegionTypeDataView);
         mInterRegionTypeDataView->setSortingEnabled(true);
         mInterRegionTypeDataView->setAlternatingRowColors(true);
         mInterRegionTypeDataView->setModel(&mInterRegionViewProxy);
         mInterRegionTypeDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
+        mInterRegionTypeDataView->restoreHeaderState();
         connect(mInterRegionTypeDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &MarketAnalysisWidget::selectInterRegionType);
 

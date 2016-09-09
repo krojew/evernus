@@ -90,7 +90,7 @@ namespace Evernus
         {
             QSettings settings;
 
-            const auto state = settings.value(QString{UISettings::headerStateKey}.arg(name)).toByteArray();
+            const auto state = settings.value(UISettings::headerStateKey.arg(name)).toByteArray();
             if (!state.isEmpty())
                 header()->restoreState(state);
         }
@@ -143,7 +143,7 @@ namespace Evernus
         if (!name.isEmpty())
         {
             QSettings settings;
-            settings.setValue(QString{UISettings::headerStateKey}.arg(name), header()->saveState());
+            settings.setValue(UISettings::headerStateKey.arg(name), header()->saveState());
         }
     }
 

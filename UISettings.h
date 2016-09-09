@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <QString>
+
 namespace Evernus
 {
     namespace UISettings
@@ -45,7 +47,7 @@ namespace Evernus
         const auto dateTimeFormatKey = "ui/global/dateTimeFormat";
         const auto plotNumberFormatKey = "ui/plot/numberFormat";
         const auto contractStatusFilterKey = "ui/contracts/statusFilter";
-        const auto headerStateKey = "ui/header/state/%1";
+        const auto headerStateKey = QStringLiteral("ui/header/state/%1");
         const auto usePackagedVolumeKey = "ui/global/usePackagedVolume";
         const auto tabShowStateKey = "ui/mainWindow/tabShowState/%1";
         const auto tabShowStateParentKey = "ui/mainWindow/tabShowState";

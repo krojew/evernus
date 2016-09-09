@@ -82,6 +82,7 @@ qt5_wrap_cpp(
     MOC_FILES
     AboutDialog.h
     ActiveTasksDialog.h
+    AdjustableTableView.h
     AggregatedStatisticsModel.h
     APIInterface.h
     APIManager.h
@@ -244,6 +245,8 @@ add_executable(
     AboutDialog.h
     ActiveTasksDialog.cpp
     ActiveTasksDialog.h
+    AdjustableTableView.cpp
+    AdjustableTableView.h
     AggregatedStatisticsModel.cpp
     AggregatedStatisticsModel.h
     APIDomParser.h
