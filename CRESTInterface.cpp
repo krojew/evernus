@@ -140,11 +140,11 @@ namespace Evernus
                     } }
                 }};
 
-                post(QStringLiteral("%1/characters/%2/ui/openwindow/marketdetails/").arg(crestUrl).arg(charId), json.toJson(), std::move(errorCallback));
+                post(charId, QStringLiteral("%1/characters/%2/ui/openwindow/marketdetails/").arg(crestUrl).arg(charId), json.toJson(), std::move(errorCallback));
             }
         };
 
-        checkAuth(opener);
+        checkAuth(charId, opener);
     }
 
     void CRESTInterface::setEndpoints(EndpointMap endpoints)
@@ -152,21 +152,22 @@ namespace Evernus
         mEndpoints = std::move(endpoints);
     }
 
-    void CRESTInterface::updateTokenAndContinue(QString token, const QDateTime &expiry)
+    void CRESTInterface::updateTokenAndContinue(Character::IdType charId, QString token, const QDateTime &expiry)
     {
-        mAccessToken = std::move(token);
-        mExpiry = expiry;
+        mAccessTokens[charId].mToken = std::move(token);
+        mAccessTokens[charId].mExpiry = expiry;
 
-        for (const auto &request : mPendingAuthRequests)
-            request(QString{});
+        const auto range = mPendingAuthRequests.equal_range(charId);
+        for (auto it = range.first; it != range.second; ++it)
+            it->second(QString{});
 
-        mPendingAuthRequests.clear();
+        mPendingAuthRequests.erase(range.first, range.second);
     }
 
     void CRESTInterface::handleTokenError(const QString &error)
     {
         for (const auto &request : mPendingAuthRequests)
-            request(error);
+            request.second(error);
 
         mPendingAuthRequests.clear();
     }
@@ -192,13 +193,13 @@ namespace Evernus
     }
 
     template<class T>
-    void CRESTInterface::checkAuth(T &&continuation) const
+    void CRESTInterface::checkAuth(Character::IdType charId, T &&continuation) const
     {
-        if (mExpiry < QDateTime::currentDateTime() || mAccessToken.isEmpty())
+        if (mAccessTokens[charId].mExpiry < QDateTime::currentDateTime() || mAccessTokens[charId].mToken.isEmpty())
         {
-            mPendingAuthRequests.emplace_back(std::forward<T>(continuation));
+            mPendingAuthRequests.insert(std::make_pair(charId, std::forward<T>(continuation)));
             if (mPendingAuthRequests.size() == 1)
-                emit tokenRequested();
+                emit tokenRequested(charId);
         }
         else
         {
@@ -355,26 +356,9 @@ namespace Evernus
 
                 const auto error = reply->error();
                 if (error != QNetworkReply::NoError)
-                {
-                    if (error == QNetworkReply::AuthenticationRequiredError)
-                    {
-                        // expired token?
-                        tryAuthAndContinue([=](const auto &error) {
-                            if (error.isEmpty())
-                                asyncGet(url, accept, continuation);
-                            else
-                                continuation(QJsonDocument{}, error);
-                        });
-                    }
-                    else
-                    {
-                        continuation(QJsonDocument{}, reply->errorString());
-                    }
-                }
+                    continuation(QJsonDocument{}, reply->errorString());
                 else
-                {
                     continuation(QJsonDocument::fromJson(reply->readAll()), QString{});
-                }
             });
         };
 
@@ -382,7 +366,7 @@ namespace Evernus
     }
 
     template<class T>
-    void CRESTInterface::post(const QUrl &url, const QByteArray &data, T &&errorCallback) const
+    void CRESTInterface::post(Character::IdType charId, const QUrl &url, const QByteArray &data, T &&errorCallback) const
     {
         auto request = [=] {
             qDebug() << "CREST request:" << url << ":" << data;
@@ -405,9 +389,9 @@ namespace Evernus
                     if (error == QNetworkReply::AuthenticationRequiredError)
                     {
                         // expired token?
-                        tryAuthAndContinue([=](const auto &error) {
+                        tryAuthAndContinue(charId, [=](const auto &error) {
                             if (error.isEmpty())
-                                post(url, data, errorCallback);
+                                post(charId, url, data, errorCallback);
                             else
                                 errorCallback(error);
                         });
@@ -440,10 +424,10 @@ namespace Evernus
     }
 
     template<class T>
-    void CRESTInterface::tryAuthAndContinue(T &&continuation) const
+    void CRESTInterface::tryAuthAndContinue(Character::IdType charId, T &&continuation) const
     {
-        mAccessToken.clear();
-        checkAuth(std::forward<T>(continuation));
+        mAccessTokens.erase(charId);
+        checkAuth(charId, std::forward<T>(continuation));
     }
 
     QNetworkRequest CRESTInterface::prepareRequest(const QUrl &url, const QByteArray &accept) const
@@ -452,7 +436,14 @@ namespace Evernus
         request.setHeader(QNetworkRequest::UserAgentHeader,
                           QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
         request.setRawHeader("Accept", accept);
-        request.setRawHeader("Authorization", "Bearer " + mAccessToken.toLatin1());
+
+        return request;
+    }
+
+    QNetworkRequest CRESTInterface::prepareRequest(Character::IdType charId, const QUrl &url, const QByteArray &accept) const
+    {
+        auto request = prepareRequest(url, accept);
+        request.setRawHeader("Authorization", "Bearer " + mAccessTokens[charId].mToken.toLatin1());
 
         return request;
     }

@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <unordered_map>
 #include <unordered_set>
 #include <functional>
 #include <vector>
@@ -62,11 +63,11 @@ namespace Evernus
         static void setRateLimit(float rate);
 
     public slots:
-        void updateTokenAndContinue(QString token, const QDateTime &expiry);
+        void updateTokenAndContinue(Character::IdType charId, QString token, const QDateTime &expiry);
         void handleTokenError(const QString &error);
 
     signals:
-        void tokenRequested() const;
+        void tokenRequested(Character::IdType charId) const;
 
     private slots:
         void processSslErrors(const QList<QSslError> &errors);
@@ -75,6 +76,12 @@ namespace Evernus
     private:
         using RegionUrlCallbackMap = QHash<QPair<uint, QString>, std::vector<std::function<void (const QUrl &, const QString &)>>>;
         using RegionUrlMap = QHash<uint, QUrl>;
+
+        struct AccessToken
+        {
+            QString mToken;
+            QDateTime mExpiry;
+        };
 
         static const QString regionsUrlName;
         static const QString itemTypesUrlName;
@@ -89,13 +96,12 @@ namespace Evernus
         mutable RegionUrlCallbackMap mPendingRegionOrdersRequests, mPendingRegionHistoryRequests, mPendingRegionMarketRequests;
 
         mutable std::multimap<std::chrono::steady_clock::time_point, std::function<void ()>> mPendingRequests;
-        mutable std::vector<std::function<void (const QString &)>> mPendingAuthRequests;
+        mutable std::unordered_multimap<Character::IdType, std::function<void (const QString &)>> mPendingAuthRequests;
 
-        mutable QString mAccessToken;
-        mutable QDateTime mExpiry;
+        mutable std::unordered_map<Character::IdType, AccessToken> mAccessTokens;
 
         template<class T>
-        void checkAuth(T &&continuation) const;
+        void checkAuth(Character::IdType charId, T &&continuation) const;
 
         template<class T>
         void fetchAccessToken(const T &continuation) const;
@@ -113,14 +119,15 @@ namespace Evernus
         template<class T>
         void asyncGet(const QUrl &url, const QByteArray &accept, T &&continuation) const;
         template<class T>
-        void post(const QUrl &url, const QByteArray &data, T &&errorCallback) const;
+        void post(Character::IdType charId, const QUrl &url, const QByteArray &data, T &&errorCallback) const;
 
         template<class T>
         void scheduleRequest(T &&request) const;
 
         template<class T>
-        void tryAuthAndContinue(T &&continuation) const;
+        void tryAuthAndContinue(Character::IdType charId, T &&continuation) const;
 
         QNetworkRequest prepareRequest(const QUrl &url, const QByteArray &accept) const;
+        QNetworkRequest prepareRequest(Character::IdType charId, const QUrl &url, const QByteArray &accept) const;
     };
 }

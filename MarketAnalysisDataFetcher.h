@@ -47,6 +47,7 @@ namespace Evernus
         MarketAnalysisDataFetcher(QByteArray clientId,
                                   QByteArray clientSecret,
                                   const EveDataProvider &dataProvider,
+                                  const CharacterRepository &characterRepo,
                                   QObject *parent = nullptr);
         virtual ~MarketAnalysisDataFetcher() = default;
 

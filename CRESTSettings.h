@@ -14,11 +14,14 @@
  */
 #pragma once
 
+#include <QString>
+
 namespace Evernus
 {
     namespace CRESTSettings
     {
-        const auto refreshTokenKey = "crest/refreshToken";
+        const auto refreshTokenGroup = QStringLiteral("crest/refreshToken");
+        const auto refreshTokenKey = refreshTokenGroup + "/%1";
         const auto rateLimitKey = "crest/rateLimit";
 
         const auto cryptKey = Q_UINT64_C(0x45729ac96cbe229f);

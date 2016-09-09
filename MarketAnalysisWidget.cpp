@@ -63,11 +63,13 @@ namespace Evernus
         FetcherThread(QByteArray clientId,
                       QByteArray clientSecret,
                       const EveDataProvider &dataProvider,
+                      const CharacterRepository &characterRepo,
                       QObject *parent)
             : QThread{parent}
             , mClientId{std::move(clientId)}
             , mClientSecret{std::move(clientSecret)}
             , mDataProvider{dataProvider}
+            , mCharacterRepo{characterRepo}
         {
         }
 
@@ -87,7 +89,10 @@ namespace Evernus
     protected:
         virtual void run() override
         {
-            mDataFetcher = std::make_unique<MarketAnalysisDataFetcher>(std::move(mClientId), std::move(mClientSecret), mDataProvider);
+            mDataFetcher = std::make_unique<MarketAnalysisDataFetcher>(std::move(mClientId),
+                                                                       std::move(mClientSecret),
+                                                                       mDataProvider,
+                                                                       mCharacterRepo);
             mPromise.set_value();
 
             QThread::run();
@@ -99,6 +104,7 @@ namespace Evernus
         QByteArray mClientSecret;
 
         const EveDataProvider &mDataProvider;
+        const CharacterRepository &mCharacterRepo;
 
         std::unique_ptr<MarketAnalysisDataFetcher> mDataFetcher;
 
@@ -134,7 +140,7 @@ namespace Evernus
                                 InterRegionMarketDataModel::getVolumeColumn(),
                                 InterRegionMarketDataModel::getMarginColumn())
     {
-        mFetcherThread = new FetcherThread{std::move(clientId), std::move(clientSecret), mDataProvider, this};
+        mFetcherThread = new FetcherThread{std::move(clientId), std::move(clientSecret), mDataProvider, mCharacterRepo, this};
         const auto future = mFetcherThread->getFuture();
 
         mFetcherThread->start();

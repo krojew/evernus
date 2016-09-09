@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <unordered_map>
 #include <functional>
 #include <vector>
 #include <memory>
@@ -27,12 +28,14 @@
 #include "CRESTAuthWidget.h"
 #include "CRESTInterface.h"
 #include "SimpleCrypt.h"
+#include "Character.h"
 #include "EveType.h"
 
 class QJsonObject;
 
 namespace Evernus
 {
+    class CharacterRepository;
     class EveDataProvider;
     class ExternalOrder;
 
@@ -48,6 +51,7 @@ namespace Evernus
         CRESTManager(QByteArray clientId,
                      QByteArray clientSecret,
                      const EveDataProvider &dataProvider,
+                     const CharacterRepository &characterRepo,
                      QObject *parent = nullptr);
         virtual ~CRESTManager() = default;
 
@@ -69,10 +73,10 @@ namespace Evernus
         void error(const QString &text) const;
 
         void tokenError(const QString &error);
-        void acquiredToken(const QString &accessToken, const QDateTime &expiry);
+        void acquiredToken(Character::IdType charId, const QString &accessToken, const QDateTime &expiry);
 
     public slots:
-        void fetchToken();
+        void fetchToken(Character::IdType charId);
 
         void handleNewPreferences();
 
@@ -80,10 +84,11 @@ namespace Evernus
         static const QString loginUrl;
         static const QString redirectDomain;
 
-        static QString mRefreshToken;
+        static std::unordered_map<Character::IdType, QString> mRefreshTokens;
         static bool mFetchingToken;
 
         const EveDataProvider &mDataProvider;
+        const CharacterRepository &mCharacterRepo;
 
         const QByteArray mClientId;
         const QByteArray mClientSecret;
@@ -97,10 +102,9 @@ namespace Evernus
         CRESTInterface::EndpointMap mEndpoints;
         QTimer mEndpointTimer;
 
-
         std::unique_ptr<CRESTAuthWidget> mAuthView;
 
-        void processAuthorizationCode(const QByteArray &code);
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
 
         QNetworkRequest getAuthRequest() const;
 
@@ -110,5 +114,6 @@ namespace Evernus
         ExternalOrder getOrderFromJson(const QJsonObject &object, uint regionId) const;
 
         static QString getMissingEnpointsError();
+        static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
     };
 }

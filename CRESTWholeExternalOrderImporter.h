@@ -21,6 +21,9 @@
 
 namespace Evernus
 {
+    class CharacterRepository;
+    class EveDataProvider;
+
     class CRESTWholeExternalOrderImporter
         : public CallbackExternalOrderImporter
     {
@@ -30,6 +33,7 @@ namespace Evernus
         CRESTWholeExternalOrderImporter(QByteArray clientId,
                                         QByteArray clientSecret,
                                         const EveDataProvider &dataProvider,
+                                        const CharacterRepository &characterRepo,
                                         QObject *parent = nullptr);
         virtual ~CRESTWholeExternalOrderImporter() = default;
 

@@ -24,6 +24,9 @@
 #include <QSettings>
 #include <QDebug>
 
+#include <boost/scope_exit.hpp>
+
+#include "CharacterRepository.h"
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
 #include "CRESTSettings.h"
@@ -37,20 +40,22 @@ namespace Evernus
 #ifdef EVERNUS_CREST_SISI
     const QString CRESTManager::loginUrl = "https://sisilogin.testeveonline.com";
 #else
-    const QString CRESTManager::loginUrl = "https://login-tq.eveonline.com";
+    const QString CRESTManager::loginUrl = "https://login.eveonline.com";
 #endif
 
     const QString CRESTManager::redirectDomain = "evernus.com";
 
-    QString CRESTManager::mRefreshToken;
+    std::unordered_map<Character::IdType, QString> CRESTManager::mRefreshTokens;
     bool CRESTManager::mFetchingToken = false;
 
     CRESTManager::CRESTManager(QByteArray clientId,
                                QByteArray clientSecret,
                                const EveDataProvider &dataProvider,
+                               const CharacterRepository &characterRepo,
                                QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
+        , mCharacterRepo{characterRepo}
         , mClientId{std::move(clientId)}
         , mClientSecret{std::move(clientSecret)}
         , mCrypt{CRESTSettings::cryptKey}
@@ -67,7 +72,13 @@ namespace Evernus
         mEndpointTimer.start(10 * 1000);
 
         QSettings settings;
-        mRefreshToken = mCrypt.decryptToString(settings.value(CRESTSettings::refreshTokenKey).toByteArray());
+        settings.beginGroup(CRESTSettings::refreshTokenGroup);
+
+        const auto keys = settings.childKeys();
+        for (const auto &key : keys)
+            mRefreshTokens[key.toULongLong()] = mCrypt.decryptToString(settings.value(key).toByteArray());
+
+        settings.endGroup();
 
         connect(&mInterface, &CRESTInterface::tokenRequested, this, &CRESTManager::fetchToken, Qt::QueuedConnection);
         connect(this, &CRESTManager::acquiredToken, &mInterface, &CRESTInterface::updateTokenAndContinue);
@@ -203,7 +214,7 @@ namespace Evernus
         return !mClientId.isEmpty() && !mClientSecret.isEmpty();
     }
 
-    void CRESTManager::fetchToken()
+    void CRESTManager::fetchToken(Character::IdType charId)
     {
         if (mFetchingToken)
             return;
@@ -212,9 +223,10 @@ namespace Evernus
 
         try
         {
-            qDebug() << "Refreshing access token...";
+            qDebug() << "Refreshing access token for" << charId;
 
-            if (mRefreshToken.isEmpty())
+            const auto it = mRefreshTokens.find(charId);
+            if (it == std::end(mRefreshTokens))
             {
                 qDebug() << "No refresh token - requesting access.";
 
@@ -231,21 +243,23 @@ namespace Evernus
                 mAuthView = std::make_unique<CRESTAuthWidget>(url);
 
                 mAuthView->setWindowModality(Qt::ApplicationModal);
-                mAuthView->setWindowTitle(tr("CREST Authentication"));
+                mAuthView->setWindowTitle(tr("CREST Authentication for character: %1").arg(mCharacterRepo.getName(charId)));
                 mAuthView->installEventFilter(this);
                 mAuthView->adjustSize();
                 mAuthView->move(QApplication::desktop()->screenGeometry(QApplication::activeWindow()).center() -
                                 mAuthView->rect().center());
                 mAuthView->show();
 
-                connect(mAuthView.get(), &CRESTAuthWidget::acquiredCode, this, &CRESTManager::processAuthorizationCode);
+                connect(mAuthView.get(), &CRESTAuthWidget::acquiredCode, this, [=](const auto &code) {
+                    processAuthorizationCode(charId, code);
+                });
                 connect(mAuthView->page(), &QWebEnginePage::urlChanged, [=](const QUrl &url) {
                     try
                     {
                         if (url.host() == redirectDomain)
                         {
                             QUrlQuery query{url};
-                            processAuthorizationCode(query.queryItemValue("code").toLatin1());
+                            processAuthorizationCode(charId, query.queryItemValue("code").toLatin1());
                         }
                     }
                     catch (...)
@@ -260,7 +274,7 @@ namespace Evernus
                 qDebug() << "Refreshing token...";
 
                 QByteArray data = "grant_type=refresh_token&refresh_token=";
-                data.append(mRefreshToken);
+                data.append(it->second);
 
                 auto reply = mNetworkManager.post(getAuthRequest(), data);
                 connect(reply, &QNetworkReply::finished, this, [=] {
@@ -281,9 +295,9 @@ namespace Evernus
 
                             if (error == "invalid_token" || error == "invalid_client" || error == "invalid_grant")
                             {
-                                mRefreshToken.clear();
+                                mRefreshTokens.erase(charId);
                                 mFetchingToken = false;
-                                fetchToken();
+                                fetchToken(charId);
                             }
                             else
                             {
@@ -302,7 +316,7 @@ namespace Evernus
                             return;
                         }
 
-                        emit acquiredToken(accessToken,
+                        emit acquiredToken(charId, accessToken,
                                            QDateTime::currentDateTime().addSecs(doc.object().value("expires_in").toInt() - 10));
 
                         mFetchingToken = false;
@@ -330,7 +344,7 @@ namespace Evernus
         CRESTInterface::setRateLimit(rate);
     }
 
-    void CRESTManager::processAuthorizationCode(const QByteArray &code)
+    void CRESTManager::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
     {
         try
         {
@@ -349,6 +363,8 @@ namespace Evernus
 
                     if (reply->error() != QNetworkReply::NoError)
                     {
+                        mFetchingToken = false;
+
                         qDebug() << "Error requesting access token:" << reply->errorString();
                         emit tokenError(reply->errorString());
                         return;
@@ -356,22 +372,50 @@ namespace Evernus
 
                     const auto doc = QJsonDocument::fromJson(reply->readAll());
                     const auto object = doc.object();
+                    const auto accessToken = object.value("access_token").toString().toLatin1();
+                    const auto refreshToken = object.value("refresh_token").toString();
 
-                    mRefreshToken = object.value("refresh_token").toString();
-                    if (mRefreshToken.isEmpty())
+                    if (refreshToken.isEmpty())
                     {
                         qDebug() << "Empty refresh token!";
                         emit tokenError(tr("Empty refresh token!"));
                         return;
                     }
 
-                    QSettings settings;
-                    settings.setValue(CRESTSettings::refreshTokenKey, mCrypt.encryptToByteArray(mRefreshToken));
+                    auto charReply = mNetworkManager.get(getVerifyRequest(accessToken));
+                    connect(charReply, &QNetworkReply::finished, this, [=] {
+                        BOOST_SCOPE_EXIT(this_) {
+                            this_->mFetchingToken = false;
+                        } BOOST_SCOPE_EXIT_END
 
-                    emit acquiredToken(object.value("access_token").toString(),
-                                       QDateTime::currentDateTime().addSecs(object.value("expires_in").toInt() - 10));
+                        charReply->deleteLater();
 
-                    mFetchingToken = false;
+                        if (charReply->error() != QNetworkReply::NoError)
+                        {
+                            qDebug() << "Error verifying access token:" << charReply->errorString();
+                            emit tokenError(charReply->errorString());
+                            return;
+                        }
+
+                        const auto doc = QJsonDocument::fromJson(charReply->readAll());
+                        const auto object = doc.object();
+                        const auto realCharId = object["CharacterID"].toInt(Character::invalidId);
+
+                        mRefreshTokens[realCharId] = refreshToken;
+
+                        QSettings settings;
+                        settings.setValue(CRESTSettings::refreshTokenKey.arg(realCharId), mCrypt.encryptToByteArray(refreshToken));
+
+                        if (charId != realCharId)
+                        {
+                            qDebug() << "Logged as invalid character id:" << realCharId;
+                            emit tokenError(tr("Please authorize access for character: %1").arg(mCharacterRepo.getName(charId)));
+                            return;
+                        }
+
+                        emit acquiredToken(realCharId, accessToken,
+                                           QDateTime::currentDateTime().addSecs(object.value("expires_in").toInt() - 10));
+                    });
                 }
                 catch (...)
                 {
@@ -395,7 +439,7 @@ namespace Evernus
             "Authorization", "Basic " + (mClientId + ":" + mClientSecret).toBase64());
 
         return request;
-     }
+    }
 
     void CRESTManager::fetchEndpoints()
     {
@@ -501,4 +545,12 @@ namespace Evernus
     {
         return tr("CREST endpoint map is empty. Please wait a while.");
     }
+
+    QNetworkRequest CRESTManager::getVerifyRequest(const QByteArray &accessToken)
+    {
+        QNetworkRequest request{loginUrl + "/oauth/verify"};
+        request.setRawHeader("Authorization", "Bearer  " + accessToken);
+
+        return request;
+     }
 }

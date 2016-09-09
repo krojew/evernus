@@ -23,11 +23,12 @@ namespace Evernus
     ProxyWebExternalOrderImporter::ProxyWebExternalOrderImporter(QByteArray clientId,
                                                                  QByteArray clientSecret,
                                                                  const EveDataProvider &dataProvider,
+                                                                 const CharacterRepository &characterRepo,
                                                                  QObject *parent)
         : ExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
-        , mCRESTIndividualImporter{std::make_unique<CRESTIndividualExternalOrderImporter>(clientId, clientSecret, mDataProvider, parent)}
-        , mCRESTWholeImporter{std::make_unique<CRESTWholeExternalOrderImporter>(std::move(clientId), std::move(clientSecret), mDataProvider, parent)}
+        , mCRESTIndividualImporter{std::make_unique<CRESTIndividualExternalOrderImporter>(clientId, clientSecret, mDataProvider, characterRepo, parent)}
+        , mCRESTWholeImporter{std::make_unique<CRESTWholeExternalOrderImporter>(std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, parent)}
         , mEveCentralImporter{std::make_unique<EveCentralExternalOrderImporter>(mDataProvider, parent)}
     {
         setCurrentImporter();

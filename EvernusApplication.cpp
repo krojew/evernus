@@ -257,7 +257,7 @@ namespace Evernus
         if (settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool())
             Updater::getInstance().checkForUpdates(true);
 
-        mCRESTManager = std::make_unique<CRESTManager>(mClientId, mClientSecret, *mDataProvider);
+        mCRESTManager = std::make_unique<CRESTManager>(mClientId, mClientSecret, *mDataProvider, *mCharacterRepository);
         connect(mCRESTManager.get(), &CRESTManager::error, this, &EvernusApplication::showGenericError);
     }
 
