@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.1)
 
 project(Evernus)
 
@@ -38,15 +38,15 @@ if(APPLE)
 
     configure_file("${CMAKE_SOURCE_DIR}/Info.plist.in" Info.plist)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "10.7")
-    set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++1y")
+    set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++14")
     set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -stdlib=libc++ -pthread")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -stdlib=libc++ -pthread")
     set(ADDITIONAL_SRC qxtglobalshortcut_mac.cpp)
     set(ADDITIONAL_LIBS Qt5::MacExtras ${CarbonLibrary})
 elseif(UNIX)
     find_package(X11 REQUIRED)
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++1y -pthread -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pthread -g")
     set(ADDITIONAL_SRC qxtglobalshortcut_x11.cpp)
     set(ADDITIONAL_LIBS ${X11_LIBRARIES})
 elseif(WIN32)
@@ -60,6 +60,9 @@ elseif(WIN32)
         message(FATAL_ERROR "Compiler too old, VS 2015 or newer required.")
     endif() # > VS2015
 endif()
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(TRANSLATIONS lang/lang_pl_PL.ts lang/lang_de_DE.ts)
 set_source_files_properties(${TRANSLATIONS} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/trans")
