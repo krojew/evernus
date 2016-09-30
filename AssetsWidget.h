@@ -52,6 +52,7 @@ namespace Evernus
         void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
 
         void setDestinationInEve(quint64 locationId);
+        void showInEve(EveType::IdType id);
 
     public slots:
         void updateData();
@@ -65,6 +66,8 @@ namespace Evernus
         void setCustomStation(quint64 id);
 
         void setDestinationForCurrent();
+        void showInEveForCurrent();
+
         void handleSelection(const QItemSelection &selected);
 
         void setCombine(int state);
@@ -83,6 +86,7 @@ namespace Evernus
         quint64 mCustomStationId = 0;
 
         QAction *mSetDestinationAct = nullptr;
+        QAction *mShowInEveAct = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
 

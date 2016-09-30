@@ -96,6 +96,16 @@ namespace Evernus
         mLocationId = id;
     }
 
+    ItemData::TypeIdType AssetModel::TreeItem::typeId() const noexcept
+    {
+        return mTypeId;
+    }
+
+    void AssetModel::TreeItem::setTypeId(ItemData::TypeIdType id) noexcept
+    {
+        mTypeId = id;
+    }
+
     QVariant AssetModel::TreeItem::decoration() const
     {
         return mDecoration;
@@ -352,6 +362,12 @@ namespace Evernus
         return (item != nullptr) ? (item->locationId()) : (LocationId{});
     }
 
+    AssetModel::LocationId AssetModel::getAssetTypeId(const QModelIndex &index) const
+    {
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
+        return (item != nullptr) ? (item->typeId()) : (LocationId{});
+    }
+
     void AssetModel::updateNames()
     {
         std::function<void(TreeItem &, const QModelIndex &, int)> updateOwner = [=, &updateOwner](TreeItem &item, const QModelIndex &parent, int row) {
@@ -403,6 +419,7 @@ namespace Evernus
         );
         treeItem->setPriceTimestamp(sellPrice->getUpdateTime());
         treeItem->setLocationId(locationId);
+        treeItem->setTypeId(typeId);
 
         if (!metaIcon.isNull())
             treeItem->setDecoration(metaIcon);

@@ -740,6 +740,7 @@ namespace Evernus
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(assetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setDestinationInEve);
+        connect(assetsTab, &AssetsWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, assetsTab, &AssetsWidget::updateData);
@@ -819,6 +820,7 @@ namespace Evernus
         connect(corpAssetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(corpAssetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(corpAssetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setDestinationInEve);
+        connect(corpAssetsTab, &AssetsWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::conquerableStationsChanged, corpAssetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::corpAssetsChanged, corpAssetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, corpAssetsTab, &AssetsWidget::updateData);

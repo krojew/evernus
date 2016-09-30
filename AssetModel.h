@@ -62,6 +62,7 @@ namespace Evernus
         double getTotalSellPrice() const noexcept;
 
         LocationId getAssetLocationId(const QModelIndex &index) const;
+        LocationId getAssetTypeId(const QModelIndex &index) const;
 
     private slots:
         void updateNames();
@@ -92,6 +93,9 @@ namespace Evernus
             LocationId locationId() const noexcept;
             void setLocationId(LocationId id) noexcept;
 
+            ItemData::TypeIdType typeId() const noexcept;
+            void setTypeId(ItemData::TypeIdType id) noexcept;
+
             QVariant decoration() const;
             void setDecoration(const QVariant &data);
 
@@ -104,6 +108,7 @@ namespace Evernus
             QVariantList mItemData;
             QDateTime mPriceTimestamp;
             LocationId mLocationId = LocationId{};
+            ItemData::TypeIdType mTypeId = ItemData::TypeIdType{};
             QVariant mDecoration;
             TreeItem *mParentItem = nullptr;
         };

@@ -124,6 +124,11 @@ namespace Evernus
         mAssetView->addAction(mSetDestinationAct);
         connect(mSetDestinationAct, &QAction::triggered, this, &AssetsWidget::setDestinationForCurrent);
 
+        mShowInEveAct = new QAction{tr("Show in EVE"), this};
+        mShowInEveAct->setEnabled(false);
+        mAssetView->addAction(mShowInEveAct);
+        connect(mShowInEveAct, &QAction::triggered, this, &AssetsWidget::showInEveForCurrent);
+
         auto stationGroup = new QGroupBox{tr("Price station"), this};
         assetLayout->addWidget(stationGroup);
 
@@ -214,12 +219,18 @@ namespace Evernus
         emit setDestinationInEve(id);
     }
 
+    void AssetsWidget::showInEveForCurrent()
+    {
+        const auto id = mModel.getAssetTypeId(mModelProxy->mapToSource(mAssetView->currentIndex()));
+        emit showInEve(id);
+    }
+
     void AssetsWidget::handleSelection(const QItemSelection &selected)
     {
-        const auto enable = !selected.isEmpty() &&
-                            mModel.getAssetLocationId(mModelProxy->mapToSource(mAssetView->currentIndex())) != 0;
+        const auto enable = !selected.isEmpty();
 
-        mSetDestinationAct->setEnabled(enable);
+        mSetDestinationAct->setEnabled(enable && mModel.getAssetLocationId(mModelProxy->mapToSource(mAssetView->currentIndex())) != 0);
+        mShowInEveAct->setEnabled(enable && mModel.getAssetTypeId(mModelProxy->mapToSource(mAssetView->currentIndex())) != 0);
     }
 
     void AssetsWidget::setCombine(int state)
