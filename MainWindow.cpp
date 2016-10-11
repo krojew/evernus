@@ -527,6 +527,12 @@ namespace Evernus
             emit openMarketInEve(typeId, mCurrentCharacterId);
     }
 
+    void MainWindow::setWaypoint(quint64 locationId)
+    {
+        if (mCurrentCharacterId != Character::invalidId)
+            emit setDestinationInEve(locationId, mCurrentCharacterId);
+    }
+
     void MainWindow::changeEvent(QEvent *event)
     {
         QSettings settings;
@@ -739,7 +745,7 @@ namespace Evernus
         connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
-        connect(assetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setDestinationInEve);
+        connect(assetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setWaypoint);
         connect(assetsTab, &AssetsWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
@@ -819,7 +825,7 @@ namespace Evernus
         connect(corpAssetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importCorpAssets);
         connect(corpAssetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(corpAssetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
-        connect(corpAssetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setDestinationInEve);
+        connect(corpAssetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setWaypoint);
         connect(corpAssetsTab, &AssetsWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::conquerableStationsChanged, corpAssetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::corpAssetsChanged, corpAssetsTab, &AssetsWidget::updateData);

@@ -67,6 +67,8 @@ namespace Evernus
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
 
+        void setDestination(quint64 locationId, Character::IdType charId) const;
+
         bool hasClientCredentials() const;
 
     signals:

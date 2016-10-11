@@ -209,6 +209,13 @@ namespace Evernus
         });
     }
 
+    void CRESTManager::setDestination(quint64 locationId, Character::IdType charId) const
+    {
+        mInterface.setDestination(locationId, charId, [=](const auto &errorText) {
+            emit error(errorText);
+        });
+    }
+
     bool CRESTManager::hasClientCredentials() const
     {
         return !mClientId.isEmpty() && !mClientSecret.isEmpty();

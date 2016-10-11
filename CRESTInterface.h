@@ -58,6 +58,8 @@ namespace Evernus
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const;
 
+        void setDestination(quint64 locationId, Character::IdType charId, const ErrorCallback &errorCallback) const;
+
         void setEndpoints(EndpointMap endpoints);
 
         static void setRateLimit(float rate);
@@ -85,6 +87,7 @@ namespace Evernus
 
         static const QString regionsUrlName;
         static const QString itemTypesUrlName;
+        static const QString systemsUrlName;
 
         static RateLimiter mCRESTLimiter;
         static QTimer mRequestTimer;

@@ -212,7 +212,6 @@ namespace Evernus
                                          &mIGBSessionManager,
                                          this};
         connect(igbService, SIGNAL(openMarginTool()), this, SIGNAL(openMarginTool()));
-        connect(this, &EvernusApplication::setDestinationInEve, igbService, &IGBService::setDestinationInEve);
 
         mIGBSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
         mIGBSessionManager.setListenInterface(QHostAddress::LocalHost);
@@ -1718,6 +1717,11 @@ namespace Evernus
     void EvernusApplication::showInEve(EveType::IdType typeId, Character::IdType charId)
     {
         mCRESTManager->openMarketDetails(typeId, charId);
+    }
+
+    void EvernusApplication::setDestinationInEve(quint64 locationId, Character::IdType charId)
+    {
+        mCRESTManager->setDestination(locationId, charId);
     }
 
     void EvernusApplication::scheduleCharacterUpdate()

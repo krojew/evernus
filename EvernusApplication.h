@@ -188,8 +188,6 @@ namespace Evernus
 
         void openMarginTool();
 
-        void setDestinationInEve(quint64 locationId);
-
     public slots:
         void refreshCharacters();
         void refreshCharacter(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
@@ -224,6 +222,7 @@ namespace Evernus
         void makeValueSnapshots(Character::IdType id);
 
         void showInEve(EveType::IdType typeId, Character::IdType charId);
+        void setDestinationInEve(quint64 locationId, Character::IdType charId);
 
     private slots:
         void scheduleCharacterUpdate();

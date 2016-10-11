@@ -43,6 +43,7 @@ namespace Evernus
 
     const QString CRESTInterface::regionsUrlName = "regions";
     const QString CRESTInterface::itemTypesUrlName = "itemTypes";
+    const QString CRESTInterface::systemsUrlName = "systems";
 
     RateLimiter CRESTInterface::mCRESTLimiter;
 
@@ -145,6 +146,39 @@ namespace Evernus
         };
 
         checkAuth(charId, opener);
+    }
+
+    void CRESTInterface::setDestination(quint64 locationId, Character::IdType charId, const ErrorCallback &errorCallback) const
+    {
+        qDebug() << "Setting destination:" << locationId;
+
+        if (!mEndpoints.contains(systemsUrlName))
+        {
+            errorCallback(tr("Missing CREST systems url!"));
+            return;
+        }
+
+        auto setter = [=](const auto &error) {
+            if (!error.isEmpty())
+            {
+                errorCallback(error);
+            }
+            else
+            {
+                QJsonDocument json{QJsonObject{
+                    { "clearOtherWaypoints", true },
+                    { "first", false },
+                    { "solarSystem", QJsonObject{
+                        { "href", QStringLiteral("%1%2/").arg(mEndpoints[systemsUrlName]).arg(locationId) },
+                        { "id", static_cast<qint64>(locationId) }
+                    } }
+                }};
+
+                post(charId, QStringLiteral("%1/characters/%2/ui/autopilot/waypoints/").arg(crestUrl).arg(charId), json.toJson(), std::move(errorCallback));
+            }
+        };
+
+        checkAuth(charId, setter);
     }
 
     void CRESTInterface::setEndpoints(EndpointMap endpoints)
@@ -371,7 +405,7 @@ namespace Evernus
         auto request = [=] {
             qDebug() << "CREST request:" << url << ":" << data;
 
-            auto request = prepareRequest(url, "application/json");
+            auto request = prepareRequest(charId, url, "application/json");
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
             auto reply = mNetworkManager.post(request, data);

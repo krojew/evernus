@@ -132,7 +132,7 @@ namespace Evernus
 
         void syncLMeve(Character::IdType id);
 
-        void setDestinationInEve(quint64 locationId);
+        void setDestinationInEve(quint64 locationId, Character::IdType charId);
         void openMarketInEve(EveType::IdType typeId, Character::IdType charId);
 
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
@@ -179,6 +179,7 @@ namespace Evernus
         void performSync();
 
         void showInEve(EveType::IdType typeId);
+        void setWaypoint(quint64 locationId);
 
     protected:
         virtual void changeEvent(QEvent *event) override;
