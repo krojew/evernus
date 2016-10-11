@@ -37,7 +37,6 @@
 #include "SyncPreferencesWidget.h"
 #include "HttpPreferencesWidget.h"
 #include "PathPreferencesWidget.h"
-#include "IGBPreferencesWidget.h"
 
 #include "PreferencesDialog.h"
 
@@ -69,7 +68,6 @@ namespace Evernus
         categories.emplace_back(std::make_pair(tr("Statistics"), new StatisticsPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Network"), new NetworkPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Synchronization"), new SyncPreferencesWidget{this}));
-        categories.emplace_back(std::make_pair(tr("In-Game Browser"), new IGBPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Web Service"), new HttpPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Wallet"), new WalletPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("LMeve"), new LMevePreferencesWidget{this}));

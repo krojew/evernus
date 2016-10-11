@@ -66,7 +66,6 @@
 #include "AssetsWidget.h"
 #include "LMeveWidget.h"
 #include "AboutDialog.h"
-#include "IGBSettings.h"
 #include "SyncDialog.h"
 #include "UISettings.h"
 #include "Updater.h"
@@ -471,15 +470,6 @@ namespace Evernus
         }
     }
 
-    void MainWindow::copyIGBLink()
-    {
-        QSettings settings;
-        QApplication::clipboard()->setText(QString{"http://localhost:%1"}
-            .arg(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>()));
-
-        QMessageBox::information(this, tr("Evernus"), tr("IGB link was copied to the clipboard."));
-    }
-
     void MainWindow::copyHTTPLink()
     {
         const auto addresses = QNetworkInterface::allAddresses();
@@ -623,7 +613,6 @@ namespace Evernus
         toolsMenu->addAction(QIcon{":/images/report.png"}, tr("Ma&rgin tool..."), this, SLOT(showMarginTool()), Qt::CTRL + Qt::Key_M);
         toolsMenu->addSeparator();
         toolsMenu->addAction(tr("Copy HTTP link"), this, SLOT(copyHTTPLink()));
-        toolsMenu->addAction(tr("Copy IGB link"), this, SLOT(copyIGBLink()));
 #ifdef EVERNUS_DROPBOX_ENABLED
         toolsMenu->addSeparator();
         toolsMenu->addAction(QIcon{":/images/arrow_refresh.png"}, tr("Upload data to cloud..."), this, SLOT(performSync()));

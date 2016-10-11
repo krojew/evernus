@@ -41,10 +41,8 @@
 #include "PathSettings.h"
 #include "HttpSettings.h"
 #include "SyncSettings.h"
-#include "IGBSettings.h"
 #include "SimpleCrypt.h"
 #include "HttpService.h"
-#include "IGBService.h"
 #include "SyncDialog.h"
 #include "UISettings.h"
 #include "PathUtils.h"
@@ -201,25 +199,6 @@ namespace Evernus
 
         showSplashMessage(tr("Clearing old market orders..."), splash);
         deleteOldMarketOrders();
-
-        showSplashMessage(tr("Setting up IGB service..."), splash);
-        auto igbService = new IGBService{*mCharacterOrderProvider,
-                                         *mCorpOrderProvider,
-                                         *mDataProvider,
-                                         *this,
-                                         *mFavoriteItemRepository,
-                                         *mCharacterRepository,
-                                         &mIGBSessionManager,
-                                         this};
-        connect(igbService, SIGNAL(openMarginTool()), this, SIGNAL(openMarginTool()));
-
-        mIGBSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
-        mIGBSessionManager.setListenInterface(QHostAddress::LocalHost);
-        mIGBSessionManager.setStaticContentService(igbService);
-        mIGBSessionManager.setConnector(QxtHttpSessionManager::HttpServer);
-
-        if (settings.value(IGBSettings::enabledKey, IGBSettings::enabledDefault).toBool())
-            mIGBSessionManager.start();
 
         showSplashMessage(tr("Setting up HTTP service..."), splash);
         auto httpService = new HttpService{*mCombinedOrderProvider,
@@ -1530,12 +1509,6 @@ namespace Evernus
         updateTranslator(settings.value(UISettings::languageKey).toString());
 
         setProxySettings();
-
-        mIGBSessionManager.shutdown();
-        mIGBSessionManager.setPort(settings.value(IGBSettings::portKey, IGBSettings::portDefault).value<quint16>());
-
-        if (settings.value(IGBSettings::enabledKey, IGBSettings::enabledDefault).toBool())
-            mIGBSessionManager.start();
 
         mHttpSessionManager.shutdown();
         mHttpSessionManager.setPort(settings.value(HttpSettings::portKey, HttpSettings::portDefault).value<quint16>());

@@ -338,7 +338,7 @@ namespace Evernus
 
         QTranslator mTranslator, mQtTranslator, mQtBaseTranslator, mQtScriptTranslator, mQtXmlPatternsTranslator;
 
-        QxtHttpSessionManager mIGBSessionManager, mHttpSessionManager;
+        QxtHttpSessionManager mHttpSessionManager;
         QxtSmtp mSmtp;
 
         std::unordered_set<MarketOrder::IdType> mPendingAutoCostOrders;

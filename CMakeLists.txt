@@ -135,8 +135,6 @@ qt5_wrap_cpp(
     GenericMarketOrdersInfoWidget.h
     HttpPreferencesWidget.h
     HttpService.h
-    IGBPreferencesWidget.h
-    IGBService.h
     ImportPreferencesWidget.h
     ImportSourcePreferencesWidget.h
     InterRegionMarketDataModel.h
@@ -456,11 +454,6 @@ add_executable(
     HttpSettings.h
     IconUtils.cpp
     IconUtils.h
-    IGBPreferencesWidget.cpp
-    IGBPreferencesWidget.h
-    IGBService.cpp
-    IGBService.h
-    IGBSettings.h
     ImportPreferencesWidget.cpp
     ImportPreferencesWidget.h
     ImportSettings.h
