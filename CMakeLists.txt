@@ -37,7 +37,7 @@ if(APPLE)
     mark_as_advanced(CarbonLibrary)
 
     configure_file("${CMAKE_SOURCE_DIR}/Info.plist.in" Info.plist)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.7")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.8")
     set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++14")
     set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -stdlib=libc++ -pthread")
@@ -865,7 +865,7 @@ if(APPLE)
     # OSX budle is ready.
     install(CODE "
             execute_process(COMMAND ${MACDEPLOYQT_PATH}/macdeployqt \"${BUNDLE_PATH}\" -verbose=2)
-            message(STATUS \"Creating dmg of app\")
+            message(STATUS \"Creating dmg of the app\")
             execute_process(COMMAND hdiutil create -volname ${PROJECT_NAME} -srcfolder \"${BUNDLE_PATH}\" -ov -format UDZO \"${PROJECT_NAME}.dmg\")
             " COMPONENT Runtime
     )
