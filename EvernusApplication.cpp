@@ -79,12 +79,6 @@ namespace Evernus
         , mEveDb(QSqlDatabase::addDatabase("QSQLITE", "eve"))
         , mAPIManager(*this)
     {
-#ifdef Q_OS_OSX
-        auto config = QSslConfiguration::defaultConfiguration();
-        config.setCaCertificates(QSslCertificate::fromPath(applicationDirPath() + "/cert.pem"));
-        QSslConfiguration::setDefaultConfiguration(config);
-#endif
-
         QSettings settings;
 
         auto lang = settings.value(UISettings::languageKey).toString();

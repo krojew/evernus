@@ -41,6 +41,13 @@ if(APPLE)
     set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++14")
     set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -stdlib=libc++ -pthread")
+
+    # From Qt 5.6 onwards SSL parts use native MacOS backend
+    # https://forum.qt.io/topic/55853/openssl-and-mac-os-x/6
+    # but LibQxt checks for QT_NO_OPENSSL and disables ssl in this case.
+    # To workaround that we define QT_OPENSSL - see qconfig.h
+    add_definitions(-DQT_OPENSSL)
+
     set(ADDITIONAL_SRC qxtglobalshortcut_mac.cpp)
     set(ADDITIONAL_LIBS Qt5::MacExtras ${CarbonLibrary})
 elseif(UNIX)
@@ -851,7 +858,6 @@ if(APPLE)
     endforeach()
 
     install(FILES iconfile.icns DESTINATION "${BUNDLE_PATH}/Contents/Resources/")
-    install(FILES "cert.pem" DESTINATION "${BUNDLE_PATH}/Contents/MacOS/")
 
     find_path(MACDEPLOYQT_PATH macdeployqt PATH_SUFFIXES bin)
     if(NOT MACDEPLOYQT_PATH)
