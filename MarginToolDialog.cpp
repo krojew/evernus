@@ -15,6 +15,7 @@
 #include <functional>
 #include <memory>
 #include <thread>
+#include <cmath>
 
 #include <QDialogButtonBox>
 #include <QStringBuilder>
