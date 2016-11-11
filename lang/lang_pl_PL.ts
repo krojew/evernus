@@ -611,7 +611,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../AssetsWidget.cpp" line="127"/>
         <source>Show in EVE</source>
-        <translation type="unfinished">Pokaż w EVE</translation>
+        <translation>Pokaż w EVE</translation>
     </message>
     <message>
         <location filename="../AssetsWidget.cpp" line="132"/>
@@ -722,7 +722,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CRESTInterface.cpp" line="157"/>
         <source>Missing CREST systems url!</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak adresu systemów w CREST!</translation>
     </message>
     <message>
         <source>CREST Authentication</source>
@@ -765,12 +765,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CRESTManager.cpp" line="253"/>
         <source>CREST Authentication for character: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoryzacja CREST dla postaci: %1</translation>
     </message>
     <message>
         <location filename="../CRESTManager.cpp" line="419"/>
         <source>Please authorize access for character: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Proszę dać dostęp do postaci: %1</translation>
     </message>
     <message>
         <location filename="../CRESTManager.cpp" line="553"/>
@@ -1044,12 +1044,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CharacterWidget.cpp" line="207"/>
         <source>Buy:</source>
-        <translation type="unfinished">Kupno:</translation>
+        <translation>Kupno:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="219"/>
         <source>Sell:</source>
-        <translation type="unfinished">Sprzedaż:</translation>
+        <translation>Sprzedaż:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="231"/>
@@ -2139,12 +2139,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../EvernusApplication.cpp" line="119"/>
         <source>CREST client id</source>
-        <translation type="unfinished"></translation>
+        <translation>Id klienta CREST</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="120"/>
         <source>CREST client secret</source>
-        <translation type="unfinished"></translation>
+        <translation>Tajny klucz klienta CREST</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="1251"/>
