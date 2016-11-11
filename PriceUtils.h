@@ -22,7 +22,8 @@ namespace Evernus
     {
         struct Taxes
         {
-            double mBrokerFee;
+            double mBuyBrokerFee;
+            double mSellBrokerFee;
             double mSalesTax;
         };
 

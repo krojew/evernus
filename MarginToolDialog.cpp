@@ -124,8 +124,8 @@ namespace Evernus
         {
             const auto taxes = PriceUtils::calculateTaxes(*mCharacterRepository.find(mCharacterId));
 
-            mBrokerFeeLabel->setText(QString{"%1%"}.arg(taxes.mBrokerFee * 100., 0, 'f', 2));
-            mSalesTaxLabel->setText(QString{"%1%"}.arg(taxes.mSalesTax * 100., 0, 'f', 2));
+            mBrokerFeeLabel->setText(QStringLiteral("%1%/%2%").arg(taxes.mBuyBrokerFee * 100., 0, 'f', 2).arg(taxes.mSellBrokerFee * 100., 0, 'f', 2));
+            mSalesTaxLabel->setText(QStringLiteral("%1%").arg(taxes.mSalesTax * 100., 0, 'f', 2));
         }
         catch (const Repository<Character>::NotFoundException &)
         {

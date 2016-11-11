@@ -94,7 +94,8 @@ namespace Evernus
         QDoubleSpinBox *mFactionStandingEdit = nullptr;
 
         QCheckBox *mBrokersFeeBtn = nullptr;
-        QDoubleSpinBox *mBrokersFeeEdit = nullptr;
+        QDoubleSpinBox *mBuyBrokersFeeEdit = nullptr;
+        QDoubleSpinBox *mSellBrokersFeeEdit = nullptr;
 
         QSpinBox *mTradeSkillEdit = nullptr;
         QSpinBox *mRetailSkillEdit = nullptr;

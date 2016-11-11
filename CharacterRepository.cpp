@@ -48,8 +48,10 @@ namespace Evernus
         character->setFactionStanding(record.value("faction_standing").toFloat());
         character->setEnabled(record.value("enabled").toBool());
 
-        if (!record.value("brokers_fee").isNull())
-            character->setBrokersFee(record.value("brokers_fee").toDouble());
+        if (!record.value("buy_brokers_fee").isNull())
+            character->setBuyBrokersFee(record.value("buy_brokers_fee").toDouble());
+        if (!record.value("sell_brokers_fee").isNull())
+            character->setSellBrokersFee(record.value("sell_brokers_fee").toDouble());
 
         CharacterData::OrderAmountSkills orderAmountSkills;
         orderAmountSkills.mTrade = record.value("trade_skill").toInt();
@@ -83,36 +85,7 @@ namespace Evernus
 
     void CharacterRepository::create(const KeyRepository &keyRepository) const
     {
-        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
-            "id BIGINT PRIMARY KEY,"
-            "key_id INTEGER NULL REFERENCES %2(id) ON UPDATE SET NULL ON DELETE SET NULL,"
-            "name TEXT NOT NULL,"
-            "corporation_name TEXT NOT NULL,"
-            "corporation_id BIGINT NOT NULL,"
-            "race TEXT NOT NULL,"
-            "bloodline TEXT NOT NULL,"
-            "ancestry TEXT NOT NULL,"
-            "gender TEXT NOT NULL,"
-            "isk DOUBLE NOT NULL,"
-            "corp_standing FLOAT NOT NULL,"
-            "faction_standing FLOAT NOT NULL,"
-            "trade_skill TINYINT NOT NULL,"
-            "retail_skill TINYINT NOT NULL,"
-            "wholesale_skill TINYINT NOT NULL,"
-            "tycoon_skill TINYINT NOT NULL,"
-            "marketing_skill TINYINT NOT NULL,"
-            "procurement_skill TINYINT NOT NULL,"
-            "daytrading_skill TINYINT NOT NULL,"
-            "visibility_skill TINYINT NOT NULL,"
-            "accounting_skill TINYINT NOT NULL,"
-            "broker_relations_skill TINYINT NOT NULL,"
-            "margin_trading_skill TINYINT NOT NULL,"
-            "contracting_skill TINYINT NOT NULL,"
-            "corporation_contracting_skill TINYINT NOT NULL,"
-            "enabled TINYINT NOT NULL,"
-            "brokers_fee FLOAT NULL"
-        ")"}.arg(getTableName()).arg(keyRepository.getTableName()));
-
+        exec(getCreateQuery(keyRepository));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(key_id)"}.arg(getTableName()).arg(keyRepository.getTableName()));
     }
 
@@ -140,13 +113,14 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
-    void CharacterRepository::updateBrokersFee(Character::IdType id, const boost::optional<double> &value) const
+    void CharacterRepository::updateBrokersFee(Character::IdType id, const boost::optional<double> &buy, const boost::optional<double> &sell) const
     {
-        auto query = prepare(QString{"UPDATE %1 SET brokers_fee = ? WHERE %2 = ?"}
+        auto query = prepare(QString{"UPDATE %1 SET buy_brokers_fee = ?, sell_brokers_fee = ? WHERE %2 = ?"}
             .arg(getTableName())
             .arg(getIdColumn()));
-        query.bindValue(0, (value) ? (*value) : (QVariant{QVariant::Double}));
-        query.bindValue(1, id);
+        query.bindValue(0, (buy) ? (*buy) : (QVariant{QVariant::Double}));
+        query.bindValue(1, (sell) ? (*sell) : (QVariant{QVariant::Double}));
+        query.bindValue(2, id);
 
         DatabaseUtils::execQuery(query);
     }
@@ -235,6 +209,40 @@ namespace Evernus
             .arg(getIdColumn()));
     }
 
+    QString CharacterRepository::getCreateQuery(const KeyRepository &keyRepository) const
+    {
+        return QStringLiteral("CREATE TABLE IF NOT EXISTS %1 ("
+            "id BIGINT PRIMARY KEY,"
+            "key_id INTEGER NULL REFERENCES %2(id) ON UPDATE SET NULL ON DELETE SET NULL,"
+            "name TEXT NOT NULL,"
+            "corporation_name TEXT NOT NULL,"
+            "corporation_id BIGINT NOT NULL,"
+            "race TEXT NOT NULL,"
+            "bloodline TEXT NOT NULL,"
+            "ancestry TEXT NOT NULL,"
+            "gender TEXT NOT NULL,"
+            "isk DOUBLE NOT NULL,"
+            "corp_standing FLOAT NOT NULL,"
+            "faction_standing FLOAT NOT NULL,"
+            "trade_skill TINYINT NOT NULL,"
+            "retail_skill TINYINT NOT NULL,"
+            "wholesale_skill TINYINT NOT NULL,"
+            "tycoon_skill TINYINT NOT NULL,"
+            "marketing_skill TINYINT NOT NULL,"
+            "procurement_skill TINYINT NOT NULL,"
+            "daytrading_skill TINYINT NOT NULL,"
+            "visibility_skill TINYINT NOT NULL,"
+            "accounting_skill TINYINT NOT NULL,"
+            "broker_relations_skill TINYINT NOT NULL,"
+            "margin_trading_skill TINYINT NOT NULL,"
+            "contracting_skill TINYINT NOT NULL,"
+            "corporation_contracting_skill TINYINT NOT NULL,"
+            "enabled TINYINT NOT NULL,"
+            "buy_brokers_fee FLOAT NULL,"
+            "sell_brokers_fee FLOAT NULL"
+        ")").arg(getTableName()).arg(keyRepository.getTableName());
+    }
+
     QStringList CharacterRepository::getColumns() const
     {
         return QStringList{}
@@ -264,7 +272,8 @@ namespace Evernus
             << "contracting_skill"
             << "corporation_contracting_skill"
             << "enabled"
-            << "brokers_fee";
+            << "buy_brokers_fee"
+            << "sell_brokers_fee";
     }
 
     void CharacterRepository::bindValues(const Character &entity, QSqlQuery &query) const
@@ -304,7 +313,8 @@ namespace Evernus
         query.bindValue(":contracting_skill", contractSkills.mContracting);
         query.bindValue(":corporation_contracting_skill", contractSkills.mCorporationContracting);
         query.bindValue(":enabled", entity.isEnabled());
-        query.bindValue(":brokers_fee", (entity.getBrokersFee()) ? (*entity.getBrokersFee()) : (QVariant{QVariant::Double}));
+        query.bindValue(":buy_brokers_fee", (entity.getBuyBrokersFee()) ? (*entity.getBuyBrokersFee()) : (QVariant{QVariant::Double}));
+        query.bindValue(":sell_brokers_fee", (entity.getBuyBrokersFee()) ? (*entity.getSellBrokersFee()) : (QVariant{QVariant::Double}));
     }
 
     void CharacterRepository::bindPositionalValues(const Character &entity, QSqlQuery &query) const
@@ -344,6 +354,7 @@ namespace Evernus
         query.addBindValue(contractSkills.mContracting);
         query.addBindValue(contractSkills.mCorporationContracting);
         query.addBindValue(entity.isEnabled());
-        query.addBindValue((entity.getBrokersFee()) ? (*entity.getBrokersFee()) : (QVariant{QVariant::Double}));
+        query.addBindValue((entity.getBuyBrokersFee()) ? (*entity.getBuyBrokersFee()) : (QVariant{QVariant::Double}));
+        query.addBindValue((entity.getSellBrokersFee()) ? (*entity.getSellBrokersFee()) : (QVariant{QVariant::Double}));
     }
 }

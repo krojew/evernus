@@ -63,7 +63,8 @@ namespace Evernus
         ISKType mISK = 0;
         float mCorpStanding = 0.f;
         float mFactionStanding = 0.f;
-        boost::optional<double> mBrokersFee;
+        boost::optional<double> mBuyBrokersFee;
+        boost::optional<double> mSellBrokersFee;
 
         OrderAmountSkills mOrderAmountSkills;
         TradeRangeSkills mTradeRangeSkills;

@@ -254,11 +254,13 @@ namespace Evernus
         const auto &corpOrderValueSnapshotRepo = provider.getCorpMarketOrderValueSnapshotRepository();
         const auto &externalOrderRepo = provider.getExternalOrderRepository();
         const auto &itemRepo = provider.getItemRepository();
+        const auto &keyRepo = provider.getKeyRepository();
 
         const auto dbBak = DatabaseUtils::backupDatabase(characterRepo.getDatabase());
 
         try
         {
+            // TODO: refactor someday...
             if (majorVersion < 2)
             {
                 if (majorVersion == 0)
@@ -267,41 +269,46 @@ namespace Evernus
                         migrateDatabaseTo05(cacheTimerRepo, characterRepo, characterOrderRepo, corporationOrderRepo);
                 }
 
-                if (minorVersion < 41)
+                if (minorVersion < 45)
                 {
-                    if (minorVersion < 27)
+                    if (minorVersion < 41)
                     {
-                        if (minorVersion < 23)
+                        if (minorVersion < 27)
                         {
-                            if (minorVersion < 16)
+                            if (minorVersion < 23)
                             {
-                                if (minorVersion < 11)
+                                if (minorVersion < 16)
                                 {
-                                    if (minorVersion < 9)
+                                    if (minorVersion < 11)
                                     {
-                                        if (minorVersion < 8)
-                                            migrateDatabaseTo18(externalOrderRepo);
+                                        if (minorVersion < 9)
+                                        {
+                                            if (minorVersion < 8)
+                                                migrateDatabaseTo18(externalOrderRepo);
 
-                                        migrateDatabaseTo19(characterRepo,
-                                                            walletJournalRepo,
-                                                            corpWalletJournalRepo,
-                                                            walletTransactionRepo,
-                                                            corpWalletTransactionRepo);
+                                            migrateDatabaseTo19(characterRepo,
+                                                                walletJournalRepo,
+                                                                corpWalletJournalRepo,
+                                                                walletTransactionRepo,
+                                                                corpWalletTransactionRepo);
+                                        }
+
+                                        migrateDatabaseTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
                                     }
 
-                                    migrateDatabaseTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
+                                    migrateDatabaseTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
                                 }
 
-                                migrateDatabaseTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
+                                migrateDatabaseTo123(externalOrderRepo, itemRepo);
                             }
 
-                            migrateDatabaseTo123(externalOrderRepo, itemRepo);
+                            migrateDatabaseTo127(characterOrderRepo, corporationOrderRepo);
                         }
 
-                        migrateDatabaseTo127(characterOrderRepo, corporationOrderRepo);
+                        migrateDatabaseTo141(characterRepo);
                     }
 
-                    migrateDatabaseTo141(characterRepo);
+                    migrateDatabaseTo145(characterRepo, keyRepo);
                 }
             }
 
@@ -423,6 +430,27 @@ namespace Evernus
     void Updater::migrateDatabaseTo141(const Repository<Character> &characterRepo) const
     {
         characterRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN brokers_fee FLOAT NULL DEFAULT NULL"}.arg(characterRepo.getTableName()));
+    }
+
+    void Updater::migrateDatabaseTo145(const CharacterRepository &characterRepo, const KeyRepository &keyRepository) const
+    {
+        QMessageBox::information(nullptr, tr("Update"), tr("This update requires settings your custom broker's fee again."));
+
+        characterRepo.getDatabase().transaction();
+
+        const auto version = characterRepo.exec("PRAGMA schema_version").value(0);
+        characterRepo.exec("PRAGMA writable_schema=ON");
+
+        characterRepo.exec(QStringLiteral("UPDATE sqlite_master SET sql = '%1' WHERE type = 'table' AND name = '%2'")
+           .arg(characterRepo.getCreateQuery(keyRepository))
+           .arg(characterRepo.getTableName()));
+
+        characterRepo.prepare(QStringLiteral("PRAGMA schema_version=%1").arg(version.toInt() + 1));
+
+        characterRepo.exec("PRAGMA writable_schema=OFF");
+        characterRepo.exec("PRAGMA integrity_check");
+
+        characterRepo.getDatabase().commit();
     }
 
     void Updater::migrateCoreTo130() const

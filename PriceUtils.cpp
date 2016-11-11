@@ -28,23 +28,25 @@ namespace Evernus
     {
         Taxes calculateTaxes(const Character &character)
         {
-            const auto customBrokersFee = character.getBrokersFee();
             const auto feeSkills = character.getFeeSkills();
-            const auto brokerFee = (customBrokersFee) ? (*customBrokersFee) : (0.03 - (feeSkills.mBrokerRelations * 0.001 +
-                0.0003 * character.getFactionStanding() + 0.0002 * character.getCorpStanding()));
             const auto salesTax = 0.02 - feeSkills.mAccounting * 0.002;
 
-            return Taxes{brokerFee, salesTax};
+            auto calcBrokersFee = [&](auto customBrokersFee) {
+                return (customBrokersFee) ? (*customBrokersFee) : (0.03 - (feeSkills.mBrokerRelations * 0.001 +
+                    0.0003 * character.getFactionStanding() + 0.0002 * character.getCorpStanding()));
+            };
+
+            return Taxes{calcBrokersFee(character.getBuyBrokersFee()), calcBrokersFee(character.getSellBrokersFee()), salesTax};
         }
 
         double getCoS(double buyPrice, const Taxes &taxes)
         {
-            return buyPrice + buyPrice * taxes.mBrokerFee;
+            return buyPrice + buyPrice * taxes.mBuyBrokerFee;
         }
 
         double getRevenue(double sellPrice, const Taxes &taxes)
         {
-            return sellPrice - sellPrice * taxes.mSalesTax - sellPrice * taxes.mBrokerFee;
+            return sellPrice - sellPrice * taxes.mSalesTax - sellPrice * taxes.mSellBrokerFee;
         }
 
         double getMargin(double cost, double price, const Taxes &taxes)

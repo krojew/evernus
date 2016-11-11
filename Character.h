@@ -82,8 +82,11 @@ namespace Evernus
         float getFactionStanding() const noexcept;
         void setFactionStanding(float standing) noexcept;
 
-        boost::optional<double> getBrokersFee() const;
-        void setBrokersFee(boost::optional<double> fee);
+        boost::optional<double> getBuyBrokersFee() const;
+        void setBuyBrokersFee(boost::optional<double> fee);
+
+        boost::optional<double> getSellBrokersFee() const;
+        void setSellBrokersFee(boost::optional<double> fee);
 
         CharacterData::OrderAmountSkills getOrderAmountSkills() const noexcept;
         void setOrderAmountSkills(const CharacterData::OrderAmountSkills &skills) noexcept;

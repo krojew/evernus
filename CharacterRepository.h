@@ -39,7 +39,7 @@ namespace Evernus
 
         void updateSkill(Character::IdType id, const QString &skill, int level) const;
         void updateStanding(Character::IdType id, const QString &type, double value) const;
-        void updateBrokersFee(Character::IdType id, const boost::optional<double> &value) const;
+        void updateBrokersFee(Character::IdType id, const boost::optional<double> &buy, const boost::optional<double> &sell) const;
 
         void disableByKey(Key::IdType id) const;
         void disableByKey(Key::IdType id, const std::vector<Character::IdType> &excluded) const;
@@ -54,6 +54,7 @@ namespace Evernus
         QString getName(Character::IdType id) const;
 
         QSqlQuery getEnabledQuery() const;
+        QString getCreateQuery(const KeyRepository &keyRepository) const;
 
     private:
         virtual QStringList getColumns() const override;

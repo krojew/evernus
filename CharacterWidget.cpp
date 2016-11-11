@@ -204,15 +204,29 @@ namespace Evernus
         brokersFeeLayout->addWidget(mBrokersFeeBtn);
         connect(mBrokersFeeBtn, &QCheckBox::stateChanged, this, &CharacterWidget::setBrokersFee);
 
-        mBrokersFeeEdit = new QDoubleSpinBox{this};
-        brokersFeeLayout->addWidget(mBrokersFeeEdit);
-        mBrokersFeeEdit->setMaximum(100.);
-        mBrokersFeeEdit->setSingleStep(0.01);
-        mBrokersFeeEdit->setEnabled(false);
-        mBrokersFeeEdit->setSuffix(locale().percent());
-        connect(mBrokersFeeEdit, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+        brokersFeeLayout->addWidget(new QLabel{tr("Buy:"), this}, 0, Qt::AlignRight);
+
+        mBuyBrokersFeeEdit = new QDoubleSpinBox{this};
+        brokersFeeLayout->addWidget(mBuyBrokersFeeEdit);
+        mBuyBrokersFeeEdit->setMaximum(100.);
+        mBuyBrokersFeeEdit->setSingleStep(0.01);
+        mBuyBrokersFeeEdit->setEnabled(false);
+        mBuyBrokersFeeEdit->setSuffix(locale().percent());
+        connect(mBuyBrokersFeeEdit, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
                 this, &CharacterWidget::setBrokersFee);
-        connect(mBrokersFeeBtn, &QCheckBox::stateChanged, mBrokersFeeEdit, &QDoubleSpinBox::setEnabled);
+        connect(mBrokersFeeBtn, &QCheckBox::stateChanged, mBuyBrokersFeeEdit, &QDoubleSpinBox::setEnabled);
+
+        brokersFeeLayout->addWidget(new QLabel{tr("Sell:"), this}, 0, Qt::AlignRight);
+
+        mSellBrokersFeeEdit = new QDoubleSpinBox{this};
+        brokersFeeLayout->addWidget(mSellBrokersFeeEdit);
+        mSellBrokersFeeEdit->setMaximum(100.);
+        mSellBrokersFeeEdit->setSingleStep(0.01);
+        mSellBrokersFeeEdit->setEnabled(false);
+        mSellBrokersFeeEdit->setSuffix(locale().percent());
+        connect(mSellBrokersFeeEdit, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                this, &CharacterWidget::setBrokersFee);
+        connect(mBrokersFeeBtn, &QCheckBox::stateChanged, mSellBrokersFeeEdit, &QDoubleSpinBox::setEnabled);
 
         auto skillsGroup = new QGroupBox{tr("Trade skills"), this};
         mainLayout->addWidget(skillsGroup);
@@ -358,8 +372,11 @@ namespace Evernus
         const auto id = getCharacterId();
         Q_ASSERT(id != Character::invalidId);
 
-        mCharacterRepository.updateBrokersFee(id,
-            (mBrokersFeeBtn->isChecked()) ? (mBrokersFeeEdit->value() / 100.) : (boost::optional<double>{}));
+        const auto enabled = mBrokersFeeBtn->isChecked();
+        const auto buy = (enabled) ? (mBuyBrokersFeeEdit->value() / 100.) : (boost::optional<double>{});
+        const auto sell = (enabled) ? (mSellBrokersFeeEdit->value() / 100.) : (boost::optional<double>{});
+
+        mCharacterRepository.updateBrokersFee(id, buy, sell);
     }
 
     void CharacterWidget::setSkillLevel(int level)
@@ -379,7 +396,8 @@ namespace Evernus
         mCorpStandingEdit->blockSignals(true);
         mFactionStandingEdit->blockSignals(true);
         mBrokersFeeBtn->blockSignals(true);
-        mBrokersFeeEdit->blockSignals(true);
+        mBuyBrokersFeeEdit->blockSignals(true);
+        mSellBrokersFeeEdit->blockSignals(true);
         mTradeSkillEdit->blockSignals(true);
         mRetailSkillEdit->blockSignals(true);
         mWholesaleSkillEdit->blockSignals(true);
@@ -417,8 +435,10 @@ namespace Evernus
             mFactionStandingEdit->setValue(0.);
 
             mBrokersFeeBtn->setChecked(false);
-            mBrokersFeeEdit->setValue(0.);
-            mBrokersFeeEdit->setEnabled(false);
+            mBuyBrokersFeeEdit->setValue(0.);
+            mBuyBrokersFeeEdit->setEnabled(false);
+            mSellBrokersFeeEdit->setValue(0.);
+            mSellBrokersFeeEdit->setEnabled(false);
 
             mTradeSkillEdit->setValue(0);
             mRetailSkillEdit->setValue(0);
@@ -461,20 +481,24 @@ namespace Evernus
                 mCorpStandingEdit->setValue(character->getCorpStanding());
                 mFactionStandingEdit->setValue(character->getFactionStanding());
 
-                const auto brokersFee = character->getBrokersFee();
+                mBrokersFeeBtn->setChecked(false);
 
-                if (brokersFee)
-                {
-                    mBrokersFeeBtn->setChecked(true);
-                    mBrokersFeeEdit->setValue(*brokersFee * 100.);
-                    mBrokersFeeEdit->setEnabled(true);
-                }
-                else
-                {
-                    mBrokersFeeBtn->setChecked(false);
-                    mBrokersFeeEdit->setValue(0.);
-                    mBrokersFeeEdit->setEnabled(false);
-                }
+                auto setBrokersFeeEdit = [=](auto edit, const auto &brokersFee) {
+                    if (brokersFee)
+                    {
+                        mBrokersFeeBtn->setChecked(true);
+                        edit->setValue(*brokersFee * 100.);
+                        edit->setEnabled(true);
+                    }
+                    else
+                    {
+                        edit->setValue(0.);
+                        edit->setEnabled(false);
+                    }
+                };
+
+                setBrokersFeeEdit(mBuyBrokersFeeEdit, character->getBuyBrokersFee());
+                setBrokersFeeEdit(mSellBrokersFeeEdit, character->getSellBrokersFee());
 
                 mTradeSkillEdit->setValue(orderAmountSkills.mTrade);
                 mRetailSkillEdit->setValue(orderAmountSkills.mRetail);
@@ -516,7 +540,8 @@ namespace Evernus
         mCorpStandingEdit->blockSignals(false);
         mFactionStandingEdit->blockSignals(false);
         mBrokersFeeBtn->blockSignals(false);
-        mBrokersFeeEdit->blockSignals(false);
+        mBuyBrokersFeeEdit->blockSignals(false);
+        mSellBrokersFeeEdit->blockSignals(false);
         mTradeSkillEdit->blockSignals(false);
         mRetailSkillEdit->blockSignals(false);
         mWholesaleSkillEdit->blockSignals(false);
