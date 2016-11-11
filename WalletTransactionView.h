@@ -16,6 +16,7 @@
 
 #include "StyledTreeView.h"
 #include "Character.h"
+#include "EveType.h"
 
 class QAbstractProxyModel;
 
@@ -45,6 +46,9 @@ namespace Evernus
 
         void setCharacter(Character::IdType id);
 
+    signals:
+        void showInEve(EveType::IdType id);
+
     public slots:
         void updateCharacters();
 
@@ -53,6 +57,7 @@ namespace Evernus
 
         void addItemCostForCharacter();
         void copySuggestedPrice() const;
+        void getTypeAndShowInEve();
 
     private:
         ItemCostProvider &mItemCostProvider;
@@ -61,6 +66,7 @@ namespace Evernus
         QAction *mCopySuggestedPriceAct = nullptr;
         QAction *mAddItemCostAct = nullptr;
         QAction *mAddItemCostForAct = nullptr;
+        QAction *mShowInEveAct = nullptr;
         QMenu *mCharsMenu = nullptr;
 
         QAbstractProxyModel *mProxy = nullptr;

@@ -108,6 +108,7 @@ namespace Evernus
             mCopySuggestedPriceAct->setEnabled(false);
             mAddItemCostAct->setEnabled(false);
             mAddItemCostForAct->setEnabled(false);
+            mShowInEveAct->setEnabled(false);
         }
         else
         {
@@ -121,6 +122,7 @@ namespace Evernus
             mCopySuggestedPriceAct->setEnabled(true);
             mAddItemCostAct->setEnabled(true);
             mAddItemCostForAct->setEnabled(true);
+            mShowInEveAct->setEnabled(true);
         }
     }
 
@@ -136,6 +138,11 @@ namespace Evernus
     {
         const auto price = getSuggestedPrice(mModel->getPrice(mCurrentTransaction.row()));
         QApplication::clipboard()->setText(QString::number(price, 'f', 2));
+    }
+
+    void WalletTransactionView::getTypeAndShowInEve()
+    {
+        emit showInEve(mModel->getTypeId(mCurrentTransaction.row()));
     }
 
     double WalletTransactionView::getSuggestedPrice(double price) const
@@ -179,6 +186,12 @@ namespace Evernus
         connect(mCopySuggestedPriceAct, &QAction::triggered, this, &WalletTransactionView::copySuggestedPrice);
 
         addAction(mCopySuggestedPriceAct);
+
+        mShowInEveAct = new QAction{tr("Show in EVE"), this};
+        mShowInEveAct->setEnabled(false);
+        connect(mShowInEveAct, &QAction::triggered, this, &WalletTransactionView::getTypeAndShowInEve);
+
+        addAction(mShowInEveAct);
     }
 
     void WalletTransactionView::addItemCost(Character::IdType characterId)

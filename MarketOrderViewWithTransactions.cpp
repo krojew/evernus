@@ -88,6 +88,7 @@ namespace Evernus
                                                       mCharacterRepo,
                                                       this};
         tabs->addTab(mTransactionsView, tr("Transactions"));
+        connect(mTransactionsView, &WalletTransactionView::showInEve, this, &MarketOrderViewWithTransactions::showInEve);
         mTransactionsView->setModels(&mTransactionProxyModel, &mTransactionModel);
         mTransactionsView->sortByColumn(1, Qt::DescendingOrder);
         mTransactionsView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);

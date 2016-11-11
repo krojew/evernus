@@ -790,6 +790,7 @@ namespace Evernus
                                                             this};
         addTab(transactionsTab, tr("Character transactions"), TabType::Character);
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
+        connect(transactionsTab, &WalletTransactionsWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
         connect(this, &MainWindow::charactersChanged, transactionsTab, &WalletTransactionsWidget::updateCharacters);
 
@@ -869,6 +870,7 @@ namespace Evernus
                                                                 this};
         addTab(corpTransactionsTab, tr("Corporation transactions"), TabType::Corp);
         connect(corpTransactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importCorpWalletTransactions);
+        connect(corpTransactionsTab, &WalletTransactionsWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::corpWalletTransactionsChanged, corpTransactionsTab, &WalletTransactionsWidget::updateData);
         connect(this, &MainWindow::charactersChanged, corpTransactionsTab, &WalletTransactionsWidget::updateCharacters);
 

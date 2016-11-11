@@ -51,6 +51,9 @@ namespace Evernus
                                  QWidget *parent = nullptr);
         virtual ~WalletTransactionsWidget() = default;
 
+    signals:
+        void showInEve(EveType::IdType id);
+
     public slots:
         void updateData();
         void updateCharacters();

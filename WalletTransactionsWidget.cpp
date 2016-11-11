@@ -90,6 +90,7 @@ namespace Evernus
                                           characterRepository,
                                           this};
         mainLayout->addWidget(mView, 1);
+        connect(mView, &WalletTransactionView::showInEve, this, &WalletTransactionsWidget::showInEve);
         mView->setModels(mFilterModel, &mModel);
         mView->sortByColumn(1, Qt::DescendingOrder);
 
