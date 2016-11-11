@@ -178,6 +178,10 @@ namespace Evernus
             settings.value(PriceSettings::fpcShourtcutKey).toString()), this};
         fpcSettingsLayout->addWidget(mFPCShortcutEdit);
 
+        mShowInEveOnFPCBtn = new QCheckBox{tr("Show in EVE on copy"), this};
+        fpcLayout->addWidget(mShowInEveOnFPCBtn);
+        mShowInEveOnFPCBtn->setChecked(settings.value(PriceSettings::showInEveOnFpcKey, PriceSettings::showInEveOnFpcDefault).toBool());
+
         auto helpLabel = new QLabel{tr(
             "Fast Price Copy allows you to update your orders in a very fast manner. Simply assign a keyboard shortcut, select an order in any market order view and press the shortcut to "
             "copy the updated price and automatically jump to the next order on the list. You can do this even when Evernus doesn't have the input focus - the keyboard shortcut works system-wide. "
@@ -211,5 +215,6 @@ namespace Evernus
         settings.setValue(PriceSettings::limitSellCopyToTotalCostKey, mLimitSellCopyToTotalCostBtn->isChecked());
         settings.setValue(PriceSettings::fpcKey, mFPCBtn->isChecked());
         settings.setValue(PriceSettings::fpcShourtcutKey, mFPCShortcutEdit->keySequence().toString());
+        settings.setValue(PriceSettings::showInEveOnFpcKey, mShowInEveOnFPCBtn->isChecked());
     }
 }

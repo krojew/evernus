@@ -54,5 +54,6 @@ namespace Evernus
         QCheckBox *mLimitSellCopyToTotalCostBtn = nullptr;
         QCheckBox *mFPCBtn = nullptr;
         QKeySequenceEdit *mFPCShortcutEdit = nullptr;
+        QCheckBox *mShowInEveOnFPCBtn = nullptr;
     };
 }

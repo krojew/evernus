@@ -50,6 +50,7 @@ namespace Evernus
         const auto ignoreOrdersWithMinVolumeDefault = false;
         const auto itemConstCostAddDefault = 0.;
         const auto itemRelativeCostAddDefault = 0.;
+        const auto showInEveOnFpcDefault = false;
 
         const auto minMarginKey = "prices/margin/min";
         const auto preferredMarginKey = "prices/margin/preferred";
@@ -72,5 +73,6 @@ namespace Evernus
         const auto ignoreOrdersWithMinVolumeKey = "prices/ignoreOrdersWithMinVolume";
         const auto itemConstCostAddKey = "prices/costs/constCost";
         const auto itemRelativeCostAddKey = "prices/costs/relativeCost";
+        const auto showInEveOnFpcKey = "prices/fpc/showInEve";
     }
 }

@@ -29,7 +29,7 @@
 #include "MarketOrderInfoWidget.h"
 #include "MarketOrderModel.h"
 #include "StyledTreeView.h"
-#include "UISettings.h"
+#include "PriceSettings.h"
 
 #include "MarketOrderView.h"
 
@@ -211,6 +211,10 @@ namespace Evernus
             const auto info = mSource->getOrderInfo(source);
             if (info.mTargetPrice >= 0.01)
                 QApplication::clipboard()->setText(QString::number(info.mTargetPrice, 'f', 2));
+
+            QSettings settings;
+            if (settings.value(PriceSettings::showInEveOnFpcKey, PriceSettings::showInEveOnFpcDefault).toBool())
+                showInEveForCurrent();
         }
     }
 
