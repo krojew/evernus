@@ -436,21 +436,7 @@ namespace Evernus
     {
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires settings your custom broker's fee again."));
 
-        characterRepo.getDatabase().transaction();
-
-        const auto version = characterRepo.exec("PRAGMA schema_version").value(0);
-        characterRepo.exec("PRAGMA writable_schema=ON");
-
-        characterRepo.exec(QStringLiteral("UPDATE sqlite_master SET sql = '%1' WHERE type = 'table' AND name = '%2'")
-           .arg(characterRepo.getCreateQuery(keyRepository))
-           .arg(characterRepo.getTableName()));
-
-        characterRepo.prepare(QStringLiteral("PRAGMA schema_version=%1").arg(version.toInt() + 1));
-
-        characterRepo.exec("PRAGMA writable_schema=OFF");
-        characterRepo.exec("PRAGMA integrity_check");
-
-        characterRepo.getDatabase().commit();
+        characterRepo.exec(QStringLiteral("ALTER TABLE %1 ADD COLUMN sell_brokers_fee FLOAT NULL DEFAULT NULL").arg(characterRepo.getTableName()));
     }
 
     void Updater::migrateCoreTo130() const

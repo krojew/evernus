@@ -48,8 +48,8 @@ namespace Evernus
         character->setFactionStanding(record.value("faction_standing").toFloat());
         character->setEnabled(record.value("enabled").toBool());
 
-        if (!record.value("buy_brokers_fee").isNull())
-            character->setBuyBrokersFee(record.value("buy_brokers_fee").toDouble());
+        if (!record.value("brokers_fee").isNull())
+            character->setBuyBrokersFee(record.value("brokers_fee").toDouble());
         if (!record.value("sell_brokers_fee").isNull())
             character->setSellBrokersFee(record.value("sell_brokers_fee").toDouble());
 
@@ -115,7 +115,7 @@ namespace Evernus
 
     void CharacterRepository::updateBrokersFee(Character::IdType id, const boost::optional<double> &buy, const boost::optional<double> &sell) const
     {
-        auto query = prepare(QString{"UPDATE %1 SET buy_brokers_fee = ?, sell_brokers_fee = ? WHERE %2 = ?"}
+        auto query = prepare(QString{"UPDATE %1 SET brokers_fee = ?, sell_brokers_fee = ? WHERE %2 = ?"}
             .arg(getTableName())
             .arg(getIdColumn()));
         query.bindValue(0, (buy) ? (*buy) : (QVariant{QVariant::Double}));
@@ -238,7 +238,7 @@ namespace Evernus
             "contracting_skill TINYINT NOT NULL,"
             "corporation_contracting_skill TINYINT NOT NULL,"
             "enabled TINYINT NOT NULL,"
-            "buy_brokers_fee FLOAT NULL,"
+            "brokers_fee FLOAT NULL,"
             "sell_brokers_fee FLOAT NULL"
         ")").arg(getTableName()).arg(keyRepository.getTableName());
     }
@@ -272,7 +272,7 @@ namespace Evernus
             << "contracting_skill"
             << "corporation_contracting_skill"
             << "enabled"
-            << "buy_brokers_fee"
+            << "brokers_fee"
             << "sell_brokers_fee";
     }
 
@@ -313,7 +313,7 @@ namespace Evernus
         query.bindValue(":contracting_skill", contractSkills.mContracting);
         query.bindValue(":corporation_contracting_skill", contractSkills.mCorporationContracting);
         query.bindValue(":enabled", entity.isEnabled());
-        query.bindValue(":buy_brokers_fee", (entity.getBuyBrokersFee()) ? (*entity.getBuyBrokersFee()) : (QVariant{QVariant::Double}));
+        query.bindValue(":brokers_fee", (entity.getBuyBrokersFee()) ? (*entity.getBuyBrokersFee()) : (QVariant{QVariant::Double}));
         query.bindValue(":sell_brokers_fee", (entity.getBuyBrokersFee()) ? (*entity.getSellBrokersFee()) : (QVariant{QVariant::Double}));
     }
 
