@@ -54,6 +54,7 @@ namespace Evernus
                              const EveDataProvider &dataProvider,
                              TaskManager &taskManager,
                              const MarketOrderRepository &orderRepo,
+                             const MarketOrderRepository &corpOrderRepo,
                              const EveTypeRepository &typeRepo,
                              const MarketGroupRepository &groupRepo,
                              const CharacterRepository &characterRepo,
@@ -108,6 +109,7 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
         const MarketOrderRepository &mOrderRepo;
+        const MarketOrderRepository &mCorpOrderRepo;
         const EveTypeRepository &mTypeRepo;
         const MarketGroupRepository &mGroupRepo;
         const CharacterRepository &mCharacterRepo;

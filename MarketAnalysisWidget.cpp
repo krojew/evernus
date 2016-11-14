@@ -117,6 +117,7 @@ namespace Evernus
                                                const EveDataProvider &dataProvider,
                                                TaskManager &taskManager,
                                                const MarketOrderRepository &orderRepo,
+                                               const MarketOrderRepository &corpOrderRepo,
                                                const EveTypeRepository &typeRepo,
                                                const MarketGroupRepository &groupRepo,
                                                const CharacterRepository &characterRepo,
@@ -125,6 +126,7 @@ namespace Evernus
         , mDataProvider(dataProvider)
         , mTaskManager(taskManager)
         , mOrderRepo(orderRepo)
+        , mCorpOrderRepo(corpOrderRepo)
         , mTypeRepo(typeRepo)
         , mGroupRepo(groupRepo)
         , mCharacterRepo(characterRepo)
@@ -305,9 +307,13 @@ namespace Evernus
         MarketOrderRepository::TypeLocationPairs ignored;
         if (mIgnoreExistingOrdersBtn->isChecked())
         {
-            const auto temp = mOrderRepo.fetchActiveTypes();
-            for (const auto &pair : temp)
-                ignored.insert(std::make_pair(pair.first, mDataProvider.getStationRegionId(pair.second)));
+            auto ignoreTypes = [&](const auto &activeTypes) {
+                for (const auto &pair : activeTypes)
+                    ignored.insert(std::make_pair(pair.first, mDataProvider.getStationRegionId(pair.second)));
+            };
+
+            ignoreTypes(mOrderRepo.fetchActiveTypes());
+            ignoreTypes(mCorpOrderRepo.fetchActiveTypes());
         }
 
         QMetaObject::invokeMethod(mDataFetcher,

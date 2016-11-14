@@ -939,6 +939,7 @@ namespace Evernus
                                                           mEveDataProvider,
                                                           taskManager,
                                                           mRepositoryProvider.getMarketOrderRepository(),
+                                                          mRepositoryProvider.getCorpMarketOrderRepository(),
                                                           mRepositoryProvider.getEveTypeRepository(),
                                                           mRepositoryProvider.getMarketGroupRepository(),
                                                           mRepositoryProvider.getCharacterRepository(),
