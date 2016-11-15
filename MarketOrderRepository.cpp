@@ -263,7 +263,7 @@ namespace Evernus
     {
         OrderStateMap result;
 
-        auto query = prepare(QString{"SELECT %1, state, volume_remaining, first_seen, last_seen, delta, issued, duration FROM %2 WHERE character_id = ?"}
+        auto query = prepare(QString{"SELECT %1, state, volume_remaining, first_seen, last_seen, delta, issued, duration, custom_location_id FROM %2 WHERE character_id = ?"}
             .arg(getIdColumn())
             .arg(getTableName()));
         query.bindValue(0, characterId);
@@ -282,6 +282,9 @@ namespace Evernus
             state.mExpiry = query.value(6).toDateTime().addDays(query.value(7).toInt());
             state.mExpiry.setTimeSpec(Qt::UTC);
             state.mDelta = query.value(5).toInt();
+
+            if (!query.value(8).isNull())
+                state.mCustomStation = query.value(8).toUInt();
 
             result.emplace(query.value(0).value<MarketOrder::IdType>(), std::move(state));
         }

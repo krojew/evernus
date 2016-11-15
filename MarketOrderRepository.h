@@ -47,6 +47,7 @@ namespace Evernus
             uint mVolumeRemaining = 0;
             QDateTime mFirstSeen, mLastSeen, mExpiry;
             int mDelta = 0;
+            MarketOrder::CutomLocationType mCustomStation;
         };
 
         enum class AggregateColumn
