@@ -39,6 +39,7 @@ namespace Evernus
         virtual void removeOrder(MarketOrder::IdType id) override;
 
         virtual void setOrderNotes(MarketOrder::IdType id, const QString &notes) override;
+        virtual void setOrderStation(MarketOrder::IdType orderId, uint stationId) override;
 
         void clearOrdersForCharacter(Character::IdType id) const;
 

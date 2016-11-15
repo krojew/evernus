@@ -68,6 +68,8 @@ namespace Evernus
         marketOrder->setCorporationId(record.value("corporation_id").toULongLong());
         if (!record.value("notes").isNull())
             marketOrder->setNotes(record.value("notes").toString());
+        if (!record.value("custom_location_id").isNull())
+            marketOrder->setCustomStationId(record.value("custom_location_id").toUInt());
         marketOrder->setNew(false);
 
         return marketOrder;
@@ -95,7 +97,8 @@ namespace Evernus
             "first_seen DATETIME NOT NULL,"
             "last_seen DATETIME NULL,"
             "corporation_id BIGINT NOT NULL,"
-            "notes TEXT NULL"
+            "notes TEXT NULL,"
+            "custom_location_id INTEGER NULL"
         ")"}.arg(getTableName()).arg(
             (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
 
@@ -443,6 +446,15 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    void MarketOrderRepository::setStation(MarketOrder::IdType orderId, uint stationId) const
+    {
+        auto query = prepare(QString{"UPDATE %1 SET custom_location_id = ? WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
+        query.bindValue(0, (stationId != 0) ? (stationId) : (QVariant{QVariant::UInt}));
+        query.bindValue(1, orderId);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     QStringList MarketOrderRepository::getColumns() const
     {
         return QStringList{}
@@ -465,7 +477,8 @@ namespace Evernus
             << "first_seen"
             << "last_seen"
             << "corporation_id"
-            << "notes";
+            << "notes"
+            << "custom_location_id";
     }
 
     void MarketOrderRepository::bindValues(const MarketOrder &entity, QSqlQuery &query) const
@@ -492,6 +505,7 @@ namespace Evernus
         query.bindValue(":last_seen", entity.getLastSeen());
         query.bindValue(":corporation_id", entity.getCorporationId());
         query.bindValue(":notes", entity.getNotes());
+        query.bindValue(":custom_location_id", (entity.getCustomStationId()) ? (*entity.getCustomStationId()) : (QVariant{QVariant::UInt}));
     }
 
     void MarketOrderRepository::bindPositionalValues(const MarketOrder &entity, QSqlQuery &query) const
@@ -518,6 +532,7 @@ namespace Evernus
         query.addBindValue(entity.getLastSeen());
         query.addBindValue(entity.getCorporationId());
         query.addBindValue(entity.getNotes());
+        query.addBindValue((entity.getCustomStationId()) ? (*entity.getCustomStationId()) : (QVariant{QVariant::UInt}));
     }
 
     template<class Binder>

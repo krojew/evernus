@@ -268,6 +268,11 @@ namespace Evernus
         connect(mArchiveView, &MarketOrderViewWithTransactions::notesChanged, this, &MarketOrderWidget::setOrderNotes);
         connect(mCombinedSellView, &MarketOrderView::notesChanged, this, &MarketOrderWidget::setOrderNotes);
         connect(mCombinedBuyView, &MarketOrderView::notesChanged, this, &MarketOrderWidget::setOrderNotes);
+        connect(mSellView, &MarketOrderViewWithTransactions::stationChanged, this, &MarketOrderWidget::setOrderStation);
+        connect(mBuyView, &MarketOrderViewWithTransactions::stationChanged, this, &MarketOrderWidget::setOrderStation);
+        connect(mArchiveView, &MarketOrderViewWithTransactions::stationChanged, this, &MarketOrderWidget::setOrderStation);
+        connect(mCombinedSellView, &MarketOrderView::stationChanged, this, &MarketOrderWidget::setOrderStation);
+        connect(mCombinedBuyView, &MarketOrderView::stationChanged, this, &MarketOrderWidget::setOrderStation);
     }
 
     void MarketOrderWidget::updateData()
@@ -330,6 +335,11 @@ namespace Evernus
     void MarketOrderWidget::setOrderNotes(MarketOrder::IdType id, const QString &notes)
     {
         mOrderProvider.setOrderNotes(id, notes);
+    }
+
+    void MarketOrderWidget::setOrderStation(MarketOrder::IdType orderId, uint stationId)
+    {
+        mOrderProvider.setOrderStation(orderId, stationId);
     }
 
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)

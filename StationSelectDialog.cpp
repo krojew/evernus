@@ -27,7 +27,7 @@ namespace Evernus
     {
         auto mainLayout = new QVBoxLayout{this};
 
-        mAnyStationBtn = new QRadioButton{tr("Any station"), this};
+        mAnyStationBtn = new QRadioButton{tr("No specific station"), this};
         mainLayout->addWidget(mAnyStationBtn);
         mAnyStationBtn->setChecked(true);
 

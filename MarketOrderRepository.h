@@ -105,6 +105,7 @@ namespace Evernus
         void deleteOldEntries(const QDateTime &from) const;
 
         void setNotes(MarketOrder::IdType id, const QString &notes) const;
+        void setStation(MarketOrder::IdType orderId, uint stationId) const;
 
     private:
         bool mCorp = false;

@@ -86,8 +86,8 @@ namespace Evernus
                 QSettings settings;
 
                 const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
-                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
+                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
+                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
                 if (price->isNew())
                     return tr("No price data -> Please import prices from Orders/Assets tab or by using Margin tool.");
 
@@ -116,8 +116,8 @@ namespace Evernus
                 QSettings settings;
 
                 const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
-                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
+                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
+                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
                 if (price->isNew())
                     return QIcon{":/images/error.png"};
 
@@ -154,8 +154,8 @@ namespace Evernus
                     QSettings settings;
 
                     const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
-                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
+                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
+                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
                     if (price->isNew())
                         return 1;
 
@@ -170,8 +170,8 @@ namespace Evernus
                     QSettings settings;
 
                     const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
-                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
+                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
+                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
                     if (price->isNew())
                         break;
 
@@ -185,8 +185,8 @@ namespace Evernus
 
                     QSettings settings;
                     const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
-                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
+                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
+                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
 
                     return (price->getPrice() - data->getPrice()) / cost->getAdjustedCost();
                 }
@@ -247,6 +247,11 @@ namespace Evernus
                 return data->getNotes();
             case ownerColumn:
                 return getCharacterName(data->getCharacterId());
+            case customStation:
+                {
+                    const auto id = data->getCustomStationId();
+                    return (id) ? (mDataProvider.getLocationName(*id)) : (QVariant{});
+                }
             }
             break;
         case Qt::DisplayRole:
@@ -293,8 +298,8 @@ namespace Evernus
                         QSettings settings;
 
                         const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
-                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
+                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
+                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
                         if (price->isNew())
                             return tr("No price data");
 
@@ -308,8 +313,8 @@ namespace Evernus
                         QSettings settings;
 
                         const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
-                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
+                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
+                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
                         if (price->isNew())
                             break;
 
@@ -325,8 +330,8 @@ namespace Evernus
                         QSettings settings;
 
                         const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
-                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
+                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
+                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
 
                         return QString{"%1%2"}
                             .arg(locale.toString(100. * (price->getPrice() - data->getPrice()) / cost->getAdjustedCost(), 'f', 2))
@@ -395,6 +400,11 @@ namespace Evernus
                     return data->getNotes();
                 case ownerColumn:
                     return getCharacterName(data->getCharacterId());
+                case customStation:
+                    {
+                        const auto id = data->getCustomStationId();
+                        return (id) ? (mDataProvider.getLocationName(*id)) : (QVariant{});
+                    }
                 }
             }
             break;
@@ -413,8 +423,8 @@ namespace Evernus
                 QSettings settings;
 
                 const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getStationId())) :
-                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getStationId())));
+                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
+                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
                 if (!price->isNew())
                 {
                     if (price->getPrice() < data->getPrice())
@@ -538,6 +548,8 @@ namespace Evernus
                 return tr("Notes");
             case ownerColumn:
                 return tr("Owner");
+            case customStation:
+                return tr("Custom station");
             }
         }
 
@@ -554,8 +566,8 @@ namespace Evernus
         QSettings settings;
 
         const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                           (mDataProvider.getTypeStationSellPrice(order->getTypeId(), order->getStationId())) :
-                           (mDataProvider.getTypeRegionSellPrice(order->getTypeId(), mDataProvider.getStationRegionId(order->getStationId())));
+                           (mDataProvider.getTypeStationSellPrice(order->getTypeId(), getStationId(*order))) :
+                           (mDataProvider.getTypeRegionSellPrice(order->getTypeId(), mDataProvider.getStationRegionId(getStationId(*order))));
 
         OrderInfo info;
         info.mOrderPrice = order->getPrice();
@@ -755,8 +767,8 @@ namespace Evernus
         QSettings settings;
 
         const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                           (mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId())) :
-                           (mDataProvider.getTypeRegionSellPrice(order.getTypeId(), mDataProvider.getStationRegionId(order.getStationId())));
+                           (mDataProvider.getTypeStationSellPrice(order.getTypeId(), getStationId(order))) :
+                           (mDataProvider.getTypeRegionSellPrice(order.getTypeId(), mDataProvider.getStationRegionId(getStationId(order))));
         auto newPrice = price->getPrice();
         if (qFuzzyIsNull(newPrice))
             newPrice = order.getPrice();

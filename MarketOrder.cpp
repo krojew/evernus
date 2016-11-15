@@ -36,6 +36,26 @@ namespace Evernus
         mStationId = id;
     }
 
+    MarketOrder::CutomLocationType MarketOrder::getCustomStationId() const &
+    {
+        return mCustomStationId;
+    }
+
+    MarketOrder::CutomLocationType MarketOrder::getCustomStationId() && noexcept
+    {
+        return std::move(mCustomStationId);
+    }
+
+    void MarketOrder::setCustomStationId(const CutomLocationType &id)
+    {
+        mCustomStationId = id;
+    }
+
+    void MarketOrder::setCustomStationId(CutomLocationType &&id) noexcept
+    {
+        mCustomStationId = std::move(id);
+    }
+
     uint MarketOrder::getVolumeEntered() const noexcept
     {
         return mVolumeEntered;

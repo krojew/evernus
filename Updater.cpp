@@ -308,7 +308,7 @@ namespace Evernus
                         migrateDatabaseTo141(characterRepo);
                     }
 
-                    migrateDatabaseTo145(characterRepo, keyRepo);
+                    migrateDatabaseTo145(characterRepo, keyRepo, characterOrderRepo, corporationOrderRepo);
                 }
             }
 
@@ -432,11 +432,17 @@ namespace Evernus
         characterRepo.exec(QString{"ALTER TABLE %1 ADD COLUMN brokers_fee FLOAT NULL DEFAULT NULL"}.arg(characterRepo.getTableName()));
     }
 
-    void Updater::migrateDatabaseTo145(const CharacterRepository &characterRepo, const KeyRepository &keyRepository) const
+    void Updater::migrateDatabaseTo145(const CharacterRepository &characterRepo,
+                                       const KeyRepository &keyRepository,
+                                       const MarketOrderRepository &characterOrderRepo,
+                                       const MarketOrderRepository &corporationOrderRepo) const
     {
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires settings your custom broker's fee again."));
 
         characterRepo.exec(QStringLiteral("ALTER TABLE %1 ADD COLUMN sell_brokers_fee FLOAT NULL DEFAULT NULL").arg(characterRepo.getTableName()));
+
+        characterOrderRepo.exec(QStringLiteral("ALTER TABLE %1 ADD COLUMN custom_location_id INTEGER NULL DEFAULT NULL").arg(characterOrderRepo.getTableName()));
+        corporationOrderRepo.exec(QStringLiteral("ALTER TABLE %1 ADD COLUMN custom_location_id INTEGER NULL DEFAULT NULL").arg(corporationOrderRepo.getTableName()));
     }
 
     void Updater::migrateCoreTo130() const

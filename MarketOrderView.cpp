@@ -27,6 +27,7 @@
 #include "MarketOrderVolumeItemDelegate.h"
 #include "MarketOrdersInfoWidget.h"
 #include "MarketOrderInfoWidget.h"
+#include "StationSelectDialog.h"
 #include "MarketOrderModel.h"
 #include "StyledTreeView.h"
 #include "PriceSettings.h"
@@ -40,8 +41,9 @@ namespace Evernus
                                      MarketOrdersInfoWidget *infoWidget,
                                      QWidget *parent)
         : QWidget(parent)
+        , mDataProvider(dataProvider)
         , mInfoWidget(infoWidget)
-        , mProxy(dataProvider)
+        , mProxy(mDataProvider)
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -79,6 +81,11 @@ namespace Evernus
         mChangeNotesAct->setEnabled(false);
         mView->addAction(mChangeNotesAct);
         connect(mChangeNotesAct, &QAction::triggered, this, &MarketOrderView::changeNotesForCurrent);
+
+        mChangeCustomStationAct = new QAction{tr("Set custom station"), this};
+        mChangeCustomStationAct->setEnabled(false);
+        mView->addAction(mChangeCustomStationAct);
+        connect(mChangeCustomStationAct, &QAction::triggered, this, &MarketOrderView::changeCustomStationForCurrent);
 
         if (mInfoWidget != nullptr)
             mainLayout->addWidget(mInfoWidget);
@@ -189,6 +196,25 @@ namespace Evernus
         }
     }
 
+    void MarketOrderView::changeCustomStationForCurrent()
+    {
+        const auto selection = getSelectionModel()->selectedRows();
+        if (selection.isEmpty())
+            return;
+
+        StationSelectDialog dlg{mDataProvider};
+        if (dlg.exec() == QDialog::Accepted)
+        {
+            const auto id = dlg.getStationId();
+            for (const auto &index : selection)
+            {
+                const auto order = mSource->getOrder(mProxy.mapToSource(index));
+                if (order != nullptr)
+                    emit stationChanged(order->getId(), id);
+            }
+        }
+    }
+
     void MarketOrderView::executeFPC()
     {
         if (mSource != nullptr)
@@ -255,6 +281,7 @@ namespace Evernus
         mShowExternalOrdersAct->setEnabled(enable);
         mShowInEveAct->setEnabled(enable);
         mChangeNotesAct->setEnabled(enable);
+        mChangeCustomStationAct->setEnabled(enable);
         mLookupGroup->setEnabled(enable);
 
         emit itemSelected();

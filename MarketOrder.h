@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <boost/optional.hpp>
+
 #include <QDateTime>
 
 #include "Character.h"
@@ -44,6 +46,8 @@ namespace Evernus
 
         static const auto characterAccountKey = 1000;
 
+        using CutomLocationType = boost::optional<uint>;
+
         using Entity::Entity;
 
         MarketOrder() = default;
@@ -56,6 +60,11 @@ namespace Evernus
 
         uint getStationId() const noexcept;
         void setStationId(uint id) noexcept;
+
+        CutomLocationType getCustomStationId() const &;
+        CutomLocationType getCustomStationId() && noexcept;
+        void setCustomStationId(const CutomLocationType &id);
+        void setCustomStationId(CutomLocationType &&id) noexcept;
 
         uint getVolumeEntered() const noexcept;
         void setVolumeEntered(uint value) noexcept;
@@ -136,5 +145,6 @@ namespace Evernus
         QDateTime mFirstSeen, mLastSeen;
         quint64 mCorporationId = 0;
         QString mNotes;
+        CutomLocationType mCustomStationId;
     };
 }

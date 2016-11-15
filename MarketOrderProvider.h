@@ -42,5 +42,6 @@ namespace Evernus
         virtual void removeOrder(MarketOrder::IdType id) = 0;
 
         virtual void setOrderNotes(MarketOrder::IdType id, const QString &notes) = 0;
+        virtual void setOrderStation(MarketOrder::IdType orderId, uint stationId) = 0;
     };
 }

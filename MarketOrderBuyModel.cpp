@@ -79,7 +79,7 @@ namespace Evernus
         case Qt::ToolTipRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
+                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
                 if (price->isNew())
                     return tr("No price data -> Please import prices from Orders/Assets tab or by using Margin tool.");
 
@@ -106,7 +106,7 @@ namespace Evernus
         case Qt::DecorationRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
+                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
                 if (price->isNew())
                     return QIcon{":/images/error.png"};
 
@@ -139,7 +139,7 @@ namespace Evernus
                 return data->getPrice();
             case priceStatusColumn:
                 {
-                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
+                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
                     if (price->isNew())
                         return 1;
 
@@ -152,7 +152,7 @@ namespace Evernus
                 }
             case priceDifferenceColumn:
                 {
-                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
+                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
                     if (price->isNew())
                         break;
 
@@ -207,6 +207,11 @@ namespace Evernus
                 return data->getNotes();
             case ownerColumn:
                 return getCharacterName(data->getCharacterId());
+            case customStation:
+                {
+                    const auto id = data->getCustomStationId();
+                    return (id) ? (mDataProvider.getLocationName(*id)) : (QVariant{});
+                }
             }
             break;
         case Qt::DisplayRole:
@@ -254,7 +259,7 @@ namespace Evernus
                     break;
                 case priceDifferenceColumn:
                     {
-                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
+                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
                         if (price->isNew())
                             break;
 
@@ -327,6 +332,11 @@ namespace Evernus
                     return data->getNotes();
                 case ownerColumn:
                     return getCharacterName(data->getCharacterId());
+                case customStation:
+                    {
+                        const auto id = data->getCustomStationId();
+                        return (id) ? (mDataProvider.getLocationName(*id)) : (QVariant{});
+                    }
                 }
             }
             break;
@@ -342,7 +352,7 @@ namespace Evernus
         case Qt::BackgroundRole:
             if (column == priceColumn && data->getState() == MarketOrder::State::Active)
             {
-                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
+                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
                 if (!price->isNew())
                 {
                     if (price->getPrice() > data->getPrice())
@@ -452,6 +462,8 @@ namespace Evernus
                 return tr("Notes");
             case ownerColumn:
                 return tr("Owner");
+            case customStation:
+                return tr("Custom station");
             }
         }
 
@@ -467,7 +479,7 @@ namespace Evernus
 
         QSettings settings;
 
-        const auto price = mDataProvider.getTypeBuyPrice(order->getTypeId(), order->getStationId(), order->getRange());
+        const auto price = mDataProvider.getTypeBuyPrice(order->getTypeId(), getStationId(*order), order->getRange());
 
         OrderInfo info;
         info.mOrderPrice = order->getPrice();
@@ -594,7 +606,7 @@ namespace Evernus
         if (character == std::end(mCharacters))
             return 0.;
 
-        const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId());
+        const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), getStationId(order));
         if (price->isNew())
             return 100.;
 
@@ -608,14 +620,14 @@ namespace Evernus
         if (character == std::end(mCharacters))
             return 0.;
 
-        const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getStationId());
+        const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), getStationId(order));
         if (price->isNew())
             return 100.;
 
         const auto delta = PriceUtils::getPriceDelta();
 
         auto newPrice
-            = mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getStationId(), order.getRange())->getPrice();
+            = mDataProvider.getTypeBuyPrice(order.getTypeId(), getStationId(order), order.getRange())->getPrice();
         if (newPrice < 0.01)
             newPrice = order.getPrice();
         else

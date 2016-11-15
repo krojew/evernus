@@ -85,6 +85,7 @@ namespace Evernus
             stationColumn,
             notesColumn,
             ownerColumn,
+            customStation,
 
             numColumns
         };

@@ -67,6 +67,7 @@ namespace Evernus
         void itemSelected();
 
         void notesChanged(MarketOrder::IdType id, const QString &notes);
+        void stationChanged(MarketOrder::IdType orderId, uint stationId);
 
     public slots:
         void executeFPC();
@@ -85,8 +86,11 @@ namespace Evernus
         void handleReset();
 
         void changeNotesForCurrent();
+        void changeCustomStationForCurrent();
 
     private:
+        const EveDataProvider &mDataProvider;
+
         StyledTreeView *mView = nullptr;
         MarketOrdersInfoWidget *mInfoWidget = nullptr;
 
@@ -97,6 +101,7 @@ namespace Evernus
         QAction *mShowExternalOrdersAct = nullptr;
         QAction *mShowInEveAct = nullptr;
         QAction *mChangeNotesAct = nullptr;
+        QAction *mChangeCustomStationAct = nullptr;
         QActionGroup *mLookupGroup = nullptr;
 
         void lookupOnWeb(const QString &baseUrl) const;

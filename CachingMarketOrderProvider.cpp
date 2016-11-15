@@ -115,6 +115,15 @@ namespace Evernus
         emit orderChanged();
     }
 
+    void CachingMarketOrderProvider::setOrderStation(MarketOrder::IdType orderId, uint stationId)
+    {
+        clearAll();
+
+        mOrderRepo.setStation(orderId, stationId);
+
+        emit orderChanged();
+    }
+
     void CachingMarketOrderProvider::clearOrdersForCharacter(Character::IdType id) const
     {
         mSellOrders.erase(id);

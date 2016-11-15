@@ -85,6 +85,7 @@ namespace Evernus
         void itemSelected();
 
         void notesChanged(MarketOrder::IdType id, const QString &notes);
+        void stationChanged(MarketOrder::IdType orderId, uint stationId);
 
     private slots:
         void selectOrder(const QItemSelection &selected);
