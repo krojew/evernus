@@ -22,6 +22,7 @@
 
 class QItemSelectionModel;
 class QActionGroup;
+class QModelIndex;
 
 namespace Evernus
 {
@@ -62,7 +63,7 @@ namespace Evernus
         void scriptError(const QString &message);
 
         void showExternalOrders(EveType::IdType id);
-        void showInEve(EveType::IdType id);
+        void showInEve(EveType::IdType id) const;
 
         void itemSelected();
 
@@ -105,5 +106,6 @@ namespace Evernus
         QActionGroup *mLookupGroup = nullptr;
 
         void lookupOnWeb(const QString &baseUrl) const;
+        void showInEveFor(const QModelIndex &index) const;
     };
 }

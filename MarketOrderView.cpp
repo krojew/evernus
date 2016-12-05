@@ -240,7 +240,7 @@ namespace Evernus
 
             QSettings settings;
             if (settings.value(PriceSettings::showInEveOnFpcKey, PriceSettings::showInEveOnFpcDefault).toBool())
-                showInEveForCurrent();
+                showInEveFor(source);
         }
     }
 
@@ -309,12 +309,7 @@ namespace Evernus
 
     void MarketOrderView::showInEveForCurrent()
     {
-        if (mSource == nullptr)
-            return;
-
-        const auto typeId = mSource->getOrderTypeId(mProxy.mapToSource(mView->currentIndex()));
-        if (typeId != EveType::invalidId)
-            emit showInEve(typeId);
+        showInEveFor(mProxy.mapToSource(mView->currentIndex()));
     }
 
     void MarketOrderView::lookupOnWeb(const QString &baseUrl) const
@@ -325,5 +320,15 @@ namespace Evernus
         const auto typeId = mSource->getOrderTypeId(mProxy.mapToSource(mView->currentIndex()));
         if (typeId != EveType::invalidId)
             QDesktopServices::openUrl(baseUrl.arg(typeId));
+    }
+
+    void MarketOrderView::showInEveFor(const QModelIndex &index) const
+    {
+        if (mSource == nullptr)
+            return;
+
+        const auto typeId = mSource->getOrderTypeId(index);
+        if (typeId != EveType::invalidId)
+            emit showInEve(typeId);
     }
 }
