@@ -880,5 +880,5 @@ elseif(UNIX)
         install(DIRECTORY ${RES} DESTINATION "share/Evernus")
     endforeach()
 
-    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "usr/bin")
+    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "bin")
 endif()
