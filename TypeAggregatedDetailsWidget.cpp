@@ -346,7 +346,7 @@ namespace Evernus
             const auto it = mHistory.find(date);
             if (it == std::end(mHistory))
             {
-                volAcc(0.);
+                volAcc(0);
                 prcAcc(0.);
 
                 volumes << 0.;
