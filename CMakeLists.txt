@@ -849,7 +849,7 @@ target_link_libraries(
 
 set(RESOURCES
     "res"
-    "trans"
+    "${CMAKE_CURRENT_BINARY_DIR}/trans"
 )
 
 if(APPLE)
@@ -877,8 +877,8 @@ if(APPLE)
     )
 elseif(UNIX)
     foreach(RES ${RESOURCES})
-        install(DIRECTORY ${RES} DESTINATION "/usr/share/Evernus")
+        install(DIRECTORY ${RES} DESTINATION "share/Evernus")
     endforeach()
 
-    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "/usr/bin")
+    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "bin")
 endif()
