@@ -71,7 +71,8 @@ namespace Evernus
 
     void ItemRepository::batchStore(const PropertyMap &map) const
     {
-        Q_ASSERT(!map.empty());
+        if (map.empty())
+            return;
 
         const auto maxRowsPerInsert = 100;
         const auto totalRows = std::begin(map)->size();
