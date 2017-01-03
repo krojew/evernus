@@ -153,11 +153,16 @@ namespace Evernus
     void InterRegionMarketDataModel::setOrderData(const std::vector<ExternalOrder> &orders,
                                                   const HistoryRegionMap &history,
                                                   quint64 srcStation,
-                                                  quint64 dstStation)
+                                                  quint64 dstStation,
+                                                  PriceType srcType,
+                                                  PriceType dstType)
     {
         beginResetModel();
 
         mData.clear();
+
+        mSrcPriceType = srcType;
+        mDstPriceType = dstType;
 
         struct LowToHigh
         {
@@ -293,19 +298,17 @@ namespace Evernus
                     data.mSrcRegion = srcRegion.first;
                     data.mDstRegion = dstRegion.first;
 
+                    auto realSellPrice = getDstPrice(data);
+                    auto realBuyPrice = getSrcPrice(data);
+
                     if (useSkillsForDifference)
                     {
-                        const auto realSellPrice = PriceUtils::getRevenue(data.mDstSellPrice, taxes);
-                        const auto realBuyPrice = PriceUtils::getCoS(data.mSrcBuyPrice, taxes);
+                        realSellPrice = PriceUtils::getRevenue(realSellPrice, taxes);
+                        realBuyPrice = PriceUtils::getCoS(realBuyPrice, taxes);
+                    }
 
-                        data.mDifference = realSellPrice - realBuyPrice;
-                        data.mMargin = (qFuzzyIsNull(realSellPrice)) ? (0.) : (100. * data.mDifference / realSellPrice);
-                    }
-                    else
-                    {
-                        data.mDifference = data.mDstSellPrice - data.mSrcBuyPrice;
-                        data.mMargin = (qFuzzyIsNull(data.mDstSellPrice)) ? (0.) : (100. * data.mDifference / data.mDstSellPrice);
-                    }
+                    data.mDifference = realSellPrice - realBuyPrice;
+                    data.mMargin = (qFuzzyIsNull(realSellPrice)) ? (0.) : (100. * data.mDifference / realSellPrice);
 
                     mData.emplace_back(std::move(data));
 
@@ -324,12 +327,12 @@ namespace Evernus
         endResetModel();
     }
 
-    void InterRegionMarketDataModel::discardBogusOrders(bool flag)
+    void InterRegionMarketDataModel::discardBogusOrders(bool flag) noexcept
     {
         mDiscardBogusOrders = flag;
     }
 
-    void InterRegionMarketDataModel::setBogusOrderThreshold(double value)
+    void InterRegionMarketDataModel::setBogusOrderThreshold(double value) noexcept
     {
         mBogusOrderThreshold = value;
     }
@@ -372,5 +375,15 @@ namespace Evernus
     int InterRegionMarketDataModel::getMarginColumn()
     {
         return marginColumn;
+    }
+
+    double InterRegionMarketDataModel::getSrcPrice(const TypeData &data) const noexcept
+    {
+        return (mSrcPriceType == PriceType::Buy) ? (data.mSrcBuyPrice) : (data.mSrcSellPrice);
+    }
+
+    double InterRegionMarketDataModel::getDstPrice(const TypeData &data) const noexcept
+    {
+        return (mDstPriceType == PriceType::Buy) ? (data.mDstBuyPrice) : (data.mDstSellPrice);
     }
 }

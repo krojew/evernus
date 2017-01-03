@@ -122,6 +122,9 @@ namespace Evernus
 
         QCheckBox *mDontSaveBtn = nullptr;
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;
+        QComboBox *mSrcPriceTypeCombo = nullptr;
+        QComboBox *mDstPriceTypeCombo = nullptr;
+
         QComboBox *mRegionCombo = nullptr;
         QComboBox *mSolarSystemCombo = nullptr;
         QStackedWidget *mRegionDataStack = nullptr;
@@ -174,5 +177,7 @@ namespace Evernus
 
         QWidget *createRegionAnalysisWidget();
         QWidget *createInterRegionAnalysisWidget();
+
+        static PriceType getPriceType(const QComboBox &combo);
     };
 }

@@ -62,10 +62,10 @@ namespace Evernus
                     return mDataProvider.getTypeName(data.mId);
                 case scoreColumn:
                     return locale.toString(data.mDifference * data.mVolume, 'f', 0);
-                case buyPriceColumn:
-                    return TextUtils::currencyToString(data.mBuyPrice, locale);
-                case sellPriceColumn:
-                    return TextUtils::currencyToString(data.mSellPrice, locale);
+                case srcPriceColumn:
+                    return TextUtils::currencyToString((mSrcPriceType == PriceType::Sell) ? (data.mSellPrice) : (data.mBuyPrice), locale);
+                case dstPriceColumn:
+                    return TextUtils::currencyToString((mDstPriceType == PriceType::Sell) ? (data.mSellPrice) : (data.mBuyPrice), locale);
                 case differenceColumn:
                     return TextUtils::currencyToString(data.mDifference, locale);
                 case volumeColumn:
@@ -81,10 +81,10 @@ namespace Evernus
                 return mDataProvider.getTypeName(data.mId);
             case scoreColumn:
                 return data.mDifference * data.mVolume;
-            case buyPriceColumn:
-                return data.mBuyPrice;
-            case sellPriceColumn:
-                return data.mSellPrice;
+            case srcPriceColumn:
+                return (mSrcPriceType == PriceType::Sell) ? (data.mSellPrice) : (data.mBuyPrice);
+            case dstPriceColumn:
+                return (mDstPriceType == PriceType::Sell) ? (data.mSellPrice) : (data.mBuyPrice);
             case differenceColumn:
                 return data.mDifference;
             case volumeColumn:
@@ -110,10 +110,10 @@ namespace Evernus
                 return tr("Name");
             case scoreColumn:
                 return tr("Score");
-            case buyPriceColumn:
-                return tr("5% volume buy price");
-            case sellPriceColumn:
-                return tr("5% volume sell price");
+            case srcPriceColumn:
+                return tr("5% volume source price");
+            case dstPriceColumn:
+                return tr("5% volume destination price");
             case differenceColumn:
                 return tr("Difference");
             case volumeColumn:
@@ -132,11 +132,14 @@ namespace Evernus
     }
 
     void TypeAggregatedMarketDataModel
-    ::setOrderData(const std::vector<ExternalOrder> &orders, const HistoryMap &history, uint region, uint solarSystem)
+    ::setOrderData(const std::vector<ExternalOrder> &orders, const HistoryMap &history, uint region, PriceType srcType, PriceType dstType, uint solarSystem)
     {
         beginResetModel();
 
         mData.clear();
+
+        mSrcPriceType = srcType;
+        mDstPriceType = dstType;
 
         struct LowToHigh
         {
@@ -224,19 +227,20 @@ namespace Evernus
                                                         mDiscardBogusOrders,
                                                         mBogusOrderThreshold);
 
+            double realSellPrice, realBuyPrice;
             if (useSkillsForDifference)
             {
-                const auto realSellPrice = PriceUtils::getRevenue(data.mSellPrice, taxes);
-                const auto realBuyPrice = PriceUtils::getCoS(data.mBuyPrice, taxes);
-
-                data.mDifference = realSellPrice - realBuyPrice;
-                data.mMargin = (qFuzzyIsNull(realSellPrice)) ? (0.) : (100. * data.mDifference / realSellPrice);
+                realSellPrice = (mDstPriceType == PriceType::Sell) ? (PriceUtils::getRevenue(data.mSellPrice, taxes)) : (PriceUtils::getCoS(data.mBuyPrice, taxes));
+                realBuyPrice = (mSrcPriceType == PriceType::Buy) ? (PriceUtils::getCoS(data.mBuyPrice, taxes)) : (PriceUtils::getRevenue(data.mSellPrice, taxes));
             }
             else
             {
-                data.mDifference = data.mSellPrice - data.mBuyPrice;
-                data.mMargin = (qFuzzyIsNull(data.mSellPrice)) ? (0.) : (100. * data.mDifference / data.mSellPrice);
+                realSellPrice = (mDstPriceType == PriceType::Sell) ? (data.mSellPrice) : (data.mBuyPrice);
+                realBuyPrice = (mSrcPriceType == PriceType::Buy) ? (data.mBuyPrice) : (data.mSellPrice);
             }
+
+            data.mDifference = realSellPrice - realBuyPrice;
+            data.mMargin = (qFuzzyIsNull(realSellPrice)) ? (0.) : (100. * data.mDifference / realSellPrice);
 
             mData.emplace_back(std::move(data));
         }
@@ -291,11 +295,11 @@ namespace Evernus
 
     int TypeAggregatedMarketDataModel::getBuyPriceColumn() noexcept
     {
-        return buyPriceColumn;
+        return srcPriceColumn;
     }
 
     int TypeAggregatedMarketDataModel::getSellPriceColumn() noexcept
     {
-        return sellPriceColumn;
+        return dstPriceColumn;
     }
 }

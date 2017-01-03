@@ -244,6 +244,21 @@ namespace Evernus
             mInterRegionDataModel.setBogusOrderThreshold(value);
         });
 
+        auto createPriceTypCombo = [=](auto &combo) {
+            combo = new QComboBox{this};
+            toolBarLayout->addWidget(combo);
+            combo->addItem(tr("Sell"), static_cast<int>(PriceType::Sell));
+            combo->addItem(tr("Buy"), static_cast<int>(PriceType::Buy));
+
+            connect(combo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MarketAnalysisWidget::recalculateAllData);
+        };
+
+        toolBarLayout->addWidget(new QLabel{tr("Source price:"), this});
+        createPriceTypCombo(mSrcPriceTypeCombo);
+
+        toolBarLayout->addWidget(new QLabel{tr("Destination price:"), this});
+        createPriceTypCombo(mDstPriceTypeCombo);
+
         auto skillsDiffBtn = new QCheckBox{tr("Use skills and taxes for difference calculation (causes recalculation)"), this};
         toolBarLayout->addWidget(skillsDiffBtn);
         skillsDiffBtn->setChecked(
@@ -343,7 +358,11 @@ namespace Evernus
             mRegionDataStack->repaint();
 
             fillSolarSystems(region);
-            mTypeDataModel.setOrderData(*mOrders, (*mHistory)[region], region);
+            mTypeDataModel.setOrderData(*mOrders,
+                                        (*mHistory)[region],
+                                        region,
+                                        getPriceType(*mSrcPriceTypeCombo),
+                                        getPriceType(*mDstPriceTypeCombo));
 
             mRegionDataStack->setCurrentWidget(mRegionTypeDataView);
         }
@@ -358,7 +377,12 @@ namespace Evernus
             mRegionDataStack->repaint();
 
             const auto system = mSolarSystemCombo->currentData().toUInt();
-            mTypeDataModel.setOrderData(*mOrders, (*mHistory)[region], region, system);
+            mTypeDataModel.setOrderData(*mOrders,
+                                        (*mHistory)[region],
+                                        region,
+                                        getPriceType(*mSrcPriceTypeCombo),
+                                        getPriceType(*mDstPriceTypeCombo),
+                                        system);
 
             mRegionDataStack->setCurrentWidget(mRegionTypeDataView);
         }
@@ -620,7 +644,12 @@ namespace Evernus
         mInterRegionDataStack->setCurrentIndex(waitingLabelIndex);
         mInterRegionDataStack->repaint();
 
-        mInterRegionDataModel.setOrderData(*mOrders, *mHistory, mSrcStation, mDstStation);
+        mInterRegionDataModel.setOrderData(*mOrders,
+                                           *mHistory,
+                                           mSrcStation,
+                                           mDstStation,
+                                           getPriceType(*mSrcPriceTypeCombo),
+                                           getPriceType(*mDstPriceTypeCombo));
     }
 
     void MarketAnalysisWidget::recalculateAllData()
@@ -1019,5 +1048,10 @@ namespace Evernus
         mInterRegionTypeDataView->addAction(mCopyInterRegionRowsAct);
 
         return container;
+    }
+
+    PriceType MarketAnalysisWidget::getPriceType(const QComboBox &combo)
+    {
+        return static_cast<PriceType>(combo.currentData().toInt());
     }
 }

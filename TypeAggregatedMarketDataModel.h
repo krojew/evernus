@@ -23,6 +23,7 @@
 
 #include "MarketHistoryEntry.h"
 #include "Character.h"
+#include "PriceType.h"
 #include "EveType.h"
 
 class QColor;
@@ -50,7 +51,7 @@ namespace Evernus
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
-        void setOrderData(const std::vector<ExternalOrder> &orders, const HistoryMap &history, uint region, uint solarSystem = 0);
+        void setOrderData(const std::vector<ExternalOrder> &orders, const HistoryMap &history, uint region, PriceType srcType, PriceType dstType, uint solarSystem = 0);
         void setCharacter(const std::shared_ptr<Character> &character);
         void discardBogusOrders(bool flag);
         void setBogusOrderThreshold(double value);
@@ -69,8 +70,8 @@ namespace Evernus
         {
             nameColumn,
             scoreColumn,
-            buyPriceColumn,
-            sellPriceColumn,
+            srcPriceColumn,
+            dstPriceColumn,
             differenceColumn,
             volumeColumn,
             marginColumn,
@@ -96,5 +97,8 @@ namespace Evernus
 
         bool mDiscardBogusOrders = true;
         double mBogusOrderThreshold = 0.9;
+
+        PriceType mSrcPriceType = PriceType::Buy;
+        PriceType mDstPriceType = PriceType::Sell;
     };
 }

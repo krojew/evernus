@@ -623,6 +623,7 @@ add_executable(
     PricePreferencesWidget.cpp
     PricePreferencesWidget.h
     PriceSettings.h
+    PriceType.h
     PriceUtils.cpp
     PriceUtils.h
     ProgressiveCounter.cpp
