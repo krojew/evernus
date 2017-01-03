@@ -2535,10 +2535,15 @@ namespace Evernus
 
     double EvernusApplication::getTotalAssetListValue(const AssetList &list) const
     {
+        QSettings settings;
+        const auto customLocationId = (settings.value(ImportSettings::useCustomAssetStationKey, ImportSettings::useCustomAssetStationDefault).toBool()) ?
+                                      (settings.value(ImportSettings::customAssetStationKey).toUInt()) :
+                                      (0);
+
         auto value = 0.;
         for (const auto &item : list)
         {
-            const auto locationId = item->getLocationId();
+            const auto locationId = (customLocationId != 0) ? (customLocationId) : (item->getLocationId());
             if (!locationId)
                 continue;
 
