@@ -195,6 +195,11 @@ namespace Evernus
         return static_cast<WalletTransaction::Type>(mData[row][typeColumn].toInt());
     }
 
+    Character::IdType WalletTransactionsModel::getOwnerId(int row) const
+    {
+        return mData[row][characterColumn].toUInt();
+    }
+
     quint64 WalletTransactionsModel::getTotalQuantity() const noexcept
     {
         return mTotalQuantity;

@@ -269,6 +269,11 @@ namespace Evernus
         return mData[index.row()].mId;
     }
 
+    Character::IdType TypeAggregatedMarketDataModel::getOwnerId(const QModelIndex &index) const
+    {
+        return (mCharacter) ? (mCharacter->getId()) : (Character::invalidId);
+    }
+
     int TypeAggregatedMarketDataModel::getScoreColumn() noexcept
     {
         return scoreColumn;

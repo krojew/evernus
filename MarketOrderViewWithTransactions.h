@@ -80,7 +80,7 @@ namespace Evernus
         void scriptError(const QString &message);
 
         void showExternalOrders(EveType::IdType id);
-        void showInEve(EveType::IdType id);
+        void showInEve(EveType::IdType id, Character::IdType ownerId);
 
         void itemSelected();
 

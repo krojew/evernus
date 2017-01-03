@@ -68,7 +68,7 @@ namespace Evernus
         void openMarginTool();
 
         void showExternalOrders(EveType::IdType id);
-        void showInEve(EveType::IdType id);
+        void showInEve(EveType::IdType id, Character::IdType ownerId);
 
         void fpcExecutorChanged(QObject *executor);
 

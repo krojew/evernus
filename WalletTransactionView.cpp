@@ -142,7 +142,8 @@ namespace Evernus
 
     void WalletTransactionView::getTypeAndShowInEve()
     {
-        emit showInEve(mModel->getTypeId(mCurrentTransaction.row()));
+        const auto row = mCurrentTransaction.row();
+        emit showInEve(mModel->getTypeId(row), mModel->getOwnerId(row));
     }
 
     double WalletTransactionView::getSuggestedPrice(double price) const

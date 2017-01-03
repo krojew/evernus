@@ -52,7 +52,7 @@ namespace Evernus
         virtual ~WalletTransactionsWidget() = default;
 
     signals:
-        void showInEve(EveType::IdType id);
+        void showInEve(EveType::IdType id, Character::IdType ownerId);
 
     public slots:
         void updateData();

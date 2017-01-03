@@ -177,7 +177,7 @@ namespace Evernus
 
         void performSync();
 
-        void showInEve(EveType::IdType typeId);
+        void showInEve(EveType::IdType typeId, Character::IdType ownerId);
         void setWaypoint(quint64 locationId);
 
     protected:

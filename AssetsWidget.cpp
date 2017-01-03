@@ -221,8 +221,8 @@ namespace Evernus
 
     void AssetsWidget::showInEveForCurrent()
     {
-        const auto id = mModel.getAssetTypeId(mModelProxy->mapToSource(mAssetView->currentIndex()));
-        emit showInEve(id);
+        const auto index = mModelProxy->mapToSource(mAssetView->currentIndex());
+        emit showInEve(mModel.getAssetTypeId(index), mModel.getAssetOwnerId(index));
     }
 
     void AssetsWidget::handleSelection(const QItemSelection &selected)

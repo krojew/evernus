@@ -486,16 +486,18 @@ namespace Evernus
 
     void MarketAnalysisWidget::showInEveForCurrentRegion()
     {
-        const auto id = mTypeDataModel.getTypeId(mTypeViewProxy.mapToSource(mRegionTypeDataView->currentIndex()));
+        const auto index = mTypeViewProxy.mapToSource(mRegionTypeDataView->currentIndex());
+        const auto id = mTypeDataModel.getTypeId(index);
         if (id != EveType::invalidId)
-            emit showInEve(id);
+            emit showInEve(id, mTypeDataModel.getOwnerId(index));
     }
 
     void MarketAnalysisWidget::showInEveForCurrentInterRegion()
     {
-        const auto id = mInterRegionDataModel.getTypeId(mInterRegionViewProxy.mapToSource(mInterRegionTypeDataView->currentIndex()));
+        const auto index = mInterRegionViewProxy.mapToSource(mInterRegionTypeDataView->currentIndex());
+        const auto id = mInterRegionDataModel.getTypeId(index);
         if (id != EveType::invalidId)
-            emit showInEve(id);
+            emit showInEve(id, mInterRegionDataModel.getOwnerId(index));
     }
 
     void MarketAnalysisWidget::copyRows(const QAbstractItemView &view, const QAbstractItemModel &model) const

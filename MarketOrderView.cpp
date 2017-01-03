@@ -329,6 +329,6 @@ namespace Evernus
 
         const auto typeId = mSource->getOrderTypeId(index);
         if (typeId != EveType::invalidId)
-            emit showInEve(typeId);
+            emit showInEve(typeId, mSource->getOrderOwnerId(index));
     }
 }

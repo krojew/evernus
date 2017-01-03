@@ -62,6 +62,7 @@ namespace Evernus
         void setBogusOrderThreshold(double value);
 
         EveType::IdType getTypeId(const QModelIndex &index) const;
+        Character::IdType getOwnerId(const QModelIndex &index) const;
 
         void reset();
 

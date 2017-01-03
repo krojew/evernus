@@ -55,6 +55,7 @@ namespace Evernus
         uint getQuantity(int row) const;
         double getPrice(int row) const;
         WalletTransaction::Type getType(int row) const;
+        Character::IdType getOwnerId(int row) const;
 
         quint64 getTotalQuantity() const noexcept;
         double getTotalSize() const noexcept;

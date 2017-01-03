@@ -65,7 +65,7 @@ namespace Evernus
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
         void preferencesChanged();
 
-        void showInEve(EveType::IdType id);
+        void showInEve(EveType::IdType id, Character::IdType ownerId);
 
         void handleNewPreferences();
 

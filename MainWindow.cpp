@@ -511,9 +511,11 @@ namespace Evernus
 #endif
     }
 
-    void MainWindow::showInEve(EveType::IdType typeId)
+    void MainWindow::showInEve(EveType::IdType typeId, Character::IdType ownerId)
     {
-        if (mCurrentCharacterId != Character::invalidId)
+        if (ownerId != Character::invalidId)
+            emit openMarketInEve(typeId, ownerId);
+        else if (mCurrentCharacterId != Character::invalidId)
             emit openMarketInEve(typeId, mCurrentCharacterId);
     }
 

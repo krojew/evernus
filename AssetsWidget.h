@@ -14,9 +14,10 @@
  */
 #pragma once
 
-#include "CharacterBoundWidget.h"
 #include "ExternalOrderImporter.h"
+#include "CharacterBoundWidget.h"
 #include "AssetModel.h"
+#include "Character.h"
 
 class QItemSelection;
 class QRadioButton;
@@ -52,7 +53,7 @@ namespace Evernus
         void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
 
         void setDestinationInEve(quint64 locationId);
-        void showInEve(EveType::IdType id);
+        void showInEve(EveType::IdType id, Character::IdType charId);
 
     public slots:
         void updateData();

@@ -342,6 +342,11 @@ namespace Evernus
         return mData[index.row()].mId;
     }
 
+    Character::IdType InterRegionMarketDataModel::getOwnerId(const QModelIndex &index) const
+    {
+        return (mCharacter) ? (mCharacter->getId()) : (Character::invalidId);
+    }
+
     void InterRegionMarketDataModel::reset()
     {
         beginResetModel();

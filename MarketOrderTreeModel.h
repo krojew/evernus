@@ -44,6 +44,7 @@ namespace Evernus
         virtual double getTotalSize() const override;
         virtual Range getOrderRange(const QModelIndex &index) const override;
         virtual EveType::IdType getOrderTypeId(const QModelIndex &index) const override;
+        virtual Character::IdType getOrderOwnerId(const QModelIndex &index) const override;
         virtual const MarketOrder *getOrder(const QModelIndex &index) const override;
 
         void setCharacter(Character::IdType id);
