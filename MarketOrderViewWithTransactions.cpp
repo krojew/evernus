@@ -52,7 +52,7 @@ namespace Evernus
     {
         auto mainLayout = new QVBoxLayout{this};
 
-        mOrderView = new MarketOrderView{mDataProvider, objectName + "-orders", infoWidget, this};
+        mOrderView = new MarketOrderView{mDataProvider, objectName + "-orders", infoWidget, costProvider, this};
         mainLayout->addWidget(mOrderView, 1);
         connect(this, &MarketOrderViewWithTransactions::statusFilterChanged, mOrderView, &MarketOrderView::statusFilterChanged);
         connect(this, &MarketOrderViewWithTransactions::priceStatusFilterChanged, mOrderView, &MarketOrderView::priceStatusFilterChanged);

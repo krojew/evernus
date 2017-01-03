@@ -20,6 +20,7 @@
 
 namespace Evernus
 {
+    class ItemCostProvider;
     class EveDataProvider;
     class MarketOrder;
 
@@ -56,7 +57,9 @@ namespace Evernus
         static const StatusFilters defaultStatusFilter;
         static const PriceStatusFilters defaultPriceStatusFilter;
 
-        explicit MarketOrderFilterProxyModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        MarketOrderFilterProxyModel(const EveDataProvider &dataProvider,
+                                    const ItemCostProvider &itemCostProvider,
+                                    QObject *parent = nullptr);
         virtual ~MarketOrderFilterProxyModel() = default;
 
         virtual void setSourceModel(QAbstractItemModel *sourceModel) override;
@@ -81,6 +84,7 @@ namespace Evernus
 
     private:
         const EveDataProvider &mDataProvider;
+        const ItemCostProvider &mItemCostProvider;
 
         StatusFilters mStatusFilter = defaultStatusFilter;
         PriceStatusFilters mPriceStatusFilter = defaultPriceStatusFilter;

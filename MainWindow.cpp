@@ -709,6 +709,7 @@ namespace Evernus
 
         auto statsTab = new StatisticsWidget{mRepositoryProvider,
                                              mEveDataProvider,
+                                             mItemCostProvider,
                                              this};
         addTab(statsTab, tr("Statistics"), TabType::Other);
         connect(statsTab, &StatisticsWidget::makeSnapshots, this, [=] {

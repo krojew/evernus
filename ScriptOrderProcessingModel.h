@@ -20,6 +20,7 @@
 
 namespace Evernus
 {
+    class ItemCostProvider;
     class EveDataProvider;
 
     class ScriptOrderProcessingModel
@@ -34,7 +35,9 @@ namespace Evernus
             Aggregate
         };
 
-        explicit ScriptOrderProcessingModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        ScriptOrderProcessingModel(const EveDataProvider &dataProvider,
+                                   const ItemCostProvider &itemCostProvider,
+                                   QObject *parent = nullptr);
         virtual ~ScriptOrderProcessingModel() = default;
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
@@ -49,6 +52,7 @@ namespace Evernus
 
     private:
         const EveDataProvider &mDataProvider;
+        const ItemCostProvider &mItemCostProvider;
 
         std::vector<QVariantList> mData;
         int mMaxColumns = 0;

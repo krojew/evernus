@@ -39,11 +39,12 @@ namespace Evernus
     MarketOrderView::MarketOrderView(const EveDataProvider &dataProvider,
                                      const QString &objectName,
                                      MarketOrdersInfoWidget *infoWidget,
+                                     const ItemCostProvider &itemCostProvider,
                                      QWidget *parent)
         : QWidget(parent)
         , mDataProvider(dataProvider)
         , mInfoWidget(infoWidget)
-        , mProxy(mDataProvider)
+        , mProxy(mDataProvider, itemCostProvider)
     {
         auto mainLayout = new QVBoxLayout{this};
 

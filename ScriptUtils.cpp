@@ -16,6 +16,7 @@
 
 #include "ExternalOrder.h"
 #include "MarketOrder.h"
+#include "ItemCost.h"
 
 #include "ScriptUtils.h"
 
@@ -23,7 +24,7 @@ namespace Evernus
 {
     namespace ScriptUtils
     {
-        QJSValue wrapMarketOrder(QJSEngine &engine, const MarketOrder &order)
+        QJSValue wrapMarketOrder(QJSEngine &engine, const MarketOrder &order, const std::shared_ptr<ItemCost> &itemCost)
         {
             auto orderObject = engine.newObject();
             orderObject.setProperty("id", QString::number(order.getId()));
@@ -45,6 +46,9 @@ namespace Evernus
             orderObject.setProperty("firstSeen", engine.toScriptValue(order.getFirstSeen()));
             orderObject.setProperty("lastSeen", engine.toScriptValue(order.getLastSeen()));
             orderObject.setProperty("corporationId", QString::number(order.getCorporationId()));
+
+            if (itemCost)
+                orderObject.setProperty("cost", QString::number(itemCost->getAdjustedCost()));
 
             return orderObject;
         }

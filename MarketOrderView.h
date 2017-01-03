@@ -27,6 +27,7 @@ class QModelIndex;
 namespace Evernus
 {
     class MarketOrdersInfoWidget;
+    class ItemCostProvider;
     class MarketOrderModel;
     class EveDataProvider;
     class StyledTreeView;
@@ -40,6 +41,7 @@ namespace Evernus
         MarketOrderView(const EveDataProvider &dataProvider,
                         const QString &objectName,
                         MarketOrdersInfoWidget *infoWidget,
+                        const ItemCostProvider &itemCostProvider,
                         QWidget *parent = nullptr);
         virtual ~MarketOrderView() = default;
 

@@ -191,6 +191,7 @@ namespace Evernus
         mCombinedSellView = new MarketOrderView{dataProvider,
                                                 (mCorp) ? ("corpCombinedMarketOrderSellView") : ("combinedMarketOrderSellView"),
                                                 new SellMarketOrdersInfoWidget{mSellModel, this},
+                                                itemCostProvider,
                                                 this};
         sellGroupLayout->addWidget(mCombinedSellView);
         mCombinedSellView->setModel(&mSellModel);
@@ -210,6 +211,7 @@ namespace Evernus
         mCombinedBuyView = new MarketOrderView{dataProvider,
                                                (mCorp) ? ("corpCombinedMarketOrderBuyView") : ("combinedMarketOrderBuyView"),
                                                new GenericMarketOrdersInfoWidget{mBuyModel, this},
+                                               itemCostProvider,
                                                this};
         buyGroupLayout->addWidget(mCombinedBuyView);
         mCombinedBuyView->setModel(&mBuyModel);

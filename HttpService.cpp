@@ -44,10 +44,10 @@ namespace Evernus
         , mCorpSellModel(corpOrderProvider, dataProvider, itemCostProvider, cacheTimerProvider, characterRepo, true)
         , mBuyModel(orderProvider, dataProvider, cacheTimerProvider, characterRepo, false)
         , mCorpBuyModel(corpOrderProvider, dataProvider, cacheTimerProvider, characterRepo, true)
-        , mSellModelProxy(dataProvider)
-        , mBuyModelProxy(dataProvider)
-        , mCorpSellModelProxy(dataProvider)
-        , mCorpBuyModelProxy(dataProvider)
+        , mSellModelProxy(dataProvider, itemCostProvider)
+        , mBuyModelProxy(dataProvider, itemCostProvider)
+        , mCorpSellModelProxy(dataProvider, itemCostProvider)
+        , mCorpBuyModelProxy(dataProvider, itemCostProvider)
     {
         mSellModelProxy.setSourceModel(&mSellModel);
         mBuyModelProxy.setSourceModel(&mBuyModel);

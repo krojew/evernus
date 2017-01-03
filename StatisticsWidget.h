@@ -43,6 +43,7 @@ namespace Evernus
     class OrderScriptRepository;
     class CharacterRepository;
     class RepositoryProvider;
+    class ItemCostProvider;
 
     class StatisticsWidget
         : public QWidget
@@ -52,6 +53,7 @@ namespace Evernus
     public:
         StatisticsWidget(const RepositoryProvider &repositoryProvider,
                          const EveDataProvider &dataProvider,
+                         const ItemCostProvider &itemCostProvider,
                          QWidget *parent = nullptr);
         virtual ~StatisticsWidget() = default;
 

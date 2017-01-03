@@ -14,6 +14,7 @@
  */
 #include <QJSEngine>
 
+#include "ItemCostProvider.h"
 #include "CommonScriptAPI.h"
 #include "EveDataProvider.h"
 #include "ScriptUtils.h"
@@ -22,9 +23,12 @@
 
 namespace Evernus
 {
-    ScriptOrderProcessingModel::ScriptOrderProcessingModel(const EveDataProvider &dataProvider, QObject *parent)
+    ScriptOrderProcessingModel::ScriptOrderProcessingModel(const EveDataProvider &dataProvider,
+                                                           const ItemCostProvider &itemCostProvider,
+                                                           QObject *parent)
         : QAbstractTableModel{parent}
         , mDataProvider{dataProvider}
+        , mItemCostProvider{itemCostProvider}
     {
     }
 
@@ -82,7 +86,7 @@ namespace Evernus
             for (const auto &order : orders)
             {
                 const auto value
-                    = processFunction.call(QJSValueList{} << ScriptUtils::wrapMarketOrder(engine, *order));
+                    = processFunction.call(QJSValueList{} << ScriptUtils::wrapMarketOrder(engine, *order, mItemCostProvider.fetchForCharacterAndType(order->getCharacterId(), order->getTypeId())));
                 if (value.isError())
                 {
                     endResetModel();
@@ -110,7 +114,7 @@ namespace Evernus
 
             auto arguments = engine.newArray(static_cast<uint>(orders.size()));
             for (auto i = 0u; i < orders.size(); ++i)
-                arguments.setProperty(i, ScriptUtils::wrapMarketOrder(engine, *orders[i]));
+                arguments.setProperty(i, ScriptUtils::wrapMarketOrder(engine, *orders[i], mItemCostProvider.fetchForCharacterAndType(orders[i]->getCharacterId(), orders[i]->getTypeId())));
 
             const auto value = processFunction.call(QJSValueList{} << arguments);
             if (value.isError())

@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <memory>
+
 class QJSEngine;
 class QJSValue;
 
@@ -21,10 +23,11 @@ namespace Evernus
 {
     class ExternalOrder;
     class MarketOrder;
+    class ItemCost;
 
     namespace ScriptUtils
     {
-        QJSValue wrapMarketOrder(QJSEngine &engine, const MarketOrder &order);
+        QJSValue wrapMarketOrder(QJSEngine &engine, const MarketOrder &order, const std::shared_ptr<ItemCost> &itemCost);
         QJSValue wrapExternalOrder(QJSEngine &engine, const ExternalOrder &order);
     }
 }

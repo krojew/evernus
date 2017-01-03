@@ -16,6 +16,7 @@
 #include <QTimer>
 
 #include "MarketOrderModel.h"
+#include "ItemCostProvider.h"
 #include "CommonScriptAPI.h"
 #include "EveDataProvider.h"
 #include "PriceSettings.h"
@@ -32,9 +33,12 @@ namespace Evernus
     const MarketOrderFilterProxyModel::StatusFilters MarketOrderFilterProxyModel::defaultStatusFilter = Changed | Active;
     const MarketOrderFilterProxyModel::PriceStatusFilters MarketOrderFilterProxyModel::defaultPriceStatusFilter = EveryPriceStatus;
 
-    MarketOrderFilterProxyModel::MarketOrderFilterProxyModel(const EveDataProvider &dataProvider, QObject *parent)
+    MarketOrderFilterProxyModel::MarketOrderFilterProxyModel(const EveDataProvider &dataProvider,
+                                                             const ItemCostProvider &itemCostProvider,
+                                                             QObject *parent)
         : LeafFilterProxyModel{parent}
         , mDataProvider{dataProvider}
+        , mItemCostProvider{itemCostProvider}
     {
         setSortCaseSensitivity(Qt::CaseInsensitive);
 
@@ -205,7 +209,7 @@ namespace Evernus
         if (!mFilterFunction.isCallable())
             return true;
 
-        auto scriptOrder = ScriptUtils::wrapMarketOrder(mEngine, order);
+        auto scriptOrder = ScriptUtils::wrapMarketOrder(mEngine, order, mItemCostProvider.fetchForCharacterAndType(order.getCharacterId(), order.getTypeId()));
 
         std::shared_ptr<ExternalOrder> overbidOrder;
 

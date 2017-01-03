@@ -60,6 +60,7 @@ namespace Evernus
 {
     StatisticsWidget::StatisticsWidget(const RepositoryProvider &repositoryProvider,
                                        const EveDataProvider &dataProvider,
+                                       const ItemCostProvider &itemCostProvider,
                                        QWidget *parent)
         : QWidget(parent)
         , mAssetSnapshotRepository(repositoryProvider.getAssetValueSnapshotRepository())
@@ -76,7 +77,7 @@ namespace Evernus
         , mOrderScriptRepository(repositoryProvider.getOrderScriptRepository())
         , mCharacterRepository(repositoryProvider.getCharacterRepository())
         , mAggrModel(mMarketOrderRepository, dataProvider)
-        , mScriptModel(dataProvider)
+        , mScriptModel(dataProvider, itemCostProvider)
     {
         auto mainLayout = new QVBoxLayout{this};
 
