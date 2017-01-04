@@ -124,6 +124,15 @@ namespace Evernus
         emit orderChanged();
     }
 
+    void CachingMarketOrderProvider::setOrderColorTag(MarketOrder::IdType orderId, const QColor &color)
+    {
+        clearAll();
+
+        mOrderRepo.setColorTag(orderId, color);
+
+        emit orderChanged();
+    }
+
     void CachingMarketOrderProvider::clearOrdersForCharacter(Character::IdType id) const
     {
         mSellOrders.erase(id);

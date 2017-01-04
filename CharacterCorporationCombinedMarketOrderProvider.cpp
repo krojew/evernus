@@ -130,6 +130,15 @@ namespace Evernus
         mBuyOrders.clear();
     }
 
+    void CharacterCorporationCombinedMarketOrderProvider::setOrderColorTag(MarketOrder::IdType orderId, const QColor &color)
+    {
+        mCharOrderProvider.setOrderColorTag(orderId, color);
+        mCorpOrderProvider.setOrderColorTag(orderId, color);
+
+        mSellOrders.clear();
+        mBuyOrders.clear();
+    }
+
     void CharacterCorporationCombinedMarketOrderProvider::clearOrdersForCharacter(Character::IdType id) const
     {
         mSellOrders.erase(id);

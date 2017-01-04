@@ -236,6 +236,26 @@ namespace Evernus
         mNotes = std::move(notes);
     }
 
+    QColor MarketOrder::getColorTag() const &
+    {
+        return mColorTag;
+    }
+
+    QColor &&MarketOrder::getColorTag() && noexcept
+    {
+        return std::move(mColorTag);
+    }
+
+    void MarketOrder::setColorTag(const QColor &color)
+    {
+        mColorTag = color;
+    }
+
+    void MarketOrder::setColorTag(QColor &&color) noexcept
+    {
+        mColorTag = std::move(color);
+    }
+
     bool MarketOrder::isArchived() const
     {
         return !mLastSeen.isNull();

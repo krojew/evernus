@@ -23,6 +23,7 @@
 class QItemSelectionModel;
 class QActionGroup;
 class QModelIndex;
+class QColor;
 
 namespace Evernus
 {
@@ -71,6 +72,7 @@ namespace Evernus
 
         void notesChanged(MarketOrder::IdType id, const QString &notes);
         void stationChanged(MarketOrder::IdType orderId, uint stationId);
+        void colorTagChanged(MarketOrder::IdType orderId, const QColor &color);
 
     public slots:
         void executeFPC();
@@ -90,6 +92,7 @@ namespace Evernus
 
         void changeNotesForCurrent();
         void changeCustomStationForCurrent();
+        void changeColorTagForCurrent(const QColor &color);
 
     private:
         const EveDataProvider &mDataProvider;
@@ -105,6 +108,8 @@ namespace Evernus
         QAction *mShowInEveAct = nullptr;
         QAction *mChangeNotesAct = nullptr;
         QAction *mChangeCustomStationAct = nullptr;
+        QAction *mChangeColorTagAct = nullptr;
+        QAction *mRemoveColorTagAct = nullptr;
         QActionGroup *mLookupGroup = nullptr;
 
         void lookupOnWeb(const QString &baseUrl) const;

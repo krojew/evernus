@@ -70,6 +70,8 @@ namespace Evernus
             marketOrder->setNotes(record.value("notes").toString());
         if (!record.value("custom_location_id").isNull())
             marketOrder->setCustomStationId(record.value("custom_location_id").toUInt());
+        if (!record.value("color_tag").isNull())
+            marketOrder->setColorTag(record.value("color_tag").toString());
         marketOrder->setNew(false);
 
         return marketOrder;
@@ -98,7 +100,8 @@ namespace Evernus
             "last_seen DATETIME NULL,"
             "corporation_id BIGINT NOT NULL,"
             "notes TEXT NULL,"
-            "custom_location_id INTEGER NULL"
+            "custom_location_id INTEGER NULL,"
+            "color_tag TEXT NULL"
         ")"}.arg(getTableName()).arg(
             (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
 
@@ -137,9 +140,9 @@ namespace Evernus
     {
         exec(QString{"REPLACE INTO %1 "
             "(id, character_id, location_id, volume_entered, volume_remaining, min_volume, delta, state, type_id, range,"
-             "account_key, duration, escrow, price, type, issued, first_seen, last_seen, corporation_id) "
+             "account_key, duration, escrow, price, type, issued, first_seen, last_seen, corporation_id, notes, color_tag) "
             "SELECT id, character_id, location_id, volume_entered, volume_remaining, min_volume, delta, state, type_id, range,"
-                   "account_key, duration, escrow, price, type, issued, first_seen, last_seen, 0 "
+                   "account_key, duration, escrow, price, type, issued, first_seen, last_seen, 0, notes, color_tag "
             "FROM %2"}.arg(getTableName()).arg(table));
     }
 
@@ -458,6 +461,15 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    void MarketOrderRepository::setColorTag(MarketOrder::IdType orderId, const QColor &color) const
+    {
+        auto query = prepare(QString{"UPDATE %1 SET color_tag = ? WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
+        query.bindValue(0, (color.isValid()) ? (color.name()) : (QVariant{QVariant::String}));
+        query.bindValue(1, orderId);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     QStringList MarketOrderRepository::getColumns() const
     {
         return QStringList{}
@@ -481,7 +493,8 @@ namespace Evernus
             << "last_seen"
             << "corporation_id"
             << "notes"
-            << "custom_location_id";
+            << "custom_location_id"
+            << "color_tag";
     }
 
     void MarketOrderRepository::bindValues(const MarketOrder &entity, QSqlQuery &query) const
@@ -509,6 +522,7 @@ namespace Evernus
         query.bindValue(":corporation_id", entity.getCorporationId());
         query.bindValue(":notes", entity.getNotes());
         query.bindValue(":custom_location_id", (entity.getCustomStationId()) ? (*entity.getCustomStationId()) : (QVariant{QVariant::UInt}));
+        query.bindValue(":color_tag", (entity.getColorTag().isValid()) ? (entity.getColorTag().name()) : (QVariant{QVariant::String}));
     }
 
     void MarketOrderRepository::bindPositionalValues(const MarketOrder &entity, QSqlQuery &query) const
@@ -536,6 +550,7 @@ namespace Evernus
         query.addBindValue(entity.getCorporationId());
         query.addBindValue(entity.getNotes());
         query.addBindValue((entity.getCustomStationId()) ? (*entity.getCustomStationId()) : (QVariant{QVariant::UInt}));
+        query.addBindValue((entity.getColorTag().isValid()) ? (entity.getColorTag().name()) : (QVariant{QVariant::String}));
     }
 
     template<class Binder>

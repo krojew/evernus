@@ -22,6 +22,8 @@
 #include "MarketOrder.h"
 #include "Repository.h"
 
+class QColor;
+
 namespace Evernus
 {
     class MarketOrderRepository
@@ -107,6 +109,7 @@ namespace Evernus
 
         void setNotes(MarketOrder::IdType id, const QString &notes) const;
         void setStation(MarketOrder::IdType orderId, uint stationId) const;
+        void setColorTag(MarketOrder::IdType orderId, const QColor &color) const;
 
     private:
         bool mCorp = false;

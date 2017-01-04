@@ -23,6 +23,7 @@
 class QPushButton;
 class QComboBox;
 class QCheckBox;
+class QColor;
 
 namespace Evernus
 {
@@ -91,6 +92,7 @@ namespace Evernus
 
         void setOrderNotes(MarketOrder::IdType id, const QString &notes);
         void setOrderStation(MarketOrder::IdType orderId, uint stationId);
+        void setColorTag(MarketOrder::IdType orderId, const QColor &color);
 
     private:
         static const QString settingsLastTabKey;

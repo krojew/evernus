@@ -275,6 +275,11 @@ namespace Evernus
         connect(mArchiveView, &MarketOrderViewWithTransactions::stationChanged, this, &MarketOrderWidget::setOrderStation);
         connect(mCombinedSellView, &MarketOrderView::stationChanged, this, &MarketOrderWidget::setOrderStation);
         connect(mCombinedBuyView, &MarketOrderView::stationChanged, this, &MarketOrderWidget::setOrderStation);
+        connect(mSellView, &MarketOrderViewWithTransactions::colorTagChanged, this, &MarketOrderWidget::setColorTag);
+        connect(mBuyView, &MarketOrderViewWithTransactions::colorTagChanged, this, &MarketOrderWidget::setColorTag);
+        connect(mArchiveView, &MarketOrderViewWithTransactions::colorTagChanged, this, &MarketOrderWidget::setColorTag);
+        connect(mCombinedSellView, &MarketOrderView::colorTagChanged, this, &MarketOrderWidget::setColorTag);
+        connect(mCombinedBuyView, &MarketOrderView::colorTagChanged, this, &MarketOrderWidget::setColorTag);
     }
 
     void MarketOrderWidget::updateData()
@@ -342,6 +347,11 @@ namespace Evernus
     void MarketOrderWidget::setOrderStation(MarketOrder::IdType orderId, uint stationId)
     {
         mOrderProvider.setOrderStation(orderId, stationId);
+    }
+
+    void MarketOrderWidget::setColorTag(MarketOrder::IdType orderId, const QColor &color)
+    {
+        mOrderProvider.setOrderColorTag(orderId, color);
     }
 
     void MarketOrderWidget::handleNewCharacter(Character::IdType id)

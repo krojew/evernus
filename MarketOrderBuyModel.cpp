@@ -371,6 +371,9 @@ namespace Evernus
                 if (data->getFirstSeen() < QDateTime::currentDateTimeUtc().addDays(-maxAge))
                     return QColor{255, 255, 192};
             }
+
+            if (data->getColorTag().isValid())
+                return data->getColorTag();
             break;
         case Qt::ForegroundRole:
             switch (column) {

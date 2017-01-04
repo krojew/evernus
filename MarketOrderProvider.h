@@ -20,6 +20,7 @@
 #include "MarketOrder.h"
 
 class QDateTime;
+class QColor;
 
 namespace Evernus
 {
@@ -43,5 +44,6 @@ namespace Evernus
 
         virtual void setOrderNotes(MarketOrder::IdType id, const QString &notes) = 0;
         virtual void setOrderStation(MarketOrder::IdType orderId, uint stationId) = 0;
+        virtual void setOrderColorTag(MarketOrder::IdType orderId, const QColor &color) = 0;
     };
 }

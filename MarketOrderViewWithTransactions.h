@@ -25,6 +25,7 @@
 #include "MarketOrder.h"
 
 class QItemSelection;
+class QColor;
 
 namespace Evernus
 {
@@ -86,6 +87,7 @@ namespace Evernus
 
         void notesChanged(MarketOrder::IdType id, const QString &notes);
         void stationChanged(MarketOrder::IdType orderId, uint stationId);
+        void colorTagChanged(MarketOrder::IdType orderId, const QColor &color);
 
     private slots:
         void selectOrder(const QItemSelection &selected);

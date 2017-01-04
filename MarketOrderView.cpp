@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QDesktopServices>
+#include <QWidgetAction>
 #include <QApplication>
 #include <QActionGroup>
 #include <QInputDialog>
@@ -22,6 +23,8 @@
 #include <QSettings>
 #include <QCursor>
 #include <QAction>
+#include <QLabel>
+#include <QMenu>
 #include <QUrl>
 
 #include "MarketOrderVolumeItemDelegate.h"
@@ -87,6 +90,33 @@ namespace Evernus
         mChangeCustomStationAct->setEnabled(false);
         mView->addAction(mChangeCustomStationAct);
         connect(mChangeCustomStationAct, &QAction::triggered, this, &MarketOrderView::changeCustomStationForCurrent);
+
+        auto colorTagMenu = new QMenu{this};
+        for (const auto &name : QColor::colorNames())
+        {
+            auto actionlabel = new QLabel{name, this};
+            actionlabel->setStyleSheet(QStringLiteral("background-color: %1").arg(name));
+
+            auto colorAction = new QWidgetAction{colorTagMenu};
+            colorAction->setDefaultWidget(actionlabel);
+            connect(colorAction, &QAction::triggered, this, [=] {
+                changeColorTagForCurrent(QColor{name});
+            });
+
+            colorTagMenu->addAction(colorAction);
+        }
+
+        mChangeColorTagAct = new QAction{tr("Color tag"), this};
+        mChangeColorTagAct->setEnabled(false);
+        mChangeColorTagAct->setMenu(colorTagMenu);
+        mView->addAction(mChangeColorTagAct);
+
+        mRemoveColorTagAct = new QAction{tr("Remove color tag"), this};
+        mRemoveColorTagAct->setEnabled(false);
+        mView->addAction(mRemoveColorTagAct);
+        connect(mRemoveColorTagAct, &QAction::triggered, this, [=] {
+            changeColorTagForCurrent(QColor{});
+        });
 
         if (mInfoWidget != nullptr)
             mainLayout->addWidget(mInfoWidget);
@@ -216,6 +246,20 @@ namespace Evernus
         }
     }
 
+    void MarketOrderView::changeColorTagForCurrent(const QColor &color)
+    {
+        const auto selection = getSelectionModel()->selectedRows();
+        if (selection.isEmpty())
+            return;
+
+        for (const auto &index : selection)
+        {
+            const auto order = mSource->getOrder(mProxy.mapToSource(index));
+            if (order != nullptr)
+                emit colorTagChanged(order->getId(), color);
+        }
+    }
+
     void MarketOrderView::executeFPC()
     {
         if (mSource != nullptr)
@@ -283,6 +327,8 @@ namespace Evernus
         mShowInEveAct->setEnabled(enable);
         mChangeNotesAct->setEnabled(enable);
         mChangeCustomStationAct->setEnabled(enable);
+        mChangeColorTagAct->setEnabled(enable);
+        mRemoveColorTagAct->setEnabled(enable);
         mLookupGroup->setEnabled(enable);
 
         emit itemSelected();

@@ -17,6 +17,7 @@
 #include <boost/optional.hpp>
 
 #include <QDateTime>
+#include <QColor>
 
 #include "Character.h"
 #include "EveType.h"
@@ -119,6 +120,11 @@ namespace Evernus
         void setNotes(const QString &notes);
         void setNotes(QString &&notes);
 
+        QColor getColorTag() const &;
+        QColor &&getColorTag() && noexcept;
+        void setColorTag(const QColor &color);
+        void setColorTag(QColor &&color) noexcept;
+
         bool isArchived() const;
 
         MarketOrder &operator =(const MarketOrder &) = default;
@@ -146,5 +152,6 @@ namespace Evernus
         quint64 mCorporationId = 0;
         QString mNotes;
         CutomLocationType mCustomStationId;
+        QColor mColorTag;
     };
 }
