@@ -175,6 +175,7 @@ namespace Evernus
                                                                  *mConquerableStationRepository,
                                                                  *mMarketGroupRepository,
                                                                  *mRefTypeRepository,
+                                                                 *mCitadelRepository,
                                                                  mAPIManager,
                                                                  mEveDb);
 

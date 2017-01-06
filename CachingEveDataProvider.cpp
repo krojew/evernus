@@ -44,6 +44,7 @@ namespace Evernus
                                                    const ConquerableStationRepository &conquerableStationRepository,
                                                    const MarketGroupRepository &marketGroupRepository,
                                                    const RefTypeRepository &refTypeRepository,
+                                                   const CitadelRepository &citadelRepository,
                                                    const APIManager &apiManager,
                                                    const QSqlDatabase &eveDb,
                                                    QObject *parent)
@@ -56,6 +57,7 @@ namespace Evernus
         , mConquerableStationRepository{conquerableStationRepository}
         , mMarketGroupRepository{marketGroupRepository}
         , mRefTypeRepository{refTypeRepository}
+        , mCitadelRepository{citadelRepository}
         , mAPIManager{apiManager}
         , mEveDb{eveDb}
     {
@@ -381,6 +383,9 @@ namespace Evernus
 
             result = query.value(0).toString();
         }
+
+        if (result.isEmpty())   // citadel?
+            result = getCitadelName(id);
 
         mLocationNameCache.emplace(id, result);
         return result;
@@ -931,6 +936,29 @@ namespace Evernus
         }
 
         return makeUnreachable();
+    }
+
+    QString CachingEveDataProvider::getCitadelName(Citadel::IdType id) const
+    {
+        auto citadel = mCitadelCache.find(id);
+        if (citadel == std::end(mCitadelCache))
+        {
+            if (mCitadelCache.empty())
+            {
+                auto citadels = mCitadelRepository.fetchAll();
+
+                mCitadelCache.reserve(citadels.size());
+                for (auto &citadel : citadels)
+                    mCitadelCache.emplace(citadel->getId(), std::move(citadel));
+            }
+
+            citadel = mCitadelCache.find(id);
+            if (citadel == std::end(mCitadelCache))
+                citadel = mCitadelCache.emplace(id, std::make_shared<Citadel>(id)).first;
+        }
+
+        Q_ASSERT(citadel->second);
+        return citadel->second->getName();
     }
 
     double CachingEveDataProvider::getPackagedVolume(const EveType &type)

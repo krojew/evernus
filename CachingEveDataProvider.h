@@ -23,6 +23,7 @@
 #include "ExternalOrderRepository.h"
 #include "MarketGroupRepository.h"
 #include "MetaGroupRepository.h"
+#include "CitadelRepository.h"
 #include "EveTypeRepository.h"
 #include "Citadel.h"
 #include "RefType.h"
@@ -54,6 +55,7 @@ namespace Evernus
                                const ConquerableStationRepository &conquerableStationRepository,
                                const MarketGroupRepository &marketGroupRepository,
                                const RefTypeRepository &refTypeRepository,
+                               const CitadelRepository &citadelRepository,
                                const APIManager &apiManager,
                                const QSqlDatabase &eveDb,
                                QObject *parent = nullptr);
@@ -119,6 +121,7 @@ namespace Evernus
         const ConquerableStationRepository &mConquerableStationRepository;
         const MarketGroupRepository &mMarketGroupRepository;
         const RefTypeRepository &mRefTypeRepository;
+        const CitadelRepository &mCitadelRepository;
 
         const APIManager &mAPIManager;
 
@@ -158,7 +161,7 @@ namespace Evernus
         mutable std::vector<MapLocation> mRegionCache;
         mutable std::unordered_map<uint, std::vector<MapLocation>> mConstellationCache, mConstellationSolarSystemCache, mRegionSolarSystemCache;
         mutable std::unordered_map<uint, std::vector<Station>> mStationCache;
-        mutable std::unordered_map<uint, std::unordered_map<Citadel::IdType, Citadel>> mCitadelCache;
+        mutable std::unordered_map<Citadel::IdType, CitadelRepository::EntityPtr> mCitadelCache;
 
         mutable std::unordered_map<uint, QString> mRegionNameCache;
         mutable std::unordered_map<uint, QString> mSolarSystemNameCache;
@@ -179,6 +182,7 @@ namespace Evernus
         const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
 
         uint getDistance(uint startSystem, uint endSystem) const;
+        QString getCitadelName(Citadel::IdType id) const;
 
         static double getPackagedVolume(const EveType &type);
     };
