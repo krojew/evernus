@@ -151,6 +151,8 @@ int main(int argc, char *argv[])
                              &app, &Evernus::EvernusApplication::refreshCharacters);
             QObject::connect(&mainWnd, &Evernus::MainWindow::refreshConquerableStations,
                              &app, &Evernus::EvernusApplication::refreshConquerableStations);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::refreshCitadels,
+                             &app, &Evernus::EvernusApplication::refreshCitadels);
             QObject::connect(&mainWnd, &Evernus::MainWindow::importCharacter,
                              &app, [&app](auto id) { app.refreshCharacter(id); });
             QObject::connect(&mainWnd, &Evernus::MainWindow::importAssets,
@@ -207,6 +209,8 @@ int main(int argc, char *argv[])
                              &mainWnd, &Evernus::MainWindow::taskEnded);
             QObject::connect(&app, &Evernus::EvernusApplication::conquerableStationsChanged,
                              &mainWnd, &Evernus::MainWindow::conquerableStationsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::citadelsChanged,
+                             &mainWnd, &Evernus::MainWindow::citadelsChanged);
             QObject::connect(&app, &Evernus::EvernusApplication::charactersChanged,
                              &mainWnd, &Evernus::MainWindow::updateCharacters);
             QObject::connect(&app, &Evernus::EvernusApplication::assetsChanged,

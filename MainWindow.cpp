@@ -423,6 +423,7 @@ namespace Evernus
     {
         emit refreshCharacters();
         emit refreshConquerableStations();
+        emit refreshCitadels();
 
         refreshWalletJournal();
 
@@ -599,30 +600,31 @@ namespace Evernus
 
         auto fileMenu = bar->addMenu(tr("&File"));
         mCharactersMenu = fileMenu->addMenu(tr("Select character"));
-        fileMenu->addAction(QIcon{":/images/user.png"}, tr("&Manage characters..."), this, SLOT(showCharacterManagement()));
+        fileMenu->addAction(QIcon{":/images/user.png"}, tr("&Manage characters..."), this, &MainWindow::showCharacterManagement);
 #ifdef Q_OS_OSX
-        fileMenu->addAction(QIcon{":/images/wrench.png"}, tr("&Preferences..."), this, SLOT(showPreferences()), QKeySequence::Preferences)->setMenuRole(QAction::PreferencesRole);
+        fileMenu->addAction(QIcon{":/images/wrench.png"}, tr("&Preferences..."), this, &MainWindow::showPreferences, QKeySequence::Preferences)->setMenuRole(QAction::PreferencesRole);
 #else
-        fileMenu->addAction(QIcon{":/images/wrench.png"}, tr("&Preferences..."), this, SLOT(showPreferences()), Qt::CTRL + Qt::Key_O)->setMenuRole(QAction::PreferencesRole);
+        fileMenu->addAction(QIcon{":/images/wrench.png"}, tr("&Preferences..."), this, &MainWindow::showPreferences, Qt::CTRL + Qt::Key_O)->setMenuRole(QAction::PreferencesRole);
 #endif
         fileMenu->addSeparator();
-        fileMenu->addAction(tr("Import EVE Mentat order history..."), this, SIGNAL(importFromMentat()));
+        fileMenu->addAction(tr("Import EVE Mentat order history..."), this, &MainWindow::importFromMentat);
         fileMenu->addSeparator();
-        fileMenu->addAction(tr("E&xit"), this, SLOT(close()), QKeySequence::Quit)->setMenuRole(QAction::QuitRole);
+        fileMenu->addAction(tr("E&xit"), this, &MainWindow::close, QKeySequence::Quit)->setMenuRole(QAction::QuitRole);
 
         auto toolsMenu = bar->addMenu(tr("&Tools"));
-        toolsMenu->addAction(tr("Import conquerable stations"), this, SIGNAL(refreshConquerableStations()));
-        toolsMenu->addAction(QIcon{":/images/report.png"}, tr("Ma&rgin tool..."), this, SLOT(showMarginTool()), Qt::CTRL + Qt::Key_M);
+        toolsMenu->addAction(tr("Import conquerable stations"), this, &MainWindow::refreshConquerableStations);
+        toolsMenu->addAction(tr("Import citadels"), this, &MainWindow::refreshCitadels);
+        toolsMenu->addAction(QIcon{":/images/report.png"}, tr("Ma&rgin tool..."), this, &MainWindow::showMarginTool, Qt::CTRL + Qt::Key_M);
         toolsMenu->addSeparator();
-        toolsMenu->addAction(tr("Copy HTTP link"), this, SLOT(copyHTTPLink()));
+        toolsMenu->addAction(tr("Copy HTTP link"), this, &MainWindow::copyHTTPLink);
 #ifdef EVERNUS_DROPBOX_ENABLED
         toolsMenu->addSeparator();
-        toolsMenu->addAction(QIcon{":/images/arrow_refresh.png"}, tr("Upload data to cloud..."), this, SLOT(performSync()));
+        toolsMenu->addAction(QIcon{":/images/arrow_refresh.png"}, tr("Upload data to cloud..."), this, &MainWindow::performSync);
 #endif
 
         auto viewMenu = bar->addMenu(tr("&View"));
         mViewTabsMenu = viewMenu->addMenu(tr("Show/hide tabs"));
-        viewMenu->addAction(tr("Show/hide table columns"), this, SLOT(showColumnHelp()));
+        viewMenu->addAction(tr("Show/hide table columns"), this, &MainWindow::showColumnHelp);
 
         auto action = viewMenu->addAction(tr("Always on top"));
         auto toggleTopmost = [action, this] {
@@ -657,10 +659,10 @@ namespace Evernus
         connect(action, &QAction::triggered, this, toggleTopmost);
 
         auto helpMenu = bar->addMenu(tr("&Help"));
-        helpMenu->addAction(QIcon{":/images/help.png"}, tr("&Online help..."), this, SLOT(openHelp()));
+        helpMenu->addAction(QIcon{":/images/help.png"}, tr("&Online help..."), this, &MainWindow::openHelp);
         helpMenu->addAction(tr("Check for &updates"), this, SLOT(checkForUpdates()));
         helpMenu->addSeparator();
-        helpMenu->addAction(tr("&About..."), this, SLOT(showAbout()))->setMenuRole(QAction::AboutRole);
+        helpMenu->addAction(tr("&About..."), this, &MainWindow::showAbout)->setMenuRole(QAction::AboutRole);
 
         mMenuWidget = new MenuBarWidget{mRepositoryProvider.getCharacterRepository(), this};
         bar->setCornerWidget(mMenuWidget);
@@ -740,6 +742,7 @@ namespace Evernus
         connect(assetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setWaypoint);
         connect(assetsTab, &AssetsWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
+        connect(this, &MainWindow::citadelsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChangedWithMarketOrders, assetsTab, &AssetsWidget::updateData);
@@ -769,6 +772,7 @@ namespace Evernus
         connect(this, &MainWindow::corpMarketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::conquerableStationsChanged, orderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::citadelsChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::charactersChanged, orderTab, &MarketOrderWidget::updateCharacters);
 
@@ -821,6 +825,7 @@ namespace Evernus
         connect(corpAssetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setWaypoint);
         connect(corpAssetsTab, &AssetsWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::conquerableStationsChanged, corpAssetsTab, &AssetsWidget::updateData);
+        connect(this, &MainWindow::citadelsChanged, corpAssetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::corpAssetsChanged, corpAssetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, corpAssetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChangedWithMarketOrders, corpAssetsTab, &AssetsWidget::updateData);
@@ -849,6 +854,7 @@ namespace Evernus
         connect(this, &MainWindow::corpMarketOrdersChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::conquerableStationsChanged, corpOrderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::citadelsChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::charactersChanged, corpOrderTab, &MarketOrderWidget::updateCharacters);
 

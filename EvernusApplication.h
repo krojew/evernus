@@ -58,12 +58,14 @@
 #include "CacheTimerProvider.h"
 #include "RepositoryProvider.h"
 #include "ContractRepository.h"
+#include "CitadelRepository.h"
 #include "EveTypeRepository.h"
 #include "RefTypeRepository.h"
 #include "CorpKeyRepository.h"
 #include "LMeveDataProvider.h"
 #include "ItemCostProvider.h"
 #include "LMeveAPIManager.h"
+#include "CitadelManager.h"
 #include "ItemRepository.h"
 #include "TaskConstants.h"
 #include "KeyRepository.h"
@@ -138,6 +140,7 @@ namespace Evernus
         virtual const CacheTimerRepository &getCacheTimerRepository() const noexcept override;
         virtual const UpdateTimerRepository &getUpdateTimerRepository() const noexcept override;
         virtual const ItemRepository &getItemRepository() const noexcept override;
+        virtual const CitadelRepository &getCitadelRepository() const noexcept override;
 
         virtual std::vector<std::shared_ptr<LMeveTask>> getTasks(Character::IdType characterId) const override;
 
@@ -167,6 +170,7 @@ namespace Evernus
         void taskEnded(uint taskId, const QString &error);
 
         void conquerableStationsChanged();
+        void citadelsChanged();
         void charactersChanged();
         void assetsChanged();
         void externalOrdersChanged();
@@ -204,6 +208,7 @@ namespace Evernus
         void refreshCorpMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpMarketOrdersFromLogs(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshConquerableStations();
+        void refreshCitadels();
         void refreshAllExternalOrders();
         void refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
         void refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
@@ -283,9 +288,11 @@ namespace Evernus
         std::unique_ptr<LMeveTaskRepository> mLMeveTaskRepository;
         std::unique_ptr<MarketGroupRepository> mMarketGroupRepository;
         std::unique_ptr<MetaGroupRepository> mMetaGroupRepository;
+        std::unique_ptr<CitadelRepository> mCitadelRepository;
 
         APIManager mAPIManager;
         LMeveAPIManager mLMeveAPIManager;
+        CitadelManager mCitadelManager;
 
         uint mTaskId = TaskConstants::invalidTask + 1;
         uint mCurrentExternalOrderImportTask = TaskConstants::invalidTask;

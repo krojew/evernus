@@ -83,8 +83,10 @@ namespace Evernus
     signals:
         void refreshCharacters();
         void refreshConquerableStations();
+        void refreshCitadels();
 
         void conquerableStationsChanged();
+        void citadelsChanged();
         void charactersChanged();
         void assetsChanged();
         void externalOrdersChanged();

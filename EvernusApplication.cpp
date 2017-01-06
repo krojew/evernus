@@ -674,6 +674,11 @@ namespace Evernus
         return *mItemRepository;
     }
 
+    const CitadelRepository &EvernusApplication::getCitadelRepository() const noexcept
+    {
+        return *mCitadelRepository;
+    }
+
     std::vector<std::shared_ptr<LMeveTask>> EvernusApplication::getTasks(Character::IdType characterId) const
     {
         const auto it = mLMeveTaskCache.find(characterId);
@@ -1410,15 +1415,37 @@ namespace Evernus
         const auto task = startTask(tr("Fetching conquerable stations..."));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        mAPIManager.fetchConquerableStationList([task, this](const auto &list, const auto &error) {
+        mAPIManager.fetchConquerableStationList([=](const auto &list, const auto &error) {
             if (error.isEmpty())
             {
                 mDataProvider->clearStationCache();
 
-                mConquerableStationRepository->exec(QString{"DELETE FROM %1"}.arg(mConquerableStationRepository->getTableName()));
+                mConquerableStationRepository->deleteAll();
                 asyncBatchStore(*mConquerableStationRepository, list, true);
 
                 emit conquerableStationsChanged();
+            }
+
+            emit taskEnded(task, error);
+        });
+    }
+
+    void EvernusApplication::refreshCitadels()
+    {
+        qDebug() << "Refreshing citadels...";
+
+        const auto task = startTask(tr("Fetching citadels..."));
+        processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        mCitadelManager.fetchCitadels([=](const auto &citadels, const auto &error) {
+            if (error.isEmpty())
+            {
+                mDataProvider->clearCitadelCache();
+
+                mCitadelRepository->deleteAll();
+                asyncBatchStore(*mCitadelRepository, citadels, true);
+
+                emit citadelsChanged();
             }
 
             emit taskEnded(task, error);
@@ -1861,6 +1888,7 @@ namespace Evernus
         mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
         mMarketGroupRepository.reset(new MarketGroupRepository{mEveDb});
         mMetaGroupRepository.reset(new MetaGroupRepository{mEveDb});
+        mCitadelRepository.reset(new CitadelRepository{mMainDb});
     }
 
     void EvernusApplication::createDbSchema()
@@ -1899,6 +1927,7 @@ namespace Evernus
         mCorpContractItemRepository->create(*mCorpContractRepository);
         mLMeveTaskRepository->create(*mCharacterRepository);
         mRefTypeRepository->create();
+        mCitadelRepository->create();
     }
 
     void EvernusApplication::precacheCacheTimers()

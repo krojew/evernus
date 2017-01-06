@@ -24,6 +24,7 @@
 #include "MarketGroupRepository.h"
 #include "MetaGroupRepository.h"
 #include "EveTypeRepository.h"
+#include "Citadel.h"
 #include "RefType.h"
 
 #include "EveDataProvider.h"
@@ -97,6 +98,7 @@ namespace Evernus
 
         void clearExternalOrderCaches();
         void clearStationCache();
+        void clearCitadelCache();
 
         void handleNewPreferences();
 
@@ -156,6 +158,7 @@ namespace Evernus
         mutable std::vector<MapLocation> mRegionCache;
         mutable std::unordered_map<uint, std::vector<MapLocation>> mConstellationCache, mConstellationSolarSystemCache, mRegionSolarSystemCache;
         mutable std::unordered_map<uint, std::vector<Station>> mStationCache;
+        mutable std::unordered_map<uint, std::unordered_map<Citadel::IdType, Citadel>> mCitadelCache;
 
         mutable std::unordered_map<uint, QString> mRegionNameCache;
         mutable std::unordered_map<uint, QString> mSolarSystemNameCache;

@@ -14,17 +14,19 @@
  */
 #pragma once
 
-#include "ConquerableStationList.h"
 #include "Repository.h"
+#include "Citadel.h"
 
 namespace Evernus
 {
-    class ConquerableStationRepository
-        : public Repository<ConquerableStation>
+    class CitadelRepository final
+        : public Repository<Citadel>
     {
     public:
         using Repository::Repository;
-        virtual ~ConquerableStationRepository() = default;
+        CitadelRepository(const CitadelRepository &) = default;
+        CitadelRepository(CitadelRepository &&) = default;
+        virtual ~CitadelRepository() = default;
 
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
@@ -34,11 +36,12 @@ namespace Evernus
         void create() const;
         void deleteAll() const;
 
-        EntityList fetchForSolarSystem(uint solarSystemId) const;
+        CitadelRepository &operator =(const CitadelRepository &) = default;
+        CitadelRepository &operator =(CitadelRepository &&) = default;
 
     private:
         virtual QStringList getColumns() const override;
-        virtual void bindValues(const ConquerableStation &entity, QSqlQuery &query) const override;
-        virtual void bindPositionalValues(const ConquerableStation &entity, QSqlQuery &query) const override;
+        virtual void bindValues(const Citadel &entity, QSqlQuery &query) const override;
+        virtual void bindPositionalValues(const Citadel &entity, QSqlQuery &query) const override;
     };
 }

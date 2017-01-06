@@ -38,6 +38,7 @@ namespace Evernus
     class ItemCostRepository;
     class CorpKeyRepository;
     class EveTypeRepository;
+    class CitadelRepository;
     class ItemRepository;
     class KeyRepository;
 
@@ -73,5 +74,6 @@ namespace Evernus
         virtual const CacheTimerRepository &getCacheTimerRepository() const noexcept = 0;
         virtual const UpdateTimerRepository &getUpdateTimerRepository() const noexcept = 0;
         virtual const ItemRepository &getItemRepository() const noexcept = 0;
+        virtual const CitadelRepository &getCitadelRepository() const noexcept = 0;
     };
 }

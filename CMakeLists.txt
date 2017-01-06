@@ -216,6 +216,7 @@ qt5_wrap_cpp(
     StationView.h
     StatisticsPreferencesWidget.h
     StatisticsWidget.h
+    StructureHuntInterface.h
     StyledTreeView.h
     SyncDialog.h
     SyncPreferencesWidget.h
@@ -324,6 +325,12 @@ add_executable(
     CharacterRepository.h
     CharacterWidget.cpp
     CharacterWidget.h
+    Citadel.cpp
+    Citadel.h
+    CitadelManager.cpp
+    CitadelManager.h
+    CitadelRepository.cpp
+    CitadelRepository.h
     ClickableLabel.cpp
     ClickableLabel.h
     ColorButton.cpp
@@ -733,6 +740,8 @@ add_executable(
     StatisticsSettings.h
     StatisticsWidget.cpp
     StatisticsWidget.h
+    StructureHuntInterface.cpp
+    StructureHuntInterface.h
     StyledTreeView.cpp
     StyledTreeView.h
     StyledTreeViewItemDelegate.cpp

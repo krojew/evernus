@@ -47,6 +47,11 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_solar_system ON %1(solar_system_id)"}.arg(getTableName()));
     }
 
+    void ConquerableStationRepository::deleteAll() const
+    {
+        exec(QString{"DELETE FROM %1"}.arg(getTableName()));
+    }
+
     ConquerableStationRepository::EntityList ConquerableStationRepository::fetchForSolarSystem(uint solarSystemId) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE solar_system_id = ?"}.arg(getTableName()));

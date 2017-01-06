@@ -747,6 +747,11 @@ namespace Evernus
         mStationCache.clear();
     }
 
+    void CachingEveDataProvider::clearCitadelCache()
+    {
+        mCitadelCache.clear();
+    }
+
     void CachingEveDataProvider::handleNewPreferences()
     {
         QSettings settings;
