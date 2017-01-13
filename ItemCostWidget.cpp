@@ -74,6 +74,7 @@ namespace Evernus
         auto constCostEdit = new QLineEdit{
             settings.value(PriceSettings::itemConstCostAddKey, PriceSettings::itemConstCostAddDefault).toString(), this};
         toolBarLayout->addWidget(constCostEdit);
+        constCostEdit->setValidator(costValidator);
         connect(constCostEdit, &QLineEdit::textEdited, this, [](const auto &text) {
             QSettings settings;
             settings.setValue(PriceSettings::itemConstCostAddKey, text.toDouble());
