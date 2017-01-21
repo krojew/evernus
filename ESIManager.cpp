@@ -29,50 +29,39 @@
 #include "CharacterRepository.h"
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
-#include "CRESTSettings.h"
 #include "ReplyTimeout.h"
+#include "SSOSettings.h"
 #include "Defines.h"
 
-#include "CRESTManager.h"
+#include "ESIManager.h"
 
 namespace Evernus
 {
-#ifdef EVERNUS_CREST_SISI
-    const QString CRESTManager::loginUrl = "https://sisilogin.testeveonline.com";
+#ifdef EVERNUS_ESI_SISI
+    const QString ESIManager::loginUrl = "https://sisilogin.testeveonline.com";
 #else
-    const QString CRESTManager::loginUrl = "https://login.eveonline.com";
+    const QString ESIManager::loginUrl = "https://login.eveonline.com";
 #endif
 
-    const QString CRESTManager::redirectDomain = "evernus.com";
+    const QString ESIManager::redirectDomain = "evernus.com";
 
-    std::unordered_map<Character::IdType, QString> CRESTManager::mRefreshTokens;
-    bool CRESTManager::mFetchingToken = false;
+    std::unordered_map<Character::IdType, QString> ESIManager::mRefreshTokens;
+    bool ESIManager::mFetchingToken = false;
 
-    CRESTManager::CRESTManager(QByteArray clientId,
-                               QByteArray clientSecret,
-                               const EveDataProvider &dataProvider,
-                               const CharacterRepository &characterRepo,
-                               QObject *parent)
+    ESIManager::ESIManager(QByteArray clientId,
+                           QByteArray clientSecret,
+                           const EveDataProvider &dataProvider,
+                           const CharacterRepository &characterRepo,
+                           QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
         , mCharacterRepo{characterRepo}
         , mClientId{std::move(clientId)}
         , mClientSecret{std::move(clientSecret)}
-        , mCrypt{CRESTSettings::cryptKey}
+        , mCrypt{SSOSettings::cryptKey}
     {
-        handleNewPreferences();
-        fetchEndpoints();
-
-        connect(&mEndpointTimer, &QTimer::timeout, this, [=] {
-            if (hasEndpoints())
-                mEndpointTimer.stop();
-            else
-                fetchEndpoints();
-        });
-        mEndpointTimer.start(10 * 1000);
-
         QSettings settings;
-        settings.beginGroup(CRESTSettings::refreshTokenGroup);
+        settings.beginGroup(SSOSettings::refreshTokenGroup);
 
         const auto keys = settings.childKeys();
         for (const auto &key : keys)
@@ -80,13 +69,13 @@ namespace Evernus
 
         settings.endGroup();
 
-        connect(&mInterface, &CRESTInterface::tokenRequested, this, &CRESTManager::fetchToken, Qt::QueuedConnection);
-        connect(this, &CRESTManager::acquiredToken, &mInterface, &CRESTInterface::updateTokenAndContinue);
-        connect(this, &CRESTManager::tokenError, &mInterface, &CRESTInterface::handleTokenError);
-        connect(this, &CRESTManager::tokenError, this, &CRESTManager::error);
+        connect(&mInterface, &ESIInterface::tokenRequested, this, &ESIManager::fetchToken, Qt::QueuedConnection);
+        connect(this, &ESIManager::acquiredToken, &mInterface, &ESIInterface::updateTokenAndContinue);
+        connect(this, &ESIManager::tokenError, &mInterface, &ESIInterface::handleTokenError);
+        connect(this, &ESIManager::tokenError, this, &ESIManager::error);
     }
 
-    bool CRESTManager::eventFilter(QObject *watched, QEvent *event)
+    bool ESIManager::eventFilter(QObject *watched, QEvent *event)
     {
         Q_ASSERT(event != nullptr);
 
@@ -95,22 +84,16 @@ namespace Evernus
             mFetchingToken = false;
 
             qDebug() << "Auth window closed.";
-            emit tokenError(tr("CREST authorization failed."));
+            emit tokenError(tr("SSO authorization failed."));
         }
 
         return QObject::eventFilter(watched, event);
     }
 
-    void CRESTManager::fetchMarketOrders(uint regionId,
+    void ESIManager::fetchMarketOrders(uint regionId,
                                          EveType::IdType typeId,
                                          const Callback<std::vector<ExternalOrder>> &callback) const
     {
-        if (!hasEndpoints())
-        {
-            callback(std::vector<ExternalOrder>(), getMissingEnpointsError());
-            return;
-        }
-
         auto ifaceCallback = [=](QJsonDocument &&data, const QString &error) {
             if (!error.isEmpty())
             {
@@ -118,7 +101,7 @@ namespace Evernus
                 return;
             }
 
-            const auto items = data.object().value("items").toArray();
+            const auto items = data.array();
 
             std::vector<ExternalOrder> orders;
             orders.reserve(items.size());
@@ -132,16 +115,10 @@ namespace Evernus
         mInterface.fetchMarketOrders(regionId, typeId, ifaceCallback);
     }
 
-    void CRESTManager::fetchMarketHistory(uint regionId,
+    void ESIManager::fetchMarketHistory(uint regionId,
                                           EveType::IdType typeId,
                                           const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const
     {
-        if (!hasEndpoints())
-        {
-            callback(std::map<QDate, MarketHistoryEntry>(), getMissingEnpointsError());
-            return;
-        }
-
 #if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
         mInterface.fetchMarketHistory(regionId, typeId, [=, callback = callback](QJsonDocument &&data, const QString &error) {
 #else
@@ -155,18 +132,18 @@ namespace Evernus
 
             std::map<QDate, MarketHistoryEntry> history;
 
-            const auto items = data.object().value("items").toArray();
+            const auto items = data.array();
             for (const auto &item : items)
             {
                 const auto itemObject = item.toObject();
                 auto date = QDate::fromString(itemObject.value("date").toString(), Qt::ISODate);
 
                 MarketHistoryEntry entry;
-                entry.mAvgPrice = itemObject.value("avgPrice").toDouble();
-                entry.mHighPrice = itemObject.value("highPrice").toDouble();
-                entry.mLowPrice = itemObject.value("lowPrice").toDouble();
-                entry.mOrders = itemObject.value("orderCount").toInt();
-                entry.mVolume = itemObject.value("volume_str").toString().toULongLong();
+                entry.mAvgPrice = itemObject.value("average").toDouble();
+                entry.mHighPrice = itemObject.value("highest").toDouble();
+                entry.mLowPrice = itemObject.value("lowest").toDouble();
+                entry.mOrders = itemObject.value("order_count").toInt();
+                entry.mVolume = itemObject.value("volume").toDouble();
 
                 history.emplace(std::move(date), std::move(entry));
             }
@@ -175,14 +152,8 @@ namespace Evernus
         });
     }
 
-    void CRESTManager::fetchMarketOrders(uint regionId, const Callback<std::vector<ExternalOrder>> &callback) const
+    void ESIManager::fetchMarketOrders(uint regionId, const Callback<std::vector<ExternalOrder>> &callback) const
     {
-        if (!hasEndpoints())
-        {
-            callback(std::vector<ExternalOrder>{}, getMissingEnpointsError());
-            return;
-        }
-
         auto orders = std::make_shared<std::vector<ExternalOrder>>();
         mInterface.fetchMarketOrders(regionId, [=, orders = std::move(orders)](auto &&data, auto atEnd, const auto &error) {
             if (!error.isEmpty())
@@ -191,7 +162,7 @@ namespace Evernus
                 return;
             }
 
-            const auto items = data.object().value("items").toArray();
+            const auto items = data.array();
             orders->reserve(orders->size() + items.size());
 
             for (const auto &item : items)
@@ -202,26 +173,26 @@ namespace Evernus
         });
     }
 
-    void CRESTManager::openMarketDetails(EveType::IdType typeId, Character::IdType charId) const
+    void ESIManager::openMarketDetails(EveType::IdType typeId, Character::IdType charId) const
     {
         mInterface.openMarketDetails(typeId, charId, [=](const auto &errorText) {
             emit error(errorText);
         });
     }
 
-    void CRESTManager::setDestination(quint64 locationId, Character::IdType charId) const
+    void ESIManager::setDestination(quint64 locationId, Character::IdType charId) const
     {
         mInterface.setDestination(locationId, charId, [=](const auto &errorText) {
             emit error(errorText);
         });
     }
 
-    bool CRESTManager::hasClientCredentials() const
+    bool ESIManager::hasClientCredentials() const
     {
         return !mClientId.isEmpty() && !mClientSecret.isEmpty();
     }
 
-    void CRESTManager::fetchToken(Character::IdType charId)
+    void ESIManager::fetchToken(Character::IdType charId)
     {
         if (mFetchingToken)
             return;
@@ -241,23 +212,23 @@ namespace Evernus
 
                 QUrlQuery query;
                 query.addQueryItem("response_type", "code");
-                query.addQueryItem("redirect_uri", "http://" + redirectDomain + "/crest-authentication/");
+                query.addQueryItem("redirect_uri", "http://" + redirectDomain + "/sso-authentication/");
                 query.addQueryItem("client_id", mClientId);
-                query.addQueryItem("scope", "characterNavigationWrite remoteClientUI");
+                query.addQueryItem("scope", "esi-ui.open_window.v1 esi-ui.write_waypoint.v1");
 
                 url.setQuery(query);
 
-                mAuthView = std::make_unique<CRESTAuthWidget>(url);
+                mAuthView = std::make_unique<SOOAuthWidget>(url);
 
                 mAuthView->setWindowModality(Qt::ApplicationModal);
-                mAuthView->setWindowTitle(tr("CREST Authentication for character: %1").arg(mCharacterRepo.getName(charId)));
+                mAuthView->setWindowTitle(tr("SSO Authentication for character: %1").arg(mCharacterRepo.getName(charId)));
                 mAuthView->installEventFilter(this);
                 mAuthView->adjustSize();
                 mAuthView->move(QApplication::desktop()->screenGeometry(QApplication::activeWindow()).center() -
                                 mAuthView->rect().center());
                 mAuthView->show();
 
-                connect(mAuthView.get(), &CRESTAuthWidget::acquiredCode, this, [=](const auto &code) {
+                connect(mAuthView.get(), &SOOAuthWidget::acquiredCode, this, [=](const auto &code) {
                     processAuthorizationCode(charId, code);
                 });
                 connect(mAuthView->page(), &QWebEnginePage::urlChanged, [=](const QUrl &url) {
@@ -343,15 +314,7 @@ namespace Evernus
         }
     }
 
-    void CRESTManager::handleNewPreferences()
-    {
-        QSettings settings;
-
-        const auto rate = settings.value(CRESTSettings::rateLimitKey, CRESTSettings::rateLimitDefault).toFloat();
-        CRESTInterface::setRateLimit(rate);
-    }
-
-    void CRESTManager::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    void ESIManager::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
     {
         try
         {
@@ -411,7 +374,7 @@ namespace Evernus
                         mRefreshTokens[realCharId] = refreshToken;
 
                         QSettings settings;
-                        settings.setValue(CRESTSettings::refreshTokenKey.arg(realCharId), mCrypt.encryptToByteArray(refreshToken));
+                        settings.setValue(SSOSettings::refreshTokenKey.arg(realCharId), mCrypt.encryptToByteArray(refreshToken));
 
                         if (charId != realCharId)
                         {
@@ -438,7 +401,7 @@ namespace Evernus
         }
     }
 
-    QNetworkRequest CRESTManager::getAuthRequest() const
+    QNetworkRequest ESIManager::getAuthRequest() const
     {
         QNetworkRequest request{loginUrl + "/oauth/token"};
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
@@ -448,62 +411,7 @@ namespace Evernus
         return request;
     }
 
-    void CRESTManager::fetchEndpoints()
-    {
-        qDebug() << "Fetching CREST endpoints:" << CRESTInterface::crestUrl;
-
-        QNetworkRequest request{CRESTInterface::crestUrl};
-        request.setHeader(QNetworkRequest::UserAgentHeader,
-                          QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
-        request.setRawHeader("Accept", "application/vnd.ccp.eve.Api-v5+json");
-
-        auto reply = mNetworkManager.get(request);
-        Q_ASSERT(reply != nullptr);
-
-        new ReplyTimeout{*reply};
-
-        connect(reply, &QNetworkReply::finished, this, [=] {
-            reply->deleteLater();
-
-            const auto errorCode = reply->error();
-            qDebug() << "Got CREST endpoints: " << errorCode;
-
-            if (errorCode != QNetworkReply::NoError)
-            {
-                emit error(tr("Error fetching CREST endpoints!"));
-                return;
-            }
-
-            const auto json = QJsonDocument::fromJson(reply->readAll());
-
-            std::function<void (const QJsonObject &)> addEndpoints = [=, &addEndpoints](const QJsonObject &object) {
-                for (auto it = std::begin(object); it != std::end(object); ++it)
-                {
-                    const auto value = it.value().toObject();
-                    if (value.contains("href"))
-                    {
-                        qDebug() << "Endpoint:" << it.key() << "->" << it.value();
-                        mEndpoints[it.key()] = value.value("href").toString();
-                    }
-                    else
-                    {
-                        addEndpoints(value);
-                    }
-                }
-            };
-
-            addEndpoints(json.object());
-
-            mInterface.setEndpoints(mEndpoints);
-        });
-    }
-
-    bool CRESTManager::hasEndpoints() const
-    {
-        return !mEndpoints.isEmpty();
-    }
-
-    ExternalOrder CRESTManager::getOrderFromJson(const QJsonObject &object, uint regionId) const
+    ExternalOrder ESIManager::getOrderFromJson(const QJsonObject &object, uint regionId) const
     {
         const auto range = object.value("range").toString();
 
@@ -512,17 +420,10 @@ namespace Evernus
 
         ExternalOrder order;
 
-        order.setId(object.value("id").toDouble()); // https://bugreports.qt.io/browse/QTBUG-28560
-        order.setType((object.value("buy").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
-
-        const auto type = object.value("type");
-        order.setTypeId((type.isObject()) ? (type.toObject().value("id").toInt()) : (type.toInt()));
-
-        const auto location = object.value("location");
-        if (location.isUndefined())
-            order.setStationId(object.value("stationID").toInt());
-        else
-            order.setStationId(location.toObject().value("id_str").toString().toUInt());
+        order.setId(object.value("order_id").toDouble()); // https://bugreports.qt.io/browse/QTBUG-28560
+        order.setType((object.value("is_buy_order").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
+        order.setTypeId(object.value("type_id").toInt());
+        order.setStationId(object.value("location_id").toInt());
 
         //TODO: replace when available
         order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));
@@ -539,25 +440,21 @@ namespace Evernus
 
         order.setUpdateTime(QDateTime::currentDateTimeUtc());
         order.setPrice(object.value("price").toDouble());
-        order.setVolumeEntered(object.value("volumeEntered").toInt());
-        order.setVolumeRemaining(object.value("volume").toInt());
-        order.setMinVolume(object.value("minVolume").toInt());
+        order.setVolumeEntered(object.value("volume_total").toInt());
+        order.setVolumeRemaining(object.value("volume_remain").toInt());
+        order.setMinVolume(object.value("min_volume").toInt());
         order.setIssued(issued);
         order.setDuration(object.value("duration").toInt());
 
         return order;
     }
 
-    QString CRESTManager::getMissingEnpointsError()
-    {
-        return tr("CREST endpoint map is empty. Please wait a while.");
-    }
-
-    QNetworkRequest CRESTManager::getVerifyRequest(const QByteArray &accessToken)
+    QNetworkRequest ESIManager::getVerifyRequest(const QByteArray &accessToken)
     {
         QNetworkRequest request{loginUrl + "/oauth/verify"};
         request.setRawHeader("Authorization", "Bearer  " + accessToken);
 
         return request;
      }
+
 }

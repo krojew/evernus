@@ -14,8 +14,8 @@
  */
 #pragma once
 
-#include "CRESTIndividualExternalOrderImporter.h"
-#include "CRESTWholeExternalOrderImporter.h"
+#include "ESIIndividualExternalOrderImporter.h"
+#include "ESIWholeExternalOrderImporter.h"
 #include "EveCentralExternalOrderImporter.h"
 #include "ImportSettings.h"
 
@@ -45,8 +45,8 @@ namespace Evernus
     private:
         const EveDataProvider &mDataProvider;
 
-        std::unique_ptr<CRESTIndividualExternalOrderImporter> mCRESTIndividualImporter;
-        std::unique_ptr<CRESTWholeExternalOrderImporter> mCRESTWholeImporter;
+        std::unique_ptr<ESIIndividualExternalOrderImporter> mESIIndividualImporter;
+        std::unique_ptr<ESIWholeExternalOrderImporter> mESIWholeImporter;
         std::unique_ptr<EveCentralExternalOrderImporter> mEveCentralImporter;
 
         ImportSettings::WebImporterType mCurrentImporter = ImportSettings::webImportTypeDefault;

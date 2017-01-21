@@ -21,7 +21,7 @@ namespace Evernus
     void CallbackExternalOrderImporter::processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const
     {
         if (mCounter.advanceAndCheckBatch())
-            emit statusChanged(tr("CREST import: waiting for %1 server replies").arg(mCounter.getCount()));
+            emit statusChanged(tr("EVE import: waiting for %1 server replies").arg(mCounter.getCount()));
 
         qDebug() << "Got reply," << mCounter.getCount() << "remaining.";
 

@@ -120,8 +120,8 @@ int main(int argc, char *argv[])
 
         Evernus::EvernusApplication app{argc, argv};
 
-        auto webImporter = std::make_unique<Evernus::ProxyWebExternalOrderImporter>(app.getCRESTClientId(),
-                                                                                    app.getCRESTClientSecret(),
+        auto webImporter = std::make_unique<Evernus::ProxyWebExternalOrderImporter>(app.getSSOClientId(),
+                                                                                    app.getSSOClientSecret(),
                                                                                     app.getDataProvider(),
                                                                                     app.getCharacterRepository());
         auto webImporterPtr = webImporter.get();
@@ -132,8 +132,8 @@ int main(int argc, char *argv[])
 
         try
         {
-            Evernus::MainWindow mainWnd{app.getCRESTClientId(),
-                                        app.getCRESTClientSecret(),
+            Evernus::MainWindow mainWnd{app.getSSOClientId(),
+                                        app.getSSOClientSecret(),
                                         app,
                                         app.getMarketOrderProvider(),
                                         app.getCorpMarketOrderProvider(),

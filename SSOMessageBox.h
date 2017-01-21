@@ -18,14 +18,14 @@
 
 namespace Evernus
 {
-    class CRESTMessageBox
+    class SSOMessageBox
         : public QMessageBox
     {
         Q_OBJECT
 
     public:
-        explicit CRESTMessageBox(const QString &message, QWidget *parent = nullptr);
-        virtual ~CRESTMessageBox() = default;
+        explicit SSOMessageBox(const QString &message, QWidget *parent = nullptr);
+        virtual ~SSOMessageBox() = default;
 
         static void showMessage(const QString &message, QWidget *parent = nullptr);
 

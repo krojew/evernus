@@ -20,9 +20,8 @@
 #include <QDebug>
 
 #include "ImportSettings.h"
-#include "CRESTUtils.h"
-
 #include "MarketAnalysisDataFetcher.h"
+#include "SSOUtils.h"
 
 namespace Evernus
 {
@@ -33,10 +32,10 @@ namespace Evernus
                                                          QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
-        , mCRESTManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
+        , mESIManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
         , mEveCentralManager{mDataProvider}
     {
-        connect(&mCRESTManager, &CRESTManager::error, this, &MarketAnalysisDataFetcher::genericError);
+        connect(&mESIManager, &ESIManager::error, this, &MarketAnalysisDataFetcher::genericError);
     }
 
     bool MarketAnalysisDataFetcher::hasPendingOrderRequests() const noexcept
@@ -77,7 +76,7 @@ namespace Evernus
         auto useWholeMarketImport = marketImportType == ImportSettings::MarketOrderImportType::Whole;
 
         if (!useWholeMarketImport && marketImportType == ImportSettings::MarketOrderImportType::Auto)
-            useWholeMarketImport = CRESTUtils::useWholeMarketImport(pairs, mDataProvider);
+            useWholeMarketImport = SSOUtils::useWholeMarketImport(pairs, mDataProvider);
 
         if (useWholeMarketImport)
         {
@@ -89,7 +88,7 @@ namespace Evernus
 
                 mHistoryCounter.incCount();
 
-                mCRESTManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
+                mESIManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
                     processHistory(pair.second, pair.first, std::move(history), error);
                 });
 
@@ -100,7 +99,7 @@ namespace Evernus
 
             for (const auto region : regions)
             {
-                mCRESTManager.fetchMarketOrders(region, [=](std::vector<ExternalOrder> &&orders, const QString &error) {
+                mESIManager.fetchMarketOrders(region, [=](std::vector<ExternalOrder> &&orders, const QString &error) {
                     orders.erase(std::remove_if(std::begin(orders), std::end(orders), [&](const auto &order) {
                         return pairs.find(std::make_pair(order.getTypeId(), order.getRegionId())) == std::end(pairs);
                     }), std::end(orders));
@@ -127,12 +126,12 @@ namespace Evernus
                 }
                 else
                 {
-                    mCRESTManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
+                    mESIManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
                         processOrders(std::move(orders), error);
                     });
                 }
 
-                mCRESTManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
+                mESIManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
                     processHistory(pair.second, pair.first, std::move(history), error);
                 });
             }
@@ -142,11 +141,6 @@ namespace Evernus
 
         emit orderStatusUpdated(tr("Waiting for %1 order server replies...").arg(mOrderCounter.getCount()));
         emit historyStatusUpdated(tr("Waiting for %1 history server replies...").arg(mHistoryCounter.getCount()));
-    }
-
-    void MarketAnalysisDataFetcher::handleNewPreferences()
-    {
-        mCRESTManager.handleNewPreferences();
     }
 
     void MarketAnalysisDataFetcher::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)

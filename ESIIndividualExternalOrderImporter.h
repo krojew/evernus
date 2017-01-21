@@ -14,40 +14,35 @@
  */
 #pragma once
 
-#include <QByteArray>
+#include <QNetworkAccessManager>
+#include <QStringList>
 
 #include "CallbackExternalOrderImporter.h"
-#include "CRESTManager.h"
+#include "ESIManager.h"
 
 namespace Evernus
 {
     class CharacterRepository;
     class EveDataProvider;
 
-    class CRESTWholeExternalOrderImporter
+    class ESIIndividualExternalOrderImporter
         : public CallbackExternalOrderImporter
     {
         Q_OBJECT
 
     public:
-        CRESTWholeExternalOrderImporter(QByteArray clientId,
-                                        QByteArray clientSecret,
-                                        const EveDataProvider &dataProvider,
-                                        const CharacterRepository &characterRepo,
-                                        QObject *parent = nullptr);
-        virtual ~CRESTWholeExternalOrderImporter() = default;
+        ESIIndividualExternalOrderImporter(QByteArray clientId,
+                                             QByteArray clientSecret,
+                                             const EveDataProvider &dataProvider,
+                                             const CharacterRepository &characterRepo,
+                                             QObject *parent = nullptr);
+        virtual ~ESIIndividualExternalOrderImporter() = default;
 
         virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
-
-    public slots:
-        void handleNewPreferences();
 
     private:
         const EveDataProvider &mDataProvider;
 
-        CRESTManager mManager;
-        mutable TypeLocationPairs mCurrentTarget;
-
-        virtual void filterOrders(std::vector<ExternalOrder> &orders) const override;
+        ESIManager mManager;
     };
 }

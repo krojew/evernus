@@ -61,7 +61,7 @@ namespace Evernus
             settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
 
         addSourceItem(*mWebImporterTypeCombo, tr("Eve-Central"), ImportSettings::WebImporterType::EveCentral, webImporterType);
-        addSourceItem(*mWebImporterTypeCombo, tr("CREST"), ImportSettings::WebImporterType::CREST, webImporterType);
+        addSourceItem(*mWebImporterTypeCombo, tr("ESI"), ImportSettings::WebImporterType::ESI, webImporterType);
 
         mMarketOrderImportTypeCombo = new QComboBox{this};
         sourceGroupLayout->addRow(tr("Market order import type:"), mMarketOrderImportTypeCombo);

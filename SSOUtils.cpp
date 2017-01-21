@@ -16,11 +16,11 @@
 
 #include "EveDataProvider.h"
 
-#include "CRESTUtils.h"
+#include "SSOUtils.h"
 
 namespace Evernus
 {
-    namespace CRESTUtils
+    namespace SSOUtils
     {
         bool useWholeMarketImport(const ExternalOrderImporter::TypeLocationPairs &target,
                                   const EveDataProvider &dataProvider)

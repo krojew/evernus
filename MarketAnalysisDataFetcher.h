@@ -30,7 +30,7 @@
 #include "ProgressiveCounter.h"
 #include "EveCentralManager.h"
 #include "ExternalOrder.h"
-#include "CRESTManager.h"
+#include "ESIManager.h"
 #include "EveType.h"
 
 namespace Evernus
@@ -67,12 +67,10 @@ namespace Evernus
         void importData(const ExternalOrderImporter::TypeLocationPairs &pairs,
                         const MarketOrderRepository::TypeLocationPairs &ignored);
 
-        void handleNewPreferences();
-
     private:
         const EveDataProvider &mDataProvider;
 
-        CRESTManager mCRESTManager;
+        ESIManager mESIManager;
         EveCentralManager mEveCentralManager;
 
         ProgressiveCounter mOrderCounter, mHistoryCounter;

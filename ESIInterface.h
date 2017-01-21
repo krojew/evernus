@@ -15,27 +15,21 @@
 #pragma once
 
 #include <unordered_map>
-#include <unordered_set>
 #include <functional>
-#include <vector>
-#include <chrono>
-#include <map>
 
 #include <QNetworkAccessManager>
 #include <QDateTime>
-#include <QTimer>
-#include <QHash>
-#include <QUrl>
+#include <QString>
 
-#include "RateLimiter.h"
 #include "Character.h"
 #include "EveType.h"
 
+class QNetworkRequest;
 class QJsonDocument;
 
 namespace Evernus
 {
-    class CRESTInterface
+    class ESIInterface final
         : public QObject
     {
         Q_OBJECT
@@ -45,12 +39,11 @@ namespace Evernus
         using PaginatedCallback = std::function<void (QJsonDocument &&data, bool atEnd, const QString &error)>;
         using ErrorCallback = std::function<void (const QString &error)>;
 
-        using EndpointMap = QHash<QString, QString>;
-
-        static const QString crestUrl;
-
-        explicit CRESTInterface(QObject *parent = nullptr);
-        virtual ~CRESTInterface() = default;
+        using QObject::QObject;
+        ESIInterface() = default;
+        ESIInterface(const ESIInterface &) = default;
+        ESIInterface(ESIInterface &&) = default;
+        virtual ~ESIInterface() = default;
 
         void fetchMarketOrders(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const;
         void fetchMarketOrders(uint regionId, const PaginatedCallback &callback) const;
@@ -60,9 +53,8 @@ namespace Evernus
 
         void setDestination(quint64 locationId, Character::IdType charId, const ErrorCallback &errorCallback) const;
 
-        void setEndpoints(EndpointMap endpoints);
-
-        static void setRateLimit(float rate);
+        ESIInterface &operator =(const ESIInterface &) = default;
+        ESIInterface &operator =(ESIInterface &&) = default;
 
     public slots:
         void updateTokenAndContinue(Character::IdType charId, QString token, const QDateTime &expiry);
@@ -73,64 +65,36 @@ namespace Evernus
 
     private slots:
         void processSslErrors(const QList<QSslError> &errors);
-        void processPendingRequests();
 
     private:
-        using RegionUrlCallbackMap = QHash<QPair<uint, QString>, std::vector<std::function<void (const QUrl &, const QString &)>>>;
-        using RegionUrlMap = QHash<uint, QUrl>;
-
         struct AccessToken
         {
             QString mToken;
             QDateTime mExpiry;
         };
 
-        static const QString regionsUrlName;
-        static const QString itemTypesUrlName;
-        static const QString systemsUrlName;
-
-        static RateLimiter mCRESTLimiter;
-        static QTimer mRequestTimer;
+        static const QString esiUrl;
 
         mutable QNetworkAccessManager mNetworkManager;
-        EndpointMap mEndpoints;
 
-        mutable RegionUrlMap mRegionUrls, mRegionOrdersUrls, mRegionHistoryUrls, mRegionMarketUrls;
-        mutable RegionUrlCallbackMap mPendingRegionOrdersRequests, mPendingRegionHistoryRequests, mPendingRegionMarketRequests;
-
-        mutable std::multimap<std::chrono::steady_clock::time_point, std::function<void ()>> mPendingRequests;
         mutable std::unordered_multimap<Character::IdType, std::function<void (const QString &)>> mPendingAuthRequests;
-
         mutable std::unordered_map<Character::IdType, AccessToken> mAccessTokens;
 
         template<class T>
         void checkAuth(Character::IdType charId, T &&continuation) const;
 
         template<class T>
-        void fetchAccessToken(const T &continuation) const;
+        void fetchPaginatedData(const QString &url, uint page, T &&continuation) const;
 
         template<class T>
-        void getRegionUrl(uint regionId, RegionUrlMap &urlMap, RegionUrlCallbackMap &callbackMap, const QString &urlName, T &&continuation) const;
-
+        void asyncGet(const QString &url, const QString &query, T &&continuation) const;
         template<class T>
-        void getRegionData(QUrl regionUrl, EveType::IdType typeId, const QByteArray &accept, T &&continuation) const;
-        template<class T>
-        void getOrders(QUrl regionUrl, T &&continuation) const;
-
-        void fetchPaginatedOrders(const PaginatedCallback &callback, const QUrl &url) const;
-
-        template<class T>
-        void asyncGet(const QUrl &url, const QByteArray &accept, T &&continuation) const;
-        template<class T>
-        void post(Character::IdType charId, const QUrl &url, const QByteArray &data, T &&errorCallback) const;
-
-        template<class T>
-        void scheduleRequest(T &&request) const;
+        void post(Character::IdType charId, const QString &url, const QString &query, T &&errorCallback) const;
 
         template<class T>
         void tryAuthAndContinue(Character::IdType charId, T &&continuation) const;
 
-        QNetworkRequest prepareRequest(const QUrl &url, const QByteArray &accept) const;
-        QNetworkRequest prepareRequest(Character::IdType charId, const QUrl &url, const QByteArray &accept) const;
+        QNetworkRequest prepareRequest(const QString &url, const QString &query) const;
+        QNetworkRequest prepareRequest(Character::IdType charId, const QString &url, const QString &query) const;
     };
 }

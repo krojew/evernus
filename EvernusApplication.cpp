@@ -33,7 +33,6 @@
 #include "StatisticsSettings.h"
 #include "UpdaterSettings.h"
 #include "NetworkSettings.h"
-#include "CRESTMessageBox.h"
 #include "ImportSettings.h"
 #include "WalletSettings.h"
 #include "PriceSettings.h"
@@ -51,16 +50,17 @@
 #include "qxtmailmessage.h"
 
 #include "EvernusApplication.h"
+#include "SSOMessageBox.h"
 
 #define STR_VALUE(s) #s
 #define EVERNUS_TEXT(s) STR_VALUE(s)
 
-#if defined(EVERNUS_CREST_CLIENT_ID) && defined(EVERNUS_CREST_SECRET)
-#   define EVERNUS_CREST_CLIENT_ID_TEXT EVERNUS_TEXT(EVERNUS_CREST_CLIENT_ID)
-#   define EVERNUS_CREST_SECRET_TEXT EVERNUS_TEXT(EVERNUS_CREST_SECRET)
+#if defined(EVERNUS_CLIENT_ID) && defined(EVERNUS_CLIENT_SECRET)
+#   define EVERNUS_CLIENT_ID_TEXT EVERNUS_TEXT(EVERNUS_CLIENT_ID)
+#   define EVERNUS_CLIENT_SECRET_TEXT EVERNUS_TEXT(EVERNUS_CLIENT_SECRET)
 #else
-#   define EVERNUS_CREST_CLIENT_ID_TEXT ""
-#   define EVERNUS_CREST_SECRET_TEXT ""
+#   define EVERNUS_CLIENT_ID_TEXT ""
+#   define EVERNUS_CLIENT_SECRET_TEXT ""
 #endif
 
 namespace Evernus
@@ -106,8 +106,8 @@ namespace Evernus
 
         const auto forceVersionArg = QStringLiteral("force-version");
         const auto noUpdateArg = QStringLiteral("no-update");
-        const auto crestIdArg = QStringLiteral("crest-id");
-        const auto crestSecretArg = QStringLiteral("crest-secret");
+        const auto clientIdArg = QStringLiteral("client-id");
+        const auto clientSecretArg = QStringLiteral("client-secret");
 
         QCommandLineParser parser;
         parser.setApplicationDescription(QCoreApplication::translate("main", "Evernus EVE Online trade tool"));
@@ -116,14 +116,14 @@ namespace Evernus
         parser.addOptions({
             { forceVersionArg, tr("Force specific version") },
             { noUpdateArg, tr("Don't run internal updater") },
-            { crestIdArg, tr("CREST client id"), "id", EVERNUS_CREST_CLIENT_ID_TEXT },
-            { crestSecretArg, tr("CREST client secret"), "secret", EVERNUS_CREST_SECRET_TEXT },
+            { clientIdArg, tr("SSO client id"), "id", EVERNUS_CLIENT_ID_TEXT },
+            { clientSecretArg, tr("SSO client secret"), "secret", EVERNUS_CLIENT_SECRET_TEXT },
         });
 
         parser.process(*this);
 
-        mClientId = parser.value(crestIdArg).toLatin1();
-        mClientSecret = parser.value(crestSecretArg).toLatin1();
+        mClientId = parser.value(clientIdArg).toLatin1();
+        mClientSecret = parser.value(clientSecretArg).toLatin1();
 
         if (parser.isSet(forceVersionArg))
             setApplicationVersion(parser.value(forceVersionArg));
@@ -230,8 +230,8 @@ namespace Evernus
         if (settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool())
             Updater::getInstance().checkForUpdates(true);
 
-        mCRESTManager = std::make_unique<CRESTManager>(mClientId, mClientSecret, *mDataProvider, *mCharacterRepository);
-        connect(mCRESTManager.get(), &CRESTManager::error, this, &EvernusApplication::showGenericError);
+        mESIManager = std::make_unique<ESIManager>(mClientId, mClientSecret, *mDataProvider, *mCharacterRepository);
+        connect(mESIManager.get(), &ESIManager::error, this, &EvernusApplication::showGenericError);
     }
 
     void EvernusApplication::registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer)
@@ -731,12 +731,12 @@ namespace Evernus
                                   Q_ARG(QString, error));
     }
 
-    QByteArray EvernusApplication::getCRESTClientId() const
+    QByteArray EvernusApplication::getSSOClientId() const
     {
         return mClientId;
     }
 
-    QByteArray EvernusApplication::getCRESTClientSecret() const
+    QByteArray EvernusApplication::getSSOClientSecret() const
     {
         return mClientSecret;
     }
@@ -1711,12 +1711,12 @@ namespace Evernus
 
     void EvernusApplication::showInEve(EveType::IdType typeId, Character::IdType charId)
     {
-        mCRESTManager->openMarketDetails(typeId, charId);
+        mESIManager->openMarketDetails(typeId, charId);
     }
 
     void EvernusApplication::setDestinationInEve(quint64 locationId, Character::IdType charId)
     {
-        mCRESTManager->setDestination(locationId, charId);
+        mESIManager->setDestination(locationId, charId);
     }
 
     void EvernusApplication::scheduleCharacterUpdate()
@@ -1772,7 +1772,7 @@ namespace Evernus
 
     void EvernusApplication::showGenericError(const QString &info)
     {
-        CRESTMessageBox::showMessage(info, activeWindow());
+        SSOMessageBox::showMessage(info, activeWindow());
     }
 
     void EvernusApplication::showPriceImportStatus(const QString &info)

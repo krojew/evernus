@@ -14,15 +14,15 @@
  */
 #pragma once
 
-#include "ExternalOrderImporter.h"
+#include <QString>
 
 namespace Evernus
 {
-    class EveDataProvider;
-
-    namespace CRESTUtils
+    namespace SSOSettings
     {
-        bool useWholeMarketImport(const ExternalOrderImporter::TypeLocationPairs &target,
-                                  const EveDataProvider &dataProvider);
+        const auto refreshTokenGroup = QStringLiteral("sso/refreshToken");
+        const auto refreshTokenKey = refreshTokenGroup + "/%1";
+
+        const auto cryptKey = Q_UINT64_C(0x454378eff0ac329f);
     }
 }

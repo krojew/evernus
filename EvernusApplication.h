@@ -69,7 +69,7 @@
 #include "ItemRepository.h"
 #include "TaskConstants.h"
 #include "KeyRepository.h"
-#include "CRESTManager.h"
+#include "ESIManager.h"
 #include "TaskManager.h"
 #include "APIManager.h"
 
@@ -149,8 +149,8 @@ namespace Evernus
         virtual void updateTask(uint taskId, const QString &description) override;
         virtual void endTask(uint taskId, const QString &error = QString{}) override;
 
-        QByteArray getCRESTClientId() const;
-        QByteArray getCRESTClientSecret() const;
+        QByteArray getSSOClientId() const;
+        QByteArray getSSOClientSecret() const;
 
         MarketOrderProvider &getMarketOrderProvider() const noexcept;
         MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
@@ -354,7 +354,7 @@ namespace Evernus
 
         mutable std::unordered_map<Character::IdType, LMeveTaskRepository::EntityList> mLMeveTaskCache;
 
-        std::unique_ptr<CRESTManager> mCRESTManager;
+        std::unique_ptr<ESIManager> mESIManager;
 
         void updateTranslator(const QString &lang);
 

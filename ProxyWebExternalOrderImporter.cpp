@@ -14,9 +14,8 @@
  */
 #include <QSettings>
 
-#include "CRESTUtils.h"
-
 #include "ProxyWebExternalOrderImporter.h"
+#include "SSOUtils.h"
 
 namespace Evernus
 {
@@ -27,14 +26,14 @@ namespace Evernus
                                                                  QObject *parent)
         : ExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
-        , mCRESTIndividualImporter{std::make_unique<CRESTIndividualExternalOrderImporter>(clientId, clientSecret, mDataProvider, characterRepo, parent)}
-        , mCRESTWholeImporter{std::make_unique<CRESTWholeExternalOrderImporter>(std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, parent)}
+        , mESIIndividualImporter{std::make_unique<ESIIndividualExternalOrderImporter>(clientId, clientSecret, mDataProvider, characterRepo, parent)}
+        , mESIWholeImporter{std::make_unique<ESIWholeExternalOrderImporter>(std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, parent)}
         , mEveCentralImporter{std::make_unique<EveCentralExternalOrderImporter>(mDataProvider, parent)}
     {
         setCurrentImporter();
 
-        connectImporter(*mCRESTIndividualImporter);
-        connectImporter(*mCRESTWholeImporter);
+        connectImporter(*mESIIndividualImporter);
+        connectImporter(*mESIWholeImporter);
         connectImporter(*mEveCentralImporter);
     }
 
@@ -42,10 +41,10 @@ namespace Evernus
     {
         if (mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Auto)
         {
-            if (CRESTUtils::useWholeMarketImport(target, mDataProvider))
-                mCRESTWholeImporter->fetchExternalOrders(target);
+            if (SSOUtils::useWholeMarketImport(target, mDataProvider))
+                mESIWholeImporter->fetchExternalOrders(target);
             else
-                mCRESTIndividualImporter->fetchExternalOrders(target);
+                mESIIndividualImporter->fetchExternalOrders(target);
         }
         else if (mCurrentImporter == ImportSettings::WebImporterType::EveCentral)
         {
@@ -53,20 +52,17 @@ namespace Evernus
         }
         else if (mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Individual)
         {
-            mCRESTIndividualImporter->fetchExternalOrders(target);
+            mESIIndividualImporter->fetchExternalOrders(target);
         }
         else
         {
-            mCRESTWholeImporter->fetchExternalOrders(target);
+            mESIWholeImporter->fetchExternalOrders(target);
         }
     }
 
     void ProxyWebExternalOrderImporter::handleNewPreferences()
     {
         setCurrentImporter();
-
-        mCRESTIndividualImporter->handleNewPreferences();
-        mCRESTWholeImporter->handleNewPreferences();
     }
 
     template<class T>

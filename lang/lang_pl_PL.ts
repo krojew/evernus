@@ -358,103 +358,6 @@
     </message>
 </context>
 <context>
-    <name>Evernus::CRESTAuthWidget</name>
-    <message>
-        <location filename="../CRESTAuthWidget.cpp" line="42"/>
-        <source>Toggle external browser</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTAuthWidget.cpp" line="66"/>
-        <source>To authorize inside the browser, use the following link and paste the resulting code below: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTAuthWidget.cpp" line="78"/>
-        <source>paste the resulting code here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTAuthWidget.cpp" line="80"/>
-        <source>Authorize</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTAuthWidget.cpp" line="96"/>
-        <source>CREST Authentication</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTAuthWidget.cpp" line="97"/>
-        <source>The supplied code is invalid. Please make sure all characters were copied or use internal browser authorization.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Evernus::CRESTInterface</name>
-    <message>
-        <location filename="../CRESTInterface.cpp" line="126"/>
-        <source>Missing CREST item types url!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTInterface.cpp" line="157"/>
-        <source>Missing CREST systems url!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Evernus::CRESTManager</name>
-    <message>
-        <location filename="../CRESTManager.cpp" line="98"/>
-        <source>CREST authorization failed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTManager.cpp" line="253"/>
-        <source>CREST Authentication for character: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTManager.cpp" line="322"/>
-        <source>Empty access token!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTManager.cpp" line="388"/>
-        <source>Empty refresh token!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTManager.cpp" line="419"/>
-        <source>Please authorize access for character: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTManager.cpp" line="473"/>
-        <source>Error fetching CREST endpoints!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTManager.cpp" line="553"/>
-        <source>CREST endpoint map is empty. Please wait a while.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Evernus::CRESTMessageBox</name>
-    <message>
-        <location filename="../CRESTMessageBox.cpp" line="24"/>
-        <source>CREST error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTMessageBox.cpp" line="26"/>
-        <source>Don&apos;t show again</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Evernus::CachingEveDataProvider</name>
     <message>
         <location filename="../CachingEveDataProvider.cpp" line="158"/>
@@ -468,7 +371,7 @@
     <name>Evernus::CallbackExternalOrderImporter</name>
     <message>
         <location filename="../CallbackExternalOrderImporter.cpp" line="24"/>
-        <source>CREST import: waiting for %1 server replies</source>
+        <source>EVE import: waiting for %1 server replies</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1343,6 +1246,34 @@
     </message>
 </context>
 <context>
+    <name>Evernus::ESIManager</name>
+    <message>
+        <location filename="../ESIManager.cpp" line="89"/>
+        <source>SSO authorization failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ESIManager.cpp" line="232"/>
+        <source>SSO Authentication for character: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ESIManager.cpp" line="301"/>
+        <source>Empty access token!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ESIManager.cpp" line="359"/>
+        <source>Empty refresh token!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ESIManager.cpp" line="390"/>
+        <source>Please authorize access for character: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::EveCentralExternalOrderImporter</name>
     <message>
         <location filename="../EveCentralExternalOrderImporter.cpp" line="58"/>
@@ -1364,12 +1295,12 @@
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="119"/>
-        <source>CREST client id</source>
+        <source>SSO client id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="120"/>
-        <source>CREST client secret</source>
+        <source>SSO client secret</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2331,7 +2262,7 @@
     </message>
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
-        <source>CREST</source>
+        <source>ESI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2990,14 +2921,14 @@
 <context>
     <name>Evernus::MarketAnalysisDataFetcher</name>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="143"/>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="155"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="142"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="149"/>
         <source>Waiting for %1 order server replies...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="144"/>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="188"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="143"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="182"/>
         <source>Waiting for %1 history server replies...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3005,207 +2936,207 @@
 <context>
     <name>Evernus::MarketAnalysisWidget</name>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="174"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="172"/>
         <source>Import data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="188"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="186"/>
         <source>Don&apos;t save imported orders (huge performance gain)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="197"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="195"/>
         <source>Ignore types with existing orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="210"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="208"/>
         <source>Discard bogus orders (causes recalculation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="223"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="221"/>
         <source>Bogus order threshold:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="250"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="248"/>
         <source>Sell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="251"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="249"/>
         <source>Buy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="256"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="254"/>
         <source>Source price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="259"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="257"/>
         <source>Destination price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="262"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="260"/>
         <source>Use skills and taxes for difference calculation (causes recalculation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="276"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="274"/>
         <source>Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="277"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="275"/>
         <source>Inter-Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="313"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="311"/>
         <source>Importing data for analysis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="315"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="313"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="316"/>
-        <source>Making %1 CREST order requests...</source>
+        <location filename="../MarketAnalysisWidget.cpp" line="314"/>
+        <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="319"/>
-        <source>Making %1 CREST history requests...</source>
+        <location filename="../MarketAnalysisWidget.cpp" line="317"/>
+        <source>Making %1 ESI history requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="485"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="483"/>
         <source>%1 in %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="575"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="573"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="629"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="863"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="627"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="861"/>
         <source>- any station -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="633"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="631"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="633"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="631"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="668"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="923"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="948"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="953"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="666"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="921"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="946"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="951"/>
         <source>- all -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="691"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="689"/>
         <source>Region:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="711"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="709"/>
         <source>Limit to solar system:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="724"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="961"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="722"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="959"/>
         <source>Volume:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="742"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="980"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="740"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="978"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="763"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="761"/>
         <source>Buy price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="779"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="777"/>
         <source>Sell price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="795"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="998"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="793"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="996"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="799"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="797"/>
         <source>Double-click an item for additional information. &quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="804"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="1012"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="802"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="1010"/>
         <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="825"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="823"/>
         <source>Show details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="830"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="1037"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="828"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="1035"/>
         <source>Show in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="835"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="1042"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="833"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="1040"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="866"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="864"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="876"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="874"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="935"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="933"/>
         <source>- multiple -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="945"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="943"/>
         <source>- none -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="1002"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="1000"/>
         <source>&quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4386,92 +4317,82 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::NetworkPreferencesWidget</name>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="55"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="54"/>
         <source>Proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="60"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="59"/>
         <source>No proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="63"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="62"/>
         <source>Custom proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="72"/>
         <source>Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
         <source>SOCKS5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="75"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
         <source>HTTP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="78"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="77"/>
         <source>Host:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="81"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="80"/>
         <source>Port:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="87"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="86"/>
         <source>User:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="90"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="89"/>
         <source>Password:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="93"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="92"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="97"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="96"/>
         <source>API provider</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="102"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="101"/>
         <source>Use default provider</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="107"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="106"/>
         <source>Use custom provider</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="114"/>
-        <source>CREST</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="120"/>
-        <source>Max. requests per second:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="130"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="119"/>
         <source>Max. reply time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="136"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="125"/>
         <source>Ignore certificate errors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4794,6 +4715,52 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="146"/>
         <source>Please select at least one region and type.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::SOOAuthWidget</name>
+    <message>
+        <location filename="../SSOAuthWidget.cpp" line="42"/>
+        <source>Toggle external browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SSOAuthWidget.cpp" line="66"/>
+        <source>To authorize inside the browser, use the following link and paste the resulting code below: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SSOAuthWidget.cpp" line="78"/>
+        <source>paste the resulting code here</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SSOAuthWidget.cpp" line="80"/>
+        <source>Authorize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SSOAuthWidget.cpp" line="96"/>
+        <source>SSO Authentication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SSOAuthWidget.cpp" line="97"/>
+        <source>The supplied code is invalid. Please make sure all characters were copied or use internal browser authorization.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::SSOMessageBox</name>
+    <message>
+        <location filename="../SSOMessageBox.cpp" line="24"/>
+        <source>SSO error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SSOMessageBox.cpp" line="26"/>
+        <source>Don&apos;t show again</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5296,24 +5263,6 @@ Total: %7</source>
     <message>
         <location filename="../SyncPreferencesWidget.cpp" line="50"/>
         <source>Evernus was compiled without Dropbox app key and secret values. In order to enable Dropbox support, register a new app key with Dropbox and recompile Evernus with EVERNUS_DROPBOX_APP_KEY and EVERNUS_DROPBOX_APP_SECRET defined.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Evernus::T</name>
-    <message>
-        <location filename="../CRESTInterface.cpp" line="249"/>
-        <source>Missing CREST regions url!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTInterface.cpp" line="319"/>
-        <source>Missing region URL for %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CRESTInterface.cpp" line="337"/>
-        <source>Missing CREST item types url!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5968,14 +5917,6 @@ Total: %7</source>
     <message>
         <location filename="../MarketOrder.cpp" line="280"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>RateLimiter</name>
-    <message>
-        <location filename="../RateLimiter.cpp" line="39"/>
-        <source>Rate must be greater than 0!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

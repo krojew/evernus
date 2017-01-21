@@ -14,17 +14,15 @@
  */
 #pragma once
 
-#include <QString>
+#include "ExternalOrderImporter.h"
 
 namespace Evernus
 {
-    namespace CRESTSettings
-    {
-        const auto refreshTokenGroup = QStringLiteral("crest/refreshToken");
-        const auto refreshTokenKey = refreshTokenGroup + "/%1";
-        const auto rateLimitKey = "crest/rateLimit";
+    class EveDataProvider;
 
-        const auto cryptKey = Q_UINT64_C(0x45729ac96cbe229f);
-        const auto rateLimitDefault = 150u;
+    namespace SSOUtils
+    {
+        bool useWholeMarketImport(const ExternalOrderImporter::TypeLocationPairs &target,
+                                  const EveDataProvider &dataProvider);
     }
 }

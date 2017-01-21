@@ -30,8 +30,8 @@ if(${Qt5XmlPatterns_VERSION} VERSION_LESS "5.4.0")
     message(SEND_ERROR "Qt version >= 5.4 is required.")
 endif()
 
-if(DEFINED EVERNUS_CREST_CLIENT_ID AND DEFINED EVERNUS_CREST_SECRET)
-    add_definitions(-DEVERNUS_CREST_CLIENT_ID=${EVERNUS_CREST_CLIENT_ID} -DEVERNUS_CREST_SECRET=${EVERNUS_CREST_SECRET})
+if(DEFINED EVERNUS_CLIENT_ID AND DEFINED EVERNUS_CLIENT_SECRET)
+    add_definitions(-DEVERNUS_CLIENT_ID=${EVERNUS_CLIENT_ID} -DEVERNUS_CLIENT_SECRET=${EVERNUS_CLIENT_SECRET})
 endif()
 
 configure_file(Version.h.in Version.h)
@@ -86,8 +86,8 @@ if(DEFINED EVERNUS_DROPBOX_APP_KEY AND DEFINED EVERNUS_DROPBOX_APP_SECRET)
     endif()
 endif()
 
-if(DEFINED EVERNUS_CREST_SISI)
-    add_definitions(-DEVERNUS_CREST_SISI)
+if(DEFINED EVERNUS_ESI_SISI)
+    add_definitions(-DEVERNUS_ESI_SISI)
 endif()
 
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TRANSLATIONS})
@@ -241,21 +241,6 @@ add_executable(
     CorpWalletSnapshot.h
     CorpWalletSnapshotRepository.cpp
     CorpWalletSnapshotRepository.h
-    CRESTAuthWidget.cpp
-    CRESTAuthWidget.h
-    CRESTIndividualExternalOrderImporter.cpp
-    CRESTIndividualExternalOrderImporter.h
-    CRESTInterface.cpp
-    CRESTInterface.h
-    CRESTManager.cpp
-    CRESTManager.h
-    CRESTMessageBox.cpp
-    CRESTMessageBox.h
-    CRESTSettings.h
-    CRESTUtils.cpp
-    CRESTUtils.h
-    CRESTWholeExternalOrderImporter.cpp
-    CRESTWholeExternalOrderImporter.h
     DatabaseUtils.cpp
     DatabaseUtils.h
     DateFilteredPlotWidget.cpp
@@ -266,6 +251,14 @@ add_executable(
     DeviationSourceWidget.cpp
     DeviationSourceWidget.h
     Entity.h
+    ESIIndividualExternalOrderImporter.cpp
+    ESIIndividualExternalOrderImporter.h
+    ESIInterface.cpp
+    ESIInterface.h
+    ESIManager.h
+    ESIManager.cpp
+    ESIWholeExternalOrderImporter.cpp
+    ESIWholeExternalOrderImporter.h
     EveCentralExternalOrderImporter.cpp
     EveCentralExternalOrderImporter.h
     EveCentralManager.cpp
@@ -554,8 +547,6 @@ add_executable(
     qxtwebevent.h
     qxtwebslotservice.cpp
     qxtwebslotservice.h
-    RateLimiter.cpp
-    RateLimiter.h
     RefType.cpp
     RefType.h
     RefTypeRepository.cpp
@@ -581,6 +572,13 @@ add_executable(
     SoundPreferencesWidget.cpp
     SoundPreferencesWidget.h
     SoundSettings.h
+    SSOAuthWidget.cpp
+    SSOAuthWidget.h
+    SSOMessageBox.cpp
+    SSOMessageBox.h
+    SSOSettings.h
+    SSOUtils.cpp
+    SSOUtils.h
     StationModel.cpp
     StationModel.h
     StationSelectDialog.cpp

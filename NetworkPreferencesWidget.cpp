@@ -27,7 +27,6 @@
 #include <QLabel>
 
 #include "NetworkSettings.h"
-#include "CRESTSettings.h"
 
 #include "NetworkPreferencesWidget.h"
 
@@ -111,16 +110,6 @@ namespace Evernus
         providerLayout->addWidget(mProviderHostEdit);
         connect(customProviderBtn, &QRadioButton::toggled, mProviderHostEdit, &QWidget::setEnabled);
 
-        auto crestGroup = new QGroupBox{tr("CREST"), this};
-        mainLayout->addWidget(crestGroup);
-
-        auto crestGroupLayout = new QFormLayout{crestGroup};
-
-        mCRESTRateLimitEdit = new QSpinBox{this};
-        crestGroupLayout->addRow(tr("Max. requests per second:"), mCRESTRateLimitEdit);
-        mCRESTRateLimitEdit->setRange(1, 10000);
-        mCRESTRateLimitEdit->setValue(settings.value(CRESTSettings::rateLimitKey, CRESTSettings::rateLimitDefault).toUInt());
-
         auto miscGroup = new QGroupBox{this};
         mainLayout->addWidget(miscGroup);
 
@@ -184,8 +173,6 @@ namespace Evernus
 
         settings.setValue(NetworkSettings::useCustomProviderKey, !mUseDefaultProviderBtn->isChecked());
         settings.setValue(NetworkSettings::providerHostKey, mProviderHostEdit->text());
-
-        settings.setValue(CRESTSettings::rateLimitKey, mCRESTRateLimitEdit->value());
 
         settings.setValue(NetworkSettings::maxReplyTimeKey, mMaxReplyTimeEdit->value());
         settings.setValue(NetworkSettings::ignoreSslErrorsKey, mIgnoreSslErrors->isChecked());

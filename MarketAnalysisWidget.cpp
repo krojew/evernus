@@ -46,7 +46,6 @@
 #include "StationSelectDialog.h"
 #include "AdjustableTableView.h"
 #include "EveDataProvider.h"
-#include "CRESTMessageBox.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
 #include "TaskManager.h"
@@ -54,6 +53,7 @@
 #include "UISettings.h"
 
 #include "MarketAnalysisWidget.h"
+#include "SSOMessageBox.h"
 
 namespace Evernus
 {
@@ -151,8 +151,6 @@ namespace Evernus
 
         mDataFetcher = mFetcherThread->getFetcher();
 
-        connect(this, &MarketAnalysisWidget::handleNewPreferences,
-                mDataFetcher, &MarketAnalysisDataFetcher::handleNewPreferences);
         connect(mDataFetcher, &MarketAnalysisDataFetcher::orderStatusUpdated,
                 this, &MarketAnalysisWidget::updateOrderTask);
         connect(mDataFetcher, &MarketAnalysisDataFetcher::historyStatusUpdated,
@@ -163,7 +161,7 @@ namespace Evernus
                 this, &MarketAnalysisWidget::endHistoryTask);
         connect(mDataFetcher, &MarketAnalysisDataFetcher::genericError,
                 this, [=](const auto &text) {
-            CRESTMessageBox::showMessage(text, this);
+            SSOMessageBox::showMessage(text, this);
         });
 
         auto mainLayout = new QVBoxLayout{this};
@@ -313,10 +311,10 @@ namespace Evernus
             const auto mainTask = mTaskManager.startTask(tr("Importing data for analysis..."));
             const auto infoText = (webImporter == ImportSettings::WebImporterType::EveCentral) ?
                                   (tr("Making %1 Eve-Central order requests...")) :
-                                  (tr("Making %1 CREST order requests..."));
+                                  (tr("Making %1 ESI order requests..."));
 
             mOrderSubtask = mTaskManager.startTask(mainTask, infoText.arg(pairs.size()));
-            mHistorySubtask = mTaskManager.startTask(mainTask, tr("Making %1 CREST history requests...").arg(pairs.size()));
+            mHistorySubtask = mTaskManager.startTask(mainTask, tr("Making %1 ESI history requests...").arg(pairs.size()));
         }
 
         MarketOrderRepository::TypeLocationPairs ignored;

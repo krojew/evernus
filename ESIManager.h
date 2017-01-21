@@ -21,12 +21,12 @@
 #include <map>
 
 #include <QNetworkAccessManager>
-#include <QTimer>
+#include <QString>
 #include <QDate>
 
 #include "MarketHistoryEntry.h"
-#include "CRESTAuthWidget.h"
-#include "CRESTInterface.h"
+#include "SSOAuthWidget.h"
+#include "ESIInterface.h"
 #include "SimpleCrypt.h"
 #include "Character.h"
 #include "EveType.h"
@@ -39,7 +39,7 @@ namespace Evernus
     class EveDataProvider;
     class ExternalOrder;
 
-    class CRESTManager
+    class ESIManager final
         : public QObject
     {
         Q_OBJECT
@@ -48,12 +48,14 @@ namespace Evernus
         template<class T>
         using Callback = std::function<void (T &&data, const QString &error)>;
 
-        CRESTManager(QByteArray clientId,
-                     QByteArray clientSecret,
-                     const EveDataProvider &dataProvider,
-                     const CharacterRepository &characterRepo,
-                     QObject *parent = nullptr);
-        virtual ~CRESTManager() = default;
+        ESIManager(QByteArray clientId,
+                   QByteArray clientSecret,
+                   const EveDataProvider &dataProvider,
+                   const CharacterRepository &characterRepo,
+                   QObject *parent = nullptr);
+        ESIManager(const ESIManager &) = default;
+        ESIManager(ESIManager &&) = default;
+        virtual ~ESIManager() = default;
 
         virtual bool eventFilter(QObject *watched, QEvent *event) override;
 
@@ -71,6 +73,9 @@ namespace Evernus
 
         bool hasClientCredentials() const;
 
+        ESIManager &operator =(const ESIManager &) = default;
+        ESIManager &operator =(ESIManager &&) = default;
+
     signals:
         void error(const QString &text) const;
 
@@ -79,8 +84,6 @@ namespace Evernus
 
     public slots:
         void fetchToken(Character::IdType charId);
-
-        void handleNewPreferences();
 
     private:
         static const QString loginUrl;
@@ -97,25 +100,18 @@ namespace Evernus
 
         SimpleCrypt mCrypt;
 
-        CRESTInterface mInterface;
+        ESIInterface mInterface;
 
         QNetworkAccessManager mNetworkManager;
 
-        CRESTInterface::EndpointMap mEndpoints;
-        QTimer mEndpointTimer;
-
-        std::unique_ptr<CRESTAuthWidget> mAuthView;
+        std::unique_ptr<SOOAuthWidget> mAuthView;
 
         void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
 
         QNetworkRequest getAuthRequest() const;
 
-        void fetchEndpoints();
-        bool hasEndpoints() const;
-
         ExternalOrder getOrderFromJson(const QJsonObject &object, uint regionId) const;
 
-        static QString getMissingEnpointsError();
         static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
     };
 }
