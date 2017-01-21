@@ -42,7 +42,6 @@ A WebService that resolves the first part of the path to a slot name and passes 
 \code
 class MyService : public QxtWebSlotService
 {
-Q_OBJECT
 public slots:
     void hello(QxtWebRequestEvent* event, QString a)
     {

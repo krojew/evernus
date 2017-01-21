@@ -3,6 +3,11 @@ cmake_minimum_required(VERSION 3.1)
 project(Evernus)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(PROJECT_NAME "evernus")
 set(MAJOR_VERSION "1")
 set(MINOR_VERSION "47")
@@ -68,9 +73,6 @@ elseif(WIN32)
     endif() # > VS2015
 endif()
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(TRANSLATIONS lang/lang_pl_PL.ts lang/lang_de_DE.ts)
 set_source_files_properties(${TRANSLATIONS} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/trans")
 
@@ -87,157 +89,6 @@ endif()
 if(DEFINED EVERNUS_CREST_SISI)
     add_definitions(-DEVERNUS_CREST_SISI)
 endif()
-
-qt5_wrap_cpp(
-    MOC_FILES
-    AboutDialog.h
-    ActiveTasksDialog.h
-    AdjustableTableView.h
-    AggregatedStatisticsModel.h
-    APIInterface.h
-    APIManager.h
-    APIResponseCache.h
-    AssetModel.h
-    AssetsImportPreferencesWidget.h
-    AssetsWidget.h
-    ButtonWithTimer.h
-    CachingEveDataProvider.h
-    CachingMarketOrderProvider.h
-    CallbackExternalOrderImporter.h
-    CharacterBoundWidget.h
-    CharacterManagerDialog.h
-    CharacterModel.h
-    CharacterImportPreferencesWidget.h
-    CharacterWidget.h
-    ClickableLabel.h
-    ColorButton.h
-    ContractModel.h
-    ContractImportPreferencesWidget.h
-    ContractStatusesWidget.h
-    ContractView.h
-    ContractWidget.h
-    CorpImportPreferencesWidget.h
-    CorpKeyEditDialog.h
-    CRESTAuthWidget.h
-    CRESTIndividualExternalOrderImporter.h
-    CRESTInterface.h
-    CRESTManager.h
-    CRESTMessageBox.h
-    CRESTWholeExternalOrderImporter.h
-    DateFilteredPlotWidget.h
-    DateRangeWidget.h
-    DeviationSourceWidget.h
-    EveCentralExternalOrderImporter.h
-    EveCentralManager.h
-    EveDataProvider.h
-    EvernusApplication.h
-    ExternalOrderBuyModel.h
-    ExternalOrderImporter.h
-    ExternalOrderSellModel.h
-    ExternalOrderView.h
-    FileDownload.h
-    FilterTextRepository.h
-    FPCController.h
-    GeneralPreferencesWidget.h
-    GenericMarketOrdersInfoWidget.h
-    HttpPreferencesWidget.h
-    HttpService.h
-    ImportPreferencesWidget.h
-    ImportSourcePreferencesWidget.h
-    InterRegionMarketDataModel.h
-    ItemCostEditDialog.h
-    ItemCostModel.h
-    ItemCostWidget.h
-    ItemHistoriesWidget.h
-    ItemHistoryWidget.h
-    ItemNameModel.h
-    ItemTypeSelectDialog.h
-    JSEveDataProvider.h
-    KeyEditDialog.h
-    LanguageSelectDialog.h
-    LMeveAPIInterface.h
-    LMeveAPIManager.h
-    LMevePreferencesWidget.h
-    LMeveTaskModel.h
-    LMeveWidget.h
-    LocationBookmarkSelectDialog.h
-    MainWindow.h
-    MarginToolDialog.h
-    MarketAnalysisDataFetcher.h
-    MarketAnalysisWidget.h
-    MarketBrowserWidget.h
-    MarketLogExternalOrderImporter.h
-    MarketLogExternalOrderImporterThread.h
-    MarketOrderArchiveModel.h
-    MarketOrderBuyModel.h
-    MarketOrderFilterProxyModel.h
-    MarketOrderFilterWidget.h
-    MarketOrderInfoWidget.h
-    MarketOrderPriceStatusesWidget.h
-    MarketOrderSellModel.h
-    MarketOrdersInfoWidget.h
-    MarketOrderStatesWidget.h
-    MarketOrderView.h
-    MarketOrderViewWithTransactions.h
-    MarketOrderWidget.h
-    MenuBarWidget.h
-    NetworkPreferencesWidget.h
-    OrderPreferencesWidget.h
-    PathPreferencesWidget.h
-    PreferencesDialog.h
-    PricePreferencesWidget.h
-    ProxyWebExternalOrderImporter.h
-    qcustomplot.h
-    qdropbox.h
-    qdropboxaccount.h
-    qdropboxfile.h
-    qdropboxfileinfo.h
-    qdropboxjson.h
-    qxtabstracthttpconnector.h
-    qxtabstractwebservice.h
-    qxtabstractwebsessionmanager.h
-    qxtabstractwebsessionmanager_p.h
-    qxtboundfunction.h
-    qxtfifo.h
-    qxtglobalshortcut.h
-    qxthttpsessionmanager.h
-    qxtsmtp_p.h
-    qxtsmtp.h
-    qxtsslserver.h
-    qxtwebcontent.h
-    qxtwebslotservice.h
-    RegionTypeSelectDialog.h
-    ReplyTimeout.h
-    ScriptOrderProcessingModel.h
-    SellMarketOrdersInfoWidget.h
-    SoundPreferencesWidget.h
-    StationModel.h
-    StationSelectDialog.h
-    StationView.h
-    StatisticsPreferencesWidget.h
-    StatisticsWidget.h
-    StructureHuntInterface.h
-    StyledTreeView.h
-    SyncDialog.h
-    SyncPreferencesWidget.h
-    TextFilterWidget.h
-    TradeableTypesTreeModel.h
-    TypeAggregatedDetailsWidget.h
-    TypeAggregatedMarketDataModel.h
-    Updater.h
-    WalletEntryFilterWidget.h
-    WalletJournalModel.h
-    WalletJournalWidget.h
-    WalletPreferencesWidget.h
-    WalletTransactionsModel.h
-    WalletTransactionsWidget.h
-    WalletTransactionView.h
-)
-
-qt5_add_resources(
-    RCC_FILES
-    evernus.qrc
-)
 
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TRANSLATIONS})
 
@@ -420,6 +271,7 @@ add_executable(
     EveCentralManager.cpp
     EveCentralManager.h
     EveDataProvider.h
+    evernus.qrc
     EvernusApplication.cpp
     EvernusApplication.h
     EveType.cpp
@@ -810,8 +662,6 @@ add_executable(
     WalletTransactionView.h
     WarningBarWidget.cpp
     WarningBarWidget.h
-    ${MOC_FILES}
-    ${RCC_FILES}
     ${TRANSLATIONS}
     ${QM_FILES}
     ${ADDITIONAL_SRC}
