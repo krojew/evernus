@@ -42,7 +42,7 @@
 
 namespace Evernus
 {
-    PreferencesDialog::PreferencesDialog(QWidget *parent)
+    PreferencesDialog::PreferencesDialog(const EveDataProvider &dataProvider, QWidget *parent)
         : QDialog(parent)
     {
         auto mainLayout = new QVBoxLayout{this};
@@ -64,7 +64,7 @@ namespace Evernus
         categories.emplace_back(std::make_pair(tr("Paths"), new PathPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Sounds"), new SoundPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Prices"), new PricePreferencesWidget{this}));
-        categories.emplace_back(std::make_pair(tr("Orders"), new OrderPreferencesWidget{this}));
+        categories.emplace_back(std::make_pair(tr("Orders"), new OrderPreferencesWidget{dataProvider, this}));
         categories.emplace_back(std::make_pair(tr("Statistics"), new StatisticsPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Network"), new NetworkPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Synchronization"), new SyncPreferencesWidget{this}));

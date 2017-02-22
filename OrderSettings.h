@@ -29,5 +29,6 @@ namespace Evernus
         const auto oldMarketOrderDaysKey = "orders/oldDays";
         const auto limitSellToStationKey = "orders/limitSellToStation";
         const auto volumeWarningKey = "orders/volumeWarning";
+        const auto defaultCustomStationKey = "orders/defaultCustomStation";
     }
 }

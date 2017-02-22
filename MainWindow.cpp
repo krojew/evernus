@@ -188,7 +188,7 @@ namespace Evernus
 
     void MainWindow::showPreferences()
     {
-        PreferencesDialog dlg{this};
+        PreferencesDialog dlg{mEveDataProvider, this};
         connect(&dlg, &PreferencesDialog::clearCorpWalletData, this, &MainWindow::clearCorpWalletData);
 
         dlg.exec();

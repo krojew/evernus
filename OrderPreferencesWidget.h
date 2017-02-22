@@ -16,28 +16,39 @@
 
 #include <QWidget>
 
+class QPushButton;
 class QCheckBox;
 class QSpinBox;
 
 namespace Evernus
 {
+    class EveDataProvider;
+
     class OrderPreferencesWidget
         : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit OrderPreferencesWidget(QWidget *parent = nullptr);
+        explicit OrderPreferencesWidget(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
         virtual ~OrderPreferencesWidget() = default;
 
     public slots:
         void applySettings();
 
+    private slots:
+        void chooseDefaultCustomStation();
+
     private:
+        const EveDataProvider &mDataProvider;
+
         QSpinBox *mMarketOrderMaxAgeEdit = nullptr;
         QCheckBox *mDeleteOldMarketOrdersBtn = nullptr;
         QSpinBox *mOldMarketOrdersDaysEdit = nullptr;
         QCheckBox *mLimitSellToStationBtn = nullptr;
         QSpinBox *mVolumeWarningEdit = nullptr;
+        QPushButton *mDefaultCustomStationBtn = nullptr;
+
+        QVariant mDefaultCustomStation;
     };
 }

@@ -12,21 +12,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFormLayout>
+#include <QPushButton>
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QSettings>
 #include <QSpinBox>
 
+#include "StationSelectDialog.h"
+#include "EveDataProvider.h"
 #include "OrderSettings.h"
 
 #include "OrderPreferencesWidget.h"
 
 namespace Evernus
 {
-    OrderPreferencesWidget::OrderPreferencesWidget(QWidget *parent)
+    OrderPreferencesWidget::OrderPreferencesWidget(const EveDataProvider &dataProvider, QWidget *parent)
         : QWidget(parent)
+        , mDataProvider{dataProvider}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -68,6 +73,17 @@ namespace Evernus
         mVolumeWarningEdit->setSuffix(locale().percent());
         mVolumeWarningEdit->setValue(settings.value(OrderSettings::volumeWarningKey, OrderSettings::volumeWarningDefault).toInt());
 
+        auto customStationGroup = new QGroupBox{this};
+        mainLayout->addWidget(customStationGroup);
+
+        auto customStationGroupLayout = new QFormLayout{customStationGroup};
+
+        mDefaultCustomStation = settings.value(OrderSettings::defaultCustomStationKey);
+
+        mDefaultCustomStationBtn = new QPushButton{(mDefaultCustomStation.isNull()) ? (tr("none")) : (mDataProvider.getLocationName(mDefaultCustomStation.toUInt())), this};
+        customStationGroupLayout->addRow(tr("Default custom station:"), mDefaultCustomStationBtn);
+        connect(mDefaultCustomStationBtn, &QPushButton::clicked, this, &OrderPreferencesWidget::chooseDefaultCustomStation);
+
         mainLayout->addStretch();
     }
 
@@ -79,5 +95,18 @@ namespace Evernus
         settings.setValue(OrderSettings::oldMarketOrderDaysKey, mOldMarketOrdersDaysEdit->value());
         settings.setValue(OrderSettings::limitSellToStationKey, mLimitSellToStationBtn->isChecked());
         settings.setValue(OrderSettings::volumeWarningKey, mVolumeWarningEdit->value());
+        settings.setValue(OrderSettings::defaultCustomStationKey, mDefaultCustomStation);
+    }
+
+    void OrderPreferencesWidget::chooseDefaultCustomStation()
+    {
+        StationSelectDialog dlg{mDataProvider, this};
+        if (dlg.exec() == QDialog::Accepted)
+        {
+            const auto id = dlg.getStationId();
+
+            mDefaultCustomStation = id;
+            mDefaultCustomStationBtn->setText((id == 0) ? (tr("none")) : (mDataProvider.getLocationName(id)));
+        }
     }
 }

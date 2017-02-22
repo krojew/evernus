@@ -1248,27 +1248,27 @@
 <context>
     <name>Evernus::ESIManager</name>
     <message>
-        <location filename="../ESIManager.cpp" line="89"/>
+        <location filename="../ESIManager.cpp" line="87"/>
         <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="232"/>
+        <location filename="../ESIManager.cpp" line="224"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="301"/>
+        <location filename="../ESIManager.cpp" line="293"/>
         <source>Empty access token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="359"/>
+        <location filename="../ESIManager.cpp" line="351"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="390"/>
+        <location filename="../ESIManager.cpp" line="382"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>

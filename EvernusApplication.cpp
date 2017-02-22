@@ -2288,6 +2288,7 @@ namespace Evernus
             const auto makeCorpSnapshot = makeSnapshot && settings.value(ImportSettings::makeCorpSnapshotsKey, ImportSettings::makeCorpSnapshotsDefault).toBool();
             const auto emailNotification = settings.value(ImportSettings::autoImportEnabledKey, ImportSettings::autoImportEnabledDefault).toBool() &&
                                            settings.value(ImportSettings::emailNotificationsEnabledKey, ImportSettings::emailNotificationsEnabledDefault).toBool();
+            const auto defaultCustomStation = settings.value(OrderSettings::defaultCustomStationKey).toUInt();
 
             struct EmailOrderInfo
             {
@@ -2336,6 +2337,8 @@ namespace Evernus
                 else
                 {
                     order.setDelta(order.getVolumeRemaining() - order.getVolumeEntered());
+                    if (defaultCustomStation != 0)
+                        order.setCustomStationId(defaultCustomStation);
                 }
 
                 order.setCorporationId(corpId); // TODO: move up after 0.5

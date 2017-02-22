@@ -21,13 +21,15 @@ class QStackedWidget;
 
 namespace Evernus
 {
+    class EveDataProvider;
+
     class PreferencesDialog
         : public QDialog
     {
         Q_OBJECT
 
     public:
-        explicit PreferencesDialog(QWidget *parent = nullptr);
+        explicit PreferencesDialog(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
         virtual ~PreferencesDialog() = default;
 
         virtual void accept() override;
