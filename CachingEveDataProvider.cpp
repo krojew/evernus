@@ -616,6 +616,9 @@ namespace Evernus
             result = query.value(0).toUInt();
         }
 
+        if (result == 0)   // citadel?
+            result = getCitadelRegionId(stationId);
+
         mStationRegionCache.emplace(stationId, result);
         return result;
     }
@@ -693,6 +696,9 @@ namespace Evernus
 
             systemId = query.value(0).toUInt();
         }
+
+        if (systemId == 0)  // citadel?
+            systemId = getCitadelSolarSystemId(stationId);
 
         mLocationSolarSystemCache.emplace(stationId, systemId);
         return systemId;
@@ -940,6 +946,21 @@ namespace Evernus
 
     QString CachingEveDataProvider::getCitadelName(Citadel::IdType id) const
     {
+        return getCitadel(id).getName();
+    }
+
+    uint CachingEveDataProvider::getCitadelRegionId(Citadel::IdType id) const
+    {
+        return getCitadel(id).getRegionId();
+    }
+
+    uint CachingEveDataProvider::getCitadelSolarSystemId(Citadel::IdType id) const
+    {
+        return getCitadel(id).getSolarSystemId();
+    }
+
+    const Citadel &CachingEveDataProvider::getCitadel(Citadel::IdType id) const
+    {
         auto citadel = mCitadelCache.find(id);
         if (citadel == std::end(mCitadelCache))
         {
@@ -958,7 +979,7 @@ namespace Evernus
         }
 
         Q_ASSERT(citadel->second);
-        return citadel->second->getName();
+        return *citadel->second;
     }
 
     double CachingEveDataProvider::getPackagedVolume(const EveType &type)

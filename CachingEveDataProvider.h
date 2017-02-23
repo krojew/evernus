@@ -182,7 +182,11 @@ namespace Evernus
         const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
 
         uint getDistance(uint startSystem, uint endSystem) const;
+
         QString getCitadelName(Citadel::IdType id) const;
+        uint getCitadelRegionId(Citadel::IdType id) const;
+        uint getCitadelSolarSystemId(Citadel::IdType id) const;
+        const Citadel &getCitadel(Citadel::IdType id) const;
 
         static double getPackagedVolume(const EveType &type);
     };
