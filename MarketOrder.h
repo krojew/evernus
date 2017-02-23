@@ -47,7 +47,7 @@ namespace Evernus
 
         static const auto characterAccountKey = 1000;
 
-        using CutomLocationType = boost::optional<uint>;
+        using CutomLocationType = boost::optional<quint64>;
 
         using Entity::Entity;
 
@@ -59,8 +59,8 @@ namespace Evernus
         Character::IdType getCharacterId() const;
         void setCharacterId(Character::IdType id);
 
-        uint getStationId() const noexcept;
-        void setStationId(uint id) noexcept;
+        quint64 getStationId() const noexcept;
+        void setStationId(quint64 id) noexcept;
 
         CutomLocationType getCustomStationId() const &;
         CutomLocationType getCustomStationId() && noexcept;
@@ -134,7 +134,7 @@ namespace Evernus
 
     private:
         Character::IdType mCharacterId = Character::invalidId;
-        uint mStationId = 0;
+        quint64 mStationId = 0;
         uint mVolumeEntered = 0;
         uint mVolumeRemaining = 0;
         uint mMinVolume = 0;

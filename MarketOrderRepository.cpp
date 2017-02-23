@@ -69,7 +69,7 @@ namespace Evernus
         if (!record.value("notes").isNull())
             marketOrder->setNotes(record.value("notes").toString());
         if (!record.value("custom_location_id").isNull())
-            marketOrder->setCustomStationId(record.value("custom_location_id").toUInt());
+            marketOrder->setCustomStationId(record.value("custom_location_id").toULongLong());
         if (!record.value("color_tag").isNull())
             marketOrder->setColorTag(record.value("color_tag").toString());
         marketOrder->setNew(false);
@@ -521,7 +521,7 @@ namespace Evernus
         query.bindValue(":last_seen", entity.getLastSeen());
         query.bindValue(":corporation_id", entity.getCorporationId());
         query.bindValue(":notes", entity.getNotes());
-        query.bindValue(":custom_location_id", (entity.getCustomStationId()) ? (*entity.getCustomStationId()) : (QVariant{QVariant::UInt}));
+        query.bindValue(":custom_location_id", (entity.getCustomStationId()) ? (*entity.getCustomStationId()) : (QVariant{QVariant::ULongLong}));
         query.bindValue(":color_tag", (entity.getColorTag().isValid()) ? (entity.getColorTag().name()) : (QVariant{QVariant::String}));
     }
 
@@ -549,7 +549,7 @@ namespace Evernus
         query.addBindValue(entity.getLastSeen());
         query.addBindValue(entity.getCorporationId());
         query.addBindValue(entity.getNotes());
-        query.addBindValue((entity.getCustomStationId()) ? (*entity.getCustomStationId()) : (QVariant{QVariant::UInt}));
+        query.addBindValue((entity.getCustomStationId()) ? (*entity.getCustomStationId()) : (QVariant{QVariant::ULongLong}));
         query.addBindValue((entity.getColorTag().isValid()) ? (entity.getColorTag().name()) : (QVariant{QVariant::String}));
     }
 

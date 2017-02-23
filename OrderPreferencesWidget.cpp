@@ -80,7 +80,7 @@ namespace Evernus
 
         mDefaultCustomStation = settings.value(OrderSettings::defaultCustomStationKey);
 
-        mDefaultCustomStationBtn = new QPushButton{(mDefaultCustomStation.isNull()) ? (tr("none")) : (mDataProvider.getLocationName(mDefaultCustomStation.toUInt())), this};
+        mDefaultCustomStationBtn = new QPushButton{(mDefaultCustomStation.isNull()) ? (tr("none")) : (mDataProvider.getLocationName(mDefaultCustomStation.toULongLong())), this};
         customStationGroupLayout->addRow(tr("Default custom station:"), mDefaultCustomStationBtn);
         connect(mDefaultCustomStationBtn, &QPushButton::clicked, this, &OrderPreferencesWidget::chooseDefaultCustomStation);
 
