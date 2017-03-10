@@ -36,6 +36,7 @@
 #include <QCheckBox>
 #include <QGroupBox>
 #include <QLineEdit>
+#include <QSpinBox>
 #include <QRegExp>
 #include <QLabel>
 #include <QDebug>
@@ -271,6 +272,8 @@ namespace Evernus
             const auto ignoreMinVolume
                 = settings.value(PriceSettings::ignoreOrdersWithMinVolumeKey, PriceSettings::ignoreOrdersWithMinVolumeDefault).toBool();
 
+            const auto rangeThreshold = mRangeThresholdEdit->value();
+
             std::vector<ExternalOrder> parsedOrders;
 
             while (!file.atEnd())
@@ -302,7 +305,7 @@ namespace Evernus
                         if (jumps != 0)
                         {
                             const auto range = order.getRange();
-                            if (range == rangeStation || jumps - range > 0)
+                            if (range == rangeStation || jumps - range > rangeThreshold)
                             {
                                 parsedOrders.emplace_back(std::move(order));
                                 continue;
@@ -317,7 +320,7 @@ namespace Evernus
 
                         ++buyCount;
                     }
-                    else if (jumps == 0)
+                    else if (jumps <= rangeThreshold)
                     {
                         const auto price = order.getPrice();
                         if (price < sell || sell < 0.)
@@ -650,12 +653,29 @@ namespace Evernus
         mainLayout->setContentsMargins(5, 5, 5, 5);
 #endif
 
+        auto preferencesGroup = new QGroupBox{this};
+        mainLayout->addWidget(preferencesGroup);
+
+        auto preferencesLayout = new QHBoxLayout{preferencesGroup};
+        preferencesLayout->addWidget(new QLabel{tr("Range threshold:"), this});
+
+        QSettings settings;
+
+        mRangeThresholdEdit = new QSpinBox{this};
+        preferencesLayout->addWidget(mRangeThresholdEdit);
+        mRangeThresholdEdit->setSuffix(tr(" jumps"));
+        mRangeThresholdEdit->setValue(settings.value(PriceSettings::rangeThresholdKey, PriceSettings::rangeThresholdDefault).toInt());
+        connect(mRangeThresholdEdit, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=](const auto value) {
+            QSettings settings;
+            settings.setValue(PriceSettings::rangeThresholdKey, value);
+        });
+
+        preferencesLayout->addStretch();
+
         auto sourceGroup = new QGroupBox{tr("Preferred source"), this};
         mainLayout->addWidget(sourceGroup);
 
         auto sourceLayout = new QHBoxLayout{sourceGroup};
-
-        QSettings settings;
 
         const auto dataSource = static_cast<PriceSettings::DataSource>(
             settings.value(PriceSettings::costDataSourceKey, static_cast<int>(PriceSettings::costDataSourceDefault)).toInt());

@@ -28,6 +28,7 @@
 class QTableWidget;
 class QRadioButton;
 class QLineEdit;
+class QSpinBox;
 class QLabel;
 
 namespace Evernus
@@ -111,6 +112,8 @@ namespace Evernus
 
         QTableWidget *m1SampleDataTable = nullptr;
         QTableWidget *m5SampleDataTable = nullptr;
+
+        QSpinBox *mRangeThresholdEdit = nullptr;
 
         QRadioButton *mOrderSourceBtn = nullptr;
         QRadioButton *mItemCostSourceBtn = nullptr;

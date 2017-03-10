@@ -51,6 +51,7 @@ namespace Evernus
         const auto itemConstCostAddDefault = 0.;
         const auto itemRelativeCostAddDefault = 0.;
         const auto showInEveOnFpcDefault = false;
+        const auto rangeThresholdDefault = 0;
 
         const auto minMarginKey = "prices/margin/min";
         const auto preferredMarginKey = "prices/margin/preferred";
@@ -74,5 +75,6 @@ namespace Evernus
         const auto itemConstCostAddKey = "prices/costs/constCost";
         const auto itemRelativeCostAddKey = "prices/costs/relativeCost";
         const auto showInEveOnFpcKey = "prices/fpc/showInEve";
+        const auto rangeThresholdKey = "prices/rangeThreshold";
     }
 }
