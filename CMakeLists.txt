@@ -241,6 +241,8 @@ add_executable(
     CorpWalletSnapshot.h
     CorpWalletSnapshotRepository.cpp
     CorpWalletSnapshotRepository.h
+    CustomFPCDialog.cpp
+    CustomFPCDialog.h
     DatabaseUtils.cpp
     DatabaseUtils.h
     DateFilteredPlotWidget.cpp

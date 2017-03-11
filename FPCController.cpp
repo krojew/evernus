@@ -61,12 +61,12 @@ namespace Evernus
 
         qDebug() << "Changing FPC executor to:" << executor;
 
-        if (mExecutor != nullptr)
+        if (!mExecutor.isNull())
             disconnect(mExecutor, SLOT(executeFPC()));
 
         mExecutor = executor;
 
-        if (mExecutor != nullptr)
+        if (!mExecutor.isNull())
             connect(this, SIGNAL(execute()), mExecutor, SLOT(executeFPC()));
     }
 

@@ -1102,6 +1102,29 @@
     </message>
 </context>
 <context>
+    <name>Evernus::CustomFPCDialog</name>
+    <message>
+        <location filename="../CustomFPCDialog.cpp" line="31"/>
+        <source>You can copy raw data into the clipboard for use as a custom Fast Price Copy source. The first column should contain item type id, and the second its price to copy (optional).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CustomFPCDialog.cpp" line="37"/>
+        <source>Paste data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CustomFPCDialog.cpp" line="43"/>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CustomFPCDialog.cpp" line="43"/>
+        <source>Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::DateFilteredPlotWidget</name>
     <message>
         <location filename="../DateFilteredPlotWidget.cpp" line="39"/>
@@ -1373,8 +1396,8 @@
     <message>
         <location filename="../EvernusApplication.cpp" line="809"/>
         <location filename="../EvernusApplication.cpp" line="815"/>
-        <location filename="../EvernusApplication.cpp" line="2445"/>
-        <location filename="../EvernusApplication.cpp" line="2483"/>
+        <location filename="../EvernusApplication.cpp" line="2448"/>
+        <location filename="../EvernusApplication.cpp" line="2486"/>
         <source>Evernus</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1573,30 +1596,30 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2446"/>
+        <location filename="../EvernusApplication.cpp" line="2449"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2450"/>
+        <location filename="../EvernusApplication.cpp" line="2453"/>
         <source>The following orders have changed their status:
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2453"/>
+        <location filename="../EvernusApplication.cpp" line="2456"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2483"/>
+        <location filename="../EvernusApplication.cpp" line="2486"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2811"/>
+        <location filename="../EvernusApplication.cpp" line="2814"/>
         <source>Fetching character %1...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2479,7 +2502,7 @@
 <context>
     <name>Evernus::Key</name>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2733"/>
+        <location filename="../EvernusApplication.cpp" line="2736"/>
         <source>Fetching contract items for contract %1...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2691,229 +2714,234 @@
 <context>
     <name>Evernus::MainWindow</name>
     <message>
-        <location filename="../MainWindow.cpp" line="242"/>
-        <location filename="../MainWindow.cpp" line="493"/>
+        <location filename="../MainWindow.cpp" line="251"/>
+        <location filename="../MainWindow.cpp" line="502"/>
         <source>Evernus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="242"/>
+        <location filename="../MainWindow.cpp" line="251"/>
         <source>You can show/hide table columns via right-click menu. Columns can also be moved around via dragging.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="257"/>
+        <location filename="../MainWindow.cpp" line="266"/>
         <source>No active tasks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="262"/>
+        <location filename="../MainWindow.cpp" line="271"/>
         <source>Active tasks: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="271"/>
+        <location filename="../MainWindow.cpp" line="280"/>
         <source>Wallet: &lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="493"/>
+        <location filename="../MainWindow.cpp" line="502"/>
         <source>HTTP link was copied to the clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="601"/>
+        <location filename="../MainWindow.cpp" line="610"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="602"/>
+        <location filename="../MainWindow.cpp" line="611"/>
         <source>Select character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="603"/>
+        <location filename="../MainWindow.cpp" line="612"/>
         <source>&amp;Manage characters...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="605"/>
-        <location filename="../MainWindow.cpp" line="607"/>
+        <location filename="../MainWindow.cpp" line="614"/>
+        <location filename="../MainWindow.cpp" line="616"/>
         <source>&amp;Preferences...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="610"/>
+        <location filename="../MainWindow.cpp" line="619"/>
         <source>Import EVE Mentat order history...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="612"/>
+        <location filename="../MainWindow.cpp" line="621"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="614"/>
+        <location filename="../MainWindow.cpp" line="623"/>
         <source>&amp;Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="615"/>
+        <location filename="../MainWindow.cpp" line="624"/>
         <source>Import conquerable stations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="616"/>
+        <location filename="../MainWindow.cpp" line="625"/>
         <source>Import citadels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="617"/>
+        <location filename="../MainWindow.cpp" line="626"/>
         <source>Ma&amp;rgin tool...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="619"/>
-        <source>Copy HTTP link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MainWindow.cpp" line="622"/>
-        <source>Upload data to cloud...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MainWindow.cpp" line="625"/>
-        <source>&amp;View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MainWindow.cpp" line="626"/>
-        <source>Show/hide tabs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../MainWindow.cpp" line="627"/>
-        <source>Show/hide table columns</source>
+        <source>Custom &amp;Fast Price Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="629"/>
+        <source>Copy HTTP link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="632"/>
+        <source>Upload data to cloud...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="635"/>
+        <source>&amp;View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="636"/>
+        <source>Show/hide tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="637"/>
+        <source>Show/hide table columns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="639"/>
         <source>Always on top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="661"/>
+        <location filename="../MainWindow.cpp" line="671"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="662"/>
+        <location filename="../MainWindow.cpp" line="672"/>
         <source>&amp;Online help...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="663"/>
+        <location filename="../MainWindow.cpp" line="673"/>
         <source>Check for &amp;updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="665"/>
+        <location filename="../MainWindow.cpp" line="675"/>
         <source>&amp;About...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="703"/>
+        <location filename="../MainWindow.cpp" line="713"/>
         <source>Character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="716"/>
+        <location filename="../MainWindow.cpp" line="726"/>
         <source>Statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="738"/>
+        <location filename="../MainWindow.cpp" line="748"/>
         <source>Assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="762"/>
+        <location filename="../MainWindow.cpp" line="772"/>
         <source>Character orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="786"/>
+        <location filename="../MainWindow.cpp" line="796"/>
         <source>Character journal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="798"/>
+        <location filename="../MainWindow.cpp" line="808"/>
         <source>Character transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="811"/>
+        <location filename="../MainWindow.cpp" line="821"/>
         <source>Character contracts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="821"/>
+        <location filename="../MainWindow.cpp" line="831"/>
         <source>Corporation assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="845"/>
+        <location filename="../MainWindow.cpp" line="855"/>
         <source>Corporation orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="868"/>
+        <location filename="../MainWindow.cpp" line="878"/>
         <source>Corporation journal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="880"/>
+        <location filename="../MainWindow.cpp" line="890"/>
         <source>Corporation transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="893"/>
+        <location filename="../MainWindow.cpp" line="903"/>
         <source>Corporation contracts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="904"/>
+        <location filename="../MainWindow.cpp" line="914"/>
         <source>Item history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="917"/>
+        <location filename="../MainWindow.cpp" line="927"/>
         <source>Market browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="929"/>
+        <location filename="../MainWindow.cpp" line="939"/>
         <source>Item costs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="938"/>
+        <location filename="../MainWindow.cpp" line="948"/>
         <source>LMeve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="960"/>
+        <location filename="../MainWindow.cpp" line="970"/>
         <source>Market analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="981"/>
+        <location filename="../MainWindow.cpp" line="991"/>
         <source>Toggle character tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="987"/>
+        <location filename="../MainWindow.cpp" line="997"/>
         <source>Toggle corporation tabs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4400,34 +4428,45 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::OrderPreferencesWidget</name>
     <message>
-        <location filename="../OrderPreferencesWidget.cpp" line="41"/>
+        <location filename="../OrderPreferencesWidget.cpp" line="46"/>
         <source>Max. market order age:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OrderPreferencesWidget.cpp" line="44"/>
-        <location filename="../OrderPreferencesWidget.cpp" line="57"/>
+        <location filename="../OrderPreferencesWidget.cpp" line="49"/>
+        <location filename="../OrderPreferencesWidget.cpp" line="62"/>
         <source> days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OrderPreferencesWidget.cpp" line="49"/>
+        <location filename="../OrderPreferencesWidget.cpp" line="54"/>
         <source>Delete old fulfilled orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OrderPreferencesWidget.cpp" line="54"/>
+        <location filename="../OrderPreferencesWidget.cpp" line="59"/>
         <source>Delete older than:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OrderPreferencesWidget.cpp" line="61"/>
+        <location filename="../OrderPreferencesWidget.cpp" line="66"/>
         <source>Limit sell order price checking to station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OrderPreferencesWidget.cpp" line="66"/>
+        <location filename="../OrderPreferencesWidget.cpp" line="71"/>
         <source>Order volume warning (0 for none):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../OrderPreferencesWidget.cpp" line="83"/>
+        <location filename="../OrderPreferencesWidget.cpp" line="109"/>
+        <source>none</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../OrderPreferencesWidget.cpp" line="84"/>
+        <source>Default custom station:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5700,184 +5739,194 @@ Total: %7</source>
 <context>
     <name>MarginToolDialog</name>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="85"/>
+        <location filename="../MarginToolDialog.cpp" line="86"/>
         <source>Margin data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="86"/>
+        <location filename="../MarginToolDialog.cpp" line="87"/>
         <source>Data source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="91"/>
+        <location filename="../MarginToolDialog.cpp" line="92"/>
         <source>Always on top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="98"/>
+        <location filename="../MarginToolDialog.cpp" line="99"/>
         <source>Quit application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="109"/>
+        <location filename="../MarginToolDialog.cpp" line="110"/>
         <source>Margin tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="451"/>
+        <location filename="../MarginToolDialog.cpp" line="454"/>
         <source>export market logs in game</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="463"/>
+        <location filename="../MarginToolDialog.cpp" line="466"/>
         <source>Sell:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="464"/>
+        <location filename="../MarginToolDialog.cpp" line="467"/>
         <source>Buy:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="465"/>
+        <location filename="../MarginToolDialog.cpp" line="468"/>
         <source>Profit:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="466"/>
+        <location filename="../MarginToolDialog.cpp" line="469"/>
         <source>Revenue:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="467"/>
+        <location filename="../MarginToolDialog.cpp" line="470"/>
         <source>Cost of sales:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="468"/>
+        <location filename="../MarginToolDialog.cpp" line="471"/>
         <source>Buyout:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="482"/>
-        <location filename="../MarginToolDialog.cpp" line="497"/>
+        <location filename="../MarginToolDialog.cpp" line="485"/>
+        <location filename="../MarginToolDialog.cpp" line="500"/>
         <source>Copy to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="518"/>
+        <location filename="../MarginToolDialog.cpp" line="521"/>
         <source>Buy orders:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="523"/>
+        <location filename="../MarginToolDialog.cpp" line="526"/>
         <source>Sell orders:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="528"/>
+        <location filename="../MarginToolDialog.cpp" line="531"/>
         <source>Buy volume/movement:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="533"/>
+        <location filename="../MarginToolDialog.cpp" line="536"/>
         <source>Sell volume/movement:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="546"/>
+        <location filename="../MarginToolDialog.cpp" line="549"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="552"/>
+        <location filename="../MarginToolDialog.cpp" line="555"/>
         <source>Markup:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="557"/>
+        <location filename="../MarginToolDialog.cpp" line="560"/>
         <source>Autocopy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="567"/>
+        <location filename="../MarginToolDialog.cpp" line="570"/>
         <source>Nothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="572"/>
+        <location filename="../MarginToolDialog.cpp" line="575"/>
         <source>Sell price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="577"/>
+        <location filename="../MarginToolDialog.cpp" line="580"/>
         <source>Buy price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="599"/>
+        <location filename="../MarginToolDialog.cpp" line="602"/>
         <source>Broker fee:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="604"/>
+        <location filename="../MarginToolDialog.cpp" line="607"/>
         <source>Sales tax:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="609"/>
+        <location filename="../MarginToolDialog.cpp" line="612"/>
         <source>Sample data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="623"/>
+        <location filename="../MarginToolDialog.cpp" line="626"/>
         <source>Show sample data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="638"/>
+        <location filename="../MarginToolDialog.cpp" line="641"/>
         <source>If you experience problems with importing orders, adjust margin tool settings in the Preferences.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="653"/>
-        <source>Preferred source</source>
+        <location filename="../MarginToolDialog.cpp" line="660"/>
+        <source>Range threshold:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="663"/>
-        <source>Orders only</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarginToolDialog.cpp" line="667"/>
-        <source>Prefer custom item costs (if available)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarginToolDialog.cpp" line="671"/>
-        <source>Custom station</source>
+        <location filename="../MarginToolDialog.cpp" line="666"/>
+        <source> jumps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="675"/>
+        <source>Preferred source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarginToolDialog.cpp" line="683"/>
+        <source>Orders only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarginToolDialog.cpp" line="687"/>
+        <source>Prefer custom item costs (if available)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarginToolDialog.cpp" line="691"/>
+        <source>Custom station</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarginToolDialog.cpp" line="695"/>
         <source>Source station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="831"/>
-        <location filename="../MarginToolDialog.cpp" line="837"/>
+        <location filename="../MarginToolDialog.cpp" line="851"/>
+        <location filename="../MarginToolDialog.cpp" line="857"/>
         <source>Margin tool error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="832"/>
+        <location filename="../MarginToolDialog.cpp" line="852"/>
         <source>Could not determine market log path. Please enter log path in settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="838"/>
+        <location filename="../MarginToolDialog.cpp" line="858"/>
         <source>Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again.</source>
         <translation type="unfinished"></translation>
     </message>

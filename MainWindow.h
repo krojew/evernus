@@ -148,6 +148,7 @@ namespace Evernus
         void showCharacterManagement();
         void showPreferences();
         void showMarginTool();
+        void showCustomFPC();
         void showAbout();
         void openHelp();
         void checkForUpdates();

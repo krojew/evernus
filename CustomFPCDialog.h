@@ -14,38 +14,38 @@
  */
 #pragma once
 
-#include <QSoundEffect>
-#include <QPointer>
-#include <QObject>
+#include <QDialog>
 
-#include "qxtglobalshortcut.h"
+#include "EveType.h"
+
+class QTableWidget;
 
 namespace Evernus
 {
-    class FPCController
-        : public QObject
+    class CustomFPCDialog final
+        : public QDialog
     {
         Q_OBJECT
 
     public:
-        explicit FPCController(QObject *parent = nullptr);
-        virtual ~FPCController() = default;
+        explicit CustomFPCDialog(QWidget *parent = nullptr);
+        CustomFPCDialog(const CustomFPCDialog &) = default;
+        CustomFPCDialog(CustomFPCDialog &&) = default;
+        virtual ~CustomFPCDialog() = default;
 
-        void handleNewPreferences();
+        CustomFPCDialog &operator =(const CustomFPCDialog &) = default;
+        CustomFPCDialog &operator =(CustomFPCDialog &&) = default;
 
     signals:
-        void execute();
+        void showInEve(EveType::IdType id);
 
     public slots:
-        void changeExecutor(QObject *executor);
+        void executeFPC();
 
     private slots:
-        void trigger();
+        void pasteData();
 
     private:
-        QxtGlobalShortcut mShortcut;
-        QSoundEffect mCopySound;
-
-        QPointer<QObject> mExecutor;
+        QTableWidget *mDataView = nullptr;
     };
 }

@@ -54,6 +54,7 @@
 #include "MarginToolDialog.h"
 #include "StatisticsWidget.h"
 #include "CharacterWidget.h"
+#include "CustomFPCDialog.h"
 #include "ContractWidget.h"
 #include "ItemCostWidget.h"
 #include "ImportSettings.h"
@@ -219,6 +220,17 @@ namespace Evernus
 
         mMarginToolDialog->showNormal();
         mMarginToolDialog->activateWindow();
+    }
+
+    void MainWindow::showCustomFPC()
+    {
+        CustomFPCDialog dlg{this};
+        mFPCController.changeExecutor(&dlg);
+        connect(&dlg, &CustomFPCDialog::showInEve, this, [=](const auto id) {
+            this->showInEve(id, Character::invalidId);
+        });
+
+        dlg.exec();
     }
 
     void MainWindow::showAbout()
@@ -615,6 +627,7 @@ namespace Evernus
         toolsMenu->addAction(tr("Import conquerable stations"), this, &MainWindow::refreshConquerableStations);
         toolsMenu->addAction(tr("Import citadels"), this, &MainWindow::refreshCitadels);
         toolsMenu->addAction(QIcon{":/images/report.png"}, tr("Ma&rgin tool..."), this, &MainWindow::showMarginTool, Qt::CTRL + Qt::Key_M);
+        toolsMenu->addAction(tr("Custom &Fast Price Copy"), this, &MainWindow::showCustomFPC);
         toolsMenu->addSeparator();
         toolsMenu->addAction(tr("Copy HTTP link"), this, &MainWindow::copyHTTPLink);
 #ifdef EVERNUS_DROPBOX_ENABLED
