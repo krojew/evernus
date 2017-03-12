@@ -14,8 +14,11 @@
  */
 #include <future>
 
+#include <QNetworkRequest>
+#include <QJsonDocument>
 #include <QApplication>
 #include <QProgressBar>
+#include <QJsonObject>
 #include <QMessageBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -24,16 +27,20 @@
 #include <QSettings>
 #include <QSaveFile>
 #include <QFileInfo>
+#include <QLineEdit>
+#include <QUrlQuery>
 #include <QLabel>
 #include <QMovie>
 #include <QDebug>
 #include <QFile>
 #include <QFont>
+#include <QUrl>
 
 #include "DatabaseUtils.h"
 #include "SyncSettings.h"
+#include "ReplyTimeout.h"
 
-#include "qdropboxfile.h"
+#include "qdropbox2file.h"
 
 #include "SyncDialog.h"
 
@@ -45,15 +52,14 @@
 namespace Evernus
 {
     const QString SyncDialog::mainDbPath = "/sandbox/main.db";
+    const QString SyncDialog::redirectLink = "https://evernus.com/sso-authentication/";
+
     QDateTime SyncDialog::mLastSyncTime;
 
     SyncDialog::SyncDialog(Mode mode, QWidget *parent)
         : QDialog(parent)
         , mMode(mode)
         , mCrypt(Q_UINT64_C(0x4630e0cc6a00124b))
-#ifdef EVERNUS_DROPBOX_ENABLED
-        , mDb(EVERNUS_DROPBOX_APP_KEY_TEXT, EVERNUS_DROPBOX_APP_SECRET_TEXT)
-#endif
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -94,18 +100,16 @@ namespace Evernus
         mTokenLabel->setOpenExternalLinks(true);
         mTokenLabel->setWordWrap(true);
 
+        mAccessCodeEdit = new QLineEdit{this};
+        tokenLayout->addWidget(mAccessCodeEdit);
+
         auto acceptTokenBtn = new QPushButton{tr("Proceed"), this};
-        tokenLayout->addWidget(acceptTokenBtn);
-        connect(acceptTokenBtn, &QPushButton::clicked, this, &SyncDialog::acceptToken);
+		tokenLayout->addWidget(acceptTokenBtn);
+        connect(acceptTokenBtn, &QPushButton::clicked, this, &SyncDialog::requestToken);
 
         setWindowTitle(tr("Synchronization"));
 
-        connect(&mDb, &QDropbox::errorOccured, this, &SyncDialog::showError);
-        connect(&mDb, &QDropbox::requestTokenFinished, this, &SyncDialog::showTokenLink);
-        connect(&mDb, &QDropbox::tokenExpired, this, &SyncDialog::showTokenLink);
-        connect(&mDb, &QDropbox::accessTokenFinished, this, &SyncDialog::setToken);
-        connect(&mDb, &QDropbox::metadataReceived, this, &SyncDialog::processMetadata);
-        connect(&mDb, &QDropbox::fileNotFound, this, &SyncDialog::handleNoFiles);
+        connect(&mDb, &QDropbox2::signal_errorOccurred, this, &SyncDialog::showError);
 
         QMetaObject::invokeMethod(this, "startSync", Qt::QueuedConnection);
     }
@@ -122,67 +126,108 @@ namespace Evernus
         QSettings settings;
 
         const auto token = mCrypt.decryptToString(settings.value(SyncSettings::dbTokenKey).toString());
-        const auto tokenSecret = mCrypt.decryptToString(settings.value(SyncSettings::dbTokenSecretKey).toString());
 
-        if (token.isEmpty() || tokenSecret.isEmpty())
+        if (token.isEmpty())
         {
-            mDb.requestToken();
+            showTokenLink();
         }
         else
         {
-            mDb.setToken(token);
-            mDb.setTokenSecret(tokenSecret);
-
-            requestMetadata();
+            acceptToken(token);
         }
     }
 
     void SyncDialog::showTokenLink()
     {
+        const auto link = QDropbox2::authorizeLink(EVERNUS_DROPBOX_APP_KEY_TEXT, redirectLink);
+        qDebug() << "Dropbox auth link:" << link;
+
         mTokenLabel->setText(tr("Dropbox requires authenticating Evernus first. Please click on "
-            "<a href='%1'>this link</a>, authorize Evernus and press 'Proceed'.").arg(mDb.authorizeLink().toString()));
+            "<a href='%1'>this link</a>, authorize Evernus and enter the resulting code below.").arg(link.toString()));
         mTokenGroup->show();
         adjustSize();
     }
 
-    void SyncDialog::acceptToken()
+    void SyncDialog::requestToken()
     {
         qDebug() << "Requesting access token...";
+
+        const auto code = mAccessCodeEdit->text();
+        if (code.isEmpty())
+            return;
 
         mTokenGroup->hide();
         adjustSize();
 
-        mDb.requestAccessToken();
+        QNetworkRequest request{QUrl{QStringLiteral("https://www.dropbox.com/oauth2/token")}};
+        request.setHeader(QNetworkRequest::UserAgentHeader,
+                          QStringLiteral("%1 %2").arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
+        request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded"));
+
+        QUrlQuery query;
+        query.addQueryItem(QStringLiteral("code"), code);
+        query.addQueryItem(QStringLiteral("grant_type"), QStringLiteral("authorization_code"));
+        query.addQueryItem(QStringLiteral("client_id"), EVERNUS_DROPBOX_APP_KEY_TEXT);
+        query.addQueryItem(QStringLiteral("client_secret"), EVERNUS_DROPBOX_APP_SECRET_TEXT);
+        query.addQueryItem(QStringLiteral("redirect_uri"), redirectLink);
+
+        auto reply = mNetworkAccessManager.post(request, query.toString().toLatin1());
+        Q_ASSERT(reply != nullptr);
+
+        new ReplyTimeout{*reply};
+
+        connect(reply, &QNetworkReply::sslErrors, this, [=] {
+            qWarning() << "Dropbox SSL errors!";
+            QMessageBox::warning(this, tr("Security warning"), tr("Encountered certificate errors while contacting Dropbox. Aborting synchronization."));
+        });
+        connect(reply, &QNetworkReply::finished, this, [=] {
+            reply->deleteLater();
+
+            const auto error = reply->error();
+            if (error != QNetworkReply::NoError)
+            {
+                qWarning() << "Dropbox token request error:" << error;
+                QMessageBox::warning(this, tr("Dropbox error"), reply->errorString());
+            }
+            else
+            {
+                const auto json = QJsonDocument::fromJson(reply->readAll());
+                setToken(json.object().value(QStringLiteral("access_token")).toString());
+            }
+        });
     }
 
-    void SyncDialog::showError()
+    void SyncDialog::acceptToken(const QString &token)
     {
-        qDebug() << "Error:" << mDb.error() << mDb.errorString();
-
-        QMessageBox::warning(this, tr("Synchronization"), tr("Error: %1 (%2)").arg(mDb.error()).arg(mDb.errorString()));
-        QMetaObject::invokeMethod(this, "reject", Qt::QueuedConnection);
-    }
-
-    void SyncDialog::setToken(const QString &token, const QString &secret)
-    {
-        QSettings settings;
-        settings.setValue(SyncSettings::dbTokenKey, mCrypt.encryptToString(token));
-        settings.setValue(SyncSettings::dbTokenSecretKey, mCrypt.encryptToString(secret));
-
+        mDb.setAccessToken(token);
         requestMetadata();
     }
 
-    void SyncDialog::processMetadata(const QString &json)
+    void SyncDialog::showError(int errorCode, const QString& errorMessage)
+    {
+        qDebug() << "Error:" << errorCode << errorMessage;
+
+        QMessageBox::warning(this, tr("Synchronization"), tr("Error: %1 (%2)").arg(errorCode).arg(errorMessage));
+        QMetaObject::invokeMethod(this, "reject", Qt::QueuedConnection);
+    }
+
+    void SyncDialog::setToken(const QString &token)
+    {
+        QSettings settings;
+        settings.setValue(SyncSettings::dbTokenKey, mCrypt.encryptToString(token));
+
+        acceptToken(token);
+    }
+
+    void SyncDialog::processMetadata(const QDropbox2EntityInfo &info)
     {
         if (mStarted)
             return;
 
-        QDropboxFileInfo info{json};
-
         if (mMode == Mode::Download)
         {
             QFileInfo currentInfo{getMainDbPath()};
-            if (currentInfo.lastModified() > info.modified())
+            if (currentInfo.lastModified() > info.clientModified())
             {
                 QSettings settings;
                 if (settings.value(SyncSettings::firstSyncKey, true).toBool())
@@ -207,7 +252,7 @@ namespace Evernus
         }
         else
         {
-            if (mLastSyncTime.isValid() && info.modified() > mLastSyncTime)
+            if (mLastSyncTime.isValid() && info.clientModified() > mLastSyncTime)
             {
                 const auto ret = QMessageBox::question(this,
                                                        tr("Synchronization"),
@@ -240,7 +285,12 @@ namespace Evernus
     void SyncDialog::requestMetadata()
     {
         qDebug() << "Requesting metadata...";
-        mDb.requestMetadata(mainDbPath);
+
+        QDropbox2File file{mainDbPath, &mDb};
+
+        const auto metadata = file.metadata();
+        if (file.error() == QDropbox2::Error::NoError || file.error() == QDropbox2::Error::FileNotFound)
+            processMetadata(metadata);
     }
 
     void SyncDialog::downloadFiles()
@@ -249,9 +299,9 @@ namespace Evernus
 
         mStarted = true;
 
-        QDropboxFile mainDb{mainDbPath, &mDb};
-        connect(&mainDb, &QDropboxFile::downloadProgress, this, &SyncDialog::updateProgress);
-        connect(mCancelBtn, &QPushButton::clicked, &mainDb, &QDropboxFile::abort, Qt::QueuedConnection);
+        QDropbox2File mainDb{mainDbPath, &mDb};
+        connect(&mainDb, &QDropbox2File::signal_downloadProgress, this, &SyncDialog::updateProgress);
+        connect(mCancelBtn, &QPushButton::clicked, &mainDb, &QDropbox2File::slot_abort, Qt::QueuedConnection);
 
         if (mainDb.open(QIODevice::ReadOnly))
         {
@@ -275,7 +325,7 @@ namespace Evernus
 
             if (file.commit())
             {
-                mLastSyncTime = mainDb.metadata().modified();
+                mLastSyncTime = mainDb.metadata().clientModified();
             }
             else
             {
@@ -294,10 +344,10 @@ namespace Evernus
         mStarted = true;
         mCancelBtn->setEnabled(false);
 
-        QDropboxFile mainDb{mainDbPath, &mDb};
+        QDropbox2File mainDb{mainDbPath, &mDb};
         mainDb.setOverwrite(true);
-        connect(&mainDb, &QDropboxFile::uploadProgress, this, &SyncDialog::updateProgress);
-        connect(mCancelBtn, &QPushButton::clicked, &mainDb, &QDropboxFile::abort);
+        connect(&mainDb, &QDropbox2File::signal_uploadProgress, this, &SyncDialog::updateProgress);
+        connect(mCancelBtn, &QPushButton::clicked, &mainDb, &QDropbox2File::slot_abort);
 
         if (!mainDb.open(QIODevice::WriteOnly))
         {
@@ -316,8 +366,6 @@ namespace Evernus
 
         asyncExec([&] {
             const auto data = qCompress(localMainDb.readAll(), 9);
-
-            mainDb.setFlushThreshold(data.size() + 1);
             mainDb.write(data);
         });
         mCancelBtn->setEnabled(true);
@@ -327,7 +375,7 @@ namespace Evernus
         QSettings settings;
         settings.setValue(SyncSettings::firstSyncKey, false);
 
-        mLastSyncTime = mainDb.metadata().modified();
+        mLastSyncTime = mainDb.metadata().clientModified();
 
         QMetaObject::invokeMethod(this, "accept", Qt::QueuedConnection);
     }

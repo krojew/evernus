@@ -28,7 +28,6 @@ namespace Evernus
         const auto enabledOnStartupKey = "sync/enabledOnStartup";
         const auto enabledOnShutdownKey = "sync/enabledOnShutdown";
         const auto dbTokenKey = "sync/db/token";
-        const auto dbTokenSecretKey = "sync/db/tokenSecret";
         const auto firstSyncKey = "sync/first";
     }
 }

@@ -486,20 +486,21 @@ add_executable(
     ProxyWebExternalOrderImporter.h
     qcustomplot.cpp
     qcustomplot.h
-    qdropbox.cpp
-    qdropbox.h
-    qdropboxaccount.cpp
-    qdropboxaccount.h
-    qdropboxfile.cpp
-    qdropboxfile.h
-    qdropboxfileinfo.cpp
-    qdropboxfileinfo.h
-    qdropboxjson.cpp
-    qdropboxjson.h
+    qdropbox2.cpp
+    qdropbox2.h
+    qdropbox2account.cpp
+    qdropbox2account.h
+    qdropbox2common.h
+    qdropbox2entity.h
+    qdropbox2entityinfo.cpp
+    qdropbox2entityinfo.h
+    qdropbox2file.cpp
+    qdropbox2file.h
+    qdropbox2folder.cpp
+    qdropbox2folder.h
+    qdropbox2global.h
     qhttpheader.cpp
     qhttpheader.h
-    qtdropbox.h
-    qtdropbox_global.h
     QtScriptSyntaxHighlighter.cpp
     QtScriptSyntaxHighlighter.h
     qxtabstracthttpconnector.cpp

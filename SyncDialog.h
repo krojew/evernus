@@ -14,16 +14,18 @@
  */
 #pragma once
 
+#include <QNetworkAccessManager>
 #include <QDateTime>
 #include <QDialog>
 
-#include "qdropbox.h"
+#include "qdropbox2.h"
 
 #include "SimpleCrypt.h"
 
 class QProgressBar;
 class QPushButton;
 class QGroupBox;
+class QLineEdit;
 class QLabel;
 
 namespace Evernus
@@ -47,17 +49,13 @@ namespace Evernus
 
     private slots:
         void startSync();
-        void showTokenLink();
-        void acceptToken();
-        void showError();
-        void setToken(const QString &token, const QString &secret);
-        void processMetadata(const QString &json);
-        void handleNoFiles();
-
+        void requestToken();
         void updateProgress(qint64 current, qint64 total);
+        void showError(int errorCode, const QString& errorMessage);
 
     private:
         static const QString mainDbPath;
+        static const QString redirectLink;
 
         static QDateTime mLastSyncTime;
 
@@ -65,12 +63,21 @@ namespace Evernus
         bool mStarted = false;
 
         SimpleCrypt mCrypt;
-        QDropbox mDb;
+        QDropbox2 mDb;
 
         QPushButton *mCancelBtn = nullptr;
         QProgressBar *mProgress = nullptr;
         QGroupBox *mTokenGroup = nullptr;
         QLabel *mTokenLabel = nullptr;
+        QLineEdit *mAccessCodeEdit = nullptr;
+
+        QNetworkAccessManager mNetworkAccessManager;
+
+        void showTokenLink();
+        void acceptToken(const QString &token);
+        void setToken(const QString &token);
+        void processMetadata(const QDropbox2EntityInfo &json);
+        void handleNoFiles();
 
         void requestMetadata();
         void downloadFiles();

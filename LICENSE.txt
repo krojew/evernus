@@ -15,7 +15,7 @@ Evernus:
 
 3rd party licenses:
 
-QtDropbox:
+QtDropbox2:
 
 Licensed under GNU LGPLv3.
 
