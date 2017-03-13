@@ -5235,69 +5235,69 @@ Total: %7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="109"/>
-        <location filename="../SyncDialog.cpp" line="209"/>
-        <location filename="../SyncDialog.cpp" line="235"/>
-        <location filename="../SyncDialog.cpp" line="257"/>
-        <location filename="../SyncDialog.cpp" line="315"/>
-        <location filename="../SyncDialog.cpp" line="331"/>
-        <location filename="../SyncDialog.cpp" line="353"/>
-        <location filename="../SyncDialog.cpp" line="361"/>
+        <location filename="../SyncDialog.cpp" line="110"/>
+        <location filename="../SyncDialog.cpp" line="210"/>
+        <location filename="../SyncDialog.cpp" line="236"/>
+        <location filename="../SyncDialog.cpp" line="258"/>
+        <location filename="../SyncDialog.cpp" line="316"/>
+        <location filename="../SyncDialog.cpp" line="332"/>
+        <location filename="../SyncDialog.cpp" line="354"/>
+        <location filename="../SyncDialog.cpp" line="362"/>
         <source>Synchronization</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="144"/>
+        <location filename="../SyncDialog.cpp" line="145"/>
         <source>Dropbox requires authenticating Evernus first. Please click on &lt;a href=&apos;%1&apos;&gt;this link&lt;/a&gt;, authorize Evernus and enter the resulting code below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="180"/>
+        <location filename="../SyncDialog.cpp" line="181"/>
         <source>Security warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="180"/>
+        <location filename="../SyncDialog.cpp" line="181"/>
         <source>Encountered certificate errors while contacting Dropbox. Aborting synchronization.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="189"/>
+        <location filename="../SyncDialog.cpp" line="190"/>
         <source>Dropbox error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="209"/>
+        <location filename="../SyncDialog.cpp" line="210"/>
         <source>Error: %1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="236"/>
+        <location filename="../SyncDialog.cpp" line="237"/>
         <source>Your local database is newer than cloud one. Do you wish to replace your local copy?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="258"/>
+        <location filename="../SyncDialog.cpp" line="259"/>
         <source>Something modified cloud data since last synchronization. Do you wish to overwrite it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="315"/>
+        <location filename="../SyncDialog.cpp" line="316"/>
         <source>Couldn&apos;t open file for writing! Synchronization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="331"/>
+        <location filename="../SyncDialog.cpp" line="332"/>
         <source>Couldn&apos;t write destination file! Synchronization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="353"/>
+        <location filename="../SyncDialog.cpp" line="354"/>
         <source>Couldn&apos;t open remote file! Synchronization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="361"/>
+        <location filename="../SyncDialog.cpp" line="362"/>
         <source>Couldn&apos;t open local file! Synchronization failed.</source>
         <translation type="unfinished"></translation>
     </message>

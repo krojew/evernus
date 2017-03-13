@@ -126,7 +126,6 @@ namespace Evernus
         QSettings settings;
 
         const auto token = mCrypt.decryptToString(settings.value(SyncSettings::dbTokenKey).toString());
-
         if (token.isEmpty())
         {
             showTokenLink();
@@ -287,6 +286,7 @@ namespace Evernus
         qDebug() << "Requesting metadata...";
 
         QDropbox2File file{mainDbPath, &mDb};
+        connect(&file, &QDropbox2File::signal_errorOccurred, this, &SyncDialog::showError);
 
         const auto metadata = file.metadata();
         if (file.error() == QDropbox2::Error::NoError || file.error() == QDropbox2::Error::FileNotFound)
@@ -301,6 +301,7 @@ namespace Evernus
 
         QDropbox2File mainDb{mainDbPath, &mDb};
         connect(&mainDb, &QDropbox2File::signal_downloadProgress, this, &SyncDialog::updateProgress);
+        connect(&mainDb, &QDropbox2File::signal_errorOccurred, this, &SyncDialog::showError);
         connect(mCancelBtn, &QPushButton::clicked, &mainDb, &QDropbox2File::slot_abort, Qt::QueuedConnection);
 
         if (mainDb.open(QIODevice::ReadOnly))
