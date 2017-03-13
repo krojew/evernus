@@ -520,12 +520,12 @@ namespace Evernus
         if (mStationCache.find(solarSystemId) == std::end(mStationCache))
         {
             QSqlQuery query{mEveDb};
-            query.prepare(
+            query.prepare(QStringLiteral(
                 "SELECT stationID id, stationName name FROM staStations WHERE solarSystemID = ? "
                 "UNION "
-                "SELECT itemID id, itemName name FROM mapDenormalize WHERE solarSystemID = ?");
-            query.bindValue(0, solarSystemId);
-            query.bindValue(1, solarSystemId);
+                "SELECT itemID id, itemName name FROM mapDenormalize WHERE solarSystemID = ?"));
+            query.addBindValue(solarSystemId);
+            query.addBindValue(solarSystemId);
 
             DatabaseUtils::execQuery(query);
 
@@ -541,6 +541,10 @@ namespace Evernus
             const auto conqStations = mConquerableStationRepository.fetchForSolarSystem(solarSystemId);
             for (const auto &station : conqStations)
                 stations.emplace_back(std::make_pair(station->getId(), station->getName()));
+
+            const auto citadels = mCitadelRepository.fetchForSolarSystem(solarSystemId);
+            for (const auto &citadel : citadels)
+                stations.emplace_back(std::make_pair(citadel->getId(), citadel->getName()));
 
             std::sort(std::begin(stations), std::end(stations), [](const auto &a, const auto &b) {
                 return a.second < b.second;

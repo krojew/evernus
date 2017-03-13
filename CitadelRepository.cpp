@@ -67,6 +67,25 @@ namespace Evernus
         exec(QString{"DELETE FROM %1"}.arg(getTableName()));
     }
 
+    CitadelRepository::EntityList CitadelRepository::fetchForSolarSystem(uint solarSystemId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE solar_system_id = ?"}.arg(getTableName()));
+        query.bindValue(0, solarSystemId);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
+    }
+
     QStringList CitadelRepository::getColumns() const
     {
         return QStringList{}

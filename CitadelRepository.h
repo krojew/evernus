@@ -36,6 +36,8 @@ namespace Evernus
         void create() const;
         void deleteAll() const;
 
+        EntityList fetchForSolarSystem(uint solarSystemId) const;
+
         CitadelRepository &operator =(const CitadelRepository &) = default;
         CitadelRepository &operator =(CitadelRepository &&) = default;
 
