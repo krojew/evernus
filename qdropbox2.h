@@ -200,7 +200,7 @@ public:
       this all without involving the user (app key and secret?), this flow needs to be
       enhanced to facilitate that.
      */
-    static QUrl authorizeLink(const QString& appKey, const QString& redirect_uri = "http://localhost");
+    static QUrl authorizeLink(const QString& appKey, const QString& redirect_uri = "http://localhost", const QString& state = QString{});
 
     /*!
       By using this function the information of the connected user will be

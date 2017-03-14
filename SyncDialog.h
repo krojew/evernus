@@ -18,6 +18,7 @@
 #include <QDateTime>
 #include <QDialog>
 
+#include "qxthttpsessionmanager.h"
 #include "qdropbox2.h"
 
 #include "SimpleCrypt.h"
@@ -49,13 +50,20 @@ namespace Evernus
 
     private slots:
         void startSync();
-        void requestToken();
+        void requestToken(const QString &code);
         void updateProgress(qint64 current, qint64 total);
         void showError(int errorCode, const QString& errorMessage);
 
+        void acceptLocalConnection();
+
     private:
+        class DropboxWebService;
+
+        static const quint16 localPort = 62345;
+
         static const QString mainDbPath;
         static const QString redirectLink;
+        static const QString localRedirectLink;
 
         static QDateTime mLastSyncTime;
 
@@ -72,6 +80,11 @@ namespace Evernus
         QLineEdit *mAccessCodeEdit = nullptr;
 
         QNetworkAccessManager mNetworkAccessManager;
+
+        QxtHttpSessionManager mAuthServer;
+        QString mAuthState;
+        DropboxWebService *mAuthWebService = nullptr;
+        bool mUsingAuthServer = false;
 
         void showTokenLink();
         void acceptToken(const QString &token);

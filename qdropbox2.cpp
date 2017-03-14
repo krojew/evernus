@@ -124,7 +124,7 @@ void QDropbox2::slot_networkRequestFinished(QNetworkReply *reply)
         if(lastErrorCode != QNetworkReply::NoError)
         {
 #ifdef QTDROPBOX_DEBUG
-            // debug information only - this should not happen, but if it does we 
+            // debug information only - this should not happen, but if it does we
             // ignore replies when not waiting for anything
 #endif
             lastErrorMessage = reply->errorString();
@@ -243,7 +243,7 @@ QString QDropbox2::apiVersion()
     return "2.0";
 }
 
-QUrl QDropbox2::authorizeLink(const QString& appKey, const QString& redirect_uri)
+QUrl QDropbox2::authorizeLink(const QString& appKey, const QString& redirect_uri, const QString& state)
 {
     QUrl url;
     url.setScheme("https");
@@ -254,6 +254,10 @@ QUrl QDropbox2::authorizeLink(const QString& appKey, const QString& redirect_uri
     query.addQueryItem("response_type", "code");
     query.addQueryItem("client_id", appKey);
     query.addQueryItem("redirect_uri", redirect_uri);
+
+    if (!state.isEmpty())
+        query.addQueryItem("state", state);
+
     url.setQuery(query);
 
 #ifdef QTDROPBOX_DEBUG

@@ -33,12 +33,17 @@
 #include <QMovie>
 #include <QDebug>
 #include <QFile>
+#include <QUuid>
 #include <QFont>
 #include <QUrl>
 
 #include "DatabaseUtils.h"
 #include "SyncSettings.h"
 #include "ReplyTimeout.h"
+
+#include "qxtabstracthttpconnector.h"
+#include "qxtabstractwebservice.h"
+#include "qxtwebevent.h"
 
 #include "qdropbox2file.h"
 
@@ -51,8 +56,58 @@
 
 namespace Evernus
 {
+    class SyncDialog::DropboxWebService
+        : public QxtAbstractWebService
+    {
+        Q_OBJECT
+
+    public:
+        DropboxWebService(QxtAbstractWebSessionManager *manager, QString authState, QObject *parent)
+            : QxtAbstractWebService{manager, parent}
+            , mAuthState{std::move(authState)}
+        {
+        }
+
+        virtual ~DropboxWebService() = default;
+
+        virtual void pageRequestedEvent(QxtWebRequestEvent *event) override
+        {
+            Q_ASSERT(event != nullptr);
+
+            // NOTE: don't use raw literal or automoc will not see the class
+            postEvent(new QxtWebPageEvent{event->sessionID, event->requestID,
+                "<!doctype html>"
+                "<html>"
+                "    <head>"
+                "        <meta http-equiv=\"refresh\" content=\"0; url=http://evernus.com/\" />"
+                "    </head>"
+                "    <body>"
+                "    </body>"
+                "</html>"
+            });
+
+            QUrlQuery query{event->url};
+
+            const auto code = query.queryItemValue("code");
+            if (code.isEmpty())
+                return;
+
+            if (query.queryItemValue("state") != mAuthState)
+                return;
+
+            emit codeAcquired(code);
+        }
+
+    signals:
+        void codeAcquired(const QString &code);
+
+    private:
+        QString mAuthState;
+    };
+
     const QString SyncDialog::mainDbPath = "/sandbox/main.db";
     const QString SyncDialog::redirectLink = "https://evernus.com/sso-authentication/";
+    const QString SyncDialog::localRedirectLink = QStringLiteral("http://localhost:%1").arg(localPort);
 
     QDateTime SyncDialog::mLastSyncTime;
 
@@ -60,6 +115,8 @@ namespace Evernus
         : QDialog(parent)
         , mMode(mode)
         , mCrypt(Q_UINT64_C(0x4630e0cc6a00124b))
+        , mAuthState(QUuid::createUuid().toString())
+        , mAuthWebService(new DropboxWebService(&mAuthServer, mAuthState, this))
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -89,27 +146,59 @@ namespace Evernus
         mainLayout->addWidget(mProgress);
         mProgress->setRange(0, 100);
 
-        mTokenGroup = new QGroupBox{};
-        mainLayout->addWidget(mTokenGroup);
-        mTokenGroup->setVisible(false);
+        // since Dropbox allows for many redirect urls, let's try setting up local server and fall back to the webpage
+        mAuthServer.setPort(localPort);
+        mAuthServer.setListenInterface(QHostAddress::LocalHost);
+        mAuthServer.setAutoCreateSession(false);
+        mAuthServer.setStaticContentService(mAuthWebService);
+        mAuthServer.setConnector(new QxtHttpServerConnector{this});
 
-        auto tokenLayout = new QVBoxLayout{mTokenGroup};
+        if (mAuthServer.start())
+        {
+            mUsingAuthServer = true;
 
-        mTokenLabel = new QLabel{this};
-        tokenLayout->addWidget(mTokenLabel);
-        mTokenLabel->setOpenExternalLinks(true);
-        mTokenLabel->setWordWrap(true);
+            mTokenGroup = new QGroupBox{this};
+            mainLayout->addWidget(mTokenGroup);
+            mTokenGroup->setVisible(false);
 
-        mAccessCodeEdit = new QLineEdit{this};
-        tokenLayout->addWidget(mAccessCodeEdit);
+            auto tokenLayout = new QVBoxLayout{mTokenGroup};
 
-        auto acceptTokenBtn = new QPushButton{tr("Proceed"), this};
-		tokenLayout->addWidget(acceptTokenBtn);
-        connect(acceptTokenBtn, &QPushButton::clicked, this, &SyncDialog::requestToken);
+            mTokenLabel = new QLabel{this};
+            tokenLayout->addWidget(mTokenLabel);
+            mTokenLabel->setOpenExternalLinks(true);
+            mTokenLabel->setWordWrap(true);
+        }
+        else
+        {
+            mTokenGroup = new QGroupBox{this};
+            mainLayout->addWidget(mTokenGroup);
+            mTokenGroup->setVisible(false);
+
+            auto tokenLayout = new QVBoxLayout{mTokenGroup};
+
+            mTokenLabel = new QLabel{this};
+            tokenLayout->addWidget(mTokenLabel);
+            mTokenLabel->setOpenExternalLinks(true);
+            mTokenLabel->setWordWrap(true);
+
+            mAccessCodeEdit = new QLineEdit{this};
+            tokenLayout->addWidget(mAccessCodeEdit);
+
+            auto acceptTokenBtn = new QPushButton{tr("Proceed"), this};
+            tokenLayout->addWidget(acceptTokenBtn);
+            connect(acceptTokenBtn, &QPushButton::clicked, this, [=] {
+                const auto code = mAccessCodeEdit->text();
+                if (code.isEmpty())
+                    return;
+
+                requestToken(code);
+            });
+        }
 
         setWindowTitle(tr("Synchronization"));
 
         connect(&mDb, &QDropbox2::signal_errorOccurred, this, &SyncDialog::showError);
+        connect(mAuthWebService, &DropboxWebService::codeAcquired, this, &SyncDialog::requestToken);
 
         QMetaObject::invokeMethod(this, "startSync", Qt::QueuedConnection);
     }
@@ -138,25 +227,35 @@ namespace Evernus
 
     void SyncDialog::showTokenLink()
     {
-        const auto link = QDropbox2::authorizeLink(EVERNUS_DROPBOX_APP_KEY_TEXT, redirectLink);
-        qDebug() << "Dropbox auth link:" << link;
+        if (mUsingAuthServer)
+        {
+            const auto link = QDropbox2::authorizeLink(EVERNUS_DROPBOX_APP_KEY_TEXT, localRedirectLink, mAuthState);
+            qDebug() << "Dropbox auth link:" << link;
 
-        mTokenLabel->setText(tr("Dropbox requires authenticating Evernus first. Please click on "
-            "<a href='%1'>this link</a>, authorize Evernus and enter the resulting code below.").arg(link.toString()));
+            mTokenLabel->setText(tr("Dropbox requires authenticating Evernus first. Please click on "
+                "<a href='%1'>this link</a>, authorize Evernus and wait for the application to proceed.").arg(link.toString()));
+        }
+        else
+        {
+            const auto link = QDropbox2::authorizeLink(EVERNUS_DROPBOX_APP_KEY_TEXT, redirectLink);
+            qDebug() << "Dropbox auth link:" << link;
+
+            mTokenLabel->setText(tr("Dropbox requires authenticating Evernus first. Please click on "
+                "<a href='%1'>this link</a>, authorize Evernus and enter the resulting code below.").arg(link.toString()));
+        }
+
         mTokenGroup->show();
         adjustSize();
     }
 
-    void SyncDialog::requestToken()
+    void SyncDialog::requestToken(const QString &code)
     {
         qDebug() << "Requesting access token...";
 
-        const auto code = mAccessCodeEdit->text();
-        if (code.isEmpty())
-            return;
-
         mTokenGroup->hide();
         adjustSize();
+
+        activateWindow();
 
         QNetworkRequest request{QUrl{QStringLiteral("https://www.dropbox.com/oauth2/token")}};
         request.setHeader(QNetworkRequest::UserAgentHeader,
@@ -168,7 +267,7 @@ namespace Evernus
         query.addQueryItem(QStringLiteral("grant_type"), QStringLiteral("authorization_code"));
         query.addQueryItem(QStringLiteral("client_id"), EVERNUS_DROPBOX_APP_KEY_TEXT);
         query.addQueryItem(QStringLiteral("client_secret"), EVERNUS_DROPBOX_APP_SECRET_TEXT);
-        query.addQueryItem(QStringLiteral("redirect_uri"), redirectLink);
+        query.addQueryItem(QStringLiteral("redirect_uri"), (mUsingAuthServer) ? (localRedirectLink) : (redirectLink));
 
         auto reply = mNetworkAccessManager.post(request, query.toString().toLatin1());
         Q_ASSERT(reply != nullptr);
@@ -208,6 +307,11 @@ namespace Evernus
 
         QMessageBox::warning(this, tr("Synchronization"), tr("Error: %1 (%2)").arg(errorCode).arg(errorMessage));
         QMetaObject::invokeMethod(this, "reject", Qt::QueuedConnection);
+    }
+
+    void SyncDialog::acceptLocalConnection()
+    {
+
     }
 
     void SyncDialog::setToken(const QString &token)
@@ -394,3 +498,5 @@ namespace Evernus
             qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     }
 }
+
+#include "SyncDialog.moc"
