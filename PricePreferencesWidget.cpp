@@ -172,11 +172,25 @@ namespace Evernus
         fpcSettingsLayout->addWidget(mFPCBtn);
         mFPCBtn->setChecked(settings.value(PriceSettings::fpcKey, PriceSettings::fpcDefault).toBool());
 
-        fpcSettingsLayout->addWidget(new QLabel{tr("Shortcut:"), this}, 0, Qt::AlignBaseline | Qt::AlignRight);
+        fpcSettingsLayout->addWidget(new QLabel{tr("Forward shortcut:"), this}, 0, Qt::AlignBaseline | Qt::AlignRight);
 
-        mFPCShortcutEdit = new QKeySequenceEdit{QKeySequence::fromString(
-            settings.value(PriceSettings::fpcShourtcutKey).toString()), this};
-        fpcSettingsLayout->addWidget(mFPCShortcutEdit);
+        mFPCForwardShortcutEdit = new QKeySequenceEdit{QKeySequence::fromString(
+            settings.value(PriceSettings::fpcForwardShortcutKey).toString()), this};
+        fpcSettingsLayout->addWidget(mFPCForwardShortcutEdit);
+        connect(mFPCForwardShortcutEdit, &QKeySequenceEdit::keySequenceChanged, this, [=](const auto &keySequence) {
+            if (keySequence.matches(Qt::Key_Escape) == QKeySequence::ExactMatch)
+                mFPCForwardShortcutEdit->clear();
+        });
+
+        fpcSettingsLayout->addWidget(new QLabel{tr("Backward shortcut:"), this}, 0, Qt::AlignBaseline | Qt::AlignRight);
+
+        mFPCBackwardShortcutEdit = new QKeySequenceEdit{QKeySequence::fromString(
+            settings.value(PriceSettings::fpcBackwardShortcutKey).toString()), this};
+        fpcSettingsLayout->addWidget(mFPCBackwardShortcutEdit);
+        connect(mFPCBackwardShortcutEdit, &QKeySequenceEdit::keySequenceChanged, this, [=](const auto &keySequence) {
+            if (keySequence.matches(Qt::Key_Escape) == QKeySequence::ExactMatch)
+                mFPCBackwardShortcutEdit->clear();
+        });
 
         mShowInEveOnFPCBtn = new QCheckBox{tr("Show in EVE on copy"), this};
         fpcLayout->addWidget(mShowInEveOnFPCBtn);
@@ -214,7 +228,8 @@ namespace Evernus
         settings.setValue(PriceSettings::limitSellCopyToCostKey, mLimitSellCopyToCostBtn->isChecked());
         settings.setValue(PriceSettings::limitSellCopyToTotalCostKey, mLimitSellCopyToTotalCostBtn->isChecked());
         settings.setValue(PriceSettings::fpcKey, mFPCBtn->isChecked());
-        settings.setValue(PriceSettings::fpcShourtcutKey, mFPCShortcutEdit->keySequence().toString());
+        settings.setValue(PriceSettings::fpcForwardShortcutKey, mFPCForwardShortcutEdit->keySequence().toString());
+        settings.setValue(PriceSettings::fpcBackwardShortcutKey, mFPCBackwardShortcutEdit->keySequence().toString());
         settings.setValue(PriceSettings::showInEveOnFpcKey, mShowInEveOnFPCBtn->isChecked());
     }
 }

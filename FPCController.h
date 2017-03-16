@@ -34,16 +34,19 @@ namespace Evernus
         void handleNewPreferences();
 
     signals:
-        void execute();
+        void executeForward();
+        void executeBackward();
 
     public slots:
         void changeExecutor(QObject *executor);
 
     private slots:
-        void trigger();
+        void triggerForward();
+        void triggerBackward();
 
     private:
-        QxtGlobalShortcut mShortcut;
+        QxtGlobalShortcut mForwardShortcut;
+        QxtGlobalShortcut mBackwardShortcut;
         QSoundEffect mCopySound;
 
         QPointer<QObject> mExecutor;

@@ -70,6 +70,8 @@ namespace Evernus
 
     public slots:
         void executeFPC();
+        void executeBackwardFPC();
+
         void updateCharacters();
 
     signals:

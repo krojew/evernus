@@ -165,6 +165,11 @@ namespace Evernus
         mOrderView->executeFPC();
     }
 
+    void MarketOrderViewWithTransactions::executeBackwardFPC()
+    {
+        mOrderView->executeBackwardFPC();
+    }
+
     void MarketOrderViewWithTransactions::updateCharacters()
     {
         mTransactionsView->updateCharacters();

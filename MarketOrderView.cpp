@@ -262,31 +262,12 @@ namespace Evernus
 
     void MarketOrderView::executeFPC()
     {
-        if (mSource != nullptr)
-        {
-            auto model = getSelectionModel();
+        executeFPC(1);
+    }
 
-            const auto selection = model->selectedRows();
-            if (selection.isEmpty())
-                return;
-
-            const auto selected = selection.first();
-            const auto source = mProxy.mapToSource(selected);
-            const auto next = mProxy.index(selected.row() + 1, 0, selected.parent());
-            if (next.isValid())
-            {
-                model->select(next, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                mView->scrollTo(next);
-            }
-
-            const auto info = mSource->getOrderInfo(source);
-            if (info.mTargetPrice >= 0.01)
-                QApplication::clipboard()->setText(QString::number(info.mTargetPrice, 'f', 2));
-
-            QSettings settings;
-            if (settings.value(PriceSettings::showInEveOnFpcKey, PriceSettings::showInEveOnFpcDefault).toBool())
-                showInEveFor(source);
-        }
+    void MarketOrderView::executeBackwardFPC()
+    {
+        executeFPC(-1);
     }
 
     void MarketOrderView::showPriceInfo(const QModelIndex &index)
@@ -377,5 +358,34 @@ namespace Evernus
         const auto typeId = mSource->getOrderTypeId(index);
         if (typeId != EveType::invalidId)
             emit showInEve(typeId, mSource->getOrderOwnerId(index));
+    }
+
+    void MarketOrderView::executeFPC(int delta)
+    {
+        if (mSource != nullptr)
+        {
+            auto model = getSelectionModel();
+
+            const auto selection = model->selectedRows();
+            if (selection.isEmpty())
+                return;
+
+            const auto selected = selection.first();
+            const auto source = mProxy.mapToSource(selected);
+            const auto next = mProxy.index(selected.row() + delta, 0, selected.parent());
+            if (next.isValid())
+            {
+                model->select(next, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                mView->scrollTo(next);
+            }
+
+            const auto info = mSource->getOrderInfo(source);
+            if (info.mTargetPrice >= 0.01)
+                QApplication::clipboard()->setText(QString::number(info.mTargetPrice, 'f', 2));
+
+            QSettings settings;
+            if (settings.value(PriceSettings::showInEveOnFpcKey, PriceSettings::showInEveOnFpcDefault).toBool())
+                showInEveFor(source);
+        }
     }
 }

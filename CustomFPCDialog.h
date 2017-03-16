@@ -37,15 +37,18 @@ namespace Evernus
         CustomFPCDialog &operator =(CustomFPCDialog &&) = default;
 
     signals:
-        void showInEve(EveType::IdType id);
+        void showInEve(EveType::IdType id) const;
 
     public slots:
         void executeFPC();
+        void executeBackwardFPC();
 
     private slots:
         void pasteData();
 
     private:
         QTableWidget *mDataView = nullptr;
+
+        void copyData(int row) const;
     };
 }

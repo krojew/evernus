@@ -68,7 +68,8 @@ namespace Evernus
         const auto refreshPricesWithOrdersKey = "prices/orders/autoRefresh";
         const auto copyNonOverbidPriceKey = "prices/orders/copyNonOverbid";
         const auto fpcKey = "prices/fpc/enabled";
-        const auto fpcShourtcutKey = "prices/fpc/shortcut";
+        const auto fpcForwardShortcutKey = "prices/fpc/shortcut";
+        const auto fpcBackwardShortcutKey = "prices/fpc/backwardShortcut";
         const auto limitSellCopyToCostKey = "prices/orders/limitSellCopyToCost";
         const auto limitSellCopyToTotalCostKey = "prices/orders/limitSellCopyToTotalCost";
         const auto ignoreOrdersWithMinVolumeKey = "prices/ignoreOrdersWithMinVolume";

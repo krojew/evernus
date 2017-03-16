@@ -30,7 +30,8 @@ namespace Evernus
 
         handleNewPreferences();
 
-        connect(&mShortcut, &QxtGlobalShortcut::activated, this, &FPCController::trigger);
+        connect(&mForwardShortcut, &QxtGlobalShortcut::activated, this, &FPCController::triggerForward);
+        connect(&mBackwardShortcut, &QxtGlobalShortcut::activated, this, &FPCController::triggerBackward);
     }
 
     void FPCController::handleNewPreferences()
@@ -39,16 +40,18 @@ namespace Evernus
 
         if (settings.value(PriceSettings::fpcKey, PriceSettings::fpcDefault).toBool())
         {
-            auto shortcut = QKeySequence::fromString(settings.value(PriceSettings::fpcShourtcutKey).toString());
-            if (!shortcut.isEmpty())
-            {
-                mShortcut.setEnabled(true);
-                mShortcut.setShortcut(shortcut);
-            }
+            auto shortcut = QKeySequence::fromString(settings.value(PriceSettings::fpcForwardShortcutKey).toString());
+            mForwardShortcut.setShortcut(shortcut);
+            mForwardShortcut.setEnabled(!shortcut.isEmpty());
+
+            shortcut = QKeySequence::fromString(settings.value(PriceSettings::fpcBackwardShortcutKey).toString());
+            mBackwardShortcut.setShortcut(shortcut);
+            mBackwardShortcut.setEnabled(!shortcut.isEmpty());
         }
         else
         {
-            mShortcut.setEnabled(false);
+            mForwardShortcut.setEnabled(false);
+            mBackwardShortcut.setEnabled(false);
         }
 
         mCopySound.setMuted(!settings.value(SoundSettings::fpcSoundKey, SoundSettings::fpcSoundDefault).toBool());
@@ -62,20 +65,36 @@ namespace Evernus
         qDebug() << "Changing FPC executor to:" << executor;
 
         if (!mExecutor.isNull())
+        {
             disconnect(mExecutor, SLOT(executeFPC()));
+            disconnect(mExecutor, SLOT(executeBackwardFPC()));
+        }
 
         mExecutor = executor;
 
         if (!mExecutor.isNull())
-            connect(this, SIGNAL(execute()), mExecutor, SLOT(executeFPC()));
+        {
+            connect(this, SIGNAL(executeForward()), mExecutor, SLOT(executeFPC()));
+            connect(this, SIGNAL(executeBackward()), mExecutor, SLOT(executeBackwardFPC()));
+        }
     }
 
-    void FPCController::trigger()
+    void FPCController::triggerForward()
     {
         if (mExecutor != nullptr)
         {
             qDebug() << "FPC triggered.";
-            emit execute();
+            emit executeForward();
+            mCopySound.play();
+        }
+    }
+
+    void FPCController::triggerBackward()
+    {
+        if (mExecutor != nullptr)
+        {
+            qDebug() << "FPC triggered.";
+            emit executeBackward();
             mCopySound.play();
         }
     }

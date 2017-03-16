@@ -76,6 +76,7 @@ namespace Evernus
 
     public slots:
         void executeFPC();
+        void executeBackwardFPC();
 
     private slots:
         void showPriceInfo(const QModelIndex &index);
@@ -114,5 +115,7 @@ namespace Evernus
 
         void lookupOnWeb(const QString &baseUrl) const;
         void showInEveFor(const QModelIndex &index) const;
+
+        void executeFPC(int delta);
     };
 }

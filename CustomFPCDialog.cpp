@@ -55,27 +55,26 @@ namespace Evernus
         auto row = mDataView->currentRow();
         if (row >= 0)
         {
-            const auto priceItem = mDataView->item(row, 1);
-            if (priceItem != nullptr)
-            {
-                auto ok = false;
-                const auto price = priceItem->text().toDouble(&ok);
-
-                if (ok)
-                    QApplication::clipboard()->setText(QString::number(price, 'f', 2));
-            }
-
-            QSettings settings;
-            if (settings.value(PriceSettings::showInEveOnFpcKey, PriceSettings::showInEveOnFpcDefault).toBool())
-            {
-                const auto id = mDataView->item(row, 0)->text().toULongLong();
-                if (id != EveType::invalidId)
-                    emit showInEve(id);
-            }
+            copyData(row);
 
             ++row;
             if (row >= mDataView->rowCount())
                 row = 0;
+
+            mDataView->setCurrentCell(row, 0);
+        }
+    }
+
+    void CustomFPCDialog::executeBackwardFPC()
+    {
+        auto row = mDataView->currentRow();
+        if (row >= 0)
+        {
+            copyData(row);
+
+            --row;
+            if (row < 0)
+                row = mDataView->rowCount() - 1;
 
             mDataView->setCurrentCell(row, 0);
         }
@@ -109,5 +108,26 @@ namespace Evernus
 
         mDataView->setRowCount(row);
         mDataView->setCurrentCell(0, 0);
+    }
+
+    void CustomFPCDialog::copyData(int row) const
+    {
+        const auto priceItem = mDataView->item(row, 1);
+        if (priceItem != nullptr)
+        {
+            auto ok = false;
+            const auto price = priceItem->text().toDouble(&ok);
+
+            if (ok)
+                QApplication::clipboard()->setText(QString::number(price, 'f', 2));
+        }
+
+        QSettings settings;
+        if (settings.value(PriceSettings::showInEveOnFpcKey, PriceSettings::showInEveOnFpcDefault).toBool())
+        {
+            const auto id = mDataView->item(row, 0)->text().toULongLong();
+            if (id != EveType::invalidId)
+                emit showInEve(id);
+        }
     }
 }
