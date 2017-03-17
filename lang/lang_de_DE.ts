@@ -4698,16 +4698,21 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="175"/>
-        <source>Shortcut:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../PricePreferencesWidget.cpp" line="181"/>
-        <source>Show in EVE on copy</source>
+        <source>Forward shortcut:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="185"/>
+        <source>Backward shortcut:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PricePreferencesWidget.cpp" line="195"/>
+        <source>Show in EVE on copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PricePreferencesWidget.cpp" line="199"/>
         <source>Fast Price Copy allows you to update your orders in a very fast manner. Simply assign a keyboard shortcut, select an order in any market order view and press the shortcut to copy the updated price and automatically jump to the next order on the list. You can do this even when Evernus doesn&apos;t have the input focus - the keyboard shortcut works system-wide. You can use this to update your prices without ever leaving Eve client.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5218,84 +5223,89 @@ Total: %7</source>
 <context>
     <name>Evernus::SyncDialog</name>
     <message>
-        <location filename="../SyncDialog.cpp" line="80"/>
+        <location filename="../SyncDialog.cpp" line="137"/>
         <source>Synchronizing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="84"/>
+        <location filename="../SyncDialog.cpp" line="141"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="106"/>
+        <location filename="../SyncDialog.cpp" line="187"/>
         <source>Proceed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="110"/>
-        <location filename="../SyncDialog.cpp" line="210"/>
-        <location filename="../SyncDialog.cpp" line="236"/>
-        <location filename="../SyncDialog.cpp" line="258"/>
-        <location filename="../SyncDialog.cpp" line="316"/>
-        <location filename="../SyncDialog.cpp" line="332"/>
-        <location filename="../SyncDialog.cpp" line="354"/>
-        <location filename="../SyncDialog.cpp" line="362"/>
+        <location filename="../SyncDialog.cpp" line="198"/>
+        <location filename="../SyncDialog.cpp" line="308"/>
+        <location filename="../SyncDialog.cpp" line="339"/>
+        <location filename="../SyncDialog.cpp" line="361"/>
+        <location filename="../SyncDialog.cpp" line="421"/>
+        <location filename="../SyncDialog.cpp" line="437"/>
+        <location filename="../SyncDialog.cpp" line="459"/>
+        <location filename="../SyncDialog.cpp" line="467"/>
         <source>Synchronization</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="145"/>
+        <location filename="../SyncDialog.cpp" line="235"/>
+        <source>Dropbox requires authenticating Evernus first. Please click on &lt;a href=&apos;%1&apos;&gt;this link&lt;/a&gt;, authorize Evernus and wait for the application to proceed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SyncDialog.cpp" line="243"/>
         <source>Dropbox requires authenticating Evernus first. Please click on &lt;a href=&apos;%1&apos;&gt;this link&lt;/a&gt;, authorize Evernus and enter the resulting code below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="181"/>
+        <location filename="../SyncDialog.cpp" line="279"/>
         <source>Security warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="181"/>
+        <location filename="../SyncDialog.cpp" line="279"/>
         <source>Encountered certificate errors while contacting Dropbox. Aborting synchronization.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="190"/>
+        <location filename="../SyncDialog.cpp" line="288"/>
         <source>Dropbox error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="210"/>
+        <location filename="../SyncDialog.cpp" line="308"/>
         <source>Error: %1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="237"/>
+        <location filename="../SyncDialog.cpp" line="340"/>
         <source>Your local database is newer than cloud one. Do you wish to replace your local copy?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="259"/>
+        <location filename="../SyncDialog.cpp" line="362"/>
         <source>Something modified cloud data since last synchronization. Do you wish to overwrite it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="316"/>
+        <location filename="../SyncDialog.cpp" line="421"/>
         <source>Couldn&apos;t open file for writing! Synchronization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="332"/>
+        <location filename="../SyncDialog.cpp" line="437"/>
         <source>Couldn&apos;t write destination file! Synchronization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="354"/>
+        <location filename="../SyncDialog.cpp" line="459"/>
         <source>Couldn&apos;t open remote file! Synchronization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SyncDialog.cpp" line="362"/>
+        <location filename="../SyncDialog.cpp" line="467"/>
         <source>Couldn&apos;t open local file! Synchronization failed.</source>
         <translation type="unfinished"></translation>
     </message>
