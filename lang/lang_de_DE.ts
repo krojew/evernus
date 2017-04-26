@@ -1276,22 +1276,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="224"/>
+        <location filename="../ESIManager.cpp" line="213"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="293"/>
+        <location filename="../ESIManager.cpp" line="282"/>
         <source>Empty access token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="351"/>
+        <location filename="../ESIManager.cpp" line="340"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="382"/>
+        <location filename="../ESIManager.cpp" line="371"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2949,14 +2949,14 @@
 <context>
     <name>Evernus::MarketAnalysisDataFetcher</name>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="142"/>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="149"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="92"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="99"/>
         <source>Waiting for %1 order server replies...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="143"/>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="182"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="93"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="132"/>
         <source>Waiting for %1 history server replies...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4458,13 +4458,18 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
     <message>
         <location filename="../OrderPreferencesWidget.cpp" line="83"/>
-        <location filename="../OrderPreferencesWidget.cpp" line="109"/>
+        <location filename="../OrderPreferencesWidget.cpp" line="114"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../OrderPreferencesWidget.cpp" line="84"/>
         <source>Default custom station:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../OrderPreferencesWidget.cpp" line="87"/>
+        <source>Try to import orders from citadels</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6091,39 +6096,45 @@ Do you wish to launch the updater?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="324"/>
-        <location filename="../Updater.cpp" line="355"/>
-        <location filename="../Updater.cpp" line="362"/>
-        <location filename="../Updater.cpp" line="374"/>
-        <location filename="../Updater.cpp" line="445"/>
+        <location filename="../Updater.cpp" line="330"/>
+        <location filename="../Updater.cpp" line="361"/>
+        <location filename="../Updater.cpp" line="368"/>
+        <location filename="../Updater.cpp" line="380"/>
+        <location filename="../Updater.cpp" line="451"/>
+        <location filename="../Updater.cpp" line="469"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="324"/>
+        <location filename="../Updater.cpp" line="330"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="355"/>
+        <location filename="../Updater.cpp" line="361"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="362"/>
+        <location filename="../Updater.cpp" line="368"/>
         <source>This update requires re-importing all item prices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="374"/>
+        <location filename="../Updater.cpp" line="380"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="445"/>
+        <location filename="../Updater.cpp" line="451"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="469"/>
+        <source>This update requires re-importing citadels.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

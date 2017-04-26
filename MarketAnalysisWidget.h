@@ -59,7 +59,7 @@ namespace Evernus
                              const MarketGroupRepository &groupRepo,
                              const CharacterRepository &characterRepo,
                              QWidget *parent = nullptr);
-        virtual ~MarketAnalysisWidget();
+        virtual ~MarketAnalysisWidget() = default;
 
     signals:
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
@@ -103,8 +103,6 @@ namespace Evernus
     private:
         static const auto waitingLabelIndex = 0;
         static const auto allRegionsIndex = 0;
-
-        class FetcherThread;
 
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
@@ -163,8 +161,9 @@ namespace Evernus
         quint64 mSrcStation = 0;
         quint64 mDstStation = 0;
 
-        FetcherThread *mFetcherThread = nullptr;
-        MarketAnalysisDataFetcher *mDataFetcher = nullptr;
+        MarketAnalysisDataFetcher mDataFetcher;
+
+        Character::IdType mCharacterId = Character::invalidId;
 
         void checkCompletion();
         void changeStation(quint64 &destination, QPushButton &btn, const QString &settingName);

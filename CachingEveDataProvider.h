@@ -23,7 +23,6 @@
 #include "ExternalOrderRepository.h"
 #include "MarketGroupRepository.h"
 #include "MetaGroupRepository.h"
-#include "CitadelRepository.h"
 #include "EveTypeRepository.h"
 #include "Citadel.h"
 #include "RefType.h"
@@ -95,6 +94,8 @@ namespace Evernus
         virtual uint getStationRegionId(quint64 stationId) const override;
         virtual uint getStationSolarSystemId(quint64 stationId) const override;
 
+        virtual const CitadelRepository::EntityList &getCitadelsForRegion(uint regionId) const override;
+
         void precacheJumpMap();
         void precacheRefTypes();
 
@@ -162,6 +163,7 @@ namespace Evernus
         mutable std::unordered_map<uint, std::vector<MapLocation>> mConstellationCache, mConstellationSolarSystemCache, mRegionSolarSystemCache;
         mutable std::unordered_map<uint, std::vector<Station>> mStationCache;
         mutable std::unordered_map<Citadel::IdType, CitadelRepository::EntityPtr> mCitadelCache;
+        mutable std::unordered_map<uint, CitadelRepository::EntityList> mRegionCitadelCache;
 
         mutable std::unordered_map<uint, QString> mRegionNameCache;
         mutable std::unordered_map<uint, QString> mSolarSystemNameCache;

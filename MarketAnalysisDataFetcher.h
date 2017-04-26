@@ -31,6 +31,7 @@
 #include "EveCentralManager.h"
 #include "ExternalOrder.h"
 #include "ESIManager.h"
+#include "Character.h"
 #include "EveType.h"
 
 namespace Evernus
@@ -65,7 +66,8 @@ namespace Evernus
 
     public slots:
         void importData(const ExternalOrderImporter::TypeLocationPairs &pairs,
-                        const MarketOrderRepository::TypeLocationPairs &ignored);
+                        const MarketOrderRepository::TypeLocationPairs &ignored,
+                        Character::IdType charId);
 
     private:
         const EveDataProvider &mDataProvider;
@@ -83,5 +85,13 @@ namespace Evernus
 
         void processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText);
         void processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText);
+
+        void importWholeMarketData(const ExternalOrderImporter::TypeLocationPairs &pairs,
+                                   const MarketOrderRepository::TypeLocationPairs &ignored);
+        void importIndividualData(const ExternalOrderImporter::TypeLocationPairs &pairs,
+                                  const MarketOrderRepository::TypeLocationPairs &ignored);
+        void importCitadelData(const ExternalOrderImporter::TypeLocationPairs &pairs,
+                               const MarketOrderRepository::TypeLocationPairs &ignored,
+                               Character::IdType charId);
     };
 }

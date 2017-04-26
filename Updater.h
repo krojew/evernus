@@ -32,6 +32,7 @@ namespace Evernus
     class CacheTimerRepository;
     class CharacterRepository;
     class RepositoryProvider;
+    class CitadelRepository;
     class ItemRepository;
     class KeyRepository;
     class ExternalOrder;
@@ -92,6 +93,7 @@ namespace Evernus
                                   const MarketOrderRepository &corporationOrderRepo) const;
         void migrateDatabaseTo147(const MarketOrderRepository &characterOrderRepo,
                                   const MarketOrderRepository &corporationOrderRepo) const;
+        void migrateDatabaseTo149(const CitadelRepository &citadelRepo) const;
 
         void migrateCoreTo130() const;
         void migrateCoreTo136() const;

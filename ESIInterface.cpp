@@ -48,6 +48,17 @@ namespace Evernus
         asyncGet(QStringLiteral("/v1/markets/%1/history/").arg(regionId), QStringLiteral("type_id=%1").arg(typeId), callback);
     }
 
+    void ESIInterface::fetchCitadelMarketOrders(quint64 citadelId, Character::IdType charId, const PaginatedCallback &callback) const
+    {
+        qDebug() << "Fetching orders from citadel" << citadelId;
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback(QJsonDocument{}, true, error);
+            else
+                fetchPaginatedData(QStringLiteral("/v1/markets/structures/%1/").arg(citadelId), 1, callback);
+        });
+    }
+
     void ESIInterface::openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const
     {
         qDebug() << "Opening market details for" << typeId;

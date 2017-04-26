@@ -23,6 +23,7 @@ namespace Evernus
         const auto oldMarketOrderDaysDefault = 180;
         const auto limitSellToStationDefault = true;
         const auto volumeWarningDefault = 0;
+        const auto importFromCitadelsDefault = true;
 
         const auto marketOrderMaxAgeKey = "prices/orders/maxAge"; // < 1.23 compatibility
         const auto deleteOldMarketOrdersKey = "orders/deleteOld";
@@ -30,5 +31,6 @@ namespace Evernus
         const auto limitSellToStationKey = "orders/limitSellToStation";
         const auto volumeWarningKey = "orders/volumeWarning";
         const auto defaultCustomStationKey = "orders/defaultCustomStation";
+        const auto importFromCitadelsKey = "orders/importFromCitadels";
     }
 }

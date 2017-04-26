@@ -84,6 +84,10 @@ namespace Evernus
         customStationGroupLayout->addRow(tr("Default custom station:"), mDefaultCustomStationBtn);
         connect(mDefaultCustomStationBtn, &QPushButton::clicked, this, &OrderPreferencesWidget::chooseDefaultCustomStation);
 
+        mImportFromCitadels = new QCheckBox{tr("Try to import orders from citadels"), this};
+        customStationGroupLayout->addRow(mImportFromCitadels);
+        mImportFromCitadels->setChecked(settings.value(OrderSettings::importFromCitadelsKey, OrderSettings::importFromCitadelsDefault).toBool());
+
         mainLayout->addStretch();
     }
 
@@ -96,6 +100,7 @@ namespace Evernus
         settings.setValue(OrderSettings::limitSellToStationKey, mLimitSellToStationBtn->isChecked());
         settings.setValue(OrderSettings::volumeWarningKey, mVolumeWarningEdit->value());
         settings.setValue(OrderSettings::defaultCustomStationKey, mDefaultCustomStation);
+        settings.setValue(OrderSettings::importFromCitadelsKey, mImportFromCitadels->isChecked());
     }
 
     void OrderPreferencesWidget::chooseDefaultCustomStation()

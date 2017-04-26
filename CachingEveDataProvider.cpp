@@ -708,6 +708,15 @@ namespace Evernus
         return systemId;
     }
 
+    const CitadelRepository::EntityList &CachingEveDataProvider::getCitadelsForRegion(uint regionId) const
+    {
+        const auto citadels = mRegionCitadelCache.find(regionId);
+        if (citadels != std::end(mRegionCitadelCache))
+            return citadels->second;
+
+        return mRegionCitadelCache.emplace(regionId, mCitadelRepository.fetchForRegion(regionId)).first->second;
+    }
+
     void CachingEveDataProvider::precacheJumpMap()
     {
         auto query = mEveDb.exec("SELECT fromRegionID, fromSolarSystemID, toSolarSystemID FROM mapSolarSystemJumps WHERE fromRegionID = toRegionID");

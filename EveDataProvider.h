@@ -21,6 +21,7 @@
 #include <QDateTime>
 #include <QObject>
 
+#include "CitadelRepository.h"
 #include "MarketGroup.h"
 #include "MetaGroup.h"
 #include "EveType.h"
@@ -28,6 +29,7 @@
 namespace Evernus
 {
     class ExternalOrder;
+    class Citadel;
 
     class EveDataProvider
         : public QObject
@@ -74,6 +76,8 @@ namespace Evernus
 
         virtual uint getStationRegionId(quint64 stationId) const = 0;
         virtual uint getStationSolarSystemId(quint64 stationId) const = 0;
+
+        virtual const CitadelRepository::EntityList &getCitadelsForRegion(uint regionId) const = 0;
 
     signals:
         void namesChanged() const;

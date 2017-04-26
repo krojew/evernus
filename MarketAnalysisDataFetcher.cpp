@@ -19,9 +19,12 @@
 #include <QSettings>
 #include <QDebug>
 
+#include "EveDataProvider.h"
 #include "ImportSettings.h"
-#include "MarketAnalysisDataFetcher.h"
+#include "OrderSettings.h"
 #include "SSOUtils.h"
+
+#include "MarketAnalysisDataFetcher.h"
 
 namespace Evernus
 {
@@ -49,7 +52,8 @@ namespace Evernus
     }
 
     void MarketAnalysisDataFetcher::importData(const ExternalOrderImporter::TypeLocationPairs &pairs,
-                                               const MarketOrderRepository::TypeLocationPairs &ignored)
+                                               const MarketOrderRepository::TypeLocationPairs &ignored,
+                                               Character::IdType charId)
     {
         mPreparingRequests = true;
         BOOST_SCOPE_EXIT(this_) {
@@ -69,8 +73,6 @@ namespace Evernus
         }
 
         QSettings settings;
-        const auto webImporter = static_cast<ImportSettings::WebImporterType>(
-            settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
         const auto marketImportType = static_cast<ImportSettings::MarketOrderImportType>(
             settings.value(ImportSettings::marketOrderImportTypeKey, static_cast<int>(ImportSettings::marketOrderImportTypeDefault)).toInt());
         auto useWholeMarketImport = marketImportType == ImportSettings::MarketOrderImportType::Whole;
@@ -79,63 +81,12 @@ namespace Evernus
             useWholeMarketImport = SSOUtils::useWholeMarketImport(pairs, mDataProvider);
 
         if (useWholeMarketImport)
-        {
-            std::unordered_set<uint> regions;
-            for (const auto &pair : pairs)
-            {
-                if (ignored.find(pair) != std::end(ignored))
-                    continue;
-
-                mHistoryCounter.incCount();
-
-                mESIManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
-                    processHistory(pair.second, pair.first, std::move(history), error);
-                });
-
-                regions.insert(pair.second);
-            }
-
-            mOrderCounter.setCount(regions.size());
-
-            for (const auto region : regions)
-            {
-                mESIManager.fetchMarketOrders(region, [=](std::vector<ExternalOrder> &&orders, const QString &error) {
-                    orders.erase(std::remove_if(std::begin(orders), std::end(orders), [&](const auto &order) {
-                        return pairs.find(std::make_pair(order.getTypeId(), order.getRegionId())) == std::end(pairs);
-                    }), std::end(orders));
-
-                    processOrders(std::move(orders), error);
-                });
-            }
-        }
+            importWholeMarketData(pairs, ignored);
         else
-        {
-            for (const auto &pair : pairs)
-            {
-                if (ignored.find(pair) != std::end(ignored))
-                    continue;
+            importIndividualData(pairs, ignored);
 
-                mOrderCounter.incCount();
-                mHistoryCounter.incCount();
-
-                if (webImporter == ImportSettings::WebImporterType::EveCentral)
-                {
-                    mEveCentralManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
-                        processOrders(std::move(orders), error);
-                    });
-                }
-                else
-                {
-                    mESIManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
-                        processOrders(std::move(orders), error);
-                    });
-                }
-
-                mESIManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
-                    processHistory(pair.second, pair.first, std::move(history), error);
-                });
-            }
-        }
+        if (settings.value(OrderSettings::importFromCitadelsKey, OrderSettings::importFromCitadelsDefault).toBool())
+            importCitadelData(pairs, ignored, charId);
 
         qDebug() << "Making" << mOrderCounter.getCount() << mHistoryCounter.getCount() << "order and history requests...";
 
@@ -202,6 +153,97 @@ namespace Evernus
         {
             emit historyImportEnded(mHistory, mAggregatedHistoryErrors.join("\n"));
             mAggregatedHistoryErrors.clear();
+        }
+    }
+
+    void MarketAnalysisDataFetcher::importWholeMarketData(const ExternalOrderImporter::TypeLocationPairs &pairs,
+                                                          const MarketOrderRepository::TypeLocationPairs &ignored)
+    {
+        std::unordered_set<uint> regions;
+        for (const auto &pair : pairs)
+        {
+            if (ignored.find(pair) != std::end(ignored))
+                continue;
+
+            mHistoryCounter.incCount();
+            mESIManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
+                processHistory(pair.second, pair.first, std::move(history), error);
+            });
+
+            regions.insert(pair.second);
+        }
+
+        mOrderCounter.setCount(regions.size());
+
+        for (const auto region : regions)
+        {
+            mESIManager.fetchMarketOrders(region, [=](std::vector<ExternalOrder> &&orders, const QString &error) {
+                orders.erase(std::remove_if(std::begin(orders), std::end(orders), [&](const auto &order) {
+                    return pairs.find(std::make_pair(order.getTypeId(), order.getRegionId())) == std::end(pairs);
+                }), std::end(orders));
+
+                processOrders(std::move(orders), error);
+            });
+        }
+    }
+
+    void MarketAnalysisDataFetcher::importIndividualData(const ExternalOrderImporter::TypeLocationPairs &pairs,
+                                                         const MarketOrderRepository::TypeLocationPairs &ignored)
+    {
+        QSettings settings;
+        const auto webImporter = static_cast<ImportSettings::WebImporterType>(
+            settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
+
+        for (const auto &pair : pairs)
+        {
+            if (ignored.find(pair) != std::end(ignored))
+                continue;
+
+            mOrderCounter.incCount();
+            mHistoryCounter.incCount();
+
+            if (webImporter == ImportSettings::WebImporterType::EveCentral)
+            {
+                mEveCentralManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
+                    processOrders(std::move(orders), error);
+                });
+            }
+            else
+            {
+                mESIManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
+                    processOrders(std::move(orders), error);
+                });
+            }
+
+            mESIManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
+                processHistory(pair.second, pair.first, std::move(history), error);
+            });
+        }
+    }
+
+    void MarketAnalysisDataFetcher::importCitadelData(const ExternalOrderImporter::TypeLocationPairs &pairs,
+                                                      const MarketOrderRepository::TypeLocationPairs &ignored,
+                                                      Character::IdType charId)
+    {
+        std::unordered_set<uint> regions;
+        for (const auto &pair : pairs)
+        {
+            if (ignored.find(pair) != std::end(ignored))
+                continue;
+
+            regions.insert(pair.second);
+        }
+
+        for (const auto region : regions)
+        {
+            const auto &citadels = mDataProvider.getCitadelsForRegion(region);
+            for (const auto &citadel : citadels)
+            {
+                mOrderCounter.incCount();
+                mESIManager.fetchCitadelMarketOrders(citadel->getId(), region, charId, [=](auto &&orders, const auto &error) {
+                    processOrders(std::move(orders), error);
+                });
+            }
         }
     }
 }

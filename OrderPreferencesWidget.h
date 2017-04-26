@@ -48,6 +48,7 @@ namespace Evernus
         QCheckBox *mLimitSellToStationBtn = nullptr;
         QSpinBox *mVolumeWarningEdit = nullptr;
         QPushButton *mDefaultCustomStationBtn = nullptr;
+        QCheckBox *mImportFromCitadels = nullptr;
 
         QVariant mDefaultCustomStation;
     };

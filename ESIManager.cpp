@@ -91,8 +91,8 @@ namespace Evernus
     }
 
     void ESIManager::fetchMarketOrders(uint regionId,
-                                         EveType::IdType typeId,
-                                         const Callback<std::vector<ExternalOrder>> &callback) const
+                                       EveType::IdType typeId,
+                                       const MarketOrderCallback &callback) const
     {
         auto ifaceCallback = [=](QJsonDocument &&data, const QString &error) {
             if (!error.isEmpty())
@@ -116,8 +116,8 @@ namespace Evernus
     }
 
     void ESIManager::fetchMarketHistory(uint regionId,
-                                          EveType::IdType typeId,
-                                          const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const
+                                        EveType::IdType typeId,
+                                        const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const
     {
 #if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
         mInterface.fetchMarketHistory(regionId, typeId, [=, callback = callback](QJsonDocument &&data, const QString &error) {
@@ -152,25 +152,14 @@ namespace Evernus
         });
     }
 
-    void ESIManager::fetchMarketOrders(uint regionId, const Callback<std::vector<ExternalOrder>> &callback) const
+    void ESIManager::fetchMarketOrders(uint regionId, const MarketOrderCallback &callback) const
     {
-        auto orders = std::make_shared<std::vector<ExternalOrder>>();
-        mInterface.fetchMarketOrders(regionId, [=, orders = std::move(orders)](auto &&data, auto atEnd, const auto &error) {
-            if (!error.isEmpty())
-            {
-                callback(std::vector<ExternalOrder>{}, error);
-                return;
-            }
+        mInterface.fetchMarketOrders(regionId, getMarketOrderCallback(regionId, callback));
+    }
 
-            const auto items = data.array();
-            orders->reserve(orders->size() + items.size());
-
-            for (const auto &item : items)
-                orders->emplace_back(getOrderFromJson(item.toObject(), regionId));
-
-            if (atEnd)
-                callback(std::move(*orders), QString{});
-        });
+    void ESIManager::fetchCitadelMarketOrders(quint64 citadelId, uint regionId, Character::IdType charId, const MarketOrderCallback &callback) const
+    {
+        mInterface.fetchCitadelMarketOrders(citadelId, charId, getMarketOrderCallback(regionId, callback));
     }
 
     void ESIManager::openMarketDetails(EveType::IdType typeId, Character::IdType charId) const
@@ -214,7 +203,7 @@ namespace Evernus
                 query.addQueryItem("response_type", "code");
                 query.addQueryItem("redirect_uri", "http://" + redirectDomain + "/sso-authentication/");
                 query.addQueryItem("client_id", mClientId);
-                query.addQueryItem("scope", "esi-ui.open_window.v1 esi-ui.write_waypoint.v1");
+                query.addQueryItem("scope", "esi-ui.open_window.v1 esi-ui.write_waypoint.v1 esi-markets.structure_markets.v1");
 
                 url.setQuery(query);
 
@@ -449,12 +438,32 @@ namespace Evernus
         return order;
     }
 
+    ESIInterface::PaginatedCallback ESIManager::getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const
+    {
+        auto orders = std::make_shared<std::vector<ExternalOrder>>();
+        return [=, orders = std::move(orders)](auto &&data, auto atEnd, const auto &error) {
+            if (!error.isEmpty())
+            {
+                callback(std::vector<ExternalOrder>{}, error);
+                return;
+            }
+
+            const auto items = data.array();
+            orders->reserve(orders->size() + items.size());
+
+            for (const auto &item : items)
+                orders->emplace_back(getOrderFromJson(item.toObject(), regionId));
+
+            if (atEnd)
+                callback(std::move(*orders), QString{});
+        };
+    }
+
     QNetworkRequest ESIManager::getVerifyRequest(const QByteArray &accessToken)
     {
         QNetworkRequest request{loginUrl + "/oauth/verify"};
         request.setRawHeader("Authorization", "Bearer  " + accessToken);
 
         return request;
-     }
-
+    }
 }

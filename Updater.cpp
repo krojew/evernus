@@ -255,6 +255,7 @@ namespace Evernus
         const auto &externalOrderRepo = provider.getExternalOrderRepository();
         const auto &itemRepo = provider.getItemRepository();
         const auto &keyRepo = provider.getKeyRepository();
+        const auto &citadelRepo = provider.getCitadelRepository();
 
         const auto dbBak = DatabaseUtils::backupDatabase(characterRepo.getDatabase());
 
@@ -269,51 +270,56 @@ namespace Evernus
                         migrateDatabaseTo05(cacheTimerRepo, characterRepo, characterOrderRepo, corporationOrderRepo);
                 }
 
-                if (minorVersion < 47)
+                if (minorVersion < 49)
                 {
-                    if (minorVersion < 45)
+                    if (minorVersion < 47)
                     {
-                        if (minorVersion < 41)
+                        if (minorVersion < 45)
                         {
-                            if (minorVersion < 27)
+                            if (minorVersion < 41)
                             {
-                                if (minorVersion < 23)
+                                if (minorVersion < 27)
                                 {
-                                    if (minorVersion < 16)
+                                    if (minorVersion < 23)
                                     {
-                                        if (minorVersion < 11)
+                                        if (minorVersion < 16)
                                         {
-                                            if (minorVersion < 9)
+                                            if (minorVersion < 11)
                                             {
-                                                if (minorVersion < 8)
-                                                    migrateDatabaseTo18(externalOrderRepo);
+                                                if (minorVersion < 9)
+                                                {
+                                                    if (minorVersion < 8)
+                                                        migrateDatabaseTo18(externalOrderRepo);
 
-                                                migrateDatabaseTo19(characterRepo,
-                                                                    walletJournalRepo,
-                                                                    corpWalletJournalRepo,
-                                                                    walletTransactionRepo,
-                                                                    corpWalletTransactionRepo);
+                                                    migrateDatabaseTo19(characterRepo,
+                                                                        walletJournalRepo,
+                                                                        corpWalletJournalRepo,
+                                                                        walletTransactionRepo,
+                                                                        corpWalletTransactionRepo);
+                                                }
+
+                                                migrateDatabaseTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
                                             }
 
-                                            migrateDatabaseTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
+                                            migrateDatabaseTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
                                         }
 
-                                        migrateDatabaseTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
+                                        migrateDatabaseTo123(externalOrderRepo, itemRepo);
                                     }
 
-                                    migrateDatabaseTo123(externalOrderRepo, itemRepo);
+                                    migrateDatabaseTo127(characterOrderRepo, corporationOrderRepo);
                                 }
 
-                                migrateDatabaseTo127(characterOrderRepo, corporationOrderRepo);
+                                migrateDatabaseTo141(characterRepo);
                             }
 
-                            migrateDatabaseTo141(characterRepo);
+                            migrateDatabaseTo145(characterRepo, keyRepo, characterOrderRepo, corporationOrderRepo);
                         }
 
-                        migrateDatabaseTo145(characterRepo, keyRepo, characterOrderRepo, corporationOrderRepo);
+                        migrateDatabaseTo147(characterOrderRepo, corporationOrderRepo);
                     }
 
-                    migrateDatabaseTo147(characterOrderRepo, corporationOrderRepo);
+                    migrateDatabaseTo149(citadelRepo);
                 }
             }
 
@@ -456,6 +462,14 @@ namespace Evernus
         const auto query = QStringLiteral("ALTER TABLE %1 ADD COLUMN color_tag TEXT NULL");
         characterOrderRepo.exec(query.arg(characterOrderRepo.getTableName()));
         corporationOrderRepo.exec(query.arg(corporationOrderRepo.getTableName()));
+    }
+
+    void Updater::migrateDatabaseTo149(const CitadelRepository &citadelRepo) const
+    {
+        QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing citadels."));
+
+        citadelRepo.deleteAll();
+        citadelRepo.exec(QStringLiteral("ALTER TABLE %1 ADD COLUMN region_id INTEGER NOT NULL DEFAULT 0").arg(citadelRepo.getTableName()));
     }
 
     void Updater::migrateCoreTo130() const

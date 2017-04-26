@@ -48,6 +48,8 @@ namespace Evernus
         template<class T>
         using Callback = std::function<void (T &&data, const QString &error)>;
 
+        using MarketOrderCallback = Callback<std::vector<ExternalOrder>>;
+
         ESIManager(QByteArray clientId,
                    QByteArray clientSecret,
                    const EveDataProvider &dataProvider,
@@ -61,11 +63,13 @@ namespace Evernus
 
         void fetchMarketOrders(uint regionId,
                                EveType::IdType typeId,
-                               const Callback<std::vector<ExternalOrder>> &callback) const;
+                               const MarketOrderCallback &callback) const;
         void fetchMarketHistory(uint regionId,
                                 EveType::IdType typeId,
                                 const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const;
-        void fetchMarketOrders(uint regionId, const Callback<std::vector<ExternalOrder>> &callback) const;
+        void fetchMarketOrders(uint regionId, const MarketOrderCallback &callback) const;
+
+        void fetchCitadelMarketOrders(quint64 citadelId, uint regionId, Character::IdType charId, const MarketOrderCallback &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
 
@@ -111,6 +115,7 @@ namespace Evernus
         QNetworkRequest getAuthRequest() const;
 
         ExternalOrder getOrderFromJson(const QJsonObject &object, uint regionId) const;
+        ESIInterface::PaginatedCallback getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const;
 
         static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
     };

@@ -13,7 +13,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <unordered_set>
-#include <future>
 
 #include <QStandardItemModel>
 #include <QDoubleValidator>
@@ -34,7 +33,6 @@
 #include <QLineEdit>
 #include <QSettings>
 #include <QAction>
-#include <QThread>
 #include <QLabel>
 #include <QDebug>
 
@@ -57,61 +55,6 @@
 
 namespace Evernus
 {
-    class MarketAnalysisWidget::FetcherThread
-        : public QThread
-    {
-    public:
-        FetcherThread(QByteArray clientId,
-                      QByteArray clientSecret,
-                      const EveDataProvider &dataProvider,
-                      const CharacterRepository &characterRepo,
-                      QObject *parent)
-            : QThread{parent}
-            , mClientId{std::move(clientId)}
-            , mClientSecret{std::move(clientSecret)}
-            , mDataProvider{dataProvider}
-            , mCharacterRepo{characterRepo}
-        {
-        }
-
-        virtual ~FetcherThread() = default;
-
-        // warning: this will live only while the thread is running
-        MarketAnalysisDataFetcher *getFetcher() const noexcept
-        {
-            return mDataFetcher.get();
-        }
-
-        std::future<void> getFuture()
-        {
-            return mPromise.get_future();
-        }
-
-    protected:
-        virtual void run() override
-        {
-            mDataFetcher = std::make_unique<MarketAnalysisDataFetcher>(std::move(mClientId),
-                                                                       std::move(mClientSecret),
-                                                                       mDataProvider,
-                                                                       mCharacterRepo);
-            mPromise.set_value();
-
-            QThread::run();
-            mDataFetcher.reset();
-        }
-
-    private:
-        QByteArray mClientId;
-        QByteArray mClientSecret;
-
-        const EveDataProvider &mDataProvider;
-        const CharacterRepository &mCharacterRepo;
-
-        std::unique_ptr<MarketAnalysisDataFetcher> mDataFetcher;
-
-        std::promise<void> mPromise;
-    };
-
     MarketAnalysisWidget::MarketAnalysisWidget(QByteArray clientId,
                                                QByteArray clientSecret,
                                                const EveDataProvider &dataProvider,
@@ -142,24 +85,17 @@ namespace Evernus
                                 InterRegionMarketDataModel::getDstRegionColumn(),
                                 InterRegionMarketDataModel::getVolumeColumn(),
                                 InterRegionMarketDataModel::getMarginColumn())
+        , mDataFetcher(std::move(clientId), std::move(clientSecret), mDataProvider, mCharacterRepo)
     {
-        mFetcherThread = new FetcherThread{std::move(clientId), std::move(clientSecret), mDataProvider, mCharacterRepo, this};
-        const auto future = mFetcherThread->getFuture();
-
-        mFetcherThread->start();
-        future.wait();
-
-        mDataFetcher = mFetcherThread->getFetcher();
-
-        connect(mDataFetcher, &MarketAnalysisDataFetcher::orderStatusUpdated,
+        connect(&mDataFetcher, &MarketAnalysisDataFetcher::orderStatusUpdated,
                 this, &MarketAnalysisWidget::updateOrderTask);
-        connect(mDataFetcher, &MarketAnalysisDataFetcher::historyStatusUpdated,
+        connect(&mDataFetcher, &MarketAnalysisDataFetcher::historyStatusUpdated,
                 this, &MarketAnalysisWidget::updateHistoryTask);
-        connect(mDataFetcher, &MarketAnalysisDataFetcher::orderImportEnded,
+        connect(&mDataFetcher, &MarketAnalysisDataFetcher::orderImportEnded,
                 this, &MarketAnalysisWidget::endOrderTask);
-        connect(mDataFetcher, &MarketAnalysisDataFetcher::historyImportEnded,
+        connect(&mDataFetcher, &MarketAnalysisDataFetcher::historyImportEnded,
                 this, &MarketAnalysisWidget::endHistoryTask);
-        connect(mDataFetcher, &MarketAnalysisDataFetcher::genericError,
+        connect(&mDataFetcher, &MarketAnalysisDataFetcher::genericError,
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
         });
@@ -275,15 +211,11 @@ namespace Evernus
         tabs->addTab(createInterRegionAnalysisWidget(), tr("Inter-Region"));
     }
 
-    MarketAnalysisWidget::~MarketAnalysisWidget()
-    {
-        mFetcherThread->quit();
-        mFetcherThread->wait();
-    }
-
     void MarketAnalysisWidget::setCharacter(Character::IdType id)
     {
-        const auto character = mCharacterRepo.find(id);
+        mCharacterId = id;
+
+        const auto character = mCharacterRepo.find(mCharacterId);
         mTypeDataModel.setCharacter(character);
         mInterRegionDataModel.setCharacter(character);
     }
@@ -302,7 +234,7 @@ namespace Evernus
         mHistory = std::make_shared<MarketAnalysisDataFetcher::HistoryResultType::element_type>();
         mInterRegionDataModel.reset();
 
-        if (!mDataFetcher->hasPendingOrderRequests() && !mDataFetcher->hasPendingHistoryRequests())
+        if (!mDataFetcher.hasPendingOrderRequests() && !mDataFetcher.hasPendingHistoryRequests())
         {
             QSettings settings;
             const auto webImporter = static_cast<ImportSettings::WebImporterType>(
@@ -329,11 +261,12 @@ namespace Evernus
             ignoreTypes(mCorpOrderRepo.fetchActiveTypes());
         }
 
-        QMetaObject::invokeMethod(mDataFetcher,
+        QMetaObject::invokeMethod(&mDataFetcher,
                                   "importData",
                                   Qt::QueuedConnection,
                                   Q_ARG(ExternalOrderImporter::TypeLocationPairs, pairs),
-                                  Q_ARG(MarketOrderRepository::TypeLocationPairs, ignored));
+                                  Q_ARG(MarketOrderRepository::TypeLocationPairs, ignored),
+                                  Q_ARG(Character::IdType, mCharacterId));
     }
 
     void MarketAnalysisWidget::storeOrders()
@@ -603,7 +536,7 @@ namespace Evernus
 
     void MarketAnalysisWidget::checkCompletion()
     {
-        if (!mDataFetcher->hasPendingOrderRequests() && !mDataFetcher->hasPendingHistoryRequests())
+        if (!mDataFetcher.hasPendingOrderRequests() && !mDataFetcher.hasPendingHistoryRequests())
         {
             showForCurrentRegion();
             mRefreshedInterRegionData = false;

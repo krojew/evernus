@@ -37,6 +37,7 @@ namespace Evernus
         void deleteAll() const;
 
         EntityList fetchForSolarSystem(uint solarSystemId) const;
+        EntityList fetchForRegion(uint regionId) const;
 
         CitadelRepository &operator =(const CitadelRepository &) = default;
         CitadelRepository &operator =(CitadelRepository &&) = default;
@@ -45,5 +46,7 @@ namespace Evernus
         virtual QStringList getColumns() const override;
         virtual void bindValues(const Citadel &entity, QSqlQuery &query) const override;
         virtual void bindPositionalValues(const Citadel &entity, QSqlQuery &query) const override;
+
+        EntityList buildList(QSqlQuery &query) const;
     };
 }

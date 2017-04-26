@@ -37,6 +37,7 @@ namespace Evernus
         auto citadel = std::make_shared<Citadel>(record.value("id").value<Citadel::IdType>());
         citadel->setName(record.value("name").toString());
         citadel->setSolarSystemId(record.value("solar_system_id").toULongLong());
+        citadel->setRegionId(record.value("region_id").toUInt());
         citadel->setX(record.value("x").toDouble());
         citadel->setY(record.value("y").toDouble());
         citadel->setZ(record.value("z").toDouble());
@@ -53,6 +54,7 @@ namespace Evernus
             "id INTEGER PRIMARY KEY,"
             "name TEXT NOT NULL,"
             "solar_system_id INTEGER NOT NULL,"
+            "region_id INTEGER NOT NULL,"
             "x REAL NOT NULL,"
             "y REAL NOT NULL,"
             "z REAL NOT NULL,"
@@ -60,6 +62,16 @@ namespace Evernus
             "first_seen DATETIME NOT NULL,"
             "public INTEGER NOT NULL"
         ")"}.arg(getTableName()));
+
+        try
+        {
+            exec(QString{"CREATE INDEX IF NOT EXISTS %1_region ON %1(region_id)"}.arg(getTableName()));
+        }
+        catch (const std::runtime_error &)
+        {
+            // ignore - versions < 1.49 do not have this column
+            qDebug() << "SQL errors ignored";
+        }
     }
 
     void CitadelRepository::deleteAll() const
@@ -72,18 +84,15 @@ namespace Evernus
         auto query = prepare(QString{"SELECT * FROM %1 WHERE solar_system_id = ?"}.arg(getTableName()));
         query.bindValue(0, solarSystemId);
 
-        DatabaseUtils::execQuery(query);
+        return buildList(query);
+    }
 
-        EntityList result;
+    CitadelRepository::EntityList CitadelRepository::fetchForRegion(uint regionId) const
+    {
+        auto query = prepare(QString{"SELECT * FROM %1 WHERE region_id = ?"}.arg(getTableName()));
+        query.bindValue(0, regionId);
 
-        const auto size = query.size();
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-            result.emplace_back(populate(query.record()));
-
-        return result;
+        return buildList(query);
     }
 
     QStringList CitadelRepository::getColumns() const
@@ -92,6 +101,7 @@ namespace Evernus
             << "id"
             << "name"
             << "solar_system_id"
+            << "region_id"
             << "x"
             << "y"
             << "z"
@@ -107,6 +117,7 @@ namespace Evernus
 
         query.bindValue(":name", entity.getName());
         query.bindValue(":solar_system_id", entity.getSolarSystemId());
+        query.bindValue(":region_id", entity.getRegionId());
         query.bindValue(":x", entity.getX());
         query.bindValue(":y", entity.getY());
         query.bindValue(":z", entity.getZ());
@@ -122,11 +133,28 @@ namespace Evernus
 
         query.addBindValue(entity.getName());
         query.addBindValue(entity.getSolarSystemId());
+        query.addBindValue(entity.getRegionId());
         query.addBindValue(entity.getX());
         query.addBindValue(entity.getY());
         query.addBindValue(entity.getZ());
         query.addBindValue(entity.getLastSeen());
         query.addBindValue(entity.getFirstSeen());
         query.addBindValue(entity.isPublic());
+    }
+
+    CitadelRepository::EntityList CitadelRepository::buildList(QSqlQuery &query) const
+    {
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
     }
 }
