@@ -51,7 +51,7 @@ namespace Evernus
 
         mView = new QWebEngineView{this};
         mAuthWidgetStack->addWidget(mView);
-        connect(mView, &QWebEngineView::urlChanged, [=](const QUrl &url) {
+        connect(mView, &QWebEngineView::urlChanged, this, [=](const QUrl &url) {
             mUrlEdit->setText(url.toString());
             mUrlEdit->setCursorPosition(0);
         });

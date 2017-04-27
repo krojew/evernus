@@ -41,3 +41,4 @@ Evernus.VC.VC.opendb
 Evernus.VC.db
 evernus_automoc*
 SyncDialog.moc
+core.*
