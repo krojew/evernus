@@ -637,9 +637,8 @@ namespace Evernus
             query.bindValue(0, stationId - 6000001);
 
             DatabaseUtils::execQuery(query);
-            query.next();
-
-            systemId = query.value(0).toUInt();
+            if (query.next())
+                systemId = query.value(0).toUInt();
         }
         else if (stationId >= 66014934 && stationId <= 67999999)
         {
@@ -670,9 +669,8 @@ namespace Evernus
             query.bindValue(0, stationId);
 
             DatabaseUtils::execQuery(query);
-            query.next();
-
-            systemId = query.value(0).toUInt();
+            if (query.next())
+                systemId = query.value(0).toUInt();
         }
         else if (stationId > 61000000)
         {
@@ -692,9 +690,8 @@ namespace Evernus
             query.bindValue(0, stationId);
 
             DatabaseUtils::execQuery(query);
-            query.next();
-
-            systemId = query.value(0).toUInt();
+            if (query.next())
+                systemId = query.value(0).toUInt();
         }
 
         if (systemId == 0)  // citadel?
