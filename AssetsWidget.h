@@ -49,8 +49,8 @@ namespace Evernus
         virtual ~AssetsWidget() = default;
 
     signals:
-        void importPricesFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
-        void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromWeb(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromFile(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
 
         void setDestinationInEve(quint64 locationId);
         void showInEve(EveType::IdType id, Character::IdType charId);

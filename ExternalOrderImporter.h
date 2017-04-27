@@ -21,6 +21,7 @@
 
 #include <QObject>
 
+#include "Character.h"
 #include "EveType.h"
 
 namespace Evernus
@@ -39,7 +40,7 @@ namespace Evernus
         using QObject::QObject;
         virtual ~ExternalOrderImporter() = default;
 
-        virtual void fetchExternalOrders(const TypeLocationPairs &target) const = 0;
+        virtual void fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const = 0;
 
     signals:
         void externalOrdersChanged(const std::vector<ExternalOrder> &orders) const;

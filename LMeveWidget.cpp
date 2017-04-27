@@ -89,12 +89,12 @@ namespace Evernus
 
     void LMeveWidget::prepareItemImportFromWeb()
     {
-        emit importPricesFromWeb(getImportTarget());
+        emit importPricesFromWeb(mCharacterId, getImportTarget());
     }
 
     void LMeveWidget::prepareItemImportFromFile()
     {
-        emit importPricesFromFile(getImportTarget());
+        emit importPricesFromFile(mCharacterId, getImportTarget());
     }
 
     void LMeveWidget::setStationId(quint64 id)

@@ -33,7 +33,7 @@ namespace Evernus
         using ExternalOrderImporter::ExternalOrderImporter;
         virtual ~MarketLogExternalOrderImporter();
 
-        virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
+        virtual void fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const override;
 
     private slots:
         void threadFinished(const ExternalOrderList &orders);

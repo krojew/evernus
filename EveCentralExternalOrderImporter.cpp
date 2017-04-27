@@ -24,8 +24,10 @@ namespace Evernus
     {
     }
 
-    void EveCentralExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
+    void EveCentralExternalOrderImporter::fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const
     {
+        Q_UNUSED(id);
+
         if (target.empty())
         {
             emit externalOrdersChanged(std::vector<ExternalOrder>{});

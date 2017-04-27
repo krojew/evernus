@@ -37,26 +37,26 @@ namespace Evernus
         connectImporter(*mEveCentralImporter);
     }
 
-    void ProxyWebExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
+    void ProxyWebExternalOrderImporter::fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const
     {
         if (mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Auto)
         {
             if (SSOUtils::useWholeMarketImport(target, mDataProvider))
-                mESIWholeImporter->fetchExternalOrders(target);
+                mESIWholeImporter->fetchExternalOrders(id, target);
             else
-                mESIIndividualImporter->fetchExternalOrders(target);
+                mESIIndividualImporter->fetchExternalOrders(id, target);
         }
         else if (mCurrentImporter == ImportSettings::WebImporterType::EveCentral)
         {
-            mEveCentralImporter->fetchExternalOrders(target);
+            mEveCentralImporter->fetchExternalOrders(id, target);
         }
         else if (mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Individual)
         {
-            mESIIndividualImporter->fetchExternalOrders(target);
+            mESIIndividualImporter->fetchExternalOrders(id, target);
         }
         else
         {
-            mESIWholeImporter->fetchExternalOrders(target);
+            mESIWholeImporter->fetchExternalOrders(id, target);
         }
     }
 

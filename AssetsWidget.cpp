@@ -177,12 +177,12 @@ namespace Evernus
 
     void AssetsWidget::prepareItemImportFromWeb()
     {
-        emit importPricesFromWeb(getImportTarget());
+        emit importPricesFromWeb(getCharacterId(), getImportTarget());
     }
 
     void AssetsWidget::prepareItemImportFromFile()
     {
-        emit importPricesFromFile(getImportTarget());
+        emit importPricesFromFile(getCharacterId(), getImportTarget());
     }
 
     void AssetsWidget::applyWildcard(const QString &text)

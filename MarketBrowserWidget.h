@@ -22,6 +22,7 @@
 #include "ExternalOrderBuyModel.h"
 #include "ExternalOrderImporter.h"
 #include "ItemNameModel.h"
+#include "Character.h"
 
 class QListWidgetItem;
 class QDoubleSpinBox;
@@ -65,8 +66,8 @@ namespace Evernus
         virtual ~MarketBrowserWidget() = default;
 
     signals:
-        void importPricesFromWeb(const ExternalOrderImporter::TypeLocationPairs &target);
-        void importPricesFromFile(const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromWeb(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromFile(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
 
         void externalOrdersChanged();
 
@@ -173,6 +174,8 @@ namespace Evernus
         NavigationStack mNavigationStack;
         NavigationStack::const_iterator mNagivationPointer = std::begin(mNavigationStack);
         bool mBlockNavigationChange = false;
+
+        Character::IdType mCharacterId = Character::invalidId;
 
         ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
 

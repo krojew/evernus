@@ -12,11 +12,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QSettings>
 #include <QDebug>
 
 #include <boost/scope_exit.hpp>
 
 #include "EveDataProvider.h"
+#include "OrderSettings.h"
 
 #include "ESIIndividualExternalOrderImporter.h"
 
@@ -35,7 +37,7 @@ namespace Evernus
         connect(&mManager, &ESIManager::error, this, &ESIIndividualExternalOrderImporter::genericError);
     }
 
-    void ESIIndividualExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
+    void ESIIndividualExternalOrderImporter::fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const
     {
         if (target.empty())
         {
@@ -50,6 +52,9 @@ namespace Evernus
 
         mCounter.resetBatchIfEmpty();
 
+        QSettings settings;
+        const auto importCitadels = settings.value(OrderSettings::importFromCitadelsKey, OrderSettings::importFromCitadelsDefault).toBool();
+
         for (const auto &pair : target)
         {
             const auto regionId = mDataProvider.getStationRegionId(pair.second);
@@ -59,6 +64,20 @@ namespace Evernus
                 mManager.fetchMarketOrders(regionId, pair.first, [this](auto &&orders, const auto &error) {
                     processResult(std::move(orders), error);
                 });
+
+                if (importCitadels)
+                {
+                    const auto &citadels = mDataProvider.getCitadelsForRegion(regionId);
+                    for (const auto &citadel : citadels)
+                    {
+                        mCounter.incCount();
+
+                        Q_ASSERT(citadel);
+                        mManager.fetchCitadelMarketOrders(citadel->getId(), regionId, id, [=](auto &&orders, const auto &error) {
+                            processResult(std::move(orders), error);
+                        });
+                    }
+                }
             }
         }
 

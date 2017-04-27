@@ -110,8 +110,8 @@ namespace Evernus
         mDeviationBtn->setMenu(deviationMenu);
 
         auto cleanupMenu = new QMenu{this};
-        cleanupMenu->addAction(tr("Clean all orders"), this, SLOT(cleanAllOrders()));
-        cleanupMenu->addAction(tr("Clean for selected type"), this, SLOT(cleanCurrentType()));
+        cleanupMenu->addAction(tr("Clean all orders"), this, &MarketBrowserWidget::cleanAllOrders);
+        cleanupMenu->addAction(tr("Clean for selected type"), this, &MarketBrowserWidget::cleanCurrentType);
 
         auto cleanupBtn = new QPushButton{QIcon{":/images/cross.png"}, tr("Cleanup  "), this};
         toolbarLayout->addWidget(cleanupBtn);
@@ -367,10 +367,12 @@ namespace Evernus
 
     void MarketBrowserWidget::setCharacter(Character::IdType id)
     {
-        mExternalOrderSellModel.setCharacter(id);
-        mExternalOrderBuyModel.setCharacter(id);
-        mSellView->setCharacterId(id);
-        mBuyView->setCharacterId(id);
+        mCharacterId = id;
+
+        mExternalOrderSellModel.setCharacter(mCharacterId);
+        mExternalOrderBuyModel.setCharacter(mCharacterId);
+        mSellView->setCharacterId(mCharacterId);
+        mBuyView->setCharacterId(mCharacterId);
     }
 
     void MarketBrowserWidget::updateData()
@@ -424,12 +426,12 @@ namespace Evernus
 
     void MarketBrowserWidget::prepareItemImportFromWeb()
     {
-        emit importPricesFromWeb(getImportTarget());
+        emit importPricesFromWeb(mCharacterId, getImportTarget());
     }
 
     void MarketBrowserWidget::prepareItemImportFromFile()
     {
-        emit importPricesFromFile(getImportTarget());
+        emit importPricesFromFile(mCharacterId, getImportTarget());
     }
 
     void MarketBrowserWidget::selectRegion(QListWidgetItem *item)

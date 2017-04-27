@@ -37,7 +37,7 @@ namespace Evernus
                                       QObject *parent = nullptr);
         virtual ~ProxyWebExternalOrderImporter() = default;
 
-        virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
+        virtual void fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const override;
 
     public slots:
         void handleNewPreferences();

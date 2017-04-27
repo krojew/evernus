@@ -1453,7 +1453,7 @@ namespace Evernus
         });
     }
 
-    void EvernusApplication::refreshAllExternalOrders()
+    void EvernusApplication::refreshAllExternalOrders(Character::IdType id)
     {
         ExternalOrderImporter::TypeLocationPairs target;
 
@@ -1478,21 +1478,21 @@ namespace Evernus
             settings.value(ImportSettings::priceImportSourceKey, static_cast<int>(ImportSettings::priceImportSourceDefault)).toInt());
         switch (source) {
         case ImportSettings::PriceImportSource::Logs:
-            refreshExternalOrdersFromFile(target);
+            refreshExternalOrdersFromFile(id, target);
             break;
         default:
-            refreshExternalOrdersFromWeb(target);
+            refreshExternalOrdersFromWeb(id, target);
         }
     }
 
-    void EvernusApplication::refreshExternalOrdersFromWeb(const ExternalOrderImporter::TypeLocationPairs &target)
+    void EvernusApplication::refreshExternalOrdersFromWeb(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target)
     {
-        importExternalOrders(ExternalOrderImporterNames::webImporter, target);
+        importExternalOrders(ExternalOrderImporterNames::webImporter, id, target);
     }
 
-    void EvernusApplication::refreshExternalOrdersFromFile(const ExternalOrderImporter::TypeLocationPairs &target)
+    void EvernusApplication::refreshExternalOrdersFromFile(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target)
     {
-        importExternalOrders(ExternalOrderImporterNames::logImporter, target);
+        importExternalOrders(ExternalOrderImporterNames::logImporter, id, target);
     }
 
     void EvernusApplication::finishExternalOrderImport(const std::vector<ExternalOrder> &orders)
@@ -2113,7 +2113,7 @@ namespace Evernus
         });
     }
 
-    void EvernusApplication::importExternalOrders(const std::string &importerName, const ExternalOrderImporter::TypeLocationPairs &target)
+    void EvernusApplication::importExternalOrders(const std::string &importerName, Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target)
     {
         if (mCurrentExternalOrderImportTask != TaskConstants::invalidTask)
             return;
@@ -2126,7 +2126,7 @@ namespace Evernus
         mCurrentExternalOrderImportTask = startTask(tr("Importing item prices..."));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        it->second->fetchExternalOrders(target);
+        it->second->fetchExternalOrders(id, target);
     }
 
     void EvernusApplication::importMarketOrdersFromLogs(Character::IdType id, uint task, bool corp)
@@ -2479,7 +2479,7 @@ namespace Evernus
             }
 
             if (settings.value(PriceSettings::refreshPricesWithOrdersKey).toBool())
-                refreshAllExternalOrders();
+                refreshAllExternalOrders(id);
         }
         catch (const CharacterRepository::NotFoundException &)
         {

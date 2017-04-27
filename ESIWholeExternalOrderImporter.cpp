@@ -14,11 +14,13 @@
  */
 #include <algorithm>
 
+#include <QSettings>
 #include <QDebug>
 
 #include <boost/scope_exit.hpp>
 
 #include "EveDataProvider.h"
+#include "OrderSettings.h"
 
 #include "ESIWholeExternalOrderImporter.h"
 
@@ -36,7 +38,7 @@ namespace Evernus
         connect(&mManager, &ESIManager::error, this, &ESIWholeExternalOrderImporter::genericError);
     }
 
-    void ESIWholeExternalOrderImporter::fetchExternalOrders(const TypeLocationPairs &target) const
+    void ESIWholeExternalOrderImporter::fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const
     {
         if (target.empty())
         {
@@ -65,11 +67,28 @@ namespace Evernus
 
         mCounter.setCount(regions.size());
 
+        QSettings settings;
+        const auto importCitadels = settings.value(OrderSettings::importFromCitadelsKey, OrderSettings::importFromCitadelsDefault).toBool();
+
         for (const auto region : regions)
         {
             mManager.fetchMarketOrders(region, [=](auto &&orders, const auto &error) {
                 processResult(std::move(orders), error);
             });
+
+            if (importCitadels)
+            {
+                const auto &citadels = mDataProvider.getCitadelsForRegion(region);
+                for (const auto &citadel : citadels)
+                {
+                    mCounter.incCount();
+
+                    Q_ASSERT(citadel);
+                    mManager.fetchCitadelMarketOrders(citadel->getId(), region, id, [=](auto &&orders, const auto &error) {
+                        processResult(std::move(orders), error);
+                    });
+                }
+            }
         }
 
         qDebug() << "Making" << mCounter.getCount() << "ESI requests...";

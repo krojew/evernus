@@ -34,7 +34,7 @@ namespace Evernus
         explicit EveCentralExternalOrderImporter(const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~EveCentralExternalOrderImporter() = default;
 
-        virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
+        virtual void fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const override;
 
     private:
         EveCentralManager mManager;

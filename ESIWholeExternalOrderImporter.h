@@ -37,7 +37,7 @@ namespace Evernus
                                       QObject *parent = nullptr);
         virtual ~ESIWholeExternalOrderImporter() = default;
 
-        virtual void fetchExternalOrders(const TypeLocationPairs &target) const override;
+        virtual void fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const override;
 
     private:
         const EveDataProvider &mDataProvider;
