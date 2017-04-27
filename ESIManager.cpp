@@ -220,7 +220,7 @@ namespace Evernus
                 connect(mAuthView.get(), &SOOAuthWidget::acquiredCode, this, [=](const auto &code) {
                     processAuthorizationCode(charId, code);
                 });
-                connect(mAuthView->page(), &QWebEnginePage::urlChanged, [=](const QUrl &url) {
+                connect(mAuthView->page(), &QWebEnginePage::urlChanged, this, [=](const QUrl &url) {
                     try
                     {
                         if (url.host() == redirectDomain)
