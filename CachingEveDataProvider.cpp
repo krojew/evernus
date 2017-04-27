@@ -770,6 +770,7 @@ namespace Evernus
     void CachingEveDataProvider::clearCitadelCache()
     {
         mCitadelCache.clear();
+        mRegionCitadelCache.clear();
     }
 
     void CachingEveDataProvider::handleNewPreferences()
