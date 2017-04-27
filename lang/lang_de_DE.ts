@@ -2949,14 +2949,14 @@
 <context>
     <name>Evernus::MarketAnalysisDataFetcher</name>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="92"/>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="99"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="93"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="100"/>
         <source>Waiting for %1 order server replies...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="93"/>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="132"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="94"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="133"/>
         <source>Waiting for %1 history server replies...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2964,207 +2964,207 @@
 <context>
     <name>Evernus::MarketAnalysisWidget</name>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="172"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="108"/>
         <source>Import data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="186"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="122"/>
         <source>Don&apos;t save imported orders (huge performance gain)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="195"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="131"/>
         <source>Ignore types with existing orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="208"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="144"/>
         <source>Discard bogus orders (causes recalculation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="221"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="157"/>
         <source>Bogus order threshold:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="248"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="184"/>
         <source>Sell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="249"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="185"/>
         <source>Buy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="254"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="190"/>
         <source>Source price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="257"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="193"/>
         <source>Destination price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="260"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="196"/>
         <source>Use skills and taxes for difference calculation (causes recalculation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="274"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="210"/>
         <source>Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="275"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="211"/>
         <source>Inter-Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="311"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="243"/>
         <source>Importing data for analysis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="313"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="245"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="314"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="246"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="317"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="249"/>
         <source>Making %1 ESI history requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="483"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="416"/>
         <source>%1 in %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="573"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="506"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="627"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="861"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="560"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="794"/>
         <source>- any station -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="631"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="564"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="631"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="564"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="666"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="921"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="946"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="951"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="599"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="854"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="879"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="884"/>
         <source>- all -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="689"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="622"/>
         <source>Region:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="709"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="642"/>
         <source>Limit to solar system:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="722"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="959"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="655"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="892"/>
         <source>Volume:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="740"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="978"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="673"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="911"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="761"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="694"/>
         <source>Buy price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="777"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="710"/>
         <source>Sell price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="793"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="996"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="726"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="929"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="797"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="730"/>
         <source>Double-click an item for additional information. &quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="802"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="1010"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="735"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="943"/>
         <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="823"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="756"/>
         <source>Show details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="828"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="1035"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="761"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="968"/>
         <source>Show in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="833"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="1040"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="766"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="973"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="864"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="797"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="874"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="807"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="933"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="866"/>
         <source>- multiple -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="943"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="876"/>
         <source>- none -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="1000"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="933"/>
         <source>&quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
