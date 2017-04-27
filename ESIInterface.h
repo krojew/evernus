@@ -86,10 +86,10 @@ namespace Evernus
         void checkAuth(Character::IdType charId, T &&continuation) const;
 
         template<class T>
-        void fetchPaginatedData(const QString &url, uint page, T &&continuation) const;
+        void fetchPaginatedData(const QString &url, uint page, T &&continuation, bool suppressAuthenticationReq = false) const;
 
         template<class T>
-        void asyncGet(const QString &url, const QString &query, T &&continuation) const;
+        void asyncGet(const QString &url, const QString &query, T &&continuation, bool suppressAuthenticationReq = false) const;
         template<class T>
         void post(Character::IdType charId, const QString &url, const QString &query, T &&errorCallback) const;
 

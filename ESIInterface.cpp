@@ -55,7 +55,7 @@ namespace Evernus
             if (!error.isEmpty())
                 callback(QJsonDocument{}, true, error);
             else
-                fetchPaginatedData(QStringLiteral("/v1/markets/structures/%1/").arg(citadelId), 1, callback);
+                fetchPaginatedData(QStringLiteral("/v1/markets/structures/%1/").arg(citadelId), 1, callback, true);
         });
     }
 
@@ -135,7 +135,7 @@ namespace Evernus
     }
 
     template<class T>
-    void ESIInterface::fetchPaginatedData(const QString &url, uint page, T &&continuation) const
+    void ESIInterface::fetchPaginatedData(const QString &url, uint page, T &&continuation, bool suppressAuthenticationReq) const
     {
         asyncGet(url, QStringLiteral("page=%1").arg(page), [=](auto &&response, const auto &error) {
             if (!error.isEmpty())
@@ -154,11 +154,11 @@ namespace Evernus
                 continuation(std::move(response), false, QString{});
                 fetchPaginatedData(url, page + 1, continuation);
             }
-        });
+        }, suppressAuthenticationReq);
     }
 
     template<class T>
-    void ESIInterface::asyncGet(const QString &url, const QString &query, T &&continuation) const
+    void ESIInterface::asyncGet(const QString &url, const QString &query, T &&continuation, bool suppressAuthenticationReq) const
     {
         qDebug() << "ESI request:" << url;
 
@@ -173,9 +173,16 @@ namespace Evernus
 
             const auto error = reply->error();
             if (error != QNetworkReply::NoError)
-                continuation(QJsonDocument{}, reply->errorString());
+            {
+                if (error == QNetworkReply::AuthenticationRequiredError && suppressAuthenticationReq)
+                    continuation(QJsonDocument{}, QString{});
+                else
+                    continuation(QJsonDocument{}, reply->errorString());
+            }
             else
+            {
                 continuation(QJsonDocument::fromJson(reply->readAll()), QString{});
+            }
         });
     }
 
