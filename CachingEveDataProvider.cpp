@@ -324,9 +324,8 @@ namespace Evernus
             query.bindValue(0, id - 6000001);
 
             DatabaseUtils::execQuery(query);
-            query.next();
-
-            result = query.value(0).toString();
+            if (query.next())
+                result = query.value(0).toString();
         }
         else if (id >= 66014934 && id <= 67999999)
         {
@@ -357,9 +356,8 @@ namespace Evernus
             query.bindValue(0, id);
 
             DatabaseUtils::execQuery(query);
-            query.next();
-
-            result = query.value(0).toString();
+            if (query.next())
+                result = query.value(0).toString();
         }
         else if (id > 61000000)
         {
@@ -379,9 +377,8 @@ namespace Evernus
             query.bindValue(0, id);
 
             DatabaseUtils::execQuery(query);
-            query.next();
-
-            result = query.value(0).toString();
+            if (query.next())
+                result = query.value(0).toString();
         }
 
         if (result.isEmpty())   // citadel?
@@ -418,7 +415,8 @@ namespace Evernus
         query.bindValue(0, id);
 
         DatabaseUtils::execQuery(query);
-        query.next();
+        if (!query.next())
+            return mSolarSystemNameCache.emplace(id, QString{}).first->second;
 
         return mSolarSystemNameCache.emplace(id, query.value(0).toString()).first->second;
     }
@@ -566,7 +564,8 @@ namespace Evernus
 
         DatabaseUtils::execQuery(query);
 
-        query.next();
+        if (!query.next())
+            return mSecurityStatuses.emplace(solarSystemId, 0.).first->second;
 
         return mSecurityStatuses.emplace(solarSystemId, query.value(0).toDouble()).first->second;
     }
@@ -585,9 +584,8 @@ namespace Evernus
             query.bindValue(0, stationId - 6000001);
 
             DatabaseUtils::execQuery(query);
-            query.next();
-
-            result = query.value(0).toUInt();
+            if (query.next())
+                result = query.value(0).toUInt();
         }
         else if ((stationId >= 66014934 && stationId <= 67999999) ||
                  (stationId >= 60014861 && stationId <= 60014928) ||
@@ -604,9 +602,8 @@ namespace Evernus
             query.bindValue(0, stationId);
 
             DatabaseUtils::execQuery(query);
-            query.next();
-
-            result = query.value(0).toUInt();
+            if (query.next())
+                result = query.value(0).toUInt();
         }
         else
         {
@@ -615,9 +612,8 @@ namespace Evernus
             query.bindValue(0, stationId);
 
             DatabaseUtils::execQuery(query);
-            query.next();
-
-            result = query.value(0).toUInt();
+            if (query.next())
+                result = query.value(0).toUInt();
         }
 
         if (result == 0)   // citadel?
