@@ -181,8 +181,12 @@ namespace Evernus
         item->second->setIcon(0, QIcon{(success) ? (":/images/accept.png") : (":/images/exclamation.png")});
         if (!success && !error.isEmpty())
         {
-            auto errorItem = new QTreeWidgetItem{item->second};
-            errorItem->setText(1, error);
+            const auto individualErrors = error.split('\n', QString::SkipEmptyParts);
+            for (const auto &individualError : individualErrors)
+            {
+                auto errorItem = new QTreeWidgetItem{item->second};
+                errorItem->setText(1, individualError);
+            }
         }
 
         mTaskItems.erase(item);
