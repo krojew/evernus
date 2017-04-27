@@ -138,6 +138,12 @@ namespace Evernus
     void ESIInterface::fetchPaginatedData(const QString &url, uint page, T &&continuation) const
     {
         asyncGet(url, QStringLiteral("page=%1").arg(page), [=](auto &&response, const auto &error) {
+            if (!error.isEmpty())
+            {
+                continuation({}, true, error);
+                return;
+            }
+
             const auto array = response.array();
             if (array.isEmpty())
             {
