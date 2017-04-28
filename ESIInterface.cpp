@@ -55,7 +55,7 @@ namespace Evernus
             if (!error.isEmpty())
                 callback(QJsonDocument{}, true, error);
             else
-                fetchPaginatedData(QStringLiteral("/v1/markets/structures/%1/").arg(citadelId), 1, callback, true);
+                fetchPaginatedData(charId, QStringLiteral("/v1/markets/structures/%1/").arg(citadelId), 1, callback, true);
         });
     }
 
@@ -135,7 +135,7 @@ namespace Evernus
     }
 
     template<class T>
-    void ESIInterface::fetchPaginatedData(const QString &url, uint page, T &&continuation, bool suppressAuthenticationReq) const
+    void ESIInterface::fetchPaginatedData(const QString &url, uint page, T &&continuation) const
     {
         asyncGet(url, QStringLiteral("page=%1").arg(page), [=](auto &&response, const auto &error) {
             if (!error.isEmpty())
@@ -154,11 +154,34 @@ namespace Evernus
                 continuation(std::move(response), false, QString{});
                 fetchPaginatedData(url, page + 1, continuation);
             }
-        }, suppressAuthenticationReq);
+        });
     }
 
     template<class T>
-    void ESIInterface::asyncGet(const QString &url, const QString &query, T &&continuation, bool suppressAuthenticationReq) const
+    void ESIInterface::fetchPaginatedData(Character::IdType charId, const QString &url, uint page, T &&continuation, bool suppressForbidden) const
+    {
+        asyncGet(charId, url, QStringLiteral("page=%1").arg(page), [=](auto &&response, const auto &error) {
+            if (!error.isEmpty())
+            {
+                continuation({}, true, error);
+                return;
+            }
+
+            const auto array = response.array();
+            if (array.isEmpty())
+            {
+                continuation(std::move(response), true, QString{});
+            }
+            else
+            {
+                continuation(std::move(response), false, QString{});
+                fetchPaginatedData(charId, url, page + 1, continuation, suppressForbidden);
+            }
+        }, suppressForbidden);
+    }
+
+    template<class T>
+    void ESIInterface::asyncGet(const QString &url, const QString &query, T &&continuation) const
     {
         qDebug() << "ESI request:" << url;
 
@@ -173,11 +196,46 @@ namespace Evernus
 
             const auto error = reply->error();
             if (error != QNetworkReply::NoError)
+                continuation(QJsonDocument{}, reply->errorString());
+            else
+                continuation(QJsonDocument::fromJson(reply->readAll()), QString{});
+        });
+    }
+
+    template<class T>
+    void ESIInterface::asyncGet(Character::IdType charId, const QString &url, const QString &query, T &&continuation, bool suppressForbidden) const
+    {
+        qDebug() << "ESI request:" << url << ":" << query;
+
+        auto reply = mNetworkManager.get(prepareRequest(charId, url, query));
+        Q_ASSERT(reply != nullptr);
+
+        new ReplyTimeout{*reply};
+
+        connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
+        connect(reply, &QNetworkReply::finished, this, [=] {
+            reply->deleteLater();
+
+            const auto error = reply->error();
+            if (error != QNetworkReply::NoError)
             {
-                if (error == QNetworkReply::AuthenticationRequiredError && suppressAuthenticationReq)
-                    continuation(QJsonDocument{}, QString{});
+                if (error == QNetworkReply::AuthenticationRequiredError)
+                {
+                    // expired token?
+                    tryAuthAndContinue(charId, [=](const auto &error) {
+                        if (error.isEmpty())
+                            asyncGet(charId, url, query, continuation, suppressForbidden);
+                        else
+                            continuation(QJsonDocument{}, error);
+                    });
+                }
                 else
-                    continuation(QJsonDocument{}, reply->errorString());
+                {
+                    if (error == QNetworkReply::ContentOperationNotPermittedError && suppressForbidden)
+                        continuation(QJsonDocument{}, QString{});
+                    else
+                        continuation(QJsonDocument{}, reply->errorString());
+                }
             }
             else
             {
