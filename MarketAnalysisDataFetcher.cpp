@@ -92,6 +92,11 @@ namespace Evernus
 
         emit orderStatusUpdated(tr("Waiting for %1 order server replies...").arg(mOrderCounter.getCount()));
         emit historyStatusUpdated(tr("Waiting for %1 history server replies...").arg(mHistoryCounter.getCount()));
+
+        if (mOrderCounter.isEmpty())
+            finishOrderImport();
+        if (mHistoryCounter.isEmpty())
+            finishHistoryImport();
     }
 
     void MarketAnalysisDataFetcher::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)
@@ -106,10 +111,7 @@ namespace Evernus
             mAggregatedOrderErrors << errorText;
 
             if (mOrderCounter.isEmpty())
-            {
-                emit orderImportEnded(mOrders, mAggregatedOrderErrors.join("\n"));
-                mAggregatedOrderErrors.clear();
-            }
+                finishOrderImport();
 
             return;
         }
@@ -120,10 +122,7 @@ namespace Evernus
                         std::make_move_iterator(std::end(orders)));
 
         if (mOrderCounter.isEmpty() && !mPreparingRequests)
-        {
-            emit orderImportEnded(mOrders, mAggregatedOrderErrors.join("\n"));
-            mAggregatedOrderErrors.clear();
-        }
+            finishOrderImport();
     }
 
     void MarketAnalysisDataFetcher
@@ -139,10 +138,7 @@ namespace Evernus
             mAggregatedHistoryErrors << errorText;
 
             if (mHistoryCounter.isEmpty())
-            {
-                emit historyImportEnded(mHistory, mAggregatedHistoryErrors.join("\n"));
-                mAggregatedHistoryErrors.clear();
-            }
+                finishHistoryImport();
 
             return;
         }
@@ -150,10 +146,7 @@ namespace Evernus
         (*mHistory)[regionId][typeId] = std::move(history);
 
         if (mHistoryCounter.isEmpty() && !mPreparingRequests)
-        {
-            emit historyImportEnded(mHistory, mAggregatedHistoryErrors.join("\n"));
-            mAggregatedHistoryErrors.clear();
-        }
+            finishHistoryImport();
     }
 
     void MarketAnalysisDataFetcher::importWholeMarketData(const ExternalOrderImporter::TypeLocationPairs &pairs,
@@ -243,6 +236,18 @@ namespace Evernus
                 });
             }
         }
+    }
+
+    void MarketAnalysisDataFetcher::finishOrderImport()
+    {
+        emit orderImportEnded(mOrders, mAggregatedOrderErrors.join("\n"));
+        mAggregatedOrderErrors.clear();
+    }
+
+    void MarketAnalysisDataFetcher::finishHistoryImport()
+    {
+        emit historyImportEnded(mHistory, mAggregatedHistoryErrors.join("\n"));
+        mAggregatedHistoryErrors.clear();
     }
 
     void MarketAnalysisDataFetcher::filterOrders(std::vector<ExternalOrder> &orders, const ExternalOrderImporter::TypeLocationPairs &pairs)

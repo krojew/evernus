@@ -18,6 +18,7 @@
 #include <functional>
 
 #include <QNetworkAccessManager>
+#include <QSettings>
 #include <QDateTime>
 #include <QString>
 
@@ -82,6 +83,8 @@ namespace Evernus
         mutable std::unordered_multimap<Character::IdType, std::function<void (const QString &)>> mPendingAuthRequests;
         mutable std::unordered_map<Character::IdType, AccessToken> mAccessTokens;
 
+        QSettings mSettings;
+
         template<class T>
         void checkAuth(Character::IdType charId, T &&continuation) const;
 
@@ -91,14 +94,14 @@ namespace Evernus
         void fetchPaginatedData(Character::IdType charId, const QString &url, uint page, T &&continuation, bool suppressForbidden = false) const;
 
         template<class T>
-        void asyncGet(const QString &url, const QString &query, T &&continuation, uint retries = getNumRetries()) const;
+        void asyncGet(const QString &url, const QString &query, T &&continuation, uint retries) const;
         template<class T>
         void asyncGet(Character::IdType charId,
                       const QString &url,
                       const QString &query,
                       T &&continuation,
-                      bool suppressForbidden = false,
-                      uint retries = getNumRetries()) const;
+                      uint retries,
+                      bool suppressForbidden = false) const;
         template<class T>
         void post(Character::IdType charId, const QString &url, const QString &query, T &&errorCallback) const;
 
@@ -108,6 +111,6 @@ namespace Evernus
         QNetworkRequest prepareRequest(const QString &url, const QString &query) const;
         QNetworkRequest prepareRequest(Character::IdType charId, const QString &url, const QString &query) const;
 
-        static uint getNumRetries();
+        uint getNumRetries() const;
     };
 }

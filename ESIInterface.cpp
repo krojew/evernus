@@ -18,7 +18,6 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QUrlQuery>
-#include <QSettings>
 #include <QDebug>
 #include <QUrl>
 
@@ -35,7 +34,7 @@ namespace Evernus
     void ESIInterface::fetchMarketOrders(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching market orders for" << regionId << "and" << typeId;
-        asyncGet(QStringLiteral("/v1/markets/%1/orders/").arg(regionId), QStringLiteral("type_id=%1").arg(typeId), callback);
+        asyncGet(QStringLiteral("/v1/markets/%1/orders/").arg(regionId), QStringLiteral("type_id=%1").arg(typeId), callback, getNumRetries());
     }
 
     void ESIInterface::fetchMarketOrders(uint regionId, const PaginatedCallback &callback) const
@@ -47,7 +46,7 @@ namespace Evernus
     void ESIInterface::fetchMarketHistory(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching market history for" << regionId << "and" << typeId;
-        asyncGet(QStringLiteral("/v1/markets/%1/history/").arg(regionId), QStringLiteral("type_id=%1").arg(typeId), callback);
+        asyncGet(QStringLiteral("/v1/markets/%1/history/").arg(regionId), QStringLiteral("type_id=%1").arg(typeId), callback, getNumRetries());
     }
 
     void ESIInterface::fetchCitadelMarketOrders(quint64 citadelId, Character::IdType charId, const PaginatedCallback &callback) const
@@ -156,7 +155,7 @@ namespace Evernus
                 continuation(std::move(response), false, QString{});
                 fetchPaginatedData(url, page + 1, continuation);
             }
-        });
+        }, getNumRetries());
     }
 
     template<class T>
@@ -179,7 +178,7 @@ namespace Evernus
                 continuation(std::move(response), false, QString{});
                 fetchPaginatedData(charId, url, page + 1, continuation, suppressForbidden);
             }
-        }, suppressForbidden);
+        }, getNumRetries(), suppressForbidden);
     }
 
     template<class T>
@@ -214,7 +213,7 @@ namespace Evernus
 
     template<class T>
     void ESIInterface
-    ::asyncGet(Character::IdType charId, const QString &url, const QString &query, T &&continuation, bool suppressForbidden, uint retries) const
+    ::asyncGet(Character::IdType charId, const QString &url, const QString &query, T &&continuation, uint retries, bool suppressForbidden) const
     {
         qDebug() << "ESI request:" << url << ":" << query;
         qDebug() << "Retries" << retries;
@@ -236,7 +235,7 @@ namespace Evernus
                     // expired token?
                     tryAuthAndContinue(charId, [=](const auto &error) {
                         if (error.isEmpty())
-                            asyncGet(charId, url, query, continuation, suppressForbidden);
+                            asyncGet(charId, url, query, continuation, retries, suppressForbidden);
                         else
                             continuation(QJsonDocument{}, error);
                     });
@@ -246,7 +245,7 @@ namespace Evernus
                     if (error == QNetworkReply::ContentOperationNotPermittedError && suppressForbidden)
                         continuation(QJsonDocument{}, QString{});
                     else if (retries > 0)
-                        asyncGet(charId, url, query, continuation, suppressForbidden, retries - 1);
+                        asyncGet(charId, url, query, continuation, retries - 1, suppressForbidden);
                     else
                         continuation(QJsonDocument{}, reply->errorString());
                 }
@@ -337,9 +336,8 @@ namespace Evernus
         return request;
     }
 
-    uint ESIInterface::getNumRetries()
+    uint ESIInterface::getNumRetries() const
     {
-        QSettings settings;
-        return settings.value(NetworkSettings::maxRetriesKey, NetworkSettings::maxRetriesDefault).toUInt();
+        return mSettings.value(NetworkSettings::maxRetriesKey, NetworkSettings::maxRetriesDefault).toUInt();
     }
 }

@@ -92,9 +92,12 @@ namespace Evernus
     private:
         static const QString loginUrl;
         static const QString redirectDomain;
+        static const QString firstTimeCitadelOrderImportKey;
 
         static std::unordered_map<Character::IdType, QString> mRefreshTokens;
         static bool mFetchingToken;
+
+        static bool mFirstTimeCitadelOrderImport;
 
         const EveDataProvider &mDataProvider;
         const CharacterRepository &mCharacterRepo;

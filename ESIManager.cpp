@@ -17,6 +17,7 @@
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QApplication>
+#include <QMessageBox>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QByteArray>
@@ -44,9 +45,12 @@ namespace Evernus
 #endif
 
     const QString ESIManager::redirectDomain = "evernus.com";
+    const QString ESIManager::firstTimeCitadelOrderImportKey = "import/firstTimeCitadelOrderImport";
 
     std::unordered_map<Character::IdType, QString> ESIManager::mRefreshTokens;
     bool ESIManager::mFetchingToken = false;
+
+    bool ESIManager::mFirstTimeCitadelOrderImport = true;
 
     ESIManager::ESIManager(QByteArray clientId,
                            QByteArray clientSecret,
@@ -68,6 +72,8 @@ namespace Evernus
             mRefreshTokens[key.toULongLong()] = mCrypt.decryptToString(settings.value(key).toByteArray());
 
         settings.endGroup();
+
+        mFirstTimeCitadelOrderImport = settings.value(firstTimeCitadelOrderImportKey, mFirstTimeCitadelOrderImport).toBool();
 
         connect(&mInterface, &ESIInterface::tokenRequested, this, &ESIManager::fetchToken, Qt::QueuedConnection);
         connect(this, &ESIManager::acquiredToken, &mInterface, &ESIInterface::updateTokenAndContinue);
@@ -159,6 +165,19 @@ namespace Evernus
 
     void ESIManager::fetchCitadelMarketOrders(quint64 citadelId, uint regionId, Character::IdType charId, const MarketOrderCallback &callback) const
     {
+        if (mFirstTimeCitadelOrderImport)
+        {
+            mFirstTimeCitadelOrderImport = false;
+
+            QSettings settings;
+            settings.setValue(firstTimeCitadelOrderImportKey, false);
+
+            QMessageBox::information(nullptr, tr("Citadel order import"), tr(
+                "Seems like you are importing citadel orders for the first time. CCP only allows importing orders from citadels you have access to. "
+                "This means you need to authenticate yourself with Eve SSO, if you haven't done that already (please wait for the SSO window to open)."
+            ));
+        }
+
         mInterface.fetchCitadelMarketOrders(citadelId, charId, getMarketOrderCallback(regionId, callback));
     }
 

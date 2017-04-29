@@ -94,6 +94,9 @@ namespace Evernus
                                const MarketOrderRepository::TypeLocationPairs &ignored,
                                Character::IdType charId);
 
+        void finishOrderImport();
+        void finishHistoryImport();
+
         static void filterOrders(std::vector<ExternalOrder> &orders, const ExternalOrderImporter::TypeLocationPairs &pairs);
     };
 }
