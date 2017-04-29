@@ -178,7 +178,7 @@ namespace Evernus
             mInterRegionDataModel.setBogusOrderThreshold(value);
         });
 
-        auto createPriceTypCombo = [=](auto &combo) {
+        auto createPriceTypeCombo = [=](auto &combo) {
             combo = new QComboBox{this};
             toolBarLayout->addWidget(combo);
             combo->addItem(tr("Sell"), static_cast<int>(PriceType::Sell));
@@ -188,10 +188,10 @@ namespace Evernus
         };
 
         toolBarLayout->addWidget(new QLabel{tr("Source price:"), this});
-        createPriceTypCombo(mSrcPriceTypeCombo);
+        createPriceTypeCombo(mSrcPriceTypeCombo);
 
         toolBarLayout->addWidget(new QLabel{tr("Destination price:"), this});
-        createPriceTypCombo(mDstPriceTypeCombo);
+        createPriceTypeCombo(mDstPriceTypeCombo);
 
         auto skillsDiffBtn = new QCheckBox{tr("Use skills and taxes for difference calculation (causes recalculation)"), this};
         toolBarLayout->addWidget(skillsDiffBtn);
