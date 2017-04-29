@@ -52,6 +52,7 @@ namespace Evernus
         QLineEdit *mProviderHostEdit = nullptr;
 
         QSpinBox *mMaxReplyTimeEdit = nullptr;
+        QSpinBox *mMaxRetriesEdit = nullptr;
         QCheckBox *mIgnoreSslErrors = nullptr;
     };
 }

@@ -91,9 +91,14 @@ namespace Evernus
         void fetchPaginatedData(Character::IdType charId, const QString &url, uint page, T &&continuation, bool suppressForbidden = false) const;
 
         template<class T>
-        void asyncGet(const QString &url, const QString &query, T &&continuation) const;
+        void asyncGet(const QString &url, const QString &query, T &&continuation, uint retries = getNumRetries()) const;
         template<class T>
-        void asyncGet(Character::IdType charId, const QString &url, const QString &query, T &&continuation, bool suppressForbidden = false) const;
+        void asyncGet(Character::IdType charId,
+                      const QString &url,
+                      const QString &query,
+                      T &&continuation,
+                      bool suppressForbidden = false,
+                      uint retries = getNumRetries()) const;
         template<class T>
         void post(Character::IdType charId, const QString &url, const QString &query, T &&errorCallback) const;
 
@@ -102,5 +107,7 @@ namespace Evernus
 
         QNetworkRequest prepareRequest(const QString &url, const QString &query) const;
         QNetworkRequest prepareRequest(Character::IdType charId, const QString &url, const QString &query) const;
+
+        static uint getNumRetries();
     };
 }

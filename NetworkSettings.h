@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <QString>
+
 namespace Evernus
 {
     namespace NetworkSettings
@@ -21,20 +23,22 @@ namespace Evernus
         const auto useProxyDefault = false;
         const auto useCustomProviderDefault = false;
         const auto defaultAPIProvider = "https://api.eveonline.com";
-        const auto maxReplyTimeDefault = 1800;
+        const auto maxReplyTimeDefault = 1800u;
         const auto ignoreSslErrorsDefault = false;
+        const auto maxRetriesDefault = 3u;
 
         const auto cryptKey = Q_UINT64_C(0x468c4a0e33a6fe01);
 
-        const auto useProxyKey = "network/useProxy";
-        const auto proxyTypeKey = "network/proxy/type";
-        const auto proxyHostKey = "network/proxy/host";
-        const auto proxyPortKey = "network/proxy/port";
-        const auto proxyUserKey = "network/proxy/user";
-        const auto proxyPasswordKey = "network/proxy/password";
-        const auto useCustomProviderKey = "network/useCustomProvider";
-        const auto providerHostKey = "network/provider/host";
-        const auto maxReplyTimeKey = "network/maxReplyTime";
-        const auto ignoreSslErrorsKey = "network/security/ignoreSslErrors";
+        const auto useProxyKey = QStringLiteral("network/useProxy");
+        const auto proxyTypeKey = QStringLiteral("network/proxy/type");
+        const auto proxyHostKey = QStringLiteral("network/proxy/host");
+        const auto proxyPortKey = QStringLiteral("network/proxy/port");
+        const auto proxyUserKey = QStringLiteral("network/proxy/user");
+        const auto proxyPasswordKey = QStringLiteral("network/proxy/password");
+        const auto useCustomProviderKey = QStringLiteral("network/useCustomProvider");
+        const auto providerHostKey = QStringLiteral("network/provider/host");
+        const auto maxReplyTimeKey = QStringLiteral("network/maxReplyTime");
+        const auto ignoreSslErrorsKey = QStringLiteral("network/security/ignoreSslErrors");
+        const auto maxRetriesKey = QStringLiteral("network/maxRetries");
     }
 }

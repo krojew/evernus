@@ -18,9 +18,11 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QUrlQuery>
+#include <QSettings>
 #include <QDebug>
 #include <QUrl>
 
+#include "NetworkSettings.h"
 #include "SecurityHelper.h"
 #include "ReplyTimeout.h"
 
@@ -181,9 +183,10 @@ namespace Evernus
     }
 
     template<class T>
-    void ESIInterface::asyncGet(const QString &url, const QString &query, T &&continuation) const
+    void ESIInterface::asyncGet(const QString &url, const QString &query, T &&continuation, uint retries) const
     {
-        qDebug() << "ESI request:" << url;
+        qDebug() << "ESI request:" << url << ":" << query;
+        qDebug() << "Retries" << retries;
 
         auto reply = mNetworkManager.get(prepareRequest(url, query));
         Q_ASSERT(reply != nullptr);
@@ -196,16 +199,25 @@ namespace Evernus
 
             const auto error = reply->error();
             if (error != QNetworkReply::NoError)
-                continuation(QJsonDocument{}, reply->errorString());
+            {
+                if (retries > 0)
+                    asyncGet(url, query, continuation, retries - 1);
+                else
+                    continuation(QJsonDocument{}, reply->errorString());
+            }
             else
+            {
                 continuation(QJsonDocument::fromJson(reply->readAll()), QString{});
+            }
         });
     }
 
     template<class T>
-    void ESIInterface::asyncGet(Character::IdType charId, const QString &url, const QString &query, T &&continuation, bool suppressForbidden) const
+    void ESIInterface
+    ::asyncGet(Character::IdType charId, const QString &url, const QString &query, T &&continuation, bool suppressForbidden, uint retries) const
     {
         qDebug() << "ESI request:" << url << ":" << query;
+        qDebug() << "Retries" << retries;
 
         auto reply = mNetworkManager.get(prepareRequest(charId, url, query));
         Q_ASSERT(reply != nullptr);
@@ -233,6 +245,8 @@ namespace Evernus
                 {
                     if (error == QNetworkReply::ContentOperationNotPermittedError && suppressForbidden)
                         continuation(QJsonDocument{}, QString{});
+                    else if (retries > 0)
+                        asyncGet(charId, url, query, continuation, suppressForbidden, retries - 1);
                     else
                         continuation(QJsonDocument{}, reply->errorString());
                 }
@@ -321,5 +335,11 @@ namespace Evernus
         request.setRawHeader("Authorization", "Bearer " + mAccessTokens[charId].mToken.toLatin1());
 
         return request;
+    }
+
+    uint ESIInterface::getNumRetries()
+    {
+        QSettings settings;
+        return settings.value(NetworkSettings::maxRetriesKey, NetworkSettings::maxRetriesDefault).toUInt();
     }
 }

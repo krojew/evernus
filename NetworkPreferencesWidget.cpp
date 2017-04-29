@@ -122,6 +122,11 @@ namespace Evernus
         mMaxReplyTimeEdit->setValue(
             settings.value(NetworkSettings::maxReplyTimeKey, NetworkSettings::maxReplyTimeDefault).toUInt());
 
+        mMaxRetriesEdit = new QSpinBox{this};
+        miscGroupLayout->addRow(tr("Max. retries:"), mMaxRetriesEdit);
+        mMaxRetriesEdit->setValue(
+            settings.value(NetworkSettings::maxRetriesKey, NetworkSettings::maxRetriesDefault).toUInt());
+
         mIgnoreSslErrors = new QCheckBox{tr("Ignore certificate errors"), this};
         miscGroupLayout->addRow(mIgnoreSslErrors);
         mIgnoreSslErrors->setChecked(
@@ -175,6 +180,7 @@ namespace Evernus
         settings.setValue(NetworkSettings::providerHostKey, mProviderHostEdit->text());
 
         settings.setValue(NetworkSettings::maxReplyTimeKey, mMaxReplyTimeEdit->value());
+        settings.setValue(NetworkSettings::maxRetriesKey, mMaxRetriesEdit->value());
         settings.setValue(NetworkSettings::ignoreSslErrorsKey, mIgnoreSslErrors->isChecked());
     }
 }
