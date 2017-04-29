@@ -178,10 +178,7 @@ namespace Evernus
         for (const auto region : regions)
         {
             mESIManager.fetchMarketOrders(region, [=](std::vector<ExternalOrder> &&orders, const QString &error) {
-                orders.erase(std::remove_if(std::begin(orders), std::end(orders), [&](const auto &order) {
-                    return pairs.find(std::make_pair(order.getTypeId(), order.getRegionId())) == std::end(pairs);
-                }), std::end(orders));
-
+                filterOrders(orders, pairs);
                 processOrders(std::move(orders), error);
             });
         }
@@ -241,9 +238,17 @@ namespace Evernus
             {
                 mOrderCounter.incCount();
                 mESIManager.fetchCitadelMarketOrders(citadel->getId(), region, charId, [=](auto &&orders, const auto &error) {
+                    filterOrders(orders, pairs);
                     processOrders(std::move(orders), error);
                 });
             }
         }
+    }
+
+    void MarketAnalysisDataFetcher::filterOrders(std::vector<ExternalOrder> &orders, const ExternalOrderImporter::TypeLocationPairs &pairs)
+    {
+        orders.erase(std::remove_if(std::begin(orders), std::end(orders), [&](const auto &order) {
+            return pairs.find(std::make_pair(order.getTypeId(), order.getRegionId())) == std::end(pairs);
+        }), std::end(orders));
     }
 }

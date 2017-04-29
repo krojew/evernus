@@ -93,5 +93,7 @@ namespace Evernus
         void importCitadelData(const ExternalOrderImporter::TypeLocationPairs &pairs,
                                const MarketOrderRepository::TypeLocationPairs &ignored,
                                Character::IdType charId);
+
+        static void filterOrders(std::vector<ExternalOrder> &orders, const ExternalOrderImporter::TypeLocationPairs &pairs);
     };
 }
