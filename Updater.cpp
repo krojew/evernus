@@ -218,17 +218,22 @@ namespace Evernus
                     migrateCoreTo03();
             }
 
-            if (minorVersion < 36)
+            if (minorVersion < 49)
             {
-                if (minorVersion < 30)
+                if (minorVersion < 36)
                 {
-                    if (minorVersion < 13)
-                        migrateCoreTo113();
+                    if (minorVersion < 30)
+                    {
+                        if (minorVersion < 13)
+                            migrateCoreTo113();
 
-                    migrateCoreTo130();
+                        migrateCoreTo130();
+                    }
+
+                    migrateCoreTo136();
                 }
 
-                migrateCoreTo136();
+                migrateCoreTo149();
             }
         }
 
@@ -333,12 +338,6 @@ namespace Evernus
 
             throw;
         }
-    }
-
-    void Updater::migrateCoreTo03() const
-    {
-        QSettings settings;
-        settings.setValue(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault);
     }
 
     void Updater::migrateDatabaseTo05(const CacheTimerRepository &cacheTimerRepo,
@@ -472,6 +471,12 @@ namespace Evernus
         citadelRepo.exec(QStringLiteral("ALTER TABLE %1 ADD COLUMN region_id INTEGER NOT NULL DEFAULT 0").arg(citadelRepo.getTableName()));
     }
 
+    void Updater::migrateCoreTo03() const
+    {
+        QSettings settings;
+        settings.setValue(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault);
+    }
+
     void Updater::migrateCoreTo130() const
     {
         QFile::remove(CachingEveDataProvider::getCacheDir().filePath(CachingEveDataProvider::systemDistanceCacheFileName));
@@ -481,5 +486,11 @@ namespace Evernus
     {
         QSettings settings;
         settings.remove(UISettings::tabShowStateParentKey);
+    }
+
+    void Updater::migrateCoreTo149() const
+    {
+        QSettings settings;
+        settings.remove(UISettings::plotNumberFormatKey);
     }
 }
