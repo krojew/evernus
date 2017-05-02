@@ -50,11 +50,6 @@ namespace Evernus
         mToEdit->setCalendarPopup(true);
         connect(mToEdit, &QDateEdit::dateChanged, this, &DateFilteredPlotWidget::toChanged);
 
-        auto labelBtn = new QCheckBox{tr("Show time labels"), this};
-        filterLayout->addWidget(labelBtn);
-        labelBtn->setChecked(true);
-        connect(labelBtn, &QCheckBox::stateChanged, this, &DateFilteredPlotWidget::showLabels);
-
         auto legendBtn = new QCheckBox{tr("Show legend"), this};
         filterLayout->addWidget(legendBtn);
         legendBtn->setChecked(true);
@@ -134,12 +129,5 @@ namespace Evernus
             mFromEdit->setDate(date.addDays(-1));
         else
             emit filterChanged();
-    }
-
-    void DateFilteredPlotWidget::showLabels(int state)
-    {
-        const auto axes = getChart().axes(Qt::Horizontal);
-        for (const auto axis : axes)
-            axis->setLabelsVisible(state == Qt::Checked);
     }
 }
