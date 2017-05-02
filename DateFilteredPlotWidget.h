@@ -14,10 +14,9 @@
  */
 #pragma once
 
-#include <QChartView>
 #include <QWidget>
 
-QT_CHARTS_USE_NAMESPACE
+#include "ZoomableChartView.h"
 
 class QDateEdit;
 class QDate;
@@ -55,6 +54,6 @@ namespace Evernus
         QDateEdit *mFromEdit = nullptr;
         QDateEdit *mToEdit = nullptr;
 
-        QChartView *mChart = nullptr;
+        ZoomableChartView *mChart = nullptr;
     };
 }

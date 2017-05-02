@@ -61,7 +61,7 @@ namespace Evernus
 
         filterLayout->addStretch();
 
-        mChart = new QChartView{this};
+        mChart = new ZoomableChartView{this};
         mainLayout->addWidget(mChart);
         mChart->setMinimumHeight(300);
         connect(legendBtn, &QCheckBox::stateChanged, this, [this](bool checked) {

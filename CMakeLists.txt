@@ -305,6 +305,8 @@ add_executable(
     GenericMarketOrdersInfoWidget.h
     GenericNameDomParser.cpp
     GenericNameDomParser.h
+    GestureChart.cpp
+    GestureChart.h
     HttpPreferencesWidget.cpp
     HttpPreferencesWidget.h
     HttpService.cpp
@@ -658,6 +660,8 @@ add_executable(
     WalletTransactionView.h
     WarningBarWidget.cpp
     WarningBarWidget.h
+    ZoomableChartView.cpp
+    ZoomableChartView.h
     qcustomplot.cpp
     qcustomplot.h
     ${TRANSLATIONS}
