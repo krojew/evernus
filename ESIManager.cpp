@@ -175,7 +175,8 @@ namespace Evernus
             QMessageBox::information(nullptr, tr("Citadel order import"), tr(
                 "Seems like you are importing citadel orders for the first time. CCP only allows importing orders from citadels you have access to. "
                 "This means you need to authenticate yourself with Eve SSO, if you haven't done that already (please wait for the SSO window to open).\n\n"
-                "Also, please note that due to large numbers of citadels in some regions, the import might take much longer."
+                "Also, please note that due to large numbers of citadels in some regions, the import might take much longer. Remember you can toggle citadel import "
+                "in the Preferences."
             ));
         }
 
