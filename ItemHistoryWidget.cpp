@@ -268,13 +268,8 @@ namespace Evernus
                 maxVolume = volume;
         }
 
-        balanceSeries->attachAxis(mDateAxis);
-        balanceSeries->attachAxis(mBalanceAxis);
-
         const auto volumeSeries = new QBarSeries{this};
         volumeSeries->append(volumeSet);
-        volumeSeries->attachAxis(mDateAxis);
-        volumeSeries->attachAxis(mVolumeAxis);
 
         mBalanceAxis->setRange(minBalance, maxBalance);
         mVolumeAxis->setRange(0., maxVolume);
@@ -282,6 +277,12 @@ namespace Evernus
 
         chart->addSeries(balanceSeries);
         chart->addSeries(volumeSeries);
+
+        balanceSeries->attachAxis(mDateAxis);
+        balanceSeries->attachAxis(mBalanceAxis);
+
+        volumeSeries->attachAxis(mDateAxis);
+        volumeSeries->attachAxis(mVolumeAxis);
 
         mTotalIncomeLabel->setText(TextUtils::currencyToString(mTotalIncome, curLocale));
         mTotalOutcomeLabel->setText(TextUtils::currencyToString(mTotalOutcome, curLocale));
