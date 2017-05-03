@@ -33,9 +33,12 @@
 #include <QTextEdit>
 #include <QComboBox>
 #include <QGroupBox>
+#include <QCheckBox>
+#include <QSettings>
 #include <QSpinBox>
 #include <QAction>
 #include <QDebug>
+#include <QLabel>
 #include <QHash>
 #include <QFont>
 
@@ -56,8 +59,6 @@
 #include "StatisticsSettings.h"
 #include "UISettings.h"
 #include "TextUtils.h"
-
-#include "qcustomplot.h"
 
 #include "StatisticsWidget.h"
 

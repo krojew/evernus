@@ -662,8 +662,6 @@ add_executable(
     WarningBarWidget.h
     ZoomableChartView.cpp
     ZoomableChartView.h
-    qcustomplot.cpp
-    qcustomplot.h
     ${TRANSLATIONS}
     ${QM_FILES}
     ${ADDITIONAL_SRC}
