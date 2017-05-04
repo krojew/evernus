@@ -67,7 +67,7 @@ namespace Evernus
 
         itemLayout->addStretch();
 
-        mChart = new ZoomableChartView{this};
+        mChart = new QChartView{this};
         mainLayout->addWidget(mChart);
         mChart->setMinimumHeight(300);
 

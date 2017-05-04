@@ -15,11 +15,13 @@
 #pragma once
 
 #include <QBarCategoryAxis>
+#include <QChartView>
 #include <QValueAxis>
 #include <QWidget>
 
-#include "ZoomableChartView.h"
 #include "Character.h"
+
+QT_CHARTS_USE_NAMESPACE
 
 class QComboBox;
 class QCheckBox;
@@ -61,7 +63,7 @@ namespace Evernus
 
         QComboBox *mItemTypeCombo = nullptr;
         QCheckBox *mAllCharactersBtn = nullptr;
-        ZoomableChartView *mChart = nullptr;
+        QChartView *mChart = nullptr;
         QLabel *mTotalIncomeLabel = nullptr;
         QLabel *mTotalOutcomeLabel = nullptr;
         QLabel *mTotalBalanceLabel = nullptr;
