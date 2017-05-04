@@ -14,15 +14,11 @@
  */
 #pragma once
 
-#include <QBarCategoryAxis>
-#include <QChartView>
-#include <QValueAxis>
 #include <QWidget>
 
 #include "Character.h"
 
-QT_CHARTS_USE_NAMESPACE
-
+class QCustomPlot;
 class QComboBox;
 class QCheckBox;
 class QCPGraph;
@@ -63,20 +59,18 @@ namespace Evernus
 
         QComboBox *mItemTypeCombo = nullptr;
         QCheckBox *mAllCharactersBtn = nullptr;
-        QChartView *mChart = nullptr;
+        QCustomPlot *mPlot = nullptr;
         QLabel *mTotalIncomeLabel = nullptr;
         QLabel *mTotalOutcomeLabel = nullptr;
         QLabel *mTotalBalanceLabel = nullptr;
         QLabel *mTotalMarginLabel = nullptr;
         QLabel *mTotalVolumeLabel = nullptr;
 
-        QBarCategoryAxis *mDateAxis = nullptr;
-        QValueAxis *mBalanceAxis = nullptr;
-        QValueAxis *mVolumeAxis = nullptr;
+        QCPGraph *mBalanceGraph = nullptr;
+        QCPBars *mVolumeGraph = nullptr;
 
         double mTotalIncome = 0., mTotalOutcome = 0.;
 
-        void setNumberFormat();
         void setMarginColor();
         double getMargin() const noexcept;
     };

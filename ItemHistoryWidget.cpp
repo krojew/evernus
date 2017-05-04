@@ -14,14 +14,11 @@
  */
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QLineSeries>
-#include <QBarSeries>
 #include <QSettings>
 #include <QSqlQuery>
 #include <QGroupBox>
 #include <QComboBox>
 #include <QCheckBox>
-#include <QBarSet>
 #include <QLabel>
 #include <QDebug>
 #include <QHash>
@@ -31,6 +28,8 @@
 #include "EveDataProvider.h"
 #include "UISettings.h"
 #include "TextUtils.h"
+
+#include "qcustomplot.h"
 
 #include "ItemHistoryWidget.h"
 
@@ -67,25 +66,44 @@ namespace Evernus
 
         itemLayout->addStretch();
 
-        mChart = new QChartView{this};
-        mainLayout->addWidget(mChart);
-        mChart->setMinimumHeight(300);
+        mPlot = new QCustomPlot{this};
+        mainLayout->addWidget(mPlot);
+        mPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+        mPlot->setMinimumHeight(300);
+        mPlot->xAxis->setAutoTicks(false);
+        mPlot->xAxis->setAutoTickLabels(true);
+        mPlot->xAxis->setTickLabelRotation(60);
+        mPlot->xAxis->setSubTickCount(0);
+        mPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
+        mPlot->xAxis->setDateTimeFormat(locale().dateFormat(QLocale::NarrowFormat));
+        mPlot->xAxis->grid()->setVisible(false);
+        mPlot->yAxis->setNumberPrecision(2);
+        mPlot->yAxis->setLabel("ISK");
+        mPlot->yAxis2->setVisible(true);
+        mPlot->yAxis2->setLabel(tr("Volume"));
+        mPlot->legend->setVisible(true);
 
-        auto locale = mChart->locale();
+        auto locale = mPlot->locale();
         locale.setNumberOptions(0);
-        mChart->setLocale(locale);
+        mPlot->setLocale(locale);
 
-        mDateAxis = new QBarCategoryAxis{this};
-        mDateAxis->setLabelsAngle(60);
-        mChart->chart()->addAxis(mDateAxis, Qt::AlignBottom);
+        QSettings settings;
+        mPlot->yAxis->setNumberFormat(
+            settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString());
 
-        mBalanceAxis = new QValueAxis{this};
-        mBalanceAxis->setTitleText(tr("ISK"));
-        mChart->chart()->addAxis(mBalanceAxis, Qt::AlignLeft);
+        auto graph = std::make_unique<QCPBars>(mPlot->xAxis, mPlot->yAxis2);
+        mVolumeGraph = graph.get();
+        mPlot->addPlottable(mVolumeGraph);
+        graph.release();
 
-        mVolumeAxis = new QValueAxis{this};
-        mVolumeAxis->setTitleText(tr("Volume"));
-        mChart->chart()->addAxis(mVolumeAxis, Qt::AlignRight);
+        mVolumeGraph->setName(tr("Volume"));
+        mVolumeGraph->setPen(QPen{Qt::cyan});
+        mVolumeGraph->setBrush(Qt::cyan);
+        mVolumeGraph->setWidth(3600 * 3);
+
+        mBalanceGraph = mPlot->addGraph();
+        mBalanceGraph->setName(tr("Balance"));
+        mBalanceGraph->setPen(QPen{Qt::darkGreen});
 
         auto totalGroup = new QGroupBox{this};
         mainLayout->addWidget(totalGroup);
@@ -126,8 +144,6 @@ namespace Evernus
         mTotalVolumeLabel->setFont(font);
 
         mainLayout->addStretch();
-
-        setNumberFormat();
     }
 
     void ItemHistoryWidget::setCharacter(Character::IdType id)
@@ -175,7 +191,12 @@ namespace Evernus
 
     void ItemHistoryWidget::handleNewPreferences()
     {
-        setNumberFormat();
+        QSettings settings;
+        mPlot->yAxis->setNumberFormat(
+            settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString());
+
+        mPlot->replot();
+
         setMarginColor();
     }
 
@@ -188,7 +209,7 @@ namespace Evernus
 
         mTotalIncome = mTotalOutcome = 0.;
 
-        const auto inserter = [&](const auto &entries) {
+        const auto inserter = [&values, &totalVolume, this](const auto &entries) {
             for (const auto &entry : entries)
             {
                 if (entry->isIgnored())
@@ -226,62 +247,27 @@ namespace Evernus
             inserter(mCorpWalletRepo.fetchForTypeIdAndCharacter(id, mCharacterId));
         }
 
-        const auto curLocale = locale();
-
-        const auto chart = mChart->chart();
-        Q_ASSERT(chart != nullptr);
-
-        chart->removeAllSeries();
-
-        QStringList dates;
-        dates.reserve(values.size());
-
-        const auto dateFormat = curLocale.dateFormat(QLocale::NarrowFormat);
-        auto i = 0;
-
-        const auto volumeSet = new QBarSet{tr("Volume"), this};
-        volumeSet->setColor(Qt::cyan);
-
-        const auto balanceSeries = new QLineSeries{this};
-        balanceSeries->setName(tr("Balance"));
-
-        auto minBalance = 0., maxBalance = 0., maxVolume = 0.;
+        QVector<double> ticks, balance, volume;
 
         QHashIterator<QDate, std::pair<double, uint>> it{values};
         while (it.hasNext())
         {
             it.next();
 
-            const auto balance = it.value().first;
-            const auto volume = it.value().second;
-
-            dates << it.key().toString(dateFormat);
-            balanceSeries->append(i++, balance);
-            volumeSet->append(volume);
-
-            if (balance > maxBalance)
-                maxBalance = balance;
-            if (balance < minBalance)
-                minBalance = balance;
-
-            if (volume > maxVolume)
-                maxVolume = volume;
+            ticks << QDateTime{it.key()}.toMSecsSinceEpoch() / 1000.;
+            balance << it.value().first;
+            volume << it.value().second;
         }
 
-        balanceSeries->attachAxis(mDateAxis);
-        balanceSeries->attachAxis(mBalanceAxis);
+        mBalanceGraph->setData(ticks, balance);
+        mVolumeGraph->setData(ticks, volume);
 
-        const auto volumeSeries = new QBarSeries{this};
-        volumeSeries->append(volumeSet);
-        volumeSeries->attachAxis(mDateAxis);
-        volumeSeries->attachAxis(mVolumeAxis);
+        mPlot->xAxis->setTickVector(ticks);
 
-        mBalanceAxis->setRange(minBalance, maxBalance);
-        mVolumeAxis->setRange(0., maxVolume);
-        mDateAxis->setCategories(dates);
+        mPlot->rescaleAxes();
+        mPlot->replot();
 
-        chart->addSeries(balanceSeries);
-        chart->addSeries(volumeSeries);
+        const auto curLocale = locale();
 
         mTotalIncomeLabel->setText(TextUtils::currencyToString(mTotalIncome, curLocale));
         mTotalOutcomeLabel->setText(TextUtils::currencyToString(mTotalOutcome, curLocale));
@@ -290,15 +276,6 @@ namespace Evernus
         mTotalVolumeLabel->setText(curLocale.toString(totalVolume));
 
         setMarginColor();
-    }
-
-    void ItemHistoryWidget::setNumberFormat()
-    {
-        QSettings settings;
-        const auto format = settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString();
-
-        mBalanceAxis->setLabelFormat(format);
-        mVolumeAxis->setLabelFormat(format);
     }
 
     void ItemHistoryWidget::setMarginColor()
