@@ -51,6 +51,8 @@ namespace Evernus
         void fromChanged(const QDate &date);
         void toChanged(const QDate &date);
 
+        void showLabels(int state);
+
     private:
         QDateEdit *mFromEdit = nullptr;
         QDateEdit *mToEdit = nullptr;
