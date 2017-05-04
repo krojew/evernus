@@ -65,6 +65,7 @@ namespace Evernus
         void updateCore(uint prevMajor, uint prevMinor) const;
         void updateDatabase(uint prevMajor, uint prevMinor, const RepositoryProvider &provider) const;
 
+        void migrateCoreTo03() const;
         void migrateDatabaseTo05(const CacheTimerRepository &cacheTimerRepo,
                                  const Repository<Character> &characterRepo,
                                  const MarketOrderRepository &characterOrderRepo,
@@ -94,9 +95,7 @@ namespace Evernus
                                   const MarketOrderRepository &corporationOrderRepo) const;
         void migrateDatabaseTo149(const CitadelRepository &citadelRepo) const;
 
-        void migrateCoreTo03() const;
         void migrateCoreTo130() const;
         void migrateCoreTo136() const;
-        void migrateCoreTo149() const;
     };
 }

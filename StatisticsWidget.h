@@ -15,17 +15,9 @@
 #pragma once
 
 #include <QWidget>
-#include <QBarSet>
 
 #include "ScriptOrderProcessingModel.h"
 #include "AggregatedStatisticsModel.h"
-
-QT_CHARTS_USE_NAMESPACE
-
-QT_CHARTS_BEGIN_NAMESPACE
-class QValueAxis;
-class QChart;
-QT_CHARTS_END_NAMESPACE
 
 class QRadioButton;
 class QPushButton;
@@ -34,6 +26,7 @@ class QTextEdit;
 class QComboBox;
 class QCheckBox;
 class QSpinBox;
+class QCPBars;
 class QLabel;
 
 namespace Evernus
@@ -87,7 +80,7 @@ namespace Evernus
         void loadScript();
         void deleteScript();
 
-        void updateBalanceTooltip(const QPointF &point, bool state);
+        void updateBalanceTooltip(QMouseEvent *event);
 
     private:
         enum
@@ -100,10 +93,6 @@ namespace Evernus
             sellOrdersGraph,
             totalValueGraph,
         };
-
-        using DatePosNegMap = QHash<QDate, std::pair<double, double>>;
-
-        static const QString defaultDateFormat;
 
         const AssetValueSnapshotRepository &mAssetSnapshotRepository;
         const CorpAssetValueSnapshotRepository &mCorpAssetSnapshotRepository;
@@ -120,6 +109,12 @@ namespace Evernus
         DateFilteredPlotWidget *mBalancePlot = nullptr;
         DateFilteredPlotWidget *mJournalPlot = nullptr;
         DateFilteredPlotWidget *mTransactionPlot = nullptr;
+
+        QCPBars *mIncomingPlot = nullptr;
+        QCPBars *mOutgoingPlot = nullptr;
+
+        QCPBars *mBuyPlot = nullptr;
+        QCPBars *mSellPlot = nullptr;
 
         QCheckBox *mCombineStatsBtn = nullptr;
         QPushButton *mAggrApplyBtn = nullptr;
@@ -146,23 +141,20 @@ namespace Evernus
 
         QString mLastLoadedScript;
 
+        void updateGraphAndLegend();
         void updateGraphColors();
 
         QWidget *createBasicStatisticsWidget();
         QWidget *createAdvancedStatisticsWidget();
 
         DateFilteredPlotWidget *createPlot();
-        QValueAxis *createISKAxis();
 
-        QBarSet *createBarSet(const QString &name, Qt::GlobalColor color);
-        void createBarChart(QChart &chart,
-                            const QString &posName,
-                            const QString &negName,
-                            const DatePosNegMap &values);
-
-        static void createBarTicks(QBarSet &incoming,
-                                   QBarSet &outgoing,
-                                   QStringList &dates,
-                                   const DatePosNegMap &values);
+        static QCPBars *createBarPlot(DateFilteredPlotWidget *plot, const QString &name, Qt::GlobalColor color);
+        static void createBarTicks(QVector<double> &ticks,
+                                   QVector<double> &incomingTicks,
+                                   QVector<double> &outgoingTicks,
+                                   QVector<double> &incomingValues,
+                                   QVector<double> &outgoingValues,
+                                   const QHash<QDate, std::pair<double, double>> &values);
     };
 }

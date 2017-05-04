@@ -19,10 +19,10 @@
 #include <QMessageBox>
 #include <QCheckBox>
 #include <QDateEdit>
-#include <QPainter>
 #include <QLocale>
 #include <QLabel>
-#include <QImage>
+
+#include "qcustomplot.h"
 
 #include "DateFilteredPlotWidget.h"
 
@@ -62,20 +62,29 @@ namespace Evernus
         auto saveBtn = new QPushButton{QIcon{":/images/image.png"}, tr("Save..."), this};
         filterLayout->addWidget(saveBtn);
         saveBtn->setFlat(true);
-        connect(saveBtn, &QPushButton::clicked, this, &DateFilteredPlotWidget::savePlot);
+        connect(saveBtn, &QPushButton::clicked, this, &DateFilteredPlotWidget::saveBalancePlot);
 
         filterLayout->addStretch();
 
-        mChart = new QChartView{this};
-        mainLayout->addWidget(mChart);
-        mChart->setMinimumHeight(300);
+        mPlot = new QCustomPlot{this};
+        mainLayout->addWidget(mPlot);
+        mPlot->setMinimumHeight(300);
+        mPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+        mPlot->xAxis->setAutoTicks(false);
+        mPlot->xAxis->setAutoTickLabels(true);
+        mPlot->xAxis->setTickLabelRotation(60);
+        mPlot->xAxis->setSubTickCount(0);
+        mPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
+        mPlot->xAxis->setDateTimeFormat(locale().dateFormat(QLocale::NarrowFormat));
+        connect(mPlot, &QCustomPlot::mouseMove, this, &DateFilteredPlotWidget::mouseMove);
         connect(legendBtn, &QCheckBox::stateChanged, this, [this](bool checked) {
-            mChart->chart()->legend()->setVisible(checked);
+            mPlot->legend->setVisible(checked);
+            mPlot->replot();
         });
 
-        auto locale = mChart->locale();
+        auto locale = mPlot->locale();
         locale.setNumberOptions(0);
-        mChart->setLocale(locale);
+        mPlot->setLocale(locale);
     }
 
     QDate DateFilteredPlotWidget::getFrom() const
@@ -98,25 +107,18 @@ namespace Evernus
         mToEdit->setDate(date);
     }
 
-    QChart &DateFilteredPlotWidget::getChart() const
+    QCustomPlot &DateFilteredPlotWidget::getPlot() const
     {
-        return *mChart->chart();
+        return *mPlot;
     }
 
-    void DateFilteredPlotWidget::savePlot()
+    void DateFilteredPlotWidget::saveBalancePlot()
     {
         const auto file = QFileDialog::getSaveFileName(this, tr("Save plot"), QString{}, tr("Images (*.png *.jpg *.jpeg *.bmp *.ppm *.xbm *.xpm)"));
         if (file.isEmpty())
             return;
 
-        QImage image{mChart->sceneRect().size().toSize(), QImage::Format_RGB32};
-
-        QPainter painter{&image};
-        painter.setRenderHint(QPainter::Antialiasing);
-
-        mChart->render(&painter);
-
-        if (!image.save(file))
+        if (!mPlot->saveRastered(file, width(), height(), 1., nullptr))
             QMessageBox::warning(this, tr("Error"), tr("Error saving image."));
     }
 
@@ -138,8 +140,7 @@ namespace Evernus
 
     void DateFilteredPlotWidget::showLabels(int state)
     {
-        const auto axes = getChart().axes(Qt::Horizontal);
-        for (const auto axis : axes)
-            axis->setLabelsVisible(state == Qt::Checked);
+        mPlot->xAxis->setTickLabels(state == Qt::Checked);
+        mPlot->replot();
     }
 }

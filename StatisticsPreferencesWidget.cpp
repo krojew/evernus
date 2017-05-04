@@ -59,8 +59,9 @@ namespace Evernus
 
         mPlotNumberFormatEdit = new QComboBox{this};
         appearanceGroupLayout->addRow(tr("Plot number format:"), mPlotNumberFormatEdit);
-        addPlotFormat(tr("scientific"), "%g", plotNumberFormat);
-        addPlotFormat(tr("fixed"), "%.2f", plotNumberFormat);
+        addPlotFormat(tr("beautified scientific"), "gbc", plotNumberFormat);
+        addPlotFormat(tr("scientific"), "g", plotNumberFormat);
+        addPlotFormat(tr("fixed"), "f", plotNumberFormat);
 
         mAssetPlotColorBtn = new ColorButton{
             settings.value(StatisticsSettings::statisticsAssetPlotColorKey, StatisticsSettings::statisticsAssetPlotColorDefault).value<QColor>(),

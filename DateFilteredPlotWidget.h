@@ -14,11 +14,9 @@
  */
 #pragma once
 
-#include <QChartView>
 #include <QWidget>
 
-QT_CHARTS_USE_NAMESPACE
-
+class QCustomPlot;
 class QDateEdit;
 class QDate;
 
@@ -39,13 +37,15 @@ namespace Evernus
         QDate getTo() const;
         void setTo(const QDate &date);
 
-        QChart &getChart() const;
+        QCustomPlot &getPlot() const;
 
     signals:
         void filterChanged();
 
+        void mouseMove(QMouseEvent *event);
+
     public slots:
-        void savePlot();
+        void saveBalancePlot();
 
     private slots:
         void fromChanged(const QDate &date);
@@ -57,6 +57,6 @@ namespace Evernus
         QDateEdit *mFromEdit = nullptr;
         QDateEdit *mToEdit = nullptr;
 
-        QChartView *mChart = nullptr;
+        QCustomPlot *mPlot = nullptr;
     };
 }
