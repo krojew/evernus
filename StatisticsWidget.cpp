@@ -576,22 +576,15 @@ namespace Evernus
         const auto numberFormat
             = settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString();
 
-        auto setNumberFormat = [&](const auto &chart) {
-            const auto axes = chart.axes(Qt::Vertical);
-            for (const auto axis : axes)
-                qobject_cast<QValueAxis *>(axis)->setLabelFormat(numberFormat);
-        };
-
-        setNumberFormat(mBalancePlot->getChart());
-        setNumberFormat(mJournalPlot->getChart());
-        setNumberFormat(mTransactionPlot->getChart());
+        qobject_cast<QValueAxis *>(mBalancePlot->getChart().axisY())->setLabelFormat(numberFormat);
+        qobject_cast<QValueAxis *>(mJournalPlot->getChart().axisY())->setLabelFormat(numberFormat);
+        qobject_cast<QValueAxis *>(mTransactionPlot->getChart().axisY())->setLabelFormat(numberFormat);
 
         if (settings.value(UISettings::applyDateFormatToGraphsKey, UISettings::applyDateFormatToGraphsDefault).toBool())
         {
             const auto dateFormat = settings.value(UISettings::dateTimeFormatKey, defaultDateFormat).toString();
-            const auto axes = mBalancePlot->getChart().axes(Qt::Horizontal);
-            for (const auto axis : axes)
-                qobject_cast<QDateTimeAxis *>(axis)->setFormat(dateFormat);
+
+            qobject_cast<QDateTimeAxis *>(mBalancePlot->getChart().axisX())->setFormat(dateFormat);
 
             updateJournalData();
             updateTransactionData();
@@ -712,8 +705,6 @@ namespace Evernus
     void StatisticsWidget::updateGraphColors()
     {
         const auto series = mBalancePlot->getChart().series();
-        if (series.isEmpty())
-            return;
 
         const auto sellOrdersValue = static_cast<QLineSeries *>(series[sellOrdersGraph]);
         const auto buyOrdersValue = static_cast<QLineSeries *>(series[buyOrdersGraph]);
