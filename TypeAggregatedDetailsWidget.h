@@ -16,17 +16,18 @@
 
 #include <map>
 
-#include <QBarCategoryAxis>
-#include <QLineSeries>
-#include <QValueAxis>
 #include <QWidget>
 #include <QDate>
 
 #include "MarketHistoryEntry.h"
-#include "ZoomableChartView.h"
 
+class QCPFinancial;
+class QCustomPlot;
+class QCPItemLine;
 class QDateEdit;
 class QSpinBox;
+class QCPGraph;
+class QCPBars;
 
 namespace Evernus
 {
@@ -57,20 +58,20 @@ namespace Evernus
         QSpinBox *mMACDFastDaysEdit = nullptr;
         QSpinBox *mMACDSlowDaysEdit = nullptr;
         QSpinBox *mMACDEMADaysEdit = nullptr;
-        ZoomableChartView *mHistoryChart = nullptr;
-        QChartView *mRSIChart = nullptr;
-        QChartView *mMACDChart = nullptr;
+        QCustomPlot *mHistoryPlot = nullptr;
 
-        QLineSeries *mTrendLine = nullptr;
-        QValueAxis *mValueAxis = nullptr;
-        QValueAxis *mVolumeAxis = nullptr;
-        QBarCategoryAxis *mHistoryDateAxis = nullptr;
+        QCPFinancial *mHistoryValuesGraph = nullptr;
+        QCPBars *mHistoryVolumeGraph = nullptr;
+        QCPBars *mHistoryVolumeFlagGraph = nullptr;
+        QCPGraph *mSMAGraph = nullptr;
+        QCPGraph *mRSIGraph = nullptr;
+        QCPGraph *mMACDGraph = nullptr;
+        QCPGraph *mMACDEMAGraph = nullptr;
+        QCPBars *mMACDDivergenceGraph = nullptr;
+        QCPGraph *mBollingerUpperGraph = nullptr;
+        QCPGraph *mBollingerLowerGraph = nullptr;
 
-        QValueAxis *mRSIAxis = nullptr;
-        QBarCategoryAxis *mRSIDateAxis = nullptr;
-
-        QValueAxis *mMACDAxis = nullptr;
-        QBarCategoryAxis *mMACDDateAxis = nullptr;
+        QCPItemLine *mTrendLine = nullptr;
 
         void deleteTrendLine() noexcept;
         void applyGraphFormats();
