@@ -55,6 +55,8 @@
 #include "UISettings.h"
 #include "TextUtils.h"
 
+#include "qcustomplot.h"
+
 #include "StatisticsWidget.h"
 
 namespace Evernus

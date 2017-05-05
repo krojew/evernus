@@ -15,12 +15,6 @@
 #include <memory>
 #include <cmath>
 
-#include <boost/accumulators/statistics/rolling_variance.hpp>
-#include <boost/accumulators/statistics/rolling_mean.hpp>
-#include <boost/accumulators/statistics/variance.hpp>
-#include <boost/accumulators/statistics/stats.hpp>
-#include <boost/accumulators/accumulators.hpp>
-
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QScrollArea>
@@ -30,6 +24,21 @@
 #include <QCheckBox>
 #include <QSpinBox>
 #include <QLabel>
+
+#ifdef Q_CC_MSVC
+#   pragma warning(push)
+#   pragma warning(disable : 4244)
+#endif
+
+#include <boost/accumulators/statistics/rolling_variance.hpp>
+#include <boost/accumulators/statistics/rolling_mean.hpp>
+#include <boost/accumulators/statistics/variance.hpp>
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/accumulators.hpp>
+
+#ifdef Q_CC_MSVC
+#   pragma warning(pop)
+#endif
 
 #include "MarketAnalysisSettings.h"
 #include "UISettings.h"
@@ -188,6 +197,10 @@ namespace Evernus
         mHistoryValuesGraph->setWidth(dayWidth);
         mHistoryValuesGraph->setChartStyle(QCPFinancial::csCandlestick);
         mHistoryValuesGraph->setTwoColored(true);
+        mHistoryValuesGraph->setBrushPositive(Qt::green);
+        mHistoryValuesGraph->setPenPositive(QPen{Qt::darkGreen});
+        mHistoryValuesGraph->setBrushNegative(Qt::red);
+        mHistoryValuesGraph->setPenNegative(QPen{Qt::darkRed});
 
         mSMAGraph = mHistoryPlot->addGraph();
         mSMAGraph->setPen(Qt::DashLine);
