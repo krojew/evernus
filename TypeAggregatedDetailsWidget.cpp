@@ -128,16 +128,15 @@ namespace Evernus
 
         const auto widgetLocale = locale();
 
+        QSharedPointer<QCPAxisTickerDateTime> xTicker{ new QCPAxisTickerDateTime{} };
+        xTicker->setDateTimeFormat(widgetLocale.dateFormat(QLocale::NarrowFormat));
+
         mHistoryPlot = new QCustomPlot{this};
         scrollArea->setWidget(mHistoryPlot);
         mHistoryPlot->axisRect(0)->setMinimumSize(500, 300);
         mHistoryPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-        mHistoryPlot->xAxis->setAutoTicks(false);
-        mHistoryPlot->xAxis->setAutoTickLabels(true);
         mHistoryPlot->xAxis->setTickLabelRotation(60);
-        mHistoryPlot->xAxis->setSubTickCount(0);
-        mHistoryPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
-        mHistoryPlot->xAxis->setDateTimeFormat(widgetLocale.dateFormat(QLocale::NarrowFormat));
+        mHistoryPlot->xAxis->setTicker(xTicker);
         mHistoryPlot->xAxis->grid()->setVisible(false);
         mHistoryPlot->yAxis->setNumberPrecision(2);
         mHistoryPlot->yAxis->setLabel("ISK");
@@ -161,7 +160,6 @@ namespace Evernus
 
         auto volumeGraph = std::make_unique<QCPBars>(mHistoryPlot->xAxis, mHistoryPlot->yAxis2);
         mHistoryVolumeGraph = volumeGraph.get();
-        mHistoryPlot->addPlottable(mHistoryVolumeGraph);
         volumeGraph.release();
 
         mHistoryVolumeGraph->setName(tr("Volume"));
@@ -171,7 +169,6 @@ namespace Evernus
 
         auto volumeFlagGraph = std::make_unique<QCPBars>(mHistoryPlot->xAxis, mHistoryPlot->yAxis2);
         mHistoryVolumeFlagGraph = volumeFlagGraph.get();
-        mHistoryPlot->addPlottable(mHistoryVolumeFlagGraph);
         volumeFlagGraph.release();
 
         mHistoryVolumeFlagGraph->setName(tr("Unusual volume"));
@@ -181,7 +178,6 @@ namespace Evernus
 
         auto valuesGraph = std::make_unique<QCPFinancial>(mHistoryPlot->xAxis, mHistoryPlot->yAxis);
         mHistoryValuesGraph = valuesGraph.get();
-        mHistoryPlot->addPlottable(mHistoryValuesGraph);
         valuesGraph.release();
 
         mHistoryValuesGraph->setName(tr("Value"));
@@ -208,8 +204,7 @@ namespace Evernus
         rsiAxisRect->setRangeDrag(Qt::Horizontal);
         rsiAxisRect->setRangeZoom(Qt::Horizontal);
         rsiAxisRect->axis(QCPAxis::atBottom)->setLayer("axes");
-        rsiAxisRect->axis(QCPAxis::atBottom)->setTickLabelType(QCPAxis::ltDateTime);
-        rsiAxisRect->axis(QCPAxis::atBottom)->setDateTimeFormat(widgetLocale.dateFormat(QLocale::NarrowFormat));
+        rsiAxisRect->axis(QCPAxis::atBottom)->setTicker(xTicker);
         rsiAxisRect->axis(QCPAxis::atLeft)->setRange(0., 100.);
         rsiAxisRect->axis(QCPAxis::atLeft)->setLabel(tr("RSI (14 days)"));
         rsiAxisRect->axis(QCPAxis::atBottom)->grid()->setLayer("grid");
@@ -222,7 +217,6 @@ namespace Evernus
         rsiAxisRect->setMarginGroup(QCP::msLeft | QCP::msRight, marginGroup);
 
         auto overboughtLine = new QCPItemStraightLine{mHistoryPlot};
-        mHistoryPlot->addItem(overboughtLine);
         overboughtLine->setClipAxisRect(rsiAxisRect);
         overboughtLine->point1->setAxes(rsiAxisRect->axis(QCPAxis::atBottom), rsiAxisRect->axis(QCPAxis::atLeft));
         overboughtLine->point2->setAxes(rsiAxisRect->axis(QCPAxis::atBottom), rsiAxisRect->axis(QCPAxis::atLeft));
@@ -230,7 +224,6 @@ namespace Evernus
         overboughtLine->point2->setCoords(1000000000000., 70.);
 
         auto oversoldLine = new QCPItemStraightLine{mHistoryPlot};
-        mHistoryPlot->addItem(oversoldLine);
         oversoldLine->setClipAxisRect(rsiAxisRect);
         oversoldLine->point1->setAxes(rsiAxisRect->axis(QCPAxis::atBottom), rsiAxisRect->axis(QCPAxis::atLeft));
         oversoldLine->point2->setAxes(rsiAxisRect->axis(QCPAxis::atBottom), rsiAxisRect->axis(QCPAxis::atLeft));
@@ -246,8 +239,7 @@ namespace Evernus
         macdAxisRect->setMaximumSize(QWIDGETSIZE_MAX, 200);
         macdAxisRect->setMinimumSize(500, 100);
         macdAxisRect->axis(QCPAxis::atBottom)->setLayer("axes");
-        macdAxisRect->axis(QCPAxis::atBottom)->setTickLabelType(QCPAxis::ltDateTime);
-        macdAxisRect->axis(QCPAxis::atBottom)->setDateTimeFormat(widgetLocale.dateFormat(QLocale::NarrowFormat));
+        macdAxisRect->axis(QCPAxis::atBottom)->setTicker(xTicker);
         macdAxisRect->axis(QCPAxis::atLeft)->setLabel(tr("MACD"));
         macdAxisRect->axis(QCPAxis::atBottom)->grid()->setLayer("grid");
         macdAxisRect->setMarginGroup(QCP::msLeft | QCP::msRight, marginGroup);
@@ -259,7 +251,6 @@ namespace Evernus
 
         auto macdDivergenceGraph = std::make_unique<QCPBars>(macdAxisRect->axis(QCPAxis::atBottom), macdAxisRect->axis(QCPAxis::atLeft));
         mMACDDivergenceGraph = macdDivergenceGraph.get();
-        mHistoryPlot->addPlottable(mMACDDivergenceGraph);
         macdDivergenceGraph.release();
 
         mMACDDivergenceGraph->setName(tr("MACD Divergence"));
@@ -438,8 +429,6 @@ namespace Evernus
         mBollingerUpperGraph->setData(dates, bollingerUp);
         mBollingerLowerGraph->setData(dates, bollingerLow);
 
-        mHistoryPlot->xAxis->setTickVector(dates);
-
         mHistoryPlot->xAxis->rescale();
         mHistoryPlot->yAxis->rescale();
         mHistoryPlot->yAxis2->rescale();
@@ -509,8 +498,8 @@ namespace Evernus
 
         if (settings.value(UISettings::applyDateFormatToGraphsKey, UISettings::applyDateFormatToGraphsDefault).toBool())
         {
-           mHistoryPlot->xAxis->setDateTimeFormat(
-               settings.value(UISettings::dateTimeFormatKey, mHistoryPlot->xAxis->dateTimeFormat()).toString());
+            const auto ticker = qSharedPointerCast<QCPAxisTickerDateTime>(mHistoryPlot->xAxis->ticker());
+            ticker->setDateTimeFormat(settings.value(UISettings::dateTimeFormatKey, ticker->dateTimeFormat()).toString());
         }
     }
 }

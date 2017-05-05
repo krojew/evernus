@@ -1271,27 +1271,39 @@
 <context>
     <name>Evernus::ESIManager</name>
     <message>
-        <location filename="../ESIManager.cpp" line="87"/>
+        <location filename="../ESIManager.cpp" line="93"/>
         <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="213"/>
+        <location filename="../ESIManager.cpp" line="175"/>
+        <source>Citadel order import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ESIManager.cpp" line="175"/>
+        <source>Seems like you are importing citadel orders for the first time. CCP only allows importing orders from citadels you have access to. This means you need to authenticate yourself with Eve SSO, if you haven&apos;t done that already (please wait for the SSO window to open).
+
+Also, please note that due to large numbers of citadels in some regions, the import might take much longer. Remember you can toggle citadel import in the Preferences.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ESIManager.cpp" line="234"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="282"/>
+        <location filename="../ESIManager.cpp" line="303"/>
         <source>Empty access token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="340"/>
+        <location filename="../ESIManager.cpp" line="361"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="371"/>
+        <location filename="../ESIManager.cpp" line="392"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1299,7 +1311,7 @@
 <context>
     <name>Evernus::EveCentralExternalOrderImporter</name>
     <message>
-        <location filename="../EveCentralExternalOrderImporter.cpp" line="58"/>
+        <location filename="../EveCentralExternalOrderImporter.cpp" line="60"/>
         <source>Waiting for %1 eve-central replies...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2950,13 +2962,13 @@
     <name>Evernus::MarketAnalysisDataFetcher</name>
     <message>
         <location filename="../MarketAnalysisDataFetcher.cpp" line="93"/>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="100"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="105"/>
         <source>Waiting for %1 order server replies...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../MarketAnalysisDataFetcher.cpp" line="94"/>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="133"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="132"/>
         <source>Waiting for %1 history server replies...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3165,7 +3177,7 @@
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="933"/>
-        <source>&quot;Show in EVE&quot; is available via the right-click menu.</source>
+        <source>Press &quot;Apply&quot; to show results. &quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3347,7 +3359,7 @@
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="327"/>
-        <location filename="../MarketBrowserWidget.cpp" line="953"/>
+        <location filename="../MarketBrowserWidget.cpp" line="955"/>
         <source>select an item</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3368,59 +3380,59 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="453"/>
-        <location filename="../MarketBrowserWidget.cpp" line="490"/>
-        <location filename="../MarketBrowserWidget.cpp" line="729"/>
+        <location filename="../MarketBrowserWidget.cpp" line="455"/>
+        <location filename="../MarketBrowserWidget.cpp" line="492"/>
+        <location filename="../MarketBrowserWidget.cpp" line="731"/>
         <source>(all)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="602"/>
+        <location filename="../MarketBrowserWidget.cpp" line="604"/>
         <source>Add to favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="757"/>
+        <location filename="../MarketBrowserWidget.cpp" line="759"/>
         <source>Add bookmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="758"/>
+        <location filename="../MarketBrowserWidget.cpp" line="760"/>
         <source>Remove bookmark...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="786"/>
+        <location filename="../MarketBrowserWidget.cpp" line="788"/>
         <source>type in wildcard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="810"/>
+        <location filename="../MarketBrowserWidget.cpp" line="812"/>
         <source>Deviation [median]  </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="812"/>
+        <location filename="../MarketBrowserWidget.cpp" line="814"/>
         <source>Deviation [best price]  </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="814"/>
+        <location filename="../MarketBrowserWidget.cpp" line="816"/>
         <source>Deviation [custom cost]  </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="816"/>
+        <location filename="../MarketBrowserWidget.cpp" line="818"/>
         <source>Deviation [fixed]  </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="818"/>
+        <location filename="../MarketBrowserWidget.cpp" line="820"/>
         <source>Deviation  </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="951"/>
+        <location filename="../MarketBrowserWidget.cpp" line="953"/>
         <source>%1 (%2m³)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4420,7 +4432,12 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="125"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="126"/>
+        <source>Max. retries:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="130"/>
         <source>Ignore certificate errors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4938,48 +4955,48 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::StatisticsWidget</name>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="87"/>
+        <location filename="../StatisticsWidget.cpp" line="88"/>
         <source>Basic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="88"/>
+        <location filename="../StatisticsWidget.cpp" line="89"/>
         <source>Advanced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="662"/>
+        <location filename="../StatisticsWidget.cpp" line="663"/>
         <source>Script error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="668"/>
+        <location filename="../StatisticsWidget.cpp" line="669"/>
         <source>Save script</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="668"/>
+        <location filename="../StatisticsWidget.cpp" line="669"/>
         <source>Enter script name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="683"/>
+        <location filename="../StatisticsWidget.cpp" line="684"/>
         <source>Load script</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="683"/>
-        <location filename="../StatisticsWidget.cpp" line="700"/>
+        <location filename="../StatisticsWidget.cpp" line="684"/>
+        <location filename="../StatisticsWidget.cpp" line="701"/>
         <source>Select script:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="700"/>
+        <location filename="../StatisticsWidget.cpp" line="701"/>
         <source>Delete script</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="730"/>
+        <location filename="../StatisticsWidget.cpp" line="731"/>
         <source>Assets: %1
 Corp. assets: %2
 Wallet: %3
@@ -4990,216 +5007,216 @@ Total: %7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="744"/>
+        <location filename="../StatisticsWidget.cpp" line="745"/>
         <source>Asset value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="747"/>
+        <location filename="../StatisticsWidget.cpp" line="748"/>
         <source>Wallet balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="750"/>
+        <location filename="../StatisticsWidget.cpp" line="751"/>
         <source>Corp. wallet balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="753"/>
+        <location filename="../StatisticsWidget.cpp" line="754"/>
         <source>Corp. asset value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="756"/>
+        <location filename="../StatisticsWidget.cpp" line="757"/>
         <source>Buy order value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="759"/>
+        <location filename="../StatisticsWidget.cpp" line="760"/>
         <source>Sell order value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="762"/>
+        <location filename="../StatisticsWidget.cpp" line="763"/>
         <source>Total value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="766"/>
+        <location filename="../StatisticsWidget.cpp" line="767"/>
         <source>Incoming</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="767"/>
+        <location filename="../StatisticsWidget.cpp" line="768"/>
         <source>Outgoing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="769"/>
+        <location filename="../StatisticsWidget.cpp" line="770"/>
         <source>Sell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="770"/>
+        <location filename="../StatisticsWidget.cpp" line="771"/>
         <source>Buy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="816"/>
+        <location filename="../StatisticsWidget.cpp" line="817"/>
         <source>Combine statistics for all characters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="826"/>
+        <location filename="../StatisticsWidget.cpp" line="827"/>
         <source>Make snapshot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="832"/>
+        <location filename="../StatisticsWidget.cpp" line="833"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="842"/>
+        <location filename="../StatisticsWidget.cpp" line="843"/>
         <source>Wallet journal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="857"/>
-        <location filename="../StatisticsWidget.cpp" line="889"/>
+        <location filename="../StatisticsWidget.cpp" line="858"/>
+        <location filename="../StatisticsWidget.cpp" line="890"/>
         <source>Total income:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="863"/>
-        <location filename="../StatisticsWidget.cpp" line="895"/>
+        <location filename="../StatisticsWidget.cpp" line="864"/>
+        <location filename="../StatisticsWidget.cpp" line="896"/>
         <source>Total cost:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="869"/>
-        <location filename="../StatisticsWidget.cpp" line="901"/>
+        <location filename="../StatisticsWidget.cpp" line="870"/>
+        <location filename="../StatisticsWidget.cpp" line="902"/>
         <source>Balance:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="877"/>
+        <location filename="../StatisticsWidget.cpp" line="878"/>
         <source>Wallet transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="919"/>
+        <location filename="../StatisticsWidget.cpp" line="920"/>
         <source>This tab allows you to create custom reports aggregating historic market order data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="927"/>
+        <location filename="../StatisticsWidget.cpp" line="928"/>
         <source>Simple aggregation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="937"/>
+        <location filename="../StatisticsWidget.cpp" line="938"/>
         <source>Group by:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="941"/>
+        <location filename="../StatisticsWidget.cpp" line="942"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="942"/>
+        <location filename="../StatisticsWidget.cpp" line="943"/>
         <source>Location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="944"/>
+        <location filename="../StatisticsWidget.cpp" line="945"/>
         <source>Order by:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="948"/>
+        <location filename="../StatisticsWidget.cpp" line="949"/>
         <source>Id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="949"/>
+        <location filename="../StatisticsWidget.cpp" line="950"/>
         <source>Count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="950"/>
+        <location filename="../StatisticsWidget.cpp" line="951"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="951"/>
+        <location filename="../StatisticsWidget.cpp" line="952"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="953"/>
+        <location filename="../StatisticsWidget.cpp" line="954"/>
         <source>Limit:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="959"/>
+        <location filename="../StatisticsWidget.cpp" line="960"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="961"/>
+        <location filename="../StatisticsWidget.cpp" line="962"/>
         <source>Include active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="964"/>
+        <location filename="../StatisticsWidget.cpp" line="965"/>
         <source>Include expired/cancelled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="967"/>
-        <location filename="../StatisticsWidget.cpp" line="998"/>
+        <location filename="../StatisticsWidget.cpp" line="968"/>
+        <location filename="../StatisticsWidget.cpp" line="999"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="974"/>
+        <location filename="../StatisticsWidget.cpp" line="975"/>
         <source>Script processing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="990"/>
+        <location filename="../StatisticsWidget.cpp" line="991"/>
         <source>see the online help to learn how to use script processing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="1003"/>
+        <location filename="../StatisticsWidget.cpp" line="1004"/>
         <source>Save script...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="1007"/>
+        <location filename="../StatisticsWidget.cpp" line="1008"/>
         <source>Load script...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="1011"/>
+        <location filename="../StatisticsWidget.cpp" line="1012"/>
         <source>Delete script...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="1015"/>
+        <location filename="../StatisticsWidget.cpp" line="1016"/>
         <source>Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="1020"/>
+        <location filename="../StatisticsWidget.cpp" line="1021"/>
         <source>For each</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="1024"/>
+        <location filename="../StatisticsWidget.cpp" line="1025"/>
         <source>Aggregate</source>
         <translation type="unfinished"></translation>
     </message>
