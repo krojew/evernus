@@ -229,6 +229,9 @@ namespace Evernus
             const auto &citadels = mDataProvider.getCitadelsForRegion(region);
             for (const auto &citadel : citadels)
             {
+                if (!citadel->canHaveMarket())
+                    continue;
+
                 mOrderCounter.incCount();
                 mESIManager.fetchCitadelMarketOrders(citadel->getId(), region, charId, [=](auto &&orders, const auto &error) {
                     filterOrders(orders, pairs);

@@ -70,6 +70,9 @@ namespace Evernus
                     const auto &citadels = mDataProvider.getCitadelsForRegion(regionId);
                     for (const auto &citadel : citadels)
                     {
+                        if (!citadel->canHaveMarket())
+                            continue;
+
                         mCounter.incCount();
 
                         Q_ASSERT(citadel);

@@ -65,6 +65,8 @@ namespace Evernus
         bool isPublic() const noexcept;
         void setPublic(bool flag) noexcept;
 
+        bool canHaveMarket() const noexcept;
+
         Citadel &operator =(const Citadel &) = default;
         Citadel &operator =(Citadel &&) = default;
 
