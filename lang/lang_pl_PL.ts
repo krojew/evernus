@@ -5376,94 +5376,94 @@ Total: %7</source>
 <context>
     <name>Evernus::TypeAggregatedDetailsWidget</name>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="56"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="65"/>
         <source>From:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="70"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="79"/>
         <source>To:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="82"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="91"/>
         <source>Moving average days:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="91"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="100"/>
         <source>MACD days:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="108"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="117"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="112"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="121"/>
         <source>Add trend line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="119"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="128"/>
         <source>Show legend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="145"/>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="167"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="154"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="176"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="177"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="186"/>
         <source>Unusual volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="187"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="196"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="194"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="207"/>
         <source>SMA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="198"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="211"/>
         <source>Bollinger upper band</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="202"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="215"/>
         <source>Bollinger lower band</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="214"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="227"/>
         <source>RSI (14 days)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="242"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="255"/>
         <source>RSI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="251"/>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="272"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="264"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="285"/>
         <source>MACD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="265"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="278"/>
         <source>MACD Divergence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="275"/>
+        <location filename="../TypeAggregatedDetailsWidget.cpp" line="288"/>
         <source>MACD Signal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6115,44 +6115,46 @@ Do you wish to launch the updater?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="330"/>
-        <location filename="../Updater.cpp" line="361"/>
-        <location filename="../Updater.cpp" line="368"/>
-        <location filename="../Updater.cpp" line="380"/>
-        <location filename="../Updater.cpp" line="451"/>
-        <location filename="../Updater.cpp" line="469"/>
+        <location filename="../Updater.cpp" line="335"/>
+        <location filename="../Updater.cpp" line="366"/>
+        <location filename="../Updater.cpp" line="373"/>
+        <location filename="../Updater.cpp" line="385"/>
+        <location filename="../Updater.cpp" line="456"/>
+        <location filename="../Updater.cpp" line="474"/>
+        <location filename="../Updater.cpp" line="482"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="330"/>
+        <location filename="../Updater.cpp" line="335"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="361"/>
+        <location filename="../Updater.cpp" line="366"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="368"/>
+        <location filename="../Updater.cpp" line="373"/>
         <source>This update requires re-importing all item prices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="380"/>
+        <location filename="../Updater.cpp" line="385"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="451"/>
+        <location filename="../Updater.cpp" line="456"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="469"/>
+        <location filename="../Updater.cpp" line="474"/>
+        <location filename="../Updater.cpp" line="482"/>
         <source>This update requires re-importing citadels.</source>
         <translation type="unfinished"></translation>
     </message>

@@ -38,6 +38,7 @@ namespace Evernus
         citadel->setName(record.value("name").toString());
         citadel->setSolarSystemId(record.value("solar_system_id").toULongLong());
         citadel->setRegionId(record.value("region_id").toUInt());
+        citadel->setTypeId(record.value("type_id").toUInt());
         citadel->setX(record.value("x").toDouble());
         citadel->setY(record.value("y").toDouble());
         citadel->setZ(record.value("z").toDouble());
@@ -60,6 +61,7 @@ namespace Evernus
             "z REAL NOT NULL,"
             "last_seen DATETIME NOT NULL,"
             "first_seen DATETIME NOT NULL,"
+            "type_id INTEGER NOT NULL,"
             "public INTEGER NOT NULL"
         ")"}.arg(getTableName()));
 
@@ -107,6 +109,7 @@ namespace Evernus
             << "z"
             << "last_seen"
             << "first_seen"
+            << "type_id"
             << "public";
     }
 
@@ -123,6 +126,7 @@ namespace Evernus
         query.bindValue(":z", entity.getZ());
         query.bindValue(":last_seen", entity.getLastSeen());
         query.bindValue(":first_seen", entity.getFirstSeen());
+        query.bindValue(":type_id", entity.getTypeId());
         query.bindValue(":public", entity.isPublic());
     }
 
@@ -139,6 +143,7 @@ namespace Evernus
         query.addBindValue(entity.getZ());
         query.addBindValue(entity.getLastSeen());
         query.addBindValue(entity.getFirstSeen());
+        query.addBindValue(entity.getTypeId());
         query.addBindValue(entity.isPublic());
     }
 
