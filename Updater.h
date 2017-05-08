@@ -98,5 +98,8 @@ namespace Evernus
 
         void migrateCoreTo130() const;
         void migrateCoreTo136() const;
+
+        static std::pair<uint, uint> getCoreVersion();
+        static std::pair<uint, uint> getDbVersion(const QSqlDatabase &db, uint defaultMajor, uint defaultMinor);
     };
 }

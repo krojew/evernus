@@ -53,28 +53,20 @@ namespace Evernus
 {
     void Updater::performVersionMigration(const RepositoryProvider &provider) const
     {
-        QSettings settings;
+        uint coreMajorVersion = 0;
+        uint coreMinorVersion = 0;
 
-        const auto curVersion
-            = settings.value(EvernusApplication::versionKey, QCoreApplication::applicationVersion()).toString().split('.');
-        const auto coreMajorVersion = curVersion[0].toUInt();
-        const auto coreMinorVersion = curVersion[1].toUInt();
+        std::tie(coreMajorVersion, coreMinorVersion) = getCoreVersion();
 
-        if (curVersion.size() != 2 || (curVersion[0] == version::majorStr() && curVersion[1] == version::minorStr()))
-            qDebug() << "Not updating core from" << curVersion;
+        if ((coreMajorVersion == 0 && coreMinorVersion == 0) || (QString::number(coreMajorVersion) == version::majorStr() && QString::number(coreMinorVersion) == version::minorStr()))
+            qDebug() << "Not updating core from" << coreMajorVersion << coreMinorVersion;
         else
             updateCore(coreMajorVersion, coreMinorVersion);
 
-        auto dbMajorVersion = coreMajorVersion;
-        auto dbMinorVersion = coreMinorVersion;
+        uint dbMajorVersion = coreMajorVersion;
+        uint dbMinorVersion = coreMinorVersion;
 
-        const auto db = provider.getKeyRepository().getDatabase();
-        auto query = db.exec(QString{"SELECT major, minor FROM %1"}.arg(version::dbTableName()));
-        if (query.next())
-        {
-            dbMajorVersion = query.value(0).toUInt();
-            dbMinorVersion = query.value(1).toUInt();
-        }
+        std::tie(dbMajorVersion, dbMinorVersion) = getDbVersion(provider.getKeyRepository().getDatabase(), dbMajorVersion, dbMinorVersion);
 
         updateDatabase(dbMajorVersion, dbMinorVersion, provider);
     }
@@ -84,28 +76,41 @@ namespace Evernus
         const auto curVersion = QCoreApplication::applicationVersion().split('.');
 
         db.exec(QString{ R"(
-                CREATE TABLE IF NOT EXISTS %1 (
-                    major INTEGER NOT NULL,
-                    minor INTEGER NOT NULL,
-                    PRIMARY KEY (major, minor)
-                )
-            )" }.arg(version::dbTableName()));
+            CREATE TABLE IF NOT EXISTS %1 (
+                major INTEGER NOT NULL,
+                minor INTEGER NOT NULL,
+                PRIMARY KEY (major, minor)
+            )
+        )" }.arg(version::dbTableName()));
 
         const auto error = db.lastError();
         if (error.isValid())
             throw std::runtime_error{ tr("Error updating db version: %1").arg(error.text()).toStdString() };
 
-        db.exec(QString{"DELETE FROM %1"}.arg(version::dbTableName()));
+        uint coreMajorVersion = 0;
+        uint coreMinorVersion = 0;
 
-        QSqlQuery query{ db };
-        if (!query.prepare(QString{"REPLACE INTO %1 (major, minor) VALUES (? ,?)"}.arg(version::dbTableName())))
-            throw std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()};
+        std::tie(coreMajorVersion, coreMinorVersion) = getCoreVersion();
 
-        query.bindValue(0, curVersion[0]);
-        query.bindValue(1, curVersion[1]);
+        uint dbMajorVersion = coreMajorVersion;
+        uint dbMinorVersion = coreMinorVersion;
 
-        if (!query.exec())
-            throw std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()};
+        std::tie(dbMajorVersion, dbMinorVersion) = getDbVersion(db, dbMajorVersion, dbMinorVersion);
+
+        if (dbMajorVersion < coreMajorVersion || (dbMajorVersion == coreMajorVersion && dbMinorVersion < coreMinorVersion))
+        {
+            db.exec(QString{"DELETE FROM %1"}.arg(version::dbTableName()));
+
+            QSqlQuery query{ db };
+            if (!query.prepare(QString{"REPLACE INTO %1 (major, minor) VALUES (? ,?)"}.arg(version::dbTableName())))
+                throw std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()};
+
+            query.bindValue(0, curVersion[0]);
+            query.bindValue(1, curVersion[1]);
+
+            if (!query.exec())
+                throw std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()};
+        }
     }
 
     Updater &Updater::getInstance()
@@ -494,5 +499,27 @@ namespace Evernus
     {
         QSettings settings;
         settings.remove(UISettings::tabShowStateParentKey);
+    }
+
+    std::pair<uint, uint> Updater::getCoreVersion()
+    {
+        QSettings settings;
+
+        const auto curVersion
+            = settings.value(EvernusApplication::versionKey, QCoreApplication::applicationVersion()).toString().split('.');
+
+        return std::make_pair(curVersion[0].toUInt(), curVersion[1].toUInt());
+    }
+
+    std::pair<uint, uint> Updater::getDbVersion(const QSqlDatabase &db, uint defaultMajor, uint defaultMinor)
+    {
+        auto query = db.exec(QString{"SELECT major, minor FROM %1"}.arg(version::dbTableName()));
+        if (query.next())
+        {
+            defaultMajor = query.value(0).toUInt();
+            defaultMinor = query.value(1).toUInt();
+        }
+
+        return std::make_pair(defaultMajor, defaultMinor);
     }
 }
