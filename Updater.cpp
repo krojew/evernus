@@ -476,7 +476,8 @@ namespace Evernus
 
     void Updater::migrateDatabaseTo149(const CitadelRepository &citadelRepo) const
     {
-        QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing citadels."));
+        // disable - never released
+        //QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing citadels."));
 
         citadelRepo.deleteAll();
         citadelRepo.exec(QStringLiteral("ALTER TABLE %1 ADD COLUMN region_id INTEGER NOT NULL DEFAULT 0").arg(citadelRepo.getTableName()));
