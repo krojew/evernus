@@ -727,7 +727,7 @@ namespace Evernus
         toolBarLayout->addWidget(filterBtn);
         connect(filterBtn, &QPushButton::clicked, this, &MarketAnalysisWidget::applyRegionFilter);
 
-        mainLayout->addWidget(new QLabel{tr("Double-click an item for additional information. \"Show in EVE\" is available via the right-click menu."), this});
+        mainLayout->addWidget(new QLabel{tr("Double-click an item for additional information. \"Show in EVE\" is available via the right-click menu. Remember to select desired <b>source price</b> and <b>destination price</b> from the dropdowns at the top, otherwise your differences might be skewed."), this});
 
         mRegionDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mRegionDataStack);
