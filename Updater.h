@@ -16,6 +16,8 @@
 
 #include <QNetworkAccessManager>
 
+#include "Repository.h"
+
 class QSqlDatabase;
 
 namespace Evernus
@@ -101,5 +103,8 @@ namespace Evernus
 
         static std::pair<uint, uint> getCoreVersion();
         static std::pair<uint, uint> getDbVersion(const QSqlDatabase &db, uint defaultMajor, uint defaultMinor);
+
+        template<class T>
+        static void safelyExecQuery(const Repository<T> &repo, const QString &query);
     };
 }
