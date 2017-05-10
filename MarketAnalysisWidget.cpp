@@ -189,6 +189,9 @@ namespace Evernus
 
         toolBarLayout->addWidget(new QLabel{tr("Source price:"), this});
         createPriceTypeCombo(mSrcPriceTypeCombo);
+        mSrcPriceTypeCombo->blockSignals(true);
+        mSrcPriceTypeCombo->setCurrentIndex(1);
+        mSrcPriceTypeCombo->blockSignals(false);
 
         toolBarLayout->addWidget(new QLabel{tr("Destination price:"), this});
         createPriceTypeCombo(mDstPriceTypeCombo);
