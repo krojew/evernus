@@ -67,7 +67,7 @@ namespace Evernus
 
         virtual void setCharacter(Character::IdType id) = 0;
         virtual void setTypeId(EveType::IdType id) = 0;
-        virtual void setStationId(uint id) = 0;
+        virtual void setStationId(quint64 id) = 0;
         virtual void setPriceColorMode(PriceColorMode mode) = 0;
 
         virtual void reset() = 0;

@@ -241,7 +241,7 @@ namespace Evernus
         mTypeId = id;
     }
 
-    void ExternalOrderBuyModel::setStationId(uint id)
+    void ExternalOrderBuyModel::setStationId(quint64 id)
     {
         mStationId = id;
     }
@@ -381,13 +381,13 @@ namespace Evernus
     {
         switch (mGrouping) {
         case Grouping::Station:
-            fillGroupedData<&ExternalOrder::getStationId>();
+            fillGroupedData<quint64, &ExternalOrder::getStationId>();
             break;
         case Grouping::System:
-            fillGroupedData<&ExternalOrder::getSolarSystemId>();
+            fillGroupedData<uint, &ExternalOrder::getSolarSystemId>();
             break;
         case Grouping::Region:
-            fillGroupedData<&ExternalOrder::getRegionId>();
+            fillGroupedData<uint, &ExternalOrder::getRegionId>();
             break;
         default:
             break;
@@ -611,13 +611,13 @@ namespace Evernus
         return QVariant{};
     }
 
-    template<uint (ExternalOrder::* Func)() const>
+    template<class Id, Id (ExternalOrder::* Func)() const>
     void ExternalOrderBuyModel::fillGroupedData()
     {
         mGroupedData.clear();
 
-        std::unordered_map<uint, GroupedData> data;
-        std::unordered_map<uint, std::vector<double>> prices;
+        std::unordered_map<quint64, GroupedData> data;
+        std::unordered_map<quint64, std::vector<double>> prices;
 
         for (const auto &order : mOrders)
         {

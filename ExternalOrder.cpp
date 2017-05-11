@@ -36,12 +36,12 @@ namespace Evernus
         mTypeId = id;
     }
 
-    uint ExternalOrder::getStationId() const noexcept
+    quint64 ExternalOrder::getStationId() const noexcept
     {
         return mLocationId;
     }
 
-    void ExternalOrder::setStationId(uint id) noexcept
+    void ExternalOrder::setStationId(quint64 id) noexcept
     {
         mLocationId = id;
     }

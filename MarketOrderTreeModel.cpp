@@ -311,7 +311,7 @@ namespace Evernus
         return group;
     }
 
-    uint MarketOrderTreeModel::getStationId(const MarketOrder &order)
+    quint64 MarketOrderTreeModel::getStationId(const MarketOrder &order)
     {
         const auto customStation = order.getCustomStationId();
         return (customStation) ? (*customStation) : (order.getStationId());

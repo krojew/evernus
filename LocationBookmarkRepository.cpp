@@ -34,7 +34,7 @@ namespace Evernus
         auto locationBookmark = std::make_shared<LocationBookmark>(record.value("id").value<LocationBookmark::IdType>());
         locationBookmark->setRegionId(record.value("region_id").toUInt());
         locationBookmark->setSolarSystemId(record.value("solar_system_id").toUInt());
-        locationBookmark->setStationId(record.value("station_id").toUInt());
+        locationBookmark->setStationId(record.value("station_id").toULongLong());
         locationBookmark->setNew(false);
 
         return locationBookmark;
@@ -46,7 +46,7 @@ namespace Evernus
             "id INTEGER PRIMARY KEY,"
             "region_id INTEGER NOT NULL,"
             "solar_system_id INTEGER NOT NULL,"
-            "station_id INTEGER NOT NULL,"
+            "station_id BIGINT NOT NULL,"
 
             "UNIQUE (region_id, solar_system_id, station_id)"
         ")"}.arg(getTableName()));

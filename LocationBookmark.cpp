@@ -38,12 +38,12 @@ namespace Evernus
         mSolarSystemId = id;
     }
 
-    uint LocationBookmark::getStationId() const noexcept
+    quint64 LocationBookmark::getStationId() const noexcept
     {
         return mStationId;
     }
 
-    void LocationBookmark::setStationId(uint id) noexcept
+    void LocationBookmark::setStationId(quint64 id) noexcept
     {
         mStationId = id;
     }

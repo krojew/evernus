@@ -432,8 +432,8 @@ namespace Evernus
 
         order.setId(object.value("order_id").toDouble()); // https://bugreports.qt.io/browse/QTBUG-28560
         order.setType((object.value("is_buy_order").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
-        order.setTypeId(object.value("type_id").toInt());
-        order.setStationId(object.value("location_id").toInt());
+        order.setTypeId(object.value("type_id").toDouble());
+        order.setStationId(object.value("location_id").toDouble());
 
         //TODO: replace when available
         order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));

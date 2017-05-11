@@ -42,7 +42,7 @@ namespace Evernus
         auto externalOrder = std::make_shared<ExternalOrder>(record.value("id").value<ExternalOrder::IdType>());
         externalOrder->setType(static_cast<ExternalOrder::Type>(record.value("type").toInt()));
         externalOrder->setTypeId(record.value("type_id").value<ExternalOrder::TypeIdType>());
-        externalOrder->setStationId(record.value("location_id").toUInt());
+        externalOrder->setStationId(record.value("location_id").toULongLong());
         externalOrder->setSolarSystemId(record.value("solar_system_id").toUInt());
         externalOrder->setRegionId(record.value("region_id").toUInt());
         externalOrder->setRange(record.value("range").toInt());
@@ -89,7 +89,7 @@ namespace Evernus
     }
 
     ExternalOrderRepository::EntityPtr ExternalOrderRepository::findSellByTypeAndStation(ExternalOrder::TypeIdType typeId,
-                                                                                         uint stationId,
+                                                                                         quint64 stationId,
                                                                                          const Repository<MarketOrder> &orderRepo,
                                                                                          const Repository<MarketOrder> &corpOrderRepo) const
     {
@@ -169,19 +169,19 @@ namespace Evernus
     }
 
     ExternalOrderRepository::EntityList ExternalOrderRepository::fetchBuyByTypeAndStation(ExternalOrder::TypeIdType typeId,
-                                                                                           uint stationId) const
+                                                                                          quint64 stationId) const
     {
         return fetchByTypeAndStation(typeId, stationId, ExternalOrder::Type::Buy);
     }
 
     ExternalOrderRepository::EntityList ExternalOrderRepository::fetchBuyByTypeAndSolarSystem(ExternalOrder::TypeIdType typeId,
-                                                                                               uint solarSystemId) const
+                                                                                              uint solarSystemId) const
     {
         return fetchByTypeAndSolarSystem(typeId, solarSystemId, ExternalOrder::Type::Buy);
     }
 
     ExternalOrderRepository::EntityList ExternalOrderRepository::fetchBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId,
-                                                                                          uint regionId) const
+                                                                                         uint regionId) const
     {
         return fetchByTypeAndRegion(typeId, regionId, ExternalOrder::Type::Buy);
     }
@@ -192,7 +192,7 @@ namespace Evernus
     }
 
     ExternalOrderRepository::EntityList ExternalOrderRepository::fetchSellByTypeAndStation(ExternalOrder::TypeIdType typeId,
-                                                                                           uint stationId) const
+                                                                                           quint64 stationId) const
     {
         return fetchByTypeAndStation(typeId, stationId, ExternalOrder::Type::Sell);
     }
@@ -241,14 +241,14 @@ namespace Evernus
         return result;
     }
 
-    std::vector<uint> ExternalOrderRepository::fetchUniqueStations() const
+    std::vector<quint64> ExternalOrderRepository::fetchUniqueStations() const
     {
-        return fetchUniqueColumn<uint>("location_id");
+        return fetchUniqueColumn<quint64>("location_id");
     }
 
-    std::vector<uint> ExternalOrderRepository::fetchUniqueStationsByRegion(uint regionId) const
+    std::vector<quint64> ExternalOrderRepository::fetchUniqueStationsByRegion(uint regionId) const
     {
-        std::vector<uint> result;
+        std::vector<quint64> result;
 
         auto query = prepare(QString{"SELECT DISTINCT location_id FROM %1 WHERE region_id = ?"}.arg(getTableName()));
         query.bindValue(0, regionId);
@@ -260,14 +260,14 @@ namespace Evernus
             result.reserve(size);
 
         while (query.next())
-            result.emplace_back(query.value(0).toUInt());
+            result.emplace_back(query.value(0).toULongLong());
 
         return result;
     }
 
-    std::vector<uint> ExternalOrderRepository::fetchUniqueStationsBySolarSystem(uint solarSystemId) const
+    std::vector<quint64> ExternalOrderRepository::fetchUniqueStationsBySolarSystem(uint solarSystemId) const
     {
-        std::vector<uint> result;
+        std::vector<quint64> result;
 
         auto query = prepare(QString{"SELECT DISTINCT location_id FROM %1 WHERE solar_system_id = ?"}.arg(getTableName()));
         query.bindValue(0, solarSystemId);
@@ -279,7 +279,7 @@ namespace Evernus
             result.reserve(size);
 
         while (query.next())
-            result.emplace_back(query.value(0).toUInt());
+            result.emplace_back(query.value(0).toULongLong());
 
         return result;
     }
@@ -434,7 +434,7 @@ namespace Evernus
     }
 
     ExternalOrderRepository::EntityList ExternalOrderRepository::fetchByTypeAndStation(ExternalOrder::TypeIdType typeId,
-                                                                                       uint stationId,
+                                                                                       quint64 stationId,
                                                                                        ExternalOrder::Type type) const
     {
         auto query = prepare(QString{"SELECT * FROM %1 WHERE type = ? AND type_id = ? AND location_id = ?"}.arg(getTableName()));

@@ -68,7 +68,7 @@ namespace Evernus
 
         virtual void setCharacter(Character::IdType id) override;
         virtual void setTypeId(EveType::IdType id) override;
-        virtual void setStationId(uint id) override;
+        virtual void setStationId(quint64 id) override;
         virtual void setPriceColorMode(PriceColorMode mode) override;
 
         virtual void reset() override;
@@ -118,7 +118,7 @@ namespace Evernus
 
         struct GroupedData
         {
-            uint mId = 0;
+            quint64 mId = 0;
             double mLowestPrice = std::numeric_limits<double>::max();
             double mMedianPrice = 0.;
             double mHighestPrice = 0.;
@@ -139,7 +139,8 @@ namespace Evernus
         Character::IdType mCharacterId = Character::invalidId;
 
         EveType::IdType mTypeId = EveType::invalidId;
-        uint mRegionId = 0, mSolarSystemId = 0, mStationId = 0;
+        uint mRegionId = 0, mSolarSystemId = 0;
+        quint64 mStationId = 0;
 
         PriceColorMode mPriceColorMode = PriceColorMode::Direction;
 
@@ -167,7 +168,7 @@ namespace Evernus
         QVariant getRegionGroupedData(int column, int role, const GroupedData &data) const;
         QVariant getGenericGroupedData(int column, int role, const GroupedData &data) const;
 
-        template<uint (ExternalOrder::* Func)() const>
+        template<class Id, Id (ExternalOrder::* Func)() const>
         void fillGroupedData();
     };
 }

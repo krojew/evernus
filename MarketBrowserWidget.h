@@ -116,7 +116,7 @@ namespace Evernus
             EveType::IdType mTypeId = EveType::invalidId;
             uint mRegionId = 0;
             uint mSolarSystemId = 0;
-            uint mStationId = 0;
+            quint64 mStationId = 0;
         };
 
         typedef std::list<NavigationState> NavigationStack;
@@ -191,7 +191,7 @@ namespace Evernus
         void updateNavigationButtons();
         void saveNavigationState();
         void restoreNavigationState();
-        void selectNagivationItems(uint regionId, uint solarSystemId, uint stationId);
+        void selectNagivationItems(uint regionId, uint solarSystemId, quint64 stationId);
 
         void setTypeId(EveType::IdType typeId);
 

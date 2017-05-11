@@ -35,14 +35,14 @@ namespace Evernus
         uint getSolarSystemId() const noexcept;
         void setSolarSystemId(uint id) noexcept;
 
-        uint getStationId() const noexcept;
-        void setStationId(uint id) noexcept;
+        quint64 getStationId() const noexcept;
+        void setStationId(quint64 id) noexcept;
 
         QString toString(const EveDataProvider &dataProvider) const;
 
     private:
         uint mRegionId = 0;
         uint mSolarSystemId = 0;
-        uint mStationId = 0;
+        quint64 mStationId = 0;
     };
 }

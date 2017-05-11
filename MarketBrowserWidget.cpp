@@ -465,9 +465,9 @@ namespace Evernus
 
         if (item != nullptr)
         {
-            std::vector<uint> stations;
+            std::vector<quint64> stations;
 
-            if (item->data(Qt::UserRole).toUInt() == 0)
+            if (item->data(Qt::UserRole).toULongLong() == 0)
             {
                 const auto regionItem = mRegionList->currentItem();
                 if (regionItem == nullptr || regionItem->data(Qt::UserRole).toUInt() == 0)
@@ -480,7 +480,7 @@ namespace Evernus
                 stations = mExternalOrderRepo.fetchUniqueStationsBySolarSystem(item->data(Qt::UserRole).toUInt());
             }
 
-            for (const auto &station : stations)
+            for (const auto station : stations)
             {
                 auto item = new QListWidgetItem{mDataProvider.getLocationName(station), mStationList};
                 item->setData(Qt::UserRole, station);
@@ -500,7 +500,7 @@ namespace Evernus
         {
             const auto region = mRegionList->currentItem()->data(Qt::UserRole).toUInt();
             const auto solarSystem = mSolarSystemList->currentItem()->data(Qt::UserRole).toUInt();
-            const auto station = item->data(Qt::UserRole).toUInt();
+            const auto station = item->data(Qt::UserRole).toULongLong();
 
             mExternalOrderSellModel.setRegionId(region);
             mExternalOrderSellModel.setSolarSystemId(solarSystem);
@@ -896,7 +896,7 @@ namespace Evernus
         mBlockNavigationChange = false;
     }
 
-    void MarketBrowserWidget::selectNagivationItems(uint regionId, uint solarSystemId, uint stationId)
+    void MarketBrowserWidget::selectNagivationItems(uint regionId, uint solarSystemId, quint64 stationId)
     {
         const auto regions = mRegionList->count();
         for (auto i = 0; i < regions; ++i)
@@ -925,7 +925,7 @@ namespace Evernus
         const auto stations = mStationList->count();
         for (auto i = 0; i < stations; ++i)
         {
-            if (mStationList->item(i)->data(Qt::UserRole).toUInt() == stationId)
+            if (mStationList->item(i)->data(Qt::UserRole).toULongLong() == stationId)
             {
                 if (mStationList->currentRow() != i)
                 {

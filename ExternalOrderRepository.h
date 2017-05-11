@@ -26,8 +26,6 @@ namespace Evernus
         : public Repository<ExternalOrder>
     {
     public:
-        typedef std::pair<ExternalOrder::TypeIdType, uint> TypeStationPair;
-
         using Repository::Repository;
         virtual ~ExternalOrderRepository() = default;
 
@@ -39,7 +37,7 @@ namespace Evernus
         void create() const;
 
         EntityPtr findSellByTypeAndStation(ExternalOrder::TypeIdType typeId,
-                                           uint stationId,
+                                           quint64 stationId,
                                            const Repository<MarketOrder> &orderRepo,
                                            const Repository<MarketOrder> &corpOrderRepo) const;
         EntityPtr findSellByTypeAndRegion(ExternalOrder::TypeIdType typeId,
@@ -53,7 +51,7 @@ namespace Evernus
 
         EntityList fetchBuyByType(ExternalOrder::TypeIdType typeId) const;
         EntityList fetchBuyByTypeAndStation(ExternalOrder::TypeIdType typeId,
-                                            uint stationId) const;
+                                            quint64 stationId) const;
         EntityList fetchBuyByTypeAndSolarSystem(ExternalOrder::TypeIdType typeId,
                                                 uint solarSystemId) const;
         EntityList fetchBuyByTypeAndRegion(ExternalOrder::TypeIdType typeId,
@@ -61,7 +59,7 @@ namespace Evernus
 
         EntityList fetchSellByType(ExternalOrder::TypeIdType typeId) const;
         EntityList fetchSellByTypeAndStation(ExternalOrder::TypeIdType typeId,
-                                             uint stationId) const;
+                                             quint64 stationId) const;
         EntityList fetchSellByTypeAndSolarSystem(ExternalOrder::TypeIdType typeId,
                                                  uint solarSystemId) const;
         EntityList fetchSellByTypeAndRegion(ExternalOrder::TypeIdType typeId,
@@ -70,9 +68,9 @@ namespace Evernus
         std::vector<EveType::IdType> fetchUniqueTypes() const;
         std::vector<uint> fetchUniqueRegions() const;
         std::vector<uint> fetchUniqueSolarSystems(uint regionId = 0) const;
-        std::vector<uint> fetchUniqueStations() const;
-        std::vector<uint> fetchUniqueStationsByRegion(uint regionId) const;
-        std::vector<uint> fetchUniqueStationsBySolarSystem(uint solarSystemId) const;
+        std::vector<quint64> fetchUniqueStations() const;
+        std::vector<quint64> fetchUniqueStationsByRegion(uint regionId) const;
+        std::vector<quint64> fetchUniqueStationsBySolarSystem(uint solarSystemId) const;
 
         void removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const;
         void removeForType(ExternalOrder::TypeIdType typeId) const;
@@ -85,8 +83,8 @@ namespace Evernus
 
         EntityList fetchByType(ExternalOrder::TypeIdType typeId, ExternalOrder::Type type) const;
         EntityList fetchByTypeAndStation(ExternalOrder::TypeIdType typeId,
-                                             uint stationId,
-                                             ExternalOrder::Type type) const;
+                                         quint64 stationId,
+                                         ExternalOrder::Type type) const;
         EntityList fetchByTypeAndSolarSystem(ExternalOrder::TypeIdType typeId,
                                              uint solarSystemId,
                                              ExternalOrder::Type type) const;
