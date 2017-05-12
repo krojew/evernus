@@ -131,6 +131,16 @@ namespace Evernus
         return mContents.end();
     }
 
+    Item::CustomValueType Item::getCustomValue() const
+    {
+        return mCustomValue;
+    }
+
+    void Item::setCustomValue(CustomValueType value)
+    {
+        mCustomValue = std::move(value);
+    }
+
     size_t Item::getChildCount() const noexcept
     {
         return mContents.size();

@@ -41,6 +41,7 @@ namespace Evernus
     {
         const auto locationId = record.value("location_id");
         const auto parentId = record.value("parent_id");
+        const auto customValue = record.value("custom_value");
 
         auto item = std::make_shared<Item>(record.value("id").value<Item::IdType>());
         item->setListId(record.value("asset_list_id").value<AssetList::IdType>());
@@ -49,6 +50,7 @@ namespace Evernus
         item->setLocationId((locationId.isNull()) ? (ItemData::LocationIdType{}) : (locationId.value<ItemData::LocationIdType::value_type>()));
         item->setQuantity(record.value("quantity").toUInt());
         item->setRawQuantity(record.value("raw_quantity").toInt());
+        item->setCustomValue((customValue.isNull()) ? (Item::CustomValueType{}) : (customValue.value<Item::CustomValueType::value_type>()));
         item->setNew(false);
 
         return item;
@@ -63,7 +65,8 @@ namespace Evernus
             "type_id INTEGER NOT NULL,"
             "location_id BIGINT NULL,"
             "quantity INTEGER NOT NULL,"
-            "raw_quantity INTEGER NOT NULL"
+            "raw_quantity INTEGER NOT NULL,"
+            "custom_value NUMERIC NULL"
         ")"}.arg(getTableName()).arg(assetRepo.getTableName()).arg(assetRepo.getIdColumn()));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(asset_list_id)"}.arg(getTableName()).arg(assetRepo.getTableName()));
@@ -129,6 +132,7 @@ namespace Evernus
     {
         const auto locationId = entity.getLocationId();
         const auto parentId = entity.getParentId();
+        const auto customValue = entity.getCustomValue();
 
         map["id"] << entity.getId();
         map["asset_list_id"] << entity.getListId();
@@ -137,6 +141,7 @@ namespace Evernus
         map["location_id"] << ((locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));
         map["quantity"] << entity.getQuantity();
         map["raw_quantity"] << entity.getRawQuantity();
+        map["custom_value"] << ((customValue) ? (*customValue) : (QVariant{QVariant::Double}));
 
         for (const auto &item : entity)
             fillProperties(*item, map);
@@ -151,13 +156,15 @@ namespace Evernus
             << "type_id"
             << "location_id"
             << "quantity"
-            << "raw_quantity";
+            << "raw_quantity"
+            << "custom_value";
     }
 
     void ItemRepository::bindValues(const Item &entity, QSqlQuery &query) const
     {
         const auto locationId = entity.getLocationId();
         const auto parentId = entity.getParentId();
+        const auto customValue = entity.getCustomValue();
 
         if (entity.getId() != Item::invalidId)
             query.bindValue(":id", entity.getId());
@@ -168,12 +175,14 @@ namespace Evernus
         query.bindValue(":location_id", (locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));
         query.bindValue(":quantity", entity.getQuantity());
         query.bindValue(":raw_quantity", entity.getRawQuantity());
+        query.bindValue(":custom_value", (customValue) ? (*customValue) : (QVariant{QVariant::Double}));
     }
 
     void ItemRepository::bindPositionalValues(const Item &entity, QSqlQuery &query) const
     {
         const auto locationId = entity.getLocationId();
         const auto parentId = entity.getParentId();
+        const auto customValue = entity.getCustomValue();
 
         if (entity.getId() != Item::invalidId)
             query.addBindValue(entity.getId());
@@ -184,5 +193,6 @@ namespace Evernus
         query.addBindValue((locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));
         query.addBindValue(entity.getQuantity());
         query.addBindValue(entity.getRawQuantity());
+        query.addBindValue((customValue) ? (*customValue) : (QVariant{QVariant::Double}));
     }
 }

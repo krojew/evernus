@@ -17,6 +17,8 @@
 #include <vector>
 #include <memory>
 
+#include <boost/optional.hpp>
+
 #include "ItemData.h"
 #include "Entity.h"
 
@@ -28,11 +30,12 @@ namespace Evernus
         : public Entity<ItemData::IdType>
     {
     public:
-        typedef std::vector<std::unique_ptr<Item>> ItemList;
-        typedef ItemList::iterator ItemIterator;
-        typedef ItemList::const_iterator ConstItemIterator;
+        using ItemList = std::vector<std::unique_ptr<Item>>;
+        using ItemIterator = ItemList::iterator;
+        using ConstItemIterator = ItemList::const_iterator;
 
-        typedef boost::optional<ItemData::IdType> ParentIdType;
+        using ParentIdType = boost::optional<ItemData::IdType>;
+        using CustomValueType = boost::optional<double>;
 
         using Entity::Entity;
 
@@ -69,6 +72,9 @@ namespace Evernus
         ItemIterator end() noexcept;
         ConstItemIterator end() const noexcept;
 
+        CustomValueType getCustomValue() const;
+        void setCustomValue(CustomValueType value);
+
         size_t getChildCount() const noexcept;
 
         void addItem(std::unique_ptr<Item> &&item);
@@ -83,5 +89,6 @@ namespace Evernus
         uint mListId = 0;
         ItemData mData;
         ItemList mContents;
+        CustomValueType mCustomValue;
     };
 }
