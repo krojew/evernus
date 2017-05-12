@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_set>
 #include <algorithm>
 
 #include <QSettings>
@@ -70,6 +71,8 @@ namespace Evernus
         QSettings settings;
         const auto importCitadels = settings.value(OrderSettings::importFromCitadelsKey, OrderSettings::importFromCitadelsDefault).toBool();
 
+        std::unordered_set<quint64> processedCitadels;
+
         for (const auto region : regions)
         {
             mManager.fetchMarketOrders(region, [=](auto &&orders, const auto &error) {
@@ -81,8 +84,10 @@ namespace Evernus
                 const auto &citadels = mDataProvider.getCitadelsForRegion(region);
                 for (const auto &citadel : citadels)
                 {
-                    if (!citadel->canHaveMarket())
+                    if (!citadel->canHaveMarket() || processedCitadels.find(citadel->getId()) != std::end(processedCitadels))
                         continue;
+
+                    processedCitadels.emplace(citadel->getId());
 
                     mCounter.incCount();
 

@@ -3016,167 +3016,167 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="193"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="196"/>
         <source>Destination price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="196"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="199"/>
         <source>Use skills and taxes for difference calculation (causes recalculation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="210"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="213"/>
         <source>Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="211"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="214"/>
         <source>Inter-Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="243"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="246"/>
         <source>Importing data for analysis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="245"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="248"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="246"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="249"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="249"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="252"/>
         <source>Making %1 ESI history requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="416"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="419"/>
         <source>%1 in %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="506"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="509"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="560"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="794"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="563"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="797"/>
         <source>- any station -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="564"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="567"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="564"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="567"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="599"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="854"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="879"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="884"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="602"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="857"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="882"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="887"/>
         <source>- all -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="622"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="625"/>
         <source>Region:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="642"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="645"/>
         <source>Limit to solar system:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="655"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="892"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="658"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="895"/>
         <source>Volume:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="673"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="911"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="676"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="914"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="694"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="697"/>
         <source>Buy price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="710"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="713"/>
         <source>Sell price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="726"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="929"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="729"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="932"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="730"/>
-        <source>Double-click an item for additional information. &quot;Show in EVE&quot; is available via the right-click menu.</source>
+        <location filename="../MarketAnalysisWidget.cpp" line="733"/>
+        <source>Double-click an item for additional information. &quot;Show in EVE&quot; is available via the right-click menu. Remember to select desired &lt;b&gt;source price&lt;/b&gt; and &lt;b&gt;destination price&lt;/b&gt; from the dropdowns at the top, otherwise your differences might be skewed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="735"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="943"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="738"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="946"/>
         <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="756"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="759"/>
         <source>Show details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="761"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="968"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="764"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="971"/>
         <source>Show in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="766"/>
-        <location filename="../MarketAnalysisWidget.cpp" line="973"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="769"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="976"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="797"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="800"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="807"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="810"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="866"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="869"/>
         <source>- multiple -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="876"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="879"/>
         <source>- none -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="933"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="936"/>
         <source>Press &quot;Apply&quot; to show results. &quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6052,109 +6052,107 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="96"/>
-        <location filename="../Updater.cpp" line="102"/>
-        <location filename="../Updater.cpp" line="108"/>
+        <location filename="../Updater.cpp" line="88"/>
+        <location filename="../Updater.cpp" line="106"/>
+        <location filename="../Updater.cpp" line="112"/>
         <source>Error updating db version: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="143"/>
-        <location filename="../Updater.cpp" line="154"/>
-        <location filename="../Updater.cpp" line="164"/>
+        <location filename="../Updater.cpp" line="148"/>
+        <location filename="../Updater.cpp" line="159"/>
+        <location filename="../Updater.cpp" line="169"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="143"/>
+        <location filename="../Updater.cpp" line="148"/>
         <source>Error contacting update server: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="154"/>
+        <location filename="../Updater.cpp" line="159"/>
         <source>Error parsing response from the update server: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="164"/>
+        <location filename="../Updater.cpp" line="169"/>
         <source>Missing update version information!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="177"/>
+        <location filename="../Updater.cpp" line="182"/>
         <source>No update found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="177"/>
+        <location filename="../Updater.cpp" line="182"/>
         <source>Your current version is up-to-date.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="186"/>
         <location filename="../Updater.cpp" line="191"/>
-        <location filename="../Updater.cpp" line="202"/>
+        <location filename="../Updater.cpp" line="196"/>
+        <location filename="../Updater.cpp" line="207"/>
         <source>Update found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="186"/>
+        <location filename="../Updater.cpp" line="191"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="191"/>
+        <location filename="../Updater.cpp" line="196"/>
         <source>A new version is available: %1
 Do you wish to launch the updater?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="202"/>
+        <location filename="../Updater.cpp" line="207"/>
         <source>Couldn&apos;t launch updater. Download manually?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="335"/>
-        <location filename="../Updater.cpp" line="366"/>
-        <location filename="../Updater.cpp" line="373"/>
-        <location filename="../Updater.cpp" line="385"/>
-        <location filename="../Updater.cpp" line="456"/>
-        <location filename="../Updater.cpp" line="474"/>
-        <location filename="../Updater.cpp" line="482"/>
+        <location filename="../Updater.cpp" line="340"/>
+        <location filename="../Updater.cpp" line="371"/>
+        <location filename="../Updater.cpp" line="378"/>
+        <location filename="../Updater.cpp" line="390"/>
+        <location filename="../Updater.cpp" line="461"/>
+        <location filename="../Updater.cpp" line="488"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="335"/>
+        <location filename="../Updater.cpp" line="340"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="366"/>
+        <location filename="../Updater.cpp" line="371"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="373"/>
+        <location filename="../Updater.cpp" line="378"/>
         <source>This update requires re-importing all item prices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="385"/>
+        <location filename="../Updater.cpp" line="390"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="456"/>
+        <location filename="../Updater.cpp" line="461"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="474"/>
-        <location filename="../Updater.cpp" line="482"/>
+        <location filename="../Updater.cpp" line="488"/>
         <source>This update requires re-importing citadels.</source>
         <translation type="unfinished"></translation>
     </message>
