@@ -57,7 +57,7 @@ namespace Evernus
         QSettings settings;
         const auto importCitadels = settings.value(OrderSettings::importFromCitadelsKey, OrderSettings::importFromCitadelsDefault).toBool();
 
-        std::unordered_set<quint64> processedCitadels;
+        std::unordered_set<uint> processedCitadelRegions;
 
         for (const auto &pair : target)
         {
@@ -69,15 +69,15 @@ namespace Evernus
                     processResult(std::move(orders), error);
                 });
 
-                if (importCitadels)
+                if (importCitadels && processedCitadelRegions.find(regionId) == std::end(processedCitadelRegions))
                 {
+                    processedCitadelRegions.emplace(regionId);
+
                     const auto &citadels = mDataProvider.getCitadelsForRegion(regionId);
                     for (const auto &citadel : citadels)
                     {
-                        if (!citadel->canHaveMarket() || processedCitadels.find(citadel->getId()) != std::end(processedCitadels))
+                        if (!citadel->canHaveMarket())
                             continue;
-
-                        processedCitadels.emplace(citadel->getId());
 
                         mCounter.incCount();
 
