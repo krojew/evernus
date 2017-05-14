@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <functional>
+#include <algorithm>
 #include <memory>
 #include <thread>
 #include <cmath>
@@ -263,7 +264,6 @@ namespace Evernus
             auto typeId = EveType::invalidId;
 
             const auto logColumns = 14;
-            const auto rangeStation = -1;
 
             const auto volRemainingColumn = 1;
             const auto volEnteredColumn = 5;
@@ -304,8 +304,8 @@ namespace Evernus
                         //          there's no way to check if the station matches
                         if (jumps != 0)
                         {
-                            const auto range = order.getRange();
-                            if (range == rangeStation || jumps - range > rangeThreshold)
+                            const int range = order.getRange();
+                            if (jumps - std::max(range, 0) > rangeThreshold)
                             {
                                 parsedOrders.emplace_back(std::move(order));
                                 continue;
