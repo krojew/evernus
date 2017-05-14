@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(PROJECT_NAME "evernus")
 set(MAJOR_VERSION "1")
-set(MINOR_VERSION "52")
+set(MINOR_VERSION "53")
 
 find_package(Boost REQUIRED)
 find_package(Qt5Core REQUIRED)
