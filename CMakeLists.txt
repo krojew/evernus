@@ -53,6 +53,10 @@ if(APPLE)
     # To workaround that we define QT_OPENSSL - see qconfig.h
     add_definitions(-DQT_OPENSSL)
 
+    # Somehow qmake does not have this defined when creating mockups
+    # in Qt 5.8
+    add_definitions(-DQ_OS_DARWIN)
+
     set(ADDITIONAL_SRC qxtglobalshortcut_mac.cpp)
     set(ADDITIONAL_LIBS Qt5::MacExtras ${CarbonLibrary})
 elseif(UNIX)

@@ -44,7 +44,7 @@
 #include <QStringList>
 #include <QTcpSocket>
 #include <QNetworkInterface>
-#ifndef QT_NO_OPENSSL
+#if !defined(QT_NO_OPENSSL) || defined(Q_OS_DARWIN)
 #    include <QSslSocket>
 #endif
 
@@ -58,7 +58,7 @@ QxtSmtp::QxtSmtp(QObject* parent) : QObject(parent)
     QXT_INIT_PRIVATE(QxtSmtp);
     qxt_d().state = QxtSmtpPrivate::Disconnected;
     qxt_d().nextID = 0;
-#ifndef QT_NO_OPENSSL
+#if !defined(QT_NO_OPENSSL) || defined(Q_OS_DARWIN)
     qxt_d().socket = new QSslSocket(this);
     QObject::connect(socket(), SIGNAL(encrypted()), this, SIGNAL(encrypted()));
     //QObject::connect(socket(), SIGNAL(encrypted()), &qxt_d(), SLOT(ehlo()));
@@ -138,7 +138,7 @@ void QxtSmtp::setStartTlsDisabled(bool disable)
     qxt_d().disableStartTLS = disable;
 }
 
-#ifndef QT_NO_OPENSSL
+#if !defined(QT_NO_OPENSSL) || defined(Q_OS_DARWIN)
 QSslSocket* QxtSmtp::sslSocket() const
 {
     return qxt_d().socket;
@@ -224,7 +224,7 @@ void QxtSmtpPrivate::socketRead()
         case EhloGreetReceived:
             parseEhlo(code, (line[3] != ' '), line.mid(4));
             break;
-#ifndef QT_NO_OPENSSL
+#if !defined(QT_NO_OPENSSL) || defined(Q_OS_DARWIN)
         case StartTLSSent:
             if (code == "220")
             {
@@ -377,7 +377,7 @@ void QxtSmtpPrivate::parseEhlo(const QByteArray& code, bool cont, const QString&
 
 void QxtSmtpPrivate::startTLS()
 {
-#ifndef QT_NO_OPENSSL
+#if !defined(QT_NO_OPENSSL) || defined(Q_OS_DARWIN)
     socket->write("starttls\r\n");
     state = StartTLSSent;
 #else

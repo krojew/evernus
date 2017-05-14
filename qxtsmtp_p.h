@@ -78,7 +78,7 @@ public:
     int nextID = 0, rcptNumber = 0, rcptAck = 0;
     bool mailAck = false;
 
-#ifndef QT_NO_OPENSSL
+#if !defined(QT_NO_OPENSSL) || defined(Q_OS_DARWIN)
     QSslSocket* socket = nullptr;
 #else
     QTcpSocket* socket = nullptr;

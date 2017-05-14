@@ -95,7 +95,7 @@ private:
     QXT_DECLARE_PRIVATE(QxtHttpServerConnector)
 };
 
-#ifndef QT_NO_OPENSSL
+#if !defined(QT_NO_OPENSSL) || defined(Q_OS_DARWIN)
 class QXT_WEB_EXPORT QxtHttpsServerConnector : public QxtHttpServerConnector
 {
     Q_OBJECT
