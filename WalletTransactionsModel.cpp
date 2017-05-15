@@ -160,6 +160,38 @@ namespace Evernus
 
             mTransactionsRepository.setIgnored(data[idColumn].value<WalletTransaction::IdType>(), ignored);
 
+            const auto quantity = data[quantityColumn].toUInt();
+            const auto typeId = data[typeIdColumn].value<EveType::IdType>();
+            const auto size = mDataProvider.getTypeVolume(typeId) * quantity;
+            const auto type = static_cast<WalletTransaction::Type>(data[typeColumn].toInt());
+            const auto price = data[priceColumn].toDouble();
+
+            const auto adjustTotals = [=](auto mul) {
+                mTotalSize += size * mul;
+
+                if (type == WalletTransaction::Type::Buy)
+                {
+                    mTotalCost += price * quantity * mul;
+                }
+                else
+                {
+                    mTotalIncome += price * quantity * mul;
+                    mTotalProfit +=
+                        (price - mItemCostProvider.fetchForCharacterAndType(mCharacterId, typeId)->getAdjustedCost()) * quantity * mul;
+                }
+            };
+
+            if (ignored)
+            {
+                adjustTotals(-1);
+                mTotalQuantity -= quantity;
+            }
+            else
+            {
+                adjustTotals(1);
+                mTotalQuantity += quantity;
+            }
+
             emit dataChanged(index, index, QVector<int>{} << Qt::CheckStateRole << Qt::FontRole);
             return true;
         }
@@ -358,18 +390,21 @@ namespace Evernus
                 << mDataProvider.getLocationName(entry->getLocationId())
                 << entry->getId();
 
-            mTotalQuantity += quantity;
-            mTotalSize += mDataProvider.getTypeVolume(entry->getTypeId()) * quantity;
+            if (!entry->isIgnored())
+            {
+                mTotalQuantity += quantity;
+                mTotalSize += mDataProvider.getTypeVolume(entry->getTypeId()) * quantity;
 
-            if (entry->getType() == WalletTransaction::Type::Buy)
-            {
-                mTotalCost += entry->getPrice() * quantity;
-            }
-            else
-            {
-                mTotalIncome += entry->getPrice() * quantity;
-                mTotalProfit +=
-                    (entry->getPrice() - mItemCostProvider.fetchForCharacterAndType(mCharacterId, entry->getTypeId())->getAdjustedCost()) * quantity;
+                if (entry->getType() == WalletTransaction::Type::Buy)
+                {
+                    mTotalCost += entry->getPrice() * quantity;
+                }
+                else
+                {
+                    mTotalIncome += entry->getPrice() * quantity;
+                    mTotalProfit +=
+                        (entry->getPrice() - mItemCostProvider.fetchForCharacterAndType(mCharacterId, entry->getTypeId())->getAdjustedCost()) * quantity;
+                }
             }
         }
     }

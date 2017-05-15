@@ -143,6 +143,8 @@ namespace Evernus
         mTotalProfitLabel = new QLabel{"-", this};
         infoLayout->addWidget(mTotalProfitLabel);
         mTotalProfitLabel->setFont(font);
+
+        connect(&mModel, &WalletTransactionsModel::dataChanged, this, &WalletTransactionsWidget::updateInfo);
     }
 
     void WalletTransactionsWidget::updateData()
