@@ -15,6 +15,7 @@
 #include <memory>
 #include <cmath>
 
+#include <QResizeEvent>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QScrollArea>
@@ -51,6 +52,8 @@ namespace ba = boost::accumulators;
 
 namespace Evernus
 {
+    const QString TypeAggregatedDetailsWidget::settingsSizeKey = QStringLiteral("typeAggregatedDetailsWidget/size");
+
     TypeAggregatedDetailsWidget::TypeAggregatedDetailsWidget(History history, QWidget *parent, Qt::WindowFlags flags)
         : QWidget(parent, flags)
         , mHistory(std::move(history))
@@ -288,6 +291,10 @@ namespace Evernus
         mMACDEMAGraph->setName(tr("MACD Signal"));
 
         applyFilter();
+
+        const auto size = settings.value(settingsSizeKey).toSize();
+        if (size.isValid())
+            resize(size);
     }
 
     void TypeAggregatedDetailsWidget::handleNewPreferences()
@@ -506,6 +513,14 @@ namespace Evernus
         mTrendLine->end->setCoords(x, linearFunc(end.toJulianDay() - start.toJulianDay()));
 
         mHistoryPlot->replot();
+    }
+
+    void TypeAggregatedDetailsWidget::resizeEvent(QResizeEvent *event)
+    {
+        Q_ASSERT(event != nullptr);
+
+        QSettings settings;
+        settings.setValue(settingsSizeKey, event->size());
     }
 
     void TypeAggregatedDetailsWidget::deleteTrendLine() noexcept

@@ -75,9 +75,9 @@
 
 namespace Evernus
 {
-    const QString MainWindow::settingsMaximizedKey = "mainWindow/maximized";
-    const QString MainWindow::settingsPosKey = "mainWindow/pos";
-    const QString MainWindow::settingsSizeKey = "mainWindow/size";
+    const QString MainWindow::settingsMaximizedKey = QStringLiteral("mainWindow/maximized");
+    const QString MainWindow::settingsPosKey = QStringLiteral("mainWindow/pos");
+    const QString MainWindow::settingsSizeKey = QStringLiteral("mainWindow/size");
 
     MainWindow::MainWindow(QByteArray clientId,
                            QByteArray clientSecret,

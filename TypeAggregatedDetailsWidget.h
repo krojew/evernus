@@ -17,6 +17,7 @@
 #include <map>
 
 #include <QWidget>
+#include <QString>
 #include <QDate>
 
 #include "MarketHistoryEntry.h"
@@ -49,7 +50,12 @@ namespace Evernus
         void applyFilter();
         void addTrendLine();
 
+    protected:
+        virtual void resizeEvent(QResizeEvent *event) override;
+
     private:
+        static const QString settingsSizeKey;
+
         History mHistory;
 
         QDateEdit *mFromEdit = nullptr;
