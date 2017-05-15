@@ -333,9 +333,9 @@ namespace Evernus
 
                         migrateDatabaseTo150(citadelRepo);
                     }
-                }
 
-                migrateDatabaseTo153(itemRepo);
+                    migrateDatabaseTo153(itemRepo);
+                }
             }
 
             updateDatabaseVersion(provider.getKeyRepository().getDatabase());
