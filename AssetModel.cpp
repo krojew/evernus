@@ -162,6 +162,7 @@ namespace Evernus
             << tr("Unit volume")
             << tr("Total volume")
             << tr("Local unit sell price")
+            << tr("Custom value")
             << tr("Local total sell price"));
 
         if (showOwner)
@@ -418,10 +419,12 @@ namespace Evernus
         const auto quantity = item.getQuantity();
         const auto sellPrice = (item.isBPC(mDataProvider)) ? (ExternalOrder::nullOrder()) : (mDataProvider.getTypeStationSellPrice(typeId, locationId));
         const auto metaIcon = IconUtils::getIconForMetaGroup(mDataProvider.getTypeMetaGroupName(typeId));
+        const auto customValue = item.getCustomValue();
+        const auto price = (customValue) ? (*customValue) : (sellPrice->getPrice());
 
         mTotalAssets += quantity;
         mTotalVolume += volume * quantity;
-        mTotalSellPrice += sellPrice->getPrice() * quantity;
+        mTotalSellPrice += price * quantity;
 
         auto treeItem = std::make_unique<TreeItem>();
         treeItem->setData(QVariantList{}
@@ -430,7 +433,8 @@ namespace Evernus
             << volume
             << (volume * quantity)
             << sellPrice->getPrice()
-            << (sellPrice->getPrice() * quantity)
+            << ((customValue) ? (*customValue) : (QVariant{}))
+            << (price * quantity)
             << ownerId
         );
         treeItem->setPriceTimestamp(sellPrice->getUpdateTime());
@@ -464,6 +468,7 @@ namespace Evernus
                     << QString{}
                     << 0.
                     << QString{}
+                    << QVariant{}
                     << 0.
                     << Character::invalidId);
                 treeItem->setLocationId(*id);

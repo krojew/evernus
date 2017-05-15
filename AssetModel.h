@@ -125,6 +125,7 @@ namespace Evernus
             unitVolumeColumn,
             totalVolumeColumn,
             unitPriceColumn,
+            customValueColumn,
             totalPriceColumn,
             ownerColumn,
 
