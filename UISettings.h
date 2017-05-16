@@ -24,7 +24,7 @@ namespace Evernus
         const auto autoCopyPriceFromInfoDefault = true;
         const auto minimizeToTrayDefault = false;
         const auto minimizeByMarginToolDefault = true;
-        const auto translationPath =  "/trans";
+        const auto translationPath =  "/translations";
         const auto plotNumberFormatDefault = "f";
         const auto usePackagedVolumeDefault = false;
         const auto omitCurrencySymbolDefault = false;

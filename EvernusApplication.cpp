@@ -1830,7 +1830,7 @@ namespace Evernus
         if (!mEveDb.isValid())
             throw std::runtime_error{"Error crating Eve DB object!"};
 
-        auto eveDbPath = applicationDirPath() + "/res/eve.db";
+        auto eveDbPath = applicationDirPath() + "/resources/eve.db";
         if (!QFile::exists(eveDbPath))
         {
             eveDbPath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, applicationName() + "/res/eve.db");

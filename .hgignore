@@ -42,3 +42,4 @@ Evernus.VC.db
 evernus_automoc*
 SyncDialog.moc
 core.*
+translations/*

@@ -78,7 +78,7 @@ elseif(WIN32)
 endif()
 
 set(TRANSLATIONS lang/lang_pl_PL.ts lang/lang_de_DE.ts)
-set_source_files_properties(${TRANSLATIONS} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/trans")
+set_source_files_properties(${TRANSLATIONS} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/translations")
 
 add_definitions(-DQXT_STATIC)
 
@@ -713,8 +713,8 @@ target_link_libraries(
 )
 
 set(RESOURCES
-    "res"
-    "${CMAKE_CURRENT_BINARY_DIR}/trans"
+    "resources"
+    "${CMAKE_CURRENT_BINARY_DIR}/translations"
 )
 
 if(APPLE)
