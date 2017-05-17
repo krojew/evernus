@@ -12,6 +12,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_map>
+#include <functional>
+
+#include <QStringList>
 #include <QSqlRecord>
 #include <QSqlQuery>
 
@@ -125,6 +129,39 @@ namespace Evernus
             }
 
             DatabaseUtils::execQuery(query);
+        }
+    }
+
+    void ItemRepository::fillCustomValues(AssetList &assets) const
+    {
+        QStringList ids;
+        std::unordered_map<Item::IdType, std::reference_wrapper<Item>> items;
+
+        const std::function<void (Item &)> fillItems = [&](Item &item) {
+            ids << QString::number(item.getId());
+            items.emplace(item.getId(), std::ref(item));
+
+            for (const auto &child : item)
+                fillItems(*child);
+        };
+
+        for (const auto &item : assets)
+            fillItems(*item);
+
+        const auto sql = QStringLiteral("SELECT id, custom_value FROM %1 WHERE %2 IN (%3)")
+            .arg(getTableName())
+            .arg(getIdColumn())
+            .arg(ids.join(QStringLiteral(", ")));
+
+        auto query = exec(sql);
+        while (query.next())
+        {
+            const auto item = items.find(query.value(0).value<Item::IdType>());
+            Q_ASSERT(item != std::end(items));
+
+            const auto value = query.value(1);
+            if (!value.isNull())
+                item->second.get().setCustomValue(value.toDouble());
         }
     }
 

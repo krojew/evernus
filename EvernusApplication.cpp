@@ -877,6 +877,7 @@ namespace Evernus
 
                 if (error.isEmpty())
                 {
+                    mItemRepository->fillCustomValues(data);
                     mAssetListRepository->deleteForCharacter(id);
                     mCharacterAssetProvider->setForCharacter(id, data);
                     mAssetListRepository->store(data);
@@ -2591,6 +2592,10 @@ namespace Evernus
         // return 0 for BPC
         if (item.isBPC(*mDataProvider))
             return 0.;
+
+        const auto customValue = item.getCustomValue();
+        if (customValue)
+            return *customValue;
 
         QSettings settings;
         const auto throwOnUnavailable

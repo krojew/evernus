@@ -22,7 +22,8 @@ namespace Evernus
         : Entity{other}
         , mParentId{other.mParentId}
         , mListId{other.mListId}
-        , mData(other.mData)
+        , mData{other.mData}
+        , mCustomValue{other.mCustomValue}
     {
         for (const auto &item : other)
             addItem(std::make_unique<Item>(*item));
@@ -171,6 +172,7 @@ namespace Evernus
         swap(mListId, copy.mListId);
         swap(mData, copy.mData);
         swap(mContents, copy.mContents);
+        swap(mCustomValue, copy.mCustomValue);
 
         return *this;
     }

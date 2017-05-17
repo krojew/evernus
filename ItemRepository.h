@@ -27,7 +27,7 @@ namespace Evernus
         : public Repository<Item>
     {
     public:
-        typedef QHash<QString, QVariantList> PropertyMap;
+        using PropertyMap = QHash<QString, QVariantList>;
 
         ItemRepository(bool corp, const QSqlDatabase &db);
         virtual ~ItemRepository() = default;
@@ -39,6 +39,8 @@ namespace Evernus
 
         void create(const Repository<AssetList> &assetRepo) const;
         void batchStore(const PropertyMap &map) const;
+
+        void fillCustomValues(AssetList &assets) const;
 
         static void fillProperties(const Item &entity, PropertyMap &map);
 
