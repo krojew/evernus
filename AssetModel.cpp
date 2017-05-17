@@ -217,6 +217,13 @@ namespace Evernus
                 if (item->parent() != &mRootItem)
                     return TextUtils::currencyToString(item->data(unitPriceColumn).toDouble(), locale);
                 break;
+            case customValueColumn:
+                {
+                    const auto value = item->data(customValueColumn);
+                    if (!value.isNull())
+                        return TextUtils::currencyToString(value.toDouble(), locale);
+                }
+                break;
             case totalPriceColumn:
                 return TextUtils::currencyToString(item->data(totalPriceColumn).toDouble(), locale);
             case ownerColumn:
