@@ -978,11 +978,15 @@ namespace Evernus
                 mCitadelCache.reserve(citadels.size());
                 for (auto &citadel : citadels)
                     mCitadelCache.emplace(citadel->getId(), std::move(citadel));
-            }
 
-            citadel = mCitadelCache.find(id);
-            if (citadel == std::end(mCitadelCache))
+                citadel = mCitadelCache.find(id);
+                if (citadel == std::end(mCitadelCache))
+                    citadel = mCitadelCache.emplace(id, std::make_shared<Citadel>(id)).first;
+            }
+            else
+            {
                 citadel = mCitadelCache.emplace(id, std::make_shared<Citadel>(id)).first;
+            }
         }
 
         Q_ASSERT(citadel->second);
