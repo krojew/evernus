@@ -14,7 +14,7 @@
  */
 #include <QCoreApplication>
 #include <QUrlQuery>
-#include <QSettings>
+#include <QDebug>
 
 #include "NetworkSettings.h"
 #include "SecurityHelper.h"
@@ -37,32 +37,32 @@ namespace Evernus
 
     void APIInterface::fetchCharacterList(const Key &key, const Callback &callback) const
     {
-        makeRequest("/account/Characters.xml.aspx", key, callback);
+        makeRequest("/account/Characters.xml.aspx", key, callback, getNumRetries());
     }
 
     void APIInterface::fetchCharacter(const Key &key, Character::IdType characterId, const Callback &callback) const
     {
-        makeRequest("/char/CharacterSheet.xml.aspx", key, callback, { std::make_pair("characterID", QString::number(characterId)) });
+        makeRequest("/char/CharacterSheet.xml.aspx", key, callback, getNumRetries(), { std::make_pair("characterID", QString::number(characterId)) });
     }
 
     void APIInterface::fetchAssets(const Key &key, Character::IdType characterId, const Callback &callback) const
     {
-        makeRequest("/char/AssetList.xml.aspx", key, callback, { std::make_pair("characterID", QString::number(characterId)) });
+        makeRequest("/char/AssetList.xml.aspx", key, callback, getNumRetries(), { std::make_pair("characterID", QString::number(characterId)) });
     }
 
     void APIInterface::fetchAssets(const CorpKey &key, const Callback &callback) const
     {
-        makeRequest("/corp/AssetList.xml.aspx", key, callback);
+        makeRequest("/corp/AssetList.xml.aspx", key, callback, getNumRetries());
     }
 
     void APIInterface::fetchConquerableStationList(const Callback &callback) const
     {
-        makeRequest("/eve/ConquerableStationList.xml.aspx", Key{}, callback);
+        makeRequest("/eve/ConquerableStationList.xml.aspx", Key{}, callback, getNumRetries());
     }
 
     void APIInterface::fetchRefTypes(const Callback &callback) const
     {
-        makeRequest("/eve/RefTypes.xml.aspx", Key{}, callback);
+        makeRequest("/eve/RefTypes.xml.aspx", Key{}, callback, getNumRetries());
     }
 
     void APIInterface::fetchWalletJournal(const Key &key,
@@ -77,7 +77,7 @@ namespace Evernus
         if (fromId != WalletJournalEntry::invalidId)
             params.emplace_back("fromID", QString::number(fromId));
 
-        makeRequest("/char/WalletJournal.xml.aspx", key, callback, params);
+        makeRequest("/char/WalletJournal.xml.aspx", key, callback, getNumRetries(), params);
     }
 
     void APIInterface::fetchWalletTransactions(const Key &key,
@@ -92,17 +92,17 @@ namespace Evernus
         if (fromId != WalletJournalEntry::invalidId)
             params.emplace_back("fromID", QString::number(fromId));
 
-        makeRequest("/char/WalletTransactions.xml.aspx", key, callback, params);
+        makeRequest("/char/WalletTransactions.xml.aspx", key, callback, getNumRetries(), params);
     }
 
     void APIInterface::fetchMarketOrders(const Key &key, Character::IdType characterId, const Callback &callback) const
     {
-        makeRequest("/char/MarketOrders.xml.aspx", key, callback, { std::make_pair("characterID", QString::number(characterId)) });
+        makeRequest("/char/MarketOrders.xml.aspx", key, callback, getNumRetries(), { std::make_pair("characterID", QString::number(characterId)) });
     }
 
     void APIInterface::fetchContracts(const Key &key, Character::IdType characterId, const Callback &callback) const
     {
-        makeRequest("/char/Contracts.xml.aspx", key, callback, { std::make_pair("characterID", QString::number(characterId)) });
+        makeRequest("/char/Contracts.xml.aspx", key, callback, getNumRetries(), { std::make_pair("characterID", QString::number(characterId)) });
     }
 
     void APIInterface::fetchContractItems(const Key &key,
@@ -114,7 +114,7 @@ namespace Evernus
         params.emplace_back(std::make_pair("characterID", QString::number(characterId)));
         params.emplace_back(std::make_pair("contractID", QString::number(contractId)));
 
-        makeRequest("/char/ContractItems.xml.aspx", key, callback, params);
+        makeRequest("/char/ContractItems.xml.aspx", key, callback, getNumRetries(), params);
     }
 
     void APIInterface::fetchWalletJournal(const CorpKey &key,
@@ -129,7 +129,7 @@ namespace Evernus
         if (fromId != WalletJournalEntry::invalidId)
             params.emplace_back("fromID", QString::number(fromId));
 
-        makeRequest("/corp/WalletJournal.xml.aspx", key, callback, params);
+        makeRequest("/corp/WalletJournal.xml.aspx", key, callback, getNumRetries(), params);
     }
 
     void APIInterface::fetchWalletTransactions(const CorpKey &key,
@@ -144,17 +144,17 @@ namespace Evernus
         if (fromId != WalletJournalEntry::invalidId)
             params.emplace_back("fromID", QString::number(fromId));
 
-        makeRequest("/corp/WalletTransactions.xml.aspx", key, callback, params);
+        makeRequest("/corp/WalletTransactions.xml.aspx", key, callback, getNumRetries(), params);
     }
 
     void APIInterface::fetchMarketOrders(const CorpKey &key, Character::IdType characterId, const Callback &callback) const
     {
-        makeRequest("/corp/MarketOrders.xml.aspx", key, callback, { std::make_pair("characterID", QString::number(characterId)) });
+        makeRequest("/corp/MarketOrders.xml.aspx", key, callback, getNumRetries(), { std::make_pair("characterID", QString::number(characterId)) });
     }
 
     void APIInterface::fetchContracts(const CorpKey &key, Character::IdType characterId, const Callback &callback) const
     {
-        makeRequest("/corp/Contracts.xml.aspx", key, callback, { std::make_pair("characterID", QString::number(characterId)) });
+        makeRequest("/corp/Contracts.xml.aspx", key, callback, getNumRetries(), { std::make_pair("characterID", QString::number(characterId)) });
     }
 
     void APIInterface::fetchContractItems(const CorpKey &key,
@@ -166,19 +166,21 @@ namespace Evernus
         params.emplace_back(std::make_pair("characterID", QString::number(characterId)));
         params.emplace_back(std::make_pair("contractID", QString::number(contractId)));
 
-        makeRequest("/corp/ContractItems.xml.aspx", key, callback, params);
+        makeRequest("/corp/ContractItems.xml.aspx", key, callback, getNumRetries(), params);
     }
 
     void APIInterface::fetchGenericName(quint64 id, const Callback &callback) const
     {
-        makeRequest("/eve/CharacterName.xml.aspx", Key{}, callback, { std::make_pair("ids", QString::number(id)) });
+        makeRequest("/eve/CharacterName.xml.aspx", Key{}, callback, getNumRetries(), { std::make_pair("ids", QString::number(id)) });
     }
 
-    void APIInterface::processReply()
+    void APIInterface::processSslErrors(const QList<QSslError> &errors)
     {
-        auto reply = qobject_cast<QNetworkReply *>(sender());
-        reply->deleteLater();
+        SecurityHelper::handleSslErrors(errors, *qobject_cast<QNetworkReply *>(sender()));
+    }
 
+    void APIInterface::processReply(QNetworkReply *reply) const
+    {
         const auto it = mPendingCallbacks.find(reply);
         Q_ASSERT(it != std::end(mPendingCallbacks));
 
@@ -189,20 +191,16 @@ namespace Evernus
         mPendingCallbacks.erase(it);
     }
 
-    void APIInterface::processSslErrors(const QList<QSslError> &errors)
-    {
-        SecurityHelper::handleSslErrors(errors, *qobject_cast<QNetworkReply *>(sender()));
-    }
-
     template<class Key>
     void APIInterface
-    ::makeRequest(const QString &endpoint, const Key &key, const Callback &callback, const QueryParams &additionalParams) const
+    ::makeRequest(const QString &endpoint, const Key &key, const Callback &callback, uint retries, const QueryParams &additionalParams) const
     {
-        QSettings settings;
+        qDebug() << "Making API request:" << endpoint << "retries:" << retries;
+
         QUrl url;
 
-        if (settings.value(NetworkSettings::useCustomProviderKey, NetworkSettings::useCustomProviderDefault).toBool())
-            url = settings.value(NetworkSettings::providerHostKey).toString() + endpoint;
+        if (mSettings.value(NetworkSettings::useCustomProviderKey, NetworkSettings::useCustomProviderDefault).toBool())
+            url = mSettings.value(NetworkSettings::providerHostKey).toString() + endpoint;
         else
             url = NetworkSettings::defaultAPIProvider + endpoint;
 
@@ -224,9 +222,27 @@ namespace Evernus
 
         new ReplyTimeout{*reply};
 
-        connect(reply, &QNetworkReply::finished, this, &APIInterface::processReply, Qt::QueuedConnection);
+        connect(reply, &QNetworkReply::finished, this, [=] {
+            reply->deleteLater();
+
+            const auto error = reply->error();
+            if (error != QNetworkReply::NoError && retries > 0)
+            {
+                mPendingCallbacks.erase(reply);
+                makeRequest(endpoint, key, callback, retries - 1, additionalParams);
+            }
+            else
+            {
+                processReply(reply);
+            }
+        }, Qt::QueuedConnection);
         connect(reply, &QNetworkReply::sslErrors, this, &APIInterface::processSslErrors);
 
         mPendingCallbacks[reply] = callback;
+    }
+
+    uint APIInterface::getNumRetries() const
+    {
+        return mSettings.value(NetworkSettings::maxRetriesKey, NetworkSettings::maxRetriesDefault).toUInt();
     }
 }

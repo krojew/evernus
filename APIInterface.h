@@ -20,6 +20,7 @@
 
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QSettings>
 
 #include "WalletJournalEntry.h"
 #include "WalletTransaction.h"
@@ -84,7 +85,6 @@ namespace Evernus
         void fetchGenericName(quint64 id, const Callback &callback) const;
 
     private slots:
-        void processReply();
         void processSslErrors(const QList<QSslError> &errors);
 
     private:
@@ -97,10 +97,17 @@ namespace Evernus
 
         mutable std::unordered_map<QNetworkReply *, Callback> mPendingCallbacks;
 
+        QSettings mSettings;
+
+        void processReply(QNetworkReply *reply) const;
+
         template<class Key>
         void makeRequest(const QString &endpoint,
                          const Key &key,
                          const Callback &callback,
+                         uint retries,
                          const QueryParams &additionalParams = QueryParams{}) const;
+
+        uint getNumRetries() const;
     };
 }
