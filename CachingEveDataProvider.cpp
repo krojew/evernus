@@ -382,7 +382,11 @@ namespace Evernus
         }
 
         if (result.isEmpty())   // citadel?
+        {
             result = getCitadelName(id);
+            if (result.isEmpty())   // still nothing? give some feedback
+                result = tr("- unknown location -");
+        }
 
         mLocationNameCache.emplace(id, result);
         return result;
