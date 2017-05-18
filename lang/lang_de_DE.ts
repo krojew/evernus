@@ -281,7 +281,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetModel.cpp" line="250"/>
+        <location filename="../AssetModel.cpp" line="257"/>
         <source>Price update time: %1</source>
         <translation type="unfinished"></translation>
     </message>

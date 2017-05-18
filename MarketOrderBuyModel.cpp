@@ -247,7 +247,7 @@ namespace Evernus
                     return TextUtils::currencyToString(data->getPrice(), locale);
                 case priceStatusColumn:
                     {
-                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getStationId(), data->getRange());
+                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
                         if (price->isNew())
                             return tr("No price data");
 
