@@ -16,6 +16,8 @@
 
 #include <unordered_map>
 
+#include <boost/optional.hpp>
+
 #include <QAbstractItemModel>
 #include <QDateTime>
 
@@ -35,6 +37,7 @@ namespace Evernus
 
     public:
         using LocationId = ItemData::LocationIdType::value_type;
+        using CustomValueType = boost::optional<double>;
 
         AssetModel(const AssetProvider &assetProvider,
                    const EveDataProvider &dataProvider,
@@ -64,6 +67,8 @@ namespace Evernus
         LocationId getAssetLocationId(const QModelIndex &index) const;
         ItemData::TypeIdType getAssetTypeId(const QModelIndex &index) const;
         Character::IdType getAssetOwnerId(const QModelIndex &index) const;
+        CustomValueType getAssetCustomValue(const QModelIndex &index) const;
+        Item::IdType getAssetId(const QModelIndex &index) const;
 
     private slots:
         void updateNames();
@@ -103,6 +108,12 @@ namespace Evernus
             QVariant decoration() const;
             void setDecoration(const QVariant &data);
 
+            CustomValueType customValue() const;
+            void setCustomValue(CustomValueType value);
+
+            Item::IdType id() const noexcept;
+            void setId(Item::IdType id) noexcept;
+
             int row() const;
 
             TreeItem *parent() const noexcept;
@@ -115,6 +126,8 @@ namespace Evernus
             ItemData::TypeIdType mTypeId = ItemData::TypeIdType{};
             Character::IdType mOwnerId = Character::IdType{};
             QVariant mDecoration;
+            CustomValueType mCustomValue;
+            Item::IdType mId = Item::invalidId;
             TreeItem *mParentItem = nullptr;
         };
 

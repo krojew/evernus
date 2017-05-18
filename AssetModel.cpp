@@ -126,6 +126,26 @@ namespace Evernus
         mDecoration = data;
     }
 
+    AssetModel::CustomValueType AssetModel::TreeItem::customValue() const
+    {
+        return mCustomValue;
+    }
+
+    void AssetModel::TreeItem::setCustomValue(CustomValueType value)
+    {
+        mCustomValue = std::move(value);
+    }
+
+    Item::IdType AssetModel::TreeItem::id() const noexcept
+    {
+        return mId;
+    }
+
+    void AssetModel::TreeItem::setId(Item::IdType id) noexcept
+    {
+        mId = id;
+    }
+
     int AssetModel::TreeItem::row() const
     {
         if (mParentItem != nullptr)
@@ -392,6 +412,18 @@ namespace Evernus
         return (item != nullptr) ? (item->ownerId()) : (Character::IdType{});
     }
 
+    AssetModel::CustomValueType AssetModel::getAssetCustomValue(const QModelIndex &index) const
+    {
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
+        return (item != nullptr) ? (item->customValue()) : (CustomValueType{});
+    }
+
+    Item::IdType AssetModel::getAssetId(const QModelIndex &index) const
+    {
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
+        return (item != nullptr) ? (item->id()) : (Item::invalidId);
+    }
+
     void AssetModel::updateNames()
     {
         std::function<void(TreeItem &, const QModelIndex &, int)> updateOwner = [=, &updateOwner](TreeItem &item, const QModelIndex &parent, int row) {
@@ -448,6 +480,8 @@ namespace Evernus
         treeItem->setLocationId(locationId);
         treeItem->setTypeId(typeId);
         treeItem->setOwnerId(ownerId);
+        treeItem->setCustomValue(customValue);
+        treeItem->setId(item.getId());
 
         if (!metaIcon.isNull())
             treeItem->setDecoration(metaIcon);

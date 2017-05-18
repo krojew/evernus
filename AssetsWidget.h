@@ -18,6 +18,7 @@
 #include "CharacterBoundWidget.h"
 #include "AssetModel.h"
 #include "Character.h"
+#include "Item.h"
 
 class QItemSelection;
 class QRadioButton;
@@ -40,7 +41,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        AssetsWidget(const AssetProvider &assetProvider,
+        AssetsWidget(AssetProvider &assetProvider,
                      const EveDataProvider &dataProvider,
                      const CacheTimerProvider &cacheTimerProvider,
                      const FilterTextRepository &filterRepo,
@@ -65,6 +66,8 @@ namespace Evernus
         void applyWildcard(const QString &text);
 
         void setCustomStation(quint64 id);
+        void setCustomValue();
+        void clearCustomValue();
 
         void setDestinationForCurrent();
         void showInEveForCurrent();
@@ -74,7 +77,7 @@ namespace Evernus
         void setCombine(int state);
 
     private:
-        const AssetProvider &mAssetProvider;
+        AssetProvider &mAssetProvider;
 
         QRadioButton *mUseAssetStationBtn = nullptr;
         StyledTreeView *mAssetView = nullptr;
@@ -88,6 +91,8 @@ namespace Evernus
 
         QAction *mSetDestinationAct = nullptr;
         QAction *mShowInEveAct = nullptr;
+        QAction *mSetCustomValueAct = nullptr;
+        QAction *mClearCustomValueAct = nullptr;
 
         virtual void handleNewCharacter(Character::IdType id) override;
 
@@ -95,6 +100,8 @@ namespace Evernus
         void setNewInfo();
 
         ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
+
+        QModelIndex getCurrentIndex() const;
 
         static void buildImportTarget(ExternalOrderImporter::TypeLocationPairs &target, const Item &item, quint64 locationId);
     };

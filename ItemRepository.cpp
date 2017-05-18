@@ -165,6 +165,29 @@ namespace Evernus
         }
     }
 
+    void ItemRepository::setCustomValue(Item::IdType id, double value) const
+    {
+        auto query = prepare(QStringLiteral("UPDATE %1 SET custom_value = ? WHERE %2 = ?")
+            .arg(getTableName())
+            .arg(getIdColumn())
+        );
+        query.addBindValue(id);
+        query.addBindValue(value);
+
+        DatabaseUtils::execQuery(query);
+    }
+
+    void ItemRepository::clearCustomValue(Item::IdType id) const
+    {
+        auto query = prepare(QStringLiteral("UPDATE %1 SET custom_value = NULL WHERE %2 = ?")
+            .arg(getTableName())
+            .arg(getIdColumn())
+        );
+        query.addBindValue(id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     void ItemRepository::fillProperties(const Item &entity, PropertyMap &map)
     {
         const auto locationId = entity.getLocationId();

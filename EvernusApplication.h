@@ -158,8 +158,8 @@ namespace Evernus
         const ContractProvider &getContractProvider() const noexcept;
         const ContractProvider &getCorpContractProvider() const noexcept;
 
-        const AssetProvider &getAssetProvider() const noexcept;
-        const AssetProvider &getCorpAssetProvider() const noexcept;
+        AssetProvider &getAssetProvider() const noexcept;
+        AssetProvider &getCorpAssetProvider() const noexcept;
 
         EveDataProvider &getDataProvider() noexcept;
 

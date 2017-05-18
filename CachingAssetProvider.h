@@ -18,20 +18,27 @@
 
 #include "AssetListRepository.h"
 #include "AssetProvider.h"
+#include "Item.h"
 
 namespace Evernus
 {
     class CharacterRepository;
+    class ItemRepository;
 
     class CachingAssetProvider
         : public AssetProvider
     {
     public:
-        CachingAssetProvider(const CharacterRepository &characterRepository, const AssetListRepository &assetRepository);
+        CachingAssetProvider(const CharacterRepository &characterRepository,
+                             const AssetListRepository &assetRepository,
+                             const ItemRepository &itemRepository);
         virtual ~CachingAssetProvider() = default;
 
         virtual AssetPtr fetchAssetsForCharacter(Character::IdType id) const override;
         virtual std::vector<AssetPtr> fetchAllAssets() const override;
+
+        virtual void setCustomValue(Item::IdType id, double value) override;
+        virtual void clearCustomValue(Item::IdType id) override;
 
         void setForCharacter(Character::IdType id, const AssetList &assets);
 
@@ -40,7 +47,10 @@ namespace Evernus
 
         const CharacterRepository &mCharacterRepository;
         const AssetListRepository &mAssetRepository;
+        const ItemRepository &mItemRepository;
 
         mutable CharacterAssetMap mAssets;
+
+        Item *findItem(Item::IdType id) const;
     };
 }

@@ -42,6 +42,9 @@ namespace Evernus
 
         void fillCustomValues(AssetList &assets) const;
 
+        void setCustomValue(Item::IdType id, double value) const;
+        void clearCustomValue(Item::IdType id) const;
+
         static void fillProperties(const Item &entity, PropertyMap &map);
 
     private:

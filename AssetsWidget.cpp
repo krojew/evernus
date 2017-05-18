@@ -12,7 +12,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <limits>
+
 #include <QSortFilterProxyModel>
+#include <QInputDialog>
 #include <QRadioButton>
 #include <QHeaderView>
 #include <QVBoxLayout>
@@ -42,7 +45,7 @@
 
 namespace Evernus
 {
-    AssetsWidget::AssetsWidget(const AssetProvider &assetProvider,
+    AssetsWidget::AssetsWidget(AssetProvider &assetProvider,
                                const EveDataProvider &dataProvider,
                                const CacheTimerProvider &cacheTimerProvider,
                                const FilterTextRepository &filterRepo,
@@ -129,6 +132,16 @@ namespace Evernus
         mAssetView->addAction(mShowInEveAct);
         connect(mShowInEveAct, &QAction::triggered, this, &AssetsWidget::showInEveForCurrent);
 
+        mSetCustomValueAct = new QAction{tr("Set custom value"), this};
+        mSetCustomValueAct->setEnabled(false);
+        mAssetView->addAction(mSetCustomValueAct);
+        connect(mSetCustomValueAct, &QAction::triggered, this, &AssetsWidget::setCustomValue);
+
+        mClearCustomValueAct = new QAction{tr("Clear custom value"), this};
+        mClearCustomValueAct->setEnabled(false);
+        mAssetView->addAction(mClearCustomValueAct);
+        connect(mClearCustomValueAct, &QAction::triggered, this, &AssetsWidget::clearCustomValue);
+
         auto stationGroup = new QGroupBox{tr("Price station"), this};
         assetLayout->addWidget(stationGroup);
 
@@ -213,15 +226,44 @@ namespace Evernus
         setNewInfo();
     }
 
+    void AssetsWidget::setCustomValue()
+    {
+        const auto index = getCurrentIndex();
+        const auto id = mModel.getAssetId(index);
+        if (id == Item::invalidId)
+            return;
+
+        const auto currentValue = mModel.getAssetCustomValue(index);
+        auto ok = false;
+
+        const auto value = QInputDialog::getDouble(this, tr("Set custom value"), tr("ISK:"), (currentValue) ? (*currentValue) : (0.), 0., std::numeric_limits<double>::max(), 2, &ok);
+        if (ok)
+        {
+            mAssetProvider.setCustomValue(id, value);
+            resetModel();
+        }
+    }
+
+    void AssetsWidget::clearCustomValue()
+    {
+        const auto index = getCurrentIndex();
+        const auto id = mModel.getAssetId(index);
+        if (id == Item::invalidId)
+            return;
+
+        mAssetProvider.clearCustomValue(id);
+        resetModel();
+    }
+
     void AssetsWidget::setDestinationForCurrent()
     {
-        const auto id = mModel.getAssetLocationId(mModelProxy->mapToSource(mAssetView->currentIndex()));
+        const auto id = mModel.getAssetLocationId(getCurrentIndex());
         emit setDestinationInEve(id);
     }
 
     void AssetsWidget::showInEveForCurrent()
     {
-        const auto index = mModelProxy->mapToSource(mAssetView->currentIndex());
+        const auto index = getCurrentIndex();
         emit showInEve(mModel.getAssetTypeId(index), mModel.getAssetOwnerId(index));
     }
 
@@ -229,8 +271,10 @@ namespace Evernus
     {
         const auto enable = !selected.isEmpty();
 
-        mSetDestinationAct->setEnabled(enable && mModel.getAssetLocationId(mModelProxy->mapToSource(mAssetView->currentIndex())) != 0);
-        mShowInEveAct->setEnabled(enable && mModel.getAssetTypeId(mModelProxy->mapToSource(mAssetView->currentIndex())) != 0);
+        mSetDestinationAct->setEnabled(enable && mModel.getAssetLocationId(getCurrentIndex()) != 0);
+        mShowInEveAct->setEnabled(enable && mModel.getAssetTypeId(getCurrentIndex()) != 0);
+        mSetCustomValueAct->setEnabled(enable);
+        mClearCustomValueAct->setEnabled(enable);
     }
 
     void AssetsWidget::setCombine(int state)
@@ -299,6 +343,11 @@ namespace Evernus
         }
 
         return target;
+    }
+
+    QModelIndex AssetsWidget::getCurrentIndex() const
+    {
+        return mModelProxy->mapToSource(mAssetView->currentIndex());
     }
 
     void AssetsWidget::buildImportTarget(ExternalOrderImporter::TypeLocationPairs &target, const Item &item, quint64 locationId)

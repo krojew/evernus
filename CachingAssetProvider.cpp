@@ -12,17 +12,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <functional>
+
 #include "CharacterRepository.h"
+#include "ItemRepository.h"
 
 #include "CachingAssetProvider.h"
 
 namespace Evernus
 {
     CachingAssetProvider::CachingAssetProvider(const CharacterRepository &characterRepository,
-                                               const AssetListRepository &assetRepository)
+                                               const AssetListRepository &assetRepository,
+                                               const ItemRepository &itemRepository)
         : AssetProvider{}
         , mCharacterRepository{characterRepository}
         , mAssetRepository{assetRepository}
+        , mItemRepository{itemRepository}
     {
     }
 
@@ -64,10 +69,57 @@ namespace Evernus
         return result;
     }
 
+    void CachingAssetProvider::setCustomValue(Item::IdType id, double value)
+    {
+        mItemRepository.setCustomValue(id, value);
+
+        const auto item = findItem(id);
+        if (item != nullptr)
+            item->setCustomValue(value);
+    }
+
+    void CachingAssetProvider::clearCustomValue(Item::IdType id)
+    {
+        mItemRepository.clearCustomValue(id);
+
+        const auto item = findItem(id);
+        if (item != nullptr)
+            item->setCustomValue(Item::CustomValueType{});
+    }
+
     void CachingAssetProvider::setForCharacter(Character::IdType id, const AssetList &assets)
     {
         const auto it = mAssets.find(id);
         if (it != std::end(mAssets))
             *it->second = assets;
+    }
+
+    Item *CachingAssetProvider::findItem(Item::IdType id) const
+    {
+        const std::function<Item *(Item &)> lookForItem = [&](Item &item) -> Item * {
+            if (item.getId() == id)
+                return &item;
+
+            for (const auto &child : item)
+            {
+                const auto item = lookForItem(*child);
+                if (item != nullptr)
+                    return item;
+            }
+
+            return nullptr;
+        };
+
+        for (const auto &assets : mAssets)
+        {
+            for (const auto &item : *assets.second)
+            {
+                const auto found = lookForItem(*item);
+                if (found != nullptr)
+                    return found;
+            }
+        }
+
+        return nullptr;
     }
 }

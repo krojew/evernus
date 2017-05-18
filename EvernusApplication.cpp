@@ -149,9 +149,11 @@ namespace Evernus
         createDbSchema();
 
         mCharacterAssetProvider = std::make_unique<CachingAssetProvider>(*mCharacterRepository,
-                                                                         *mAssetListRepository);
+                                                                         *mAssetListRepository,
+                                                                         *mItemRepository);
         mCorpAssetProvider = std::make_unique<CachingAssetProvider>(*mCharacterRepository,
-                                                                    *mCorpAssetListRepository);
+                                                                    *mCorpAssetListRepository,
+                                                                    *mItemRepository);
 
         mCharacterOrderProvider = std::make_unique<CachingMarketOrderProvider>(*mMarketOrderRepository);
         connect(mCharacterOrderProvider.get(), &CachingMarketOrderProvider::orderChanged,
@@ -761,12 +763,12 @@ namespace Evernus
         return *mCorpContractProvider;
     }
 
-    const AssetProvider &EvernusApplication::getAssetProvider() const noexcept
+    AssetProvider &EvernusApplication::getAssetProvider() const noexcept
     {
         return *mCharacterAssetProvider;
     }
 
-    const AssetProvider &EvernusApplication::getCorpAssetProvider() const noexcept
+    AssetProvider &EvernusApplication::getCorpAssetProvider() const noexcept
     {
         return *mCorpAssetProvider;
     }

@@ -17,6 +17,7 @@
 #include <memory>
 
 #include "Character.h"
+#include "Item.h"
 
 namespace Evernus
 {
@@ -32,5 +33,8 @@ namespace Evernus
 
         virtual AssetPtr fetchAssetsForCharacter(Character::IdType id) const = 0;
         virtual std::vector<AssetPtr> fetchAllAssets() const = 0;
+
+        virtual void setCustomValue(Item::IdType id, double value) = 0;
+        virtual void clearCustomValue(Item::IdType id) = 0;
     };
 }
