@@ -20,7 +20,6 @@
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QSettings>
-#include <QDebug>
 #include <QLabel>
 #include <QHash>
 #include <QFont>

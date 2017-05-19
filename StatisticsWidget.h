@@ -16,21 +16,9 @@
 
 #include <QWidget>
 
-#include "ScriptOrderProcessingModel.h"
-#include "AggregatedStatisticsModel.h"
-#include "Character.h"
-
-class QRadioButton;
-class QPushButton;
-class QTableView;
-class QTextEdit;
-class QComboBox;
-class QCheckBox;
-class QSpinBox;
-class QLabel;
-
 namespace Evernus
 {
+    class AdvancedStatisticsWidget;
     class OrderScriptRepository;
     class BasicStatisticsWidget;
     class CharacterRepository;
@@ -60,43 +48,8 @@ namespace Evernus
         void updateData();
         void handleNewPreferences();
 
-    private slots:
-        void applyAggrFilter();
-        void applyScript();
-
-        void copyAggrData();
-
-        void showScriptError(const QString &message);
-
-        void saveScript();
-        void loadScript();
-        void deleteScript();
-
     private:
-        const MarketOrderRepository &mMarketOrderRepository;
-        const OrderScriptRepository &mOrderScriptRepository;
-        const CharacterRepository &mCharacterRepository;
-
         BasicStatisticsWidget *mBasicStatsWidget = nullptr;
-
-        QPushButton *mAggrApplyBtn = nullptr;
-        QPushButton *mScriptApplyBtn = nullptr;
-        QComboBox *mAggrGroupingColumnCombo = nullptr;
-        QComboBox *mAggrOrderColumnCombo = nullptr;
-        QSpinBox *mAggrLimitEdit = nullptr;
-        QCheckBox *mAggrIncludeActiveBtn = nullptr;
-        QCheckBox *mAggrIncludeNotFulfilledBtn = nullptr;
-        QTextEdit *mAggrScriptEdit = nullptr;
-        QRadioButton *mScriptForEachModeBtn = nullptr;
-        QTableView *mAggrView = nullptr;
-
-        Character::IdType mCharacterId = Character::invalidId;
-
-        AggregatedStatisticsModel mAggrModel;
-        ScriptOrderProcessingModel mScriptModel;
-
-        QString mLastLoadedScript;
-
-        QWidget *createAdvancedStatisticsWidget();
+        AdvancedStatisticsWidget *mAdvancedStatisticsWidget = nullptr;
     };
 }

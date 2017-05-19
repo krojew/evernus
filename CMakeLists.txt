@@ -111,6 +111,8 @@ add_executable(
     ActiveTasksDialog.h
     AdjustableTableView.cpp
     AdjustableTableView.h
+    AdvancedStatisticsWidget.cpp
+    AdvancedStatisticsWidget.h
     AggregatedStatisticsModel.cpp
     AggregatedStatisticsModel.h
     APIDomParser.h
