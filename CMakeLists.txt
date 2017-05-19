@@ -142,6 +142,8 @@ add_executable(
     AssetValueSnapshotRepository.h
     AssignedContractModel.cpp
     AssignedContractModel.h
+    BasicStatisticsWidget.cpp
+    BasicStatisticsWidget.h
     ButtonWithTimer.cpp
     ButtonWithTimer.h
     CacheTimer.cpp
