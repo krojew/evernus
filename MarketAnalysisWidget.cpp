@@ -36,27 +36,27 @@
 #include <QLabel>
 #include <QDebug>
 
-#include "TypeAggregatedDetailsWidget.h"
 #include "RegionTypeSelectDialog.h"
 #include "MarketAnalysisSettings.h"
 #include "MarketOrderRepository.h"
+#include "RegionAnalysisWidget.h"
 #include "CharacterRepository.h"
 #include "StationSelectDialog.h"
 #include "AdjustableTableView.h"
 #include "EveDataProvider.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
+#include "SSOMessageBox.h"
 #include "TaskManager.h"
 #include "FlowLayout.h"
 #include "UISettings.h"
 
 #include "MarketAnalysisWidget.h"
-#include "SSOMessageBox.h"
 
 namespace Evernus
 {
-    MarketAnalysisWidget::MarketAnalysisWidget(QByteArray clientId,
-                                               QByteArray clientSecret,
+    MarketAnalysisWidget::MarketAnalysisWidget(const QByteArray &clientId,
+                                               const QByteArray &clientSecret,
                                                const EveDataProvider &dataProvider,
                                                TaskManager &taskManager,
                                                const MarketOrderRepository &orderRepo,
@@ -66,6 +66,7 @@ namespace Evernus
                                                const CharacterRepository &characterRepo,
                                                QWidget *parent)
         : QWidget(parent)
+        , MarketDataProvider()
         , mDataProvider(dataProvider)
         , mTaskManager(taskManager)
         , mOrderRepo(orderRepo)
@@ -75,17 +76,12 @@ namespace Evernus
         , mCharacterRepo(characterRepo)
         , mOrders(std::make_shared<MarketAnalysisDataFetcher::OrderResultType::element_type>())
         , mHistory(std::make_shared<MarketAnalysisDataFetcher::HistoryResultType::element_type>())
-        , mTypeDataModel(mDataProvider)
-        , mTypeViewProxy(TypeAggregatedMarketDataModel::getVolumeColumn(),
-                         TypeAggregatedMarketDataModel::getMarginColumn(),
-                         TypeAggregatedMarketDataModel::getBuyPriceColumn(),
-                         TypeAggregatedMarketDataModel::getSellPriceColumn())
         , mInterRegionDataModel(mDataProvider)
         , mInterRegionViewProxy(InterRegionMarketDataModel::getSrcRegionColumn(),
                                 InterRegionMarketDataModel::getDstRegionColumn(),
                                 InterRegionMarketDataModel::getVolumeColumn(),
                                 InterRegionMarketDataModel::getMarginColumn())
-        , mDataFetcher(std::move(clientId), std::move(clientSecret), mDataProvider, mCharacterRepo)
+        , mDataFetcher(clientId, clientSecret, mDataProvider, mCharacterRepo)
     {
         connect(&mDataFetcher, &MarketAnalysisDataFetcher::orderStatusUpdated,
                 this, &MarketAnalysisWidget::updateOrderTask);
@@ -138,7 +134,6 @@ namespace Evernus
         });
 
         const auto discardBogusOrders = settings.value(MarketAnalysisSettings::discardBogusOrdersKey, MarketAnalysisSettings::discardBogusOrdersDefault).toBool();
-        mTypeDataModel.discardBogusOrders(discardBogusOrders);
         mInterRegionDataModel.discardBogusOrders(discardBogusOrders);
 
         auto discardBogusOrdersBtn = new QCheckBox{tr("Discard bogus orders (causes recalculation)"), this};
@@ -148,7 +143,7 @@ namespace Evernus
             QSettings settings;
             settings.setValue(MarketAnalysisSettings::discardBogusOrdersKey, checked);
 
-            mTypeDataModel.discardBogusOrders(checked);
+            mRegionAnalysisWidget->discardBogusOrders(checked);
             mInterRegionDataModel.discardBogusOrders(checked);
 
             recalculateAllData();
@@ -163,7 +158,6 @@ namespace Evernus
             = settings.value(MarketAnalysisSettings::bogusOrderThresholdKey, MarketAnalysisSettings::bogusOrderThresholdDefault).toString();
         const auto bogusThresholdValue = bogusThreshold.toDouble();
 
-        mTypeDataModel.setBogusOrderThreshold(bogusThresholdValue);
         mInterRegionDataModel.setBogusOrderThreshold(bogusThresholdValue);
 
         auto bogusThresholdEdit = new QLineEdit{bogusThreshold, this};
@@ -174,7 +168,7 @@ namespace Evernus
             settings.setValue(MarketAnalysisSettings::bogusOrderThresholdKey, text);
 
             const auto value = text.toDouble();
-            mTypeDataModel.setBogusOrderThreshold(value);
+            mRegionAnalysisWidget->setBogusOrderThreshold(value);
             mInterRegionDataModel.setBogusOrderThreshold(value);
         });
 
@@ -184,7 +178,10 @@ namespace Evernus
             combo->addItem(tr("Sell"), static_cast<int>(PriceType::Sell));
             combo->addItem(tr("Buy"), static_cast<int>(PriceType::Buy));
 
-            connect(combo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MarketAnalysisWidget::recalculateAllData);
+            connect(combo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=] {
+                mRegionAnalysisWidget->setPriceTypes(getPriceType(*mSrcPriceTypeCombo), getPriceType(*mDstPriceTypeCombo));
+                recalculateAllData();
+            });
         };
 
         toolBarLayout->addWidget(new QLabel{tr("Source price:"), this});
@@ -210,8 +207,28 @@ namespace Evernus
         auto tabs = new QTabWidget{this};
         mainLayout->addWidget(tabs);
 
-        tabs->addTab(createRegionAnalysisWidget(), tr("Region"));
+        mRegionAnalysisWidget = new RegionAnalysisWidget{clientId, clientSecret, mDataProvider, *this, tabs};
+        connect(mRegionAnalysisWidget, &RegionAnalysisWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
+        mRegionAnalysisWidget->setPriceTypes(getPriceType(*mSrcPriceTypeCombo), getPriceType(*mDstPriceTypeCombo));
+        mRegionAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
+        mRegionAnalysisWidget->discardBogusOrders(discardBogusOrders);
+
+        tabs->addTab(mRegionAnalysisWidget, tr("Region"));
         tabs->addTab(createInterRegionAnalysisWidget(), tr("Inter-Region"));
+    }
+
+    const MarketAnalysisWidget::HistoryMap *MarketAnalysisWidget::getHistory(uint regionId) const
+    {
+        if (!mHistory)
+            return nullptr;
+
+        const auto it = mHistory->find(regionId);
+        return (it == std::end(*mHistory)) ? (nullptr) : (&it->second);
+    }
+
+    const MarketAnalysisWidget::OrderResultType *MarketAnalysisWidget::getOrders() const
+    {
+        return (mOrders) ? (mOrders.get()) : (nullptr);
     }
 
     void MarketAnalysisWidget::setCharacter(Character::IdType id)
@@ -219,7 +236,7 @@ namespace Evernus
         mCharacterId = id;
 
         const auto character = mCharacterRepo.find(mCharacterId);
-        mTypeDataModel.setCharacter(character);
+        mRegionAnalysisWidget->setCharacter(character);
         mInterRegionDataModel.setCharacter(character);
     }
 
@@ -282,75 +299,7 @@ namespace Evernus
 
     void MarketAnalysisWidget::showForCurrentRegion()
     {
-        const auto region = getCurrentRegion();
-        if (region != 0)
-        {
-            QSettings settings;
-            settings.setValue(MarketAnalysisSettings::lastRegionKey, region);
-
-            mRegionDataStack->setCurrentIndex(waitingLabelIndex);
-            mRegionDataStack->repaint();
-
-            fillSolarSystems(region);
-            mTypeDataModel.setOrderData(*mOrders,
-                                        (*mHistory)[region],
-                                        region,
-                                        getPriceType(*mSrcPriceTypeCombo),
-                                        getPriceType(*mDstPriceTypeCombo));
-
-            mRegionDataStack->setCurrentWidget(mRegionTypeDataView);
-        }
-    }
-
-    void MarketAnalysisWidget::showForCurrentRegionAndSolarSystem()
-    {
-        const auto region = getCurrentRegion();
-        if (region != 0)
-        {
-            mRegionDataStack->setCurrentIndex(waitingLabelIndex);
-            mRegionDataStack->repaint();
-
-            const auto system = mSolarSystemCombo->currentData().toUInt();
-            mTypeDataModel.setOrderData(*mOrders,
-                                        (*mHistory)[region],
-                                        region,
-                                        getPriceType(*mSrcPriceTypeCombo),
-                                        getPriceType(*mDstPriceTypeCombo),
-                                        system);
-
-            mRegionDataStack->setCurrentWidget(mRegionTypeDataView);
-        }
-    }
-
-    void MarketAnalysisWidget::applyRegionFilter()
-    {
-        const auto minVolume = mMinRegionVolumeEdit->text();
-        const auto maxVolume = mMaxRegionVolumeEdit->text();
-        const auto minMargin = mMinRegionMarginEdit->text();
-        const auto maxMargin = mMaxRegionMarginEdit->text();
-        const auto minBuyPrice = mMinBuyPriceEdit->text();
-        const auto maxBuyPrice = mMaxBuyPriceEdit->text();
-        const auto minSellPrice = mMinSellPriceEdit->text();
-        const auto maxSellPrice = mMaxSellPriceEdit->text();
-
-        QSettings settings;
-        settings.setValue(MarketAnalysisSettings::minVolumeFilterKey, minVolume);
-        settings.setValue(MarketAnalysisSettings::maxVolumeFilterKey, maxVolume);
-        settings.setValue(MarketAnalysisSettings::minMarginFilterKey, minMargin);
-        settings.setValue(MarketAnalysisSettings::maxMarginFilterKey, maxMargin);
-        settings.setValue(MarketAnalysisSettings::minBuyPriceFilterKey, minBuyPrice);
-        settings.setValue(MarketAnalysisSettings::maxBuyPriceFilterKey, maxBuyPrice);
-        settings.setValue(MarketAnalysisSettings::minSellPriceFilterKey, minSellPrice);
-        settings.setValue(MarketAnalysisSettings::maxSellPriceFilterKey, maxSellPrice);
-
-        mTypeViewProxy.setFilter((minVolume.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (minVolume.toUInt()),
-                                 (maxVolume.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (maxVolume.toUInt()),
-                                 (minMargin.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::MarginValueType{}) : (minMargin.toDouble()),
-                                 (maxMargin.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::MarginValueType{}) : (maxMargin.toDouble()),
-                                 (minBuyPrice.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::PriceValueType{}) : (minBuyPrice.toDouble()),
-                                 (maxBuyPrice.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::PriceValueType{}) : (maxBuyPrice.toDouble()),
-                                 (minSellPrice.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::PriceValueType{}) : (minSellPrice.toDouble()),
-                                 (maxSellPrice.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::PriceValueType{}) : (maxSellPrice.toDouble()));
+        mRegionAnalysisWidget->showForCurrentRegion();
     }
 
     void MarketAnalysisWidget::applyInterRegionFilter()
@@ -406,48 +355,11 @@ namespace Evernus
         }
     }
 
-    void MarketAnalysisWidget::showDetails(const QModelIndex &item)
-    {
-        const auto id = mTypeDataModel.getTypeId(mTypeViewProxy.mapToSource(item));
-        const auto region = getCurrentRegion();
-        const auto &history = (*mHistory)[region];
-        const auto it = history.find(id);
-
-        if (it != std::end(history))
-        {
-            auto widget = new TypeAggregatedDetailsWidget{it->second, this, Qt::Window};
-            widget->setWindowTitle(tr("%1 in %2").arg(mDataProvider.getTypeName(id)).arg(mDataProvider.getRegionName(region)));
-            widget->show();
-            connect(this, &MarketAnalysisWidget::preferencesChanged, widget, &TypeAggregatedDetailsWidget::handleNewPreferences);
-        }
-    }
-
-    void MarketAnalysisWidget::selectRegionType(const QItemSelection &selected)
-    {
-        const auto enabled = !selected.isEmpty();
-        mShowDetailsAct->setEnabled(enabled);
-        mShowInEveRegionAct->setEnabled(enabled);
-        mCopyRegionRowsAct->setEnabled(enabled);
-    }
-
     void MarketAnalysisWidget::selectInterRegionType(const QItemSelection &selected)
     {
         const auto enabled = !selected.isEmpty();
         mShowInEveInterRegionAct->setEnabled(enabled);
         mCopyInterRegionRowsAct->setEnabled(enabled);
-    }
-
-    void MarketAnalysisWidget::showDetailsForCurrent()
-    {
-        showDetails(mRegionTypeDataView->currentIndex());
-    }
-
-    void MarketAnalysisWidget::showInEveForCurrentRegion()
-    {
-        const auto index = mTypeViewProxy.mapToSource(mRegionTypeDataView->currentIndex());
-        const auto id = mTypeDataModel.getTypeId(index);
-        if (id != EveType::invalidId)
-            emit showInEve(id, mTypeDataModel.getOwnerId(index));
     }
 
     void MarketAnalysisWidget::showInEveForCurrentInterRegion()
@@ -592,189 +504,6 @@ namespace Evernus
 
         showForCurrentRegion();
         applyInterRegionFilter();
-    }
-
-    void MarketAnalysisWidget::fillSolarSystems(uint regionId)
-    {
-        mSolarSystemCombo->blockSignals(true);
-        mSolarSystemCombo->clear();
-
-        mSolarSystemCombo->addItem(tr("- all -"));
-
-        const auto &systems = mDataProvider.getSolarSystemsForRegion(regionId);
-        for (const auto &system : systems)
-            mSolarSystemCombo->addItem(system.second, system.first);
-
-        mSolarSystemCombo->setCurrentIndex(0);
-        mSolarSystemCombo->blockSignals(false);
-    }
-
-    uint MarketAnalysisWidget::getCurrentRegion() const
-    {
-        return mRegionCombo->currentData().toUInt();
-    }
-
-    QWidget *MarketAnalysisWidget::createRegionAnalysisWidget()
-    {
-        auto container = new QWidget{this};
-        auto mainLayout = new QVBoxLayout{container};
-
-        auto toolBarLayout = new FlowLayout{};
-        mainLayout->addLayout(toolBarLayout);
-
-        toolBarLayout->addWidget(new QLabel{tr("Region:"), this});
-
-        mRegionCombo = new QComboBox{this};
-        toolBarLayout->addWidget(mRegionCombo);
-        mRegionCombo->setEditable(true);
-        mRegionCombo->setInsertPolicy(QComboBox::NoInsert);
-
-        QSettings settings;
-        const auto lastRegion = settings.value(MarketAnalysisSettings::lastRegionKey).toUInt();
-
-        const auto regions = mDataProvider.getRegions();
-        for (const auto &region : regions)
-        {
-            mRegionCombo->addItem(region.second, region.first);
-            if (region.first == lastRegion)
-                mRegionCombo->setCurrentIndex(mRegionCombo->count() - 1);
-        }
-
-        connect(mRegionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(showForCurrentRegion()));
-
-        toolBarLayout->addWidget(new QLabel{tr("Limit to solar system:"), this});
-
-        mSolarSystemCombo = new QComboBox{this};
-        toolBarLayout->addWidget(mSolarSystemCombo);
-        mSolarSystemCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-        mSolarSystemCombo->setEditable(true);
-        mSolarSystemCombo->setInsertPolicy(QComboBox::NoInsert);
-        fillSolarSystems(mRegionCombo->currentData().toUInt());
-        connect(mSolarSystemCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(showForCurrentRegionAndSolarSystem()));
-
-        auto volumeValidator = new QIntValidator{this};
-        volumeValidator->setBottom(0);
-
-        toolBarLayout->addWidget(new QLabel{tr("Volume:"), this});
-
-        auto value = settings.value(MarketAnalysisSettings::minVolumeFilterKey);
-
-        mMinRegionVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMinRegionVolumeEdit);
-        mMinRegionVolumeEdit->setValidator(volumeValidator);
-
-        toolBarLayout->addWidget(new QLabel{"-", this});
-
-        value = settings.value(MarketAnalysisSettings::maxVolumeFilterKey);
-
-        mMaxRegionVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMaxRegionVolumeEdit);
-        mMaxRegionVolumeEdit->setValidator(volumeValidator);
-
-        auto marginValidator = new QIntValidator{this};
-
-        toolBarLayout->addWidget(new QLabel{tr("Margin:"), this});
-
-        value = settings.value(MarketAnalysisSettings::minMarginFilterKey);
-
-        mMinRegionMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMinRegionMarginEdit);
-        mMinRegionMarginEdit->setValidator(marginValidator);
-        mMinRegionMarginEdit->setPlaceholderText(locale().percent());
-
-        toolBarLayout->addWidget(new QLabel{"-", this});
-
-        value = settings.value(MarketAnalysisSettings::maxMarginFilterKey);
-
-        mMaxRegionMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMaxRegionMarginEdit);
-        mMaxRegionMarginEdit->setValidator(marginValidator);
-        mMaxRegionMarginEdit->setPlaceholderText(locale().percent());
-
-        auto priceValidator = new QDoubleValidator{this};
-        priceValidator->setBottom(0.);
-
-        toolBarLayout->addWidget(new QLabel{tr("Buy price:"), this});
-
-        value = settings.value(MarketAnalysisSettings::minBuyPriceFilterKey);
-
-        mMinBuyPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMinBuyPriceEdit);
-        mMinBuyPriceEdit->setValidator(priceValidator);
-
-        toolBarLayout->addWidget(new QLabel{"-", this});
-
-        value = settings.value(MarketAnalysisSettings::maxBuyPriceFilterKey);
-
-        mMaxBuyPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMaxBuyPriceEdit);
-        mMaxBuyPriceEdit->setValidator(priceValidator);
-
-        toolBarLayout->addWidget(new QLabel{tr("Sell price:"), this});
-
-        value = settings.value(MarketAnalysisSettings::minSellPriceFilterKey);
-
-        mMinSellPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMinSellPriceEdit);
-        mMinSellPriceEdit->setValidator(priceValidator);
-
-        toolBarLayout->addWidget(new QLabel{"-", this});
-
-        value = settings.value(MarketAnalysisSettings::maxSellPriceFilterKey);
-
-        mMaxSellPriceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
-        toolBarLayout->addWidget(mMaxSellPriceEdit);
-        mMaxSellPriceEdit->setValidator(priceValidator);
-
-        auto filterBtn = new QPushButton{tr("Apply"), this};
-        toolBarLayout->addWidget(filterBtn);
-        connect(filterBtn, &QPushButton::clicked, this, &MarketAnalysisWidget::applyRegionFilter);
-
-        mainLayout->addWidget(new QLabel{tr("Double-click an item for additional information. \"Show in EVE\" is available via the right-click menu. Remember to select desired <b>source price</b> and <b>destination price</b> from the dropdowns at the top, otherwise your differences might be skewed."), this});
-
-        mRegionDataStack = new QStackedWidget{this};
-        mainLayout->addWidget(mRegionDataStack);
-
-        auto waitingLabel = new QLabel{tr("Calculating data..."), this};
-        mRegionDataStack->addWidget(waitingLabel);
-        waitingLabel->setAlignment(Qt::AlignCenter);
-
-        mTypeViewProxy.setSortRole(Qt::UserRole);
-        mTypeViewProxy.setSourceModel(&mTypeDataModel);
-
-        mRegionTypeDataView = new AdjustableTableView{"marketAnalysisRegionView", this};
-        mRegionDataStack->addWidget(mRegionTypeDataView);
-        mRegionTypeDataView->setSortingEnabled(true);
-        mRegionTypeDataView->setAlternatingRowColors(true);
-        mRegionTypeDataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        mRegionTypeDataView->setModel(&mTypeViewProxy);
-        mRegionTypeDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
-        mRegionTypeDataView->restoreHeaderState();
-        connect(mRegionTypeDataView, &QTableView::doubleClicked, this, &MarketAnalysisWidget::showDetails);
-        connect(mRegionTypeDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
-                this, &MarketAnalysisWidget::selectRegionType);
-
-        mRegionDataStack->setCurrentWidget(mRegionTypeDataView);
-
-        mShowDetailsAct = new QAction{tr("Show details"), this};
-        mShowDetailsAct->setEnabled(false);
-        mRegionTypeDataView->addAction(mShowDetailsAct);
-        connect(mShowDetailsAct, &QAction::triggered, this, &MarketAnalysisWidget::showDetailsForCurrent);
-
-        mShowInEveRegionAct = new QAction{tr("Show in EVE"), this};
-        mShowInEveRegionAct->setEnabled(false);
-        mRegionTypeDataView->addAction(mShowInEveRegionAct);
-        connect(mShowInEveRegionAct, &QAction::triggered, this, &MarketAnalysisWidget::showInEveForCurrentRegion);
-
-        mCopyRegionRowsAct = new QAction{tr("&Copy"), this};
-        mCopyRegionRowsAct->setEnabled(false);
-        mCopyRegionRowsAct->setShortcut(QKeySequence::Copy);
-        connect(mCopyRegionRowsAct, &QAction::triggered, this, [=] {
-            copyRows(*mRegionTypeDataView, mTypeViewProxy);
-        });
-        mRegionTypeDataView->addAction(mCopyRegionRowsAct);
-
-        return container;
     }
 
     QWidget *MarketAnalysisWidget::createInterRegionAnalysisWidget()

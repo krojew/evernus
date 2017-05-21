@@ -255,12 +255,12 @@ namespace Evernus
         endResetModel();
     }
 
-    void TypeAggregatedMarketDataModel::discardBogusOrders(bool flag)
+    void TypeAggregatedMarketDataModel::discardBogusOrders(bool flag) noexcept
     {
         mDiscardBogusOrders = flag;
     }
 
-    void TypeAggregatedMarketDataModel::setBogusOrderThreshold(double value)
+    void TypeAggregatedMarketDataModel::setBogusOrderThreshold(double value) noexcept
     {
         mBogusOrderThreshold = value;
     }

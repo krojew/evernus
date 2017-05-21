@@ -16,12 +16,11 @@
 
 #include <QWidget>
 
-#include "TypeAggregatedMarketDataFilterProxyModel.h"
 #include "InterRegionMarketDataFilterProxyModel.h"
-#include "TypeAggregatedMarketDataModel.h"
 #include "InterRegionMarketDataModel.h"
 #include "MarketAnalysisDataFetcher.h"
 #include "ExternalOrderImporter.h"
+#include "MarketDataProvider.h"
 #include "ExternalOrder.h"
 #include "TaskConstants.h"
 
@@ -37,6 +36,7 @@ namespace Evernus
 {
     class MarketOrderRepository;
     class MarketGroupRepository;
+    class RegionAnalysisWidget;
     class CharacterRepository;
     class AdjustableTableView;
     class EveTypeRepository;
@@ -45,12 +45,13 @@ namespace Evernus
 
     class MarketAnalysisWidget
         : public QWidget
+        , public MarketDataProvider
     {
         Q_OBJECT
 
     public:
-        MarketAnalysisWidget(QByteArray clientId,
-                             QByteArray clientSecret,
+        MarketAnalysisWidget(const QByteArray &clientId,
+                             const QByteArray &clientSecret,
                              const EveDataProvider &dataProvider,
                              TaskManager &taskManager,
                              const MarketOrderRepository &orderRepo,
@@ -60,6 +61,9 @@ namespace Evernus
                              const CharacterRepository &characterRepo,
                              QWidget *parent = nullptr);
         virtual ~MarketAnalysisWidget() = default;
+
+        virtual const HistoryMap *getHistory(uint regionId) const override;
+        virtual const OrderResultType *getOrders() const override;
 
     signals:
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
@@ -79,17 +83,11 @@ namespace Evernus
         void storeOrders();
 
         void showForCurrentRegion();
-        void showForCurrentRegionAndSolarSystem();
 
-        void applyRegionFilter();
         void applyInterRegionFilter();
 
-        void showDetails(const QModelIndex &item);
-        void selectRegionType(const QItemSelection &selected);
         void selectInterRegionType(const QItemSelection &selected);
 
-        void showDetailsForCurrent();
-        void showInEveForCurrentRegion();
         void showInEveForCurrentInterRegion();
 
         void copyRows(const QAbstractItemView &view, const QAbstractItemModel &model) const;
@@ -112,29 +110,15 @@ namespace Evernus
         const MarketGroupRepository &mGroupRepo;
         const CharacterRepository &mCharacterRepo;
 
-        QAction *mShowDetailsAct = nullptr;
-        QAction *mShowInEveRegionAct = nullptr;
         QAction *mShowInEveInterRegionAct = nullptr;
-        QAction *mCopyRegionRowsAct = nullptr;
         QAction *mCopyInterRegionRowsAct = nullptr;
+
+        RegionAnalysisWidget *mRegionAnalysisWidget = nullptr;
 
         QCheckBox *mDontSaveBtn = nullptr;
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;
         QComboBox *mSrcPriceTypeCombo = nullptr;
         QComboBox *mDstPriceTypeCombo = nullptr;
-
-        QComboBox *mRegionCombo = nullptr;
-        QComboBox *mSolarSystemCombo = nullptr;
-        QStackedWidget *mRegionDataStack = nullptr;
-        AdjustableTableView *mRegionTypeDataView = nullptr;
-        QLineEdit *mMinRegionVolumeEdit = nullptr;
-        QLineEdit *mMaxRegionVolumeEdit = nullptr;
-        QLineEdit *mMinRegionMarginEdit = nullptr;
-        QLineEdit *mMaxRegionMarginEdit = nullptr;
-        QLineEdit *mMinBuyPriceEdit = nullptr;
-        QLineEdit *mMaxBuyPriceEdit = nullptr;
-        QLineEdit *mMinSellPriceEdit = nullptr;
-        QLineEdit *mMaxSellPriceEdit = nullptr;
 
         QComboBox *mSourceRegionCombo = nullptr;
         QComboBox *mDestRegionCombo = nullptr;
@@ -150,9 +134,6 @@ namespace Evernus
 
         MarketAnalysisDataFetcher::OrderResultType mOrders;
         MarketAnalysisDataFetcher::HistoryResultType mHistory;
-
-        TypeAggregatedMarketDataModel mTypeDataModel;
-        TypeAggregatedMarketDataFilterProxyModel mTypeViewProxy;
 
         InterRegionMarketDataModel mInterRegionDataModel;
         InterRegionMarketDataFilterProxyModel mInterRegionViewProxy;
@@ -170,11 +151,6 @@ namespace Evernus
         void recalculateInterRegionData();
         void recalculateAllData();
 
-        void fillSolarSystems(uint regionId);
-
-        uint getCurrentRegion() const;
-
-        QWidget *createRegionAnalysisWidget();
         QWidget *createInterRegionAnalysisWidget();
 
         static PriceType getPriceType(const QComboBox &combo);

@@ -407,6 +407,7 @@ add_executable(
     MarketAnalysisWidget.cpp
     MarketBrowserWidget.cpp
     MarketBrowserWidget.h
+    MarketDataProvider.h
     MarketGroup.cpp
     MarketGroup.h
     MarketGroupRepository.cpp
@@ -564,6 +565,8 @@ add_executable(
     RefTypeRepository.h
     RefTypeXmlReceiver.cpp
     RefTypeXmlReceiver.h
+    RegionAnalysisWidget.cpp
+    RegionAnalysisWidget.h
     RegionTypeSelectDialog.cpp
     RegionTypeSelectDialog.h
     ReplyTimeout.cpp
