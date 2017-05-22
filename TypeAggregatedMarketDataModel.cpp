@@ -19,6 +19,7 @@
 #include <QSettings>
 #include <QLocale>
 #include <QColor>
+#include <QIcon>
 
 #include <boost/range/adaptor/reversed.hpp>
 
@@ -92,6 +93,14 @@ namespace Evernus
             case marginColumn:
                 return data.mMargin;
             }
+            break;
+        case Qt::ToolTipRole:
+            if (column == nameColumn)
+                return tr("Double-click for detailed market information.");
+            break;
+        case Qt::DecorationRole:
+            if (column == nameColumn)
+                return QIcon{":/images/chart_curve.png"};
             break;
         case Qt::ForegroundRole:
             if (column == marginColumn)
