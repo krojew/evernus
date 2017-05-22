@@ -330,6 +330,8 @@ add_executable(
     ImportSettings.h
     ImportSourcePreferencesWidget.cpp
     ImportSourcePreferencesWidget.h
+    InterRegionAnalysisWidget.cpp
+    InterRegionAnalysisWidget.h
     InterRegionMarketDataFilterProxyModel.cpp
     InterRegionMarketDataFilterProxyModel.h
     InterRegionMarketDataModel.cpp

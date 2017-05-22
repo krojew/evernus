@@ -14,9 +14,12 @@
  */
 #pragma once
 
+#include <unordered_map>
 #include <vector>
+#include <map>
 
-#include "TypeAggregatedMarketDataModel.h"
+#include "MarketHistoryEntry.h"
+#include "EveType.h"
 
 namespace Evernus
 {
@@ -25,7 +28,10 @@ namespace Evernus
     class MarketDataProvider
     {
     public:
-        using HistoryMap = TypeAggregatedMarketDataModel::HistoryMap;
+        template<class T>
+        using TypeMap = std::unordered_map<EveType::IdType, T>;
+        using HistoryMap = TypeMap<std::map<QDate, MarketHistoryEntry>>;
+        using HistoryRegionMap = std::unordered_map<uint, HistoryMap>;
         using OrderResultType = std::vector<ExternalOrder>;
 
         MarketDataProvider() = default;
@@ -34,6 +40,7 @@ namespace Evernus
         virtual ~MarketDataProvider() = default;
 
         virtual const HistoryMap *getHistory(uint regionId) const = 0;
+        virtual const HistoryRegionMap *getHistory() const = 0;
         virtual const OrderResultType *getOrders() const = 0;
 
         MarketDataProvider &operator =(const MarketDataProvider &) = default;

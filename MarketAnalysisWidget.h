@@ -16,24 +16,18 @@
 
 #include <QWidget>
 
-#include "InterRegionMarketDataFilterProxyModel.h"
-#include "InterRegionMarketDataModel.h"
 #include "MarketAnalysisDataFetcher.h"
 #include "ExternalOrderImporter.h"
 #include "MarketDataProvider.h"
 #include "ExternalOrder.h"
 #include "TaskConstants.h"
 
-class QAbstractItemView;
-class QStackedWidget;
-class QPushButton;
-class QTableView;
 class QComboBox;
 class QCheckBox;
-class QLineEdit;
 
 namespace Evernus
 {
+    class InterRegionAnalysisWidget;
     class MarketOrderRepository;
     class MarketGroupRepository;
     class RegionAnalysisWidget;
@@ -63,6 +57,7 @@ namespace Evernus
         virtual ~MarketAnalysisWidget() = default;
 
         virtual const HistoryMap *getHistory(uint regionId) const override;
+        virtual const HistoryRegionMap *getHistory() const override;
         virtual const OrderResultType *getOrders() const override;
 
     signals:
@@ -75,22 +70,13 @@ namespace Evernus
 
     public slots:
         void setCharacter(Character::IdType id);
+        void showForCurrentRegion();
 
     private slots:
         void prepareOrderImport();
 
         void importData(const ExternalOrderImporter::TypeLocationPairs &pairs);
         void storeOrders();
-
-        void showForCurrentRegion();
-
-        void applyInterRegionFilter();
-
-        void selectInterRegionType(const QItemSelection &selected);
-
-        void showInEveForCurrentInterRegion();
-
-        void copyRows(const QAbstractItemView &view, const QAbstractItemModel &model) const;
 
         void updateOrderTask(const QString &text);
         void updateHistoryTask(const QString &text);
@@ -110,24 +96,13 @@ namespace Evernus
         const MarketGroupRepository &mGroupRepo;
         const CharacterRepository &mCharacterRepo;
 
-        QAction *mShowInEveInterRegionAct = nullptr;
-        QAction *mCopyInterRegionRowsAct = nullptr;
-
         RegionAnalysisWidget *mRegionAnalysisWidget = nullptr;
+        InterRegionAnalysisWidget *mInterRegionAnalysisWidget = nullptr;
 
         QCheckBox *mDontSaveBtn = nullptr;
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;
         QComboBox *mSrcPriceTypeCombo = nullptr;
         QComboBox *mDstPriceTypeCombo = nullptr;
-
-        QComboBox *mSourceRegionCombo = nullptr;
-        QComboBox *mDestRegionCombo = nullptr;
-        QLineEdit *mMinInterRegionVolumeEdit = nullptr;
-        QLineEdit *mMaxInterRegionVolumeEdit = nullptr;
-        QLineEdit *mMinInterRegionMarginEdit = nullptr;
-        QLineEdit *mMaxInterRegionMarginEdit = nullptr;
-        QStackedWidget *mInterRegionDataStack = nullptr;
-        AdjustableTableView *mInterRegionTypeDataView = nullptr;
 
         uint mOrderSubtask = TaskConstants::invalidTask;
         uint mHistorySubtask = TaskConstants::invalidTask;
@@ -135,23 +110,12 @@ namespace Evernus
         MarketAnalysisDataFetcher::OrderResultType mOrders;
         MarketAnalysisDataFetcher::HistoryResultType mHistory;
 
-        InterRegionMarketDataModel mInterRegionDataModel;
-        InterRegionMarketDataFilterProxyModel mInterRegionViewProxy;
-        bool mRefreshedInterRegionData = false;
-
-        quint64 mSrcStation = 0;
-        quint64 mDstStation = 0;
-
         MarketAnalysisDataFetcher mDataFetcher;
 
         Character::IdType mCharacterId = Character::invalidId;
 
         void checkCompletion();
-        void changeStation(quint64 &destination, QPushButton &btn, const QString &settingName);
-        void recalculateInterRegionData();
         void recalculateAllData();
-
-        QWidget *createInterRegionAnalysisWidget();
 
         static PriceType getPriceType(const QComboBox &combo);
     };
