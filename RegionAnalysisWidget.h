@@ -29,7 +29,6 @@ class QAbstractItemView;
 class QStackedWidget;
 class QPushButton;
 class QComboBox;
-class QCheckBox;
 class QLineEdit;
 
 namespace Evernus
@@ -85,7 +84,6 @@ namespace Evernus
         using HistoryOrdersPair = std::pair<const MarketDataProvider::HistoryMap *, const MarketDataProvider::OrderResultType *>;
 
         static const auto waitingLabelIndex = 0;
-        static const auto allRegionsIndex = 0;
 
         const EveDataProvider &mDataProvider;
         const MarketDataProvider &mMarketDataProvider;

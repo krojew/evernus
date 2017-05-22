@@ -12,24 +12,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <unordered_set>
-
-#include <QStandardItemModel>
 #include <QDoubleValidator>
 #include <QStackedWidget>
 #include <QIntValidator>
 #include <QApplication>
-#include <QProgressBar>
-#include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QPushButton>
-#include <QMessageBox>
 #include <QTableView>
 #include <QClipboard>
-#include <QTabWidget>
 #include <QComboBox>
-#include <QCheckBox>
 #include <QLineEdit>
 #include <QSettings>
 #include <QAction>
@@ -38,13 +30,8 @@
 
 #include "TypeAggregatedDetailsWidget.h"
 #include "MarketAnalysisSettings.h"
-#include "StationSelectDialog.h"
 #include "AdjustableTableView.h"
 #include "EveDataProvider.h"
-#include "ImportSettings.h"
-#include "PriceSettings.h"
-#include "SSOMessageBox.h"
-#include "TaskManager.h"
 #include "FlowLayout.h"
 #include "UISettings.h"
 
