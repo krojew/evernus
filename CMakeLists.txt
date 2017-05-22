@@ -113,6 +113,8 @@ add_executable(
     AdjustableTableView.h
     AdvancedStatisticsWidget.cpp
     AdvancedStatisticsWidget.h
+    AggregatedEventProcessor.cpp
+    AggregatedEventProcessor.h
     AggregatedStatisticsModel.cpp
     AggregatedStatisticsModel.h
     APIDomParser.h

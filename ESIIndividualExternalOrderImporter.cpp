@@ -85,9 +85,13 @@ namespace Evernus
                         mManager.fetchCitadelMarketOrders(citadel->getId(), regionId, id, [=](auto &&orders, const auto &error) {
                             processResult(std::move(orders), error);
                         });
+
+                        processEvents();
                     }
                 }
             }
+
+            processEvents();
         }
 
         qDebug() << "Making" << mCounter.getCount() << "ESI requests...";

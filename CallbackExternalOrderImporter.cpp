@@ -63,7 +63,13 @@ namespace Evernus
         }
     }
 
-    void CallbackExternalOrderImporter::filterOrders(std::vector<ExternalOrder> & /* orders */) const
+    void CallbackExternalOrderImporter::processEvents() const
     {
+        mEventProcessor.processEvents();
+    }
+
+    void CallbackExternalOrderImporter::filterOrders(std::vector<ExternalOrder> &orders) const
+    {
+        Q_UNUSED(orders);
     }
 }

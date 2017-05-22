@@ -24,6 +24,7 @@
 #include <QDate>
 
 #include "TypeAggregatedMarketDataModel.h"
+#include "AggregatedEventProcessor.h"
 #include "ExternalOrderImporter.h"
 #include "MarketOrderRepository.h"
 #include "MarketHistoryEntry.h"
@@ -83,6 +84,8 @@ namespace Evernus
         OrderResultType mOrders;
         HistoryResultType mHistory;
 
+        AggregatedEventProcessor mEventProcessor;
+
         void processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText);
         void processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText);
 
@@ -96,6 +99,8 @@ namespace Evernus
 
         void finishOrderImport();
         void finishHistoryImport();
+
+        void processEvents();
 
         static void filterOrders(std::vector<ExternalOrder> &orders, const ExternalOrderImporter::TypeLocationPairs &pairs);
     };

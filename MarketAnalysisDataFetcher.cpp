@@ -174,6 +174,8 @@ namespace Evernus
                 filterOrders(orders, pairs);
                 processOrders(std::move(orders), error);
             });
+
+            processEvents();
         }
     }
 
@@ -208,6 +210,8 @@ namespace Evernus
             mESIManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
                 processHistory(pair.second, pair.first, std::move(history), error);
             });
+
+            processEvents();
         }
     }
 
@@ -237,6 +241,8 @@ namespace Evernus
                     filterOrders(orders, pairs);
                     processOrders(std::move(orders), error);
                 });
+
+                processEvents();
             }
         }
     }
@@ -251,6 +257,11 @@ namespace Evernus
     {
         emit historyImportEnded(mHistory, mAggregatedHistoryErrors.join("\n"));
         mAggregatedHistoryErrors.clear();
+    }
+
+    void MarketAnalysisDataFetcher::processEvents()
+    {
+        mEventProcessor.processEvents();
     }
 
     void MarketAnalysisDataFetcher::filterOrders(std::vector<ExternalOrder> &orders, const ExternalOrderImporter::TypeLocationPairs &pairs)

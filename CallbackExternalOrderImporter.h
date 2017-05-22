@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include "AggregatedEventProcessor.h"
 #include "ExternalOrderImporter.h"
 #include "ProgressiveCounter.h"
 #include "ExternalOrder.h"
@@ -37,8 +38,11 @@ namespace Evernus
         mutable QStringList mAggregatedErrors;
 
         void processResult(std::vector<ExternalOrder> &&orders, const QString &errorText) const;
+        void processEvents() const;
 
     private:
+        AggregatedEventProcessor mEventProcessor;
+
         virtual void filterOrders(std::vector<ExternalOrder> &orders) const;
     };
 }
