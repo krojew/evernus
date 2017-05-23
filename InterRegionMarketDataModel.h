@@ -66,6 +66,8 @@ namespace Evernus
 
         EveType::IdType getTypeId(const QModelIndex &index) const;
         Character::IdType getOwnerId(const QModelIndex &index) const;
+        uint getSrcRegionId(const QModelIndex &index) const;
+        uint getDstRegionId(const QModelIndex &index) const;
 
         void reset();
 

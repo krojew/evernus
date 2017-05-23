@@ -62,8 +62,6 @@ namespace Evernus
 
         void showInEve(EveType::IdType id, Character::IdType ownerId);
 
-        void handleNewPreferences();
-
     public slots:
         void showForCurrentRegion();
 

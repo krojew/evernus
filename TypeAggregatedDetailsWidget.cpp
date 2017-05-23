@@ -12,9 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QResizeEvent>
 #include <QVBoxLayout>
-#include <QSettings>
 
 #include "TypeAggregatedDetailsFilterWidget.h"
 #include "TypeAggregatedGraphWidget.h"
@@ -23,13 +21,9 @@
 
 namespace Evernus
 {
-    const QString TypeAggregatedDetailsWidget::settingsSizeKey = QStringLiteral("typeAggregatedDetailsWidget/size");
-
     TypeAggregatedDetailsWidget::TypeAggregatedDetailsWidget(History history, QWidget *parent, Qt::WindowFlags flags)
-        : QWidget(parent, flags)
+        : SizeRememberingWidget(QStringLiteral("typeAggregatedDetailsWidget/size"), parent, flags)
     {
-        const auto dayWidth = 23 * 3600;
-
         auto mainLayout = new QVBoxLayout{this};
 
         mFilterWidget = new TypeAggregatedDetailsFilterWidget{this};
@@ -46,24 +40,10 @@ namespace Evernus
                                   mFilterWidget->getMACDFastDays(),
                                   mFilterWidget->getMACDSlowDays(),
                                   mFilterWidget->getMACDEMADays());
-
-        QSettings settings;
-
-        const auto size = settings.value(settingsSizeKey).toSize();
-        if (size.isValid())
-            resize(size);
     }
 
     void TypeAggregatedDetailsWidget::handleNewPreferences()
     {
         mGraphWidget->handleNewPreferences();
-    }
-
-    void TypeAggregatedDetailsWidget::resizeEvent(QResizeEvent *event)
-    {
-        Q_ASSERT(event != nullptr);
-
-        QSettings settings;
-        settings.setValue(settingsSizeKey, event->size());
     }
 }

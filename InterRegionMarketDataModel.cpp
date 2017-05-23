@@ -18,6 +18,7 @@
 #include <QSettings>
 #include <QLocale>
 #include <QColor>
+#include <QIcon>
 
 #include <boost/range/adaptor/reversed.hpp>
 
@@ -107,6 +108,14 @@ namespace Evernus
             case dstRegionColumn:
                 return data.mDstRegion;
             }
+            break;
+        case Qt::ToolTipRole:
+            if (column == nameColumn)
+                return tr("Double-click for detailed market information.");
+            break;
+        case Qt::DecorationRole:
+            if (column == nameColumn)
+                return QIcon{":/images/chart_curve.png"};
             break;
         case Qt::ForegroundRole:
             if (column == marginColumn)
@@ -348,6 +357,22 @@ namespace Evernus
     Character::IdType InterRegionMarketDataModel::getOwnerId(const QModelIndex &index) const
     {
         return (mCharacter) ? (mCharacter->getId()) : (Character::invalidId);
+    }
+
+    uint InterRegionMarketDataModel::getSrcRegionId(const QModelIndex &index) const
+    {
+        if (!index.isValid())
+            return 0;
+
+        return mData[index.row()].mSrcRegion;
+    }
+
+    uint InterRegionMarketDataModel::getDstRegionId(const QModelIndex &index) const
+    {
+        if (!index.isValid())
+            return 0;
+
+        return mData[index.row()].mDstRegion;
     }
 
     void InterRegionMarketDataModel::reset()

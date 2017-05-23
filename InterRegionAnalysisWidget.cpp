@@ -36,6 +36,7 @@
 #include <QLabel>
 #include <QDebug>
 
+#include "DoubleTypeAggregatedDetailsWidget.h"
 #include "MarketAnalysisSettings.h"
 #include "StationSelectDialog.h"
 #include "AdjustableTableView.h"
@@ -256,10 +257,16 @@ namespace Evernus
         mInterRegionTypeDataView->setModel(&mInterRegionViewProxy);
         mInterRegionTypeDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
         mInterRegionTypeDataView->restoreHeaderState();
+        connect(mInterRegionTypeDataView, &QTableView::doubleClicked, this, &InterRegionAnalysisWidget::showDetails);
         connect(mInterRegionTypeDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &InterRegionAnalysisWidget::selectInterRegionType);
 
         mInterRegionDataStack->setCurrentWidget(mInterRegionTypeDataView);
+
+        mShowDetailsAct = new QAction{tr("Show details"), this};
+        mShowDetailsAct->setEnabled(false);
+        mInterRegionTypeDataView->addAction(mShowDetailsAct);
+        connect(mShowDetailsAct, &QAction::triggered, this, &InterRegionAnalysisWidget::showDetailsForCurrent);
 
         mShowInEveInterRegionAct = new QAction{tr("Show in EVE"), this};
         mShowInEveInterRegionAct->setEnabled(false);
@@ -365,9 +372,46 @@ namespace Evernus
         }
     }
 
+    void InterRegionAnalysisWidget::showDetails(const QModelIndex &item)
+    {
+        const auto mappedItem = mInterRegionViewProxy.mapToSource(item);
+        const auto id = mInterRegionDataModel.getTypeId(mappedItem);
+        const auto srcRegion = mInterRegionDataModel.getSrcRegionId(mappedItem);
+        const auto dstRegion = mInterRegionDataModel.getDstRegionId(mappedItem);
+
+        const auto srcHistory = mMarketDataProvider.getHistory(srcRegion);
+        if (srcHistory == nullptr)
+            return;
+
+        const auto dstHistory = mMarketDataProvider.getHistory(dstRegion);
+        if (dstHistory == nullptr)
+            return;
+
+        const auto srcIt = srcHistory->find(id);
+        const auto dstIt = dstHistory->find(id);
+        if (srcIt != std::end(*srcHistory) || dstIt != std::end(*dstHistory))
+        {
+            auto widget = new DoubleTypeAggregatedDetailsWidget{srcIt->second,
+                                                                dstIt->second,
+                                                                mDataProvider.getRegionName(srcRegion),
+                                                                mDataProvider.getRegionName(dstRegion),
+                                                                this,
+                                                                Qt::Window};
+            widget->setWindowTitle(mDataProvider.getTypeName(id));
+            widget->show();
+            connect(this, &InterRegionAnalysisWidget::preferencesChanged, widget, &DoubleTypeAggregatedDetailsWidget::handleNewPreferences);
+        }
+    }
+
+    void InterRegionAnalysisWidget::showDetailsForCurrent()
+    {
+        showDetails(mInterRegionTypeDataView->currentIndex());
+    }
+
     void InterRegionAnalysisWidget::selectInterRegionType(const QItemSelection &selected)
     {
         const auto enabled = !selected.isEmpty();
+        mShowDetailsAct->setEnabled(enabled);
         mShowInEveInterRegionAct->setEnabled(enabled);
         mCopyInterRegionRowsAct->setEnabled(enabled);
     }

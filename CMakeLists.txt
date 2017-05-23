@@ -262,6 +262,8 @@ add_executable(
     Defines.h
     DeviationSourceWidget.cpp
     DeviationSourceWidget.h
+    DoubleTypeAggregatedDetailsWidget.cpp
+    DoubleTypeAggregatedDetailsWidget.h
     Entity.h
     ESIIndividualExternalOrderImporter.cpp
     ESIIndividualExternalOrderImporter.h
@@ -587,6 +589,8 @@ add_executable(
     SellMarketOrdersInfoWidget.h
     SimpleCrypt.cpp
     SimpleCrypt.h
+    SizeRememberingWidget.cpp
+    SizeRememberingWidget.h
     SoundPreferencesWidget.cpp
     SoundPreferencesWidget.h
     SoundSettings.h

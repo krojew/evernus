@@ -2612,80 +2612,80 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::InterRegionAnalysisWidget</name>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="82"/>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="426"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="83"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="450"/>
         <source>- any station -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="94"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="95"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="104"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="105"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="151"/>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="176"/>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="181"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="152"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="177"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="182"/>
         <source>- all -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="163"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="164"/>
         <source>- multiple -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="173"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="174"/>
         <source>- none -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="189"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="190"/>
         <source>Volume:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="207"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="208"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="225"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="226"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="229"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="230"/>
         <source>Press &quot;Apply&quot; to show results. &quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="239"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="240"/>
         <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="264"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="265"/>
         <source>Show in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="269"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="270"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="430"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="454"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="430"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="454"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5467,12 +5467,12 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="90"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="108"/>
         <source>Add trend line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="97"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="117"/>
         <source>Show legend</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5480,59 +5480,59 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::TypeAggregatedGraphWidget</name>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="78"/>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="92"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="79"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="93"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="102"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="103"/>
         <source>Unusual volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="112"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="113"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="123"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="124"/>
         <source>SMA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="127"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="128"/>
         <source>Bollinger upper band</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="131"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="132"/>
         <source>Bollinger lower band</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="143"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="144"/>
         <source>RSI (14 days)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="171"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="172"/>
         <source>RSI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="180"/>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="201"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="181"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="202"/>
         <source>MACD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="194"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="195"/>
         <source>MACD Divergence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="204"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="205"/>
         <source>MACD Signal</source>
         <translation type="unfinished"></translation>
     </message>

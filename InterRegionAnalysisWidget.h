@@ -25,6 +25,7 @@
 class QAbstractItemView;
 class QStackedWidget;
 class QPushButton;
+class QModelIndex;
 class QTableView;
 class QComboBox;
 class QCheckBox;
@@ -61,10 +62,15 @@ namespace Evernus
         void clearData();
 
     signals:
+        void preferencesChanged();
+
         void showInEve(EveType::IdType id, Character::IdType ownerId);
 
     private slots:
         void applyInterRegionFilter();
+
+        void showDetails(const QModelIndex &item);
+        void showDetailsForCurrent();
 
         void selectInterRegionType(const QItemSelection &selected);
 
@@ -79,6 +85,7 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
         const MarketDataProvider &mMarketDataProvider;
 
+        QAction *mShowDetailsAct = nullptr;
         QAction *mShowInEveInterRegionAct = nullptr;
         QAction *mCopyInterRegionRowsAct = nullptr;
 

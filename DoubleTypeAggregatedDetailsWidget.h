@@ -16,6 +16,7 @@
 
 #include <map>
 
+#include <QString>
 #include <QDate>
 
 #include "SizeRememberingWidget.h"
@@ -32,7 +33,7 @@ namespace Evernus
     class TypeAggregatedDetailsFilterWidget;
     class TypeAggregatedGraphWidget;
 
-    class TypeAggregatedDetailsWidget
+    class DoubleTypeAggregatedDetailsWidget
         : public SizeRememberingWidget
     {
         Q_OBJECT
@@ -40,14 +41,20 @@ namespace Evernus
     public:
         using History = std::map<QDate, MarketHistoryEntry>;
 
-        explicit TypeAggregatedDetailsWidget(History history, QWidget *parent = nullptr, Qt::WindowFlags flags = 0);
-        virtual ~TypeAggregatedDetailsWidget() = default;
+        DoubleTypeAggregatedDetailsWidget(History firstHistory,
+                                          History secondHistory,
+                                          const QString &firstInfo,
+                                          const QString &secondInfo,
+                                          QWidget *parent = nullptr,
+                                          Qt::WindowFlags flags = 0);
+        virtual ~DoubleTypeAggregatedDetailsWidget() = default;
 
     public slots:
         void handleNewPreferences();
 
     private:
         TypeAggregatedDetailsFilterWidget *mFilterWidget = nullptr;
-        TypeAggregatedGraphWidget *mGraphWidget = nullptr;
+        TypeAggregatedGraphWidget *mFirstGraphWidget = nullptr;
+        TypeAggregatedGraphWidget *mSecondGraphWidget = nullptr;
     };
 }
