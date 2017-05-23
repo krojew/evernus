@@ -85,11 +85,31 @@ namespace Evernus
 
         auto filterBtn = new QPushButton{tr("Apply"), this};
         mainLayout->addWidget(filterBtn);
-        connect(filterBtn, &QPushButton::clicked, this, &TypeAggregatedDetailsFilterWidget::applyFilter);
+        connect(filterBtn, &QPushButton::clicked, this, [=] {
+            const auto smaDays = getSMADays();
+            const auto macdFastDays = getMACDFastDays();
+            const auto macdSlowDays = getMACDSlowDays();
+            const auto macdEmaDays = getMACDEMADays();
+
+            QSettings settings;
+            settings.setValue(MarketAnalysisSettings::smaDaysKey, smaDays);
+            settings.setValue(MarketAnalysisSettings::macdFastDaysKey, macdFastDays);
+            settings.setValue(MarketAnalysisSettings::macdSlowDaysKey, macdSlowDays);
+            settings.setValue(MarketAnalysisSettings::macdEmaDaysKey, macdEmaDays);
+
+            emit applyFilter(getFrom(),
+                             getTo(),
+                             smaDays,
+                             macdFastDays,
+                             macdSlowDays,
+                             macdEmaDays);
+        });
 
         auto addTrendLineBtn = new QPushButton{tr("Add trend line"), this};
         mainLayout->addWidget(addTrendLineBtn);
-        connect(addTrendLineBtn, &QPushButton::clicked, this, &TypeAggregatedDetailsFilterWidget::addTrendLine);
+        connect(addTrendLineBtn, &QPushButton::clicked, this, [=] {
+            emit addTrendLine(getFrom(), getTo());
+        });
 
         const auto showLegend
             = settings.value(MarketAnalysisSettings::showLegendKey, MarketAnalysisSettings::showLegendDefault).toBool();

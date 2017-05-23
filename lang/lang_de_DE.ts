@@ -5476,61 +5476,61 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
 </context>
 <context>
-    <name>Evernus::TypeAggregatedDetailsWidget</name>
+    <name>Evernus::TypeAggregatedGraphWidget</name>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="83"/>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="105"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="78"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="92"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="115"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="102"/>
         <source>Unusual volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="125"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="112"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="136"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="123"/>
         <source>SMA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="140"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="127"/>
         <source>Bollinger upper band</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="144"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="131"/>
         <source>Bollinger lower band</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="156"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="143"/>
         <source>RSI (14 days)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="184"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="171"/>
         <source>RSI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="193"/>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="214"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="180"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="201"/>
         <source>MACD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="207"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="194"/>
         <source>MACD Divergence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsWidget.cpp" line="217"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="204"/>
         <source>MACD Signal</source>
         <translation type="unfinished"></translation>
     </message>

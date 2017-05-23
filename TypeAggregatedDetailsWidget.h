@@ -31,6 +31,7 @@ class QCPBars;
 namespace Evernus
 {
     class TypeAggregatedDetailsFilterWidget;
+    class TypeAggregatedGraphWidget;
 
     class TypeAggregatedDetailsWidget
         : public QWidget
@@ -46,35 +47,13 @@ namespace Evernus
     public slots:
         void handleNewPreferences();
 
-    private slots:
-        void applyFilter();
-        void addTrendLine();
-
     protected:
         virtual void resizeEvent(QResizeEvent *event) override;
 
     private:
         static const QString settingsSizeKey;
 
-        History mHistory;
-
         TypeAggregatedDetailsFilterWidget *mFilterWidget = nullptr;
-        QCustomPlot *mHistoryPlot = nullptr;
-
-        QCPFinancial *mHistoryValuesGraph = nullptr;
-        QCPBars *mHistoryVolumeGraph = nullptr;
-        QCPBars *mHistoryVolumeFlagGraph = nullptr;
-        QCPGraph *mSMAGraph = nullptr;
-        QCPGraph *mRSIGraph = nullptr;
-        QCPGraph *mMACDGraph = nullptr;
-        QCPGraph *mMACDEMAGraph = nullptr;
-        QCPBars *mMACDDivergenceGraph = nullptr;
-        QCPGraph *mBollingerUpperGraph = nullptr;
-        QCPGraph *mBollingerLowerGraph = nullptr;
-
-        QCPItemLine *mTrendLine = nullptr;
-
-        void deleteTrendLine() noexcept;
-        void applyGraphFormats();
+        TypeAggregatedGraphWidget *mGraphWidget = nullptr;
     };
 }

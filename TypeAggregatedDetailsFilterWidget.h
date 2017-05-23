@@ -42,9 +42,14 @@ namespace Evernus
         int getMACDEMADays() const;
 
     signals:
-        void addTrendLine();
+        void addTrendLine(const QDate &start, const QDate &end);
         void showLegend(bool flag);
-        void applyFilter();
+        void applyFilter(const QDate &start,
+                         const QDate &end,
+                         int smaDays,
+                         int macdFastDays,
+                         int macdSlowDays,
+                         int macdEmaDays);
 
     private:
         QDateEdit *mFromEdit = nullptr;

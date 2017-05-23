@@ -632,6 +632,8 @@ add_executable(
     TypeAggregatedDetailsFilterWidget.h
     TypeAggregatedDetailsWidget.cpp
     TypeAggregatedDetailsWidget.h
+    TypeAggregatedGraphWidget.cpp
+    TypeAggregatedGraphWidget.h
     TypeAggregatedMarketDataFilterProxyModel.cpp
     TypeAggregatedMarketDataFilterProxyModel.h
     TypeAggregatedMarketDataModel.cpp
