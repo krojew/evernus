@@ -1,0 +1,134 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QDateEdit>
+#include <QSettings>
+#include <QCheckBox>
+#include <QSpinBox>
+#include <QLabel>
+
+#include "MarketAnalysisSettings.h"
+
+#include "TypeAggregatedDetailsFilterWidget.h"
+
+namespace Evernus
+{
+    TypeAggregatedDetailsFilterWidget::TypeAggregatedDetailsFilterWidget(QWidget *parent, Qt::WindowFlags flags)
+        : QWidget(parent, flags)
+    {
+        auto mainLayout = new QHBoxLayout{this};
+
+        mainLayout->addWidget(new QLabel{tr("From:"), this});
+
+        const auto current = QDate::currentDate().addDays(-1);
+
+        mFromEdit = new QDateEdit{this};
+        mainLayout->addWidget(mFromEdit);
+        mFromEdit->setCalendarPopup(true);
+        mFromEdit->setDate(current.addDays(-90));
+        mFromEdit->setMaximumDate(current);
+        connect(mFromEdit, &QDateEdit::dateChanged, this, [=](const QDate &date) {
+            if (date > mToEdit->date())
+                mToEdit->setDate(date);
+        });
+
+        mainLayout->addWidget(new QLabel{tr("To:"), this});
+
+        mToEdit = new QDateEdit{this};
+        mainLayout->addWidget(mToEdit);
+        mToEdit->setCalendarPopup(true);
+        mToEdit->setDate(current);
+        mToEdit->setMaximumDate(current);
+        connect(mToEdit, &QDateEdit::dateChanged, this, [=](const QDate &date) {
+            if (date < mFromEdit->date())
+                mFromEdit->setDate(date);
+        });
+
+        mainLayout->addWidget(new QLabel{tr("Moving average days:"), this});
+
+        QSettings settings;
+
+        mSMADaysEdit = new QSpinBox{this};
+        mainLayout->addWidget(mSMADaysEdit);
+        mSMADaysEdit->setMinimum(2);
+        mSMADaysEdit->setValue(settings.value(MarketAnalysisSettings::smaDaysKey, MarketAnalysisSettings::smaDaysDefault).toInt());
+
+        mainLayout->addWidget(new QLabel{tr("MACD days:"), this});
+
+        mMACDFastDaysEdit = new QSpinBox{this};
+        mainLayout->addWidget(mMACDFastDaysEdit);
+        mMACDFastDaysEdit->setMinimum(2);
+        mMACDFastDaysEdit->setValue(settings.value(MarketAnalysisSettings::macdFastDaysKey, MarketAnalysisSettings::macdFastDaysDefault).toInt());
+
+        mMACDSlowDaysEdit = new QSpinBox{this};
+        mainLayout->addWidget(mMACDSlowDaysEdit);
+        mMACDSlowDaysEdit->setMinimum(2);
+        mMACDSlowDaysEdit->setValue(settings.value(MarketAnalysisSettings::macdSlowDaysKey, MarketAnalysisSettings::macdSlowDaysDefault).toInt());
+
+        mMACDEMADaysEdit = new QSpinBox{this};
+        mainLayout->addWidget(mMACDEMADaysEdit);
+        mMACDEMADaysEdit->setMinimum(2);
+        mMACDEMADaysEdit->setValue(settings.value(MarketAnalysisSettings::macdEmaDaysKey, MarketAnalysisSettings::macdEmaDaysDefault).toInt());
+
+        auto filterBtn = new QPushButton{tr("Apply"), this};
+        mainLayout->addWidget(filterBtn);
+        connect(filterBtn, &QPushButton::clicked, this, &TypeAggregatedDetailsFilterWidget::applyFilter);
+
+        auto addTrendLineBtn = new QPushButton{tr("Add trend line"), this};
+        mainLayout->addWidget(addTrendLineBtn);
+        connect(addTrendLineBtn, &QPushButton::clicked, this, &TypeAggregatedDetailsFilterWidget::addTrendLine);
+
+        const auto showLegend
+            = settings.value(MarketAnalysisSettings::showLegendKey, MarketAnalysisSettings::showLegendDefault).toBool();
+
+        auto legendBtn = new QCheckBox{tr("Show legend"), this};
+        mainLayout->addWidget(legendBtn);
+        legendBtn->setChecked(showLegend);
+        connect(legendBtn, &QCheckBox::stateChanged, this, &TypeAggregatedDetailsFilterWidget::showLegend);
+
+        mainLayout->addStretch();
+    }
+
+    QDate TypeAggregatedDetailsFilterWidget::getFrom() const
+    {
+        return mFromEdit->date();
+    }
+
+    QDate TypeAggregatedDetailsFilterWidget::getTo() const
+    {
+        return mToEdit->date();
+    }
+
+    int TypeAggregatedDetailsFilterWidget::getSMADays() const
+    {
+        return mSMADaysEdit->value();
+    }
+
+    int TypeAggregatedDetailsFilterWidget::getMACDFastDays() const
+    {
+        return mMACDFastDaysEdit->value();
+    }
+
+    int TypeAggregatedDetailsFilterWidget::getMACDSlowDays() const
+    {
+        return mMACDSlowDaysEdit->value();
+    }
+
+    int TypeAggregatedDetailsFilterWidget::getMACDEMADays() const
+    {
+        return mMACDEMADaysEdit->value();
+    }
+}

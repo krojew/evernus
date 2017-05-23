@@ -628,6 +628,8 @@ add_executable(
     TimerTypes.h
     TradeableTypesTreeModel.cpp
     TradeableTypesTreeModel.h
+    TypeAggregatedDetailsFilterWidget.cpp
+    TypeAggregatedDetailsFilterWidget.h
     TypeAggregatedDetailsWidget.cpp
     TypeAggregatedDetailsWidget.h
     TypeAggregatedMarketDataFilterProxyModel.cpp

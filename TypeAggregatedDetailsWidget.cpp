@@ -16,15 +16,9 @@
 #include <cmath>
 
 #include <QResizeEvent>
-#include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QScrollArea>
-#include <QPushButton>
-#include <QDateEdit>
 #include <QSettings>
-#include <QCheckBox>
-#include <QSpinBox>
-#include <QLabel>
 
 #ifdef Q_CC_MSVC
 #   pragma warning(push)
@@ -41,6 +35,7 @@
 #   pragma warning(pop)
 #endif
 
+#include "TypeAggregatedDetailsFilterWidget.h"
 #include "MarketAnalysisSettings.h"
 #include "UISettings.h"
 
@@ -62,83 +57,18 @@ namespace Evernus
 
         auto mainLayout = new QVBoxLayout{this};
 
-        auto toolBarLayout = new QHBoxLayout{};
-        mainLayout->addLayout(toolBarLayout);
-
-        toolBarLayout->addWidget(new QLabel{tr("From:"), this});
-
-        const auto current = QDate::currentDate().addDays(-1);
-
-        mFromEdit = new QDateEdit{this};
-        toolBarLayout->addWidget(mFromEdit);
-        mFromEdit->setCalendarPopup(true);
-        mFromEdit->setDate(current.addDays(-90));
-        mFromEdit->setMaximumDate(current);
-        connect(mFromEdit, &QDateEdit::dateChanged, this, [=](const QDate &date) {
-            if (date > mToEdit->date())
-                mToEdit->setDate(date);
-        });
-
-        toolBarLayout->addWidget(new QLabel{tr("To:"), this});
-
-        mToEdit = new QDateEdit{this};
-        toolBarLayout->addWidget(mToEdit);
-        mToEdit->setCalendarPopup(true);
-        mToEdit->setDate(current);
-        mToEdit->setMaximumDate(current);
-        connect(mToEdit, &QDateEdit::dateChanged, this, [=](const QDate &date) {
-            if (date < mFromEdit->date())
-                mFromEdit->setDate(date);
-        });
-
-        toolBarLayout->addWidget(new QLabel{tr("Moving average days:"), this});
-
-        QSettings settings;
-
-        mSMADaysEdit = new QSpinBox{this};
-        toolBarLayout->addWidget(mSMADaysEdit);
-        mSMADaysEdit->setMinimum(2);
-        mSMADaysEdit->setValue(settings.value(MarketAnalysisSettings::smaDaysKey, MarketAnalysisSettings::smaDaysDefault).toInt());
-
-        toolBarLayout->addWidget(new QLabel{tr("MACD days:"), this});
-
-        mMACDFastDaysEdit = new QSpinBox{this};
-        toolBarLayout->addWidget(mMACDFastDaysEdit);
-        mMACDFastDaysEdit->setMinimum(2);
-        mMACDFastDaysEdit->setValue(settings.value(MarketAnalysisSettings::macdFastDaysKey, MarketAnalysisSettings::macdFastDaysDefault).toInt());
-
-        mMACDSlowDaysEdit = new QSpinBox{this};
-        toolBarLayout->addWidget(mMACDSlowDaysEdit);
-        mMACDSlowDaysEdit->setMinimum(2);
-        mMACDSlowDaysEdit->setValue(settings.value(MarketAnalysisSettings::macdSlowDaysKey, MarketAnalysisSettings::macdSlowDaysDefault).toInt());
-
-        mMACDEMADaysEdit = new QSpinBox{this};
-        toolBarLayout->addWidget(mMACDEMADaysEdit);
-        mMACDEMADaysEdit->setMinimum(2);
-        mMACDEMADaysEdit->setValue(settings.value(MarketAnalysisSettings::macdEmaDaysKey, MarketAnalysisSettings::macdEmaDaysDefault).toInt());
-
-        auto filterBtn = new QPushButton{tr("Apply"), this};
-        toolBarLayout->addWidget(filterBtn);
-        connect(filterBtn, &QPushButton::clicked, this, &TypeAggregatedDetailsWidget::applyFilter);
-
-        auto addTrendLineBtn = new QPushButton{tr("Add trend line"), this};
-        toolBarLayout->addWidget(addTrendLineBtn);
-        connect(addTrendLineBtn, &QPushButton::clicked, this, &TypeAggregatedDetailsWidget::addTrendLine);
-
-        const auto showLegend
-            = settings.value(MarketAnalysisSettings::showLegendKey, MarketAnalysisSettings::showLegendDefault).toBool();
-
-        auto legendBtn = new QCheckBox{tr("Show legend"), this};
-        toolBarLayout->addWidget(legendBtn);
-        legendBtn->setChecked(showLegend);
-
-        toolBarLayout->addStretch();
+        mFilterWidget = new TypeAggregatedDetailsFilterWidget{this};
+        mainLayout->addWidget(mFilterWidget);
+        connect(mFilterWidget, &TypeAggregatedDetailsFilterWidget::addTrendLine, this, &TypeAggregatedDetailsWidget::addTrendLine);
+        connect(mFilterWidget, &TypeAggregatedDetailsFilterWidget::applyFilter, this, &TypeAggregatedDetailsWidget::applyFilter);
 
         auto scrollArea = new QScrollArea{this};
         mainLayout->addWidget(scrollArea);
         scrollArea->setWidgetResizable(true);
 
         const auto widgetLocale = locale();
+
+        QSettings settings;
 
         mHistoryPlot = new QCustomPlot{this};
         scrollArea->setWidget(mHistoryPlot);
@@ -155,9 +85,9 @@ namespace Evernus
         mHistoryPlot->yAxis->setLabel("ISK");
         mHistoryPlot->yAxis2->setVisible(true);
         mHistoryPlot->yAxis2->setLabel(tr("Volume"));
-        mHistoryPlot->legend->setVisible(showLegend);
+        mHistoryPlot->legend->setVisible(settings.value(MarketAnalysisSettings::showLegendKey, MarketAnalysisSettings::showLegendDefault).toBool());
 
-        connect(legendBtn, &QCheckBox::stateChanged, this, [=](bool checked) {
+        connect(mFilterWidget, &TypeAggregatedDetailsFilterWidget::showLegend, this, [=](bool checked) {
             QSettings settings;
             settings.setValue(MarketAnalysisSettings::showLegendKey, checked);
 
@@ -305,8 +235,9 @@ namespace Evernus
 
     void TypeAggregatedDetailsWidget::applyFilter()
     {
-        const auto start = mFromEdit->date();
-        const auto size = start.daysTo(mToEdit->date()) + 1;
+        const auto start = mFilterWidget->getFrom();
+        const auto end = mFilterWidget->getTo();
+        const auto size = start.daysTo(end) + 1;
 
         auto prevAvg = 0.;
 
@@ -319,10 +250,10 @@ namespace Evernus
                 prevAvg = std::prev(it)->second.mAvgPrice;
         }
 
-        const auto smaDays = mSMADaysEdit->value();
-        const auto macdFastDays = mMACDFastDaysEdit->value();
-        const auto macdSlowDays = mMACDSlowDaysEdit->value();
-        const auto macdEmaDays = mMACDEMADaysEdit->value();
+        const auto smaDays = mFilterWidget->getSMADays();
+        const auto macdFastDays = mFilterWidget->getMACDFastDays();
+        const auto macdSlowDays = mFilterWidget->getMACDSlowDays();
+        const auto macdEmaDays = mFilterWidget->getMACDEMADays();
         const auto rsiDays = 14;
         const auto rsiEmaAlpha = 1. / rsiDays;
         const auto macdFastEmaAlpha = 1. / macdFastDays;
@@ -357,7 +288,7 @@ namespace Evernus
         ba::accumulator_set<double, ba::stats<ba::tag::rolling_mean, ba::tag::rolling_variance>>
         prcAcc(ba::tag::rolling_window::window_size = smaDays);
 
-        for (auto date = start, end = mToEdit->date(); date <= end; date = date.addDays(1))
+        for (auto date = start; date <= end; date = date.addDays(1))
         {
             dates << QDateTime{date}.toMSecsSinceEpoch() / 1000.;
 
@@ -432,7 +363,7 @@ namespace Evernus
         const auto volMean = ba::mean(volAcc);
 
         QVector<double> volumeFlagDates, volumeFlags;
-        for (auto date = start, end = mToEdit->date(); date <= end; date = date.addDays(1))
+        for (auto date = start; date <= end; date = date.addDays(1))
         {
             const auto it = mHistory.find(date);
             if (it == std::end(mHistory))
@@ -472,8 +403,8 @@ namespace Evernus
     {
         deleteTrendLine();
 
-        const auto start = mFromEdit->date();
-        const auto end = mToEdit->date();
+        const auto start = mFilterWidget->getFrom();
+        const auto end = mFilterWidget->getTo();
 
         auto sumXY = 0., sumX = 0., sumY = 0., sumX2 = 0.;
 

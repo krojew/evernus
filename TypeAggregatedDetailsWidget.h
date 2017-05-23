@@ -25,13 +25,13 @@
 class QCPFinancial;
 class QCustomPlot;
 class QCPItemLine;
-class QDateEdit;
-class QSpinBox;
 class QCPGraph;
 class QCPBars;
 
 namespace Evernus
 {
+    class TypeAggregatedDetailsFilterWidget;
+
     class TypeAggregatedDetailsWidget
         : public QWidget
     {
@@ -58,12 +58,7 @@ namespace Evernus
 
         History mHistory;
 
-        QDateEdit *mFromEdit = nullptr;
-        QDateEdit *mToEdit = nullptr;
-        QSpinBox *mSMADaysEdit = nullptr;
-        QSpinBox *mMACDFastDaysEdit = nullptr;
-        QSpinBox *mMACDSlowDaysEdit = nullptr;
-        QSpinBox *mMACDEMADaysEdit = nullptr;
+        TypeAggregatedDetailsFilterWidget *mFilterWidget = nullptr;
         QCustomPlot *mHistoryPlot = nullptr;
 
         QCPFinancial *mHistoryValuesGraph = nullptr;
