@@ -7,7 +7,7 @@ QDropbox2::QDropbox2(QObject *parent)
       eventLoop(nullptr)
 {
 #ifdef QTDROPBOX_DEBUG
-    qDebug() << "creating dropbox api" << endl;
+    qDebug() << "creating dropbox api";
 #endif
 
     init();
@@ -22,7 +22,7 @@ QDropbox2::QDropbox2(const QString& app_key, const QString& app_secret, QObject 
       eventLoop(nullptr)
 {
 #ifdef QTDROPBOX_DEBUG
-    qDebug() << "creating api with access token and method" << endl;
+    qDebug() << "creating api with access token and method";
 #endif
 
     init(url, method);
@@ -36,7 +36,7 @@ QDropbox2::QDropbox2(const QString& token, QObject *parent, OAuthMethod method, 
       eventLoop(nullptr)
 {
 #ifdef QTDROPBOX_DEBUG
-    qDebug() << "creating api with access token and method" << endl;
+    qDebug() << "creating api with access token and method";
 #endif
 
     init(url, method);
@@ -103,12 +103,11 @@ void QDropbox2::slot_networkRequestFinished(QNetworkReply *reply)
     lastResponse = QString(buff);
 
 #ifdef QTDROPBOX_DEBUG
-    //qDebug() << "request " << nr << "finished." << endl;
-    qDebug() << "request was: " << reply->url().toString() << endl;
-    qDebug() << "response: " << reply->bytesAvailable() << "bytes" << endl;
-    qDebug() << "status code: " << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString() << endl;
-    qDebug() << "== begin response ==" << endl << lastResponse << endl << "== end response ==" << endl;
-    qDebug() << "req#" << nr << " is of type " << requestMap[nr].type << endl;
+    //qDebug() << "request " << nr << "finished.";
+    qDebug() << "request was: " << reply->url().toString();
+    qDebug() << "response: " << reply->bytesAvailable() << "bytes";
+    qDebug() << "status code: " << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString();
+    qDebug() << "== begin response ==" << endl << lastResponse << endl << "== end response ==";
 #endif
 
     lastErrorCode = reply->error();
@@ -167,7 +166,7 @@ bool QDropbox2::createAPIv2Request(QUrl request, QNetworkRequest& req, bool incl
         lastErrorCode = (int)QDropbox2::APIError;
         lastErrorMessage = "The authorizing access token has not been set.";
 #ifdef QTDROPBOX_DEBUG
-        qDebug() << "error " << lastErrorCode << "(" << lastErrorMessage << ") in createAPIv2Reqeust()" << endl;
+        qDebug() << "error " << lastErrorCode << "(" << lastErrorMessage << ") in createAPIv2Reqeust()";
 #endif
         emit signal_errorOccurred(lastErrorCode, lastErrorMessage);
     }
@@ -192,7 +191,7 @@ bool QDropbox2::createAPIv2Request(QUrl request, QNetworkRequest& req, bool incl
 QNetworkReply* QDropbox2::sendPOST(QNetworkRequest& rq, QByteArray postdata)
 {
 #ifdef QTDROPBOX_DEBUG
-    qDebug() << "sendPOST() host = " << host << endl;
+    qDebug() << "sendPOST() rq = " << rq.url().toString();
 #endif
 
     return QNAM.post(rq, postdata);
@@ -201,7 +200,7 @@ QNetworkReply* QDropbox2::sendPOST(QNetworkRequest& rq, QByteArray postdata)
 QNetworkReply*  QDropbox2::sendGET(QNetworkRequest& rq)
 {
 #ifdef QTDROPBOX_DEBUG
-    qDebug() << "sendGET() host = " << host << endl;
+    qDebug() << "sendGET() rq = " << rq.url().toString();
 #endif
 
     return QNAM.get(rq);
@@ -464,7 +463,7 @@ void QDropbox2::userInfoCallback(QNetworkReply* /*reply*/, CallbackPtr /*data*/)
         lastErrorCode = (int)QDropbox2::APIError;
         lastErrorMessage  = "Dropbox API did not send correct answer for account information.";
 #ifdef QTDROPBOX_DEBUG
-        qDebug() << "error: " << lastErrorMessage << endl;
+        qDebug() << "error: " << lastErrorMessage;
 #endif
         emit signal_errorOccurred(lastErrorCode, lastErrorMessage);
     }
@@ -563,7 +562,7 @@ void QDropbox2::usageInfoCallback(QNetworkReply* /*reply*/, CallbackPtr /*data*/
         lastErrorCode = (int)QDropbox2::APIError;
         lastErrorMessage  = "Dropbox API did not send correct answer for account information.";
 #ifdef QTDROPBOX_DEBUG
-        qDebug() << "error: " << lastErrorMessage << endl;
+        qDebug() << "error: " << lastErrorMessage;
 #endif
         emit signal_errorOccurred(lastErrorCode, lastErrorMessage);
     }
@@ -590,7 +589,7 @@ void QDropbox2::usageInfoCallback(QNetworkReply* /*reply*/, CallbackPtr /*data*/
 void QDropbox2::startEventLoop()
 {
 #ifdef QTDROPBOX_DEBUG
-    qDebug() << "QDropbox::startEventLoop()" << endl;
+    qDebug() << "QDropbox::startEventLoop()";
 #endif
     if(eventLoop == nullptr)
         eventLoop = new QEventLoop(this);
@@ -600,12 +599,12 @@ void QDropbox2::startEventLoop()
 void QDropbox2::stopEventLoop()
 {
 #ifdef QTDROPBOX_DEBUG
-    qDebug() << "QDropbox::stopEventLoop()" << endl;
+    qDebug() << "QDropbox::stopEventLoop()";
 #endif
     if(eventLoop == nullptr)
         return;
 #ifdef QTDROPBOX_DEBUG
-    qDebug() << "loop ended" << endl;
+    qDebug() << "loop ended";
 #endif
     eventLoop->exit();
 }

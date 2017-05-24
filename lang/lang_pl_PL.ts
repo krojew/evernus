@@ -2613,7 +2613,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     <name>Evernus::InterRegionAnalysisWidget</name>
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="83"/>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="450"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="470"/>
         <source>- any station -</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2670,22 +2670,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="265"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="266"/>
+        <source>Show details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="271"/>
         <source>Show in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="270"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="276"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="454"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="474"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="454"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="474"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2693,47 +2698,52 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::InterRegionMarketDataModel</name>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="125"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="114"/>
+        <source>Double-click for detailed market information.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../InterRegionMarketDataModel.cpp" line="134"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="127"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="136"/>
         <source>Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="129"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="138"/>
         <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="131"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="140"/>
         <source>5% volume source price (b/s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="133"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="142"/>
         <source>Destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="135"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="144"/>
         <source>5% volume destination price (b/s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="137"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="146"/>
         <source>Best difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="139"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="148"/>
         <source>30-day avg. min. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="141"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="150"/>
         <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3312,17 +3322,17 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="973"/>
+        <location filename="../MainWindow.cpp" line="972"/>
         <source>Market analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="994"/>
+        <location filename="../MainWindow.cpp" line="993"/>
         <source>Toggle character tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1000"/>
+        <location filename="../MainWindow.cpp" line="999"/>
         <source>Toggle corporation tabs</source>
         <translation type="unfinished"></translation>
     </message>
