@@ -18,7 +18,6 @@
 #include <QDoubleValidator>
 #include <QStackedWidget>
 #include <QIntValidator>
-#include <QApplication>
 #include <QProgressBar>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -26,7 +25,6 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QTableView>
-#include <QClipboard>
 #include <QTabWidget>
 #include <QComboBox>
 #include <QCheckBox>
@@ -45,18 +43,18 @@
 #include "ImportSettings.h"
 #include "PriceSettings.h"
 #include "SSOMessageBox.h"
+#include "ModelUtils.h"
 #include "FlowLayout.h"
-#include "UISettings.h"
 
 #include "InterRegionAnalysisWidget.h"
 
 namespace Evernus
 {
     InterRegionAnalysisWidget::InterRegionAnalysisWidget(const QByteArray &clientId,
-                                               const QByteArray &clientSecret,
-                                               const EveDataProvider &dataProvider,
-                                               const MarketDataProvider &marketDataProvider,
-                                               QWidget *parent)
+                                                         const QByteArray &clientSecret,
+                                                         const EveDataProvider &dataProvider,
+                                                         const MarketDataProvider &marketDataProvider,
+                                                         QWidget *parent)
         : QWidget(parent)
         , mDataProvider(dataProvider)
         , mMarketDataProvider(marketDataProvider)
@@ -87,10 +85,10 @@ namespace Evernus
 
         auto list = settings.value(MarketAnalysisSettings::srcStationKey).toList();
         if (list.size() == 4)
-            mSrcStation = list[3].toUInt();
+            mSrcStation = list[3].toULongLong();
         list = settings.value(MarketAnalysisSettings::dstStationKey).toList();
         if (list.size() == 4)
-            mDstStation = list[3].toUInt();
+            mDstStation = list[3].toULongLong();
 
         toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
         mSourceRegionCombo = createRegionCombo();
@@ -254,6 +252,7 @@ namespace Evernus
         mInterRegionDataStack->addWidget(mInterRegionTypeDataView);
         mInterRegionTypeDataView->setSortingEnabled(true);
         mInterRegionTypeDataView->setAlternatingRowColors(true);
+        mInterRegionTypeDataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         mInterRegionTypeDataView->setModel(&mInterRegionViewProxy);
         mInterRegionTypeDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
         mInterRegionTypeDataView->restoreHeaderState();
@@ -276,9 +275,7 @@ namespace Evernus
         mCopyInterRegionRowsAct = new QAction{tr("&Copy"), this};
         mCopyInterRegionRowsAct->setEnabled(false);
         mCopyInterRegionRowsAct->setShortcut(QKeySequence::Copy);
-        connect(mCopyInterRegionRowsAct, &QAction::triggered, this, [=] {
-            copyRows(*mInterRegionTypeDataView, mInterRegionViewProxy);
-        });
+        connect(mCopyInterRegionRowsAct, &QAction::triggered, this, &InterRegionAnalysisWidget::copyRows);
         mInterRegionTypeDataView->addAction(mCopyInterRegionRowsAct);
     }
 
@@ -424,38 +421,14 @@ namespace Evernus
             emit showInEve(id, mInterRegionDataModel.getOwnerId(index));
     }
 
-    void InterRegionAnalysisWidget::copyRows(const QAbstractItemView &view, const QAbstractItemModel &model) const
+    void InterRegionAnalysisWidget::copyRows() const
     {
-        const auto indexes = view.selectionModel()->selectedIndexes();
-        if (indexes.isEmpty())
-            return;
-
-        QSettings settings;
-        const auto delim
-            = settings.value(UISettings::columnDelimiterKey, UISettings::columnDelimiterDefault).value<char>();
-
-        QString result;
-
-        auto prevRow = indexes.first().row();
-        for (const auto &index : indexes)
-        {
-            if (prevRow != index.row())
-            {
-                prevRow = index.row();
-                result[result.size() - 1] = '\n';
-            }
-
-            result.append(model.data(index).toString());
-            result.append(delim);
-        }
-
-        result.chop(1);
-        QApplication::clipboard()->setText(result);
+        ModelUtils::copyRowsToClipboard(mInterRegionTypeDataView->selectionModel()->selectedIndexes(), mInterRegionViewProxy);
     }
 
     void InterRegionAnalysisWidget::changeStation(quint64 &destination, QPushButton &btn, const QString &settingName)
     {
-        StationSelectDialog dlg{mDataProvider, this};
+        StationSelectDialog dlg{mDataProvider, true, this};
 
         QSettings settings;
         dlg.selectPath(settings.value(settingName).toList());
@@ -490,14 +463,14 @@ namespace Evernus
         if (orders == nullptr)
             return;
 
-        mInterRegionDataStack->setCurrentIndex(waitingLabelIndex);
-        mInterRegionDataStack->repaint();
-
         mInterRegionDataModel.setOrderData(*orders,
                                            *history,
                                            mSrcStation,
                                            mDstStation,
                                            mSrcPriceType,
                                            mDstPriceType);
+
+        mInterRegionDataStack->setCurrentIndex(waitingLabelIndex);
+        mInterRegionDataStack->repaint();
     }
 }

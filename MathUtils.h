@@ -25,34 +25,37 @@ namespace Evernus
     {
         template<class T>
         double calcPercentile(const T &orders,
-                              uint maxVolume,
-                              double avgPrice30,
+                              quint64 maxVolume,
+                              double avgPrice,
                               bool discardBogusOrders,
                               double bogusOrderThreshold)
         {
+            if (orders.empty())
+                return avgPrice;
+
             if (maxVolume == 0)
                 maxVolume = 1;
 
-            const auto nullAvg = qFuzzyIsNull(avgPrice30);
+            const auto nullAvg = qFuzzyIsNull(avgPrice);
 
             auto it = std::begin(orders);
-            auto volume = 0u;
+            quint64 volume = 0u;
             auto result = 0.;
 
             while (volume < maxVolume && it != std::end(orders))
             {
                 const auto price = it->get().getPrice();
-                if (!discardBogusOrders || nullAvg || fabs((price - avgPrice30) / avgPrice30) < bogusOrderThreshold)
-                {
-                    const auto orderVolume = it->get().getVolumeRemaining();
-                    const auto add = std::min(orderVolume, maxVolume - volume);
+                const quint64 orderVolume = it->get().getVolumeRemaining();
+                const auto add = std::min(orderVolume, maxVolume - volume);
 
+                if (!discardBogusOrders || nullAvg || fabs((price - avgPrice) / avgPrice) < bogusOrderThreshold)
+                {
                     volume += add;
                     result += price * add;
                 }
                 else if (!nullAvg)
                 {
-                    maxVolume -= std::min(it->get().getVolumeRemaining(), maxVolume - volume);
+                    maxVolume -= add;
                 }
 
                 ++it;

@@ -28,11 +28,11 @@ class QCheckBox;
 namespace Evernus
 {
     class InterRegionAnalysisWidget;
+    class ImportingAnalysisWidget;
     class MarketOrderRepository;
     class MarketGroupRepository;
     class RegionAnalysisWidget;
     class CharacterRepository;
-    class AdjustableTableView;
     class EveTypeRepository;
     class EveDataProvider;
     class TaskManager;
@@ -96,6 +96,7 @@ namespace Evernus
 
         RegionAnalysisWidget *mRegionAnalysisWidget = nullptr;
         InterRegionAnalysisWidget *mInterRegionAnalysisWidget = nullptr;
+        ImportingAnalysisWidget *mImportingAnalysisWidget = nullptr;
 
         QCheckBox *mDontSaveBtn = nullptr;
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;

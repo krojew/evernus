@@ -27,18 +27,14 @@
 #include "PriceType.h"
 #include "EveType.h"
 
-class QColor;
-
 namespace Evernus
 {
     class EveDataProvider;
     class ExternalOrder;
 
-    class InterRegionMarketDataModel
+    class ImportingDataModel
         : public QAbstractTableModel
     {
-        Q_OBJECT
-
     public:
         template<class T>
         using TypeMap = std::unordered_map<EveType::IdType, T>;
@@ -47,48 +43,40 @@ namespace Evernus
         using HistoryTypeMap = TypeMap<std::map<QDate, MarketHistoryEntry>>;
         using HistoryRegionMap = RegionMap<HistoryTypeMap>;
 
-        explicit InterRegionMarketDataModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
-        virtual ~InterRegionMarketDataModel() = default;
+        explicit ImportingDataModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        ImportingDataModel(const ImportingDataModel &) = default;
+        ImportingDataModel(ImportingDataModel &&) = default;
+        virtual ~ImportingDataModel() = default;
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
         virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
-        void setOrderData(const std::vector<ExternalOrder> &orders,
-                          const HistoryRegionMap &history,
-                          quint64 srcStation,
-                          quint64 dstStation,
-                          PriceType srcType,
-                          PriceType dstType);
         void setCharacter(const std::shared_ptr<Character> &character);
         void discardBogusOrders(bool flag) noexcept;
         void setBogusOrderThreshold(double value) noexcept;
 
         EveType::IdType getTypeId(const QModelIndex &index) const;
-        Character::IdType getOwnerId(const QModelIndex &index) const;
-        uint getSrcRegionId(const QModelIndex &index) const;
-        uint getDstRegionId(const QModelIndex &index) const;
 
-        void reset();
+        void setOrderData(const std::vector<ExternalOrder> &orders,
+                          const HistoryRegionMap &history,
+                          quint64 srcStation,
+                          quint64 dstStation,
+                          PriceType srcType,
+                          PriceType dstType,
+                          int aggrDays);
 
-        static int getSrcRegionColumn();
-        static int getDstRegionColumn();
-        static int getVolumeColumn();
-        static int getMarginColumn();
+        ImportingDataModel &operator =(const ImportingDataModel &) = default;
+        ImportingDataModel &operator =(ImportingDataModel &&) = default;
 
     private:
         enum
         {
             nameColumn,
-            scoreColumn,
-            srcRegionColumn,
-            srcPriceColumn,
-            dstRegionColumn,
-            dstPriceColumn,
-            differenceColumn,
-            volumeColumn,
-            marginColumn,
+            avgVolumeColumn,
+            dstVolume,
+            relativeDstVolume,
 
             numColumns
         };
@@ -96,30 +84,17 @@ namespace Evernus
         struct TypeData
         {
             EveType::IdType mId = EveType::invalidId;
-            double mSrcBuyPrice = 0.;
-            double mSrcSellPrice = 0.;
-            double mDstBuyPrice = 0.;
-            double mDstSellPrice = 0.;
-            double mDifference = 0.;
-            double mVolume = 0;
-            uint mSrcRegion = 0;
-            uint mDstRegion = 0;
-            double mMargin = 0.;
+            double mAvgVolume = 0.;
+            quint64 mDstVolume = 0;
         };
 
         const EveDataProvider &mDataProvider;
 
-        std::vector<TypeData> mData;
-
         std::shared_ptr<Character> mCharacter;
+
+        std::vector<TypeData> mData;
 
         bool mDiscardBogusOrders = true;
         double mBogusOrderThreshold = 0.9;
-
-        PriceType mSrcPriceType = PriceType::Buy;
-        PriceType mDstPriceType = PriceType::Sell;
-
-        double getSrcPrice(const TypeData &data) const noexcept;
-        double getDstPrice(const TypeData &data) const noexcept;
     };
 }

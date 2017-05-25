@@ -76,7 +76,7 @@ namespace Evernus
 
         void showInEveForCurrentInterRegion();
 
-        void copyRows(const QAbstractItemView &view, const QAbstractItemModel &model) const;
+        void copyRows() const;
 
     private:
         static const auto waitingLabelIndex = 0;

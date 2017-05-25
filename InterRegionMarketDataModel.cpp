@@ -41,6 +41,7 @@ namespace Evernus
 
     int InterRegionMarketDataModel::columnCount(const QModelIndex &parent) const
     {
+        Q_UNUSED(parent);
         return numColumns;
     }
 
@@ -75,7 +76,7 @@ namespace Evernus
                 case volumeColumn:
                     return locale.toString(data.mVolume);
                 case marginColumn:
-                    return QString{"%1%2"}.arg(locale.toString(data.mMargin, 'f', 2)).arg(locale.percent());
+                    return QStringLiteral("%1%2").arg(locale.toString(data.mMargin, 'f', 2)).arg(locale.percent());
                 }
             }
             break;
@@ -156,6 +157,7 @@ namespace Evernus
 
     int InterRegionMarketDataModel::rowCount(const QModelIndex &parent) const
     {
+        Q_UNUSED(parent);
         return static_cast<int>(mData.size());
     }
 
@@ -192,7 +194,7 @@ namespace Evernus
         RegionMap<TypeMap<std::multiset<std::reference_wrapper<const ExternalOrder>, LowToHigh>>> sellOrders;
         RegionMap<TypeMap<std::multiset<std::reference_wrapper<const ExternalOrder>, HighToLow>>> buyOrders;
 
-        RegionMap<TypeMap<uint>> sellVolumes, buyVolumes;
+        RegionMap<TypeMap<quint64>> sellVolumes, buyVolumes;
 
         QEventLoop loop;
 
@@ -231,7 +233,7 @@ namespace Evernus
         {
             double mBuyPrice = 0.;
             double mSellPrice = 0.;
-            uint mVolume = 0;
+            quint64 mVolume = 0;
         };
 
         RegionMap<TypeMap<AggrTypeData>> aggrTypeData;

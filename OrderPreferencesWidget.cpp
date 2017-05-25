@@ -105,7 +105,7 @@ namespace Evernus
 
     void OrderPreferencesWidget::chooseDefaultCustomStation()
     {
-        StationSelectDialog dlg{mDataProvider, this};
+        StationSelectDialog dlg{mDataProvider, true, this};
         if (dlg.exec() == QDialog::Accepted)
         {
             const auto id = dlg.getStationId();

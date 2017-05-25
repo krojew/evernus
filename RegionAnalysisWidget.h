@@ -76,7 +76,7 @@ namespace Evernus
         void showDetailsForCurrent();
         void showInEveForCurrentRegion();
 
-        void copyRows(const QAbstractItemView &view, const QAbstractItemModel &model) const;
+        void copyRows() const;
 
     private:
         using HistoryOrdersPair = std::pair<const MarketDataProvider::HistoryMap *, const MarketDataProvider::OrderResultType *>;

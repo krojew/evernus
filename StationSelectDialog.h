@@ -29,7 +29,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit StationSelectDialog(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
+        explicit StationSelectDialog(const EveDataProvider &dataProvider,
+                                     bool allowNone = true,
+                                     QWidget *parent = nullptr);
         virtual ~StationSelectDialog() = default;
 
         QVariantList getSelectedPath() const;

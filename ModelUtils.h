@@ -14,21 +14,12 @@
  */
 #pragma once
 
-#include <QString>
-
-class QDateTime;
-class QLocale;
-class QColor;
+#include <QAbstractItemModel>
 
 namespace Evernus
 {
-    namespace TextUtils
+    namespace ModelUtils
     {
-        QString secondsToString(uint duration);
-        QString dateTimeToString(const QDateTime &dt, const QLocale &locale);
-        QString currencyToString(double value, const QLocale &locale);
-
-        QColor getMarginColor(double margin);
-        QString getMarginStyleSheet(double margin);
+        void copyRowsToClipboard(const QModelIndexList &indexes, const QAbstractItemModel &model);
     }
 }

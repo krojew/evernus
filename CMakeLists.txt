@@ -13,7 +13,7 @@ set(MAJOR_VERSION "1")
 set(MINOR_VERSION "53")
 
 find_package(Boost REQUIRED)
-find_package(Qt5Core REQUIRED)
+find_package(Qt5Core 5.4 REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
@@ -25,10 +25,6 @@ find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
 find_package(Qt5WebEngineWidgets REQUIRED)
 find_package(Qt5Widgets REQUIRED)
-
-if(${Qt5XmlPatterns_VERSION} VERSION_LESS "5.4.0")
-    message(SEND_ERROR "Qt version >= 5.4 is required.")
-endif()
 
 if(DEFINED EVERNUS_CLIENT_ID AND DEFINED EVERNUS_CLIENT_SECRET)
     add_definitions(-DEVERNUS_CLIENT_ID=${EVERNUS_CLIENT_ID} -DEVERNUS_CLIENT_SECRET=${EVERNUS_CLIENT_SECRET})
@@ -327,6 +323,10 @@ add_executable(
     HttpSettings.h
     IconUtils.cpp
     IconUtils.h
+    ImportingAnalysisWidget.cpp
+    ImportingAnalysisWidget.h
+    ImportingDataModel.cpp
+    ImportingDataModel.h
     ImportPreferencesWidget.cpp
     ImportPreferencesWidget.h
     ImportSettings.h
@@ -470,6 +470,8 @@ add_executable(
     MetaGroup.h
     MetaGroupRepository.cpp
     MetaGroupRepository.h
+    ModelUtils.cpp
+    ModelUtils.h
     NetworkPreferencesWidget.cpp
     NetworkPreferencesWidget.h
     NetworkSettings.h

@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <QString>
+
 namespace Evernus
 {
     namespace MarketAnalysisSettings
@@ -28,29 +30,33 @@ namespace Evernus
         const auto discardBogusOrdersDefault = true;
         const auto bogusOrderThresholdDefault = 0.9;
         const auto useSkillsForDifferenceDefault = false;
+        const auto importingAggrDaysDefault = 7;
 
-        const auto dontSaveLargeOrdersKey = "marketAnalysis/dontSaveOrders";
-        const auto minVolumeFilterKey = "marketAnalysis/filter/minVolume";
-        const auto maxVolumeFilterKey = "marketAnalysis/filter/maxVolume";
-        const auto minMarginFilterKey = "marketAnalysis/filter/minMargin";
-        const auto maxMarginFilterKey = "marketAnalysis/filter/maxMargin";
-        const auto minBuyPriceFilterKey = "marketAnalysis/filter/minBuyPrice";
-        const auto maxBuyPriceFilterKey = "marketAnalysis/filter/maxBuyPrice";
-        const auto minSellPriceFilterKey = "marketAnalysis/filter/minSellPrice";
-        const auto maxSellPriceFilterKey = "marketAnalysis/filter/maxSellPrice";
-        const auto smaDaysKey = "marketAnalysis/smaDays";
-        const auto lastRegionKey = "marketAnalysis/lastRegion";
-        const auto macdFastDaysKey = "marketAnalysis/macd/fastDays";
-        const auto macdSlowDaysKey = "marketAnalysis/macd/slowDays";
-        const auto macdEmaDaysKey = "marketAnalysis/macd/emaDays";
-        const auto showLegendKey = "marketAnalysis/showLegend";
-        const auto ignoreExistingOrdersKey = "marketAnalysis/ignoreExistingOrders";
-        const auto discardBogusOrdersKey = "marketAnalysis/discardBogusOrders";
-        const auto bogusOrderThresholdKey = "marketAnalysis/bogusOrderThreshold";
-        const auto srcRegionKey = "marketAnalysis/interRegion/srcRegion";
-        const auto dstRegionKey = "marketAnalysis/interRegion/dstRegion";
-        const auto srcStationKey = "marketAnalysis/interRegion/srcStation";
-        const auto dstStationKey = "marketAnalysis/interRegion/dstStation";
-        const auto useSkillsForDifferenceKey = "marketAnalysis/useSkillsForDifference";
+        const auto dontSaveLargeOrdersKey = QStringLiteral("marketAnalysis/dontSaveOrders");
+        const auto minVolumeFilterKey = QStringLiteral("marketAnalysis/filter/minVolume");
+        const auto maxVolumeFilterKey = QStringLiteral("marketAnalysis/filter/maxVolume");
+        const auto minMarginFilterKey = QStringLiteral("marketAnalysis/filter/minMargin");
+        const auto maxMarginFilterKey = QStringLiteral("marketAnalysis/filter/maxMargin");
+        const auto minBuyPriceFilterKey = QStringLiteral("marketAnalysis/filter/minBuyPrice");
+        const auto maxBuyPriceFilterKey = QStringLiteral("marketAnalysis/filter/maxBuyPrice");
+        const auto minSellPriceFilterKey = QStringLiteral("marketAnalysis/filter/minSellPrice");
+        const auto maxSellPriceFilterKey = QStringLiteral("marketAnalysis/filter/maxSellPrice");
+        const auto smaDaysKey = QStringLiteral("marketAnalysis/smaDays");
+        const auto lastRegionKey = QStringLiteral("marketAnalysis/lastRegion");
+        const auto macdFastDaysKey = QStringLiteral("marketAnalysis/macd/fastDays");
+        const auto macdSlowDaysKey = QStringLiteral("marketAnalysis/macd/slowDays");
+        const auto macdEmaDaysKey = QStringLiteral("marketAnalysis/macd/emaDays");
+        const auto showLegendKey = QStringLiteral("marketAnalysis/showLegend");
+        const auto ignoreExistingOrdersKey = QStringLiteral("marketAnalysis/ignoreExistingOrders");
+        const auto discardBogusOrdersKey = QStringLiteral("marketAnalysis/discardBogusOrders");
+        const auto bogusOrderThresholdKey = QStringLiteral("marketAnalysis/bogusOrderThreshold");
+        const auto srcRegionKey = QStringLiteral("marketAnalysis/interRegion/srcRegion");
+        const auto dstRegionKey = QStringLiteral("marketAnalysis/interRegion/dstRegion");
+        const auto srcStationKey = QStringLiteral("marketAnalysis/interRegion/srcStation");
+        const auto dstStationKey = QStringLiteral("marketAnalysis/interRegion/dstStation");
+        const auto useSkillsForDifferenceKey = QStringLiteral("marketAnalysis/useSkillsForDifference");
+        const auto srcImportStationKey = QStringLiteral("marketAnalysis/importing/srcStation");
+        const auto dstImportStationKey = QStringLiteral("marketAnalysis/importing/dstStation");
+        const auto importingAggrDaysKey = QStringLiteral("marketAnalysis/importing/aggrDays");
     }
 }

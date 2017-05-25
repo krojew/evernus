@@ -24,6 +24,7 @@
 #include <QDebug>
 
 #include "InterRegionAnalysisWidget.h"
+#include "ImportingAnalysisWidget.h"
 #include "RegionTypeSelectDialog.h"
 #include "MarketAnalysisSettings.h"
 #include "MarketOrderRepository.h"
@@ -116,6 +117,7 @@ namespace Evernus
 
             mRegionAnalysisWidget->discardBogusOrders(checked);
             mInterRegionAnalysisWidget->discardBogusOrders(checked);
+            mImportingAnalysisWidget->discardBogusOrders(checked);
 
             recalculateAllData();
         });
@@ -139,6 +141,7 @@ namespace Evernus
             const auto value = text.toDouble();
             mRegionAnalysisWidget->setBogusOrderThreshold(value);
             mInterRegionAnalysisWidget->setBogusOrderThreshold(value);
+            mImportingAnalysisWidget->setBogusOrderThreshold(value);
         });
 
         auto createPriceTypeCombo = [=](auto &combo) {
@@ -148,8 +151,12 @@ namespace Evernus
             combo->addItem(tr("Buy"), static_cast<int>(PriceType::Buy));
 
             connect(combo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=] {
-                mRegionAnalysisWidget->setPriceTypes(getPriceType(*mSrcPriceTypeCombo), getPriceType(*mDstPriceTypeCombo));
-                mInterRegionAnalysisWidget->setPriceTypes(getPriceType(*mSrcPriceTypeCombo), getPriceType(*mDstPriceTypeCombo));
+                const auto src = getPriceType(*mSrcPriceTypeCombo);
+                const auto dst = getPriceType(*mDstPriceTypeCombo);
+
+                mRegionAnalysisWidget->setPriceTypes(src, dst);
+                mInterRegionAnalysisWidget->setPriceTypes(src, dst);
+                mImportingAnalysisWidget->setPriceTypes(src, dst);
                 recalculateAllData();
             });
         };
@@ -177,20 +184,30 @@ namespace Evernus
         auto tabs = new QTabWidget{this};
         mainLayout->addWidget(tabs);
 
+        const auto src = getPriceType(*mSrcPriceTypeCombo);
+        const auto dst = getPriceType(*mDstPriceTypeCombo);
+
         mRegionAnalysisWidget = new RegionAnalysisWidget{clientId, clientSecret, mDataProvider, *this, tabs};
         connect(mRegionAnalysisWidget, &RegionAnalysisWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
-        mRegionAnalysisWidget->setPriceTypes(getPriceType(*mSrcPriceTypeCombo), getPriceType(*mDstPriceTypeCombo));
+        mRegionAnalysisWidget->setPriceTypes(src, dst);
         mRegionAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
         mRegionAnalysisWidget->discardBogusOrders(discardBogusOrders);
 
         mInterRegionAnalysisWidget = new InterRegionAnalysisWidget{clientId, clientSecret, mDataProvider, *this, tabs};
         connect(mInterRegionAnalysisWidget, &InterRegionAnalysisWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
-        mInterRegionAnalysisWidget->setPriceTypes(getPriceType(*mSrcPriceTypeCombo), getPriceType(*mDstPriceTypeCombo));
+        mInterRegionAnalysisWidget->setPriceTypes(src, dst);
         mInterRegionAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
         mInterRegionAnalysisWidget->discardBogusOrders(discardBogusOrders);
 
+        mImportingAnalysisWidget = new ImportingAnalysisWidget{mDataProvider, *this, tabs};
+        connect(mImportingAnalysisWidget, &ImportingAnalysisWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
+        mImportingAnalysisWidget->setPriceTypes(src, dst);
+        mImportingAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
+        mImportingAnalysisWidget->discardBogusOrders(discardBogusOrders);
+
         tabs->addTab(mRegionAnalysisWidget, tr("Region"));
         tabs->addTab(mInterRegionAnalysisWidget, tr("Inter-Region"));
+        tabs->addTab(mImportingAnalysisWidget, tr("Importing"));
     }
 
     const MarketAnalysisWidget::HistoryMap *MarketAnalysisWidget::getHistory(uint regionId) const
@@ -219,6 +236,7 @@ namespace Evernus
         const auto character = mCharacterRepo.find(mCharacterId);
         mRegionAnalysisWidget->setCharacter(character);
         mInterRegionAnalysisWidget->setCharacter(character);
+        mImportingAnalysisWidget->setCharacter(character);
     }
 
     void MarketAnalysisWidget::prepareOrderImport()
@@ -347,6 +365,7 @@ namespace Evernus
     {
         showForCurrentRegion();
         mInterRegionAnalysisWidget->recalculateAllData();
+        mImportingAnalysisWidget->recalculateData();
     }
 
     PriceType MarketAnalysisWidget::getPriceType(const QComboBox &combo)

@@ -15,12 +15,10 @@
 #include <QDoubleValidator>
 #include <QStackedWidget>
 #include <QIntValidator>
-#include <QApplication>
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QPushButton>
 #include <QTableView>
-#include <QClipboard>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QSettings>
@@ -32,8 +30,8 @@
 #include "MarketAnalysisSettings.h"
 #include "AdjustableTableView.h"
 #include "EveDataProvider.h"
+#include "ModelUtils.h"
 #include "FlowLayout.h"
-#include "UISettings.h"
 
 #include "RegionAnalysisWidget.h"
 
@@ -207,9 +205,7 @@ namespace Evernus
         mCopyRegionRowsAct = new QAction{tr("&Copy"), this};
         mCopyRegionRowsAct->setEnabled(false);
         mCopyRegionRowsAct->setShortcut(QKeySequence::Copy);
-        connect(mCopyRegionRowsAct, &QAction::triggered, this, [=] {
-            copyRows(*mRegionTypeDataView, mTypeViewProxy);
-        });
+        connect(mCopyRegionRowsAct, &QAction::triggered, this, &RegionAnalysisWidget::copyRows);
         mRegionTypeDataView->addAction(mCopyRegionRowsAct);
     }
 
@@ -350,33 +346,9 @@ namespace Evernus
             emit showInEve(id, mTypeDataModel.getOwnerId(index));
     }
 
-    void RegionAnalysisWidget::copyRows(const QAbstractItemView &view, const QAbstractItemModel &model) const
+    void RegionAnalysisWidget::copyRows() const
     {
-        const auto indexes = view.selectionModel()->selectedIndexes();
-        if (indexes.isEmpty())
-            return;
-
-        QSettings settings;
-        const auto delim
-            = settings.value(UISettings::columnDelimiterKey, UISettings::columnDelimiterDefault).value<char>();
-
-        QString result;
-
-        auto prevRow = indexes.first().row();
-        for (const auto &index : indexes)
-        {
-            if (prevRow != index.row())
-            {
-                prevRow = index.row();
-                result[result.size() - 1] = '\n';
-            }
-
-            result.append(model.data(index).toString());
-            result.append(delim);
-        }
-
-        result.chop(1);
-        QApplication::clipboard()->setText(result);
+        ModelUtils::copyRowsToClipboard(mRegionTypeDataView->selectionModel()->selectedIndexes(), mTypeViewProxy);
     }
 
     void RegionAnalysisWidget::fillSolarSystems(uint regionId)

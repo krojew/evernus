@@ -22,22 +22,29 @@
 
 namespace Evernus
 {
-    StationSelectDialog::StationSelectDialog(const EveDataProvider &dataProvider, QWidget *parent)
+    StationSelectDialog::StationSelectDialog(const EveDataProvider &dataProvider, bool allowNone, QWidget *parent)
         : QDialog(parent)
     {
         auto mainLayout = new QVBoxLayout{this};
 
-        mAnyStationBtn = new QRadioButton{tr("No specific station"), this};
-        mainLayout->addWidget(mAnyStationBtn);
-        mAnyStationBtn->setChecked(true);
+        if (allowNone)
+        {
+            mAnyStationBtn = new QRadioButton{tr("No specific station"), this};
+            mainLayout->addWidget(mAnyStationBtn);
+            mAnyStationBtn->setChecked(true);
 
-        mCustomStationBtn = new QRadioButton{tr("Custom station"), this};
-        mainLayout->addWidget(mCustomStationBtn);
+            mCustomStationBtn = new QRadioButton{tr("Custom station"), this};
+            mainLayout->addWidget(mCustomStationBtn);
+        }
 
         mStationView = new StationView{dataProvider, this};
         mainLayout->addWidget(mStationView);
-        mStationView->setEnabled(false);
-        connect(mAnyStationBtn, &QRadioButton::toggled, mStationView, &StationView::setDisabled);
+
+        if (allowNone)
+        {
+            mStationView->setEnabled(false);
+            connect(mAnyStationBtn, &QRadioButton::toggled, mStationView, &StationView::setDisabled);
+        }
 
         auto buttonBox = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel};
         mainLayout->addWidget(buttonBox);
@@ -51,24 +58,27 @@ namespace Evernus
 
     QVariantList StationSelectDialog::getSelectedPath() const
     {
-        return (mAnyStationBtn->isChecked()) ? (QVariantList{}) : (mStationView->getSelectedPath());
+        return (mAnyStationBtn != nullptr && mAnyStationBtn->isChecked()) ? (QVariantList{}) : (mStationView->getSelectedPath());
     }
 
     void StationSelectDialog::selectPath(const QVariantList &path)
     {
         if (path.isEmpty())
         {
-            mAnyStationBtn->setChecked(true);
+            if (mAnyStationBtn != nullptr)
+                mAnyStationBtn->setChecked(true);
         }
         else
         {
             mStationView->selectPath(path);
-            mCustomStationBtn->setChecked(true);
+
+            if (mCustomStationBtn != nullptr)
+                mCustomStationBtn->setChecked(true);
         }
     }
 
     quint64 StationSelectDialog::getStationId() const
     {
-        return (mAnyStationBtn->isChecked()) ? (0) : (mStationView->getStationId());
+        return (mAnyStationBtn != nullptr && mAnyStationBtn->isChecked()) ? (0) : (mStationView->getStationId());
     }
 }
