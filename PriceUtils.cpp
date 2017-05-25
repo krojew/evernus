@@ -46,7 +46,8 @@ namespace Evernus
 
         double getRevenue(double sellPrice, const Taxes &taxes, bool limitOrder)
         {
-            return sellPrice - sellPrice * taxes.mSalesTax - ((limitOrder) ? (sellPrice * taxes.mSellBrokerFee) : (0.));
+            const auto taxedRevenue = sellPrice - sellPrice * taxes.mSalesTax;
+            return (limitOrder) ? (taxedRevenue - sellPrice * taxes.mSellBrokerFee) : (taxedRevenue);
         }
 
         double getMargin(double cost, double price, const Taxes &taxes, bool limitOrder)

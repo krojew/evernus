@@ -2610,6 +2610,73 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     </message>
 </context>
 <context>
+    <name>Evernus::ImportingAnalysisWidget</name>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="49"/>
+        <source>Source:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="52"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="206"/>
+        <source>- no station -</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="70"/>
+        <source>Destination:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="78"/>
+        <source>Aggregate:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="83"/>
+        <source>days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="86"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="93"/>
+        <source>Calculating data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="104"/>
+        <source>Show in EVE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="109"/>
+        <source>&amp;Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="210"/>
+        <source>Station change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="210"/>
+        <source>Changing station requires data recalculation. Do you wish to do it now?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::ImportingDataModel</name>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="47"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::InterRegionAnalysisWidget</name>
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="83"/>
