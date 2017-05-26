@@ -137,7 +137,6 @@ namespace Evernus
         mDataStack->addWidget(mDataView);
         mDataView->setSortingEnabled(true);
         mDataView->setAlternatingRowColors(true);
-        mDataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         mDataView->setModel(&mDataProxy);
         mDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
         mDataView->restoreHeaderState();
@@ -216,6 +215,8 @@ namespace Evernus
                                 analysisDays,
                                 std::min(analysisDays, aggrDays),
                                 pricePerM3);
+
+        mDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 
         mDataStack->setCurrentWidget(mDataView);
     }

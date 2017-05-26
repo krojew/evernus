@@ -252,7 +252,6 @@ namespace Evernus
         mInterRegionDataStack->addWidget(mInterRegionTypeDataView);
         mInterRegionTypeDataView->setSortingEnabled(true);
         mInterRegionTypeDataView->setAlternatingRowColors(true);
-        mInterRegionTypeDataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         mInterRegionTypeDataView->setModel(&mInterRegionViewProxy);
         mInterRegionTypeDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
         mInterRegionTypeDataView->restoreHeaderState();
