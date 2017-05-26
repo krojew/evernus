@@ -79,9 +79,9 @@ namespace Evernus
             avgVolumeColumn,
             dstVolumeColumn,
             relativeDstVolumeColumn,
-            dstPriceColumn,
             srcPriceColumn,
             importPriceColumn,
+            dstPriceColumn,
             marginColumn,
 
             numColumns
