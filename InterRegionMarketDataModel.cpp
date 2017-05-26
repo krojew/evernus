@@ -20,6 +20,9 @@
 #include <QColor>
 #include <QIcon>
 
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/statistics/mean.hpp>
+#include <boost/accumulators/accumulators.hpp>
 #include <boost/range/adaptor/reversed.hpp>
 
 #include "MarketAnalysisSettings.h"
@@ -30,6 +33,8 @@
 #include "TextUtils.h"
 
 #include "InterRegionMarketDataModel.h"
+
+using namespace boost::accumulators;
 
 namespace Evernus
 {
@@ -243,20 +248,22 @@ namespace Evernus
             for (const auto type : regionHistory.second)
             {
                 AggrTypeData data;
-                auto avgPrice30 = 0.;
+
+                accumulator_set<quint64, stats<tag::mean>> volumeAcc;
+                accumulator_set<double, stats<tag::mean>> priceAcc;
 
                 for (const auto &timePoint : boost::adaptors::reverse(type.second))
                 {
                     if (timePoint.first < historyLimit)
                         break;
 
-                    data.mVolume += timePoint.second.mVolume;
-                    avgPrice30 += timePoint.second.mAvgPrice;
+                    volumeAcc(timePoint.second.mVolume);
+                    priceAcc(timePoint.second.mAvgPrice);
                 }
 
-                avgPrice30 /= 30.;
+                const auto avgPrice30 = mean(priceAcc);
 
-                data.mVolume /= 30;
+                data.mVolume = mean(volumeAcc);
                 data.mBuyPrice = MathUtils::calcPercentile(buyOrders[regionHistory.first][type.first],
                                                            buyVolumes[regionHistory.first][type.first] * 0.05,
                                                            avgPrice30,
