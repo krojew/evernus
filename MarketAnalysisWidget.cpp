@@ -253,6 +253,7 @@ namespace Evernus
         mHistory = std::make_shared<MarketAnalysisDataFetcher::HistoryResultType::element_type>();
 
         mInterRegionAnalysisWidget->clearData();
+        mImportingAnalysisWidget->clearData();
 
         if (!mDataFetcher.hasPendingOrderRequests() && !mDataFetcher.hasPendingHistoryRequests())
         {

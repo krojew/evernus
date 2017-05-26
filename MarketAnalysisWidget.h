@@ -83,9 +83,6 @@ namespace Evernus
         void endHistoryTask(const MarketAnalysisDataFetcher::HistoryResultType &history, const QString &error);
 
     private:
-        static const auto waitingLabelIndex = 0;
-        static const auto allRegionsIndex = 0;
-
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
         const MarketOrderRepository &mOrderRepo;

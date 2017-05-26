@@ -394,4 +394,11 @@ namespace Evernus
             data.mProjectedProfit = data.mAvgVolume * data.mPriceDifference;
         }
     }
+
+    void ImportingDataModel::reset()
+    {
+        beginResetModel();
+        mData.clear();
+        endResetModel();
+    }
 }

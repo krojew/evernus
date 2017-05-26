@@ -55,6 +55,7 @@ namespace Evernus
 
         void setCharacter(const std::shared_ptr<Character> &character);
         void recalculateData();
+        void clearData();
 
         ImportingAnalysisWidget &operator =(const ImportingAnalysisWidget &) = default;
         ImportingAnalysisWidget &operator =(ImportingAnalysisWidget &&) = default;

@@ -221,6 +221,11 @@ namespace Evernus
         mDataStack->setCurrentWidget(mDataView);
     }
 
+    void ImportingAnalysisWidget::clearData()
+    {
+        mDataModel.reset();
+    }
+
     void ImportingAnalysisWidget::copyRows() const
     {
         ModelUtils::copyRowsToClipboard(mDataView->selectionModel()->selectedIndexes(), mDataProxy);

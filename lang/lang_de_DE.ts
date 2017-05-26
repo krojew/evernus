@@ -2618,7 +2618,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="58"/>
-        <location filename="../ImportingAnalysisWidget.cpp" line="261"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="266"/>
         <source>- no station -</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2674,12 +2674,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="267"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="272"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="267"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="272"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3548,27 +3548,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="263"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="264"/>
         <source>Importing data for analysis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="265"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="266"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="266"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="267"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="269"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="270"/>
         <source>Making %1 ESI history requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="324"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="325"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>

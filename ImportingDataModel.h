@@ -69,6 +69,8 @@ namespace Evernus
                           int aggrDays,
                           double pricePerM3);
 
+        void reset();
+
         ImportingDataModel &operator =(const ImportingDataModel &) = default;
         ImportingDataModel &operator =(ImportingDataModel &&) = default;
 
