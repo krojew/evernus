@@ -260,6 +260,8 @@ add_executable(
     DeviationSourceWidget.h
     DoubleTypeAggregatedDetailsWidget.cpp
     DoubleTypeAggregatedDetailsWidget.h
+    DoubleTypeCompareWidget.cpp
+    DoubleTypeCompareWidget.h
     Entity.h
     ESIIndividualExternalOrderImporter.cpp
     ESIIndividualExternalOrderImporter.h
@@ -338,6 +340,8 @@ add_executable(
     InterRegionMarketDataFilterProxyModel.h
     InterRegionMarketDataModel.cpp
     InterRegionMarketDataModel.h
+    InterRegionTypeDetailsWidget.cpp
+    InterRegionTypeDetailsWidget.h
     IssuedContractModel.cpp
     IssuedContractModel.h
     Item.cpp
@@ -418,6 +422,7 @@ add_executable(
     MarketGroup.h
     MarketGroupRepository.cpp
     MarketGroupRepository.h
+    MarketHistory.h
     MarketHistoryEntry.h
     MarketLogExternalOrderImporter.cpp
     MarketLogExternalOrderImporter.h

@@ -23,8 +23,8 @@
 
 namespace Evernus
 {
-    DoubleTypeAggregatedDetailsWidget::DoubleTypeAggregatedDetailsWidget(History firstHistory,
-                                                                         History secondHistory,
+    DoubleTypeAggregatedDetailsWidget::DoubleTypeAggregatedDetailsWidget(MarketHistory firstHistory,
+                                                                         MarketHistory secondHistory,
                                                                          const QString &firstInfo,
                                                                          const QString &secondInfo,
                                                                          QWidget *parent,

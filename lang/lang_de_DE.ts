@@ -1440,22 +1440,22 @@ Total: %7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DateFilteredPlotWidget.cpp" line="117"/>
+        <location filename="../DateFilteredPlotWidget.cpp" line="118"/>
         <source>Save plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DateFilteredPlotWidget.cpp" line="117"/>
+        <location filename="../DateFilteredPlotWidget.cpp" line="118"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp *.ppm *.xbm *.xpm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DateFilteredPlotWidget.cpp" line="122"/>
+        <location filename="../DateFilteredPlotWidget.cpp" line="123"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DateFilteredPlotWidget.cpp" line="122"/>
+        <location filename="../DateFilteredPlotWidget.cpp" line="123"/>
         <source>Error saving image.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1553,6 +1553,14 @@ Total: %7</source>
     <message>
         <location filename="../DeviationSourceWidget.cpp" line="50"/>
         <source>Uses given fixed value as reference.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::DoubleTypeCompareWidget</name>
+    <message>
+        <location filename="../DoubleTypeCompareWidget.cpp" line="67"/>
+        <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2873,6 +2881,19 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="156"/>
         <source>Margin</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::InterRegionTypeDetailsWidget</name>
+    <message>
+        <location filename="../InterRegionTypeDetailsWidget.cpp" line="43"/>
+        <source>Individual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../InterRegionTypeDetailsWidget.cpp" line="50"/>
+        <source>Combined</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -21,7 +21,7 @@
 
 #include <QAbstractTableModel>
 
-#include "MarketHistoryEntry.h"
+#include "MarketHistory.h"
 #include "Character.h"
 #include "PriceType.h"
 #include "EveType.h"
@@ -41,7 +41,7 @@ namespace Evernus
     public:
         template<class T>
         using TypeMap = std::unordered_map<EveType::IdType, T>;
-        using HistoryMap = TypeMap<std::map<QDate, MarketHistoryEntry>>;
+        using HistoryMap = TypeMap<MarketHistory>;
 
         explicit TypeAggregatedMarketDataModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
         virtual ~TypeAggregatedMarketDataModel() = default;

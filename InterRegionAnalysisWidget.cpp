@@ -34,7 +34,7 @@
 #include <QLabel>
 #include <QDebug>
 
-#include "DoubleTypeAggregatedDetailsWidget.h"
+#include "InterRegionTypeDetailsWidget.h"
 #include "MarketAnalysisSettings.h"
 #include "StationSelectDialog.h"
 #include "AdjustableTableView.h"
@@ -387,15 +387,15 @@ namespace Evernus
         const auto dstIt = dstHistory->find(id);
         if (srcIt != std::end(*srcHistory) || dstIt != std::end(*dstHistory))
         {
-            auto widget = new DoubleTypeAggregatedDetailsWidget{srcIt->second,
-                                                                dstIt->second,
-                                                                mDataProvider.getRegionName(srcRegion),
-                                                                mDataProvider.getRegionName(dstRegion),
-                                                                this,
-                                                                Qt::Window};
+            auto widget = new InterRegionTypeDetailsWidget{srcIt->second,
+                                                           dstIt->second,
+                                                           mDataProvider.getRegionName(srcRegion),
+                                                           mDataProvider.getRegionName(dstRegion),
+                                                           this,
+                                                           Qt::Window};
             widget->setWindowTitle(mDataProvider.getTypeName(id));
             widget->show();
-            connect(this, &InterRegionAnalysisWidget::preferencesChanged, widget, &DoubleTypeAggregatedDetailsWidget::handleNewPreferences);
+            connect(this, &InterRegionAnalysisWidget::preferencesChanged, widget, &InterRegionTypeDetailsWidget::handleNewPreferences);
         }
     }
 

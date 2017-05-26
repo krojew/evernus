@@ -14,13 +14,10 @@
  */
 #pragma once
 
-#include <map>
-
 #include <QString>
-#include <QDate>
 
 #include "SizeRememberingWidget.h"
-#include "MarketHistoryEntry.h"
+#include "MarketHistory.h"
 
 class QCPFinancial;
 class QCustomPlot;
@@ -39,10 +36,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        using History = std::map<QDate, MarketHistoryEntry>;
-
-        DoubleTypeAggregatedDetailsWidget(History firstHistory,
-                                          History secondHistory,
+        DoubleTypeAggregatedDetailsWidget(MarketHistory firstHistory,
+                                          MarketHistory secondHistory,
                                           const QString &firstInfo,
                                           const QString &secondInfo,
                                           QWidget *parent = nullptr,

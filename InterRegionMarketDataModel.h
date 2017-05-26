@@ -22,7 +22,7 @@
 #include <QAbstractTableModel>
 #include <QDate>
 
-#include "MarketHistoryEntry.h"
+#include "MarketHistory.h"
 #include "Character.h"
 #include "PriceType.h"
 #include "EveType.h"
@@ -44,7 +44,7 @@ namespace Evernus
         using TypeMap = std::unordered_map<EveType::IdType, T>;
         template<class T>
         using RegionMap = std::unordered_map<uint, T>;
-        using HistoryTypeMap = TypeMap<std::map<QDate, MarketHistoryEntry>>;
+        using HistoryTypeMap = TypeMap<MarketHistory>;
         using HistoryRegionMap = RegionMap<HistoryTypeMap>;
 
         explicit InterRegionMarketDataModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
