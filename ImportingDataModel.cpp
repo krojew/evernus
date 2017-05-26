@@ -75,6 +75,9 @@ namespace Evernus
                 case dstVolumeColumn:
                     return locale.toString(data.mDstVolume);
                 case relativeDstVolumeColumn:
+                    if (qFuzzyIsNull(data.mAvgVolume))
+                        return QStringLiteral("0%1").arg(locale.percent());
+
                     return QStringLiteral("%1%2").arg(locale.toString(data.mDstVolume * 100 / data.mAvgVolume, 'f', 2)).arg(locale.percent());
                 case dstPriceColumn:
                     return TextUtils::currencyToString(data.mDstPrice, locale);
@@ -100,6 +103,9 @@ namespace Evernus
             case dstVolumeColumn:
                 return data.mDstVolume;
             case relativeDstVolumeColumn:
+                if (qFuzzyIsNull(data.mAvgVolume))
+                    return 0;
+
                 return data.mDstVolume * 100 / data.mAvgVolume;
             case dstPriceColumn:
                 return data.mDstPrice;

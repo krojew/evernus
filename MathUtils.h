@@ -31,7 +31,7 @@ namespace Evernus
                               double bogusOrderThreshold)
         {
             if (orders.empty())
-                return avgPrice;
+                return (std::isnan(avgPrice)) ? (0.) : (avgPrice);
 
             if (maxVolume == 0)
                 maxVolume = 1;
