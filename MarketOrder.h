@@ -19,6 +19,7 @@
 #include <QDateTime>
 #include <QColor>
 
+#include "PriceType.h"
 #include "Character.h"
 #include "EveType.h"
 #include "Entity.h"
@@ -39,15 +40,10 @@ namespace Evernus
             CharacterDeleted,
         };
 
-        enum class Type
-        {
-            Buy,
-            Sell
-        };
-
         static const auto characterAccountKey = 1000;
 
         using CutomLocationType = boost::optional<quint64>;
+        using Type = PriceType;
 
         using Entity::Entity;
 
