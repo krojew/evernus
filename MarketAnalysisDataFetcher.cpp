@@ -164,6 +164,7 @@ namespace Evernus
             });
 
             regions.insert(pair.second);
+            processEvents();
         }
 
         mOrderCounter.setCount(regions.size());
