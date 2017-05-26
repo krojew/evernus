@@ -2687,38 +2687,43 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ImportingDataModel</name>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="114"/>
+        <location filename="../ImportingDataModel.cpp" line="122"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="116"/>
+        <location filename="../ImportingDataModel.cpp" line="124"/>
         <source>Avg. dst. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="118"/>
+        <location filename="../ImportingDataModel.cpp" line="126"/>
         <source>Dst. remaining volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="120"/>
+        <location filename="../ImportingDataModel.cpp" line="128"/>
         <source>Relative dst. remaining volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="122"/>
+        <location filename="../ImportingDataModel.cpp" line="130"/>
         <source>5% volume destination price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="124"/>
+        <location filename="../ImportingDataModel.cpp" line="132"/>
         <source>5% volume source price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="126"/>
+        <location filename="../ImportingDataModel.cpp" line="134"/>
         <source>Import price (src. price + price per m³)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="136"/>
+        <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

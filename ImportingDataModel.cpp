@@ -19,6 +19,7 @@
 #include <QCoreApplication>
 #include <QSettings>
 #include <QLocale>
+#include <QColor>
 
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
@@ -80,6 +81,8 @@ namespace Evernus
                     return TextUtils::currencyToString(data.mSrcPrice, locale);
                 case importPriceColumn:
                     return TextUtils::currencyToString(data.mImportPrice, locale);
+                case marginColumn:
+                    return QStringLiteral("%1%2").arg(locale.toString(data.mMargin, 'f', 2)).arg(locale.percent());
                 }
             }
             break;
@@ -99,7 +102,13 @@ namespace Evernus
                 return data.mSrcPrice;
             case importPriceColumn:
                 return data.mImportPrice;
+            case marginColumn:
+                return data.mMargin;
             }
+            break;
+        case Qt::ForegroundRole:
+            if (column == marginColumn)
+                return TextUtils::getMarginColor(data.mMargin);
         }
 
         return QVariant{};
@@ -124,6 +133,8 @@ namespace Evernus
                 return tr("5% volume source price");
             case importPriceColumn:
                 return tr("Import price (src. price + price per m³)");
+            case marginColumn:
+                return tr("Margin");
             }
         }
 
@@ -358,6 +369,7 @@ namespace Evernus
             }
 
             data.mImportPrice = data.mSrcPrice + mDataProvider.getTypeVolume(data.mId) * pricePerM3;
+            data.mMargin = (qFuzzyIsNull(data.mDstPrice)) ? (0.) : (100. * (data.mDstPrice - data.mSrcPrice) / data.mDstPrice);
         }
     }
 }
