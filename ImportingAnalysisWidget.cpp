@@ -86,7 +86,7 @@ namespace Evernus
         mAnalysisDaysEdit = new QSpinBox{this};
         toolBarLayout->addWidget(mAnalysisDaysEdit);
         mAnalysisDaysEdit->setRange(1, 365);
-        mAnalysisDaysEdit->setSuffix(tr("days"));
+        mAnalysisDaysEdit->setSuffix(tr(" days"));
         mAnalysisDaysEdit->setValue(
             settings.value(MarketAnalysisSettings::importingAnalysisDaysKey, MarketAnalysisSettings::importingAnalysisDaysDefault).toInt());
 
@@ -95,7 +95,7 @@ namespace Evernus
         mAggrDaysEdit = new QSpinBox{this};
         toolBarLayout->addWidget(mAggrDaysEdit);
         mAggrDaysEdit->setRange(1, 365);
-        mAggrDaysEdit->setSuffix(tr("days"));
+        mAggrDaysEdit->setSuffix(tr(" days"));
         mAggrDaysEdit->setValue(
             settings.value(MarketAnalysisSettings::importingAggrDaysKey, MarketAnalysisSettings::importingAggrDaysDefault).toInt());
 
@@ -104,13 +104,14 @@ namespace Evernus
         mPricePerM3 = new QDoubleSpinBox{this};
         toolBarLayout->addWidget(mPricePerM3);
         mPricePerM3->setMaximum(std::numeric_limits<double>::max());
+        mPricePerM3->setSuffix(QStringLiteral("ISK"));
         mPricePerM3->setValue(settings.value(MarketAnalysisSettings::importingPricePerM3Key).toDouble());
 
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
         connect(filterBtn, &QPushButton::clicked, this, &ImportingAnalysisWidget::recalculateData);
 
-        toolBarLayout->addWidget(new QLabel{tr("Press \"Apply\" to show results. \"Show in EVE\" is available via the right-click menu."), this});
+        toolBarLayout->addWidget(new QLabel{tr("Press \"Apply\" to show results. Additional actions are available via the right-click menu."), this});
 
         mDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mDataStack);

@@ -225,7 +225,7 @@ namespace Evernus
         toolBarLayout->addWidget(filterBtn);
         connect(filterBtn, &QPushButton::clicked, this, &InterRegionAnalysisWidget::applyInterRegionFilter);
 
-        toolBarLayout->addWidget(new QLabel{tr("Press \"Apply\" to show results. \"Show in EVE\" is available via the right-click menu."), this});
+        toolBarLayout->addWidget(new QLabel{tr("Press \"Apply\" to show results. Additional actions are available via the right-click menu."), this});
 
         mInterRegionDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mInterRegionDataStack);
