@@ -74,6 +74,7 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
         const MarketDataProvider &mMarketDataProvider;
 
+        QSpinBox *mAnalysisDaysEdit = nullptr;
         QSpinBox *mAggrDaysEdit = nullptr;
         QStackedWidget *mDataStack = nullptr;
         AdjustableTableView *mDataView = nullptr;

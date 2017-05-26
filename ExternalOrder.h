@@ -19,6 +19,7 @@
 #include <QStringList>
 #include <QDateTime>
 
+#include "PriceType.h"
 #include "ItemData.h"
 #include "Entity.h"
 
@@ -28,12 +29,23 @@ namespace Evernus
         : public Entity<quint64>
     {
     public:
-        typedef ItemData::TypeIdType TypeIdType;
+        using TypeIdType = ItemData::TypeIdType;
+        using Type = PriceType;
 
-        enum class Type
+        struct LowToHigh
         {
-            Buy,
-            Sell
+            inline bool operator ()(const ExternalOrder &a, const ExternalOrder &b) const noexcept
+            {
+                return a.getPrice() < b.getPrice();
+            }
+        };
+
+        struct HighToLow
+        {
+            inline bool operator ()(const ExternalOrder &a, const ExternalOrder &b) const noexcept
+            {
+                return a.getPrice() > b.getPrice();
+            }
         };
 
         using Entity::Entity;

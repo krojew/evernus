@@ -2612,58 +2612,69 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ImportingAnalysisWidget</name>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="49"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="53"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="52"/>
-        <location filename="../ImportingAnalysisWidget.cpp" line="199"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="56"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="243"/>
         <source>- no station -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="70"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="74"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="78"/>
-        <source>Aggregate:</source>
+        <location filename="../ImportingAnalysisWidget.cpp" line="82"/>
+        <source>Analysis period:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="83"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="87"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="96"/>
         <source>days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="86"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="91"/>
+        <source>Aggregate over:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="100"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="93"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="104"/>
+        <source>Press &quot;Apply&quot; to show results. &quot;Show in EVE&quot; is available via the right-click menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="114"/>
         <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="104"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="140"/>
         <source>Show in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="109"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="145"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="203"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="249"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="203"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="249"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2671,8 +2682,33 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ImportingDataModel</name>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="48"/>
+        <location filename="../ImportingDataModel.cpp" line="110"/>
         <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="112"/>
+        <source>Avg. dst. volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="114"/>
+        <source>Dst. remaining volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="116"/>
+        <source>Relative dst. remaining volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="118"/>
+        <source>5% volume destination price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="120"/>
+        <source>5% volume source price</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2680,7 +2716,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     <name>Evernus::InterRegionAnalysisWidget</name>
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="81"/>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="442"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="443"/>
         <source>- any station -</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2737,27 +2773,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="264"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="265"/>
         <source>Show details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="269"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="270"/>
         <source>Show in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="274"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="275"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="446"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="447"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="446"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="447"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2765,52 +2801,52 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::InterRegionMarketDataModel</name>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="115"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="120"/>
         <source>Double-click for detailed market information.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="135"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="140"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="137"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="142"/>
         <source>Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="139"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="144"/>
         <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="141"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="146"/>
         <source>5% volume source price (b/s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="143"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="148"/>
         <source>Destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="145"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="150"/>
         <source>5% volume destination price (b/s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="147"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="152"/>
         <source>Best difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="149"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="154"/>
         <source>30-day avg. min. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="151"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="156"/>
         <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>

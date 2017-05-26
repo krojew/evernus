@@ -12,7 +12,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
+
 #include <QStackedWidget>
+#include <QProgressBar>
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -76,13 +79,23 @@ namespace Evernus
             changeStation(mDstStation, *stationBtn, MarketAnalysisSettings::dstImportStationKey);
         });
 
-        toolBarLayout->addWidget(new QLabel{tr("Aggregate:"), this});
+        toolBarLayout->addWidget(new QLabel{tr("Analysis period:"), this});
+
+        mAnalysisDaysEdit = new QSpinBox{this};
+        toolBarLayout->addWidget(mAnalysisDaysEdit);
+        mAnalysisDaysEdit->setRange(1, 365);
+        mAnalysisDaysEdit->setSuffix(tr("days"));
+        mAnalysisDaysEdit->setValue(
+            settings.value(MarketAnalysisSettings::importingAnalysisDaysKey, MarketAnalysisSettings::importingAnalysisDaysDefault).toInt());
+
+        toolBarLayout->addWidget(new QLabel{tr("Aggregate over:"), this});
 
         mAggrDaysEdit = new QSpinBox{this};
         toolBarLayout->addWidget(mAggrDaysEdit);
         mAggrDaysEdit->setRange(1, 365);
         mAggrDaysEdit->setSuffix(tr("days"));
-        mAggrDaysEdit->setValue(settings.value(MarketAnalysisSettings::importingAggrDaysKey, MarketAnalysisSettings::importingAggrDaysDefault).toInt());
+        mAggrDaysEdit->setValue(
+            settings.value(MarketAnalysisSettings::importingAggrDaysKey, MarketAnalysisSettings::importingAggrDaysDefault).toInt());
 
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
@@ -93,9 +106,20 @@ namespace Evernus
         mDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mDataStack);
 
+        auto waitingWidget = new QWidget{this};
+
+        auto waitingLayout = new QVBoxLayout{waitingWidget};
+        waitingLayout->setAlignment(Qt::AlignCenter);
+
         auto waitingLabel = new QLabel{tr("Calculating data..."), this};
-        mDataStack->addWidget(waitingLabel);
+        waitingLayout->addWidget(waitingLabel);
         waitingLabel->setAlignment(Qt::AlignCenter);
+
+        auto waitingProgress = new QProgressBar{this};
+        waitingLayout->addWidget(waitingProgress);
+        waitingProgress->setRange(0, 0);
+
+        mDataStack->addWidget(waitingWidget);
 
         mDataProxy.setSortRole(Qt::UserRole);
         mDataProxy.setSourceModel(&mDataModel);
@@ -165,13 +189,16 @@ namespace Evernus
         if (orders == nullptr)
             return;
 
+        const auto analysisDays = mAnalysisDaysEdit->value();
+
         mDataModel.setOrderData(*orders,
                                 *history,
                                 mSrcStation,
                                 mDstStation,
                                 mSrcPriceType,
                                 mDstPriceType,
-                                mAggrDaysEdit->value());
+                                analysisDays,
+                                std::min(analysisDays, mAggrDaysEdit->value()));
 
         mDataStack->setCurrentWidget(mDataView);
     }

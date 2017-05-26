@@ -63,8 +63,9 @@ namespace Evernus
                           const HistoryRegionMap &history,
                           quint64 srcStation,
                           quint64 dstStation,
-                          PriceType srcType,
-                          PriceType dstType,
+                          PriceType srcPriceType,
+                          PriceType dstPriceType,
+                          int analysisDays,
                           int aggrDays);
 
         ImportingDataModel &operator =(const ImportingDataModel &) = default;
@@ -75,8 +76,10 @@ namespace Evernus
         {
             nameColumn,
             avgVolumeColumn,
-            dstVolume,
-            relativeDstVolume,
+            dstVolumeColumn,
+            relativeDstVolumeColumn,
+            dstPriceColumn,
+            srcPriceColumn,
 
             numColumns
         };
@@ -86,6 +89,8 @@ namespace Evernus
             EveType::IdType mId = EveType::invalidId;
             double mAvgVolume = 0.;
             quint64 mDstVolume = 0;
+            double mDstPrice = 0.;
+            double mSrcPrice = 0.;
         };
 
         const EveDataProvider &mDataProvider;

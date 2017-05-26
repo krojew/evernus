@@ -31,6 +31,7 @@ namespace Evernus
         const auto bogusOrderThresholdDefault = 0.9;
         const auto useSkillsForDifferenceDefault = false;
         const auto importingAggrDaysDefault = 7;
+        const auto importingAnalysisDaysDefault = 180;
 
         const auto dontSaveLargeOrdersKey = QStringLiteral("marketAnalysis/dontSaveOrders");
         const auto minVolumeFilterKey = QStringLiteral("marketAnalysis/filter/minVolume");
@@ -58,5 +59,6 @@ namespace Evernus
         const auto srcImportStationKey = QStringLiteral("marketAnalysis/importing/srcStation");
         const auto dstImportStationKey = QStringLiteral("marketAnalysis/importing/dstStation");
         const auto importingAggrDaysKey = QStringLiteral("marketAnalysis/importing/aggrDays");
+        const auto importingAnalysisDaysKey = QStringLiteral("marketAnalysis/importing/analysisDays");
     }
 }

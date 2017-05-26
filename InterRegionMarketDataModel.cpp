@@ -180,24 +180,8 @@ namespace Evernus
         mSrcPriceType = srcType;
         mDstPriceType = dstType;
 
-        struct LowToHigh
-        {
-            bool operator ()(const ExternalOrder &a, const ExternalOrder &b) const noexcept
-            {
-                return a.getPrice() < b.getPrice();
-            }
-        };
-
-        struct HighToLow
-        {
-            bool operator ()(const ExternalOrder &a, const ExternalOrder &b) const noexcept
-            {
-                return a.getPrice() > b.getPrice();
-            }
-        };
-
-        RegionMap<TypeMap<std::multiset<std::reference_wrapper<const ExternalOrder>, LowToHigh>>> sellOrders;
-        RegionMap<TypeMap<std::multiset<std::reference_wrapper<const ExternalOrder>, HighToLow>>> buyOrders;
+        RegionMap<TypeMap<std::multiset<std::reference_wrapper<const ExternalOrder>, ExternalOrder::LowToHigh>>> sellOrders;
+        RegionMap<TypeMap<std::multiset<std::reference_wrapper<const ExternalOrder>, ExternalOrder::HighToLow>>> buyOrders;
 
         RegionMap<TypeMap<quint64>> sellVolumes, buyVolumes;
 

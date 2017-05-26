@@ -13,18 +13,30 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <type_traits>
+#include <future>
+#include <set>
 
 #include <QCoreApplication>
+#include <QSettings>
 #include <QLocale>
 
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/statistics/mean.hpp>
+#include <boost/accumulators/accumulators.hpp>
+#include <boost/range/adaptor/reversed.hpp>
 #include <boost/range/adaptor/filtered.hpp>
 #include <boost/scope_exit.hpp>
 
+#include "MarketAnalysisSettings.h"
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
+#include "PriceUtils.h"
+#include "TextUtils.h"
 #include "MathUtils.h"
 
 #include "ImportingDataModel.h"
+
+using namespace boost::accumulators;
 
 namespace Evernus
 {
@@ -58,10 +70,14 @@ namespace Evernus
                     return mDataProvider.getTypeName(data.mId);
                 case avgVolumeColumn:
                     return locale.toString(data.mAvgVolume);
-                case dstVolume:
+                case dstVolumeColumn:
                     return locale.toString(data.mDstVolume);
-                case relativeDstVolume:
+                case relativeDstVolumeColumn:
                     return QStringLiteral("%1%2").arg(locale.toString(data.mDstVolume * 100 / data.mAvgVolume, 'f', 2)).arg(locale.percent());
+                case dstPriceColumn:
+                    return TextUtils::currencyToString(data.mDstPrice, locale);
+                case srcPriceColumn:
+                    return TextUtils::currencyToString(data.mSrcPrice, locale);
                 }
             }
             break;
@@ -71,10 +87,14 @@ namespace Evernus
                 return mDataProvider.getTypeName(data.mId);
             case avgVolumeColumn:
                 return data.mAvgVolume;
-            case dstVolume:
+            case dstVolumeColumn:
                 return data.mDstVolume;
-            case relativeDstVolume:
+            case relativeDstVolumeColumn:
                 return data.mDstVolume * 100 / data.mAvgVolume;
+            case dstPriceColumn:
+                return data.mDstPrice;
+            case srcPriceColumn:
+                return data.mSrcPrice;
             }
         }
 
@@ -90,10 +110,14 @@ namespace Evernus
                 return tr("Name");
             case avgVolumeColumn:
                 return tr("Avg. dst. volume");
-            case dstVolume:
+            case dstVolumeColumn:
                 return tr("Dst. remaining volume");
-            case relativeDstVolume:
+            case relativeDstVolumeColumn:
                 return tr("Relative dst. remaining volume");
+            case dstPriceColumn:
+                return tr("5% volume destination price");
+            case srcPriceColumn:
+                return tr("5% volume source price");
             }
         }
 
@@ -134,8 +158,9 @@ namespace Evernus
                                           const HistoryRegionMap &history,
                                           quint64 srcStation,
                                           quint64 dstStation,
-                                          PriceType srcType,
-                                          PriceType dstType,
+                                          PriceType srcPriceType,
+                                          PriceType dstPriceType,
+                                          int analysisDays,
                                           int aggrDays)
     {
         beginResetModel();
@@ -150,32 +175,68 @@ namespace Evernus
         if (dstHistory == std::end(history))
             return;
 
+        const auto srcHistory = history.find(mDataProvider.getStationRegionId(srcStation));
+        if (srcHistory == std::end(history))
+            return;
+
         struct TypeData
         {
-            quint64 mVolume = 0;
-            double mSellPrice = 0.;
+            quint64 mTotalVolume = 0;
+            double mDstPrice = 0.;
+            double mSrcPrice = 0.;
         };
 
         TypeMap<TypeData> typeMap;
-        TypeMap<quint64> sellVolumes;
-        TypeMap<std::vector<std::reference_wrapper<const ExternalOrder>>> sellOrders;
+        TypeMap<quint64> srcVolumes, dstVolumes, dstSellVolumes;
+        TypeMap<std::multiset<std::reference_wrapper<const ExternalOrder>, ExternalOrder::LowToHigh>> dstOrders;
+        TypeMap<std::multiset<std::reference_wrapper<const ExternalOrder>, ExternalOrder::HighToLow>> srcOrders;
 
-        const auto dstOrderFilter = [=](const auto &order) {
-            return order.getStationId() == dstStation;
-        };
+        // gather prices and volumes from dst orders - we need those to calculate percentile dst price
+        auto dstFuture = std::async(std::launch::async, [&] {
+            const auto dstOrderFilter = [=](const auto &order) {
+                return order.getStationId() == dstStation;
+            };
 
-        for (const auto &order : orders | boost::adaptors::filtered(dstOrderFilter))
-        {
-            const auto typeId = order.getTypeId();
-            if (order.getType() == ExternalOrder::Type::Sell)
+            for (const auto &order : orders | boost::adaptors::filtered(dstOrderFilter))
             {
-                sellOrders[typeId].emplace_back(std::cref(order));
-                sellVolumes[typeId] += order.getVolumeRemaining();
+                const auto typeId = order.getTypeId();
+                const auto type = order.getType();
 
-                QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+                if (dstPriceType == type)
+                {
+                    dstOrders[typeId].emplace(std::cref(order));
+                    dstVolumes[typeId] += order.getVolumeRemaining();
+                }
+
+                if (type == ExternalOrder::Type::Sell)
+                    dstSellVolumes[typeId] += order.getVolumeRemaining();
             }
-        }
+        });
 
+        // gather prices and volumes from src orders - we need those to calculate percentile src price
+        auto srcFuture = std::async(std::launch::async, [&] {
+            const auto srcOrderFilter = [=](const auto &order) {
+                return order.getStationId() == srcStation && srcPriceType == order.getType();
+            };
+
+            for (const auto &order : orders | boost::adaptors::filtered(srcOrderFilter))
+            {
+                const auto typeId = order.getTypeId();
+                srcOrders[typeId].emplace(std::cref(order));
+                srcVolumes[typeId] += order.getVolumeRemaining();
+            }
+        });
+
+        const auto historyLimit = QDate::currentDate().addDays(-analysisDays);
+
+        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        dstFuture.get();
+        srcFuture.get();
+
+        const auto volumePercentile = 0.05;
+
+        // fill our type map with order data
         for (const auto &order : orders)
         {
             const auto typeId = order.getTypeId();
@@ -184,31 +245,84 @@ namespace Evernus
                 continue;
 
             auto &data = typeMap[typeId];
-            auto avgPrice = 0.;
 
+            accumulator_set<double, stats<tag::mean>> dstPriceAcc;
+            accumulator_set<double, stats<tag::mean>> srcPriceAcc;
+
+            // go through dst history to calculate avg price and total trade volume
             const auto dstTypeHistory = dstHistory->second.find(typeId);
-            if (dstTypeHistory != std::end(dstHistory->second) && !dstTypeHistory->second.empty())
+            if (dstTypeHistory != std::end(dstHistory->second))
             {
-//                for (const auto &timePoint : dstTypeHistory->second)
-//                {
-//                    if (timePoint.first < historyLimit)
-//                        break;
-//
-//                    data.mVolume += timePoint.second.mVolume;
-//                    avgPrice += timePoint.second.mAvgPrice;
-//                }
-//
-//                avgPrice /= aggrDays;
+                for (const auto &timePoint : boost::adaptors::reverse(dstTypeHistory->second))
+                {
+                    if (timePoint.first < historyLimit)
+                        break;
+
+                    data.mTotalVolume += timePoint.second.mVolume;
+                    dstPriceAcc(timePoint.second.mAvgPrice);
+                }
             }
 
-            data.mSellPrice = MathUtils::calcPercentile(sellOrders[typeId],
-                                                        sellVolumes[typeId] * 0.05,
-                                                        avgPrice,
-                                                        mDiscardBogusOrders,
-                                                        mBogusOrderThreshold);
+            const auto srcTypeHistory = srcHistory->second.find(typeId);
+            if (srcTypeHistory != std::end(srcHistory->second))
+            {
+                for (const auto &timePoint : boost::adaptors::reverse(srcTypeHistory->second))
+                {
+                    if (timePoint.first < historyLimit)
+                        break;
+
+                    srcPriceAcc(timePoint.second.mAvgPrice);
+                }
+            }
+
+            // dst orders are by default sorted from lowest price, which means we need to reverse them if we
+            // want to sell to buy orders, which are highest first
+            if (dstPriceType == PriceType::Sell)
+            {
+                data.mDstPrice = MathUtils::calcPercentile(dstOrders[typeId],
+                                                           dstVolumes[typeId] * volumePercentile,
+                                                           mean(dstPriceAcc),
+                                                           mDiscardBogusOrders,
+                                                           mBogusOrderThreshold);
+            }
+            else
+            {
+                data.mDstPrice = MathUtils::calcPercentile(boost::adaptors::reverse(dstOrders[typeId]),
+                                                           dstVolumes[typeId] * volumePercentile,
+                                                           mean(dstPriceAcc),
+                                                           mDiscardBogusOrders,
+                                                           mBogusOrderThreshold);
+            }
+
+            // same logic for src orders
+            if (srcPriceType == PriceType::Buy)
+            {
+                data.mSrcPrice = MathUtils::calcPercentile(srcOrders[typeId],
+                                                           srcVolumes[typeId] * volumePercentile,
+                                                           mean(srcPriceAcc),
+                                                           mDiscardBogusOrders,
+                                                           mBogusOrderThreshold);
+            }
+            else
+            {
+                data.mSrcPrice = MathUtils::calcPercentile(boost::adaptors::reverse(srcOrders[typeId]),
+                                                           srcVolumes[typeId] * volumePercentile,
+                                                           mean(srcPriceAcc),
+                                                           mDiscardBogusOrders,
+                                                           mBogusOrderThreshold);
+            }
 
             QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         }
+
+        PriceUtils::Taxes taxes;
+
+        QSettings settings;
+        const auto useSkillsForDifference = mCharacter && settings.value(
+            MarketAnalysisSettings::useSkillsForDifferenceKey, MarketAnalysisSettings::useSkillsForDifferenceDefault).toBool();
+
+        if (useSkillsForDifference)
+            taxes = PriceUtils::calculateTaxes(*mCharacter);
 
         mData.reserve(typeMap.size());
 
@@ -218,8 +332,23 @@ namespace Evernus
 
             auto &data = mData.back();
             data.mId = type.first;
-            data.mAvgVolume = static_cast<double>(type.second.mVolume) / aggrDays;
-            data.mDstVolume = sellVolumes[data.mId];
+            data.mAvgVolume = static_cast<double>(type.second.mTotalVolume) * aggrDays / analysisDays;
+            data.mDstVolume = dstSellVolumes[data.mId];
+
+            if (useSkillsForDifference)
+            {
+                data.mDstPrice = (dstPriceType == PriceType::Sell) ?
+                                 (PriceUtils::getRevenue(type.second.mDstPrice, taxes)) :
+                                 (PriceUtils::getRevenue(type.second.mDstPrice, taxes, false));
+                data.mSrcPrice = (srcPriceType == PriceType::Buy) ?
+                                 (PriceUtils::getCoS(type.second.mSrcPrice, taxes)) :
+                                 (PriceUtils::getCoS(type.second.mSrcPrice, taxes, false));
+            }
+            else
+            {
+                data.mDstPrice = type.second.mDstPrice;
+                data.mSrcPrice = type.second.mSrcPrice;
+            }
         }
     }
 }
