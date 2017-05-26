@@ -78,6 +78,8 @@ namespace Evernus
                     return TextUtils::currencyToString(data.mDstPrice, locale);
                 case srcPriceColumn:
                     return TextUtils::currencyToString(data.mSrcPrice, locale);
+                case importPriceColumn:
+                    return TextUtils::currencyToString(data.mImportPrice, locale);
                 }
             }
             break;
@@ -95,6 +97,8 @@ namespace Evernus
                 return data.mDstPrice;
             case srcPriceColumn:
                 return data.mSrcPrice;
+            case importPriceColumn:
+                return data.mImportPrice;
             }
         }
 
@@ -118,6 +122,8 @@ namespace Evernus
                 return tr("5% volume destination price");
             case srcPriceColumn:
                 return tr("5% volume source price");
+            case importPriceColumn:
+                return tr("Import price (src. price + price per m³)");
             }
         }
 
@@ -161,7 +167,8 @@ namespace Evernus
                                           PriceType srcPriceType,
                                           PriceType dstPriceType,
                                           int analysisDays,
-                                          int aggrDays)
+                                          int aggrDays,
+                                          double pricePerM3)
     {
         beginResetModel();
 
@@ -349,6 +356,8 @@ namespace Evernus
                 data.mDstPrice = type.second.mDstPrice;
                 data.mSrcPrice = type.second.mSrcPrice;
             }
+
+            data.mImportPrice = data.mSrcPrice + mDataProvider.getTypeVolume(data.mId) * pricePerM3;
         }
     }
 }

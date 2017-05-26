@@ -66,7 +66,8 @@ namespace Evernus
                           PriceType srcPriceType,
                           PriceType dstPriceType,
                           int analysisDays,
-                          int aggrDays);
+                          int aggrDays,
+                          double pricePerM3);
 
         ImportingDataModel &operator =(const ImportingDataModel &) = default;
         ImportingDataModel &operator =(ImportingDataModel &&) = default;
@@ -80,6 +81,7 @@ namespace Evernus
             relativeDstVolumeColumn,
             dstPriceColumn,
             srcPriceColumn,
+            importPriceColumn,
 
             numColumns
         };
@@ -91,6 +93,7 @@ namespace Evernus
             quint64 mDstVolume = 0;
             double mDstPrice = 0.;
             double mSrcPrice = 0.;
+            double mImportPrice = 0.;
         };
 
         const EveDataProvider &mDataProvider;

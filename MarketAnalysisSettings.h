@@ -60,5 +60,6 @@ namespace Evernus
         const auto dstImportStationKey = QStringLiteral("marketAnalysis/importing/dstStation");
         const auto importingAggrDaysKey = QStringLiteral("marketAnalysis/importing/aggrDays");
         const auto importingAnalysisDaysKey = QStringLiteral("marketAnalysis/importing/analysisDays");
+        const auto importingPricePerM3Key = QStringLiteral("marketAnalysis/importing/pricePerM3");
     }
 }

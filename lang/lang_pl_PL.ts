@@ -2612,69 +2612,74 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ImportingAnalysisWidget</name>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="53"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="55"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="56"/>
-        <location filename="../ImportingAnalysisWidget.cpp" line="243"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="58"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="260"/>
         <source>- no station -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="74"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="76"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="82"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="84"/>
         <source>Analysis period:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="87"/>
-        <location filename="../ImportingAnalysisWidget.cpp" line="96"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="89"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="98"/>
         <source>days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="91"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="93"/>
         <source>Aggregate over:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="100"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="102"/>
+        <source>Price per m³:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="109"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="104"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="113"/>
         <source>Press &quot;Apply&quot; to show results. &quot;Show in EVE&quot; is available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="114"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="123"/>
         <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="140"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="149"/>
         <source>Show in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="145"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="154"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="249"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="266"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="249"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="266"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2682,33 +2687,38 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ImportingDataModel</name>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="110"/>
+        <location filename="../ImportingDataModel.cpp" line="114"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="112"/>
+        <location filename="../ImportingDataModel.cpp" line="116"/>
         <source>Avg. dst. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="114"/>
+        <location filename="../ImportingDataModel.cpp" line="118"/>
         <source>Dst. remaining volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="116"/>
+        <location filename="../ImportingDataModel.cpp" line="120"/>
         <source>Relative dst. remaining volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="118"/>
+        <location filename="../ImportingDataModel.cpp" line="122"/>
         <source>5% volume destination price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="120"/>
+        <location filename="../ImportingDataModel.cpp" line="124"/>
         <source>5% volume source price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="126"/>
+        <source>Import price (src. price + price per m³)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

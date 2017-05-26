@@ -13,8 +13,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <algorithm>
+#include <limits>
 
 #include <QStackedWidget>
+#include <QDoubleSpinBox>
 #include <QProgressBar>
 #include <QHeaderView>
 #include <QVBoxLayout>
@@ -96,6 +98,13 @@ namespace Evernus
         mAggrDaysEdit->setSuffix(tr("days"));
         mAggrDaysEdit->setValue(
             settings.value(MarketAnalysisSettings::importingAggrDaysKey, MarketAnalysisSettings::importingAggrDaysDefault).toInt());
+
+        toolBarLayout->addWidget(new QLabel{tr("Price per m³:"), this});
+
+        mPricePerM3 = new QDoubleSpinBox{this};
+        toolBarLayout->addWidget(mPricePerM3);
+        mPricePerM3->setMaximum(std::numeric_limits<double>::max());
+        mPricePerM3->setValue(settings.value(MarketAnalysisSettings::importingPricePerM3Key).toDouble());
 
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
@@ -190,6 +199,13 @@ namespace Evernus
             return;
 
         const auto analysisDays = mAnalysisDaysEdit->value();
+        const auto aggrDays = mAggrDaysEdit->value();
+        const auto pricePerM3 = mPricePerM3->value();
+
+        QSettings settings;
+        settings.setValue(MarketAnalysisSettings::importingAnalysisDaysKey, analysisDays);
+        settings.setValue(MarketAnalysisSettings::importingAggrDaysKey, aggrDays);
+        settings.setValue(MarketAnalysisSettings::importingPricePerM3Key, pricePerM3);
 
         mDataModel.setOrderData(*orders,
                                 *history,
@@ -198,7 +214,8 @@ namespace Evernus
                                 mSrcPriceType,
                                 mDstPriceType,
                                 analysisDays,
-                                std::min(analysisDays, mAggrDaysEdit->value()));
+                                std::min(analysisDays, aggrDays),
+                                pricePerM3);
 
         mDataStack->setCurrentWidget(mDataView);
     }
