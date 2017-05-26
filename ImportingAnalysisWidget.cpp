@@ -87,6 +87,7 @@ namespace Evernus
         toolBarLayout->addWidget(mAnalysisDaysEdit);
         mAnalysisDaysEdit->setRange(1, 365);
         mAnalysisDaysEdit->setSuffix(tr(" days"));
+        mAnalysisDaysEdit->setToolTip(tr("The number of days going back from today, to use for analysis. If the destiantion has been in use for shorter time, be sure to adjust this accordingly."));
         mAnalysisDaysEdit->setValue(
             settings.value(MarketAnalysisSettings::importingAnalysisDaysKey, MarketAnalysisSettings::importingAnalysisDaysDefault).toInt());
 
@@ -96,6 +97,7 @@ namespace Evernus
         toolBarLayout->addWidget(mAggrDaysEdit);
         mAggrDaysEdit->setRange(1, 365);
         mAggrDaysEdit->setSuffix(tr(" days"));
+        mAggrDaysEdit->setToolTip(tr("The number of days to aggregate movement over. This should reflect how fast you want your stock to sell."));
         mAggrDaysEdit->setValue(
             settings.value(MarketAnalysisSettings::importingAggrDaysKey, MarketAnalysisSettings::importingAggrDaysDefault).toInt());
 
@@ -105,6 +107,7 @@ namespace Evernus
         toolBarLayout->addWidget(mPricePerM3);
         mPricePerM3->setMaximum(std::numeric_limits<double>::max());
         mPricePerM3->setSuffix(QStringLiteral("ISK"));
+        mPricePerM3->setToolTip(tr("Addtional cost added to buy price. This is multiplied by item size and desired volume to move (which in turn is based on aggregation days)."));
         mPricePerM3->setValue(settings.value(MarketAnalysisSettings::importingPricePerM3Key).toDouble());
 
         auto filterBtn = new QPushButton{tr("Apply"), this};
