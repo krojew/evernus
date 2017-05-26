@@ -249,7 +249,6 @@ namespace Evernus
             {
                 AggrTypeData data;
 
-                accumulator_set<quint64, stats<tag::mean>> volumeAcc;
                 accumulator_set<double, stats<tag::mean>> priceAcc;
 
                 for (const auto &timePoint : boost::adaptors::reverse(type.second))
@@ -257,13 +256,13 @@ namespace Evernus
                     if (timePoint.first < historyLimit)
                         break;
 
-                    volumeAcc(timePoint.second.mVolume);
+                    data.mVolume += timePoint.second.mVolume;
                     priceAcc(timePoint.second.mAvgPrice);
                 }
 
                 const auto avgPrice30 = mean(priceAcc);
 
-                data.mVolume = mean(volumeAcc);
+                data.mVolume /= 30;
                 data.mBuyPrice = MathUtils::calcPercentile(buyOrders[regionHistory.first][type.first],
                                                            buyVolumes[regionHistory.first][type.first] * 0.05,
                                                            avgPrice30,
