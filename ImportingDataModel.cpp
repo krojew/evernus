@@ -71,7 +71,7 @@ namespace Evernus
                 case nameColumn:
                     return mDataProvider.getTypeName(data.mId);
                 case avgVolumeColumn:
-                    return locale.toString(data.mAvgVolume);
+                    return locale.toString(data.mAvgVolume, 'f', 2);
                 case dstVolumeColumn:
                     return locale.toString(data.mDstVolume);
                 case relativeDstVolumeColumn:
@@ -82,8 +82,12 @@ namespace Evernus
                     return TextUtils::currencyToString(data.mSrcPrice, locale);
                 case importPriceColumn:
                     return TextUtils::currencyToString(data.mImportPrice, locale);
+                case priceDifferenceColumn:
+                    return TextUtils::currencyToString(data.mPriceDifference, locale);
                 case marginColumn:
                     return QStringLiteral("%1%2").arg(locale.toString(data.mMargin, 'f', 2)).arg(locale.percent());
+                case projectedProfitColumn:
+                    return TextUtils::currencyToString(data.mProjectedProfit, locale);
                 }
             }
             break;
@@ -103,8 +107,12 @@ namespace Evernus
                 return data.mSrcPrice;
             case importPriceColumn:
                 return data.mImportPrice;
+            case priceDifferenceColumn:
+                return data.mPriceDifference;
             case marginColumn:
                 return data.mMargin;
+            case projectedProfitColumn:
+                return data.mProjectedProfit;
             }
             break;
         case Qt::ForegroundRole:
@@ -134,8 +142,12 @@ namespace Evernus
                 return tr("5% volume source price");
             case importPriceColumn:
                 return tr("Import price (src. price + price per m³)");
+            case priceDifferenceColumn:
+                return tr("Price difference");
             case marginColumn:
                 return tr("Margin");
+            case projectedProfitColumn:
+                return tr("Projected profit");
             }
         }
 
@@ -377,7 +389,9 @@ namespace Evernus
             }
 
             data.mImportPrice = data.mSrcPrice + mDataProvider.getTypeVolume(data.mId) * pricePerM3;
-            data.mMargin = (qFuzzyIsNull(data.mDstPrice)) ? (0.) : (100. * (data.mDstPrice - data.mSrcPrice) / data.mDstPrice);
+            data.mPriceDifference = data.mDstPrice - data.mImportPrice;
+            data.mMargin = (qFuzzyIsNull(data.mDstPrice)) ? (0.) : (100. * data.mPriceDifference / data.mDstPrice);
+            data.mProjectedProfit = data.mAvgVolume * data.mPriceDifference;
         }
     }
 }

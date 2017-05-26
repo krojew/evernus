@@ -82,7 +82,9 @@ namespace Evernus
             srcPriceColumn,
             importPriceColumn,
             dstPriceColumn,
+            priceDifferenceColumn,
             marginColumn,
+            projectedProfitColumn,
 
             numColumns
         };
@@ -95,7 +97,9 @@ namespace Evernus
             double mDstPrice = 0.;
             double mSrcPrice = 0.;
             double mImportPrice = 0.;
+            double mPriceDifference = 0.;
             double mMargin = 0.;
+            double mProjectedProfit = 0.;
         };
 
         const EveDataProvider &mDataProvider;
