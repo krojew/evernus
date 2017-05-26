@@ -30,6 +30,7 @@
 
 #include "MarketAnalysisSettings.h"
 #include "EveDataProvider.h"
+#include "PriceSettings.h"
 #include "ExternalOrder.h"
 #include "PriceUtils.h"
 #include "TextUtils.h"
@@ -252,7 +253,11 @@ namespace Evernus
         dstFuture.get();
         srcFuture.get();
 
+        QSettings settings;
+
         const auto volumePercentile = 0.05;
+        const auto preferredMargin
+            = settings.value(PriceSettings::preferredMarginKey, PriceSettings::preferredMarginDefault).toDouble() / 100.;
 
         // fill our type map with order data
         for (const auto &order : orders)
@@ -330,12 +335,15 @@ namespace Evernus
                                                            mBogusOrderThreshold);
             }
 
+            // check if this was traded at all
+            if (qFuzzyIsNull(data.mDstPrice))
+                data.mDstPrice = data.mSrcPrice * (1 + preferredMargin);
+
             QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         }
 
         PriceUtils::Taxes taxes;
 
-        QSettings settings;
         const auto useSkillsForDifference = mCharacter && settings.value(
             MarketAnalysisSettings::useSkillsForDifferenceKey, MarketAnalysisSettings::useSkillsForDifferenceDefault).toBool();
 
