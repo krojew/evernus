@@ -70,6 +70,7 @@ namespace Evernus
         mainLayout->addWidget(mPlot);
         mPlot->setMinimumHeight(300);
         mPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+        mPlot->legend->setVisible(true);
         mPlot->xAxis->setAutoTicks(false);
         mPlot->xAxis->setAutoTickLabels(true);
         mPlot->xAxis->setTickLabelRotation(60);
