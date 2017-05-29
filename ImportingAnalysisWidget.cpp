@@ -17,7 +17,6 @@
 
 #include <QStackedWidget>
 #include <QDoubleSpinBox>
-#include <QProgressBar>
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -28,6 +27,7 @@
 #include <QLabel>
 
 #include "MarketAnalysisSettings.h"
+#include "CalculatingDataWidget.h"
 #include "AdjustableTableView.h"
 #include "StationSelectDialog.h"
 #include "MarketDataProvider.h"
@@ -119,20 +119,7 @@ namespace Evernus
         mDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mDataStack);
 
-        auto waitingWidget = new QWidget{this};
-
-        auto waitingLayout = new QVBoxLayout{waitingWidget};
-        waitingLayout->setAlignment(Qt::AlignCenter);
-
-        auto waitingLabel = new QLabel{tr("Calculating data..."), this};
-        waitingLayout->addWidget(waitingLabel);
-        waitingLabel->setAlignment(Qt::AlignCenter);
-
-        auto waitingProgress = new QProgressBar{this};
-        waitingLayout->addWidget(waitingProgress);
-        waitingProgress->setRange(0, 0);
-
-        mDataStack->addWidget(waitingWidget);
+        mDataStack->addWidget(new CalculatingDataWidget{this});
 
         mDataProxy.setSortRole(Qt::UserRole);
         mDataProxy.setSourceModel(&mDataModel);

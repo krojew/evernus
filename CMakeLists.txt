@@ -161,6 +161,8 @@ add_executable(
     CachingEveDataProvider.h
     CachingMarketOrderProvider.cpp
     CachingMarketOrderProvider.h
+    CalculatingDataWidget.cpp
+    CalculatingDataWidget.h
     CallbackExternalOrderImporter.cpp
     CallbackExternalOrderImporter.h
     Character.cpp

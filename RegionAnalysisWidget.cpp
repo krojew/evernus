@@ -28,6 +28,7 @@
 
 #include "TypeAggregatedDetailsWidget.h"
 #include "MarketAnalysisSettings.h"
+#include "CalculatingDataWidget.h"
 #include "AdjustableTableView.h"
 #include "EveDataProvider.h"
 #include "ModelUtils.h"
@@ -171,9 +172,7 @@ namespace Evernus
         mRegionDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mRegionDataStack);
 
-        auto waitingLabel = new QLabel{tr("Calculating data..."), this};
-        mRegionDataStack->addWidget(waitingLabel);
-        waitingLabel->setAlignment(Qt::AlignCenter);
+        mRegionDataStack->addWidget(new CalculatingDataWidget{this});
 
         mTypeViewProxy.setSortRole(Qt::UserRole);
         mTypeViewProxy.setSourceModel(&mTypeDataModel);

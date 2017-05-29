@@ -18,7 +18,6 @@
 #include <QDoubleValidator>
 #include <QStackedWidget>
 #include <QIntValidator>
-#include <QProgressBar>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
@@ -36,6 +35,7 @@
 
 #include "InterRegionTypeDetailsWidget.h"
 #include "MarketAnalysisSettings.h"
+#include "CalculatingDataWidget.h"
 #include "StationSelectDialog.h"
 #include "AdjustableTableView.h"
 #include "MarketDataProvider.h"
@@ -230,20 +230,7 @@ namespace Evernus
         mInterRegionDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mInterRegionDataStack);
 
-        auto waitingWidget = new QWidget{this};
-
-        auto waitingLayout = new QVBoxLayout{waitingWidget};
-        waitingLayout->setAlignment(Qt::AlignCenter);
-
-        auto waitingLabel = new QLabel{tr("Calculating data..."), this};
-        waitingLayout->addWidget(waitingLabel);
-        waitingLabel->setAlignment(Qt::AlignCenter);
-
-        auto waitingProgress = new QProgressBar{this};
-        waitingLayout->addWidget(waitingProgress);
-        waitingProgress->setRange(0, 0);
-
-        mInterRegionDataStack->addWidget(waitingWidget);
+        mInterRegionDataStack->addWidget(new CalculatingDataWidget{this});
 
         mInterRegionViewProxy.setSortRole(Qt::UserRole);
         mInterRegionViewProxy.setSourceModel(&mInterRegionDataModel);
