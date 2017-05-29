@@ -12,8 +12,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <unordered_set>
-
 #include <QStandardItemModel>
 #include <QDoubleValidator>
 #include <QStackedWidget>
@@ -40,6 +38,7 @@
 #include "AdjustableTableView.h"
 #include "MarketDataProvider.h"
 #include "EveDataProvider.h"
+#include "RegionComboBox.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
 #include "SSOMessageBox.h"
@@ -68,14 +67,6 @@ namespace Evernus
         auto toolBarLayout = new FlowLayout{};
         mainLayout->addLayout(toolBarLayout);
 
-        auto createRegionCombo = [=] {
-            auto combo = new QComboBox{this};
-            combo->setEditable(true);
-            combo->setInsertPolicy(QComboBox::NoInsert);
-
-            return combo;
-        };
-
         auto getStationName = [this](auto id) {
             return (id != 0) ? (mDataProvider.getLocationName(id)) : (tr("- any station -"));
         };
@@ -90,7 +81,7 @@ namespace Evernus
             mDstStation = list[3].toULongLong();
 
         toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
-        mSourceRegionCombo = createRegionCombo();
+        mSourceRegionCombo = new RegionComboBox{mDataProvider, MarketAnalysisSettings::srcRegionKey, this};
         toolBarLayout->addWidget(mSourceRegionCombo);
 
         auto stationBtn = new QPushButton{getStationName(mSrcStation), this};
@@ -100,7 +91,7 @@ namespace Evernus
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Destination:"), this});
-        mDestRegionCombo = createRegionCombo();
+        mDestRegionCombo = new RegionComboBox{mDataProvider, MarketAnalysisSettings::dstRegionKey, this};
         toolBarLayout->addWidget(mDestRegionCombo);
 
         stationBtn = new QPushButton{getStationName(mDstStation), this};
@@ -108,79 +99,6 @@ namespace Evernus
         connect(stationBtn, &QPushButton::clicked, this, [=] {
             changeStation(mDstStation, *stationBtn, MarketAnalysisSettings::dstStationKey);
         });
-
-        auto fillRegionCombo = [this](auto combo, const auto savedKey) {
-            std::unordered_set<uint> saved;
-            QSettings settings;
-
-            const auto savedList = settings.value(savedKey).toList();
-            for (const auto &value : savedList)
-                saved.emplace(value.toUInt());
-
-            auto model = new QStandardItemModel{this};
-
-            const auto regions = mDataProvider.getRegions();
-            for (const auto &region : regions)
-            {
-                auto item = new QStandardItem{region.second};
-                item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-                item->setData(region.first);
-                item->setCheckState((saved.find(region.first) != std::end(saved)) ? (Qt::Checked) : (Qt::Unchecked));
-
-                model->appendRow(item);
-            }
-
-            combo->setModel(model);
-
-            connect(model, &QStandardItemModel::itemChanged, this, [=] {
-                QVariantList saved;
-                for (auto i = 0; i < model->rowCount(); ++i)
-                {
-                    const auto item = model->item(i);
-                    if (item->checkState() == Qt::Checked)
-                        saved.append(item->data().toUInt());
-                }
-
-                QSettings settings;
-                settings.setValue(savedKey, saved);
-
-                if (model->item(allRegionsIndex)->checkState() == Qt::Checked)
-                {
-                    combo->setCurrentText(tr("- all -"));
-                    return;
-                }
-
-                auto hasChecked = false;
-                for (auto i = allRegionsIndex + 1; i < model->rowCount(); ++i)
-                {
-                    const auto item = model->item(i);
-                    if (item->checkState() == Qt::Checked)
-                    {
-                        if (hasChecked)
-                        {
-                            combo->setCurrentText(tr("- multiple -"));
-                            return;
-                        }
-
-                        hasChecked = true;
-                        combo->setCurrentText(item->text());
-                    }
-                }
-
-                if (!hasChecked)
-                    combo->setCurrentText(tr("- none -"));
-            }, Qt::QueuedConnection);
-
-            auto item = new QStandardItem{tr("- all -")};
-            item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-            item->setCheckState((saved.empty() || saved.find(0) != std::end(saved)) ? (Qt::Checked) : (Qt::Unchecked));
-
-            model->insertRow(allRegionsIndex, item);
-            combo->setCurrentText(tr("- all -"));
-        };
-
-        fillRegionCombo(mSourceRegionCombo, MarketAnalysisSettings::srcRegionKey);
-        fillRegionCombo(mDestRegionCombo, MarketAnalysisSettings::dstRegionKey);
 
         auto volumeValidator = new QIntValidator{this};
         volumeValidator->setBottom(0);
@@ -295,29 +213,11 @@ namespace Evernus
 
     void InterRegionAnalysisWidget::applyInterRegionFilter()
     {
-        InterRegionMarketDataFilterProxyModel::RegionList srcRegions, dstRegions;
-
-        auto fillRegions = [](const QStandardItemModel *model, InterRegionMarketDataFilterProxyModel::RegionList &list) {
-            if (model->item(allRegionsIndex)->checkState() == Qt::Checked)
-            {
-                for (auto i = allRegionsIndex + 1; i < model->rowCount(); ++i)
-                    list.emplace(model->item(i)->data().toUInt());
-            }
-            else
-            {
-                for (auto i = allRegionsIndex + 1; i < model->rowCount(); ++i)
-                {
-                    if (model->item(i)->checkState() == Qt::Checked)
-                        list.emplace(model->item(i)->data().toUInt());
-                }
-            }
-        };
+        const auto srcRegions = mSourceRegionCombo->getSelectedRegionList();
+        const auto dstRegions = mDestRegionCombo->getSelectedRegionList();
 
         if (!mRefreshedInterRegionData)
             recalculateInterRegionData();
-
-        fillRegions(static_cast<const QStandardItemModel *>(mSourceRegionCombo->model()), srcRegions);
-        fillRegions(static_cast<const QStandardItemModel *>(mDestRegionCombo->model()), dstRegions);
 
         const auto minVolume = mMinInterRegionVolumeEdit->text();
         const auto maxVolume = mMaxInterRegionVolumeEdit->text();

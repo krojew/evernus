@@ -2894,70 +2894,53 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::InterRegionAnalysisWidget</name>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="80"/>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="405"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="71"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="305"/>
         <source>- any station -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="92"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="83"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="102"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="93"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="149"/>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="174"/>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="179"/>
-        <source>- all -</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="161"/>
-        <source>- multiple -</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="171"/>
-        <source>- none -</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="187"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="105"/>
         <source>Volume:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="205"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="123"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="223"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="141"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="227"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="145"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="250"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="168"/>
         <source>Show details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="409"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="309"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="409"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="309"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5042,6 +5025,44 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
 </context>
 <context>
+    <name>Evernus::OreReprocessingArbitrageWidget</name>
+    <message>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="49"/>
+        <source>Base yield:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="63"/>
+        <source>Include station tax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="73"/>
+        <source>Ignore orders with min. volume &gt; 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="83"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="87"/>
+        <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="88"/>
+        <source>If you wish to make the fastest trade as possible, be sure to set the correct &lt;b&gt;buy and sell price type&lt;/b&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="89"/>
+        <source>Due to the fast nature of arbitrage, prices are not based on volume percentile.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::PathPreferencesWidget</name>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="39"/>
@@ -5345,6 +5366,26 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="333"/>
         <source>- all -</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::RegionComboBox</name>
+    <message>
+        <location filename="../RegionComboBox.cpp" line="64"/>
+        <location filename="../RegionComboBox.cpp" line="89"/>
+        <location filename="../RegionComboBox.cpp" line="94"/>
+        <source>- all -</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionComboBox.cpp" line="76"/>
+        <source>- multiple -</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionComboBox.cpp" line="86"/>
+        <source>- none -</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

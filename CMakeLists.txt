@@ -589,6 +589,8 @@ add_executable(
     RefTypeXmlReceiver.h
     RegionAnalysisWidget.cpp
     RegionAnalysisWidget.h
+    RegionComboBox.cpp
+    RegionComboBox.h
     RegionTypeSelectDialog.cpp
     RegionTypeSelectDialog.h
     ReplyTimeout.cpp

@@ -26,7 +26,6 @@ class QStackedWidget;
 class QPushButton;
 class QModelIndex;
 class QTableView;
-class QComboBox;
 class QCheckBox;
 class QLineEdit;
 
@@ -35,6 +34,7 @@ namespace Evernus
     class AdjustableTableView;
     class MarketDataProvider;
     class EveDataProvider;
+    class RegionComboBox;
 
     class InterRegionAnalysisWidget
         : public StandardModelProxyWidget
@@ -75,15 +75,14 @@ namespace Evernus
 
     private:
         static const auto waitingLabelIndex = 0;
-        static const auto allRegionsIndex = 0;
 
         const EveDataProvider &mDataProvider;
         const MarketDataProvider &mMarketDataProvider;
 
         QAction *mShowDetailsAct = nullptr;
 
-        QComboBox *mSourceRegionCombo = nullptr;
-        QComboBox *mDestRegionCombo = nullptr;
+        RegionComboBox *mSourceRegionCombo = nullptr;
+        RegionComboBox *mDestRegionCombo = nullptr;
         QLineEdit *mMinInterRegionVolumeEdit = nullptr;
         QLineEdit *mMaxInterRegionVolumeEdit = nullptr;
         QLineEdit *mMinInterRegionMarginEdit = nullptr;
