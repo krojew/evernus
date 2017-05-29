@@ -16,6 +16,8 @@
 
 #include "ExternalOrderImporter.h"
 #include "CharacterBoundWidget.h"
+#include "LeafFilterProxyModel.h"
+#include "AggregatedAssetModel.h"
 #include "AssetModel.h"
 #include "Character.h"
 #include "Item.h"
@@ -27,7 +29,7 @@ class QLabel;
 namespace Evernus
 {
     class FilterTextRepository;
-    class LeafFilterProxyModel;
+    class AdjustableTableView;
     class CacheTimerProvider;
     class EveDataProvider;
     class StyledTreeView;
@@ -81,11 +83,15 @@ namespace Evernus
 
         QRadioButton *mUseAssetStationBtn = nullptr;
         StyledTreeView *mAssetView = nullptr;
+        AdjustableTableView *mAggregatedView = nullptr;
         StationView *mStationView = nullptr;
         QLabel *mInfoLabel = nullptr;
 
-        AssetModel mModel;
-        LeafFilterProxyModel *mModelProxy = nullptr;
+        AssetModel mInventoryModel;
+        LeafFilterProxyModel mInventoryModelProxy;
+
+        AggregatedAssetModel mAggregatedModel;
+        LeafFilterProxyModel mAggregatedModelProxy;
 
         quint64 mCustomStationId = 0;
 

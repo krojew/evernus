@@ -109,6 +109,8 @@ add_executable(
     AdjustableTableView.h
     AdvancedStatisticsWidget.cpp
     AdvancedStatisticsWidget.h
+    AggregatedAssetModel.cpp
+    AggregatedAssetModel.h
     AggregatedEventProcessor.cpp
     AggregatedEventProcessor.h
     AggregatedStatisticsModel.cpp

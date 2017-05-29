@@ -366,6 +366,24 @@
     </message>
 </context>
 <context>
+    <name>Evernus::AggregatedAssetModel</name>
+    <message>
+        <location filename="../AggregatedAssetModel.cpp" line="93"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../AggregatedAssetModel.cpp" line="95"/>
+        <source>Quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../AggregatedAssetModel.cpp" line="97"/>
+        <source>Total value</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::AggregatedStatisticsModel</name>
     <message>
         <location filename="../AggregatedStatisticsModel.cpp" line="87"/>
@@ -462,68 +480,78 @@
 <context>
     <name>Evernus::AssetsWidget</name>
     <message>
-        <location filename="../AssetsWidget.cpp" line="69"/>
+        <location filename="../AssetsWidget.cpp" line="71"/>
         <source>Import prices from Web</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="74"/>
+        <location filename="../AssetsWidget.cpp" line="76"/>
         <source>Import prices from logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="79"/>
+        <location filename="../AssetsWidget.cpp" line="81"/>
         <source>Expand all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="83"/>
+        <location filename="../AssetsWidget.cpp" line="85"/>
         <source>Collapse all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="93"/>
+        <location filename="../AssetsWidget.cpp" line="95"/>
         <source>Combine for all characters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="125"/>
+        <location filename="../AssetsWidget.cpp" line="131"/>
+        <source>Inventory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../AssetsWidget.cpp" line="138"/>
         <source>Set destination in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="130"/>
+        <location filename="../AssetsWidget.cpp" line="143"/>
         <source>Show in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="135"/>
-        <location filename="../AssetsWidget.cpp" line="239"/>
+        <location filename="../AssetsWidget.cpp" line="148"/>
+        <location filename="../AssetsWidget.cpp" line="267"/>
         <source>Set custom value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="140"/>
+        <location filename="../AssetsWidget.cpp" line="153"/>
         <source>Clear custom value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="145"/>
+        <location filename="../AssetsWidget.cpp" line="159"/>
+        <source>Aggregated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../AssetsWidget.cpp" line="165"/>
         <source>Price station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="153"/>
+        <location filename="../AssetsWidget.cpp" line="173"/>
         <source>Use asset location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="163"/>
+        <location filename="../AssetsWidget.cpp" line="183"/>
         <source>Use custom station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="239"/>
+        <location filename="../AssetsWidget.cpp" line="267"/>
         <source>ISK:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2626,7 +2654,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="58"/>
-        <location filename="../ImportingAnalysisWidget.cpp" line="266"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="270"/>
         <source>- no station -</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2641,53 +2669,68 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="89"/>
-        <location filename="../ImportingAnalysisWidget.cpp" line="98"/>
-        <source>days</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="93"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="94"/>
         <source>Aggregate over:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="102"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="104"/>
         <source>Price per m³:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="109"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="113"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="113"/>
-        <source>Press &quot;Apply&quot; to show results. &quot;Show in EVE&quot; is available via the right-click menu.</source>
+        <location filename="../ImportingAnalysisWidget.cpp" line="89"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="99"/>
+        <source> days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="123"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="90"/>
+        <source>The number of days going back from today, to use for analysis. If the destiantion has been in use for shorter time, be sure to adjust this accordingly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="100"/>
+        <source>The number of days to aggregate movement over. This should reflect how fast you want your stock to sell.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="110"/>
+        <source>Addtional cost added to buy price. This is multiplied by item size and desired volume to move (which in turn is based on aggregation days).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="117"/>
+        <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="127"/>
         <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="148"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="152"/>
         <source>Show in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="153"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="157"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="272"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="276"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="272"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="276"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2695,52 +2738,52 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ImportingDataModel</name>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="132"/>
+        <location filename="../ImportingDataModel.cpp" line="138"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="134"/>
+        <location filename="../ImportingDataModel.cpp" line="140"/>
         <source>Avg. dst. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="136"/>
+        <location filename="../ImportingDataModel.cpp" line="142"/>
         <source>Dst. remaining volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="138"/>
+        <location filename="../ImportingDataModel.cpp" line="144"/>
         <source>Relative dst. remaining volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="140"/>
+        <location filename="../ImportingDataModel.cpp" line="146"/>
         <source>5% volume destination price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="142"/>
+        <location filename="../ImportingDataModel.cpp" line="148"/>
         <source>5% volume source price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="144"/>
+        <location filename="../ImportingDataModel.cpp" line="150"/>
         <source>Import price (src. price + price per m³)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="146"/>
+        <location filename="../ImportingDataModel.cpp" line="152"/>
         <source>Price difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="148"/>
+        <location filename="../ImportingDataModel.cpp" line="154"/>
         <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="150"/>
+        <location filename="../ImportingDataModel.cpp" line="156"/>
         <source>Projected profit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2797,7 +2840,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     </message>
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="228"/>
-        <source>Press &quot;Apply&quot; to show results. &quot;Show in EVE&quot; is available via the right-click menu.</source>
+        <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5193,7 +5236,7 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="169"/>
-        <source>Double-click an item for additional information. &quot;Show in EVE&quot; is available via the right-click menu. Remember to select desired &lt;b&gt;source price&lt;/b&gt; and &lt;b&gt;destination price&lt;/b&gt; from the dropdowns at the top, otherwise your differences might be skewed.</source>
+        <source>Double-click an item for additional information. Additional actions are available via the right-click menu. Remember to select desired &lt;b&gt;source price&lt;/b&gt; and &lt;b&gt;destination price&lt;/b&gt; from the dropdowns at the top, otherwise your differences might be skewed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

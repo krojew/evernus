@@ -20,6 +20,7 @@
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QTabWidget>
 #include <QCheckBox>
 #include <QGroupBox>
 #include <QSettings>
@@ -28,7 +29,7 @@
 #include <QLabel>
 #include <QDebug>
 
-#include "LeafFilterProxyModel.h"
+#include "AdjustableTableView.h"
 #include "CacheTimerProvider.h"
 #include "WarningBarWidget.h"
 #include "TextFilterWidget.h"
@@ -56,7 +57,8 @@ namespace Evernus
                                ImportSettings::maxAssetListAgeKey,
                                parent)
         , mAssetProvider(assetProvider)
-        , mModel(mAssetProvider, dataProvider, !corp)
+        , mInventoryModel(mAssetProvider, dataProvider, !corp)
+        , mAggregatedModel(mAssetProvider, dataProvider)
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -97,7 +99,8 @@ namespace Evernus
             QSettings settings;
             settings.setValue(UISettings::combineAssetsKey, checked);
 
-            mModel.setCombineCharacters(checked);
+            mInventoryModel.setCombineCharacters(checked);
+            mAggregatedModel.setCombineCharacters(checked);
             resetModel();
         });
 
@@ -107,16 +110,26 @@ namespace Evernus
         auto assetLayout = new QHBoxLayout{};
         mainLayout->addLayout(assetLayout);
 
-        mModel.setCombineCharacters(combineBtn->isChecked());
+        const auto mainTabs = new QTabWidget{this};
+        assetLayout->addWidget(mainTabs, 1);
 
-        mModelProxy = new LeafFilterProxyModel{this};
-        mModelProxy->setSourceModel(&mModel);
-        mModelProxy->setSortRole(Qt::UserRole);
-        mModelProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+        mInventoryModel.setCombineCharacters(combineBtn->isChecked());
+        mInventoryModelProxy.setSourceModel(&mInventoryModel);
+
+        mAggregatedModel.setCombineCharacters(combineBtn->isChecked());
+        mAggregatedModelProxy.setSourceModel(&mAggregatedModel);
+
+        const auto configureProxy = [=](auto &proxy) {
+            proxy.setSortRole(Qt::UserRole);
+            proxy.setFilterCaseSensitivity(Qt::CaseInsensitive);
+        };
+
+        configureProxy(mInventoryModelProxy);
+        configureProxy(mAggregatedModelProxy);
 
         mAssetView = new StyledTreeView{"assetView", this};
-        assetLayout->addWidget(mAssetView, 1);
-        mAssetView->setModel(mModelProxy);
+        mainTabs->addTab(mAssetView, tr("Inventory"));
+        mAssetView->setModel(&mInventoryModelProxy);
         connect(mAssetView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &AssetsWidget::handleSelection);
         connect(expandAll, &QPushButton::clicked, mAssetView, &StyledTreeView::expandAll);
@@ -141,6 +154,13 @@ namespace Evernus
         mClearCustomValueAct->setEnabled(false);
         mAssetView->addAction(mClearCustomValueAct);
         connect(mClearCustomValueAct, &QAction::triggered, this, &AssetsWidget::clearCustomValue);
+
+        mAggregatedView = new AdjustableTableView{"assetsWidgetAggregatedView", this};
+        mainTabs->addTab(mAggregatedView, tr("Aggregated"));
+        mAggregatedView->setSortingEnabled(true);
+        mAggregatedView->setAlternatingRowColors(true);
+        mAggregatedView->setModel(&mAggregatedModelProxy);
+        mAggregatedView->restoreHeaderState();
 
         auto stationGroup = new QGroupBox{tr("Price station"), this};
         assetLayout->addWidget(stationGroup);
@@ -176,13 +196,17 @@ namespace Evernus
         mainLayout->addWidget(mInfoLabel);
 
         if (useCustomStation)
-            mModel.setCustomStation(mStationView->getStationId());
+        {
+            mInventoryModel.setCustomStation(mStationView->getStationId());
+            mAggregatedModel.setCustomStation(mStationView->getStationId());
+        }
     }
 
     void AssetsWidget::updateData()
     {
         refreshImportTimer();
-        mModel.reset();
+        mInventoryModel.reset();
+        mAggregatedModel.reset();
         mAssetView->expandAll();
 
         setNewInfo();
@@ -200,7 +224,8 @@ namespace Evernus
 
     void AssetsWidget::applyWildcard(const QString &text)
     {
-        mModelProxy->setFilterWildcard(text);
+        mInventoryModelProxy.setFilterWildcard(text);
+        mAggregatedModelProxy.setFilterWildcard(text);
         mAssetView->expandAll();
     }
 
@@ -218,8 +243,11 @@ namespace Evernus
             return;
         }
 
-        mModel.setCustomStation(mCustomStationId);
-        mModel.reset();
+        mInventoryModel.setCustomStation(mCustomStationId);
+        mInventoryModel.reset();
+
+        mAggregatedModel.setCustomStation(mCustomStationId);
+        mAggregatedModel.reset();
 
         mAssetView->expandAll();
 
@@ -229,11 +257,11 @@ namespace Evernus
     void AssetsWidget::setCustomValue()
     {
         const auto index = getCurrentIndex();
-        const auto id = mModel.getAssetId(index);
+        const auto id = mInventoryModel.getAssetId(index);
         if (id == Item::invalidId)
             return;
 
-        const auto currentValue = mModel.getAssetCustomValue(index);
+        const auto currentValue = mInventoryModel.getAssetCustomValue(index);
         auto ok = false;
 
         const auto value = QInputDialog::getDouble(this, tr("Set custom value"), tr("ISK:"), (currentValue) ? (*currentValue) : (0.), 0., std::numeric_limits<double>::max(), 2, &ok);
@@ -247,7 +275,7 @@ namespace Evernus
     void AssetsWidget::clearCustomValue()
     {
         const auto index = getCurrentIndex();
-        const auto id = mModel.getAssetId(index);
+        const auto id = mInventoryModel.getAssetId(index);
         if (id == Item::invalidId)
             return;
 
@@ -257,22 +285,22 @@ namespace Evernus
 
     void AssetsWidget::setDestinationForCurrent()
     {
-        const auto id = mModel.getAssetLocationId(getCurrentIndex());
+        const auto id = mInventoryModel.getAssetLocationId(getCurrentIndex());
         emit setDestinationInEve(id);
     }
 
     void AssetsWidget::showInEveForCurrent()
     {
         const auto index = getCurrentIndex();
-        emit showInEve(mModel.getAssetTypeId(index), mModel.getAssetOwnerId(index));
+        emit showInEve(mInventoryModel.getAssetTypeId(index), mInventoryModel.getAssetOwnerId(index));
     }
 
     void AssetsWidget::handleSelection(const QItemSelection &selected)
     {
         const auto enable = !selected.isEmpty();
 
-        mSetDestinationAct->setEnabled(enable && mModel.getAssetLocationId(getCurrentIndex()) != 0);
-        mShowInEveAct->setEnabled(enable && mModel.getAssetTypeId(getCurrentIndex()) != 0);
+        mSetDestinationAct->setEnabled(enable && mInventoryModel.getAssetLocationId(getCurrentIndex()) != 0);
+        mShowInEveAct->setEnabled(enable && mInventoryModel.getAssetTypeId(getCurrentIndex()) != 0);
         mSetCustomValueAct->setEnabled(enable);
         mClearCustomValueAct->setEnabled(enable);
     }
@@ -286,16 +314,22 @@ namespace Evernus
     {
         qDebug() << "Switching assets to" << id;
 
-        mModel.setCharacter(id);
+        mInventoryModel.setCharacter(id);
+        mAggregatedModel.setCharacter(id);
+
         resetModel();
     }
 
     void AssetsWidget::resetModel()
     {
-        mModel.reset();
+        mInventoryModel.reset();
+        mAggregatedModel.reset();
+
         mAssetView->expandAll();
         mAssetView->header()->resizeSections(QHeaderView::ResizeToContents);
         mAssetView->sortByColumn(0, Qt::AscendingOrder);
+
+        mAggregatedView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 
         setNewInfo();
     }
@@ -304,9 +338,9 @@ namespace Evernus
     {
         QLocale locale;
         mInfoLabel->setText(QString{"Total assets: <strong>%1</strong> Total volume: <strong>%2m³</strong> Total sell price: <strong>%3</strong>"}
-            .arg(locale.toString(mModel.getTotalAssets()))
-            .arg(locale.toString(mModel.getTotalVolume(), 'f', 2))
-            .arg(TextUtils::currencyToString(mModel.getTotalSellPrice(), locale)));
+            .arg(locale.toString(mInventoryModel.getTotalAssets()))
+            .arg(locale.toString(mInventoryModel.getTotalVolume(), 'f', 2))
+            .arg(TextUtils::currencyToString(mInventoryModel.getTotalSellPrice(), locale)));
     }
 
     ExternalOrderImporter::TypeLocationPairs AssetsWidget::getImportTarget() const
@@ -331,7 +365,7 @@ namespace Evernus
             }
         };
 
-        if (mModel.isCombiningCharacters())
+        if (mInventoryModel.isCombiningCharacters())
         {
             const auto list = mAssetProvider.fetchAllAssets();
             for (const auto &assets : list)
@@ -347,7 +381,7 @@ namespace Evernus
 
     QModelIndex AssetsWidget::getCurrentIndex() const
     {
-        return mModelProxy->mapToSource(mAssetView->currentIndex());
+        return mInventoryModelProxy.mapToSource(mAssetView->currentIndex());
     }
 
     void AssetsWidget::buildImportTarget(ExternalOrderImporter::TypeLocationPairs &target, const Item &item, quint64 locationId)
