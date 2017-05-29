@@ -714,6 +714,48 @@ namespace Evernus
         return mRegionCitadelCache.emplace(regionId, mCitadelRepository.fetchForRegion(regionId)).first->second;
     }
 
+    const CachingEveDataProvider::ReprocessingMap &CachingEveDataProvider::getOreReprocessingInfo() const
+    {
+        if (mOreReprocessingInfo.empty())
+        {
+            const QStringList oreGroupNames = {
+                QStringLiteral("Veldspar"),
+                QStringLiteral("Scordite"),
+                QStringLiteral("Pyroxeres"),
+                QStringLiteral("Plagioclase"),
+                QStringLiteral("Omber"),
+                QStringLiteral("Kernite"),
+                QStringLiteral("Jaspet"),
+                QStringLiteral("Hemorphite"),
+                QStringLiteral("Hedbergite"),
+                QStringLiteral("Gneiss"),
+                QStringLiteral("Dark Ochre"),
+                QStringLiteral("Spodumain"),
+                QStringLiteral("Crokite"),
+                QStringLiteral("Bistot"),
+                QStringLiteral("Arkonor"),
+                QStringLiteral("Mercoxit"),
+                QStringLiteral("Ice")
+            };
+
+            QSqlQuery groupsQuery{mEveDb};
+            groupsQuery.prepare(QStringLiteral("SELECT groupID FROM invGroups WHERE groupName IN (%1)").arg(oreGroupNames.join(", ")));
+
+            DatabaseUtils::execQuery(groupsQuery);
+
+            QStringList groupIds;
+            while (groupsQuery.hasNext())
+                groupIds << groupsQuery.value(0).toString();
+
+            QSqlQuery typesQuery{mEveDb};
+            typesQuery.prepare(QStringLiteral("SELECT typeID FROM invTypes WHERE groupID IN (%1) AND marketGroupID IS NOT NULL").arg(groupIds.join(", ")));
+
+            DatabaseUtils::execQuery(typesQuery);
+        }
+
+        return mOreReprocessingInfo;
+    }
+
     void CachingEveDataProvider::precacheJumpMap()
     {
         auto query = mEveDb.exec("SELECT fromRegionID, fromSolarSystemID, toSolarSystemID FROM mapSolarSystemJumps WHERE fromRegionID = toRegionID");

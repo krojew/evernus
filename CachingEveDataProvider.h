@@ -96,6 +96,8 @@ namespace Evernus
 
         virtual const CitadelRepository::EntityList &getCitadelsForRegion(uint regionId) const override;
 
+        virtual const ReprocessingMap &getOreReprocessingInfo() const override;
+
         void precacheJumpMap();
         void precacheRefTypes();
 
@@ -173,6 +175,8 @@ namespace Evernus
         bool mUsePackagedVolume = false;
 
         mutable QHash<QPair<uint, uint>, uint> mSystemDistances;
+
+        mutable ReprocessingMap mOreReprocessingInfo;
 
         EveTypeRepository::EntityPtr getEveType(EveType::IdType id) const;
 
