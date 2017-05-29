@@ -14,12 +14,15 @@
  */
 #pragma once
 
+#include <QString>
+
 namespace Evernus
 {
     namespace UpdaterSettings
     {
         const auto autoUpdateDefault = true;
 
-        const auto autoUpdateKey = "updater/autoUpdate";
+        const auto autoUpdateKey = QStringLiteral("updater/autoUpdate");
+        const auto askedToShowReleaseNotesKey = QStringLiteral("updater/askedToShowReleaseNotes");
     }
 }

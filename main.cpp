@@ -13,13 +13,16 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QCommandLineParser>
+#include <QDesktopServices>
 #include <QApplication>
 #include <QLocalSocket>
 #include <QLocalServer>
 #include <QMessageBox>
+#include <QSettings>
 #include <QDebug>
 #include <QFile>
 #include <QDir>
+#include <QUrl>
 
 #include "MarketLogExternalOrderImporterThread.h"
 #include "MarketLogExternalOrderImporter.h"
@@ -31,6 +34,7 @@
 #include "MarketOrderRepository.h"
 #include "ExternalOrderModel.h"
 #include "EvernusApplication.h"
+#include "UpdaterSettings.h"
 #include "MainWindow.h"
 #include "Version.h"
 
@@ -252,6 +256,18 @@ int main(int argc, char *argv[])
             QObject::connect(&mainWnd, &Evernus::MainWindow::preferencesChanged,
                              webImporterPtr, &Evernus::ProxyWebExternalOrderImporter::handleNewPreferences);
             mainWnd.showAsSaved();
+
+            QSettings settings;
+            if (!settings.value(Evernus::UpdaterSettings::askedToShowReleaseNotesKey, false).toBool())
+            {
+                const auto ret = QMessageBox::question(&mainWnd,
+                                                       QCoreApplication::translate("main", "New version"),
+                                                       QCoreApplication::translate("main", "Would you like to see what's new in this version?"));
+                if (ret == QMessageBox::Yes)
+                    QDesktopServices::openUrl(QUrl{QStringLiteral("http://evernus.com/latest-evernus-version")});
+
+                settings.setValue(Evernus::UpdaterSettings::askedToShowReleaseNotesKey, true);
+            }
 
             return app.exec();
         }

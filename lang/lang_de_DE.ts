@@ -6331,107 +6331,107 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="88"/>
-        <location filename="../Updater.cpp" line="106"/>
-        <location filename="../Updater.cpp" line="112"/>
+        <location filename="../Updater.cpp" line="89"/>
+        <location filename="../Updater.cpp" line="107"/>
+        <location filename="../Updater.cpp" line="113"/>
         <source>Error updating db version: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="148"/>
-        <location filename="../Updater.cpp" line="159"/>
-        <location filename="../Updater.cpp" line="169"/>
+        <location filename="../Updater.cpp" line="149"/>
+        <location filename="../Updater.cpp" line="160"/>
+        <location filename="../Updater.cpp" line="170"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="148"/>
+        <location filename="../Updater.cpp" line="149"/>
         <source>Error contacting update server: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="159"/>
+        <location filename="../Updater.cpp" line="160"/>
         <source>Error parsing response from the update server: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="169"/>
+        <location filename="../Updater.cpp" line="170"/>
         <source>Missing update version information!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="182"/>
+        <location filename="../Updater.cpp" line="183"/>
         <source>No update found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="182"/>
+        <location filename="../Updater.cpp" line="183"/>
         <source>Your current version is up-to-date.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="191"/>
-        <location filename="../Updater.cpp" line="196"/>
-        <location filename="../Updater.cpp" line="207"/>
+        <location filename="../Updater.cpp" line="192"/>
+        <location filename="../Updater.cpp" line="197"/>
+        <location filename="../Updater.cpp" line="208"/>
         <source>Update found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="191"/>
+        <location filename="../Updater.cpp" line="192"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="196"/>
+        <location filename="../Updater.cpp" line="197"/>
         <source>A new version is available: %1
 Do you wish to launch the updater?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="207"/>
+        <location filename="../Updater.cpp" line="208"/>
         <source>Couldn&apos;t launch updater. Download manually?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="345"/>
-        <location filename="../Updater.cpp" line="376"/>
-        <location filename="../Updater.cpp" line="383"/>
-        <location filename="../Updater.cpp" line="395"/>
-        <location filename="../Updater.cpp" line="466"/>
-        <location filename="../Updater.cpp" line="493"/>
+        <location filename="../Updater.cpp" line="347"/>
+        <location filename="../Updater.cpp" line="378"/>
+        <location filename="../Updater.cpp" line="385"/>
+        <location filename="../Updater.cpp" line="397"/>
+        <location filename="../Updater.cpp" line="468"/>
+        <location filename="../Updater.cpp" line="495"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="345"/>
+        <location filename="../Updater.cpp" line="347"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="376"/>
+        <location filename="../Updater.cpp" line="378"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="383"/>
+        <location filename="../Updater.cpp" line="385"/>
         <source>This update requires re-importing all item prices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="395"/>
+        <location filename="../Updater.cpp" line="397"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="466"/>
+        <location filename="../Updater.cpp" line="468"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="493"/>
+        <location filename="../Updater.cpp" line="495"/>
         <source>This update requires re-importing citadels.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6444,34 +6444,44 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="61"/>
-        <location filename="../main.cpp" line="76"/>
+        <location filename="../main.cpp" line="65"/>
+        <location filename="../main.cpp" line="80"/>
         <source>Already running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="61"/>
+        <location filename="../main.cpp" line="65"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="76"/>
+        <location filename="../main.cpp" line="80"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="85"/>
-        <location filename="../main.cpp" line="261"/>
+        <location filename="../main.cpp" line="89"/>
+        <location filename="../main.cpp" line="277"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="86"/>
+        <location filename="../main.cpp" line="90"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="270"/>
+        <location filename="../main.cpp" line="264"/>
+        <source>New version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="265"/>
+        <source>Would you like to see what&apos;s new in this version?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="286"/>
         <source>Initialization error</source>
         <translation type="unfinished"></translation>
     </message>

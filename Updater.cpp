@@ -39,6 +39,7 @@
 #include "EvernusApplication.h"
 #include "RepositoryProvider.h"
 #include "StatisticsSettings.h"
+#include "UpdaterSettings.h"
 #include "ItemRepository.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
@@ -239,6 +240,7 @@ namespace Evernus
 
         QSettings settings;
         settings.remove(RegionTypeSelectDialog::settingsTypesKey);
+        settings.remove(UpdaterSettings::askedToShowReleaseNotesKey);
     }
 
     void Updater
