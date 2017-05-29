@@ -425,14 +425,14 @@ namespace Evernus
         if (orders == nullptr)
             return;
 
+        mInterRegionDataStack->setCurrentIndex(waitingLabelIndex);
+        mInterRegionDataStack->repaint();
+
         mInterRegionDataModel.setOrderData(*orders,
                                            *history,
                                            mSrcStation,
                                            mDstStation,
                                            mSrcPriceType,
                                            mDstPriceType);
-
-        mInterRegionDataStack->setCurrentIndex(waitingLabelIndex);
-        mInterRegionDataStack->repaint();
     }
 }

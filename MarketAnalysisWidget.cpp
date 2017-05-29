@@ -206,7 +206,7 @@ namespace Evernus
         mImportingAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
         mImportingAnalysisWidget->discardBogusOrders(discardBogusOrders);
 
-        mOreReprocessingArbitrageWidget = new OreReprocessingArbitrageWidget{this};
+        mOreReprocessingArbitrageWidget = new OreReprocessingArbitrageWidget{mDataProvider, *this, tabs};
 
         tabs->addTab(mRegionAnalysisWidget, tr("Region"));
         tabs->addTab(mInterRegionAnalysisWidget, tr("Inter-Region"));
@@ -374,6 +374,7 @@ namespace Evernus
         showForCurrentRegion();
         mInterRegionAnalysisWidget->recalculateAllData();
         mImportingAnalysisWidget->recalculateData();
+        mOreReprocessingArbitrageWidget->recalculateData();
     }
 
     PriceType MarketAnalysisWidget::getPriceType(const QComboBox &combo)

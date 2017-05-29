@@ -22,11 +22,15 @@
 #include "StandardModelProxyWidget.h"
 
 class QStackedWidget;
+class QDoubleSpinBox;
+class QCheckBox;
 class QAction;
 
 namespace Evernus
 {
     class AdjustableTableView;
+    class MarketDataProvider;
+    class EveDataProvider;
     class Character;
 
     class OreReprocessingArbitrageWidget
@@ -35,7 +39,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit OreReprocessingArbitrageWidget(QWidget *parent = nullptr);
+        explicit OreReprocessingArbitrageWidget(const EveDataProvider &dataProvider,
+                                                const MarketDataProvider &marketDataProvider,
+                                                QWidget *parent = nullptr);
         OreReprocessingArbitrageWidget(const OreReprocessingArbitrageWidget &) = default;
         OreReprocessingArbitrageWidget(OreReprocessingArbitrageWidget &&) = default;
         virtual ~OreReprocessingArbitrageWidget() = default;
@@ -46,9 +52,17 @@ namespace Evernus
         OreReprocessingArbitrageWidget &operator =(const OreReprocessingArbitrageWidget &) = default;
         OreReprocessingArbitrageWidget &operator =(OreReprocessingArbitrageWidget &&) = default;
 
+    public slots:
+        void recalculateData();
+
     private:
         static const auto waitingLabelIndex = 0;
 
+        const MarketDataProvider &mMarketDataProvider;
+
+        QDoubleSpinBox *mStationEfficiencyEdit = nullptr;
+        QCheckBox *mIncludeStationTaxBtn = nullptr;
+        QCheckBox *mIgnoreMinVolumeBtn = nullptr;
         QStackedWidget *mDataStack = nullptr;
         AdjustableTableView *mDataView = nullptr;
 

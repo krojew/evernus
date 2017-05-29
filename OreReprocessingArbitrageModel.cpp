@@ -12,10 +12,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "EveDataProvider.h"
+
 #include "OreReprocessingArbitrageModel.h"
 
 namespace Evernus
 {
+    OreReprocessingArbitrageModel::OreReprocessingArbitrageModel(const EveDataProvider &dataProvider, QObject *parent)
+        : QAbstractTableModel{parent}
+        , ModelWithTypes{}
+        , mDataProvider{dataProvider}
+    {
+    }
+
     int OreReprocessingArbitrageModel::columnCount(const QModelIndex &parent) const
     {
         Q_UNUSED(parent);
@@ -46,6 +55,16 @@ namespace Evernus
     {
         beginResetModel();
         mCharacter = std::move(character);
+        endResetModel();
+    }
+
+    void OreReprocessingArbitrageModel::setOrderData(const std::vector<ExternalOrder> &orders,
+                                                     PriceType srcPriceType,
+                                                     PriceType dstPriceType,
+                                                     bool useStationTax,
+                                                     bool ignoreMinVolume)
+    {
+        beginResetModel();
         endResetModel();
     }
 

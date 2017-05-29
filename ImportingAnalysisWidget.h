@@ -42,9 +42,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit ImportingAnalysisWidget(const EveDataProvider &dataProvider,
-                                         const MarketDataProvider &marketDataProvider,
-                                         QWidget *parent = nullptr);
+        ImportingAnalysisWidget(const EveDataProvider &dataProvider,
+                                const MarketDataProvider &marketDataProvider,
+                                QWidget *parent = nullptr);
         ImportingAnalysisWidget(const ImportingAnalysisWidget &) = default;
         ImportingAnalysisWidget(ImportingAnalysisWidget &&) = default;
         virtual ~ImportingAnalysisWidget() = default;

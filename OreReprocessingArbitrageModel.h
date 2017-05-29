@@ -15,14 +15,19 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include <QAbstractTableModel>
 
 #include "ModelWithTypes.h"
 #include "Character.h"
+#include "PriceType.h"
 
 namespace Evernus
 {
+    class EveDataProvider;
+    class ExternalOrder;
+
     class OreReprocessingArbitrageModel
         : public QAbstractTableModel
         , public ModelWithTypes
@@ -30,7 +35,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        OreReprocessingArbitrageModel() = default;
+        explicit OreReprocessingArbitrageModel(const EveDataProvider &dataProvider,
+                                               QObject *parent = nullptr);
         OreReprocessingArbitrageModel(const OreReprocessingArbitrageModel &) = default;
         OreReprocessingArbitrageModel(OreReprocessingArbitrageModel &&) = default;
         virtual ~OreReprocessingArbitrageModel() = default;
@@ -43,6 +49,11 @@ namespace Evernus
         virtual EveType::IdType getTypeId(const QModelIndex &index) const override;
 
         void setCharacter(std::shared_ptr<Character> character);
+        void setOrderData(const std::vector<ExternalOrder> &orders,
+                          PriceType srcPriceType,
+                          PriceType dstPriceType,
+                          bool useStationTax,
+                          bool ignoreMinVolume);
 
         void reset();
 
@@ -54,6 +65,8 @@ namespace Evernus
         {
             numColumns
         };
+
+        const EveDataProvider &mDataProvider;
 
         std::shared_ptr<Character> mCharacter;
     };
