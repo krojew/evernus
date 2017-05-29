@@ -37,15 +37,21 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        struct ReprocessingMaterialInfo
+        {
+            EveType::IdType mMaterialId;
+            uint mQuantity;
+        };
+
         struct ReprocessingInfo
         {
-            EveType::IdType mMaterialId = EveType::invalidId;
-            uint mQuantity = 0;
+            uint mPortionSize;
+            std::vector<ReprocessingMaterialInfo> mMaterials;
         };
 
         using MapLocation = std::pair<uint, QString> ;
         using Station = std::pair<quint64, QString>;
-        using ReprocessingMap = std::unordered_map<EveType::IdType, std::vector<ReprocessingInfo>>;
+        using ReprocessingMap = std::unordered_map<EveType::IdType, ReprocessingInfo>;
 
         using QObject::QObject;
         virtual ~EveDataProvider() = default;

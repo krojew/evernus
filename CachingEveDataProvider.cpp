@@ -738,19 +738,26 @@ namespace Evernus
                 QStringLiteral("Ice")
             };
 
-            QSqlQuery groupsQuery{mEveDb};
-            groupsQuery.prepare(QStringLiteral("SELECT groupID FROM invGroups WHERE groupName IN (%1)").arg(oreGroupNames.join(", ")));
+            QSqlQuery query{mEveDb};
+            query.prepare(QStringLiteral(R"(
+SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize FROM invTypeMaterials m INNER JOIN (
+    SELECT typeID, portionSize FROM invTypes WHERE groupID IN (
+        SELECT groupID FROM invGroups WHERE groupName IN ('%1')
+    ) AND marketGroupID IS NOT NULL
+) t ON t.typeID = m.typeID
+            )").arg(oreGroupNames.join("', '")));
 
-            DatabaseUtils::execQuery(groupsQuery);
+            DatabaseUtils::execQuery(query);
 
-            QStringList groupIds;
-            while (groupsQuery.hasNext())
-                groupIds << groupsQuery.value(0).toString();
-
-            QSqlQuery typesQuery{mEveDb};
-            typesQuery.prepare(QStringLiteral("SELECT typeID FROM invTypes WHERE groupID IN (%1) AND marketGroupID IS NOT NULL").arg(groupIds.join(", ")));
-
-            DatabaseUtils::execQuery(typesQuery);
+            while (query.next())
+            {
+                auto &info = mOreReprocessingInfo[query.value(0).value<EveType::IdType>()];
+                info.mPortionSize = query.value(3).toUInt();
+                info.mMaterials.emplace_back(ReprocessingMaterialInfo{
+                    query.value(1).value<EveType::IdType>(),
+                    query.value(2).toUInt()
+                });
+            }
         }
 
         return mOreReprocessingInfo;
