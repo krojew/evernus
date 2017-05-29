@@ -51,6 +51,7 @@ namespace Evernus
         mStationEfficiencyEdit = new QDoubleSpinBox{this};
         toolBarLayout->addWidget(mStationEfficiencyEdit);
         mStationEfficiencyEdit->setRange(0., 100.);
+        mStationEfficiencyEdit->setSuffix(locale().percent());
         mStationEfficiencyEdit->setValue(
             settings.value(MarketAnalysisSettings::reprocessingStationEfficiencyKey, MarketAnalysisSettings::reprocessingStationEfficiencyDefault).toDouble()
         );
