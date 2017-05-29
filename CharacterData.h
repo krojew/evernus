@@ -53,6 +53,30 @@ namespace Evernus
             int mCorporationContracting = 0;
         };
 
+        struct ReprocessingSkills
+        {
+            int mArkonorProcessing = 0;
+            int mBistotProcessing = 0;
+            int mCrokiteProcessing = 0;
+            int mDarkOchreProcessing = 0;
+            int mGneissProcessing = 0;
+            int mHedbergiteProcessing = 0;
+            int mHemorphiteProcessing = 0;
+            int mIceProcessing = 0;
+            int mJaspetProcessing = 0;
+            int mKerniteProcessing = 0;
+            int mMercoxitProcessing = 0;
+            int mOmberProcessing = 0;
+            int mPlagioclaseProcessing = 0;
+            int mPyroxeresProcessing = 0;
+            int mReprocessing = 0;
+            int mReprocessingEfficiency = 0;
+            int mScorditeProcessing = 0;
+            int mScrapmetalProcessing = 0;
+            int mSpodumainProcessing = 0;
+            int mVeldsparProcessing = 0;
+        };
+
         QString mName;
         QString mCorporationName;
         quint64 mCorporationId = 0;
@@ -65,10 +89,12 @@ namespace Evernus
         float mFactionStanding = 0.f;
         boost::optional<double> mBuyBrokersFee;
         boost::optional<double> mSellBrokersFee;
+        float mReprocessingImplantBonus = 0.f;
 
         OrderAmountSkills mOrderAmountSkills;
         TradeRangeSkills mTradeRangeSkills;
         FeeSkills mFeeSkills;
         ContractSkills mContractSkills;
+        ReprocessingSkills mReprocessingSkills;
     };
 }

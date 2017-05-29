@@ -216,6 +216,16 @@ namespace Evernus
         mData.mSellBrokersFee = std::move(fee);
     }
 
+    float Character::getReprocessingImplantBonus() const noexcept
+    {
+        return mData.mReprocessingImplantBonus;
+    }
+
+    void Character::setReprocessingImplantBonus(float value) noexcept
+    {
+        mData.mReprocessingImplantBonus = value;
+    }
+
     CharacterData::OrderAmountSkills Character::getOrderAmountSkills() const noexcept
     {
         return mData.mOrderAmountSkills;
@@ -274,6 +284,21 @@ namespace Evernus
     void Character::setContractSkills(CharacterData::ContractSkills &&skills) noexcept
     {
         mData.mContractSkills = std::move(skills);
+    }
+
+    CharacterData::ReprocessingSkills Character::getReprocessingSkills() const noexcept
+    {
+        return mData.mReprocessingSkills;
+    }
+
+    void Character::setReprocessingSkills(const CharacterData::ReprocessingSkills &skills) noexcept
+    {
+        mData.mReprocessingSkills = skills;
+    }
+
+    void Character::setReprocessingSkills(CharacterData::ReprocessingSkills &&skills) noexcept
+    {
+        mData.mReprocessingSkills = std::move(skills);
     }
 
     CharacterData Character::getCharacterData() const &
