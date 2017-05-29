@@ -14,10 +14,9 @@
  */
 #pragma once
 
-#include <QWidget>
-
 #include "InterRegionMarketDataFilterProxyModel.h"
 #include "InterRegionMarketDataModel.h"
+#include "StandardModelProxyWidget.h"
 #include "ExternalOrder.h"
 #include "TaskConstants.h"
 #include "PriceType.h"
@@ -38,7 +37,7 @@ namespace Evernus
     class EveDataProvider;
 
     class InterRegionAnalysisWidget
-        : public QWidget
+        : public StandardModelProxyWidget
     {
         Q_OBJECT
 
@@ -74,10 +73,6 @@ namespace Evernus
 
         void selectInterRegionType(const QItemSelection &selected);
 
-        void showInEveForCurrentInterRegion();
-
-        void copyRows() const;
-
     private:
         static const auto waitingLabelIndex = 0;
         static const auto allRegionsIndex = 0;
@@ -86,8 +81,6 @@ namespace Evernus
         const MarketDataProvider &mMarketDataProvider;
 
         QAction *mShowDetailsAct = nullptr;
-        QAction *mShowInEveInterRegionAct = nullptr;
-        QAction *mCopyInterRegionRowsAct = nullptr;
 
         QComboBox *mSourceRegionCombo = nullptr;
         QComboBox *mDestRegionCombo = nullptr;

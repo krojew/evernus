@@ -36,6 +36,7 @@ namespace Evernus
 {
     TypeAggregatedMarketDataModel::TypeAggregatedMarketDataModel(const EveDataProvider &dataProvider, QObject *parent)
         : QAbstractTableModel{parent}
+        , ModelWithTypes{}
         , mDataProvider{dataProvider}
     {
     }

@@ -14,11 +14,10 @@
  */
 #pragma once
 
-#include <QWidget>
-
 #include "TypeAggregatedMarketDataFilterProxyModel.h"
 #include "InterRegionMarketDataFilterProxyModel.h"
 #include "TypeAggregatedMarketDataModel.h"
+#include "StandardModelProxyWidget.h"
 #include "ExternalOrderImporter.h"
 #include "MarketDataProvider.h"
 #include "ExternalOrder.h"
@@ -38,7 +37,7 @@ namespace Evernus
     class EveDataProvider;
 
     class RegionAnalysisWidget
-        : public QWidget
+        : public StandardModelProxyWidget
     {
         Q_OBJECT
 
@@ -74,9 +73,6 @@ namespace Evernus
         void selectRegionType(const QItemSelection &selected);
 
         void showDetailsForCurrent();
-        void showInEveForCurrentRegion();
-
-        void copyRows() const;
 
     private:
         using HistoryOrdersPair = std::pair<const MarketDataProvider::HistoryMap *, const MarketDataProvider::OrderResultType *>;
@@ -90,8 +86,6 @@ namespace Evernus
         PriceType mDstPriceType = PriceType::Buy;
 
         QAction *mShowDetailsAct = nullptr;
-        QAction *mShowInEveRegionAct = nullptr;
-        QAction *mCopyRegionRowsAct = nullptr;
 
         QComboBox *mRegionCombo = nullptr;
         QComboBox *mSolarSystemCombo = nullptr;

@@ -481,6 +481,7 @@ add_executable(
     MetaGroupRepository.h
     ModelUtils.cpp
     ModelUtils.h
+    ModelWithTypes.h
     NetworkPreferencesWidget.cpp
     NetworkPreferencesWidget.h
     NetworkSettings.h
@@ -616,6 +617,8 @@ add_executable(
     SSOSettings.h
     SSOUtils.cpp
     SSOUtils.h
+    StandardModelProxyWidget.cpp
+    StandardModelProxyWidget.h
     StationModel.cpp
     StationModel.h
     StationSelectDialog.cpp

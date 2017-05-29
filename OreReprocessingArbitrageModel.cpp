@@ -36,4 +36,22 @@ namespace Evernus
     {
         return 0;
     }
+
+    EveType::IdType OreReprocessingArbitrageModel::getTypeId(const QModelIndex &index) const
+    {
+        return EveType::invalidId;
+    }
+
+    void OreReprocessingArbitrageModel::setCharacter(std::shared_ptr<Character> character)
+    {
+        beginResetModel();
+        mCharacter = std::move(character);
+        endResetModel();
+    }
+
+    void OreReprocessingArbitrageModel::reset()
+    {
+        beginResetModel();
+        endResetModel();
+    }
 }

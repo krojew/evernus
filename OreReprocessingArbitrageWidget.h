@@ -14,19 +14,23 @@
  */
 #pragma once
 
+#include <memory>
+
 #include <QSortFilterProxyModel>
-#include <QWidget>
 
 #include "OreReprocessingArbitrageModel.h"
+#include "StandardModelProxyWidget.h"
 
 class QStackedWidget;
+class QAction;
 
 namespace Evernus
 {
     class AdjustableTableView;
+    class Character;
 
     class OreReprocessingArbitrageWidget
-        : public QWidget
+        : public StandardModelProxyWidget
     {
         Q_OBJECT
 
@@ -35,6 +39,9 @@ namespace Evernus
         OreReprocessingArbitrageWidget(const OreReprocessingArbitrageWidget &) = default;
         OreReprocessingArbitrageWidget(OreReprocessingArbitrageWidget &&) = default;
         virtual ~OreReprocessingArbitrageWidget() = default;
+
+        void setCharacter(std::shared_ptr<Character> character);
+        void clearData();
 
         OreReprocessingArbitrageWidget &operator =(const OreReprocessingArbitrageWidget &) = default;
         OreReprocessingArbitrageWidget &operator =(OreReprocessingArbitrageWidget &&) = default;

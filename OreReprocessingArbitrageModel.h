@@ -14,12 +14,18 @@
  */
 #pragma once
 
+#include <memory>
+
 #include <QAbstractTableModel>
+
+#include "ModelWithTypes.h"
+#include "Character.h"
 
 namespace Evernus
 {
     class OreReprocessingArbitrageModel
         : public QAbstractTableModel
+        , public ModelWithTypes
     {
         Q_OBJECT
 
@@ -34,6 +40,12 @@ namespace Evernus
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
+        virtual EveType::IdType getTypeId(const QModelIndex &index) const override;
+
+        void setCharacter(std::shared_ptr<Character> character);
+
+        void reset();
+
         OreReprocessingArbitrageModel &operator =(const OreReprocessingArbitrageModel &) = default;
         OreReprocessingArbitrageModel &operator =(OreReprocessingArbitrageModel &&) = default;
 
@@ -42,5 +54,7 @@ namespace Evernus
         {
             numColumns
         };
+
+        std::shared_ptr<Character> mCharacter;
     };
 }

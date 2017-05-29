@@ -43,7 +43,6 @@
 #include "ImportSettings.h"
 #include "PriceSettings.h"
 #include "SSOMessageBox.h"
-#include "ModelUtils.h"
 #include "FlowLayout.h"
 
 #include "InterRegionAnalysisWidget.h"
@@ -55,7 +54,7 @@ namespace Evernus
                                                          const EveDataProvider &dataProvider,
                                                          const MarketDataProvider &marketDataProvider,
                                                          QWidget *parent)
-        : QWidget(parent)
+        : StandardModelProxyWidget(mInterRegionDataModel, mInterRegionViewProxy, parent)
         , mDataProvider(dataProvider)
         , mMarketDataProvider(marketDataProvider)
         , mInterRegionDataModel(mDataProvider)
@@ -253,16 +252,7 @@ namespace Evernus
         mInterRegionTypeDataView->addAction(mShowDetailsAct);
         connect(mShowDetailsAct, &QAction::triggered, this, &InterRegionAnalysisWidget::showDetailsForCurrent);
 
-        mShowInEveInterRegionAct = new QAction{tr("Show in EVE"), this};
-        mShowInEveInterRegionAct->setEnabled(false);
-        mInterRegionTypeDataView->addAction(mShowInEveInterRegionAct);
-        connect(mShowInEveInterRegionAct, &QAction::triggered, this, &InterRegionAnalysisWidget::showInEveForCurrentInterRegion);
-
-        mCopyInterRegionRowsAct = new QAction{tr("&Copy"), this};
-        mCopyInterRegionRowsAct->setEnabled(false);
-        mCopyInterRegionRowsAct->setShortcut(QKeySequence::Copy);
-        connect(mCopyInterRegionRowsAct, &QAction::triggered, this, &InterRegionAnalysisWidget::copyRows);
-        mInterRegionTypeDataView->addAction(mCopyInterRegionRowsAct);
+        installOnView(mInterRegionTypeDataView);
     }
 
     void InterRegionAnalysisWidget::setPriceTypes(PriceType src, PriceType dst) noexcept
@@ -283,6 +273,7 @@ namespace Evernus
 
     void InterRegionAnalysisWidget::setCharacter(const std::shared_ptr<Character> &character)
     {
+        StandardModelProxyWidget::setCharacter((character) ? (character->getId()) : (Character::invalidId));
         mInterRegionDataModel.setCharacter(character);
     }
 
@@ -395,21 +386,6 @@ namespace Evernus
     {
         const auto enabled = !selected.isEmpty();
         mShowDetailsAct->setEnabled(enabled);
-        mShowInEveInterRegionAct->setEnabled(enabled);
-        mCopyInterRegionRowsAct->setEnabled(enabled);
-    }
-
-    void InterRegionAnalysisWidget::showInEveForCurrentInterRegion()
-    {
-        const auto index = mInterRegionViewProxy.mapToSource(mInterRegionTypeDataView->currentIndex());
-        const auto id = mInterRegionDataModel.getTypeId(index);
-        if (id != EveType::invalidId)
-            emit showInEve(id, mInterRegionDataModel.getOwnerId(index));
-    }
-
-    void InterRegionAnalysisWidget::copyRows() const
-    {
-        ModelUtils::copyRowsToClipboard(mInterRegionTypeDataView->selectionModel()->selectedIndexes(), mInterRegionViewProxy);
     }
 
     void InterRegionAnalysisWidget::changeStation(quint64 &destination, QPushButton &btn, const QString &settingName)

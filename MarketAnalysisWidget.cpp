@@ -238,9 +238,11 @@ namespace Evernus
         mCharacterId = id;
 
         const auto character = mCharacterRepo.find(mCharacterId);
+
         mRegionAnalysisWidget->setCharacter(character);
         mInterRegionAnalysisWidget->setCharacter(character);
         mImportingAnalysisWidget->setCharacter(character);
+        mOreReprocessingArbitrageWidget->setCharacter(character);
     }
 
     void MarketAnalysisWidget::prepareOrderImport()
@@ -258,6 +260,7 @@ namespace Evernus
 
         mInterRegionAnalysisWidget->clearData();
         mImportingAnalysisWidget->clearData();
+        mOreReprocessingArbitrageWidget->clearData();
 
         if (!mDataFetcher.hasPendingOrderRequests() && !mDataFetcher.hasPendingHistoryRequests())
         {

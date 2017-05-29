@@ -14,6 +14,7 @@
  */
 #include <QStackedWidget>
 #include <QVBoxLayout>
+#include <QAction>
 
 #include "CalculatingDataWidget.h"
 #include "AdjustableTableView.h"
@@ -23,7 +24,7 @@
 namespace Evernus
 {
     OreReprocessingArbitrageWidget::OreReprocessingArbitrageWidget(QWidget *parent)
-        : QWidget(parent)
+        : StandardModelProxyWidget(mDataModel, mDataProxy, parent)
     {
         const auto mainLayout = new QVBoxLayout{this};
 
@@ -41,5 +42,20 @@ namespace Evernus
         mDataView->setAlternatingRowColors(true);
         mDataView->setModel(&mDataProxy);
         mDataView->restoreHeaderState();
+
+        mDataStack->setCurrentWidget(mDataView);
+
+        installOnView(mDataView);
+    }
+
+    void OreReprocessingArbitrageWidget::setCharacter(std::shared_ptr<Character> character)
+    {
+        StandardModelProxyWidget::setCharacter((character) ? (character->getId()) : (Character::invalidId));
+        mDataModel.setCharacter(std::move(character));
+    }
+
+    void OreReprocessingArbitrageWidget::clearData()
+    {
+        mDataModel.reset();
     }
 }
