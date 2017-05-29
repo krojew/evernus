@@ -903,82 +903,192 @@ Total: %7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="313"/>
-        <source>never imported</source>
+        <location filename="../CharacterWidget.cpp" line="274"/>
+        <source>Reprocessing skills</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="282"/>
+        <source>Reprocessing implant bonus:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="300"/>
+        <source>Arkonor processing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="302"/>
+        <source>Bistot processing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="304"/>
+        <source>Crokite processing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="306"/>
+        <source>Dark Ochre processing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="308"/>
+        <source>Gneiss processing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="314"/>
+        <source>Hedbergite processing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="316"/>
+        <source>Hemorphite processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="318"/>
-        <source>Character sheet: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CharacterWidget.cpp" line="319"/>
-        <source>Asset list: %1</source>
+        <source>Ice processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="320"/>
-        <source>Market orders: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CharacterWidget.cpp" line="321"/>
-        <source>Wallet journal: %1</source>
+        <source>Jaspet processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="322"/>
-        <source>Wallet transactions: %1</source>
+        <source>Kernite processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="325"/>
-        <source>Contracts: %1</source>
+        <location filename="../CharacterWidget.cpp" line="328"/>
+        <source>Mercoxit processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="331"/>
-        <source>Corp. asset list: %1</source>
+        <location filename="../CharacterWidget.cpp" line="330"/>
+        <source>Omber processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="332"/>
-        <source>Corp. market orders: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CharacterWidget.cpp" line="333"/>
-        <source>Corp. wallet journal: %1</source>
+        <source>Plagioclase processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="334"/>
+        <source>Pyroxeres processing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="336"/>
+        <source>Reprocessing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="342"/>
+        <source>Reprocessing efficiency:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="344"/>
+        <source>Scordite processing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="346"/>
+        <source>Scrapmetal processing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="348"/>
+        <source>Spodumain processing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="350"/>
+        <source>Veldspar processing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="392"/>
+        <source>never imported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="397"/>
+        <source>Character sheet: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="398"/>
+        <source>Asset list: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="399"/>
+        <source>Market orders: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="400"/>
+        <source>Wallet journal: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="401"/>
+        <source>Wallet transactions: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="404"/>
+        <source>Contracts: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="410"/>
+        <source>Corp. asset list: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="411"/>
+        <source>Corp. market orders: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="412"/>
+        <source>Corp. wallet journal: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="413"/>
         <source>Corp. wallet transactions: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="337"/>
+        <location filename="../CharacterWidget.cpp" line="416"/>
         <source>Corp. contracts: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="534"/>
+        <location filename="../CharacterWidget.cpp" line="667"/>
         <source>Character error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="534"/>
+        <location filename="../CharacterWidget.cpp" line="667"/>
         <source>Character not found in DB. Refresh characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="618"/>
+        <location filename="../CharacterWidget.cpp" line="751"/>
         <source>&lt;strong&gt;%1 of %2&lt;/strong&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="628"/>
+        <location filename="../CharacterWidget.cpp" line="761"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation type="unfinished"></translation>
     </message>

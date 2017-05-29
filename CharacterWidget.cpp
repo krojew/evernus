@@ -228,10 +228,10 @@ namespace Evernus
                 this, &CharacterWidget::setBrokersFee);
         connect(mBrokersFeeBtn, &QCheckBox::stateChanged, mSellBrokersFeeEdit, &QDoubleSpinBox::setEnabled);
 
-        auto skillsGroup = new QGroupBox{tr("Trade skills"), this};
-        mainLayout->addWidget(skillsGroup);
+        auto tradeSkillsGroup = new QGroupBox{tr("Trade skills"), this};
+        mainLayout->addWidget(tradeSkillsGroup);
 
-        auto skillsLayout = new QHBoxLayout{skillsGroup};
+        auto skillsLayout = new QHBoxLayout{tradeSkillsGroup};
 
         auto orderAmountGroup = new QGroupBox{tr("Order amount skills"), this};
         skillsLayout->addWidget(orderAmountGroup);
@@ -270,6 +270,85 @@ namespace Evernus
         contractingLayout->addRow(tr("Contracting:"), createSkillEdit(mContractingSkillEdit, "contracting_skill"));
         contractingLayout->addRow(tr("Corporation contracting:"),
                                   createSkillEdit(mCorporationContractingSkillEdit, "corporation_contracting_skill"));
+
+        const auto reprocessingSkillsGroup = new QGroupBox{tr("Reprocessing skills"), this};
+        mainLayout->addWidget(reprocessingSkillsGroup);
+
+        const auto reprocessingSkillsGroupLayout = new QVBoxLayout{reprocessingSkillsGroup};
+
+        const auto reprocessingImplantBonusLayout = new QHBoxLayout{};
+        reprocessingSkillsGroupLayout->addLayout(reprocessingImplantBonusLayout);
+
+        reprocessingImplantBonusLayout->addWidget(new QLabel{tr("Reprocessing implant bonus:"), this});
+
+        mReprocessingImplantBonusEdit = new QDoubleSpinBox{this};
+        reprocessingImplantBonusLayout->addWidget(mReprocessingImplantBonusEdit);
+        mReprocessingImplantBonusEdit->setRange(0., 100.);
+        mReprocessingImplantBonusEdit->setSingleStep(0.01);
+        mReprocessingImplantBonusEdit->setSuffix(locale().percent());
+        connect(mReprocessingImplantBonusEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+                this, &CharacterWidget::setReprocessingImplantBonus);
+
+        reprocessingImplantBonusLayout->addStretch();
+
+        const auto reprocessingSkillsLayout = new QHBoxLayout{};
+        reprocessingSkillsGroupLayout->addLayout(reprocessingSkillsLayout);
+
+        const auto reprocessingSkills1Layout = new QFormLayout{};
+        reprocessingSkillsLayout->addLayout(reprocessingSkills1Layout);
+
+        reprocessingSkills1Layout->addRow(tr("Arkonor processing:"),
+                                          createSkillEdit(mArkonorProcessingSkillEdit, "arkonor_processing"));
+        reprocessingSkills1Layout->addRow(tr("Bistot processing:"),
+                                          createSkillEdit(mBistotProcessingSkillEdit, "bistot_processing"));
+        reprocessingSkills1Layout->addRow(tr("Crokite processing:"),
+                                          createSkillEdit(mCrokiteProcessingSkillEdit, "crokite_processing"));
+        reprocessingSkills1Layout->addRow(tr("Dark Ochre processing:"),
+                                          createSkillEdit(mDarkOchreProcessingSkillEdit, "dark_ochre_processing"));
+        reprocessingSkills1Layout->addRow(tr("Gneiss processing:"),
+                                          createSkillEdit(mGneissProcessingSkillEdit, "gneiss_processing"));
+
+        const auto reprocessingSkills2Layout = new QFormLayout{};
+        reprocessingSkillsLayout->addLayout(reprocessingSkills2Layout);
+
+        reprocessingSkills2Layout->addRow(tr("Hedbergite processing:"),
+                                          createSkillEdit(mHedbergiteProcessingSkillEdit, "hedbergite_processing"));
+        reprocessingSkills2Layout->addRow(tr("Hemorphite processing:"),
+                                          createSkillEdit(mHemorphiteProcessingSkillEdit, "hemorphite_processing"));
+        reprocessingSkills2Layout->addRow(tr("Ice processing:"),
+                                          createSkillEdit(mIceProcessingSkillEdit, "ice_processing"));
+        reprocessingSkills2Layout->addRow(tr("Jaspet processing:"),
+                                          createSkillEdit(mJaspetProcessingSkillEdit, "jaspet_processing"));
+        reprocessingSkills2Layout->addRow(tr("Kernite processing:"),
+                                          createSkillEdit(mKerniteProcessingSkillEdit, "kernite_processing"));
+
+        const auto reprocessingSkills3Layout = new QFormLayout{};
+        reprocessingSkillsLayout->addLayout(reprocessingSkills3Layout);
+
+        reprocessingSkills3Layout->addRow(tr("Mercoxit processing:"),
+                                          createSkillEdit(mMercoxitProcessingSkillEdit, "mercoxit_processing"));
+        reprocessingSkills3Layout->addRow(tr("Omber processing:"),
+                                          createSkillEdit(mOmberProcessingSkillEdit, "omber_processing"));
+        reprocessingSkills3Layout->addRow(tr("Plagioclase processing:"),
+                                          createSkillEdit(mPlagioclaseProcessingSkillEdit, "plagioclase_processing"));
+        reprocessingSkills3Layout->addRow(tr("Pyroxeres processing:"),
+                                          createSkillEdit(mPyroxeresProcessingSkillEdit, "pyroxeres_processing"));
+        reprocessingSkills3Layout->addRow(tr("Reprocessing:"),
+                                          createSkillEdit(mReprocessingSkillEdit, "reprocessing"));
+
+        const auto reprocessingSkills4Layout = new QFormLayout{};
+        reprocessingSkillsLayout->addLayout(reprocessingSkills4Layout);
+
+        reprocessingSkills4Layout->addRow(tr("Reprocessing efficiency:"),
+                                          createSkillEdit(mReprocessingEfficiencySkillEdit, "reprocessing_efficiency"));
+        reprocessingSkills4Layout->addRow(tr("Scordite processing:"),
+                                          createSkillEdit(mScorditeProcessingSkillEdit, "scordite_processing"));
+        reprocessingSkills4Layout->addRow(tr("Scrapmetal processing:"),
+                                          createSkillEdit(mScrapmetalProcessingSkillEdit, "scrapmetal_processing"));
+        reprocessingSkills4Layout->addRow(tr("Spodumain processing:"),
+                                          createSkillEdit(mSpodumainProcessingSkillEdit, "spodumain_processing"));
+        reprocessingSkills4Layout->addRow(tr("Veldspar processing:"),
+                                          createSkillEdit(mVeldsparProcessingSkillEdit, "veldspar_processing"));
 
         mainLayout->addStretch();
 
@@ -379,10 +458,17 @@ namespace Evernus
         mCharacterRepository.updateBrokersFee(id, buy, sell);
     }
 
+    void CharacterWidget::setReprocessingImplantBonus(double value)
+    {
+        const auto id = getCharacterId();
+        Q_ASSERT(id != Character::invalidId);
+
+        mCharacterRepository.updateReprocessingImplantBonus(id, value);
+    }
+
     void CharacterWidget::setSkillLevel(int level)
     {
         const auto id = getCharacterId();
-
         Q_ASSERT(id != Character::invalidId);
 
         const auto fieldName = sender()->property(skillFieldProperty).toString();
@@ -454,6 +540,29 @@ namespace Evernus
             mContractingSkillEdit->setValue(0);
             mCorporationContractingSkillEdit->setValue(0);
 
+            mReprocessingImplantBonusEdit->setValue(0.);
+
+            mArkonorProcessingSkillEdit->setValue(0);
+            mBistotProcessingSkillEdit->setValue(0);
+            mCrokiteProcessingSkillEdit->setValue(0);
+            mDarkOchreProcessingSkillEdit->setValue(0);
+            mGneissProcessingSkillEdit->setValue(0);
+            mHedbergiteProcessingSkillEdit->setValue(0);
+            mHemorphiteProcessingSkillEdit->setValue(0);
+            mIceProcessingSkillEdit->setValue(0);
+            mJaspetProcessingSkillEdit->setValue(0);
+            mKerniteProcessingSkillEdit->setValue(0);
+            mMercoxitProcessingSkillEdit->setValue(0);
+            mOmberProcessingSkillEdit->setValue(0);
+            mPlagioclaseProcessingSkillEdit->setValue(0);
+            mPyroxeresProcessingSkillEdit->setValue(0);
+            mReprocessingSkillEdit->setValue(0);
+            mReprocessingEfficiencySkillEdit->setValue(0);
+            mScorditeProcessingSkillEdit->setValue(0);
+            mScrapmetalProcessingSkillEdit->setValue(0);
+            mSpodumainProcessingSkillEdit->setValue(0);
+            mVeldsparProcessingSkillEdit->setValue(0);
+
             mPortrait->setPixmap(defaultPortrait);
         }
         else
@@ -466,6 +575,7 @@ namespace Evernus
                 const auto tradeRangeSkills = character->getTradeRangeSkills();
                 const auto feeSkills = character->getFeeSkills();
                 const auto contractSkills = character->getContractSkills();
+                const auto reprocessingSkills = character->getReprocessingSkills();
 
                 mNameLabel->setText(character->getName());
                 mBackgroundLabel->setText(QString{"%1 %2, %3, %4"}
@@ -513,6 +623,29 @@ namespace Evernus
                 mMarginTradingSkillEdit->setValue(feeSkills.mMarginTrading);
                 mContractingSkillEdit->setValue(contractSkills.mContracting);
                 mCorporationContractingSkillEdit->setValue(contractSkills.mCorporationContracting);
+
+                mReprocessingImplantBonusEdit->setValue(character->getReprocessingImplantBonus());
+
+                mArkonorProcessingSkillEdit->setValue(reprocessingSkills.mArkonorProcessing);
+                mBistotProcessingSkillEdit->setValue(reprocessingSkills.mBistotProcessing);
+                mCrokiteProcessingSkillEdit->setValue(reprocessingSkills.mCrokiteProcessing);
+                mDarkOchreProcessingSkillEdit->setValue(reprocessingSkills.mDarkOchreProcessing);
+                mGneissProcessingSkillEdit->setValue(reprocessingSkills.mGneissProcessing);
+                mHedbergiteProcessingSkillEdit->setValue(reprocessingSkills.mHedbergiteProcessing);
+                mHemorphiteProcessingSkillEdit->setValue(reprocessingSkills.mHemorphiteProcessing);
+                mIceProcessingSkillEdit->setValue(reprocessingSkills.mIceProcessing);
+                mJaspetProcessingSkillEdit->setValue(reprocessingSkills.mJaspetProcessing);
+                mKerniteProcessingSkillEdit->setValue(reprocessingSkills.mKerniteProcessing);
+                mMercoxitProcessingSkillEdit->setValue(reprocessingSkills.mMercoxitProcessing);
+                mOmberProcessingSkillEdit->setValue(reprocessingSkills.mOmberProcessing);
+                mPlagioclaseProcessingSkillEdit->setValue(reprocessingSkills.mPlagioclaseProcessing);
+                mPyroxeresProcessingSkillEdit->setValue(reprocessingSkills.mPyroxeresProcessing);
+                mReprocessingSkillEdit->setValue(reprocessingSkills.mReprocessing);
+                mReprocessingEfficiencySkillEdit->setValue(reprocessingSkills.mReprocessingEfficiency);
+                mScorditeProcessingSkillEdit->setValue(reprocessingSkills.mScorditeProcessing);
+                mScrapmetalProcessingSkillEdit->setValue(reprocessingSkills.mScrapmetalProcessing);
+                mSpodumainProcessingSkillEdit->setValue(reprocessingSkills.mSpodumainProcessing);
+                mVeldsparProcessingSkillEdit->setValue(reprocessingSkills.mVeldsparProcessing);
 
                 QSettings settings;
                 if (settings.value(ImportSettings::importPortraitKey, ImportSettings::importPortraitDefault).toBool())
@@ -634,7 +767,8 @@ namespace Evernus
         target = new QSpinBox{this};
         target->setMaximum(5);
         target->setProperty(skillFieldProperty, skillField);
-        connect(target, SIGNAL(valueChanged(int)), SLOT(setSkillLevel(int)));
+        connect(target, QOverload<int>::of(&QSpinBox::valueChanged),
+                this, &CharacterWidget::setSkillLevel);
 
         return target;
     }

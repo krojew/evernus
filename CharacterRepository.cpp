@@ -149,6 +149,17 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    void CharacterRepository::updateReprocessingImplantBonus(Character::IdType id, double value) const
+    {
+        auto query = prepare(QString{"UPDATE %1 SET reprocessing_implant_bonus = ? WHERE %2 = ?"}
+            .arg(getTableName())
+            .arg(getIdColumn()));
+        query.bindValue(0, value);
+        query.bindValue(1, id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     void CharacterRepository::disableByKey(Key::IdType id) const
     {
         auto query = prepare(QString{"UPDATE %1 SET key_id = NULL, enabled = 0 WHERE key_id = ?"}.arg(getTableName()));
