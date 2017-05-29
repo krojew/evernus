@@ -338,6 +338,8 @@ namespace Evernus
 
                     migrateDatabaseTo153(itemRepo);
                 }
+
+                migrateDatabaseTo20(characterRepo);
             }
 
             updateDatabaseVersion(provider.getKeyRepository().getDatabase());
@@ -501,6 +503,31 @@ namespace Evernus
     void Updater::migrateDatabaseTo153(const ItemRepository &itemRepo) const
     {
         safelyExecQuery(itemRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN custom_value NUMERIC NULL DEFAULT NULL").arg(itemRepo.getTableName()));
+    }
+
+    void Updater::migrateDatabaseTo20(const Repository<Character> &characterRepo) const
+    {
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN reprocessing_implant_bonus FLOAT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN arkonor_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN bistot_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN crokite_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN dark_ochre_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN gneiss_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN hedbergite_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN hemorphite_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN ice_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN jaspet_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN kernite_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN mercoxit_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN omber_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN plagioclase_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN pyroxeres_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN reprocessing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN reprocessing_efficiency TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN scordite_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN scrapmetal_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN spodumain_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN veldspar_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
     }
 
     void Updater::migrateCoreTo130() const

@@ -6396,44 +6396,44 @@ Do you wish to launch the updater?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="347"/>
-        <location filename="../Updater.cpp" line="378"/>
-        <location filename="../Updater.cpp" line="385"/>
-        <location filename="../Updater.cpp" line="397"/>
-        <location filename="../Updater.cpp" line="468"/>
-        <location filename="../Updater.cpp" line="495"/>
+        <location filename="../Updater.cpp" line="349"/>
+        <location filename="../Updater.cpp" line="380"/>
+        <location filename="../Updater.cpp" line="387"/>
+        <location filename="../Updater.cpp" line="399"/>
+        <location filename="../Updater.cpp" line="470"/>
+        <location filename="../Updater.cpp" line="497"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="347"/>
+        <location filename="../Updater.cpp" line="349"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="378"/>
+        <location filename="../Updater.cpp" line="380"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="385"/>
+        <location filename="../Updater.cpp" line="387"/>
         <source>This update requires re-importing all item prices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="397"/>
+        <location filename="../Updater.cpp" line="399"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="468"/>
+        <location filename="../Updater.cpp" line="470"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="495"/>
+        <location filename="../Updater.cpp" line="497"/>
         <source>This update requires re-importing citadels.</source>
         <translation type="unfinished"></translation>
     </message>
