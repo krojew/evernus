@@ -491,6 +491,10 @@ add_executable(
     OrderScriptRepository.cpp
     OrderScriptRepository.h
     OrderSettings.h
+    OreReprocessingArbitrageModel.cpp
+    OreReprocessingArbitrageModel.h
+    OreReprocessingArbitrageWidget.cpp
+    OreReprocessingArbitrageWidget.h
     OrderPreferencesWidget.cpp
     OrderPreferencesWidget.h
     PathPreferencesWidget.cpp

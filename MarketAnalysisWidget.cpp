@@ -23,6 +23,7 @@
 #include <QLabel>
 #include <QDebug>
 
+#include "OreReprocessingArbitrageWidget.h"
 #include "InterRegionAnalysisWidget.h"
 #include "ImportingAnalysisWidget.h"
 #include "RegionTypeSelectDialog.h"
@@ -205,9 +206,12 @@ namespace Evernus
         mImportingAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
         mImportingAnalysisWidget->discardBogusOrders(discardBogusOrders);
 
+        mOreReprocessingArbitrageWidget = new OreReprocessingArbitrageWidget{this};
+
         tabs->addTab(mRegionAnalysisWidget, tr("Region"));
         tabs->addTab(mInterRegionAnalysisWidget, tr("Inter-Region"));
         tabs->addTab(mImportingAnalysisWidget, tr("Importing"));
+        tabs->addTab(mOreReprocessingArbitrageWidget, tr("Ore reprocessing arbitrage"));
     }
 
     const MarketAnalysisWidget::HistoryMap *MarketAnalysisWidget::getHistory(uint regionId) const
