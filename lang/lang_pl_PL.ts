@@ -5027,37 +5027,37 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::OreReprocessingArbitrageWidget</name>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="49"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="50"/>
         <source>Base yield:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="63"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="64"/>
         <source>Include station tax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="73"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="74"/>
         <source>Ignore orders with min. volume &gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="83"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="84"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="87"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="88"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="88"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="89"/>
         <source>If you wish to make the fastest trade as possible, be sure to set the correct &lt;b&gt;buy and sell price type&lt;/b&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="89"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="90"/>
         <source>Due to the fast nature of arbitrage, prices are not based on volume percentile.</source>
         <translation type="unfinished"></translation>
     </message>

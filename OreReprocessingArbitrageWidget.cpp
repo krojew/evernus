@@ -16,6 +16,7 @@
 #include <QDoubleSpinBox>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QHeaderView>
 #include <QCheckBox>
 #include <QSettings>
 #include <QAction>
@@ -131,6 +132,8 @@ namespace Evernus
         mDataStack->repaint();
 
         // TODO: set model data
+
+        mDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 
         mDataStack->setCurrentWidget(mDataView);
         mDataStack->repaint();
