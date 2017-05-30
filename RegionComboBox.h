@@ -44,5 +44,7 @@ namespace Evernus
 
     private:
         static const auto allRegionsIndex = 0;
+
+        void setRegionText();
     };
 }

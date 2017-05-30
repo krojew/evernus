@@ -5019,57 +5019,57 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::OreReprocessingArbitrageWidget</name>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="57"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="60"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="67"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="70"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="77"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="80"/>
         <source>Base yield:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="91"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="94"/>
         <source>Include station tax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="101"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="104"/>
         <source>Ignore orders with min. volume &gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="111"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="114"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="115"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="118"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="116"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="119"/>
         <source>If you wish to make the fastest trade as possible, be sure to set the correct &lt;b&gt;buy and sell price type&lt;/b&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="117"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="120"/>
         <source>Due to the fast nature of arbitrage, prices are not based on volume percentile.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="185"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="188"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="185"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="188"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5384,19 +5384,18 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::RegionComboBox</name>
     <message>
-        <location filename="../RegionComboBox.cpp" line="66"/>
-        <location filename="../RegionComboBox.cpp" line="91"/>
-        <location filename="../RegionComboBox.cpp" line="96"/>
+        <location filename="../RegionComboBox.cpp" line="67"/>
+        <location filename="../RegionComboBox.cpp" line="102"/>
         <source>- all -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionComboBox.cpp" line="78"/>
+        <location filename="../RegionComboBox.cpp" line="114"/>
         <source>- multiple -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionComboBox.cpp" line="88"/>
+        <location filename="../RegionComboBox.cpp" line="124"/>
         <source>- none -</source>
         <translation type="unfinished"></translation>
     </message>

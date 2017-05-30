@@ -61,31 +61,7 @@ namespace Evernus
             QSettings settings;
             settings.setValue(settingsKey, saved);
 
-            if (model->item(allRegionsIndex)->checkState() == Qt::Checked)
-            {
-                setCurrentText(tr("- all -"));
-                return;
-            }
-
-            auto hasChecked = false;
-            for (auto i = allRegionsIndex + 1; i < model->rowCount(); ++i)
-            {
-                const auto item = model->item(i);
-                if (item->checkState() == Qt::Checked)
-                {
-                    if (hasChecked)
-                    {
-                        setCurrentText(tr("- multiple -"));
-                        return;
-                    }
-
-                    hasChecked = true;
-                    setCurrentText(item->text());
-                }
-            }
-
-            if (!hasChecked)
-                setCurrentText(tr("- none -"));
+            setRegionText();
         }, Qt::QueuedConnection);
 
         auto item = new QStandardItem{tr("- all -")};
@@ -93,7 +69,7 @@ namespace Evernus
         item->setCheckState((saved.empty() || saved.find(0) != std::end(saved)) ? (Qt::Checked) : (Qt::Unchecked));
 
         model->insertRow(allRegionsIndex, item);
-        setCurrentText(tr("- all -"));
+        setRegionText();
     }
 
     RegionComboBox::RegionList RegionComboBox::getSelectedRegionList() const
@@ -116,5 +92,35 @@ namespace Evernus
         }
 
         return list;
+    }
+
+    void RegionComboBox::setRegionText()
+    {
+        const auto srcModel = static_cast<const QStandardItemModel *>(model());
+        if (srcModel->item(allRegionsIndex)->checkState() == Qt::Checked)
+        {
+            setCurrentText(tr("- all -"));
+            return;
+        }
+
+        auto hasChecked = false;
+        for (auto i = allRegionsIndex + 1; i < srcModel->rowCount(); ++i)
+        {
+            const auto item = srcModel->item(i);
+            if (item->checkState() == Qt::Checked)
+            {
+                if (hasChecked)
+                {
+                    setCurrentText(tr("- multiple -"));
+                    return;
+                }
+
+                hasChecked = true;
+                setCurrentText(item->text());
+            }
+        }
+
+        if (!hasChecked)
+            setCurrentText(tr("- none -"));
     }
 }
