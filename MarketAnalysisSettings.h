@@ -67,5 +67,9 @@ namespace Evernus
         const auto reprocessingStationEfficiencyKey = QStringLiteral("marketAnalysis/reprocessing/stationEfficiency");
         const auto reprocessingIncludeStationTaxKey = QStringLiteral("marketAnalysis/reprocessing/includeStationTax");
         const auto reprocessingIgnoreMinVolumeKey = QStringLiteral("marketAnalysis/reprocessing/ignoreMinVolume");
+        const auto reprocessingSrcStationKey = QStringLiteral("marketAnalysis/reprocessing/srcStation");
+        const auto reprocessingDstStationKey = QStringLiteral("marketAnalysis/reprocessing/dstStation");
+        const auto reprocessingSrcRegionKey = QStringLiteral("marketAnalysis/reprocessing/srcRegion");
+        const auto reprocessingDstRegionKey = QStringLiteral("marketAnalysis/reprocessing/dstRegion");
     }
 }

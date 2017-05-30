@@ -16,6 +16,7 @@
 #include <QDoubleSpinBox>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QMessageBox>
 #include <QHeaderView>
 #include <QCheckBox>
 #include <QSettings>
@@ -26,7 +27,9 @@
 #include "MarketAnalysisSettings.h"
 #include "CalculatingDataWidget.h"
 #include "AdjustableTableView.h"
+#include "StationSelectButton.h"
 #include "MarketDataProvider.h"
+#include "RegionComboBox.h"
 #include "FlowLayout.h"
 
 #include "OreReprocessingArbitrageWidget.h"
@@ -46,6 +49,33 @@ namespace Evernus
         mainLayout->addLayout(toolBarLayout);
 
         QSettings settings;
+
+        const auto srcStationPath = settings.value(MarketAnalysisSettings::reprocessingSrcStationKey).toList();
+        if (srcStationPath.size() == 4)
+            mSrcStation = srcStationPath[3].toULongLong();
+        const auto dstStationPath = settings.value(MarketAnalysisSettings::reprocessingDstStationKey).toList();
+        if (dstStationPath.size() == 4)
+            mDstStation = dstStationPath[3].toULongLong();
+
+        toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
+        mSourceRegionCombo = new RegionComboBox{dataProvider, MarketAnalysisSettings::reprocessingSrcRegionKey, this};
+        toolBarLayout->addWidget(mSourceRegionCombo);
+
+        auto stationBtn = new StationSelectButton{dataProvider, srcStationPath, this};
+        toolBarLayout->addWidget(stationBtn);
+        connect(stationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+            changeStation(mSrcStation, path, MarketAnalysisSettings::reprocessingSrcStationKey);
+        });
+
+        toolBarLayout->addWidget(new QLabel{tr("Destination:"), this});
+        mDestRegionCombo = new RegionComboBox{dataProvider, MarketAnalysisSettings::reprocessingDstRegionKey, this};
+        toolBarLayout->addWidget(mDestRegionCombo);
+
+        stationBtn = new StationSelectButton{dataProvider, dstStationPath, this};
+        toolBarLayout->addWidget(stationBtn);
+        connect(stationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+            changeStation(mDstStation, path, MarketAnalysisSettings::reprocessingDstStationKey);
+        });
 
         toolBarLayout->addWidget(new QLabel{tr("Base yield:"), this});
 
@@ -143,5 +173,21 @@ namespace Evernus
 
         mDataStack->setCurrentWidget(mDataView);
         mDataStack->repaint();
+    }
+
+    void OreReprocessingArbitrageWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)
+    {
+        QSettings settings;
+        settings.setValue(settingName, path);
+
+        if (path.size() == 4)
+            destination = path[3].toULongLong();
+        else
+            destination = 0;
+
+        if (QMessageBox::question(this, tr("Station change"), tr("Changing station requires data recalculation. Do you wish to do it now?")) == QMessageBox::No)
+            return;
+
+        recalculateData();
     }
 }

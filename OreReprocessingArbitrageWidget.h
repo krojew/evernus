@@ -32,6 +32,7 @@ namespace Evernus
     class AdjustableTableView;
     class MarketDataProvider;
     class EveDataProvider;
+    class RegionComboBox;
     class Character;
 
     class OreReprocessingArbitrageWidget
@@ -63,6 +64,8 @@ namespace Evernus
 
         const MarketDataProvider &mMarketDataProvider;
 
+        RegionComboBox *mSourceRegionCombo = nullptr;
+        RegionComboBox *mDestRegionCombo = nullptr;
         QDoubleSpinBox *mStationEfficiencyEdit = nullptr;
         QCheckBox *mIncludeStationTaxBtn = nullptr;
         QCheckBox *mIgnoreMinVolumeBtn = nullptr;
@@ -74,5 +77,10 @@ namespace Evernus
 
         PriceType mSrcPriceType = PriceType::Buy;
         PriceType mDstPriceType = PriceType::Buy;
+
+        quint64 mSrcStation = 0;
+        quint64 mDstStation = 0;
+
+        void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
     };
 }
