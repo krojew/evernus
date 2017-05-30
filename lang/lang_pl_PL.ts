@@ -5372,19 +5372,19 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::RegionComboBox</name>
     <message>
-        <location filename="../RegionComboBox.cpp" line="64"/>
-        <location filename="../RegionComboBox.cpp" line="89"/>
-        <location filename="../RegionComboBox.cpp" line="94"/>
+        <location filename="../RegionComboBox.cpp" line="66"/>
+        <location filename="../RegionComboBox.cpp" line="91"/>
+        <location filename="../RegionComboBox.cpp" line="96"/>
         <source>- all -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionComboBox.cpp" line="76"/>
+        <location filename="../RegionComboBox.cpp" line="78"/>
         <source>- multiple -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionComboBox.cpp" line="86"/>
+        <location filename="../RegionComboBox.cpp" line="88"/>
         <source>- none -</source>
         <translation type="unfinished"></translation>
     </message>

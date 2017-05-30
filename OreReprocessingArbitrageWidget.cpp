@@ -123,10 +123,6 @@ namespace Evernus
     {
         qDebug() << "Recomputing ore reprocessing arbitrage data...";
 
-        const auto history = mMarketDataProvider.getHistory();
-        if (history == nullptr)
-            return;
-
         const auto orders = mMarketDataProvider.getOrders();
         if (orders == nullptr)
             return;
