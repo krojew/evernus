@@ -2894,53 +2894,47 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::InterRegionAnalysisWidget</name>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="71"/>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="305"/>
-        <source>- any station -</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="83"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="79"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="93"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="89"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="105"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="101"/>
         <source>Volume:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="123"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="119"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="141"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="137"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="145"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="141"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="168"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="164"/>
         <source>Show details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="309"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="297"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="309"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="297"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5514,6 +5508,15 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../StandardModelProxyWidget.cpp" line="50"/>
         <source>&amp;Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::StationSelectButton</name>
+    <message>
+        <location filename="../StationSelectButton.cpp" line="27"/>
+        <location filename="../StationSelectButton.cpp" line="46"/>
+        <source>- any station -</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

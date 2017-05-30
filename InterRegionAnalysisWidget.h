@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <QVariant>
+
 #include "InterRegionMarketDataFilterProxyModel.h"
 #include "InterRegionMarketDataModel.h"
 #include "StandardModelProxyWidget.h"
@@ -100,7 +102,7 @@ namespace Evernus
         PriceType mSrcPriceType = PriceType::Buy;
         PriceType mDstPriceType = PriceType::Buy;
 
-        void changeStation(quint64 &destination, QPushButton &btn, const QString &settingName);
+        void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
         void recalculateInterRegionData();
     };
 }

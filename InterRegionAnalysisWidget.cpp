@@ -34,7 +34,7 @@
 #include "InterRegionTypeDetailsWidget.h"
 #include "MarketAnalysisSettings.h"
 #include "CalculatingDataWidget.h"
-#include "StationSelectDialog.h"
+#include "StationSelectButton.h"
 #include "AdjustableTableView.h"
 #include "MarketDataProvider.h"
 #include "EveDataProvider.h"
@@ -67,37 +67,33 @@ namespace Evernus
         auto toolBarLayout = new FlowLayout{};
         mainLayout->addLayout(toolBarLayout);
 
-        auto getStationName = [this](auto id) {
-            return (id != 0) ? (mDataProvider.getLocationName(id)) : (tr("- any station -"));
-        };
-
         QSettings settings;
 
-        auto list = settings.value(MarketAnalysisSettings::srcStationKey).toList();
-        if (list.size() == 4)
-            mSrcStation = list[3].toULongLong();
-        list = settings.value(MarketAnalysisSettings::dstStationKey).toList();
-        if (list.size() == 4)
-            mDstStation = list[3].toULongLong();
+        const auto srcStationPath = settings.value(MarketAnalysisSettings::srcStationKey).toList();
+        if (srcStationPath.size() == 4)
+            mSrcStation = srcStationPath[3].toULongLong();
+        const auto dstStationPath = settings.value(MarketAnalysisSettings::dstStationKey).toList();
+        if (dstStationPath.size() == 4)
+            mDstStation = dstStationPath[3].toULongLong();
 
         toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
         mSourceRegionCombo = new RegionComboBox{mDataProvider, MarketAnalysisSettings::srcRegionKey, this};
         toolBarLayout->addWidget(mSourceRegionCombo);
 
-        auto stationBtn = new QPushButton{getStationName(mSrcStation), this};
+        auto stationBtn = new StationSelectButton{mDataProvider, srcStationPath, this};
         toolBarLayout->addWidget(stationBtn);
-        connect(stationBtn, &QPushButton::clicked, this, [=] {
-            changeStation(mSrcStation, *stationBtn, MarketAnalysisSettings::srcStationKey);
+        connect(stationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+            changeStation(mSrcStation, path, MarketAnalysisSettings::srcStationKey);
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Destination:"), this});
         mDestRegionCombo = new RegionComboBox{mDataProvider, MarketAnalysisSettings::dstRegionKey, this};
         toolBarLayout->addWidget(mDestRegionCombo);
 
-        stationBtn = new QPushButton{getStationName(mDstStation), this};
+        stationBtn = new StationSelectButton{mDataProvider, dstStationPath, this};
         toolBarLayout->addWidget(stationBtn);
-        connect(stationBtn, &QPushButton::clicked, this, [=] {
-            changeStation(mDstStation, *stationBtn, MarketAnalysisSettings::dstStationKey);
+        connect(stationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+            changeStation(mDstStation, path, MarketAnalysisSettings::dstStationKey);
         });
 
         auto volumeValidator = new QIntValidator{this};
@@ -288,23 +284,15 @@ namespace Evernus
         mShowDetailsAct->setEnabled(enabled);
     }
 
-    void InterRegionAnalysisWidget::changeStation(quint64 &destination, QPushButton &btn, const QString &settingName)
+    void InterRegionAnalysisWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)
     {
-        StationSelectDialog dlg{mDataProvider, true, this};
-
         QSettings settings;
-        dlg.selectPath(settings.value(settingName).toList());
+        settings.setValue(settingName, path);
 
-        if (dlg.exec() != QDialog::Accepted)
-            return;
-
-        settings.setValue(settingName, dlg.getSelectedPath());
-
-        destination = dlg.getStationId();
-        if (destination == 0)
-            btn.setText(tr("- any station -"));
+        if (path.size() == 4)
+            destination = path[3].toULongLong();
         else
-            btn.setText(mDataProvider.getLocationName(destination));
+            destination = 0;
 
         if (QMessageBox::question(this, tr("Station change"), tr("Changing station requires data recalculation. Do you wish to do it now?")) == QMessageBox::No)
             return;

@@ -623,6 +623,8 @@ add_executable(
     StandardModelProxyWidget.h
     StationModel.cpp
     StationModel.h
+    StationSelectButton.cpp
+    StationSelectButton.h
     StationSelectDialog.cpp
     StationSelectDialog.h
     StationView.cpp
