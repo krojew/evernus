@@ -120,6 +120,12 @@ namespace Evernus
         mDataModel.reset();
     }
 
+    void OreReprocessingArbitrageWidget::setPriceTypes(PriceType src, PriceType dst) noexcept
+    {
+        mSrcPriceType = src;
+        mDstPriceType = dst;
+    }
+
     void OreReprocessingArbitrageWidget::recalculateData()
     {
         qDebug() << "Recomputing ore reprocessing arbitrage data...";

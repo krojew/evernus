@@ -20,6 +20,7 @@
 
 #include "OreReprocessingArbitrageModel.h"
 #include "StandardModelProxyWidget.h"
+#include "PriceType.h"
 
 class QStackedWidget;
 class QDoubleSpinBox;
@@ -49,6 +50,8 @@ namespace Evernus
         void setCharacter(std::shared_ptr<Character> character);
         void clearData();
 
+        void setPriceTypes(PriceType src, PriceType dst) noexcept;
+
         OreReprocessingArbitrageWidget &operator =(const OreReprocessingArbitrageWidget &) = default;
         OreReprocessingArbitrageWidget &operator =(OreReprocessingArbitrageWidget &&) = default;
 
@@ -68,5 +71,8 @@ namespace Evernus
 
         OreReprocessingArbitrageModel mDataModel;
         QSortFilterProxyModel mDataProxy;
+
+        PriceType mSrcPriceType = PriceType::Buy;
+        PriceType mDstPriceType = PriceType::Buy;
     };
 }
