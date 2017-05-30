@@ -235,7 +235,10 @@ namespace Evernus
                 }
             }
 
-            return ItemData{reprocessingInfo.first};
+            ItemData data;
+            data.mId = reprocessingInfo.first;
+
+            return data;
         };
 
         // fill our destination collection
