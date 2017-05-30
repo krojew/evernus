@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <unordered_set>
 #include <memory>
 #include <vector>
 
@@ -35,6 +36,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        using RegionList = std::unordered_set<uint>;
+
         explicit OreReprocessingArbitrageModel(const EveDataProvider &dataProvider,
                                                QObject *parent = nullptr);
         OreReprocessingArbitrageModel(const OreReprocessingArbitrageModel &) = default;
@@ -52,6 +55,10 @@ namespace Evernus
         void setOrderData(const std::vector<ExternalOrder> &orders,
                           PriceType srcPriceType,
                           PriceType dstPriceType,
+                          const RegionList &srcRegions,
+                          const RegionList &dstRegions,
+                          quint64 srcStation,
+                          quint64 dstStation,
                           bool useStationTax,
                           bool ignoreMinVolume);
 

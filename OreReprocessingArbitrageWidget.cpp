@@ -167,7 +167,15 @@ namespace Evernus
         mDataStack->setCurrentIndex(waitingLabelIndex);
         mDataStack->repaint();
 
-        // TODO: set model data
+        mDataModel.setOrderData(*orders,
+                                mSrcPriceType,
+                                mDstPriceType,
+                                mSourceRegionCombo->getSelectedRegionList(),
+                                mDestRegionCombo->getSelectedRegionList(),
+                                mSrcStation,
+                                mDstStation,
+                                mIncludeStationTaxBtn->isChecked(),
+                                mIgnoreMinVolumeBtn->isChecked());
 
         mDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 

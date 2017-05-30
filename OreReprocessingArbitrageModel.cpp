@@ -61,6 +61,10 @@ namespace Evernus
     void OreReprocessingArbitrageModel::setOrderData(const std::vector<ExternalOrder> &orders,
                                                      PriceType srcPriceType,
                                                      PriceType dstPriceType,
+                                                     const RegionList &srcRegions,
+                                                     const RegionList &dstRegions,
+                                                     quint64 srcStation,
+                                                     quint64 dstStation,
                                                      bool useStationTax,
                                                      bool ignoreMinVolume)
     {
