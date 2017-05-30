@@ -5017,6 +5017,14 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
 </context>
 <context>
+    <name>Evernus::OreReprocessingArbitrageModel</name>
+    <message>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="78"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::OreReprocessingArbitrageWidget</name>
     <message>
         <location filename="../OreReprocessingArbitrageWidget.cpp" line="60"/>
@@ -5055,7 +5063,7 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
     <message>
         <location filename="../OreReprocessingArbitrageWidget.cpp" line="119"/>
-        <source>If you wish to make the fastest trade as possible, be sure to set the correct &lt;b&gt;buy and sell price type&lt;/b&gt;.</source>
+        <source>If you wish to make the fastest trade as possible, be sure to set the correct &lt;b&gt;sell price type&lt;/b&gt;. &lt;b&gt;Buying always uses sell orders.&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5064,12 +5072,12 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="196"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="194"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="196"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="194"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>

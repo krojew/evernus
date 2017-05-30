@@ -158,7 +158,7 @@ namespace Evernus
                 mRegionAnalysisWidget->setPriceTypes(src, dst);
                 mInterRegionAnalysisWidget->setPriceTypes(src, dst);
                 mImportingAnalysisWidget->setPriceTypes(src, dst);
-                mOreReprocessingArbitrageWidget->setPriceTypes(src, dst);
+                mOreReprocessingArbitrageWidget->setPriceType(dst);
 
                 recalculateAllData();
             });
@@ -209,7 +209,7 @@ namespace Evernus
         mImportingAnalysisWidget->discardBogusOrders(discardBogusOrders);
 
         mOreReprocessingArbitrageWidget = new OreReprocessingArbitrageWidget{mDataProvider, *this, tabs};
-        mOreReprocessingArbitrageWidget->setPriceTypes(src, dst);
+        mOreReprocessingArbitrageWidget->setPriceType(dst);
         connect(mOreReprocessingArbitrageWidget, &OreReprocessingArbitrageWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
 
         tabs->addTab(mRegionAnalysisWidget, tr("Region"));

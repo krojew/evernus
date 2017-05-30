@@ -13,6 +13,7 @@ set(MAJOR_VERSION "2")
 set(MINOR_VERSION "0")
 
 find_package(Boost REQUIRED)
+find_package(Qt5Concurrent REQUIRED)
 find_package(Qt5Core 5.4 REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
@@ -739,6 +740,7 @@ endif()
 target_link_libraries(
     ${PROJECT_NAME}
     ${Boost_LIBRARIES}
+    Qt5::Concurrent
     Qt5::Core
     Qt5::Gui
     Qt5::Multimedia

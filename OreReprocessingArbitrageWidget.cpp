@@ -116,7 +116,7 @@ namespace Evernus
         connect(filterBtn, &QPushButton::clicked, this, &OreReprocessingArbitrageWidget::recalculateData);
 
         toolBarLayout->addWidget(new QLabel{tr("Press \"Apply\" to show results. Additional actions are available via the right-click menu."), this});
-        toolBarLayout->addWidget(new QLabel{tr("If you wish to make the fastest trade as possible, be sure to set the correct <b>buy and sell price type</b>."), this});
+        toolBarLayout->addWidget(new QLabel{tr("If you wish to make the fastest trade as possible, be sure to set the correct <b>sell price type</b>. <b>Buying always uses sell orders.</b>"), this});
         toolBarLayout->addWidget(new QLabel{tr("Due to the fast nature of arbitrage, prices are not based on volume percentile."), this});
 
         mDataStack = new QStackedWidget{this};
@@ -150,9 +150,8 @@ namespace Evernus
         mDataModel.reset();
     }
 
-    void OreReprocessingArbitrageWidget::setPriceTypes(PriceType src, PriceType dst) noexcept
+    void OreReprocessingArbitrageWidget::setPriceType(PriceType dst) noexcept
     {
-        mSrcPriceType = src;
         mDstPriceType = dst;
     }
 
@@ -168,14 +167,14 @@ namespace Evernus
         mDataStack->repaint();
 
         mDataModel.setOrderData(*orders,
-                                mSrcPriceType,
                                 mDstPriceType,
                                 mSourceRegionCombo->getSelectedRegionList(),
                                 mDestRegionCombo->getSelectedRegionList(),
                                 mSrcStation,
                                 mDstStation,
                                 mIncludeStationTaxBtn->isChecked(),
-                                mIgnoreMinVolumeBtn->isChecked());
+                                mIgnoreMinVolumeBtn->isChecked(),
+                                mStationEfficiencyEdit->value());
 
         mDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 

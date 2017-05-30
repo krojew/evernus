@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <unordered_map>
 #include <unordered_set>
 #include <memory>
 #include <vector>
@@ -23,6 +24,7 @@
 #include "ModelWithTypes.h"
 #include "Character.h"
 #include "PriceType.h"
+#include "EveType.h"
 
 namespace Evernus
 {
@@ -53,14 +55,14 @@ namespace Evernus
 
         void setCharacter(std::shared_ptr<Character> character);
         void setOrderData(const std::vector<ExternalOrder> &orders,
-                          PriceType srcPriceType,
                           PriceType dstPriceType,
                           const RegionList &srcRegions,
                           const RegionList &dstRegions,
                           quint64 srcStation,
                           quint64 dstStation,
                           bool useStationTax,
-                          bool ignoreMinVolume);
+                          bool ignoreMinVolume,
+                          double baseYield);
 
         void reset();
 
@@ -70,11 +72,22 @@ namespace Evernus
     private:
         enum
         {
+            nameColumn,
+
             numColumns
         };
+
+        struct ItemData
+        {
+            EveType::IdType mId = EveType::invalidId;
+        };
+
+        static const std::unordered_map<EveType::IdType, int (Character::*)()> reprocessingSkillMap;
 
         const EveDataProvider &mDataProvider;
 
         std::shared_ptr<Character> mCharacter;
+
+        std::vector<ItemData> mData;
     };
 }
