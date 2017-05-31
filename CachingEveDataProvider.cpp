@@ -36,6 +36,26 @@ namespace Evernus
     const QString CachingEveDataProvider::nameCacheFileName = "generic_names";
     const QString CachingEveDataProvider::systemDistanceCacheFileName = "system_distances";
 
+    const QStringList CachingEveDataProvider::oreGroupNames = {
+        QStringLiteral("Veldspar"),
+        QStringLiteral("Scordite"),
+        QStringLiteral("Pyroxeres"),
+        QStringLiteral("Plagioclase"),
+        QStringLiteral("Omber"),
+        QStringLiteral("Kernite"),
+        QStringLiteral("Jaspet"),
+        QStringLiteral("Hemorphite"),
+        QStringLiteral("Hedbergite"),
+        QStringLiteral("Gneiss"),
+        QStringLiteral("Dark Ochre"),
+        QStringLiteral("Spodumain"),
+        QStringLiteral("Crokite"),
+        QStringLiteral("Bistot"),
+        QStringLiteral("Arkonor"),
+        QStringLiteral("Mercoxit"),
+        QStringLiteral("Ice")
+    };
+
     CachingEveDataProvider::CachingEveDataProvider(const EveTypeRepository &eveTypeRepository,
                                                    const MetaGroupRepository &metaGroupRepository,
                                                    const ExternalOrderRepository &externalOrderRepository,
@@ -718,26 +738,6 @@ namespace Evernus
     {
         if (mOreReprocessingInfo.empty())
         {
-            const QStringList oreGroupNames = {
-                QStringLiteral("Veldspar"),
-                QStringLiteral("Scordite"),
-                QStringLiteral("Pyroxeres"),
-                QStringLiteral("Plagioclase"),
-                QStringLiteral("Omber"),
-                QStringLiteral("Kernite"),
-                QStringLiteral("Jaspet"),
-                QStringLiteral("Hemorphite"),
-                QStringLiteral("Hedbergite"),
-                QStringLiteral("Gneiss"),
-                QStringLiteral("Dark Ochre"),
-                QStringLiteral("Spodumain"),
-                QStringLiteral("Crokite"),
-                QStringLiteral("Bistot"),
-                QStringLiteral("Arkonor"),
-                QStringLiteral("Mercoxit"),
-                QStringLiteral("Ice")
-            };
-
             QSqlQuery query{mEveDb};
             query.prepare(QStringLiteral(R"(
 SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM invTypeMaterials m INNER JOIN (
@@ -762,6 +762,44 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         }
 
         return mOreReprocessingInfo;
+    }
+
+    const CachingEveDataProvider::ReprocessingMap &CachingEveDataProvider::getTypeReprocessingInfo(const TypeList &requestedTypes) const
+    {
+        auto reducedTypes = requestedTypes;
+        for (const auto &info : mTypeReprocessingInfo)
+            reducedTypes.erase(info.first);
+
+        if (!reducedTypes.empty())
+        {
+            QStringList typeNames;
+            reducedTypes.reserve(reducedTypes.size());
+
+            for (const auto id : reducedTypes)
+                typeNames << QString::number(id);
+
+            QSqlQuery query{mEveDb};
+            query.prepare(QStringLiteral(R"(
+SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM invTypeMaterials m INNER JOIN (
+    SELECT typeID, portionSize, groupID FROM invTypes WHERE typeID IN (%1) AND marketGroupID IS NOT NULL
+) t ON t.typeID = m.typeID
+            )").arg(typeNames.join(", ")));
+
+            DatabaseUtils::execQuery(query);
+
+            while (query.next())
+            {
+                auto &info = mTypeReprocessingInfo[query.value(0).value<EveType::IdType>()];
+                info.mPortionSize = query.value(3).toUInt();
+                info.mGroupId = query.value(4).toUInt();
+                info.mMaterials.emplace_back(ReprocessingMaterialInfo{
+                    query.value(1).value<EveType::IdType>(),
+                    query.value(2).toUInt()
+                });
+            }
+        }
+
+        return mTypeReprocessingInfo;
     }
 
     uint CachingEveDataProvider::getGroupId(const QString &name) const

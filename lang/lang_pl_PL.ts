@@ -671,14 +671,14 @@ Total: %7</source>
 <context>
     <name>Evernus::CachingEveDataProvider</name>
     <message>
-        <location filename="../CachingEveDataProvider.cpp" line="158"/>
-        <location filename="../CachingEveDataProvider.cpp" line="175"/>
-        <location filename="../CachingEveDataProvider.cpp" line="183"/>
+        <location filename="../CachingEveDataProvider.cpp" line="178"/>
+        <location filename="../CachingEveDataProvider.cpp" line="195"/>
+        <location filename="../CachingEveDataProvider.cpp" line="203"/>
         <source>(unknown)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CachingEveDataProvider.cpp" line="388"/>
+        <location filename="../CachingEveDataProvider.cpp" line="408"/>
         <source>- unknown location -</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5537,32 +5537,32 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::ScrapmetalReprocessingArbitrageModel</name>
     <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="128"/>
+        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="129"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="130"/>
+        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="131"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="132"/>
+        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="133"/>
         <source>Total profit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="134"/>
+        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="135"/>
         <source>Total cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="136"/>
+        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="137"/>
         <source>Difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="138"/>
+        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="139"/>
         <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>

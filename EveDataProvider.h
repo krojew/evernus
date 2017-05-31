@@ -15,6 +15,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 #include <memory>
 
@@ -53,6 +54,7 @@ namespace Evernus
         using MapLocation = std::pair<uint, QString> ;
         using Station = std::pair<quint64, QString>;
         using ReprocessingMap = std::unordered_map<EveType::IdType, ReprocessingInfo>;
+        using TypeList = std::unordered_set<EveType::IdType>;
 
         using QObject::QObject;
         virtual ~EveDataProvider() = default;
@@ -94,6 +96,7 @@ namespace Evernus
         virtual const CitadelRepository::EntityList &getCitadelsForRegion(uint regionId) const = 0;
 
         virtual const ReprocessingMap &getOreReprocessingInfo() const = 0;
+        virtual const ReprocessingMap &getTypeReprocessingInfo(const TypeList &requestedTypes) const = 0;
 
         virtual uint getGroupId(const QString &name) const = 0;
 

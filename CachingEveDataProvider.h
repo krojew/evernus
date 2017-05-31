@@ -16,6 +16,7 @@
 
 #include <unordered_set>
 
+#include <QStringList>
 #include <QHash>
 
 #include <boost/functional/hash.hpp>
@@ -97,6 +98,7 @@ namespace Evernus
         virtual const CitadelRepository::EntityList &getCitadelsForRegion(uint regionId) const override;
 
         virtual const ReprocessingMap &getOreReprocessingInfo() const override;
+        virtual const ReprocessingMap &getTypeReprocessingInfo(const TypeList &requestedTypes) const override;
 
         virtual uint getGroupId(const QString &name) const override;
 
@@ -120,6 +122,7 @@ namespace Evernus
         typedef std::pair<EveType::IdType, uint> TypeRegionPair;
 
         static const QString nameCacheFileName;
+        static const QStringList oreGroupNames;
 
         const EveTypeRepository &mEveTypeRepository;
         const MetaGroupRepository &mMetaGroupRepository;
@@ -183,6 +186,7 @@ namespace Evernus
         mutable QHash<QPair<uint, uint>, uint> mSystemDistances;
 
         mutable ReprocessingMap mOreReprocessingInfo;
+        mutable ReprocessingMap mTypeReprocessingInfo;
 
         EveTypeRepository::EntityPtr getEveType(EveType::IdType id) const;
 

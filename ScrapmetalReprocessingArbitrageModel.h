@@ -14,7 +14,6 @@
  */
 #pragma once
 
-#include <unordered_map>
 #include <unordered_set>
 #include <memory>
 #include <vector>
@@ -96,9 +95,9 @@ namespace Evernus
 
         std::shared_ptr<Character> mCharacter;
 
-        std::unordered_map<uint, int CharacterData::ReprocessingSkills::*> mReprocessingSkillMap;
+        std::unordered_set<uint> mOreGroups;
         std::vector<ItemData> mData;
 
-        void insertSkillMapping(const QString &groupName, int CharacterData::ReprocessingSkills::* skill);
+        void insertOreGroup(const QString &groupName);
     };
 }
