@@ -24,6 +24,7 @@
 #include <QtConcurrent>
 
 #include <QCoreApplication>
+#include <QColor>
 #include <QDebug>
 
 #include "EveDataProvider.h"
@@ -87,6 +88,8 @@ namespace Evernus
                     return TextUtils::currencyToString(data.mTotalCost, locale);
                 case differenceColumn:
                     return TextUtils::currencyToString(data.mTotalProfit - data.mTotalCost, locale);
+                case marginColumn:
+                    return QStringLiteral("%1%2").arg(locale.toString(data.mMargin, 'f', 2)).arg(locale.percent());
                 }
             }
             break;
@@ -100,7 +103,13 @@ namespace Evernus
                 return data.mTotalCost;
             case differenceColumn:
                 return data.mTotalProfit - data.mTotalCost;
+            case marginColumn:
+                return data.mMargin;
             }
+            break;
+        case Qt::ForegroundRole:
+            if (column == marginColumn)
+                return TextUtils::getMarginColor(data.mMargin);
         }
 
         return {};
@@ -119,6 +128,8 @@ namespace Evernus
                 return tr("Total cost");
             case differenceColumn:
                 return tr("Difference");
+            case marginColumn:
+                return tr("Margin");
             }
         }
 
@@ -371,6 +382,9 @@ namespace Evernus
             data.mId = reprocessingInfo.first;
             data.mTotalProfit = totalIncome;
             data.mTotalCost = totalCost;
+
+            if (!qFuzzyIsNull(data.mTotalCost))
+                data.mMargin = 100. * (data.mTotalProfit - data.mTotalCost) / data.mTotalCost;
 
             return data;
         };

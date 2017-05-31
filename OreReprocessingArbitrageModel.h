@@ -76,6 +76,7 @@ namespace Evernus
             totalProfitColumn,
             totalCostColumn,
             differenceColumn,
+            marginColumn,
 
             numColumns
         };
@@ -85,6 +86,7 @@ namespace Evernus
             EveType::IdType mId = EveType::invalidId;
             double mTotalProfit = 0.;
             double mTotalCost = 0.;
+            double mMargin = 0.;
         };
 
         const EveDataProvider &mDataProvider;
