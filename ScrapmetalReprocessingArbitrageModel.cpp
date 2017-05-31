@@ -38,7 +38,7 @@
 namespace Evernus
 {
     ScrapmetalReprocessingArbitrageModel::ScrapmetalReprocessingArbitrageModel(const EveDataProvider &dataProvider, QObject *parent)
-        : QAbstractTableModel{parent}
+        : ReprocessingArbitrageModel{parent}
         , ModelWithTypes{}
         , mDataProvider{dataProvider}
     {

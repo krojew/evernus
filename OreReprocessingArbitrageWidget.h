@@ -14,30 +14,13 @@
  */
 #pragma once
 
-#include <memory>
-
-#include <QSortFilterProxyModel>
-
 #include "OreReprocessingArbitrageModel.h"
-#include "StandardModelProxyWidget.h"
-#include "PriceType.h"
-
-class QStackedWidget;
-class QDoubleSpinBox;
-class QCheckBox;
-class QSpinBox;
-class QAction;
+#include "ReprocessingArbitrageWidget.h"
 
 namespace Evernus
 {
-    class AdjustableTableView;
-    class MarketDataProvider;
-    class EveDataProvider;
-    class RegionComboBox;
-    class Character;
-
     class OreReprocessingArbitrageWidget
-        : public StandardModelProxyWidget
+        : public ReprocessingArbitrageWidget
     {
         Q_OBJECT
 
@@ -49,39 +32,10 @@ namespace Evernus
         OreReprocessingArbitrageWidget(OreReprocessingArbitrageWidget &&) = default;
         virtual ~OreReprocessingArbitrageWidget() = default;
 
-        void setCharacter(std::shared_ptr<Character> character);
-        void clearData();
-
-        void setPriceType(PriceType dst) noexcept;
-
         OreReprocessingArbitrageWidget &operator =(const OreReprocessingArbitrageWidget &) = default;
         OreReprocessingArbitrageWidget &operator =(OreReprocessingArbitrageWidget &&) = default;
 
-    public slots:
-        void recalculateData();
-
     private:
-        static const auto waitingLabelIndex = 0;
-
-        const MarketDataProvider &mMarketDataProvider;
-
-        RegionComboBox *mSourceRegionCombo = nullptr;
-        RegionComboBox *mDestRegionCombo = nullptr;
-        QDoubleSpinBox *mStationEfficiencyEdit = nullptr;
-        QSpinBox *mSellVolumeLimitEdit = nullptr;
-        QCheckBox *mIncludeStationTaxBtn = nullptr;
-        QCheckBox *mIgnoreMinVolumeBtn = nullptr;
-        QStackedWidget *mDataStack = nullptr;
-        AdjustableTableView *mDataView = nullptr;
-
         OreReprocessingArbitrageModel mDataModel;
-        QSortFilterProxyModel mDataProxy;
-
-        PriceType mDstPriceType = PriceType::Buy;
-
-        quint64 mSrcStation = 0;
-        quint64 mDstStation = 0;
-
-        void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
     };
 }

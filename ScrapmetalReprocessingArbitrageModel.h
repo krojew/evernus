@@ -14,31 +14,21 @@
  */
 #pragma once
 
-#include <unordered_set>
-#include <memory>
-#include <vector>
-
-#include <QAbstractTableModel>
-
+#include "ReprocessingArbitrageModel.h"
 #include "ModelWithTypes.h"
-#include "Character.h"
-#include "PriceType.h"
 #include "EveType.h"
 
 namespace Evernus
 {
     class EveDataProvider;
-    class ExternalOrder;
 
     class ScrapmetalReprocessingArbitrageModel
-        : public QAbstractTableModel
+        : public ReprocessingArbitrageModel
         , public ModelWithTypes
     {
         Q_OBJECT
 
     public:
-        using RegionList = std::unordered_set<uint>;
-
         explicit ScrapmetalReprocessingArbitrageModel(const EveDataProvider &dataProvider,
                                                       QObject *parent = nullptr);
         ScrapmetalReprocessingArbitrageModel(const ScrapmetalReprocessingArbitrageModel &) = default;
@@ -52,19 +42,19 @@ namespace Evernus
 
         virtual EveType::IdType getTypeId(const QModelIndex &index) const override;
 
-        void setCharacter(std::shared_ptr<Character> character);
-        void setOrderData(const std::vector<ExternalOrder> &orders,
-                          PriceType dstPriceType,
-                          const RegionList &srcRegions,
-                          const RegionList &dstRegions,
-                          quint64 srcStation,
-                          quint64 dstStation,
-                          bool useStationTax,
-                          bool ignScrapmetalMinVolume,
-                          double baseYield,
-                          double sellVolumeLimit);
+        virtual void setCharacter(std::shared_ptr<Character> character) override;
+        virtual void setOrderData(const std::vector<ExternalOrder> &orders,
+                                  PriceType dstPriceType,
+                                  const RegionList &srcRegions,
+                                  const RegionList &dstRegions,
+                                  quint64 srcStation,
+                                  quint64 dstStation,
+                                  bool useStationTax,
+                                  bool ignScrapmetalMinVolume,
+                                  double baseYield,
+                                  double sellVolumeLimit) override;
 
-        void reset();
+        virtual void reset() override;
 
         ScrapmetalReprocessingArbitrageModel &operator =(const ScrapmetalReprocessingArbitrageModel &) = default;
         ScrapmetalReprocessingArbitrageModel &operator =(ScrapmetalReprocessingArbitrageModel &&) = default;
