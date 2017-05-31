@@ -225,7 +225,7 @@ namespace Evernus
         const auto canSellToOrder = [=](const auto &order) {
             return (dstSystem == 0) ||
                    (order.getRange() == ExternalOrder::rangeStation && dstStation == order.getStationId()) ||
-                   (mDataProvider.getDistance(dstSystem, order.getSolarSystemId()) <= order.getRange());
+                   (mDataProvider.getDistance(dstSystem, order.getSolarSystemId()) <= static_cast<uint>(order.getRange()));
         };
 
         const auto isDstOrder = [&](const auto &order) {
