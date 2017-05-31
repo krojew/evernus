@@ -66,8 +66,6 @@ namespace Evernus
         groupLayout->addWidget(removeBtn);
         removeBtn->setFlat(true);
         removeBtn->setIcon(QIcon{":/images/delete.png"});
-        connect(removeBtn, &QPushButton::clicked, this, [=] {
-            group->deleteLater();
-        });
+        connect(removeBtn, &QPushButton::clicked, group, &QGroupBox::deleteLater);
     }
 }
