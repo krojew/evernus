@@ -116,7 +116,7 @@ namespace Evernus
         connect(filterBtn, &QPushButton::clicked, this, &OreReprocessingArbitrageWidget::recalculateData);
 
         toolBarLayout->addWidget(new QLabel{tr("Press \"Apply\" to show results. Additional actions are available via the right-click menu."), this});
-        toolBarLayout->addWidget(new QLabel{tr("If you wish to make the fastest trade as possible, be sure to set the correct <b>sell price type</b>. <b>Buying always uses sell orders.</b>"), this});
+        toolBarLayout->addWidget(new QLabel{tr("If you wish to make the fastest trade as possible, be sure to set the correct <b>destination price type</b>. <b>Buying always uses sell orders.</b>"), this});
         toolBarLayout->addWidget(new QLabel{tr("Due to the fast nature of arbitrage, prices are not based on volume percentile."), this});
 
         mDataStack = new QStackedWidget{this};
