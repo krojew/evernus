@@ -7,11 +7,12 @@
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ *  GNU General Public License for mScrapmetal details.
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_map>
 #include <type_traits>
 #include <functional>
 #include <algorithm>
@@ -32,41 +33,41 @@
 #include "PriceUtils.h"
 #include "TextUtils.h"
 
-#include "OreReprocessingArbitrageModel.h"
+#include "ScrapmetalReprocessingArbitrageModel.h"
 
 namespace Evernus
 {
-    OreReprocessingArbitrageModel::OreReprocessingArbitrageModel(const EveDataProvider &dataProvider, QObject *parent)
+    ScrapmetalReprocessingArbitrageModel::ScrapmetalReprocessingArbitrageModel(const EveDataProvider &dataProvider, QObject *parent)
         : ReprocessingArbitrageModel{parent}
         , ModelWithTypes{}
         , mDataProvider{dataProvider}
     {
-        insertSkillMapping(QStringLiteral("Arkonor"), &CharacterData::ReprocessingSkills::mArkonorProcessing);
-        insertSkillMapping(QStringLiteral("Bistot"), &CharacterData::ReprocessingSkills::mBistotProcessing);
-        insertSkillMapping(QStringLiteral("Crokite"), &CharacterData::ReprocessingSkills::mCrokiteProcessing);
-        insertSkillMapping(QStringLiteral("Dark Ochre"), &CharacterData::ReprocessingSkills::mDarkOchreProcessing);
-        insertSkillMapping(QStringLiteral("Gneiss"), &CharacterData::ReprocessingSkills::mGneissProcessing);
-        insertSkillMapping(QStringLiteral("Hedbergite"), &CharacterData::ReprocessingSkills::mHedbergiteProcessing);
-        insertSkillMapping(QStringLiteral("Hemorphite"), &CharacterData::ReprocessingSkills::mHemorphiteProcessing);
-        insertSkillMapping(QStringLiteral("Ice"), &CharacterData::ReprocessingSkills::mIceProcessing);
-        insertSkillMapping(QStringLiteral("Jaspet"), &CharacterData::ReprocessingSkills::mJaspetProcessing);
-        insertSkillMapping(QStringLiteral("Kernite"), &CharacterData::ReprocessingSkills::mKerniteProcessing);
-        insertSkillMapping(QStringLiteral("Mercoxit"), &CharacterData::ReprocessingSkills::mMercoxitProcessing);
-        insertSkillMapping(QStringLiteral("Omber"), &CharacterData::ReprocessingSkills::mOmberProcessing);
-        insertSkillMapping(QStringLiteral("Plagioclase"), &CharacterData::ReprocessingSkills::mPlagioclaseProcessing);
-        insertSkillMapping(QStringLiteral("Pyroxeres"), &CharacterData::ReprocessingSkills::mPyroxeresProcessing);
-        insertSkillMapping(QStringLiteral("Scordite"), &CharacterData::ReprocessingSkills::mScorditeProcessing);
-        insertSkillMapping(QStringLiteral("Spodumain"), &CharacterData::ReprocessingSkills::mSpodumainProcessing);
-        insertSkillMapping(QStringLiteral("Veldspar"), &CharacterData::ReprocessingSkills::mVeldsparProcessing);
+        insertOreGroup(QStringLiteral("Arkonor"));
+        insertOreGroup(QStringLiteral("Bistot"));
+        insertOreGroup(QStringLiteral("Crokite"));
+        insertOreGroup(QStringLiteral("Dark Ochre"));
+        insertOreGroup(QStringLiteral("Gneiss"));
+        insertOreGroup(QStringLiteral("Hedbergite"));
+        insertOreGroup(QStringLiteral("Hemorphite"));
+        insertOreGroup(QStringLiteral("Ice"));
+        insertOreGroup(QStringLiteral("Jaspet"));
+        insertOreGroup(QStringLiteral("Kernite"));
+        insertOreGroup(QStringLiteral("Mercoxit"));
+        insertOreGroup(QStringLiteral("Omber"));
+        insertOreGroup(QStringLiteral("Plagioclase"));
+        insertOreGroup(QStringLiteral("Pyroxeres"));
+        insertOreGroup(QStringLiteral("Scordite"));
+        insertOreGroup(QStringLiteral("Spodumain"));
+        insertOreGroup(QStringLiteral("Veldspar"));
     }
 
-    int OreReprocessingArbitrageModel::columnCount(const QModelIndex &parent) const
+    int ScrapmetalReprocessingArbitrageModel::columnCount(const QModelIndex &parent) const
     {
         Q_UNUSED(parent);
         return numColumns;
     }
 
-    QVariant OreReprocessingArbitrageModel::data(const QModelIndex &index, int role) const
+    QVariant ScrapmetalReprocessingArbitrageModel::data(const QModelIndex &index, int role) const
     {
         if (!index.isValid())
             return {};
@@ -119,7 +120,7 @@ namespace Evernus
         return {};
     }
 
-    QVariant OreReprocessingArbitrageModel::headerData(int section, Qt::Orientation orientation, int role) const
+    QVariant ScrapmetalReprocessingArbitrageModel::headerData(int section, Qt::Orientation orientation, int role) const
     {
         if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
         {
@@ -142,13 +143,13 @@ namespace Evernus
         return {};
     }
 
-    int OreReprocessingArbitrageModel::rowCount(const QModelIndex &parent) const
+    int ScrapmetalReprocessingArbitrageModel::rowCount(const QModelIndex &parent) const
     {
         Q_UNUSED(parent);
         return static_cast<int>(mData.size());
     }
 
-    EveType::IdType OreReprocessingArbitrageModel::getTypeId(const QModelIndex &index) const
+    EveType::IdType ScrapmetalReprocessingArbitrageModel::getTypeId(const QModelIndex &index) const
     {
         if (!index.isValid())
             return EveType::invalidId;
@@ -156,23 +157,23 @@ namespace Evernus
         return mData[index.row()].mId;
     }
 
-    void OreReprocessingArbitrageModel::setCharacter(std::shared_ptr<Character> character)
+    void ScrapmetalReprocessingArbitrageModel::setCharacter(std::shared_ptr<Character> character)
     {
         beginResetModel();
         mCharacter = std::move(character);
         endResetModel();
     }
 
-    void OreReprocessingArbitrageModel::setOrderData(const std::vector<ExternalOrder> &orders,
-                                                     PriceType dstPriceType,
-                                                     const RegionList &srcRegions,
-                                                     const RegionList &dstRegions,
-                                                     quint64 srcStation,
-                                                     quint64 dstStation,
-                                                     bool useStationTax,
-                                                     bool ignoreMinVolume,
-                                                     double baseYield,
-                                                     double sellVolumeLimit)
+    void ScrapmetalReprocessingArbitrageModel::setOrderData(const std::vector<ExternalOrder> &orders,
+                                                            PriceType dstPriceType,
+                                                            const RegionList &srcRegions,
+                                                            const RegionList &dstRegions,
+                                                            quint64 srcStation,
+                                                            quint64 dstStation,
+                                                            bool useStationTax,
+                                                            bool ignScrapmetalMinVolume,
+                                                            double baseYield,
+                                                            double sellVolumeLimit)
     {
         beginResetModel();
 
@@ -185,26 +186,13 @@ namespace Evernus
         if (!mCharacter)
             return;
 
-        const auto &reprocessingInfo = mDataProvider.getOreReprocessingInfo();
         const auto reprocessingSkills = mCharacter->getReprocessingSkills();
-        const auto reprocessingYield = baseYield *
-                                       (1 + reprocessingSkills.mReprocessing * 0.03) *
-                                       (1 + reprocessingSkills.mReprocessingEfficiency * 0.02) *
-                                       (1 + mCharacter->getReprocessingImplantBonus() / 100.);
+        const auto reprocessingYield = baseYield * (1 + reprocessingSkills.mScrapmetalProcessing * 0.02);
 
         const auto dstSystem = (dstStation == 0) ? (0u) : (mDataProvider.getStationSolarSystemId(dstStation));
 
         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
         const auto stationTax = 1 - std::max(0., 5. - mCharacter->getCorpStanding() * 0.75) / 100.;
-
-        // gather src/dst orders for reprocessing types
-        std::unordered_set<EveType::IdType> oreTypes, materialTypes;
-        for (const auto &info : reprocessingInfo)
-        {
-            oreTypes.emplace(info.first);
-            for (const auto &material : info.second.mMaterials)
-                materialTypes.emplace(material.mMaterialId);
-        }
 
         const auto allSrcRegions = srcRegions.find(0) != std::end(srcRegions);
         const auto allDstRegions = dstRegions.find(0) != std::end(dstRegions);
@@ -238,19 +226,26 @@ namespace Evernus
         };
 
         const auto orderFilter = [&](const auto &order) {
-            return (isSrcOrder(order) || isDstOrder(order)) && (!ignoreMinVolume || order.getMinVolume() <= 1);
+            return (isSrcOrder(order) || isDstOrder(order)) && (!ignScrapmetalMinVolume || order.getMinVolume() <= 1);
         };
+
+        EveDataProvider::TypeList reprocessingTypes;
 
         std::unordered_map<EveType::IdType, std::multiset<ExternalOrder, ExternalOrder::LowToHigh>> sellMap;
         std::unordered_map<EveType::IdType, std::multiset<std::reference_wrapper<const ExternalOrder>, ExternalOrder::HighToLow>> buyMap;
         for (const auto &order : orders | boost::adaptors::filtered(orderFilter))
         {
             const auto typeId = order.getTypeId();
-            if (oreTypes.find(order.getTypeId()) != std::end(oreTypes) && isSrcOrder(order))
+            if (isSrcOrder(order))
+            {
                 sellMap[typeId].emplace(order);
-            if (materialTypes.find(order.getTypeId()) != std::end(materialTypes) && isDstOrder(order))
+                reprocessingTypes.emplace(typeId);
+            }
+            if (isDstOrder(order))
                 buyMap[typeId].emplace(std::cref(order));
         }
+
+        const auto &aggregatedReprocessingInfo = mDataProvider.getTypeReprocessingInfo(reprocessingTypes);
 
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
@@ -290,25 +285,21 @@ namespace Evernus
         };
 
         // NOTE: using std::function because QtConcurrent::mapped cannot infer the result type properly
-        const std::function<ItemData (const EveDataProvider::ReprocessingMap::value_type &)> findArbitrageForBuy = [&](const auto &reprocessingInfo) {
+        const std::function<ItemData (const decltype(sellMap)::value_type &)> findArbitrageForBuy = [&](const auto &sellOrderList) {
             Q_ASSERT(dstPriceType == PriceType::Buy);
 
-            qDebug() << "Finding arbitrage opportunities for" << reprocessingInfo.first;
-
-            const auto sellOrderList = sellMap.find(reprocessingInfo.first);
-            if (sellOrderList == std::end(sellMap))
-                return ItemData{};
-
-            const auto skill = mReprocessingSkillMap.find(reprocessingInfo.second.mGroupId);
-            if (skill == std::end(mReprocessingSkillMap))
+            const auto reprocessingInfo = aggregatedReprocessingInfo.find(sellOrderList.first);
+            if (reprocessingInfo == std::end(aggregatedReprocessingInfo) ||
+                mOreGroups.find(reprocessingInfo->second.mGroupId) != std::end(mOreGroups))
             {
-                qWarning() << "Missing reprocessing skill for" << reprocessingInfo.first;
                 return ItemData{};
             }
 
+            qDebug() << "Finding arbitrage opportunities for" << sellOrderList.first;
+
             // copy buy map locally so we can modify volumes
             std::unordered_map<EveType::IdType, std::vector<ExternalOrder>> localBuyMap;
-            for (const auto &material : reprocessingInfo.second.mMaterials)
+            for (const auto &material : reprocessingInfo->second.mMaterials)
             {
                 const auto buyOrderList = buyMap.find(material.mMaterialId);
                 if (buyOrderList == std::end(buyMap))
@@ -319,20 +310,20 @@ namespace Evernus
                                     std::forward_as_tuple(std::begin(buyOrderList->second), std::end(buyOrderList->second)));
             }
 
-            const auto requiredVolume = reprocessingInfo.second.mPortionSize;
+            const auto requiredVolume = reprocessingInfo->second.mPortionSize;
 
             quint64 totalVolume = 0u;
             auto totalIncome = 0.;
             auto totalCost = 0.;
 
-            // keep buying and selling until no more orders are left or we stop making profit
+            // keep buying and selling until no mScrapmetal orders are left or we stop making profit
             while (true)
             {
                 QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
                 // unsychronized access but that's ok, since only one thread touches given type orders
-                const auto bought = fillOrders(sellOrderList->second, requiredVolume);
-                if (bought.empty()) // no more volume to buy
+                const auto bought = fillOrders(sellOrderList.second, requiredVolume);
+                if (bought.empty()) // no volume to buy
                     break;
 
                 auto cost = std::accumulate(std::begin(bought), std::end(bought), 0., [&](auto total, const auto &order) {
@@ -342,9 +333,9 @@ namespace Evernus
                 auto income = 0.;
 
                 // try to sell all the refined goods
-                for (const auto &material : reprocessingInfo.second.mMaterials)
+                for (const auto &material : reprocessingInfo->second.mMaterials)
                 {
-                    const uint sellVolume = reprocessingYield * (1 + reprocessingSkills.*(skill->second) * 0.02) * material.mQuantity;
+                    const uint sellVolume = reprocessingYield * material.mQuantity;
 
                     const auto buyOrderList = localBuyMap.find(material.mMaterialId);
                     if (buyOrderList == std::end(localBuyMap))   // can't sell this one, maybe there's still profit to be made
@@ -381,14 +372,14 @@ namespace Evernus
                 }
             }
 
-            qDebug() << "Done finding arbitrage opportunities for" << reprocessingInfo.first;
+            qDebug() << "Done finding arbitrage opportunities for" << reprocessingInfo->first;
 
             // discard unprofitable
             if (totalCost >= totalIncome)
                 return ItemData{};
 
             ItemData data;
-            data.mId = reprocessingInfo.first;
+            data.mId = sellOrderList.first;
             data.mTotalProfit = totalIncome;
             data.mTotalCost = totalCost;
             data.mVolume = totalVolume;
@@ -399,21 +390,17 @@ namespace Evernus
             return data;
         };
 
-        const std::function<ItemData (const EveDataProvider::ReprocessingMap::value_type &)> findArbitrageForSell = [&](const auto &reprocessingInfo) {
+        const std::function<ItemData (const decltype(sellMap)::value_type &)> findArbitrageForSell = [&](const auto &sellOrderList) {
             Q_ASSERT(dstPriceType == PriceType::Sell);
 
-            qDebug() << "Finding arbitrage opportunities for" << reprocessingInfo.first;
-
-            const auto sellOrderList = sellMap.find(reprocessingInfo.first);
-            if (sellOrderList == std::end(sellMap))
-                return ItemData{};
-
-            const auto skill = mReprocessingSkillMap.find(reprocessingInfo.second.mGroupId);
-            if (skill == std::end(mReprocessingSkillMap))
+            const auto reprocessingInfo = aggregatedReprocessingInfo.find(sellOrderList.first);
+            if (reprocessingInfo == std::end(aggregatedReprocessingInfo) ||
+                mOreGroups.find(reprocessingInfo->second.mGroupId) != std::end(mOreGroups))
             {
-                qWarning() << "Missing reprocessing skill for" << reprocessingInfo.first;
                 return ItemData{};
             }
+
+            qDebug() << "Finding arbitrage opportunities for" << sellOrderList.first;
 
             struct MaterialData
             {
@@ -423,7 +410,7 @@ namespace Evernus
 
             // find dst prices and volumes
             std::unordered_map<EveType::IdType, MaterialData> dstPrices;
-            for (const auto &material : reprocessingInfo.second.mMaterials)
+            for (const auto &material : reprocessingInfo->second.mMaterials)
             {
                 const auto dstOrderList = buyMap.find(material.mMaterialId);
                 if (dstOrderList == std::end(buyMap) || dstOrderList->second.empty())   // can't sell this one, maybe there's still profit to be made
@@ -440,20 +427,20 @@ namespace Evernus
                 }) * sellVolumeLimit;
             }
 
-            const auto requiredVolume = reprocessingInfo.second.mPortionSize;
+            const auto requiredVolume = reprocessingInfo->second.mPortionSize;
 
             quint64 totalVolume = 0u;
             auto totalIncome = 0.;
             auto totalCost = 0.;
 
-            // keep buying and selling until no more orders are left, volume is exhausted or we stop making profit
+            // keep buying and selling until no mScrapmetal orders are left, volume is exhausted or we stop making profit
             while (true)
             {
                 QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
                 // unsychronized access but that's ok, since only one thread touches given type orders
-                const auto bought = fillOrders(sellOrderList->second, requiredVolume);
-                if (bought.empty()) // no more volume to buy
+                const auto bought = fillOrders(sellOrderList.second, requiredVolume);
+                if (bought.empty()) // no volume to buy
                     break;
 
                 auto cost = std::accumulate(std::begin(bought), std::end(bought), 0., [&](auto total, const auto &order) {
@@ -463,11 +450,11 @@ namespace Evernus
                 auto income = 0.;
 
                 // try to sell all the refined goods
-                for (const auto &material : reprocessingInfo.second.mMaterials)
+                for (const auto &material : reprocessingInfo->second.mMaterials)
                 {
                     auto &dstData = dstPrices[material.mMaterialId];
 
-                    const quint64 sellVolume = reprocessingYield * (1 + reprocessingSkills.*(skill->second) * 0.02) * material.mQuantity;
+                    const quint64 sellVolume = reprocessingYield * material.mQuantity;
                     const auto amount = std::min(sellVolume, dstData.mVolume);
                     if (amount == 0)
                         continue;
@@ -495,14 +482,14 @@ namespace Evernus
                 }
             }
 
-            qDebug() << "Done finding arbitrage opportunities for" << reprocessingInfo.first;
+            qDebug() << "Done finding arbitrage opportunities for" << reprocessingInfo->first;
 
             // discard unprofitable
             if (totalCost >= totalIncome)
                 return ItemData{};
 
             ItemData data;
-            data.mId = reprocessingInfo.first;
+            data.mId = sellOrderList.first;
             data.mTotalProfit = totalIncome;
             data.mTotalCost = totalCost;
             data.mVolume = totalVolume;
@@ -520,24 +507,24 @@ namespace Evernus
         };
 
         // concurrently check for all arbitrage opportunities
-        mData = QtConcurrent::blockingMappedReduced<decltype(mData)>(reprocessingInfo,
+        mData = QtConcurrent::blockingMappedReduced<decltype(mData)>(sellMap,
                                                                      (dstPriceType == PriceType::Buy) ? (findArbitrageForBuy) : (findArbitrageForSell),
                                                                      fillData);
     }
 
-    void OreReprocessingArbitrageModel::reset()
+    void ScrapmetalReprocessingArbitrageModel::reset()
     {
         beginResetModel();
         mData.clear();
         endResetModel();
     }
 
-    void OreReprocessingArbitrageModel::insertSkillMapping(const QString &groupName, int CharacterData::ReprocessingSkills::* skill)
+    void ScrapmetalReprocessingArbitrageModel::insertOreGroup(const QString &groupName)
     {
         const auto groupId = mDataProvider.getGroupId(groupName);
         if (groupId == 0)
             throw std::runtime_error{"Cannot find group id for: " + groupName.toStdString()};
 
-        mReprocessingSkillMap[groupId] = skill;
+        mOreGroups.emplace(groupId);
     }
 }

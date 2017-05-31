@@ -37,6 +37,8 @@ namespace Evernus
         StandardModelProxyWidget(const ModelWithTypes &dataModel,
                                  const QAbstractProxyModel &dataProxy,
                                  QWidget *parent = nullptr);
+        StandardModelProxyWidget(const QAbstractProxyModel &dataProxy,
+                                 QWidget *parent = nullptr);
         StandardModelProxyWidget(const StandardModelProxyWidget &) = default;
         StandardModelProxyWidget(StandardModelProxyWidget &&) = default;
         virtual ~StandardModelProxyWidget() = default;
@@ -50,13 +52,16 @@ namespace Evernus
     signals:
         void showInEve(EveType::IdType id, Character::IdType ownerId);
 
+    protected:
+        void setDataModel(const ModelWithTypes &dataModel);
+
     private slots:
         void copyRows() const;
         void selectType(const QItemSelection &selected);
         void showInEveForCurrent();
 
     private:
-        const ModelWithTypes &mDataModel;
+        const ModelWithTypes *mDataModel = nullptr;
         const QAbstractProxyModel &mDataProxy;
 
         QAbstractItemView *mDataView = nullptr;

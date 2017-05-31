@@ -28,7 +28,14 @@ namespace Evernus
                                                        const QAbstractProxyModel &dataProxy,
                                                        QWidget *parent)
         : QWidget{parent}
-        , mDataModel{dataModel}
+        , mDataModel{&dataModel}
+        , mDataProxy{dataProxy}
+    {
+    }
+
+    StandardModelProxyWidget::StandardModelProxyWidget(const QAbstractProxyModel &dataProxy,
+                                                       QWidget *parent)
+        : QWidget{parent}
         , mDataProxy{dataProxy}
     {
     }
@@ -59,6 +66,11 @@ namespace Evernus
         mCharacterId = id;
     }
 
+    void StandardModelProxyWidget::setDataModel(const ModelWithTypes &dataModel)
+    {
+        mDataModel = &dataModel;
+    }
+
     void StandardModelProxyWidget::copyRows() const
     {
         ModelUtils::copyRowsToClipboard(mDataView->selectionModel()->selectedIndexes(), mDataProxy);
@@ -76,7 +88,9 @@ namespace Evernus
         if (mCharacterId == Character::invalidId)
             return;
 
-        const auto id = mDataModel.getTypeId(mDataProxy.mapToSource(mDataView->currentIndex()));
+        Q_ASSERT(mDataModel != nullptr);
+
+        const auto id = mDataModel->getTypeId(mDataProxy.mapToSource(mDataView->currentIndex()));
         if (id != EveType::invalidId)
             emit showInEve(id, mCharacterId);
     }

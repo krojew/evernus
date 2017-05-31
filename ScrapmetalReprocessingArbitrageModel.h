@@ -7,14 +7,12 @@
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ *  GNU General Public License for mScrapmetal details.
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
-
-#include <unordered_map>
 
 #include "ReprocessingArbitrageModel.h"
 #include "ModelWithTypes.h"
@@ -24,20 +22,18 @@ namespace Evernus
 {
     class EveDataProvider;
 
-    class OreReprocessingArbitrageModel
+    class ScrapmetalReprocessingArbitrageModel
         : public ReprocessingArbitrageModel
         , public ModelWithTypes
     {
         Q_OBJECT
 
     public:
-        using RegionList = std::unordered_set<uint>;
-
-        explicit OreReprocessingArbitrageModel(const EveDataProvider &dataProvider,
-                                               QObject *parent = nullptr);
-        OreReprocessingArbitrageModel(const OreReprocessingArbitrageModel &) = default;
-        OreReprocessingArbitrageModel(OreReprocessingArbitrageModel &&) = default;
-        virtual ~OreReprocessingArbitrageModel() = default;
+        explicit ScrapmetalReprocessingArbitrageModel(const EveDataProvider &dataProvider,
+                                                      QObject *parent = nullptr);
+        ScrapmetalReprocessingArbitrageModel(const ScrapmetalReprocessingArbitrageModel &) = default;
+        ScrapmetalReprocessingArbitrageModel(ScrapmetalReprocessingArbitrageModel &&) = default;
+        virtual ~ScrapmetalReprocessingArbitrageModel() = default;
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
         virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -54,14 +50,14 @@ namespace Evernus
                                   quint64 srcStation,
                                   quint64 dstStation,
                                   bool useStationTax,
-                                  bool ignoreMinVolume,
+                                  bool ignScrapmetalMinVolume,
                                   double baseYield,
                                   double sellVolumeLimit) override;
 
         virtual void reset() override;
 
-        OreReprocessingArbitrageModel &operator =(const OreReprocessingArbitrageModel &) = default;
-        OreReprocessingArbitrageModel &operator =(OreReprocessingArbitrageModel &&) = default;
+        ScrapmetalReprocessingArbitrageModel &operator =(const ScrapmetalReprocessingArbitrageModel &) = default;
+        ScrapmetalReprocessingArbitrageModel &operator =(ScrapmetalReprocessingArbitrageModel &&) = default;
 
     private:
         enum
@@ -89,9 +85,9 @@ namespace Evernus
 
         std::shared_ptr<Character> mCharacter;
 
-        std::unordered_map<uint, int CharacterData::ReprocessingSkills::*> mReprocessingSkillMap;
+        std::unordered_set<uint> mOreGroups;
         std::vector<ItemData> mData;
 
-        void insertSkillMapping(const QString &groupName, int CharacterData::ReprocessingSkills::* skill);
+        void insertOreGroup(const QString &groupName);
     };
 }
