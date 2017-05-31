@@ -48,6 +48,7 @@ namespace Evernus
 
     signals:
         void importAll();
+        void characterDataChanged() const;
 
     public slots:
         void updateData();

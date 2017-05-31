@@ -456,6 +456,8 @@ namespace Evernus
         const auto sell = (enabled) ? (mSellBrokersFeeEdit->value() / 100.) : (boost::optional<double>{});
 
         mCharacterRepository.updateBrokersFee(id, buy, sell);
+
+        emit characterDataChanged();
     }
 
     void CharacterWidget::setReprocessingImplantBonus(double value)
@@ -464,6 +466,8 @@ namespace Evernus
         Q_ASSERT(id != Character::invalidId);
 
         mCharacterRepository.updateReprocessingImplantBonus(id, value);
+
+        emit characterDataChanged();
     }
 
     void CharacterWidget::setSkillLevel(int level)
@@ -473,6 +477,8 @@ namespace Evernus
 
         const auto fieldName = sender()->property(skillFieldProperty).toString();
         mCharacterRepository.updateSkill(id, fieldName, level);
+
+        emit characterDataChanged();
     }
 
     void CharacterWidget::handleNewCharacter(Character::IdType id)
@@ -734,6 +740,8 @@ namespace Evernus
         Q_ASSERT(id != Character::invalidId);
 
         mCharacterRepository.updateStanding(id, type, value);
+
+        emit characterDataChanged();
     }
 
     void CharacterWidget::updateCharacterMarketData(const CharacterData::OrderAmountSkills &orderAmountSkills)

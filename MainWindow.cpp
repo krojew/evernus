@@ -454,6 +454,11 @@ namespace Evernus
             refreshContracts();
     }
 
+    void MainWindow::characterDataChanged()
+    {
+        mTabCharacterIds.clear();
+    }
+
     void MainWindow::updateCurrentTab(int index)
     {
         auto widget = mMainTabs->widget(index);
@@ -705,6 +710,7 @@ namespace Evernus
         addTab(charTab, tr("Character"), TabType::Character);
         connect(charTab, &CharacterWidget::importFromAPI, this, &MainWindow::importCharacter);
         connect(charTab, &CharacterWidget::importAll, this, &MainWindow::refreshAll);
+        connect(charTab, &CharacterWidget::characterDataChanged, this, &MainWindow::characterDataChanged);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::updateData);
         connect(this, &MainWindow::assetsChanged, charTab, &CharacterWidget::updateTimerList);
         connect(this, &MainWindow::walletJournalChanged, charTab, &CharacterWidget::updateTimerList);

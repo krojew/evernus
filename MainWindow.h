@@ -170,6 +170,8 @@ namespace Evernus
         void refreshMarketOrdersFromLogs();
         void refreshAll();
 
+        void characterDataChanged();
+
     private slots:
         void updateCurrentTab(int index);
 
