@@ -25,6 +25,7 @@
 class QStackedWidget;
 class QDoubleSpinBox;
 class QCheckBox;
+class QSpinBox;
 class QAction;
 
 namespace Evernus
@@ -67,6 +68,7 @@ namespace Evernus
         RegionComboBox *mSourceRegionCombo = nullptr;
         RegionComboBox *mDestRegionCombo = nullptr;
         QDoubleSpinBox *mStationEfficiencyEdit = nullptr;
+        QSpinBox *mSellVolumeLimitEdit = nullptr;
         QCheckBox *mIncludeStationTaxBtn = nullptr;
         QCheckBox *mIgnoreMinVolumeBtn = nullptr;
         QStackedWidget *mDataStack = nullptr;

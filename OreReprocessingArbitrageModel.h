@@ -62,7 +62,8 @@ namespace Evernus
                           quint64 dstStation,
                           bool useStationTax,
                           bool ignoreMinVolume,
-                          double baseYield);
+                          double baseYield,
+                          double sellVolumeLimit);
 
         void reset();
 
@@ -73,6 +74,7 @@ namespace Evernus
         enum
         {
             nameColumn,
+            volumeColumn,
             totalProfitColumn,
             totalCostColumn,
             differenceColumn,
@@ -87,6 +89,7 @@ namespace Evernus
             double mTotalProfit = 0.;
             double mTotalCost = 0.;
             double mMargin = 0.;
+            quint64 mVolume = 0;
         };
 
         const EveDataProvider &mDataProvider;

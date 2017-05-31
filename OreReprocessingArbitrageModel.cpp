@@ -82,6 +82,8 @@ namespace Evernus
                 switch (column) {
                 case nameColumn:
                     return mDataProvider.getTypeName(data.mId);
+                case volumeColumn:
+                    return locale.toString(data.mVolume);
                 case totalProfitColumn:
                     return TextUtils::currencyToString(data.mTotalProfit, locale);
                 case totalCostColumn:
@@ -97,6 +99,8 @@ namespace Evernus
             switch (column) {
             case nameColumn:
                 return mDataProvider.getTypeName(data.mId);
+            case volumeColumn:
+                return data.mVolume;
             case totalProfitColumn:
                 return data.mTotalProfit;
             case totalCostColumn:
@@ -122,6 +126,8 @@ namespace Evernus
             switch (section) {
             case nameColumn:
                 return tr("Name");
+            case volumeColumn:
+                return tr("Volume");
             case totalProfitColumn:
                 return tr("Total profit");
             case totalCostColumn:
@@ -165,7 +171,8 @@ namespace Evernus
                                                      quint64 dstStation,
                                                      bool useStationTax,
                                                      bool ignoreMinVolume,
-                                                     double baseYield)
+                                                     double baseYield,
+                                                     double sellVolumeLimit)
     {
         beginResetModel();
 
@@ -286,7 +293,7 @@ namespace Evernus
         const std::function<ItemData (const EveDataProvider::ReprocessingMap::value_type &)> findArbitrageForBuy = [&](const auto &reprocessingInfo) {
             Q_ASSERT(dstPriceType == PriceType::Buy);
 
-            qDebug() << "Finding arbitrage opportinities for" << reprocessingInfo.first;
+            qDebug() << "Finding arbitrage opportunities for" << reprocessingInfo.first;
 
             const auto sellOrderList = sellMap.find(reprocessingInfo.first);
             if (sellOrderList == std::end(sellMap))
@@ -314,6 +321,7 @@ namespace Evernus
 
             const auto requiredVolume = reprocessingInfo.second.mPortionSize;
 
+            quint64 totalVolume = 0u;
             auto totalIncome = 0.;
             auto totalCost = 0.;
 
@@ -364,6 +372,7 @@ namespace Evernus
                 {
                     totalIncome += income;
                     totalCost += cost;
+                    totalVolume += requiredVolume;
                 }
                 else
                 {
@@ -372,7 +381,7 @@ namespace Evernus
                 }
             }
 
-            qDebug() << "Done finding arbitrage opportinities for" << reprocessingInfo.first;
+            qDebug() << "Done finding arbitrage opportunities for" << reprocessingInfo.first;
 
             // discard unprofitable
             if (totalCost >= totalIncome)
@@ -382,6 +391,121 @@ namespace Evernus
             data.mId = reprocessingInfo.first;
             data.mTotalProfit = totalIncome;
             data.mTotalCost = totalCost;
+            data.mVolume = totalVolume;
+
+            if (!qFuzzyIsNull(data.mTotalCost))
+                data.mMargin = 100. * (data.mTotalProfit - data.mTotalCost) / data.mTotalCost;
+
+            return data;
+        };
+
+        const std::function<ItemData (const EveDataProvider::ReprocessingMap::value_type &)> findArbitrageForSell = [&](const auto &reprocessingInfo) {
+            Q_ASSERT(dstPriceType == PriceType::Sell);
+
+            qDebug() << "Finding arbitrage opportunities for" << reprocessingInfo.first;
+
+            const auto sellOrderList = sellMap.find(reprocessingInfo.first);
+            if (sellOrderList == std::end(sellMap))
+                return ItemData{};
+
+            const auto skill = mReprocessingSkillMap.find(reprocessingInfo.second.mGroupId);
+            if (skill == std::end(mReprocessingSkillMap))
+            {
+                qWarning() << "Missing reprocessing skill for" << reprocessingInfo.first;
+                return ItemData{};
+            }
+
+            struct MaterialData
+            {
+                double mPrice;
+                quint64 mVolume;
+            };
+
+            // find dst prices and volumes
+            std::unordered_map<EveType::IdType, MaterialData> dstPrices;
+            for (const auto &material : reprocessingInfo.second.mMaterials)
+            {
+                const auto dstOrderList = buyMap.find(material.mMaterialId);
+                if (dstOrderList == std::end(buyMap) || dstOrderList->second.empty())   // can't sell this one, maybe there's still profit to be made
+                    continue;
+
+                // compute our dst limit order price
+                auto &data = dstPrices[material.mMaterialId];
+                data.mPrice = std::rbegin(dstOrderList->second)->get().getPrice() - PriceUtils::getPriceDelta();
+                data.mVolume = std::accumulate(std::begin(dstOrderList->second),
+                                               std::end(dstOrderList->second),
+                                               0u,
+                                               [](auto total, const auto &order) {
+                    return total + order.get().getVolumeRemaining();
+                }) * sellVolumeLimit;
+            }
+
+            const auto requiredVolume = reprocessingInfo.second.mPortionSize;
+
+            quint64 totalVolume = 0u;
+            auto totalIncome = 0.;
+            auto totalCost = 0.;
+
+            // keep buying and selling until no more orders are left, volume is exhausted or we stop making profit
+            while (true)
+            {
+                QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+
+                // unsychronized access but that's ok, since only one thread touches given type orders
+                const auto bought = fillOrders(sellOrderList->second, requiredVolume);
+                if (bought.empty()) // no more volume to buy
+                    break;
+
+                auto cost = std::accumulate(std::begin(bought), std::end(bought), 0., [&](auto total, const auto &order) {
+                    return order.mVolume * PriceUtils::getCoS(order.mPrice, taxes, false) + total;
+                });
+
+                auto income = 0.;
+
+                // try to sell all the refined goods
+                for (const auto &material : reprocessingInfo.second.mMaterials)
+                {
+                    auto &dstData = dstPrices[material.mMaterialId];
+
+                    const quint64 sellVolume = reprocessingYield * (1 + reprocessingSkills.*(skill->second) * 0.02) * material.mQuantity;
+                    const auto amount = std::min(sellVolume, dstData.mVolume);
+                    if (amount == 0)
+                        continue;
+
+                    dstData.mVolume -= amount;
+                    totalVolume += amount;
+
+                    const auto price = dstData.mPrice;
+
+                    income += PriceUtils::getRevenue(price, taxes) * amount;
+
+                    if (useStationTax)
+                        cost += stationTax * price * amount;
+                }
+
+                if (income > cost)
+                {
+                    totalIncome += income;
+                    totalCost += cost;
+                }
+                else
+                {
+                    // we stopped being profitable
+                    break;
+                }
+            }
+
+            qDebug() << "Done finding arbitrage opportunities for" << reprocessingInfo.first;
+
+            // discard unprofitable
+            if (totalCost >= totalIncome)
+                return ItemData{};
+
+            ItemData data;
+            data.mId = reprocessingInfo.first;
+            data.mTotalProfit = totalIncome;
+            data.mTotalCost = totalCost;
+            data.mVolume = totalVolume;
 
             if (!qFuzzyIsNull(data.mTotalCost))
                 data.mMargin = 100. * (data.mTotalProfit - data.mTotalCost) / data.mTotalCost;
@@ -396,7 +520,9 @@ namespace Evernus
         };
 
         // concurrently check for all arbitrage opportunities
-        mData = QtConcurrent::blockingMappedReduced<decltype(mData)>(reprocessingInfo, findArbitrageForBuy, fillData);
+        mData = QtConcurrent::blockingMappedReduced<decltype(mData)>(reprocessingInfo,
+                                                                     (dstPriceType == PriceType::Buy) ? (findArbitrageForBuy) : (findArbitrageForSell),
+                                                                     fillData);
     }
 
     void OreReprocessingArbitrageModel::reset()

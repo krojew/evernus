@@ -20,6 +20,7 @@
 #include <QHeaderView>
 #include <QCheckBox>
 #include <QSettings>
+#include <QSpinBox>
 #include <QAction>
 #include <QLabel>
 #include <QDebug>
@@ -89,6 +90,20 @@ namespace Evernus
         connect(mStationEfficiencyEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [=](auto value) {
             QSettings settings;
             settings.setValue(MarketAnalysisSettings::reprocessingStationEfficiencyKey, value);
+        });
+
+        toolBarLayout->addWidget(new QLabel{tr("Volume limit selling with sell orders:"), this});
+
+        mSellVolumeLimitEdit = new QSpinBox{this};
+        toolBarLayout->addWidget(mSellVolumeLimitEdit);
+        mSellVolumeLimitEdit->setRange(0, std::numeric_limits<int>::max());
+        mSellVolumeLimitEdit->setSuffix(locale().percent());
+        mSellVolumeLimitEdit->setValue(
+            settings.value(MarketAnalysisSettings::reprocessingSellVolumeLimitKey, MarketAnalysisSettings::reprocessingSellVolumeLimitDefault).toInt()
+        );
+        connect(mSellVolumeLimitEdit, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](auto value) {
+            QSettings settings;
+            settings.setValue(MarketAnalysisSettings::reprocessingSellVolumeLimitKey, value);
         });
 
         mIncludeStationTaxBtn = new QCheckBox{tr("Include station tax"), this};
@@ -174,7 +189,8 @@ namespace Evernus
                                 mDstStation,
                                 mIncludeStationTaxBtn->isChecked(),
                                 mIgnoreMinVolumeBtn->isChecked(),
-                                mStationEfficiencyEdit->value());
+                                mStationEfficiencyEdit->value(),
+                                mSellVolumeLimitEdit->value() / 100.);
 
         mDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 

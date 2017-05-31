@@ -5019,27 +5019,32 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::OreReprocessingArbitrageModel</name>
     <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="123"/>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="128"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="125"/>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="130"/>
+        <source>Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="132"/>
         <source>Total profit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="127"/>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="134"/>
         <source>Total cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="129"/>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="136"/>
         <source>Difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="131"/>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="138"/>
         <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5047,57 +5052,62 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::OreReprocessingArbitrageWidget</name>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="60"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="61"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="70"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="71"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="80"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="81"/>
         <source>Base yield:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="94"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="95"/>
+        <source>Volume limit selling with sell orders:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="109"/>
         <source>Include station tax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="104"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="119"/>
         <source>Ignore orders with min. volume &gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="114"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="129"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="118"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="133"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="119"/>
-        <source>If you wish to make the fastest trade as possible, be sure to set the correct &lt;b&gt;sell price type&lt;/b&gt;. &lt;b&gt;Buying always uses sell orders.&lt;/b&gt;</source>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="134"/>
+        <source>If you wish to make the fastest trade as possible, be sure to set the correct &lt;b&gt;destination price type&lt;/b&gt;. &lt;b&gt;Buying always uses sell orders.&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="120"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="135"/>
         <source>Due to the fast nature of arbitrage, prices are not based on volume percentile.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="195"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="211"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="195"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="211"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
