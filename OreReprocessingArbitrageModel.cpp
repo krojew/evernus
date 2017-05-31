@@ -12,20 +12,24 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <type_traits>
 #include <functional>
 #include <algorithm>
 #include <stdexcept>
-#include <mutex>
 #include <set>
 
 #include <boost/range/adaptor/filtered.hpp>
 #include <boost/scope_exit.hpp>
 
 #include <QtConcurrent>
+
+#include <QCoreApplication>
 #include <QDebug>
 
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
+#include "PriceUtils.h"
+#include "TextUtils.h"
 
 #include "OreReprocessingArbitrageModel.h"
 
@@ -71,15 +75,31 @@ namespace Evernus
 
         switch (role) {
         case Qt::DisplayRole:
-            switch (column) {
-            case nameColumn:
-                return mDataProvider.getTypeName(data.mId);
+            {
+                QLocale locale;
+
+                switch (column) {
+                case nameColumn:
+                    return mDataProvider.getTypeName(data.mId);
+                case totalProfitColumn:
+                    return TextUtils::currencyToString(data.mTotalProfit, locale);
+                case totalCostColumn:
+                    return TextUtils::currencyToString(data.mTotalCost, locale);
+                case differenceColumn:
+                    return TextUtils::currencyToString(data.mTotalProfit - data.mTotalCost, locale);
+                }
             }
             break;
         case Qt::UserRole:
             switch (column) {
             case nameColumn:
                 return mDataProvider.getTypeName(data.mId);
+            case totalProfitColumn:
+                return data.mTotalProfit;
+            case totalCostColumn:
+                return data.mTotalCost;
+            case differenceColumn:
+                return data.mTotalProfit - data.mTotalCost;
             }
         }
 
@@ -93,6 +113,12 @@ namespace Evernus
             switch (section) {
             case nameColumn:
                 return tr("Name");
+            case totalProfitColumn:
+                return tr("Total profit");
+            case totalCostColumn:
+                return tr("Total cost");
+            case differenceColumn:
+                return tr("Difference");
             }
         }
 
@@ -148,6 +174,11 @@ namespace Evernus
                                        (1 + reprocessingSkills.mReprocessingEfficiency * 0.02) *
                                        (1 + mCharacter->getReprocessingImplantBonus() / 100.);
 
+        const auto dstSystem = (dstStation == 0) ? (0u) : (mDataProvider.getStationSolarSystemId(dstStation));
+
+        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        const auto stationTax = 1 - std::max(0., 5. - mCharacter->getCorpStanding() * 0.75) / 100.;
+
         // gather src/dst orders for reprocessing types
         std::unordered_set<EveType::IdType> oreTypes, materialTypes;
         for (const auto &info : reprocessingInfo)
@@ -173,10 +204,19 @@ namespace Evernus
                    isValidStation(srcStation, order);
         };
 
+        const auto canSellToOrder = [=](const auto &order) {
+            return (dstSystem == 0) ||
+                   (order.getRange() == ExternalOrder::rangeStation && dstStation == order.getStationId()) ||
+                   (mDataProvider.getDistance(dstSystem, order.getSolarSystemId()) <= order.getRange());
+        };
+
         const auto isDstOrder = [&](const auto &order) {
-            return order.getType() == dstPriceType &&
-                   isValidRegion(allDstRegions, dstRegions, order) &&
-                   isValidStation(dstStation, order);
+            return (order.getType() == dstPriceType) &&
+                   (isValidRegion(allDstRegions, dstRegions, order)) &&
+                   (
+                       (dstPriceType == PriceType::Sell && isValidStation(dstStation, order)) ||
+                       (dstPriceType == PriceType::Buy && canSellToOrder(order))
+                   );
         };
 
         const auto orderFilter = [&](const auto &order) {
@@ -184,15 +224,17 @@ namespace Evernus
         };
 
         std::unordered_map<EveType::IdType, std::multiset<ExternalOrder, ExternalOrder::LowToHigh>> sellMap;
-        std::unordered_map<EveType::IdType, std::multiset<ExternalOrder, ExternalOrder::HighToLow>> buyMap;
+        std::unordered_map<EveType::IdType, std::multiset<std::reference_wrapper<const ExternalOrder>, ExternalOrder::HighToLow>> buyMap;
         for (const auto &order : orders | boost::adaptors::filtered(orderFilter))
         {
             const auto typeId = order.getTypeId();
             if (oreTypes.find(order.getTypeId()) != std::end(oreTypes) && isSrcOrder(order))
                 sellMap[typeId].emplace(order);
             if (materialTypes.find(order.getTypeId()) != std::end(materialTypes) && isDstOrder(order))
-                buyMap[typeId].emplace(order);
+                buyMap[typeId].emplace(std::cref(order));
         }
+
+        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
         // for given type, try to find arbitrage opportunities from source orders to dst orders
         // we have 2 versions to avoid branching logic - selling to buy orders and using sell orders
@@ -203,12 +245,13 @@ namespace Evernus
             double mPrice;
         };
 
-        const auto buyVolume = [&](auto &orders, auto volume) {
+        // buy/sell a volume of stuff from orders
+        const auto fillOrders = [](auto &orders, auto volume) {
             std::vector<UsedOrder> usedOrders;
             for (auto &order : orders)
             {
                 const auto orderVolume = order.getVolumeRemaining();
-                if (volume > order.getMinVolume() && orderVolume > 0)
+                if (volume >= order.getMinVolume() && orderVolume > 0)
                 {
                     const auto amount = std::min(orderVolume, volume);
                     volume -= amount;
@@ -219,6 +262,9 @@ namespace Evernus
 
                     UsedOrder used{amount, order.getPrice()};
                     usedOrders.emplace_back(used);
+
+                    if (volume == 0)
+                        break;
                 }
             }
 
@@ -227,41 +273,102 @@ namespace Evernus
 
         // NOTE: using std::function because QtConcurrent::mapped cannot infer the result type properly
         const std::function<ItemData (const EveDataProvider::ReprocessingMap::value_type &)> findArbitrageForBuy = [&](const auto &reprocessingInfo) {
+            Q_ASSERT(dstPriceType == PriceType::Buy);
+
+            qDebug() << "Finding arbitrage opportinities for" << reprocessingInfo.first;
+
             const auto sellOrderList = sellMap.find(reprocessingInfo.first);
             if (sellOrderList == std::end(sellMap))
                 return ItemData{};
 
-            const auto skill = mReprocessingSkillMap.find(reprocessingInfo.first);
+            const auto skill = mReprocessingSkillMap.find(reprocessingInfo.second.mGroupId);
             if (skill == std::end(mReprocessingSkillMap))
             {
                 qWarning() << "Missing reprocessing skill for" << reprocessingInfo.first;
                 return ItemData{};
             }
 
+            // copy buy map locally so we can modify volumes
+            std::unordered_map<EveType::IdType, std::vector<ExternalOrder>> localBuyMap;
+            for (const auto &material : reprocessingInfo.second.mMaterials)
+            {
+                const auto buyOrderList = buyMap.find(material.mMaterialId);
+                if (buyOrderList == std::end(buyMap))
+                    continue;
+
+                localBuyMap.emplace(std::piecewise_construct,
+                                    std::forward_as_tuple(material.mMaterialId),
+                                    std::forward_as_tuple(std::begin(buyOrderList->second), std::end(buyOrderList->second)));
+            }
+
             const auto requiredVolume = reprocessingInfo.second.mPortionSize;
+
+            auto totalIncome = 0.;
+            auto totalCost = 0.;
 
             // keep buying and selling until no more orders are left or we stop making profit
             while (true)
             {
                 // unsychronized access but that's ok, since only one thread touches given type orders
-                const auto bought = buyVolume(sellOrderList->second, requiredVolume);
+                const auto bought = fillOrders(sellOrderList->second, requiredVolume);
                 if (bought.empty()) // no more volume to buy
                     break;
 
-                auto cost = std::accumulate(std::begin(bought), std::end(bought), 0., [](auto total, const auto &order) {
-                    return order.mVolume * order.mPrice + total;
+                auto cost = std::accumulate(std::begin(bought), std::end(bought), 0., [&](auto total, const auto &order) {
+                    return order.mVolume * PriceUtils::getCoS(order.mPrice, taxes, false) + total;
                 });
+
+                auto income = 0.;
 
                 // try to sell all the refined goods
                 for (const auto &material : reprocessingInfo.second.mMaterials)
                 {
-                    const auto sellVolume = reprocessingYield * (1 + reprocessingSkills.*(skill->second) * 0.02) * material.mQuantity;
+                    const uint sellVolume = reprocessingYield * (1 + reprocessingSkills.*(skill->second) * 0.02) * material.mQuantity;
 
+                    const auto buyOrderList = localBuyMap.find(material.mMaterialId);
+                    if (buyOrderList == std::end(localBuyMap))   // can't sell this one, maybe there's still profit to be made
+                        continue;
+
+                    const auto sold = fillOrders(buyOrderList->second, sellVolume);
+
+                    // cannot sell some stuff, so let's advance in hope we turn in a profit from other materials
+                    if (sold.empty())
+                        continue;
+
+                    income += std::accumulate(std::begin(sold), std::end(sold), 0., [&](auto total, const auto &order) {
+                        return order.mVolume * PriceUtils::getRevenue(order.mPrice, taxes, false) + total;
+                    });
+
+                    if (useStationTax)
+                    {
+                        cost += stationTax * std::accumulate(std::begin(sold), std::end(sold), 0., [&](auto total, const auto &order) {
+                            return order.mVolume * order.mPrice + total;
+                        });
+                    }
+                }
+
+                if (income > cost)
+                {
+                    totalIncome += income;
+                    totalCost += cost;
+                }
+                else
+                {
+                    // we stopped being profitable
+                    break;
                 }
             }
 
+            qDebug() << "Done finding arbitrage opportinities for" << reprocessingInfo.first;
+
+            // discard unprofitable
+            if (totalCost >= totalIncome)
+                return ItemData{};
+
             ItemData data;
             data.mId = reprocessingInfo.first;
+            data.mTotalProfit = totalIncome;
+            data.mTotalCost = totalCost;
 
             return data;
         };

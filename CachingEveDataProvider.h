@@ -100,6 +100,8 @@ namespace Evernus
 
         virtual uint getGroupId(const QString &name) const override;
 
+        virtual uint getDistance(uint startSystem, uint endSystem) const override;
+
         void precacheJumpMap();
         void precacheRefTypes();
 
@@ -190,8 +192,6 @@ namespace Evernus
         uint getSolarSystemRegionId(uint stationId) const;
 
         const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
-
-        uint getDistance(uint startSystem, uint endSystem) const;
 
         QString getCitadelName(Citadel::IdType id) const;
         uint getCitadelRegionId(Citadel::IdType id) const;

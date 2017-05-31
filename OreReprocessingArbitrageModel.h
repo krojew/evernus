@@ -73,6 +73,9 @@ namespace Evernus
         enum
         {
             nameColumn,
+            totalProfitColumn,
+            totalCostColumn,
+            differenceColumn,
 
             numColumns
         };
@@ -80,6 +83,8 @@ namespace Evernus
         struct ItemData
         {
             EveType::IdType mId = EveType::invalidId;
+            double mTotalProfit = 0.;
+            double mTotalCost = 0.;
         };
 
         const EveDataProvider &mDataProvider;

@@ -97,6 +97,8 @@ namespace Evernus
 
         virtual uint getGroupId(const QString &name) const = 0;
 
+        virtual uint getDistance(uint startSystem, uint endSystem) const = 0;
+
     signals:
         void namesChanged() const;
     };
