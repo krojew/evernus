@@ -5019,7 +5019,7 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::OreReprocessingArbitrageModel</name>
     <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="78"/>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="95"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>

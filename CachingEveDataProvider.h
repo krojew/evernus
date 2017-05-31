@@ -98,6 +98,8 @@ namespace Evernus
 
         virtual const ReprocessingMap &getOreReprocessingInfo() const override;
 
+        virtual uint getGroupId(const QString &name) const override;
+
         void precacheJumpMap();
         void precacheRefTypes();
 
@@ -171,6 +173,8 @@ namespace Evernus
         mutable std::unordered_map<uint, QString> mSolarSystemNameCache;
 
         mutable std::unordered_map<quint64, uint> mStationRegionCache;
+
+        mutable QHash<QString, uint> mGroupIdCache;
 
         bool mUsePackagedVolume = false;
 

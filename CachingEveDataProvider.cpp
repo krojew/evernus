@@ -740,8 +740,8 @@ namespace Evernus
 
             QSqlQuery query{mEveDb};
             query.prepare(QStringLiteral(R"(
-SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize FROM invTypeMaterials m INNER JOIN (
-    SELECT typeID, portionSize FROM invTypes WHERE groupID IN (
+SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM invTypeMaterials m INNER JOIN (
+    SELECT typeID, portionSize, groupID FROM invTypes WHERE groupID IN (
         SELECT groupID FROM invGroups WHERE groupName IN ('%1')
     ) AND marketGroupID IS NOT NULL
 ) t ON t.typeID = m.typeID
@@ -753,6 +753,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize FROM invTypeMateria
             {
                 auto &info = mOreReprocessingInfo[query.value(0).value<EveType::IdType>()];
                 info.mPortionSize = query.value(3).toUInt();
+                info.mGroupId = query.value(4).toUInt();
                 info.mMaterials.emplace_back(ReprocessingMaterialInfo{
                     query.value(1).value<EveType::IdType>(),
                     query.value(2).toUInt()
@@ -761,6 +762,29 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize FROM invTypeMateria
         }
 
         return mOreReprocessingInfo;
+    }
+
+    uint CachingEveDataProvider::getGroupId(const QString &name) const
+    {
+        if (mGroupIdCache.contains(name))
+            return mGroupIdCache[name];
+
+        QSqlQuery query{mEveDb};
+        query.prepare(QStringLiteral("SELECT groupID FROM invGroups WHERE groupName = ?"));
+        query.addBindValue(name);
+
+        DatabaseUtils::execQuery(query);
+
+        if (query.next())
+        {
+            const auto id = query.value(0).toUInt();
+
+            mGroupIdCache[name] = id;
+            return id;
+        }
+
+        mGroupIdCache[name] = 0;
+        return 0;
     }
 
     void CachingEveDataProvider::precacheJumpMap()

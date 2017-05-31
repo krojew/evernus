@@ -14,6 +14,7 @@
  */
 #include <functional>
 #include <algorithm>
+#include <stdexcept>
 #include <mutex>
 #include <set>
 
@@ -21,6 +22,7 @@
 #include <boost/scope_exit.hpp>
 
 #include <QtConcurrent>
+#include <QDebug>
 
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
@@ -29,13 +31,28 @@
 
 namespace Evernus
 {
-    const std::unordered_map<EveType::IdType, int (Character::*)()> OreReprocessingArbitrageModel::reprocessingSkillMap;
-
     OreReprocessingArbitrageModel::OreReprocessingArbitrageModel(const EveDataProvider &dataProvider, QObject *parent)
         : QAbstractTableModel{parent}
         , ModelWithTypes{}
         , mDataProvider{dataProvider}
     {
+        insertSkillMapping(QStringLiteral("Arkonor"), &CharacterData::ReprocessingSkills::mArkonorProcessing);
+        insertSkillMapping(QStringLiteral("Bistot"), &CharacterData::ReprocessingSkills::mBistotProcessing);
+        insertSkillMapping(QStringLiteral("Crokite"), &CharacterData::ReprocessingSkills::mCrokiteProcessing);
+        insertSkillMapping(QStringLiteral("Dark Ochre"), &CharacterData::ReprocessingSkills::mDarkOchreProcessing);
+        insertSkillMapping(QStringLiteral("Gneiss"), &CharacterData::ReprocessingSkills::mGneissProcessing);
+        insertSkillMapping(QStringLiteral("Hedbergite"), &CharacterData::ReprocessingSkills::mHedbergiteProcessing);
+        insertSkillMapping(QStringLiteral("Hemorphite"), &CharacterData::ReprocessingSkills::mHemorphiteProcessing);
+        insertSkillMapping(QStringLiteral("Ice"), &CharacterData::ReprocessingSkills::mIceProcessing);
+        insertSkillMapping(QStringLiteral("Jaspet"), &CharacterData::ReprocessingSkills::mJaspetProcessing);
+        insertSkillMapping(QStringLiteral("Kernite"), &CharacterData::ReprocessingSkills::mKerniteProcessing);
+        insertSkillMapping(QStringLiteral("Mercoxit"), &CharacterData::ReprocessingSkills::mMercoxitProcessing);
+        insertSkillMapping(QStringLiteral("Omber"), &CharacterData::ReprocessingSkills::mOmberProcessing);
+        insertSkillMapping(QStringLiteral("Plagioclase"), &CharacterData::ReprocessingSkills::mPlagioclaseProcessing);
+        insertSkillMapping(QStringLiteral("Pyroxeres"), &CharacterData::ReprocessingSkills::mPyroxeresProcessing);
+        insertSkillMapping(QStringLiteral("Scordite"), &CharacterData::ReprocessingSkills::mScorditeProcessing);
+        insertSkillMapping(QStringLiteral("Spodumain"), &CharacterData::ReprocessingSkills::mSpodumainProcessing);
+        insertSkillMapping(QStringLiteral("Veldspar"), &CharacterData::ReprocessingSkills::mVeldsparProcessing);
     }
 
     int OreReprocessingArbitrageModel::columnCount(const QModelIndex &parent) const
@@ -125,6 +142,11 @@ namespace Evernus
             return;
 
         const auto &reprocessingInfo = mDataProvider.getOreReprocessingInfo();
+        const auto reprocessingSkills = mCharacter->getReprocessingSkills();
+        const auto reprocessingYield = baseYield *
+                                       (1 + reprocessingSkills.mReprocessing * 0.03) *
+                                       (1 + reprocessingSkills.mReprocessingEfficiency * 0.02) *
+                                       (1 + mCharacter->getReprocessingImplantBonus() / 100.);
 
         // gather src/dst orders for reprocessing types
         std::unordered_set<EveType::IdType> oreTypes, materialTypes;
@@ -209,11 +231,19 @@ namespace Evernus
             if (sellOrderList == std::end(sellMap))
                 return ItemData{};
 
+            const auto skill = mReprocessingSkillMap.find(reprocessingInfo.first);
+            if (skill == std::end(mReprocessingSkillMap))
+            {
+                qWarning() << "Missing reprocessing skill for" << reprocessingInfo.first;
+                return ItemData{};
+            }
+
             const auto requiredVolume = reprocessingInfo.second.mPortionSize;
 
             // keep buying and selling until no more orders are left or we stop making profit
             while (true)
             {
+                // unsychronized access but that's ok, since only one thread touches given type orders
                 const auto bought = buyVolume(sellOrderList->second, requiredVolume);
                 if (bought.empty()) // no more volume to buy
                     break;
@@ -225,6 +255,7 @@ namespace Evernus
                 // try to sell all the refined goods
                 for (const auto &material : reprocessingInfo.second.mMaterials)
                 {
+                    const auto sellVolume = reprocessingYield * (1 + reprocessingSkills.*(skill->second) * 0.02) * material.mQuantity;
 
                 }
             }
@@ -250,5 +281,14 @@ namespace Evernus
         beginResetModel();
         mData.clear();
         endResetModel();
+    }
+
+    void OreReprocessingArbitrageModel::insertSkillMapping(const QString &groupName, int CharacterData::ReprocessingSkills::* skill)
+    {
+        const auto groupId = mDataProvider.getGroupId(groupName);
+        if (groupId == 0)
+            throw std::runtime_error{"Cannot find group id for: " + groupName.toStdString()};
+
+        mReprocessingSkillMap[groupId] = skill;
     }
 }

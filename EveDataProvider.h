@@ -46,6 +46,7 @@ namespace Evernus
         struct ReprocessingInfo
         {
             uint mPortionSize;
+            uint mGroupId;
             std::vector<ReprocessingMaterialInfo> mMaterials;
         };
 
@@ -93,6 +94,8 @@ namespace Evernus
         virtual const CitadelRepository::EntityList &getCitadelsForRegion(uint regionId) const = 0;
 
         virtual const ReprocessingMap &getOreReprocessingInfo() const = 0;
+
+        virtual uint getGroupId(const QString &name) const = 0;
 
     signals:
         void namesChanged() const;

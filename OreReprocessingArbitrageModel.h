@@ -82,12 +82,13 @@ namespace Evernus
             EveType::IdType mId = EveType::invalidId;
         };
 
-        static const std::unordered_map<EveType::IdType, int (Character::*)()> reprocessingSkillMap;
-
         const EveDataProvider &mDataProvider;
 
         std::shared_ptr<Character> mCharacter;
 
+        std::unordered_map<uint, int CharacterData::ReprocessingSkills::*> mReprocessingSkillMap;
         std::vector<ItemData> mData;
+
+        void insertSkillMapping(const QString &groupName, int CharacterData::ReprocessingSkills::* skill);
     };
 }
