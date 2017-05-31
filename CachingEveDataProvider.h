@@ -96,6 +96,12 @@ namespace Evernus
 
         virtual const CitadelRepository::EntityList &getCitadelsForRegion(uint regionId) const override;
 
+        virtual const ReprocessingMap &getOreReprocessingInfo() const override;
+
+        virtual uint getGroupId(const QString &name) const override;
+
+        virtual uint getDistance(uint startSystem, uint endSystem) const override;
+
         void precacheJumpMap();
         void precacheRefTypes();
 
@@ -170,9 +176,13 @@ namespace Evernus
 
         mutable std::unordered_map<quint64, uint> mStationRegionCache;
 
+        mutable QHash<QString, uint> mGroupIdCache;
+
         bool mUsePackagedVolume = false;
 
         mutable QHash<QPair<uint, uint>, uint> mSystemDistances;
+
+        mutable ReprocessingMap mOreReprocessingInfo;
 
         EveTypeRepository::EntityPtr getEveType(EveType::IdType id) const;
 
@@ -182,8 +192,6 @@ namespace Evernus
         uint getSolarSystemRegionId(uint stationId) const;
 
         const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
-
-        uint getDistance(uint startSystem, uint endSystem) const;
 
         QString getCitadelName(Citadel::IdType id) const;
         uint getCitadelRegionId(Citadel::IdType id) const;

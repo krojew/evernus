@@ -23,6 +23,7 @@
 #include <QLabel>
 #include <QDebug>
 
+#include "OreReprocessingArbitrageWidget.h"
 #include "InterRegionAnalysisWidget.h"
 #include "ImportingAnalysisWidget.h"
 #include "RegionTypeSelectDialog.h"
@@ -157,6 +158,8 @@ namespace Evernus
                 mRegionAnalysisWidget->setPriceTypes(src, dst);
                 mInterRegionAnalysisWidget->setPriceTypes(src, dst);
                 mImportingAnalysisWidget->setPriceTypes(src, dst);
+                mOreReprocessingArbitrageWidget->setPriceType(dst);
+
                 recalculateAllData();
             });
         };
@@ -205,9 +208,14 @@ namespace Evernus
         mImportingAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
         mImportingAnalysisWidget->discardBogusOrders(discardBogusOrders);
 
+        mOreReprocessingArbitrageWidget = new OreReprocessingArbitrageWidget{mDataProvider, *this, tabs};
+        mOreReprocessingArbitrageWidget->setPriceType(dst);
+        connect(mOreReprocessingArbitrageWidget, &OreReprocessingArbitrageWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
+
         tabs->addTab(mRegionAnalysisWidget, tr("Region"));
         tabs->addTab(mInterRegionAnalysisWidget, tr("Inter-Region"));
         tabs->addTab(mImportingAnalysisWidget, tr("Importing"));
+        tabs->addTab(mOreReprocessingArbitrageWidget, tr("Ore reprocessing arbitrage"));
     }
 
     const MarketAnalysisWidget::HistoryMap *MarketAnalysisWidget::getHistory(uint regionId) const
@@ -234,9 +242,11 @@ namespace Evernus
         mCharacterId = id;
 
         const auto character = mCharacterRepo.find(mCharacterId);
+
         mRegionAnalysisWidget->setCharacter(character);
         mInterRegionAnalysisWidget->setCharacter(character);
         mImportingAnalysisWidget->setCharacter(character);
+        mOreReprocessingArbitrageWidget->setCharacter(character);
     }
 
     void MarketAnalysisWidget::prepareOrderImport()
@@ -254,6 +264,7 @@ namespace Evernus
 
         mInterRegionAnalysisWidget->clearData();
         mImportingAnalysisWidget->clearData();
+        mOreReprocessingArbitrageWidget->clearData();
 
         if (!mDataFetcher.hasPendingOrderRequests() && !mDataFetcher.hasPendingHistoryRequests())
         {
@@ -367,6 +378,7 @@ namespace Evernus
         showForCurrentRegion();
         mInterRegionAnalysisWidget->recalculateAllData();
         mImportingAnalysisWidget->recalculateData();
+        mOreReprocessingArbitrageWidget->recalculateData();
     }
 
     PriceType MarketAnalysisWidget::getPriceType(const QComboBox &combo)

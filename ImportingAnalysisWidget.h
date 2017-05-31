@@ -17,6 +17,7 @@
 #include <QSortFilterProxyModel>
 #include <QWidget>
 
+#include "StandardModelProxyWidget.h"
 #include "ImportingDataModel.h"
 #include "Character.h"
 #include "EveType.h"
@@ -36,14 +37,14 @@ namespace Evernus
     class EveDataProvider;
 
     class ImportingAnalysisWidget
-        : public QWidget
+        : public StandardModelProxyWidget
     {
         Q_OBJECT
 
     public:
-        explicit ImportingAnalysisWidget(const EveDataProvider &dataProvider,
-                                         const MarketDataProvider &marketDataProvider,
-                                         QWidget *parent = nullptr);
+        ImportingAnalysisWidget(const EveDataProvider &dataProvider,
+                                const MarketDataProvider &marketDataProvider,
+                                QWidget *parent = nullptr);
         ImportingAnalysisWidget(const ImportingAnalysisWidget &) = default;
         ImportingAnalysisWidget(ImportingAnalysisWidget &&) = default;
         virtual ~ImportingAnalysisWidget() = default;
@@ -60,16 +61,6 @@ namespace Evernus
         ImportingAnalysisWidget &operator =(const ImportingAnalysisWidget &) = default;
         ImportingAnalysisWidget &operator =(ImportingAnalysisWidget &&) = default;
 
-    signals:
-        void showInEve(EveType::IdType id, Character::IdType ownerId);
-
-    private slots:
-        void copyRows() const;
-
-        void selectType(const QItemSelection &selected);
-
-        void showInEveForCurrent();
-
     private:
         static const auto waitingLabelIndex = 0;
 
@@ -81,9 +72,6 @@ namespace Evernus
         QDoubleSpinBox *mPricePerM3 = nullptr;
         QStackedWidget *mDataStack = nullptr;
         AdjustableTableView *mDataView = nullptr;
-
-        QAction *mShowInEveAct = nullptr;
-        QAction *mCopyRowsAct = nullptr;
 
         quint64 mSrcStation = 0;
         quint64 mDstStation = 0;

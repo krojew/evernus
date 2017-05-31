@@ -44,6 +44,7 @@ namespace Evernus
 {
     ImportingDataModel::ImportingDataModel(const EveDataProvider &dataProvider, QObject *parent)
         : QAbstractTableModel{parent}
+        , ModelWithTypes{}
         , mDataProvider{dataProvider}
     {
     }
@@ -165,10 +166,10 @@ namespace Evernus
         return static_cast<int>(mData.size());
     }
 
-    void ImportingDataModel::setCharacter(const std::shared_ptr<Character> &character)
+    void ImportingDataModel::setCharacter(std::shared_ptr<Character> character)
     {
         beginResetModel();
-        mCharacter = character;
+        mCharacter = std::move(character);
         endResetModel();
     }
 

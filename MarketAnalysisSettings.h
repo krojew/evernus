@@ -32,6 +32,10 @@ namespace Evernus
         const auto useSkillsForDifferenceDefault = false;
         const auto importingAggrDaysDefault = 7;
         const auto importingAnalysisDaysDefault = 180;
+        const auto reprocessingStationEfficiencyDefault = 50.;
+        const auto reprocessingIncludeStationTaxDefault = true;
+        const auto reprocessingIgnoreMinVolumeDefault = true;
+        const auto reprocessingSellVolumeLimitDefault = 10;
 
         const auto dontSaveLargeOrdersKey = QStringLiteral("marketAnalysis/dontSaveOrders");
         const auto minVolumeFilterKey = QStringLiteral("marketAnalysis/filter/minVolume");
@@ -61,5 +65,13 @@ namespace Evernus
         const auto importingAggrDaysKey = QStringLiteral("marketAnalysis/importing/aggrDays");
         const auto importingAnalysisDaysKey = QStringLiteral("marketAnalysis/importing/analysisDays");
         const auto importingPricePerM3Key = QStringLiteral("marketAnalysis/importing/pricePerM3");
+        const auto reprocessingStationEfficiencyKey = QStringLiteral("marketAnalysis/reprocessing/stationEfficiency");
+        const auto reprocessingIncludeStationTaxKey = QStringLiteral("marketAnalysis/reprocessing/includeStationTax");
+        const auto reprocessingIgnoreMinVolumeKey = QStringLiteral("marketAnalysis/reprocessing/ignoreMinVolume");
+        const auto reprocessingSrcStationKey = QStringLiteral("marketAnalysis/reprocessing/srcStation");
+        const auto reprocessingDstStationKey = QStringLiteral("marketAnalysis/reprocessing/dstStation");
+        const auto reprocessingSrcRegionKey = QStringLiteral("marketAnalysis/reprocessing/srcRegion");
+        const auto reprocessingDstRegionKey = QStringLiteral("marketAnalysis/reprocessing/dstRegion");
+        const auto reprocessingSellVolumeLimitKey = QStringLiteral("marketAnalysis/reprocessing/sellVolumeLimit");
     }
 }

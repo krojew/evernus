@@ -28,9 +28,9 @@
 
 #include "TypeAggregatedDetailsWidget.h"
 #include "MarketAnalysisSettings.h"
+#include "CalculatingDataWidget.h"
 #include "AdjustableTableView.h"
 #include "EveDataProvider.h"
-#include "ModelUtils.h"
 #include "FlowLayout.h"
 
 #include "RegionAnalysisWidget.h"
@@ -42,7 +42,7 @@ namespace Evernus
                                                const EveDataProvider &dataProvider,
                                                const MarketDataProvider &marketDataProvider,
                                                QWidget *parent)
-        : QWidget(parent)
+        : StandardModelProxyWidget(mTypeDataModel, mTypeViewProxy, parent)
         , mDataProvider(dataProvider)
         , mMarketDataProvider(marketDataProvider)
         , mTypeDataModel(mDataProvider)
@@ -171,9 +171,7 @@ namespace Evernus
         mRegionDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mRegionDataStack);
 
-        auto waitingLabel = new QLabel{tr("Calculating data..."), this};
-        mRegionDataStack->addWidget(waitingLabel);
-        waitingLabel->setAlignment(Qt::AlignCenter);
+        mRegionDataStack->addWidget(new CalculatingDataWidget{this});
 
         mTypeViewProxy.setSortRole(Qt::UserRole);
         mTypeViewProxy.setSourceModel(&mTypeDataModel);
@@ -197,16 +195,7 @@ namespace Evernus
         mRegionTypeDataView->addAction(mShowDetailsAct);
         connect(mShowDetailsAct, &QAction::triggered, this, &RegionAnalysisWidget::showDetailsForCurrent);
 
-        mShowInEveRegionAct = new QAction{tr("Show in EVE"), this};
-        mShowInEveRegionAct->setEnabled(false);
-        mRegionTypeDataView->addAction(mShowInEveRegionAct);
-        connect(mShowInEveRegionAct, &QAction::triggered, this, &RegionAnalysisWidget::showInEveForCurrentRegion);
-
-        mCopyRegionRowsAct = new QAction{tr("&Copy"), this};
-        mCopyRegionRowsAct->setEnabled(false);
-        mCopyRegionRowsAct->setShortcut(QKeySequence::Copy);
-        connect(mCopyRegionRowsAct, &QAction::triggered, this, &RegionAnalysisWidget::copyRows);
-        mRegionTypeDataView->addAction(mCopyRegionRowsAct);
+        installOnView(mRegionTypeDataView);
     }
 
     void RegionAnalysisWidget::setPriceTypes(PriceType src, PriceType dst) noexcept
@@ -227,6 +216,7 @@ namespace Evernus
 
     void RegionAnalysisWidget::setCharacter(const std::shared_ptr<Character> &character)
     {
+        StandardModelProxyWidget::setCharacter((character) ? (character->getId()) : (Character::invalidId));
         mTypeDataModel.setCharacter(character);
     }
 
@@ -327,28 +317,12 @@ namespace Evernus
 
     void RegionAnalysisWidget::selectRegionType(const QItemSelection &selected)
     {
-        const auto enabled = !selected.isEmpty();
-        mShowDetailsAct->setEnabled(enabled);
-        mShowInEveRegionAct->setEnabled(enabled);
-        mCopyRegionRowsAct->setEnabled(enabled);
+        mShowDetailsAct->setEnabled(!selected.isEmpty());
     }
 
     void RegionAnalysisWidget::showDetailsForCurrent()
     {
         showDetails(mRegionTypeDataView->currentIndex());
-    }
-
-    void RegionAnalysisWidget::showInEveForCurrentRegion()
-    {
-        const auto index = mTypeViewProxy.mapToSource(mRegionTypeDataView->currentIndex());
-        const auto id = mTypeDataModel.getTypeId(index);
-        if (id != EveType::invalidId)
-            emit showInEve(id, mTypeDataModel.getOwnerId(index));
-    }
-
-    void RegionAnalysisWidget::copyRows() const
-    {
-        ModelUtils::copyRowsToClipboard(mRegionTypeDataView->selectionModel()->selectedIndexes(), mTypeViewProxy);
     }
 
     void RegionAnalysisWidget::fillSolarSystems(uint regionId)

@@ -12,13 +12,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <unordered_set>
-
 #include <QStandardItemModel>
 #include <QDoubleValidator>
 #include <QStackedWidget>
 #include <QIntValidator>
-#include <QProgressBar>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
@@ -36,14 +33,15 @@
 
 #include "InterRegionTypeDetailsWidget.h"
 #include "MarketAnalysisSettings.h"
-#include "StationSelectDialog.h"
+#include "CalculatingDataWidget.h"
+#include "StationSelectButton.h"
 #include "AdjustableTableView.h"
 #include "MarketDataProvider.h"
 #include "EveDataProvider.h"
+#include "RegionComboBox.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
 #include "SSOMessageBox.h"
-#include "ModelUtils.h"
 #include "FlowLayout.h"
 
 #include "InterRegionAnalysisWidget.h"
@@ -55,7 +53,7 @@ namespace Evernus
                                                          const EveDataProvider &dataProvider,
                                                          const MarketDataProvider &marketDataProvider,
                                                          QWidget *parent)
-        : QWidget(parent)
+        : StandardModelProxyWidget(mInterRegionDataModel, mInterRegionViewProxy, parent)
         , mDataProvider(dataProvider)
         , mMarketDataProvider(marketDataProvider)
         , mInterRegionDataModel(mDataProvider)
@@ -69,119 +67,34 @@ namespace Evernus
         auto toolBarLayout = new FlowLayout{};
         mainLayout->addLayout(toolBarLayout);
 
-        auto createRegionCombo = [=] {
-            auto combo = new QComboBox{this};
-            combo->setEditable(true);
-            combo->setInsertPolicy(QComboBox::NoInsert);
-
-            return combo;
-        };
-
-        auto getStationName = [this](auto id) {
-            return (id != 0) ? (mDataProvider.getLocationName(id)) : (tr("- any station -"));
-        };
-
         QSettings settings;
 
-        auto list = settings.value(MarketAnalysisSettings::srcStationKey).toList();
-        if (list.size() == 4)
-            mSrcStation = list[3].toULongLong();
-        list = settings.value(MarketAnalysisSettings::dstStationKey).toList();
-        if (list.size() == 4)
-            mDstStation = list[3].toULongLong();
+        const auto srcStationPath = settings.value(MarketAnalysisSettings::srcStationKey).toList();
+        if (srcStationPath.size() == 4)
+            mSrcStation = srcStationPath[3].toULongLong();
+        const auto dstStationPath = settings.value(MarketAnalysisSettings::dstStationKey).toList();
+        if (dstStationPath.size() == 4)
+            mDstStation = dstStationPath[3].toULongLong();
 
         toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
-        mSourceRegionCombo = createRegionCombo();
+        mSourceRegionCombo = new RegionComboBox{mDataProvider, MarketAnalysisSettings::srcRegionKey, this};
         toolBarLayout->addWidget(mSourceRegionCombo);
 
-        auto stationBtn = new QPushButton{getStationName(mSrcStation), this};
+        auto stationBtn = new StationSelectButton{mDataProvider, srcStationPath, this};
         toolBarLayout->addWidget(stationBtn);
-        connect(stationBtn, &QPushButton::clicked, this, [=] {
-            changeStation(mSrcStation, *stationBtn, MarketAnalysisSettings::srcStationKey);
+        connect(stationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+            changeStation(mSrcStation, path, MarketAnalysisSettings::srcStationKey);
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Destination:"), this});
-        mDestRegionCombo = createRegionCombo();
+        mDestRegionCombo = new RegionComboBox{mDataProvider, MarketAnalysisSettings::dstRegionKey, this};
         toolBarLayout->addWidget(mDestRegionCombo);
 
-        stationBtn = new QPushButton{getStationName(mDstStation), this};
+        stationBtn = new StationSelectButton{mDataProvider, dstStationPath, this};
         toolBarLayout->addWidget(stationBtn);
-        connect(stationBtn, &QPushButton::clicked, this, [=] {
-            changeStation(mDstStation, *stationBtn, MarketAnalysisSettings::dstStationKey);
+        connect(stationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+            changeStation(mDstStation, path, MarketAnalysisSettings::dstStationKey);
         });
-
-        auto fillRegionCombo = [this](auto combo, const auto savedKey) {
-            std::unordered_set<uint> saved;
-            QSettings settings;
-
-            const auto savedList = settings.value(savedKey).toList();
-            for (const auto &value : savedList)
-                saved.emplace(value.toUInt());
-
-            auto model = new QStandardItemModel{this};
-
-            const auto regions = mDataProvider.getRegions();
-            for (const auto &region : regions)
-            {
-                auto item = new QStandardItem{region.second};
-                item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-                item->setData(region.first);
-                item->setCheckState((saved.find(region.first) != std::end(saved)) ? (Qt::Checked) : (Qt::Unchecked));
-
-                model->appendRow(item);
-            }
-
-            combo->setModel(model);
-
-            connect(model, &QStandardItemModel::itemChanged, this, [=] {
-                QVariantList saved;
-                for (auto i = 0; i < model->rowCount(); ++i)
-                {
-                    const auto item = model->item(i);
-                    if (item->checkState() == Qt::Checked)
-                        saved.append(item->data().toUInt());
-                }
-
-                QSettings settings;
-                settings.setValue(savedKey, saved);
-
-                if (model->item(allRegionsIndex)->checkState() == Qt::Checked)
-                {
-                    combo->setCurrentText(tr("- all -"));
-                    return;
-                }
-
-                auto hasChecked = false;
-                for (auto i = allRegionsIndex + 1; i < model->rowCount(); ++i)
-                {
-                    const auto item = model->item(i);
-                    if (item->checkState() == Qt::Checked)
-                    {
-                        if (hasChecked)
-                        {
-                            combo->setCurrentText(tr("- multiple -"));
-                            return;
-                        }
-
-                        hasChecked = true;
-                        combo->setCurrentText(item->text());
-                    }
-                }
-
-                if (!hasChecked)
-                    combo->setCurrentText(tr("- none -"));
-            }, Qt::QueuedConnection);
-
-            auto item = new QStandardItem{tr("- all -")};
-            item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-            item->setCheckState((saved.empty() || saved.find(0) != std::end(saved)) ? (Qt::Checked) : (Qt::Unchecked));
-
-            model->insertRow(allRegionsIndex, item);
-            combo->setCurrentText(tr("- all -"));
-        };
-
-        fillRegionCombo(mSourceRegionCombo, MarketAnalysisSettings::srcRegionKey);
-        fillRegionCombo(mDestRegionCombo, MarketAnalysisSettings::dstRegionKey);
 
         auto volumeValidator = new QIntValidator{this};
         volumeValidator->setBottom(0);
@@ -230,20 +143,7 @@ namespace Evernus
         mInterRegionDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mInterRegionDataStack);
 
-        auto waitingWidget = new QWidget{this};
-
-        auto waitingLayout = new QVBoxLayout{waitingWidget};
-        waitingLayout->setAlignment(Qt::AlignCenter);
-
-        auto waitingLabel = new QLabel{tr("Calculating data..."), this};
-        waitingLayout->addWidget(waitingLabel);
-        waitingLabel->setAlignment(Qt::AlignCenter);
-
-        auto waitingProgress = new QProgressBar{this};
-        waitingLayout->addWidget(waitingProgress);
-        waitingProgress->setRange(0, 0);
-
-        mInterRegionDataStack->addWidget(waitingWidget);
+        mInterRegionDataStack->addWidget(new CalculatingDataWidget{this});
 
         mInterRegionViewProxy.setSortRole(Qt::UserRole);
         mInterRegionViewProxy.setSourceModel(&mInterRegionDataModel);
@@ -266,16 +166,7 @@ namespace Evernus
         mInterRegionTypeDataView->addAction(mShowDetailsAct);
         connect(mShowDetailsAct, &QAction::triggered, this, &InterRegionAnalysisWidget::showDetailsForCurrent);
 
-        mShowInEveInterRegionAct = new QAction{tr("Show in EVE"), this};
-        mShowInEveInterRegionAct->setEnabled(false);
-        mInterRegionTypeDataView->addAction(mShowInEveInterRegionAct);
-        connect(mShowInEveInterRegionAct, &QAction::triggered, this, &InterRegionAnalysisWidget::showInEveForCurrentInterRegion);
-
-        mCopyInterRegionRowsAct = new QAction{tr("&Copy"), this};
-        mCopyInterRegionRowsAct->setEnabled(false);
-        mCopyInterRegionRowsAct->setShortcut(QKeySequence::Copy);
-        connect(mCopyInterRegionRowsAct, &QAction::triggered, this, &InterRegionAnalysisWidget::copyRows);
-        mInterRegionTypeDataView->addAction(mCopyInterRegionRowsAct);
+        installOnView(mInterRegionTypeDataView);
     }
 
     void InterRegionAnalysisWidget::setPriceTypes(PriceType src, PriceType dst) noexcept
@@ -296,6 +187,7 @@ namespace Evernus
 
     void InterRegionAnalysisWidget::setCharacter(const std::shared_ptr<Character> &character)
     {
+        StandardModelProxyWidget::setCharacter((character) ? (character->getId()) : (Character::invalidId));
         mInterRegionDataModel.setCharacter(character);
     }
 
@@ -317,29 +209,11 @@ namespace Evernus
 
     void InterRegionAnalysisWidget::applyInterRegionFilter()
     {
-        InterRegionMarketDataFilterProxyModel::RegionList srcRegions, dstRegions;
-
-        auto fillRegions = [](const QStandardItemModel *model, InterRegionMarketDataFilterProxyModel::RegionList &list) {
-            if (model->item(allRegionsIndex)->checkState() == Qt::Checked)
-            {
-                for (auto i = allRegionsIndex + 1; i < model->rowCount(); ++i)
-                    list.emplace(model->item(i)->data().toUInt());
-            }
-            else
-            {
-                for (auto i = allRegionsIndex + 1; i < model->rowCount(); ++i)
-                {
-                    if (model->item(i)->checkState() == Qt::Checked)
-                        list.emplace(model->item(i)->data().toUInt());
-                }
-            }
-        };
+        const auto srcRegions = mSourceRegionCombo->getSelectedRegionList();
+        const auto dstRegions = mDestRegionCombo->getSelectedRegionList();
 
         if (!mRefreshedInterRegionData)
             recalculateInterRegionData();
-
-        fillRegions(static_cast<const QStandardItemModel *>(mSourceRegionCombo->model()), srcRegions);
-        fillRegions(static_cast<const QStandardItemModel *>(mDestRegionCombo->model()), dstRegions);
 
         const auto minVolume = mMinInterRegionVolumeEdit->text();
         const auto maxVolume = mMaxInterRegionVolumeEdit->text();
@@ -408,40 +282,17 @@ namespace Evernus
     {
         const auto enabled = !selected.isEmpty();
         mShowDetailsAct->setEnabled(enabled);
-        mShowInEveInterRegionAct->setEnabled(enabled);
-        mCopyInterRegionRowsAct->setEnabled(enabled);
     }
 
-    void InterRegionAnalysisWidget::showInEveForCurrentInterRegion()
+    void InterRegionAnalysisWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)
     {
-        const auto index = mInterRegionViewProxy.mapToSource(mInterRegionTypeDataView->currentIndex());
-        const auto id = mInterRegionDataModel.getTypeId(index);
-        if (id != EveType::invalidId)
-            emit showInEve(id, mInterRegionDataModel.getOwnerId(index));
-    }
-
-    void InterRegionAnalysisWidget::copyRows() const
-    {
-        ModelUtils::copyRowsToClipboard(mInterRegionTypeDataView->selectionModel()->selectedIndexes(), mInterRegionViewProxy);
-    }
-
-    void InterRegionAnalysisWidget::changeStation(quint64 &destination, QPushButton &btn, const QString &settingName)
-    {
-        StationSelectDialog dlg{mDataProvider, true, this};
-
         QSettings settings;
-        dlg.selectPath(settings.value(settingName).toList());
+        settings.setValue(settingName, path);
 
-        if (dlg.exec() != QDialog::Accepted)
-            return;
-
-        settings.setValue(settingName, dlg.getSelectedPath());
-
-        destination = dlg.getStationId();
-        if (destination == 0)
-            btn.setText(tr("- any station -"));
+        if (path.size() == 4)
+            destination = path[3].toULongLong();
         else
-            btn.setText(mDataProvider.getLocationName(destination));
+            destination = 0;
 
         if (QMessageBox::question(this, tr("Station change"), tr("Changing station requires data recalculation. Do you wish to do it now?")) == QMessageBox::No)
             return;
@@ -462,14 +313,14 @@ namespace Evernus
         if (orders == nullptr)
             return;
 
+        mInterRegionDataStack->setCurrentIndex(waitingLabelIndex);
+        mInterRegionDataStack->repaint();
+
         mInterRegionDataModel.setOrderData(*orders,
                                            *history,
                                            mSrcStation,
                                            mDstStation,
                                            mSrcPriceType,
                                            mDstPriceType);
-
-        mInterRegionDataStack->setCurrentIndex(waitingLabelIndex);
-        mInterRegionDataStack->repaint();
     }
 }

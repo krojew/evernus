@@ -37,8 +37,22 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        typedef std::pair<uint, QString> MapLocation;
-        typedef std::pair<quint64, QString> Station;
+        struct ReprocessingMaterialInfo
+        {
+            EveType::IdType mMaterialId;
+            uint mQuantity;
+        };
+
+        struct ReprocessingInfo
+        {
+            uint mPortionSize;
+            uint mGroupId;
+            std::vector<ReprocessingMaterialInfo> mMaterials;
+        };
+
+        using MapLocation = std::pair<uint, QString> ;
+        using Station = std::pair<quint64, QString>;
+        using ReprocessingMap = std::unordered_map<EveType::IdType, ReprocessingInfo>;
 
         using QObject::QObject;
         virtual ~EveDataProvider() = default;
@@ -78,6 +92,12 @@ namespace Evernus
         virtual uint getStationSolarSystemId(quint64 stationId) const = 0;
 
         virtual const CitadelRepository::EntityList &getCitadelsForRegion(uint regionId) const = 0;
+
+        virtual const ReprocessingMap &getOreReprocessingInfo() const = 0;
+
+        virtual uint getGroupId(const QString &name) const = 0;
+
+        virtual uint getDistance(uint startSystem, uint endSystem) const = 0;
 
     signals:
         void namesChanged() const;

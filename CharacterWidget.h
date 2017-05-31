@@ -58,6 +58,7 @@ namespace Evernus
         void setCorpStanding(double value);
         void setFactionStanding(double value);
         void setBrokersFee();
+        void setReprocessingImplantBonus(double value);
 
         void setSkillLevel(int level);
 
@@ -110,6 +111,27 @@ namespace Evernus
         QSpinBox *mMarginTradingSkillEdit = nullptr;
         QSpinBox *mContractingSkillEdit = nullptr;
         QSpinBox *mCorporationContractingSkillEdit = nullptr;
+        QDoubleSpinBox *mReprocessingImplantBonusEdit = nullptr;
+        QSpinBox *mArkonorProcessingSkillEdit = nullptr;
+        QSpinBox *mBistotProcessingSkillEdit = nullptr;
+        QSpinBox *mCrokiteProcessingSkillEdit = nullptr;
+        QSpinBox *mDarkOchreProcessingSkillEdit = nullptr;
+        QSpinBox *mGneissProcessingSkillEdit = nullptr;
+        QSpinBox *mHedbergiteProcessingSkillEdit = nullptr;
+        QSpinBox *mHemorphiteProcessingSkillEdit = nullptr;
+        QSpinBox *mIceProcessingSkillEdit = nullptr;
+        QSpinBox *mJaspetProcessingSkillEdit = nullptr;
+        QSpinBox *mKerniteProcessingSkillEdit = nullptr;
+        QSpinBox *mMercoxitProcessingSkillEdit = nullptr;
+        QSpinBox *mOmberProcessingSkillEdit = nullptr;
+        QSpinBox *mPlagioclaseProcessingSkillEdit = nullptr;
+        QSpinBox *mPyroxeresProcessingSkillEdit = nullptr;
+        QSpinBox *mReprocessingSkillEdit = nullptr;
+        QSpinBox *mReprocessingEfficiencySkillEdit = nullptr;
+        QSpinBox *mScorditeProcessingSkillEdit = nullptr;
+        QSpinBox *mScrapmetalProcessingSkillEdit = nullptr;
+        QSpinBox *mSpodumainProcessingSkillEdit = nullptr;
+        QSpinBox *mVeldsparProcessingSkillEdit = nullptr;
 
         QGroupBox *mUpdateTimersGroup = nullptr;
         QListWidget *mUpdateTimersList = nullptr;

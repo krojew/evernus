@@ -14,10 +14,11 @@
  */
 #pragma once
 
-#include <QWidget>
+#include <QVariant>
 
 #include "InterRegionMarketDataFilterProxyModel.h"
 #include "InterRegionMarketDataModel.h"
+#include "StandardModelProxyWidget.h"
 #include "ExternalOrder.h"
 #include "TaskConstants.h"
 #include "PriceType.h"
@@ -27,7 +28,6 @@ class QStackedWidget;
 class QPushButton;
 class QModelIndex;
 class QTableView;
-class QComboBox;
 class QCheckBox;
 class QLineEdit;
 
@@ -36,9 +36,10 @@ namespace Evernus
     class AdjustableTableView;
     class MarketDataProvider;
     class EveDataProvider;
+    class RegionComboBox;
 
     class InterRegionAnalysisWidget
-        : public QWidget
+        : public StandardModelProxyWidget
     {
         Q_OBJECT
 
@@ -74,23 +75,16 @@ namespace Evernus
 
         void selectInterRegionType(const QItemSelection &selected);
 
-        void showInEveForCurrentInterRegion();
-
-        void copyRows() const;
-
     private:
         static const auto waitingLabelIndex = 0;
-        static const auto allRegionsIndex = 0;
 
         const EveDataProvider &mDataProvider;
         const MarketDataProvider &mMarketDataProvider;
 
         QAction *mShowDetailsAct = nullptr;
-        QAction *mShowInEveInterRegionAct = nullptr;
-        QAction *mCopyInterRegionRowsAct = nullptr;
 
-        QComboBox *mSourceRegionCombo = nullptr;
-        QComboBox *mDestRegionCombo = nullptr;
+        RegionComboBox *mSourceRegionCombo = nullptr;
+        RegionComboBox *mDestRegionCombo = nullptr;
         QLineEdit *mMinInterRegionVolumeEdit = nullptr;
         QLineEdit *mMaxInterRegionVolumeEdit = nullptr;
         QLineEdit *mMinInterRegionMarginEdit = nullptr;
@@ -108,7 +102,7 @@ namespace Evernus
         PriceType mSrcPriceType = PriceType::Buy;
         PriceType mDstPriceType = PriceType::Buy;
 
-        void changeStation(quint64 &destination, QPushButton &btn, const QString &settingName);
+        void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
         void recalculateInterRegionData();
     };
 }

@@ -27,6 +27,7 @@ class QCheckBox;
 
 namespace Evernus
 {
+    class OreReprocessingArbitrageWidget;
     class InterRegionAnalysisWidget;
     class ImportingAnalysisWidget;
     class MarketOrderRepository;
@@ -94,6 +95,7 @@ namespace Evernus
         RegionAnalysisWidget *mRegionAnalysisWidget = nullptr;
         InterRegionAnalysisWidget *mInterRegionAnalysisWidget = nullptr;
         ImportingAnalysisWidget *mImportingAnalysisWidget = nullptr;
+        OreReprocessingArbitrageWidget *mOreReprocessingArbitrageWidget = nullptr;
 
         QCheckBox *mDontSaveBtn = nullptr;
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;

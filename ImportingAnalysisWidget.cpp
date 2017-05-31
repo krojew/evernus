@@ -17,7 +17,6 @@
 
 #include <QStackedWidget>
 #include <QDoubleSpinBox>
-#include <QProgressBar>
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -28,11 +27,11 @@
 #include <QLabel>
 
 #include "MarketAnalysisSettings.h"
+#include "CalculatingDataWidget.h"
 #include "AdjustableTableView.h"
 #include "StationSelectDialog.h"
 #include "MarketDataProvider.h"
 #include "EveDataProvider.h"
-#include "ModelUtils.h"
 #include "FlowLayout.h"
 
 #include "ImportingAnalysisWidget.h"
@@ -42,7 +41,7 @@ namespace Evernus
     ImportingAnalysisWidget::ImportingAnalysisWidget(const EveDataProvider &dataProvider,
                                                      const MarketDataProvider &marketDataProvider,
                                                      QWidget *parent)
-        : QWidget(parent)
+        : StandardModelProxyWidget(mDataModel, mDataProxy, parent)
         , mDataProvider(dataProvider)
         , mMarketDataProvider(marketDataProvider)
         , mDataModel(mDataProvider)
@@ -119,20 +118,7 @@ namespace Evernus
         mDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mDataStack);
 
-        auto waitingWidget = new QWidget{this};
-
-        auto waitingLayout = new QVBoxLayout{waitingWidget};
-        waitingLayout->setAlignment(Qt::AlignCenter);
-
-        auto waitingLabel = new QLabel{tr("Calculating data..."), this};
-        waitingLayout->addWidget(waitingLabel);
-        waitingLabel->setAlignment(Qt::AlignCenter);
-
-        auto waitingProgress = new QProgressBar{this};
-        waitingLayout->addWidget(waitingProgress);
-        waitingProgress->setRange(0, 0);
-
-        mDataStack->addWidget(waitingWidget);
+        mDataStack->addWidget(new CalculatingDataWidget{this});
 
         mDataProxy.setSortRole(Qt::UserRole);
         mDataProxy.setSourceModel(&mDataModel);
@@ -144,21 +130,10 @@ namespace Evernus
         mDataView->setModel(&mDataProxy);
         mDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
         mDataView->restoreHeaderState();
-        connect(mDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
-                this, &ImportingAnalysisWidget::selectType);
 
         mDataStack->setCurrentWidget(mDataView);
 
-        mShowInEveAct = new QAction{tr("Show in EVE"), this};
-        mShowInEveAct->setEnabled(false);
-        mDataView->addAction(mShowInEveAct);
-        connect(mShowInEveAct, &QAction::triggered, this, &ImportingAnalysisWidget::showInEveForCurrent);
-
-        mCopyRowsAct = new QAction{tr("&Copy"), this};
-        mCopyRowsAct->setEnabled(false);
-        mCopyRowsAct->setShortcut(QKeySequence::Copy);
-        connect(mCopyRowsAct, &QAction::triggered, this, &ImportingAnalysisWidget::copyRows);
-        mDataView->addAction(mCopyRowsAct);
+        installOnView(mDataView);
     }
 
     void ImportingAnalysisWidget::setPriceTypes(PriceType src, PriceType dst) noexcept
@@ -181,6 +156,8 @@ namespace Evernus
     {
         mCharacter = character;
         mDataModel.setCharacter(mCharacter);
+
+        StandardModelProxyWidget::setCharacter((mCharacter) ? (mCharacter->getId()) : (Character::invalidId));
     }
 
     void ImportingAnalysisWidget::recalculateData()
@@ -228,28 +205,6 @@ namespace Evernus
     void ImportingAnalysisWidget::clearData()
     {
         mDataModel.reset();
-    }
-
-    void ImportingAnalysisWidget::copyRows() const
-    {
-        ModelUtils::copyRowsToClipboard(mDataView->selectionModel()->selectedIndexes(), mDataProxy);
-    }
-
-    void ImportingAnalysisWidget::selectType(const QItemSelection &selected)
-    {
-        const auto enabled = !selected.isEmpty();
-        mShowInEveAct->setEnabled(enabled);
-        mCopyRowsAct->setEnabled(enabled);
-    }
-
-    void ImportingAnalysisWidget::showInEveForCurrent()
-    {
-        if (!mCharacter)
-            return;
-
-        const auto id = mDataModel.getTypeId(mDataProxy.mapToSource(mDataView->currentIndex()));
-        if (id != EveType::invalidId)
-            emit showInEve(id, mCharacter->getId());
     }
 
     void ImportingAnalysisWidget::changeStation(quint64 &destination, QPushButton &btn, const QString &settingName)

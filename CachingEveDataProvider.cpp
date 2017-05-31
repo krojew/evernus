@@ -714,6 +714,79 @@ namespace Evernus
         return mRegionCitadelCache.emplace(regionId, mCitadelRepository.fetchForRegion(regionId)).first->second;
     }
 
+    const CachingEveDataProvider::ReprocessingMap &CachingEveDataProvider::getOreReprocessingInfo() const
+    {
+        if (mOreReprocessingInfo.empty())
+        {
+            const QStringList oreGroupNames = {
+                QStringLiteral("Veldspar"),
+                QStringLiteral("Scordite"),
+                QStringLiteral("Pyroxeres"),
+                QStringLiteral("Plagioclase"),
+                QStringLiteral("Omber"),
+                QStringLiteral("Kernite"),
+                QStringLiteral("Jaspet"),
+                QStringLiteral("Hemorphite"),
+                QStringLiteral("Hedbergite"),
+                QStringLiteral("Gneiss"),
+                QStringLiteral("Dark Ochre"),
+                QStringLiteral("Spodumain"),
+                QStringLiteral("Crokite"),
+                QStringLiteral("Bistot"),
+                QStringLiteral("Arkonor"),
+                QStringLiteral("Mercoxit"),
+                QStringLiteral("Ice")
+            };
+
+            QSqlQuery query{mEveDb};
+            query.prepare(QStringLiteral(R"(
+SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM invTypeMaterials m INNER JOIN (
+    SELECT typeID, portionSize, groupID FROM invTypes WHERE groupID IN (
+        SELECT groupID FROM invGroups WHERE groupName IN ('%1')
+    ) AND marketGroupID IS NOT NULL
+) t ON t.typeID = m.typeID
+            )").arg(oreGroupNames.join("', '")));
+
+            DatabaseUtils::execQuery(query);
+
+            while (query.next())
+            {
+                auto &info = mOreReprocessingInfo[query.value(0).value<EveType::IdType>()];
+                info.mPortionSize = query.value(3).toUInt();
+                info.mGroupId = query.value(4).toUInt();
+                info.mMaterials.emplace_back(ReprocessingMaterialInfo{
+                    query.value(1).value<EveType::IdType>(),
+                    query.value(2).toUInt()
+                });
+            }
+        }
+
+        return mOreReprocessingInfo;
+    }
+
+    uint CachingEveDataProvider::getGroupId(const QString &name) const
+    {
+        if (mGroupIdCache.contains(name))
+            return mGroupIdCache[name];
+
+        QSqlQuery query{mEveDb};
+        query.prepare(QStringLiteral("SELECT groupID FROM invGroups WHERE groupName = ?"));
+        query.addBindValue(name);
+
+        DatabaseUtils::execQuery(query);
+
+        if (query.next())
+        {
+            const auto id = query.value(0).toUInt();
+
+            mGroupIdCache[name] = id;
+            return id;
+        }
+
+        mGroupIdCache[name] = 0;
+        return 0;
+    }
+
     void CachingEveDataProvider::precacheJumpMap()
     {
         auto query = mEveDb.exec("SELECT fromRegionID, fromSolarSystemID, toSolarSystemID FROM mapSolarSystemJumps WHERE fromRegionID = toRegionID");

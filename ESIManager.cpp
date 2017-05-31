@@ -440,11 +440,11 @@ namespace Evernus
         order.setRegionId(regionId);
 
         if (range == "station")
-            order.setRange(-1);
+            order.setRange(ExternalOrder::rangeStation);
         else if (range == "system")
-            order.setRange(0);
+            order.setRange(ExternalOrder::rangeSystem);
         else if (range == "region")
-            order.setRange(32767);
+            order.setRange(ExternalOrder::rangeRegion);
         else
             order.setRange(range.toShort());
 

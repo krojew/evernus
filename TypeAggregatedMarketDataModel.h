@@ -21,6 +21,7 @@
 
 #include <QAbstractTableModel>
 
+#include "ModelWithTypes.h"
 #include "MarketHistory.h"
 #include "Character.h"
 #include "PriceType.h"
@@ -35,6 +36,7 @@ namespace Evernus
 
     class TypeAggregatedMarketDataModel
         : public QAbstractTableModel
+        , public ModelWithTypes
     {
         Q_OBJECT
 
@@ -56,7 +58,7 @@ namespace Evernus
         void discardBogusOrders(bool flag) noexcept;
         void setBogusOrderThreshold(double value) noexcept;
 
-        EveType::IdType getTypeId(const QModelIndex &index) const;
+        virtual EveType::IdType getTypeId(const QModelIndex &index) const override;
         Character::IdType getOwnerId(const QModelIndex &index) const;
 
         static int getScoreColumn() noexcept;

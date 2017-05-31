@@ -9,10 +9,11 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(PROJECT_NAME "evernus")
-set(MAJOR_VERSION "1")
-set(MINOR_VERSION "53")
+set(MAJOR_VERSION "2")
+set(MINOR_VERSION "0")
 
 find_package(Boost REQUIRED)
+find_package(Qt5Concurrent REQUIRED)
 find_package(Qt5Core 5.4 REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
@@ -161,6 +162,8 @@ add_executable(
     CachingEveDataProvider.h
     CachingMarketOrderProvider.cpp
     CachingMarketOrderProvider.h
+    CalculatingDataWidget.cpp
+    CalculatingDataWidget.h
     CallbackExternalOrderImporter.cpp
     CallbackExternalOrderImporter.h
     Character.cpp
@@ -479,6 +482,7 @@ add_executable(
     MetaGroupRepository.h
     ModelUtils.cpp
     ModelUtils.h
+    ModelWithTypes.h
     NetworkPreferencesWidget.cpp
     NetworkPreferencesWidget.h
     NetworkSettings.h
@@ -489,6 +493,10 @@ add_executable(
     OrderScriptRepository.cpp
     OrderScriptRepository.h
     OrderSettings.h
+    OreReprocessingArbitrageModel.cpp
+    OreReprocessingArbitrageModel.h
+    OreReprocessingArbitrageWidget.cpp
+    OreReprocessingArbitrageWidget.h
     OrderPreferencesWidget.cpp
     OrderPreferencesWidget.h
     PathPreferencesWidget.cpp
@@ -582,6 +590,8 @@ add_executable(
     RefTypeXmlReceiver.h
     RegionAnalysisWidget.cpp
     RegionAnalysisWidget.h
+    RegionComboBox.cpp
+    RegionComboBox.h
     RegionTypeSelectDialog.cpp
     RegionTypeSelectDialog.h
     ReplyTimeout.cpp
@@ -610,8 +620,12 @@ add_executable(
     SSOSettings.h
     SSOUtils.cpp
     SSOUtils.h
+    StandardModelProxyWidget.cpp
+    StandardModelProxyWidget.h
     StationModel.cpp
     StationModel.h
+    StationSelectButton.cpp
+    StationSelectButton.h
     StationSelectDialog.cpp
     StationSelectDialog.h
     StationView.cpp
@@ -726,6 +740,7 @@ endif()
 target_link_libraries(
     ${PROJECT_NAME}
     ${Boost_LIBRARIES}
+    Qt5::Concurrent
     Qt5::Core
     Qt5::Gui
     Qt5::Multimedia

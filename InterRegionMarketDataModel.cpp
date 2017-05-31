@@ -40,6 +40,7 @@ namespace Evernus
 {
     InterRegionMarketDataModel::InterRegionMarketDataModel(const EveDataProvider &dataProvider, QObject *parent)
         : QAbstractTableModel{parent}
+        , ModelWithTypes{}
         , mDataProvider{dataProvider}
     {
     }

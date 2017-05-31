@@ -55,6 +55,7 @@ namespace Evernus
                 CharacterData::TradeRangeSkills tradeRangeSkills;
                 CharacterData::FeeSkills feeSkills;
                 CharacterData::ContractSkills contractSkills;
+                CharacterData::ReprocessingSkills reprocessingSkills;
 
                 const auto skills = node.elementsByTagName("row");
                 for (auto i = 0; i < skills.count(); ++i)
@@ -97,8 +98,62 @@ namespace Evernus
                     case 25235:
                         contractSkills.mContracting = element.attribute("level").toInt();
                         break;
-                    case 25233:
-                        contractSkills.mCorporationContracting = element.attribute("level").toInt();
+                    case 12180:
+                        reprocessingSkills.mArkonorProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12181:
+                        reprocessingSkills.mBistotProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12182:
+                        reprocessingSkills.mCrokiteProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12183:
+                        reprocessingSkills.mDarkOchreProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12185:
+                        reprocessingSkills.mHedbergiteProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12186:
+                        reprocessingSkills.mHemorphiteProcessing = element.attribute("level").toInt();
+                        break;
+                    case 18025:
+                        reprocessingSkills.mIceProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12187:
+                        reprocessingSkills.mJaspetProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12188:
+                        reprocessingSkills.mKerniteProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12189:
+                        reprocessingSkills.mMercoxitProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12190:
+                        reprocessingSkills.mOmberProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12191:
+                        reprocessingSkills.mPlagioclaseProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12192:
+                        reprocessingSkills.mPyroxeresProcessing = element.attribute("level").toInt();
+                        break;
+                    case 3385:
+                        reprocessingSkills.mReprocessing = element.attribute("level").toInt();
+                        break;
+                    case 3389:
+                        reprocessingSkills.mReprocessingEfficiency = element.attribute("level").toInt();
+                        break;
+                    case 12193:
+                        reprocessingSkills.mScorditeProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12196:
+                        reprocessingSkills.mScrapmetalProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12194:
+                        reprocessingSkills.mSpodumainProcessing = element.attribute("level").toInt();
+                        break;
+                    case 12195:
+                        reprocessingSkills.mVeldsparProcessing = element.attribute("level").toInt();
                     }
                 }
 
@@ -106,6 +161,7 @@ namespace Evernus
                 result.setTradeRangeSkills(std::move(tradeRangeSkills));
                 result.setFeeSkills(std::move(feeSkills));
                 result.setContractSkills(std::move(contractSkills));
+                result.setReprocessingSkills(std::move(reprocessingSkills));
             }
 
             return result;

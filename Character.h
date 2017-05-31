@@ -88,6 +88,9 @@ namespace Evernus
         boost::optional<double> getSellBrokersFee() const;
         void setSellBrokersFee(boost::optional<double> fee);
 
+        float getReprocessingImplantBonus() const noexcept;
+        void setReprocessingImplantBonus(float value) noexcept;
+
         CharacterData::OrderAmountSkills getOrderAmountSkills() const noexcept;
         void setOrderAmountSkills(const CharacterData::OrderAmountSkills &skills) noexcept;
         void setOrderAmountSkills(CharacterData::OrderAmountSkills &&skills) noexcept;
@@ -103,6 +106,10 @@ namespace Evernus
         CharacterData::ContractSkills getContractSkills() const noexcept;
         void setContractSkills(const CharacterData::ContractSkills &skills) noexcept;
         void setContractSkills(CharacterData::ContractSkills &&skills) noexcept;
+
+        CharacterData::ReprocessingSkills getReprocessingSkills() const noexcept;
+        void setReprocessingSkills(const CharacterData::ReprocessingSkills &skills) noexcept;
+        void setReprocessingSkills(CharacterData::ReprocessingSkills &&skills) noexcept;
 
         CharacterData getCharacterData() const &;
         CharacterData &&getCharacterData() && noexcept;
