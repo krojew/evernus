@@ -309,6 +309,8 @@ namespace Evernus
             // keep buying and selling until no more orders are left or we stop making profit
             while (true)
             {
+                QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+
                 // unsychronized access but that's ok, since only one thread touches given type orders
                 const auto bought = fillOrders(sellOrderList->second, requiredVolume);
                 if (bought.empty()) // no more volume to buy
