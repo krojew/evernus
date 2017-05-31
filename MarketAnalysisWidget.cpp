@@ -161,8 +161,6 @@ namespace Evernus
                 mImportingAnalysisWidget->setPriceTypes(src, dst);
                 mOreReprocessingArbitrageWidget->setPriceType(dst);
                 mScrapmetalReprocessingArbitrageWidget->setPriceType(dst);
-
-                recalculateAllData();
             });
         };
 

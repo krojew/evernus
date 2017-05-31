@@ -3647,67 +3647,67 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="169"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="167"/>
         <source>Source price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="175"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="173"/>
         <source>Destination price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="178"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="176"/>
         <source>Use skills and taxes for difference calculation (causes recalculation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="223"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="221"/>
         <source>Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="224"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="222"/>
         <source>Inter-Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="225"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="223"/>
         <source>Importing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="226"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="224"/>
         <source>Ore reprocessing arbitrage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="227"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="225"/>
         <source>Scrapmetal reprocessing arbitrage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="286"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="284"/>
         <source>Importing data for analysis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="288"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="286"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="289"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="287"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="292"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="290"/>
         <source>Making %1 ESI history requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="347"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="345"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5596,12 +5596,12 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::StandardModelProxyWidget</name>
     <message>
-        <location filename="../StandardModelProxyWidget.cpp" line="45"/>
+        <location filename="../StandardModelProxyWidget.cpp" line="52"/>
         <source>Show in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StandardModelProxyWidget.cpp" line="50"/>
+        <location filename="../StandardModelProxyWidget.cpp" line="57"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
