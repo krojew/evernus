@@ -172,8 +172,6 @@ namespace Evernus
                 buyMap[typeId].emplace(order);
         }
 
-        std::mutex sellMutex;
-
         // for given type, try to find arbitrage opportunities from source orders to dst orders
         // we have 2 versions to avoid branching logic - selling to buy orders and using sell orders
 
@@ -185,24 +183,20 @@ namespace Evernus
 
         const auto buyVolume = [&](auto &orders, auto volume) {
             std::vector<UsedOrder> usedOrders;
-
+            for (auto &order : orders)
             {
-                std::lock_guard<std::mutex> lock{sellMutex};
-                for (auto &order : orders)
+                const auto orderVolume = order.getVolumeRemaining();
+                if (volume > order.getMinVolume() && orderVolume > 0)
                 {
-                    const auto orderVolume = order.getVolumeRemaining();
-                    if (volume > order.getMinVolume() && orderVolume > 0)
-                    {
-                        const auto amount = std::min(orderVolume, volume);
-                        volume -= amount;
+                    const auto amount = std::min(orderVolume, volume);
+                    volume -= amount;
 
-                        // NOTE: we're casting away const, but not modifying the actual set key
-                        // looks dirty, but there's no partial constness
-                        const_cast<ExternalOrder &>(order).setVolumeRemaining(orderVolume - amount);
+                    // NOTE: we're casting away const, but not modifying the actual set key
+                    // looks dirty, but there's no partial constness
+                    const_cast<ExternalOrder &>(order).setVolumeRemaining(orderVolume - amount);
 
-                        UsedOrder used{amount, order.getPrice()};
-                        usedOrders.emplace_back(used);
-                    }
+                    UsedOrder used{amount, order.getPrice()};
+                    usedOrders.emplace_back(used);
                 }
             }
 
