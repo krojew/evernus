@@ -598,6 +598,10 @@ add_executable(
     ReplyTimeout.h
     Repository.h
     RepositoryProvider.h
+    ScrapmetalReprocessingArbitrageModel.cpp
+    ScrapmetalReprocessingArbitrageModel.h
+    ScrapmetalReprocessingArbitrageWidget.cpp
+    ScrapmetalReprocessingArbitrageWidget.h
     ScriptOrderProcessingModel.cpp
     ScriptOrderProcessingModel.h
     ScriptUtils.cpp

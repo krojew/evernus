@@ -23,6 +23,7 @@
 #include <QLabel>
 #include <QDebug>
 
+#include "ScrapmetalReprocessingArbitrageWidget.h"
 #include "OreReprocessingArbitrageWidget.h"
 #include "InterRegionAnalysisWidget.h"
 #include "ImportingAnalysisWidget.h"
@@ -159,6 +160,7 @@ namespace Evernus
                 mInterRegionAnalysisWidget->setPriceTypes(src, dst);
                 mImportingAnalysisWidget->setPriceTypes(src, dst);
                 mOreReprocessingArbitrageWidget->setPriceType(dst);
+                mScrapmetalReprocessingArbitrageWidget->setPriceType(dst);
 
                 recalculateAllData();
             });
@@ -210,12 +212,19 @@ namespace Evernus
 
         mOreReprocessingArbitrageWidget = new OreReprocessingArbitrageWidget{mDataProvider, *this, tabs};
         mOreReprocessingArbitrageWidget->setPriceType(dst);
-        connect(mOreReprocessingArbitrageWidget, &OreReprocessingArbitrageWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
+        connect(mOreReprocessingArbitrageWidget, &OreReprocessingArbitrageWidget::showInEve,
+                this, &MarketAnalysisWidget::showInEve);
+
+        mScrapmetalReprocessingArbitrageWidget = new ScrapmetalReprocessingArbitrageWidget{mDataProvider, *this, tabs};
+        mScrapmetalReprocessingArbitrageWidget->setPriceType(dst);
+        connect(mScrapmetalReprocessingArbitrageWidget, &ScrapmetalReprocessingArbitrageWidget::showInEve,
+                this, &MarketAnalysisWidget::showInEve);
 
         tabs->addTab(mRegionAnalysisWidget, tr("Region"));
         tabs->addTab(mInterRegionAnalysisWidget, tr("Inter-Region"));
         tabs->addTab(mImportingAnalysisWidget, tr("Importing"));
         tabs->addTab(mOreReprocessingArbitrageWidget, tr("Ore reprocessing arbitrage"));
+        tabs->addTab(mScrapmetalReprocessingArbitrageWidget, tr("Scrapmetal reprocessing arbitrage"));
     }
 
     const MarketAnalysisWidget::HistoryMap *MarketAnalysisWidget::getHistory(uint regionId) const
@@ -247,6 +256,7 @@ namespace Evernus
         mInterRegionAnalysisWidget->setCharacter(character);
         mImportingAnalysisWidget->setCharacter(character);
         mOreReprocessingArbitrageWidget->setCharacter(character);
+        mScrapmetalReprocessingArbitrageWidget->setCharacter(character);
     }
 
     void MarketAnalysisWidget::prepareOrderImport()
@@ -265,6 +275,7 @@ namespace Evernus
         mInterRegionAnalysisWidget->clearData();
         mImportingAnalysisWidget->clearData();
         mOreReprocessingArbitrageWidget->clearData();
+        mScrapmetalReprocessingArbitrageWidget->clearData();
 
         if (!mDataFetcher.hasPendingOrderRequests() && !mDataFetcher.hasPendingHistoryRequests())
         {
@@ -376,9 +387,11 @@ namespace Evernus
     void MarketAnalysisWidget::recalculateAllData()
     {
         showForCurrentRegion();
+
         mInterRegionAnalysisWidget->recalculateAllData();
         mImportingAnalysisWidget->recalculateData();
         mOreReprocessingArbitrageWidget->recalculateData();
+        mScrapmetalReprocessingArbitrageWidget->recalculateData();
     }
 
     PriceType MarketAnalysisWidget::getPriceType(const QComboBox &combo)
