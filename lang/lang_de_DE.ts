@@ -5102,12 +5102,12 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="211"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="212"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageWidget.cpp" line="211"/>
+        <location filename="../OreReprocessingArbitrageWidget.cpp" line="212"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>

@@ -147,6 +147,7 @@ namespace Evernus
         mDataView->setSortingEnabled(true);
         mDataView->setAlternatingRowColors(true);
         mDataView->setModel(&mDataProxy);
+        mDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
         mDataView->restoreHeaderState();
 
         mDataStack->setCurrentWidget(mDataView);
