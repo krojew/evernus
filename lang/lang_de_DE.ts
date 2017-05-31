@@ -3090,43 +3090,43 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="63"/>
+        <location filename="../ItemHistoryWidget.cpp" line="64"/>
         <source>Combine for all characters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="83"/>
-        <location filename="../ItemHistoryWidget.cpp" line="99"/>
+        <location filename="../ItemHistoryWidget.cpp" line="84"/>
+        <location filename="../ItemHistoryWidget.cpp" line="100"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="105"/>
+        <location filename="../ItemHistoryWidget.cpp" line="106"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="116"/>
+        <location filename="../ItemHistoryWidget.cpp" line="117"/>
         <source>Total income:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="122"/>
+        <location filename="../ItemHistoryWidget.cpp" line="123"/>
         <source>Total cost:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="128"/>
+        <location filename="../ItemHistoryWidget.cpp" line="129"/>
         <source>Balance:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="134"/>
+        <location filename="../ItemHistoryWidget.cpp" line="135"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ItemHistoryWidget.cpp" line="140"/>
+        <location filename="../ItemHistoryWidget.cpp" line="141"/>
         <source>Total volume:</source>
         <translation type="unfinished"></translation>
     </message>

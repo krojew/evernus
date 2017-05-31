@@ -42,6 +42,12 @@ namespace Evernus
         mMainLayout->addStretch();
     }
 
+    void ItemHistoriesWidget::setCharacter(Character::IdType id)
+    {
+        mCharacterId = id;
+        emit characterChanged(mCharacterId);
+    }
+
     void ItemHistoriesWidget::addHistory()
     {
         auto group = new QGroupBox{this};
@@ -51,7 +57,8 @@ namespace Evernus
 
         auto historyWidget = new ItemHistoryWidget{mWalletRepo, mCorpWalletRepo, mDataProvider, group};
         groupLayout->addWidget(historyWidget);
-        connect(this, &ItemHistoriesWidget::setCharacter, historyWidget, &ItemHistoryWidget::setCharacter);
+        historyWidget->setCharacter(mCharacterId);
+        connect(this, &ItemHistoriesWidget::characterChanged, historyWidget, &ItemHistoryWidget::setCharacter);
         connect(this, &ItemHistoriesWidget::updateData, historyWidget, &ItemHistoryWidget::updateData);
         connect(this, &ItemHistoriesWidget::handleNewPreferences, historyWidget, &ItemHistoryWidget::handleNewPreferences);
 

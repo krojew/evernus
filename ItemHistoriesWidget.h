@@ -38,10 +38,13 @@ namespace Evernus
         virtual ~ItemHistoriesWidget() = default;
 
     signals:
-        void setCharacter(Character::IdType id);
-
         void updateData();
         void handleNewPreferences();
+
+        void characterChanged(Character::IdType id);
+
+    public slots:
+        void setCharacter(Character::IdType id);
 
     private slots:
         void addHistory();
@@ -52,5 +55,7 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         QVBoxLayout *mMainLayout = nullptr;
+
+        Character::IdType mCharacterId = Character::invalidId;
     };
 }
