@@ -23,6 +23,7 @@
 #include <QByteArray>
 #include <QUrlQuery>
 #include <QSettings>
+#include <QDateTime>
 #include <QDebug>
 
 #include <boost/scope_exit.hpp>
@@ -100,6 +101,8 @@ namespace Evernus
                                        EveType::IdType typeId,
                                        const MarketOrderCallback &callback) const
     {
+        qDebug() << "Started market order import at" << QDateTime::currentDateTime();
+
         auto ifaceCallback = [=](QJsonDocument &&data, const QString &error) {
             if (!error.isEmpty())
             {
@@ -125,6 +128,8 @@ namespace Evernus
                                         EveType::IdType typeId,
                                         const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const
     {
+        qDebug() << "Started history import at" << QDateTime::currentDateTime();
+
 #if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
         mInterface.fetchMarketHistory(regionId, typeId, [=, callback = callback](QJsonDocument &&data, const QString &error) {
 #else
@@ -160,6 +165,7 @@ namespace Evernus
 
     void ESIManager::fetchMarketOrders(uint regionId, const MarketOrderCallback &callback) const
     {
+        qDebug() << "Started market order import at" << QDateTime::currentDateTime();
         mInterface.fetchMarketOrders(regionId, getMarketOrderCallback(regionId, callback));
     }
 
@@ -180,6 +186,7 @@ namespace Evernus
             ));
         }
 
+        qDebug() << "Started citadel market order import at" << QDateTime::currentDateTime();
         mInterface.fetchCitadelMarketOrders(citadelId, charId, getMarketOrderCallback(regionId, callback));
     }
 

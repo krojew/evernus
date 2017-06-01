@@ -16,6 +16,7 @@
 
 #include <boost/scope_exit.hpp>
 
+#include <QDateTime>
 #include <QSettings>
 #include <QDebug>
 
@@ -250,12 +251,16 @@ namespace Evernus
 
     void MarketAnalysisDataFetcher::finishOrderImport()
     {
+        qDebug() << "Started market order import at" << QDateTime::currentDateTime() << mOrders->size();
+
         emit orderImportEnded(mOrders, mAggregatedOrderErrors.join("\n"));
         mAggregatedOrderErrors.clear();
     }
 
     void MarketAnalysisDataFetcher::finishHistoryImport()
     {
+        qDebug() << "Finished history import at" << QDateTime::currentDateTime() << mHistory->size();
+
         emit historyImportEnded(mHistory, mAggregatedHistoryErrors.join("\n"));
         mAggregatedHistoryErrors.clear();
     }
