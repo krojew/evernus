@@ -47,8 +47,9 @@ namespace Evernus
     public:
         template<class T>
         using Callback = std::function<void (T &&data, const QString &error)>;
-
-        using MarketOrderCallback = Callback<std::vector<ExternalOrder>>;
+        using ExternalOrderList = std::vector<ExternalOrder>;
+        using MarketOrderCallback = Callback<ExternalOrderList>;
+        using HistoryMap = std::map<QDate, MarketHistoryEntry>;
 
         ESIManager(QByteArray clientId,
                    QByteArray clientSecret,
@@ -66,7 +67,7 @@ namespace Evernus
                                const MarketOrderCallback &callback) const;
         void fetchMarketHistory(uint regionId,
                                 EveType::IdType typeId,
-                                const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const;
+                                const Callback<HistoryMap> &callback) const;
         void fetchMarketOrders(uint regionId, const MarketOrderCallback &callback) const;
 
         void fetchCitadelMarketOrders(quint64 citadelId, uint regionId, Character::IdType charId, const MarketOrderCallback &callback) const;

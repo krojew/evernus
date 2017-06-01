@@ -100,7 +100,7 @@ include_directories(
 
 add_executable(
     ${PROJECT_NAME}
-    WIN32
+    #WIN32
     MACOSX_BUNDLE
     AboutDialog.cpp
     AboutDialog.h

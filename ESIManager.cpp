@@ -12,6 +12,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <atomic>
+
+#include <QtConcurrent>
+
+#include <QFutureWatcher>
 #include <QDesktopWidget>
 #include <QWebEnginePage>
 #include <QNetworkReply>
@@ -106,19 +111,27 @@ namespace Evernus
         auto ifaceCallback = [=](QJsonDocument &&data, const QString &error) {
             if (!error.isEmpty())
             {
-                callback(std::vector<ExternalOrder>(), error);
+                callback(ExternalOrderList{}, error);
                 return;
             }
 
-            const auto items = data.array();
+            const auto watcher = new QFutureWatcher<ExternalOrderList>{};
+            connect(watcher, &QFutureWatcher<ExternalOrderList>::finished, this, [=] {
+                watcher->deleteLater();
 
-            std::vector<ExternalOrder> orders;
-            orders.reserve(items.size());
+                const auto future = watcher->future();
+                callback(future.result(), QString{});
+            });
 
-            for (const auto &item : items)
-                orders.emplace_back(getOrderFromJson(item.toObject(), regionId));
+            watcher->setFuture(QtConcurrent::run([=, items = data.array()] {
+                ExternalOrderList result;
+                result.reserve(items.size());
 
-            callback(std::move(orders), QString{});
+                for (const auto &item : items)
+                    result.emplace_back(getOrderFromJson(item.toObject(), regionId));
+
+                return result;
+            }));
         };
 
         mInterface.fetchMarketOrders(regionId, typeId, ifaceCallback);
@@ -126,7 +139,7 @@ namespace Evernus
 
     void ESIManager::fetchMarketHistory(uint regionId,
                                         EveType::IdType typeId,
-                                        const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const
+                                        const Callback<HistoryMap> &callback) const
     {
         qDebug() << "Started history import at" << QDateTime::currentDateTime();
 
@@ -137,15 +150,11 @@ namespace Evernus
 #endif
             if (!error.isEmpty())
             {
-                callback(std::map<QDate, MarketHistoryEntry>(), error);
+                callback(HistoryMap{}, error);
                 return;
             }
 
-            std::map<QDate, MarketHistoryEntry> history;
-
-            const auto items = data.array();
-            for (const auto &item : items)
-            {
+            const std::function<std::pair<QDate, MarketHistoryEntry> (const QJsonValue &)> parseItem = [](const auto &item) {
                 const auto itemObject = item.toObject();
                 auto date = QDate::fromString(itemObject.value("date").toString(), Qt::ISODate);
 
@@ -156,10 +165,14 @@ namespace Evernus
                 entry.mOrders = itemObject.value("order_count").toInt();
                 entry.mVolume = itemObject.value("volume").toDouble();
 
-                history.emplace(std::move(date), std::move(entry));
-            }
+                return std::make_pair(std::move(date), std::move(entry));
+            };
 
-            callback(std::move(history), QString{});
+            const auto insertItem = [](auto &history, auto &item) {
+                history.insert(std::move(item));
+            };
+
+            callback(QtConcurrent::blockingMappedReduced<HistoryMap>(data.array(), parseItem, insertItem), QString{});
         });
     }
 
@@ -477,10 +490,16 @@ namespace Evernus
             }
 
             const auto items = data.array();
-            orders->reserve(orders->size() + items.size());
+            const auto curSize = orders->size();
+            orders->resize(curSize + items.size());
 
-            for (const auto &item : items)
-                orders->emplace_back(getOrderFromJson(item.toObject(), regionId));
+            std::atomic_size_t nextIndex{curSize};
+
+            const auto parseItem = [&](const auto &item) {
+                (*orders)[nextIndex++] = getOrderFromJson(item.toObject(), regionId);
+            };
+
+            QtConcurrent::blockingMap(items, parseItem);
 
             if (atEnd)
                 callback(std::move(*orders), QString{});
