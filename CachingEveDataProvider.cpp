@@ -649,8 +649,6 @@ namespace Evernus
 
     uint CachingEveDataProvider::getStationSolarSystemId(quint64 stationId) const
     {
-        std::lock_guard<std::mutex> lock{mLocationSolarSystemCacheMutex};
-
         const auto it = mLocationSolarSystemCache.find(stationId);
         if (it != std::end(mLocationSolarSystemCache))
             return it->second;

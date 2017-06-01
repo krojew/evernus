@@ -1713,39 +1713,39 @@ Total: %7</source>
 <context>
     <name>Evernus::ESIManager</name>
     <message>
-        <location filename="../ESIManager.cpp" line="97"/>
+        <location filename="../ESIManager.cpp" line="93"/>
         <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="179"/>
+        <location filename="../ESIManager.cpp" line="175"/>
         <source>Citadel order import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="179"/>
+        <location filename="../ESIManager.cpp" line="175"/>
         <source>Seems like you are importing citadel orders for the first time. CCP only allows importing orders from citadels you have access to. This means you need to authenticate yourself with Eve SSO, if you haven&apos;t done that already (please wait for the SSO window to open).
 
 Also, please note that due to large numbers of citadels in some regions, the import might take much longer. Remember you can toggle citadel import in the Preferences.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="238"/>
+        <location filename="../ESIManager.cpp" line="234"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="307"/>
+        <location filename="../ESIManager.cpp" line="303"/>
         <source>Empty access token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="365"/>
+        <location filename="../ESIManager.cpp" line="361"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="396"/>
+        <location filename="../ESIManager.cpp" line="392"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2787,6 +2787,21 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="93"/>
+        <source>Aggregate over:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="103"/>
+        <source>Price per m³:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="112"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="88"/>
         <location filename="../ImportingAnalysisWidget.cpp" line="98"/>
         <source> days</source>
@@ -2798,28 +2813,13 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="93"/>
-        <source>Aggregate over:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="99"/>
         <source>The number of days to aggregate movement over. This should reflect how fast you want your stock to sell.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="103"/>
-        <source>Price per m³:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="109"/>
         <source>Addtional cost added to buy price. This is multiplied by item size and desired volume to move (which in turn is based on aggregation days).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="112"/>
-        <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3077,7 +3077,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ItemHistoriesWidget.cpp" line="65"/>
+        <location filename="../ItemHistoriesWidget.cpp" line="58"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>

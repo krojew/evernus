@@ -12,10 +12,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <atomic>
-
-#include <QtConcurrent>
-
 #include <QDesktopWidget>
 #include <QWebEnginePage>
 #include <QNetworkReply>
@@ -111,15 +107,15 @@ namespace Evernus
                 return;
             }
 
-            const std::function<ExternalOrder (const QJsonValue &)> parseItem = [=](const auto &item) {
-                return getOrderFromJson(item.toObject(), regionId);
-            };
+            const auto items = data.array();
 
-            const auto insertItem = [](auto &orders, auto &order) {
-                orders.emplace_back(std::move(order));
-            };
+            std::vector<ExternalOrder> orders;
+            orders.reserve(items.size());
 
-            callback(QtConcurrent::blockingMappedReduced<std::vector<ExternalOrder>>(data.array(), parseItem, insertItem), QString{});
+            for (const auto &item : items)
+                orders.emplace_back(getOrderFromJson(item.toObject(), regionId));
+
+            callback(std::move(orders), QString{});
         };
 
         mInterface.fetchMarketOrders(regionId, typeId, ifaceCallback);
@@ -127,7 +123,7 @@ namespace Evernus
 
     void ESIManager::fetchMarketHistory(uint regionId,
                                         EveType::IdType typeId,
-                                        const Callback<HistoryMap> &callback) const
+                                        const Callback<std::map<QDate, MarketHistoryEntry>> &callback) const
     {
 #if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
         mInterface.fetchMarketHistory(regionId, typeId, [=, callback = callback](QJsonDocument &&data, const QString &error) {
@@ -136,11 +132,15 @@ namespace Evernus
 #endif
             if (!error.isEmpty())
             {
-                callback(HistoryMap{}, error);
+                callback(std::map<QDate, MarketHistoryEntry>(), error);
                 return;
             }
 
-            const std::function<std::pair<QDate, MarketHistoryEntry> (const QJsonValue &)> parseItem = [](const auto &item) {
+            std::map<QDate, MarketHistoryEntry> history;
+
+            const auto items = data.array();
+            for (const auto &item : items)
+            {
                 const auto itemObject = item.toObject();
                 auto date = QDate::fromString(itemObject.value("date").toString(), Qt::ISODate);
 
@@ -151,14 +151,10 @@ namespace Evernus
                 entry.mOrders = itemObject.value("order_count").toInt();
                 entry.mVolume = itemObject.value("volume").toDouble();
 
-                return std::make_pair(std::move(date), std::move(entry));
-            };
+                history.emplace(std::move(date), std::move(entry));
+            }
 
-            const auto insertItem = [](auto &history, auto &item) {
-                history.insert(std::move(item));
-            };
-
-            callback(QtConcurrent::blockingMappedReduced<HistoryMap>(data.array(), parseItem, insertItem), QString{});
+            callback(std::move(history), QString{});
         });
     }
 
@@ -474,16 +470,10 @@ namespace Evernus
             }
 
             const auto items = data.array();
-            const auto curSize = orders->size();
-            orders->resize(curSize + items.size());
+            orders->reserve(orders->size() + items.size());
 
-            std::atomic_size_t nextIndex{curSize};
-
-            const auto parseItem = [&](const auto &item) {
-                (*orders)[nextIndex++] = getOrderFromJson(item.toObject(), regionId);
-            };
-
-            QtConcurrent::blockingMap(items, parseItem);
+            for (const auto &item : items)
+                orders->emplace_back(getOrderFromJson(item.toObject(), regionId));
 
             if (atEnd)
                 callback(std::move(*orders), QString{});
