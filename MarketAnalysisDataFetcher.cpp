@@ -250,12 +250,16 @@ namespace Evernus
 
     void MarketAnalysisDataFetcher::finishOrderImport()
     {
+        qDebug() << "Got market orders:" << mOrders->size();
+
         emit orderImportEnded(mOrders, mAggregatedOrderErrors.join("\n"));
         mAggregatedOrderErrors.clear();
     }
 
     void MarketAnalysisDataFetcher::finishHistoryImport()
     {
+        qDebug() << "Got market history:" << mHistory->size();
+
         emit historyImportEnded(mHistory, mAggregatedHistoryErrors.join("\n"));
         mAggregatedHistoryErrors.clear();
     }

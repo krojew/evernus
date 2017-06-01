@@ -15,6 +15,7 @@
 #pragma once
 
 #include <unordered_set>
+#include <mutex>
 
 #include <QStringList>
 #include <QHash>
@@ -165,6 +166,7 @@ namespace Evernus
 
         mutable std::unordered_map<uint, uint> mSolarSystemRegionCache;
         mutable std::unordered_map<quint64, uint> mLocationSolarSystemCache;
+        mutable std::mutex mLocationSolarSystemCacheMutex;
 
         mutable std::unordered_map<uint, double> mSecurityStatuses;
 
