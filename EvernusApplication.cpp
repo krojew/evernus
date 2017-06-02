@@ -1546,6 +1546,8 @@ namespace Evernus
 
         setSmtpSettings();
 
+        mESIManager->handleNewPreferences();
+
         emit itemCostsChanged();
         emit itemVolumeChanged();
     }

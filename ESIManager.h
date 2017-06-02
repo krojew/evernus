@@ -90,6 +90,8 @@ namespace Evernus
     public slots:
         void fetchToken(Character::IdType charId);
 
+        void handleNewPreferences();
+
     private:
         static const QString loginUrl;
         static const QString redirectDomain;
@@ -108,7 +110,8 @@ namespace Evernus
 
         SimpleCrypt mCrypt;
 
-        ESIInterface mInterface;
+        std::vector<ESIInterface *> mInterfaces;
+        mutable std::size_t mCurrentInterface = 0;
 
         QNetworkAccessManager mNetworkManager;
 
@@ -120,6 +123,10 @@ namespace Evernus
 
         ExternalOrder getOrderFromJson(const QJsonObject &object, uint regionId) const;
         ESIInterface::PaginatedCallback getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const;
+
+        void createInterfaces();
+
+        const ESIInterface &selectNextInterface() const;
 
         static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
     };

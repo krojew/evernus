@@ -35,6 +35,7 @@
 
 #include "CharacterRepository.h"
 #include "EveDataProvider.h"
+#include "NetworkSettings.h"
 #include "ExternalOrder.h"
 #include "ReplyTimeout.h"
 #include "SSOSettings.h"
@@ -81,9 +82,8 @@ namespace Evernus
 
         mFirstTimeCitadelOrderImport = settings.value(firstTimeCitadelOrderImportKey, mFirstTimeCitadelOrderImport).toBool();
 
-        connect(&mInterface, &ESIInterface::tokenRequested, this, &ESIManager::fetchToken, Qt::QueuedConnection);
-        connect(this, &ESIManager::acquiredToken, &mInterface, &ESIInterface::updateTokenAndContinue);
-        connect(this, &ESIManager::tokenError, &mInterface, &ESIInterface::handleTokenError);
+        createInterfaces();
+
         connect(this, &ESIManager::tokenError, this, &ESIManager::error);
     }
 
@@ -134,7 +134,7 @@ namespace Evernus
             }));
         };
 
-        mInterface.fetchMarketOrders(regionId, typeId, ifaceCallback);
+        selectNextInterface().fetchMarketOrders(regionId, typeId, ifaceCallback);
     }
 
     void ESIManager::fetchMarketHistory(uint regionId,
@@ -144,9 +144,9 @@ namespace Evernus
         qDebug() << "Started history import at" << QDateTime::currentDateTime();
 
 #if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
-        mInterface.fetchMarketHistory(regionId, typeId, [=, callback = callback](QJsonDocument &&data, const QString &error) {
+        selectNextInterface().fetchMarketHistory(regionId, typeId, [=, callback = callback](QJsonDocument &&data, const QString &error) {
 #else
-        mInterface.fetchMarketHistory(regionId, typeId, [=](QJsonDocument &&data, const QString &error) {
+        selectNextInterface().fetchMarketHistory(regionId, typeId, [=](QJsonDocument &&data, const QString &error) {
 #endif
             if (!error.isEmpty())
             {
@@ -179,7 +179,7 @@ namespace Evernus
     void ESIManager::fetchMarketOrders(uint regionId, const MarketOrderCallback &callback) const
     {
         qDebug() << "Started market order import at" << QDateTime::currentDateTime();
-        mInterface.fetchMarketOrders(regionId, getMarketOrderCallback(regionId, callback));
+        selectNextInterface().fetchMarketOrders(regionId, getMarketOrderCallback(regionId, callback));
     }
 
     void ESIManager::fetchCitadelMarketOrders(quint64 citadelId, uint regionId, Character::IdType charId, const MarketOrderCallback &callback) const
@@ -200,19 +200,19 @@ namespace Evernus
         }
 
         qDebug() << "Started citadel market order import at" << QDateTime::currentDateTime();
-        mInterface.fetchCitadelMarketOrders(citadelId, charId, getMarketOrderCallback(regionId, callback));
+        selectNextInterface().fetchCitadelMarketOrders(citadelId, charId, getMarketOrderCallback(regionId, callback));
     }
 
     void ESIManager::openMarketDetails(EveType::IdType typeId, Character::IdType charId) const
     {
-        mInterface.openMarketDetails(typeId, charId, [=](const auto &errorText) {
+        selectNextInterface().openMarketDetails(typeId, charId, [=](const auto &errorText) {
             emit error(errorText);
         });
     }
 
     void ESIManager::setDestination(quint64 locationId, Character::IdType charId) const
     {
-        mInterface.setDestination(locationId, charId, [=](const auto &errorText) {
+        selectNextInterface().setDestination(locationId, charId, [=](const auto &errorText) {
             emit error(errorText);
         });
     }
@@ -342,6 +342,16 @@ namespace Evernus
             mFetchingToken = false;
             throw;
         }
+    }
+
+    void ESIManager::handleNewPreferences()
+    {
+        for (auto iface : mInterfaces)
+            iface->deleteLater();
+
+        mInterfaces.clear();
+
+        createInterfaces();
     }
 
     void ESIManager::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
@@ -504,6 +514,35 @@ namespace Evernus
             if (atEnd)
                 callback(std::move(*orders), QString{});
         };
+    }
+
+    void ESIManager::createInterfaces()
+    {
+        QSettings settings;
+
+        // IO bound
+        const auto maxInterfaces = settings.value(NetworkSettings::maxESIThreadsKey, NetworkSettings::maxESIThreadsDefault).toUInt();
+
+        mInterfaces.reserve(maxInterfaces);
+
+        for (auto i = 0u; i < maxInterfaces; ++i)
+        {
+            const auto interface = new ESIInterface{this};
+
+            mInterfaces.emplace_back(interface);
+
+            connect(interface, &ESIInterface::tokenRequested, this, &ESIManager::fetchToken, Qt::QueuedConnection);
+            connect(this, &ESIManager::acquiredToken, interface, &ESIInterface::updateTokenAndContinue);
+            connect(this, &ESIManager::tokenError, interface, &ESIInterface::handleTokenError);
+        }
+    }
+
+    const ESIInterface &ESIManager::selectNextInterface() const
+    {
+        const auto &interface = *mInterfaces[mCurrentInterface];
+        mCurrentInterface = (mCurrentInterface + 1) % mInterfaces.size();
+
+        return interface;
     }
 
     QNetworkRequest ESIManager::getVerifyRequest(const QByteArray &accessToken)

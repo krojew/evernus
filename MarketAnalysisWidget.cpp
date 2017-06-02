@@ -77,6 +77,8 @@ namespace Evernus
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
         });
+        connect(this, &MarketAnalysisWidget::preferencesChanged,
+                &mDataFetcher, &MarketAnalysisDataFetcher::handleNewPreferences);
 
         auto mainLayout = new QVBoxLayout{this};
 

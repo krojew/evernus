@@ -70,6 +70,8 @@ namespace Evernus
                         const MarketOrderRepository::TypeLocationPairs &ignored,
                         Character::IdType charId);
 
+        void handleNewPreferences();
+
     private:
         const EveDataProvider &mDataProvider;
 

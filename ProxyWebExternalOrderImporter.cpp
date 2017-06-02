@@ -62,6 +62,9 @@ namespace Evernus
 
     void ProxyWebExternalOrderImporter::handleNewPreferences()
     {
+        mESIIndividualImporter->handleNewPreferences();
+        mESIWholeImporter->handleNewPreferences();
+
         setCurrentImporter();
     }
 

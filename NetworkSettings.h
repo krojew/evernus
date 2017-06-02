@@ -26,6 +26,7 @@ namespace Evernus
         const auto maxReplyTimeDefault = 1800u;
         const auto ignoreSslErrorsDefault = false;
         const auto maxRetriesDefault = 3u;
+        const auto maxESIThreadsDefault = 8;
 
         const auto cryptKey = Q_UINT64_C(0x468c4a0e33a6fe01);
 
@@ -40,5 +41,6 @@ namespace Evernus
         const auto maxReplyTimeKey = QStringLiteral("network/maxReplyTime");
         const auto ignoreSslErrorsKey = QStringLiteral("network/security/ignoreSslErrors");
         const auto maxRetriesKey = QStringLiteral("network/maxRetries");
+        const auto maxESIThreadsKey = QStringLiteral("network/maxESIThreads");
     }
 }

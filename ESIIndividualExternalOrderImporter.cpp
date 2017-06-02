@@ -102,4 +102,9 @@ namespace Evernus
             mResult.clear();
         }
     }
+
+    void ESIIndividualExternalOrderImporter::handleNewPreferences()
+    {
+        mManager.handleNewPreferences();
+    }
 }

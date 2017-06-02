@@ -32,13 +32,16 @@ namespace Evernus
 
     public:
         ESIIndividualExternalOrderImporter(QByteArray clientId,
-                                             QByteArray clientSecret,
-                                             const EveDataProvider &dataProvider,
-                                             const CharacterRepository &characterRepo,
-                                             QObject *parent = nullptr);
+                                           QByteArray clientSecret,
+                                           const EveDataProvider &dataProvider,
+                                           const CharacterRepository &characterRepo,
+                                           QObject *parent = nullptr);
         virtual ~ESIIndividualExternalOrderImporter() = default;
 
         virtual void fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const override;
+
+    public slots:
+        void handleNewPreferences();
 
     private:
         const EveDataProvider &mDataProvider;

@@ -107,6 +107,11 @@ namespace Evernus
         }
     }
 
+    void ESIWholeExternalOrderImporter::handleNewPreferences()
+    {
+        mManager.handleNewPreferences();
+    }
+
     void ESIWholeExternalOrderImporter::filterOrders(std::vector<ExternalOrder> &orders) const
     {
         orders.erase(std::remove_if(std::begin(orders), std::end(orders), [=](const auto &order) {

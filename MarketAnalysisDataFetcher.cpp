@@ -100,6 +100,11 @@ namespace Evernus
             finishHistoryImport();
     }
 
+    void MarketAnalysisDataFetcher::handleNewPreferences()
+    {
+        mESIManager.handleNewPreferences();
+    }
+
     void MarketAnalysisDataFetcher::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)
     {
         if (mOrderCounter.advanceAndCheckBatch())
