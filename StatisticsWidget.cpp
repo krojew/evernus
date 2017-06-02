@@ -17,6 +17,7 @@
 
 #include "AdvancedStatisticsWidget.h"
 #include "BasicStatisticsWidget.h"
+#include "ReportsWidget.h"
 
 #include "StatisticsWidget.h"
 
@@ -38,8 +39,11 @@ namespace Evernus
 
         mAdvancedStatisticsWidget = new AdvancedStatisticsWidget{repositoryProvider, dataProvider, itemCostProvider, tabs};
 
+        mReportsWidget = new ReportsWidget{repositoryProvider, this};
+
         tabs->addTab(mBasicStatsWidget, tr("Basic"));
         tabs->addTab(mAdvancedStatisticsWidget, tr("Advanced"));
+        tabs->addTab(mReportsWidget, tr("Reports"));
     }
 
     void StatisticsWidget::setCharacter(Character::IdType id)
@@ -48,6 +52,7 @@ namespace Evernus
 
         mBasicStatsWidget->setCharacter(id);
         mAdvancedStatisticsWidget->setCharacter(id);
+        mReportsWidget->setCharacter(id);
     }
 
     void StatisticsWidget::updateBalanceData()

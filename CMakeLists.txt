@@ -596,6 +596,8 @@ add_executable(
     RegionTypeSelectDialog.h
     ReplyTimeout.cpp
     ReplyTimeout.h
+    ReportsWidget.cpp
+    ReportsWidget.h
     Repository.h
     RepositoryProvider.h
     ReprocessingArbitrageModel.h

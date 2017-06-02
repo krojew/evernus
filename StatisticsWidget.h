@@ -24,6 +24,7 @@ namespace Evernus
     class CharacterRepository;
     class RepositoryProvider;
     class ItemCostProvider;
+    class ReportsWidget;
 
     class StatisticsWidget
         : public QWidget
@@ -51,5 +52,6 @@ namespace Evernus
     private:
         BasicStatisticsWidget *mBasicStatsWidget = nullptr;
         AdvancedStatisticsWidget *mAdvancedStatisticsWidget = nullptr;
+        ReportsWidget *mReportsWidget = nullptr;
     };
 }

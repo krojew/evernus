@@ -5717,13 +5717,18 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::StatisticsWidget</name>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="41"/>
+        <location filename="../StatisticsWidget.cpp" line="44"/>
         <source>Basic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsWidget.cpp" line="42"/>
+        <location filename="../StatisticsWidget.cpp" line="45"/>
         <source>Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StatisticsWidget.cpp" line="46"/>
+        <source>Reports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
