@@ -129,6 +129,7 @@ namespace Evernus
 
         mMaxESIThreadsEdit = new QSpinBox{this};
         miscGroupLayout->addRow(tr("Max. ESI network threads:"), mMaxESIThreadsEdit);
+        mMaxESIThreadsEdit->setMinimum(1);
         mMaxESIThreadsEdit->setValue(
             settings.value(NetworkSettings::maxESIThreadsKey, NetworkSettings::maxESIThreadsDefault).toUInt());
 

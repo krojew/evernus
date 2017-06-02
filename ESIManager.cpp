@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
 #include <atomic>
 
 #include <QtConcurrent>
@@ -521,7 +522,10 @@ namespace Evernus
         QSettings settings;
 
         // IO bound
-        const auto maxInterfaces = settings.value(NetworkSettings::maxESIThreadsKey, NetworkSettings::maxESIThreadsDefault).toUInt();
+        const auto maxInterfaces = std::max(
+            settings.value(NetworkSettings::maxESIThreadsKey, NetworkSettings::maxESIThreadsDefault).toUInt(),
+            1u
+        );
 
         mInterfaces.reserve(maxInterfaces);
 
