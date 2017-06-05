@@ -39,7 +39,7 @@ namespace Evernus
 
         mAdvancedStatisticsWidget = new AdvancedStatisticsWidget{repositoryProvider, dataProvider, itemCostProvider, tabs};
 
-        mReportsWidget = new ReportsWidget{repositoryProvider, this};
+        mReportsWidget = new ReportsWidget{repositoryProvider, dataProvider, this};
 
         tabs->addTab(mBasicStatsWidget, tr("Basic"));
         tabs->addTab(mAdvancedStatisticsWidget, tr("Advanced"));

@@ -13,10 +13,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QVBoxLayout>
+#include <QHeaderView>
 #include <QCheckBox>
+#include <QGroupBox>
 #include <QSettings>
 
-#include "WalletTransactionRepository.h"
+#include "AdjustableTableView.h"
 #include "RepositoryProvider.h"
 #include "FlowLayout.h"
 #include "UISettings.h"
@@ -26,14 +28,17 @@
 namespace Evernus
 {
     ReportsWidget::ReportsWidget(const RepositoryProvider &repositoryProvider,
+                                 const EveDataProvider &dataProvider,
                                  QWidget *parent)
         : QWidget{parent}
-        , mTransactionRepository{repositoryProvider.getWalletTransactionRepository()}
-        , mCorpTransactionRepository{repositoryProvider.getCorpWalletTransactionRepository()}
+        , mPerformanceModel{repositoryProvider.getWalletTransactionRepository(),
+                            repositoryProvider.getCorpWalletTransactionRepository(),
+                            repositoryProvider.getCharacterRepository(),
+                            dataProvider}
     {
-        auto mainLayout = new QVBoxLayout{this};
+        const auto mainLayout = new QVBoxLayout{this};
 
-        auto toolBarLayout = new FlowLayout{};
+        const auto toolBarLayout = new FlowLayout{};
         mainLayout->addLayout(toolBarLayout);
 
         QSettings settings;
@@ -47,18 +52,50 @@ namespace Evernus
 
             recalculateData();
         });
+
+        mCombineWithCorpBtn = new QCheckBox{tr("Combine with corp. data"), this};
+        toolBarLayout->addWidget(mCombineWithCorpBtn);
+        mCombineWithCorpBtn->setChecked(settings.value(UISettings::combineReportsWithCorpKey, UISettings::combineReportsWithCorpDefault).toBool());
+        connect(mCombineWithCorpBtn, &QCheckBox::toggled, this, [=](bool checked) {
+            QSettings settings;
+            settings.setValue(UISettings::combineReportsWithCorpKey, checked);
+
+            recalculateData();
+        });
+
+        mPerformanceProxy.setSortRole(Qt::UserRole);
+        mPerformanceProxy.setSourceModel(&mPerformanceModel);
+
+        const auto bestItemsGroup = new QGroupBox{tr("Best items"), this};
+        mainLayout->addWidget(bestItemsGroup);
+
+        const auto bestItemsGroupLayout = new QVBoxLayout{bestItemsGroup};
+
+        mBestItemsView = new AdjustableTableView{QStringLiteral("reportsBestItemsView"), this};
+        bestItemsGroupLayout->addWidget(mBestItemsView);
+        mBestItemsView->setSortingEnabled(true);
+        mBestItemsView->setAlternatingRowColors(true);
+        mBestItemsView->setModel(&mPerformanceProxy);
+        mBestItemsView->restoreHeaderState();
     }
 
     void ReportsWidget::setCharacter(Character::IdType id)
     {
+        const auto prevCharactedId = mCharacterId;
+
         mCharacterId = id;
 
-        if (!mCombineBtn->isChecked())
+        if (!mCombineBtn->isChecked() || prevCharactedId == Character::invalidId)
             recalculateData();
     }
 
     void ReportsWidget::recalculateData()
     {
+        mPerformanceModel.reset(mCombineBtn->isChecked(),
+                                mCombineWithCorpBtn->isChecked(),
+                                mCharacterId);
 
+        mBestItemsView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+        mBestItemsView->sortByColumn(TypePerformanceModel::profitColumn, Qt::DescendingOrder);
     }
 }

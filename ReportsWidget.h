@@ -14,15 +14,18 @@
  */
 #pragma once
 
+#include <QSortFilterProxyModel>
 #include <QWidget>
 
+#include "TypePerformanceModel.h"
 #include "Character.h"
 
 class QCheckBox;
 
 namespace Evernus
 {
-    class WalletTransactionRepository;
+    class AdjustableTableView;
+    class EveDataProvider;
 
     class ReportsWidget
         : public QWidget
@@ -30,8 +33,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit ReportsWidget(const RepositoryProvider &repositoryProvider,
-                               QWidget *parent = nullptr);
+        ReportsWidget(const RepositoryProvider &repositoryProvider,
+                      const EveDataProvider &dataProvider,
+                      QWidget *parent = nullptr);
         ReportsWidget(const ReportsWidget &) = default;
         ReportsWidget(ReportsWidget &&) = default;
         virtual ~ReportsWidget() = default;
@@ -42,9 +46,13 @@ namespace Evernus
         ReportsWidget &operator =(ReportsWidget &&) = default;
 
     private:
-        const WalletTransactionRepository &mTransactionRepository, &mCorpTransactionRepository;
-
         QCheckBox *mCombineBtn = nullptr;
+        QCheckBox *mCombineWithCorpBtn = nullptr;
+
+        TypePerformanceModel mPerformanceModel;
+        QSortFilterProxyModel mPerformanceProxy;
+
+        AdjustableTableView *mBestItemsView = nullptr;
 
         Character::IdType mCharacterId = Character::invalidId;
 

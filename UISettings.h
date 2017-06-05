@@ -37,6 +37,7 @@ namespace Evernus
         const auto applyDateFormatToGraphsDefault = false;
         const auto showMarginToolSampleDataDefault = true;
         const auto combineReportsDefault = false;
+        const auto combineReportsWithCorpDefault = false;
 
         const auto autoCloseTasksKey = QStringLiteral("ui/tasks/autoClose");
         const auto autoCopyPriceFromInfoKey = QStringLiteral("ui/price/copyFromInfo");
@@ -63,5 +64,6 @@ namespace Evernus
         const auto applyDateFormatToGraphsKey = QStringLiteral("ui/global/applyDateTimeFormatToGraphs");
         const auto showMarginToolSampleDataKey = QStringLiteral("ui/marginTool/showSamples");
         const auto combineReportsKey = QStringLiteral("ui/combine/reports");
+        const auto combineReportsWithCorpKey = QStringLiteral("ui/combine/reportsWithCorp");
     }
 }

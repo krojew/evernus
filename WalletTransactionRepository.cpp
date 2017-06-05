@@ -83,11 +83,14 @@ namespace Evernus
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp_type ON %1(character_id, timestamp, type)"}.arg(getTableName()));
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp_type_type_id ON %1(character_id, timestamp, type, type_id)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_ignored ON %1(ignored)"}.arg(getTableName()));
+        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_ignored ON %1(character_id, ignored)"}.arg(getTableName()));
 
         try
         {
             exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_timestamp_type ON %1(corporation_id, timestamp, type)"}.arg(getTableName()));
             exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_timestamp_type_type_id ON %1(corporation_id, timestamp, type, type_id)"}.arg(getTableName()));
+            exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_ignored ON %1(corporation_id, ignored)"}.arg(getTableName()));
         }
         catch (const std::exception &)
         {
