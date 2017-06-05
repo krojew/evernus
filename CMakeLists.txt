@@ -14,7 +14,7 @@ set(MINOR_VERSION "0")
 
 find_package(Boost REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
-find_package(Qt5Core 5.4 REQUIRED)
+find_package(Qt5Core 5.7 REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Multimedia REQUIRED)

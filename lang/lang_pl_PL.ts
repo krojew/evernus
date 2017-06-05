@@ -5431,6 +5431,14 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
 </context>
 <context>
+    <name>Evernus::ReportsWidget</name>
+    <message>
+        <location filename="../ReportsWidget.cpp" line="41"/>
+        <source>Combine for all characters</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::ReprocessingArbitrageWidget</name>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="62"/>
