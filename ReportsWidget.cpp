@@ -17,9 +17,11 @@
 #include <QCheckBox>
 #include <QGroupBox>
 #include <QSettings>
+#include <QDate>
 
 #include "AdjustableTableView.h"
 #include "RepositoryProvider.h"
+#include "DateRangeWidget.h"
 #include "FlowLayout.h"
 #include "UISettings.h"
 
@@ -40,6 +42,14 @@ namespace Evernus
 
         const auto toolBarLayout = new FlowLayout{};
         mainLayout->addLayout(toolBarLayout);
+
+        const auto tillDate = QDate::currentDate();
+        const auto fromDate = tillDate.addDays(-7);
+
+        mDateRangeEdit = new DateRangeWidget{this};
+        toolBarLayout->addWidget(mDateRangeEdit);
+        mDateRangeEdit->setRange(fromDate, tillDate);
+        connect(mDateRangeEdit, &DateRangeWidget::rangeChanged, this, &ReportsWidget::recalculateData);
 
         QSettings settings;
 
@@ -91,7 +101,9 @@ namespace Evernus
 
     void ReportsWidget::recalculateData()
     {
-        mPerformanceModel.reset(mCombineBtn->isChecked(),
+        mPerformanceModel.reset(mDateRangeEdit->getFrom(),
+                                mDateRangeEdit->getTo(),
+                                mCombineBtn->isChecked(),
                                 mCombineWithCorpBtn->isChecked(),
                                 mCharacterId);
 

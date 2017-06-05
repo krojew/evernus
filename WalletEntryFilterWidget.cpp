@@ -37,7 +37,8 @@ namespace Evernus
         for (auto i = 0; i < typeFilters.count(); ++i)
             mTypeCombo->addItem(typeFilters[i], i);
 
-        connect(mTypeCombo, SIGNAL(currentIndexChanged(int)), SLOT(changeEntryType()));
+        connect(mTypeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                this, &WalletEntryFilterWidget::changeEntryType);
 
         mRangeEdit = new DateRangeWidget{this};
         mainLayout->addWidget(mRangeEdit);

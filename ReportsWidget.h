@@ -25,6 +25,7 @@ class QCheckBox;
 namespace Evernus
 {
     class AdjustableTableView;
+    class DateRangeWidget;
     class EveDataProvider;
 
     class ReportsWidget
@@ -45,7 +46,11 @@ namespace Evernus
         ReportsWidget &operator =(const ReportsWidget &) = default;
         ReportsWidget &operator =(ReportsWidget &&) = default;
 
+    private slots:
+        void recalculateData();
+
     private:
+        DateRangeWidget *mDateRangeEdit = nullptr;
         QCheckBox *mCombineBtn = nullptr;
         QCheckBox *mCombineWithCorpBtn = nullptr;
 
@@ -55,7 +60,5 @@ namespace Evernus
         AdjustableTableView *mBestItemsView = nullptr;
 
         Character::IdType mCharacterId = Character::invalidId;
-
-        void recalculateData();
     };
 }

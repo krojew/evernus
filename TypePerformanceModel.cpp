@@ -18,6 +18,7 @@
 
 #include <QLocale>
 #include <QColor>
+#include <QDate>
 
 #include "WalletTransactionRepository.h"
 #include "CharacterRepository.h"
@@ -131,7 +132,11 @@ namespace Evernus
         return static_cast<int>(mData.size());
     }
 
-    void TypePerformanceModel::reset(bool combineCharacters, bool combineCorp, Character::IdType characterId)
+    void TypePerformanceModel::reset(const QDate &from,
+                                     const QDate &to,
+                                     bool combineCharacters,
+                                     bool combineCorp,
+                                     Character::IdType characterId)
     {
         beginResetModel();
 
@@ -150,30 +155,38 @@ namespace Evernus
             query = QSqlQuery{QStringLiteral(R"(
 SELECT type_id, type, price, quantity
     FROM (
-        SELECT type_id, price, type, quantity FROM %1 WHERE ignored = 0
+        SELECT type_id, price, type, quantity FROM %1 WHERE ignored = 0 AND timestamp BETWEEN ? AND ?
         UNION
-        SELECT type_id, price, type, quantity FROM %2 WHERE ignored = 0
+        SELECT type_id, price, type, quantity FROM %2 WHERE ignored = 0 AND timestamp BETWEEN ? AND ?
     )
     GROUP BY type_id, type
             )")
                 .arg(mTransactionRepository.getTableName())
                 .arg(mCorpTransactionRepository.getTableName())
             , db};
+
+            query.addBindValue(from);
+            query.addBindValue(to);
+            query.addBindValue(from);
+            query.addBindValue(to);
         }
         else if (combineCharacters)
         {
-            query = QSqlQuery{QStringLiteral("SELECT type_id, type, price, quantity FROM %1 WHERE ignored = 0")
+            query = QSqlQuery{QStringLiteral("SELECT type_id, type, price, quantity FROM %1 WHERE ignored = 0 AND timestamp BETWEEN ? AND ?")
                 .arg(mTransactionRepository.getTableName())
             , db};
+
+            query.addBindValue(from);
+            query.addBindValue(to);
         }
         else if (combineCorp)
         {
             query = QSqlQuery{QStringLiteral(R"(
 SELECT type_id, type, price, quantity
     FROM (
-        SELECT type_id, price, type, quantity FROM %1 WHERE character_id = ? AND ignored = 0
+        SELECT type_id, price, type, quantity FROM %1 WHERE character_id = ? AND ignored = 0 AND timestamp BETWEEN ? AND ?
         UNION
-        SELECT type_id, price, type, quantity FROM %2 WHERE corporation_id = ? AND ignored = 0
+        SELECT type_id, price, type, quantity FROM %2 WHERE corporation_id = ? AND ignored = 0 AND timestamp BETWEEN ? AND ?
     )
     GROUP BY type_id, type
             )")
@@ -182,15 +195,21 @@ SELECT type_id, type, price, quantity
             , db};
 
             query.addBindValue(characterId);
+            query.addBindValue(from);
+            query.addBindValue(to);
             query.addBindValue(mCharacterRepository.getCorporationId(characterId));
+            query.addBindValue(from);
+            query.addBindValue(to);
         }
         else
         {
-            query = QSqlQuery{QStringLiteral("SELECT type_id, type, price, quantity FROM %1 WHERE character_id = ? AND ignored = 0")
+            query = QSqlQuery{QStringLiteral("SELECT type_id, type, price, quantity FROM %1 WHERE character_id = ? AND ignored = 0 AND timestamp BETWEEN ? AND ?")
                 .arg(mTransactionRepository.getTableName())
             , db};
 
             query.addBindValue(characterId);
+            query.addBindValue(from);
+            query.addBindValue(to);
         }
 
         DatabaseUtils::execQuery(query);

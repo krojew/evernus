@@ -21,6 +21,8 @@
 #include "Character.h"
 #include "EveType.h"
 
+class QDate;
+
 namespace Evernus
 {
     class WalletTransactionRepository;
@@ -59,7 +61,11 @@ namespace Evernus
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
-        void reset(bool combineCharacters, bool combineCorp, Character::IdType characterId);
+        void reset(const QDate &from,
+                   const QDate &to,
+                   bool combineCharacters,
+                   bool combineCorp,
+                   Character::IdType characterId);
 
         TypePerformanceModel &operator =(const TypePerformanceModel &) = default;
         TypePerformanceModel &operator =(TypePerformanceModel &&) = default;
