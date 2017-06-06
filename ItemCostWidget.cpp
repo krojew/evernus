@@ -86,7 +86,7 @@ namespace Evernus
         toolBarLayout->addWidget(relCostEdit);
         relCostEdit->setValue(settings.value(PriceSettings::itemRelativeCostAddKey, PriceSettings::itemRelativeCostAddDefault).toDouble());
         relCostEdit->setSuffix(locale().percent());
-        connect(relCostEdit, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, [](auto value) {
+        connect(relCostEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [](auto value) {
             QSettings settings;
             settings.setValue(PriceSettings::itemRelativeCostAddKey, value);
         });
@@ -101,7 +101,7 @@ namespace Evernus
         mProxy.setSourceModel(&mModel);
         mProxy.setFilterCaseSensitivity(Qt::CaseInsensitive);
 
-        mView = new StyledTreeView{"itemCostView", this};
+        mView = new StyledTreeView{QStringLiteral("itemCostView"), this};
         mainLayout->addWidget(mView, 1);
         mView->setModel(&mProxy);
         connect(mView->selectionModel(), &QItemSelectionModel::selectionChanged,

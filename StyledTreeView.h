@@ -43,6 +43,7 @@ namespace Evernus
 
     private:
         QMenu *mColumnsMenu = nullptr;
+        bool mSaveStateEnabled = true;
 
         void copyRowsWithRole(int role) const;
     };

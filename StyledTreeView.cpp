@@ -56,8 +56,8 @@ namespace Evernus
         action->setMenu(mColumnsMenu);
         addAction(action);
 
-        connect(header(), &QHeaderView::sectionMoved, this, &StyledTreeView::saveHeaderState);
-        connect(header(), &QHeaderView::sectionResized, this, &StyledTreeView::saveHeaderState);
+        connect(header(), &QHeaderView::sectionMoved, this, &StyledTreeView::saveHeaderState, Qt::DirectConnection);
+        connect(header(), &QHeaderView::sectionResized, this, &StyledTreeView::saveHeaderState, Qt::DirectConnection);
     }
 
     StyledTreeView::StyledTreeView(const QString &objectName, QWidget *parent)
@@ -70,13 +70,17 @@ namespace Evernus
     {
         auto prevModel = model();
         if (prevModel != nullptr)
-            disconnect(newModel, SIGNAL(modelReset()), this, SLOT(setColumnsMenu()));
+            disconnect(prevModel, SIGNAL(modelReset()), this, SLOT(setColumnsMenu()));
 
+        mSaveStateEnabled = false;
         QTreeView::setModel(newModel);
+        mSaveStateEnabled = true;
 
         if (newModel != nullptr)
         {
-            connect(newModel, SIGNAL(modelReset()), this, SLOT(setColumnsMenu()));
+            connect(newModel, &QAbstractItemModel::modelReset, this, [=] {
+                setColumnsMenu();
+            });
 
             restoreHeaderState();
             setColumnsMenu(newModel);
@@ -92,7 +96,15 @@ namespace Evernus
 
             const auto state = settings.value(UISettings::headerStateKey.arg(name)).toByteArray();
             if (!state.isEmpty())
+            {
                 header()->restoreState(state);
+            }
+            else
+            {
+                mSaveStateEnabled = false;
+                header()->resizeSections(QHeaderView::ResizeToContents);
+                mSaveStateEnabled = true;
+            }
         }
     }
 
@@ -139,9 +151,17 @@ namespace Evernus
 
     void StyledTreeView::saveHeaderState()
     {
+        if (!mSaveStateEnabled)
+            return;
+
         const auto name = objectName();
         if (!name.isEmpty())
         {
+            // don't save state when the model is empty - hack for not saving state when e.g. initial geometry changes
+            const auto curModel = model();
+            if (curModel == nullptr || curModel->rowCount() == 0)
+                return;
+
             QSettings settings;
             settings.setValue(UISettings::headerStateKey.arg(name), header()->saveState());
         }

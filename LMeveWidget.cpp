@@ -118,7 +118,7 @@ namespace Evernus
         auto container = new QWidget{this};
         auto containerLayout = new QHBoxLayout{container};
 
-        mTaskView = new StyledTreeView{"lmeve-tasks", this};
+        mTaskView = new StyledTreeView{QStringLiteral("lmeve-tasks"), this};
         containerLayout->addWidget(mTaskView, 1);
         mTaskView->setModel(&mTaskProxy);
         mTaskView->setRootIsDecorated(false);
@@ -135,8 +135,8 @@ namespace Evernus
 
         auto importMenu = new QMenu{this};
 
-        importMenu->addAction(QIcon{":/images/world.png"}, tr("Import prices from Web"), this, SLOT(prepareItemImportFromWeb()));
-        importMenu->addAction(QIcon{":/images/page_refresh.png"}, tr("Import prices from logs"), this, SLOT(prepareItemImportFromFile()));
+        importMenu->addAction(QIcon{":/images/world.png"}, tr("Import prices from Web"), this, &LMeveWidget::prepareItemImportFromWeb);
+        importMenu->addAction(QIcon{":/images/page_refresh.png"}, tr("Import prices from logs"), this, &LMeveWidget::prepareItemImportFromFile);
 
         mImportBtn = new QPushButton{QIcon{":/images/arrow_refresh_small.png"}, tr("Import prices  "), this};
         stationLayout->addWidget(mImportBtn);

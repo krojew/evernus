@@ -127,7 +127,7 @@ namespace Evernus
         configureProxy(mInventoryModelProxy);
         configureProxy(mAggregatedModelProxy);
 
-        mAssetView = new StyledTreeView{"assetView", this};
+        mAssetView = new StyledTreeView{QStringLiteral("assetView"), this};
         mainTabs->addTab(mAssetView, tr("Inventory"));
         mAssetView->setModel(&mInventoryModelProxy);
         connect(mAssetView->selectionModel(), &QItemSelectionModel::selectionChanged,

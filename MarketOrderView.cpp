@@ -196,7 +196,7 @@ namespace Evernus
     void MarketOrderView::handleReset()
     {
         emit closeOrderInfo();
-        mView->header()->resizeSections(QHeaderView::ResizeToContents);
+        mView->restoreHeaderState();
     }
 
     void MarketOrderView::changeNotesForCurrent()
