@@ -42,6 +42,7 @@ namespace Evernus
             buyVolumeColumn,
             profitColumn,
             profitPerItemColumn,
+            profitPerM3,
             marginColumn,
 
             numColumns

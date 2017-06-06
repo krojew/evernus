@@ -74,6 +74,8 @@ namespace Evernus
                     return TextUtils::currencyToString(data.mProfit, locale);
                 case profitPerItemColumn:
                     return (data.mSellVolume == 0) ? (QString{}) : (TextUtils::currencyToString(data.mProfit / data.mSellVolume, locale));
+                case profitPerM3:
+                    return TextUtils::currencyToString(data.mProfit / mDataProvider.getTypeVolume(data.mId), locale);
                 case marginColumn:
                     return QStringLiteral("%1%2").arg(locale.toString(data.mMargin, 'f', 2)).arg(locale.percent());
                 }
@@ -91,6 +93,8 @@ namespace Evernus
                 return data.mProfit;
             case profitPerItemColumn:
                 return (data.mSellVolume == 0) ? (0.) : (data.mProfit / data.mSellVolume);
+            case profitPerM3:
+                return data.mProfit / mDataProvider.getTypeVolume(data.mId);
             case marginColumn:
                 return data.mMargin;
             }
@@ -118,6 +122,8 @@ namespace Evernus
                 return tr("Profit");
             case profitPerItemColumn:
                 return tr("Profit per item");
+            case profitPerM3:
+                return tr("Profit per m³");
             case marginColumn:
                 return tr("Margin");
             }
