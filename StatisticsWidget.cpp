@@ -78,5 +78,6 @@ namespace Evernus
     void StatisticsWidget::handleNewPreferences()
     {
         mBasicStatsWidget->handleNewPreferences();
+        mReportsWidget->handleNewPreferences();
     }
 }

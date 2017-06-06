@@ -49,7 +49,7 @@ namespace Evernus
 
         auto &plot = mHistoryPlot->getPlot();
         plot.yAxis->setNumberPrecision(2);
-        plot.yAxis->setLabel("Avg. price [ISK]");
+        plot.yAxis->setLabel(tr("Avg. price [ISK]"));
 
         mFirstPriceGraph = plot.addGraph();
         mFirstPriceGraph->setPen(QPen{Qt::darkRed});

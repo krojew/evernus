@@ -20,10 +20,14 @@
 #include "TypePerformanceModel.h"
 #include "Character.h"
 
+class QCustomPlot;
 class QCheckBox;
+class QCPBars;
 
 namespace Evernus
 {
+    class WalletTransactionRepository;
+    class CharacterRepository;
     class AdjustableTableView;
     class DateRangeWidget;
     class EveDataProvider;
@@ -42,6 +46,7 @@ namespace Evernus
         virtual ~ReportsWidget() = default;
 
         void setCharacter(Character::IdType id);
+        void handleNewPreferences();
 
         ReportsWidget &operator =(const ReportsWidget &) = default;
         ReportsWidget &operator =(ReportsWidget &&) = default;
@@ -50,6 +55,12 @@ namespace Evernus
         void recalculateData();
 
     private:
+        const WalletTransactionRepository &mWalletTransactionRepository;
+        const WalletTransactionRepository &mCorpWalletTransactionRepository;
+        const CharacterRepository &mCharacterRepository;
+
+        const EveDataProvider &mDataProvider;
+
         DateRangeWidget *mDateRangeEdit = nullptr;
         QCheckBox *mCombineBtn = nullptr;
         QCheckBox *mCombineWithCorpBtn = nullptr;
@@ -59,6 +70,16 @@ namespace Evernus
 
         AdjustableTableView *mBestItemsView = nullptr;
 
+        QCustomPlot *mStationProfitPlot = nullptr;
+        QCPBars *mStationProfitGraph = nullptr;
+        QCPBars *mStationCostGraph = nullptr;
+        QCPBars *mStationVolumeGraph = nullptr;
+
         Character::IdType mCharacterId = Character::invalidId;
+
+        void recalculateBestItems(bool combineCharacters, bool combineCorp);
+        void recalculateTotalProfit(bool combineCharacters, bool combineCorp);
+
+        void applyGraphFormats();
     };
 }
