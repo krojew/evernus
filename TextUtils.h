@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <chrono>
+
 #include <QString>
 
 class QDateTime;
@@ -24,7 +26,7 @@ namespace Evernus
 {
     namespace TextUtils
     {
-        QString secondsToString(uint duration);
+        QString secondsToString(const std::chrono::seconds &duration);
         QString dateTimeToString(const QDateTime &dt, const QLocale &locale);
         QString currencyToString(double value, const QLocale &locale);
 

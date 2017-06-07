@@ -1705,6 +1705,11 @@ Total: %7</source>
 <context>
     <name>Evernus::DoubleTypeCompareWidget</name>
     <message>
+        <location filename="../DoubleTypeCompareWidget.cpp" line="52"/>
+        <source>Avg. price [ISK]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../DoubleTypeCompareWidget.cpp" line="67"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
@@ -4433,6 +4438,14 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
 </context>
 <context>
+    <name>Evernus::MarketOrderPerformanceModel</name>
+    <message>
+        <location filename="../MarketOrderPerformanceModel.cpp" line="80"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::MarketOrderPriceStatusesWidget</name>
     <message>
         <location filename="../MarketOrderPriceStatusesWidget.cpp" line="37"/>
@@ -5433,13 +5446,48 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::ReportsWidget</name>
     <message>
-        <location filename="../ReportsWidget.cpp" line="42"/>
+        <location filename="../ReportsWidget.cpp" line="73"/>
         <source>Combine for all characters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="52"/>
+        <location filename="../ReportsWidget.cpp" line="83"/>
         <source>Combine with corp. data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReportsWidget.cpp" line="96"/>
+        <source>Best items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReportsWidget.cpp" line="111"/>
+        <source>Fastest orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReportsWidget.cpp" line="123"/>
+        <source>Station profit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReportsWidget.cpp" line="137"/>
+        <source>Size [m³]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReportsWidget.cpp" line="145"/>
+        <source>Total profit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReportsWidget.cpp" line="152"/>
+        <source>Total costs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReportsWidget.cpp" line="159"/>
+        <source>Total size</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5477,31 +5525,36 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="130"/>
+        <source>Only high-sec orders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="140"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="134"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="144"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="135"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="145"/>
         <source>If you wish to make the fastest trade as possible, be sure to set the correct &lt;b&gt;destination price type&lt;/b&gt;. &lt;b&gt;Buying always uses sell orders.&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="136"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="146"/>
         <source>Due to the fast nature of arbitrage, prices are not based on volume percentile.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="222"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="233"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="222"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="233"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6036,6 +6089,44 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
     <message>
         <location filename="../TypeAggregatedMarketDataModel.cpp" line="132"/>
+        <source>Margin</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::TypePerformanceModel</name>
+    <message>
+        <location filename="../TypePerformanceModel.cpp" line="116"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypePerformanceModel.cpp" line="118"/>
+        <source>Sell volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypePerformanceModel.cpp" line="120"/>
+        <source>Buy volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypePerformanceModel.cpp" line="122"/>
+        <source>Profit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypePerformanceModel.cpp" line="124"/>
+        <source>Profit per item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypePerformanceModel.cpp" line="126"/>
+        <source>Profit per m³</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypePerformanceModel.cpp" line="128"/>
         <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>

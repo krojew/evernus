@@ -79,7 +79,7 @@ namespace Evernus
 
     void MarketOrderRepository::create(const Repository<Character> &characterRepo) const
     {
-        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+        exec(QStringLiteral("CREATE TABLE IF NOT EXISTS %1 ("
             "id BIGINT PRIMARY KEY,"
             "character_id BIGINT NOT NULL %2,"
             "location_id INTEGER NOT NULL,"
@@ -102,20 +102,23 @@ namespace Evernus
             "notes TEXT NULL,"
             "custom_location_id INTEGER NULL,"
             "color_tag TEXT NULL"
-        ")"}.arg(getTableName()).arg(
-            (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
+        ")").arg(getTableName()).arg(
+            (mCorp) ? (QString{}) : (QStringLiteral("REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE").arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
 
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_state ON %1(state)"}.arg(getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_state ON %1(character_id, state)"}.arg(getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type)"}.arg(getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_last_seen ON %1(character_id, last_seen)"}.arg(getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_last_seen ON %1(last_seen)"}.arg(getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)").arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_state ON %1(state)").arg(getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_character_state ON %1(character_id, state)").arg(getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_character_type ON %1(character_id, type)").arg(getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_character_last_seen ON %1(character_id, last_seen)").arg(getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_last_seen ON %1(last_seen)").arg(getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_first_seen_last_seen_state ON %1(first_seen, last_seen, state)").arg(getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_character_first_seen_last_seen_state ON %1(character_id, first_seen, last_seen, state)").arg(getTableName()));
 
         try
         {
-            exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_type ON %1(corporation_id, type)"}.arg(getTableName()));
-            exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_last_seen ON %1(corporation_id, last_seen)"}.arg(getTableName()));
+            exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_corporation_type ON %1(corporation_id, type)").arg(getTableName()));
+            exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_corporation_last_seen ON %1(corporation_id, last_seen)").arg(getTableName()));
+            exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_corporation_first_seen_last_seen_state ON %1(corporation_id, first_seen, last_seen, state)").arg(getTableName()));
         }
         catch (const std::runtime_error &)
         {
@@ -126,30 +129,30 @@ namespace Evernus
 
     void MarketOrderRepository::dropIndexes(const Repository<Character> &characterRepo) const
     {
-        exec(QString{"DROP INDEX IF EXISTS %1_%2_index"}.arg(getTableName()).arg(characterRepo.getTableName()));
-        exec(QString{"DROP INDEX IF EXISTS %1_state"}.arg(getTableName()));
-        exec(QString{"DROP INDEX IF EXISTS %1_corporation_type"}.arg(getTableName()));
-        exec(QString{"DROP INDEX IF EXISTS %1_character_state"}.arg(getTableName()));
-        exec(QString{"DROP INDEX IF EXISTS %1_character_type"}.arg(getTableName()));
-        exec(QString{"DROP INDEX IF EXISTS %1_character_last_seen"}.arg(getTableName()));
-        exec(QString{"DROP INDEX IF EXISTS %1_corporation_last_seen"}.arg(getTableName()));
-        exec(QString{"DROP INDEX IF EXISTS %1_last_seen"}.arg(getTableName()));
+        exec(QStringLiteral("DROP INDEX IF EXISTS %1_%2_index").arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QStringLiteral("DROP INDEX IF EXISTS %1_state").arg(getTableName()));
+        exec(QStringLiteral("DROP INDEX IF EXISTS %1_corporation_type").arg(getTableName()));
+        exec(QStringLiteral("DROP INDEX IF EXISTS %1_character_state").arg(getTableName()));
+        exec(QStringLiteral("DROP INDEX IF EXISTS %1_character_type").arg(getTableName()));
+        exec(QStringLiteral("DROP INDEX IF EXISTS %1_character_last_seen").arg(getTableName()));
+        exec(QStringLiteral("DROP INDEX IF EXISTS %1_corporation_last_seen").arg(getTableName()));
+        exec(QStringLiteral("DROP INDEX IF EXISTS %1_last_seen").arg(getTableName()));
     }
 
     void MarketOrderRepository::copyDataWithoutCorporationIdFrom(const QString &table) const
     {
-        exec(QString{"REPLACE INTO %1 "
+        exec(QStringLiteral("REPLACE INTO %1 "
             "(id, character_id, location_id, volume_entered, volume_remaining, min_volume, delta, state, type_id, range,"
              "account_key, duration, escrow, price, type, issued, first_seen, last_seen, corporation_id, notes, color_tag) "
             "SELECT id, character_id, location_id, volume_entered, volume_remaining, min_volume, delta, state, type_id, range,"
                    "account_key, duration, escrow, price, type, issued, first_seen, last_seen, 0, notes, color_tag "
-            "FROM %2"}.arg(getTableName()).arg(table));
+            "FROM %2").arg(getTableName()).arg(table));
     }
 
     MarketOrderRepository::AggrData MarketOrderRepository::getAggregatedData(Character::IdType characterId) const
     {
-        auto query = prepare(QString{
-            "SELECT type, COUNT(*), SUM(price * volume_remaining), SUM(volume_remaining) FROM %1 WHERE character_id = ? AND state = ? GROUP BY type"}
+        auto query = prepare(QStringLiteral(
+            "SELECT type, COUNT(*), SUM(price * volume_remaining), SUM(volume_remaining) FROM %1 WHERE character_id = ? AND state = ? GROUP BY type")
                 .arg(getTableName()));
         query.bindValue(0, characterId);
         query.bindValue(1, static_cast<int>(MarketOrder::State::Active));
@@ -266,7 +269,7 @@ namespace Evernus
     {
         OrderStateMap result;
 
-        auto query = prepare(QString{"SELECT %1, state, volume_remaining, first_seen, last_seen, delta, issued, duration, custom_location_id FROM %2 WHERE character_id = ?"}
+        auto query = prepare(QStringLiteral("SELECT %1, state, volume_remaining, first_seen, last_seen, delta, issued, duration, custom_location_id FROM %2 WHERE character_id = ?")
             .arg(getIdColumn())
             .arg(getTableName()));
         query.bindValue(0, characterId);
@@ -297,104 +300,95 @@ namespace Evernus
 
     MarketOrderRepository::EntityList MarketOrderRepository::fetchForCharacter(Character::IdType characterId) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ?"}.arg(getTableName()));
+        auto query = prepare(QStringLiteral("SELECT * FROM %1 WHERE character_id = ?").arg(getTableName()));
         query.bindValue(0, characterId);
 
         DatabaseUtils::execQuery(query);
 
-        EntityList result;
-
-        const auto size = query.size();
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-            result.emplace_back(populate(query.record()));
-
-        return result;
+        return populate(query);
     }
 
     MarketOrderRepository::EntityList MarketOrderRepository::fetchForCharacter(Character::IdType characterId, MarketOrder::Type type) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND type = ?"}.arg(getTableName()));
+        auto query = prepare(QStringLiteral("SELECT * FROM %1 WHERE character_id = ? AND type = ?").arg(getTableName()));
         query.bindValue(0, characterId);
         query.bindValue(1, static_cast<int>(type));
 
         DatabaseUtils::execQuery(query);
 
-        EntityList result;
-
-        const auto size = query.size();
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-            result.emplace_back(populate(query.record()));
-
-        return result;
+        return populate(query);
     }
 
     MarketOrderRepository::EntityList MarketOrderRepository::fetchForCorporation(uint corporationId, MarketOrder::Type type) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE corporation_id = ? AND type = ?"}.arg(getTableName()));
+        auto query = prepare(QStringLiteral("SELECT * FROM %1 WHERE corporation_id = ? AND type = ?").arg(getTableName()));
         query.bindValue(0, corporationId);
         query.bindValue(1, static_cast<int>(type));
 
         DatabaseUtils::execQuery(query);
 
-        EntityList result;
-
-        const auto size = query.size();
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-            result.emplace_back(populate(query.record()));
-
-        return result;
+        return populate(query);
     }
 
     MarketOrderRepository::EntityList MarketOrderRepository::fetchArchivedForCharacter(Character::IdType characterId) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE character_id = ? AND last_seen IS NOT NULL"}.arg(getTableName()));
+        auto query = prepare(QStringLiteral("SELECT * FROM %1 WHERE character_id = ? AND last_seen IS NOT NULL").arg(getTableName()));
         query.bindValue(0, characterId);
 
         DatabaseUtils::execQuery(query);
 
-        EntityList result;
-
-        const auto size = query.size();
-        if (size > 0)
-            result.reserve(size);
-
-        while (query.next())
-            result.emplace_back(populate(query.record()));
-
-        return result;
+        return populate(query);
     }
 
     MarketOrderRepository::EntityList MarketOrderRepository::fetchArchivedForCorporation(uint corporationId) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE corporation_id = ? AND last_seen IS NOT NULL"}.arg(getTableName()));
+        auto query = prepare(QStringLiteral("SELECT * FROM %1 WHERE corporation_id = ? AND last_seen IS NOT NULL").arg(getTableName()));
         query.bindValue(0, corporationId);
 
         DatabaseUtils::execQuery(query);
 
-        EntityList result;
+        return populate(query);
+    }
 
-        const auto size = query.size();
-        if (size > 0)
-            result.reserve(size);
+    MarketOrderRepository::EntityList MarketOrderRepository::fetchFulfilled(const QDate &from, const QDate &to) const
+    {
+        auto query = prepare(QStringLiteral("SELECT * FROM %1 WHERE first_seen BETWEEN ? AND ? AND last_seen IS NOT NULL AND state = ?").arg(getTableName()));
+        query.addBindValue(from);
+        query.addBindValue(to);
+        query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
 
-        while (query.next())
-            result.emplace_back(populate(query.record()));
+        DatabaseUtils::execQuery(query);
 
-        return result;
+        return populate(query);
+    }
+
+    MarketOrderRepository::EntityList MarketOrderRepository::fetchFulfilledForCharacter(const QDate &from, const QDate &to, Character::IdType characterId) const
+    {
+        auto query = prepare(QStringLiteral("SELECT * FROM %1 WHERE character_id = ? AND first_seen BETWEEN ? AND ? AND last_seen IS NOT NULL AND state = ?").arg(getTableName()));
+        query.addBindValue(characterId);
+        query.addBindValue(from);
+        query.addBindValue(to);
+        query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
+
+        DatabaseUtils::execQuery(query);
+
+        return populate(query);
+    }
+
+    MarketOrderRepository::EntityList MarketOrderRepository::fetchFulfilledForCorporation(const QDate &from, const QDate &to, uint corporationId) const
+    {
+        auto query = prepare(QStringLiteral("SELECT * FROM %1 WHERE corporation_id = ? AND first_seen BETWEEN ? AND ? AND last_seen IS NOT NULL AND state = ?").arg(getTableName()));
+        query.addBindValue(corporationId);
+        query.addBindValue(from);
+        query.addBindValue(to);
+        query.addBindValue(static_cast<int>(MarketOrder::State::Fulfilled));
+
+        return populate(query);
     }
 
     MarketOrderRepository::TypeLocationPairs MarketOrderRepository::fetchActiveTypes() const
     {
-        auto query = prepare(QString{"SELECT type_id, location_id FROM %1 WHERE state = ?"}.arg(getTableName()));
+        auto query = prepare(QStringLiteral("SELECT type_id, location_id FROM %1 WHERE state = ?").arg(getTableName()));
         query.bindValue(0, static_cast<int>(MarketOrder::State::Active));
 
         DatabaseUtils::execQuery(query);
@@ -437,7 +431,7 @@ namespace Evernus
 
     void MarketOrderRepository::deleteOldEntries(const QDateTime &from) const
     {
-        auto query = prepare(QString{"DELETE FROM %1 WHERE last_seen < ?"}.arg(getTableName()));
+        auto query = prepare(QStringLiteral("DELETE FROM %1 WHERE last_seen < ?").arg(getTableName()));
         query.bindValue(0, from);
 
         DatabaseUtils::execQuery(query);
@@ -445,7 +439,7 @@ namespace Evernus
 
     void MarketOrderRepository::setNotes(MarketOrder::IdType id, const QString &notes) const
     {
-        auto query = prepare(QString{"UPDATE %1 SET notes = ? WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
+        auto query = prepare(QStringLiteral("UPDATE %1 SET notes = ? WHERE %2 = ?").arg(getTableName()).arg(getIdColumn()));
         query.bindValue(0, notes);
         query.bindValue(1, id);
 
@@ -454,7 +448,7 @@ namespace Evernus
 
     void MarketOrderRepository::setStation(MarketOrder::IdType orderId, uint stationId) const
     {
-        auto query = prepare(QString{"UPDATE %1 SET custom_location_id = ? WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
+        auto query = prepare(QStringLiteral("UPDATE %1 SET custom_location_id = ? WHERE %2 = ?").arg(getTableName()).arg(getIdColumn()));
         query.bindValue(0, (stationId != 0) ? (stationId) : (QVariant{QVariant::UInt}));
         query.bindValue(1, orderId);
 
@@ -463,7 +457,7 @@ namespace Evernus
 
     void MarketOrderRepository::setColorTag(MarketOrder::IdType orderId, const QColor &color) const
     {
-        auto query = prepare(QString{"UPDATE %1 SET color_tag = ? WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
+        auto query = prepare(QStringLiteral("UPDATE %1 SET color_tag = ? WHERE %2 = ?").arg(getTableName()).arg(getIdColumn()));
         query.bindValue(0, (color.isValid()) ? (color.name()) : (QVariant{QVariant::String}));
         query.bindValue(1, orderId);
 
@@ -594,5 +588,19 @@ namespace Evernus
             valueBinder(query);
             executeBatch(reminderBegin, std::end(ids));
         }
+    }
+
+    MarketOrderRepository::EntityList MarketOrderRepository::populate(QSqlQuery &query) const
+    {
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
     }
 }

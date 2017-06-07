@@ -418,7 +418,7 @@ namespace Evernus
                         const auto timeCur = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() / 1000;
 
                         if (timeEnd > timeCur)
-                            return TextUtils::secondsToString(timeEnd - timeCur);
+                            return TextUtils::secondsToString(std::chrono::seconds{timeEnd - timeCur});
                     }
                     break;
                 case updatedColumn:

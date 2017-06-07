@@ -17,6 +17,7 @@
 #include <QSortFilterProxyModel>
 #include <QWidget>
 
+#include "MarketOrderPerformanceModel.h"
 #include "TypePerformanceModel.h"
 #include "Character.h"
 
@@ -65,10 +66,14 @@ namespace Evernus
         QCheckBox *mCombineBtn = nullptr;
         QCheckBox *mCombineWithCorpBtn = nullptr;
 
-        TypePerformanceModel mPerformanceModel;
-        QSortFilterProxyModel mPerformanceProxy;
+        TypePerformanceModel mTypePerformanceModel;
+        QSortFilterProxyModel mTypePerformanceProxy;
+
+        MarketOrderPerformanceModel mMarketOrderPerformanceModel;
+        QSortFilterProxyModel mMarketOrderPerformanceProxy;
 
         AdjustableTableView *mBestItemsView = nullptr;
+        AdjustableTableView *mFastestOrdersView = nullptr;
 
         QCustomPlot *mStationProfitPlot = nullptr;
         QCPBars *mStationProfitGraph = nullptr;
@@ -78,6 +83,7 @@ namespace Evernus
         Character::IdType mCharacterId = Character::invalidId;
 
         void recalculateBestItems(bool combineCharacters, bool combineCorp);
+        void recalculateFastestOrders(bool combineCharacters, bool combineCorp);
         void recalculateTotalProfit(bool combineCharacters, bool combineCorp);
 
         void applyGraphFormats();

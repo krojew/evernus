@@ -95,7 +95,7 @@ namespace Evernus
             else
             {
                 mWarningBarWidget->setText(tr("<strong>Warning!</strong> This data is %1 old and may need an update.")
-                    .arg(TextUtils::secondsToString((curTime.toMSecsSinceEpoch() - lastUpdate.toMSecsSinceEpoch()) / 1000)));
+                    .arg(TextUtils::secondsToString(std::chrono::seconds{(curTime.toMSecsSinceEpoch() - lastUpdate.toMSecsSinceEpoch()) / 1000})));
             }
         }
         else

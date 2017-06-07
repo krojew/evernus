@@ -100,6 +100,14 @@ namespace Evernus
         EntityList fetchForCorporation(uint corporationId, MarketOrder::Type type) const;
         EntityList fetchArchivedForCharacter(Character::IdType characterId) const;
         EntityList fetchArchivedForCorporation(uint corporationId) const;
+        EntityList fetchFulfilled(const QDate &from,
+                                  const QDate &to) const;
+        EntityList fetchFulfilledForCharacter(const QDate &from,
+                                              const QDate &to,
+                                              Character::IdType characterId) const;
+        EntityList fetchFulfilledForCorporation(const QDate &from,
+                                                const QDate &to,
+                                                uint corporationId) const;
 
         TypeLocationPairs fetchActiveTypes() const;
 
@@ -123,5 +131,7 @@ namespace Evernus
                                  const QString &baseQuery,
                                  const std::vector<MarketOrder::IdType> &ids,
                                  const Binder &valueBinder) const;
+
+        EntityList populate(QSqlQuery &query) const;
     };
 }

@@ -262,6 +262,5 @@ SELECT type_id, type, price, quantity
 
             mData.emplace_back(std::move(data));
         }
-
     }
 }

@@ -446,6 +446,8 @@ add_executable(
     MarketOrderInfoWidget.cpp
     MarketOrderInfoWidget.h
     MarketOrderModel.h
+    MarketOrderPerformanceModel.cpp
+    MarketOrderPerformanceModel.h
     MarketOrderPriceStatusesWidget.cpp
     MarketOrderPriceStatusesWidget.h
     MarketOrderProvider.h

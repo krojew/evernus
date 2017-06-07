@@ -27,17 +27,13 @@ namespace Evernus
 {
     namespace TextUtils
     {
-        QString secondsToString(uint duration)
+        QString secondsToString(const std::chrono::seconds &duration)
         {
             QString res;
 
-            duration /= 60;
-
-            const auto minutes = duration % 60;
-            duration /= 60;
-
-            const auto hours = duration % 24;
-            const auto days = duration / 24;
+            const auto minutes = std::chrono::duration_cast<std::chrono::minutes>(duration).count() % 60;
+            const auto hours = std::chrono::duration_cast<std::chrono::hours>(duration).count() % 24;
+            const auto days = std::chrono::duration_cast<std::chrono::hours>(duration).count() / 24;
 
             if (hours == 0 && days == 0)
                 return res.sprintf(QCoreApplication::translate("TextUtils", "%02dmin").toLatin1().data(), minutes);

@@ -14,6 +14,7 @@
  */
 #include <unordered_map>
 
+#include <QGridLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QCheckBox>
@@ -48,15 +49,19 @@ namespace Evernus
         , mCorpWalletTransactionRepository{repositoryProvider.getCorpWalletTransactionRepository()}
         , mCharacterRepository{repositoryProvider.getCharacterRepository()}
         , mDataProvider{dataProvider}
-        , mPerformanceModel{mWalletTransactionRepository,
-                            mCorpWalletTransactionRepository,
-                            mCharacterRepository,
-                            mDataProvider}
+        , mTypePerformanceModel{mWalletTransactionRepository,
+                                mCorpWalletTransactionRepository,
+                                mCharacterRepository,
+                                mDataProvider}
+        , mMarketOrderPerformanceModel{repositoryProvider.getMarketOrderRepository(),
+                                       repositoryProvider.getCorpMarketOrderRepository(),
+                                       mCharacterRepository,
+                                       mDataProvider}
     {
-        const auto mainLayout = new QVBoxLayout{this};
+        const auto mainLayout = new QGridLayout{this};
 
         const auto toolBarLayout = new FlowLayout{};
-        mainLayout->addLayout(toolBarLayout);
+        mainLayout->addLayout(toolBarLayout, 0, 0, 1, 2);
 
         const auto tillDate = QDate::currentDate();
         const auto fromDate = tillDate.addDays(-7);
@@ -88,11 +93,11 @@ namespace Evernus
             recalculateData();
         });
 
-        mPerformanceProxy.setSortRole(Qt::UserRole);
-        mPerformanceProxy.setSourceModel(&mPerformanceModel);
+        mTypePerformanceProxy.setSortRole(Qt::UserRole);
+        mTypePerformanceProxy.setSourceModel(&mTypePerformanceModel);
 
         const auto bestItemsGroup = new QGroupBox{tr("Best items"), this};
-        mainLayout->addWidget(bestItemsGroup, 1);
+        mainLayout->addWidget(bestItemsGroup, 1, 0);
 
         const auto bestItemsGroupLayout = new QVBoxLayout{bestItemsGroup};
 
@@ -100,16 +105,32 @@ namespace Evernus
         bestItemsGroupLayout->addWidget(mBestItemsView);
         mBestItemsView->setSortingEnabled(true);
         mBestItemsView->setAlternatingRowColors(true);
-        mBestItemsView->setModel(&mPerformanceProxy);
+        mBestItemsView->setModel(&mTypePerformanceProxy);
         mBestItemsView->restoreHeaderState();
 
+        mMarketOrderPerformanceProxy.setSortRole(Qt::UserRole);
+        mMarketOrderPerformanceProxy.setSourceModel(&mMarketOrderPerformanceModel);
+
+        const auto fastestOrdersGroup = new QGroupBox{tr("Fastest orders"), this};
+        mainLayout->addWidget(fastestOrdersGroup, 1, 1);
+
+        const auto fastestOrdersGroupLayout = new QVBoxLayout{fastestOrdersGroup};
+
+        mFastestOrdersView = new AdjustableTableView{QStringLiteral("reportsFastestOrdersView"), this};
+        fastestOrdersGroupLayout->addWidget(mFastestOrdersView);
+        mFastestOrdersView->setSortingEnabled(true);
+        mFastestOrdersView->setAlternatingRowColors(true);
+        mFastestOrdersView->setModel(&mMarketOrderPerformanceProxy);
+        mFastestOrdersView->restoreHeaderState();
+
         const auto stationProfitGroup = new QGroupBox{tr("Station profit"), this};
-        mainLayout->addWidget(stationProfitGroup, 1);
+        mainLayout->addWidget(stationProfitGroup, 2, 0, 1, 2);
 
         const auto stationProfitGroupLayout = new QVBoxLayout{stationProfitGroup};
 
         mStationProfitPlot = new QCustomPlot{this};
         stationProfitGroupLayout->addWidget(mStationProfitPlot);
+        mStationProfitPlot->axisRect(0)->setMinimumSize(500, 300);
         mStationProfitPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
         mStationProfitPlot->xAxis->setAutoTicks(false);
         mStationProfitPlot->xAxis->setAutoTickLabels(false);
@@ -165,19 +186,31 @@ namespace Evernus
         const auto combineCorp = mCombineWithCorpBtn->isChecked();
 
         recalculateBestItems(combineCharacters, combineCorp);
+        recalculateFastestOrders(combineCharacters, combineCorp);
         recalculateTotalProfit(combineCharacters, combineCorp);
     }
 
     void ReportsWidget::recalculateBestItems(bool combineCharacters, bool combineCorp)
     {
-        mPerformanceModel.reset(mDateRangeEdit->getFrom(),
-                                mDateRangeEdit->getTo(),
-                                combineCharacters,
-                                combineCorp,
-                                mCharacterId);
+        mTypePerformanceModel.reset(mDateRangeEdit->getFrom(),
+                                    mDateRangeEdit->getTo(),
+                                    combineCharacters,
+                                    combineCorp,
+                                    mCharacterId);
 
         mBestItemsView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
         mBestItemsView->sortByColumn(TypePerformanceModel::profitColumn, Qt::DescendingOrder);
+    }
+
+    void ReportsWidget::recalculateFastestOrders(bool combineCharacters, bool combineCorp)
+    {
+        mMarketOrderPerformanceModel.reset(mDateRangeEdit->getFrom(),
+                                           mDateRangeEdit->getTo(),
+                                           combineCharacters,
+                                           combineCorp,
+                                           mCharacterId);
+
+        mFastestOrdersView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
     }
 
     void ReportsWidget::recalculateTotalProfit(bool combineCharacters, bool combineCorp)
