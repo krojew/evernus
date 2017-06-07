@@ -171,6 +171,7 @@ namespace Evernus
                                                      quint64 dstStation,
                                                      bool useStationTax,
                                                      bool ignoreMinVolume,
+                                                     bool onlyHighSec,
                                                      double baseYield,
                                                      double sellVolumeLimit)
     {
@@ -238,7 +239,9 @@ namespace Evernus
         };
 
         const auto orderFilter = [&](const auto &order) {
-            return (isSrcOrder(order) || isDstOrder(order)) && (!ignoreMinVolume || order.getMinVolume() <= 1);
+            return (isSrcOrder(order) || isDstOrder(order)) &&
+                   (!ignoreMinVolume || order.getMinVolume() <= 1) &&
+                   (!onlyHighSec || mDataProvider.getSolarSystemSecurityStatus(order.getSolarSystemId()) >= 0.5);
         };
 
         std::unordered_map<EveType::IdType, std::multiset<ExternalOrder, ExternalOrder::LowToHigh>> sellMap;

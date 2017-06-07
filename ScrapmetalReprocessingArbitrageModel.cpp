@@ -172,6 +172,7 @@ namespace Evernus
                                                             quint64 dstStation,
                                                             bool useStationTax,
                                                             bool ignScrapmetalMinVolume,
+                                                            bool onlyHighSec,
                                                             double baseYield,
                                                             double sellVolumeLimit)
     {
@@ -213,7 +214,7 @@ namespace Evernus
         const auto canSellToOrder = [=](const auto &order) {
             return (dstSystem == 0) ||
                    (order.getRange() == ExternalOrder::rangeStation && dstStation == order.getStationId()) ||
-                   (mDataProvider.getDistance(dstSystem, order.getSolarSystemId()) <= order.getRange());
+                   (mDataProvider.getDistance(dstSystem, order.getSolarSystemId()) <= static_cast<uint>(order.getRange()));
         };
 
         const auto isDstOrder = [&](const auto &order) {
@@ -226,7 +227,9 @@ namespace Evernus
         };
 
         const auto orderFilter = [&](const auto &order) {
-            return (isSrcOrder(order) || isDstOrder(order)) && (!ignScrapmetalMinVolume || order.getMinVolume() <= 1);
+            return (isSrcOrder(order) || isDstOrder(order)) &&
+                   (!ignScrapmetalMinVolume || order.getMinVolume() <= 1) &&
+                   (!onlyHighSec || mDataProvider.getSolarSystemSecurityStatus(order.getSolarSystemId()) >= 0.5);
         };
 
         EveDataProvider::TypeList reprocessingTypes;

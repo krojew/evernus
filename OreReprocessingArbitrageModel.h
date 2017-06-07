@@ -55,6 +55,7 @@ namespace Evernus
                                   quint64 dstStation,
                                   bool useStationTax,
                                   bool ignoreMinVolume,
+                                  bool onlyHighSec,
                                   double baseYield,
                                   double sellVolumeLimit) override;
 

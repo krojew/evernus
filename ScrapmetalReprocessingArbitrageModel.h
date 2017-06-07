@@ -51,6 +51,7 @@ namespace Evernus
                                   quint64 dstStation,
                                   bool useStationTax,
                                   bool ignScrapmetalMinVolume,
+                                  bool onlyHighSec,
                                   double baseYield,
                                   double sellVolumeLimit) override;
 

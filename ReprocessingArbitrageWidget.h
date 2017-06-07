@@ -76,6 +76,7 @@ namespace Evernus
         QSpinBox *mSellVolumeLimitEdit = nullptr;
         QCheckBox *mIncludeStationTaxBtn = nullptr;
         QCheckBox *mIgnoreMinVolumeBtn = nullptr;
+        QCheckBox *mOnlyHighSecBtn = nullptr;
         QStackedWidget *mDataStack = nullptr;
         AdjustableTableView *mDataView = nullptr;
 

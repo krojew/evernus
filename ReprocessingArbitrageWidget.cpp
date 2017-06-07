@@ -127,6 +127,16 @@ namespace Evernus
             settings.setValue(MarketAnalysisSettings::reprocessingIgnoreMinVolumeKey, state == Qt::Checked);
         });
 
+        mOnlyHighSecBtn = new QCheckBox{tr("Only high-sec orders"), this};
+        toolBarLayout->addWidget(mOnlyHighSecBtn);
+        mOnlyHighSecBtn->setChecked(
+            settings.value(MarketAnalysisSettings::reprocessingOnlyHighSecKey, MarketAnalysisSettings::reprocessingOnlyHighSecDefault).toBool()
+        );
+        connect(mOnlyHighSecBtn, &QCheckBox::stateChanged, this, [=](auto state) {
+            QSettings settings;
+            settings.setValue(MarketAnalysisSettings::reprocessingOnlyHighSecKey, state == Qt::Checked);
+        });
+
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
         connect(filterBtn, &QPushButton::clicked, this, &ReprocessingArbitrageWidget::recalculateData);
@@ -194,6 +204,7 @@ namespace Evernus
                                  mDstStation,
                                  mIncludeStationTaxBtn->isChecked(),
                                  mIgnoreMinVolumeBtn->isChecked(),
+                                 mOnlyHighSecBtn->isChecked(),
                                  mStationEfficiencyEdit->value(),
                                  mSellVolumeLimitEdit->value() / 100.);
 
