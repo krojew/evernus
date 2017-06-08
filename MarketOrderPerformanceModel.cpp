@@ -129,7 +129,7 @@ namespace Evernus
         struct OrderData
         {
             quint64 mVolume = 0;
-            std::vector<int> mTuronover;
+            std::vector<qint64> mTuronover;
         };
 
         std::unordered_map<EveType::IdType, OrderData> orderMap;
