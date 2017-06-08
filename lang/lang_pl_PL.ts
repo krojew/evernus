@@ -4440,17 +4440,17 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::MarketOrderPerformanceModel</name>
     <message>
-        <location filename="../MarketOrderPerformanceModel.cpp" line="108"/>
+        <location filename="../MarketOrderPerformanceModel.cpp" line="98"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketOrderPerformanceModel.cpp" line="110"/>
+        <location filename="../MarketOrderPerformanceModel.cpp" line="100"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketOrderPerformanceModel.cpp" line="112"/>
+        <location filename="../MarketOrderPerformanceModel.cpp" line="102"/>
         <source>Median turnover time</source>
         <translation type="unfinished"></translation>
     </message>

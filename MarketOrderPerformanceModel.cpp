@@ -13,23 +13,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <unordered_map>
+#include <algorithm>
+#include <atomic>
+
+#include <boost/scope_exit.hpp>
+
+#include <QtConcurrent>
 
 #include <QLocale>
 #include <QDate>
-
-#ifdef Q_CC_MSVC
-#   pragma warning(push)
-#   pragma warning(disable : 4244)
-#endif
-
-#include <boost/accumulators/statistics/stats.hpp>
-#include <boost/accumulators/statistics/median.hpp>
-#include <boost/accumulators/accumulators.hpp>
-#include <boost/scope_exit.hpp>
-
-#ifdef Q_CC_MSVC
-#   pragma warning(pop)
-#endif
 
 #include "MarketOrderRepository.h"
 #include "CharacterRepository.h"
@@ -38,8 +30,6 @@
 #include "TextUtils.h"
 
 #include "MarketOrderPerformanceModel.h"
-
-using namespace boost::accumulators;
 
 namespace Evernus
 {
@@ -139,7 +129,7 @@ namespace Evernus
         struct OrderData
         {
             quint64 mVolume = 0;
-            accumulator_set<int, stats<tag::median>> mMedianTuronover;
+            std::vector<int> mTuronover;
         };
 
         std::unordered_map<EveType::IdType, OrderData> orderMap;
@@ -151,7 +141,7 @@ namespace Evernus
 
                 auto &data = orderMap[order->getTypeId()];
                 data.mVolume += order->getVolumeEntered();
-                data.mMedianTuronover(order->getFirstSeen().secsTo(order->getLastSeen()));
+                data.mTuronover.emplace_back(order->getFirstSeen().secsTo(order->getLastSeen()));
             }
         };
 
@@ -170,16 +160,18 @@ namespace Evernus
             insertOrders(orders);
         }
 
-        mData.reserve(orderMap.size());
+        mData.resize(orderMap.size());
+        std::atomic_size_t i{0};
 
-        for (const auto &order : orderMap)
-        {
-            mData.emplace_back();
-
-            auto &data = mData.back();
+        QtConcurrent::blockingMap(orderMap, [&](auto &order) {
+            auto &data = mData[i++];
             data.mId = order.first;
             data.mVolume = order.second.mVolume;
-            data.mTurnover = std::chrono::minutes{static_cast<int>(median(order.second.mMedianTuronover)) * 60};
-        }
+
+            std::nth_element(std::begin(order.second.mTuronover),
+                             std::next(std::begin(order.second.mTuronover), order.second.mTuronover.size() / 2),
+                             std::end(order.second.mTuronover));
+            data.mTurnover = std::chrono::minutes{order.second.mTuronover[order.second.mTuronover.size() / 2] / 60};
+        });
     }
 }
