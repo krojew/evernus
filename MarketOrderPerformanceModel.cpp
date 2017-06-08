@@ -92,7 +92,7 @@ namespace Evernus
             case volumeColumn:
                 return data.mVolume;
             case timeColumn:
-                return data.mTurnover.count();
+                return static_cast<qlonglong>(data.mTurnover.count());
             }
         }
 

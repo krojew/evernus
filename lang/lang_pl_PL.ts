@@ -4440,8 +4440,18 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::MarketOrderPerformanceModel</name>
     <message>
-        <location filename="../MarketOrderPerformanceModel.cpp" line="80"/>
+        <location filename="../MarketOrderPerformanceModel.cpp" line="108"/>
         <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketOrderPerformanceModel.cpp" line="110"/>
+        <source>Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketOrderPerformanceModel.cpp" line="112"/>
+        <source>Median turnover time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5446,47 +5456,47 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::ReportsWidget</name>
     <message>
-        <location filename="../ReportsWidget.cpp" line="73"/>
+        <location filename="../ReportsWidget.cpp" line="76"/>
         <source>Combine for all characters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="83"/>
+        <location filename="../ReportsWidget.cpp" line="86"/>
         <source>Combine with corp. data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="96"/>
+        <location filename="../ReportsWidget.cpp" line="99"/>
         <source>Best items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="111"/>
+        <location filename="../ReportsWidget.cpp" line="114"/>
         <source>Fastest orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="123"/>
+        <location filename="../ReportsWidget.cpp" line="126"/>
         <source>Station profit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="137"/>
+        <location filename="../ReportsWidget.cpp" line="140"/>
         <source>Size [m³]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="145"/>
+        <location filename="../ReportsWidget.cpp" line="148"/>
         <source>Total profit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="152"/>
+        <location filename="../ReportsWidget.cpp" line="155"/>
         <source>Total costs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="159"/>
+        <location filename="../ReportsWidget.cpp" line="162"/>
         <source>Total size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6659,17 +6669,17 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>TextUtils</name>
     <message>
-        <location filename="../TextUtils.cpp" line="43"/>
+        <location filename="../TextUtils.cpp" line="39"/>
         <source>%02dmin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TextUtils.cpp" line="46"/>
+        <location filename="../TextUtils.cpp" line="42"/>
         <source>%02dh %02dmin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TextUtils.cpp" line="48"/>
+        <location filename="../TextUtils.cpp" line="44"/>
         <source>%dd %02dh</source>
         <translation type="unfinished"></translation>
     </message>
