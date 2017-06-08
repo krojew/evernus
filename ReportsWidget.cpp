@@ -211,6 +211,7 @@ namespace Evernus
                                            mCharacterId);
 
         mFastestOrdersView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+        mFastestOrdersView->sortByColumn(MarketOrderPerformanceModel::timeColumn, Qt::AscendingOrder);
     }
 
     void ReportsWidget::recalculateTotalProfit(bool combineCharacters, bool combineCorp)
