@@ -14,6 +14,7 @@
  */
 #include <limits>
 
+#include <QMessageBox>
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QGroupBox>
@@ -127,6 +128,17 @@ namespace Evernus
 
     void ImportPreferencesWidget::applySettings()
     {
+        const auto autoImport = mAutoImportBtn->isChecked();
+        auto emailNotifications = mEmailNotificationBtn->isChecked();
+        const auto emailNotificationsAddress = mEmailNotificationAddressEdit->text();
+        const auto smtpHost = mSmtpHostEdit->text();
+
+        if (autoImport && emailNotifications && (emailNotificationsAddress.isEmpty() || smtpHost.isEmpty()))
+        {
+            QMessageBox::warning(this, tr("Email notifications"), tr("Email notifications will be disabled since destination address or SMTP host is empty."));
+            emailNotifications = false;
+        }
+
         QSettings settings;
         settings.setValue(ImportSettings::ignoreCachedImportKey, mIgnoreCachedBtn->isChecked());
         settings.setValue(ImportSettings::importAllCharactersKey, mAllCharactersBtn->isChecked());
@@ -135,12 +147,12 @@ namespace Evernus
         settings.setValue(ImportSettings::maxWalletAgeKey, mWalletTimerEdit->value());
         settings.setValue(ImportSettings::maxMarketOrdersAgeKey, mMarketOrdersTimerEdit->value());
         settings.setValue(ImportSettings::maxContractsAgeKey, mContractsTimerEdit->value());
-        settings.setValue(ImportSettings::autoImportEnabledKey, mAutoImportBtn->isChecked());
+        settings.setValue(ImportSettings::autoImportEnabledKey, autoImport);
         settings.setValue(ImportSettings::autoImportTimeKey, mAutoImportTimeEdit->value());
-        settings.setValue(ImportSettings::emailNotificationsEnabledKey, mEmailNotificationBtn->isChecked());
-        settings.setValue(ImportSettings::emailNotificationAddressKey, mEmailNotificationAddressEdit->text());
+        settings.setValue(ImportSettings::emailNotificationsEnabledKey, emailNotifications);
+        settings.setValue(ImportSettings::emailNotificationAddressKey, emailNotificationsAddress);
         settings.setValue(ImportSettings::smtpConnectionSecurityKey, mSmtpConnectionSecurityEdit->currentData().toInt());
-        settings.setValue(ImportSettings::smtpHostKey, mSmtpHostEdit->text());
+        settings.setValue(ImportSettings::smtpHostKey, smtpHost);
         settings.setValue(ImportSettings::smtpPortKey, mSmtpPortEdit->value());
         settings.setValue(ImportSettings::smtpUserKey, mSmtpUserEdit->text());
         settings.setValue(ImportSettings::smtpPasswordKey, mCrypt.encryptToString(mSmtpPasswordEdit->text()));
