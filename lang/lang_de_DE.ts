@@ -3632,87 +3632,112 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="115"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="106"/>
+        <source>Ignore item types wich have active market orders.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="116"/>
         <source>Discard bogus orders (causes recalculation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="129"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="119"/>
+        <source>Use heuristics based on average price to determine if a given order is legit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="131"/>
         <source>Bogus order threshold:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="154"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="143"/>
+        <source>How much a price can deviate from the average price to consider it legit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="157"/>
         <source>Sell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="155"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="158"/>
         <source>Buy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="169"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="172"/>
         <source>Source price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="175"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="177"/>
+        <source>Type of orders used for buing items.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="179"/>
         <source>Destination price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="178"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="181"/>
+        <source>Type of orders used for selling items.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisWidget.cpp" line="183"/>
         <source>Use skills and taxes for difference calculation (causes recalculation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="223"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="228"/>
         <source>Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="224"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="229"/>
         <source>Inter-Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="225"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="230"/>
         <source>Importing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="226"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="231"/>
         <source>Ore reprocessing arbitrage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="227"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="232"/>
         <source>Scrapmetal reprocessing arbitrage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="286"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="291"/>
         <source>Importing data for analysis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="288"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="293"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="289"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="294"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="292"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="297"/>
         <source>Making %1 ESI history requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="347"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="352"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5517,52 +5542,67 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="96"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="88"/>
+        <source>This is the base yield of the station you are reprocessing in.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="97"/>
         <source>Volume limit selling with sell orders:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="110"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="103"/>
+        <source>If you wish to sell using sell orders (not recommended due to fast nature of arbitrage and additional taxes), you should specify the percentage of current market volume you wish to sell. For example, using 100% means you wish to sell the exact amount of materials which is currently on the market. Using higher values will give more total profit, but assumes you can actually sell such amounts. Therefore you should set this percentage to a reasonable value, like 10%.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="117"/>
         <source>Include station tax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="120"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="127"/>
         <source>Ignore orders with min. volume &gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="130"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="129"/>
+        <source>Ignore orders wich require minimum volume larger than 1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="138"/>
         <source>Only high-sec orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="140"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="148"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="144"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="152"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="145"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="153"/>
         <source>If you wish to make the fastest trade as possible, be sure to set the correct &lt;b&gt;destination price type&lt;/b&gt;. &lt;b&gt;Buying always uses sell orders.&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="146"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="154"/>
         <source>Due to the fast nature of arbitrage, prices are not based on volume percentile.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="233"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="241"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="233"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="241"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>

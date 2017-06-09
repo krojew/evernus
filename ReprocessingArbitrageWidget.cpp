@@ -85,6 +85,7 @@ namespace Evernus
         toolBarLayout->addWidget(mStationEfficiencyEdit);
         mStationEfficiencyEdit->setRange(0., 100.);
         mStationEfficiencyEdit->setSuffix(locale().percent());
+        mStationEfficiencyEdit->setToolTip(tr("The base yield of the station you are reprocessing in."));
         mStationEfficiencyEdit->setValue(
             settings.value(MarketAnalysisSettings::reprocessingStationEfficiencyKey, MarketAnalysisSettings::reprocessingStationEfficiencyDefault).toDouble()
         );
@@ -99,6 +100,12 @@ namespace Evernus
         toolBarLayout->addWidget(mSellVolumeLimitEdit);
         mSellVolumeLimitEdit->setRange(0, std::numeric_limits<int>::max());
         mSellVolumeLimitEdit->setSuffix(locale().percent());
+        mSellVolumeLimitEdit->setToolTip(tr(
+            "If you wish to sell using sell orders (not recommended due to fast nature of arbitrage and additional taxes), you should specify "
+            "the percentage of current market volume you wish to sell. For example, using 100% means you wish to sell the exact amount of materials "
+            "which is currently on the market. Using higher values will give more total profit, but assumes you can actually sell such amounts. "
+            "Therefore you should set this percentage to a reasonable value, like 10%."
+        ));
         mSellVolumeLimitEdit->setValue(
             settings.value(MarketAnalysisSettings::reprocessingSellVolumeLimitKey, MarketAnalysisSettings::reprocessingSellVolumeLimitDefault).toInt()
         );
@@ -119,6 +126,7 @@ namespace Evernus
 
         mIgnoreMinVolumeBtn = new QCheckBox{tr("Ignore orders with min. volume > 1"), this};
         toolBarLayout->addWidget(mIgnoreMinVolumeBtn);
+        mIgnoreMinVolumeBtn->setToolTip(tr("Ignore orders wich require minimum volume larger than 1."));
         mIgnoreMinVolumeBtn->setChecked(
             settings.value(MarketAnalysisSettings::reprocessingIgnoreMinVolumeKey, MarketAnalysisSettings::reprocessingIgnoreMinVolumeDefault).toBool()
         );

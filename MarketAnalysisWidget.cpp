@@ -103,6 +103,7 @@ namespace Evernus
 
         mIgnoreExistingOrdersBtn = new QCheckBox{tr("Ignore types with existing orders"), this};
         toolBarLayout->addWidget(mIgnoreExistingOrdersBtn);
+        mIgnoreExistingOrdersBtn->setToolTip(tr("Ignore item types wich have active market orders."));
         mIgnoreExistingOrdersBtn->setChecked(
             settings.value(MarketAnalysisSettings::ignoreExistingOrdersKey, MarketAnalysisSettings::ignoreExistingOrdersDefault).toBool());
         connect(mIgnoreExistingOrdersBtn, &QCheckBox::toggled, [](auto checked) {
@@ -115,6 +116,7 @@ namespace Evernus
         auto discardBogusOrdersBtn = new QCheckBox{tr("Discard bogus orders (causes recalculation)"), this};
         toolBarLayout->addWidget(discardBogusOrdersBtn);
         discardBogusOrdersBtn->setChecked(discardBogusOrders);
+        discardBogusOrdersBtn->setToolTip(tr("Use heuristics based on average price to determine if a given order is legit."));
         connect(discardBogusOrdersBtn, &QCheckBox::toggled, this, [=](bool checked) {
             QSettings settings;
             settings.setValue(MarketAnalysisSettings::discardBogusOrdersKey, checked);
@@ -138,6 +140,7 @@ namespace Evernus
         auto bogusThresholdEdit = new QLineEdit{bogusThreshold, this};
         toolBarLayout->addWidget(bogusThresholdEdit);
         bogusThresholdEdit->setValidator(thresholdValidator);
+        bogusThresholdEdit->setToolTip(tr("How much a price can deviate from the average price to consider it legit."));
         connect(bogusThresholdEdit, &QLineEdit::textEdited, this, [this](const auto &text) {
             QSettings settings;
             settings.setValue(MarketAnalysisSettings::bogusOrderThresholdKey, text);
@@ -171,9 +174,11 @@ namespace Evernus
         mSrcPriceTypeCombo->blockSignals(true);
         mSrcPriceTypeCombo->setCurrentIndex(1);
         mSrcPriceTypeCombo->blockSignals(false);
+        mSrcPriceTypeCombo->setToolTip(tr("Type of orders used for buing items."));
 
         toolBarLayout->addWidget(new QLabel{tr("Destination price:"), this});
         createPriceTypeCombo(mDstPriceTypeCombo);
+        mDstPriceTypeCombo->setToolTip(tr("Type of orders used for selling items."));
 
         auto skillsDiffBtn = new QCheckBox{tr("Use skills and taxes for difference calculation (causes recalculation)"), this};
         toolBarLayout->addWidget(skillsDiffBtn);
