@@ -16,6 +16,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QJsonArray>
 #include <QUrlQuery>
 #include <QDebug>
@@ -243,11 +244,23 @@ namespace Evernus
                 else
                 {
                     if (error == QNetworkReply::ContentOperationNotPermittedError && suppressForbidden)
+                    {
                         continuation(QJsonDocument{}, QString{});
+                    }
                     else if (retries > 0)
+                    {
                         asyncGet(charId, url, query, continuation, retries - 1, suppressForbidden);
+                    }
                     else
-                        continuation(QJsonDocument{}, reply->errorString());
+                    {
+                        // try to get ESI error
+                        const auto errorDoc = QJsonDocument::fromJson(reply->readAll());
+                        auto errorString = errorDoc.object().value("error").toString();
+                        if (errorString.isEmpty())
+                            errorString = reply->errorString();
+
+                        continuation(QJsonDocument{}, errorString);
+                    }
                 }
             }
             else
