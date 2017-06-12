@@ -5496,22 +5496,22 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="177"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="178"/>
         <source>Save preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="177"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="178"/>
         <source>Enter preset name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="202"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="203"/>
         <source>Load preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="202"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="203"/>
         <source>Select preset:</source>
         <translation type="unfinished"></translation>
     </message>

@@ -173,8 +173,9 @@ namespace Evernus
 
     void RegionTypeSelectDialog::savePreset()
     {
+        const auto savedPresets = mRegionTypePresetRepo.getAllNames();
         const auto name
-            = QInputDialog::getText(this, tr("Save preset"), tr("Enter preset name:"), QLineEdit::Normal, mLastLoadedPreset);
+            = QInputDialog::getItem(this, tr("Save preset"), tr("Enter preset name:"), savedPresets, savedPresets.indexOf(mLastLoadedPreset));
         if (!name.isEmpty())
         {
             mLastLoadedPreset = name;
