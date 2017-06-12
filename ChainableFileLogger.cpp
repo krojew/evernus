@@ -22,13 +22,13 @@ namespace Evernus
 {
     ChainableFileLogger *ChainableFileLogger::instance = nullptr;
 
-    ChainableFileLogger::ChainableFileLogger(const QString &fileName)
-        : mLogFile{QStringLiteral("%1/%2").arg(QStandardPaths::writableLocation(QStandardPaths::DataLocation)).arg(fileName)}
+    ChainableFileLogger::ChainableFileLogger()
+        : mLogFile{getLogDir() + QStringLiteral("main.log")}
     {
-        QDir{}.mkpath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+        QDir{}.mkpath(getLogDir());
 
         if (!mLogFile.open(QIODevice::WriteOnly | QIODevice::Text))
-            qWarning() << "Error opening log file:" << fileName;
+            qWarning() << "Error opening main.log file at:" << getLogDir();
         else
             mPrevHandler = qInstallMessageHandler(&ChainableFileLogger::handleMessage);
     }
@@ -40,7 +40,7 @@ namespace Evernus
 
     void ChainableFileLogger::initialize()
     {
-        static ChainableFileLogger instance{"main.log"};
+        static ChainableFileLogger instance{};
         ChainableFileLogger::instance = &instance;
     }
 
@@ -52,7 +52,7 @@ namespace Evernus
         const auto log = qFormatLogMessage(type, context, msg);
         if (!log.isEmpty())
         {
-            mStream << log;
+            mStream << log << '\n';
             mStream.flush();
         }
     }
@@ -61,5 +61,10 @@ namespace Evernus
     {
         Q_ASSERT(instance != nullptr);
         instance->writeMessage(type, context, msg);
+    }
+
+    QString ChainableFileLogger::getLogDir()
+    {
+        return QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QStringLiteral("/log/");
     }
 }

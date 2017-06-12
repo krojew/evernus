@@ -15,7 +15,6 @@
 #pragma once
 
 #include <QTextStream>
-#include <QString>
 #include <QFile>
 
 namespace Evernus
@@ -38,11 +37,12 @@ namespace Evernus
         QTextStream mStream{&mLogFile};
         QtMessageHandler mPrevHandler = nullptr;
 
-        explicit ChainableFileLogger(const QString &fileName);
+        ChainableFileLogger();
         ~ChainableFileLogger();
 
         void writeMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 
         static void handleMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+        static QString getLogDir();
     };
 }

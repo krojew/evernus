@@ -43,14 +43,14 @@ int main(int argc, char *argv[])
 {
     try
     {
-        Evernus::ChainableFileLogger::initialize();
-
         QCoreApplication::setApplicationName("Evernus");
         QCoreApplication::setApplicationVersion(version::fullStr());
         QCoreApplication::setOrganizationDomain("evernus.com");
         QCoreApplication::setOrganizationName("evernus.com");
         QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+        Evernus::ChainableFileLogger::initialize();
 
 #ifdef Q_OS_WIN
         const auto serverName = QCoreApplication::applicationName() + ".socket";
