@@ -51,19 +51,21 @@ namespace Evernus
                                                const EveTypeRepository &typeRepo,
                                                const MarketGroupRepository &groupRepo,
                                                const CharacterRepository &characterRepo,
+                                               const RegionTypePresetRepository &regionTypePresetRepo,
                                                QWidget *parent)
-        : QWidget(parent)
-        , MarketDataProvider()
-        , mDataProvider(dataProvider)
-        , mTaskManager(taskManager)
-        , mOrderRepo(orderRepo)
-        , mCorpOrderRepo(corpOrderRepo)
-        , mTypeRepo(typeRepo)
-        , mGroupRepo(groupRepo)
-        , mCharacterRepo(characterRepo)
-        , mOrders(std::make_shared<MarketAnalysisDataFetcher::OrderResultType::element_type>())
-        , mHistory(std::make_shared<MarketAnalysisDataFetcher::HistoryResultType::element_type>())
-        , mDataFetcher(clientId, clientSecret, mDataProvider, mCharacterRepo)
+        : QWidget{parent}
+        , MarketDataProvider{}
+        , mDataProvider{dataProvider}
+        , mTaskManager{taskManager}
+        , mOrderRepo{orderRepo}
+        , mCorpOrderRepo{corpOrderRepo}
+        , mTypeRepo{typeRepo}
+        , mGroupRepo{groupRepo}
+        , mCharacterRepo{characterRepo}
+        , mRegionTypePresetRepo{regionTypePresetRepo}
+        , mOrders{std::make_shared<MarketAnalysisDataFetcher::OrderResultType::element_type>()}
+        , mHistory{std::make_shared<MarketAnalysisDataFetcher::HistoryResultType::element_type>()}
+        , mDataFetcher{clientId, clientSecret, mDataProvider, mCharacterRepo}
     {
         connect(&mDataFetcher, &MarketAnalysisDataFetcher::orderStatusUpdated,
                 this, &MarketAnalysisWidget::updateOrderTask);
@@ -266,7 +268,7 @@ namespace Evernus
 
     void MarketAnalysisWidget::prepareOrderImport()
     {
-        RegionTypeSelectDialog dlg{mDataProvider, mTypeRepo, mGroupRepo, this};
+        RegionTypeSelectDialog dlg{mDataProvider, mTypeRepo, mGroupRepo, mRegionTypePresetRepo, this};
         connect(&dlg, &RegionTypeSelectDialog::selected, this, &MarketAnalysisWidget::importData);
 
         dlg.exec();

@@ -14,6 +14,7 @@
  */
 #include <QRegularExpression>
 #include <QDialogButtonBox>
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -24,6 +25,8 @@
 #include <QTreeView>
 #include <QSettings>
 
+#include "RegionTypePresetRepository.h"
+#include "RegionTypePreset.h"
 #include "EveDataProvider.h"
 
 #include "RegionTypeSelectDialog.h"
@@ -36,9 +39,11 @@ namespace Evernus
     RegionTypeSelectDialog::RegionTypeSelectDialog(const EveDataProvider &dataProvider,
                                                    const EveTypeRepository &typeRepo,
                                                    const MarketGroupRepository &groupRepo,
+                                                   const RegionTypePresetRepository &regionTypePresetRepo,
                                                    QWidget *parent)
-        : QDialog(parent)
-        , mTypeModel(typeRepo, groupRepo)
+        : QDialog{parent}
+        , mRegionTypePresetRepo{regionTypePresetRepo}
+        , mTypeModel{typeRepo, groupRepo}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -112,6 +117,17 @@ namespace Evernus
         mTypeView->setHeaderHidden(true);
         mTypeView->setModel(&mTypeProxy);
 
+        const auto presetLayout = new QHBoxLayout{};
+        mainLayout->addLayout(presetLayout);
+
+        const auto savePresetBtn = new QPushButton{tr("Save preset..."), this};
+        presetLayout->addWidget(savePresetBtn);
+        connect(savePresetBtn, &QPushButton::clicked, this, &RegionTypeSelectDialog::savePreset);
+
+        const auto loadPresetBtn = new QPushButton{tr("Load preset..."), this};
+        presetLayout->addWidget(loadPresetBtn);
+        connect(loadPresetBtn, &QPushButton::clicked, this, &RegionTypeSelectDialog::loadPreset);
+
         auto buttonBox = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel};
         mainLayout->addWidget(buttonBox);
         connect(buttonBox, &QDialogButtonBox::accepted, this, &RegionTypeSelectDialog::accept);
@@ -153,5 +169,63 @@ namespace Evernus
 
         emit selected(result);
         QDialog::accept();
+    }
+
+    void RegionTypeSelectDialog::savePreset()
+    {
+        const auto name
+            = QInputDialog::getText(this, tr("Save preset"), tr("Enter preset name:"), QLineEdit::Normal, mLastLoadedPreset);
+        if (!name.isEmpty())
+        {
+            mLastLoadedPreset = name;
+
+            const auto selectedRegions = mRegionList->selectedItems();
+            RegionTypePreset::RegionSet regions;
+
+            for (const auto region : selectedRegions)
+            {
+                const auto regionId = region->data(Qt::UserRole).value<ExternalOrderImporter::TypeLocationPair::second_type>();
+                regions.emplace(regionId);
+            }
+
+            RegionTypePreset preset{name};
+            preset.setTypes(mTypeModel.getSelectedTypes());
+            preset.setRegions(std::move(regions));
+
+            mRegionTypePresetRepo.store(preset);
+        }
+    }
+
+    void RegionTypeSelectDialog::loadPreset()
+    {
+        const auto name
+            = QInputDialog::getItem(this, tr("Load preset"), tr("Select preset:"), mRegionTypePresetRepo.getAllNames(), 0, false);
+        if (!name.isEmpty())
+        {
+            try
+            {
+                const auto preset = mRegionTypePresetRepo.find(name);
+                Q_ASSERT(preset);
+
+                const auto regions = preset->getRegions();
+
+                const auto numItems = mRegionList->count();
+                for (auto i = 0; i < numItems; ++i)
+                {
+                    const auto item = mRegionList->item(i);
+                    Q_ASSERT(item != nullptr);
+
+                    const auto regionId = item->data(Qt::UserRole).value<ExternalOrderImporter::TypeLocationPair::second_type>();
+                    item->setSelected(regions.find(regionId) != std::end(regions));
+                }
+
+                mTypeModel.selectTypes(preset->getTypes());
+
+                mLastLoadedPreset = name;
+            }
+            catch (const RegionTypePresetRepository::NotFoundException &)
+            {
+            }
+        }
     }
 }

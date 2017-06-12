@@ -960,6 +960,7 @@ namespace Evernus
                                                           mRepositoryProvider.getEveTypeRepository(),
                                                           mRepositoryProvider.getMarketGroupRepository(),
                                                           mRepositoryProvider.getCharacterRepository(),
+                                                          mRepositoryProvider.getRegionTypePresetRepository(),
                                                           this};
         connect(marketAnalysisTab, &MarketAnalysisWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
         connect(marketAnalysisTab, &MarketAnalysisWidget::showInEve, this, &MainWindow::showInEve);

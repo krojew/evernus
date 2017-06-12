@@ -25,6 +25,7 @@ namespace Evernus
     class CorpWalletSnapshotRepository;
     class WalletTransactionRepository;
     class LocationBookmarkRepository;
+    class RegionTypePresetRepository;
     class WalletSnapshotRepository;
     class ExternalOrderRepository;
     class FavoriteItemRepository;
@@ -75,5 +76,6 @@ namespace Evernus
         virtual const UpdateTimerRepository &getUpdateTimerRepository() const noexcept = 0;
         virtual const ItemRepository &getItemRepository() const noexcept = 0;
         virtual const CitadelRepository &getCitadelRepository() const noexcept = 0;
+        virtual const RegionTypePresetRepository &getRegionTypePresetRepository() const noexcept = 0;
     };
 }

@@ -25,6 +25,7 @@ class QTreeView;
 
 namespace Evernus
 {
+    class RegionTypePresetRepository;
     class EveDataProvider;
 
     class RegionTypeSelectDialog
@@ -38,6 +39,7 @@ namespace Evernus
         RegionTypeSelectDialog(const EveDataProvider &dataProvider,
                                const EveTypeRepository &typeRepo,
                                const MarketGroupRepository &groupRepo,
+                               const RegionTypePresetRepository &regionTypePresetRepo,
                                QWidget *parent = nullptr);
         virtual ~RegionTypeSelectDialog() = default;
 
@@ -47,13 +49,21 @@ namespace Evernus
     public slots:
         virtual void accept() override;
 
+    private slots:
+        void savePreset();
+        void loadPreset();
+
     private:
         static const QString settingsRegionsKey;
+
+        const RegionTypePresetRepository &mRegionTypePresetRepo;
 
         QListWidget *mRegionList = nullptr;
         QTreeView *mTypeView = nullptr;
 
         TradeableTypesTreeModel mTypeModel;
         QSortFilterProxyModel mTypeProxy;
+
+        QString mLastLoadedPreset;
     };
 }
