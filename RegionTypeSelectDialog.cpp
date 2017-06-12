@@ -185,7 +185,7 @@ namespace Evernus
 
             for (const auto region : selectedRegions)
             {
-                const auto regionId = region->data(Qt::UserRole).value<ExternalOrderImporter::TypeLocationPair::second_type>();
+                const auto regionId = region->data(Qt::UserRole).value<RegionTypePreset::RegionSet::key_type>();
                 regions.emplace(regionId);
             }
 
