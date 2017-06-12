@@ -166,6 +166,8 @@ add_executable(
     CalculatingDataWidget.h
     CallbackExternalOrderImporter.cpp
     CallbackExternalOrderImporter.h
+    ChainableFileLogger.cpp
+    ChainableFileLogger.h
     Character.cpp
     Character.h
     CharacterBoundWidget.cpp

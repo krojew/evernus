@@ -6878,44 +6878,44 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="65"/>
-        <location filename="../main.cpp" line="80"/>
+        <location filename="../main.cpp" line="68"/>
+        <location filename="../main.cpp" line="83"/>
         <source>Already running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="65"/>
+        <location filename="../main.cpp" line="68"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="80"/>
+        <location filename="../main.cpp" line="83"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="89"/>
-        <location filename="../main.cpp" line="277"/>
+        <location filename="../main.cpp" line="92"/>
+        <location filename="../main.cpp" line="280"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="90"/>
+        <location filename="../main.cpp" line="93"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="264"/>
+        <location filename="../main.cpp" line="267"/>
         <source>New version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="265"/>
+        <location filename="../main.cpp" line="268"/>
         <source>Would you like to see what&apos;s new in this version?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="286"/>
+        <location filename="../main.cpp" line="289"/>
         <source>Initialization error</source>
         <translation type="unfinished"></translation>
     </message>

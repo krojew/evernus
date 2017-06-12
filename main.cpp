@@ -32,6 +32,7 @@
 #include "MarketAnalysisDataFetcher.h"
 #include "ContractFilterProxyModel.h"
 #include "MarketOrderRepository.h"
+#include "ChainableFileLogger.h"
 #include "ExternalOrderModel.h"
 #include "EvernusApplication.h"
 #include "UpdaterSettings.h"
@@ -42,6 +43,8 @@ int main(int argc, char *argv[])
 {
     try
     {
+        Evernus::ChainableFileLogger::initialize();
+
         QCoreApplication::setApplicationName("Evernus");
         QCoreApplication::setApplicationVersion(version::fullStr());
         QCoreApplication::setOrganizationDomain("evernus.com");
