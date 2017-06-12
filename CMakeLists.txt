@@ -594,6 +594,10 @@ add_executable(
     RegionAnalysisWidget.h
     RegionComboBox.cpp
     RegionComboBox.h
+    RegionTypePreset.cpp
+    RegionTypePreset.h
+    RegionTypePresetRepository.cpp
+    RegionTypePresetRepository.h
     RegionTypeSelectDialog.cpp
     RegionTypeSelectDialog.h
     ReplyTimeout.cpp

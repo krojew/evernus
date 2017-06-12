@@ -1843,242 +1843,242 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="785"/>
+        <location filename="../EvernusApplication.cpp" line="790"/>
         <source>Fetching characters...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="798"/>
+        <location filename="../EvernusApplication.cpp" line="803"/>
         <source>Fetching characters for key %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="811"/>
-        <location filename="../EvernusApplication.cpp" line="817"/>
-        <location filename="../EvernusApplication.cpp" line="2453"/>
-        <location filename="../EvernusApplication.cpp" line="2491"/>
+        <location filename="../EvernusApplication.cpp" line="816"/>
+        <location filename="../EvernusApplication.cpp" line="822"/>
+        <location filename="../EvernusApplication.cpp" line="2460"/>
+        <location filename="../EvernusApplication.cpp" line="2498"/>
         <source>Evernus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="811"/>
+        <location filename="../EvernusApplication.cpp" line="816"/>
         <source>An error occurred while updating character key information: %1. Data sync should work, but character tab will display incorrect information.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="817"/>
+        <location filename="../EvernusApplication.cpp" line="822"/>
         <source>An error occurred while updating character key information. Data sync should work, but character tab will display incorrect information.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="866"/>
+        <location filename="../EvernusApplication.cpp" line="871"/>
         <source>Fetching assets for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="905"/>
-        <location filename="../EvernusApplication.cpp" line="969"/>
-        <location filename="../EvernusApplication.cpp" line="1035"/>
-        <location filename="../EvernusApplication.cpp" line="1094"/>
-        <location filename="../EvernusApplication.cpp" line="1119"/>
-        <location filename="../EvernusApplication.cpp" line="1181"/>
-        <location filename="../EvernusApplication.cpp" line="1240"/>
-        <location filename="../EvernusApplication.cpp" line="1311"/>
-        <location filename="../EvernusApplication.cpp" line="1374"/>
-        <location filename="../EvernusApplication.cpp" line="1399"/>
+        <location filename="../EvernusApplication.cpp" line="910"/>
+        <location filename="../EvernusApplication.cpp" line="974"/>
+        <location filename="../EvernusApplication.cpp" line="1040"/>
+        <location filename="../EvernusApplication.cpp" line="1099"/>
+        <location filename="../EvernusApplication.cpp" line="1124"/>
+        <location filename="../EvernusApplication.cpp" line="1186"/>
+        <location filename="../EvernusApplication.cpp" line="1245"/>
+        <location filename="../EvernusApplication.cpp" line="1316"/>
+        <location filename="../EvernusApplication.cpp" line="1379"/>
+        <location filename="../EvernusApplication.cpp" line="1404"/>
         <source>Key not found!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="909"/>
-        <location filename="../EvernusApplication.cpp" line="973"/>
-        <location filename="../EvernusApplication.cpp" line="1039"/>
-        <location filename="../EvernusApplication.cpp" line="1098"/>
-        <location filename="../EvernusApplication.cpp" line="1123"/>
-        <location filename="../EvernusApplication.cpp" line="1185"/>
-        <location filename="../EvernusApplication.cpp" line="1315"/>
-        <location filename="../EvernusApplication.cpp" line="1378"/>
+        <location filename="../EvernusApplication.cpp" line="914"/>
+        <location filename="../EvernusApplication.cpp" line="978"/>
+        <location filename="../EvernusApplication.cpp" line="1044"/>
+        <location filename="../EvernusApplication.cpp" line="1103"/>
+        <location filename="../EvernusApplication.cpp" line="1128"/>
+        <location filename="../EvernusApplication.cpp" line="1190"/>
+        <location filename="../EvernusApplication.cpp" line="1320"/>
+        <location filename="../EvernusApplication.cpp" line="1383"/>
         <source>Character not found!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="917"/>
+        <location filename="../EvernusApplication.cpp" line="922"/>
         <source>Fetching contracts for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="981"/>
+        <location filename="../EvernusApplication.cpp" line="986"/>
         <source>Fetching wallet journal for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="990"/>
+        <location filename="../EvernusApplication.cpp" line="995"/>
         <source>Fetching wallet journal for character %1 (this may take a while)...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1047"/>
+        <location filename="../EvernusApplication.cpp" line="1052"/>
         <source>Fetching wallet transactions for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1059"/>
+        <location filename="../EvernusApplication.cpp" line="1064"/>
         <source>Fetching wallet transactions for character %1 (this may take a while)...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1106"/>
-        <location filename="../EvernusApplication.cpp" line="1131"/>
+        <location filename="../EvernusApplication.cpp" line="1111"/>
+        <location filename="../EvernusApplication.cpp" line="1136"/>
         <source>Fetching market orders for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1143"/>
+        <location filename="../EvernusApplication.cpp" line="1148"/>
         <source>Fetching corporation assets for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1193"/>
+        <location filename="../EvernusApplication.cpp" line="1198"/>
         <source>Fetching corporation contracts for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1248"/>
+        <location filename="../EvernusApplication.cpp" line="1253"/>
         <source>Fetching corporation wallet journal for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1260"/>
+        <location filename="../EvernusApplication.cpp" line="1265"/>
         <source>Fetching corporation wallet journal for character %1 (this may take a while)...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1323"/>
+        <location filename="../EvernusApplication.cpp" line="1328"/>
         <source>Fetching corporation wallet transactions for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1336"/>
+        <location filename="../EvernusApplication.cpp" line="1341"/>
         <source>Fetching corporation wallet transactions for character %1 (this may take a while)...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1386"/>
-        <location filename="../EvernusApplication.cpp" line="1407"/>
+        <location filename="../EvernusApplication.cpp" line="1391"/>
+        <location filename="../EvernusApplication.cpp" line="1412"/>
         <source>Fetching corporation market orders for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1419"/>
+        <location filename="../EvernusApplication.cpp" line="1424"/>
         <source>Fetching conquerable stations...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1441"/>
+        <location filename="../EvernusApplication.cpp" line="1446"/>
         <source>Fetching citadels...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1505"/>
+        <location filename="../EvernusApplication.cpp" line="1510"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1557"/>
+        <location filename="../EvernusApplication.cpp" line="1562"/>
         <source>Select Mentat directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1567"/>
+        <location filename="../EvernusApplication.cpp" line="1572"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1567"/>
+        <location filename="../EvernusApplication.cpp" line="1572"/>
         <source>Error opening %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1571"/>
+        <location filename="../EvernusApplication.cpp" line="1576"/>
         <source>Importing order history...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1617"/>
+        <location filename="../EvernusApplication.cpp" line="1622"/>
         <source>Importing order history: %1 processed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1622"/>
+        <location filename="../EvernusApplication.cpp" line="1627"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1643"/>
+        <location filename="../EvernusApplication.cpp" line="1648"/>
         <source>Synchronizing with LMeve...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1797"/>
+        <location filename="../EvernusApplication.cpp" line="1802"/>
         <source>SMTP Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1797"/>
-        <location filename="../EvernusApplication.cpp" line="1805"/>
+        <location filename="../EvernusApplication.cpp" line="1802"/>
+        <location filename="../EvernusApplication.cpp" line="1810"/>
         <source>Error sending email: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1805"/>
+        <location filename="../EvernusApplication.cpp" line="1810"/>
         <source>Mail Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2131"/>
+        <location filename="../EvernusApplication.cpp" line="2138"/>
         <source>Importing item prices...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2142"/>
+        <location filename="../EvernusApplication.cpp" line="2149"/>
         <source>Cannot determine market logs path!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2156"/>
+        <location filename="../EvernusApplication.cpp" line="2163"/>
         <source>No market logs found!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2167"/>
+        <location filename="../EvernusApplication.cpp" line="2174"/>
         <source>Could not open market log file!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2454"/>
+        <location filename="../EvernusApplication.cpp" line="2461"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2458"/>
+        <location filename="../EvernusApplication.cpp" line="2465"/>
         <source>The following orders have changed their status:
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2461"/>
+        <location filename="../EvernusApplication.cpp" line="2468"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2491"/>
+        <location filename="../EvernusApplication.cpp" line="2498"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2823"/>
+        <location filename="../EvernusApplication.cpp" line="2830"/>
         <source>Fetching character %1...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3165,7 +3165,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::Key</name>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2745"/>
+        <location filename="../EvernusApplication.cpp" line="2752"/>
         <source>Fetching contract items for contract %1...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3594,17 +3594,17 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="967"/>
+        <location filename="../MainWindow.cpp" line="968"/>
         <source>Market analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="988"/>
+        <location filename="../MainWindow.cpp" line="989"/>
         <source>Toggle character tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="994"/>
+        <location filename="../MainWindow.cpp" line="995"/>
         <source>Toggle corporation tabs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3627,127 +3627,127 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::MarketAnalysisWidget</name>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="88"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="90"/>
         <source>Import data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="95"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="97"/>
         <source>Don&apos;t save imported orders (huge performance gain)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="104"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="106"/>
         <source>Ignore types with existing orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="106"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="108"/>
         <source>Ignore item types wich have active market orders.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="116"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="118"/>
         <source>Discard bogus orders (causes recalculation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="119"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="121"/>
         <source>Use heuristics based on average price to determine if a given order is legit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="131"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="133"/>
         <source>Bogus order threshold:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="143"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="145"/>
         <source>How much a price can deviate from the average price to consider it legit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="157"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="159"/>
         <source>Sell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="158"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="160"/>
         <source>Buy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="172"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="174"/>
         <source>Source price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="177"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="179"/>
         <source>Type of orders used for buing items.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="179"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="181"/>
         <source>Destination price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="181"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="183"/>
         <source>Type of orders used for selling items.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="183"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="185"/>
         <source>Use skills and taxes for difference calculation (causes recalculation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="228"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="230"/>
         <source>Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="229"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="231"/>
         <source>Inter-Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="230"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="232"/>
         <source>Importing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="231"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="233"/>
         <source>Ore reprocessing arbitrage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="232"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="234"/>
         <source>Scrapmetal reprocessing arbitrage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="291"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="293"/>
         <source>Importing data for analysis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="293"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="295"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="294"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="296"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="297"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="299"/>
         <source>Making %1 ESI history requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="352"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="354"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5448,43 +5448,73 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::RegionTypeSelectDialog</name>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="48"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="53"/>
         <source>Regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="73"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="78"/>
         <source>Select all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="77"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="82"/>
         <source>Deselect all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="81"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="86"/>
         <source>Select without wormholes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="94"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="99"/>
         <source>Types</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="120"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="123"/>
+        <source>Save preset...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionTypeSelectDialog.cpp" line="127"/>
+        <source>Load preset...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionTypeSelectDialog.cpp" line="136"/>
         <source>Select regions and types</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="146"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="162"/>
         <source>Order import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="146"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="162"/>
         <source>Please select at least one region and type.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionTypeSelectDialog.cpp" line="177"/>
+        <source>Save preset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionTypeSelectDialog.cpp" line="177"/>
+        <source>Enter preset name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionTypeSelectDialog.cpp" line="202"/>
+        <source>Load preset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionTypeSelectDialog.cpp" line="202"/>
+        <source>Select preset:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

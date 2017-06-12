@@ -36,6 +36,7 @@
 #include "WalletTransactionRepository.h"
 #include "CachingMarketOrderProvider.h"
 #include "LocationBookmarkRepository.h"
+#include "RegionTypePresetRepository.h"
 #include "WalletSnapshotRepository.h"
 #include "ExternalOrderRepository.h"
 #include "CachingContractProvider.h"
@@ -141,6 +142,7 @@ namespace Evernus
         virtual const UpdateTimerRepository &getUpdateTimerRepository() const noexcept override;
         virtual const ItemRepository &getItemRepository() const noexcept override;
         virtual const CitadelRepository &getCitadelRepository() const noexcept override;
+        virtual const RegionTypePresetRepository &getRegionTypePresetRepository() const noexcept override;
 
         virtual std::vector<std::shared_ptr<LMeveTask>> getTasks(Character::IdType characterId) const override;
 
@@ -289,6 +291,7 @@ namespace Evernus
         std::unique_ptr<MarketGroupRepository> mMarketGroupRepository;
         std::unique_ptr<MetaGroupRepository> mMetaGroupRepository;
         std::unique_ptr<CitadelRepository> mCitadelRepository;
+        std::unique_ptr<RegionTypePresetRepository> mRegionTypePresetRepository;
 
         APIManager mAPIManager;
         LMeveAPIManager mLMeveAPIManager;

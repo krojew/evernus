@@ -682,6 +682,11 @@ namespace Evernus
         return *mCitadelRepository;
     }
 
+    const RegionTypePresetRepository &EvernusApplication::getRegionTypePresetRepository() const noexcept
+    {
+        return *mRegionTypePresetRepository;
+    }
+
     std::vector<std::shared_ptr<LMeveTask>> EvernusApplication::getTasks(Character::IdType characterId) const
     {
         const auto it = mLMeveTaskCache.find(characterId);
@@ -1895,6 +1900,7 @@ namespace Evernus
         mMarketGroupRepository.reset(new MarketGroupRepository{mEveDb});
         mMetaGroupRepository.reset(new MetaGroupRepository{mEveDb});
         mCitadelRepository.reset(new CitadelRepository{mMainDb});
+        mRegionTypePresetRepository.reset(new RegionTypePresetRepository{mMainDb});
     }
 
     void EvernusApplication::createDbSchema()
@@ -1934,6 +1940,7 @@ namespace Evernus
         mLMeveTaskRepository->create(*mCharacterRepository);
         mRefTypeRepository->create();
         mCitadelRepository->create();
+        mRegionTypePresetRepository->create();
     }
 
     void EvernusApplication::precacheCacheTimers()
