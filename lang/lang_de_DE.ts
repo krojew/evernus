@@ -2583,119 +2583,129 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ImportPreferencesWidget</name>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="44"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="45"/>
         <source>Ignore up-to-date data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="48"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="49"/>
         <source>Import data for all characters with one click</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="52"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="53"/>
         <source>Data age</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="58"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="59"/>
         <source>Max. character update age:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="61"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="62"/>
         <source>Max. asset list update age:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="64"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="65"/>
         <source>Max. wallet update age:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="67"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="68"/>
         <source>Max. market orders update age:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="70"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="71"/>
         <source>Max. contracts update age:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="72"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="73"/>
         <source>Auto-import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="77"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="78"/>
         <source>Enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="82"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="83"/>
         <source>Auto-import time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="85"/>
-        <location filename="../ImportPreferencesWidget.cpp" line="153"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="86"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="165"/>
         <source>min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="88"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="89"/>
         <source>Enable email notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="94"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="95"/>
         <source>Destination address:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="100"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="101"/>
         <source>SMTP security:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="101"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="102"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="102"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="103"/>
         <source>STARTTLS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="103"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="104"/>
         <source>SSL/TLS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="106"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="107"/>
         <source>SMTP host:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="109"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="110"/>
         <source>SMTP port:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="115"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="116"/>
         <source>SMTP user:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="118"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="119"/>
         <source>SMTP password:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="121"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="122"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportPreferencesWidget.cpp" line="138"/>
+        <source>Email notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportPreferencesWidget.cpp" line="138"/>
+        <source>Email notifications will be disabled since destination address or SMTP host is empty.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5543,7 +5553,7 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="88"/>
-        <source>This is the base yield of the station you are reprocessing in.</source>
+        <source>The base yield of the station you are reprocessing in.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
