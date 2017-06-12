@@ -243,9 +243,12 @@ namespace Evernus
                 }
                 else
                 {
-                    if (error == QNetworkReply::ContentOperationNotPermittedError && suppressForbidden)
+                    if (error == QNetworkReply::ContentOperationNotPermittedError || error == QNetworkReply::ContentAccessDenied)
                     {
-                        continuation(QJsonDocument{}, QString{});
+                        if (suppressForbidden)
+                            continuation(QJsonDocument{}, QString{});
+                        else
+                            continuation(QJsonDocument{}, reply->errorString());
                     }
                     else if (retries > 0)
                     {
