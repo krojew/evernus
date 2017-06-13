@@ -52,6 +52,8 @@ namespace Evernus
         const auto log = qFormatLogMessage(type, context, msg);
         if (!log.isEmpty())
         {
+            std::lock_guard<std::mutex> lock{mStreamMutex};
+
             mStream << log << '\n';
             mStream.flush();
         }

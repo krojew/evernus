@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <mutex>
+
 #include <QTextStream>
 #include <QFile>
 
@@ -36,6 +38,8 @@ namespace Evernus
         QFile mLogFile;
         QTextStream mStream{&mLogFile};
         QtMessageHandler mPrevHandler = nullptr;
+
+        std::mutex mStreamMutex;
 
         ChainableFileLogger();
         ~ChainableFileLogger();
