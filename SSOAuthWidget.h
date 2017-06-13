@@ -24,13 +24,13 @@ class QLineEdit;
 
 namespace Evernus
 {
-    class SOOAuthWidget
+    class SSOAuthWidget
         : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit SOOAuthWidget(const QUrl &url, QWidget *parent = nullptr);
+        explicit SSOAuthWidget(const QUrl &url, QWidget *parent = nullptr);
 
         QWebEnginePage *page() const;
 

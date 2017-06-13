@@ -249,7 +249,7 @@ namespace Evernus
 
                 url.setQuery(query);
 
-                mAuthView = std::make_unique<SOOAuthWidget>(url);
+                mAuthView = std::make_unique<SSOAuthWidget>(url);
 
                 mAuthView->setWindowModality(Qt::ApplicationModal);
                 mAuthView->setWindowTitle(tr("SSO Authentication for character: %1").arg(mCharacterRepo.getName(charId)));
@@ -259,7 +259,7 @@ namespace Evernus
                                 mAuthView->rect().center());
                 mAuthView->show();
 
-                connect(mAuthView.get(), &SOOAuthWidget::acquiredCode, this, [=](const auto &code) {
+                connect(mAuthView.get(), &SSOAuthWidget::acquiredCode, this, [=](const auto &code) {
                     processAuthorizationCode(charId, code);
                 });
                 connect(mAuthView->page(), &QWebEnginePage::urlChanged, this, [=](const QUrl &url) {

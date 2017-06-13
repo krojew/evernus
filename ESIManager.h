@@ -115,7 +115,7 @@ namespace Evernus
 
         QNetworkAccessManager mNetworkManager;
 
-        std::unique_ptr<SOOAuthWidget> mAuthView;
+        std::unique_ptr<SSOAuthWidget> mAuthView;
 
         void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
 

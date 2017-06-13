@@ -5650,7 +5650,7 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
 </context>
 <context>
-    <name>Evernus::SOOAuthWidget</name>
+    <name>Evernus::SSOAuthWidget</name>
     <message>
         <location filename="../SSOAuthWidget.cpp" line="42"/>
         <source>Toggle external browser</source>

@@ -26,7 +26,7 @@
 
 namespace Evernus
 {
-    SOOAuthWidget::SOOAuthWidget(const QUrl &url, QWidget *parent)
+    SSOAuthWidget::SSOAuthWidget(const QUrl &url, QWidget *parent)
         : QWidget(parent)
         , mAuthUrl(url)
     {
@@ -79,15 +79,15 @@ namespace Evernus
 
         auto authBtn = new QPushButton{tr("Authorize"), this};
         codeLayout->addWidget(authBtn);
-        connect(authBtn, &QPushButton::clicked, this, &SOOAuthWidget::applyCode);
+        connect(authBtn, &QPushButton::clicked, this, &SSOAuthWidget::applyCode);
     }
 
-    QWebEnginePage *SOOAuthWidget::page() const
+    QWebEnginePage *SSOAuthWidget::page() const
     {
         return mView->page();
     }
 
-    void SOOAuthWidget::applyCode()
+    void SSOAuthWidget::applyCode()
     {
         const auto code = mCodeEdit->text().toLatin1();
         if (code.isEmpty())
