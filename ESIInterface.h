@@ -112,5 +112,7 @@ namespace Evernus
         QNetworkRequest prepareRequest(Character::IdType charId, const QString &url, const QString &query) const;
 
         uint getNumRetries() const;
+
+        static QString getError(const QString &url, QNetworkReply &reply);
     };
 }

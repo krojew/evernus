@@ -203,7 +203,7 @@ namespace Evernus
                 if (retries > 0)
                     asyncGet(url, query, continuation, retries - 1);
                 else
-                    continuation(QJsonDocument{}, reply->errorString());
+                    continuation(QJsonDocument{}, getError(url, *reply));
             }
             else
             {
@@ -248,7 +248,7 @@ namespace Evernus
                         if (suppressForbidden)
                             continuation(QJsonDocument{}, QString{});
                         else
-                            continuation(QJsonDocument{}, reply->errorString());
+                            continuation(QJsonDocument{}, getError(url, *reply));
                     }
                     else if (retries > 0)
                     {
@@ -256,13 +256,7 @@ namespace Evernus
                     }
                     else
                     {
-                        // try to get ESI error
-                        const auto errorDoc = QJsonDocument::fromJson(reply->readAll());
-                        auto errorString = errorDoc.object().value("error").toString();
-                        if (errorString.isEmpty())
-                            errorString = reply->errorString();
-
-                        continuation(QJsonDocument{}, errorString);
+                        continuation(QJsonDocument{}, getError(url, *reply));
                     }
                 }
             }
@@ -305,7 +299,7 @@ namespace Evernus
                 }
                 else
                 {
-                    errorCallback(reply->errorString());
+                    errorCallback(getError(url, *reply));
                 }
             }
             else
@@ -355,5 +349,18 @@ namespace Evernus
     uint ESIInterface::getNumRetries() const
     {
         return mSettings.value(NetworkSettings::maxRetriesKey, NetworkSettings::maxRetriesDefault).toUInt();
+    }
+
+    QString ESIInterface::getError(const QString &url, QNetworkReply &reply)
+    {
+        // try to get ESI error
+        const auto errorDoc = QJsonDocument::fromJson(reply.readAll());
+        auto errorString = errorDoc.object().value("error").toString();
+        if (errorString.isEmpty())
+            errorString = reply.errorString();
+        else
+            errorString = QStringLiteral("%1: %2").arg(url).arg(errorString);
+
+        return errorString;
     }
 }
