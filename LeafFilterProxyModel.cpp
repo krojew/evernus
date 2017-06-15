@@ -36,13 +36,13 @@ namespace Evernus
     bool LeafFilterProxyModel::hasAcceptedChildren(int sourceRow, const QModelIndex &sourceParent) const
     {
         const auto item = sourceModel()->index(sourceRow, 0, sourceParent);
-        if (!item.isValid())
+        if (!item.isValid() || !item.model()->hasChildren(item))
             return false;
 
         const auto childCount = item.model()->rowCount(item);
         for (auto i = 0; i < childCount; ++i)
         {
-            if (filterAcceptsRow(i, item))
+            if (filterAcceptsRowItself(i, item))
                 return true;
 
             if (hasAcceptedChildren(i, item))

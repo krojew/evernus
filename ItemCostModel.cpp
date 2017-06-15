@@ -86,7 +86,7 @@ namespace Evernus
 
     int ItemCostModel::rowCount(const QModelIndex &parent) const
     {
-        return static_cast<int>(mData.size());
+        return (parent.isValid()) ? (0) : (static_cast<int>(mData.size()));
     }
 
     void ItemCostModel::setCharacter(Character::IdType id)

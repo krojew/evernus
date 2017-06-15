@@ -144,8 +144,7 @@ namespace Evernus
 
     int OreReprocessingArbitrageModel::rowCount(const QModelIndex &parent) const
     {
-        Q_UNUSED(parent);
-        return static_cast<int>(mData.size());
+        return (parent.isValid()) ? (0) : (static_cast<int>(mData.size()));
     }
 
     EveType::IdType OreReprocessingArbitrageModel::getTypeId(const QModelIndex &index) const

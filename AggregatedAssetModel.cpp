@@ -103,8 +103,7 @@ namespace Evernus
 
     int AggregatedAssetModel::rowCount(const QModelIndex &parent) const
     {
-        Q_UNUSED(parent);
-        return static_cast<int>(mData.size());
+        return (parent.isValid()) ? (0) : (static_cast<int>(mData.size()));
     }
 
     void AggregatedAssetModel::setCharacter(Character::IdType id)

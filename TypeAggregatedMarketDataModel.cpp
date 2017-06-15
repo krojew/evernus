@@ -138,7 +138,7 @@ namespace Evernus
 
     int TypeAggregatedMarketDataModel::rowCount(const QModelIndex &parent) const
     {
-        return static_cast<int>(mData.size());
+        return (parent.isValid()) ? (0) : (static_cast<int>(mData.size()));
     }
 
     void TypeAggregatedMarketDataModel

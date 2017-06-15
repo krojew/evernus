@@ -163,8 +163,7 @@ namespace Evernus
 
     int InterRegionMarketDataModel::rowCount(const QModelIndex &parent) const
     {
-        Q_UNUSED(parent);
-        return static_cast<int>(mData.size());
+        return (parent.isValid()) ? (0) : (static_cast<int>(mData.size()));
     }
 
     void InterRegionMarketDataModel::setOrderData(const std::vector<ExternalOrder> &orders,
