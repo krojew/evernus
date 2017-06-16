@@ -86,7 +86,7 @@ namespace Evernus
         toolBarLayout->addWidget(mAnalysisDaysEdit);
         mAnalysisDaysEdit->setRange(1, 365);
         mAnalysisDaysEdit->setSuffix(tr(" days"));
-        mAnalysisDaysEdit->setToolTip(tr("The number of days going back from today, to use for analysis. If the destiantion has been in use for shorter time, be sure to adjust this accordingly."));
+        mAnalysisDaysEdit->setToolTip(tr("The number of days going back from today, to use for analysis. If the destination has been in use for shorter time, be sure to adjust this accordingly."));
         mAnalysisDaysEdit->setValue(
             settings.value(MarketAnalysisSettings::importingAnalysisDaysKey, MarketAnalysisSettings::importingAnalysisDaysDefault).toInt());
 

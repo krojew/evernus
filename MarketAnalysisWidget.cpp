@@ -105,7 +105,7 @@ namespace Evernus
 
         mIgnoreExistingOrdersBtn = new QCheckBox{tr("Ignore types with existing orders"), this};
         toolBarLayout->addWidget(mIgnoreExistingOrdersBtn);
-        mIgnoreExistingOrdersBtn->setToolTip(tr("Ignore item types wich have active market orders."));
+        mIgnoreExistingOrdersBtn->setToolTip(tr("Ignore item types which have active market orders."));
         mIgnoreExistingOrdersBtn->setChecked(
             settings.value(MarketAnalysisSettings::ignoreExistingOrdersKey, MarketAnalysisSettings::ignoreExistingOrdersDefault).toBool());
         connect(mIgnoreExistingOrdersBtn, &QCheckBox::toggled, [](auto checked) {
@@ -176,7 +176,7 @@ namespace Evernus
         mSrcPriceTypeCombo->blockSignals(true);
         mSrcPriceTypeCombo->setCurrentIndex(1);
         mSrcPriceTypeCombo->blockSignals(false);
-        mSrcPriceTypeCombo->setToolTip(tr("Type of orders used for buing items."));
+        mSrcPriceTypeCombo->setToolTip(tr("Type of orders used for buying items."));
 
         toolBarLayout->addWidget(new QLabel{tr("Destination price:"), this});
         createPriceTypeCombo(mDstPriceTypeCombo);
