@@ -80,6 +80,10 @@ namespace Evernus
                         return QStringLiteral("0%1").arg(locale.percent());
 
                     return QStringLiteral("%1%2").arg(locale.toString(data.mDstVolume * 100 / data.mAvgVolume, 'f', 2)).arg(locale.percent());
+                case srcOrderCountColumn:
+                    return locale.toString(data.mSrcOrderCount);
+                case dstOrderCountColumn:
+                    return locale.toString(data.mDstOrderCount);
                 case dstPriceColumn:
                     return TextUtils::currencyToString(data.mDstPrice, locale);
                 case srcPriceColumn:
@@ -108,6 +112,10 @@ namespace Evernus
                     return 0;
 
                 return data.mDstVolume * 100 / data.mAvgVolume;
+            case srcOrderCountColumn:
+                return data.mSrcOrderCount;
+            case dstOrderCountColumn:
+                return data.mDstOrderCount;
             case dstPriceColumn:
                 return data.mDstPrice;
             case srcPriceColumn:
@@ -143,6 +151,10 @@ namespace Evernus
                 return tr("Dst. remaining volume");
             case relativeDstVolumeColumn:
                 return tr("Relative dst. remaining volume");
+            case srcOrderCountColumn:
+                return tr("Source order count");
+            case dstOrderCountColumn:
+                return tr("Destination order count");
             case dstPriceColumn:
                 return tr("5% volume destination price");
             case srcPriceColumn:
@@ -222,6 +234,8 @@ namespace Evernus
             quint64 mTotalVolume = 0;
             double mDstPrice = 0.;
             double mSrcPrice = 0.;
+            quint64 mSrcOrderCount = 0;
+            quint64 mDstOrderCount = 0;
         };
 
         TypeMap<TypeData> typeMap;
@@ -317,11 +331,17 @@ namespace Evernus
                 }
             }
 
+            const auto &typeSrcOrders = srcOrders[typeId];
+            const auto &typeDstOrders = dstOrders[typeId];
+
+            data.mSrcOrderCount = typeSrcOrders.size();
+            data.mDstOrderCount = typeDstOrders.size();
+
             // dst orders are by default sorted from lowest price, which means we need to reverse them if we
             // want to sell to buy orders, which are highest first
             if (dstPriceType == PriceType::Sell)
             {
-                data.mDstPrice = MathUtils::calcPercentile(dstOrders[typeId],
+                data.mDstPrice = MathUtils::calcPercentile(typeDstOrders,
                                                            dstVolumes[typeId] * volumePercentile,
                                                            mean(dstPriceAcc),
                                                            mDiscardBogusOrders,
@@ -329,7 +349,7 @@ namespace Evernus
             }
             else
             {
-                data.mDstPrice = MathUtils::calcPercentile(boost::adaptors::reverse(dstOrders[typeId]),
+                data.mDstPrice = MathUtils::calcPercentile(boost::adaptors::reverse(typeDstOrders),
                                                            dstVolumes[typeId] * volumePercentile,
                                                            mean(dstPriceAcc),
                                                            mDiscardBogusOrders,
@@ -339,7 +359,7 @@ namespace Evernus
             // same logic for src orders
             if (srcPriceType == PriceType::Buy)
             {
-                data.mSrcPrice = MathUtils::calcPercentile(srcOrders[typeId],
+                data.mSrcPrice = MathUtils::calcPercentile(typeSrcOrders,
                                                            srcVolumes[typeId] * volumePercentile,
                                                            mean(srcPriceAcc),
                                                            mDiscardBogusOrders,
@@ -347,7 +367,7 @@ namespace Evernus
             }
             else
             {
-                data.mSrcPrice = MathUtils::calcPercentile(boost::adaptors::reverse(srcOrders[typeId]),
+                data.mSrcPrice = MathUtils::calcPercentile(boost::adaptors::reverse(typeSrcOrders),
                                                            srcVolumes[typeId] * volumePercentile,
                                                            mean(srcPriceAcc),
                                                            mDiscardBogusOrders,
@@ -379,6 +399,8 @@ namespace Evernus
             data.mId = type.first;
             data.mAvgVolume = static_cast<double>(type.second.mTotalVolume) * aggrDays / analysisDays;
             data.mDstVolume = dstSellVolumes[data.mId];
+            data.mSrcOrderCount = type.second.mSrcOrderCount;
+            data.mDstOrderCount = type.second.mDstOrderCount;
 
             if (useSkillsForDifference)
             {

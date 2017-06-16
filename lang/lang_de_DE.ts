@@ -2856,52 +2856,62 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ImportingDataModel</name>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="139"/>
+        <location filename="../ImportingDataModel.cpp" line="147"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="141"/>
+        <location filename="../ImportingDataModel.cpp" line="149"/>
         <source>Avg. dst. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="143"/>
+        <location filename="../ImportingDataModel.cpp" line="151"/>
         <source>Dst. remaining volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="145"/>
+        <location filename="../ImportingDataModel.cpp" line="153"/>
         <source>Relative dst. remaining volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="147"/>
-        <source>5% volume destination price</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ImportingDataModel.cpp" line="149"/>
-        <source>5% volume source price</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ImportingDataModel.cpp" line="151"/>
-        <source>Import price (src. price + price per m³)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ImportingDataModel.cpp" line="153"/>
-        <source>Price difference</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ImportingDataModel.cpp" line="155"/>
-        <source>Margin</source>
+        <source>Source order count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="157"/>
+        <source>Destination order count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="159"/>
+        <source>5% volume destination price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="161"/>
+        <source>5% volume source price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="163"/>
+        <source>Import price (src. price + price per m³)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="165"/>
+        <source>Price difference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="167"/>
+        <source>Margin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="169"/>
         <source>Projected profit</source>
         <translation type="unfinished"></translation>
     </message>

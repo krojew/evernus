@@ -82,6 +82,8 @@ namespace Evernus
             avgVolumeColumn,
             dstVolumeColumn,
             relativeDstVolumeColumn,
+            srcOrderCountColumn,
+            dstOrderCountColumn,
             srcPriceColumn,
             importPriceColumn,
             dstPriceColumn,
@@ -103,6 +105,8 @@ namespace Evernus
             double mPriceDifference = 0.;
             double mMargin = 0.;
             double mProjectedProfit = 0.;
+            quint64 mSrcOrderCount = 0;
+            quint64 mDstOrderCount = 0;
         };
 
         const EveDataProvider &mDataProvider;
