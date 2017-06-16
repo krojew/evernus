@@ -1855,8 +1855,8 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     <message>
         <location filename="../EvernusApplication.cpp" line="816"/>
         <location filename="../EvernusApplication.cpp" line="822"/>
-        <location filename="../EvernusApplication.cpp" line="2460"/>
-        <location filename="../EvernusApplication.cpp" line="2498"/>
+        <location filename="../EvernusApplication.cpp" line="2462"/>
+        <location filename="../EvernusApplication.cpp" line="2500"/>
         <source>Evernus</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2035,50 +2035,50 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2138"/>
+        <location filename="../EvernusApplication.cpp" line="2140"/>
         <source>Importing item prices...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2149"/>
+        <location filename="../EvernusApplication.cpp" line="2151"/>
         <source>Cannot determine market logs path!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2163"/>
+        <location filename="../EvernusApplication.cpp" line="2165"/>
         <source>No market logs found!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2174"/>
+        <location filename="../EvernusApplication.cpp" line="2176"/>
         <source>Could not open market log file!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2461"/>
+        <location filename="../EvernusApplication.cpp" line="2463"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2465"/>
+        <location filename="../EvernusApplication.cpp" line="2467"/>
         <source>The following orders have changed their status:
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2468"/>
+        <location filename="../EvernusApplication.cpp" line="2470"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2498"/>
+        <location filename="../EvernusApplication.cpp" line="2500"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2830"/>
+        <location filename="../EvernusApplication.cpp" line="2832"/>
         <source>Fetching character %1...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3165,7 +3165,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::Key</name>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2752"/>
+        <location filename="../EvernusApplication.cpp" line="2754"/>
         <source>Fetching contract items for contract %1...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6063,17 +6063,32 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="86"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="73"/>
+        <source>Fast days.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="79"/>
+        <source>Slow days.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="85"/>
+        <source>EMA days.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="89"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="108"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="111"/>
         <source>Add trend line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="117"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="120"/>
         <source>Show legend</source>
         <translation type="unfinished"></translation>
     </message>

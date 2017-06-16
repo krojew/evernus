@@ -70,16 +70,19 @@ namespace Evernus
 
         mMACDFastDaysEdit = new QSpinBox{this};
         mainLayout->addWidget(mMACDFastDaysEdit);
+        mMACDFastDaysEdit->setToolTip(tr("Fast days."));
         mMACDFastDaysEdit->setMinimum(2);
         mMACDFastDaysEdit->setValue(settings.value(MarketAnalysisSettings::macdFastDaysKey, MarketAnalysisSettings::macdFastDaysDefault).toInt());
 
         mMACDSlowDaysEdit = new QSpinBox{this};
         mainLayout->addWidget(mMACDSlowDaysEdit);
+        mMACDSlowDaysEdit->setToolTip(tr("Slow days."));
         mMACDSlowDaysEdit->setMinimum(2);
         mMACDSlowDaysEdit->setValue(settings.value(MarketAnalysisSettings::macdSlowDaysKey, MarketAnalysisSettings::macdSlowDaysDefault).toInt());
 
         mMACDEMADaysEdit = new QSpinBox{this};
         mainLayout->addWidget(mMACDEMADaysEdit);
+        mMACDEMADaysEdit->setToolTip(tr("EMA days."));
         mMACDEMADaysEdit->setMinimum(2);
         mMACDEMADaysEdit->setValue(settings.value(MarketAnalysisSettings::macdEmaDaysKey, MarketAnalysisSettings::macdEmaDaysDefault).toInt());
 
