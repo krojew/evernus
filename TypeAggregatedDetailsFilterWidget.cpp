@@ -36,10 +36,13 @@ namespace Evernus
 
         const auto current = QDate::currentDate().addDays(-1);
 
+        QSettings settings;
+
         mFromEdit = new QDateEdit{this};
         mainLayout->addWidget(mFromEdit);
         mFromEdit->setCalendarPopup(true);
-        mFromEdit->setDate(current.addDays(-90));
+        mFromEdit->setDate(current.addDays(
+            -settings.value(MarketAnalysisSettings::typeAggregatedChartDurationKey, MarketAnalysisSettings::typeAggregatedChartDurationDefault).toInt()));
         mFromEdit->setMaximumDate(current);
         connect(mFromEdit, &QDateEdit::dateChanged, this, [=](const QDate &date) {
             if (date > mToEdit->date())
@@ -59,8 +62,6 @@ namespace Evernus
         });
 
         mainLayout->addWidget(new QLabel{tr("Moving average days:"), this});
-
-        QSettings settings;
 
         mSMADaysEdit = new QSpinBox{this};
         mainLayout->addWidget(mSMADaysEdit);

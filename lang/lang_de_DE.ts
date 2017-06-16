@@ -5815,78 +5815,88 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::StatisticsPreferencesWidget</name>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="42"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="44"/>
         <source>Combine character and corporation journal in statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="47"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="49"/>
         <source>Take automatic value snapshots</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="52"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="54"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="61"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="63"/>
         <source>Plot number format:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="62"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="64"/>
         <source>beautified scientific</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="63"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="65"/>
         <source>scientific</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="64"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="66"/>
         <source>fixed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="70"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="72"/>
         <source>Asset value plot color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="75"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="77"/>
         <source>Corp. asset value plot color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="80"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="82"/>
         <source>Wallet balance plot color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="85"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="87"/>
         <source>Corp. wallet balance plot color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="90"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="92"/>
         <source>Buy order value plot color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="95"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="97"/>
         <source>Sell order value plot color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="100"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="102"/>
         <source>Total value plot color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StatisticsPreferencesWidget.cpp" line="102"/>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="104"/>
         <source>Reset to default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="114"/>
+        <source>Default period for item details graphs:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StatisticsPreferencesWidget.cpp" line="116"/>
+        <source> days</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6068,62 +6078,62 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="49"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="52"/>
         <source>To:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="61"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="64"/>
         <source>Moving average days:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="70"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="71"/>
         <source>MACD days:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="74"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="75"/>
         <source>Fast days.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="80"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="81"/>
         <source>Slow days.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="86"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="87"/>
         <source>EMA days.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="90"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="91"/>
         <source>Volume graph:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="94"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="95"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="95"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="96"/>
         <source>Order count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="100"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="101"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="126"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="127"/>
         <source>Add trend line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="135"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="136"/>
         <source>Show legend</source>
         <translation type="unfinished"></translation>
     </message>

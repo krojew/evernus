@@ -18,6 +18,7 @@
 
 class QCheckBox;
 class QComboBox;
+class QSpinBox;
 
 namespace Evernus
 {
@@ -50,6 +51,8 @@ namespace Evernus
         ColorButton *mBuyOrdersPlotColorBtn = nullptr;
         ColorButton *mSellOrdersPlotColorBtn = nullptr;
         ColorButton *mTotalPlotColorBtn = nullptr;
+
+        QSpinBox *mDefaultAggregatedGraphPeriodEdit = nullptr;
 
         void addPlotFormat(const QString &text, const QString &value, const QString &curValue);
     };
