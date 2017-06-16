@@ -70,6 +70,10 @@ namespace Evernus
                     return TextUtils::currencyToString((mDstPriceType == PriceType::Sell) ? (data.mSellPrice) : (data.mBuyPrice), locale);
                 case differenceColumn:
                     return TextUtils::currencyToString(data.mDifference, locale);
+                case buyOrderCountColumn:
+                    return locale.toString(data.mBuyOrderCount);
+                case sellOrderCountColumn:
+                    return locale.toString(data.mSellOrderCount);
                 case volumeColumn:
                     return locale.toString(data.mVolume);
                 case marginColumn:
@@ -89,6 +93,10 @@ namespace Evernus
                 return (mDstPriceType == PriceType::Sell) ? (data.mSellPrice) : (data.mBuyPrice);
             case differenceColumn:
                 return data.mDifference;
+            case buyOrderCountColumn:
+                return data.mBuyOrderCount;
+            case sellOrderCountColumn:
+                return data.mSellOrderCount;
             case volumeColumn:
                 return data.mVolume;
             case marginColumn:
@@ -126,6 +134,10 @@ namespace Evernus
                 return tr("5% volume destination price");
             case differenceColumn:
                 return tr("Difference");
+            case buyOrderCountColumn:
+                return tr("Buy order count");
+            case sellOrderCountColumn:
+                return tr("Sell order count");
             case volumeColumn:
                 return tr("30-day avg. volume");
             case marginColumn:
@@ -225,13 +237,18 @@ namespace Evernus
                 avgPrice30 /= 30.;
             }
 
+            const auto &typeBuyOrders = buyOrders[type];
+            const auto &typeSellOrders = sellOrders[type];
+
             data.mId = type;
-            data.mBuyPrice = MathUtils::calcPercentile(buyOrders[type],
+            data.mBuyOrderCount = typeBuyOrders.size();
+            data.mSellOrderCount = typeSellOrders.size();
+            data.mBuyPrice = MathUtils::calcPercentile(typeBuyOrders,
                                                        buyVolumes[type] * 0.05,
                                                        avgPrice30,
                                                        mDiscardBogusOrders,
                                                        mBogusOrderThreshold);
-            data.mSellPrice = MathUtils::calcPercentile(sellOrders[type],
+            data.mSellPrice = MathUtils::calcPercentile(typeSellOrders,
                                                         sellVolumes[type] * 0.05,
                                                         avgPrice30,
                                                         mDiscardBogusOrders,

@@ -6187,42 +6187,52 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::TypeAggregatedMarketDataModel</name>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="100"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="108"/>
         <source>Double-click for detailed market information.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="120"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="128"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="122"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="130"/>
         <source>Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="124"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="132"/>
         <source>5% volume source price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="126"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="134"/>
         <source>5% volume destination price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="128"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="136"/>
         <source>Difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="130"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="138"/>
+        <source>Buy order count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="140"/>
+        <source>Sell order count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="142"/>
         <source>30-day avg. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="132"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="144"/>
         <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>
