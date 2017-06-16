@@ -2957,52 +2957,62 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::InterRegionMarketDataModel</name>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="121"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="129"/>
         <source>Double-click for detailed market information.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="141"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="149"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="143"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="151"/>
         <source>Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="145"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="153"/>
         <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="147"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="155"/>
         <source>5% volume source price (b/s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="149"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="157"/>
+        <source>Source order count (b/s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../InterRegionMarketDataModel.cpp" line="159"/>
         <source>Destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="151"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="161"/>
         <source>5% volume destination price (b/s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="153"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="163"/>
+        <source>Destination order count (b/s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../InterRegionMarketDataModel.cpp" line="165"/>
         <source>Best difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="155"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="167"/>
         <source>30-day avg. min. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionMarketDataModel.cpp" line="157"/>
+        <location filename="../InterRegionMarketDataModel.cpp" line="169"/>
         <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>
