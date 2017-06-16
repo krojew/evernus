@@ -16,6 +16,8 @@
 
 #include <QString>
 
+#include "VolumeType.h"
+
 namespace Evernus
 {
     namespace MarketAnalysisSettings
@@ -37,6 +39,7 @@ namespace Evernus
         const auto reprocessingIgnoreMinVolumeDefault = true;
         const auto reprocessingSellVolumeLimitDefault = 10;
         const auto reprocessingOnlyHighSecDefault = true;
+        const auto volumeGraphTypeDefault = static_cast<int>(VolumeType::Volume);
 
         const auto dontSaveLargeOrdersKey = QStringLiteral("marketAnalysis/dontSaveOrders");
         const auto minVolumeFilterKey = QStringLiteral("marketAnalysis/filter/minVolume");
@@ -75,5 +78,6 @@ namespace Evernus
         const auto reprocessingDstRegionKey = QStringLiteral("marketAnalysis/reprocessing/dstRegion");
         const auto reprocessingSellVolumeLimitKey = QStringLiteral("marketAnalysis/reprocessing/sellVolumeLimit");
         const auto reprocessingOnlyHighSecKey = QStringLiteral("marketAnalysis/reprocessing/onlyHighSec");
+        const auto volumeGraphTypeKey = QStringLiteral("marketAnalysis/typeAggregatedChart/volumeType");
     }
 }

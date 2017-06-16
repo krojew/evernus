@@ -6043,52 +6043,67 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::TypeAggregatedDetailsFilterWidget</name>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="34"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="35"/>
         <source>From:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="48"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="49"/>
         <source>To:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="60"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="61"/>
         <source>Moving average days:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="69"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="70"/>
         <source>MACD days:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="73"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="74"/>
         <source>Fast days.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="79"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="80"/>
         <source>Slow days.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="85"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="86"/>
         <source>EMA days.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="89"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="90"/>
+        <source>Volume graph:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="94"/>
+        <source>Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="95"/>
+        <source>Order count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="100"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="111"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="126"/>
         <source>Add trend line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="120"/>
+        <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="135"/>
         <source>Show legend</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6098,11 +6113,14 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="79"/>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="93"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="231"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="371"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="103"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="374"/>
         <source>Unusual volume</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6150,6 +6168,17 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="205"/>
         <source>MACD Signal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="231"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="371"/>
+        <source>Order count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="374"/>
+        <source>Unusual order count</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6893,44 +6922,44 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="68"/>
-        <location filename="../main.cpp" line="83"/>
+        <location filename="../main.cpp" line="69"/>
+        <location filename="../main.cpp" line="84"/>
         <source>Already running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="68"/>
+        <location filename="../main.cpp" line="69"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="83"/>
+        <location filename="../main.cpp" line="84"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="92"/>
-        <location filename="../main.cpp" line="280"/>
+        <location filename="../main.cpp" line="93"/>
+        <location filename="../main.cpp" line="282"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="93"/>
+        <location filename="../main.cpp" line="94"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="267"/>
+        <location filename="../main.cpp" line="269"/>
         <source>New version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="268"/>
+        <location filename="../main.cpp" line="270"/>
         <source>Would you like to see what&apos;s new in this version?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="289"/>
+        <location filename="../main.cpp" line="291"/>
         <source>Initialization error</source>
         <translation type="unfinished"></translation>
     </message>

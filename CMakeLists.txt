@@ -693,6 +693,7 @@ add_executable(
     UpdateTimerRepository.cpp
     UpdateTimerRepository.h
     Version.h
+    VolumeType.h
     WalletEntryFilterWidget.cpp
     WalletEntryFilterWidget.h
     WalletJournal.h

@@ -18,7 +18,10 @@
 #include <QString>
 #include <QDate>
 
+#include "VolumeType.h"
+
 class QDateEdit;
+class QComboBox;
 class QSpinBox;
 
 namespace Evernus
@@ -41,6 +44,8 @@ namespace Evernus
         int getMACDSlowDays() const;
         int getMACDEMADays() const;
 
+        VolumeType getVolumeType() const;
+
     signals:
         void addTrendLine(const QDate &start, const QDate &end);
         void showLegend(bool flag);
@@ -49,7 +54,8 @@ namespace Evernus
                          int smaDays,
                          int macdFastDays,
                          int macdSlowDays,
-                         int macdEmaDays);
+                         int macdEmaDays,
+                         VolumeType volumeType);
 
     private:
         QDateEdit *mFromEdit = nullptr;
@@ -58,5 +64,6 @@ namespace Evernus
         QSpinBox *mMACDFastDaysEdit = nullptr;
         QSpinBox *mMACDSlowDaysEdit = nullptr;
         QSpinBox *mMACDEMADaysEdit = nullptr;
+        QComboBox *mVolumeTypeEdit = nullptr;
     };
 }
