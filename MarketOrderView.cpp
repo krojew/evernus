@@ -320,9 +320,12 @@ namespace Evernus
         if (mSource == nullptr)
             return;
 
-        const auto selection = getSelectionModel()->selectedRows();
-        if (!selection.isEmpty())
+        auto selection = getSelectionModel()->selectedRows();
+        while (!selection.isEmpty())
+        {
             mProxy.removeRow(selection.first().row(), mProxy.parent(selection.first()));
+            selection = getSelectionModel()->selectedRows();
+        }
     }
 
     void MarketOrderView::showExternalOrdersForCurrent()
