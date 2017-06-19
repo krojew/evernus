@@ -103,8 +103,6 @@ namespace Evernus
 
         QString getGroupName(EveType::IdType typeId) const;
 
-        static quint64 getStationId(const MarketOrder &order);
-
     private:
         Character::IdType mCharacterId = Character::invalidId;
         bool mAllCharacters = false;
