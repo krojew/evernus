@@ -28,7 +28,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        typedef MarketLogExternalOrderImporterThread::ExternalOrderList ExternalOrderList;
+        using ExternalOrderList = MarketLogExternalOrderImporterThread::ExternalOrderList;
 
         using ExternalOrderImporter::ExternalOrderImporter;
         virtual ~MarketLogExternalOrderImporter();

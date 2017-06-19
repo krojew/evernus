@@ -318,7 +318,7 @@ namespace Evernus
             auto totalIncome = 0.;
             auto totalCost = 0.;
 
-            // keep buying and selling until no mScrapmetal orders are left or we stop making profit
+            // keep buying and selling until no scrapmetal orders are left or we stop making profit
             while (true)
             {
                 QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);

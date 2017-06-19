@@ -441,6 +441,8 @@ add_executable(
     MarketOrderArchiveModel.h
     MarketOrderBuyModel.cpp
     MarketOrderBuyModel.h
+    MarketOrderDataFetcher.cpp
+    MarketOrderDataFetcher.h
     MarketOrderFilterProxyModel.cpp
     MarketOrderFilterProxyModel.h
     MarketOrderFilterWidget.cpp
