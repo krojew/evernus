@@ -96,6 +96,7 @@ namespace Evernus
 
         mDontSaveBtn = new QCheckBox{tr("Don't save imported orders (huge performance gain)"), this};
         toolBarLayout->addWidget(mDontSaveBtn);
+        mDontSaveBtn->setToolTip(tr("Saving orders makes them available to other parts of the application, even across restarts."));
         mDontSaveBtn->setChecked(
             settings.value(MarketAnalysisSettings::dontSaveLargeOrdersKey, MarketAnalysisSettings::dontSaveLargeOrdersDefault).toBool());
         connect(mDontSaveBtn, &QCheckBox::toggled, [](auto checked) {
