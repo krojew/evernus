@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_set>
 #include <algorithm>
 
 #include <boost/scope_exit.hpp>
@@ -117,10 +118,15 @@ namespace Evernus
 
     void MarketOrderDataFetcher::importWholeMarketData(const ExternalOrderImporter::TypeLocationPairs &pairs)
     {
-        mOrderCounter.addCount(pairs.size());
-
+        std::unordered_set<quint64> regions;
         for (const auto &pair : pairs)
         {
+            if (regions.find(pair.second) != std::end(regions))
+                continue;
+
+            regions.emplace(pair.second);
+
+            mOrderCounter.incCount();
             mESIManager.fetchMarketOrders(pair.second, [=](std::vector<ExternalOrder> &&orders, const QString &error) {
                 filterOrders(orders, pairs);
                 processOrders(std::move(orders), error);
@@ -159,8 +165,14 @@ namespace Evernus
 
     void MarketOrderDataFetcher::importCitadelData(const ExternalOrderImporter::TypeLocationPairs &pairs, Character::IdType charId)
     {
+        std::unordered_set<quint64> regions;
         for (const auto &pair : pairs)
         {
+            if (regions.find(pair.second) != std::end(regions))
+                continue;
+
+            regions.emplace(pair.second);
+
             const auto &citadels = mDataProvider.getCitadelsForRegion(pair.second);
             for (const auto &citadel : citadels)
             {
