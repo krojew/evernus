@@ -117,7 +117,7 @@ namespace Evernus
 
     void MarketOrderDataFetcher::importWholeMarketData(const ExternalOrderImporter::TypeLocationPairs &pairs)
     {
-        mOrderCounter.setCount(pairs.size());
+        mOrderCounter.addCount(pairs.size());
 
         for (const auto &pair : pairs)
         {
@@ -136,10 +136,10 @@ namespace Evernus
         const auto webImporter = static_cast<ImportSettings::WebImporterType>(
             settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
 
+        mOrderCounter.addCount(pairs.size());
+
         for (const auto &pair : pairs)
         {
-            mOrderCounter.incCount();
-
             if (webImporter == ImportSettings::WebImporterType::EveCentral)
             {
                 mEveCentralManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
