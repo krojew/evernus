@@ -455,7 +455,7 @@ namespace Evernus
     void MarketBrowserWidget::prepareItemImportFromWeb()
     {
         RegionTypeSelectDialog dlg{mDataProvider, mTypeRepo, mGroupRepo, mRegionTypePresetRepo, this};
-        connect(&dlg, &RegionTypeSelectDialog::selected, this, &MarketBrowserWidget::importData);
+        connect(&dlg, &RegionTypeSelectDialog::selected, this, &MarketBrowserWidget::importData, Qt::QueuedConnection);
 
         dlg.exec();
     }
