@@ -173,7 +173,7 @@ namespace Evernus
             processEvents();
         }
 
-        mOrderCounter.setCount(regions.size());
+        mOrderCounter.addCount(regions.size());
 
         for (const auto region : regions)
         {
