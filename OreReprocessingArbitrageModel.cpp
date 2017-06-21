@@ -218,7 +218,8 @@ namespace Evernus
         };
 
         const auto isSrcOrder = [&](const auto &order) {
-            return isValidRegion(allSrcRegions, srcRegions, order) &&
+            return order.getType() == ExternalOrder::Type::Sell &&
+                   isValidRegion(allSrcRegions, srcRegions, order) &&
                    isValidStation(srcStation, order);
         };
 
