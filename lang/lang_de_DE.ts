@@ -5141,32 +5141,32 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::OreReprocessingArbitrageModel</name>
     <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="128"/>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="129"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="130"/>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="131"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="132"/>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="133"/>
         <source>Total profit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="134"/>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="135"/>
         <source>Total cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="136"/>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="137"/>
         <source>Difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="138"/>
+        <location filename="../OreReprocessingArbitrageModel.cpp" line="139"/>
         <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5755,32 +5755,32 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::ScrapmetalReprocessingArbitrageModel</name>
     <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="129"/>
+        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="130"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="131"/>
+        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="132"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="133"/>
+        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="134"/>
         <source>Total profit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="135"/>
+        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="136"/>
         <source>Total cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="137"/>
+        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="138"/>
         <source>Difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="139"/>
+        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="140"/>
         <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>

@@ -126,6 +126,7 @@ add_executable(
     APIUtils.cpp
     APIUtils.h
     APIXmlReceiver.h
+    ArbitrageUtils.h
     AssetList.cpp
     AssetList.h
     AssetListRepository.cpp
