@@ -4,7 +4,7 @@
 <context>
     <name>APIXmlReceiver</name>
     <message>
-        <location filename="../APIXmlReceiver.cpp" line="105"/>
+        <location filename="../APIXmlReceiver.inl" line="105"/>
         <source>Couldn&apos;t convert %1 to %2!</source>
         <translation type="unfinished"></translation>
     </message>

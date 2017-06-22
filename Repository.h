@@ -77,4 +77,4 @@ namespace Evernus
     };
 }
 
-#include "Repository.cpp"
+#include "Repository.inl"
