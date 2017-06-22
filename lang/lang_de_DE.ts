@@ -4382,8 +4382,8 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::MarketOrderDataFetcher</name>
     <message>
-        <location filename="../MarketOrderDataFetcher.cpp" line="81"/>
-        <location filename="../MarketOrderDataFetcher.cpp" line="95"/>
+        <location filename="../MarketOrderDataFetcher.cpp" line="82"/>
+        <location filename="../MarketOrderDataFetcher.cpp" line="96"/>
         <source>Waiting for %1 order server replies...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7001,44 +7001,44 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="69"/>
-        <location filename="../main.cpp" line="84"/>
+        <location filename="../main.cpp" line="71"/>
+        <location filename="../main.cpp" line="86"/>
         <source>Already running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="69"/>
+        <location filename="../main.cpp" line="71"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="84"/>
+        <location filename="../main.cpp" line="86"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="93"/>
-        <location filename="../main.cpp" line="282"/>
+        <location filename="../main.cpp" line="95"/>
+        <location filename="../main.cpp" line="284"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="94"/>
+        <location filename="../main.cpp" line="96"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="269"/>
+        <location filename="../main.cpp" line="271"/>
         <source>New version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="270"/>
+        <location filename="../main.cpp" line="272"/>
         <source>Would you like to see what&apos;s new in this version?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="291"/>
+        <location filename="../main.cpp" line="293"/>
         <source>Initialization error</source>
         <translation type="unfinished"></translation>
     </message>

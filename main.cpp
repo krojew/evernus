@@ -53,6 +53,8 @@ int main(int argc, char *argv[])
 
         Evernus::ChainableFileLogger::initialize();
 
+        qSetMessagePattern(QStringLiteral("[%{type}] %{time} %{threadid} %{message}"));
+
 #ifdef Q_OS_WIN
         const auto serverName = QCoreApplication::applicationName() + ".socket";
 #else
