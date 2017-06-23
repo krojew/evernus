@@ -4826,57 +4826,57 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::MarketOrderView</name>
     <message>
-        <location filename="../MarketOrderView.cpp" line="69"/>
+        <location filename="../MarketOrderView.cpp" line="71"/>
         <source>Delete order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="74"/>
+        <location filename="../MarketOrderView.cpp" line="76"/>
         <source>Show in market browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="79"/>
+        <location filename="../MarketOrderView.cpp" line="81"/>
         <source>Show in EVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="84"/>
+        <location filename="../MarketOrderView.cpp" line="86"/>
         <source>Change notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="89"/>
+        <location filename="../MarketOrderView.cpp" line="91"/>
         <source>Set custom station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="109"/>
+        <location filename="../MarketOrderView.cpp" line="111"/>
         <source>Color tag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="114"/>
+        <location filename="../MarketOrderView.cpp" line="116"/>
         <source>Remove color tag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="127"/>
+        <location filename="../MarketOrderView.cpp" line="129"/>
         <source>Lookup item on eve-marketdata.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="130"/>
+        <location filename="../MarketOrderView.cpp" line="132"/>
         <source>Lookup item on eve-central.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="218"/>
+        <location filename="../MarketOrderView.cpp" line="220"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketOrderView.cpp" line="218"/>
+        <location filename="../MarketOrderView.cpp" line="220"/>
         <source>Notes:</source>
         <translation type="unfinished"></translation>
     </message>

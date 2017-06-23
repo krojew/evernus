@@ -34,7 +34,6 @@ namespace Evernus
 
         virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex{}) const override;
         virtual QModelIndex parent(const QModelIndex &index) const override;
-        virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex{}) override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
         virtual size_t getOrderCount() const override;
@@ -46,6 +45,7 @@ namespace Evernus
         virtual EveType::IdType getOrderTypeId(const QModelIndex &index) const override;
         virtual Character::IdType getOrderOwnerId(const QModelIndex &index) const override;
         virtual const MarketOrder *getOrder(const QModelIndex &index) const override;
+        virtual void removeIndexes(const QModelIndexList &indexes) override;
 
         void setCharacter(Character::IdType id);
         void setAllCaracters(bool all);
