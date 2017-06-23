@@ -43,7 +43,7 @@ namespace Evernus
 
     QVariant AggregatedAssetModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return {};
 
         const auto &row = mData[index.row()];
@@ -140,7 +140,7 @@ namespace Evernus
             for (const auto &list : assets)
                 fillAssets(list, items);
         }
-        else if (mCharacterId != Character::invalidId)
+        else if (Q_LIKELY(mCharacterId != Character::invalidId))
         {
             fillAssets(mAssetProvider.fetchAssetsForCharacter(mCharacterId), items);
         }

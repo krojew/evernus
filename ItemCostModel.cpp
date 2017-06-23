@@ -52,7 +52,7 @@ namespace Evernus
 
     QVariant ItemCostModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         if (role == Qt::DisplayRole)
@@ -99,7 +99,7 @@ namespace Evernus
     {
         beginResetModel();
 
-        if (mCharacterId == Character::invalidId)
+        if (Q_UNLIKELY(mCharacterId == Character::invalidId))
             mData.clear();
         else
             mData = mCostProvider.fetchForCharacter(mCharacterId);

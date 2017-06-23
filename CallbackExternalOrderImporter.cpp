@@ -25,11 +25,11 @@ namespace Evernus
 
         qDebug() << "Got reply," << mCounter.getCount() << "remaining.";
 
-        if (!errorText.isEmpty())
+        if (Q_UNLIKELY(!errorText.isEmpty()))
         {
             mAggregatedErrors << errorText;
 
-            if (mCounter.isEmpty())
+            if (Q_UNLIKELY(mCounter.isEmpty()))
             {
                 mResult.clear();
                 emit error(mAggregatedErrors.join("\n"));
@@ -49,7 +49,7 @@ namespace Evernus
 
         if (mCounter.isEmpty() && !mPreparingRequests)
         {
-            if (mAggregatedErrors.isEmpty())
+            if (Q_LIKELY(mAggregatedErrors.isEmpty()))
             {
                 emit externalOrdersChanged(mResult);
             }

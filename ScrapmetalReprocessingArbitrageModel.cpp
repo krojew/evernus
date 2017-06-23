@@ -70,7 +70,7 @@ namespace Evernus
 
     QVariant ScrapmetalReprocessingArbitrageModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return {};
 
         const auto column = index.column();
@@ -184,7 +184,7 @@ namespace Evernus
 
         mData.clear();
 
-        if (!mCharacter)
+        if (Q_UNLIKELY(!mCharacter))
             return;
 
         const auto reprocessingSkills = mCharacter->getReprocessingSkills();

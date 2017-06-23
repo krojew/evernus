@@ -79,7 +79,7 @@ namespace Evernus
 
     QVariant WalletTransactionsModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
              return QVariant{};
 
         const auto row = index.row();
@@ -287,7 +287,7 @@ namespace Evernus
         mTotalProfit = 0.;
 
         mData.clear();
-        if (mCharacterId != Character::invalidId || mCombineCharacters)
+        if (Q_LIKELY(mCharacterId != Character::invalidId || mCombineCharacters))
         {
             try
             {

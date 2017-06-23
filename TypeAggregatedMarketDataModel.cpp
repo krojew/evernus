@@ -48,7 +48,7 @@ namespace Evernus
 
     QVariant TypeAggregatedMarketDataModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         const auto column = index.column();
@@ -226,7 +226,7 @@ namespace Evernus
             {
                 for (const auto &timePoint : boost::adaptors::reverse(typeHistory->second))
                 {
-                    if (timePoint.first < historyLimit)
+                    if (Q_UNLIKELY(timePoint.first < historyLimit))
                         break;
 
                     data.mVolume += timePoint.second.mVolume;

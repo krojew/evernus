@@ -53,7 +53,7 @@ namespace Evernus
 
     QVariant InterRegionMarketDataModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         const auto column = index.column();
@@ -251,7 +251,7 @@ namespace Evernus
 
                 for (const auto &timePoint : boost::adaptors::reverse(type.second))
                 {
-                    if (timePoint.first < historyLimit)
+                    if (Q_UNLIKELY(timePoint.first < historyLimit))
                         break;
 
                     data.mVolume += timePoint.second.mVolume;
@@ -305,7 +305,7 @@ namespace Evernus
                         continue;
 
                     const auto dstData = dstRegion.second.find(type.first);
-                    if (dstData == std::end(dstRegion.second))
+                    if (Q_UNLIKELY(dstData == std::end(dstRegion.second)))
                         continue;
 
                     TypeData data;

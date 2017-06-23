@@ -97,7 +97,7 @@ namespace Evernus
 
         qDebug() << mOrderCounter.getCount() << "orders remaining; error:" << errorText;
 
-        if (!errorText.isEmpty())
+        if (Q_UNLIKELY(!errorText.isEmpty()))
         {
             mAggregatedOrderErrors << errorText;
 

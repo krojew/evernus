@@ -54,7 +54,7 @@ namespace Evernus
 
     QVariant MarketOrderArchiveModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         const auto item = static_cast<const TreeItem *>(index.internalPointer());

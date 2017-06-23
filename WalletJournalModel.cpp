@@ -75,7 +75,7 @@ namespace Evernus
 
     QVariant WalletJournalModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
              return QVariant{};
 
         const auto row = index.row();
@@ -169,7 +169,7 @@ namespace Evernus
         beginResetModel();
 
         mData.clear();
-        if (mCharacterId != Character::invalidId || mCombineCharacters)
+        if (Q_LIKELY(mCharacterId != Character::invalidId || mCombineCharacters))
         {
             try
             {

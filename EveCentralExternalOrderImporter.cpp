@@ -61,10 +61,10 @@ namespace Evernus
 
         qDebug() << "Got reply," << mCounter.getCount() << "remaining.";
 
-        if (!errorText.isEmpty())
+        if (Q_UNLIKELY(!errorText.isEmpty()))
             mAggregatedErrors << errorText;
 
-        if (mAggregatedErrors.isEmpty())
+        if (Q_LIKELY(mAggregatedErrors.isEmpty()))
         {
             mResult.insert(std::end(mResult),
                            std::make_move_iterator(std::begin(data)),
@@ -73,7 +73,7 @@ namespace Evernus
 
         if (mCounter.isEmpty())
         {
-            if (mAggregatedErrors.isEmpty())
+            if (Q_LIKELY(mAggregatedErrors.isEmpty()))
                 emit externalOrdersChanged(mResult);
             else
                 emit error(mAggregatedErrors.join("\n"));

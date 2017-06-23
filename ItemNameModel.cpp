@@ -26,7 +26,7 @@ namespace Evernus
 
     QVariant ItemNameModel::data(const QModelIndex &index, int role) const
     {
-        if (index.isValid() && index.column() == 0)
+        if (Q_LIKELY(index.isValid() && index.column() == 0))
         {
             if (role == Qt::DisplayRole)
                 return mDataProvider.getTypeName(mData[index.row()]);

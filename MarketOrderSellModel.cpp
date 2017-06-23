@@ -59,7 +59,7 @@ namespace Evernus
 
     QVariant MarketOrderSellModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         const auto item = static_cast<const TreeItem *>(index.internalPointer());
@@ -563,7 +563,7 @@ namespace Evernus
     {
         const auto item = static_cast<const TreeItem *>(index.internalPointer());
         const auto order = item->getOrder();
-        if (order == nullptr)
+        if (Q_UNLIKELY(order == nullptr))
             return OrderInfo{};
 
         QSettings settings;
@@ -673,7 +673,7 @@ namespace Evernus
         mTotalIncome = 0.;
 
         const auto character = mCharacters.find(characterId);
-        if (character == std::end(mCharacters))
+        if (Q_UNLIKELY(character == std::end(mCharacters)))
             return OrderList{};
 
         const auto orders = (mCorp) ?
@@ -753,7 +753,7 @@ namespace Evernus
     double MarketOrderSellModel::getMargin(const MarketOrder &order) const
     {
         const auto character = mCharacters.find(order.getCharacterId());
-        if (character == std::end(mCharacters))
+        if (Q_UNLIKELY(character == std::end(mCharacters)))
             return 0.;
 
         const auto taxes = PriceUtils::calculateTaxes(*character->second);
@@ -764,7 +764,7 @@ namespace Evernus
     double MarketOrderSellModel::getNewMargin(const MarketOrder &order) const
     {
         const auto character = mCharacters.find(order.getCharacterId());
-        if (character == std::end(mCharacters))
+        if (Q_UNLIKELY(character == std::end(mCharacters)))
             return 0.;
 
         QSettings settings;

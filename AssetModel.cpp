@@ -201,7 +201,7 @@ namespace Evernus
 
     QVariant AssetModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
              return QVariant{};
 
         auto item = static_cast<const TreeItem *>(index.internalPointer());
@@ -371,7 +371,7 @@ namespace Evernus
             for (const auto &list : assets)
                 fillAssets(list);
         }
-        else if (mCharacterId != Character::invalidId)
+        else if (Q_LIKELY(mCharacterId != Character::invalidId))
         {
             fillAssets(mAssetProvider.fetchAssetsForCharacter(mCharacterId));
         }

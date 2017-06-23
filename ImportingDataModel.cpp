@@ -57,7 +57,7 @@ namespace Evernus
 
     QVariant ImportingDataModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         const auto column = index.column();
@@ -197,7 +197,7 @@ namespace Evernus
 
     EveType::IdType ImportingDataModel::getTypeId(const QModelIndex &index) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return EveType::invalidId;
 
         return mData[index.row()].mId;
@@ -307,11 +307,11 @@ namespace Evernus
 
             // go through dst history to calculate avg price and total trade volume
             const auto dstTypeHistory = dstHistory->second.find(typeId);
-            if (dstTypeHistory != std::end(dstHistory->second))
+            if (Q_LIKELY(dstTypeHistory != std::end(dstHistory->second)))
             {
                 for (const auto &timePoint : boost::adaptors::reverse(dstTypeHistory->second))
                 {
-                    if (timePoint.first < historyLimit)
+                    if (Q_UNLIKELY(timePoint.first < historyLimit))
                         break;
 
                     data.mTotalVolume += timePoint.second.mVolume;
@@ -320,11 +320,11 @@ namespace Evernus
             }
 
             const auto srcTypeHistory = srcHistory->second.find(typeId);
-            if (srcTypeHistory != std::end(srcHistory->second))
+            if (Q_LIKELY(srcTypeHistory != std::end(srcHistory->second)))
             {
                 for (const auto &timePoint : boost::adaptors::reverse(srcTypeHistory->second))
                 {
-                    if (timePoint.first < historyLimit)
+                    if (Q_UNLIKELY(timePoint.first < historyLimit))
                         break;
 
                     srcPriceAcc(timePoint.second.mAvgPrice);

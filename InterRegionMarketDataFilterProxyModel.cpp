@@ -52,7 +52,7 @@ namespace Evernus
             return false;
 
         const auto source = sourceModel();
-        if (source != nullptr)
+        if (Q_LIKELY(source != nullptr))
         {
             auto checkRegion = [=, &sourceParent](int column, const RegionList &regions) {
                 const auto value

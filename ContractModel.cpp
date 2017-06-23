@@ -36,7 +36,7 @@ namespace Evernus
 
     QVariant ContractModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         return (index.internalId() == 0) ? (contractData(index, role)) : (contractItemData(index, role));

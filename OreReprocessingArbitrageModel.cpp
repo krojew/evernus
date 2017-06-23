@@ -69,7 +69,7 @@ namespace Evernus
 
     QVariant OreReprocessingArbitrageModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return {};
 
         const auto column = index.column();
@@ -268,11 +268,11 @@ namespace Evernus
             qDebug() << "Finding arbitrage opportunities for" << reprocessingInfo.first;
 
             const auto sellOrderList = sellMap.find(reprocessingInfo.first);
-            if (sellOrderList == std::end(sellMap))
+            if (Q_UNLIKELY(sellOrderList == std::end(sellMap)))
                 return ItemData{};
 
             const auto skill = mReprocessingSkillMap.find(reprocessingInfo.second.mGroupId);
-            if (skill == std::end(mReprocessingSkillMap))
+            if (Q_UNLIKELY(skill == std::end(mReprocessingSkillMap)))
             {
                 qWarning() << "Missing reprocessing skill for" << reprocessingInfo.first;
                 return ItemData{};
@@ -283,7 +283,7 @@ namespace Evernus
             for (const auto &material : reprocessingInfo.second.mMaterials)
             {
                 const auto buyOrderList = buyMap.find(material.mMaterialId);
-                if (buyOrderList == std::end(buyMap))
+                if (Q_UNLIKELY(buyOrderList == std::end(buyMap)))
                     continue;
 
                 localBuyMap.emplace(std::piecewise_construct,
@@ -377,11 +377,11 @@ namespace Evernus
             qDebug() << "Finding arbitrage opportunities for" << reprocessingInfo.first;
 
             const auto sellOrderList = sellMap.find(reprocessingInfo.first);
-            if (sellOrderList == std::end(sellMap))
+            if (Q_UNLIKELY(sellOrderList == std::end(sellMap)))
                 return ItemData{};
 
             const auto skill = mReprocessingSkillMap.find(reprocessingInfo.second.mGroupId);
-            if (skill == std::end(mReprocessingSkillMap))
+            if (Q_UNLIKELY(skill == std::end(mReprocessingSkillMap)))
             {
                 qWarning() << "Missing reprocessing skill for" << reprocessingInfo.first;
                 return ItemData{};

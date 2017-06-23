@@ -24,7 +24,7 @@ namespace Evernus
     void CitadelManager::fetchCitadels(Callback callback) const
     {
         mInterface.fetchCitadels([=, callback = std::move(callback)](const auto &result, const auto &error) {
-            if (!error.isEmpty())
+            if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error);
                 return;

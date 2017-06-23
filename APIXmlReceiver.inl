@@ -100,7 +100,7 @@ namespace Evernus
     template<class U>
     U APIXmlReceiver<T, CurElem>::convert(QVariant value)
     {
-        if (!value.template canConvert<U>())
+        if (Q_UNLIKELY(!value.template canConvert<U>()))
         {
             throw std::runtime_error{QCoreApplication::translate("APIXmlReceiver", "Couldn't convert %1 to %2!")
                 .arg(value.toString())

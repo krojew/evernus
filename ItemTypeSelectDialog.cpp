@@ -47,7 +47,7 @@ namespace Evernus
 
         model->sort(0);
 
-        if (!types.empty())
+        if (Q_LIKELY(!types.empty()))
         {
             auto item = model->item(0);
             item->setCheckState(Qt::Checked); // auto check first, because the combo is not visible

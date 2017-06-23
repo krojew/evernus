@@ -94,7 +94,7 @@ namespace Evernus
             reply->deleteLater();
 
             const auto replyError = reply->error();
-            if (replyError != QNetworkReply::NoError)
+            if (Q_UNLIKELY(replyError != QNetworkReply::NoError))
                 callback(std::vector<ExternalOrder>(), reply->errorString());
             else
                 processResult(typeId, reply->readAll(), callback);
@@ -180,7 +180,7 @@ namespace Evernus
             }
         }
 
-        if (reader.hasError())
+        if (Q_UNLIKELY(reader.hasError()))
             callback(std::vector<ExternalOrder>(), reader.errorString());
         else
             callback(std::move(result), QString{});
