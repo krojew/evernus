@@ -70,6 +70,7 @@ namespace Evernus
         const auto importingAggrDaysKey = QStringLiteral("marketAnalysis/importing/aggrDays");
         const auto importingAnalysisDaysKey = QStringLiteral("marketAnalysis/importing/analysisDays");
         const auto importingPricePerM3Key = QStringLiteral("marketAnalysis/importing/pricePerM3");
+        const auto importingCollateralKey = QStringLiteral("marketAnalysis/importing/collateral");
         const auto reprocessingStationEfficiencyKey = QStringLiteral("marketAnalysis/reprocessing/stationEfficiency");
         const auto reprocessingIncludeStationTaxKey = QStringLiteral("marketAnalysis/reprocessing/includeStationTax");
         const auto reprocessingIgnoreMinVolumeKey = QStringLiteral("marketAnalysis/reprocessing/ignoreMinVolume");

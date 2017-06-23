@@ -68,7 +68,8 @@ namespace Evernus
                           PriceType dstPriceType,
                           int analysisDays,
                           int aggrDays,
-                          double pricePerM3);
+                          double pricePerM3,
+                          double collateral);
 
         void reset();
 

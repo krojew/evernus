@@ -102,12 +102,21 @@ namespace Evernus
 
         toolBarLayout->addWidget(new QLabel{tr("Price per m³:"), this});
 
-        mPricePerM3 = new QDoubleSpinBox{this};
-        toolBarLayout->addWidget(mPricePerM3);
-        mPricePerM3->setMaximum(std::numeric_limits<double>::max());
-        mPricePerM3->setSuffix(QStringLiteral("ISK"));
-        mPricePerM3->setToolTip(tr("Addtional cost added to buy price. This is multiplied by item size and desired volume to move (which in turn is based on aggregation days)."));
-        mPricePerM3->setValue(settings.value(MarketAnalysisSettings::importingPricePerM3Key).toDouble());
+        mPricePerM3Edit = new QDoubleSpinBox{this};
+        toolBarLayout->addWidget(mPricePerM3Edit);
+        mPricePerM3Edit->setMaximum(std::numeric_limits<double>::max());
+        mPricePerM3Edit->setSuffix(QStringLiteral("ISK"));
+        mPricePerM3Edit->setToolTip(tr("Addtional cost added to buy price. This is multiplied by item size and desired volume to move (which in turn is based on aggregation days)."));
+        mPricePerM3Edit->setValue(settings.value(MarketAnalysisSettings::importingPricePerM3Key).toDouble());
+
+        toolBarLayout->addWidget(new QLabel{tr("Collateral:"), this});
+
+        mCollateralEdit = new QSpinBox{this};
+        toolBarLayout->addWidget(mCollateralEdit);
+        mCollateralEdit->setRange(0, 100);
+        mCollateralEdit->setSuffix(locale().percent());
+        mCollateralEdit->setToolTip(tr("Addtional cost added to buy price. This is the percetange of the base price."));
+        mCollateralEdit->setValue(settings.value(MarketAnalysisSettings::importingCollateralKey).toInt());
 
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
@@ -180,12 +189,14 @@ namespace Evernus
 
         const auto analysisDays = mAnalysisDaysEdit->value();
         const auto aggrDays = mAggrDaysEdit->value();
-        const auto pricePerM3 = mPricePerM3->value();
+        const auto pricePerM3 = mPricePerM3Edit->value();
+        const auto collateral = mCollateralEdit->value() / 100.;
 
         QSettings settings;
         settings.setValue(MarketAnalysisSettings::importingAnalysisDaysKey, analysisDays);
         settings.setValue(MarketAnalysisSettings::importingAggrDaysKey, aggrDays);
         settings.setValue(MarketAnalysisSettings::importingPricePerM3Key, pricePerM3);
+        settings.setValue(MarketAnalysisSettings::importingCollateralKey, collateral);
 
         mDataModel.setOrderData(*orders,
                                 *history,
@@ -195,7 +206,8 @@ namespace Evernus
                                 mDstPriceType,
                                 analysisDays,
                                 std::min(analysisDays, aggrDays),
-                                pricePerM3);
+                                pricePerM3,
+                                collateral);
 
         mDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 

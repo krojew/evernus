@@ -69,7 +69,8 @@ namespace Evernus
 
         QSpinBox *mAnalysisDaysEdit = nullptr;
         QSpinBox *mAggrDaysEdit = nullptr;
-        QDoubleSpinBox *mPricePerM3 = nullptr;
+        QDoubleSpinBox *mPricePerM3Edit = nullptr;
+        QSpinBox *mCollateralEdit = nullptr;
         QStackedWidget *mDataStack = nullptr;
         AdjustableTableView *mDataView = nullptr;
 

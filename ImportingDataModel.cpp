@@ -160,7 +160,7 @@ namespace Evernus
             case srcPriceColumn:
                 return tr("5% volume source price");
             case importPriceColumn:
-                return tr("Import price (src. price + price per m³)");
+                return tr("Import price (src. price + price per m³ + collateral)");
             case priceDifferenceColumn:
                 return tr("Price difference");
             case marginColumn:
@@ -211,7 +211,8 @@ namespace Evernus
                                           PriceType dstPriceType,
                                           int analysisDays,
                                           int aggrDays,
-                                          double pricePerM3)
+                                          double pricePerM3,
+                                          double collateral)
     {
         beginResetModel();
 
@@ -391,6 +392,8 @@ namespace Evernus
 
         mData.reserve(typeMap.size());
 
+        collateral += 1.;
+
         for (const auto &type : typeMap)
         {
             mData.emplace_back();
@@ -417,7 +420,7 @@ namespace Evernus
                 data.mSrcPrice = type.second.mSrcPrice;
             }
 
-            data.mImportPrice = data.mSrcPrice + mDataProvider.getTypeVolume(data.mId) * pricePerM3;
+            data.mImportPrice = data.mSrcPrice * collateral + mDataProvider.getTypeVolume(data.mId) * pricePerM3;
             data.mPriceDifference = data.mDstPrice - data.mImportPrice;
             data.mMargin = (qFuzzyIsNull(data.mDstPrice)) ? (0.) : (100. * data.mPriceDifference / data.mDstPrice);
             data.mProjectedProfit = data.mAvgVolume * data.mPriceDifference;
