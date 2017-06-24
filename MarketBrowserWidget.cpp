@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QSortFilterProxyModel>
+#include <QCoreApplication>
 #include <QDoubleSpinBox>
 #include <QWidgetAction>
 #include <QRadioButton>
@@ -27,6 +28,7 @@
 #include <QListView>
 #include <QGroupBox>
 #include <QLineEdit>
+#include <QSettings>
 #include <QSpinBox>
 #include <QLabel>
 #include <QMenu>
@@ -36,13 +38,17 @@
 #include "LocationBookmarkRepository.h"
 #include "ExternalOrderRepository.h"
 #include "FavoriteItemRepository.h"
+#include "RegionTypeSelectDialog.h"
 #include "MarketOrderRepository.h"
 #include "DeviationSourceWidget.h"
 #include "ItemTypeSelectDialog.h"
 #include "ExternalOrderView.h"
 #include "MarketOrderView.h"
 #include "EveDataProvider.h"
+#include "ImportSettings.h"
 #include "DatabaseUtils.h"
+#include "SSOMessageBox.h"
+#include "TaskManager.h"
 #include "Defines.h"
 
 #include "MarketBrowserWidget.h"
@@ -55,23 +61,34 @@ namespace Evernus
                                              const CharacterRepository &characterRepo,
                                              const FavoriteItemRepository &favoriteItemRepo,
                                              const LocationBookmarkRepository &locationBookmarkRepo,
+                                             const EveTypeRepository &typeRepo,
+                                             const MarketGroupRepository &groupRepo,
+                                             const RegionTypePresetRepository &regionTypePresetRepo,
                                              const MarketOrderProvider &orderProvider,
                                              const MarketOrderProvider &corpOrderProvider,
                                              EveDataProvider &dataProvider,
+                                             TaskManager &taskManager,
                                              const ItemCostProvider &costProvider,
+                                             QByteArray clientId,
+                                             QByteArray clientSecret,
                                              QWidget *parent)
-        : QWidget(parent)
-        , mExternalOrderRepo(externalOrderRepo)
-        , mOrderRepo(orderRepo)
-        , mCorpOrderRepo(corpOrderRepo)
-        , mFavoriteItemRepo(favoriteItemRepo)
-        , mLocationBookmarkRepo(locationBookmarkRepo)
-        , mDataProvider(dataProvider)
-        , mNameModel(mDataProvider)
-        , mOrderNameModel(mDataProvider)
-        , mFavoriteNameModel(mDataProvider)
-        , mExternalOrderSellModel(mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider)
-        , mExternalOrderBuyModel(mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider)
+        : QWidget{parent}
+        , mExternalOrderRepo{externalOrderRepo}
+        , mOrderRepo{orderRepo}
+        , mCorpOrderRepo{corpOrderRepo}
+        , mFavoriteItemRepo{favoriteItemRepo}
+        , mLocationBookmarkRepo{locationBookmarkRepo}
+        , mTypeRepo{typeRepo}
+        , mGroupRepo{groupRepo}
+        , mRegionTypePresetRepo{regionTypePresetRepo}
+        , mDataProvider{dataProvider}
+        , mTaskManager{taskManager}
+        , mNameModel{mDataProvider}
+        , mOrderNameModel{mDataProvider}
+        , mFavoriteNameModel{mDataProvider}
+        , mExternalOrderSellModel{mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider}
+        , mExternalOrderBuyModel{mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider}
+        , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -363,6 +380,17 @@ namespace Evernus
         mBuyView->addTreeViewAction(setBuyDeviationValueAct);
 
         fillRegions();
+
+        connect(&mDataFetcher, &MarketOrderDataFetcher::orderStatusUpdated,
+                this, &MarketBrowserWidget::updateOrderTask);
+        connect(&mDataFetcher, &MarketOrderDataFetcher::orderImportEnded,
+                this, &MarketBrowserWidget::endOrderTask);
+        connect(&mDataFetcher, &MarketOrderDataFetcher::genericError,
+                this, [=](const auto &text) {
+            SSOMessageBox::showMessage(text, this);
+        });
+        connect(this, &MarketBrowserWidget::preferencesChanged,
+                &mDataFetcher, &MarketOrderDataFetcher::handleNewPreferences);
     }
 
     void MarketBrowserWidget::setCharacter(Character::IdType id)
@@ -426,7 +454,10 @@ namespace Evernus
 
     void MarketBrowserWidget::prepareItemImportFromWeb()
     {
-        emit importPricesFromWeb(mCharacterId, getImportTarget());
+        RegionTypeSelectDialog dlg{mDataProvider, mTypeRepo, mGroupRepo, mRegionTypePresetRepo, this};
+        connect(&dlg, &RegionTypeSelectDialog::selected, this, &MarketBrowserWidget::importData, Qt::QueuedConnection);
+
+        dlg.exec();
     }
 
     void MarketBrowserWidget::prepareItemImportFromFile()
@@ -685,6 +716,43 @@ namespace Evernus
     {
         mDataProvider.clearExternalOrdersForType(mExternalOrderSellModel.getTypeId());
         emit externalOrdersChanged();
+    }
+
+    void MarketBrowserWidget::importData(const ExternalOrderImporter::TypeLocationPairs &pairs)
+    {
+        if (!mDataFetcher.hasPendingOrderRequests())
+        {
+            QSettings settings;
+            const auto webImporter = static_cast<ImportSettings::WebImporterType>(
+                settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
+
+            const auto mainTask = mTaskManager.startTask(tr("Importing data..."));
+            const auto infoText = (webImporter == ImportSettings::WebImporterType::EveCentral) ?
+                                  (tr("Making %1 Eve-Central order requests...")) :
+                                  (tr("Making %1 ESI order requests..."));
+
+            mOrderSubtask = mTaskManager.startTask(mainTask, infoText.arg(pairs.size()));
+        }
+
+        mDataFetcher.importData(pairs, mCharacterId);
+    }
+
+    void MarketBrowserWidget::updateOrderTask(const QString &text)
+    {
+        mTaskManager.updateTask(mOrderSubtask, text);
+    }
+
+    void MarketBrowserWidget::endOrderTask(const MarketOrderDataFetcher::OrderResultType &orders, const QString &error)
+    {
+        Q_ASSERT(orders);
+
+        if (error.isEmpty())
+        {
+            mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(orders->size()));
+            emit updateExternalOrders(*orders);
+        }
+
+        mTaskManager.endTask(mOrderSubtask, error);
     }
 
     ExternalOrderImporter::TypeLocationPairs MarketBrowserWidget::getImportTarget() const

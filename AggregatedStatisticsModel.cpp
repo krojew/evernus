@@ -37,7 +37,7 @@ namespace Evernus
 
     QVariant AggregatedStatisticsModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         const auto &record = mData[index.row()];

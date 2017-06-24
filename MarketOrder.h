@@ -63,6 +63,8 @@ namespace Evernus
         void setCustomStationId(const CutomLocationType &id);
         void setCustomStationId(CutomLocationType &&id) noexcept;
 
+        quint64 getEffectiveStationId() const noexcept;
+
         uint getVolumeEntered() const noexcept;
         void setVolumeEntered(uint value) noexcept;
 

@@ -50,7 +50,7 @@ namespace Evernus
             mPrevHandler(type, context, msg);
 
         const auto log = qFormatLogMessage(type, context, msg);
-        if (!log.isEmpty())
+        if (Q_LIKELY(!log.isEmpty()))
         {
             std::lock_guard<std::mutex> lock{mStreamMutex};
 

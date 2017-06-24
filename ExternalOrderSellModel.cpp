@@ -53,7 +53,7 @@ namespace Evernus
 
     QVariant ExternalOrderSellModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         const auto column = index.column();

@@ -17,6 +17,7 @@
 #include <QDateEdit>
 #include <QSettings>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QSpinBox>
 #include <QLabel>
 
@@ -35,10 +36,13 @@ namespace Evernus
 
         const auto current = QDate::currentDate().addDays(-1);
 
+        QSettings settings;
+
         mFromEdit = new QDateEdit{this};
         mainLayout->addWidget(mFromEdit);
         mFromEdit->setCalendarPopup(true);
-        mFromEdit->setDate(current.addDays(-90));
+        mFromEdit->setDate(current.addDays(
+            -settings.value(MarketAnalysisSettings::typeAggregatedChartDurationKey, MarketAnalysisSettings::typeAggregatedChartDurationDefault).toInt()));
         mFromEdit->setMaximumDate(current);
         connect(mFromEdit, &QDateEdit::dateChanged, this, [=](const QDate &date) {
             if (date > mToEdit->date())
@@ -59,8 +63,6 @@ namespace Evernus
 
         mainLayout->addWidget(new QLabel{tr("Moving average days:"), this});
 
-        QSettings settings;
-
         mSMADaysEdit = new QSpinBox{this};
         mainLayout->addWidget(mSMADaysEdit);
         mSMADaysEdit->setMinimum(2);
@@ -70,18 +72,31 @@ namespace Evernus
 
         mMACDFastDaysEdit = new QSpinBox{this};
         mainLayout->addWidget(mMACDFastDaysEdit);
+        mMACDFastDaysEdit->setToolTip(tr("Fast days."));
         mMACDFastDaysEdit->setMinimum(2);
         mMACDFastDaysEdit->setValue(settings.value(MarketAnalysisSettings::macdFastDaysKey, MarketAnalysisSettings::macdFastDaysDefault).toInt());
 
         mMACDSlowDaysEdit = new QSpinBox{this};
         mainLayout->addWidget(mMACDSlowDaysEdit);
+        mMACDSlowDaysEdit->setToolTip(tr("Slow days."));
         mMACDSlowDaysEdit->setMinimum(2);
         mMACDSlowDaysEdit->setValue(settings.value(MarketAnalysisSettings::macdSlowDaysKey, MarketAnalysisSettings::macdSlowDaysDefault).toInt());
 
         mMACDEMADaysEdit = new QSpinBox{this};
         mainLayout->addWidget(mMACDEMADaysEdit);
+        mMACDEMADaysEdit->setToolTip(tr("EMA days."));
         mMACDEMADaysEdit->setMinimum(2);
         mMACDEMADaysEdit->setValue(settings.value(MarketAnalysisSettings::macdEmaDaysKey, MarketAnalysisSettings::macdEmaDaysDefault).toInt());
+
+        mainLayout->addWidget(new QLabel{tr("Volume graph:"), this});
+
+        mVolumeTypeEdit = new QComboBox{this};
+        mainLayout->addWidget(mVolumeTypeEdit);
+        mVolumeTypeEdit->addItem(tr("Volume"), static_cast<int>(VolumeType::Volume));
+        mVolumeTypeEdit->addItem(tr("Order count"), static_cast<int>(VolumeType::OrderCount));
+        mVolumeTypeEdit->setCurrentIndex(mVolumeTypeEdit->findData(
+            settings.value(MarketAnalysisSettings::volumeGraphTypeKey, MarketAnalysisSettings::volumeGraphTypeDefault).toInt()
+        ));
 
         auto filterBtn = new QPushButton{tr("Apply"), this};
         mainLayout->addWidget(filterBtn);
@@ -90,19 +105,23 @@ namespace Evernus
             const auto macdFastDays = getMACDFastDays();
             const auto macdSlowDays = getMACDSlowDays();
             const auto macdEmaDays = getMACDEMADays();
+            const auto volumeType = getVolumeType();
 
             QSettings settings;
             settings.setValue(MarketAnalysisSettings::smaDaysKey, smaDays);
             settings.setValue(MarketAnalysisSettings::macdFastDaysKey, macdFastDays);
             settings.setValue(MarketAnalysisSettings::macdSlowDaysKey, macdSlowDays);
             settings.setValue(MarketAnalysisSettings::macdEmaDaysKey, macdEmaDays);
+            settings.setValue(MarketAnalysisSettings::volumeGraphTypeKey,
+                              static_cast<int>(volumeType));
 
             emit applyFilter(getFrom(),
                              getTo(),
                              smaDays,
                              macdFastDays,
                              macdSlowDays,
-                             macdEmaDays);
+                             macdEmaDays,
+                             volumeType);
         });
 
         auto addTrendLineBtn = new QPushButton{tr("Add trend line"), this};
@@ -150,5 +169,10 @@ namespace Evernus
     int TypeAggregatedDetailsFilterWidget::getMACDEMADays() const
     {
         return mMACDEMADaysEdit->value();
+    }
+
+    VolumeType TypeAggregatedDetailsFilterWidget::getVolumeType() const
+    {
+        return static_cast<VolumeType>(mVolumeTypeEdit->currentData().toInt());
     }
 }

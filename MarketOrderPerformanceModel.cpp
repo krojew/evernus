@@ -54,7 +54,7 @@ namespace Evernus
 
     QVariant MarketOrderPerformanceModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return {};
 
         const auto column = index.column();

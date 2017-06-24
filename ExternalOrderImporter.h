@@ -34,8 +34,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
-        typedef std::unordered_set<TypeLocationPair, boost::hash<TypeLocationPair>> TypeLocationPairs;
+        using TypeLocationPair = std::pair<EveType::IdType, quint64>;
+        using TypeLocationPairs = std::unordered_set<TypeLocationPair, boost::hash<TypeLocationPair>>;
 
         using QObject::QObject;
         virtual ~ExternalOrderImporter() = default;

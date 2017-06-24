@@ -19,6 +19,7 @@
 #include <QWidget>
 
 #include "MarketHistoryEntry.h"
+#include "VolumeType.h"
 
 class QCPFinancial;
 class QCustomPlot;
@@ -48,7 +49,8 @@ namespace Evernus
                          int smaDays,
                          int macdFastDays,
                          int macdSlowDays,
-                         int macdEmaDays);
+                         int macdEmaDays,
+                         VolumeType volumeType);
         void addTrendLine(const QDate &start, const QDate &end);
 
     private:

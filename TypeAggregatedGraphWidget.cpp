@@ -225,8 +225,11 @@ namespace Evernus
                                                 int smaDays,
                                                 int macdFastDays,
                                                 int macdSlowDays,
-                                                int macdEmaDays)
+                                                int macdEmaDays,
+                                                VolumeType volumeType)
     {
+        mHistoryPlot->yAxis2->setLabel((volumeType == VolumeType::OrderCount) ? (tr("Order count")) : (tr("Volume")));
+
         const auto size = start.daysTo(end) + 1;
 
         auto prevAvg = 0.;
@@ -293,10 +296,14 @@ namespace Evernus
                 u = std::max(0., it->second.mAvgPrice - prevAvg);
                 d = std::max(0., prevAvg - it->second.mAvgPrice);
 
-                volAcc(it->second.mVolume);
+                const auto volumeValue = (volumeType == VolumeType::OrderCount) ?
+                                         (it->second.mOrders) :
+                                         (it->second.mVolume);
+
+                volAcc(volumeValue);
                 prcAcc(it->second.mAvgPrice);
 
-                volumes << it->second.mVolume;
+                volumes << volumeValue;
                 open << std::max(std::min(prevAvg, it->second.mHighPrice), it->second.mLowPrice);
                 high << it->second.mHighPrice;
                 low << it->second.mLowPrice;
@@ -349,7 +356,9 @@ namespace Evernus
             if (it == std::end(mHistory))
                 continue;
 
-            if (it->second.mVolume < volMean - volStdDev2 || it->second.mVolume > volMean + volStdDev2)
+            const auto value = (volumeType == VolumeType::OrderCount) ? (it->second.mOrders) : (it->second.mVolume);
+
+            if (value < volMean - volStdDev2 || value > volMean + volStdDev2)
             {
                 volumeFlagDates << QDateTime{date}.toMSecsSinceEpoch() / 1000.;
                 volumeFlags << volumes[start.daysTo(date)];
@@ -357,6 +366,13 @@ namespace Evernus
         }
 
         deleteTrendLine();
+
+        mHistoryVolumeGraph->setName(
+            (volumeType == VolumeType::OrderCount) ? (tr("Order count")) : (tr("Volume"))
+        );
+        mHistoryVolumeFlagGraph->setName(
+            (volumeType == VolumeType::OrderCount) ? (tr("Unusual order count")) : (tr("Unusual volume"))
+        );
 
         mHistoryValuesGraph->setData(dates, open, high, low, close);
         mHistoryVolumeGraph->setData(dates, volumes);

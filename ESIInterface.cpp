@@ -65,7 +65,7 @@ namespace Evernus
     {
         qDebug() << "Opening market details for" << typeId;
         auto opener = [=](const auto &error) {
-            if (!error.isEmpty())
+            if (Q_UNLIKELY(!error.isEmpty()))
             {
                 errorCallback(error);
             }
@@ -83,7 +83,7 @@ namespace Evernus
         qDebug() << "Setting destination:" << locationId;
 
         auto setter = [=](const auto &error) {
-            if (!error.isEmpty())
+            if (Q_UNLIKELY(!error.isEmpty()))
             {
                 errorCallback(error);
             }
@@ -140,7 +140,7 @@ namespace Evernus
     void ESIInterface::fetchPaginatedData(const QString &url, uint page, T &&continuation) const
     {
         asyncGet(url, QStringLiteral("page=%1").arg(page), [=](auto &&response, const auto &error) {
-            if (!error.isEmpty())
+            if (Q_UNLIKELY(!error.isEmpty()))
             {
                 continuation({}, true, error);
                 return;
@@ -163,7 +163,7 @@ namespace Evernus
     void ESIInterface::fetchPaginatedData(Character::IdType charId, const QString &url, uint page, T &&continuation, bool suppressForbidden) const
     {
         asyncGet(charId, url, QStringLiteral("page=%1").arg(page), [=](auto &&response, const auto &error) {
-            if (!error.isEmpty())
+            if (Q_UNLIKELY(!error.isEmpty()))
             {
                 continuation({}, true, error);
                 return;
@@ -198,7 +198,7 @@ namespace Evernus
             reply->deleteLater();
 
             const auto error = reply->error();
-            if (error != QNetworkReply::NoError)
+            if (Q_UNLIKELY(error != QNetworkReply::NoError))
             {
                 if (retries > 0)
                     asyncGet(url, query, continuation, retries - 1);
@@ -229,7 +229,7 @@ namespace Evernus
             reply->deleteLater();
 
             const auto error = reply->error();
-            if (error != QNetworkReply::NoError)
+            if (Q_UNLIKELY(error != QNetworkReply::NoError))
             {
                 if (error == QNetworkReply::AuthenticationRequiredError)
                 {
@@ -285,7 +285,7 @@ namespace Evernus
             reply->deleteLater();
 
             const auto error = reply->error();
-            if (error != QNetworkReply::NoError)
+            if (Q_UNLIKELY(error != QNetworkReply::NoError))
             {
                 if (error == QNetworkReply::AuthenticationRequiredError)
                 {
@@ -305,7 +305,7 @@ namespace Evernus
             else
             {
                 const auto errorText = reply->readAll();
-                if (!errorText.isEmpty())
+                if (Q_UNLIKELY(!errorText.isEmpty()))
                     errorCallback(errorText);
             }
         });

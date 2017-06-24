@@ -76,6 +76,8 @@ namespace Evernus
             dstPriceColumn,
             differenceColumn,
             volumeColumn,
+            buyOrderCountColumn,
+            sellOrderCountColumn,
             marginColumn,
 
             numColumns
@@ -89,6 +91,8 @@ namespace Evernus
             double mDifference = 0.;
             double mVolume = 0;
             double mMargin = 0.;
+            quint64 mBuyOrderCount = 0;
+            quint64 mSellOrderCount = 0;
         };
 
         const EveDataProvider &mDataProvider;

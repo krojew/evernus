@@ -57,7 +57,7 @@ namespace Evernus
 
     QVariant ImportingDataModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         const auto column = index.column();
@@ -80,6 +80,10 @@ namespace Evernus
                         return QStringLiteral("0%1").arg(locale.percent());
 
                     return QStringLiteral("%1%2").arg(locale.toString(data.mDstVolume * 100 / data.mAvgVolume, 'f', 2)).arg(locale.percent());
+                case srcOrderCountColumn:
+                    return locale.toString(data.mSrcOrderCount);
+                case dstOrderCountColumn:
+                    return locale.toString(data.mDstOrderCount);
                 case dstPriceColumn:
                     return TextUtils::currencyToString(data.mDstPrice, locale);
                 case srcPriceColumn:
@@ -108,6 +112,10 @@ namespace Evernus
                     return 0;
 
                 return data.mDstVolume * 100 / data.mAvgVolume;
+            case srcOrderCountColumn:
+                return data.mSrcOrderCount;
+            case dstOrderCountColumn:
+                return data.mDstOrderCount;
             case dstPriceColumn:
                 return data.mDstPrice;
             case srcPriceColumn:
@@ -143,12 +151,16 @@ namespace Evernus
                 return tr("Dst. remaining volume");
             case relativeDstVolumeColumn:
                 return tr("Relative dst. remaining volume");
+            case srcOrderCountColumn:
+                return tr("Source order count");
+            case dstOrderCountColumn:
+                return tr("Destination order count");
             case dstPriceColumn:
                 return tr("5% volume destination price");
             case srcPriceColumn:
                 return tr("5% volume source price");
             case importPriceColumn:
-                return tr("Import price (src. price + price per m³)");
+                return tr("Import price (src. price + price per m³ + collateral)");
             case priceDifferenceColumn:
                 return tr("Price difference");
             case marginColumn:
@@ -185,7 +197,7 @@ namespace Evernus
 
     EveType::IdType ImportingDataModel::getTypeId(const QModelIndex &index) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return EveType::invalidId;
 
         return mData[index.row()].mId;
@@ -199,7 +211,8 @@ namespace Evernus
                                           PriceType dstPriceType,
                                           int analysisDays,
                                           int aggrDays,
-                                          double pricePerM3)
+                                          double pricePerM3,
+                                          double collateral)
     {
         beginResetModel();
 
@@ -222,6 +235,8 @@ namespace Evernus
             quint64 mTotalVolume = 0;
             double mDstPrice = 0.;
             double mSrcPrice = 0.;
+            quint64 mSrcOrderCount = 0;
+            quint64 mDstOrderCount = 0;
         };
 
         TypeMap<TypeData> typeMap;
@@ -293,11 +308,11 @@ namespace Evernus
 
             // go through dst history to calculate avg price and total trade volume
             const auto dstTypeHistory = dstHistory->second.find(typeId);
-            if (dstTypeHistory != std::end(dstHistory->second))
+            if (Q_LIKELY(dstTypeHistory != std::end(dstHistory->second)))
             {
                 for (const auto &timePoint : boost::adaptors::reverse(dstTypeHistory->second))
                 {
-                    if (timePoint.first < historyLimit)
+                    if (Q_UNLIKELY(timePoint.first < historyLimit))
                         break;
 
                     data.mTotalVolume += timePoint.second.mVolume;
@@ -306,22 +321,28 @@ namespace Evernus
             }
 
             const auto srcTypeHistory = srcHistory->second.find(typeId);
-            if (srcTypeHistory != std::end(srcHistory->second))
+            if (Q_LIKELY(srcTypeHistory != std::end(srcHistory->second)))
             {
                 for (const auto &timePoint : boost::adaptors::reverse(srcTypeHistory->second))
                 {
-                    if (timePoint.first < historyLimit)
+                    if (Q_UNLIKELY(timePoint.first < historyLimit))
                         break;
 
                     srcPriceAcc(timePoint.second.mAvgPrice);
                 }
             }
 
+            const auto &typeSrcOrders = srcOrders[typeId];
+            const auto &typeDstOrders = dstOrders[typeId];
+
+            data.mSrcOrderCount = typeSrcOrders.size();
+            data.mDstOrderCount = typeDstOrders.size();
+
             // dst orders are by default sorted from lowest price, which means we need to reverse them if we
             // want to sell to buy orders, which are highest first
             if (dstPriceType == PriceType::Sell)
             {
-                data.mDstPrice = MathUtils::calcPercentile(dstOrders[typeId],
+                data.mDstPrice = MathUtils::calcPercentile(typeDstOrders,
                                                            dstVolumes[typeId] * volumePercentile,
                                                            mean(dstPriceAcc),
                                                            mDiscardBogusOrders,
@@ -329,7 +350,7 @@ namespace Evernus
             }
             else
             {
-                data.mDstPrice = MathUtils::calcPercentile(boost::adaptors::reverse(dstOrders[typeId]),
+                data.mDstPrice = MathUtils::calcPercentile(boost::adaptors::reverse(typeDstOrders),
                                                            dstVolumes[typeId] * volumePercentile,
                                                            mean(dstPriceAcc),
                                                            mDiscardBogusOrders,
@@ -339,7 +360,7 @@ namespace Evernus
             // same logic for src orders
             if (srcPriceType == PriceType::Buy)
             {
-                data.mSrcPrice = MathUtils::calcPercentile(srcOrders[typeId],
+                data.mSrcPrice = MathUtils::calcPercentile(typeSrcOrders,
                                                            srcVolumes[typeId] * volumePercentile,
                                                            mean(srcPriceAcc),
                                                            mDiscardBogusOrders,
@@ -347,7 +368,7 @@ namespace Evernus
             }
             else
             {
-                data.mSrcPrice = MathUtils::calcPercentile(boost::adaptors::reverse(srcOrders[typeId]),
+                data.mSrcPrice = MathUtils::calcPercentile(boost::adaptors::reverse(typeSrcOrders),
                                                            srcVolumes[typeId] * volumePercentile,
                                                            mean(srcPriceAcc),
                                                            mDiscardBogusOrders,
@@ -371,6 +392,8 @@ namespace Evernus
 
         mData.reserve(typeMap.size());
 
+        collateral += 1.;
+
         for (const auto &type : typeMap)
         {
             mData.emplace_back();
@@ -379,6 +402,8 @@ namespace Evernus
             data.mId = type.first;
             data.mAvgVolume = static_cast<double>(type.second.mTotalVolume) * aggrDays / analysisDays;
             data.mDstVolume = dstSellVolumes[data.mId];
+            data.mSrcOrderCount = type.second.mSrcOrderCount;
+            data.mDstOrderCount = type.second.mDstOrderCount;
 
             if (useSkillsForDifference)
             {
@@ -395,7 +420,7 @@ namespace Evernus
                 data.mSrcPrice = type.second.mSrcPrice;
             }
 
-            data.mImportPrice = data.mSrcPrice + mDataProvider.getTypeVolume(data.mId) * pricePerM3;
+            data.mImportPrice = data.mSrcPrice * collateral + mDataProvider.getTypeVolume(data.mId) * pricePerM3;
             data.mPriceDifference = data.mDstPrice - data.mImportPrice;
             data.mMargin = (qFuzzyIsNull(data.mDstPrice)) ? (0.) : (100. * data.mPriceDifference / data.mDstPrice);
             data.mProjectedProfit = data.mAvgVolume * data.mPriceDifference;

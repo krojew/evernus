@@ -68,7 +68,8 @@ namespace Evernus
                           PriceType dstPriceType,
                           int analysisDays,
                           int aggrDays,
-                          double pricePerM3);
+                          double pricePerM3,
+                          double collateral);
 
         void reset();
 
@@ -82,6 +83,8 @@ namespace Evernus
             avgVolumeColumn,
             dstVolumeColumn,
             relativeDstVolumeColumn,
+            srcOrderCountColumn,
+            dstOrderCountColumn,
             srcPriceColumn,
             importPriceColumn,
             dstPriceColumn,
@@ -103,6 +106,8 @@ namespace Evernus
             double mPriceDifference = 0.;
             double mMargin = 0.;
             double mProjectedProfit = 0.;
+            quint64 mSrcOrderCount = 0;
+            quint64 mDstOrderCount = 0;
         };
 
         const EveDataProvider &mDataProvider;

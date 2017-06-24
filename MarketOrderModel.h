@@ -84,5 +84,7 @@ namespace Evernus
         virtual int getVolumeColumn() const = 0;
 
         virtual Type getType() const = 0;
+
+        virtual void removeIndexes(const QModelIndexList &indexes) = 0;
     };
 }

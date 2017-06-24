@@ -28,6 +28,7 @@
 #include <QDebug>
 
 #include "EveDataProvider.h"
+#include "ArbitrageUtils.h"
 #include "ExternalOrder.h"
 #include "PriceUtils.h"
 #include "TextUtils.h"
@@ -68,7 +69,7 @@ namespace Evernus
 
     QVariant OreReprocessingArbitrageModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return {};
 
         const auto column = index.column();
@@ -218,7 +219,8 @@ namespace Evernus
         };
 
         const auto isSrcOrder = [&](const auto &order) {
-            return isValidRegion(allSrcRegions, srcRegions, order) &&
+            return order.getType() == ExternalOrder::Type::Sell &&
+                   isValidRegion(allSrcRegions, srcRegions, order) &&
                    isValidStation(srcStation, order);
         };
 
@@ -259,38 +261,6 @@ namespace Evernus
         // for given type, try to find arbitrage opportunities from source orders to dst orders
         // we have 2 versions to avoid branching logic - selling to buy orders and using sell orders
 
-        struct UsedOrder
-        {
-            uint mVolume;
-            double mPrice;
-        };
-
-        // buy/sell a volume of stuff from orders
-        const auto fillOrders = [](auto &orders, auto volume) {
-            std::vector<UsedOrder> usedOrders;
-            for (auto &order : orders)
-            {
-                const auto orderVolume = order.getVolumeRemaining();
-                if (volume >= order.getMinVolume() && orderVolume > 0)
-                {
-                    const auto amount = std::min(orderVolume, volume);
-                    volume -= amount;
-
-                    // NOTE: we're casting away const, but not modifying the actual set key
-                    // looks dirty, but there's no partial constness
-                    const_cast<ExternalOrder &>(order).setVolumeRemaining(orderVolume - amount);
-
-                    UsedOrder used{amount, order.getPrice()};
-                    usedOrders.emplace_back(used);
-
-                    if (volume == 0)
-                        break;
-                }
-            }
-
-            return usedOrders;
-        };
-
         // NOTE: using std::function because QtConcurrent::mapped cannot infer the result type properly
         const std::function<ItemData (const EveDataProvider::ReprocessingMap::value_type &)> findArbitrageForBuy = [&](const auto &reprocessingInfo) {
             Q_ASSERT(dstPriceType == PriceType::Buy);
@@ -298,11 +268,11 @@ namespace Evernus
             qDebug() << "Finding arbitrage opportunities for" << reprocessingInfo.first;
 
             const auto sellOrderList = sellMap.find(reprocessingInfo.first);
-            if (sellOrderList == std::end(sellMap))
+            if (Q_UNLIKELY(sellOrderList == std::end(sellMap)))
                 return ItemData{};
 
             const auto skill = mReprocessingSkillMap.find(reprocessingInfo.second.mGroupId);
-            if (skill == std::end(mReprocessingSkillMap))
+            if (Q_UNLIKELY(skill == std::end(mReprocessingSkillMap)))
             {
                 qWarning() << "Missing reprocessing skill for" << reprocessingInfo.first;
                 return ItemData{};
@@ -313,7 +283,7 @@ namespace Evernus
             for (const auto &material : reprocessingInfo.second.mMaterials)
             {
                 const auto buyOrderList = buyMap.find(material.mMaterialId);
-                if (buyOrderList == std::end(buyMap))
+                if (Q_UNLIKELY(buyOrderList == std::end(buyMap)))
                     continue;
 
                 localBuyMap.emplace(std::piecewise_construct,
@@ -333,7 +303,7 @@ namespace Evernus
                 QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
                 // unsychronized access but that's ok, since only one thread touches given type orders
-                const auto bought = fillOrders(sellOrderList->second, requiredVolume);
+                const auto bought = ArbitrageUtils::fillOrders(sellOrderList->second, requiredVolume, true);
                 if (bought.empty()) // no more volume to buy
                     break;
 
@@ -352,7 +322,7 @@ namespace Evernus
                     if (buyOrderList == std::end(localBuyMap))   // can't sell this one, maybe there's still profit to be made
                         continue;
 
-                    const auto sold = fillOrders(buyOrderList->second, sellVolume);
+                    const auto sold = ArbitrageUtils::fillOrders(buyOrderList->second, sellVolume, false);
 
                     // cannot sell some stuff, so let's advance in hope we turn in a profit from other materials
                     if (sold.empty())
@@ -407,11 +377,11 @@ namespace Evernus
             qDebug() << "Finding arbitrage opportunities for" << reprocessingInfo.first;
 
             const auto sellOrderList = sellMap.find(reprocessingInfo.first);
-            if (sellOrderList == std::end(sellMap))
+            if (Q_UNLIKELY(sellOrderList == std::end(sellMap)))
                 return ItemData{};
 
             const auto skill = mReprocessingSkillMap.find(reprocessingInfo.second.mGroupId);
-            if (skill == std::end(mReprocessingSkillMap))
+            if (Q_UNLIKELY(skill == std::end(mReprocessingSkillMap)))
             {
                 qWarning() << "Missing reprocessing skill for" << reprocessingInfo.first;
                 return ItemData{};
@@ -454,7 +424,7 @@ namespace Evernus
                 QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
                 // unsychronized access but that's ok, since only one thread touches given type orders
-                const auto bought = fillOrders(sellOrderList->second, requiredVolume);
+                const auto bought = ArbitrageUtils::fillOrders(sellOrderList->second, requiredVolume, true);
                 if (bought.empty()) // no more volume to buy
                     break;
 

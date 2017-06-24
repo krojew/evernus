@@ -38,6 +38,7 @@
 #include "EvernusApplication.h"
 #include "UpdaterSettings.h"
 #include "MainWindow.h"
+#include "VolumeType.h"
 #include "Version.h"
 
 int main(int argc, char *argv[])
@@ -52,6 +53,8 @@ int main(int argc, char *argv[])
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
         Evernus::ChainableFileLogger::initialize();
+
+        qSetMessagePattern(QStringLiteral("[%{type}] %{time} %{threadid} %{message}"));
 
 #ifdef Q_OS_WIN
         const auto serverName = QCoreApplication::applicationName() + ".socket";
@@ -125,6 +128,7 @@ int main(int argc, char *argv[])
         qRegisterMetaType<Evernus::MarketAnalysisDataFetcher::OrderResultType>("OrderResultType");
         qRegisterMetaType<Evernus::MarketAnalysisDataFetcher::HistoryResultType>("MarketAnalysisDataFetcher::HistoryResultType");
         qRegisterMetaType<Evernus::MarketAnalysisDataFetcher::HistoryResultType>("HistoryResultType");
+        qRegisterMetaType<Evernus::VolumeType>("VolumeType");
 
         Evernus::EvernusApplication app{argc, argv};
 

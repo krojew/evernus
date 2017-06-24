@@ -226,7 +226,7 @@ namespace Evernus
             reply->deleteLater();
 
             const auto error = reply->error();
-            if (error != QNetworkReply::NoError && retries > 0)
+            if (Q_UNLIKELY(error != QNetworkReply::NoError && retries > 0))
             {
                 mPendingCallbacks.erase(reply);
                 makeRequest(endpoint, key, callback, retries - 1, additionalParams);

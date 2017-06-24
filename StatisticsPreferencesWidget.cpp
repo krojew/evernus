@@ -18,7 +18,9 @@
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QSpinBox>
 
+#include "MarketAnalysisSettings.h"
 #include "StatisticsSettings.h"
 #include "ColorButton.h"
 #include "UISettings.h"
@@ -103,6 +105,18 @@ namespace Evernus
         appearanceGroupLayout->addRow(resetColors);
         connect(resetColors, &QPushButton::clicked, this, &StatisticsPreferencesWidget::resetPlotColors);
 
+        const auto miscGroup = new QGroupBox{this};
+        mainLayout->addWidget(miscGroup);
+
+        const auto miscGroupLayout = new QFormLayout{miscGroup};
+
+        mDefaultAggregatedGraphPeriodEdit = new QSpinBox{this};
+        miscGroupLayout->addRow(tr("Default period for item details graphs:"), mDefaultAggregatedGraphPeriodEdit);
+        mDefaultAggregatedGraphPeriodEdit->setRange(1, 365);
+        mDefaultAggregatedGraphPeriodEdit->setSuffix(tr(" days"));
+        mDefaultAggregatedGraphPeriodEdit->setValue(
+            settings.value(MarketAnalysisSettings::typeAggregatedChartDurationKey, MarketAnalysisSettings::typeAggregatedChartDurationDefault).toInt());
+
         mainLayout->addStretch();
     }
 
@@ -119,6 +133,7 @@ namespace Evernus
         settings.setValue(StatisticsSettings::statisticsBuyOrderPlotColorKey, mBuyOrdersPlotColorBtn->getColor());
         settings.setValue(StatisticsSettings::statisticsSellOrderPlotColorKey, mSellOrdersPlotColorBtn->getColor());
         settings.setValue(StatisticsSettings::statisticsTotalPlotColorKey, mTotalPlotColorBtn->getColor());
+        settings.setValue(MarketAnalysisSettings::typeAggregatedChartDurationKey, mDefaultAggregatedGraphPeriodEdit->value());
     }
 
     void StatisticsPreferencesWidget::resetPlotColors()

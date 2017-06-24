@@ -126,22 +126,6 @@ namespace Evernus
         return createIndex(parentItem->row(), 0, parentItem);
     }
 
-    bool MarketOrderTreeModel::removeRows(int row, int count, const QModelIndex &parent)
-    {
-        beginRemoveRows(parent, row, row + count);
-
-        for (auto i = row; i < row + count; ++i)
-        {
-            const auto order = getOrder(index(i, 0, parent));
-            if (order != nullptr)
-                handleOrderRemoval(*order);
-        }
-
-        endRemoveRows();
-
-        return true;
-    }
-
     int MarketOrderTreeModel::rowCount(const QModelIndex &parent) const
     {
         const TreeItem *parentItem = nullptr;
@@ -216,6 +200,28 @@ namespace Evernus
 
         const auto item = static_cast<const TreeItem *>(index.internalPointer());
         return item->getOrder();
+    }
+
+    void MarketOrderTreeModel::removeIndexes(const QModelIndexList &indexes)
+    {
+        std::vector<const MarketOrder *> orders;
+        orders.reserve(indexes.size());
+
+        for (const auto &index : indexes)
+        {
+            const auto order = getOrder(index);
+            if (Q_LIKELY(order != nullptr))
+                orders.emplace_back(order);
+        }
+
+        for (const auto order : orders)
+            handleOrderRemoval(*order);
+
+        for (const auto &index : indexes)
+        {
+            beginRemoveRows(parent(index), index.row(), index.row() + 1);
+            endRemoveRows();
+        }
     }
 
     void MarketOrderTreeModel::setCharacter(Character::IdType id)
@@ -309,12 +315,6 @@ namespace Evernus
             group = mDataProvider.getTypeMarketGroupName(typeId);
 
         return group;
-    }
-
-    quint64 MarketOrderTreeModel::getStationId(const MarketOrder &order)
-    {
-        const auto customStation = order.getCustomStationId();
-        return (customStation) ? (*customStation) : (order.getStationId());
     }
 
     void MarketOrderTreeModel::handleNewCharacter(Character::IdType /* characterId */)

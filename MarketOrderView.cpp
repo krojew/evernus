@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
+
 #include <QDesktopServices>
 #include <QWidgetAction>
 #include <QApplication>
@@ -320,9 +322,12 @@ namespace Evernus
         if (mSource == nullptr)
             return;
 
-        const auto selection = getSelectionModel()->selectedRows();
-        if (!selection.isEmpty())
-            mProxy.removeRow(selection.first().row(), mProxy.parent(selection.first()));
+        auto indexes = getSelectionModel()->selectedRows();
+        std::transform(std::begin(indexes), std::end(indexes), std::begin(indexes), [=](const auto &index) {
+            return mProxy.mapToSource(index);
+        });
+
+        mSource->removeIndexes(indexes);
     }
 
     void MarketOrderView::showExternalOrdersForCurrent()

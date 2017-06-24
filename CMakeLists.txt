@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(PROJECT_NAME "evernus")
 set(MAJOR_VERSION "2")
-set(MINOR_VERSION "0")
+set(MINOR_VERSION "1")
 
 find_package(Boost REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
@@ -126,6 +126,7 @@ add_executable(
     APIUtils.cpp
     APIUtils.h
     APIXmlReceiver.h
+    ArbitrageUtils.h
     AssetList.cpp
     AssetList.h
     AssetListRepository.cpp
@@ -441,6 +442,8 @@ add_executable(
     MarketOrderArchiveModel.h
     MarketOrderBuyModel.cpp
     MarketOrderBuyModel.h
+    MarketOrderDataFetcher.cpp
+    MarketOrderDataFetcher.h
     MarketOrderFilterProxyModel.cpp
     MarketOrderFilterProxyModel.h
     MarketOrderFilterWidget.cpp
@@ -695,6 +698,7 @@ add_executable(
     UpdateTimerRepository.cpp
     UpdateTimerRepository.h
     Version.h
+    VolumeType.h
     WalletEntryFilterWidget.cpp
     WalletEntryFilterWidget.h
     WalletJournal.h

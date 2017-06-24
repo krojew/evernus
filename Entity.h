@@ -50,4 +50,4 @@ namespace Evernus
     };
 }
 
-#include "Entity.cpp"
+#include "Entity.inl"

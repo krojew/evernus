@@ -96,6 +96,7 @@ namespace Evernus
 
         mDontSaveBtn = new QCheckBox{tr("Don't save imported orders (huge performance gain)"), this};
         toolBarLayout->addWidget(mDontSaveBtn);
+        mDontSaveBtn->setToolTip(tr("Saving orders makes them available to other parts of the application, even across restarts."));
         mDontSaveBtn->setChecked(
             settings.value(MarketAnalysisSettings::dontSaveLargeOrdersKey, MarketAnalysisSettings::dontSaveLargeOrdersDefault).toBool());
         connect(mDontSaveBtn, &QCheckBox::toggled, [](auto checked) {
@@ -105,7 +106,7 @@ namespace Evernus
 
         mIgnoreExistingOrdersBtn = new QCheckBox{tr("Ignore types with existing orders"), this};
         toolBarLayout->addWidget(mIgnoreExistingOrdersBtn);
-        mIgnoreExistingOrdersBtn->setToolTip(tr("Ignore item types wich have active market orders."));
+        mIgnoreExistingOrdersBtn->setToolTip(tr("Ignore item types which have active market orders."));
         mIgnoreExistingOrdersBtn->setChecked(
             settings.value(MarketAnalysisSettings::ignoreExistingOrdersKey, MarketAnalysisSettings::ignoreExistingOrdersDefault).toBool());
         connect(mIgnoreExistingOrdersBtn, &QCheckBox::toggled, [](auto checked) {
@@ -176,7 +177,7 @@ namespace Evernus
         mSrcPriceTypeCombo->blockSignals(true);
         mSrcPriceTypeCombo->setCurrentIndex(1);
         mSrcPriceTypeCombo->blockSignals(false);
-        mSrcPriceTypeCombo->setToolTip(tr("Type of orders used for buing items."));
+        mSrcPriceTypeCombo->setToolTip(tr("Type of orders used for buying items."));
 
         toolBarLayout->addWidget(new QLabel{tr("Destination price:"), this});
         createPriceTypeCombo(mDstPriceTypeCombo);

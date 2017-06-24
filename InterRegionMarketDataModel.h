@@ -86,8 +86,10 @@ namespace Evernus
             scoreColumn,
             srcRegionColumn,
             srcPriceColumn,
+            srcOrderCountColumn,
             dstRegionColumn,
             dstPriceColumn,
+            dstOrderCountColumn,
             differenceColumn,
             volumeColumn,
             marginColumn,
@@ -107,6 +109,10 @@ namespace Evernus
             uint mSrcRegion = 0;
             uint mDstRegion = 0;
             double mMargin = 0.;
+            quint64 mSrcBuyOrderCount = 0;
+            quint64 mSrcSellOrderCount = 0;
+            quint64 mDstBuyOrderCount = 0;
+            quint64 mDstSellOrderCount = 0;
         };
 
         const EveDataProvider &mDataProvider;

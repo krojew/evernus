@@ -59,7 +59,7 @@ namespace Evernus
 
     QVariant MarketOrderSellModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         const auto item = static_cast<const TreeItem *>(index.internalPointer());
@@ -86,8 +86,8 @@ namespace Evernus
                 QSettings settings;
 
                 const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
-                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
+                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getEffectiveStationId())) :
+                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getEffectiveStationId())));
                 if (price->isNew())
                     return tr("No price data -> Please import prices from Orders/Assets tab or by using Margin tool.");
 
@@ -116,8 +116,8 @@ namespace Evernus
                 QSettings settings;
 
                 const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
-                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
+                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getEffectiveStationId())) :
+                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getEffectiveStationId())));
                 if (price->isNew())
                     return QIcon{":/images/error.png"};
 
@@ -154,8 +154,8 @@ namespace Evernus
                     QSettings settings;
 
                     const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
-                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
+                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getEffectiveStationId())) :
+                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getEffectiveStationId())));
                     if (price->isNew())
                         return 1;
 
@@ -170,8 +170,8 @@ namespace Evernus
                     QSettings settings;
 
                     const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
-                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
+                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getEffectiveStationId())) :
+                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getEffectiveStationId())));
                     if (price->isNew())
                         break;
 
@@ -185,8 +185,8 @@ namespace Evernus
 
                     QSettings settings;
                     const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
-                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
+                                       (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getEffectiveStationId())) :
+                                       (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getEffectiveStationId())));
 
                     return (price->getPrice() - data->getPrice()) / cost->getAdjustedCost();
                 }
@@ -298,8 +298,8 @@ namespace Evernus
                         QSettings settings;
 
                         const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
-                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
+                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getEffectiveStationId())) :
+                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getEffectiveStationId())));
                         if (price->isNew())
                             return tr("No price data");
 
@@ -313,8 +313,8 @@ namespace Evernus
                         QSettings settings;
 
                         const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
-                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
+                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getEffectiveStationId())) :
+                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getEffectiveStationId())));
                         if (price->isNew())
                             break;
 
@@ -330,8 +330,8 @@ namespace Evernus
                         QSettings settings;
 
                         const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
-                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
+                                           (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getEffectiveStationId())) :
+                                           (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getEffectiveStationId())));
 
                         return QString{"%1%2"}
                             .arg(locale.toString(100. * (price->getPrice() - data->getPrice()) / cost->getAdjustedCost(), 'f', 2))
@@ -423,8 +423,8 @@ namespace Evernus
                 QSettings settings;
 
                 const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), getStationId(*data))) :
-                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(getStationId(*data))));
+                                   (mDataProvider.getTypeStationSellPrice(data->getTypeId(), data->getEffectiveStationId())) :
+                                   (mDataProvider.getTypeRegionSellPrice(data->getTypeId(), mDataProvider.getStationRegionId(data->getEffectiveStationId())));
                 if (!price->isNew())
                 {
                     if (price->getPrice() < data->getPrice())
@@ -563,14 +563,14 @@ namespace Evernus
     {
         const auto item = static_cast<const TreeItem *>(index.internalPointer());
         const auto order = item->getOrder();
-        if (order == nullptr)
+        if (Q_UNLIKELY(order == nullptr))
             return OrderInfo{};
 
         QSettings settings;
 
         const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                           (mDataProvider.getTypeStationSellPrice(order->getTypeId(), getStationId(*order))) :
-                           (mDataProvider.getTypeRegionSellPrice(order->getTypeId(), mDataProvider.getStationRegionId(getStationId(*order))));
+                           (mDataProvider.getTypeStationSellPrice(order->getTypeId(), order->getEffectiveStationId())) :
+                           (mDataProvider.getTypeRegionSellPrice(order->getTypeId(), mDataProvider.getStationRegionId(order->getEffectiveStationId())));
 
         OrderInfo info;
         info.mOrderPrice = order->getPrice();
@@ -673,7 +673,7 @@ namespace Evernus
         mTotalIncome = 0.;
 
         const auto character = mCharacters.find(characterId);
-        if (character == std::end(mCharacters))
+        if (Q_UNLIKELY(character == std::end(mCharacters)))
             return OrderList{};
 
         const auto orders = (mCorp) ?
@@ -753,7 +753,7 @@ namespace Evernus
     double MarketOrderSellModel::getMargin(const MarketOrder &order) const
     {
         const auto character = mCharacters.find(order.getCharacterId());
-        if (character == std::end(mCharacters))
+        if (Q_UNLIKELY(character == std::end(mCharacters)))
             return 0.;
 
         const auto taxes = PriceUtils::calculateTaxes(*character->second);
@@ -764,14 +764,14 @@ namespace Evernus
     double MarketOrderSellModel::getNewMargin(const MarketOrder &order) const
     {
         const auto character = mCharacters.find(order.getCharacterId());
-        if (character == std::end(mCharacters))
+        if (Q_UNLIKELY(character == std::end(mCharacters)))
             return 0.;
 
         QSettings settings;
 
         const auto price = (settings.value(OrderSettings::limitSellToStationKey, OrderSettings::limitSellToStationDefault).toBool()) ?
-                           (mDataProvider.getTypeStationSellPrice(order.getTypeId(), getStationId(order))) :
-                           (mDataProvider.getTypeRegionSellPrice(order.getTypeId(), mDataProvider.getStationRegionId(getStationId(order))));
+                           (mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getEffectiveStationId())) :
+                           (mDataProvider.getTypeRegionSellPrice(order.getTypeId(), mDataProvider.getStationRegionId(order.getEffectiveStationId())));
         auto newPrice = price->getPrice();
         if (qFuzzyIsNull(newPrice))
             newPrice = order.getPrice();

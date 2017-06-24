@@ -377,7 +377,10 @@ namespace Evernus
 
         const auto importer = [&target](const auto &orders) {
             for (const auto &order : orders)
-                target.emplace(std::make_pair(order->getTypeId(), order->getStationId()));
+            {
+                Q_ASSERT(order);
+                target.emplace(std::make_pair(order->getTypeId(), order->getEffectiveStationId()));
+            }
         };
 
         if (mCorp)

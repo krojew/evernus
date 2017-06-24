@@ -62,4 +62,4 @@ namespace Evernus
     };
 }
 
-#include "APIXmlReceiver.cpp"
+#include "APIXmlReceiver.inl"

@@ -18,10 +18,12 @@
 
 #include <QWidget>
 
+#include "MarketOrderDataFetcher.h"
 #include "ExternalOrderSellModel.h"
 #include "ExternalOrderBuyModel.h"
 #include "ExternalOrderImporter.h"
 #include "ItemNameModel.h"
+#include "TaskConstants.h"
 #include "Character.h"
 
 class QListWidgetItem;
@@ -29,6 +31,7 @@ class QDoubleSpinBox;
 class QListWidget;
 class QPushButton;
 class QTabWidget;
+class QByteArray;
 class QListView;
 class QCheckBox;
 class QGroupBox;
@@ -38,13 +41,17 @@ class QMenu;
 
 namespace Evernus
 {
+    class RegionTypePresetRepository;
     class LocationBookmarkRepository;
     class ExternalOrderRepository;
     class FavoriteItemRepository;
     class MarketOrderRepository;
+    class MarketGroupRepository;
     class ExternalOrderView;
+    class EveTypeRepository;
     class ItemCostProvider;
     class EveDataProvider;
+    class TaskManager;
 
     class MarketBrowserWidget
         : public QWidget
@@ -58,18 +65,26 @@ namespace Evernus
                             const CharacterRepository &characterRepo,
                             const FavoriteItemRepository &favoriteItemRepo,
                             const LocationBookmarkRepository &locationBookmarkRepo,
+                            const EveTypeRepository &typeRepo,
+                            const MarketGroupRepository &groupRepo,
+                            const RegionTypePresetRepository &regionTypePresetRepo,
                             const MarketOrderProvider &orderProvider,
                             const MarketOrderProvider &corpOrderProvider,
                             EveDataProvider &dataProvider,
+                            TaskManager &taskManager,
                             const ItemCostProvider &costProvider,
+                            QByteArray clientId,
+                            QByteArray clientSecret,
                             QWidget *parent = nullptr);
         virtual ~MarketBrowserWidget() = default;
 
     signals:
-        void importPricesFromWeb(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
         void importPricesFromFile(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
 
         void externalOrdersChanged();
+        void preferencesChanged();
+
+        void updateExternalOrders(const std::vector<ExternalOrder> &orders);
 
     public slots:
         void setCharacter(Character::IdType id);
@@ -110,6 +125,11 @@ namespace Evernus
         void cleanAllOrders();
         void cleanCurrentType();
 
+        void importData(const ExternalOrderImporter::TypeLocationPairs &pairs);
+
+        void updateOrderTask(const QString &text);
+        void endOrderTask(const MarketOrderDataFetcher::OrderResultType &orders, const QString &error);
+
     private:
         struct NavigationState
         {
@@ -130,7 +150,11 @@ namespace Evernus
         const MarketOrderRepository &mCorpOrderRepo;
         const FavoriteItemRepository &mFavoriteItemRepo;
         const LocationBookmarkRepository &mLocationBookmarkRepo;
+        const EveTypeRepository &mTypeRepo;
+        const MarketGroupRepository &mGroupRepo;
+        const RegionTypePresetRepository &mRegionTypePresetRepo;
         EveDataProvider &mDataProvider;
+        TaskManager &mTaskManager;
 
         ItemNameModel mNameModel;
         ItemNameModel mOrderNameModel;
@@ -176,6 +200,10 @@ namespace Evernus
         bool mBlockNavigationChange = false;
 
         Character::IdType mCharacterId = Character::invalidId;
+
+        MarketOrderDataFetcher mDataFetcher;
+
+        uint mOrderSubtask = TaskConstants::invalidTask;
 
         ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
 

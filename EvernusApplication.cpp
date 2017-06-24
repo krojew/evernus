@@ -1841,14 +1841,16 @@ namespace Evernus
             throw std::runtime_error{"Error crating Eve DB object!"};
 
         auto eveDbPath = applicationDirPath() + "/resources/eve.db";
+        qDebug() << "Eve DB path:" << eveDbPath;
+
         if (!QFile::exists(eveDbPath))
         {
-            eveDbPath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, applicationName() + "/res/eve.db");
+            eveDbPath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, applicationName() + "/resources/eve.db");
+            qDebug() << "Eve DB path:" << eveDbPath;
+
             if (!QFile::exists(eveDbPath))
                 throw std::runtime_error{"Cannot find Eve DB!"};
         }
-
-        qDebug() << "Eve DB path:" << eveDbPath;
 
         mEveDb.setDatabaseName(eveDbPath);
         mEveDb.setConnectOptions("QSQLITE_OPEN_READONLY");

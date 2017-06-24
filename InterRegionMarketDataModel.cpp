@@ -53,7 +53,7 @@ namespace Evernus
 
     QVariant InterRegionMarketDataModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         const auto column = index.column();
@@ -72,11 +72,15 @@ namespace Evernus
                 case srcRegionColumn:
                     return mDataProvider.getRegionName(data.mSrcRegion);
                 case srcPriceColumn:
-                    return QString{"%1 / %2"}.arg(TextUtils::currencyToString(data.mSrcBuyPrice, locale)).arg(TextUtils::currencyToString(data.mSrcSellPrice, locale));
+                    return QStringLiteral("%1 / %2").arg(TextUtils::currencyToString(data.mSrcBuyPrice, locale)).arg(TextUtils::currencyToString(data.mSrcSellPrice, locale));
+                case srcOrderCountColumn:
+                    return QStringLiteral("%1 / %2").arg(locale.toString(data.mSrcBuyOrderCount)).arg(locale.toString(data.mSrcSellOrderCount));
                 case dstRegionColumn:
                     return mDataProvider.getRegionName(data.mDstRegion);
                 case dstPriceColumn:
-                    return QString{"%1 / %2"}.arg(TextUtils::currencyToString(data.mDstBuyPrice, locale)).arg(TextUtils::currencyToString(data.mDstSellPrice, locale));
+                    return QStringLiteral("%1 / %2").arg(TextUtils::currencyToString(data.mDstBuyPrice, locale)).arg(TextUtils::currencyToString(data.mDstSellPrice, locale));
+                case dstOrderCountColumn:
+                    return QStringLiteral("%1 / %2").arg(locale.toString(data.mDstBuyOrderCount)).arg(locale.toString(data.mDstSellOrderCount));
                 case differenceColumn:
                     return TextUtils::currencyToString(data.mDifference, locale);
                 case volumeColumn:
@@ -96,10 +100,14 @@ namespace Evernus
                 return mDataProvider.getRegionName(data.mSrcRegion);
             case srcPriceColumn:
                 return (data.mSrcBuyPrice + data.mSrcSellPrice) / 2.;
+            case srcOrderCountColumn:
+                return (data.mSrcBuyOrderCount + data.mSrcSellOrderCount) / 2.;
             case dstRegionColumn:
                 return mDataProvider.getRegionName(data.mDstRegion);
             case dstPriceColumn:
                 return (data.mDstBuyPrice + data.mDstSellPrice) / 2.;
+            case dstOrderCountColumn:
+                return (data.mDstBuyOrderCount + data.mDstSellOrderCount) / 2.;
             case differenceColumn:
                 return data.mDifference;
             case volumeColumn:
@@ -145,10 +153,14 @@ namespace Evernus
                 return tr("Source");
             case srcPriceColumn:
                 return tr("5% volume source price (b/s)");
+            case srcOrderCountColumn:
+                return tr("Source order count (b/s)");
             case dstRegionColumn:
                 return tr("Destination");
             case dstPriceColumn:
                 return tr("5% volume destination price (b/s)");
+            case dstOrderCountColumn:
+                return tr("Destination order count (b/s)");
             case differenceColumn:
                 return tr("Best difference");
             case volumeColumn:
@@ -223,6 +235,8 @@ namespace Evernus
             double mBuyPrice = 0.;
             double mSellPrice = 0.;
             quint64 mVolume = 0;
+            quint64 mBuyOrderCount = 0;
+            quint64 mSellOrderCount = 0;
         };
 
         RegionMap<TypeMap<AggrTypeData>> aggrTypeData;
@@ -237,7 +251,7 @@ namespace Evernus
 
                 for (const auto &timePoint : boost::adaptors::reverse(type.second))
                 {
-                    if (timePoint.first < historyLimit)
+                    if (Q_UNLIKELY(timePoint.first < historyLimit))
                         break;
 
                     data.mVolume += timePoint.second.mVolume;
@@ -246,13 +260,18 @@ namespace Evernus
 
                 const auto avgPrice30 = mean(priceAcc);
 
+                const auto &typeBuyOrders = buyOrders[regionHistory.first][type.first];
+                const auto &typeSellOrders = sellOrders[regionHistory.first][type.first];
+
                 data.mVolume /= 30;
-                data.mBuyPrice = MathUtils::calcPercentile(buyOrders[regionHistory.first][type.first],
+                data.mBuyOrderCount = typeBuyOrders.size();
+                data.mSellOrderCount = typeSellOrders.size();
+                data.mBuyPrice = MathUtils::calcPercentile(typeBuyOrders,
                                                            buyVolumes[regionHistory.first][type.first] * 0.05,
                                                            avgPrice30,
                                                            mDiscardBogusOrders,
                                                            mBogusOrderThreshold);
-                data.mSellPrice = MathUtils::calcPercentile(sellOrders[regionHistory.first][type.first],
+                data.mSellPrice = MathUtils::calcPercentile(typeSellOrders,
                                                             sellVolumes[regionHistory.first][type.first] * 0.05,
                                                             avgPrice30,
                                                             mDiscardBogusOrders,
@@ -286,15 +305,19 @@ namespace Evernus
                         continue;
 
                     const auto dstData = dstRegion.second.find(type.first);
-                    if (dstData == std::end(dstRegion.second))
+                    if (Q_UNLIKELY(dstData == std::end(dstRegion.second)))
                         continue;
 
                     TypeData data;
                     data.mId = type.first;
                     data.mSrcBuyPrice = type.second.mBuyPrice;
                     data.mSrcSellPrice = type.second.mSellPrice;
+                    data.mSrcBuyOrderCount = type.second.mBuyOrderCount;
+                    data.mSrcSellOrderCount = type.second.mSellOrderCount;
                     data.mDstBuyPrice = dstData->second.mBuyPrice;
                     data.mDstSellPrice = dstData->second.mSellPrice;
+                    data.mDstBuyOrderCount = dstData->second.mBuyOrderCount;
+                    data.mDstSellOrderCount = dstData->second.mSellOrderCount;
                     data.mVolume = std::min(type.second.mVolume, dstData->second.mVolume);
                     data.mSrcRegion = srcRegion.first;
                     data.mDstRegion = dstRegion.first;

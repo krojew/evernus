@@ -110,7 +110,7 @@ namespace Evernus
         qDebug() << "Started market order import at" << QDateTime::currentDateTime();
 
         auto ifaceCallback = [=](QJsonDocument &&data, const QString &error) {
-            if (!error.isEmpty())
+            if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback(ExternalOrderList{}, error);
                 return;
@@ -149,7 +149,7 @@ namespace Evernus
 #else
         selectNextInterface().fetchMarketHistory(regionId, typeId, [=](QJsonDocument &&data, const QString &error) {
 #endif
-            if (!error.isEmpty())
+            if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback(HistoryMap{}, error);
                 return;
@@ -294,7 +294,7 @@ namespace Evernus
                         const auto doc = QJsonDocument::fromJson(reply->readAll());
                         const auto object = doc.object();
 
-                        if (reply->error() != QNetworkReply::NoError)
+                        if (Q_UNLIKELY(reply->error() != QNetworkReply::NoError))
                         {
                             qWarning() << "Error refreshing token:" << reply->errorString();
 
@@ -372,7 +372,7 @@ namespace Evernus
                 {
                     reply->deleteLater();
 
-                    if (reply->error() != QNetworkReply::NoError)
+                    if (Q_UNLIKELY(reply->error() != QNetworkReply::NoError))
                     {
                         mFetchingToken = false;
 
@@ -386,7 +386,7 @@ namespace Evernus
                     const auto accessToken = object.value("access_token").toString().toLatin1();
                     const auto refreshToken = object.value("refresh_token").toString();
 
-                    if (refreshToken.isEmpty())
+                    if (Q_UNLIKELY(refreshToken.isEmpty()))
                     {
                         qDebug() << "Empty refresh token!";
                         emit tokenError(tr("Empty refresh token!"));
@@ -401,7 +401,7 @@ namespace Evernus
 
                         charReply->deleteLater();
 
-                        if (charReply->error() != QNetworkReply::NoError)
+                        if (Q_UNLIKELY(charReply->error() != QNetworkReply::NoError))
                         {
                             qDebug() << "Error verifying access token:" << charReply->errorString();
                             emit tokenError(charReply->errorString());
@@ -494,7 +494,7 @@ namespace Evernus
     {
         auto orders = std::make_shared<std::vector<ExternalOrder>>();
         return [=, orders = std::move(orders)](auto &&data, auto atEnd, const auto &error) {
-            if (!error.isEmpty())
+            if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback(std::vector<ExternalOrder>{}, error);
                 return;

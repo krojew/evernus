@@ -56,6 +56,11 @@ namespace Evernus
         mCustomStationId = std::move(id);
     }
 
+    quint64 MarketOrder::getEffectiveStationId() const noexcept
+    {
+        return (mCustomStationId) ? (*mCustomStationId) : (mStationId);
+    }
+
     uint MarketOrder::getVolumeEntered() const noexcept
     {
         return mVolumeEntered;

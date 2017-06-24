@@ -112,7 +112,7 @@ namespace Evernus
 
         qDebug() << mOrderCounter.getCount() << "orders remaining; error:" << errorText;
 
-        if (!errorText.isEmpty())
+        if (Q_UNLIKELY(!errorText.isEmpty()))
         {
             mAggregatedOrderErrors << errorText;
 
@@ -139,7 +139,7 @@ namespace Evernus
 
         qDebug() << mHistoryCounter.getCount() << "history remaining; error:" << errorText;
 
-        if (!errorText.isEmpty())
+        if (Q_UNLIKELY(!errorText.isEmpty()))
         {
             mAggregatedHistoryErrors << errorText;
 
@@ -173,7 +173,7 @@ namespace Evernus
             processEvents();
         }
 
-        mOrderCounter.setCount(regions.size());
+        mOrderCounter.addCount(regions.size());
 
         for (const auto region : regions)
         {

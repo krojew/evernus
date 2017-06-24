@@ -56,7 +56,7 @@ namespace Evernus
 
     QVariant MarketOrderBuyModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return QVariant{};
 
         const auto item = static_cast<const TreeItem *>(index.internalPointer());
@@ -79,7 +79,7 @@ namespace Evernus
         case Qt::ToolTipRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
+                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getEffectiveStationId(), data->getRange());
                 if (price->isNew())
                     return tr("No price data -> Please import prices from Orders/Assets tab or by using Margin tool.");
 
@@ -106,7 +106,7 @@ namespace Evernus
         case Qt::DecorationRole:
             if (column == priceColumn)
             {
-                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
+                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getEffectiveStationId(), data->getRange());
                 if (price->isNew())
                     return QIcon{":/images/error.png"};
 
@@ -139,7 +139,7 @@ namespace Evernus
                 return data->getPrice();
             case priceStatusColumn:
                 {
-                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
+                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getEffectiveStationId(), data->getRange());
                     if (price->isNew())
                         return 1;
 
@@ -152,7 +152,7 @@ namespace Evernus
                 }
             case priceDifferenceColumn:
                 {
-                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
+                    const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getEffectiveStationId(), data->getRange());
                     if (price->isNew())
                         break;
 
@@ -247,7 +247,7 @@ namespace Evernus
                     return TextUtils::currencyToString(data->getPrice(), locale);
                 case priceStatusColumn:
                     {
-                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
+                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getEffectiveStationId(), data->getRange());
                         if (price->isNew())
                             return tr("No price data");
 
@@ -259,7 +259,7 @@ namespace Evernus
                     break;
                 case priceDifferenceColumn:
                     {
-                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
+                        const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getEffectiveStationId(), data->getRange());
                         if (price->isNew())
                             break;
 
@@ -352,7 +352,7 @@ namespace Evernus
         case Qt::BackgroundRole:
             if (column == priceColumn && data->getState() == MarketOrder::State::Active)
             {
-                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), getStationId(*data), data->getRange());
+                const auto price = mDataProvider.getTypeBuyPrice(data->getTypeId(), data->getEffectiveStationId(), data->getRange());
                 if (!price->isNew())
                 {
                     if (price->getPrice() > data->getPrice())
@@ -477,12 +477,12 @@ namespace Evernus
     {
         const auto item = static_cast<const TreeItem *>(index.internalPointer());
         const auto order = item->getOrder();
-        if (order == nullptr)
+        if (Q_UNLIKELY(order == nullptr))
             return OrderInfo{};
 
         QSettings settings;
 
-        const auto price = mDataProvider.getTypeBuyPrice(order->getTypeId(), getStationId(*order), order->getRange());
+        const auto price = mDataProvider.getTypeBuyPrice(order->getTypeId(), order->getEffectiveStationId(), order->getRange());
 
         OrderInfo info;
         info.mOrderPrice = order->getPrice();
@@ -606,10 +606,10 @@ namespace Evernus
     double MarketOrderBuyModel::getMargin(const MarketOrder &order) const
     {
         const auto character = mCharacters.find(order.getCharacterId());
-        if (character == std::end(mCharacters))
+        if (Q_UNLIKELY(character == std::end(mCharacters)))
             return 0.;
 
-        const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), getStationId(order));
+        const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getEffectiveStationId());
         if (price->isNew())
             return 100.;
 
@@ -620,17 +620,17 @@ namespace Evernus
     double MarketOrderBuyModel::getNewMargin(const MarketOrder &order) const
     {
         const auto character = mCharacters.find(order.getCharacterId());
-        if (character == std::end(mCharacters))
+        if (Q_UNLIKELY(character == std::end(mCharacters)))
             return 0.;
 
-        const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), getStationId(order));
+        const auto price = mDataProvider.getTypeStationSellPrice(order.getTypeId(), order.getEffectiveStationId());
         if (price->isNew())
             return 100.;
 
         const auto delta = PriceUtils::getPriceDelta();
 
         auto newPrice
-            = mDataProvider.getTypeBuyPrice(order.getTypeId(), getStationId(order), order.getRange())->getPrice();
+            = mDataProvider.getTypeBuyPrice(order.getTypeId(), order.getEffectiveStationId(), order.getRange())->getPrice();
         if (newPrice < 0.01)
             newPrice = order.getPrice();
         else
