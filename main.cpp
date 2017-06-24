@@ -27,6 +27,7 @@
 #include "MarketLogExternalOrderImporterThread.h"
 #include "MarketLogExternalOrderImporter.h"
 #include "ProxyWebExternalOrderImporter.h"
+#include "QMacPasteboardMimeUnicodeText.h"
 #include "MarketOrderFilterProxyModel.h"
 #include "ExternalOrderImporterNames.h"
 #include "MarketAnalysisDataFetcher.h"
@@ -126,6 +127,10 @@ int main(int argc, char *argv[])
         qRegisterMetaType<Evernus::MarketAnalysisDataFetcher::HistoryResultType>("HistoryResultType");
 
         Evernus::EvernusApplication app{argc, argv};
+
+#ifdef Q_OS_MACOS
+        new QMacPasteboardMimeUnicodeText;
+#endif
 
         auto webImporter = std::make_unique<Evernus::ProxyWebExternalOrderImporter>(app.getSSOClientId(),
                                                                                     app.getSSOClientSecret(),

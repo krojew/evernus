@@ -537,6 +537,8 @@ add_executable(
     qdropbox2global.h
     qhttpheader.cpp
     qhttpheader.h
+    QMacPasteboardMimeUnicodeText.cpp
+    QMacPasteboardMimeUnicodeText.h
     QtScriptSyntaxHighlighter.cpp
     QtScriptSyntaxHighlighter.h
     qxtabstracthttpconnector.cpp
