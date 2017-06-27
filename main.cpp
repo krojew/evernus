@@ -24,10 +24,13 @@
 #include <QDir>
 #include <QUrl>
 
+#ifdef Q_OS_OSX
+#   include "QMacPasteboardMimeUnicodeText.h"
+#endif
+
 #include "MarketLogExternalOrderImporterThread.h"
 #include "MarketLogExternalOrderImporter.h"
 #include "ProxyWebExternalOrderImporter.h"
-#include "QMacPasteboardMimeUnicodeText.h"
 #include "MarketOrderFilterProxyModel.h"
 #include "ExternalOrderImporterNames.h"
 #include "MarketAnalysisDataFetcher.h"
