@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifdef Q_OS_OSX
+
 #include <QMacPasteboardMime>
 
 class QMacPasteboardMimeUnicodeText : public QMacPasteboardMime {
@@ -25,3 +27,5 @@ public:
     QVariant convertToMime(const QString &mime, QList<QByteArray> data, QString flav);
     QList<QByteArray> convertFromMime(const QString &mime, QVariant data, QString flav);
 };
+
+#endif

@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 
         Evernus::EvernusApplication app{argc, argv};
 
-#ifdef Q_OS_MACOS
+#ifdef Q_OS_OSX
         new QMacPasteboardMimeUnicodeText;
 #endif
 
