@@ -193,7 +193,7 @@ namespace Evernus
         const auto dstSystem = (dstStation == 0) ? (0u) : (mDataProvider.getStationSolarSystemId(dstStation));
 
         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-        const auto stationTax = 1 - std::max(0., 5. - mCharacter->getCorpStanding() * 0.75) / 100.;
+        const auto stationTax = ArbitrageUtils::getStationTax(mCharacter->getCorpStanding());
 
         const auto isValidRegion = [&](const auto &regions, const auto &order) {
             return regions.find(order.getRegionId()) != std::end(regions);

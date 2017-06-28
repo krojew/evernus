@@ -196,7 +196,7 @@ namespace Evernus
         const auto dstSystem = (dstStation == 0) ? (0u) : (mDataProvider.getStationSolarSystemId(dstStation));
 
         const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
-        const auto stationTax = 1 - std::max(0., 5. - mCharacter->getCorpStanding() * 0.75) / 100.;
+        const auto stationTax = ArbitrageUtils::getStationTax(mCharacter->getCorpStanding());
 
         // gather src/dst orders for reprocessing types
         std::unordered_set<EveType::IdType> oreTypes, materialTypes;
