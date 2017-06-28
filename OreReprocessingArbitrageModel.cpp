@@ -207,11 +207,8 @@ namespace Evernus
                 materialTypes.emplace(material.mMaterialId);
         }
 
-        const auto allSrcRegions = srcRegions.find(0) != std::end(srcRegions);
-        const auto allDstRegions = dstRegions.find(0) != std::end(dstRegions);
-
-        const auto isValidRegion = [&](auto allFlag, const auto &regions, const auto &order) {
-            return allFlag || regions.find(order.getRegionId()) != std::end(regions);
+        const auto isValidRegion = [&](const auto &regions, const auto &order) {
+            return regions.find(order.getRegionId()) != std::end(regions);
         };
 
         const auto isValidStation = [&](auto stationId, const auto &order) {
@@ -220,7 +217,7 @@ namespace Evernus
 
         const auto isSrcOrder = [&](const auto &order) {
             return order.getType() == ExternalOrder::Type::Sell &&
-                   isValidRegion(allSrcRegions, srcRegions, order) &&
+                   isValidRegion(srcRegions, order) &&
                    isValidStation(srcStation, order);
         };
 
@@ -232,7 +229,7 @@ namespace Evernus
 
         const auto isDstOrder = [&](const auto &order) {
             return (order.getType() == dstPriceType) &&
-                   (isValidRegion(allDstRegions, dstRegions, order)) &&
+                   (isValidRegion(dstRegions, order)) &&
                    (
                        (dstPriceType == PriceType::Sell && isValidStation(dstStation, order)) ||
                        (dstPriceType == PriceType::Buy && canSellToOrder(order))
