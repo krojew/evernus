@@ -71,14 +71,18 @@ namespace Evernus
                     return locale.toString(data.mDifference * data.mVolume, 'f', 0);
                 case srcRegionColumn:
                     return mDataProvider.getRegionName(data.mSrcRegion);
-                case srcPriceColumn:
-                    return QStringLiteral("%1 / %2").arg(TextUtils::currencyToString(data.mSrcBuyPrice, locale)).arg(TextUtils::currencyToString(data.mSrcSellPrice, locale));
+                case srcBuyPriceColumn:
+                    return TextUtils::currencyToString(data.mSrcBuyPrice, locale);
+                case srcSellPriceColumn:
+                    return TextUtils::currencyToString(data.mSrcSellPrice, locale);
                 case srcOrderCountColumn:
                     return QStringLiteral("%1 / %2").arg(locale.toString(data.mSrcBuyOrderCount)).arg(locale.toString(data.mSrcSellOrderCount));
                 case dstRegionColumn:
                     return mDataProvider.getRegionName(data.mDstRegion);
-                case dstPriceColumn:
-                    return QStringLiteral("%1 / %2").arg(TextUtils::currencyToString(data.mDstBuyPrice, locale)).arg(TextUtils::currencyToString(data.mDstSellPrice, locale));
+                case dstBuyPriceColumn:
+                    return TextUtils::currencyToString(data.mDstBuyPrice, locale);
+                case dstSellPriceColumn:
+                    return TextUtils::currencyToString(data.mDstSellPrice, locale);
                 case dstOrderCountColumn:
                     return QStringLiteral("%1 / %2").arg(locale.toString(data.mDstBuyOrderCount)).arg(locale.toString(data.mDstSellOrderCount));
                 case differenceColumn:
@@ -98,14 +102,18 @@ namespace Evernus
                 return data.mDifference * data.mVolume;
             case srcRegionColumn:
                 return mDataProvider.getRegionName(data.mSrcRegion);
-            case srcPriceColumn:
-                return (data.mSrcBuyPrice + data.mSrcSellPrice) / 2.;
+            case srcBuyPriceColumn:
+                return data.mSrcBuyPrice;
+            case srcSellPriceColumn:
+                return data.mSrcSellPrice;
             case srcOrderCountColumn:
                 return (data.mSrcBuyOrderCount + data.mSrcSellOrderCount) / 2.;
             case dstRegionColumn:
                 return mDataProvider.getRegionName(data.mDstRegion);
-            case dstPriceColumn:
-                return (data.mDstBuyPrice + data.mDstSellPrice) / 2.;
+            case dstBuyPriceColumn:
+                return data.mDstBuyPrice;
+            case dstSellPriceColumn:
+                return data.mDstSellPrice;
             case dstOrderCountColumn:
                 return (data.mDstBuyOrderCount + data.mDstSellOrderCount) / 2.;
             case differenceColumn:
@@ -151,14 +159,18 @@ namespace Evernus
                 return tr("Score");
             case srcRegionColumn:
                 return tr("Source");
-            case srcPriceColumn:
-                return tr("5% volume source price (b/s)");
+            case srcBuyPriceColumn:
+                return tr("5% volume source price (buy)");
+            case srcSellPriceColumn:
+                return tr("5% volume source price (sell)");
             case srcOrderCountColumn:
                 return tr("Source order count (b/s)");
             case dstRegionColumn:
                 return tr("Destination");
-            case dstPriceColumn:
-                return tr("5% volume destination price (b/s)");
+            case dstBuyPriceColumn:
+                return tr("5% volume destination price (buy)");
+            case dstSellPriceColumn:
+                return tr("5% volume destination price (sell)");
             case dstOrderCountColumn:
                 return tr("Destination order count (b/s)");
             case differenceColumn:
