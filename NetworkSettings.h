@@ -14,6 +14,9 @@
  */
 #pragma once
 
+#include <algorithm>
+#include <thread>
+
 #include <QString>
 
 namespace Evernus
@@ -26,7 +29,7 @@ namespace Evernus
         const auto maxReplyTimeDefault = 1800u;
         const auto ignoreSslErrorsDefault = false;
         const auto maxRetriesDefault = 3u;
-        const auto maxESIThreadsDefault = 8;
+        const auto maxESIThreadsDefault = std::max(8u, std::thread::hardware_concurrency());
 
         const auto cryptKey = Q_UINT64_C(0x468c4a0e33a6fe01);
 
