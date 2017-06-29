@@ -65,8 +65,6 @@ namespace Evernus
     signals:
         void preferencesChanged();
 
-        void showInEve(EveType::IdType id, Character::IdType ownerId);
-
     private slots:
         void applyInterRegionFilter();
 
