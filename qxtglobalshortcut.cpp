@@ -162,7 +162,9 @@ QxtGlobalShortcut::QxtGlobalShortcut(const QKeySequence& shortcut, QObject* pare
  */
 QxtGlobalShortcut::~QxtGlobalShortcut()
 {
+#ifndef Q_OS_OSX
     if (qxt_d().key != 0)
+#endif
         qxt_d().unsetShortcut();
 }
 
@@ -187,9 +189,16 @@ QKeySequence QxtGlobalShortcut::shortcut() const
 
 bool QxtGlobalShortcut::setShortcut(const QKeySequence& shortcut)
 {
+#ifndef Q_OS_OSX
     if (qxt_d().key != 0)
+#endif
         qxt_d().unsetShortcut();
     return qxt_d().setShortcut(shortcut);
+}
+
+void QxtGlobalShortcut::unsetShortcut()
+{
+    qxt_d().unsetShortcut();
 }
 
 /*!

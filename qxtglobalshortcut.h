@@ -50,6 +50,7 @@ public:
 
     QKeySequence shortcut() const;
     bool setShortcut(const QKeySequence& shortcut);
+    void unsetShortcut();
 
     bool isEnabled() const;
 

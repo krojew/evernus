@@ -38,20 +38,17 @@ namespace Evernus
     {
         QSettings settings;
 
+        mForwardShortcut.unsetShortcut();
+        mBackwardShortcut.unsetShortcut();
         if (settings.value(PriceSettings::fpcKey, PriceSettings::fpcDefault).toBool())
         {
             auto shortcut = QKeySequence::fromString(settings.value(PriceSettings::fpcForwardShortcutKey).toString());
-            mForwardShortcut.setShortcut(shortcut);
-            mForwardShortcut.setEnabled(!shortcut.isEmpty());
+            if (!shortcut.isEmpty())
+                mForwardShortcut.setShortcut(shortcut);
 
             shortcut = QKeySequence::fromString(settings.value(PriceSettings::fpcBackwardShortcutKey).toString());
-            mBackwardShortcut.setShortcut(shortcut);
-            mBackwardShortcut.setEnabled(!shortcut.isEmpty());
-        }
-        else
-        {
-            mForwardShortcut.setEnabled(false);
-            mBackwardShortcut.setEnabled(false);
+            if (!shortcut.isEmpty())
+                mBackwardShortcut.setShortcut(shortcut);
         }
 
         mCopySound.setMuted(!settings.value(SoundSettings::fpcSoundKey, SoundSettings::fpcSoundDefault).toBool());
