@@ -17,6 +17,7 @@
 
 #include <QStackedWidget>
 #include <QDoubleSpinBox>
+#include <QRadioButton>
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -118,6 +119,17 @@ namespace Evernus
         mCollateralEdit->setToolTip(tr("Addtional cost added to buy price. This is the percetange of the base price."));
         mCollateralEdit->setValue(settings.value(MarketAnalysisSettings::importingCollateralKey).toInt());
 
+        const auto collateralType = static_cast<PriceType>(
+            settings.value(MarketAnalysisSettings::importingCollateralPriceTypeKey, MarketAnalysisSettings::importingCollateralPriceTypeDefault).toInt());
+
+        mCollateralBuyTypeBtn = new QRadioButton{tr("buy"), this};
+        toolBarLayout->addWidget(mCollateralBuyTypeBtn);
+        mCollateralBuyTypeBtn->setChecked(collateralType != PriceType::Sell);
+
+        mCollateralSellTypeBtn = new QRadioButton{tr("sell"), this};
+        toolBarLayout->addWidget(mCollateralSellTypeBtn);
+        mCollateralSellTypeBtn->setChecked(collateralType == PriceType::Sell);
+
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
         connect(filterBtn, &QPushButton::clicked, this, &ImportingAnalysisWidget::recalculateData);
@@ -191,12 +203,14 @@ namespace Evernus
         const auto aggrDays = mAggrDaysEdit->value();
         const auto pricePerM3 = mPricePerM3Edit->value();
         const auto collateral = mCollateralEdit->value() / 100.;
+        const auto collateralPriceType = (mCollateralBuyTypeBtn->isChecked()) ? (PriceType::Buy) : (PriceType::Sell);
 
         QSettings settings;
         settings.setValue(MarketAnalysisSettings::importingAnalysisDaysKey, analysisDays);
         settings.setValue(MarketAnalysisSettings::importingAggrDaysKey, aggrDays);
         settings.setValue(MarketAnalysisSettings::importingPricePerM3Key, pricePerM3);
         settings.setValue(MarketAnalysisSettings::importingCollateralKey, collateral);
+        settings.setValue(MarketAnalysisSettings::importingCollateralPriceTypeKey, static_cast<int>(collateralPriceType));
 
         mDataModel.setOrderData(*orders,
                                 *history,
@@ -207,7 +221,8 @@ namespace Evernus
                                 analysisDays,
                                 std::min(analysisDays, aggrDays),
                                 pricePerM3,
-                                collateral);
+                                collateral,
+                                collateralPriceType);
 
         mDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 

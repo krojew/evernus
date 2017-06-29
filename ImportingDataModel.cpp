@@ -212,7 +212,8 @@ namespace Evernus
                                           int analysisDays,
                                           int aggrDays,
                                           double pricePerM3,
-                                          double collateral)
+                                          double collateral,
+                                          PriceType collateralType)
     {
         beginResetModel();
 
@@ -420,7 +421,9 @@ namespace Evernus
                 data.mSrcPrice = type.second.mSrcPrice;
             }
 
-            data.mImportPrice = data.mSrcPrice * collateral + mDataProvider.getTypeVolume(data.mId) * pricePerM3;
+            const auto collateralPrice = (collateralType == PriceType::Buy) ? (data.mSrcPrice) : (data.mDstPrice);
+
+            data.mImportPrice = collateralPrice * collateral + mDataProvider.getTypeVolume(data.mId) * pricePerM3;
             data.mPriceDifference = data.mDstPrice - data.mImportPrice;
             data.mMargin = (qFuzzyIsNull(data.mDstPrice)) ? (0.) : (100. * data.mPriceDifference / data.mDstPrice);
             data.mProjectedProfit = data.mAvgVolume * data.mPriceDifference;

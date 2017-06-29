@@ -59,8 +59,6 @@ namespace Evernus
     signals:
         void preferencesChanged();
 
-        void showInEve(EveType::IdType id, Character::IdType ownerId);
-
     public slots:
         void showForCurrentRegion();
 

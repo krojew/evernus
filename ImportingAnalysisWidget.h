@@ -25,6 +25,7 @@
 class QItemSelection;
 class QStackedWidget;
 class QDoubleSpinBox;
+class QRadioButton;
 class QPushButton;
 class QSpinBox;
 class QString;
@@ -71,6 +72,8 @@ namespace Evernus
         QSpinBox *mAggrDaysEdit = nullptr;
         QDoubleSpinBox *mPricePerM3Edit = nullptr;
         QSpinBox *mCollateralEdit = nullptr;
+        QRadioButton *mCollateralBuyTypeBtn = nullptr;
+        QRadioButton *mCollateralSellTypeBtn = nullptr;
         QStackedWidget *mDataStack = nullptr;
         AdjustableTableView *mDataView = nullptr;
 

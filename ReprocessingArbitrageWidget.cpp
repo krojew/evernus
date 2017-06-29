@@ -214,7 +214,7 @@ namespace Evernus
                                  mIncludeStationTaxBtn->isChecked(),
                                  mIgnoreMinVolumeBtn->isChecked(),
                                  mOnlyHighSecBtn->isChecked(),
-                                 mStationEfficiencyEdit->value(),
+                                 mStationEfficiencyEdit->value() / 100.,
                                  mSellVolumeLimitEdit->value() / 100.);
 
         mDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);

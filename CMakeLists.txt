@@ -54,7 +54,7 @@ if(APPLE)
     # in Qt 5.8
     add_definitions(-DQ_OS_DARWIN)
 
-    set(ADDITIONAL_SRC qxtglobalshortcut_mac.cpp)
+    set(ADDITIONAL_SRC qxtglobalshortcut_mac.cpp QMacPasteboardMimeUnicodeText.cpp QMacPasteboardMimeUnicodeText.h)
     set(ADDITIONAL_LIBS Qt5::MacExtras ${CarbonLibrary})
 elseif(UNIX)
     find_package(X11 REQUIRED)
@@ -126,6 +126,7 @@ add_executable(
     APIUtils.cpp
     APIUtils.h
     APIXmlReceiver.h
+    ArbitrageUtils.cpp
     ArbitrageUtils.h
     AssetList.cpp
     AssetList.h
@@ -540,8 +541,6 @@ add_executable(
     qdropbox2global.h
     qhttpheader.cpp
     qhttpheader.h
-    QMacPasteboardMimeUnicodeText.cpp
-    QMacPasteboardMimeUnicodeText.h
     QtScriptSyntaxHighlighter.cpp
     QtScriptSyntaxHighlighter.h
     qxtabstracthttpconnector.cpp

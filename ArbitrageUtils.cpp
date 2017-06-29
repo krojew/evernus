@@ -12,27 +12,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include <algorithm>
 
-#include <vector>
-
-#include <QtGlobal>
+#include "ArbitrageUtils.h"
 
 namespace Evernus
 {
     namespace ArbitrageUtils
     {
-        struct UsedOrder
+        double getStationTax(double corpStanding) noexcept
         {
-            uint mVolume;
-            double mPrice;
-        };
-
-        template<class Orders>
-        std::vector<UsedOrder> fillOrders(Orders &orders, uint volume, bool requireVolume);
-
-        double getStationTax(double corpStanding) noexcept;
+            return std::max(0., 5. - corpStanding * 0.75) / 100.;
+        }
     }
 }
-
-#include "ArbitrageUtils.inl"
