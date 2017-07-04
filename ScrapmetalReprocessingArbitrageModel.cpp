@@ -25,9 +25,11 @@
 #include <QtConcurrent>
 
 #include <QCoreApplication>
+#include <QSettings>
 #include <QColor>
 #include <QDebug>
 
+#include "MarketAnalysisSettings.h"
 #include "EveDataProvider.h"
 #include "ArbitrageUtils.h"
 #include "ExternalOrder.h"
@@ -193,7 +195,15 @@ namespace Evernus
 
         const auto dstSystem = (dstStation == 0) ? (0u) : (mDataProvider.getStationSolarSystemId(dstStation));
 
-        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        PriceUtils::Taxes taxes;
+
+        QSettings settings;
+        const auto useSkillsForDifference = settings.value(
+            MarketAnalysisSettings::useSkillsForDifferenceKey, MarketAnalysisSettings::useSkillsForDifferenceDefault).toBool();
+
+        if (useSkillsForDifference)
+            taxes = PriceUtils::calculateTaxes(*mCharacter);
+
         const auto stationTax = ArbitrageUtils::getStationTax(mCharacter->getCorpStanding());
 
         const auto isValidRegion = [&](const auto &regions, const auto &order) {
