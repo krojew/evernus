@@ -46,7 +46,7 @@ namespace Evernus
 
         double getRevenue(double sellPrice, const Taxes &taxes, bool limitOrder)
         {
-            const auto taxedRevenue = sellPrice - sellPrice * taxes.mSalesTax;
+            const auto taxedRevenue = sellPrice * (1. - taxes.mSalesTax);
             return (limitOrder) ? (taxedRevenue - sellPrice * taxes.mSellBrokerFee) : (taxedRevenue);
         }
 
