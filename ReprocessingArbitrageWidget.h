@@ -74,6 +74,8 @@ namespace Evernus
         RegionComboBox *mDestRegionCombo = nullptr;
         QDoubleSpinBox *mStationEfficiencyEdit = nullptr;
         QSpinBox *mSellVolumeLimitEdit = nullptr;
+        QCheckBox *mCustomStationTaxBtn = nullptr;
+        QDoubleSpinBox *mCustomStationTaxEdit = nullptr;
         QCheckBox *mIncludeStationTaxBtn = nullptr;
         QCheckBox *mIgnoreMinVolumeBtn = nullptr;
         QCheckBox *mOnlyHighSecBtn = nullptr;

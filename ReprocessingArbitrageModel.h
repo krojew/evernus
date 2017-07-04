@@ -18,6 +18,8 @@
 #include <memory>
 #include <vector>
 
+#include <boost/optional.hpp>
+
 #include <QAbstractTableModel>
 
 #include "Character.h"
@@ -51,7 +53,8 @@ namespace Evernus
                                   bool ignoreMinVolume,
                                   bool onlyHighSec,
                                   double baseYield,
-                                  double sellVolumeLimit) = 0;
+                                  double sellVolumeLimit,
+                                  const boost::optional<double> &customStationTax) = 0;
 
         virtual void reset() = 0;
 

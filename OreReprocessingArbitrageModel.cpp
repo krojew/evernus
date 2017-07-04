@@ -176,7 +176,8 @@ namespace Evernus
                                                      bool ignoreMinVolume,
                                                      bool onlyHighSec,
                                                      double baseYield,
-                                                     double sellVolumeLimit)
+                                                     double sellVolumeLimit,
+                                                     const boost::optional<double> &customStationTax)
     {
         beginResetModel();
 
@@ -207,7 +208,7 @@ namespace Evernus
         if (useSkillsForDifference)
             taxes = PriceUtils::calculateTaxes(*mCharacter);
 
-        const auto stationTax = ArbitrageUtils::getStationTax(mCharacter->getCorpStanding());
+        const auto stationTax = (customStationTax) ? (*customStationTax) : (ArbitrageUtils::getStationTax(mCharacter->getCorpStanding()));
 
         // gather src/dst orders for reprocessing types
         std::unordered_set<EveType::IdType> oreTypes, materialTypes;

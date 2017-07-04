@@ -145,6 +145,31 @@ namespace Evernus
             settings.setValue(MarketAnalysisSettings::reprocessingOnlyHighSecKey, state == Qt::Checked);
         });
 
+        mCustomStationTaxBtn = new QCheckBox{tr("Custom station tax"), this};
+        toolBarLayout->addWidget(mCustomStationTaxBtn);
+        mCustomStationTaxBtn->setChecked(
+            settings.value(MarketAnalysisSettings::reprocessingCustomStationTaxKey, MarketAnalysisSettings::reprocessingCustomStationTaxDefault).toBool()
+        );
+        connect(mCustomStationTaxBtn, &QCheckBox::stateChanged, this, [=](auto state) {
+            QSettings settings;
+            settings.setValue(MarketAnalysisSettings::reprocessingCustomStationTaxKey, state == Qt::Checked);
+        });
+
+        mCustomStationTaxEdit = new QDoubleSpinBox{this};
+        toolBarLayout->addWidget(mCustomStationTaxEdit);
+        mCustomStationTaxEdit->setRange(0., 100.);
+        mCustomStationTaxEdit->setSuffix(locale().percent());
+        mCustomStationTaxEdit->setToolTip(tr("When including station tax, use this value instead of cumputed one."));
+        mCustomStationTaxEdit->setEnabled(mCustomStationTaxBtn->isChecked());
+        mCustomStationTaxEdit->setValue(
+            settings.value(MarketAnalysisSettings::reprocessingCustomStationTaxValueKey, MarketAnalysisSettings::reprocessingCustomStationTaxValueDefault).toDouble()
+        );
+        connect(mCustomStationTaxEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [=](auto value) {
+            QSettings settings;
+            settings.setValue(MarketAnalysisSettings::reprocessingCustomStationTaxValueKey, value);
+        });
+        connect(mCustomStationTaxBtn, &QCheckBox::stateChanged, mCustomStationTaxEdit, &QDoubleSpinBox::setEnabled);
+
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
         connect(filterBtn, &QPushButton::clicked, this, &ReprocessingArbitrageWidget::recalculateData);
@@ -204,6 +229,10 @@ namespace Evernus
         mDataStack->setCurrentIndex(waitingLabelIndex);
         mDataStack->repaint();
 
+        boost::optional<double> stationTax;
+        if (mCustomStationTaxBtn->isChecked())
+            stationTax = mCustomStationTaxEdit->value() / 100.;
+
         Q_ASSERT(mDataModel != nullptr);
         mDataModel->setOrderData(*orders,
                                  mDstPriceType,
@@ -215,7 +244,8 @@ namespace Evernus
                                  mIgnoreMinVolumeBtn->isChecked(),
                                  mOnlyHighSecBtn->isChecked(),
                                  mStationEfficiencyEdit->value() / 100.,
-                                 mSellVolumeLimitEdit->value() / 100.);
+                                 mSellVolumeLimitEdit->value() / 100.,
+                                 stationTax);
 
         mDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 

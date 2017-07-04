@@ -53,7 +53,8 @@ namespace Evernus
                                   bool ignScrapmetalMinVolume,
                                   bool onlyHighSec,
                                   double baseYield,
-                                  double sellVolumeLimit) override;
+                                  double sellVolumeLimit,
+                                  const boost::optional<double> &customStationTax) override;
 
         virtual void reset() override;
 

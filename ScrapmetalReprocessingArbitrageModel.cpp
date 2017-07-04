@@ -177,7 +177,8 @@ namespace Evernus
                                                             bool ignScrapmetalMinVolume,
                                                             bool onlyHighSec,
                                                             double baseYield,
-                                                            double sellVolumeLimit)
+                                                            double sellVolumeLimit,
+                                                            const boost::optional<double> &customStationTax)
     {
         beginResetModel();
 
@@ -204,7 +205,7 @@ namespace Evernus
         if (useSkillsForDifference)
             taxes = PriceUtils::calculateTaxes(*mCharacter);
 
-        const auto stationTax = ArbitrageUtils::getStationTax(mCharacter->getCorpStanding());
+        const auto stationTax = (customStationTax) ? (*customStationTax) : (ArbitrageUtils::getStationTax(mCharacter->getCorpStanding()));
 
         const auto isValidRegion = [&](const auto &regions, const auto &order) {
             return regions.find(order.getRegionId()) != std::end(regions);

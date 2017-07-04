@@ -41,6 +41,8 @@ namespace Evernus
         const auto reprocessingIgnoreMinVolumeDefault = true;
         const auto reprocessingSellVolumeLimitDefault = 10;
         const auto reprocessingOnlyHighSecDefault = true;
+        const auto reprocessingCustomStationTaxDefault = false;
+        const auto reprocessingCustomStationTaxValueDefault = 0.;
         const auto volumeGraphTypeDefault = static_cast<int>(VolumeType::Volume);
         const auto typeAggregatedChartDurationDefault = 90;
 
@@ -83,6 +85,8 @@ namespace Evernus
         const auto reprocessingDstRegionKey = QStringLiteral("marketAnalysis/reprocessing/dstRegion");
         const auto reprocessingSellVolumeLimitKey = QStringLiteral("marketAnalysis/reprocessing/sellVolumeLimit");
         const auto reprocessingOnlyHighSecKey = QStringLiteral("marketAnalysis/reprocessing/onlyHighSec");
+        const auto reprocessingCustomStationTaxKey = QStringLiteral("marketAnalysis/reprocessing/customStationTax");
+        const auto reprocessingCustomStationTaxValueKey = QStringLiteral("marketAnalysis/reprocessing/customStationTaxValue");
         const auto typeAggregatedChartDurationKey = QStringLiteral("marketAnalysis/typeAggregatedChart/duration");
         const auto volumeGraphTypeKey = QStringLiteral("marketAnalysis/typeAggregatedChart/volumeType");
     }
