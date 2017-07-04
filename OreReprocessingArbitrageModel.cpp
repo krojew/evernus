@@ -341,11 +341,7 @@ namespace Evernus
                     });
 
                     if (useStationTax)
-                    {
-                        cost += stationTax * std::accumulate(std::begin(sold), std::end(sold), 0., [&](auto total, const auto &order) {
-                            return order.mVolume * order.mPrice + total;
-                        });
-                    }
+                        cost += ArbitrageUtils::getReprocessingTax(sold, stationTax, sellVolume);
                 }
 
                 if (income > cost)

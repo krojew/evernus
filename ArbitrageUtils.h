@@ -32,6 +32,7 @@ namespace Evernus
         std::vector<UsedOrder> fillOrders(Orders &orders, uint volume, bool requireVolume);
 
         double getStationTax(double corpStanding) noexcept;
+        double getReprocessingTax(const std::vector<UsedOrder> &orders, double stationTax, uint desiredVolume) noexcept;
     }
 }
 

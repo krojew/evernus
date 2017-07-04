@@ -24,5 +24,28 @@ namespace Evernus
         {
             return std::max(0., 5. - corpStanding * 0.75) / 100.;
         }
+
+        double getReprocessingTax(const std::vector<UsedOrder> &orders, double stationTax, uint desiredVolume) noexcept
+        {
+            // eve uses it's adjusted prices, but let's use the actual order prices for calculations
+            uint totalVolume = 0;
+            double totalPrice = 0.;
+            double totalCost = 0.;
+
+            for (const auto &order : orders)
+            {
+                totalVolume += order.mVolume;
+                totalCost += order.mVolume * order.mPrice;
+                totalPrice += order.mPrice;
+            }
+
+            Q_ASSERT(desiredVolume >= totalVolume);
+
+            // assume remaining volume would sell for avg price
+            const auto remainingVolume = desiredVolume - totalVolume;
+            totalCost += remainingVolume * totalPrice / orders.size();
+
+            return stationTax * totalCost;
+        }
     }
 }
