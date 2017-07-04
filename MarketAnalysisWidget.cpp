@@ -256,6 +256,8 @@ namespace Evernus
 
     void MarketAnalysisWidget::setCharacter(Character::IdType id)
     {
+        qDebug() << "Setting market analysis character to" << id;
+
         mCharacterId = id;
 
         const auto character = mCharacterRepo.find(mCharacterId);

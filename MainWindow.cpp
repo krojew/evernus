@@ -457,6 +457,10 @@ namespace Evernus
     void MainWindow::characterDataChanged()
     {
         mTabCharacterIds.clear();
+
+        const auto tabIndex = mMainTabs->currentIndex();
+        if (tabIndex != mCharacterTabIndex)
+            updateCurrentTab(tabIndex);
     }
 
     void MainWindow::updateCurrentTab(int index)
@@ -707,7 +711,7 @@ namespace Evernus
                                            mRepositoryProvider.getCorpKeyRepository(),
                                            cacheTimerProvider,
                                            this};
-        addTab(charTab, tr("Character"), TabType::Character);
+        mCharacterTabIndex = addTab(charTab, tr("Character"), TabType::Character);
         connect(charTab, &CharacterWidget::importFromAPI, this, &MainWindow::importCharacter);
         connect(charTab, &CharacterWidget::importAll, this, &MainWindow::refreshAll);
         connect(charTab, &CharacterWidget::characterDataChanged, this, &MainWindow::characterDataChanged);

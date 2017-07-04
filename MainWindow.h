@@ -214,6 +214,8 @@ namespace Evernus
         QTabWidget *mMainTabs = nullptr;
         QSystemTrayIcon *mTrayIcon = nullptr;
 
+        int mCharacterTabIndex = 0;
+
         bool mShowMaximized = false;
 
         CharacterManagerDialog *mCharacterManagerDialog = nullptr;

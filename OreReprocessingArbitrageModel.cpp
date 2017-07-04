@@ -160,6 +160,7 @@ namespace Evernus
     {
         beginResetModel();
         mCharacter = std::move(character);
+        mData.clear();
         endResetModel();
     }
 

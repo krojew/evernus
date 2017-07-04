@@ -360,6 +360,7 @@ namespace Evernus
     {
         beginResetModel();
         mCharacter = character;
+        mData.clear();
         endResetModel();
     }
 
