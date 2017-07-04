@@ -72,7 +72,7 @@ namespace Evernus
         generalGroupLayout->addWidget(mAutoUpdateBtn);
         mAutoUpdateBtn->setChecked(settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool());
 
-        mUsePackagedVolumeBtn = new QCheckBox{tr("Use packaged size for ships"), this};
+        mUsePackagedVolumeBtn = new QCheckBox{tr("Use packaged size for ships and modules"), this};
         generalGroupLayout->addWidget(mUsePackagedVolumeBtn);
         mUsePackagedVolumeBtn->setChecked(settings.value(UISettings::usePackagedVolumeKey, UISettings::usePackagedVolumeDefault).toBool());
 

@@ -1125,6 +1125,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         case 649:
         case 952:
         case 340:
+        case 1706:
             return 1000.;
         case 324:
         case 830:
