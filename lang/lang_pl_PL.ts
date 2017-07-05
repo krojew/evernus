@@ -2372,7 +2372,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     </message>
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="75"/>
-        <source>Use packaged size for ships</source>
+        <source>Use packaged size for ships and modules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5704,36 +5704,46 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="148"/>
+        <source>Custom station tax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="162"/>
+        <source>When including station tax, use this value instead of cumputed one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="173"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="152"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="177"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="153"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="178"/>
         <source>If you wish to make the fastest trade as possible, be sure to set the correct &lt;b&gt;destination price type&lt;/b&gt;. &lt;b&gt;Buying always uses sell orders.&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="154"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="179"/>
         <source>Due to the fast nature of arbitrage, prices are not based on volume percentile.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="155"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="180"/>
         <source>Remember to import the source and resulting items to reprocess, otherwise you won&apos;t see any data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="242"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="272"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="242"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="272"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>

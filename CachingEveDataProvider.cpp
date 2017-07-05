@@ -1125,6 +1125,8 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         case 649:
         case 952:
         case 340:
+        case 1699:
+        case 1700:
         case 1706:
             return 1000.;
         case 324:
@@ -1173,6 +1175,28 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
             return 1000000.;
         case 30:
             return 10000000.f;
+            // these here are a pain - the group id is not enough
+        case 38:
+        case 40:
+        case 41:
+        case 61:
+        case 62:
+        case 63:
+        case 67:
+        case 68:
+        case 71:
+        case 76:
+        case 325:
+        case 585:
+        case 1199:
+        case 1697:
+        case 1698:
+            if (type.getVolume() > 1000.)
+                return 1000.;
+            break;
+        case 60:
+            if (type.getVolume() > 2000.)
+                return 2000.;
         }
 
         return type.getVolume();
