@@ -26,7 +26,6 @@
 
 #include <QCoreApplication>
 #include <QSettings>
-#include <QColor>
 #include <QDebug>
 
 #include "MarketAnalysisSettings.h"
@@ -34,16 +33,13 @@
 #include "ArbitrageUtils.h"
 #include "ExternalOrder.h"
 #include "PriceUtils.h"
-#include "TextUtils.h"
 
 #include "ScrapmetalReprocessingArbitrageModel.h"
 
 namespace Evernus
 {
     ScrapmetalReprocessingArbitrageModel::ScrapmetalReprocessingArbitrageModel(const EveDataProvider &dataProvider, QObject *parent)
-        : ReprocessingArbitrageModel{parent}
-        , ModelWithTypes{}
-        , mDataProvider{dataProvider}
+        : ReprocessingArbitrageModel{dataProvider, parent}
     {
         insertOreGroup(QStringLiteral("Arkonor"));
         insertOreGroup(QStringLiteral("Bistot"));
@@ -62,109 +58,6 @@ namespace Evernus
         insertOreGroup(QStringLiteral("Scordite"));
         insertOreGroup(QStringLiteral("Spodumain"));
         insertOreGroup(QStringLiteral("Veldspar"));
-    }
-
-    int ScrapmetalReprocessingArbitrageModel::columnCount(const QModelIndex &parent) const
-    {
-        Q_UNUSED(parent);
-        return numColumns;
-    }
-
-    QVariant ScrapmetalReprocessingArbitrageModel::data(const QModelIndex &index, int role) const
-    {
-        if (Q_UNLIKELY(!index.isValid()))
-            return {};
-
-        const auto column = index.column();
-        const auto &data = mData[index.row()];
-
-        switch (role) {
-        case Qt::DisplayRole:
-            {
-                QLocale locale;
-
-                switch (column) {
-                case nameColumn:
-                    return mDataProvider.getTypeName(data.mId);
-                case volumeColumn:
-                    return locale.toString(data.mVolume);
-                case totalProfitColumn:
-                    return TextUtils::currencyToString(data.mTotalProfit, locale);
-                case totalCostColumn:
-                    return TextUtils::currencyToString(data.mTotalCost, locale);
-                case differenceColumn:
-                    return TextUtils::currencyToString(data.mTotalProfit - data.mTotalCost, locale);
-                case marginColumn:
-                    return QStringLiteral("%1%2").arg(locale.toString(data.mMargin, 'f', 2)).arg(locale.percent());
-                }
-            }
-            break;
-        case Qt::UserRole:
-            switch (column) {
-            case nameColumn:
-                return mDataProvider.getTypeName(data.mId);
-            case volumeColumn:
-                return data.mVolume;
-            case totalProfitColumn:
-                return data.mTotalProfit;
-            case totalCostColumn:
-                return data.mTotalCost;
-            case differenceColumn:
-                return data.mTotalProfit - data.mTotalCost;
-            case marginColumn:
-                return data.mMargin;
-            }
-            break;
-        case Qt::ForegroundRole:
-            if (column == marginColumn)
-                return TextUtils::getMarginColor(data.mMargin);
-        }
-
-        return {};
-    }
-
-    QVariant ScrapmetalReprocessingArbitrageModel::headerData(int section, Qt::Orientation orientation, int role) const
-    {
-        if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        {
-            switch (section) {
-            case nameColumn:
-                return tr("Name");
-            case volumeColumn:
-                return tr("Volume");
-            case totalProfitColumn:
-                return tr("Total profit");
-            case totalCostColumn:
-                return tr("Total cost");
-            case differenceColumn:
-                return tr("Difference");
-            case marginColumn:
-                return tr("Margin");
-            }
-        }
-
-        return {};
-    }
-
-    int ScrapmetalReprocessingArbitrageModel::rowCount(const QModelIndex &parent) const
-    {
-        return (parent.isValid()) ? (0) : (static_cast<int>(mData.size()));
-    }
-
-    EveType::IdType ScrapmetalReprocessingArbitrageModel::getTypeId(const QModelIndex &index) const
-    {
-        if (!index.isValid())
-            return EveType::invalidId;
-
-        return mData[index.row()].mId;
-    }
-
-    void ScrapmetalReprocessingArbitrageModel::setCharacter(std::shared_ptr<Character> character)
-    {
-        beginResetModel();
-        mCharacter = std::move(character);
-        mData.clear();
-        endResetModel();
     }
 
     void ScrapmetalReprocessingArbitrageModel::setOrderData(const std::vector<ExternalOrder> &orders,
@@ -207,13 +100,8 @@ namespace Evernus
 
         const auto stationTax = (customStationTax) ? (*customStationTax) : (ArbitrageUtils::getStationTax(mCharacter->getCorpStanding()));
 
-        const auto isValidRegion = [&](const auto &regions, const auto &order) {
-            return regions.find(order.getRegionId()) != std::end(regions);
-        };
-
-        const auto isValidStation = [&](auto stationId, const auto &order) {
-            return stationId == 0 || order.getStationId() == stationId;
-        };
+        const auto isValidRegion = getValidRegionFilter();
+        const auto isValidStation = getValidStationFilter();
 
         const auto isSrcOrder = [&](const auto &order) {
             return order.getType() == ExternalOrder::Type::Sell &&
@@ -487,13 +375,6 @@ namespace Evernus
         mData = QtConcurrent::blockingMappedReduced<decltype(mData)>(sellMap,
                                                                      (dstPriceType == PriceType::Buy) ? (findArbitrageForBuy) : (findArbitrageForSell),
                                                                      fillData);
-    }
-
-    void ScrapmetalReprocessingArbitrageModel::reset()
-    {
-        beginResetModel();
-        mData.clear();
-        endResetModel();
     }
 
     void ScrapmetalReprocessingArbitrageModel::insertOreGroup(const QString &groupName)

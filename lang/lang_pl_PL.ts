@@ -5171,39 +5171,6 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
 </context>
 <context>
-    <name>Evernus::OreReprocessingArbitrageModel</name>
-    <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="131"/>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="133"/>
-        <source>Volume</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="135"/>
-        <source>Total profit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="137"/>
-        <source>Total cost</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="139"/>
-        <source>Difference</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../OreReprocessingArbitrageModel.cpp" line="141"/>
-        <source>Margin</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Evernus::PathPreferencesWidget</name>
     <message>
         <location filename="../PathPreferencesWidget.cpp" line="39"/>
@@ -5651,6 +5618,39 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
 </context>
 <context>
+    <name>Evernus::ReprocessingArbitrageModel</name>
+    <message>
+        <location filename="../ReprocessingArbitrageModel.cpp" line="84"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReprocessingArbitrageModel.cpp" line="86"/>
+        <source>Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReprocessingArbitrageModel.cpp" line="88"/>
+        <source>Total profit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReprocessingArbitrageModel.cpp" line="90"/>
+        <source>Total cost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReprocessingArbitrageModel.cpp" line="92"/>
+        <source>Difference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReprocessingArbitrageModel.cpp" line="94"/>
+        <source>Margin</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::ReprocessingArbitrageWidget</name>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="62"/>
@@ -5791,39 +5791,6 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../SSOMessageBox.cpp" line="26"/>
         <source>Don&apos;t show again</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Evernus::ScrapmetalReprocessingArbitrageModel</name>
-    <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="132"/>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="134"/>
-        <source>Volume</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="136"/>
-        <source>Total profit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="138"/>
-        <source>Total cost</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="140"/>
-        <source>Difference</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ScrapmetalReprocessingArbitrageModel.cpp" line="142"/>
-        <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

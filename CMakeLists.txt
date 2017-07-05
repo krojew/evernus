@@ -612,6 +612,7 @@ add_executable(
     ReportsWidget.h
     Repository.h
     RepositoryProvider.h
+    ReprocessingArbitrageModel.cpp
     ReprocessingArbitrageModel.h
     ReprocessingArbitrageWidget.cpp
     ReprocessingArbitrageWidget.h
