@@ -126,6 +126,16 @@ namespace Evernus
        mPublic = flag;
     }
 
+    bool Citadel::isIgnored() const noexcept
+    {
+       return mIgnored;
+    }
+
+    void Citadel::setIgnored(bool flag) noexcept
+    {
+       mIgnored = flag;
+    }
+
     bool Citadel::canHaveMarket() const noexcept
     {
         return mTypeId != 35832; // Astrahus

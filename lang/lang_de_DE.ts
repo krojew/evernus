@@ -5618,32 +5618,32 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::ReprocessingArbitrageModel</name>
     <message>
-        <location filename="../ReprocessingArbitrageModel.cpp" line="84"/>
+        <location filename="../ReprocessingArbitrageModel.cpp" line="97"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageModel.cpp" line="86"/>
+        <location filename="../ReprocessingArbitrageModel.cpp" line="99"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageModel.cpp" line="88"/>
+        <location filename="../ReprocessingArbitrageModel.cpp" line="101"/>
         <source>Total profit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageModel.cpp" line="90"/>
+        <location filename="../ReprocessingArbitrageModel.cpp" line="103"/>
         <source>Total cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageModel.cpp" line="92"/>
+        <location filename="../ReprocessingArbitrageModel.cpp" line="105"/>
         <source>Difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageModel.cpp" line="94"/>
+        <location filename="../ReprocessingArbitrageModel.cpp" line="107"/>
         <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6958,44 +6958,44 @@ Do you wish to launch the updater?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="353"/>
-        <location filename="../Updater.cpp" line="384"/>
-        <location filename="../Updater.cpp" line="391"/>
-        <location filename="../Updater.cpp" line="403"/>
-        <location filename="../Updater.cpp" line="474"/>
-        <location filename="../Updater.cpp" line="501"/>
+        <location filename="../Updater.cpp" line="359"/>
+        <location filename="../Updater.cpp" line="390"/>
+        <location filename="../Updater.cpp" line="397"/>
+        <location filename="../Updater.cpp" line="409"/>
+        <location filename="../Updater.cpp" line="480"/>
+        <location filename="../Updater.cpp" line="507"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="353"/>
+        <location filename="../Updater.cpp" line="359"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="384"/>
+        <location filename="../Updater.cpp" line="390"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="391"/>
+        <location filename="../Updater.cpp" line="397"/>
         <source>This update requires re-importing all item prices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="403"/>
+        <location filename="../Updater.cpp" line="409"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="474"/>
+        <location filename="../Updater.cpp" line="480"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="501"/>
+        <location filename="../Updater.cpp" line="507"/>
         <source>This update requires re-importing citadels.</source>
         <translation type="unfinished"></translation>
     </message>

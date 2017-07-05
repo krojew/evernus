@@ -65,6 +65,9 @@ namespace Evernus
         bool isPublic() const noexcept;
         void setPublic(bool flag) noexcept;
 
+        bool isIgnored() const noexcept;
+        void setIgnored(bool flag) noexcept;
+
         bool canHaveMarket() const noexcept;
 
         Citadel &operator =(const Citadel &) = default;
@@ -81,5 +84,6 @@ namespace Evernus
         QDateTime mLastSeen;
         QDateTime mFirstSeen;
         bool mPublic = false;
+        bool mIgnored = false;
     };
 }

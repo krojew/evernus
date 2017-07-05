@@ -44,6 +44,8 @@ namespace Evernus
         citadel->setZ(record.value("z").toDouble());
         citadel->setFirstSeen(firstSeen);
         citadel->setLastSeen(lastSeen);
+        citadel->setPublic(record.value("public").toBool());
+        citadel->setIgnored(record.value("ignored").toBool());
         citadel->setNew(false);
 
         return citadel;
@@ -62,7 +64,8 @@ namespace Evernus
             "last_seen DATETIME NOT NULL,"
             "first_seen DATETIME NOT NULL,"
             "type_id INTEGER NOT NULL,"
-            "public INTEGER NOT NULL"
+            "public INTEGER NOT NULL,"
+            "ignored INTEGER NOT NULL"
         ")"}.arg(getTableName()));
 
         try
@@ -110,7 +113,8 @@ namespace Evernus
             << "last_seen"
             << "first_seen"
             << "type_id"
-            << "public";
+            << "public"
+            << "ignored";
     }
 
     void CitadelRepository::bindValues(const Citadel &entity, QSqlQuery &query) const
@@ -128,6 +132,7 @@ namespace Evernus
         query.bindValue(":first_seen", entity.getFirstSeen());
         query.bindValue(":type_id", entity.getTypeId());
         query.bindValue(":public", entity.isPublic());
+        query.bindValue(":ignored", entity.isIgnored());
     }
 
     void CitadelRepository::bindPositionalValues(const Citadel &entity, QSqlQuery &query) const
@@ -145,6 +150,7 @@ namespace Evernus
         query.addBindValue(entity.getFirstSeen());
         query.addBindValue(entity.getTypeId());
         query.addBindValue(entity.isPublic());
+        query.addBindValue(entity.isIgnored());
     }
 
     CitadelRepository::EntityList CitadelRepository::buildList(QSqlQuery &query) const
