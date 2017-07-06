@@ -31,8 +31,9 @@ namespace Evernus
         mainLayout->addWidget(iconLabel);
         iconLabel->setPixmap(icon.pixmap(icon.actualSize(QSize{64, 64})));
 
-        const auto link = "http://evernus.com";
-        const auto forum = "https://forums.eveonline.com/default.aspx?g=posts&t=362779";
+        const auto link = QStringLiteral("http://evernus.com");
+        const auto oldForum = QStringLiteral("https://forums.eveonline.com/default.aspx?g=posts&t=362779");
+        const auto newForum = QStringLiteral("https://meta.eveonline.com/t/evernus-2-1-release-the-ultimate-market-tool/6031");
 
         auto aboutLabel = new QLabel{tr(
             "<strong>%1</strong><br />%2<br /><br />"
@@ -41,11 +42,13 @@ namespace Evernus
             "All donations are welcome :)<br /><br />"
             "<a href='%3'>%3</a><br />"
             "Twitter: <a href='http://twitter.com/evernusproject'>@evernusproject</a><br />"
-            "Forum topic: <a href='%4'>%4</a>")
+            "New forum topic: <a href='%4'>%4</a><br />"
+            "Old forum topic: <a href='%5'>%5</a>")
                 .arg(QCoreApplication::applicationName())
                 .arg(QCoreApplication::applicationVersion())
                 .arg(link)
-                .arg(forum),
+                .arg(newForum)
+                .arg(oldForum),
             this};
         mainLayout->addWidget(aboutLabel);
         aboutLabel->setTextFormat(Qt::RichText);
