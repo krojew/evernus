@@ -193,6 +193,10 @@ add_executable(
     CharacterWidget.h
     Citadel.cpp
     Citadel.h
+    CitadelLocationModel.cpp
+    CitadelLocationModel.h
+    CitadelLocationWidget.cpp
+    CitadelLocationWidget.h
     CitadelManager.cpp
     CitadelManager.h
     CitadelManagerDialog.cpp

@@ -14,11 +14,11 @@
  */
 #include "EveDataProvider.h"
 
-#include "StationModel.h"
+#include "CitadelLocationModel.h"
 
 namespace Evernus
 {
-    StationModel::LocationNode::LocationNode(quint64 id, LocationNode *parent, size_t row, const QString &name, Type type)
+    CitadelLocationModel::LocationNode::LocationNode(quint64 id, LocationNode *parent, size_t row, const QString &name, Type type)
         : mId{id}
         , mParent{parent}
         , mRow{row}
@@ -27,13 +27,13 @@ namespace Evernus
     {
     }
 
-    StationModel::StationModel(const EveDataProvider &dataProvider, QObject *parent)
+    CitadelLocationModel::CitadelLocationModel(const EveDataProvider &dataProvider, QObject *parent)
         : QAbstractItemModel{parent}
         , mDataProvider{dataProvider}
     {
     }
 
-    bool StationModel::canFetchMore(const QModelIndex &parent) const
+    bool CitadelLocationModel::canFetchMore(const QModelIndex &parent) const
     {
         if (!parent.isValid())
             return mRegions.empty();
@@ -45,19 +45,19 @@ namespace Evernus
         case LocationNode::Type::Constellation:
             return mSolarSystems.find(node->mId) == std::end(mSolarSystems);
         case LocationNode::Type::SolarSystem:
-            return mStations.find(node->mId) == std::end(mStations);
+            return mCitadels.find(node->mId) == std::end(mCitadels);
         default:
             return false;
         }
     }
 
-    int StationModel::columnCount(const QModelIndex &parent) const
+    int CitadelLocationModel::columnCount(const QModelIndex &parent) const
     {
         Q_UNUSED(parent);
         return 1;
     }
 
-    QVariant StationModel::data(const QModelIndex &index, int role) const
+    QVariant CitadelLocationModel::data(const QModelIndex &index, int role) const
     {
         if (!index.isValid())
             return {};
@@ -68,7 +68,7 @@ namespace Evernus
         return {};
     }
 
-    void StationModel::fetchMore(const QModelIndex &parent)
+    void CitadelLocationModel::fetchMore(const QModelIndex &parent)
     {
         if (!parent.isValid())
         {
@@ -109,13 +109,13 @@ namespace Evernus
             }
         case LocationNode::Type::SolarSystem:
             {
-                const auto &stations = mDataProvider.getStations(node->mId);
-                auto &target = mStations[node->mId];
+                const auto &citadels = mDataProvider.getCitadelsForSolarSystem(node->mId);
+                auto &target = mCitadels[node->mId];
 
-                target.reserve(stations.size());
+                target.reserve(citadels.size());
 
-                for (const auto &station : stations)
-                    target.emplace_back(LocationNode{station.first, node, target.size(), station.second, LocationNode::Type::Station});
+                for (const auto &citadel : citadels)
+                    target.emplace_back(LocationNode{citadel->getId(), node, target.size(), citadel->getName(), LocationNode::Type::Citadel});
 
                 break;
             }
@@ -124,7 +124,7 @@ namespace Evernus
         }
     }
 
-    bool StationModel::hasChildren(const QModelIndex &parent) const
+    bool CitadelLocationModel::hasChildren(const QModelIndex &parent) const
     {
         if (!parent.isValid())
             return true;
@@ -135,16 +135,16 @@ namespace Evernus
                node->mType == LocationNode::Type::SolarSystem;
     }
 
-    QModelIndex StationModel::index(int row, int column, const QModelIndex &parent) const
+    QModelIndex CitadelLocationModel::index(int row, int column, const QModelIndex &parent) const
     {
         if (column != 0)
-            return {};
+            return QModelIndex{};
 
         if (!parent.isValid())
         {
             // https://bugreports.qt-project.org/browse/QTBUG-40624
             if (mRegions.empty())
-                return QModelIndex{};
+                return {};
 
             return createIndex(row, column, &mRegions[row]);
         }
@@ -156,13 +156,13 @@ namespace Evernus
         case LocationNode::Type::Constellation:
             return createIndex(row, column, &mSolarSystems[node->mId][row]);
         case LocationNode::Type::SolarSystem:
-            return createIndex(row, column, &mStations[node->mId][row]);
+            return createIndex(row, column, &mCitadels[node->mId][row]);
         default:
             return {};
         }
     }
 
-    QModelIndex StationModel::parent(const QModelIndex &index) const
+    QModelIndex CitadelLocationModel::parent(const QModelIndex &index) const
     {
         if (!index.isValid())
             return {};
@@ -173,14 +173,14 @@ namespace Evernus
             return {};
         case LocationNode::Type::Constellation:
         case LocationNode::Type::SolarSystem:
-        case LocationNode::Type::Station:
+        case LocationNode::Type::Citadel:
             return createIndex(static_cast<int>(node->mParent->mRow), 0, node->mParent);
         }
 
         return {};
     }
 
-    int StationModel::rowCount(const QModelIndex &parent) const
+    int CitadelLocationModel::rowCount(const QModelIndex &parent) const
     {
         if (!parent.isValid())
             return static_cast<int>(mRegions.size());
@@ -192,56 +192,15 @@ namespace Evernus
         case LocationNode::Type::Constellation:
             return static_cast<int>(mSolarSystems[node->mId].size());
         case LocationNode::Type::SolarSystem:
-            return static_cast<int>(mStations[node->mId].size());
+            return static_cast<int>(mCitadels[node->mId].size());
         default:
             return 0;
         }
     }
 
-    QModelIndex StationModel::index(quint64 id, const QModelIndex &parent)
+    void CitadelLocationModel::refresh()
     {
-        if (canFetchMore(parent))
-            fetchMore(parent);
-
-        const auto finder = [id, &parent, this](const auto &collection) {
-            const auto it = std::find_if(std::begin(collection), std::end(collection), [id](const auto &node) {
-                return node.mId == id;
-            });
-
-            return (it == std::end(collection)) ? (QModelIndex{}) : (index(std::distance(std::begin(collection), it), 0, parent));
-        };
-
-        if (!parent.isValid())
-            return finder(mRegions);
-
-        const auto node = static_cast<const LocationNode *>(parent.internalPointer());
-        switch (node->mType) {
-        case LocationNode::Type::Region:
-            return finder(mConstellations[node->mId]);
-        case LocationNode::Type::Constellation:
-            return finder(mSolarSystems[node->mId]);
-        case LocationNode::Type::SolarSystem:
-            return finder(mStations[node->mId]);
-        default:
-            return {};
-        }
-    }
-
-    quint64 StationModel::getStationId(const QModelIndex &index) const
-    {
-        if (!index.isValid())
-            return 0;
-
-        const auto node = static_cast<const LocationNode *>(index.internalPointer());
-        return (node->mType == LocationNode::Type::Station) ? (node->mId) : (0);
-    }
-
-    quint64 StationModel::getGenericId(const QModelIndex &index) const
-    {
-        if (!index.isValid())
-            return 0;
-
-        const auto node = static_cast<const LocationNode *>(index.internalPointer());
-        return node->mId;
+        beginResetModel();
+        endResetModel();
     }
 }

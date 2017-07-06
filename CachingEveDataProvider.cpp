@@ -736,6 +736,15 @@ namespace Evernus
         return mRegionCitadelCache.emplace(regionId, mCitadelRepository.fetchForRegion(regionId)).first->second;
     }
 
+    const CitadelRepository::EntityList &CachingEveDataProvider::getCitadelsForSolarSystem(uint solarSystemId) const
+    {
+        const auto citadels = mSolarSystemCitadelCache.find(solarSystemId);
+        if (citadels != std::end(mSolarSystemCitadelCache))
+            return citadels->second;
+
+        return mSolarSystemCitadelCache.emplace(solarSystemId, mCitadelRepository.fetchForSolarSystem(solarSystemId)).first->second;
+    }
+
     const CachingEveDataProvider::ReprocessingMap &CachingEveDataProvider::getOreReprocessingInfo() const
     {
         if (mOreReprocessingInfo.empty())

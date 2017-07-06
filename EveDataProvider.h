@@ -94,6 +94,7 @@ namespace Evernus
         virtual uint getStationSolarSystemId(quint64 stationId) const = 0;
 
         virtual const CitadelRepository::EntityList &getCitadelsForRegion(uint regionId) const = 0;
+        virtual const CitadelRepository::EntityList &getCitadelsForSolarSystem(uint solarSystemId) const = 0;
 
         virtual const ReprocessingMap &getOreReprocessingInfo() const = 0;
         virtual const ReprocessingMap &getTypeReprocessingInfo(const TypeList &requestedTypes) const = 0;

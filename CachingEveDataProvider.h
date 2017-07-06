@@ -97,6 +97,7 @@ namespace Evernus
         virtual uint getStationSolarSystemId(quint64 stationId) const override;
 
         virtual const CitadelRepository::EntityList &getCitadelsForRegion(uint regionId) const override;
+        virtual const CitadelRepository::EntityList &getCitadelsForSolarSystem(uint solarSystemId) const override;
 
         virtual const ReprocessingMap &getOreReprocessingInfo() const override;
         virtual const ReprocessingMap &getTypeReprocessingInfo(const TypeList &requestedTypes) const override;
@@ -175,6 +176,7 @@ namespace Evernus
         mutable std::unordered_map<uint, std::vector<Station>> mStationCache;
         mutable std::unordered_map<Citadel::IdType, CitadelRepository::EntityPtr> mCitadelCache;
         mutable std::unordered_map<uint, CitadelRepository::EntityList> mRegionCitadelCache;
+        mutable std::unordered_map<uint, CitadelRepository::EntityList> mSolarSystemCitadelCache;
 
         mutable std::unordered_map<uint, QString> mRegionNameCache;
         mutable std::unordered_map<uint, QString> mSolarSystemNameCache;

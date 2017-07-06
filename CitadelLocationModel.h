@@ -23,28 +23,30 @@ namespace Evernus
 {
     class EveDataProvider;
 
-    class StationModel
+    class CitadelLocationModel
         : public QAbstractItemModel
     {
         Q_OBJECT
 
     public:
-        explicit StationModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
-        virtual ~StationModel() = default;
+        explicit CitadelLocationModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        CitadelLocationModel(const CitadelLocationModel &) = default;
+        CitadelLocationModel(CitadelLocationModel &&) = default;
+        virtual ~CitadelLocationModel() = default;
 
         virtual bool canFetchMore(const QModelIndex &parent) const override;
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
         virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-        virtual void fetchMore(const QModelIndex &parent) override;
         virtual bool hasChildren(const QModelIndex &parent = QModelIndex{}) const override;
+        virtual void fetchMore(const QModelIndex &parent) override;
         virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex{}) const override;
         virtual QModelIndex parent(const QModelIndex &index) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
-        QModelIndex index(quint64 id, const QModelIndex &parent = QModelIndex{});
+        void refresh();
 
-        quint64 getStationId(const QModelIndex &index) const;
-        quint64 getGenericId(const QModelIndex &index) const;
+        CitadelLocationModel &operator =(const CitadelLocationModel &) = default;
+        CitadelLocationModel &operator =(CitadelLocationModel &&) = default;
 
     private:
         struct LocationNode
@@ -54,7 +56,7 @@ namespace Evernus
                 Region,
                 Constellation,
                 SolarSystem,
-                Station
+                Citadel
             };
 
             quint64 mId = 0;
@@ -62,6 +64,7 @@ namespace Evernus
             size_t mRow = 0;
             QString mName;
             Type mType = Type::Region;
+            bool mSelected = false;
 
             LocationNode(quint64 id, LocationNode *parent, size_t row, const QString &name, Type type);
         };
@@ -69,6 +72,6 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         mutable std::vector<LocationNode> mRegions;
-        mutable std::unordered_map<uint, std::vector<LocationNode>> mConstellations, mSolarSystems, mStations;
+        mutable std::unordered_map<uint, std::vector<LocationNode>> mConstellations, mSolarSystems, mCitadels;
     };
 }

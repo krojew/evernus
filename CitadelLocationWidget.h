@@ -14,30 +14,32 @@
  */
 #pragma once
 
-#include <QDialog>
+#include <QWidget>
+
+#include "CitadelLocationModel.h"
 
 namespace Evernus
 {
     class EveDataProvider;
 
-    class CitadelManagerDialog
-        : public QDialog
+    class CitadelLocationWidget
+        : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit CitadelManagerDialog(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
-        CitadelManagerDialog(const CitadelManagerDialog &) = default;
-        CitadelManagerDialog(CitadelManagerDialog &&) = default;
-        virtual ~CitadelManagerDialog() = default;
+        explicit CitadelLocationWidget(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
+        CitadelLocationWidget(const CitadelLocationWidget &) = default;
+        CitadelLocationWidget(CitadelLocationWidget &&) = default;
+        virtual ~CitadelLocationWidget() = default;
 
-        CitadelManagerDialog &operator =(const CitadelManagerDialog &) = default;
-        CitadelManagerDialog &operator =(CitadelManagerDialog &&) = default;
+        CitadelLocationWidget &operator =(const CitadelLocationWidget &) = default;
+        CitadelLocationWidget &operator =(CitadelLocationWidget &&) = default;
 
-    signals:
-        void citadelsChanged();
+    public slots:
+        void refresh();
 
-    private slots:
-        void applyChanges();
+    private:
+        CitadelLocationModel mModel;
     };
 }

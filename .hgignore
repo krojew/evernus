@@ -43,3 +43,4 @@ evernus_automoc*
 SyncDialog.moc
 core.*
 translations/*
+images/.directory

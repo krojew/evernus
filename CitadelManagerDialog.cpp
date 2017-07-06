@@ -12,17 +12,38 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QDialogButtonBox>
 #include <QVBoxLayout>
+#include <QTabWidget>
+
+#include "CitadelLocationWidget.h"
 
 #include "CitadelManagerDialog.h"
 
 namespace Evernus
 {
-    CitadelManagerDialog::CitadelManagerDialog(QWidget *parent)
+    CitadelManagerDialog::CitadelManagerDialog(const EveDataProvider &dataProvider, QWidget *parent)
         : QDialog{parent}
     {
         const auto mainLayout = new QVBoxLayout{this};
 
+        const auto locationWidget = new CitadelLocationWidget{dataProvider, this};
+        connect(this, &CitadelManagerDialog::citadelsChanged, locationWidget, &CitadelLocationWidget::refresh);
+
+        const auto tabs = new QTabWidget{this};
+        mainLayout->addWidget(tabs);
+        tabs->addTab(locationWidget, tr("By location"));
+
+        const auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
+        mainLayout->addWidget(buttons);
+        connect(buttons, &QDialogButtonBox::accepted, this, &CitadelManagerDialog::applyChanges);
+        connect(buttons, &QDialogButtonBox::rejected, this, &CitadelManagerDialog::reject);
+
         setWindowTitle(tr("Citadel manager"));
+    }
+
+    void CitadelManagerDialog::applyChanges()
+    {
+        accept();
     }
 }
