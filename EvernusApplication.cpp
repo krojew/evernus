@@ -2323,6 +2323,8 @@ namespace Evernus
                     order.setDelta(order.getVolumeRemaining() - cIt->second.mVolumeRemaining);
                     order.setFirstSeen(cIt->second.mFirstSeen);
                     order.setCustomStationId(cIt->second.mCustomStation);
+                    order.setNotes(cIt->second.mNotes);
+                    order.setColorTag(cIt->second.mColorTag);
 
                     if (order.getState() != MarketOrder::State::Active)
                     {

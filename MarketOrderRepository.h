@@ -50,6 +50,8 @@ namespace Evernus
             QDateTime mFirstSeen, mLastSeen, mExpiry;
             int mDelta = 0;
             MarketOrder::CutomLocationType mCustomStation;
+            QString mNotes;
+            QColor mColorTag;
         };
 
         enum class AggregateColumn
