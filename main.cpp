@@ -19,6 +19,7 @@
 #include <QLocalServer>
 #include <QMessageBox>
 #include <QSettings>
+#include <QSysInfo>
 #include <QDebug>
 #include <QFile>
 #include <QDir>
@@ -64,6 +65,9 @@ int main(int argc, char *argv[])
 #else
         const auto serverName = QDir::tempPath() + "/" + QCoreApplication::applicationName() + ".socket";
 #endif
+
+        qInfo() << QSysInfo::prettyProductName();
+        qInfo() << QCoreApplication::applicationName() << QCoreApplication::applicationVersion();
 
         QLocalSocket socket;
         socket.connectToServer(serverName);
