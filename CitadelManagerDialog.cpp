@@ -22,7 +22,7 @@
 namespace Evernus
 {
     CitadelManagerDialog::CitadelManagerDialog(const EveDataProvider &dataProvider, QWidget *parent)
-        : QDialog{parent}
+        : QDialog{parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMaximizeButtonHint}
     {
         const auto mainLayout = new QVBoxLayout{this};
 
