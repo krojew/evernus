@@ -36,6 +36,8 @@ namespace Evernus
         : public QAbstractTableModel
         , public ModelWithTypes
     {
+        Q_OBJECT
+
     public:
         using RegionList = std::unordered_set<uint>;
 

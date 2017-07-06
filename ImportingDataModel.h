@@ -36,6 +36,8 @@ namespace Evernus
         : public QAbstractTableModel
         , public ModelWithTypes
     {
+        Q_OBJECT
+
     public:
         template<class T>
         using TypeMap = std::unordered_map<EveType::IdType, T>;
