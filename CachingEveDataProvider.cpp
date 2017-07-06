@@ -491,6 +491,33 @@ namespace Evernus
         return mConstellationCache[regionId];
     }
 
+    const std::vector<EveDataProvider::MapTreeLocation> &CachingEveDataProvider::getConstellations() const
+    {
+        if (BOOST_UNLIKELY(mAllConstellationsCache.empty()))
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT constellationID, constellationName, regionID FROM mapConstellations ORDER BY constellationName");
+
+            DatabaseUtils::execQuery(query);
+
+            const auto size = query.size();
+            if (size > 0)
+                mAllConstellationsCache.reserve(size);
+
+            mConstellationCache.clear();
+
+            while (query.next())
+            {
+                MapTreeLocation location{query.value(2).toUInt(), query.value(0).toUInt(), query.value(1).toString()};
+
+                mAllConstellationsCache.emplace_back(location);
+                mConstellationCache[location.mParent].emplace_back(std::make_pair(location.mId, location.mName));
+            }
+        }
+
+        return mAllConstellationsCache;
+    }
+
     const std::vector<EveDataProvider::MapLocation> &CachingEveDataProvider::getSolarSystemsForConstellation(uint constellationId) const
     {
         if (mConstellationSolarSystemCache.find(constellationId) == std::end(mConstellationSolarSystemCache))
@@ -535,6 +562,33 @@ namespace Evernus
         }
 
         return mRegionSolarSystemCache[regionId];
+    }
+
+    const std::vector<EveDataProvider::MapTreeLocation> &CachingEveDataProvider::getSolarSystems() const
+    {
+        if (BOOST_UNLIKELY(mAllSolarSystemsCache.empty()))
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare("SELECT solarSystemID, solarSystemName, constellationID FROM mapSolarSystems ORDER BY solarSystemName");
+
+            DatabaseUtils::execQuery(query);
+
+            const auto size = query.size();
+            if (size > 0)
+                mAllSolarSystemsCache.reserve(size);
+
+            mConstellationSolarSystemCache.clear();
+
+            while (query.next())
+            {
+                MapTreeLocation location{query.value(2).toUInt(), query.value(0).toUInt(), query.value(1).toString()};
+
+                mAllSolarSystemsCache.emplace_back(location);
+                mConstellationSolarSystemCache[location.mParent].emplace_back(std::make_pair(location.mId, location.mName));
+            }
+        }
+
+        return mAllSolarSystemsCache;
     }
 
     const std::vector<EveDataProvider::Station> &CachingEveDataProvider::getStations(uint solarSystemId) const
@@ -745,6 +799,25 @@ namespace Evernus
         return mSolarSystemCitadelCache.emplace(solarSystemId, mCitadelRepository.fetchForSolarSystem(solarSystemId)).first->second;
     }
 
+    const CitadelRepository::EntityList &CachingEveDataProvider::getCitadels() const
+    {
+        if (BOOST_UNLIKELY(mAllCitadelsCache.empty()))
+        {
+            mAllCitadelsCache = mCitadelRepository.fetchAll();
+
+            mRegionCitadelCache.clear();
+            mSolarSystemCitadelCache.clear();
+
+            for (const auto &citadel : mAllCitadelsCache)
+            {
+                mRegionCitadelCache[citadel->getRegionId()].emplace_back(citadel);
+                mSolarSystemCitadelCache[citadel->getSolarSystemId()].emplace_back(citadel);
+            }
+        }
+
+        return mAllCitadelsCache;
+    }
+
     const CachingEveDataProvider::ReprocessingMap &CachingEveDataProvider::getOreReprocessingInfo() const
     {
         if (mOreReprocessingInfo.empty())
@@ -894,6 +967,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
     {
         mCitadelCache.clear();
         mRegionCitadelCache.clear();
+        mAllCitadelsCache.clear();
     }
 
     void CachingEveDataProvider::handleNewPreferences()

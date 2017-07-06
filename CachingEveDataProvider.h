@@ -87,8 +87,10 @@ namespace Evernus
 
         virtual const std::vector<MapLocation> &getRegions() const override;
         virtual const std::vector<MapLocation> &getConstellations(uint regionId) const override;
+        virtual const std::vector<MapTreeLocation> &getConstellations() const override;
         virtual const std::vector<MapLocation> &getSolarSystemsForConstellation(uint constellationId) const override;
         virtual const std::vector<MapLocation> &getSolarSystemsForRegion(uint regionId) const override;
+        virtual const std::vector<MapTreeLocation> &getSolarSystems() const override;
         virtual const std::vector<Station> &getStations(uint solarSystemId) const override;
 
         virtual double getSolarSystemSecurityStatus(uint solarSystemId) const override;
@@ -98,6 +100,7 @@ namespace Evernus
 
         virtual const CitadelRepository::EntityList &getCitadelsForRegion(uint regionId) const override;
         virtual const CitadelRepository::EntityList &getCitadelsForSolarSystem(uint solarSystemId) const override;
+        virtual const CitadelRepository::EntityList &getCitadels() const override;
 
         virtual const ReprocessingMap &getOreReprocessingInfo() const override;
         virtual const ReprocessingMap &getTypeReprocessingInfo(const TypeList &requestedTypes) const override;
@@ -177,6 +180,10 @@ namespace Evernus
         mutable std::unordered_map<Citadel::IdType, CitadelRepository::EntityPtr> mCitadelCache;
         mutable std::unordered_map<uint, CitadelRepository::EntityList> mRegionCitadelCache;
         mutable std::unordered_map<uint, CitadelRepository::EntityList> mSolarSystemCitadelCache;
+
+        mutable std::vector<MapTreeLocation> mAllConstellationsCache;
+        mutable std::vector<MapTreeLocation> mAllSolarSystemsCache;
+        mutable CitadelRepository::EntityList mAllCitadelsCache;
 
         mutable std::unordered_map<uint, QString> mRegionNameCache;
         mutable std::unordered_map<uint, QString> mSolarSystemNameCache;

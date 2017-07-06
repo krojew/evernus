@@ -16,6 +16,7 @@
 
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
 #include <QAbstractItemModel>
 
@@ -34,11 +35,9 @@ namespace Evernus
         CitadelLocationModel(CitadelLocationModel &&) = default;
         virtual ~CitadelLocationModel() = default;
 
-        virtual bool canFetchMore(const QModelIndex &parent) const override;
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
         virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
         virtual bool hasChildren(const QModelIndex &parent = QModelIndex{}) const override;
-        virtual void fetchMore(const QModelIndex &parent) override;
         virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex{}) const override;
         virtual QModelIndex parent(const QModelIndex &index) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
@@ -69,9 +68,15 @@ namespace Evernus
             LocationNode(quint64 id, LocationNode *parent, size_t row, const QString &name, Type type);
         };
 
+        using LocationCache = std::unordered_map<uint, LocationNode *>;
+        using LocationList = std::vector<std::unique_ptr<LocationNode>>;
+
         const EveDataProvider &mDataProvider;
 
-        mutable std::vector<LocationNode> mRegions;
-        mutable std::unordered_map<uint, std::vector<LocationNode>> mConstellations, mSolarSystems, mCitadels;
+        mutable LocationList mRegions;
+        mutable std::unordered_map<uint, LocationList> mConstellations, mSolarSystems, mCitadels;
+        LocationCache mSolarSystemMap;
+
+        void fillStaticData();
     };
 }

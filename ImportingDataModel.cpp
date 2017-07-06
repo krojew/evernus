@@ -58,7 +58,7 @@ namespace Evernus
     QVariant ImportingDataModel::data(const QModelIndex &index, int role) const
     {
         if (Q_UNLIKELY(!index.isValid()))
-            return QVariant{};
+            return {};
 
         const auto column = index.column();
         const auto &data = mData[index.row()];

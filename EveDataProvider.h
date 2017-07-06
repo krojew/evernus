@@ -51,7 +51,14 @@ namespace Evernus
             std::vector<ReprocessingMaterialInfo> mMaterials;
         };
 
-        using MapLocation = std::pair<uint, QString> ;
+        struct MapTreeLocation
+        {
+            uint mParent;
+            uint mId;
+            QString mName;
+        };
+
+        using MapLocation = std::pair<uint, QString>;
         using Station = std::pair<quint64, QString>;
         using ReprocessingMap = std::unordered_map<EveType::IdType, ReprocessingInfo>;
         using TypeList = std::unordered_set<EveType::IdType>;
@@ -84,8 +91,10 @@ namespace Evernus
 
         virtual const std::vector<MapLocation> &getRegions() const = 0;
         virtual const std::vector<MapLocation> &getConstellations(uint regionId) const = 0;
+        virtual const std::vector<MapTreeLocation> &getConstellations() const = 0;
         virtual const std::vector<MapLocation> &getSolarSystemsForConstellation(uint constellationId) const = 0;
         virtual const std::vector<MapLocation> &getSolarSystemsForRegion(uint regionId) const = 0;
+        virtual const std::vector<MapTreeLocation> &getSolarSystems() const = 0;
         virtual const std::vector<Station> &getStations(uint solarSystemId) const = 0;
 
         virtual double getSolarSystemSecurityStatus(uint solarSystemId) const = 0;
@@ -95,6 +104,7 @@ namespace Evernus
 
         virtual const CitadelRepository::EntityList &getCitadelsForRegion(uint regionId) const = 0;
         virtual const CitadelRepository::EntityList &getCitadelsForSolarSystem(uint solarSystemId) const = 0;
+        virtual const CitadelRepository::EntityList &getCitadels() const = 0;
 
         virtual const ReprocessingMap &getOreReprocessingInfo() const = 0;
         virtual const ReprocessingMap &getTypeReprocessingInfo(const TypeList &requestedTypes) const = 0;

@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <boost/scope_exit.hpp>
+
 #include "EveDataProvider.h"
 
 #include "CitadelLocationModel.h"
@@ -31,24 +33,12 @@ namespace Evernus
         : QAbstractItemModel{parent}
         , mDataProvider{dataProvider}
     {
-    }
+        blockSignals(true);
 
-    bool CitadelLocationModel::canFetchMore(const QModelIndex &parent) const
-    {
-        if (!parent.isValid())
-            return mRegions.empty();
+        fillStaticData();
+        refresh();
 
-        const auto node = static_cast<const LocationNode *>(parent.internalPointer());
-        switch (node->mType) {
-        case LocationNode::Type::Region:
-            return mConstellations.find(node->mId) == std::end(mConstellations);
-        case LocationNode::Type::Constellation:
-            return mSolarSystems.find(node->mId) == std::end(mSolarSystems);
-        case LocationNode::Type::SolarSystem:
-            return mCitadels.find(node->mId) == std::end(mCitadels);
-        default:
-            return false;
-        }
+        blockSignals(false);
     }
 
     int CitadelLocationModel::columnCount(const QModelIndex &parent) const
@@ -59,69 +49,18 @@ namespace Evernus
 
     QVariant CitadelLocationModel::data(const QModelIndex &index, int role) const
     {
-        if (!index.isValid())
+        if (Q_UNLIKELY(!index.isValid()))
             return {};
 
-        if (role == Qt::DisplayRole)
-            return static_cast<const LocationNode *>(index.internalPointer())->mName;
+        const auto item = static_cast<const LocationNode *>(index.internalPointer());
+
+        switch (role) {
+        case Qt::DisplayRole:
+            return item->mName;
+//        case Qt::CheckStateRole:
+        }
 
         return {};
-    }
-
-    void CitadelLocationModel::fetchMore(const QModelIndex &parent)
-    {
-        if (!parent.isValid())
-        {
-            const auto &regions = mDataProvider.getRegions();
-            mRegions.reserve(regions.size());
-
-            for (const auto &region : regions)
-                mRegions.emplace_back(LocationNode{region.first, nullptr, mRegions.size(), region.second, LocationNode::Type::Region});
-
-            return;
-        }
-
-        const auto node = static_cast<LocationNode *>(parent.internalPointer());
-        switch (node->mType) {
-        case LocationNode::Type::Region:
-            {
-                const auto &constellations = mDataProvider.getConstellations(node->mId);
-                auto &target = mConstellations[node->mId];
-
-                target.reserve(constellations.size());
-
-                for (const auto &constellation : constellations)
-                    target.emplace_back(LocationNode{constellation.first, node, target.size(), constellation.second, LocationNode::Type::Constellation});
-
-                break;
-            }
-        case LocationNode::Type::Constellation:
-            {
-                const auto &systems = mDataProvider.getSolarSystemsForConstellation(node->mId);
-                auto &target = mSolarSystems[node->mId];
-
-                target.reserve(systems.size());
-
-                for (const auto &system : systems)
-                    target.emplace_back(LocationNode{system.first, node, target.size(), system.second, LocationNode::Type::SolarSystem});
-
-                break;
-            }
-        case LocationNode::Type::SolarSystem:
-            {
-                const auto &citadels = mDataProvider.getCitadelsForSolarSystem(node->mId);
-                auto &target = mCitadels[node->mId];
-
-                target.reserve(citadels.size());
-
-                for (const auto &citadel : citadels)
-                    target.emplace_back(LocationNode{citadel->getId(), node, target.size(), citadel->getName(), LocationNode::Type::Citadel});
-
-                break;
-            }
-        default:
-            break;
-        }
     }
 
     bool CitadelLocationModel::hasChildren(const QModelIndex &parent) const
@@ -132,13 +71,13 @@ namespace Evernus
         const auto node = static_cast<LocationNode *>(parent.internalPointer());
         return node->mType == LocationNode::Type::Region ||
                node->mType == LocationNode::Type::Constellation ||
-               node->mType == LocationNode::Type::SolarSystem;
+               (node->mType == LocationNode::Type::SolarSystem && mCitadels.find(node->mId) != std::end(mCitadels));
     }
 
     QModelIndex CitadelLocationModel::index(int row, int column, const QModelIndex &parent) const
     {
         if (column != 0)
-            return QModelIndex{};
+            return {};
 
         if (!parent.isValid())
         {
@@ -146,17 +85,17 @@ namespace Evernus
             if (mRegions.empty())
                 return {};
 
-            return createIndex(row, column, &mRegions[row]);
+            return createIndex(row, column, mRegions[row].get());
         }
 
         const auto node = static_cast<const LocationNode *>(parent.internalPointer());
         switch (node->mType) {
         case LocationNode::Type::Region:
-            return createIndex(row, column, &mConstellations[node->mId][row]);
+            return createIndex(row, column, mConstellations[node->mId][row].get());
         case LocationNode::Type::Constellation:
-            return createIndex(row, column, &mSolarSystems[node->mId][row]);
+            return createIndex(row, column, mSolarSystems[node->mId][row].get());
         case LocationNode::Type::SolarSystem:
-            return createIndex(row, column, &mCitadels[node->mId][row]);
+            return createIndex(row, column, mCitadels[node->mId][row].get());
         default:
             return {};
         }
@@ -201,6 +140,70 @@ namespace Evernus
     void CitadelLocationModel::refresh()
     {
         beginResetModel();
-        endResetModel();
+
+        BOOST_SCOPE_EXIT(this_) {
+            this_->endResetModel();
+        } BOOST_SCOPE_EXIT_END
+
+        mCitadels.clear();
+
+        const auto &citadels = mDataProvider.getCitadels();
+        for (const auto &citadel : citadels)
+        {
+            const auto solarSystem = mSolarSystemMap.find(citadel->getSolarSystemId());
+            if (Q_LIKELY(solarSystem != std::end(mSolarSystemMap)))
+            {
+                auto &target = mCitadels[citadel->getSolarSystemId()];
+                target.emplace_back(std::make_unique<LocationNode>(citadel->getId(), solarSystem->second, target.size(), citadel->getName(), LocationNode::Type::Citadel));
+            }
+        }
+    }
+
+    void CitadelLocationModel::fillStaticData()
+    {
+        beginResetModel();
+
+        BOOST_SCOPE_EXIT(this_) {
+            this_->endResetModel();
+        } BOOST_SCOPE_EXIT_END
+
+        const auto &regions = mDataProvider.getRegions();
+        mRegions.reserve(regions.size());
+
+        LocationCache regionMap, constellationMap;
+
+        for (const auto &region : regions)
+        {
+            mRegions.emplace_back(std::make_unique<LocationNode>(region.first, nullptr, mRegions.size(), region.second, LocationNode::Type::Region));
+            regionMap[mRegions.back()->mId] = mRegions.back().get();
+        }
+
+        const auto &constellations = mDataProvider.getConstellations();
+        mConstellations.reserve(constellations.size());
+
+        for (const auto &constellation : constellations)
+        {
+            const auto region = regionMap.find(constellation.mParent);
+            if (Q_LIKELY(region != std::end(regionMap)))
+            {
+                auto &target = mConstellations[constellation.mParent];
+                target.emplace_back(std::make_unique<LocationNode>(constellation.mId, region->second, target.size(), constellation.mName, LocationNode::Type::Constellation));
+                constellationMap[target.back()->mId] = target.back().get();
+            }
+        }
+
+        const auto &solarSystems = mDataProvider.getSolarSystems();
+        mSolarSystems.reserve(solarSystems.size());
+
+        for (const auto &solarSystem : solarSystems)
+        {
+            const auto constellation = constellationMap.find(solarSystem.mParent);
+            if (Q_LIKELY(constellation != std::end(constellationMap)))
+            {
+                auto &target = mSolarSystems[solarSystem.mParent];
+                target.emplace_back(std::make_unique<LocationNode>(solarSystem.mId, constellation->second, target.size(), solarSystem.mName, LocationNode::Type::SolarSystem));
+                mSolarSystemMap[target.back()->mId] = target.back().get();
+            }
+        }
     }
 }
