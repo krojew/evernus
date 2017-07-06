@@ -149,6 +149,7 @@ namespace Evernus
         void showPreferences();
         void showMarginTool();
         void showCustomFPC();
+        void showCitadelManager();
         void showAbout();
         void openHelp();
         void checkForUpdates();

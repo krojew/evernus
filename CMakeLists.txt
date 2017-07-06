@@ -195,6 +195,8 @@ add_executable(
     Citadel.h
     CitadelManager.cpp
     CitadelManager.h
+    CitadelManagerDialog.cpp
+    CitadelManagerDialog.h
     CitadelRepository.cpp
     CitadelRepository.h
     ClickableLabel.cpp

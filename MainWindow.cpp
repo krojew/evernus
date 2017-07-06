@@ -40,6 +40,7 @@
 #include "WalletTransactionsWidget.h"
 #include "CharacterManagerDialog.h"
 #include "MarketAnalysisWidget.h"
+#include "CitadelManagerDialog.h"
 #include "WalletJournalWidget.h"
 #include "CharacterRepository.h"
 #include "MarketBrowserWidget.h"
@@ -227,6 +228,12 @@ namespace Evernus
             this->showInEve(id, Character::invalidId);
         });
 
+        dlg.exec();
+    }
+
+    void MainWindow::showCitadelManager()
+    {
+        CitadelManagerDialog dlg{this};
         dlg.exec();
     }
 
@@ -632,6 +639,7 @@ namespace Evernus
         auto toolsMenu = bar->addMenu(tr("&Tools"));
         toolsMenu->addAction(tr("Import conquerable stations"), this, &MainWindow::refreshConquerableStations);
         toolsMenu->addAction(tr("Import citadels"), this, &MainWindow::refreshCitadels);
+        toolsMenu->addAction(tr("Citadel manager"), this, &MainWindow::showCitadelManager);
         toolsMenu->addAction(QIcon{":/images/report.png"}, tr("Ma&rgin tool..."), this, &MainWindow::showMarginTool, Qt::CTRL + Qt::Key_M);
         toolsMenu->addAction(tr("Custom &Fast Price Copy"), this, &MainWindow::showCustomFPC);
         toolsMenu->addSeparator();
