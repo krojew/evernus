@@ -14,7 +14,6 @@
  */
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
-#include <QTabWidget>
 
 #include "CitadelLocationWidget.h"
 
@@ -28,11 +27,8 @@ namespace Evernus
         const auto mainLayout = new QVBoxLayout{this};
 
         const auto locationWidget = new CitadelLocationWidget{dataProvider, this};
+        mainLayout->addWidget(locationWidget);
         connect(this, &CitadelManagerDialog::citadelsChanged, locationWidget, &CitadelLocationWidget::refresh);
-
-        const auto tabs = new QTabWidget{this};
-        mainLayout->addWidget(tabs);
-        tabs->addTab(locationWidget, tr("By location"));
 
         const auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);
