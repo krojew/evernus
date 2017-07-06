@@ -187,12 +187,12 @@
 <context>
     <name>Evernus::AboutDialog</name>
     <message>
-        <location filename="../AboutDialog.cpp" line="38"/>
+        <location filename="../AboutDialog.cpp" line="43"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Created by &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;German translation by &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Hel+O%27Ween&apos;&gt;Hel O&apos;Ween&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;All donations are welcome :)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;New forum topic: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;&lt;br /&gt;Old forum topic: &lt;a href=&apos;%5&apos;&gt;%5&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AboutDialog.cpp" line="57"/>
+        <location filename="../AboutDialog.cpp" line="67"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>

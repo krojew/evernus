@@ -13,7 +13,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QCoreApplication>
+#include <QDialogButtonBox>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QLabel>
 #include <QIcon>
 
@@ -22,13 +24,16 @@
 namespace Evernus
 {
     AboutDialog::AboutDialog(QWidget *parent)
-        : QDialog(parent)
+        : QDialog{parent}
     {
-        auto mainLayout = new QHBoxLayout{this};
+        auto mainLayout = new QVBoxLayout{this};
+
+        auto textLayout = new QHBoxLayout{};
+        mainLayout->addLayout(textLayout);
         auto icon = parent->windowIcon();
 
         auto iconLabel = new QLabel{this};
-        mainLayout->addWidget(iconLabel);
+        textLayout->addWidget(iconLabel);
         iconLabel->setPixmap(icon.pixmap(icon.actualSize(QSize{64, 64})));
 
         const auto link = QStringLiteral("http://evernus.com");
@@ -50,9 +55,14 @@ namespace Evernus
                 .arg(newForum)
                 .arg(oldForum),
             this};
-        mainLayout->addWidget(aboutLabel);
+        textLayout->addWidget(aboutLabel);
         aboutLabel->setTextFormat(Qt::RichText);
         aboutLabel->setOpenExternalLinks(true);
+
+        const auto buttons = new QDialogButtonBox{QDialogButtonBox::Close, this};
+        mainLayout->addWidget(buttons);
+        buttons->setCenterButtons(true);
+        connect(buttons, &QDialogButtonBox::rejected, this, &AboutDialog::close);
 
         setWindowTitle(tr("About"));
     }
