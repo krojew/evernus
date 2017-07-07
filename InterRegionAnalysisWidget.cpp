@@ -289,10 +289,7 @@ namespace Evernus
         QSettings settings;
         settings.setValue(settingName, path);
 
-        if (path.size() == 4)
-            destination = path[3].toULongLong();
-        else
-            destination = 0;
+        destination = EveDataProvider::getStationIdFromPath(path);
 
         if (QMessageBox::question(this, tr("Station change"), tr("Changing station requires data recalculation. Do you wish to do it now?")) == QMessageBox::No)
             return;

@@ -290,6 +290,7 @@ add_executable(
     EveCentralExternalOrderImporter.h
     EveCentralManager.cpp
     EveCentralManager.h
+    EveDataProvider.cpp
     EveDataProvider.h
     evernus.qrc
     EvernusApplication.cpp

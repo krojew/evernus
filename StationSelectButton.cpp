@@ -22,8 +22,8 @@ namespace Evernus
     StationSelectButton::StationSelectButton(const EveDataProvider &dataProvider,
                                              QVariantList initialStationPath,
                                              QWidget *parent)
-        : QPushButton((initialStationPath.size() == 4 && initialStationPath[3].toULongLong() != 0) ?
-                      (dataProvider.getLocationName(initialStationPath[3].toULongLong())) :
+        : QPushButton((EveDataProvider::getStationIdFromPath(initialStationPath) != 0) ?
+                      (dataProvider.getLocationName(EveDataProvider::getStationIdFromPath(initialStationPath))) :
                       (tr("- any station -")), parent)
         , mDataProvider(dataProvider)
         , mStationPath(std::move(initialStationPath))

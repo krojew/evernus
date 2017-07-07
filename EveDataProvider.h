@@ -20,6 +20,7 @@
 #include <memory>
 
 #include <QDateTime>
+#include <QVariant>
 #include <QObject>
 
 #include "CitadelRepository.h"
@@ -112,6 +113,8 @@ namespace Evernus
         virtual uint getGroupId(const QString &name) const = 0;
 
         virtual uint getDistance(uint startSystem, uint endSystem) const = 0;
+
+        static quint64 getStationIdFromPath(const QVariantList &path);
 
     signals:
         void namesChanged() const;
