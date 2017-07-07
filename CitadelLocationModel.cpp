@@ -33,12 +33,8 @@ namespace Evernus
         : QAbstractItemModel{parent}
         , mDataProvider{dataProvider}
     {
-        blockSignals(true);
-
         fillStaticData();
         refresh();
-
-        blockSignals(false);
     }
 
     int CitadelLocationModel::columnCount(const QModelIndex &parent) const
@@ -52,26 +48,25 @@ namespace Evernus
         if (Q_UNLIKELY(!index.isValid()))
             return {};
 
-        const auto item = static_cast<const LocationNode *>(index.internalPointer());
+        const auto node = static_cast<const LocationNode *>(index.internalPointer());
+        Q_ASSERT(node != nullptr);
 
         switch (role) {
         case Qt::DisplayRole:
-            return item->mName;
-//        case Qt::CheckStateRole:
+            return node->mName;
+        case Qt::CheckStateRole:
+            return getNodeCheckState(*node);
         }
 
         return {};
     }
 
-    bool CitadelLocationModel::hasChildren(const QModelIndex &parent) const
+    Qt::ItemFlags CitadelLocationModel::flags(const QModelIndex &index) const
     {
-        if (!parent.isValid())
-            return true;
+        if (!index.isValid())
+            return 0;
 
-        const auto node = static_cast<LocationNode *>(parent.internalPointer());
-        return node->mType == LocationNode::Type::Region ||
-               node->mType == LocationNode::Type::Constellation ||
-               (node->mType == LocationNode::Type::SolarSystem && mCitadels.find(node->mId) != std::end(mCitadels));
+        return QAbstractItemModel::flags(index) | Qt::ItemIsUserCheckable;
     }
 
     QModelIndex CitadelLocationModel::index(int row, int column, const QModelIndex &parent) const
@@ -80,15 +75,11 @@ namespace Evernus
             return {};
 
         if (!parent.isValid())
-        {
-            // https://bugreports.qt-project.org/browse/QTBUG-40624
-            if (mRegions.empty())
-                return {};
-
             return createIndex(row, column, mRegions[row].get());
-        }
 
         const auto node = static_cast<const LocationNode *>(parent.internalPointer());
+        Q_ASSERT(node != nullptr);
+
         switch (node->mType) {
         case LocationNode::Type::Region:
             return createIndex(row, column, mConstellations[node->mId][row].get());
@@ -107,6 +98,8 @@ namespace Evernus
             return {};
 
         const auto node = static_cast<const LocationNode *>(index.internalPointer());
+        Q_ASSERT(node != nullptr);
+
         switch (node->mType) {
         case LocationNode::Type::Region:
             return {};
@@ -125,6 +118,8 @@ namespace Evernus
             return static_cast<int>(mRegions.size());
 
         const auto node = static_cast<const LocationNode *>(parent.internalPointer());
+        Q_ASSERT(node != nullptr);
+
         switch (node->mType) {
         case LocationNode::Type::Region:
             return static_cast<int>(mConstellations[node->mId].size());
@@ -135,6 +130,25 @@ namespace Evernus
         default:
             return 0;
         }
+    }
+
+    bool CitadelLocationModel::setData(const QModelIndex &index, const QVariant &value, int role)
+    {
+        if (index.isValid() && role == Qt::CheckStateRole)
+        {
+            setCheckState(index, value.toInt() == Qt::Checked);
+
+            auto parentIndex = parent(index);
+            while (parentIndex.isValid())
+            {
+                emit dataChanged(parentIndex, parentIndex, { Qt::CheckStateRole });
+                parentIndex = parent(parentIndex);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     void CitadelLocationModel::refresh()
@@ -205,5 +219,95 @@ namespace Evernus
                 mSolarSystemMap[target.back()->mId] = target.back().get();
             }
         }
+    }
+
+    Qt::CheckState CitadelLocationModel::getNodeCheckState(const LocationNode &node) const noexcept
+    {
+        switch (node.mType) {
+        case LocationNode::Type::Region:
+            return getRegionNodeCheckState(node);
+        case LocationNode::Type::Constellation:
+            return getConstellationNodeCheckState(node);
+        case LocationNode::Type::SolarSystem:
+            return getSolarSystemNodeCheckState(node);
+        case LocationNode::Type::Citadel:
+            return getCitadelNodeCheckState(node);
+        }
+
+        return Qt::Unchecked;
+    }
+
+    Qt::CheckState CitadelLocationModel::getNodeCheckState(const LocationList &children) const noexcept
+    {
+        auto state = Qt::Unchecked;
+
+        for (const auto &child : children)
+        {
+            Q_ASSERT(child);
+
+            const auto childState = getNodeCheckState(*child);
+            switch (childState) {
+            case Qt::Checked:
+                if (state == Qt::Unchecked)
+                    state = Qt::Checked;
+                break;
+            case Qt::Unchecked:
+                if (state == Qt::Checked)
+                    return Qt::PartiallyChecked;
+                break;
+            case Qt::PartiallyChecked:
+                return Qt::PartiallyChecked;
+            }
+        }
+
+        return state;
+    }
+
+    Qt::CheckState CitadelLocationModel::getRegionNodeCheckState(const LocationNode &node) const noexcept
+    {
+        return getNodeCheckState(mConstellations[node.mId]);
+    }
+
+    Qt::CheckState CitadelLocationModel::getConstellationNodeCheckState(const LocationNode &node) const noexcept
+    {
+        return getNodeCheckState(mSolarSystems[node.mId]);
+    }
+
+    Qt::CheckState CitadelLocationModel::getSolarSystemNodeCheckState(const LocationNode &node) const noexcept
+    {
+        return getNodeCheckState(mCitadels[node.mId]);
+    }
+
+    Qt::CheckState CitadelLocationModel::getCitadelNodeCheckState(const LocationNode &node) const noexcept
+    {
+        return (node.mSelected) ? (Qt::Checked) : (Qt::Unchecked);
+    }
+
+    void CitadelLocationModel::setCheckState(const QModelIndex &index, bool checked)
+    {
+        const auto node = static_cast<LocationNode *>(index.internalPointer());
+        Q_ASSERT(node != nullptr);
+
+        switch (node->mType) {
+        case LocationNode::Type::Region:
+            setCheckState(index, mConstellations[node->mId], checked);
+            break;
+        case LocationNode::Type::Constellation:
+            setCheckState(index, mSolarSystems[node->mId], checked);
+            break;
+        case LocationNode::Type::SolarSystem:
+            setCheckState(index, mCitadels[node->mId], checked);
+            break;
+        case LocationNode::Type::Citadel:
+            node->mSelected = checked;
+        }
+
+        emit dataChanged(index, index, { Qt::CheckStateRole });
+    }
+
+    void CitadelLocationModel::setCheckState(const QModelIndex &parent, const LocationList &children, bool checked)
+    {
+        for (auto row = 0u; row < children.size(); ++row)
+            setCheckState(index(row, 0, parent), checked);
     }
 }

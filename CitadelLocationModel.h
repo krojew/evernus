@@ -37,10 +37,11 @@ namespace Evernus
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
         virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-        virtual bool hasChildren(const QModelIndex &parent = QModelIndex{}) const override;
+        virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
         virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex{}) const override;
         virtual QModelIndex parent(const QModelIndex &index) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
+        virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
         void refresh();
 
@@ -78,5 +79,15 @@ namespace Evernus
         LocationCache mSolarSystemMap;
 
         void fillStaticData();
+
+        Qt::CheckState getNodeCheckState(const LocationNode &node) const noexcept;
+        Qt::CheckState getNodeCheckState(const LocationList &children) const noexcept;
+        Qt::CheckState getRegionNodeCheckState(const LocationNode &node) const noexcept;
+        Qt::CheckState getConstellationNodeCheckState(const LocationNode &node) const noexcept;
+        Qt::CheckState getSolarSystemNodeCheckState(const LocationNode &node) const noexcept;
+        Qt::CheckState getCitadelNodeCheckState(const LocationNode &node) const noexcept;
+
+        void setCheckState(const QModelIndex &index, bool checked);
+        void setCheckState(const QModelIndex &parent, const LocationList &children, bool checked);
     };
 }
