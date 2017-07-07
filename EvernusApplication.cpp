@@ -1679,8 +1679,15 @@ namespace Evernus
     {
         mCorpWalletJournalEntryRepository->deleteAll();
         mCorpWalletTransactionRepository->deleteAll();
+
         emit corpWalletJournalChanged();
         emit corpWalletTransactionsChanged();
+    }
+
+    void EvernusApplication::clearCitadelCache()
+    {
+        mDataProvider->clearCitadelCache();
+        emit citadelsChanged();
     }
 
     void EvernusApplication::makeValueSnapshots(Character::IdType id)

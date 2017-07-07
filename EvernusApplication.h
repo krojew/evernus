@@ -226,6 +226,7 @@ namespace Evernus
         void syncLMeve(Character::IdType id);
 
         void clearCorpWalletData();
+        void clearCitadelCache();
 
         void makeValueSnapshots(Character::IdType id);
 

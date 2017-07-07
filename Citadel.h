@@ -69,6 +69,7 @@ namespace Evernus
         void setIgnored(bool flag) noexcept;
 
         bool canHaveMarket() const noexcept;
+        bool canImportMarket() const noexcept;
 
         Citadel &operator =(const Citadel &) = default;
         Citadel &operator =(Citadel &&) = default;

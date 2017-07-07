@@ -235,7 +235,9 @@ namespace Evernus
     {
         CitadelManagerDialog dlg{mEveDataProvider, mRepositoryProvider.getCitadelRepository(), this};
         connect(this, &MainWindow::citadelsChanged, &dlg, &CitadelManagerDialog::citadelsChanged);
-        dlg.exec();
+
+        if (dlg.exec() == QDialog::Accepted)
+            emit citadelsEdited();
     }
 
     void MainWindow::showAbout()

@@ -76,12 +76,12 @@ namespace Evernus
                     const auto &citadels = mDataProvider.getCitadelsForRegion(regionId);
                     for (const auto &citadel : citadels)
                     {
-                        if (!citadel->canHaveMarket())
+                        Q_ASSERT(citadel);
+
+                        if (!citadel->canImportMarket())
                             continue;
 
                         mCounter.incCount();
-
-                        Q_ASSERT(citadel);
                         mManager.fetchCitadelMarketOrders(citadel->getId(), regionId, id, [=](auto &&orders, const auto &error) {
                             processResult(std::move(orders), error);
                         });

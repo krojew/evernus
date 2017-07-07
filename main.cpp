@@ -222,6 +222,8 @@ int main(int argc, char *argv[])
                              &app, &Evernus::EvernusApplication::clearCorpWalletData);
             QObject::connect(&mainWnd, &Evernus::MainWindow::makeValueSnapshots,
                              &app, &Evernus::EvernusApplication::makeValueSnapshots);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::citadelsEdited,
+                             &app, &Evernus::EvernusApplication::clearCitadelCache);
             QObject::connect(&app, static_cast<void (Evernus::EvernusApplication::*)(uint, const QString &)>(&Evernus::EvernusApplication::taskStarted),
                              &mainWnd, &Evernus::MainWindow::addNewTaskInfo);
             QObject::connect(&app, static_cast<void (Evernus::EvernusApplication::*)(uint, uint, const QString &)>(&Evernus::EvernusApplication::taskStarted),

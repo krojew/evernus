@@ -140,4 +140,9 @@ namespace Evernus
     {
         return mTypeId != 35832; // Astrahus
     }
+
+    bool Citadel::canImportMarket() const noexcept
+    {
+        return canHaveMarket() && !isIgnored();
+    }
 }

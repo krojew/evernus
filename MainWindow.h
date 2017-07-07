@@ -87,6 +87,7 @@ namespace Evernus
 
         void conquerableStationsChanged();
         void citadelsChanged();
+        void citadelsEdited();
         void charactersChanged();
         void assetsChanged();
         void externalOrdersChanged();
