@@ -18,13 +18,17 @@
 #include <QLabel>
 
 #include "CitadelLocationWidget.h"
+#include "CitadelRepository.h"
 
 #include "CitadelManagerDialog.h"
 
 namespace Evernus
 {
-    CitadelManagerDialog::CitadelManagerDialog(const EveDataProvider &dataProvider, QWidget *parent)
+    CitadelManagerDialog::CitadelManagerDialog(const EveDataProvider &dataProvider,
+                                               const CitadelRepository &citadelRepo,
+                                               QWidget *parent)
         : QDialog{parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint}
+        , mCitadelRepo{citadelRepo}
     {
         const auto mainLayout = new QVBoxLayout{this};
 
@@ -35,9 +39,9 @@ namespace Evernus
 
         ignoredBoxLayout->addWidget(new QLabel{tr("Ignored citadels will not have their data imported."), this});
 
-        const auto locationWidget = new CitadelLocationWidget{dataProvider, this};
-        ignoredBoxLayout->addWidget(locationWidget);
-        connect(this, &CitadelManagerDialog::citadelsChanged, locationWidget, &CitadelLocationWidget::refresh);
+        mIgnoredCitadelsWidget = new CitadelLocationWidget{dataProvider, this};
+        ignoredBoxLayout->addWidget(mIgnoredCitadelsWidget);
+        connect(this, &CitadelManagerDialog::citadelsChanged, mIgnoredCitadelsWidget, &CitadelLocationWidget::refresh);
 
         const auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);
@@ -49,6 +53,7 @@ namespace Evernus
 
     void CitadelManagerDialog::applyChanges()
     {
+        mCitadelRepo.setIgnored(mIgnoredCitadelsWidget->getSelectedCitadels());
         accept();
     }
 }

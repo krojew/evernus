@@ -28,10 +28,14 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        using CitadelList = CitadelLocationModel::CitadelList;
+
         explicit CitadelLocationWidget(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
         CitadelLocationWidget(const CitadelLocationWidget &) = default;
         CitadelLocationWidget(CitadelLocationWidget &&) = default;
         virtual ~CitadelLocationWidget() = default;
+
+        CitadelList getSelectedCitadels() const;
 
         CitadelLocationWidget &operator =(const CitadelLocationWidget &) = default;
         CitadelLocationWidget &operator =(CitadelLocationWidget &&) = default;

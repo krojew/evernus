@@ -233,7 +233,7 @@ namespace Evernus
 
     void MainWindow::showCitadelManager()
     {
-        CitadelManagerDialog dlg{mEveDataProvider, this};
+        CitadelManagerDialog dlg{mEveDataProvider, mRepositoryProvider.getCitadelRepository(), this};
         connect(this, &MainWindow::citadelsChanged, &dlg, &CitadelManagerDialog::citadelsChanged);
         dlg.exec();
     }

@@ -15,6 +15,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 #include <memory>
 
@@ -30,6 +31,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        using CitadelList = std::unordered_set<quint64>;
+
         explicit CitadelLocationModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
         CitadelLocationModel(const CitadelLocationModel &) = default;
         CitadelLocationModel(CitadelLocationModel &&) = default;
@@ -44,6 +47,8 @@ namespace Evernus
         virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
         void refresh();
+
+        CitadelList getSelectedCitadels() const;
 
         CitadelLocationModel &operator =(const CitadelLocationModel &) = default;
         CitadelLocationModel &operator =(CitadelLocationModel &&) = default;

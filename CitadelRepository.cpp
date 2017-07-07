@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
+
 #include "CitadelRepository.h"
 
 namespace Evernus
@@ -53,7 +55,7 @@ namespace Evernus
 
     void CitadelRepository::create() const
     {
-        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+        exec(QStringLiteral("CREATE TABLE IF NOT EXISTS %1 ("
             "id INTEGER PRIMARY KEY,"
             "name TEXT NOT NULL,"
             "solar_system_id INTEGER NOT NULL,"
@@ -66,11 +68,11 @@ namespace Evernus
             "type_id INTEGER NOT NULL,"
             "public INTEGER NOT NULL,"
             "ignored INTEGER NOT NULL"
-        ")"}.arg(getTableName()));
+        ")").arg(getTableName()));
 
         try
         {
-            exec(QString{"CREATE INDEX IF NOT EXISTS %1_region ON %1(region_id)"}.arg(getTableName()));
+            exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_region ON %1(region_id)").arg(getTableName()));
         }
         catch (const std::runtime_error &)
         {
@@ -81,12 +83,12 @@ namespace Evernus
 
     void CitadelRepository::deleteAll() const
     {
-        exec(QString{"DELETE FROM %1"}.arg(getTableName()));
+        exec(QStringLiteral("DELETE FROM %1").arg(getTableName()));
     }
 
     CitadelRepository::EntityList CitadelRepository::fetchForSolarSystem(uint solarSystemId) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE solar_system_id = ?"}.arg(getTableName()));
+        auto query = prepare(QStringLiteral("SELECT * FROM %1 WHERE solar_system_id = ?").arg(getTableName()));
         query.bindValue(0, solarSystemId);
 
         return buildList(query);
@@ -94,10 +96,35 @@ namespace Evernus
 
     CitadelRepository::EntityList CitadelRepository::fetchForRegion(uint regionId) const
     {
-        auto query = prepare(QString{"SELECT * FROM %1 WHERE region_id = ?"}.arg(getTableName()));
+        auto query = prepare(QStringLiteral("SELECT * FROM %1 WHERE region_id = ?").arg(getTableName()));
         query.bindValue(0, regionId);
 
         return buildList(query);
+    }
+
+    void CitadelRepository::setIgnored(const CitadelList &citadels) const
+    {
+        QStringList placeholders;
+        std::fill_n(std::back_inserter(placeholders), citadels.size(), QStringLiteral("?"));
+
+        const auto fill = placeholders.join(QStringLiteral(", "));
+        auto db = getDatabase();
+
+        db.transaction();
+
+        auto query = prepare(QStringLiteral("UPDATE %1 SET ignored = 0 WHERE id NOT IN (%2)").arg(getTableName()).arg(fill));
+        for (const auto id : citadels)
+            query.addBindValue(id);
+
+        DatabaseUtils::execQuery(query);
+
+        query = prepare(QStringLiteral("UPDATE %1 SET ignored = 1 WHERE id IN (%2)").arg(getTableName()).arg(fill));
+        for (const auto id : citadels)
+            query.addBindValue(id);
+
+        DatabaseUtils::execQuery(query);
+
+        db.commit();
     }
 
     QStringList CitadelRepository::getColumns() const

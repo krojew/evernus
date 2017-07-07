@@ -50,6 +50,11 @@ namespace Evernus
         connect(btn, &QPushButton::clicked, mainView, &QTreeView::collapseAll);
     }
 
+    CitadelLocationWidget::CitadelList CitadelLocationWidget::getSelectedCitadels() const
+    {
+        return mModel.getSelectedCitadels();
+    }
+
     void CitadelLocationWidget::refresh()
     {
         mModel.refresh();

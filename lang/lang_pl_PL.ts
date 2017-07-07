@@ -1117,17 +1117,17 @@ Total: %7</source>
 <context>
     <name>Evernus::CitadelManagerDialog</name>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="31"/>
+        <location filename="../CitadelManagerDialog.cpp" line="35"/>
         <source>Ignored citadels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="36"/>
+        <location filename="../CitadelManagerDialog.cpp" line="40"/>
         <source>Ignored citadels will not have their data imported.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="47"/>
+        <location filename="../CitadelManagerDialog.cpp" line="51"/>
         <source>Citadel manager</source>
         <translation type="unfinished"></translation>
     </message>

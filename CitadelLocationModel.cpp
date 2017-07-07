@@ -169,8 +169,25 @@ namespace Evernus
             {
                 auto &target = mCitadels[citadel->getSolarSystemId()];
                 target.emplace_back(std::make_unique<LocationNode>(citadel->getId(), solarSystem->second, target.size(), citadel->getName(), LocationNode::Type::Citadel));
+                target.back()->mSelected = citadel->isIgnored();
             }
         }
+    }
+
+    CitadelLocationModel::CitadelList CitadelLocationModel::getSelectedCitadels() const
+    {
+        CitadelList result;
+        for (const auto &systemCitadels : mCitadels)
+        {
+            for (const auto &citadel : systemCitadels.second)
+            {
+                Q_ASSERT(citadel);
+                if (citadel->mSelected)
+                    result.emplace(citadel->mId);
+            }
+        }
+
+        return result;
     }
 
     void CitadelLocationModel::fillStaticData()

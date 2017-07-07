@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <unordered_set>
+
 #include "Repository.h"
 #include "Citadel.h"
 
@@ -23,6 +25,8 @@ namespace Evernus
         : public Repository<Citadel>
     {
     public:
+        using CitadelList = std::unordered_set<Citadel::IdType>;
+
         using Repository::Repository;
         CitadelRepository(const CitadelRepository &) = default;
         CitadelRepository(CitadelRepository &&) = default;
@@ -38,6 +42,8 @@ namespace Evernus
 
         EntityList fetchForSolarSystem(uint solarSystemId) const;
         EntityList fetchForRegion(uint regionId) const;
+
+        void setIgnored(const CitadelList &citadels) const;
 
         CitadelRepository &operator =(const CitadelRepository &) = default;
         CitadelRepository &operator =(CitadelRepository &&) = default;
