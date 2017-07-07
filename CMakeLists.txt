@@ -191,6 +191,8 @@ add_executable(
     CharacterRepository.h
     CharacterWidget.cpp
     CharacterWidget.h
+    CheckableTreeView.cpp
+    CheckableTreeView.h
     Citadel.cpp
     Citadel.h
     CitadelLocationModel.cpp

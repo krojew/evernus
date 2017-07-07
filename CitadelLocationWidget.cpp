@@ -15,8 +15,9 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
-#include <QTreeView>
 #include <QIcon>
+
+#include "CheckableTreeView.h"
 
 #include "CitadelLocationWidget.h"
 
@@ -32,7 +33,7 @@ namespace Evernus
         mainLayout->addLayout(buttonLayout);
         buttonLayout->addStretch();
 
-        const auto mainView = new QTreeView{this};
+        const auto mainView = new CheckableTreeView{this};
         mainLayout->addWidget(mainView);
         mainView->setModel(&mModel);
         mainView->setHeaderHidden(true);
