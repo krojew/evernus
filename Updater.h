@@ -99,7 +99,8 @@ namespace Evernus
         void migrateDatabaseTo150(const CitadelRepository &citadelRepo) const;
         void migrateDatabaseTo153(const ItemRepository &itemRepo) const;
         void migrateDatabaseTo20(const Repository<Character> &characterRepo) const;
-        void migrateDatabaseTo22(const CitadelRepository &citadelRepo) const;
+        void migrateDatabaseTo22(const CitadelRepository &citadelRepo,
+                                 const ItemRepository &corpItemRepo) const;
 
         void migrateCoreTo130() const;
         void migrateCoreTo136() const;

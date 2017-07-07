@@ -77,5 +77,6 @@ namespace Evernus
         virtual const ItemRepository &getItemRepository() const noexcept = 0;
         virtual const CitadelRepository &getCitadelRepository() const noexcept = 0;
         virtual const RegionTypePresetRepository &getRegionTypePresetRepository() const noexcept = 0;
+        virtual const ItemRepository &getCorpItemRepository() const noexcept = 0;
     };
 }

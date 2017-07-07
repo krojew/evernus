@@ -687,6 +687,11 @@ namespace Evernus
         return *mRegionTypePresetRepository;
     }
 
+    const ItemRepository &EvernusApplication::getCorpItemRepository() const noexcept
+    {
+        return *mCorpItemRepository;
+    }
+
     std::vector<std::shared_ptr<LMeveTask>> EvernusApplication::getTasks(Character::IdType characterId) const
     {
         const auto it = mLMeveTaskCache.find(characterId);

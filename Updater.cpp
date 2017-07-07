@@ -267,6 +267,7 @@ namespace Evernus
         const auto &itemRepo = provider.getItemRepository();
         const auto &keyRepo = provider.getKeyRepository();
         const auto &citadelRepo = provider.getCitadelRepository();
+        const auto &corpItemRepo = provider.getCorpItemRepository();
 
         const auto dbBak = DatabaseUtils::backupDatabase(characterRepo.getDatabase());
 
@@ -349,7 +350,7 @@ namespace Evernus
             if (majorVersion < 3)
             {
                 if (minorVersion < 2)
-                    migrateDatabaseTo22(citadelRepo);
+                    migrateDatabaseTo22(citadelRepo, corpItemRepo);
             }
 
             updateDatabaseVersion(provider.getKeyRepository().getDatabase());
@@ -515,11 +516,6 @@ namespace Evernus
         safelyExecQuery(itemRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN custom_value NUMERIC NULL DEFAULT NULL").arg(itemRepo.getTableName()));
     }
 
-    void Updater::migrateDatabaseTo22(const CitadelRepository &citadelRepo) const
-    {
-        safelyExecQuery(citadelRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN ignored INTEGER NOT NULL DEFAULT 0").arg(citadelRepo.getTableName()));
-    }
-
     void Updater::migrateDatabaseTo20(const Repository<Character> &characterRepo) const
     {
         safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN reprocessing_implant_bonus FLOAT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
@@ -543,6 +539,12 @@ namespace Evernus
         safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN scrapmetal_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
         safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN spodumain_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
         safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN veldspar_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+    }
+
+    void Updater::migrateDatabaseTo22(const CitadelRepository &citadelRepo, const ItemRepository &corpItemRepo) const
+    {
+        safelyExecQuery(citadelRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN ignored INTEGER NOT NULL DEFAULT 0").arg(citadelRepo.getTableName()));
+        safelyExecQuery(corpItemRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN custom_value NUMERIC NULL DEFAULT NULL").arg(corpItemRepo.getTableName()));
     }
 
     void Updater::migrateCoreTo130() const
