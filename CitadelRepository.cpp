@@ -104,25 +104,30 @@ namespace Evernus
 
     void CitadelRepository::setIgnored(const CitadelList &citadels) const
     {
-        QStringList placeholders;
-        std::fill_n(std::back_inserter(placeholders), citadels.size(), QStringLiteral("?"));
-
-        const auto fill = placeholders.join(QStringLiteral(", "));
         auto db = getDatabase();
-
         db.transaction();
 
-        auto query = prepare(QStringLiteral("UPDATE %1 SET ignored = 0 WHERE id NOT IN (%2)").arg(getTableName()).arg(fill));
-        for (const auto id : citadels)
-            query.addBindValue(id);
+        exec(QStringLiteral("UPDATE %1 SET ignored = 0").arg(getTableName()));
 
-        DatabaseUtils::execQuery(query);
+        auto start = std::begin(citadels);
+        const auto end = std::end(citadels);
 
-        query = prepare(QStringLiteral("UPDATE %1 SET ignored = 1 WHERE id IN (%2)").arg(getTableName()).arg(fill));
-        for (const auto id : citadels)
-            query.addBindValue(id);
+        while (start != end)
+        {
+            const auto size = std::min(maxSqliteBoundVariables, static_cast<std::size_t>(std::distance(start, end)));
 
-        DatabaseUtils::execQuery(query);
+            QStringList placeholders;
+            std::fill_n(std::back_inserter(placeholders), size, QStringLiteral("?"));
+
+            const auto fill = placeholders.join(QStringLiteral(", "));
+
+            auto query = prepare(QStringLiteral("UPDATE %1 SET ignored = 1 WHERE id IN (%2)").arg(getTableName()).arg(fill));
+
+            for (auto i = 0u; i < size; ++i)
+                query.addBindValue(*start++);
+
+            DatabaseUtils::execQuery(query);
+        }
 
         db.commit();
     }
