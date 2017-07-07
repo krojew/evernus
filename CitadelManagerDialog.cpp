@@ -14,6 +14,8 @@
  */
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
+#include <QGroupBox>
+#include <QLabel>
 
 #include "CitadelLocationWidget.h"
 
@@ -26,8 +28,15 @@ namespace Evernus
     {
         const auto mainLayout = new QVBoxLayout{this};
 
+        const auto ignoredBox = new QGroupBox{tr("Ignored citadels"), this};
+        mainLayout->addWidget(ignoredBox);
+
+        const auto ignoredBoxLayout = new QVBoxLayout{ignoredBox};
+
+        ignoredBoxLayout->addWidget(new QLabel{tr("Ignored citadels will not have their data imported."), this});
+
         const auto locationWidget = new CitadelLocationWidget{dataProvider, this};
-        mainLayout->addWidget(locationWidget);
+        ignoredBoxLayout->addWidget(locationWidget);
         connect(this, &CitadelManagerDialog::citadelsChanged, locationWidget, &CitadelLocationWidget::refresh);
 
         const auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
