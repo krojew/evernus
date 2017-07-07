@@ -2591,7 +2591,7 @@ namespace Evernus
     {
         QSettings settings;
         const auto customLocationId = (settings.value(ImportSettings::useCustomAssetStationKey, ImportSettings::useCustomAssetStationDefault).toBool()) ?
-                                      (settings.value(ImportSettings::customAssetStationKey).toUInt()) :
+                                      (EveDataProvider::getStationIdFromPath(settings.value(ImportSettings::customAssetStationKey).toList())) :
                                       (0);
 
         auto value = 0.;
