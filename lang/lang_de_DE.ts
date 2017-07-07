@@ -521,7 +521,7 @@
     </message>
     <message>
         <location filename="../AssetsWidget.cpp" line="148"/>
-        <location filename="../AssetsWidget.cpp" line="267"/>
+        <location filename="../AssetsWidget.cpp" line="270"/>
         <source>Set custom value</source>
         <translation type="unfinished"></translation>
     </message>
@@ -546,12 +546,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="183"/>
+        <location filename="../AssetsWidget.cpp" line="186"/>
         <source>Use custom station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AssetsWidget.cpp" line="267"/>
+        <location filename="../AssetsWidget.cpp" line="270"/>
         <source>ISK:</source>
         <translation type="unfinished"></translation>
     </message>

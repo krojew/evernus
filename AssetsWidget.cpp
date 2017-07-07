@@ -173,11 +173,14 @@ namespace Evernus
         mUseAssetStationBtn = new QRadioButton{tr("Use asset location"), this};
         stationGroupLayout->addWidget(mUseAssetStationBtn);
         mUseAssetStationBtn->setChecked(!useCustomStation);
-        connect(mUseAssetStationBtn, &QRadioButton::toggled, this, [this](bool checked) {
+        connect(mUseAssetStationBtn, &QRadioButton::toggled, this, [=](bool checked) {
             if (checked)
                 setCustomStation(0);
             else
                 setCustomStation(mStationView->getStationId());
+
+            QSettings settings;
+            settings.setValue(ImportSettings::useCustomAssetStationKey, !checked);
         });
 
         auto customStationBtn = new QRadioButton{tr("Use custom station"), this};
