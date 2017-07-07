@@ -292,7 +292,8 @@ namespace Evernus
 
     Qt::CheckState CitadelLocationModel::getSolarSystemNodeCheckState(const LocationNode &node) const noexcept
     {
-        return getNodeCheckState(mCitadels[node.mId]);
+        const auto &citadels = mCitadels[node.mId];
+        return (citadels.empty()) ? ((node.mSelected) ? (Qt::Checked) : (Qt::Unchecked)) : (getNodeCheckState(citadels));
     }
 
     Qt::CheckState CitadelLocationModel::getCitadelNodeCheckState(const LocationNode &node) const noexcept
@@ -313,7 +314,10 @@ namespace Evernus
             setCheckState(index, mSolarSystems[node->mId], checked);
             break;
         case LocationNode::Type::SolarSystem:
-            setCheckState(index, mCitadels[node->mId], checked);
+            if (mCitadels[node->mId].empty())
+                node->mSelected = checked;
+            else
+                setCheckState(index, mCitadels[node->mId], checked);
             break;
         case LocationNode::Type::Citadel:
             node->mSelected = checked;
