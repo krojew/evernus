@@ -214,7 +214,8 @@ namespace Evernus
                                           int aggrDays,
                                           double pricePerM3,
                                           double collateral,
-                                          PriceType collateralType)
+                                          PriceType collateralType,
+                                          bool hideEmptySell)
     {
         beginResetModel();
 
@@ -396,8 +397,13 @@ namespace Evernus
 
         collateral += 1.;
 
+        hideEmptySell = hideEmptySell && srcPriceType == PriceType::Sell;
+
         for (const auto &type : typeMap)
         {
+            if (hideEmptySell && type.second.mSrcOrderCount == 0)
+                continue;
+
             mData.emplace_back();
 
             auto &data = mData.back();

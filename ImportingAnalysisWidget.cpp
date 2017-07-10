@@ -22,6 +22,7 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QCheckBox>
 #include <QSettings>
 #include <QSpinBox>
 #include <QAction>
@@ -130,6 +131,12 @@ namespace Evernus
         toolBarLayout->addWidget(mCollateralSellTypeBtn);
         mCollateralSellTypeBtn->setChecked(collateralType == PriceType::Sell);
 
+        mIgnoreEmptySellBtn = new QCheckBox{tr("Hide empty source sell orders"), this};
+        toolBarLayout->addWidget(mIgnoreEmptySellBtn);
+        mIgnoreEmptySellBtn->setToolTip(tr("Hide item types which have 0 source orders when source price type is set to \"Sell\"."));
+        mIgnoreEmptySellBtn->setChecked(
+            settings.value(MarketAnalysisSettings::importingHideEmptySellOrdersKey, MarketAnalysisSettings::importingHideEmptySellOrdersDefault).toBool());
+
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
         connect(filterBtn, &QPushButton::clicked, this, &ImportingAnalysisWidget::recalculateData);
@@ -204,6 +211,7 @@ namespace Evernus
         const auto pricePerM3 = mPricePerM3Edit->value();
         const auto collateral = mCollateralEdit->value() / 100.;
         const auto collateralPriceType = (mCollateralBuyTypeBtn->isChecked()) ? (PriceType::Buy) : (PriceType::Sell);
+        const auto hideEmptySell = mIgnoreEmptySellBtn->isChecked();
 
         QSettings settings;
         settings.setValue(MarketAnalysisSettings::importingAnalysisDaysKey, analysisDays);
@@ -211,6 +219,7 @@ namespace Evernus
         settings.setValue(MarketAnalysisSettings::importingPricePerM3Key, pricePerM3);
         settings.setValue(MarketAnalysisSettings::importingCollateralKey, collateral);
         settings.setValue(MarketAnalysisSettings::importingCollateralPriceTypeKey, static_cast<int>(collateralPriceType));
+        settings.setValue(MarketAnalysisSettings::importingHideEmptySellOrdersKey, hideEmptySell);
 
         mDataModel.setOrderData(*orders,
                                 *history,
@@ -222,7 +231,8 @@ namespace Evernus
                                 std::min(analysisDays, aggrDays),
                                 pricePerM3,
                                 collateral,
-                                collateralPriceType);
+                                collateralPriceType,
+                                hideEmptySell);
 
         mDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 

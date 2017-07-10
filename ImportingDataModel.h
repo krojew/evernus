@@ -72,7 +72,8 @@ namespace Evernus
                           int aggrDays,
                           double pricePerM3,
                           double collateral,
-                          PriceType collateralType);
+                          PriceType collateralType,
+                          bool hideEmptySell);
 
         void reset();
 

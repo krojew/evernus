@@ -36,6 +36,7 @@ namespace Evernus
         const auto importingAggrDaysDefault = 7;
         const auto importingAnalysisDaysDefault = 180;
         const auto importingCollateralPriceTypeDefault = static_cast<int>(PriceType::Buy);
+        const auto importingHideEmptySellOrdersDefault = true;
         const auto reprocessingStationEfficiencyDefault = 50.;
         const auto reprocessingIncludeStationTaxDefault = true;
         const auto reprocessingIgnoreMinVolumeDefault = true;
@@ -76,6 +77,7 @@ namespace Evernus
         const auto importingPricePerM3Key = QStringLiteral("marketAnalysis/importing/pricePerM3");
         const auto importingCollateralKey = QStringLiteral("marketAnalysis/importing/collateral");
         const auto importingCollateralPriceTypeKey = QStringLiteral("marketAnalysis/importing/collateralPriceType");
+        const auto importingHideEmptySellOrdersKey = QStringLiteral("marketAnalysis/importing/hideEmptySellOrders");
         const auto reprocessingStationEfficiencyKey = QStringLiteral("marketAnalysis/reprocessing/stationEfficiency");
         const auto reprocessingIncludeStationTaxKey = QStringLiteral("marketAnalysis/reprocessing/includeStationTax");
         const auto reprocessingIgnoreMinVolumeKey = QStringLiteral("marketAnalysis/reprocessing/ignoreMinVolume");
