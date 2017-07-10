@@ -61,7 +61,7 @@ namespace Evernus
         const size_t maxSqliteBoundVariables = 999;
 
     private:
-        QSqlDatabase mDb;
+        mutable QSqlDatabase mDb;
 
         void insert(T &entity) const;
         void update(const T &entity) const;
