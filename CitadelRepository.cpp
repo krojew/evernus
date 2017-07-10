@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_map>
 #include <algorithm>
 
 #include "CitadelRepository.h"
@@ -20,34 +21,34 @@ namespace Evernus
 {
     QString CitadelRepository::getTableName() const
     {
-        return "citadels";
+        return QStringLiteral("citadels");
     }
 
     QString CitadelRepository::getIdColumn() const
     {
-        return "id";
+        return QStringLiteral("id");
     }
 
     CitadelRepository::EntityPtr CitadelRepository::populate(const QSqlRecord &record) const
     {
-        auto firstSeen = record.value("first_seen").toDateTime();
+        auto firstSeen = record.value(QStringLiteral("first_seen")).toDateTime();
         firstSeen.setTimeSpec(Qt::UTC);
 
-        auto lastSeen = record.value("last_seen").toDateTime();
+        auto lastSeen = record.value(QStringLiteral("last_seen")).toDateTime();
         lastSeen.setTimeSpec(Qt::UTC);
 
-        auto citadel = std::make_shared<Citadel>(record.value("id").value<Citadel::IdType>());
-        citadel->setName(record.value("name").toString());
-        citadel->setSolarSystemId(record.value("solar_system_id").toULongLong());
-        citadel->setRegionId(record.value("region_id").toUInt());
-        citadel->setTypeId(record.value("type_id").toUInt());
-        citadel->setX(record.value("x").toDouble());
-        citadel->setY(record.value("y").toDouble());
-        citadel->setZ(record.value("z").toDouble());
+        auto citadel = std::make_shared<Citadel>(record.value(QStringLiteral("id")).value<Citadel::IdType>());
+        citadel->setName(record.value(QStringLiteral("name")).toString());
+        citadel->setSolarSystemId(record.value(QStringLiteral("solar_system_id")).toULongLong());
+        citadel->setRegionId(record.value(QStringLiteral("region_id")).toUInt());
+        citadel->setTypeId(record.value(QStringLiteral("type_id")).toUInt());
+        citadel->setX(record.value(QStringLiteral("x")).toDouble());
+        citadel->setY(record.value(QStringLiteral("y")).toDouble());
+        citadel->setZ(record.value(QStringLiteral("z")).toDouble());
         citadel->setFirstSeen(firstSeen);
         citadel->setLastSeen(lastSeen);
-        citadel->setPublic(record.value("public").toBool());
-        citadel->setIgnored(record.value("ignored").toBool());
+        citadel->setPublic(record.value(QStringLiteral("public")).toBool());
+        citadel->setIgnored(record.value(QStringLiteral("ignored")).toBool());
         citadel->setNew(false);
 
         return citadel;
@@ -86,6 +87,44 @@ namespace Evernus
         exec(QStringLiteral("DELETE FROM %1").arg(getTableName()));
     }
 
+    void CitadelRepository::replace(CitadelList citadels) const
+    {
+        auto start = std::begin(citadels);
+        const auto end = std::end(citadels);
+
+        std::unordered_map<Citadel::IdType, bool> stateMap;
+        stateMap.reserve(citadels.size());
+
+        while (start != end)
+        {
+            const auto size = std::min(maxSqliteBoundVariables, static_cast<std::size_t>(std::distance(start, end)));
+
+            QStringList placeholders;
+            std::fill_n(std::back_inserter(placeholders), size, QStringLiteral("?"));
+
+            const auto fill = placeholders.join(QStringLiteral(", "));
+
+            auto query = prepare(QStringLiteral("SELECT %3, ignored FROM %1 WHERE id IN (%2)")
+                .arg(getTableName())
+                .arg(fill)
+                .arg(getIdColumn()));
+
+            for (auto i = 0u; i < size; ++i)
+                query.addBindValue((start++)->getId());
+
+            DatabaseUtils::execQuery(query);
+
+            while (query.next())
+                stateMap.emplace(query.value(0).value<Citadel::IdType>(), query.value(1).toBool());
+        }
+
+        for (auto &citadel : citadels)
+            citadel.setIgnored(stateMap[citadel.getId()]);
+
+        deleteAll();
+        batchStore(citadels, true);
+    }
+
     CitadelRepository::EntityList CitadelRepository::fetchForSolarSystem(uint solarSystemId) const
     {
         auto query = prepare(QStringLiteral("SELECT * FROM %1 WHERE solar_system_id = ?").arg(getTableName()));
@@ -102,7 +141,7 @@ namespace Evernus
         return buildList(query);
     }
 
-    void CitadelRepository::setIgnored(const CitadelList &citadels) const
+    void CitadelRepository::setIgnored(const CitadelIdList &citadels) const
     {
         auto db = getDatabase();
         db.transaction();
@@ -135,36 +174,36 @@ namespace Evernus
     QStringList CitadelRepository::getColumns() const
     {
         return QStringList{}
-            << "id"
-            << "name"
-            << "solar_system_id"
-            << "region_id"
-            << "x"
-            << "y"
-            << "z"
-            << "last_seen"
-            << "first_seen"
-            << "type_id"
-            << "public"
-            << "ignored";
+            << QStringLiteral("id")
+            << QStringLiteral("name")
+            << QStringLiteral("solar_system_id")
+            << QStringLiteral("region_id")
+            << QStringLiteral("x")
+            << QStringLiteral("y")
+            << QStringLiteral("z")
+            << QStringLiteral("last_seen")
+            << QStringLiteral("first_seen")
+            << QStringLiteral("type_id")
+            << QStringLiteral("public")
+            << QStringLiteral("ignored");
     }
 
     void CitadelRepository::bindValues(const Citadel &entity, QSqlQuery &query) const
     {
         if (entity.getId() != Citadel::invalidId)
-            query.bindValue(":id", entity.getId());
+            query.bindValue(QStringLiteral(":id"), entity.getId());
 
-        query.bindValue(":name", entity.getName());
-        query.bindValue(":solar_system_id", entity.getSolarSystemId());
-        query.bindValue(":region_id", entity.getRegionId());
-        query.bindValue(":x", entity.getX());
-        query.bindValue(":y", entity.getY());
-        query.bindValue(":z", entity.getZ());
-        query.bindValue(":last_seen", entity.getLastSeen());
-        query.bindValue(":first_seen", entity.getFirstSeen());
-        query.bindValue(":type_id", entity.getTypeId());
-        query.bindValue(":public", entity.isPublic());
-        query.bindValue(":ignored", entity.isIgnored());
+        query.bindValue(QStringLiteral(":name"), entity.getName());
+        query.bindValue(QStringLiteral(":solar_system_id"), entity.getSolarSystemId());
+        query.bindValue(QStringLiteral(":region_id"), entity.getRegionId());
+        query.bindValue(QStringLiteral(":x"), entity.getX());
+        query.bindValue(QStringLiteral(":y"), entity.getY());
+        query.bindValue(QStringLiteral(":z"), entity.getZ());
+        query.bindValue(QStringLiteral(":last_seen"), entity.getLastSeen());
+        query.bindValue(QStringLiteral(":first_seen"), entity.getFirstSeen());
+        query.bindValue(QStringLiteral(":type_id"), entity.getTypeId());
+        query.bindValue(QStringLiteral(":public"), entity.isPublic());
+        query.bindValue(QStringLiteral(":ignored"), entity.isIgnored());
     }
 
     void CitadelRepository::bindPositionalValues(const Citadel &entity, QSqlQuery &query) const

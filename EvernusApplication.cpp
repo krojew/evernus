@@ -1451,15 +1451,15 @@ namespace Evernus
         const auto task = startTask(tr("Fetching citadels..."));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        mCitadelManager.fetchCitadels([=](const auto &citadels, const auto &error) {
+        mCitadelManager.fetchCitadels([=](auto &&citadels, const auto &error) {
             if (error.isEmpty())
             {
                 mDataProvider->clearCitadelCache();
 
-                mCitadelRepository->deleteAll();
-                asyncBatchStore(*mCitadelRepository, citadels, true);
-
-                emit citadelsChanged();
+                asyncExecute([=, citadels = std::move(citadels)] {
+                    mCitadelRepository->replace(std::move(citadels));
+                    emit citadelsChanged();
+                });
             }
 
             emit taskEnded(task, error);

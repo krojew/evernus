@@ -25,7 +25,8 @@ namespace Evernus
         : public Repository<Citadel>
     {
     public:
-        using CitadelList = std::unordered_set<Citadel::IdType>;
+        using CitadelIdList = std::unordered_set<Citadel::IdType>;
+        using CitadelList = std::vector<Citadel>;
 
         using Repository::Repository;
         CitadelRepository(const CitadelRepository &) = default;
@@ -39,11 +40,12 @@ namespace Evernus
 
         void create() const;
         void deleteAll() const;
+        void replace(CitadelList citadels) const;
 
         EntityList fetchForSolarSystem(uint solarSystemId) const;
         EntityList fetchForRegion(uint regionId) const;
 
-        void setIgnored(const CitadelList &citadels) const;
+        void setIgnored(const CitadelIdList &citadels) const;
 
         CitadelRepository &operator =(const CitadelRepository &) = default;
         CitadelRepository &operator =(CitadelRepository &&) = default;
