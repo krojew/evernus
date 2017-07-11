@@ -23,6 +23,7 @@
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QSettings>
+#include <QSpinBox>
 #include <QAction>
 #include <QLabel>
 #include <QDebug>
@@ -163,6 +164,15 @@ namespace Evernus
         toolBarLayout->addWidget(mMaxSellPriceEdit);
         mMaxSellPriceEdit->setValidator(priceValidator);
 
+        toolBarLayout->addWidget(new QLabel{tr("Avg. period:"), this});
+
+        mAvgDaysEdit = new QSpinBox{this};
+        toolBarLayout->addWidget(mAvgDaysEdit);
+        mAvgDaysEdit->setSuffix(tr(" days"));
+        mAvgDaysEdit->setToolTip(tr("The number of days used to calculate averages."));
+        mAvgDaysEdit->setRange(1, 365);
+        mAvgDaysEdit->setValue(settings.value(MarketAnalysisSettings::avgDaysKey, MarketAnalysisSettings::avgDaysDefault).toInt());
+
         mIgnorePricePercentilesBtn = new QCheckBox{tr("Ignore price percentiles"), this};
         toolBarLayout->addWidget(mIgnorePricePercentilesBtn);
         mIgnorePricePercentilesBtn->setToolTip(tr("Use simple min/max prices from market orders, instead of calculating volume-based percetiles."));
@@ -285,6 +295,7 @@ namespace Evernus
         const auto minSellPrice = mMinSellPriceEdit->text();
         const auto maxSellPrice = mMaxSellPriceEdit->text();
         const auto ignorePricePercetiles = mIgnorePricePercentilesBtn->isChecked();
+        const auto avgPeriod = mAvgDaysEdit->value();
 
         QSettings settings;
         settings.setValue(MarketAnalysisSettings::minVolumeFilterKey, minVolume);
@@ -296,6 +307,7 @@ namespace Evernus
         settings.setValue(MarketAnalysisSettings::minSellPriceFilterKey, minSellPrice);
         settings.setValue(MarketAnalysisSettings::maxSellPriceFilterKey, maxSellPrice);
         settings.setValue(MarketAnalysisSettings::ignorePricePercetilesKey, ignorePricePercetiles);
+        settings.setValue(MarketAnalysisSettings::avgDaysKey, avgPeriod);
 
         mTypeViewProxy.setFilter((minVolume.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (minVolume.toUInt()),
                                  (maxVolume.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::VolumeValueType{}) : (maxVolume.toUInt()),
@@ -306,11 +318,22 @@ namespace Evernus
                                  (minSellPrice.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::PriceValueType{}) : (minSellPrice.toDouble()),
                                  (maxSellPrice.isEmpty()) ? (TypeAggregatedMarketDataFilterProxyModel::PriceValueType{}) : (maxSellPrice.toDouble()));
 
+        auto resetModel = false;
+
         if (mTypeDataModel.ignoringPercentiles() != ignorePricePercetiles)
         {
             mTypeDataModel.ignorePercentile(ignorePricePercetiles);
-            showForCurrentRegionAndSolarSystem();
+            resetModel = true;
         }
+
+        if (mTypeDataModel.getAvgPeriod() != avgPeriod)
+        {
+            mTypeDataModel.setAvgPeriod(avgPeriod);
+            resetModel = true;
+        }
+
+        if (resetModel)
+            showForCurrentRegionAndSolarSystem();
     }
 
     void RegionAnalysisWidget::showDetails(const QModelIndex &item)

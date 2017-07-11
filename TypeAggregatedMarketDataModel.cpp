@@ -140,7 +140,7 @@ namespace Evernus
             case sellOrderCountColumn:
                 return tr("Sell order count");
             case volumeColumn:
-                return tr("30-day avg. volume");
+                return tr("Avg. volume");
             case marginColumn:
                 return tr("Margin");
             }
@@ -215,7 +215,7 @@ namespace Evernus
             usedTypes.insert(typeId);
         }
 
-        const auto historyLimit = QDate::currentDate().addDays(-30);
+        const auto historyLimit = QDate::currentDate().addDays(-static_cast<int>(mAvgPeriod));
         PriceUtils::Taxes taxes;
 
         QSettings settings;
@@ -228,7 +228,7 @@ namespace Evernus
         for (const auto type : usedTypes)
         {
             TypeData data;
-            auto avgPrice30 = 0.;
+            auto avgPrice = 0.;
 
             const auto typeHistory = history.find(type);
             if (typeHistory != std::end(history))
@@ -239,11 +239,11 @@ namespace Evernus
                         break;
 
                     data.mVolume += timePoint.second.mVolume;
-                    avgPrice30 += timePoint.second.mAvgPrice;
+                    avgPrice += timePoint.second.mAvgPrice;
                 }
 
-                data.mVolume /= 30;
-                avgPrice30 /= 30.;
+                data.mVolume /= mAvgPeriod;
+                avgPrice /= mAvgPeriod;
             }
 
             const auto &typeBuyOrders = buyOrders[type];
@@ -262,12 +262,12 @@ namespace Evernus
             {
                 data.mBuyPrice = MathUtils::calcPercentile(typeBuyOrders,
                                                            buyVolumes[type] * 0.05,
-                                                           avgPrice30,
+                                                           avgPrice,
                                                            mDiscardBogusOrders,
                                                            mBogusOrderThreshold);
                 data.mSellPrice = MathUtils::calcPercentile(typeSellOrders,
                                                             sellVolumes[type] * 0.05,
-                                                            avgPrice30,
+                                                            avgPrice,
                                                             mDiscardBogusOrders,
                                                             mBogusOrderThreshold);
             }
@@ -330,6 +330,16 @@ namespace Evernus
     void TypeAggregatedMarketDataModel::ignorePercentile(bool flag) noexcept
     {
         mIgnorePercentiles = flag;
+    }
+
+    uint TypeAggregatedMarketDataModel::getAvgPeriod() const noexcept
+    {
+        return mAvgPeriod;
+    }
+
+    void TypeAggregatedMarketDataModel::setAvgPeriod(uint value) noexcept
+    {
+        mAvgPeriod = value;
     }
 
     int TypeAggregatedMarketDataModel::getScoreColumn() noexcept

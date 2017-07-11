@@ -69,6 +69,9 @@ namespace Evernus
         bool ignoringPercentiles() const noexcept;
         void ignorePercentile(bool flag) noexcept;
 
+        uint getAvgPeriod() const noexcept;
+        void setAvgPeriod(uint value) noexcept;
+
         static int getScoreColumn() noexcept;
         static int getVolumeColumn() noexcept;
         static int getMarginColumn() noexcept;
@@ -116,5 +119,6 @@ namespace Evernus
         PriceType mDstPriceType = PriceType::Sell;
 
         bool mIgnorePercentiles = false;
+        uint mAvgPeriod = 30;
     };
 }

@@ -30,6 +30,7 @@ class QPushButton;
 class QCheckBox;
 class QComboBox;
 class QLineEdit;
+class QSpinBox;
 
 namespace Evernus
 {
@@ -98,6 +99,7 @@ namespace Evernus
         QLineEdit *mMaxBuyPriceEdit = nullptr;
         QLineEdit *mMinSellPriceEdit = nullptr;
         QLineEdit *mMaxSellPriceEdit = nullptr;
+        QSpinBox *mAvgDaysEdit = nullptr;
         QCheckBox *mIgnorePricePercentilesBtn = nullptr;
 
         MarketDataProvider::HistoryMap mEmptyHistory;

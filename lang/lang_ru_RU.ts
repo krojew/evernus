@@ -5481,67 +5481,82 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::RegionAnalysisWidget</name>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="60"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="61"/>
         <source>Region:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="81"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="82"/>
         <source>Limit to solar system:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="95"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="96"/>
         <source>Volume:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="113"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="114"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="134"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="135"/>
         <source>Buy price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="150"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="151"/>
         <source>Sell price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="166"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="167"/>
+        <source>Avg. period:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionAnalysisWidget.cpp" line="171"/>
+        <source> days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionAnalysisWidget.cpp" line="172"/>
+        <source>The number of days used to calculate averages.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionAnalysisWidget.cpp" line="176"/>
         <source>Ignore price percentiles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="168"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="178"/>
         <source>Use simple min/max prices from market orders, instead of calculating volume-based percetiles.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="173"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="183"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="177"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="187"/>
         <source>Double-click an item for additional information. Additional actions are available via the right-click menu. Remember to select desired &lt;b&gt;source price&lt;/b&gt; and &lt;b&gt;destination price&lt;/b&gt; from the dropdowns at the top, otherwise your differences might be skewed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="201"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="211"/>
         <source>Show details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="328"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="351"/>
         <source>%1 in %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="349"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="372"/>
         <source>- all -</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6383,7 +6398,7 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
     <message>
         <location filename="../TypeAggregatedMarketDataModel.cpp" line="143"/>
-        <source>30-day avg. volume</source>
+        <source>Avg. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
