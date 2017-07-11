@@ -46,6 +46,7 @@ namespace Evernus
         const auto reprocessingCustomStationTaxValueDefault = 0.;
         const auto volumeGraphTypeDefault = static_cast<int>(VolumeType::Volume);
         const auto typeAggregatedChartDurationDefault = 90;
+        const auto ignorePricePercetilesDefault = false;
 
         const auto dontSaveLargeOrdersKey = QStringLiteral("marketAnalysis/dontSaveOrders");
         const auto minVolumeFilterKey = QStringLiteral("marketAnalysis/filter/minVolume");
@@ -56,6 +57,7 @@ namespace Evernus
         const auto maxBuyPriceFilterKey = QStringLiteral("marketAnalysis/filter/maxBuyPrice");
         const auto minSellPriceFilterKey = QStringLiteral("marketAnalysis/filter/minSellPrice");
         const auto maxSellPriceFilterKey = QStringLiteral("marketAnalysis/filter/maxSellPrice");
+        const auto ignorePricePercetilesKey = QStringLiteral("marketAnalysis/region/ignorePricePercetiles");
         const auto smaDaysKey = QStringLiteral("marketAnalysis/smaDays");
         const auto lastRegionKey = QStringLiteral("marketAnalysis/lastRegion");
         const auto macdFastDaysKey = QStringLiteral("marketAnalysis/macd/fastDays");

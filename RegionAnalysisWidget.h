@@ -27,6 +27,7 @@
 class QAbstractItemView;
 class QStackedWidget;
 class QPushButton;
+class QCheckBox;
 class QComboBox;
 class QLineEdit;
 
@@ -97,6 +98,7 @@ namespace Evernus
         QLineEdit *mMaxBuyPriceEdit = nullptr;
         QLineEdit *mMinSellPriceEdit = nullptr;
         QLineEdit *mMaxSellPriceEdit = nullptr;
+        QCheckBox *mIgnorePricePercentilesBtn = nullptr;
 
         MarketDataProvider::HistoryMap mEmptyHistory;
         MarketDataProvider::OrderResultType mEmptyOrders;

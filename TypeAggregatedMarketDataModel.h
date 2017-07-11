@@ -53,13 +53,21 @@ namespace Evernus
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
-        void setOrderData(const std::vector<ExternalOrder> &orders, const HistoryMap &history, uint region, PriceType srcType, PriceType dstType, uint solarSystem = 0);
+        void setOrderData(const std::vector<ExternalOrder> &orders,
+                          const HistoryMap &history,
+                          uint region,
+                          PriceType srcType,
+                          PriceType dstType,
+                          uint solarSystem = 0);
         void setCharacter(const std::shared_ptr<Character> &character);
         void discardBogusOrders(bool flag) noexcept;
         void setBogusOrderThreshold(double value) noexcept;
 
         virtual EveType::IdType getTypeId(const QModelIndex &index) const override;
         Character::IdType getOwnerId(const QModelIndex &index) const;
+
+        bool ignoringPercentiles() const noexcept;
+        void ignorePercentile(bool flag) noexcept;
 
         static int getScoreColumn() noexcept;
         static int getVolumeColumn() noexcept;
@@ -106,5 +114,7 @@ namespace Evernus
 
         PriceType mSrcPriceType = PriceType::Buy;
         PriceType mDstPriceType = PriceType::Sell;
+
+        bool mIgnorePercentiles = false;
     };
 }

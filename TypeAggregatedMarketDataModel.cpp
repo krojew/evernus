@@ -22,6 +22,7 @@
 #include <QIcon>
 
 #include <boost/range/adaptor/reversed.hpp>
+#include <boost/scope_exit.hpp>
 
 #include "MarketAnalysisSettings.h"
 #include "EveDataProvider.h"
@@ -129,9 +130,9 @@ namespace Evernus
             case scoreColumn:
                 return tr("Score");
             case srcPriceColumn:
-                return tr("5% volume source price");
+                return (mIgnorePercentiles) ? (tr("Best source price")) : (tr("5% volume source price"));
             case dstPriceColumn:
-                return tr("5% volume destination price");
+                return (mIgnorePercentiles) ? (tr("Best destination price")) : (tr("5% volume destination price"));
             case differenceColumn:
                 return tr("Difference");
             case buyOrderCountColumn:
@@ -153,10 +154,18 @@ namespace Evernus
         return (parent.isValid()) ? (0) : (static_cast<int>(mData.size()));
     }
 
-    void TypeAggregatedMarketDataModel
-    ::setOrderData(const std::vector<ExternalOrder> &orders, const HistoryMap &history, uint region, PriceType srcType, PriceType dstType, uint solarSystem)
+    void TypeAggregatedMarketDataModel::setOrderData(const std::vector<ExternalOrder> &orders,
+                                                     const HistoryMap &history,
+                                                     uint region,
+                                                     PriceType srcType,
+                                                     PriceType dstType,
+                                                     uint solarSystem)
     {
         beginResetModel();
+
+        BOOST_SCOPE_EXIT(this_) {
+            this_->endResetModel();
+        } BOOST_SCOPE_EXIT_END
 
         mData.clear();
 
@@ -243,16 +252,25 @@ namespace Evernus
             data.mId = type;
             data.mBuyOrderCount = typeBuyOrders.size();
             data.mSellOrderCount = typeSellOrders.size();
-            data.mBuyPrice = MathUtils::calcPercentile(typeBuyOrders,
-                                                       buyVolumes[type] * 0.05,
-                                                       avgPrice30,
-                                                       mDiscardBogusOrders,
-                                                       mBogusOrderThreshold);
-            data.mSellPrice = MathUtils::calcPercentile(typeSellOrders,
-                                                        sellVolumes[type] * 0.05,
-                                                        avgPrice30,
-                                                        mDiscardBogusOrders,
-                                                        mBogusOrderThreshold);
+
+            if (mIgnorePercentiles)
+            {
+                data.mBuyPrice = (typeBuyOrders.empty()) ? (0.) : (std::cbegin(typeBuyOrders)->get().getPrice());
+                data.mSellPrice = (typeSellOrders.empty()) ? (0.) : (std::cbegin(typeSellOrders)->get().getPrice());
+            }
+            else
+            {
+                data.mBuyPrice = MathUtils::calcPercentile(typeBuyOrders,
+                                                           buyVolumes[type] * 0.05,
+                                                           avgPrice30,
+                                                           mDiscardBogusOrders,
+                                                           mBogusOrderThreshold);
+                data.mSellPrice = MathUtils::calcPercentile(typeSellOrders,
+                                                            sellVolumes[type] * 0.05,
+                                                            avgPrice30,
+                                                            mDiscardBogusOrders,
+                                                            mBogusOrderThreshold);
+            }
 
             double realSellPrice, realBuyPrice;
             if (useSkillsForDifference)
@@ -271,8 +289,6 @@ namespace Evernus
 
             mData.emplace_back(std::move(data));
         }
-
-        endResetModel();
     }
 
     void TypeAggregatedMarketDataModel::setCharacter(const std::shared_ptr<Character> &character)
@@ -304,6 +320,16 @@ namespace Evernus
     Character::IdType TypeAggregatedMarketDataModel::getOwnerId(const QModelIndex &index) const
     {
         return (mCharacter) ? (mCharacter->getId()) : (Character::invalidId);
+    }
+
+    bool TypeAggregatedMarketDataModel::ignoringPercentiles() const noexcept
+    {
+        return mIgnorePercentiles;
+    }
+
+    void TypeAggregatedMarketDataModel::ignorePercentile(bool flag) noexcept
+    {
+        mIgnorePercentiles = flag;
     }
 
     int TypeAggregatedMarketDataModel::getScoreColumn() noexcept

@@ -5481,57 +5481,67 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::RegionAnalysisWidget</name>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="59"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="60"/>
         <source>Region:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="80"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="81"/>
         <source>Limit to solar system:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="94"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="95"/>
         <source>Volume:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="112"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="113"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="133"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="134"/>
         <source>Buy price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="149"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="150"/>
         <source>Sell price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="165"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="166"/>
+        <source>Ignore price percentiles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionAnalysisWidget.cpp" line="168"/>
+        <source>Use simple min/max prices from market orders, instead of calculating volume-based percetiles.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../RegionAnalysisWidget.cpp" line="173"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="169"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="177"/>
         <source>Double-click an item for additional information. Additional actions are available via the right-click menu. Remember to select desired &lt;b&gt;source price&lt;/b&gt; and &lt;b&gt;destination price&lt;/b&gt; from the dropdowns at the top, otherwise your differences might be skewed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="193"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="201"/>
         <source>Show details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="312"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="328"/>
         <source>%1 in %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="333"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="349"/>
         <source>- all -</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6322,52 +6332,62 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::TypeAggregatedMarketDataModel</name>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="108"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="109"/>
         <source>Double-click for detailed market information.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="128"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="129"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="130"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="131"/>
         <source>Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="132"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="133"/>
         <source>5% volume source price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="134"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="133"/>
+        <source>Best source price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="135"/>
         <source>5% volume destination price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="136"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="135"/>
+        <source>Best destination price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="137"/>
         <source>Difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="138"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="139"/>
         <source>Buy order count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="140"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="141"/>
         <source>Sell order count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="142"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="143"/>
         <source>30-day avg. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="144"/>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="145"/>
         <source>Margin</source>
         <translation type="unfinished"></translation>
     </message>
