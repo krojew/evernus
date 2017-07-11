@@ -2130,109 +2130,109 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ExternalOrderBuyModel</name>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="83"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="114"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="418"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="61"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="92"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="290"/>
         <source>Station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="85"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="63"/>
         <source>Deviation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="87"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="65"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="89"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="130"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="67"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="108"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="91"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="69"/>
         <source>Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="93"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="71"/>
         <source>Min. quantity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="95"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="132"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="73"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="110"/>
         <source>Total cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="97"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="136"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="75"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="114"/>
         <source>Total size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="99"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="77"/>
         <source>Issued</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="101"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="79"/>
         <source>Time left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="103"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="81"/>
         <source>Imported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="105"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="118"/>
-        <location filename="../ExternalOrderBuyModel.cpp" line="422"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="83"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="96"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="294"/>
         <source>Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="116"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="94"/>
         <source>Solar system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="124"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="102"/>
         <source>Lowest price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="126"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="104"/>
         <source>Median price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="128"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="106"/>
         <source>Highest price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="134"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="112"/>
         <source>Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="420"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="292"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="424"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="296"/>
         <source>%1 jumps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderBuyModel.cpp" line="501"/>
+        <location filename="../ExternalOrderBuyModel.cpp" line="373"/>
         <source>Your order</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2240,87 +2240,87 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ExternalOrderSellModel</name>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="83"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="110"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="61"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="88"/>
         <source>Station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="85"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="63"/>
         <source>Deviation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="87"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="65"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="89"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="126"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="67"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="104"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="91"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="128"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="69"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="106"/>
         <source>Total profit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="93"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="132"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="71"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="110"/>
         <source>Total size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="95"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="73"/>
         <source>Issued</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="97"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="75"/>
         <source>Time left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="99"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="77"/>
         <source>Imported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="101"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="114"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="79"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="92"/>
         <source>Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="112"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="90"/>
         <source>Solar system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="120"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="98"/>
         <source>Lowest price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="122"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="100"/>
         <source>Median price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="124"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="102"/>
         <source>Highest price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="130"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="108"/>
         <source>Orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="477"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="349"/>
         <source>Your order</source>
         <translation type="unfinished"></translation>
     </message>

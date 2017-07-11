@@ -30,14 +30,13 @@
 namespace Evernus
 {
     ExternalOrderBuyModel::ExternalOrderBuyModel(const EveDataProvider &dataProvider,
-                                                   const ExternalOrderRepository &orderRepo,
-                                                   const CharacterRepository &characterRepo,
-                                                   const MarketOrderProvider &orderProvider,
-                                                   const MarketOrderProvider &corpOrderProvider,
-                                                   const ItemCostProvider &costProvider,
-                                                   QObject *parent)
-        : ExternalOrderModel{parent}
-        , mDataProvider{dataProvider}
+                                                 const ExternalOrderRepository &orderRepo,
+                                                 const CharacterRepository &characterRepo,
+                                                 const MarketOrderProvider &orderProvider,
+                                                 const MarketOrderProvider &corpOrderProvider,
+                                                 const ItemCostProvider &costProvider,
+                                                 QObject *parent)
+        : ExternalOrderModel{dataProvider, parent}
         , mOrderRepo{orderRepo}
         , mCharacterRepo{characterRepo}
         , mOrderProvider{orderProvider}
@@ -49,27 +48,6 @@ namespace Evernus
     int ExternalOrderBuyModel::columnCount(const QModelIndex &parent) const
     {
         return (mGrouping == Grouping::None) ? (numUngroupedColumns) : (numGroupedColumns);
-    }
-
-    QVariant ExternalOrderBuyModel::data(const QModelIndex &index, int role) const
-    {
-        if (Q_UNLIKELY(!index.isValid()))
-            return QVariant{};
-
-        const auto column = index.column();
-
-        switch (mGrouping) {
-        case Grouping::None:
-            return getUngroupedData(column, role, *mOrders[index.row()]);
-        case Grouping::Station:
-            return getStationGroupedData(column, role, mGroupedData[index.row()]);
-        case Grouping::System:
-            return getSystemGroupedData(column, role, mGroupedData[index.row()]);
-        case Grouping::Region:
-            return getRegionGroupedData(column, role, mGroupedData[index.row()]);
-        }
-
-        return QVariant{};
     }
 
     QVariant ExternalOrderBuyModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -141,27 +119,6 @@ namespace Evernus
         return QVariant{};
     }
 
-    QModelIndex ExternalOrderBuyModel::index(int row, int column, const QModelIndex &parent) const
-    {
-        if (!parent.isValid())
-            return createIndex(row, column);
-
-        return QModelIndex{};
-    }
-
-    QModelIndex ExternalOrderBuyModel::parent(const QModelIndex &index) const
-    {
-        return QModelIndex{};
-    }
-
-    int ExternalOrderBuyModel::rowCount(const QModelIndex &parent) const
-    {
-        if (parent.isValid())
-            return 0;
-
-        return (mGrouping == Grouping::None) ? (static_cast<int>(mOrders.size())) : (static_cast<int>(mGroupedData.size()));
-    }
-
     int ExternalOrderBuyModel::getPriceColumn() const
     {
         return (mGrouping == Grouping::None) ? (priceColumn) : (highestPriceColumn);
@@ -175,41 +132,6 @@ namespace Evernus
     int ExternalOrderBuyModel::getVolumeColumn() const
     {
         return volumeColumn;
-    }
-
-    uint ExternalOrderBuyModel::getTotalVolume() const
-    {
-        return mTotalVolume;
-    }
-
-    double ExternalOrderBuyModel::getTotalSize() const
-    {
-        return mTotalSize;
-    }
-
-    double ExternalOrderBuyModel::getTotalPrice() const
-    {
-        return mTotalPrice;
-    }
-
-    double ExternalOrderBuyModel::getMedianPrice() const
-    {
-        return mMedianPrice;
-    }
-
-    double ExternalOrderBuyModel::getMaxPrice() const
-    {
-        return mMaxPrice;
-    }
-
-    double ExternalOrderBuyModel::getMinPrice() const
-    {
-        return mMinPrice;
-    }
-
-    const ExternalOrder &ExternalOrderBuyModel::getOrder(size_t row) const
-    {
-        return *mOrders[row];
     }
 
     void ExternalOrderBuyModel::setCharacter(Character::IdType id)
@@ -234,21 +156,6 @@ namespace Evernus
         }
 
         endResetModel();
-    }
-
-    void ExternalOrderBuyModel::setTypeId(EveType::IdType id)
-    {
-        mTypeId = id;
-    }
-
-    void ExternalOrderBuyModel::setStationId(quint64 id)
-    {
-        mStationId = id;
-    }
-
-    void ExternalOrderBuyModel::setPriceColorMode(PriceColorMode mode)
-    {
-        mPriceColorMode = mode;
     }
 
     void ExternalOrderBuyModel::reset()
@@ -303,16 +210,6 @@ namespace Evernus
         endResetModel();
     }
 
-    void ExternalOrderBuyModel::changeDeviationSource(DeviationSourceType type, double value)
-    {
-        beginResetModel();
-
-        mDeviationType = type;
-        mDeviationValue = value;
-
-        endResetModel();
-    }
-
     double ExternalOrderBuyModel::getPrice(const QModelIndex &index) const
     {
         if (!index.isValid())
@@ -324,35 +221,10 @@ namespace Evernus
         case Grouping::Station:
         case Grouping::System:
         case Grouping::Region:
-            return mGroupedData[index.row()].mLowestPrice;
+            return mGroupedData[index.row()].mHighestPrice;
         }
 
         return 0.;
-    }
-
-    void ExternalOrderBuyModel::setRegionId(uint id)
-    {
-        mRegionId = id;
-    }
-
-    void ExternalOrderBuyModel::setSolarSystemId(uint id)
-    {
-        mSolarSystemId = id;
-    }
-
-    EveType::IdType ExternalOrderBuyModel::getTypeId() const noexcept
-    {
-        return mTypeId;
-    }
-
-    void ExternalOrderBuyModel::setGrouping(Grouping grouping)
-    {
-        beginResetModel();
-
-        mGrouping = grouping;
-        refreshGroupedData();
-
-        endResetModel();
     }
 
     double ExternalOrderBuyModel::computeDeviation(const ExternalOrder &order) const
@@ -506,54 +378,6 @@ namespace Evernus
         }
 
         return QVariant{};
-    }
-
-    QVariant ExternalOrderBuyModel::getStationGroupedData(int column, int role, const GroupedData &data) const
-    {
-        if (column == groupByColumn)
-        {
-            switch (role) {
-            case Qt::DisplayRole:
-            case Qt::UserRole:
-                return mDataProvider.getLocationName(data.mId);
-            }
-
-            return QVariant{};
-        }
-
-        return getGenericGroupedData(column, role, data);
-    }
-
-    QVariant ExternalOrderBuyModel::getSystemGroupedData(int column, int role, const GroupedData &data) const
-    {
-        if (column == groupByColumn)
-        {
-            switch (role) {
-            case Qt::DisplayRole:
-            case Qt::UserRole:
-                return mDataProvider.getSolarSystemName(data.mId);
-            }
-
-            return QVariant{};
-        }
-
-        return getGenericGroupedData(column, role, data);
-    }
-
-    QVariant ExternalOrderBuyModel::getRegionGroupedData(int column, int role, const GroupedData &data) const
-    {
-        if (column == groupByColumn)
-        {
-            switch (role) {
-            case Qt::DisplayRole:
-            case Qt::UserRole:
-                return mDataProvider.getRegionName(data.mId);
-            }
-
-            return QVariant{};
-        }
-
-        return getGenericGroupedData(column, role, data);
     }
 
     QVariant ExternalOrderBuyModel::getGenericGroupedData(int column, int role, const GroupedData &data) const

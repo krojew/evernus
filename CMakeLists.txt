@@ -310,6 +310,7 @@ add_executable(
     ExternalOrderImporter.h
     ExternalOrderImporterNames.h
     ExternalOrderImporterRegistry.h
+    ExternalOrderModel.cpp
     ExternalOrderModel.h
     ExternalOrderRepository.cpp
     ExternalOrderRepository.h
