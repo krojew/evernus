@@ -258,7 +258,7 @@ namespace Evernus
 
     void MarketAnalysisDataFetcher::finishOrderImport()
     {
-        qDebug() << "Started market order import at" << QDateTime::currentDateTime() << mOrders->size();
+        qDebug() << "Finished market order import at" << QDateTime::currentDateTime() << mOrders->size();
 
         emit orderImportEnded(mOrders, mAggregatedOrderErrors.join("\n"));
         mAggregatedOrderErrors.clear();
