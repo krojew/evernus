@@ -173,201 +173,166 @@ namespace Evernus
 
     void MarginToolDialog::refreshData(const QString &path)
     {
-        QString targetFile;
-
-        auto curLocale = locale();
-        auto newFiles = getKnownFiles(path);
-
-        QHashIterator<QString, QDateTime> it{newFiles};
-        while (it.hasNext())
-        {
-            it.next();
-            if (!mKnownFiles.contains(it.key()))
-            {
-                targetFile = it.key();
-                break;
-            }
-        }
-
+        const auto targetFile = getNewFile(path);
         if (targetFile.isEmpty())
+            return;
+
+        const QString logFile = path % "/" % targetFile;
+
+        qDebug() << "Calculating margin from file: " << logFile;
+
+        QSettings settings;
+        QFile file{logFile};
+        QFileInfo info{file};
+
+#ifdef Q_OS_WIN
+        if (settings.value(PriceSettings::priceAltImportKey, PriceSettings::priceAltImportDefault).toBool())
         {
-            QHashIterator<QString, QDateTime> it{newFiles};
-            while (it.hasNext())
+            while (!file.open(QIODevice::ReadWrite))
+                std::this_thread::sleep_for(std::chrono::milliseconds{10});
+        }
+        else
+        {
+#endif
+            const auto modTimeDelay = settings.value(PriceSettings::importLogWaitTimeKey, PriceSettings::importLogWaitTimeDefault).toUInt();
+
+            // wait for Eve to finish dumping data
+            forever
             {
-                it.next();
-                if (it.value() != mKnownFiles[it.key()])
-                {
-                    targetFile = it.key();
+                const auto modTime = info.lastModified();
+                if (modTime.msecsTo(QDateTime::currentDateTime()) >= modTimeDelay)
                     break;
-                }
             }
 
-            if (targetFile.isEmpty())
-            {
-                mKnownFiles = std::move(newFiles);
+            if (!file.open(QIODevice::ReadOnly))
                 return;
-            }
+#ifdef Q_OS_WIN
         }
+#endif
 
-        mKnownFiles = std::move(newFiles);
+        file.readLine();
 
-        if (!targetFile.isEmpty())
+        auto buy = -1.;
+        auto sell = -1.;
+
+        uint buyVol = 0, buyInit = 0;
+        uint sellVol = 0, sellInit = 0;
+
+        auto buyCount = 0u;
+        auto sellCount = 0u;
+        auto buyout = 0.;
+
+        QString name;
+        const auto priceTime = info.created();
+
+        auto typeId = EveType::invalidId;
+
+        const auto logColumns = 14;
+
+        const auto volRemainingColumn = 1;
+        const auto volEnteredColumn = 5;
+        const auto jumpsColumn = 13;
+
+        const auto ignoreMinVolume
+            = settings.value(PriceSettings::ignoreOrdersWithMinVolumeKey, PriceSettings::ignoreOrdersWithMinVolumeDefault).toBool();
+
+        const auto rangeThreshold = mRangeThresholdEdit->value();
+
+        std::vector<ExternalOrder> parsedOrders;
+
+        while (!file.atEnd())
         {
-            const QString logFile = path % "/" % targetFile;
+            const QString line = file.readLine();
+            const auto values = line.split(',');
 
-            qDebug() << "Calculating margin from file: " << logFile;
-
-            QSettings settings;
-            QFile file{logFile};
-            QFileInfo info{file};
-
-#ifdef Q_OS_WIN
-            if (settings.value(PriceSettings::priceAltImportKey, PriceSettings::priceAltImportDefault).toBool())
+            if (values.count() >= logColumns)
             {
-                while (!file.open(QIODevice::ReadWrite))
-                    std::this_thread::sleep_for(std::chrono::milliseconds{10});
-            }
-            else
-            {
-#endif
-                const auto modTimeDelay = settings.value(PriceSettings::importLogWaitTimeKey, PriceSettings::importLogWaitTimeDefault).toUInt();
+                ExternalOrder order = ExternalOrder::parseLogLine(values);
 
-                // wait for Eve to finish dumping data
-                forever
+                if (ignoreMinVolume && order.getMinVolume() > 1)
+                    continue;
+
+                order.setUpdateTime(priceTime);
+
+                if (typeId == EveType::invalidId)
                 {
-                    const auto modTime = info.lastModified();
-                    if (modTime.msecsTo(QDateTime::currentDateTime()) >= modTimeDelay)
-                        break;
+                    typeId = order.getTypeId();
+                    name = mDataProvider.getTypeName(typeId);
                 }
 
-                if (!file.open(QIODevice::ReadOnly))
-                    return;
-#ifdef Q_OS_WIN
-            }
-#endif
+                const auto jumps = values[jumpsColumn].toInt();
 
-            file.readLine();
-
-            auto buy = -1.;
-            auto sell = -1.;
-
-            uint buyVol = 0, buyInit = 0;
-            uint sellVol = 0, sellInit = 0;
-
-            auto buyCount = 0u;
-            auto sellCount = 0u;
-            auto buyout = 0.;
-
-            QString name;
-            const auto priceTime = info.created();
-
-            auto typeId = EveType::invalidId;
-
-            const auto logColumns = 14;
-
-            const auto volRemainingColumn = 1;
-            const auto volEnteredColumn = 5;
-            const auto jumpsColumn = 13;
-
-            const auto ignoreMinVolume
-                = settings.value(PriceSettings::ignoreOrdersWithMinVolumeKey, PriceSettings::ignoreOrdersWithMinVolumeDefault).toBool();
-
-            const auto rangeThreshold = mRangeThresholdEdit->value();
-
-            std::vector<ExternalOrder> parsedOrders;
-
-            while (!file.atEnd())
-            {
-                const QString line = file.readLine();
-                const auto values = line.split(',');
-
-                if (values.count() >= logColumns)
+                if (order.getType() == ExternalOrder::Type::Buy)
                 {
-                    ExternalOrder order = ExternalOrder::parseLogLine(values);
-
-                    if (ignoreMinVolume && order.getMinVolume() > 1)
-                        continue;
-
-                    order.setUpdateTime(priceTime);
-
-                    if (typeId == EveType::invalidId)
+                    // warning: this does not take into account orders in the same system, but different station -
+                    //          there's no way to check if the station matches
+                    if (jumps != 0)
                     {
-                        typeId = order.getTypeId();
-                        name = mDataProvider.getTypeName(typeId);
-                    }
-
-                    const auto jumps = values[jumpsColumn].toInt();
-
-                    if (order.getType() == ExternalOrder::Type::Buy)
-                    {
-                        // warning: this does not take into account orders in the same system, but different station -
-                        //          there's no way to check if the station matches
-                        if (jumps != 0)
+                        const int range = order.getRange();
+                        if (jumps - std::max(range, 0) > rangeThreshold)
                         {
-                            const int range = order.getRange();
-                            if (jumps - std::max(range, 0) > rangeThreshold)
-                            {
-                                parsedOrders.emplace_back(std::move(order));
-                                continue;
-                            }
+                            parsedOrders.emplace_back(std::move(order));
+                            continue;
                         }
-
-                        if (order.getPrice() > buy)
-                            buy = order.getPrice();
-
-                        buyVol += static_cast<uint>(values[volRemainingColumn].toDouble());
-                        buyInit += static_cast<uint>(values[volEnteredColumn].toDouble());
-
-                        ++buyCount;
-                    }
-                    else if (jumps <= rangeThreshold)
-                    {
-                        const auto price = order.getPrice();
-                        if (price < sell || sell < 0.)
-                            sell = price;
-
-                        const auto remaining = static_cast<uint>(values[volRemainingColumn].toDouble());
-
-                        buyout += remaining * price;
-                        sellVol += remaining;
-                        sellInit += static_cast<uint>(values[volEnteredColumn].toDouble());
-
-                        ++sellCount;
                     }
 
-                    parsedOrders.emplace_back(std::move(order));
+                    if (order.getPrice() > buy)
+                        buy = order.getPrice();
+
+                    buyVol += static_cast<uint>(values[volRemainingColumn].toDouble());
+                    buyInit += static_cast<uint>(values[volEnteredColumn].toDouble());
+
+                    ++buyCount;
                 }
+                else if (jumps <= rangeThreshold)
+                {
+                    const auto price = order.getPrice();
+                    if (price < sell || sell < 0.)
+                        sell = price;
+
+                    const auto remaining = static_cast<uint>(values[volRemainingColumn].toDouble());
+
+                    buyout += remaining * price;
+                    sellVol += remaining;
+                    sellInit += static_cast<uint>(values[volEnteredColumn].toDouble());
+
+                    ++sellCount;
+                }
+
+                parsedOrders.emplace_back(std::move(order));
             }
-
-            mDataProvider.updateExternalOrders(parsedOrders);
-
-            if (settings.value(PathSettings::deleteLogsKey, PathSettings::deleteLogsDefault).toBool())
-                file.remove();
-
-            if (mItemCostSourceBtn->isChecked())
-            {
-                const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, typeId);
-                if (!cost->isNew())
-                    buy = cost->getAdjustedCost() - PriceUtils::getPriceDelta();
-            }
-            else if (mStationSourceBtn->isChecked())
-            {
-                const auto station = mStationView->getStationId();
-                if (station == 0)
-                    buy = 0.;
-                else
-                    buy = mDataProvider.getTypeBuyPrice(typeId, station)->getPrice();
-            }
-
-            mNameLabel->setText(name);
-            mBuyOrdersLabel->setText(curLocale.toString(buyCount));
-            mSellOrdersLabel->setText(curLocale.toString(sellCount));
-            mBuyVolLabel->setText(QString{"%1/%2"}.arg(curLocale.toString(buyVol)).arg(curLocale.toString(buyInit - buyVol)));
-            mSellVolLabel->setText(QString{"%1/%2"}.arg(curLocale.toString(sellVol)).arg(curLocale.toString(sellInit - sellVol)));
-            mBuyoutLabel->setText(TextUtils::currencyToString(buyout, curLocale));
-
-            updateInfo(buy, sell, true);
         }
+
+        mDataProvider.updateExternalOrders(parsedOrders);
+
+        if (settings.value(PathSettings::deleteLogsKey, PathSettings::deleteLogsDefault).toBool())
+            file.remove();
+
+        if (mItemCostSourceBtn->isChecked())
+        {
+            const auto cost = mItemCostProvider.fetchForCharacterAndType(mCharacterId, typeId);
+            if (!cost->isNew())
+                buy = cost->getAdjustedCost() - PriceUtils::getPriceDelta();
+        }
+        else if (mStationSourceBtn->isChecked())
+        {
+            const auto station = mStationView->getStationId();
+            if (station == 0)
+                buy = 0.;
+            else
+                buy = mDataProvider.getTypeBuyPrice(typeId, station)->getPrice();
+        }
+
+        const auto curLocale = locale();
+
+        mNameLabel->setText(name);
+        mBuyOrdersLabel->setText(curLocale.toString(buyCount));
+        mSellOrdersLabel->setText(curLocale.toString(sellCount));
+        mBuyVolLabel->setText(QString{"%1/%2"}.arg(curLocale.toString(buyVol)).arg(curLocale.toString(buyInit - buyVol)));
+        mSellVolLabel->setText(QString{"%1/%2"}.arg(curLocale.toString(sellVol)).arg(curLocale.toString(sellInit - sellVol)));
+        mBuyoutLabel->setText(TextUtils::currencyToString(buyout, curLocale));
+
+        updateInfo(buy, sell, true);
     }
 
     void MarginToolDialog::refreshDataByEdits()
@@ -863,6 +828,32 @@ namespace Evernus
         }
     }
 
+    QString MarginToolDialog::getNewFile(const QString &path) const
+    {
+        const QDir basePath{path};
+
+        const auto files = basePath.entryList(QStringList{"*.txt"}, QDir::Files | QDir::Readable, QDir::Time);
+        if (files.isEmpty())
+            return {};
+
+        QSettings settings;
+
+        const QRegExp charLogWildcard{
+            settings.value(PathSettings::characterLogWildcardKey, PathSettings::characterLogWildcardDefault).toString(),
+            Qt::CaseInsensitive,
+            QRegExp::Wildcard};
+        const QRegExp corpLogWildcard{
+            settings.value(PathSettings::corporationLogWildcardKey, PathSettings::corporationLogWildcardDefault).toString(),
+            Qt::CaseInsensitive,
+            QRegExp::Wildcard};
+
+        const auto &file = files.front();
+        if (charLogWildcard.exactMatch(file) || corpLogWildcard.exactMatch(file) || mKnownFiles.contains(file))
+            return {};
+
+        return file;
+    }
+
     void MarginToolDialog::fillSampleData(QTableWidget &table, double revenue, double cos, int multiplier)
     {
         const auto inserter = [&table](auto &&text, auto row, auto column) {
@@ -886,7 +877,7 @@ namespace Evernus
         table.resizeColumnsToContents();
     }
 
-    MarginToolDialog::FileModificationMap MarginToolDialog::getKnownFiles(const QString &path)
+    MarginToolDialog::FileList MarginToolDialog::getKnownFiles(const QString &path)
     {
         const QDir basePath{path};
         const auto files = basePath.entryList(QStringList{"*.txt"}, QDir::Files | QDir::Readable);
@@ -902,14 +893,13 @@ namespace Evernus
             Qt::CaseInsensitive,
             QRegExp::Wildcard};
 
-        FileModificationMap out;
+        FileList out;
         for (const auto &file : files)
         {
             if (charLogWildcard.exactMatch(file) || corpLogWildcard.exactMatch(file))
                 continue;
 
-            QFileInfo info{basePath.filePath(file)};
-            out[file] = info.lastModified();
+            out << file;
         }
 
         return out;

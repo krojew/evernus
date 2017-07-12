@@ -20,7 +20,7 @@
 #include <QFileSystemWatcher>
 #include <QDateTime>
 #include <QDialog>
-#include <QHash>
+#include <QSet>
 
 #include "ExternalOrder.h"
 #include "Character.h"
@@ -78,7 +78,7 @@ namespace Evernus
         virtual void closeEvent(QCloseEvent *event) override;
 
     private:
-        typedef QHash<QString, QDateTime> FileModificationMap;
+        using FileList = QSet<QString>;
 
         static const auto samples = 100000000;
 
@@ -121,7 +121,7 @@ namespace Evernus
 
         StationView *mStationView = nullptr;
 
-        FileModificationMap mKnownFiles;
+        FileList mKnownFiles;
 
         Character::IdType mCharacterId = Character::invalidId;
 
@@ -138,8 +138,10 @@ namespace Evernus
 
         void setUpWatcher();
 
+        QString getNewFile(const QString &path) const;
+
         static void fillSampleData(QTableWidget &table, double revenue, double cos, int multiplier);
 
-        static FileModificationMap getKnownFiles(const QString &path);
+        static FileList getKnownFiles(const QString &path);
     };
 }
