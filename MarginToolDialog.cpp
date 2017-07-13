@@ -177,6 +177,8 @@ namespace Evernus
         if (targetFile.isEmpty())
             return;
 
+        mKnownFiles << targetFile;
+
         const QString logFile = path % "/" % targetFile;
 
         qDebug() << "Calculating margin from file: " << logFile;
