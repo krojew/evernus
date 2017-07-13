@@ -6750,169 +6750,169 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="454"/>
+        <location filename="../MarginToolDialog.cpp" line="421"/>
         <source>export market logs in game</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="466"/>
+        <location filename="../MarginToolDialog.cpp" line="433"/>
         <source>Sell:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="467"/>
+        <location filename="../MarginToolDialog.cpp" line="434"/>
         <source>Buy:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="468"/>
+        <location filename="../MarginToolDialog.cpp" line="435"/>
         <source>Profit:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="469"/>
+        <location filename="../MarginToolDialog.cpp" line="436"/>
         <source>Revenue:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="470"/>
+        <location filename="../MarginToolDialog.cpp" line="437"/>
         <source>Cost of sales:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="471"/>
+        <location filename="../MarginToolDialog.cpp" line="438"/>
         <source>Buyout:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="485"/>
-        <location filename="../MarginToolDialog.cpp" line="500"/>
+        <location filename="../MarginToolDialog.cpp" line="452"/>
+        <location filename="../MarginToolDialog.cpp" line="467"/>
         <source>Copy to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="521"/>
+        <location filename="../MarginToolDialog.cpp" line="488"/>
         <source>Buy orders:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="526"/>
+        <location filename="../MarginToolDialog.cpp" line="493"/>
         <source>Sell orders:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="531"/>
+        <location filename="../MarginToolDialog.cpp" line="498"/>
         <source>Buy volume/movement:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="536"/>
+        <location filename="../MarginToolDialog.cpp" line="503"/>
         <source>Sell volume/movement:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="549"/>
+        <location filename="../MarginToolDialog.cpp" line="516"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="555"/>
+        <location filename="../MarginToolDialog.cpp" line="522"/>
         <source>Markup:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="560"/>
+        <location filename="../MarginToolDialog.cpp" line="527"/>
         <source>Autocopy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="570"/>
+        <location filename="../MarginToolDialog.cpp" line="537"/>
         <source>Nothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="575"/>
+        <location filename="../MarginToolDialog.cpp" line="542"/>
         <source>Sell price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="580"/>
+        <location filename="../MarginToolDialog.cpp" line="547"/>
         <source>Buy price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="602"/>
+        <location filename="../MarginToolDialog.cpp" line="569"/>
         <source>Broker fee:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="607"/>
+        <location filename="../MarginToolDialog.cpp" line="574"/>
         <source>Sales tax:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="612"/>
+        <location filename="../MarginToolDialog.cpp" line="579"/>
         <source>Sample data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="626"/>
+        <location filename="../MarginToolDialog.cpp" line="593"/>
         <source>Show sample data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="641"/>
+        <location filename="../MarginToolDialog.cpp" line="608"/>
         <source>If you experience problems with importing orders, adjust margin tool settings in the Preferences.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="660"/>
+        <location filename="../MarginToolDialog.cpp" line="627"/>
         <source>Range threshold:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="666"/>
+        <location filename="../MarginToolDialog.cpp" line="633"/>
         <source> jumps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="675"/>
+        <location filename="../MarginToolDialog.cpp" line="642"/>
         <source>Preferred source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="683"/>
+        <location filename="../MarginToolDialog.cpp" line="650"/>
         <source>Orders only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="687"/>
+        <location filename="../MarginToolDialog.cpp" line="654"/>
         <source>Prefer custom item costs (if available)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="691"/>
+        <location filename="../MarginToolDialog.cpp" line="658"/>
         <source>Custom station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="695"/>
+        <location filename="../MarginToolDialog.cpp" line="662"/>
         <source>Source station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="851"/>
-        <location filename="../MarginToolDialog.cpp" line="857"/>
+        <location filename="../MarginToolDialog.cpp" line="818"/>
+        <location filename="../MarginToolDialog.cpp" line="824"/>
         <source>Margin tool error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="852"/>
+        <location filename="../MarginToolDialog.cpp" line="819"/>
         <source>Could not determine market log path. Please enter log path in settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarginToolDialog.cpp" line="858"/>
+        <location filename="../MarginToolDialog.cpp" line="825"/>
         <source>Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again.</source>
         <translation type="unfinished"></translation>
     </message>
