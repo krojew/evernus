@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QRadioButton>
 #include <QTableWidget>
+#include <QDirIterator>
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QHBoxLayout>
@@ -308,7 +309,11 @@ namespace Evernus
         mDataProvider.updateExternalOrders(parsedOrders);
 
         if (settings.value(PathSettings::deleteLogsKey, PathSettings::deleteLogsDefault).toBool())
+        {
+            mWatcher.blockSignals(true);
             file.remove();
+            mWatcher.blockSignals(false);
+        }
 
         if (mItemCostSourceBtn->isChecked())
         {
@@ -832,10 +837,8 @@ namespace Evernus
 
     QString MarginToolDialog::getNewFile(const QString &path) const
     {
-        const QDir basePath{path};
-
-        const auto files = basePath.entryList(QStringList{"*.txt"}, QDir::Files | QDir::Readable, QDir::Time);
-        if (files.isEmpty())
+        QDirIterator files{path, { QStringLiteral("*.txt") }, QDir::Files | QDir::Readable};
+        if (!files.hasNext())
             return {};
 
         QSettings settings;
@@ -849,9 +852,25 @@ namespace Evernus
             Qt::CaseInsensitive,
             QRegExp::Wildcard};
 
-        const auto &file = files.front();
-        if (charLogWildcard.exactMatch(file) || corpLogWildcard.exactMatch(file) || mKnownFiles.contains(file))
-            return {};
+        QString file;
+        QDateTime bestModified;
+
+        while (files.hasNext())
+        {
+            files.next();
+
+            const auto fileName = files.fileName();
+
+            if (mKnownFiles.contains(fileName) || charLogWildcard.exactMatch(fileName) || corpLogWildcard.exactMatch(fileName))
+                continue;
+
+            const auto lastModified = files.fileInfo().lastModified();
+            if (lastModified > bestModified)
+            {
+                file = fileName;
+                bestModified = lastModified;
+            }
+        }
 
         return file;
     }
