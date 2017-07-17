@@ -71,7 +71,7 @@ namespace Evernus
             }
             else
             {
-                post(charId, "/v1/ui/openwindow/marketdetails/", QStringLiteral("type_id=%1").arg(typeId), std::move(errorCallback));
+                post(charId, QStringLiteral("/v1/ui/openwindow/marketdetails/"), QStringLiteral("type_id=%1").arg(typeId), std::move(errorCallback));
             }
         };
 
@@ -94,7 +94,7 @@ namespace Evernus
                 query.addQueryItem(QStringLiteral("add_to_beginning"), QStringLiteral("false"));
                 query.addQueryItem(QStringLiteral("clear_other_waypoints"), QStringLiteral("true"));
 
-                post(charId, "/v2/ui/autopilot/waypoint/", query.query(), std::move(errorCallback));
+                post(charId, QStringLiteral("/v2/ui/autopilot/waypoint/"), query.query(), std::move(errorCallback));
             }
         };
 
@@ -327,9 +327,9 @@ namespace Evernus
     {
         QUrlQuery endQuery{query};
 #ifdef EVERNUS_ESI_SISI
-        endQuery.addQueryItem("datasource", "singularity");
+        endQuery.addQueryItem(QStringLiteral("datasource"), QStringLiteral("singularity"));
 #else
-        endQuery.addQueryItem("datasource", "tranquility");
+        endQuery.addQueryItem(QStringLiteral("datasource"), QStringLiteral("tranquility"));
 #endif
 
         QUrl endUrl{esiUrl + url};
@@ -337,8 +337,8 @@ namespace Evernus
 
         QNetworkRequest request{endUrl};
         request.setHeader(QNetworkRequest::UserAgentHeader,
-                          QString{"%1 %2"}.arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
-        request.setRawHeader("Accept", "application/json");
+                          QStringLiteral("%1 %2").arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
+        request.setRawHeader(QByteArrayLiteral("Accept"), QByteArrayLiteral("application/json"));
 
         return request;
     }
@@ -346,7 +346,7 @@ namespace Evernus
     QNetworkRequest ESIInterface::prepareRequest(Character::IdType charId, const QString &url, const QString &query) const
     {
         auto request = prepareRequest(url, query);
-        request.setRawHeader("Authorization", "Bearer " + mAccessTokens[charId].mToken.toLatin1());
+        request.setRawHeader(QByteArrayLiteral("Authorization"), QByteArrayLiteral("Bearer ") + mAccessTokens[charId].mToken.toLatin1());
 
         return request;
     }
@@ -360,7 +360,7 @@ namespace Evernus
     {
         // try to get ESI error
         const auto errorDoc = QJsonDocument::fromJson(reply.readAll());
-        auto errorString = errorDoc.object().value("error").toString();
+        auto errorString = errorDoc.object().value(QStringLiteral("error")).toString();
         if (errorString.isEmpty())
             errorString = reply.errorString();
         else
