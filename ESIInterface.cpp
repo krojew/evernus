@@ -89,7 +89,12 @@ namespace Evernus
             }
             else
             {
-                post(charId, "/v2/ui/autopilot/waypoint/", QStringLiteral("destination_id=%1").arg(locationId), std::move(errorCallback));
+                QUrlQuery query;
+                query.addQueryItem(QStringLiteral("destination_id"), QString::number(locationId));
+                query.addQueryItem(QStringLiteral("add_to_beginning"), QStringLiteral("false"));
+                query.addQueryItem(QStringLiteral("clear_other_waypoints"), QStringLiteral("true"));
+
+                post(charId, "/v2/ui/autopilot/waypoint/", query.query(), std::move(errorCallback));
             }
         };
 
