@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <QString>
+
 namespace Evernus
 {
     namespace PriceSettings
@@ -53,29 +55,29 @@ namespace Evernus
         const auto showInEveOnFpcDefault = false;
         const auto rangeThresholdDefault = 0;
 
-        const auto minMarginKey = "prices/margin/min";
-        const auto preferredMarginKey = "prices/margin/preferred";
-        const auto copyModeKey = "prices/copyMode";
-        const auto priceDeltaKey = "prices/delta";
-        const auto priceDeltaRandomKey = "prices/deltaRandom";
-        const auto priceAltImportKey = "prices/import/alt";
-        const auto priceMaxAgeKey = "prices/maxAge";
-        const auto importLogWaitTimeKey = "prices/import/logWaitTime";
-        const auto autoAddCustomItemCostKey = "prices/orders/autoAddCustomItemCost";
-        const auto costDataSourceKey = "prices/dataSource";
-        const auto costSourceStationKey = "prices/costSourceStation";
-        const auto shareCostsKey = "prices/shareCosts";
-        const auto refreshPricesWithOrdersKey = "prices/orders/autoRefresh";
-        const auto copyNonOverbidPriceKey = "prices/orders/copyNonOverbid";
-        const auto fpcKey = "prices/fpc/enabled";
-        const auto fpcForwardShortcutKey = "prices/fpc/shortcut";
-        const auto fpcBackwardShortcutKey = "prices/fpc/backwardShortcut";
-        const auto limitSellCopyToCostKey = "prices/orders/limitSellCopyToCost";
-        const auto limitSellCopyToTotalCostKey = "prices/orders/limitSellCopyToTotalCost";
-        const auto ignoreOrdersWithMinVolumeKey = "prices/ignoreOrdersWithMinVolume";
-        const auto itemConstCostAddKey = "prices/costs/constCost";
-        const auto itemRelativeCostAddKey = "prices/costs/relativeCost";
-        const auto showInEveOnFpcKey = "prices/fpc/showInEve";
-        const auto rangeThresholdKey = "prices/rangeThreshold";
+        const auto minMarginKey = QStringLiteral("prices/margin/min");
+        const auto preferredMarginKey = QStringLiteral("prices/margin/preferred");
+        const auto copyModeKey = QStringLiteral("prices/copyMode");
+        const auto priceDeltaKey = QStringLiteral("prices/delta");
+        const auto priceDeltaRandomKey = QStringLiteral("prices/deltaRandom");
+        const auto priceAltImportKey = QStringLiteral("prices/import/alt");
+        const auto priceMaxAgeKey = QStringLiteral("prices/maxAge");
+        const auto importLogWaitTimeKey = QStringLiteral("prices/import/logWaitTime");
+        const auto autoAddCustomItemCostKey = QStringLiteral("prices/orders/autoAddCustomItemCost");
+        const auto costDataSourceKey = QStringLiteral("prices/dataSource");
+        const auto costSourceStationKey = QStringLiteral("prices/costSourceStation");
+        const auto shareCostsKey = QStringLiteral("prices/shareCosts");
+        const auto refreshPricesWithOrdersKey = QStringLiteral("prices/orders/autoRefresh");
+        const auto copyNonOverbidPriceKey = QStringLiteral("prices/orders/copyNonOverbid");
+        const auto fpcKey = QStringLiteral("prices/fpc/enabled");
+        const auto fpcForwardShortcutKey = QStringLiteral("prices/fpc/shortcut");
+        const auto fpcBackwardShortcutKey = QStringLiteral("prices/fpc/backwardShortcut");
+        const auto limitSellCopyToCostKey = QStringLiteral("prices/orders/limitSellCopyToCost");
+        const auto limitSellCopyToTotalCostKey = QStringLiteral("prices/orders/limitSellCopyToTotalCost");
+        const auto ignoreOrdersWithMinVolumeKey = QStringLiteral("prices/ignoreOrdersWithMinVolume");
+        const auto itemConstCostAddKey = QStringLiteral("prices/costs/constCost");
+        const auto itemRelativeCostAddKey = QStringLiteral("prices/costs/relativeCost");
+        const auto showInEveOnFpcKey = QStringLiteral("prices/fpc/showInEve");
+        const auto rangeThresholdKey = QStringLiteral("prices/rangeThreshold");
     }
 }
