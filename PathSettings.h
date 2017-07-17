@@ -14,19 +14,19 @@
  */
 #pragma once
 
-#include <QtGlobal>
+#include <QString>
 
 namespace Evernus
 {
     namespace PathSettings
     {
-        const auto characterLogWildcardDefault = "My Orders-*.txt";
-        const auto corporationLogWildcardDefault = "Corporation Orders-*.txt";
+        const auto characterLogWildcardDefault = QStringLiteral("My Orders-*.txt");
+        const auto corporationLogWildcardDefault = QStringLiteral("Corporation Orders-*.txt");
         const auto deleteLogsDefault = true;
 
-        const auto marketLogsPathKey = "path/marketLogs/path";
-        const auto deleteLogsKey = "path/marketLogs/delete";
-        const auto characterLogWildcardKey = "path/marketLogs/characterWildcard";
-        const auto corporationLogWildcardKey = "path/marketLogs/corporationWildcard";
+        const auto marketLogsPathKey = QStringLiteral("path/marketLogs/path");
+        const auto deleteLogsKey = QStringLiteral("path/marketLogs/delete");
+        const auto characterLogWildcardKey = QStringLiteral("path/marketLogs/characterWildcard");
+        const auto corporationLogWildcardKey = QStringLiteral("path/marketLogs/corporationWildcard");
     }
 }

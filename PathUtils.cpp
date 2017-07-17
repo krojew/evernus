@@ -29,7 +29,7 @@ namespace Evernus
 
             auto logPath = settings.value(PathSettings::marketLogsPathKey).toString();
             if (logPath.isEmpty())
-                logPath = QStandardPaths::locate(QStandardPaths::DocumentsLocation, "EVE/logs/Marketlogs", QStandardPaths::LocateDirectory);
+                logPath = QStandardPaths::locate(QStandardPaths::DocumentsLocation, QStringLiteral("EVE/logs/Marketlogs"), QStandardPaths::LocateDirectory);
 
             return logPath;
         }
