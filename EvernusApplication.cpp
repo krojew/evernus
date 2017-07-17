@@ -1050,14 +1050,14 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::refreshWalletTransactions(Character::IdType id, uint parentTask)
+    void EvernusApplication::refreshWalletTransactions(Character::IdType id, uint parentTask, bool force)
     {
         qDebug() << "Refreshing wallet transactions: " << id;
 
         const auto task = startTask(tr("Fetching wallet transactions for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        if (!checkImportAndEndTask(id, TimerType::WalletTransactions, task))
+        if (!force && !checkImportAndEndTask(id, TimerType::WalletTransactions, task))
             return;
 
         try
@@ -1326,14 +1326,14 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::refreshCorpWalletTransactions(Character::IdType id, uint parentTask)
+    void EvernusApplication::refreshCorpWalletTransactions(Character::IdType id, uint parentTask, bool force)
     {
         qDebug() << "Refreshing corp wallet transactions: " << id;
 
         const auto task = startTask(tr("Fetching corporation wallet transactions for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        if (!checkImportAndEndTask(id, TimerType::CorpWalletTransactions, task))
+        if (!force && !checkImportAndEndTask(id, TimerType::CorpWalletTransactions, task))
             return;
 
         try
@@ -2501,9 +2501,9 @@ namespace Evernus
             if (autoSetCosts)
             {
                 if (corp)
-                    refreshCorpWalletTransactions(id);
+                    refreshCorpWalletTransactions(id, TaskConstants::invalidTask, true);
                 else
-                    refreshWalletTransactions(id);
+                    refreshWalletTransactions(id, TaskConstants::invalidTask, true);
             }
 
             if (settings.value(PriceSettings::refreshPricesWithOrdersKey).toBool())

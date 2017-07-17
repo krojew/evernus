@@ -201,13 +201,13 @@ namespace Evernus
         void refreshAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshContracts(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
-        void refreshWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask, bool force = false);
         void refreshMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshMarketOrdersFromLogs(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpContracts(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
-        void refreshCorpWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshCorpWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask, bool force = false);
         void refreshCorpMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpMarketOrdersFromLogs(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshConquerableStations();
