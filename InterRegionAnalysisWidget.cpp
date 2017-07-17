@@ -70,11 +70,9 @@ namespace Evernus
         QSettings settings;
 
         const auto srcStationPath = settings.value(MarketAnalysisSettings::srcStationKey).toList();
-        if (srcStationPath.size() == 4)
-            mSrcStation = srcStationPath[3].toULongLong();
+        mSrcStation = EveDataProvider::getStationIdFromPath(srcStationPath);
         const auto dstStationPath = settings.value(MarketAnalysisSettings::dstStationKey).toList();
-        if (dstStationPath.size() == 4)
-            mDstStation = dstStationPath[3].toULongLong();
+        mDstStation = EveDataProvider::getStationIdFromPath(dstStationPath);
 
         toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
         mSourceRegionCombo = new RegionComboBox{mDataProvider, MarketAnalysisSettings::srcRegionKey, this};
@@ -148,7 +146,7 @@ namespace Evernus
         mInterRegionViewProxy.setSortRole(Qt::UserRole);
         mInterRegionViewProxy.setSourceModel(&mInterRegionDataModel);
 
-        mInterRegionTypeDataView = new AdjustableTableView{"marketAnalysisInterRegionView", this};
+        mInterRegionTypeDataView = new AdjustableTableView{QStringLiteral("marketAnalysisInterRegionView"), this};
         mInterRegionDataStack->addWidget(mInterRegionTypeDataView);
         mInterRegionTypeDataView->setSortingEnabled(true);
         mInterRegionTypeDataView->setAlternatingRowColors(true);
