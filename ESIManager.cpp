@@ -251,8 +251,23 @@ namespace Evernus
 
                 mAuthView = std::make_unique<SSOAuthWidget>(url);
 
+                QString charName;
+
+                try
+                {
+                    charName = mCharacterRepo.getName(charId);
+                }
+                catch (const CharacterRepository::NotFoundException &)
+                {
+                    charName = mDataProvider.getGenericName(charId);
+                }
+
+                if (charName.isEmpty())
+                    mAuthView->setWindowTitle(tr("SSO Authentication for unknown character: %1").arg(charId));
+                else
+                    mAuthView->setWindowTitle(tr("SSO Authentication for character: %1").arg(charName));
+
                 mAuthView->setWindowModality(Qt::ApplicationModal);
-                mAuthView->setWindowTitle(tr("SSO Authentication for character: %1").arg(mCharacterRepo.getName(charId)));
                 mAuthView->installEventFilter(this);
                 mAuthView->adjustSize();
                 mAuthView->move(QApplication::desktop()->screenGeometry(QApplication::activeWindow()).center() -
