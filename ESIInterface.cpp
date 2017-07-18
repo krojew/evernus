@@ -53,6 +53,13 @@ namespace Evernus
     void ESIInterface::fetchCitadelMarketOrders(quint64 citadelId, Character::IdType charId, const PaginatedCallback &callback) const
     {
         qDebug() << "Fetching orders from citadel" << citadelId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, true, tr("Cannot fetch citadels with no character selected."));
+            return;
+        }
+
         checkAuth(charId, [=](const auto &error) {
             if (!error.isEmpty())
                 callback(QJsonDocument{}, true, error);
@@ -64,6 +71,13 @@ namespace Evernus
     void ESIInterface::openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const
     {
         qDebug() << "Opening market details for" << typeId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            errorCallback(tr("Cannot open market window for invalid character. Check if there's a character associated with the item you wish to view."));
+            return;
+        }
+
         auto opener = [=](const auto &error) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
