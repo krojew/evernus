@@ -12,10 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <algorithm>
-
-#include <QDataStream>
-#include <QByteArray>
+#include "DatabaseUtils.h"
 
 #include "RegionTypePresetRepository.h"
 
@@ -34,8 +31,8 @@ namespace Evernus
     RegionTypePresetRepository::EntityPtr RegionTypePresetRepository::populate(const QSqlRecord &record) const
     {
         auto preset = std::make_shared<RegionTypePreset>(record.value(getIdColumn()).value<RegionTypePreset::IdType>());
-        preset->setTypes(decodeRawSet<RegionTypePreset::TypeSet::key_type>(record, "types"));
-        preset->setRegions(decodeRawSet<RegionTypePreset::RegionSet::key_type>(record, "regions"));
+        preset->setTypes(DatabaseUtils::decodeRawSet<RegionTypePreset::TypeSet::key_type>(record, QStringLiteral("types")));
+        preset->setRegions(DatabaseUtils::decodeRawSet<RegionTypePreset::RegionSet::key_type>(record, QStringLiteral("regions")));
         preset->setNew(false);
 
         return preset;
@@ -73,10 +70,10 @@ namespace Evernus
     void RegionTypePresetRepository::bindValues(const RegionTypePreset &entity, QSqlQuery &query) const
     {
         if (entity.getId() != RegionTypePreset::invalidId)
-            query.bindValue(":" + getIdColumn(), entity.getId());
+            query.bindValue(QStringLiteral(":") + getIdColumn(), entity.getId());
 
-        query.bindValue(":types", encodeRawSet(entity.getTypes()));
-        query.bindValue(":regions", encodeRawSet(entity.getRegions()));
+        query.bindValue(QStringLiteral(":types"), DatabaseUtils::encodeRawSet(entity.getTypes()));
+        query.bindValue(QStringLiteral(":regions"), DatabaseUtils::encodeRawSet(entity.getRegions()));
     }
 
     void RegionTypePresetRepository::bindPositionalValues(const RegionTypePreset &entity, QSqlQuery &query) const
@@ -84,38 +81,7 @@ namespace Evernus
         if (entity.getId() != RegionTypePreset::invalidId)
             query.addBindValue(entity.getId());
 
-        query.addBindValue(encodeRawSet(entity.getTypes()));
-        query.addBindValue(encodeRawSet(entity.getRegions()));
-    }
-
-    template<class T>
-    std::unordered_set<T> RegionTypePresetRepository::decodeRawSet(const QSqlRecord &record, const QString &name)
-    {
-        QDataStream stream{record.value(name).toByteArray()};
-
-        QVariantList list;
-        stream >> list;
-
-        std::unordered_set<T> result;
-        result.reserve(list.size());
-
-        for (const auto &value : list)
-            result.emplace(value.template value<T>());
-
-        return result;
-    }
-
-    template<class T>
-    QByteArray RegionTypePresetRepository::encodeRawSet(const std::unordered_set<T> &values)
-    {
-        QVariantList list;
-        std::copy(std::begin(values), std::end(values), std::back_inserter(list));
-
-        QByteArray data;
-
-        QDataStream stream{&data, QIODevice::WriteOnly};
-        stream << list;
-
-        return data;
+        query.addBindValue(DatabaseUtils::encodeRawSet(entity.getTypes()));
+        query.addBindValue(DatabaseUtils::encodeRawSet(entity.getRegions()));
     }
 }

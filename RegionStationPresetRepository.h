@@ -14,22 +14,21 @@
  */
 #pragma once
 
-#include "RegionTypePreset.h"
+#include "RegionStationPreset.h"
 #include "Repository.h"
 
-class QStringList;
 class QByteArray;
 
 namespace Evernus
 {
-    class RegionTypePresetRepository
-        : public Repository<RegionTypePreset>
+    class RegionStationPresetRepository
+        : public Repository<RegionStationPreset>
     {
     public:
         using Repository::Repository;
-        RegionTypePresetRepository(const RegionTypePresetRepository &) = default;
-        RegionTypePresetRepository(RegionTypePresetRepository &&) = default;
-        virtual ~RegionTypePresetRepository() = default;
+        RegionStationPresetRepository(const RegionStationPresetRepository &) = default;
+        RegionStationPresetRepository(RegionStationPresetRepository &&) = default;
+        virtual ~RegionStationPresetRepository() = default;
 
         virtual QString getTableName() const override;
         virtual QString getIdColumn() const override;
@@ -38,14 +37,12 @@ namespace Evernus
 
         void create() const;
 
-        QStringList getAllNames() const;
-
-        RegionTypePresetRepository &operator =(const RegionTypePresetRepository &) = default;
-        RegionTypePresetRepository &operator =(RegionTypePresetRepository &&) = default;
+        RegionStationPresetRepository &operator =(const RegionStationPresetRepository &) = default;
+        RegionStationPresetRepository &operator =(RegionStationPresetRepository &&) = default;
 
     private:
         virtual QStringList getColumns() const override;
-        virtual void bindValues(const RegionTypePreset &entity, QSqlQuery &query) const override;
-        virtual void bindPositionalValues(const RegionTypePreset &entity, QSqlQuery &query) const override;
+        virtual void bindValues(const RegionStationPreset &entity, QSqlQuery &query) const override;
+        virtual void bindPositionalValues(const RegionStationPreset &entity, QSqlQuery &query) const override;
     };
 }

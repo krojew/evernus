@@ -14,7 +14,11 @@
  */
 #pragma once
 
+#include <unordered_set>
+
 class QSqlDatabase;
+class QSqlRecord;
+class QByteArray;
 class QSqlQuery;
 class QString;
 
@@ -27,5 +31,12 @@ namespace Evernus
         void execQuery(QSqlQuery &query);
         QString backupDatabase(const QSqlDatabase &db);
         QString backupDatabase(const QString &dbPath);
+
+        template<class T>
+        std::unordered_set<T> decodeRawSet(const QSqlRecord &record, const QString &name);
+        template<class T>
+        QByteArray encodeRawSet(const std::unordered_set<T> &values);
     }
 }
+
+#include "DatabaseUtils.inl"

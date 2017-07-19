@@ -2359,6 +2359,19 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
 </context>
 <context>
+    <name>Evernus::ESIInterface</name>
+    <message>
+        <location filename="../ESIInterface.cpp" line="59"/>
+        <source>Cannot fetch citadels with no character selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ESIInterface.cpp" line="77"/>
+        <source>Cannot open market window for invalid character. Check if there&apos;s a character associated with the item you wish to view.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::ESIManager</name>
     <message>
         <location filename="../ESIManager.cpp" line="100"/>
@@ -2378,22 +2391,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="255"/>
+        <location filename="../ESIManager.cpp" line="266"/>
+        <source>SSO Authentication for unknown character: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ESIManager.cpp" line="268"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="324"/>
+        <location filename="../ESIManager.cpp" line="339"/>
         <source>Empty access token!</source>
         <translation type="unfinished">Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="392"/>
+        <location filename="../ESIManager.cpp" line="407"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished">Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="423"/>
+        <location filename="../ESIManager.cpp" line="438"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished">Proszę dać dostęp do postaci: %1</translation>
     </message>
@@ -3825,47 +3843,47 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::InterRegionAnalysisWidget</name>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="79"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="77"/>
         <source>Source:</source>
         <translation type="unfinished">Źródło:</translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="89"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="87"/>
         <source>Destination:</source>
         <translation type="unfinished">Cel:</translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="101"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="99"/>
         <source>Volume:</source>
         <translation type="unfinished">Wolumen:</translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="119"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="117"/>
         <source>Margin:</source>
         <translation type="unfinished">Marża:</translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="137"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="135"/>
         <source>Apply</source>
         <translation type="unfinished">Zastosuj</translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="141"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="139"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="164"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="162"/>
         <source>Show details</source>
         <translation type="unfinished">Pokaż szczegóły</translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="294"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="292"/>
         <source>Station change</source>
         <translation type="unfinished">Zmiana stacji</translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="294"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="292"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished">Zmiana stacji wymaga ponownego przeliczenia danych. Zrobić to teraz?</translation>
     </message>
