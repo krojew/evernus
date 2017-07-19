@@ -16,33 +16,63 @@
 
 namespace Evernus
 {
-    RegionStationPreset::StationId RegionStationPreset::getStationId() const
+    RegionStationPreset::StationId RegionStationPreset::getSrcStationId() const
     {
-        return mStationId;
+        return mSrcStationId;
     }
 
-    void RegionStationPreset::setStationId(StationId station)
+    void RegionStationPreset::setSrcStationId(StationId station)
     {
-        mStationId = std::move(station);
+        mSrcStationId = std::move(station);
     }
 
-    RegionStationPreset::RegionSet RegionStationPreset::getRegions() const &
+    RegionStationPreset::StationId RegionStationPreset::getDstStationId() const
     {
-        return mRegions;
+        return mDstStationId;
     }
 
-    RegionStationPreset::RegionSet &&RegionStationPreset::getRegions() && noexcept
+    void RegionStationPreset::setDstStationId(StationId station)
     {
-        return std::move(mRegions);
+        mDstStationId = std::move(station);
     }
 
-    void RegionStationPreset::setRegions(const RegionSet &regions)
+    RegionStationPreset::RegionSet RegionStationPreset::getSrcRegions() const &
     {
-        mRegions = regions;
+        return mSrcRegions;
     }
 
-    void RegionStationPreset::setRegions(RegionSet &&regions) noexcept
+    RegionStationPreset::RegionSet &&RegionStationPreset::getSrcRegions() && noexcept
     {
-        mRegions = std::move(regions);
+        return std::move(mSrcRegions);
+    }
+
+    void RegionStationPreset::setSrcRegions(const RegionSet &regions)
+    {
+        mSrcRegions = regions;
+    }
+
+    void RegionStationPreset::setSrcRegions(RegionSet &&regions) noexcept
+    {
+        mSrcRegions = std::move(regions);
+    }
+
+    RegionStationPreset::RegionSet RegionStationPreset::getDstRegions() const &
+    {
+        return mDstRegions;
+    }
+
+    RegionStationPreset::RegionSet &&RegionStationPreset::getDstRegions() && noexcept
+    {
+        return std::move(mDstRegions);
+    }
+
+    void RegionStationPreset::setDstRegions(const RegionSet &regions)
+    {
+        mDstRegions = regions;
+    }
+
+    void RegionStationPreset::setDstRegions(RegionSet &&regions) noexcept
+    {
+        mDstRegions = std::move(regions);
     }
 }

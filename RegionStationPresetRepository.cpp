@@ -30,14 +30,18 @@ namespace Evernus
 
     RegionStationPresetRepository::EntityPtr RegionStationPresetRepository::populate(const QSqlRecord &record) const
     {
-        const auto stationId = record.value(QStringLiteral("station_id"));
-
         auto preset = std::make_shared<RegionStationPreset>(record.value(getIdColumn()).value<RegionStationPreset::IdType>());
-        preset->setRegions(DatabaseUtils::decodeRawSet<RegionStationPreset::RegionSet::key_type>(record, QStringLiteral("regions")));
+        preset->setSrcRegions(DatabaseUtils::decodeRawSet<RegionStationPreset::RegionSet::key_type>(record, QStringLiteral("src_regions")));
+        preset->setDstRegions(DatabaseUtils::decodeRawSet<RegionStationPreset::RegionSet::key_type>(record, QStringLiteral("dst_regions")));
         preset->setNew(false);
 
+        auto stationId = record.value(QStringLiteral("src_station_id"));
         if (!stationId.isNull())
-            preset->setStationId(stationId.value<RegionStationPreset::StationId::value_type>());
+            preset->setSrcStationId(stationId.value<RegionStationPreset::StationId::value_type>());
+
+        stationId = record.value(QStringLiteral("dst_station_id"));
+        if (!stationId.isNull())
+            preset->setDstStationId(stationId.value<RegionStationPreset::StationId::value_type>());
 
         return preset;
     }
@@ -46,8 +50,10 @@ namespace Evernus
     {
         exec(QStringLiteral("CREATE TABLE IF NOT EXISTS %1 ("
             "%2 TEXT PRIMARY KEY,"
-            "station_id BIGINT NULL,"
-            "regions BLOB NOT NULL"
+            "src_station_id BIGINT NULL,"
+            "dst_station_id BIGINT NULL,"
+            "src_regions BLOB NOT NULL,"
+            "dst_regions BLOB NOT NULL"
         ")").arg(getTableName()).arg(getIdColumn()));
     }
 
@@ -55,8 +61,10 @@ namespace Evernus
     {
         return {
             getIdColumn(),
-            QStringLiteral("station_id"),
-            QStringLiteral("regions")
+            QStringLiteral("src_station_id"),
+            QStringLiteral("dst_station_id"),
+            QStringLiteral("src_regions"),
+            QStringLiteral("dst_regions")
         };
     }
 
@@ -65,10 +73,14 @@ namespace Evernus
         if (entity.getId() != RegionStationPreset::invalidId)
             query.bindValue(QStringLiteral(":") + getIdColumn(), entity.getId());
 
-        const auto stationId = entity.getStationId();
+        auto stationId = entity.getSrcStationId();
+        query.bindValue(QStringLiteral(":src_station_id"), (stationId) ? (*stationId) : (QVariant{QVariant::ULongLong}));
 
-        query.bindValue(QStringLiteral(":station_id"), (stationId) ? (*stationId) : (QVariant{QVariant::ULongLong}));
-        query.bindValue(QStringLiteral(":regions"), DatabaseUtils::encodeRawSet(entity.getRegions()));
+        stationId = entity.getDstStationId();
+        query.bindValue(QStringLiteral(":dst_station_id"), (stationId) ? (*stationId) : (QVariant{QVariant::ULongLong}));
+
+        query.bindValue(QStringLiteral(":src_regions"), DatabaseUtils::encodeRawSet(entity.getSrcRegions()));
+        query.bindValue(QStringLiteral(":dst_regions"), DatabaseUtils::encodeRawSet(entity.getDstRegions()));
     }
 
     void RegionStationPresetRepository::bindPositionalValues(const RegionStationPreset &entity, QSqlQuery &query) const
@@ -76,9 +88,13 @@ namespace Evernus
         if (entity.getId() != RegionStationPreset::invalidId)
             query.addBindValue(entity.getId());
 
-        const auto stationId = entity.getStationId();
-
+        auto stationId = entity.getSrcStationId();
         query.addBindValue((stationId) ? (*stationId) : (QVariant{QVariant::ULongLong}));
-        query.addBindValue(DatabaseUtils::encodeRawSet(entity.getRegions()));
+
+        stationId = entity.getDstStationId();
+        query.addBindValue((stationId) ? (*stationId) : (QVariant{QVariant::ULongLong}));
+
+        query.addBindValue(DatabaseUtils::encodeRawSet(entity.getSrcRegions()));
+        query.addBindValue(DatabaseUtils::encodeRawSet(entity.getDstRegions()));
     }
 }

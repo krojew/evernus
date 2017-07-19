@@ -37,19 +37,30 @@ namespace Evernus
         RegionStationPreset(RegionStationPreset &&) = default;
         virtual ~RegionStationPreset() = default;
 
-        StationId getStationId() const;
-        void setStationId(StationId station);
+        StationId getSrcStationId() const;
+        void setSrcStationId(StationId station);
 
-        RegionSet getRegions() const &;
-        RegionSet &&getRegions() && noexcept;
-        void setRegions(const RegionSet &regions);
-        void setRegions(RegionSet &&regions) noexcept;
+        StationId getDstStationId() const;
+        void setDstStationId(StationId station);
+
+        RegionSet getSrcRegions() const &;
+        RegionSet &&getSrcRegions() && noexcept;
+        void setSrcRegions(const RegionSet &regions);
+        void setSrcRegions(RegionSet &&regions) noexcept;
+
+        RegionSet getDstRegions() const &;
+        RegionSet &&getDstRegions() && noexcept;
+        void setDstRegions(const RegionSet &regions);
+        void setDstRegions(RegionSet &&regions) noexcept;
 
         RegionStationPreset &operator =(const RegionStationPreset &) = default;
         RegionStationPreset &operator =(RegionStationPreset &&) = default;
 
     private:
-        StationId mStationId;
-        RegionSet mRegions;
+        StationId mSrcStationId;
+        StationId mDstStationId;
+
+        RegionSet mSrcRegions;
+        RegionSet mDstRegions;
     };
 }
