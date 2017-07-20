@@ -14,6 +14,8 @@
 */
 #pragma once
 
+#include <QtGlobal>
+
 #if defined(_MSC_VER) && _MSC_VER == 1900
 #   define EVERNUS_VS_TEMPLATE_LAMBDA_HACK 1
 #else
@@ -24,4 +26,10 @@
 #   define EVERNUS_CLANG_LAMBDA_CAPTURE_BUG 1
 #else
 #   define EVERNUS_CLANG_LAMBDA_CAPTURE_BUG 0
+#endif
+
+#if defined(Q_OS_LINUX) && !defined(NDEBUG)
+#   define EVERNUS_CREATE_DUMPS 1
+#else
+#   define EVERNUS_CREATE_DUMPS 0
 #endif

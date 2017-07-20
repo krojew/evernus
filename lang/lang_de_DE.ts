@@ -2125,6 +2125,25 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
 </context>
 <context>
+    <name>Evernus::DumpUploader</name>
+    <message>
+        <location filename="../DumpUploader.cpp" line="36"/>
+        <location filename="../DumpUploader.cpp" line="42"/>
+        <source>Evernus</source>
+        <translation type="unfinished">Evernus</translation>
+    </message>
+    <message>
+        <location filename="../DumpUploader.cpp" line="37"/>
+        <source>The application crashed in a previous run. Create bug report and upload crash data?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DumpUploader.cpp" line="42"/>
+        <source>Delete crash reports?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::ESIInterface</name>
     <message>
         <location filename="../ESIInterface.cpp" line="59"/>
@@ -8412,44 +8431,44 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="vanished">CREST Client Secret.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="79"/>
-        <location filename="../main.cpp" line="94"/>
+        <location filename="../main.cpp" line="119"/>
+        <location filename="../main.cpp" line="134"/>
         <source>Already running</source>
         <translation>Läuft bereits</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="79"/>
+        <location filename="../main.cpp" line="119"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation>Evernus scheint schon zu laufen. Is das nicht der Fall, entferne bitte &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="94"/>
+        <location filename="../main.cpp" line="134"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation>Evernus wurde letztes Mal wahrscheinlich nicht korrekt beendet. Möchtest du einen Aufräumversuch starten?</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="103"/>
-        <location filename="../main.cpp" line="298"/>
+        <location filename="../main.cpp" line="143"/>
+        <location filename="../main.cpp" line="344"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="104"/>
+        <location filename="../main.cpp" line="144"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation>Konnte &apos;%1&apos; nicht entfernen!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="285"/>
+        <location filename="../main.cpp" line="331"/>
         <source>New version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="286"/>
+        <location filename="../main.cpp" line="332"/>
         <source>Would you like to see what&apos;s new in this version?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="307"/>
+        <location filename="../main.cpp" line="353"/>
         <source>Initialization error</source>
         <translation>Fehler beim Initialisieren</translation>
     </message>

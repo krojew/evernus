@@ -58,10 +58,11 @@ if(APPLE)
     set(ADDITIONAL_LIBS Qt5::MacExtras ${CarbonLibrary})
 elseif(UNIX)
     find_package(X11 REQUIRED)
+    find_package(Breakpad REQUIRED)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pthread -g")
-    set(ADDITIONAL_SRC qxtglobalshortcut_x11.cpp)
-    set(ADDITIONAL_LIBS ${X11_LIBRARIES})
+    set(ADDITIONAL_SRC qxtglobalshortcut_x11.cpp DumpUploader.h DumpUploader.cpp)
+    set(ADDITIONAL_LIBS ${X11_LIBRARIES} Breakpad::Client)
 elseif(WIN32)
     find_package(Qt5WinExtras REQUIRED)
 

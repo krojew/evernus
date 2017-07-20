@@ -14,6 +14,7 @@
  */
 #include <QCommandLineParser>
 #include <QDesktopServices>
+#include <QStandardPaths>
 #include <QApplication>
 #include <QLocalSocket>
 #include <QLocalServer>
@@ -27,6 +28,14 @@
 
 #ifdef Q_OS_OSX
 #   include "QMacPasteboardMimeUnicodeText.h"
+#endif
+
+#ifdef Q_OS_LINUX
+#   include <iostream>
+
+#   include <client/linux/handler/exception_handler.h>
+
+#   include "DumpUploader.h"
 #endif
 
 #include "MarketLogExternalOrderImporterThread.h"
@@ -44,17 +53,48 @@
 #include "MainWindow.h"
 #include "VolumeType.h"
 #include "Version.h"
+#include "Defines.h"
+
+#if EVERNUS_CREATE_DUMPS
+namespace
+{
+    bool dumpCallback(const google_breakpad::MinidumpDescriptor &descriptor, void *context, bool succeeded)
+    {
+        Q_UNUSED(context);
+
+        std::cerr << "Created dump: " << descriptor.path() << std::endl;
+        return succeeded;
+    }
+}
+#endif
 
 int main(int argc, char *argv[])
 {
     try
     {
-        QCoreApplication::setApplicationName("Evernus");
+        QCoreApplication::setApplicationName(QStringLiteral("Evernus"));
         QCoreApplication::setApplicationVersion(version::fullStr());
-        QCoreApplication::setOrganizationDomain("evernus.com");
-        QCoreApplication::setOrganizationName("evernus.com");
+        QCoreApplication::setOrganizationDomain(QStringLiteral("evernus.com"));
+        QCoreApplication::setOrganizationName(QStringLiteral("evernus.com"));
         QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+#if EVERNUS_CREATE_DUMPS
+        const auto dumpPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + QStringLiteral("/dump");
+        QDir{}.mkpath(dumpPath);
+
+        google_breakpad::MinidumpDescriptor descriptor{
+            dumpPath.toStdString()
+        };
+        google_breakpad::ExceptionHandler eh{
+            descriptor,
+            nullptr,
+            dumpCallback,
+            nullptr,
+            true,
+            -1
+        };
+#endif
 
         Evernus::ChainableFileLogger::initialize();
 
@@ -138,6 +178,12 @@ int main(int argc, char *argv[])
         qRegisterMetaType<Evernus::VolumeType>("VolumeType");
 
         Evernus::EvernusApplication app{argc, argv};
+
+#if EVERNUS_CREATE_DUMPS
+        // hopefully we'll reach this point
+        Evernus::DumpUploader uploader{dumpPath};
+        uploader.run();
+#endif
 
 #ifdef Q_OS_OSX
         new QMacPasteboardMimeUnicodeText;
