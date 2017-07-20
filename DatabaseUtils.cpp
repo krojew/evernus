@@ -31,7 +31,7 @@ namespace Evernus
     {
         QString getDbPath()
         {
-            return QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/db/";
+            return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/db/";
         }
 
         void createDb(QSqlDatabase &db, const QString &name)

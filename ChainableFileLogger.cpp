@@ -67,6 +67,6 @@ namespace Evernus
 
     QString ChainableFileLogger::getLogDir()
     {
-        return QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QStringLiteral("/log/");
+        return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + QStringLiteral("/log/");
     }
 }
