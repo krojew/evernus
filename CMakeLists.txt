@@ -781,7 +781,7 @@ endif()
 
 target_link_libraries(
     ${PROJECT_NAME}
-    ${Boost_LIBRARIES}
+    Boost::boost
     Breakpad::Client
     Qt5::Concurrent
     Qt5::Core
