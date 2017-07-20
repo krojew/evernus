@@ -28,7 +28,7 @@
 #   define EVERNUS_CLANG_LAMBDA_CAPTURE_BUG 0
 #endif
 
-#if defined(Q_OS_LINUX) && !defined(NDEBUG)
+#ifdef NDEBUG
 #   define EVERNUS_CREATE_DUMPS 1
 #else
 #   define EVERNUS_CREATE_DUMPS 0

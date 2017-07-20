@@ -45,7 +45,7 @@ namespace Evernus
 
     void DumpUploader::uploadDumps() const
     {
-        QDesktopServices::openUrl(QUrl{mDumpDir.path(), QUrl::TolerantMode});
+        QDesktopServices::openUrl(QUrl{QStringLiteral("file:///%1").arg(mDumpDir.path()), QUrl::TolerantMode});
         QDesktopServices::openUrl(QUrl{QStringLiteral("https://bitbucket.org/krojew/evernus/issues/new")});
     }
 

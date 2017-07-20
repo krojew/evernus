@@ -30,14 +30,6 @@
 #   include "QMacPasteboardMimeUnicodeText.h"
 #endif
 
-#ifdef Q_OS_LINUX
-#   include <iostream>
-
-#   include <client/linux/handler/exception_handler.h>
-
-#   include "DumpUploader.h"
-#endif
-
 #include "MarketLogExternalOrderImporterThread.h"
 #include "MarketLogExternalOrderImporter.h"
 #include "ProxyWebExternalOrderImporter.h"
@@ -55,9 +47,24 @@
 #include "Version.h"
 #include "Defines.h"
 
+#ifdef EVERNUS_CREATE_DUMPS
+#   include <iostream>
+
+#   include "DumpUploader.h"
+
+#   ifdef Q_OS_LINUX
+#       include <client/linux/handler/exception_handler.h>
+#   elif defined(Q_OS_OSX)
+#       include <client/mac/handler/exception_handler.h>
+#else
+#       include <client/windows/handler/exception_handler.h>
+#   endif
+#endif
+
 #if EVERNUS_CREATE_DUMPS
 namespace
 {
+#   ifdef Q_OS_LINUX
     bool dumpCallback(const google_breakpad::MinidumpDescriptor &descriptor, void *context, bool succeeded)
     {
         Q_UNUSED(context);
@@ -65,6 +72,24 @@ namespace
         std::cerr << "Created dump: " << descriptor.path() << std::endl;
         return succeeded;
     }
+#   elif defined(Q_OS_OSX)
+    //TODO: implement
+#   else
+    bool dumpCallback(const wchar_t *dump_path,
+                      const wchar_t *minidump_id,
+                      void *context,
+                      EXCEPTION_POINTERS *exinfo,
+                      MDRawAssertionInfo *assertion,
+                      bool succeeded)
+   {
+        Q_UNUSED(context);
+        Q_UNUSED(exinfo);
+        Q_UNUSED(assertion);
+
+        std::wcerr << L"Created dump: " << dump_path << L'/' << minidump_id << std::endl;
+        return succeeded;
+   }
+#   endif
 }
 #endif
 
@@ -83,6 +108,7 @@ int main(int argc, char *argv[])
         const auto dumpPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + QStringLiteral("/dump");
         QDir{}.mkpath(dumpPath);
 
+#   ifdef Q_OS_LINUX
         google_breakpad::MinidumpDescriptor descriptor{
             dumpPath.toStdString()
         };
@@ -94,8 +120,18 @@ int main(int argc, char *argv[])
             true,
             -1
         };
+#   elif defined(Q_OS_OSX)
+        //TODO: implement
+#   else
+        new google_breakpad::ExceptionHandler{
+            dumpPath.toStdWString(),
+            nullptr,
+            dumpCallback,
+            nullptr,
+            google_breakpad::ExceptionHandler::HANDLER_ALL
+        };
+#   endif
 #endif
-
         Evernus::ChainableFileLogger::initialize();
 
         qSetMessagePattern(QStringLiteral("[%{type}] %{time} %{threadid} %{message}"));

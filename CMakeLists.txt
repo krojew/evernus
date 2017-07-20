@@ -13,6 +13,7 @@ set(MAJOR_VERSION "2")
 set(MINOR_VERSION "2")
 
 find_package(Boost REQUIRED)
+find_package(Breakpad REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
 find_package(Qt5Core 5.7 REQUIRED)
 find_package(Qt5Gui REQUIRED)
@@ -58,11 +59,10 @@ if(APPLE)
     set(ADDITIONAL_LIBS Qt5::MacExtras ${CarbonLibrary})
 elseif(UNIX)
     find_package(X11 REQUIRED)
-    find_package(Breakpad REQUIRED)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pthread -g")
-    set(ADDITIONAL_SRC qxtglobalshortcut_x11.cpp DumpUploader.h DumpUploader.cpp)
-    set(ADDITIONAL_LIBS ${X11_LIBRARIES} Breakpad::Client)
+    set(ADDITIONAL_SRC qxtglobalshortcut_x11.cpp)
+    set(ADDITIONAL_LIBS ${X11_LIBRARIES})
 elseif(WIN32)
     find_package(Qt5WinExtras REQUIRED)
 
@@ -280,6 +280,8 @@ add_executable(
     DoubleTypeAggregatedDetailsWidget.h
     DoubleTypeCompareWidget.cpp
     DoubleTypeCompareWidget.h
+    DumpUploader.cpp
+    DumpUploader.h
     Entity.h
     ESIIndividualExternalOrderImporter.cpp
     ESIIndividualExternalOrderImporter.h
@@ -780,6 +782,7 @@ endif()
 target_link_libraries(
     ${PROJECT_NAME}
     ${Boost_LIBRARIES}
+    Breakpad::Client
     Qt5::Concurrent
     Qt5::Core
     Qt5::Gui
