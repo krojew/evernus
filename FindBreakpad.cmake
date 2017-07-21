@@ -52,7 +52,7 @@ else()
 
     find_library(
         BREAKPAD_HANDLER_LIBRARY
-        NAMES libbreakpad_HANDLER.a
+        NAMES libbreakpad_client.a
         HINTS ${BREAKPAD_ROOT_HINTS}
         PATH_SUFFIXES lib
     )
