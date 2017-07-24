@@ -113,6 +113,6 @@ namespace Evernus
 
         uint getNumRetries() const;
 
-        static QString getError(const QString &url, QNetworkReply &reply);
+        static QString getError(const QString &url, const QString &query, QNetworkReply &reply);
     };
 }

@@ -222,7 +222,7 @@ namespace Evernus
                 if (retries > 0)
                     asyncGet(url, query, continuation, retries - 1);
                 else
-                    continuation(QJsonDocument{}, getError(url, *reply));
+                    continuation(QJsonDocument{}, getError(url, query, *reply));
             }
             else
             {
@@ -267,7 +267,7 @@ namespace Evernus
                         if (suppressForbidden)
                             continuation(QJsonDocument{}, QString{});
                         else
-                            continuation(QJsonDocument{}, getError(url, *reply));
+                            continuation(QJsonDocument{}, getError(url, query, *reply));
                     }
                     else if (retries > 0)
                     {
@@ -275,7 +275,7 @@ namespace Evernus
                     }
                     else
                     {
-                        continuation(QJsonDocument{}, getError(url, *reply));
+                        continuation(QJsonDocument{}, getError(url, query, *reply));
                     }
                 }
             }
@@ -318,7 +318,7 @@ namespace Evernus
                 }
                 else
                 {
-                    errorCallback(getError(url, *reply));
+                    errorCallback(getError(url, query, *reply));
                 }
             }
             else
@@ -370,16 +370,14 @@ namespace Evernus
         return mSettings.value(NetworkSettings::maxRetriesKey, NetworkSettings::maxRetriesDefault).toUInt();
     }
 
-    QString ESIInterface::getError(const QString &url, QNetworkReply &reply)
+    QString ESIInterface::getError(const QString &url, const QString &query, QNetworkReply &reply)
     {
         // try to get ESI error
         const auto errorDoc = QJsonDocument::fromJson(reply.readAll());
         auto errorString = errorDoc.object().value(QStringLiteral("error")).toString();
         if (errorString.isEmpty())
             errorString = reply.errorString();
-        else
-            errorString = QStringLiteral("%1: %2").arg(url).arg(errorString);
 
-        return errorString;
+        return QStringLiteral("%1?%2: %3").arg(url).arg(query).arg(errorString);
     }
 }
