@@ -20,6 +20,7 @@
 #include <QCheckBox>
 #include <QSettings>
 #include <QSpinBox>
+#include <QLabel>
 
 #include "StationSelectDialog.h"
 #include "EveDataProvider.h"
@@ -83,6 +84,12 @@ namespace Evernus
         mDefaultCustomStationBtn = new QPushButton{(mDefaultCustomStation.isNull()) ? (tr("none")) : (mDataProvider.getLocationName(mDefaultCustomStation.toULongLong())), this};
         customStationGroupLayout->addRow(tr("Default custom station:"), mDefaultCustomStationBtn);
         connect(mDefaultCustomStationBtn, &QPushButton::clicked, this, &OrderPreferencesWidget::chooseDefaultCustomStation);
+
+        const auto customStationHelp = new QLabel{
+            tr("If you change the default custom station, your orders will still retain the one previously set. You can change it by right-clicking on the order(s)."), this
+        };
+        customStationGroupLayout->addRow(customStationHelp);
+        customStationHelp->setWordWrap(true);
 
         mImportFromCitadels = new QCheckBox{tr("Try to import orders from citadels"), this};
         customStationGroupLayout->addRow(mImportFromCitadels);
