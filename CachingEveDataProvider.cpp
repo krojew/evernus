@@ -648,6 +648,25 @@ namespace Evernus
         return mSecurityStatuses.emplace(solarSystemId, query.value(0).toDouble()).first->second;
     }
 
+    uint CachingEveDataProvider::getSolarSystemConstellationId(uint solarSystemId) const
+    {
+        const auto it = mSolarSystemConstellationCache.find(solarSystemId);
+        if (it != std::end(mSolarSystemConstellationCache))
+            return it->second;
+
+        QSqlQuery query{mEveDb};
+        query.prepare("SELECT constellationID FROM mapSolarSystems WHERE solarSystemID = ?");
+        query.bindValue(0, solarSystemId);
+
+        DatabaseUtils::execQuery(query);
+        query.next();
+
+        const auto constellationId = query.value(0).toUInt();
+
+        mSolarSystemConstellationCache.emplace(solarSystemId, constellationId);
+        return constellationId;
+    }
+
     uint CachingEveDataProvider::getStationRegionId(quint64 stationId) const
     {
         const auto it = mStationRegionCache.find(stationId);

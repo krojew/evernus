@@ -33,18 +33,24 @@ namespace Evernus
         RegionComboBox(const EveDataProvider &dataProvider,
                        const QString &settingsKey,
                        QWidget *parent = nullptr);
+        explicit RegionComboBox(const EveDataProvider &dataProvider,
+                                QWidget *parent = nullptr);
         RegionComboBox(const RegionComboBox &) = default;
         RegionComboBox(RegionComboBox &&) = default;
         virtual ~RegionComboBox() = default;
 
         RegionList getSelectedRegionList() const;
+        void setSelectedRegionList(const RegionList &regions);
 
         RegionComboBox &operator =(const RegionComboBox &) = default;
         RegionComboBox &operator =(RegionComboBox &&) = default;
 
+    private slots:
+        void setRegionText();
+
     private:
         static const auto allRegionsIndex = 0;
 
-        void setRegionText();
+        void addData(const EveDataProvider &dataProvider, const RegionList &saved);
     };
 }

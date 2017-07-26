@@ -30,9 +30,14 @@ namespace Evernus
         StationSelectButton(const EveDataProvider &dataProvider,
                             QVariantList initialStationPath,
                             QWidget *parent = nullptr);
+        explicit StationSelectButton(const EveDataProvider &dataProvider,
+                                     QWidget *parent = nullptr);
         StationSelectButton(const StationSelectButton &) = default;
         StationSelectButton(StationSelectButton &&) = default;
         virtual ~StationSelectButton() = default;
+
+        quint64 getSelectedStationId() const;
+        void setSelectedStationId(quint64 id);
 
         StationSelectButton &operator =(const StationSelectButton &) = default;
         StationSelectButton &operator =(StationSelectButton &&) = default;
@@ -47,5 +52,7 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         QVariantList mStationPath;
+
+        void setStationNameText(quint64 id);
     };
 }

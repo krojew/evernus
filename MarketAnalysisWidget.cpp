@@ -52,6 +52,7 @@ namespace Evernus
                                                const MarketGroupRepository &groupRepo,
                                                const CharacterRepository &characterRepo,
                                                const RegionTypePresetRepository &regionTypePresetRepo,
+                                               const RegionStationPresetRepository &regionStationPresetRepository,
                                                QWidget *parent)
         : QWidget{parent}
         , MarketDataProvider{}
@@ -206,7 +207,12 @@ namespace Evernus
         mRegionAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
         mRegionAnalysisWidget->discardBogusOrders(discardBogusOrders);
 
-        mInterRegionAnalysisWidget = new InterRegionAnalysisWidget{clientId, clientSecret, mDataProvider, *this, tabs};
+        mInterRegionAnalysisWidget = new InterRegionAnalysisWidget{clientId,
+                                                                   clientSecret,
+                                                                   mDataProvider,
+                                                                   *this,
+                                                                   regionStationPresetRepository,
+                                                                   tabs};
         connect(mInterRegionAnalysisWidget, &InterRegionAnalysisWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
         mInterRegionAnalysisWidget->setPriceTypes(src, dst);
         mInterRegionAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);

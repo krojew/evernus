@@ -983,6 +983,7 @@ namespace Evernus
                                                           mRepositoryProvider.getMarketGroupRepository(),
                                                           mRepositoryProvider.getCharacterRepository(),
                                                           mRepositoryProvider.getRegionTypePresetRepository(),
+                                                          mRepositoryProvider.getRegionStationPresetRepository(),
                                                           this};
         connect(marketAnalysisTab, &MarketAnalysisWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
         connect(marketAnalysisTab, &MarketAnalysisWidget::showInEve, this, &MainWindow::showInEve);

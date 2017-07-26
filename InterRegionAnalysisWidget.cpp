@@ -32,6 +32,7 @@
 #include <QDebug>
 
 #include "InterRegionTypeDetailsWidget.h"
+#include "FavoriteLocationsButton.h"
 #include "MarketAnalysisSettings.h"
 #include "CalculatingDataWidget.h"
 #include "StationSelectButton.h"
@@ -52,15 +53,16 @@ namespace Evernus
                                                          const QByteArray &clientSecret,
                                                          const EveDataProvider &dataProvider,
                                                          const MarketDataProvider &marketDataProvider,
+                                                         const RegionStationPresetRepository &regionStationPresetRepository,
                                                          QWidget *parent)
-        : StandardModelProxyWidget(mInterRegionDataModel, mInterRegionViewProxy, parent)
-        , mDataProvider(dataProvider)
-        , mMarketDataProvider(marketDataProvider)
-        , mInterRegionDataModel(mDataProvider)
-        , mInterRegionViewProxy(InterRegionMarketDataModel::getSrcRegionColumn(),
+        : StandardModelProxyWidget{mInterRegionDataModel, mInterRegionViewProxy, parent}
+        , mDataProvider{dataProvider}
+        , mMarketDataProvider{marketDataProvider}
+        , mInterRegionDataModel{mDataProvider}
+        , mInterRegionViewProxy{InterRegionMarketDataModel::getSrcRegionColumn(),
                                 InterRegionMarketDataModel::getDstRegionColumn(),
                                 InterRegionMarketDataModel::getVolumeColumn(),
-                                InterRegionMarketDataModel::getMarginColumn())
+                                InterRegionMarketDataModel::getMarginColumn()}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -93,6 +95,9 @@ namespace Evernus
         connect(stationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
             changeStation(mDstStation, path, MarketAnalysisSettings::dstStationKey);
         });
+
+        const auto locationFavBtn = new FavoriteLocationsButton{regionStationPresetRepository, mDataProvider, this};
+        toolBarLayout->addWidget(locationFavBtn);
 
         auto volumeValidator = new QIntValidator{this};
         volumeValidator->setBottom(0);

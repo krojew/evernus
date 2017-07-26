@@ -324,6 +324,8 @@ add_executable(
     FavoriteItem.h
     FavoriteItemRepository.cpp
     FavoriteItemRepository.h
+    FavoriteLocationsButton.cpp
+    FavoriteLocationsButton.h
     FileDownload.cpp
     FileDownload.h
     FilterText.cpp
@@ -615,6 +617,8 @@ add_executable(
     RegionComboBox.h
     RegionStationPreset.cpp
     RegionStationPreset.h
+    RegionStationPresetDialog.cpp
+    RegionStationPresetDialog.h
     RegionStationPresetRepository.cpp
     RegionStationPresetRepository.h
     RegionTypePreset.cpp

@@ -57,6 +57,17 @@ namespace Evernus
         ")").arg(getTableName()).arg(getIdColumn()));
     }
 
+    QStringList RegionStationPresetRepository::getAllNames() const
+    {
+        auto query = exec(QString{"SELECT %1 FROM %2 ORDER BY %1"}.arg(getIdColumn()).arg(getTableName()));
+
+        QStringList result;
+        while (query.next())
+            result << query.value(0).toString();
+
+        return result;
+    }
+
     QStringList RegionStationPresetRepository::getColumns() const
     {
         return {

@@ -33,6 +33,7 @@ class QLineEdit;
 
 namespace Evernus
 {
+    class RegionStationPresetRepository;
     class AdjustableTableView;
     class MarketDataProvider;
     class EveDataProvider;
@@ -48,6 +49,7 @@ namespace Evernus
                                   const QByteArray &clientSecret,
                                   const EveDataProvider &dataProvider,
                                   const MarketDataProvider &marketDataProvider,
+                                  const RegionStationPresetRepository &regionStationPresetRepository,
                                   QWidget *parent = nullptr);
         virtual ~InterRegionAnalysisWidget() = default;
 

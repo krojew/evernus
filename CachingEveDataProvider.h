@@ -94,6 +94,8 @@ namespace Evernus
         virtual const std::vector<Station> &getStations(uint solarSystemId) const override;
 
         virtual double getSolarSystemSecurityStatus(uint solarSystemId) const override;
+        virtual uint getSolarSystemConstellationId(uint solarSystemId) const override;
+        virtual uint getSolarSystemRegionId(uint stationId) const override;
 
         virtual uint getStationRegionId(quint64 stationId) const override;
         virtual uint getStationSolarSystemId(quint64 stationId) const override;
@@ -169,6 +171,7 @@ namespace Evernus
         std::unordered_map<uint, std::unordered_multimap<uint, uint>> mSystemJumpMap;
 
         mutable std::unordered_map<uint, uint> mSolarSystemRegionCache;
+        mutable std::unordered_map<uint, uint> mSolarSystemConstellationCache;
         mutable std::unordered_map<quint64, uint> mLocationSolarSystemCache;
         mutable std::mutex mLocationSolarSystemCacheMutex;
 
@@ -203,8 +206,6 @@ namespace Evernus
 
         MarketGroupRepository::EntityPtr getMarketGroupParent(MarketGroup::IdType id) const;
         MarketGroupRepository::EntityPtr getMarketGroup(MarketGroup::IdType id) const;
-
-        uint getSolarSystemRegionId(uint stationId) const;
 
         const ExternalOrderRepository::EntityList &getExternalOrders(EveType::IdType typeId, uint regionId) const;
 

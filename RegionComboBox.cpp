@@ -22,38 +22,23 @@
 namespace Evernus
 {
     RegionComboBox::RegionComboBox(const EveDataProvider &dataProvider, const QString &settingsKey, QWidget *parent)
-        : QComboBox(parent)
+        : QComboBox{parent}
     {
-        setEditable(true);
-        setInsertPolicy(QComboBox::NoInsert);
-
-        std::unordered_set<uint> saved;
+        RegionList saved;
         QSettings settings;
 
         const auto savedList = settings.value(settingsKey).toList();
         for (const auto &value : savedList)
             saved.emplace(value.toUInt());
 
-        auto model = new QStandardItemModel{this};
+        addData(dataProvider, saved);
 
-        const auto regions = dataProvider.getRegions();
-        for (const auto &region : regions)
-        {
-            auto item = new QStandardItem{region.second};
-            item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-            item->setData(region.first);
-            item->setCheckState((saved.find(region.first) != std::end(saved)) ? (Qt::Checked) : (Qt::Unchecked));
-
-            model->appendRow(item);
-        }
-
-        setModel(model);
-
-        connect(model, &QStandardItemModel::itemChanged, this, [=] {
+        const auto itemModel = static_cast<const QStandardItemModel *>(model());
+        connect(itemModel, &QStandardItemModel::itemChanged, this, [=] {
             QVariantList saved;
-            for (auto i = 0; i < model->rowCount(); ++i)
+            for (auto i = 0; i < itemModel->rowCount(); ++i)
             {
-                const auto item = model->item(i);
+                const auto item = itemModel->item(i);
                 if (item->checkState() == Qt::Checked)
                     saved.append(item->data().toUInt());
             }
@@ -63,13 +48,15 @@ namespace Evernus
 
             setRegionText();
         }, Qt::QueuedConnection);
+    }
 
-        auto item = new QStandardItem{tr("- all -")};
-        item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-        item->setCheckState((saved.empty() || saved.find(0) != std::end(saved)) ? (Qt::Checked) : (Qt::Unchecked));
+    RegionComboBox::RegionComboBox(const EveDataProvider &dataProvider, QWidget *parent)
+        : QComboBox{parent}
+    {
+        addData(dataProvider, RegionList{});
 
-        model->insertRow(allRegionsIndex, item);
-        setRegionText();
+        const auto itemModel = static_cast<const QStandardItemModel *>(model());
+        connect(itemModel, &QStandardItemModel::itemChanged, this, &RegionComboBox::setRegionText, Qt::QueuedConnection);
     }
 
     RegionComboBox::RegionList RegionComboBox::getSelectedRegionList() const
@@ -92,6 +79,22 @@ namespace Evernus
         }
 
         return list;
+    }
+
+    void RegionComboBox::setSelectedRegionList(const RegionList &regions)
+    {
+        const auto srcModel = static_cast<const QStandardItemModel *>(model());
+        disconnect(srcModel, &QStandardItemModel::itemChanged, this, &RegionComboBox::setRegionText);
+
+        srcModel->item(allRegionsIndex)->setCheckState(Qt::Unchecked);
+        for (auto i = allRegionsIndex + 1; i < srcModel->rowCount(); ++i)
+        {
+            const auto item = srcModel->item(i);
+            item->setCheckState((regions.find(item->data().toUInt()) == std::end(regions)) ? (Qt::Unchecked) : (Qt::Checked));
+        }
+
+        connect(srcModel, &QStandardItemModel::itemChanged, this, &RegionComboBox::setRegionText, Qt::QueuedConnection);
+        setRegionText();
     }
 
     void RegionComboBox::setRegionText()
@@ -122,5 +125,33 @@ namespace Evernus
 
         if (!hasChecked)
             setCurrentText(tr("- none -"));
+    }
+
+    void RegionComboBox::addData(const EveDataProvider &dataProvider, const RegionList &saved)
+    {
+        setEditable(true);
+        setInsertPolicy(QComboBox::NoInsert);
+
+        auto model = new QStandardItemModel{this};
+
+        const auto regions = dataProvider.getRegions();
+        for (const auto &region : regions)
+        {
+            auto item = new QStandardItem{region.second};
+            item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+            item->setData(region.first);
+            item->setCheckState((saved.find(region.first) != std::end(saved)) ? (Qt::Checked) : (Qt::Unchecked));
+
+            model->appendRow(item);
+        }
+
+        setModel(model);
+
+        auto item = new QStandardItem{tr("- all -")};
+        item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+        item->setCheckState((saved.empty() || saved.find(0) != std::end(saved)) ? (Qt::Checked) : (Qt::Unchecked));
+
+        model->insertRow(allRegionsIndex, item);
+        setRegionText();
     }
 }

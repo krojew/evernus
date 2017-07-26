@@ -29,6 +29,7 @@ namespace Evernus
 {
     class ScrapmetalReprocessingArbitrageWidget;
     class OreReprocessingArbitrageWidget;
+    class RegionStationPresetRepository;
     class RegionTypePresetRepository;
     class InterRegionAnalysisWidget;
     class ImportingAnalysisWidget;
@@ -57,6 +58,7 @@ namespace Evernus
                              const MarketGroupRepository &groupRepo,
                              const CharacterRepository &characterRepo,
                              const RegionTypePresetRepository &regionTypePresetRepo,
+                             const RegionStationPresetRepository &regionStationPresetRepository,
                              QWidget *parent = nullptr);
         virtual ~MarketAnalysisWidget() = default;
 

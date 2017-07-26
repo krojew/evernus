@@ -37,6 +37,8 @@ namespace Evernus
 
         void create() const;
 
+        QStringList getAllNames() const;
+
         RegionStationPresetRepository &operator =(const RegionStationPresetRepository &) = default;
         RegionStationPresetRepository &operator =(RegionStationPresetRepository &&) = default;
 
