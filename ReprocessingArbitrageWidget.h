@@ -30,6 +30,7 @@ class QAction;
 
 namespace Evernus
 {
+    class RegionStationPresetRepository;
     class ReprocessingArbitrageModel;
     class AdjustableTableView;
     class MarketDataProvider;
@@ -45,6 +46,7 @@ namespace Evernus
     public:
         explicit ReprocessingArbitrageWidget(const EveDataProvider &dataProvider,
                                              const MarketDataProvider &marketDataProvider,
+                                             const RegionStationPresetRepository &regionStationPresetRepository,
                                              const QString &viewConfigName,
                                              QWidget *parent = nullptr);
         ReprocessingArbitrageWidget(const ReprocessingArbitrageWidget &) = default;

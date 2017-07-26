@@ -18,9 +18,11 @@ namespace Evernus
 {
     OreReprocessingArbitrageWidget::OreReprocessingArbitrageWidget(const EveDataProvider &dataProvider,
                                                                    const MarketDataProvider &marketDataProvider,
+                                                                   const RegionStationPresetRepository &regionStationPresetRepository,
                                                                    QWidget *parent)
         : ReprocessingArbitrageWidget{dataProvider,
                                       marketDataProvider,
+                                      regionStationPresetRepository,
                                       QStringLiteral("marketAnalysisOreReprocessingArbitrageView"),
                                       parent}
         , mDataModel{dataProvider}

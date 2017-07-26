@@ -224,12 +224,12 @@ namespace Evernus
         mImportingAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
         mImportingAnalysisWidget->discardBogusOrders(discardBogusOrders);
 
-        mOreReprocessingArbitrageWidget = new OreReprocessingArbitrageWidget{mDataProvider, *this, tabs};
+        mOreReprocessingArbitrageWidget = new OreReprocessingArbitrageWidget{mDataProvider, *this, regionStationPresetRepository, tabs};
         mOreReprocessingArbitrageWidget->setPriceType(dst);
         connect(mOreReprocessingArbitrageWidget, &OreReprocessingArbitrageWidget::showInEve,
                 this, &MarketAnalysisWidget::showInEve);
 
-        mScrapmetalReprocessingArbitrageWidget = new ScrapmetalReprocessingArbitrageWidget{mDataProvider, *this, tabs};
+        mScrapmetalReprocessingArbitrageWidget = new ScrapmetalReprocessingArbitrageWidget{mDataProvider, *this, regionStationPresetRepository, tabs};
         mScrapmetalReprocessingArbitrageWidget->setPriceType(dst);
         connect(mScrapmetalReprocessingArbitrageWidget, &ScrapmetalReprocessingArbitrageWidget::showInEve,
                 this, &MarketAnalysisWidget::showInEve);

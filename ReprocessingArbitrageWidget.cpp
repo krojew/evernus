@@ -26,6 +26,7 @@
 #include <QDebug>
 
 #include "ReprocessingArbitrageModel.h"
+#include "FavoriteLocationsButton.h"
 #include "MarketAnalysisSettings.h"
 #include "CalculatingDataWidget.h"
 #include "AdjustableTableView.h"
@@ -41,6 +42,7 @@ namespace Evernus
 {
     ReprocessingArbitrageWidget::ReprocessingArbitrageWidget(const EveDataProvider &dataProvider,
                                                              const MarketDataProvider &marketDataProvider,
+                                                             const RegionStationPresetRepository &regionStationPresetRepository,
                                                              const QString &viewConfigName,
                                                              QWidget *parent)
         : StandardModelProxyWidget(mDataProxy, parent)
@@ -64,9 +66,9 @@ namespace Evernus
         mSourceRegionCombo = new RegionComboBox{dataProvider, MarketAnalysisSettings::reprocessingSrcRegionKey, this};
         toolBarLayout->addWidget(mSourceRegionCombo);
 
-        auto stationBtn = new StationSelectButton{dataProvider, srcStationPath, this};
-        toolBarLayout->addWidget(stationBtn);
-        connect(stationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+        const auto srcStationBtn = new StationSelectButton{dataProvider, srcStationPath, this};
+        toolBarLayout->addWidget(srcStationBtn);
+        connect(srcStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
             changeStation(mSrcStation, path, MarketAnalysisSettings::reprocessingSrcStationKey);
         });
 
@@ -74,10 +76,21 @@ namespace Evernus
         mDestRegionCombo = new RegionComboBox{dataProvider, MarketAnalysisSettings::reprocessingDstRegionKey, this};
         toolBarLayout->addWidget(mDestRegionCombo);
 
-        stationBtn = new StationSelectButton{dataProvider, dstStationPath, this};
-        toolBarLayout->addWidget(stationBtn);
-        connect(stationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+        const auto dstStationBtn = new StationSelectButton{dataProvider, dstStationPath, this};
+        toolBarLayout->addWidget(dstStationBtn);
+        connect(dstStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
             changeStation(mDstStation, path, MarketAnalysisSettings::reprocessingDstStationKey);
+        });
+
+        const auto locationFavBtn = new FavoriteLocationsButton{regionStationPresetRepository, dataProvider, this};
+        toolBarLayout->addWidget(locationFavBtn);
+        connect(locationFavBtn, &FavoriteLocationsButton::locationsChosen,
+                this, [=](const auto &srcRegions, auto srcStationId, const auto &dstRegions, auto dstStationId) {
+            mSourceRegionCombo->setSelectedRegionList(srcRegions);
+            mDestRegionCombo->setSelectedRegionList(dstRegions);
+
+            srcStationBtn->setSelectedStationId(srcStationId);
+            dstStationBtn->setSelectedStationId(dstStationId);
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Base yield:"), this});

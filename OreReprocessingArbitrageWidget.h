@@ -25,9 +25,10 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit OreReprocessingArbitrageWidget(const EveDataProvider &dataProvider,
-                                                const MarketDataProvider &marketDataProvider,
-                                                QWidget *parent = nullptr);
+        OreReprocessingArbitrageWidget(const EveDataProvider &dataProvider,
+                                       const MarketDataProvider &marketDataProvider,
+                                       const RegionStationPresetRepository &regionStationPresetRepository,
+                                       QWidget *parent = nullptr);
         OreReprocessingArbitrageWidget(const OreReprocessingArbitrageWidget &) = default;
         OreReprocessingArbitrageWidget(OreReprocessingArbitrageWidget &&) = default;
         virtual ~OreReprocessingArbitrageWidget() = default;

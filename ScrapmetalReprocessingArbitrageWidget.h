@@ -23,9 +23,10 @@ namespace Evernus
         : public ReprocessingArbitrageWidget
     {
     public:
-        explicit ScrapmetalReprocessingArbitrageWidget(const EveDataProvider &dataProvider,
-                                                       const MarketDataProvider &marketDataProvider,
-                                                       QWidget *parent = nullptr);
+        ScrapmetalReprocessingArbitrageWidget(const EveDataProvider &dataProvider,
+                                              const MarketDataProvider &marketDataProvider,
+                                              const RegionStationPresetRepository &regionStationPresetRepository,
+                                              QWidget *parent = nullptr);
         ScrapmetalReprocessingArbitrageWidget(const ScrapmetalReprocessingArbitrageWidget &) = default;
         ScrapmetalReprocessingArbitrageWidget(ScrapmetalReprocessingArbitrageWidget &&) = default;
         virtual ~ScrapmetalReprocessingArbitrageWidget() = default;

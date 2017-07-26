@@ -18,9 +18,11 @@ namespace Evernus
 {
     ScrapmetalReprocessingArbitrageWidget::ScrapmetalReprocessingArbitrageWidget(const EveDataProvider &dataProvider,
                                                                                  const MarketDataProvider &marketDataProvider,
+                                                                                 const RegionStationPresetRepository &regionStationPresetRepository,
                                                                                  QWidget *parent)
         : ReprocessingArbitrageWidget{dataProvider,
                                       marketDataProvider,
+                                      regionStationPresetRepository,
                                       QStringLiteral("marketAnalysisScrapmetalReprocessingArbitrageView"),
                                       parent}
         , mDataModel{dataProvider}
