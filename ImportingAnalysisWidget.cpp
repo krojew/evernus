@@ -28,10 +28,11 @@
 #include <QAction>
 #include <QLabel>
 
+#include "FavoriteLocationsButton.h"
 #include "MarketAnalysisSettings.h"
 #include "CalculatingDataWidget.h"
+#include "StationSelectButton.h"
 #include "AdjustableTableView.h"
-#include "StationSelectDialog.h"
 #include "MarketDataProvider.h"
 #include "EveDataProvider.h"
 #include "FlowLayout.h"
@@ -42,6 +43,7 @@ namespace Evernus
 {
     ImportingAnalysisWidget::ImportingAnalysisWidget(const EveDataProvider &dataProvider,
                                                      const MarketDataProvider &marketDataProvider,
+                                                     const RegionStationPresetRepository &regionStationPresetRepository,
                                                      QWidget *parent)
         : StandardModelProxyWidget(mDataModel, mDataProxy, parent)
         , mDataProvider(dataProvider)
@@ -55,31 +57,33 @@ namespace Evernus
 
         toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
 
-        const auto getStationName = [=](auto id) {
-            return (id != 0) ? (mDataProvider.getLocationName(id)) : (tr("- no station -"));
-        };
-
         QSettings settings;
 
-        auto list = settings.value(MarketAnalysisSettings::srcImportStationKey).toList();
-        if (list.size() == 4)
-            mSrcStation = list[3].toULongLong();
-        list = settings.value(MarketAnalysisSettings::dstImportStationKey).toList();
-        if (list.size() == 4)
-            mDstStation = list[3].toULongLong();
+        const auto srcStationPath = settings.value(MarketAnalysisSettings::srcImportStationKey).toList();
+        mSrcStation = EveDataProvider::getStationIdFromPath(srcStationPath);
+        const auto dstStationPath = settings.value(MarketAnalysisSettings::dstImportStationKey).toList();
+        mDstStation = EveDataProvider::getStationIdFromPath(dstStationPath);
 
-        auto stationBtn = new QPushButton{getStationName(mSrcStation), this};
-        toolBarLayout->addWidget(stationBtn);
-        connect(stationBtn, &QPushButton::clicked, this, [=] {
-            changeStation(mSrcStation, *stationBtn, MarketAnalysisSettings::srcImportStationKey);
+        const auto srcStationBtn = new StationSelectButton{mDataProvider, srcStationPath, this};
+        toolBarLayout->addWidget(srcStationBtn);
+        connect(srcStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+            changeStation(mSrcStation, path, MarketAnalysisSettings::srcImportStationKey);
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Destination:"), this});
 
-        stationBtn = new QPushButton{getStationName(mDstStation), this};
-        toolBarLayout->addWidget(stationBtn);
-        connect(stationBtn, &QPushButton::clicked, this, [=] {
-            changeStation(mDstStation, *stationBtn, MarketAnalysisSettings::dstImportStationKey);
+        const auto dstStationBtn = new StationSelectButton{mDataProvider, dstStationPath, this};
+        toolBarLayout->addWidget(dstStationBtn);
+        connect(dstStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+            changeStation(mDstStation, path, MarketAnalysisSettings::dstImportStationKey);
+        });
+
+        const auto locationFavBtn = new FavoriteLocationsButton{regionStationPresetRepository, dataProvider, this};
+        toolBarLayout->addWidget(locationFavBtn);
+        connect(locationFavBtn, &FavoriteLocationsButton::locationsChosen,
+                this, [=](const auto &, auto srcStationId, const auto &, auto dstStationId) {
+            srcStationBtn->setSelectedStationId(srcStationId);
+            dstStationBtn->setSelectedStationId(dstStationId);
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Analysis period:"), this});
@@ -244,31 +248,17 @@ namespace Evernus
         mDataModel.reset();
     }
 
-    void ImportingAnalysisWidget::changeStation(quint64 &destination, QPushButton &btn, const QString &settingName)
+    void ImportingAnalysisWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)
     {
-        StationSelectDialog dlg{mDataProvider, false, this};
-
         QSettings settings;
-        dlg.selectPath(settings.value(settingName).toList());
+        settings.setValue(settingName, path);
 
-        if (dlg.exec() != QDialog::Accepted)
-            return;
+        destination = EveDataProvider::getStationIdFromPath(path);
 
-        settings.setValue(settingName, dlg.getSelectedPath());
-
-        destination = dlg.getStationId();
-        if (destination == 0)
+        if (destination != 0)
         {
-            btn.setText(tr("- no station -"));
-        }
-        else
-        {
-            btn.setText(mDataProvider.getLocationName(destination));
-
-            if (QMessageBox::question(this, tr("Station change"), tr("Changing station requires data recalculation. Do you wish to do it now?")) == QMessageBox::No)
-                return;
-
-            recalculateData();
+            if (QMessageBox::question(this, tr("Station change"), tr("Changing station requires data recalculation. Do you wish to do it now?")) == QMessageBox::Yes)
+                recalculateData();
         }
     }
 }

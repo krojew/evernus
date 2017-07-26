@@ -34,6 +34,7 @@ class QAction;
 
 namespace Evernus
 {
+    class RegionStationPresetRepository;
     class AdjustableTableView;
     class MarketDataProvider;
     class EveDataProvider;
@@ -46,6 +47,7 @@ namespace Evernus
     public:
         ImportingAnalysisWidget(const EveDataProvider &dataProvider,
                                 const MarketDataProvider &marketDataProvider,
+                                const RegionStationPresetRepository &regionStationPresetRepository,
                                 QWidget *parent = nullptr);
         ImportingAnalysisWidget(const ImportingAnalysisWidget &) = default;
         ImportingAnalysisWidget(ImportingAnalysisWidget &&) = default;
@@ -90,6 +92,6 @@ namespace Evernus
 
         std::shared_ptr<Character> mCharacter;
 
-        void changeStation(quint64 &destination, QPushButton &btn, const QString &settingName);
+        void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
     };
 }

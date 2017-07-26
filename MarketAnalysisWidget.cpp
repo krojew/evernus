@@ -218,7 +218,7 @@ namespace Evernus
         mInterRegionAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
         mInterRegionAnalysisWidget->discardBogusOrders(discardBogusOrders);
 
-        mImportingAnalysisWidget = new ImportingAnalysisWidget{mDataProvider, *this, tabs};
+        mImportingAnalysisWidget = new ImportingAnalysisWidget{mDataProvider, *this, regionStationPresetRepository, tabs};
         connect(mImportingAnalysisWidget, &ImportingAnalysisWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
         mImportingAnalysisWidget->setPriceTypes(src, dst);
         mImportingAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
