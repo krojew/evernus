@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <unordered_set>
+
 #include <QPushButton>
 
 namespace Evernus
@@ -27,6 +29,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        using RegionList = std::unordered_set<uint>;
+
         FavoriteLocationsButton(const RegionStationPresetRepository &regionStationPresetRepository,
                                 const EveDataProvider &dataProvider,
                                 QWidget *parent = nullptr);
@@ -36,6 +40,10 @@ namespace Evernus
 
         FavoriteLocationsButton &operator =(const FavoriteLocationsButton &) = default;
         FavoriteLocationsButton &operator =(FavoriteLocationsButton &&) = default;
+
+    signals:
+        void locationsChosen(const RegionList &srcRegions, quint64 srcStationdId,
+                             const RegionList &dstRegions, quint64 dstStationdId);
 
     private slots:
         void selectFavoriteLocations();

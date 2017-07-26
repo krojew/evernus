@@ -80,9 +80,9 @@ namespace Evernus
         mSourceRegionCombo = new RegionComboBox{mDataProvider, MarketAnalysisSettings::srcRegionKey, this};
         toolBarLayout->addWidget(mSourceRegionCombo);
 
-        auto stationBtn = new StationSelectButton{mDataProvider, srcStationPath, this};
-        toolBarLayout->addWidget(stationBtn);
-        connect(stationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+        const auto srcStationBtn = new StationSelectButton{mDataProvider, srcStationPath, this};
+        toolBarLayout->addWidget(srcStationBtn);
+        connect(srcStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
             changeStation(mSrcStation, path, MarketAnalysisSettings::srcStationKey);
         });
 
@@ -90,14 +90,22 @@ namespace Evernus
         mDestRegionCombo = new RegionComboBox{mDataProvider, MarketAnalysisSettings::dstRegionKey, this};
         toolBarLayout->addWidget(mDestRegionCombo);
 
-        stationBtn = new StationSelectButton{mDataProvider, dstStationPath, this};
-        toolBarLayout->addWidget(stationBtn);
-        connect(stationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+        const auto dstStationBtn = new StationSelectButton{mDataProvider, dstStationPath, this};
+        toolBarLayout->addWidget(dstStationBtn);
+        connect(dstStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
             changeStation(mDstStation, path, MarketAnalysisSettings::dstStationKey);
         });
 
         const auto locationFavBtn = new FavoriteLocationsButton{regionStationPresetRepository, mDataProvider, this};
         toolBarLayout->addWidget(locationFavBtn);
+        connect(locationFavBtn, &FavoriteLocationsButton::locationsChosen,
+                this, [=](const auto &srcRegions, auto srcStationId, const auto &dstRegions, auto dstStationId) {
+            mSourceRegionCombo->setSelectedRegionList(srcRegions);
+            mDestRegionCombo->setSelectedRegionList(dstRegions);
+
+            srcStationBtn->setSelectedStationId(srcStationId);
+            dstStationBtn->setSelectedStationId(dstStationId);
+        });
 
         auto volumeValidator = new QIntValidator{this};
         volumeValidator->setBottom(0);

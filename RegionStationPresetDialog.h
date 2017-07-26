@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <unordered_set>
+
 #include <QDialog>
 
 class QComboBox;
@@ -31,12 +33,20 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        using RegionList = std::unordered_set<uint>;
+
         RegionStationPresetDialog(const RegionStationPresetRepository &regionStationPresetRepository,
                                   const EveDataProvider &dataProvider,
                                   QWidget *parent = nullptr);
         RegionStationPresetDialog(const RegionStationPresetDialog &) = default;
         RegionStationPresetDialog(RegionStationPresetDialog &&) = default;
         virtual ~RegionStationPresetDialog() = default;
+
+        RegionList getSrcRegions() const;
+        RegionList getDstRegions() const;
+
+        quint64 getSrcStationId() const;
+        quint64 getDstStationId() const;
 
         RegionStationPresetDialog &operator =(const RegionStationPresetDialog &) = default;
         RegionStationPresetDialog &operator =(RegionStationPresetDialog &&) = default;

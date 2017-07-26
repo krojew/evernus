@@ -63,6 +63,8 @@ namespace Evernus
         };
 
         setStationNameText(id);
+
+        emit stationChanged(mStationPath);
     }
 
     void StationSelectButton::selectStation()

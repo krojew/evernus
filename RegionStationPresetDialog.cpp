@@ -99,9 +99,30 @@ namespace Evernus
         mDstStationBtn = new StationSelectButton{dataProvider, this};
         dstGroupLayout->addWidget(mDstStationBtn);
 
-        const auto btnBox = new QDialogButtonBox{QDialogButtonBox::Close, this};
+        const auto btnBox = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(btnBox);
+        connect(btnBox, &QDialogButtonBox::accepted, this, &RegionStationPresetDialog::accept);
         connect(btnBox, &QDialogButtonBox::rejected, this, &RegionStationPresetDialog::reject);
+    }
+
+    RegionStationPresetDialog::RegionList RegionStationPresetDialog::getSrcRegions() const
+    {
+        return mSrcRegions->getSelectedRegionList();
+    }
+
+    RegionStationPresetDialog::RegionList RegionStationPresetDialog::getDstRegions() const
+    {
+        return mDstRegions->getSelectedRegionList();
+    }
+
+    quint64 RegionStationPresetDialog::getSrcStationId() const
+    {
+        return mSrcStationBtn->getSelectedStationId();
+    }
+
+    quint64 RegionStationPresetDialog::getDstStationId() const
+    {
+        return mDstStationBtn->getSelectedStationId();
     }
 
     void RegionStationPresetDialog::load()

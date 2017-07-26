@@ -35,6 +35,7 @@ namespace Evernus
     void FavoriteLocationsButton::selectFavoriteLocations()
     {
         RegionStationPresetDialog dlg{mRegionStationPresetRepository, mDataProvider, this};
-        dlg.exec();
+        if (dlg.exec() == QDialog::Accepted)
+            emit locationsChosen(dlg.getSrcRegions(), dlg.getSrcStationId(), dlg.getDstRegions(), dlg.getDstStationId());
     }
 }
