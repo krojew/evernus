@@ -21,36 +21,36 @@ namespace Evernus
 {
     QString EveTypeRepository::getTableName() const
     {
-        return "invTypes";
+        return QStringLiteral("invTypes");
     }
 
     QString EveTypeRepository::getIdColumn() const
     {
-        return "typeID";
+        return QStringLiteral("typeID");
     }
 
     EveTypeRepository::EntityPtr EveTypeRepository::populate(const QSqlRecord &record) const
     {
-        const auto marketGroupId = record.value("marketGroupID");
-        const auto description = record.value("description");
-        const auto raceId = record.value("raceID");
+        const auto marketGroupId = record.value(QStringLiteral("marketGroupID"));
+        const auto description = record.value(QStringLiteral("description"));
+        const auto raceId = record.value(QStringLiteral("raceID"));
 
-        auto type = std::make_shared<EveType>(record.value("typeID").value<EveType::IdType>());
-        type->setGroupId(record.value("groupID").toUInt());
-        type->setName(record.value("typeName").toString());
+        auto type = std::make_shared<EveType>(record.value(QStringLiteral("typeID")).value<EveType::IdType>());
+        type->setGroupId(record.value(QStringLiteral("groupID")).toUInt());
+        type->setName(record.value(QStringLiteral("typeName")).toString());
         type->setDescription((description.isNull()) ? (EveType::DescriptionType{}) : (description.toString()));
-        type->setMass(record.value("mass").toDouble());
-        type->setVolume(record.value("volume").toDouble());
-        type->setCapacity(record.value("capacity").toDouble());
-        type->setPortionSize(record.value("portionSize").toInt());
+        type->setMass(record.value(QStringLiteral("mass")).toDouble());
+        type->setVolume(record.value(QStringLiteral("volume")).toDouble());
+        type->setCapacity(record.value(QStringLiteral("capacity")).toDouble());
+        type->setPortionSize(record.value(QStringLiteral("portionSize")).toInt());
         type->setRaceId((raceId.isNull()) ? (EveType::RaceIdType{}) : (raceId.value<EveType::RaceIdType::value_type>()));
-        type->setBasePrice(record.value("basePrice").toDouble());
-        type->setPublished(record.value("published").toInt() != 0);
+        type->setBasePrice(record.value(QStringLiteral("basePrice")).toDouble());
+        type->setPublished(record.value(QStringLiteral("published")).toInt() != 0);
         type->setMarketGroupId((marketGroupId.isNull()) ? (EveType::MarketGroupIdType{}) : (marketGroupId.value<MarketGroup::IdType>()));
-        type->setGraphicId(record.value("graphicID").toUInt());
-        type->setIconId(record.value("iconID").toUInt());
-        type->setRadius(record.value("radius").toDouble());
-        type->setSoundId(record.value("soundID").toUInt());
+        type->setGraphicId(record.value(QStringLiteral("graphicID")).toUInt());
+        type->setIconId(record.value(QStringLiteral("iconID")).toUInt());
+        type->setRadius(record.value(QStringLiteral("radius")).toDouble());
+        type->setSoundId(record.value(QStringLiteral("soundID")).toUInt());
         type->setNew(false);
 
         return type;
@@ -58,7 +58,7 @@ namespace Evernus
 
     std::unordered_map<EveType::IdType, QString> EveTypeRepository::fetchAllTradeableNames() const
     {
-        auto query = exec(QString{"SELECT %1, typeName FROM %2 WHERE marketGroupID IS NOT NULL"}
+        auto query = exec(QStringLiteral("SELECT %1, typeName FROM %2 WHERE marketGroupID IS NOT NULL")
             .arg(getIdColumn()).arg(getTableName()));
 
         std::unordered_map<EveType::IdType, QString> result;
@@ -72,7 +72,7 @@ namespace Evernus
     {
         EntityList out;
 
-        auto result = exec(QString{"SELECT * FROM %1 WHERE marketGroupID IS NOT NULL"}.arg(getTableName()));
+        auto result = exec(QStringLiteral("SELECT * FROM %1 WHERE marketGroupID IS NOT NULL").arg(getTableName()));
         const auto size = result.size();
         if (size != -1)
             out.reserve(size);
@@ -86,22 +86,22 @@ namespace Evernus
     QStringList EveTypeRepository::getColumns() const
     {
         return QStringList{}
-            << "typeID"
-            << "groupID"
-            << "typeName"
-            << "description"
-            << "mass"
-            << "volume"
-            << "capacity"
-            << "portionSize"
-            << "raceID"
-            << "basePrice"
-            << "published"
-            << "marketGroupID"
-            << "graphicID"
-            << "iconID"
-            << "radius"
-            << "soundID";
+            << QStringLiteral("typeID")
+            << QStringLiteral("groupID")
+            << QStringLiteral("typeName")
+            << QStringLiteral("description")
+            << QStringLiteral("mass")
+            << QStringLiteral("volume")
+            << QStringLiteral("capacity")
+            << QStringLiteral("portionSize")
+            << QStringLiteral("raceID")
+            << QStringLiteral("basePrice")
+            << QStringLiteral("published")
+            << QStringLiteral("marketGroupID")
+            << QStringLiteral("graphicID")
+            << QStringLiteral("iconID")
+            << QStringLiteral("radius")
+            << QStringLiteral("soundID");
     }
 
     void EveTypeRepository::bindValues(const EveType &entity, QSqlQuery &query) const
