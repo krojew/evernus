@@ -104,6 +104,7 @@ namespace Evernus
 
         void migrateCoreTo130() const;
         void migrateCoreTo136() const;
+        void migrateCoreTo23() const;
 
         static std::pair<uint, uint> getSavedCoreVersion();
         static std::pair<uint, uint> getCurrentCoreVersion();

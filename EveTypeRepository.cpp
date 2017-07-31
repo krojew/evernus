@@ -58,7 +58,7 @@ namespace Evernus
 
     std::unordered_map<EveType::IdType, QString> EveTypeRepository::fetchAllTradeableNames() const
     {
-        auto query = exec(QStringLiteral("SELECT %1, typeName FROM %2 WHERE marketGroupID IS NOT NULL")
+        auto query = exec(QStringLiteral("SELECT %1, typeName FROM %2 WHERE published = 1 AND marketGroupID IS NOT NULL")
             .arg(getIdColumn()).arg(getTableName()));
 
         std::unordered_map<EveType::IdType, QString> result;
@@ -72,7 +72,7 @@ namespace Evernus
     {
         EntityList out;
 
-        auto result = exec(QStringLiteral("SELECT * FROM %1 WHERE marketGroupID IS NOT NULL").arg(getTableName()));
+        auto result = exec(QStringLiteral("SELECT * FROM %1 WHERE published = 1 AND marketGroupID IS NOT NULL").arg(getTableName()));
         const auto size = result.size();
         if (size != -1)
             out.reserve(size);

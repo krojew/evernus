@@ -349,8 +349,13 @@ namespace Evernus
 
             if (majorVersion < 3)
             {
-                if (minorVersion < 2)
-                    migrateDatabaseTo22(citadelRepo, corpItemRepo);
+                if (minorVersion < 3)
+                {
+                    if (minorVersion < 2)
+                        migrateDatabaseTo22(citadelRepo, corpItemRepo);
+
+                    migrateCoreTo23();
+                }
             }
 
             updateDatabaseVersion(provider.getKeyRepository().getDatabase());
@@ -556,6 +561,12 @@ namespace Evernus
     {
         QSettings settings;
         settings.remove(UISettings::tabShowStateParentKey);
+    }
+
+    void Updater::migrateCoreTo23() const
+    {
+        QSettings settings;
+        settings.remove(RegionTypeSelectDialog::settingsTypesKey);
     }
 
     std::pair<uint, uint> Updater::getSavedCoreVersion()
