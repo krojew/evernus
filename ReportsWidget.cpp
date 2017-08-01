@@ -275,16 +275,20 @@ namespace Evernus
         stations.reserve(size);
         stationNames.reserve(size);
 
+        auto stationIndex = 0;
+
         for (const auto &entry : aggregatedEntries)
         {
             incoming << entry.second.mIncoming;
             outgoing << entry.second.mOutgoing;
             volume << entry.second.mVolume;
-            incomingStations << entry.first - 0.25;
-            outgoingStations << entry.first;
-            volumeStations << entry.first + 0.25;
-            stations << entry.first;
+            incomingStations << stationIndex - 0.25;
+            outgoingStations << stationIndex;
+            volumeStations << stationIndex + 0.25;
+            stations << stationIndex;
             stationNames << mDataProvider.getLocationName(entry.first);
+
+            ++stationIndex;
         }
 
         mStationProfitGraph->setData(incomingStations, incoming);
