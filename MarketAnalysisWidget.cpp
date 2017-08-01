@@ -213,13 +213,18 @@ namespace Evernus
                                                                    *this,
                                                                    regionStationPresetRepository,
                                                                    tabs};
-        connect(mInterRegionAnalysisWidget, &InterRegionAnalysisWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
+        connect(mInterRegionAnalysisWidget, &InterRegionAnalysisWidget::showInEve,
+                this, &MarketAnalysisWidget::showInEve);
+        connect(this, &MarketAnalysisWidget::preferencesChanged,
+                mInterRegionAnalysisWidget, &InterRegionAnalysisWidget::preferencesChanged);
         mInterRegionAnalysisWidget->setPriceTypes(src, dst);
         mInterRegionAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
         mInterRegionAnalysisWidget->discardBogusOrders(discardBogusOrders);
 
         mImportingAnalysisWidget = new ImportingAnalysisWidget{mDataProvider, *this, regionStationPresetRepository, tabs};
         connect(mImportingAnalysisWidget, &ImportingAnalysisWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
+        connect(this, &MarketAnalysisWidget::preferencesChanged,
+                mImportingAnalysisWidget, &ImportingAnalysisWidget::preferencesChanged);
         mImportingAnalysisWidget->setPriceTypes(src, dst);
         mImportingAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
         mImportingAnalysisWidget->discardBogusOrders(discardBogusOrders);

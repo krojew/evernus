@@ -28,6 +28,7 @@
 #include <QAction>
 #include <QLabel>
 
+#include "InterRegionTypeDetailsWidget.h"
 #include "FavoriteLocationsButton.h"
 #include "MarketAnalysisSettings.h"
 #include "CalculatingDataWidget.h"
@@ -162,8 +163,16 @@ namespace Evernus
         mDataView->setModel(&mDataProxy);
         mDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
         mDataView->restoreHeaderState();
+        connect(mDataView, &QTableView::doubleClicked, this, &ImportingAnalysisWidget::showDetails);
+        connect(mDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &ImportingAnalysisWidget::selectType);
 
         mDataStack->setCurrentWidget(mDataView);
+
+        mShowDetailsAct = new QAction{tr("Show details"), this};
+        mShowDetailsAct->setEnabled(false);
+        mDataView->addAction(mShowDetailsAct);
+        connect(mShowDetailsAct, &QAction::triggered, this, &ImportingAnalysisWidget::showDetailsForCurrent);
 
         installOnView(mDataView);
     }
@@ -246,6 +255,48 @@ namespace Evernus
     void ImportingAnalysisWidget::clearData()
     {
         mDataModel.reset();
+    }
+
+    void ImportingAnalysisWidget::showDetails(const QModelIndex &item)
+    {
+        const auto mappedItem = mDataProxy.mapToSource(item);
+        const auto id = mDataModel.getTypeId(mappedItem);
+        const auto srcRegion = mDataProvider.getStationRegionId(mSrcStation);
+        const auto dstRegion = mDataProvider.getStationRegionId(mDstStation);
+
+        const auto srcHistory = mMarketDataProvider.getHistory(srcRegion);
+        if (srcHistory == nullptr)
+            return;
+
+        const auto dstHistory = mMarketDataProvider.getHistory(dstRegion);
+        if (dstHistory == nullptr)
+            return;
+
+        const auto srcIt = srcHistory->find(id);
+        const auto dstIt = dstHistory->find(id);
+        if (srcIt != std::end(*srcHistory) || dstIt != std::end(*dstHistory))
+        {
+            auto widget = new InterRegionTypeDetailsWidget{srcIt->second,
+                                                           dstIt->second,
+                                                           mDataProvider.getRegionName(srcRegion),
+                                                           mDataProvider.getRegionName(dstRegion),
+                                                           this,
+                                                           Qt::Window};
+            widget->setWindowTitle(mDataProvider.getTypeName(id));
+            widget->show();
+            connect(this, &ImportingAnalysisWidget::preferencesChanged,
+                    widget, &InterRegionTypeDetailsWidget::handleNewPreferences);
+        }
+    }
+
+    void ImportingAnalysisWidget::showDetailsForCurrent()
+    {
+        showDetails(mDataView->currentIndex());
+    }
+
+    void ImportingAnalysisWidget::selectType(const QItemSelection &selected)
+    {
+        mShowDetailsAct->setEnabled(!selected.isEmpty());
     }
 
     void ImportingAnalysisWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)

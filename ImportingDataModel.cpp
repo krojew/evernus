@@ -20,6 +20,7 @@
 #include <QSettings>
 #include <QLocale>
 #include <QColor>
+#include <QIcon>
 
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
@@ -130,12 +131,20 @@ namespace Evernus
                 return data.mProjectedProfit;
             }
             break;
+        case Qt::ToolTipRole:
+            if (column == nameColumn)
+                return tr("Double-click for detailed market information.");
+            break;
+        case Qt::DecorationRole:
+            if (column == nameColumn)
+                return QIcon{":/images/chart_curve.png"};
+            break;
         case Qt::ForegroundRole:
             if (column == marginColumn)
                 return TextUtils::getMarginColor(data.mMargin);
         }
 
-        return QVariant{};
+        return {};
     }
 
     QVariant ImportingDataModel::headerData(int section, Qt::Orientation orientation, int role) const

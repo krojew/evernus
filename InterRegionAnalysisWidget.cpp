@@ -280,7 +280,8 @@ namespace Evernus
                                                            Qt::Window};
             widget->setWindowTitle(mDataProvider.getTypeName(id));
             widget->show();
-            connect(this, &InterRegionAnalysisWidget::preferencesChanged, widget, &InterRegionTypeDetailsWidget::handleNewPreferences);
+            connect(this, &InterRegionAnalysisWidget::preferencesChanged,
+                    widget, &InterRegionTypeDetailsWidget::handleNewPreferences);
         }
     }
 

@@ -65,6 +65,15 @@ namespace Evernus
         ImportingAnalysisWidget &operator =(const ImportingAnalysisWidget &) = default;
         ImportingAnalysisWidget &operator =(ImportingAnalysisWidget &&) = default;
 
+    signals:
+        void preferencesChanged();
+
+    private slots:
+        void showDetails(const QModelIndex &item);
+        void showDetailsForCurrent();
+
+        void selectType(const QItemSelection &selected);
+
     private:
         static const auto waitingLabelIndex = 0;
 
@@ -80,6 +89,8 @@ namespace Evernus
         QCheckBox *mIgnoreEmptySellBtn = nullptr;
         QStackedWidget *mDataStack = nullptr;
         AdjustableTableView *mDataView = nullptr;
+
+        QAction *mShowDetailsAct = nullptr;
 
         quint64 mSrcStation = 0;
         quint64 mDstStation = 0;
