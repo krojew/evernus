@@ -50,14 +50,15 @@ namespace Evernus
             if (!db.open())
                 throw std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error opening DB!").toStdString()};
 
-            db.exec("PRAGMA foreign_keys = ON");
+            db.exec(QStringLiteral("PRAGMA foreign_keys = ON"));
         }
 
         void execQuery(QSqlQuery &query)
         {
+            qDebug() << "SQL:" << query.lastQuery();
             if (!query.exec())
             {
-                const auto error = QString{"%1: %2"}.arg(query.lastError().text()).arg(query.lastQuery());
+                const auto error = query.lastError().text();
 
                 qCritical() << error;
                 throw std::runtime_error{error.toStdString()};
@@ -71,7 +72,7 @@ namespace Evernus
 
         QString backupDatabase(const QString &dbPath)
         {
-            const auto dbBak = dbPath + ".bak";
+            const auto dbBak = dbPath + QStringLiteral(".bak");
 
             QFile::remove(dbBak);
             QFile::copy(dbPath, dbBak);

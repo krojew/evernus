@@ -32,12 +32,14 @@ namespace Evernus
     template<class T>
     QSqlQuery Repository<T>::exec(const QString &query) const
     {
+        qDebug() << "SQL:" << query;
+
         auto result = mDb.exec(query);
         const auto error = mDb.lastError();
 
         if (error.isValid())
         {
-            const auto errorText = QStringLiteral("%1: %2").arg(error.text()).arg(query);
+            const auto errorText = error.text();
 
             qCritical() << errorText;
             throw std::runtime_error{errorText.toStdString()};

@@ -3383,98 +3383,103 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ImportingAnalysisWidget</name>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="58"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="59"/>
         <source>Source:</source>
         <translation type="unfinished">Quelle:</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="73"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="74"/>
         <source>Destination:</source>
         <translation type="unfinished">Ziel:</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="89"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="90"/>
         <source>Analysis period:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="94"/>
-        <location filename="../ImportingAnalysisWidget.cpp" line="104"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="95"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="105"/>
         <source> days</source>
         <translation type="unfinished"> Tage</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="95"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="96"/>
         <source>The number of days going back from today, to use for analysis. If the destination has been in use for shorter time, be sure to adjust this accordingly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="99"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="100"/>
         <source>Aggregate over:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="105"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="106"/>
         <source>The number of days to aggregate movement over. This should reflect how fast you want your stock to sell.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="109"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="110"/>
         <source>Price per m³:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="115"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="116"/>
         <source>Addtional cost added to buy price. This is multiplied by item size and desired volume to move (which in turn is based on aggregation days).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="118"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="119"/>
         <source>Collateral:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="124"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="125"/>
         <source>Addtional cost added to buy price. This is the percetange of the base price.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="130"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="131"/>
         <source>buy</source>
         <translation type="unfinished">Kauf</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="134"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="135"/>
         <source>sell</source>
         <translation type="unfinished">Verkauf</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="138"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="139"/>
         <source>Hide empty source sell orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="140"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="141"/>
         <source>Hide item types which have 0 source orders when source price type is set to &quot;Sell&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="144"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="145"/>
         <source>Apply</source>
         <translation type="unfinished">Anwenden</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="148"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="149"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="260"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="172"/>
+        <source>Show details</source>
+        <translation type="unfinished">Details anzeigen</translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="311"/>
         <source>Station change</source>
         <translation type="unfinished">Stationswechsel</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="260"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="311"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished">Ein Stationswechesel erfordert eine Datenneuberechnung. Möchtest Du dies nun tun?</translation>
     </message>
@@ -3482,62 +3487,67 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ImportingDataModel</name>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="147"/>
+        <location filename="../ImportingDataModel.cpp" line="136"/>
+        <source>Double-click for detailed market information.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="156"/>
         <source>Name</source>
         <translation type="unfinished">Name</translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="149"/>
+        <location filename="../ImportingDataModel.cpp" line="158"/>
         <source>Avg. dst. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="151"/>
+        <location filename="../ImportingDataModel.cpp" line="160"/>
         <source>Dst. remaining volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="153"/>
+        <location filename="../ImportingDataModel.cpp" line="162"/>
         <source>Relative dst. remaining volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="155"/>
+        <location filename="../ImportingDataModel.cpp" line="164"/>
         <source>Source order count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="157"/>
+        <location filename="../ImportingDataModel.cpp" line="166"/>
         <source>Destination order count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="159"/>
+        <location filename="../ImportingDataModel.cpp" line="168"/>
         <source>5% volume destination price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="161"/>
+        <location filename="../ImportingDataModel.cpp" line="170"/>
         <source>5% volume source price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="163"/>
+        <location filename="../ImportingDataModel.cpp" line="172"/>
         <source>Import price (src. price + price per m³ + collateral)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="165"/>
+        <location filename="../ImportingDataModel.cpp" line="174"/>
         <source>Price difference</source>
         <translation type="unfinished">Preisdifferenz</translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="167"/>
+        <location filename="../ImportingDataModel.cpp" line="176"/>
         <source>Margin</source>
         <translation type="unfinished">Marge</translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="169"/>
+        <location filename="../ImportingDataModel.cpp" line="178"/>
         <source>Projected profit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3580,12 +3590,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished">Details anzeigen</translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="305"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="306"/>
         <source>Station change</source>
         <translation type="unfinished">Stationswechsel</translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="305"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="306"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished">Ein Stationswechesel erfordert eine Datenneuberechnung. Möchtest Du dies nun tun?</translation>
     </message>
@@ -4470,7 +4480,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::MarketAnalysisWidget</name>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="237"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="242"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
@@ -4519,12 +4529,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="305"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="310"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="308"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="313"/>
         <source>Making %1 ESI history requests...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4533,27 +4543,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="vanished">Verwenden Sie Skills für Differenzberechnung</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="238"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="243"/>
         <source>Inter-Region</source>
         <translation>Interregional</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="239"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="244"/>
         <source>Importing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="240"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="245"/>
         <source>Ore reprocessing arbitrage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="241"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="246"/>
         <source>Scrapmetal reprocessing arbitrage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="304"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="309"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation>Erstelle %1 Eve-Central Auftragsanfragen...</translation>
     </message>
@@ -4682,7 +4692,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="obsolete">&amp;Zeilen kopieren</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="302"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="307"/>
         <source>Importing data for analysis...</source>
         <translation>Importiere Daten zur Analyse...</translation>
     </message>
@@ -4703,7 +4713,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="vanished">Warte auf %1 Serverantworten für Aufträge...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="363"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="368"/>
         <source>Saving %1 imported orders...</source>
         <translation>Speichere %1 importierte Aufträge...</translation>
     </message>
