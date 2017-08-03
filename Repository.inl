@@ -81,7 +81,7 @@ namespace Evernus
 
     template<class T>
     template<class U>
-    void Repository<T>::batchStore(const U &entities, bool hasId) const
+    void Repository<T>::batchStore(const U &entities, bool hasId, bool wrapIntransaction) const
     {
         if (entities.empty())
             return;
@@ -114,7 +114,8 @@ namespace Evernus
 
         const auto batchQueryStr = baseQueryStr.arg(batchBindings.join(", "));
 
-        mDb.transaction();
+        if (wrapIntransaction)
+            mDb.transaction();
 
         try
         {
@@ -147,11 +148,14 @@ namespace Evernus
         }
         catch (...)
         {
-            mDb.rollback();
+            if (wrapIntransaction)
+                mDb.rollback();
+
             throw;
         }
 
-        mDb.commit();
+        if (wrapIntransaction)
+            mDb.commit();
     }
 
     template<class T>

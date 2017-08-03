@@ -121,8 +121,21 @@ namespace Evernus
         for (auto &citadel : citadels)
             citadel.setIgnored(stateMap[citadel.getId()]);
 
-        deleteAll();
-        batchStore(citadels, true);
+        auto db = getDatabase();
+        db.transaction();
+
+        try
+        {
+            deleteAll();
+            batchStore(citadels, true, false);
+        }
+        catch (...)
+        {
+            db.rollback();
+            throw;
+        }
+
+        db.commit();
     }
 
     CitadelRepository::EntityList CitadelRepository::fetchForSolarSystem(uint solarSystemId) const
@@ -146,26 +159,34 @@ namespace Evernus
         auto db = getDatabase();
         db.transaction();
 
-        exec(QStringLiteral("UPDATE %1 SET ignored = 0").arg(getTableName()));
-
-        auto start = std::begin(citadels);
-        const auto end = std::end(citadels);
-
-        while (start != end)
+        try
         {
-            const auto size = std::min(maxSqliteBoundVariables, static_cast<std::size_t>(std::distance(start, end)));
+            exec(QStringLiteral("UPDATE %1 SET ignored = 0").arg(getTableName()));
 
-            QStringList placeholders;
-            std::fill_n(std::back_inserter(placeholders), size, QStringLiteral("?"));
+            auto start = std::begin(citadels);
+            const auto end = std::end(citadels);
 
-            const auto fill = placeholders.join(QStringLiteral(", "));
+            while (start != end)
+            {
+                const auto size = std::min(maxSqliteBoundVariables, static_cast<std::size_t>(std::distance(start, end)));
 
-            auto query = prepare(QStringLiteral("UPDATE %1 SET ignored = 1 WHERE id IN (%2)").arg(getTableName()).arg(fill));
+                QStringList placeholders;
+                std::fill_n(std::back_inserter(placeholders), size, QStringLiteral("?"));
 
-            for (auto i = 0u; i < size; ++i)
-                query.addBindValue(*start++);
+                const auto fill = placeholders.join(QStringLiteral(", "));
 
-            DatabaseUtils::execQuery(query);
+                auto query = prepare(QStringLiteral("UPDATE %1 SET ignored = 1 WHERE id IN (%2)").arg(getTableName()).arg(fill));
+
+                for (auto i = 0u; i < size; ++i)
+                    query.addBindValue(*start++);
+
+                DatabaseUtils::execQuery(query);
+            }
+        }
+        catch (...)
+        {
+            db.rollback();
+            throw;
         }
 
         db.commit();

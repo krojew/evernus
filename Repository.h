@@ -43,7 +43,7 @@ namespace Evernus
         void store(T &entity) const;
 
         template<class U>
-        void batchStore(const U &entities, bool hasId) const;
+        void batchStore(const U &entities, bool hasId, bool wrapIntransaction = true) const;
 
         template<class Id>
         void remove(Id &&id) const;
