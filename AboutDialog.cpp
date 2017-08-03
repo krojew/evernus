@@ -37,8 +37,8 @@ namespace Evernus
         iconLabel->setPixmap(icon.pixmap(icon.actualSize(QSize{64, 64})));
 
         const auto link = QStringLiteral("http://evernus.com");
-        const auto oldForum = QStringLiteral("https://forums.eveonline.com/default.aspx?g=posts&t=362779");
-        const auto newForum = QStringLiteral("https://meta.eveonline.com/t/evernus-2-1-release-the-ultimate-market-tool/6031");
+        const auto oldForum = QStringLiteral("https://forums-archive.eveonline.com/default.aspx?g=posts&t=362779");
+        const auto newForum = QStringLiteral("https://forums.eveonline.com/t/evernus-2-2-release-the-ultimate-market-tool/6031");
 
         auto aboutLabel = new QLabel{tr(
             "<strong>%1</strong><br />%2<br /><br />"
