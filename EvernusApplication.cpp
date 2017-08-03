@@ -1463,6 +1463,7 @@ namespace Evernus
 
                 asyncExecute([=, citadels = std::move(citadels)] {
                     mCitadelRepository->replace(std::move(citadels));
+                    mExternalOrderRepository->fixMissingData(*mCitadelRepository);
                     emit citadelsChanged();
                 });
             }

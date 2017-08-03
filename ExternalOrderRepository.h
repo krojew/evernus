@@ -21,6 +21,7 @@
 namespace Evernus
 {
     class MarketOrder;
+    class Citadel;
 
     class ExternalOrderRepository
         : public Repository<ExternalOrder>
@@ -75,6 +76,8 @@ namespace Evernus
         void removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const;
         void removeForType(ExternalOrder::TypeIdType typeId) const;
         void removeAll() const;
+
+        void fixMissingData(const Repository<Citadel> &citadelRepo) const;
 
     private:
         virtual QStringList getColumns() const override;

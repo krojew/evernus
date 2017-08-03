@@ -16,6 +16,7 @@
 #include <QSqlQuery>
 
 #include "MarketOrder.h"
+#include "Citadel.h"
 
 #include "ExternalOrderRepository.h"
 
@@ -365,6 +366,17 @@ namespace Evernus
     void ExternalOrderRepository::removeAll() const
     {
         exec(QStringLiteral("DELETE FROM %1").arg(getTableName()));
+    }
+
+    void ExternalOrderRepository::fixMissingData(const Repository<Citadel> &citadelRepo) const
+    {
+        exec(QStringLiteral(R"(
+    UPDATE %1 SET solar_system_id = (
+        SELECT c.solar_system_id FROM %2 c WHERE c.%3 = location_id
+    ) WHERE solar_system_id = 0 AND EXISTS(
+        SELECT c.solar_system_id FROM %2 c WHERE c.%3 = location_id
+    )
+        )").arg(getTableName()).arg(citadelRepo.getTableName()).arg(citadelRepo.getIdColumn()));
     }
 
     QStringList ExternalOrderRepository::getColumns() const
