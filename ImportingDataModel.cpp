@@ -14,6 +14,8 @@
  */
 #include <type_traits>
 #include <future>
+#include <cmath>
+#include <mutex>
 #include <set>
 
 #include <QCoreApplication>
@@ -21,6 +23,8 @@
 #include <QLocale>
 #include <QColor>
 #include <QIcon>
+
+#include <QtConcurrent>
 
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
@@ -76,6 +80,8 @@ namespace Evernus
                     return locale.toString(data.mAvgVolume, 'f', 2);
                 case medianDstVolume:
                     return locale.toString(data.mMedianVolume);
+                case madDstVolume:
+                    return locale.toString(data.mVolumeMAD, 'f', 2);
                 case dstVolumeColumn:
                     return locale.toString(data.mDstVolume);
                 case relativeDstVolumeColumn:
@@ -110,6 +116,8 @@ namespace Evernus
                 return data.mAvgVolume;
             case medianDstVolume:
                 return data.mMedianVolume;
+            case madDstVolume:
+                return data.mVolumeMAD;
             case dstVolumeColumn:
                 return data.mDstVolume;
             case relativeDstVolumeColumn:
@@ -162,6 +170,8 @@ namespace Evernus
                 return tr("Avg. dst. volume");
             case medianDstVolume:
                 return tr("Median dst. volume");
+            case madDstVolume:
+                return tr("Dst. volume mean absolute deviation");
             case dstVolumeColumn:
                 return tr("Dst. remaining volume");
             case relativeDstVolumeColumn:
@@ -423,12 +433,16 @@ namespace Evernus
 
         hideEmptySell = hideEmptySell && srcPriceType == PriceType::Sell;
 
-        for (const auto &type : typeMap)
-        {
-            if (hideEmptySell && type.second.mSrcOrderCount == 0)
-                continue;
+        std::mutex dataMutex;
 
-            mData.emplace_back();
+        QtConcurrent::blockingMap(typeMap, [&](const auto &type) {
+            if (hideEmptySell && type.second.mSrcOrderCount == 0)
+                return;
+
+            {
+                std::lock_guard<std::mutex> lock{dataMutex};
+                mData.emplace_back();
+            }
 
             auto &data = mData.back();
             data.mId = type.first;
@@ -437,6 +451,22 @@ namespace Evernus
             data.mDstVolume = dstSellVolumes[data.mId];
             data.mSrcOrderCount = type.second.mSrcOrderCount;
             data.mDstOrderCount = type.second.mDstOrderCount;
+
+            auto absDeviationSum = 0.;
+
+            const auto dstTypeHistory = dstHistory->second.find(data.mId);
+            if (Q_LIKELY(dstTypeHistory != std::end(dstHistory->second)))
+            {
+                for (const auto &timePoint : boost::adaptors::reverse(dstTypeHistory->second))
+                {
+                    if (Q_UNLIKELY(timePoint.first < historyLimit))
+                        break;
+
+                    absDeviationSum += std::abs(timePoint.second.mVolume - data.mAvgVolume);
+                }
+            }
+
+            data.mVolumeMAD = absDeviationSum / analysisDays;
 
             if (useSkillsForDifference)
             {
@@ -459,7 +489,7 @@ namespace Evernus
             data.mPriceDifference = data.mDstPrice - data.mImportPrice;
             data.mMargin = (qFuzzyIsNull(data.mDstPrice)) ? (0.) : (100. * data.mPriceDifference / data.mDstPrice);
             data.mProjectedProfit = data.mAvgVolume * data.mPriceDifference;
-        }
+        });
     }
 
     void ImportingDataModel::reset()
