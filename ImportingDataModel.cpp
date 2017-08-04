@@ -74,6 +74,8 @@ namespace Evernus
                     return mDataProvider.getTypeName(data.mId);
                 case avgVolumeColumn:
                     return locale.toString(data.mAvgVolume, 'f', 2);
+                case medianDstVolume:
+                    return locale.toString(data.mMedianVolume);
                 case dstVolumeColumn:
                     return locale.toString(data.mDstVolume);
                 case relativeDstVolumeColumn:
@@ -106,6 +108,8 @@ namespace Evernus
                 return mDataProvider.getTypeName(data.mId);
             case avgVolumeColumn:
                 return data.mAvgVolume;
+            case medianDstVolume:
+                return data.mMedianVolume;
             case dstVolumeColumn:
                 return data.mDstVolume;
             case relativeDstVolumeColumn:
@@ -156,6 +160,8 @@ namespace Evernus
                 return tr("Name");
             case avgVolumeColumn:
                 return tr("Avg. dst. volume");
+            case medianDstVolume:
+                return tr("Median dst. volume");
             case dstVolumeColumn:
                 return tr("Dst. remaining volume");
             case relativeDstVolumeColumn:
@@ -245,6 +251,7 @@ namespace Evernus
         struct TypeData
         {
             quint64 mTotalVolume = 0;
+            quint64 mMedianVolume = 0;
             double mDstPrice = 0.;
             double mSrcPrice = 0.;
             quint64 mSrcOrderCount = 0;
@@ -318,6 +325,9 @@ namespace Evernus
             accumulator_set<double, stats<tag::mean>> dstPriceAcc;
             accumulator_set<double, stats<tag::mean>> srcPriceAcc;
 
+            std::vector<quint64> historyVolumes(analysisDays);
+            auto curHistoryVolume = std::begin(historyVolumes);
+
             // go through dst history to calculate avg price and total trade volume
             const auto dstTypeHistory = dstHistory->second.find(typeId);
             if (Q_LIKELY(dstTypeHistory != std::end(dstHistory->second)))
@@ -329,8 +339,13 @@ namespace Evernus
 
                     data.mTotalVolume += timePoint.second.mVolume;
                     dstPriceAcc(timePoint.second.mAvgPrice);
+
+                    *(curHistoryVolume++) = timePoint.second.mVolume;
                 }
             }
+
+            std::nth_element(std::begin(historyVolumes), std::begin(historyVolumes) + historyVolumes.size() / 2, std::end(historyVolumes));
+            data.mMedianVolume = historyVolumes[historyVolumes.size() / 2];
 
             const auto srcTypeHistory = srcHistory->second.find(typeId);
             if (Q_LIKELY(srcTypeHistory != std::end(srcHistory->second)))
@@ -418,6 +433,7 @@ namespace Evernus
             auto &data = mData.back();
             data.mId = type.first;
             data.mAvgVolume = static_cast<double>(type.second.mTotalVolume) * aggrDays / analysisDays;
+            data.mMedianVolume = type.second.mMedianVolume;
             data.mDstVolume = dstSellVolumes[data.mId];
             data.mSrcOrderCount = type.second.mSrcOrderCount;
             data.mDstOrderCount = type.second.mDstOrderCount;

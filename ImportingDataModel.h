@@ -85,6 +85,7 @@ namespace Evernus
         {
             nameColumn,
             avgVolumeColumn,
+            medianDstVolume,
             dstVolumeColumn,
             relativeDstVolumeColumn,
             srcOrderCountColumn,
@@ -103,6 +104,7 @@ namespace Evernus
         {
             EveType::IdType mId = EveType::invalidId;
             double mAvgVolume = 0.;
+            quint64 mMedianVolume = 0;
             quint64 mDstVolume = 0;
             double mDstPrice = 0.;
             double mSrcPrice = 0.;
