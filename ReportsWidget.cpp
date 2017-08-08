@@ -132,6 +132,7 @@ namespace Evernus
         stationProfitGroupLayout->addWidget(mStationProfitPlot);
         mStationProfitPlot->axisRect(0)->setMinimumSize(500, 300);
         mStationProfitPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+        mStationProfitPlot->axisRect()->setRangeDragAxes(mStationProfitPlot->axisRect()->rangeDragAxis(Qt::Horizontal), nullptr);
         mStationProfitPlot->xAxis->setAutoTicks(false);
         mStationProfitPlot->xAxis->setAutoTickLabels(false);
         mStationProfitPlot->xAxis->setAutoSubTicks(false);

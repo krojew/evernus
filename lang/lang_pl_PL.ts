@@ -2529,8 +2529,8 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     <message>
         <location filename="../EvernusApplication.cpp" line="826"/>
         <location filename="../EvernusApplication.cpp" line="832"/>
-        <location filename="../EvernusApplication.cpp" line="2483"/>
-        <location filename="../EvernusApplication.cpp" line="2521"/>
+        <location filename="../EvernusApplication.cpp" line="2484"/>
+        <location filename="../EvernusApplication.cpp" line="2522"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -2591,7 +2591,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation>Pobieranie cytadel...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1658"/>
+        <location filename="../EvernusApplication.cpp" line="1659"/>
         <source>Synchronizing with LMeve...</source>
         <translation>Synchronizowanie z LMeve...</translation>
     </message>
@@ -2663,48 +2663,48 @@ Czy chcesz kontynuować?
 Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialność za jakąkolwiek karę CPP może na Ciebie nałożyć, jeśli zmienią swoją politykę.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1520"/>
+        <location filename="../EvernusApplication.cpp" line="1521"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1819"/>
+        <location filename="../EvernusApplication.cpp" line="1820"/>
         <source>SMTP Error</source>
         <translation>Błąd SMTP</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1819"/>
-        <location filename="../EvernusApplication.cpp" line="1827"/>
+        <location filename="../EvernusApplication.cpp" line="1820"/>
+        <location filename="../EvernusApplication.cpp" line="1828"/>
         <source>Error sending email: %1</source>
         <translation>Błąd wysyłania maila: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1827"/>
+        <location filename="../EvernusApplication.cpp" line="1828"/>
         <source>Mail Error</source>
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2170"/>
+        <location filename="../EvernusApplication.cpp" line="2171"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2184"/>
+        <location filename="../EvernusApplication.cpp" line="2185"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2195"/>
+        <location filename="../EvernusApplication.cpp" line="2196"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2484"/>
+        <location filename="../EvernusApplication.cpp" line="2485"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2488"/>
+        <location filename="../EvernusApplication.cpp" line="2489"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -2713,14 +2713,14 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2491"/>
+        <location filename="../EvernusApplication.cpp" line="2492"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2521"/>
+        <location filename="../EvernusApplication.cpp" line="2522"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
@@ -2758,42 +2758,42 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Pobieranie stacji graczy...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1572"/>
+        <location filename="../EvernusApplication.cpp" line="1573"/>
         <source>Select Mentat directory</source>
         <translation>Wybierz katalog Mentat</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1582"/>
+        <location filename="../EvernusApplication.cpp" line="1583"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1582"/>
+        <location filename="../EvernusApplication.cpp" line="1583"/>
         <source>Error opening %1</source>
         <translation>Błąd otwierania %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1586"/>
+        <location filename="../EvernusApplication.cpp" line="1587"/>
         <source>Importing order history...</source>
         <translation>Importowanie historii zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1632"/>
+        <location filename="../EvernusApplication.cpp" line="1633"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importowanie historii zleceń: %1 przetworzonych</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1637"/>
+        <location filename="../EvernusApplication.cpp" line="1638"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2853"/>
+        <location filename="../EvernusApplication.cpp" line="2854"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2159"/>
+        <location filename="../EvernusApplication.cpp" line="2160"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>
@@ -3806,67 +3806,77 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ImportingDataModel</name>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="136"/>
+        <location filename="../ImportingDataModel.cpp" line="148"/>
         <source>Double-click for detailed market information.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="156"/>
+        <location filename="../ImportingDataModel.cpp" line="168"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="158"/>
+        <location filename="../ImportingDataModel.cpp" line="170"/>
         <source>Avg. dst. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="160"/>
-        <source>Dst. remaining volume</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ImportingDataModel.cpp" line="162"/>
-        <source>Relative dst. remaining volume</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ImportingDataModel.cpp" line="164"/>
-        <source>Source order count</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ImportingDataModel.cpp" line="166"/>
-        <source>Destination order count</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ImportingDataModel.cpp" line="168"/>
-        <source>5% volume destination price</source>
-        <translation type="unfinished">Cena 5% celu</translation>
-    </message>
-    <message>
-        <location filename="../ImportingDataModel.cpp" line="170"/>
-        <source>5% volume source price</source>
-        <translation type="unfinished">Cena 5% źródła</translation>
-    </message>
-    <message>
         <location filename="../ImportingDataModel.cpp" line="172"/>
-        <source>Import price (src. price + price per m³ + collateral)</source>
+        <source>Median dst. volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="174"/>
+        <source>Dst. volume mean absolute deviation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="176"/>
+        <source>Dst. remaining volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="178"/>
+        <source>Relative dst. remaining volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="180"/>
+        <source>Source order count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="182"/>
+        <source>Destination order count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="184"/>
+        <source>5% volume destination price</source>
+        <translation type="unfinished">Cena 5% celu</translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="186"/>
+        <source>5% volume source price</source>
+        <translation type="unfinished">Cena 5% źródła</translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="188"/>
+        <source>Import price (src. price + price per m³ + collateral)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingDataModel.cpp" line="190"/>
         <source>Price difference</source>
         <translation type="unfinished">Różnica cen</translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="176"/>
+        <location filename="../ImportingDataModel.cpp" line="192"/>
         <source>Margin</source>
         <translation type="unfinished">Marża</translation>
     </message>
     <message>
-        <location filename="../ImportingDataModel.cpp" line="178"/>
+        <location filename="../ImportingDataModel.cpp" line="194"/>
         <source>Projected profit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4178,7 +4188,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::Key</name>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2775"/>
+        <location filename="../EvernusApplication.cpp" line="2776"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
@@ -7105,22 +7115,22 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="140"/>
+        <location filename="../ReportsWidget.cpp" line="141"/>
         <source>Size [m³]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="148"/>
+        <location filename="../ReportsWidget.cpp" line="149"/>
         <source>Total profit</source>
         <translation type="unfinished">Całkowity zysk</translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="155"/>
+        <location filename="../ReportsWidget.cpp" line="156"/>
         <source>Total costs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="162"/>
+        <location filename="../ReportsWidget.cpp" line="163"/>
         <source>Total size</source>
         <translation type="unfinished">Całkowita objętość</translation>
     </message>
