@@ -161,7 +161,6 @@ namespace Evernus
         connect(mForwardBtn, &QPushButton::clicked, this, &MarketBrowserWidget::stepForward);
 
         mBookmarksMenu = new QMenu{this};
-        fillBookmarksMenu();
 
         auto bookmarksBtn = new QPushButton{QIcon{":/images/star.png"}, tr("Bookmarks"), this};
         navigationLayout->addWidget(bookmarksBtn);
@@ -206,13 +205,11 @@ namespace Evernus
         navigatorGroupLayout->addWidget(mItemTabs);
 
         mItemTabs->addTab(createItemNameListTab(mNameModel, mKnownItemList), tr("Name"));
-        fillKnownItemNames();
 
         mKnownItemList->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(mKnownItemList, &QListView::customContextMenuRequested, this, &MarketBrowserWidget::showItemContextMenu);
 
         mItemTabs->addTab(createItemNameListTab(mOrderNameModel, mOrderItemList), tr("My orders"));
-        fillOrderItemNames();
 
         mOrderItemList->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(mOrderItemList, &QListView::customContextMenuRequested, this, &MarketBrowserWidget::showItemContextMenu);
@@ -220,7 +217,6 @@ namespace Evernus
         auto favoriteToolbarLayout = new QHBoxLayout{};
 
         mItemTabs->addTab(createItemNameListTab(mFavoriteNameModel, mFavoriteItemList, favoriteToolbarLayout), tr("Favorite"));
-        fillFavoriteItemNames();
 
         auto addFavoriteBtn = new QPushButton{QIcon{":/images/add.png"}, tr("Add..."), this};
         favoriteToolbarLayout->addWidget(addFavoriteBtn);
@@ -379,8 +375,6 @@ namespace Evernus
         });
         mBuyView->addTreeViewAction(setBuyDeviationValueAct);
 
-        fillRegions();
-
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderStatusUpdated,
                 this, &MarketBrowserWidget::updateOrderTask);
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderImportEnded,
@@ -395,6 +389,14 @@ namespace Evernus
 
     void MarketBrowserWidget::setCharacter(Character::IdType id)
     {
+        std::call_once(mKnownNamesFlag, [=] {
+            fillBookmarksMenu();
+            fillKnownItemNames();
+            fillFavoriteItemNames();
+            fillOrderItemNames();
+            fillRegions();
+        });
+
         mCharacterId = id;
 
         mExternalOrderSellModel.setCharacter(mCharacterId);

@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <mutex>
 #include <list>
 
 #include <QWidget>
@@ -204,6 +205,8 @@ namespace Evernus
         MarketOrderDataFetcher mDataFetcher;
 
         uint mOrderSubtask = TaskConstants::invalidTask;
+
+        std::once_flag mKnownNamesFlag;
 
         ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
 
