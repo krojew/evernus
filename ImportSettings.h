@@ -74,6 +74,7 @@ namespace Evernus
         const auto corpWalletDivisionDefault = 1000;
         const auto webImportTypeDefault = WebImporterType::ESI;
         const auto marketOrderImportTypeDefault = MarketOrderImportType::Auto;
+        const auto csvSeparatorDefault = QChar(',');
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
@@ -109,5 +110,7 @@ namespace Evernus
         const auto corpWalletDivisionKey = QStringLiteral("import/corp/walletDivision");
         const auto webImportTypeKey = QStringLiteral("import/source/webImporter");
         const auto marketOrderImportTypeKey = QStringLiteral("import/marketOrderType");
+        const auto itemPricesFileDirKey = QStringLiteral("import/costs/fileDir");
+        const auto csvSeparatorKey = QStringLiteral("import/csvSeparator");
     }
 }

@@ -111,4 +111,14 @@ namespace Evernus
     {
         return mData[row]->getId();
     }
+
+    EveType::IdType ItemCostModel::getTypeId(int row) const
+    {
+        return mData[row]->getTypeId();
+    }
+
+    double ItemCostModel::getCost(int row) const
+    {
+        return mData[row]->getCost();
+    }
 }

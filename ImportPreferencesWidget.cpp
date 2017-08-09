@@ -40,15 +40,19 @@ namespace Evernus
         auto generalBox = new QGroupBox{this};
         mainLayout->addWidget(generalBox);
 
-        auto generalBoxLayout = new QVBoxLayout{generalBox};
+        auto generalBoxLayout = new QFormLayout{generalBox};
 
         mIgnoreCachedBtn = new QCheckBox{tr("Ignore up-to-date data"), this};
-        generalBoxLayout->addWidget(mIgnoreCachedBtn);
+        generalBoxLayout->addRow(mIgnoreCachedBtn);
         mIgnoreCachedBtn->setChecked(settings.value(ImportSettings::ignoreCachedImportKey, ImportSettings::ignoreCachedImportDefault).toBool());
 
         mAllCharactersBtn = new QCheckBox{tr("Import data for all characters with one click"), this};
-        generalBoxLayout->addWidget(mAllCharactersBtn);
+        generalBoxLayout->addRow(mAllCharactersBtn);
         mAllCharactersBtn->setChecked(settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool());
+
+        mCsvSeparatorEdit = new QLineEdit{settings.value(ImportSettings::csvSeparatorKey, ImportSettings::csvSeparatorDefault).toString(), this};
+        generalBoxLayout->addRow(tr("CSV separator:"), mCsvSeparatorEdit);
+        mCsvSeparatorEdit->setMaxLength(1);
 
         auto timersBox = new QGroupBox{tr("Data age"), this};
         mainLayout->addWidget(timersBox);
@@ -139,9 +143,14 @@ namespace Evernus
             emailNotifications = false;
         }
 
+        auto csvSeparator = mCsvSeparatorEdit->text();
+        if (csvSeparator.length() != 1)
+            csvSeparator = ImportSettings::csvSeparatorDefault;
+
         QSettings settings;
         settings.setValue(ImportSettings::ignoreCachedImportKey, mIgnoreCachedBtn->isChecked());
         settings.setValue(ImportSettings::importAllCharactersKey, mAllCharactersBtn->isChecked());
+        settings.setValue(ImportSettings::csvSeparatorKey, csvSeparator);
         settings.setValue(ImportSettings::maxCharacterAgeKey, mCharacterTimerEdit->value());
         settings.setValue(ImportSettings::maxAssetListAgeKey, mAssetListTimerEdit->value());
         settings.setValue(ImportSettings::maxWalletAgeKey, mWalletTimerEdit->value());

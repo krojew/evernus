@@ -52,6 +52,7 @@ namespace Evernus
 
         QCheckBox *mAutoImportBtn = nullptr;
         QSpinBox *mAutoImportTimeEdit = nullptr;
+        QLineEdit *mCsvSeparatorEdit = nullptr;
         QCheckBox *mEmailNotificationBtn = nullptr;
         QLineEdit *mEmailNotificationAddressEdit = nullptr;
         QComboBox *mSmtpConnectionSecurityEdit = nullptr;

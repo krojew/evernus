@@ -59,6 +59,9 @@ namespace Evernus
 
         void applyWildcard();
 
+        void importCsv();
+        void exportCsv();
+
     private:
         const ItemCostProvider &mCostProvider;
         const EveDataProvider &mEveDataProvider;
@@ -81,5 +84,7 @@ namespace Evernus
         bool mBlockUpdate = false;
 
         void showCostEditDialog(ItemCost &cost);
+
+        static QChar getCsvSeparator();
     };
 }

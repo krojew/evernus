@@ -570,6 +570,8 @@ add_executable(
     qxtboundcfunction.h
     qxtboundfunction.h
     qxtboundfunctionbase.h
+    qxtcsvmodel.cpp
+    qxtcsvmodel.h
     qxtfifo.cpp
     qxtfifo.h
     qxtglobal.cpp

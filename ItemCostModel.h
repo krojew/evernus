@@ -44,6 +44,8 @@ namespace Evernus
         void reset();
 
         ItemCost::IdType getId(int row) const;
+        EveType::IdType getTypeId(int row) const;
+        double getCost(int row) const;
 
     private:
         const ItemCostProvider &mCostProvider;

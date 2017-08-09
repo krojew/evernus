@@ -14,18 +14,25 @@
  */
 #include <QDoubleValidator>
 #include <QDoubleSpinBox>
+#include <QMessageBox>
+#include <QFileDialog>
 #include <QHeaderView>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLineEdit>
 #include <QSettings>
+#include <QFileInfo>
 #include <QLabel>
+#include <QMenu>
 
 #include "ItemCostEditDialog.h"
 #include "ItemCostProvider.h"
 #include "StyledTreeView.h"
+#include "ImportSettings.h"
 #include "PriceSettings.h"
+
+#include "qxtcsvmodel.h"
 
 #include "ItemCostWidget.h"
 
@@ -44,27 +51,36 @@ namespace Evernus
         auto toolBarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolBarLayout);
 
-        mAddBtn = new QPushButton{QIcon{":/images/add.png"}, tr("Add..."), this};
+        mAddBtn = new QPushButton{QIcon{QStringLiteral(":/images/add.png")}, tr("Add..."), this};
         toolBarLayout->addWidget(mAddBtn);
         mAddBtn->setFlat(true);
         connect(mAddBtn, &QPushButton::clicked, this, &ItemCostWidget::addCost);
 
-        mEditBtn = new QPushButton{QIcon{":/images/pencil.png"}, tr("Edit..."), this};
+        mEditBtn = new QPushButton{QIcon{QStringLiteral(":/images/pencil.png")}, tr("Edit..."), this};
         toolBarLayout->addWidget(mEditBtn);
         mEditBtn->setFlat(true);
         mEditBtn->setDisabled(true);
         connect(mEditBtn, &QPushButton::clicked, this, &ItemCostWidget::editCost);
 
-        mRemoveBtn = new QPushButton{QIcon{":/images/delete.png"}, tr("Remove"), this};
+        mRemoveBtn = new QPushButton{QIcon{QStringLiteral(":/images/delete.png")}, tr("Remove"), this};
         toolBarLayout->addWidget(mRemoveBtn);
         mRemoveBtn->setFlat(true);
         mRemoveBtn->setDisabled(true);
         connect(mRemoveBtn, &QPushButton::clicked, this, &ItemCostWidget::deleteCost);
 
-        auto deleteAllBtn = new QPushButton{QIcon{":/images/cross.png"}, tr("Remove all"), this};
+        auto deleteAllBtn = new QPushButton{QIcon{QStringLiteral(":/images/cross.png")}, tr("Remove all"), this};
         toolBarLayout->addWidget(deleteAllBtn);
         deleteAllBtn->setFlat(true);
         connect(deleteAllBtn, &QPushButton::clicked, this, &ItemCostWidget::deleteAllCost);
+
+        const auto importMenu = new QMenu{this};
+        importMenu->addAction(tr("Import CSV..."), this, &ItemCostWidget::importCsv);
+        importMenu->addAction(tr("Export CSV..."), this, &ItemCostWidget::exportCsv);
+
+        const auto importBtn = new QPushButton{QIcon{QStringLiteral(":/images/page_excel.png")}, tr("Import/export  "), this};
+        toolBarLayout->addWidget(importBtn);
+        importBtn->setFlat(true);
+        importBtn->setMenu(importMenu);
 
         auto costValidator = new QDoubleValidator{this};
         QSettings settings;
@@ -208,10 +224,93 @@ namespace Evernus
         mProxy.setFilterWildcard(mFilterEdit->text());
     }
 
+    void ItemCostWidget::importCsv()
+    {
+        QSettings settings;
+
+        const auto fileName = QFileDialog::getOpenFileName(
+            this,
+            tr("Open file"),
+            settings.value(ImportSettings::itemPricesFileDirKey).toString(),
+            tr("CSV (*.csv)")
+        );
+
+        if (fileName.isEmpty())
+            return;
+
+        QFileInfo info{fileName};
+        settings.setValue(ImportSettings::itemPricesFileDirKey, info.dir().path());
+
+        QxtCsvModel model{fileName, nullptr, false, getCsvSeparator()};
+        if (model.columnCount() < 2)
+        {
+            QMessageBox::information(this, tr("CSV import"), tr("CSV file must have at least two columns: item id and value."));
+            return;
+        }
+
+        const auto rows = model.rowCount();
+        for (auto row = 0; row < rows; ++row)
+        {
+            const auto typeId = model.data(model.index(row, 0)).value<EveType::IdType>();
+            if (typeId == 0)
+                continue;
+
+            ItemCost cost;
+            cost.setCharacterId(mCharacterId);
+            cost.setTypeId(typeId);
+            cost.setCost(model.data(model.index(row, 1)).toDouble());
+
+            mCostProvider.storeItemCost(cost);
+        }
+    }
+
+    void ItemCostWidget::exportCsv()
+    {
+        QSettings settings;
+
+        const auto fileName = QFileDialog::getSaveFileName(
+            this,
+            tr("Open file"),
+            settings.value(ImportSettings::itemPricesFileDirKey).toString(),
+            tr("CSV (*.csv)")
+        );
+
+        if (fileName.isEmpty())
+            return;
+
+        QFileInfo info{fileName};
+        settings.setValue(ImportSettings::itemPricesFileDirKey, info.dir().path());
+
+        const auto rows = mModel.rowCount();
+
+        QxtCsvModel model;
+        model.insertRows(0, rows);
+        model.insertColumns(0, 2);
+
+        for (auto row = 0; row < rows; ++row)
+        {
+            model.setData(model.index(row, 0), mModel.getTypeId(row));
+            model.setData(model.index(row, 1), mModel.getCost(row));
+        }
+
+        model.toCSV(fileName, false, getCsvSeparator());
+    }
+
     void ItemCostWidget::showCostEditDialog(ItemCost &cost)
     {
         ItemCostEditDialog dlg{cost, mEveDataProvider, this};
         if (dlg.exec() == QDialog::Accepted)
             mCostProvider.storeItemCost(cost);
+    }
+
+    QChar ItemCostWidget::getCsvSeparator()
+    {
+        QSettings settings;
+
+        auto separator = settings.value(ImportSettings::csvSeparatorKey, ImportSettings::csvSeparatorDefault).toString();
+        if (separator.length() != 1)
+            separator = ImportSettings::csvSeparatorDefault;
+
+        return separator[0];
     }
 }
