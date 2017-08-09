@@ -22,6 +22,7 @@
 #include <QSettings>
 #include <QDateTime>
 #include <QVector>
+#include <QLabel>
 #include <QDate>
 #include <QPen>
 
@@ -92,6 +93,8 @@ namespace Evernus
 
             recalculateData();
         });
+
+        toolBarLayout->addWidget(new QLabel{tr("The accuracy of reports depends on the frequency of imports - import data frequently to get the most of it.")});
 
         mTypePerformanceProxy.setSortRole(Qt::UserRole);
         mTypePerformanceProxy.setSourceModel(&mTypePerformanceModel);
