@@ -138,9 +138,16 @@ namespace Evernus
             {
                 Q_ASSERT(order);
 
+                const auto firstSeen = order->getFirstSeen();
+                const auto lastSeen = order->getLastSeen();
+
+                // probably imported as fulfilled, ignore since we cannot predict anything
+                if (firstSeen == lastSeen)
+                    continue;
+
                 auto &data = orderMap[order->getTypeId()];
                 data.mVolume += order->getVolumeEntered();
-                data.mTuronover.emplace_back(order->getFirstSeen().secsTo(order->getLastSeen()));
+                data.mTuronover.emplace_back(firstSeen.secsTo(lastSeen));
             }
         };
 
