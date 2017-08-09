@@ -27,8 +27,8 @@
 namespace Evernus
 {
     ItemCostEditDialog::ItemCostEditDialog(ItemCost &cost, const EveDataProvider &dataProvider, QWidget *parent)
-        : QDialog(parent)
-        , mCost(cost)
+        : QDialog{parent}
+        , mCost{cost}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -48,6 +48,7 @@ namespace Evernus
         mTypeCombo->setEditable(true);
         mTypeCombo->setInsertPolicy(QComboBox::NoInsert);
         mTypeCombo->model()->sort(0);
+        mTypeCombo->setFocus();
 
         auto costLayout = new QHBoxLayout{};
         mainLayout->addLayout(costLayout);

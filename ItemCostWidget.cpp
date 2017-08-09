@@ -34,10 +34,10 @@ namespace Evernus
     ItemCostWidget::ItemCostWidget(const ItemCostProvider &costProvider,
                                    const EveDataProvider &eveDataProvider,
                                    QWidget *parent)
-        : QWidget(parent)
-        , mCostProvider(costProvider)
-        , mEveDataProvider(eveDataProvider)
-        , mModel(mCostProvider, mEveDataProvider)
+        : QWidget{parent}
+        , mCostProvider{costProvider}
+        , mEveDataProvider{eveDataProvider}
+        , mModel{mCostProvider, mEveDataProvider}
     {
         auto mainLayout = new QVBoxLayout{this};
 
