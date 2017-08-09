@@ -14,31 +14,22 @@
  */
 #pragma once
 
-#include <QDialog>
-
-class QComboBox;
+#include <QDoubleSpinBox>
 
 namespace Evernus
 {
-    class ExcelDoubleSpinBox;
-    class EveDataProvider;
-    class ItemCost;
-
-    class ItemCostEditDialog
-        : public QDialog
+    class ExcelDoubleSpinBox
+        : public QDoubleSpinBox
     {
-        Q_OBJECT
-
     public:
-        ItemCostEditDialog(ItemCost &cost, const EveDataProvider &dataProvider, QWidget *parent = nullptr);
-        virtual ~ItemCostEditDialog() = default;
+        using QDoubleSpinBox::QDoubleSpinBox;
+        ExcelDoubleSpinBox(const ExcelDoubleSpinBox &) = default;
+        ExcelDoubleSpinBox(ExcelDoubleSpinBox &&) = default;
+        virtual ~ExcelDoubleSpinBox() = default;
 
-        virtual void accept() override;
+        virtual QValidator::State validate(QString &input, int &pos) const override;
 
-    private:
-        ItemCost &mCost;
-
-        QComboBox *mTypeCombo = nullptr;
-        ExcelDoubleSpinBox *mCostEdit = nullptr;
+        ExcelDoubleSpinBox &operator =(const ExcelDoubleSpinBox &) = default;
+        ExcelDoubleSpinBox &operator =(ExcelDoubleSpinBox &&) = default;
     };
 }

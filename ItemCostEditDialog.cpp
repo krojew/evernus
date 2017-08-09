@@ -13,12 +13,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QDialogButtonBox>
-#include <QDoubleSpinBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QComboBox>
 #include <QLabel>
 
+#include "ExcelDoubleSpinBox.h"
 #include "EveDataProvider.h"
 #include "ItemCost.h"
 
@@ -55,7 +55,7 @@ namespace Evernus
 
         costLayout->addWidget(new QLabel{tr("Cost:"), this});
 
-        mCostEdit = new QDoubleSpinBox{};
+        mCostEdit = new ExcelDoubleSpinBox{this};
         costLayout->addWidget(mCostEdit);
         mCostEdit->setMaximum(1000000000000.);
         mCostEdit->setSuffix(" ISK");

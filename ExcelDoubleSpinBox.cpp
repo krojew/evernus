@@ -12,33 +12,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
-
-#include <QDialog>
-
-class QComboBox;
+#include "ExcelDoubleSpinBox.h"
 
 namespace Evernus
 {
-    class ExcelDoubleSpinBox;
-    class EveDataProvider;
-    class ItemCost;
-
-    class ItemCostEditDialog
-        : public QDialog
+    QValidator::State ExcelDoubleSpinBox::validate(QString &input, int &pos) const
     {
-        Q_OBJECT
-
-    public:
-        ItemCostEditDialog(ItemCost &cost, const EveDataProvider &dataProvider, QWidget *parent = nullptr);
-        virtual ~ItemCostEditDialog() = default;
-
-        virtual void accept() override;
-
-    private:
-        ItemCost &mCost;
-
-        QComboBox *mTypeCombo = nullptr;
-        ExcelDoubleSpinBox *mCostEdit = nullptr;
-    };
+        input.remove('$');
+        return QDoubleSpinBox::validate(input, pos);
+    }
 }

@@ -3723,12 +3723,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ItemCostEditDialog</name>
     <message>
-        <location filename="../ItemCostEditDialog.cpp" line="55"/>
+        <location filename="../ItemCostEditDialog.cpp" line="56"/>
         <source>Cost:</source>
         <translation>Kosten:</translation>
     </message>
     <message>
-        <location filename="../ItemCostEditDialog.cpp" line="70"/>
+        <location filename="../ItemCostEditDialog.cpp" line="71"/>
         <source>Item Cost Edit</source>
         <translation>Kosten bearbeiten</translation>
     </message>
@@ -6631,47 +6631,52 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::ReportsWidget</name>
     <message>
-        <location filename="../ReportsWidget.cpp" line="76"/>
+        <location filename="../ReportsWidget.cpp" line="77"/>
         <source>Combine for all characters</source>
         <translation type="unfinished">Für alle Charaktere zusammenfassen</translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="86"/>
+        <location filename="../ReportsWidget.cpp" line="87"/>
         <source>Combine with corp. data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="99"/>
+        <location filename="../ReportsWidget.cpp" line="97"/>
+        <source>The accuracy of reports depends on the frequency of imports - import data frequently to get the most of it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ReportsWidget.cpp" line="102"/>
         <source>Best items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="114"/>
+        <location filename="../ReportsWidget.cpp" line="117"/>
         <source>Fastest orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="126"/>
+        <location filename="../ReportsWidget.cpp" line="129"/>
         <source>Station profit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="140"/>
+        <location filename="../ReportsWidget.cpp" line="143"/>
         <source>Size [m³]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="148"/>
+        <location filename="../ReportsWidget.cpp" line="151"/>
         <source>Total profit</source>
         <translation type="unfinished">Profit gesamt</translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="155"/>
+        <location filename="../ReportsWidget.cpp" line="158"/>
         <source>Total costs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportsWidget.cpp" line="162"/>
+        <location filename="../ReportsWidget.cpp" line="165"/>
         <source>Total size</source>
         <translation type="unfinished">Größe gesamt</translation>
     </message>

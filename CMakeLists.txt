@@ -304,6 +304,8 @@ add_executable(
     EveType.h
     EveTypeRepository.cpp
     EveTypeRepository.h
+    ExcelDoubleSpinBox.cpp
+    ExcelDoubleSpinBox.h
     ExternalOrder.cpp
     ExternalOrder.h
     ExternalOrderBuyModel.cpp
