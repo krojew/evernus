@@ -3498,57 +3498,62 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Importuj dane dla wszystkich postaci jednym kliknięciem</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="53"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="54"/>
+        <source>CSV separator:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportPreferencesWidget.cpp" line="57"/>
         <source>Data age</source>
         <translation>Wiek danych</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="59"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="63"/>
         <source>Max. character update age:</source>
         <translation>Maks. czas aktualizacji postaci:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="62"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="66"/>
         <source>Max. asset list update age:</source>
         <translation>Maks. czas aktualizacji aktywów:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="65"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="69"/>
         <source>Max. wallet update age:</source>
         <translation>Maks. czas akutalizacji portfela:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="68"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="72"/>
         <source>Max. market orders update age:</source>
         <translation>Maks. czas aktualizacji zleceń:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="71"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="75"/>
         <source>Max. contracts update age:</source>
         <translation>Maks. czas aktualizacji kontraktów:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="73"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="77"/>
         <source>Auto-import</source>
         <translation>Automatyczny import</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="78"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="82"/>
         <source>Enabled</source>
         <translation>Włączony</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="83"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="87"/>
         <source>Auto-import time:</source>
         <translation>Czas między importami:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="138"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="142"/>
         <source>Email notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="138"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="142"/>
         <source>Email notifications will be disabled since destination address or SMTP host is empty.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3557,63 +3562,63 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished"> min</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="89"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="93"/>
         <source>Enable email notifications</source>
         <translation>Włącz powiadomienia mailem</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="95"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="99"/>
         <source>Destination address:</source>
         <translation>Adres docelowy:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="101"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="105"/>
         <source>SMTP security:</source>
         <translation>Bezpieczeństwo SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="102"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="106"/>
         <source>None</source>
         <translation>Brak</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="103"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="107"/>
         <source>STARTTLS</source>
         <translation>STARTTLS</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="104"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="108"/>
         <source>SSL/TLS</source>
         <translation>SSL/TLS</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="107"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="111"/>
         <source>SMTP host:</source>
         <translation>Serwer SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="110"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="114"/>
         <source>SMTP port:</source>
         <translation>Port SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="116"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="120"/>
         <source>SMTP user:</source>
         <translation>Użytkownik SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="119"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="123"/>
         <source>SMTP password:</source>
         <translation>Hasło SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="122"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="126"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
         <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="86"/>
-        <location filename="../ImportPreferencesWidget.cpp" line="165"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="90"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="174"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -4068,39 +4073,76 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ItemCostWidget</name>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="47"/>
+        <location filename="../ItemCostWidget.cpp" line="54"/>
         <source>Add...</source>
         <translation>Dodaj...</translation>
     </message>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="52"/>
+        <location filename="../ItemCostWidget.cpp" line="59"/>
         <source>Edit...</source>
         <translation>Edytuj...</translation>
     </message>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="58"/>
+        <location filename="../ItemCostWidget.cpp" line="65"/>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="64"/>
+        <location filename="../ItemCostWidget.cpp" line="71"/>
         <source>Remove all</source>
         <translation>Usuń wszystkie</translation>
     </message>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="72"/>
+        <location filename="../ItemCostWidget.cpp" line="77"/>
+        <source>Import CSV...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ItemCostWidget.cpp" line="78"/>
+        <source>Export CSV...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ItemCostWidget.cpp" line="80"/>
+        <source>Import/export  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ItemCostWidget.cpp" line="88"/>
         <source>Constant added cost:</source>
         <translation>Stały dodany koszt:</translation>
     </message>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="83"/>
+        <location filename="../ItemCostWidget.cpp" line="99"/>
         <source>Relative added cost:</source>
         <translation>Relatywny dodany koszt:</translation>
     </message>
     <message>
-        <location filename="../ItemCostWidget.cpp" line="96"/>
+        <location filename="../ItemCostWidget.cpp" line="112"/>
         <source>type in wildcard and press Enter</source>
         <translation>wpisz wzór i naciśnij Enter</translation>
+    </message>
+    <message>
+        <location filename="../ItemCostWidget.cpp" line="233"/>
+        <location filename="../ItemCostWidget.cpp" line="273"/>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ItemCostWidget.cpp" line="235"/>
+        <location filename="../ItemCostWidget.cpp" line="275"/>
+        <source>CSV (*.csv)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ItemCostWidget.cpp" line="247"/>
+        <source>CSV import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ItemCostWidget.cpp" line="247"/>
+        <source>CSV file must have at least two columns: item id and value.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
