@@ -204,6 +204,73 @@ namespace Evernus
         selectNextInterface().fetchCitadelMarketOrders(citadelId, charId, getMarketOrderCallback(regionId, callback));
     }
 
+    void ESIManager::fetchAssets(Character::IdType charId, const Callback<AssetList> &callback) const
+    {
+        selectNextInterface().fetchAssets(charId, [=](auto &&data, const auto &error) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error);
+                return;
+            }
+
+            const auto assets = data.array();
+
+            std::vector<AssetList::ItemType> allItems;
+            allItems.reserve(assets.size());
+
+            std::unordered_map<Item::IdType, Item *> itemMap;
+            itemMap.reserve(assets.size());
+
+            for (const auto &itemObj : assets)
+            {
+                const auto item = itemObj.toObject();
+
+                auto newItem = std::make_unique<Item>(item.value(QStringLiteral("item_id")).toDouble());
+                newItem->setLocationId(item.value(QStringLiteral("location_id")).toDouble());
+                newItem->setTypeId(item.value(QStringLiteral("type_id")).toDouble());
+                newItem->setQuantity(item.value(QStringLiteral("quantity")).toDouble());
+
+                // ESI doesn't return raw quantity, so let's try to guess BPO/BPC status
+                const auto name = mDataProvider.getTypeName(newItem->getTypeId());
+                if (name.endsWith(QStringLiteral("Blueprint")))
+                {
+                    // BPC's are singletons (I hope...)
+                    if (item.value(QStringLiteral("is_singleton")).toBool())
+                        newItem->setRawQuantity(Item::magicBPCQuantity);
+                    else
+                        newItem->setRawQuantity(Item::magicBPOQuantity);
+                }
+                else
+                {
+                    newItem->setRawQuantity(newItem->getQuantity());
+                }
+
+                itemMap.emplace(newItem->getId(), newItem.get());
+                allItems.emplace_back(std::move(newItem));
+            }
+
+            AssetList list;
+            list.setCharacterId(charId);
+
+            // make tree
+            for (auto &item : allItems)
+            {
+                const auto parent = itemMap.find(*item->getLocationId());
+                if (parent != std::end(itemMap))
+                {
+                    item->setLocationId({});
+                    parent->second->addItem(std::move(item));
+                }
+                else
+                {
+                    list.addItem(std::move(item));
+                }
+            }
+
+            callback(std::move(list), {});
+        });
+    }
+
     void ESIManager::openMarketDetails(EveType::IdType typeId, Character::IdType charId) const
     {
         selectNextInterface().openMarketDetails(typeId, charId, [=](const auto &errorText) {

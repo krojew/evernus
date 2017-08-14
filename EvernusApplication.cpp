@@ -883,7 +883,7 @@ namespace Evernus
 
         if (shouldUseESIOverXML())
         {
-
+            refreshAssetsFromESI(id, assetSubtask);
         }
         else
         {
@@ -905,24 +905,7 @@ namespace Evernus
                 unmarkImport(id, TimerType::AssetList);
 
                 if (error.isEmpty())
-                {
-                    mItemRepository->fillCustomValues(data);
-                    mAssetListRepository->deleteForCharacter(id);
-                    mCharacterAssetProvider->setForCharacter(id, data);
-                    mAssetListRepository->store(data);
-
-                    QSettings settings;
-
-                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, Evernus::ImportSettings::autoUpdateAssetValueDefault).toBool() &&
-                        settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsKey).toBool())
-                    {
-                        computeAssetListSellValueSnapshot(data);
-                    }
-
-                    saveUpdateTimer(Evernus::TimerType::AssetList, mAssetsUtcUpdateTimes, id);
-
-                    emit assetsChanged();
-                }
+                    updateCharacterAssets(id, data);
 
                 emit taskEnded(assetSubtask, error);
             });
@@ -939,7 +922,14 @@ namespace Evernus
 
     void EvernusApplication::refreshAssetsFromESI(Character::IdType id, uint assetSubtask)
     {
+        Q_ASSERT(mESIManager);
 
+        mESIManager->fetchAssets(id, [=](auto &&assets, const auto &error) {
+            if (error.isEmpty())
+                updateCharacterAssets(id, assets);
+
+            emit taskEnded(assetSubtask, error);
+        });
     }
 
     void EvernusApplication::refreshContracts(Character::IdType id, uint parentTask)
@@ -2617,6 +2607,26 @@ namespace Evernus
         catch (const CharacterRepository::NotFoundException &)
         {
         }
+    }
+
+    void EvernusApplication::updateCharacterAssets(Character::IdType id, AssetList &list)
+    {
+        mItemRepository->fillCustomValues(list);
+        mAssetListRepository->deleteForCharacter(id);
+        mCharacterAssetProvider->setForCharacter(id, list);
+        mAssetListRepository->store(list);
+
+        QSettings settings;
+
+        if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, Evernus::ImportSettings::autoUpdateAssetValueDefault).toBool() &&
+            settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsKey).toBool())
+        {
+            computeAssetListSellValueSnapshot(list);
+        }
+
+        saveUpdateTimer(Evernus::TimerType::AssetList, mAssetsUtcUpdateTimes, id);
+
+        emit assetsChanged();
     }
 
     double EvernusApplication::getTotalAssetListValue(const AssetList &list) const

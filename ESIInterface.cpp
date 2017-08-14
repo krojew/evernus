@@ -82,7 +82,7 @@ namespace Evernus
             if (!error.isEmpty())
                 callback({}, error);
             else
-                asyncGet(QStringLiteral("/v1/characters/%1/assets/").arg(charId), {}, callback, getNumRetries());
+                asyncGet(charId, QStringLiteral("/v1/characters/%1/assets/").arg(charId), {}, callback, getNumRetries());
         });
     }
 

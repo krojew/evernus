@@ -158,8 +158,8 @@ namespace Evernus
 
     bool Item::isBPC(const EveDataProvider &dataProvider) const noexcept
     {
-        const auto magicBPCQuantity = -2;
-        return mData.mRawQuantity == magicBPCQuantity && dataProvider.getTypeName(mData.mTypeId).endsWith("Blueprint");
+        return mData.mRawQuantity == magicBPCQuantity &&
+               dataProvider.getTypeName(mData.mTypeId).endsWith(QStringLiteral("Blueprint"));
     }
 
     Item &Item::operator =(const Item &other)

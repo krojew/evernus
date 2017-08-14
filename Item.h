@@ -37,6 +37,9 @@ namespace Evernus
         using ParentIdType = boost::optional<ItemData::IdType>;
         using CustomValueType = boost::optional<double>;
 
+        static const int magicBPOQuantity = -1;
+        static const int magicBPCQuantity = -2;
+
         using Entity::Entity;
 
         Item() = default;

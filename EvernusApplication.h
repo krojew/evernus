@@ -388,6 +388,8 @@ namespace Evernus
         void computeAssetListSellValueSnapshot(const AssetList &list) const;
         void computeCorpAssetListSellValueSnapshot(const AssetList &list) const;
 
+        void updateCharacterAssets(Character::IdType id, AssetList &list);
+
         double getTotalAssetListValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;
 
