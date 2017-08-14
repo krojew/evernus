@@ -86,6 +86,37 @@ namespace Evernus
         });
     }
 
+    void ESIInterface::fetchCharacter(Character::IdType charId, const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching character" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, tr("Cannot fetch character with no character selected."));
+            return;
+        }
+
+        asyncGet(QStringLiteral("/v4/characters/%1/").arg(charId), {}, callback, getNumRetries());
+    }
+
+    void ESIInterface::fetchCharacterSkills(Character::IdType charId, const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching character skills for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, tr("Cannot fetch character skills with no character selected."));
+            return;
+        }
+
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error);
+            else
+                asyncGet(charId, QStringLiteral("/v3/characters/%1/skills/").arg(charId), {}, callback, getNumRetries());
+        });
+    }
+
     void ESIInterface::openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const
     {
         qDebug() << "Opening market details for" << typeId;

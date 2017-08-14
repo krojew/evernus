@@ -201,8 +201,6 @@ namespace Evernus
         void refreshCharacters();
         void refreshCharacter(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
-        void refreshAssetsFromXML(Character::IdType id, uint assetSubtask);
-        void refreshAssetsFromESI(Character::IdType id, uint assetSubtask);
         void refreshContracts(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask, bool force = false);
@@ -375,10 +373,13 @@ namespace Evernus
         void deleteOldWalletEntries();
         void deleteOldMarketOrders();
 
-        void importCharacter(Character::IdType id, uint task, const Key &key);
+        void importCharacterFromXML(Character::IdType id, uint task, const Key &key);
+        void importCharacterFromESI(Character::IdType id, uint task, const Key &key);
         void importExternalOrders(const std::string &importerName, Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
         void importMarketOrdersFromLogs(Character::IdType id, uint task, bool corp);
         void importMarketOrders(Character::IdType id, MarketOrders &orders, bool corp);
+        void importAssetsFromXML(Character::IdType id, uint assetSubtask);
+        void importAssetsFromESI(Character::IdType id, uint assetSubtask);
 
         KeyRepository::EntityPtr getCharacterKey(Character::IdType id) const;
         CorpKeyRepository::EntityPtr getCorpKey(Character::IdType id) const;
@@ -389,6 +390,7 @@ namespace Evernus
         void computeCorpAssetListSellValueSnapshot(const AssetList &list) const;
 
         void updateCharacterAssets(Character::IdType id, AssetList &list);
+        void updateCharacter(Character &character);
 
         double getTotalAssetListValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;

@@ -844,8 +844,16 @@ namespace Evernus
                             for (auto i = 0u; i < characters.size(); ++i)
                                 charTasks[i] = startTask(charListSubtask, getCharacterImportMessage(characters[i]));
 
-                            for (auto i = 0u; i < characters.size(); ++i)
-                                importCharacter(characters[i], charTasks[i], *key);
+                            if (shouldUseESIOverXML())
+                            {
+                                for (auto i = 0u; i < characters.size(); ++i)
+                                    importCharacterFromESI(characters[i], charTasks[i], *key);
+                            }
+                            else
+                            {
+                                for (auto i = 0u; i < characters.size(); ++i)
+                                    importCharacterFromXML(characters[i], charTasks[i], *key);
+                            }
                         }
                     }
                     else
@@ -864,7 +872,11 @@ namespace Evernus
         try
         {
             const auto charSubtask = startTask(parentTask, getCharacterImportMessage(id));
-            importCharacter(id, charSubtask, *getCharacterKey(id));
+
+            if (shouldUseESIOverXML())
+                importCharacterFromESI(id, charSubtask, *getCharacterKey(id));
+            else
+                importCharacterFromXML(id, charSubtask, *getCharacterKey(id));
         }
         catch (const KeyRepository::NotFoundException &)
         {
@@ -883,18 +895,18 @@ namespace Evernus
 
         if (shouldUseESIOverXML())
         {
-            refreshAssetsFromESI(id, assetSubtask);
+            importAssetsFromESI(id, assetSubtask);
         }
         else
         {
             if (!checkImportAndEndTask(id, TimerType::AssetList, assetSubtask))
                 return;
 
-            refreshAssetsFromXML(id, assetSubtask);
+            importAssetsFromXML(id, assetSubtask);
         }
     }
 
-    void EvernusApplication::refreshAssetsFromXML(Character::IdType id, uint assetSubtask)
+    void EvernusApplication::importAssetsFromXML(Character::IdType id, uint assetSubtask)
     {
         try
         {
@@ -920,7 +932,7 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::refreshAssetsFromESI(Character::IdType id, uint assetSubtask)
+    void EvernusApplication::importAssetsFromESI(Character::IdType id, uint assetSubtask)
     {
         Q_ASSERT(mESIManager);
 
@@ -2094,7 +2106,7 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::importCharacter(Character::IdType id, uint task, const Key &key)
+    void EvernusApplication::importCharacterFromXML(Character::IdType id, uint task, const Key &key)
     {
         if (!checkImportAndEndTask(id, TimerType::Character, task))
             return;
@@ -2105,31 +2117,7 @@ namespace Evernus
 
             if (error.isEmpty())
             {
-                QSettings settings;
-
-                try
-                {
-                    const auto prevData = mCharacterRepository->find(data.getId());
-
-                    if (!settings.value(Evernus::ImportSettings::importSkillsKey, Evernus::ImportSettings::importSkillsDefault).toBool())
-                    {
-                        data.setOrderAmountSkills(prevData->getOrderAmountSkills());
-                        data.setTradeRangeSkills(prevData->getTradeRangeSkills());
-                        data.setFeeSkills(prevData->getFeeSkills());
-                        data.setContractSkills(prevData->getContractSkills());
-                    }
-
-                    data.setCorpStanding(prevData->getCorpStanding());
-                    data.setFactionStanding(prevData->getFactionStanding());
-                    data.setEnabled(prevData->isEnabled());
-                }
-                catch (const Evernus::CharacterRepository::NotFoundException &)
-                {
-                }
-
-                mMainDb.exec("PRAGMA foreign_keys = OFF;");
-                mCharacterRepository->store(data);
-                mMainDb.exec("PRAGMA foreign_keys = ON;");
+                updateCharacter(data);
 
                 const auto cacheTimer = mCharacterUtcCacheTimes[id];
                 if (cacheTimer.isValid())
@@ -2141,13 +2129,19 @@ namespace Evernus
 
                     mCacheTimerRepository->store(timer);
                 }
+            }
 
-                if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
-                    createWalletSnapshot(data.getId(), data.getISK());
+            emit taskEnded(task, error);
+        });
+    }
 
-                saveUpdateTimer(Evernus::TimerType::Character, mCharacterUtcUpdateTimes, id);
-
-                QMetaObject::invokeMethod(this, "scheduleCharacterUpdate", Qt::QueuedConnection);
+    void EvernusApplication::importCharacterFromESI(Character::IdType id, uint task, const Key &key)
+    {
+        mESIManager->fetchCharacter(id, [=](auto &&data, const auto &error) {
+            if (error.isEmpty())
+            {
+                data.setKeyId(key.getId());
+                updateCharacter(data);
             }
 
             emit taskEnded(task, error);
@@ -2627,6 +2621,42 @@ namespace Evernus
         saveUpdateTimer(Evernus::TimerType::AssetList, mAssetsUtcUpdateTimes, id);
 
         emit assetsChanged();
+    }
+
+    void EvernusApplication::updateCharacter(Character &character)
+    {
+        QSettings settings;
+
+        try
+        {
+            const auto prevData = mCharacterRepository->find(character.getId());
+
+            if (!settings.value(Evernus::ImportSettings::importSkillsKey, Evernus::ImportSettings::importSkillsDefault).toBool())
+            {
+                character.setOrderAmountSkills(prevData->getOrderAmountSkills());
+                character.setTradeRangeSkills(prevData->getTradeRangeSkills());
+                character.setFeeSkills(prevData->getFeeSkills());
+                character.setContractSkills(prevData->getContractSkills());
+            }
+
+            character.setCorpStanding(prevData->getCorpStanding());
+            character.setFactionStanding(prevData->getFactionStanding());
+            character.setEnabled(prevData->isEnabled());
+        }
+        catch (const Evernus::CharacterRepository::NotFoundException &)
+        {
+        }
+
+        mMainDb.exec("PRAGMA foreign_keys = OFF;");
+        mCharacterRepository->store(character);
+        mMainDb.exec("PRAGMA foreign_keys = ON;");
+
+        if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
+            createWalletSnapshot(character.getId(), character.getISK());
+
+        saveUpdateTimer(Evernus::TimerType::Character, mCharacterUtcUpdateTimes, character.getId());
+
+        QMetaObject::invokeMethod(this, "scheduleCharacterUpdate", Qt::QueuedConnection);
     }
 
     double EvernusApplication::getTotalAssetListValue(const AssetList &list) const

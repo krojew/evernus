@@ -70,13 +70,12 @@ namespace Evernus
                                 EveType::IdType typeId,
                                 const Callback<HistoryMap> &callback) const;
         void fetchMarketOrders(uint regionId, const MarketOrderCallback &callback) const;
-
         void fetchCitadelMarketOrders(quint64 citadelId,
                                       uint regionId,
                                       Character::IdType charId,
                                       const MarketOrderCallback &callback) const;
-
         void fetchAssets(Character::IdType charId, const Callback<AssetList> &callback) const;
+        void fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
 

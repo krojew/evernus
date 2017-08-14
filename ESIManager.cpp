@@ -271,6 +271,26 @@ namespace Evernus
         });
     }
 
+    void ESIManager::fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const
+    {
+        selectNextInterface().fetchCharacter(charId, [=](auto &&publicData, const auto &error) {
+            selectNextInterface().fetchCharacterSkills(
+                charId, [=, publicData = std::move(publicData)](auto &&skillData, const auto &error) {
+                    if (Q_UNLIKELY(!error.isEmpty()))
+                    {
+                        callback({}, error);
+                        return;
+                    }
+
+                    const auto publicDataObj = publicData.object();
+
+                    Character character{charId};
+
+                    callback(std::move(character), {});
+            });
+        });
+    }
+
     void ESIManager::openMarketDetails(EveType::IdType typeId, Character::IdType charId) const
     {
         selectNextInterface().openMarketDetails(typeId, charId, [=](const auto &errorText) {
