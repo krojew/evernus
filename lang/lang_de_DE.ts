@@ -3357,7 +3357,18 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     </message>
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="83"/>
         <source>ESI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="80"/>
+        <source>Eve data import type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="82"/>
+        <source>XML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8484,12 +8495,12 @@ Wollen Sie den Updater starten möchten?</translation>
         <translation>Lässt sich nicht starten Updater. Manuell herunterladen?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="486"/>
+        <location filename="../Updater.cpp" line="490"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="513"/>
+        <location filename="../Updater.cpp" line="517"/>
         <source>This update requires re-importing citadels.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8501,35 +8512,35 @@ Wollen Sie den Updater starten möchten?</translation>
         <translation>Fehler beim Aktualisieren der Datenbankversion: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="365"/>
-        <location filename="../Updater.cpp" line="396"/>
-        <location filename="../Updater.cpp" line="403"/>
-        <location filename="../Updater.cpp" line="415"/>
-        <location filename="../Updater.cpp" line="486"/>
-        <location filename="../Updater.cpp" line="513"/>
+        <location filename="../Updater.cpp" line="369"/>
+        <location filename="../Updater.cpp" line="400"/>
+        <location filename="../Updater.cpp" line="407"/>
+        <location filename="../Updater.cpp" line="419"/>
+        <location filename="../Updater.cpp" line="490"/>
+        <location filename="../Updater.cpp" line="517"/>
         <source>Update</source>
         <translation>Update</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="365"/>
+        <location filename="../Updater.cpp" line="369"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation>Während des Updateprozess ist ein Fehler aufgetreten.
 Ein Backup der Datenbank wurde als %1 gespeichert. Bitte schaue in der Onlinehilfe nach was in dieser Situation zu tun ist.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="396"/>
+        <location filename="../Updater.cpp" line="400"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation>Diese Update erfordert den Reimport aller Daten. Bitte klicke nach dem Update auf &quot;Alle importieren&quot;.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="403"/>
+        <location filename="../Updater.cpp" line="407"/>
         <source>This update requires re-importing all item prices.</source>
         <translation>Diese Update erfordert den Reimport aller Artikelpreise.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="415"/>
+        <location filename="../Updater.cpp" line="419"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation>Diese Update erfordert den Reimport aller Corporation Transaktionen und Logbücher.</translation>
     </message>

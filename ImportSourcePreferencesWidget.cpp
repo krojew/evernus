@@ -73,6 +73,15 @@ namespace Evernus
         addSourceItem(*mMarketOrderImportTypeCombo, tr("Individual"), ImportSettings::MarketOrderImportType::Individual, marketOrderImportType);
         addSourceItem(*mMarketOrderImportTypeCombo, tr("Whole"), ImportSettings::MarketOrderImportType::Whole, marketOrderImportType);
 
+        const auto eveSource = static_cast<ImportSettings::EveImportSource>(
+            settings.value(ImportSettings::eveImportSourceKey, static_cast<int>(ImportSettings::eveImportSourceDefault)).toInt());
+
+        mEveImportSourceCombo = new QComboBox{this};
+        sourceGroupLayout->addRow(tr("Eve data import type:"), mEveImportSourceCombo);
+
+        addSourceItem(*mEveImportSourceCombo, tr("XML"), ImportSettings::EveImportSource::XML, eveSource);
+        addSourceItem(*mEveImportSourceCombo, tr("ESI"), ImportSettings::EveImportSource::ESI, eveSource);
+
         mainLayout->addStretch();
     }
 
@@ -83,6 +92,7 @@ namespace Evernus
         settings.setValue(ImportSettings::marketOrderImportSourceKey, mMarketOrderSourceCombo->currentData());
         settings.setValue(ImportSettings::webImportTypeKey, mWebImporterTypeCombo->currentData());
         settings.setValue(ImportSettings::marketOrderImportTypeKey, mMarketOrderImportTypeCombo->currentData());
+        settings.setValue(ImportSettings::eveImportSourceKey, mEveImportSourceCombo->currentData());
     }
 
     template<class T>

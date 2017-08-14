@@ -3668,7 +3668,18 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="83"/>
         <source>ESI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="80"/>
+        <source>Eve data import type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="82"/>
+        <source>XML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9028,12 +9039,12 @@ Czy chcesz rozpocząć aktualizację?</translation>
         <translation>Nie udało się rozpocząć aktualizacji. Pobrać ręcznie?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="486"/>
+        <location filename="../Updater.cpp" line="490"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
         <translation>Ta akutalizacja wymaga ustawienia własnego broker fee od nowa.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="513"/>
+        <location filename="../Updater.cpp" line="517"/>
         <source>This update requires re-importing citadels.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9045,36 +9056,36 @@ Czy chcesz rozpocząć aktualizację?</translation>
         <translation>Błąd aktualizacji wersji bazy danych: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="365"/>
-        <location filename="../Updater.cpp" line="396"/>
-        <location filename="../Updater.cpp" line="403"/>
-        <location filename="../Updater.cpp" line="415"/>
-        <location filename="../Updater.cpp" line="486"/>
-        <location filename="../Updater.cpp" line="513"/>
+        <location filename="../Updater.cpp" line="369"/>
+        <location filename="../Updater.cpp" line="400"/>
+        <location filename="../Updater.cpp" line="407"/>
+        <location filename="../Updater.cpp" line="419"/>
+        <location filename="../Updater.cpp" line="490"/>
+        <location filename="../Updater.cpp" line="517"/>
         <source>Update</source>
         <translation>Aktualizacja</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="365"/>
+        <location filename="../Updater.cpp" line="369"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation>Wystąpił błąd podczas akutalizacji.
 Kopia zapasowa bazay danych została zapisana jako %1. Zajrzyj do pomocy online w celu uzyskania informacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="396"/>
+        <location filename="../Updater.cpp" line="400"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania wszystkich danych.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="403"/>
+        <location filename="../Updater.cpp" line="407"/>
         <source>This update requires re-importing all item prices.</source>
         <translation>Ta aktualizacja wymaga ponownego zaimportowania cen przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="415"/>
+        <location filename="../Updater.cpp" line="419"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania dziennika i transakcji korporacji.</translation>
     </message>

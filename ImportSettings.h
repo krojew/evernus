@@ -52,6 +52,12 @@ namespace Evernus
             Whole
         };
 
+        enum class EveImportSource
+        {
+            XML,
+            ESI,
+        };
+
         const auto importSkillsDefault = true;
         const auto importPortraitDefault = true;
         const auto importAssetsDefault = true;
@@ -75,6 +81,7 @@ namespace Evernus
         const auto webImportTypeDefault = WebImporterType::ESI;
         const auto marketOrderImportTypeDefault = MarketOrderImportType::Auto;
         const auto csvSeparatorDefault = QChar(',');
+        const auto eveImportSourceDefault = EveImportSource::ESI;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
@@ -112,5 +119,6 @@ namespace Evernus
         const auto marketOrderImportTypeKey = QStringLiteral("import/marketOrderType");
         const auto itemPricesFileDirKey = QStringLiteral("import/costs/fileDir");
         const auto csvSeparatorKey = QStringLiteral("import/csvSeparator");
+        const auto eveImportSourceKey = QStringLiteral("import/eveSource");
     }
 }

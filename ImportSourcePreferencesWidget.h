@@ -37,6 +37,7 @@ namespace Evernus
         QComboBox *mMarketOrderSourceCombo = nullptr;
         QComboBox *mWebImporterTypeCombo = nullptr;
         QComboBox *mMarketOrderImportTypeCombo = nullptr;
+        QComboBox *mEveImportSourceCombo = nullptr;
 
         template<class T>
         void addSourceItem(QComboBox &combo, const QString &text, T value, T current);
