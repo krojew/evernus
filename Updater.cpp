@@ -345,6 +345,9 @@ namespace Evernus
                 }
 
                 migrateDatabaseTo20(characterRepo);
+
+                // reset version in case major bump
+                minorVersion = 0;
             }
 
             if (majorVersion < 3)
