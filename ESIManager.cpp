@@ -245,7 +245,7 @@ namespace Evernus
                 query.addQueryItem("response_type", "code");
                 query.addQueryItem("redirect_uri", "http://" + redirectDomain + "/sso-authentication/");
                 query.addQueryItem("client_id", mClientId);
-                query.addQueryItem("scope", "esi-ui.open_window.v1 esi-ui.write_waypoint.v1 esi-markets.structure_markets.v1");
+                query.addQueryItem("scope", "esi-ui.open_window.v1 esi-ui.write_waypoint.v1 esi-markets.structure_markets.v1 esi-assets.read_assets.v1");
 
                 url.setQuery(query);
 

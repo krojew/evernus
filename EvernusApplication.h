@@ -201,6 +201,8 @@ namespace Evernus
         void refreshCharacters();
         void refreshCharacter(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshAssetsFromXML(Character::IdType id, uint assetSubtask);
+        void refreshAssetsFromESI(Character::IdType id, uint assetSubtask);
         void refreshContracts(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask, bool force = false);
@@ -424,5 +426,7 @@ namespace Evernus
         static QString getCharacterImportMessage(Character::IdType id);
 
         static void setProxySettings();
+
+        static bool shouldUseESIOverXML();
     };
 }

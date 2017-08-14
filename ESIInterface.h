@@ -52,6 +52,8 @@ namespace Evernus
 
         void fetchCitadelMarketOrders(quint64 citadelId, Character::IdType charId, const PaginatedCallback &callback) const;
 
+        void fetchAssets(Character::IdType charId, const JsonCallback &callback) const;
+
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const;
 
         void setDestination(quint64 locationId, Character::IdType charId, const ErrorCallback &errorCallback) const;

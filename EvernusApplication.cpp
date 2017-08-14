@@ -881,9 +881,21 @@ namespace Evernus
         const auto assetSubtask = startTask(parentTask, tr("Fetching assets for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        if (!checkImportAndEndTask(id, TimerType::AssetList, assetSubtask))
-            return;
+        if (shouldUseESIOverXML())
+        {
 
+        }
+        else
+        {
+            if (!checkImportAndEndTask(id, TimerType::AssetList, assetSubtask))
+                return;
+
+            refreshAssetsFromXML(id, assetSubtask);
+        }
+    }
+
+    void EvernusApplication::refreshAssetsFromXML(Character::IdType id, uint assetSubtask)
+    {
         try
         {
             const auto key = getCharacterKey(id);
@@ -923,6 +935,11 @@ namespace Evernus
         {
             emit taskEnded(assetSubtask, tr("Character not found!"));
         }
+    }
+
+    void EvernusApplication::refreshAssetsFromESI(Character::IdType id, uint assetSubtask)
+    {
+
     }
 
     void EvernusApplication::refreshContracts(Character::IdType id, uint parentTask)
@@ -2874,5 +2891,16 @@ namespace Evernus
         {
             QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
         }
+    }
+
+    bool EvernusApplication::shouldUseESIOverXML()
+    {
+        QSettings settings;
+        return static_cast<ImportSettings::EveImportSource>(
+            settings.value(
+                ImportSettings::eveImportSourceKey,
+                static_cast<int>(ImportSettings::eveImportSourceDefault)
+            ).toInt()
+        ) != ImportSettings::EveImportSource::XML;
     }
 }
