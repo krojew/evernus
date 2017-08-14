@@ -384,7 +384,8 @@ int main(int argc, char *argv[])
                     QCoreApplication::translate(
                         "main",
                         "Would you like to use ESI for data import where applicable?\n\n"
-                        "Using ESI gives access to more data, e.g. citadel assets, but requires additional autorization. "
+                        "Using ESI gives access to more data, e.g. citadel assets, and lower cache timers but requires additional autorization. "
+                        "Support for more ESI endpoints is ongoing.\n\n"
                         "You can always change it in Preferences->Import->Source."
                     ),
                     QMessageBox::NoButton,
