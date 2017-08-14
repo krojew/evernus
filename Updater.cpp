@@ -358,6 +358,7 @@ namespace Evernus
                         migrateDatabaseTo22(citadelRepo, corpItemRepo);
 
                     migrateCoreTo23();
+                    migrateDatabaseTo23(citadelRepo);
                 }
             }
 
@@ -553,6 +554,12 @@ namespace Evernus
     {
         safelyExecQuery(citadelRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN ignored INTEGER NOT NULL DEFAULT 0").arg(citadelRepo.getTableName()));
         safelyExecQuery(corpItemRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN custom_value NUMERIC NULL DEFAULT NULL").arg(corpItemRepo.getTableName()));
+    }
+
+    void Updater::migrateDatabaseTo23(const CitadelRepository &citadelRepo) const
+    {
+        // re-add ignored column because of borked prev update
+        safelyExecQuery(citadelRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN ignored INTEGER NOT NULL DEFAULT 0").arg(citadelRepo.getTableName()));
     }
 
     void Updater::migrateCoreTo130() const
