@@ -8561,44 +8561,66 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="vanished">CREST Client Secret.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="155"/>
-        <location filename="../main.cpp" line="170"/>
+        <location filename="../main.cpp" line="156"/>
+        <location filename="../main.cpp" line="171"/>
         <source>Already running</source>
         <translation>Läuft bereits</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="155"/>
+        <location filename="../main.cpp" line="156"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation>Evernus scheint schon zu laufen. Is das nicht der Fall, entferne bitte &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="170"/>
+        <location filename="../main.cpp" line="171"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation>Evernus wurde letztes Mal wahrscheinlich nicht korrekt beendet. Möchtest du einen Aufräumversuch starten?</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="179"/>
-        <location filename="../main.cpp" line="380"/>
+        <location filename="../main.cpp" line="180"/>
+        <location filename="../main.cpp" line="417"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="180"/>
+        <location filename="../main.cpp" line="181"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation>Konnte &apos;%1&apos; nicht entfernen!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="367"/>
+        <location filename="../main.cpp" line="369"/>
         <source>New version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="368"/>
+        <location filename="../main.cpp" line="370"/>
         <source>Would you like to see what&apos;s new in this version?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="389"/>
+        <location filename="../main.cpp" line="383"/>
+        <source>Import source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="384"/>
+        <source>Would you like to use ESI for data import where applicable?
+
+Using ESI gives access to more data, e.g. citadel assets, but requires additional autorization. You can always change it in Preferences-&gt;Import-&gt;Source.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="393"/>
+        <source>Use ESI and XML API</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="394"/>
+        <source>Use only XML API</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="426"/>
         <source>Initialization error</source>
         <translation>Fehler beim Initialisieren</translation>
     </message>
