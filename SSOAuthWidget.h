@@ -36,6 +36,10 @@ namespace Evernus
 
     signals:
         void acquiredCode(const QByteArray &code);
+        void aboutToClose();
+
+    protected:
+        virtual void closeEvent(QCloseEvent *event) override;
 
     private slots:
         void applyCode();

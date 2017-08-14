@@ -45,6 +45,7 @@
 #include "PriceSettings.h"
 #include "OrderSettings.h"
 #include "PathSettings.h"
+#include "SSOSettings.h"
 #include "UISettings.h"
 #include "Version.h"
 
@@ -577,6 +578,10 @@ namespace Evernus
     {
         QSettings settings;
         settings.remove(RegionTypeSelectDialog::settingsTypesKey);
+
+        settings.beginGroup(SSOSettings::refreshTokenGroup);
+        settings.remove(QStringLiteral(""));
+        settings.endGroup();
     }
 
     std::pair<uint, uint> Updater::getSavedCoreVersion()

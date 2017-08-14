@@ -119,6 +119,6 @@ namespace Evernus
         const auto marketOrderImportTypeKey = QStringLiteral("import/marketOrderType");
         const auto itemPricesFileDirKey = QStringLiteral("import/costs/fileDir");
         const auto csvSeparatorKey = QStringLiteral("import/csvSeparator");
-        const auto eveImportSourceKey = QStringLiteral("import/eveSource");
+        const auto eveImportSourceKey = QStringLiteral("import/source/eve");
     }
 }

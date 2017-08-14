@@ -85,22 +85,10 @@ namespace Evernus
 
         createInterfaces();
 
-        connect(this, &ESIManager::tokenError, this, &ESIManager::error);
-    }
-
-    bool ESIManager::eventFilter(QObject *watched, QEvent *event)
-    {
-        Q_ASSERT(event != nullptr);
-
-        if (watched == mAuthView.get() && event->type() == QEvent::Close)
-        {
-            mFetchingToken = false;
-
-            qDebug() << "Auth window closed.";
-            emit tokenError(tr("SSO authorization failed."));
-        }
-
-        return QObject::eventFilter(watched, event);
+        connect(this, &ESIManager::tokenError, this, [=](auto charId, const auto &errorInfo) {
+            Q_UNUSED(charId);
+            emit error(errorInfo);
+        });
     }
 
     void ESIManager::fetchMarketOrders(uint regionId,
@@ -274,6 +262,12 @@ namespace Evernus
     void ESIManager::fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const
     {
         selectNextInterface().fetchCharacter(charId, [=](auto &&publicData, const auto &error) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error);
+                return;
+            }
+
             selectNextInterface().fetchCharacterSkills(
                 charId, [=, publicData = std::move(publicData)](auto &&skillData, const auto &error) {
                     if (Q_UNLIKELY(!error.isEmpty()))
@@ -284,10 +278,207 @@ namespace Evernus
 
                     const auto publicDataObj = publicData.object();
 
-                    Character character{charId};
+                    selectNextInterface().fetchCorporation(
+                        publicDataObj.value(QStringLiteral("corporation_id")).toDouble(),
+                        [=, publicDataObj = std::move(publicDataObj), skillData = std::move(skillData)](auto &&corpData, const auto &error) {
+                            if (Q_UNLIKELY(!error.isEmpty()))
+                            {
+                                callback({}, error);
+                                return;
+                            }
 
-                    callback(std::move(character), {});
+                            selectNextInterface().fetchCharacterWallet(
+                                charId,
+                                [=, corpData = std::move(corpData), publicDataObj = std::move(publicDataObj), skillData = std::move(skillData)](auto &walletData, const auto &error) {
+                                    if (Q_UNLIKELY(!error.isEmpty()))
+                                    {
+                                        callback({}, error);
+                                        return;
+                                    }
+
+                                    const auto corpDataObj = corpData.object();
+
+                                    Character character{charId};
+                                    character.setName(publicDataObj.value(QStringLiteral("name")).toString());
+                                    character.setCorporationName(corpDataObj.value(QStringLiteral("corporation_name")).toString());
+                                    character.setCorporationId(publicDataObj.value(QStringLiteral("corporation_id")).toDouble());
+                                    character.setRace(mDataProvider.getRaceName(publicDataObj.value(QStringLiteral("race_id")).toDouble()));
+                                    character.setBloodline(mDataProvider.getBloodlineName(publicDataObj.value(QStringLiteral("bloodline_id")).toDouble()));
+                                    // TODO: change when ancestry enpoint becomes available
+                                    character.setAncestry(mDataProvider.getGenericName(publicDataObj.value(QStringLiteral("ancestry_id")).toDouble()));
+                                    character.setGender(publicDataObj.value(QStringLiteral("gender")).toString());
+                                    character.setISK(walletData.toDouble());
+
+                                    CharacterData::OrderAmountSkills orderAmountSkills;
+                                    CharacterData::TradeRangeSkills tradeRangeSkills;
+                                    CharacterData::FeeSkills feeSkills;
+                                    CharacterData::ContractSkills contractSkills;
+                                    CharacterData::ReprocessingSkills reprocessingSkills;
+
+                                    const auto skills = skillData.object().value(QStringLiteral("skills")).toArray();
+                                    for (const auto &skill : skills)
+                                    {
+                                        const auto skillObj = skill.toObject();
+                                        switch (skillObj.value(QStringLiteral("skill_id")).toInt()) {
+                                        case 3443:
+                                            orderAmountSkills.mTrade = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 3444:
+                                            orderAmountSkills.mRetail = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 16596:
+                                            orderAmountSkills.mWholesale = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 18580:
+                                            orderAmountSkills.mTycoon = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 16598:
+                                            tradeRangeSkills.mMarketing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 16594:
+                                            tradeRangeSkills.mProcurement = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 16595:
+                                            tradeRangeSkills.mDaytrading = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 3447:
+                                            tradeRangeSkills.mVisibility = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 16622:
+                                            feeSkills.mAccounting = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 3446:
+                                            feeSkills.mBrokerRelations = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 16597:
+                                            feeSkills.mMarginTrading = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 25235:
+                                            contractSkills.mContracting = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12180:
+                                            reprocessingSkills.mArkonorProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12181:
+                                            reprocessingSkills.mBistotProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12182:
+                                            reprocessingSkills.mCrokiteProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12183:
+                                            reprocessingSkills.mDarkOchreProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12185:
+                                            reprocessingSkills.mHedbergiteProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12186:
+                                            reprocessingSkills.mHemorphiteProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 18025:
+                                            reprocessingSkills.mIceProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12187:
+                                            reprocessingSkills.mJaspetProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12188:
+                                            reprocessingSkills.mKerniteProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12189:
+                                            reprocessingSkills.mMercoxitProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12190:
+                                            reprocessingSkills.mOmberProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12191:
+                                            reprocessingSkills.mPlagioclaseProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12192:
+                                            reprocessingSkills.mPyroxeresProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 3385:
+                                            reprocessingSkills.mReprocessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 3389:
+                                            reprocessingSkills.mReprocessingEfficiency = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12193:
+                                            reprocessingSkills.mScorditeProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12196:
+                                            reprocessingSkills.mScrapmetalProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12194:
+                                            reprocessingSkills.mSpodumainProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 12195:
+                                            reprocessingSkills.mVeldsparProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                        }
+                                    }
+
+                                    character.setOrderAmountSkills(std::move(orderAmountSkills));
+                                    character.setTradeRangeSkills(std::move(tradeRangeSkills));
+                                    character.setFeeSkills(std::move(feeSkills));
+                                    character.setContractSkills(std::move(contractSkills));
+                                    character.setReprocessingSkills(std::move(reprocessingSkills));
+
+                                    callback(std::move(character), {});
+                            });
+                    });
             });
+        });
+    }
+
+    void ESIManager::fetchRaces(const Callback<NameMap> &callback) const
+    {
+        selectNextInterface().fetchRaces([=](auto &&data, const auto &error) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error);
+                return;
+            }
+
+            const auto races = data.array();
+
+            NameMap names;
+            names.reserve(races.size());
+
+            for (const auto &race : races)
+            {
+                const auto raceObj = race.toObject();
+                names.emplace(
+                    static_cast<quint64>(raceObj.value(QStringLiteral("race_id")).toDouble()),
+                    raceObj.value(QStringLiteral("name")).toString()
+                );
+            }
+
+            callback(std::move(names), {});
+        });
+    }
+
+    void ESIManager::fetchBloodlines(const Callback<NameMap> &callback) const
+    {
+        selectNextInterface().fetchBloodlines([=](auto &&data, const auto &error) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error);
+                return;
+            }
+
+            const auto bloodlines = data.array();
+
+            NameMap names;
+            names.reserve(bloodlines.size());
+
+            for (const auto &bloodline : bloodlines)
+            {
+                const auto bloodlineObj = bloodline.toObject();
+                names.emplace(
+                    static_cast<quint64>(bloodlineObj.value(QStringLiteral("bloodline_id")).toDouble()),
+                    bloodlineObj.value(QStringLiteral("name")).toString()
+                );
+            }
+
+            callback(std::move(names), {});
         });
     }
 
@@ -312,6 +503,8 @@ namespace Evernus
 
     void ESIManager::fetchToken(Character::IdType charId)
     {
+        mPendingTokenRefresh.insert(charId);
+
         if (mFetchingToken)
             return;
 
@@ -329,14 +522,17 @@ namespace Evernus
                 QUrl url{loginUrl + "/oauth/authorize"};
 
                 QUrlQuery query;
-                query.addQueryItem("response_type", "code");
-                query.addQueryItem("redirect_uri", "http://" + redirectDomain + "/sso-authentication/");
-                query.addQueryItem("client_id", mClientId);
-                query.addQueryItem("scope", "esi-ui.open_window.v1 esi-ui.write_waypoint.v1 esi-markets.structure_markets.v1 esi-assets.read_assets.v1");
+                query.addQueryItem(QStringLiteral("response_type"), QStringLiteral("code"));
+                query.addQueryItem(QStringLiteral("redirect_uri"), QStringLiteral("http://%1/sso-authentication/").arg(redirectDomain));
+                query.addQueryItem(QStringLiteral("client_id"), mClientId);
+                query.addQueryItem(
+                    QStringLiteral("scope"),
+                    QStringLiteral("esi-skills.read_skills.v1 esi-wallet.read_character_wallet.v1 esi-assets.read_assets.v1 esi-ui.open_window.v1 esi-ui.write_waypoint.v1 esi-markets.structure_markets.v1")
+                );
 
                 url.setQuery(query);
 
-                mAuthView = std::make_unique<SSOAuthWidget>(url);
+                mAuthView.reset(new SSOAuthWidget{url});
 
                 QString charName;
 
@@ -355,14 +551,22 @@ namespace Evernus
                     mAuthView->setWindowTitle(tr("SSO Authentication for character: %1").arg(charName));
 
                 mAuthView->setWindowModality(Qt::ApplicationModal);
-                mAuthView->installEventFilter(this);
                 mAuthView->adjustSize();
                 mAuthView->move(QApplication::desktop()->screenGeometry(QApplication::activeWindow()).center() -
                                 mAuthView->rect().center());
                 mAuthView->show();
 
-                connect(mAuthView.get(), &SSOAuthWidget::acquiredCode, this, [=](const auto &code) {
+                connect(mAuthView.data(), &SSOAuthWidget::acquiredCode, this, [=](const auto &code) {
                     processAuthorizationCode(charId, code);
+                });
+                connect(mAuthView.data(), &SSOAuthWidget::aboutToClose, this, [=] {
+                    mPendingTokenRefresh.erase(charId);
+                    mFetchingToken = false;
+
+                    qDebug() << "Auth window closed.";
+                    emit tokenError(charId, tr("SSO authorization failed."));
+
+                    scheduleNextTokenFetch();
                 });
                 connect(mAuthView->page(), &QWebEnginePage::urlChanged, this, [=](const QUrl &url) {
                     try
@@ -375,6 +579,7 @@ namespace Evernus
                     }
                     catch (...)
                     {
+                        mPendingTokenRefresh.clear();
                         mFetchingToken = false;
                         throw;
                     }
@@ -404,36 +609,44 @@ namespace Evernus
 
                             qWarning() << "Returned error:" << error;
 
+                            mPendingTokenRefresh.erase(charId);
+                            mFetchingToken = false;
+
                             if (error == "invalid_token" || error == "invalid_client" || error == "invalid_grant")
                             {
-                                mRefreshTokens.erase(charId);
-                                mFetchingToken = false;
                                 fetchToken(charId);
                             }
                             else
                             {
                                 const auto desc = object.value("error_description").toString();
-                                emit tokenError((desc.isEmpty()) ? (reply->errorString()) : (desc));
+                                emit tokenError(charId, (desc.isEmpty()) ? (reply->errorString()) : (desc));
+
+                                scheduleNextTokenFetch();
                             }
 
                             return;
                         }
 
+                        BOOST_SCOPE_EXIT(this_, charId) {
+                            this_->mPendingTokenRefresh.erase(charId);
+                            this_->mFetchingToken = false;
+                            this_->scheduleNextTokenFetch();
+                        } BOOST_SCOPE_EXIT_END
+
                         const auto accessToken = object.value("access_token").toString();
                         if (accessToken.isEmpty())
                         {
                             qWarning() << "Empty access token!";
-                            emit tokenError(tr("Empty access token!"));
+                            emit tokenError(charId, tr("Empty access token!"));
                             return;
                         }
 
                         emit acquiredToken(charId, accessToken,
                                            QDateTime::currentDateTime().addSecs(doc.object().value("expires_in").toInt() - 10));
-
-                        mFetchingToken = false;
                     }
                     catch (...)
                     {
+                        mPendingTokenRefresh.clear();
                         mFetchingToken = false;
                         throw;
                     }
@@ -442,6 +655,7 @@ namespace Evernus
         }
         catch (...)
         {
+            mPendingTokenRefresh.clear();
             mFetchingToken = false;
             throw;
         }
@@ -461,7 +675,7 @@ namespace Evernus
     {
         try
         {
-            mAuthView->removeEventFilter(this);
+            mAuthView->disconnect(this);
             mAuthView->close();
 
             qDebug() << "Requesting access token...";
@@ -472,6 +686,8 @@ namespace Evernus
             connect(reply, &QNetworkReply::finished, this, [=] {
                 try
                 {
+                    mPendingTokenRefresh.erase(charId);
+
                     reply->deleteLater();
 
                     if (Q_UNLIKELY(reply->error() != QNetworkReply::NoError))
@@ -479,7 +695,9 @@ namespace Evernus
                         mFetchingToken = false;
 
                         qDebug() << "Error requesting access token:" << reply->errorString();
-                        emit tokenError(reply->errorString());
+                        emit tokenError(charId, reply->errorString());
+
+                        scheduleNextTokenFetch();
                         return;
                     }
 
@@ -490,8 +708,12 @@ namespace Evernus
 
                     if (Q_UNLIKELY(refreshToken.isEmpty()))
                     {
+                        mFetchingToken = false;
+
                         qDebug() << "Empty refresh token!";
-                        emit tokenError(tr("Empty refresh token!"));
+                        emit tokenError(charId, tr("Empty refresh token!"));
+
+                        scheduleNextTokenFetch();
                         return;
                     }
 
@@ -499,6 +721,7 @@ namespace Evernus
                     connect(charReply, &QNetworkReply::finished, this, [=] {
                         BOOST_SCOPE_EXIT(this_) {
                             this_->mFetchingToken = false;
+                            this_->scheduleNextTokenFetch();
                         } BOOST_SCOPE_EXIT_END
 
                         charReply->deleteLater();
@@ -506,7 +729,7 @@ namespace Evernus
                         if (Q_UNLIKELY(charReply->error() != QNetworkReply::NoError))
                         {
                             qDebug() << "Error verifying access token:" << charReply->errorString();
-                            emit tokenError(charReply->errorString());
+                            emit tokenError(charId, charReply->errorString());
                             return;
                         }
 
@@ -522,7 +745,7 @@ namespace Evernus
                         if (charId != realCharId)
                         {
                             qDebug() << "Logged as invalid character id:" << realCharId;
-                            emit tokenError(tr("Please authorize access for character: %1").arg(mCharacterRepo.getName(charId)));
+                            emit tokenError(charId, tr("Please authorize access for character: %1").arg(mCharacterRepo.getName(charId)));
                             return;
                         }
 
@@ -532,6 +755,7 @@ namespace Evernus
                 }
                 catch (...)
                 {
+                    mPendingTokenRefresh.clear();
                     mFetchingToken = false;
                     throw;
                 }
@@ -641,6 +865,17 @@ namespace Evernus
             connect(this, &ESIManager::acquiredToken, interface, &ESIInterface::updateTokenAndContinue);
             connect(this, &ESIManager::tokenError, interface, &ESIInterface::handleTokenError);
         }
+    }
+
+    void ESIManager::scheduleNextTokenFetch()
+    {
+        if (mPendingTokenRefresh.empty())
+            return;
+
+        const auto charId = *std::begin(mPendingTokenRefresh);
+        mPendingTokenRefresh.erase(std::begin(mPendingTokenRefresh));
+
+        QMetaObject::invokeMethod(this, "fetchToken", Q_ARG(Character::IdType, charId));
     }
 
     const ESIInterface &ESIManager::selectNextInterface() const

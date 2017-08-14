@@ -26,6 +26,7 @@
 #include "ConquerableStationRepository.h"
 #include "MarketOrderRepository.h"
 #include "RefTypeRepository.h"
+#include "ESIManager.h"
 #include "UISettings.h"
 #include "APIManager.h"
 
@@ -34,6 +35,9 @@
 namespace Evernus
 {
     const QString CachingEveDataProvider::nameCacheFileName = "generic_names";
+    const QString CachingEveDataProvider::raceCacheFileName = "race_names";
+    const QString CachingEveDataProvider::bloodlineCacheFileName = "bloodline_names";
+
     const QString CachingEveDataProvider::systemDistanceCacheFileName = "system_distances";
 
     const QStringList CachingEveDataProvider::oreGroupNames = {
@@ -81,13 +85,7 @@ namespace Evernus
         , mAPIManager{apiManager}
         , mEveDb{eveDb}
     {
-        QFile nameCache{getCacheDir().filePath(nameCacheFileName)};
-        if (nameCache.open(QIODevice::ReadOnly))
-        {
-            QDataStream cacheStream{&nameCache};
-            cacheStream >> mGenericNameCache;
-        }
-
+        readCache(nameCacheFileName, mGenericNameCache);
         handleNewPreferences();
     }
 
@@ -98,17 +96,10 @@ namespace Evernus
             const auto dataCacheDir = getCacheDir();
             if (dataCacheDir.mkpath("."))
             {
-                const auto cacheWrite = [&dataCacheDir](const auto &name, const auto &data) {
-                    QFile nameCache{dataCacheDir.filePath(name)};
-                    if (nameCache.open(QIODevice::WriteOnly))
-                    {
-                        QDataStream cacheStream{&nameCache};
-                        cacheStream << data;
-                    }
-                };
-
                 cacheWrite(nameCacheFileName, mGenericNameCache);
                 cacheWrite(systemDistanceCacheFileName, mSystemDistances);
+                cacheWrite(raceCacheFileName, mRaceNameCache);
+                cacheWrite(bloodlineCacheFileName, mBloodlineNameCache);
             }
         }
         catch (...)
@@ -928,6 +919,40 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         return 0;
     }
 
+    void CachingEveDataProvider::precacheNames(const ESIManager &esiManager)
+    {
+        readCache(raceCacheFileName, mRaceNameCache);
+        readCache(bloodlineCacheFileName, mBloodlineNameCache);
+
+        if (mRaceNameCache.isEmpty())
+        {
+            esiManager.fetchRaces([=](auto &&data, const auto &error) {
+                if (!error.isEmpty())
+                {
+                    qWarning() << "Error precaching races:" << error;
+                    return;
+                }
+
+                for (const auto &race : data)
+                    mRaceNameCache[race.first] = race.second;
+            });
+        }
+
+        if (mBloodlineNameCache.isEmpty())
+        {
+            esiManager.fetchBloodlines([=](auto &&data, const auto &error) {
+                if (!error.isEmpty())
+                {
+                    qWarning() << "Error precaching bloodlines:" << error;
+                    return;
+                }
+
+                for (const auto &bloodline : data)
+                    mBloodlineNameCache[bloodline.first] = bloodline.second;
+            });
+        }
+    }
+
     void CachingEveDataProvider::precacheJumpMap()
     {
         auto query = mEveDb.exec("SELECT fromRegionID, fromSolarSystemID, toSolarSystemID FROM mapSolarSystemJumps WHERE fromRegionID = toRegionID");
@@ -1170,6 +1195,16 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         return makeUnreachable();
     }
 
+    QString CachingEveDataProvider::getRaceName(uint raceId) const
+    {
+        return mRaceNameCache.value(raceId);
+    }
+
+    QString CachingEveDataProvider::getBloodlineName(uint bloodlineId) const
+    {
+        return mBloodlineNameCache.value(bloodlineId);
+    }
+
     QString CachingEveDataProvider::getCitadelName(Citadel::IdType id) const
     {
         return getCitadel(id).getName();
@@ -1302,6 +1337,27 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         }
 
         return type.getVolume();
+    }
+
+    void CachingEveDataProvider::readCache(const QString &cacheFileName, NameMap &cache)
+    {
+        QFile cacheFile{getCacheDir().filePath(cacheFileName)};
+        if (cacheFile.open(QIODevice::ReadOnly))
+        {
+            QDataStream cacheStream{&cacheFile};
+            cacheStream >> cache;
+        }
+    }
+
+    template<class Cache>
+    void CachingEveDataProvider::cacheWrite(const QString &cacheFileName, const Cache &cache) const
+    {
+        QFile cacheFile{getCacheDir().filePath(cacheFileName)};
+        if (cacheFile.open(QIODevice::WriteOnly))
+        {
+            QDataStream cacheStream{&cacheFile};
+            cacheStream << cache;
+        }
     }
 
     QDir CachingEveDataProvider::getCacheDir()

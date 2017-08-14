@@ -39,6 +39,7 @@ namespace Evernus
         using JsonCallback = std::function<void (QJsonDocument &&data, const QString &error)>;
         using PaginatedCallback = std::function<void (QJsonDocument &&data, bool atEnd, const QString &error)>;
         using ErrorCallback = std::function<void (const QString &error)>;
+        using StringCallback = std::function<void (QString &&data, const QString &error)>;  // https://bugreports.qt.io/browse/QTBUG-62502
 
         using QObject::QObject;
         ESIInterface() = default;
@@ -53,6 +54,10 @@ namespace Evernus
         void fetchAssets(Character::IdType charId, const JsonCallback &callback) const;
         void fetchCharacter(Character::IdType charId, const JsonCallback &callback) const;
         void fetchCharacterSkills(Character::IdType charId, const JsonCallback &callback) const;
+        void fetchCorporation(quint64 corpId, const JsonCallback &callback) const;
+        void fetchRaces(const JsonCallback &callback) const;
+        void fetchBloodlines(const JsonCallback &callback) const;
+        void fetchCharacterWallet(Character::IdType charId, const StringCallback &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const;
 
@@ -63,7 +68,7 @@ namespace Evernus
 
     public slots:
         void updateTokenAndContinue(Character::IdType charId, QString token, const QDateTime &expiry);
-        void handleTokenError(const QString &error);
+        void handleTokenError(Character::IdType charId, const QString &error);
 
     signals:
         void tokenRequested(Character::IdType charId) const;
@@ -77,6 +82,12 @@ namespace Evernus
             QString mToken;
             QDateTime mExpiry;
         };
+
+        struct JsonTag {};
+        struct StringTag {};
+
+        template<class Tag>
+        struct TaggedInvoke;
 
         static const QString esiUrl;
 
@@ -97,11 +108,11 @@ namespace Evernus
 
         template<class T>
         void asyncGet(const QString &url, const QString &query, T &&continuation, uint retries) const;
-        template<class T>
+        template<class T, class ResultTag = JsonTag>
         void asyncGet(Character::IdType charId,
                       const QString &url,
                       const QString &query,
-                      T &&continuation,
+                      const T &continuation,
                       uint retries,
                       bool suppressForbidden = false) const;
         template<class T>

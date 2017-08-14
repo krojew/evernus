@@ -15,12 +15,13 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 #include <functional>
 #include <vector>
-#include <memory>
 #include <map>
 
 #include <QNetworkAccessManager>
+#include <QScopedPointer>
 #include <QString>
 #include <QDate>
 
@@ -51,6 +52,7 @@ namespace Evernus
         using ExternalOrderList = std::vector<ExternalOrder>;
         using MarketOrderCallback = Callback<ExternalOrderList>;
         using HistoryMap = std::map<QDate, MarketHistoryEntry>;
+        using NameMap = std::unordered_map<quint64, QString>;
 
         ESIManager(QByteArray clientId,
                    QByteArray clientSecret,
@@ -60,8 +62,6 @@ namespace Evernus
         ESIManager(const ESIManager &) = default;
         ESIManager(ESIManager &&) = default;
         virtual ~ESIManager() = default;
-
-        virtual bool eventFilter(QObject *watched, QEvent *event) override;
 
         void fetchMarketOrders(uint regionId,
                                EveType::IdType typeId,
@@ -76,6 +76,8 @@ namespace Evernus
                                       const MarketOrderCallback &callback) const;
         void fetchAssets(Character::IdType charId, const Callback<AssetList> &callback) const;
         void fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const;
+        void fetchRaces(const Callback<NameMap> &callback) const;
+        void fetchBloodlines(const Callback<NameMap> &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
 
@@ -89,7 +91,7 @@ namespace Evernus
     signals:
         void error(const QString &text) const;
 
-        void tokenError(const QString &error);
+        void tokenError(Character::IdType charId, const QString &error);
         void acquiredToken(Character::IdType charId, const QString &accessToken, const QDateTime &expiry);
 
     public slots:
@@ -120,7 +122,9 @@ namespace Evernus
 
         QNetworkAccessManager mNetworkManager;
 
-        std::unique_ptr<SSOAuthWidget> mAuthView;
+        QScopedPointer<SSOAuthWidget, QScopedPointerDeleteLater> mAuthView;
+
+        std::unordered_set<Character::IdType> mPendingTokenRefresh;
 
         void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
 
@@ -130,6 +134,7 @@ namespace Evernus
         ESIInterface::PaginatedCallback getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const;
 
         void createInterfaces();
+        void scheduleNextTokenFetch();
 
         const ESIInterface &selectNextInterface() const;
 

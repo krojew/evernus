@@ -116,6 +116,9 @@ namespace Evernus
 
         virtual uint getDistance(uint startSystem, uint endSystem) const = 0;
 
+        virtual QString getRaceName(uint raceId) const = 0;
+        virtual QString getBloodlineName(uint bloodlineId) const = 0;
+
         static quint64 getStationIdFromPath(const QVariantList &path);
 
     signals:

@@ -412,6 +412,9 @@ int main(int argc, char *argv[])
                 }
             }
 
+            if (!app.getCharacterRepository().hasCharacters())
+                QMetaObject::invokeMethod(&mainWnd, "showCharacterManagement", Qt::QueuedConnection);
+
             return app.exec();
         }
         catch (const std::exception &e)

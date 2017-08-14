@@ -26,10 +26,9 @@
 #include "MarketGroupRepository.h"
 #include "MetaGroupRepository.h"
 #include "EveTypeRepository.h"
+#include "EveDataProvider.h"
 #include "Citadel.h"
 #include "RefType.h"
-
-#include "EveDataProvider.h"
 
 class QDir;
 
@@ -38,6 +37,7 @@ namespace Evernus
     class ConquerableStationRepository;
     class MarketOrderRepository;
     class RefTypeRepository;
+    class ESIManager;
     class APIManager;
 
     class CachingEveDataProvider
@@ -111,6 +111,10 @@ namespace Evernus
 
         virtual uint getDistance(uint startSystem, uint endSystem) const override;
 
+        virtual QString getRaceName(uint raceId) const override;
+        virtual QString getBloodlineName(uint bloodlineId) const override;
+
+        void precacheNames(const ESIManager &esiManager);
         void precacheJumpMap();
         void precacheRefTypes();
 
@@ -125,10 +129,15 @@ namespace Evernus
         static QDir getCacheDir();
 
     private:
-        typedef std::pair<EveType::IdType, quint64> TypeLocationPair;
-        typedef std::pair<EveType::IdType, uint> TypeRegionPair;
+        using TypeLocationPair = std::pair<EveType::IdType, quint64>;
+        using TypeRegionPair = std::pair<EveType::IdType, uint>;
+
+        using NameMap = QHash<quint64, QString>;
 
         static const QString nameCacheFileName;
+        static const QString raceCacheFileName;
+        static const QString bloodlineCacheFileName;
+
         static const QStringList oreGroupNames;
 
         const EveTypeRepository &mEveTypeRepository;
@@ -165,7 +174,7 @@ namespace Evernus
 
         std::unordered_map<RefType::IdType, QString> mRefTypeNames;
 
-        mutable QHash<quint64, QString> mGenericNameCache;
+        mutable NameMap mGenericNameCache;
         mutable std::unordered_set<quint64> mPendingNameRequests;
 
         std::unordered_map<uint, std::unordered_multimap<uint, uint>> mSystemJumpMap;
@@ -202,6 +211,9 @@ namespace Evernus
         mutable ReprocessingMap mOreReprocessingInfo;
         mutable ReprocessingMap mTypeReprocessingInfo;
 
+        NameMap mRaceNameCache;
+        NameMap mBloodlineNameCache;
+
         EveTypeRepository::EntityPtr getEveType(EveType::IdType id) const;
 
         MarketGroupRepository::EntityPtr getMarketGroupParent(MarketGroup::IdType id) const;
@@ -213,6 +225,11 @@ namespace Evernus
         uint getCitadelRegionId(Citadel::IdType id) const;
         uint getCitadelSolarSystemId(Citadel::IdType id) const;
         const Citadel &getCitadel(Citadel::IdType id) const;
+
+        void readCache(const QString &cacheFileName, NameMap &cache);
+
+        template<class Cache>
+        void cacheWrite(const QString &cacheFileName, const Cache &cache) const;
 
         static double getPackagedVolume(const EveType &type);
     };

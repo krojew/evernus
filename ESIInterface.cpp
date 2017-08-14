@@ -30,6 +30,38 @@
 
 namespace Evernus
 {
+    template<>
+    struct ESIInterface::TaggedInvoke<ESIInterface::JsonTag>
+    {
+        template<class T>
+        static inline void invoke(const QByteArray &data, const T &callback)
+        {
+            callback(QJsonDocument::fromJson(data), QString{});
+        }
+
+        template<class T>
+        static inline void invoke(const QString &error, const T &callback)
+        {
+            callback(QJsonDocument{}, error);
+        }
+    };
+
+    template<>
+    struct ESIInterface::TaggedInvoke<ESIInterface::StringTag>
+    {
+        template<class T>
+        static inline void invoke(const QByteArray &data, const T &callback)
+        {
+            callback(QString::fromUtf8(data), QString{});
+        }
+
+        template<class T>
+        static inline void invoke(const QString &error, const T &callback)
+        {
+            callback(QString{}, error);
+        }
+    };
+
     const QString ESIInterface::esiUrl{"https://esi.tech.ccp.is"};
 
     void ESIInterface::fetchMarketOrders(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const
@@ -117,6 +149,42 @@ namespace Evernus
         });
     }
 
+    void ESIInterface::fetchCorporation(quint64 corpId, const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching corporation" << corpId;
+        asyncGet(QStringLiteral("/v3/corporations/%1/").arg(corpId), {}, callback, getNumRetries());
+    }
+
+    void ESIInterface::fetchRaces(const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching races";
+        asyncGet(QStringLiteral("/v1/universe/races/"), {}, callback, getNumRetries());
+    }
+
+    void ESIInterface::fetchBloodlines(const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching bloodlines";
+        asyncGet(QStringLiteral("/v1/universe/bloodlines/"), {}, callback, getNumRetries());
+    }
+
+    void ESIInterface::fetchCharacterWallet(Character::IdType charId, const StringCallback &callback) const
+    {
+        qDebug() << "Fetching character wallet for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, tr("Cannot fetch character wallet with no character selected."));
+            return;
+        }
+
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error);
+            else
+                asyncGet<decltype(callback), StringTag>(charId, QStringLiteral("/v1/characters/%1/wallet/").arg(charId), {}, callback, getNumRetries());
+        });
+    }
+
     void ESIInterface::openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const
     {
         qDebug() << "Opening market details for" << typeId;
@@ -176,12 +244,13 @@ namespace Evernus
         mPendingAuthRequests.erase(range.first, range.second);
     }
 
-    void ESIInterface::handleTokenError(const QString &error)
+    void ESIInterface::handleTokenError(Character::IdType charId, const QString &error)
     {
-        for (const auto &request : mPendingAuthRequests)
-            request.second(error);
+        const auto requests = mPendingAuthRequests.equal_range(charId);
+        for (auto request = requests.first; request != requests.second; ++request)
+            request->second(error);
 
-        mPendingAuthRequests.clear();
+        mPendingAuthRequests.erase(requests.first, requests.second);
     }
 
     void ESIInterface::processSslErrors(const QList<QSslError> &errors)
@@ -280,9 +349,9 @@ namespace Evernus
         });
     }
 
-    template<class T>
+    template<class T, class ResultTag>
     void ESIInterface
-    ::asyncGet(Character::IdType charId, const QString &url, const QString &query, T &&continuation, uint retries, bool suppressForbidden) const
+    ::asyncGet(Character::IdType charId, const QString &url, const QString &query, const T &continuation, uint retries, bool suppressForbidden) const
     {
         qDebug() << "ESI request:" << url << ":" << query;
         qDebug() << "Retries" << retries;
@@ -304,9 +373,9 @@ namespace Evernus
                     // expired token?
                     tryAuthAndContinue(charId, [=](const auto &error) {
                         if (error.isEmpty())
-                            asyncGet(charId, url, query, continuation, retries, suppressForbidden);
+                            asyncGet<T, ResultTag>(charId, url, query, continuation, retries, suppressForbidden);
                         else
-                            continuation(QJsonDocument{}, error);
+                            TaggedInvoke<ResultTag>::invoke(error, continuation);
                     });
                 }
                 else
@@ -314,23 +383,23 @@ namespace Evernus
                     if (error == QNetworkReply::ContentOperationNotPermittedError || error == QNetworkReply::ContentAccessDenied)
                     {
                         if (suppressForbidden)
-                            continuation(QJsonDocument{}, QString{});
+                            TaggedInvoke<ResultTag>::invoke(QString{}, continuation);
                         else
-                            continuation(QJsonDocument{}, getError(url, query, *reply));
+                            TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), continuation);
                     }
                     else if (retries > 0)
                     {
-                        asyncGet(charId, url, query, continuation, retries - 1, suppressForbidden);
+                        asyncGet<T, ResultTag>(charId, url, query, continuation, retries - 1, suppressForbidden);
                     }
                     else
                     {
-                        continuation(QJsonDocument{}, getError(url, query, *reply));
+                        TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), continuation);
                     }
                 }
             }
             else
             {
-                continuation(QJsonDocument::fromJson(reply->readAll()), QString{});
+                TaggedInvoke<ResultTag>::invoke(reply->readAll(), continuation);
             }
         });
     }

@@ -121,9 +121,6 @@ namespace Evernus
 
         setWindowIcon(QIcon{":/images/main-icon.png"});
 
-        if (!mRepositoryProvider.getCharacterRepository().hasCharacters())
-            QMetaObject::invokeMethod(this, "showCharacterManagement", Qt::QueuedConnection);
-
         setUpAutoImportTimer();
 
         mStatusActiveTasksThrobber.start();

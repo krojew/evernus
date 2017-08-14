@@ -234,6 +234,8 @@ namespace Evernus
 
         mESIManager = std::make_unique<ESIManager>(mClientId, mClientSecret, *mDataProvider, *mCharacterRepository);
         connect(mESIManager.get(), &ESIManager::error, this, &EvernusApplication::showGenericError);
+
+        mDataProvider->precacheNames(*mESIManager);
     }
 
     void EvernusApplication::registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer)

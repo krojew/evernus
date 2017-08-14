@@ -87,6 +87,11 @@ namespace Evernus
         return mView->page();
     }
 
+    void SSOAuthWidget::closeEvent(QCloseEvent *event)
+    {
+        emit aboutToClose();
+    }
+
     void SSOAuthWidget::applyCode()
     {
         const auto code = mCodeEdit->text().toLatin1();
