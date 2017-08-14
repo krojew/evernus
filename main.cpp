@@ -394,18 +394,20 @@ int main(int argc, char *argv[])
                 sourceQuestionBox.addButton(QCoreApplication::translate("main", "Use ESI and XML API"), QMessageBox::YesRole);
                 sourceQuestionBox.addButton(QCoreApplication::translate("main", "Use only XML API"), QMessageBox::NoRole);
 
-                if (sourceQuestionBox.exec() == QMessageBox::Yes)
+                sourceQuestionBox.exec();
+
+                if (sourceQuestionBox.buttonRole(sourceQuestionBox.clickedButton()) == QMessageBox::NoRole)
                 {
                     settings.setValue(
                         Evernus::ImportSettings::eveImportSourceKey,
-                        static_cast<int>(Evernus::ImportSettings::EveImportSource::ESI)
+                        static_cast<int>(Evernus::ImportSettings::EveImportSource::XML)
                     );
                 }
                 else
                 {
                     settings.setValue(
                         Evernus::ImportSettings::eveImportSourceKey,
-                        static_cast<int>(Evernus::ImportSettings::EveImportSource::XML)
+                        static_cast<int>(Evernus::ImportSettings::EveImportSource::ESI)
                     );
                 }
             }
