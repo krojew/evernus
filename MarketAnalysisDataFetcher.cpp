@@ -165,7 +165,8 @@ namespace Evernus
                 continue;
 
             mHistoryCounter.incCount();
-            mESIManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
+            mESIManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error, const auto &expires) {
+                Q_UNUSED(expires);
                 processHistory(pair.second, pair.first, std::move(history), error);
             });
 
@@ -177,7 +178,9 @@ namespace Evernus
 
         for (const auto region : regions)
         {
-            mESIManager.fetchMarketOrders(region, [=](std::vector<ExternalOrder> &&orders, const QString &error) {
+            mESIManager.fetchMarketOrders(region, [=](auto &&orders, const auto &error, const auto &expires) {
+                Q_UNUSED(expires);
+
                 filterOrders(orders, pairs);
                 processOrders(std::move(orders), error);
             });
@@ -209,12 +212,14 @@ namespace Evernus
             }
             else
             {
-                mESIManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
+                mESIManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error, const auto &expires) {
+                    Q_UNUSED(expires);
                     processOrders(std::move(orders), error);
                 });
             }
 
-            mESIManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error) {
+            mESIManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error, const auto &expires) {
+                Q_UNUSED(expires);
                 processHistory(pair.second, pair.first, std::move(history), error);
             });
 
@@ -246,7 +251,9 @@ namespace Evernus
                     continue;
 
                 mOrderCounter.incCount();
-                mESIManager.fetchCitadelMarketOrders(citadel->getId(), region, charId, [=](auto &&orders, const auto &error) {
+                mESIManager.fetchCitadelMarketOrders(citadel->getId(), region, charId, [=](auto &&orders, const auto &error, const auto &expires) {
+                    Q_UNUSED(expires);
+
                     filterOrders(orders, pairs);
                     processOrders(std::move(orders), error);
                 });

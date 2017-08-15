@@ -97,10 +97,10 @@ namespace Evernus
     {
         qDebug() << "Started market order import at" << QDateTime::currentDateTime();
 
-        auto ifaceCallback = [=](QJsonDocument &&data, const QString &error) {
+        auto ifaceCallback = [=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
-                callback(ExternalOrderList{}, error);
+                callback({}, error, expires);
                 return;
             }
 
@@ -109,7 +109,7 @@ namespace Evernus
                 watcher->deleteLater();
 
                 const auto future = watcher->future();
-                callback(future.result(), QString{});
+                callback(future.result(), {}, expires);
             });
 
             watcher->setFuture(QtConcurrent::run([=, items = data.array()] {
@@ -133,13 +133,13 @@ namespace Evernus
         qDebug() << "Started history import at" << QDateTime::currentDateTime();
 
 #if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
-        selectNextInterface().fetchMarketHistory(regionId, typeId, [=, callback = callback](QJsonDocument &&data, const QString &error) {
+        selectNextInterface().fetchMarketHistory(regionId, typeId, [=, callback = callback](auto &&data, const auto &error, const auto &expires) {
 #else
-        selectNextInterface().fetchMarketHistory(regionId, typeId, [=](QJsonDocument &&data, const QString &error) {
+        selectNextInterface().fetchMarketHistory(regionId, typeId, [=](auto &&data, const auto &error, const auto &expires) {
 #endif
             if (Q_UNLIKELY(!error.isEmpty()))
             {
-                callback(HistoryMap{}, error);
+                callback({}, error, expires);
                 return;
             }
 
@@ -161,7 +161,7 @@ namespace Evernus
                 history.insert(std::move(item));
             };
 
-            callback(QtConcurrent::blockingMappedReduced<HistoryMap>(data.array(), parseItem, insertItem), QString{});
+            callback(QtConcurrent::blockingMappedReduced<HistoryMap>(data.array(), parseItem, insertItem), {}, expires);
         });
     }
 
@@ -194,10 +194,10 @@ namespace Evernus
 
     void ESIManager::fetchAssets(Character::IdType charId, const Callback<AssetList> &callback) const
     {
-        selectNextInterface().fetchAssets(charId, [=](auto &&data, const auto &error) {
+        selectNextInterface().fetchAssets(charId, [=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
-                callback({}, error);
+                callback({}, error, expires);
                 return;
             }
 
@@ -255,24 +255,24 @@ namespace Evernus
                 }
             }
 
-            callback(std::move(list), {});
+            callback(std::move(list), {}, expires);
         });
     }
 
     void ESIManager::fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const
     {
-        selectNextInterface().fetchCharacter(charId, [=](auto &&publicData, const auto &error) {
+        selectNextInterface().fetchCharacter(charId, [=](auto &&publicData, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
-                callback({}, error);
+                callback({}, error, expires);
                 return;
             }
 
             selectNextInterface().fetchCharacterSkills(
-                charId, [=, publicData = std::move(publicData)](auto &&skillData, const auto &error) {
+                charId, [=, publicData = std::move(publicData)](auto &&skillData, const auto &error, const auto &expires) {
                     if (Q_UNLIKELY(!error.isEmpty()))
                     {
-                        callback({}, error);
+                        callback({}, error, expires);
                         return;
                     }
 
@@ -280,19 +280,19 @@ namespace Evernus
 
                     selectNextInterface().fetchCorporation(
                         publicDataObj.value(QStringLiteral("corporation_id")).toDouble(),
-                        [=, publicDataObj = std::move(publicDataObj), skillData = std::move(skillData)](auto &&corpData, const auto &error) {
+                        [=, publicDataObj = std::move(publicDataObj), skillData = std::move(skillData)](auto &&corpData, const auto &error, const auto &expires) {
                             if (Q_UNLIKELY(!error.isEmpty()))
                             {
-                                callback({}, error);
+                                callback({}, error, expires);
                                 return;
                             }
 
                             selectNextInterface().fetchCharacterWallet(
                                 charId,
-                                [=, corpData = std::move(corpData), publicDataObj = std::move(publicDataObj), skillData = std::move(skillData)](auto &walletData, const auto &error) {
+                                [=, corpData = std::move(corpData), publicDataObj = std::move(publicDataObj), skillData = std::move(skillData)](auto &walletData, const auto &error, const auto &expires) {
                                     if (Q_UNLIKELY(!error.isEmpty()))
                                     {
-                                        callback({}, error);
+                                        callback({}, error, expires);
                                         return;
                                     }
 
@@ -421,7 +421,7 @@ namespace Evernus
                                     character.setContractSkills(std::move(contractSkills));
                                     character.setReprocessingSkills(std::move(reprocessingSkills));
 
-                                    callback(std::move(character), {});
+                                    callback(std::move(character), {}, expires);
                             });
                     });
             });
@@ -430,10 +430,10 @@ namespace Evernus
 
     void ESIManager::fetchRaces(const Callback<NameMap> &callback) const
     {
-        selectNextInterface().fetchRaces([=](auto &&data, const auto &error) {
+        selectNextInterface().fetchRaces([=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
-                callback({}, error);
+                callback({}, error, expires);
                 return;
             }
 
@@ -451,16 +451,16 @@ namespace Evernus
                 );
             }
 
-            callback(std::move(names), {});
+            callback(std::move(names), {}, expires);
         });
     }
 
     void ESIManager::fetchBloodlines(const Callback<NameMap> &callback) const
     {
-        selectNextInterface().fetchBloodlines([=](auto &&data, const auto &error) {
+        selectNextInterface().fetchBloodlines([=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
-                callback({}, error);
+                callback({}, error, expires);
                 return;
             }
 
@@ -478,16 +478,16 @@ namespace Evernus
                 );
             }
 
-            callback(std::move(names), {});
+            callback(std::move(names), {}, expires);
         });
     }
 
     void ESIManager::fetchCharacterMarketOrders(Character::IdType charId, const Callback<MarketOrders> &callback) const
     {
-        selectNextInterface().fetchCharacterMarketOrders(charId, [=](auto &&data, const auto &error) {
+        selectNextInterface().fetchCharacterMarketOrders(charId, [=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
-                callback({}, error);
+                callback({}, error, expires);
                 return;
             }
 
@@ -519,7 +519,7 @@ namespace Evernus
                 curOrder.setFirstSeen(issued);
             });
 
-            callback(std::move(orders), {});
+            callback(std::move(orders), {}, expires);
         });
     }
 
@@ -868,10 +868,10 @@ namespace Evernus
     ESIInterface::PaginatedCallback ESIManager::getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const
     {
         auto orders = std::make_shared<std::vector<ExternalOrder>>();
-        return [=, orders = std::move(orders)](auto &&data, auto atEnd, const auto &error) {
+        return [=, orders = std::move(orders)](auto &&data, auto atEnd, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
-                callback(std::vector<ExternalOrder>{}, error);
+                callback({}, error, expires);
                 return;
             }
 
@@ -888,7 +888,7 @@ namespace Evernus
             QtConcurrent::blockingMap(items, parseItem);
 
             if (atEnd)
-                callback(std::move(*orders), QString{});
+                callback(std::move(*orders), {}, expires);
         };
     }
 

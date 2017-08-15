@@ -36,10 +36,10 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        using JsonCallback = std::function<void (QJsonDocument &&data, const QString &error)>;
-        using PaginatedCallback = std::function<void (QJsonDocument &&data, bool atEnd, const QString &error)>;
+        using JsonCallback = std::function<void (QJsonDocument &&data, const QString &error, const QDateTime &expires)>;
+        using PaginatedCallback = std::function<void (QJsonDocument &&data, bool atEnd, const QString &error, const QDateTime &expires)>;
         using ErrorCallback = std::function<void (const QString &error)>;
-        using StringCallback = std::function<void (QString &&data, const QString &error)>;  // https://bugreports.qt.io/browse/QTBUG-62502
+        using StringCallback = std::function<void (QString &&data, const QString &error, const QDateTime &expires)>;  // https://bugreports.qt.io/browse/QTBUG-62502
 
         using QObject::QObject;
         ESIInterface() = default;
@@ -128,5 +128,6 @@ namespace Evernus
         uint getNumRetries() const;
 
         static QString getError(const QString &url, const QString &query, QNetworkReply &reply);
+        static QDateTime getExpireTime(const QNetworkReply &reply);
     };
 }

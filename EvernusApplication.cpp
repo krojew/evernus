@@ -938,9 +938,12 @@ namespace Evernus
     {
         Q_ASSERT(mESIManager);
 
-        mESIManager->fetchAssets(id, [=](auto &&assets, const auto &error) {
+        mESIManager->fetchAssets(id, [=](auto &&assets, const auto &error, const auto &expires) {
             if (error.isEmpty())
+            {
                 updateCharacterAssets(id, assets);
+                setUtcCacheTimer(id, TimerType::AssetList, expires);
+            }
 
             emit taskEnded(assetSubtask, error);
         });
@@ -968,10 +971,11 @@ namespace Evernus
 
     void EvernusApplication::importMarketOrdersFromESI(Character::IdType id, uint importSubtask)
     {
-        mESIManager->fetchCharacterMarketOrders(id, [=](auto &&data, const auto &error) {
+        mESIManager->fetchCharacterMarketOrders(id, [=](auto &&data, const auto &error, const auto &expires) {
             if (error.isEmpty())
             {
                 importMarketOrders(id, data, false);
+                setUtcCacheTimer(id, TimerType::MarketOrders, expires);
 
                 emit marketOrdersChanged();
                 emit externalOrdersChangedWithMarketOrders();
@@ -2141,20 +2145,7 @@ namespace Evernus
             unmarkImport(id, TimerType::Character);
 
             if (error.isEmpty())
-            {
                 updateCharacter(data);
-
-                const auto cacheTimer = mCharacterUtcCacheTimes[id];
-                if (cacheTimer.isValid())
-                {
-                    Evernus::CacheTimer timer;
-                    timer.setCharacterId(id);
-                    timer.setType(Evernus::TimerType::Character);
-                    timer.setCacheUntil(cacheTimer);
-
-                    mCacheTimerRepository->store(timer);
-                }
-            }
 
             emit taskEnded(task, error);
         });
@@ -2162,7 +2153,7 @@ namespace Evernus
 
     void EvernusApplication::importCharacterFromESI(Character::IdType id, uint task, const Key &key)
     {
-        mESIManager->fetchCharacter(id, [=](auto &&data, const auto &error) {
+        mESIManager->fetchCharacter(id, [=](auto &&data, const auto &error, const auto &expires) {
             if (error.isEmpty())
             {
                 data.setKeyId(key.getId());
@@ -2652,9 +2643,11 @@ namespace Evernus
     {
         QSettings settings;
 
+        const auto charId = character.getId();
+
         try
         {
-            const auto prevData = mCharacterRepository->find(character.getId());
+            const auto prevData = mCharacterRepository->find(charId);
 
             if (!settings.value(Evernus::ImportSettings::importSkillsKey, Evernus::ImportSettings::importSkillsDefault).toBool())
             {
@@ -2677,11 +2670,22 @@ namespace Evernus
         mMainDb.exec("PRAGMA foreign_keys = ON;");
 
         if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
-            createWalletSnapshot(character.getId(), character.getISK());
+            createWalletSnapshot(charId, character.getISK());
 
-        saveUpdateTimer(Evernus::TimerType::Character, mCharacterUtcUpdateTimes, character.getId());
+        saveUpdateTimer(Evernus::TimerType::Character, mCharacterUtcUpdateTimes, charId);
 
         QMetaObject::invokeMethod(this, "scheduleCharacterUpdate", Qt::QueuedConnection);
+
+        const auto cacheTimer = mCharacterUtcCacheTimes[charId];
+        if (cacheTimer.isValid())
+        {
+            Evernus::CacheTimer timer;
+            timer.setCharacterId(charId);
+            timer.setType(Evernus::TimerType::Character);
+            timer.setCacheUntil(cacheTimer);
+
+            mCacheTimerRepository->store(timer);
+        }
     }
 
     double EvernusApplication::getTotalAssetListValue(const AssetList &list) const

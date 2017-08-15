@@ -36,6 +36,7 @@
 #include "EveType.h"
 
 class QJsonObject;
+class QDateTime;
 
 namespace Evernus
 {
@@ -50,7 +51,7 @@ namespace Evernus
 
     public:
         template<class T>
-        using Callback = std::function<void (T &&data, const QString &error)>;
+        using Callback = std::function<void (T &&data, const QString &error, const QDateTime &expires)>;
         using ExternalOrderList = std::vector<ExternalOrder>;
         using MarketOrderCallback = Callback<ExternalOrderList>;
         using HistoryMap = std::map<QDate, MarketHistoryEntry>;

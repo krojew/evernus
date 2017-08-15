@@ -926,7 +926,9 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
 
         if (mRaceNameCache.isEmpty())
         {
-            esiManager.fetchRaces([=](auto &&data, const auto &error) {
+            esiManager.fetchRaces([=](auto &&data, const auto &error, const auto &expires) {
+                Q_UNUSED(expires);
+
                 if (!error.isEmpty())
                 {
                     qWarning() << "Error precaching races:" << error;
@@ -940,7 +942,9 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
 
         if (mBloodlineNameCache.isEmpty())
         {
-            esiManager.fetchBloodlines([=](auto &&data, const auto &error) {
+            esiManager.fetchBloodlines([=](auto &&data, const auto &error, const auto &expires) {
+                Q_UNUSED(expires);
+
                 if (!error.isEmpty())
                 {
                     qWarning() << "Error precaching bloodlines:" << error;

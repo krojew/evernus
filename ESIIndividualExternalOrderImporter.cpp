@@ -65,7 +65,8 @@ namespace Evernus
             if (regionId != 0)
             {
                 mCounter.incCount();
-                mManager.fetchMarketOrders(regionId, pair.first, [this](auto &&orders, const auto &error) {
+                mManager.fetchMarketOrders(regionId, pair.first, [this](auto &&orders, const auto &error, const auto &expires) {
+                    Q_UNUSED(expires);
                     processResult(std::move(orders), error);
                 });
 
@@ -82,7 +83,8 @@ namespace Evernus
                             continue;
 
                         mCounter.incCount();
-                        mManager.fetchCitadelMarketOrders(citadel->getId(), regionId, id, [=](auto &&orders, const auto &error) {
+                        mManager.fetchCitadelMarketOrders(citadel->getId(), regionId, id, [=](auto &&orders, const auto &error, const auto &expires) {
+                            Q_UNUSED(expires);
                             processResult(std::move(orders), error);
                         });
 

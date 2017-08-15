@@ -17,7 +17,7 @@
 namespace Evernus
 {
     ButtonWithTimer::ButtonWithTimer(const QString &text, QWidget *parent)
-        : QPushButton{QIcon{":/images/arrow_refresh.png"}, text, parent}
+        : QPushButton{QIcon{QStringLiteral(":/images/arrow_refresh.png")}, text, parent}
         , mOrigText{text}
     {
         setFlat(true);
@@ -50,14 +50,14 @@ namespace Evernus
             const auto delta = curTime.secsTo(mEndTime);
             if (delta < 3600)
             {
-                setText(QString{"%1 (%2:%3)"}
+                setText(QStringLiteral("%1 (%2:%3)")
                     .arg(mOrigText)
                     .arg(delta / 60, 2, 10, QLatin1Char{'0'})
                     .arg(delta % 60, 2, 10, QLatin1Char{'0'}));
             }
             else
             {
-                setText(QString{"%1 (%4:%2:%3)"}
+                setText(QStringLiteral("%1 (%4:%2:%3)")
                     .arg(mOrigText)
                     .arg((delta % 3600) / 60, 2, 10, QLatin1Char{'0'})
                     .arg(delta % 60, 2, 10, QLatin1Char{'0'})

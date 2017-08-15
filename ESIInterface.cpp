@@ -34,15 +34,15 @@ namespace Evernus
     struct ESIInterface::TaggedInvoke<ESIInterface::JsonTag>
     {
         template<class T>
-        static inline void invoke(const QByteArray &data, const T &callback)
+        static inline void invoke(const QByteArray &data, const QDateTime &expires, const T &callback)
         {
-            callback(QJsonDocument::fromJson(data), QString{});
+            callback(QJsonDocument::fromJson(data), QString{}, expires);
         }
 
         template<class T>
-        static inline void invoke(const QString &error, const T &callback)
+        static inline void invoke(const QString &error, const QDateTime &expires, const T &callback)
         {
-            callback(QJsonDocument{}, error);
+            callback(QJsonDocument{}, error, expires);
         }
     };
 
@@ -50,15 +50,15 @@ namespace Evernus
     struct ESIInterface::TaggedInvoke<ESIInterface::StringTag>
     {
         template<class T>
-        static inline void invoke(const QByteArray &data, const T &callback)
+        static inline void invoke(const QByteArray &data, const QDateTime &expires, const T &callback)
         {
-            callback(QString::fromUtf8(data), QString{});
+            callback(QString::fromUtf8(data), QString{}, expires);
         }
 
         template<class T>
-        static inline void invoke(const QString &error, const T &callback)
+        static inline void invoke(const QString &error, const QDateTime &expires, const T &callback)
         {
-            callback(QString{}, error);
+            callback(QString{}, error, expires);
         }
     };
 
@@ -88,13 +88,13 @@ namespace Evernus
 
         if (Q_UNLIKELY(charId == Character::invalidId))
         {
-            callback({}, true, tr("Cannot fetch citadels with no character selected."));
+            callback({}, true, tr("Cannot fetch citadels with no character selected."), {});
             return;
         }
 
         checkAuth(charId, [=](const auto &error) {
             if (!error.isEmpty())
-                callback(QJsonDocument{}, true, error);
+                callback(QJsonDocument{}, true, error, {});
             else
                 fetchPaginatedData(charId, QStringLiteral("/v1/markets/structures/%1/").arg(citadelId), 1, callback, true);
         });
@@ -106,13 +106,13 @@ namespace Evernus
 
         if (Q_UNLIKELY(charId == Character::invalidId))
         {
-            callback({}, tr("Cannot fetch assets with no character selected."));
+            callback({}, tr("Cannot fetch assets with no character selected."), {});
             return;
         }
 
         checkAuth(charId, [=](const auto &error) {
             if (!error.isEmpty())
-                callback({}, error);
+                callback({}, error, {});
             else
                 asyncGet(charId, QStringLiteral("/v1/characters/%1/assets/").arg(charId), {}, callback, getNumRetries());
         });
@@ -124,7 +124,7 @@ namespace Evernus
 
         if (Q_UNLIKELY(charId == Character::invalidId))
         {
-            callback({}, tr("Cannot fetch character with no character selected."));
+            callback({}, tr("Cannot fetch character with no character selected."), {});
             return;
         }
 
@@ -137,13 +137,13 @@ namespace Evernus
 
         if (Q_UNLIKELY(charId == Character::invalidId))
         {
-            callback({}, tr("Cannot fetch character skills with no character selected."));
+            callback({}, tr("Cannot fetch character skills with no character selected."), {});
             return;
         }
 
         checkAuth(charId, [=](const auto &error) {
             if (!error.isEmpty())
-                callback({}, error);
+                callback({}, error, {});
             else
                 asyncGet(charId, QStringLiteral("/v3/characters/%1/skills/").arg(charId), {}, callback, getNumRetries());
         });
@@ -173,13 +173,13 @@ namespace Evernus
 
         if (Q_UNLIKELY(charId == Character::invalidId))
         {
-            callback({}, tr("Cannot fetch character wallet with no character selected."));
+            callback({}, tr("Cannot fetch character wallet with no character selected."), {});
             return;
         }
 
         checkAuth(charId, [=](const auto &error) {
             if (!error.isEmpty())
-                callback({}, error);
+                callback({}, error, {});
             else
                 asyncGet<decltype(callback), StringTag>(charId, QStringLiteral("/v1/characters/%1/wallet/").arg(charId), {}, callback, getNumRetries());
         });
@@ -191,13 +191,13 @@ namespace Evernus
 
         if (Q_UNLIKELY(charId == Character::invalidId))
         {
-            callback({}, tr("Cannot fetch character market orders with no character selected."));
+            callback({}, tr("Cannot fetch character market orders with no character selected."), {});
             return;
         }
 
         checkAuth(charId, [=](const auto &error) {
             if (!error.isEmpty())
-                callback({}, error);
+                callback({}, error, {});
             else
                 asyncGet(charId, QStringLiteral("/v1/characters/%1/orders/").arg(charId), {}, callback, getNumRetries());
         });
@@ -294,21 +294,21 @@ namespace Evernus
     template<class T>
     void ESIInterface::fetchPaginatedData(const QString &url, uint page, T &&continuation) const
     {
-        asyncGet(url, QStringLiteral("page=%1").arg(page), [=](auto &&response, const auto &error) {
+        asyncGet(url, QStringLiteral("page=%1").arg(page), [=](auto &&response, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
-                continuation({}, true, error);
+                continuation({}, true, error, expires);
                 return;
             }
 
             const auto array = response.array();
             if (array.isEmpty())
             {
-                continuation(std::move(response), true, QString{});
+                continuation(std::move(response), true, QString{}, expires);
             }
             else
             {
-                continuation(std::move(response), false, QString{});
+                continuation(std::move(response), false, QString{}, expires);
                 fetchPaginatedData(url, page + 1, continuation);
             }
         }, getNumRetries());
@@ -317,21 +317,21 @@ namespace Evernus
     template<class T>
     void ESIInterface::fetchPaginatedData(Character::IdType charId, const QString &url, uint page, T &&continuation, bool suppressForbidden) const
     {
-        asyncGet(charId, url, QStringLiteral("page=%1").arg(page), [=](auto &&response, const auto &error) {
+        asyncGet(charId, url, QStringLiteral("page=%1").arg(page), [=](auto &&response, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
-                continuation({}, true, error);
+                continuation({}, true, error, expires);
                 return;
             }
 
             const auto array = response.array();
             if (array.isEmpty())
             {
-                continuation(std::move(response), true, QString{});
+                continuation(std::move(response), true, QString{}, expires);
             }
             else
             {
-                continuation(std::move(response), false, QString{});
+                continuation(std::move(response), false, QString{}, expires);
                 fetchPaginatedData(charId, url, page + 1, continuation, suppressForbidden);
             }
         }, getNumRetries(), suppressForbidden);
@@ -358,11 +358,11 @@ namespace Evernus
                 if (retries > 0)
                     asyncGet(url, query, continuation, retries - 1);
                 else
-                    continuation(QJsonDocument{}, getError(url, query, *reply));
+                    continuation(QJsonDocument{}, getError(url, query, *reply), getExpireTime(*reply));
             }
             else
             {
-                continuation(QJsonDocument::fromJson(reply->readAll()), QString{});
+                continuation(QJsonDocument::fromJson(reply->readAll()), QString{}, getExpireTime(*reply));
             }
         });
     }
@@ -393,7 +393,7 @@ namespace Evernus
                         if (error.isEmpty())
                             asyncGet<T, ResultTag>(charId, url, query, continuation, retries, suppressForbidden);
                         else
-                            TaggedInvoke<ResultTag>::invoke(error, continuation);
+                            TaggedInvoke<ResultTag>::invoke(error, getExpireTime(*reply), continuation);
                     });
                 }
                 else
@@ -401,9 +401,9 @@ namespace Evernus
                     if (error == QNetworkReply::ContentOperationNotPermittedError || error == QNetworkReply::ContentAccessDenied)
                     {
                         if (suppressForbidden)
-                            TaggedInvoke<ResultTag>::invoke(QString{}, continuation);
+                            TaggedInvoke<ResultTag>::invoke(QString{}, getExpireTime(*reply), continuation);
                         else
-                            TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), continuation);
+                            TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), getExpireTime(*reply), continuation);
                     }
                     else if (retries > 0)
                     {
@@ -411,13 +411,13 @@ namespace Evernus
                     }
                     else
                     {
-                        TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), continuation);
+                        TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), getExpireTime(*reply), continuation);
                     }
                 }
             }
             else
             {
-                TaggedInvoke<ResultTag>::invoke(reply->readAll(), continuation);
+                TaggedInvoke<ResultTag>::invoke(reply->readAll(), getExpireTime(*reply), continuation);
             }
         });
     }
@@ -515,5 +515,10 @@ namespace Evernus
             errorString = reply.errorString();
 
         return QStringLiteral("%1?%2: %3").arg(url).arg(query).arg(errorString);
+    }
+
+    QDateTime ESIInterface::getExpireTime(const QNetworkReply &reply)
+    {
+        return QDateTime::fromString(reply.rawHeader(QByteArrayLiteral("expires")), Qt::RFC2822Date);
     }
 }
