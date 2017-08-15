@@ -482,6 +482,47 @@ namespace Evernus
         });
     }
 
+    void ESIManager::fetchCharacterMarketOrders(Character::IdType charId, const Callback<MarketOrders> &callback) const
+    {
+        selectNextInterface().fetchCharacterMarketOrders(charId, [=](auto &&data, const auto &error) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error);
+                return;
+            }
+
+            const auto orderArray = data.array();
+            MarketOrders orders(orderArray.size());
+
+            std::atomic_size_t index{0};
+            QtConcurrent::blockingMap(orderArray, [&, charId](const auto &order) {
+                const auto orderObj = order.toObject();
+
+                auto issued = QDateTime::fromString(orderObj.value("issued").toString(), Qt::ISODate);
+                issued.setTimeSpec(Qt::UTC);
+
+                auto &curOrder = orders[index++];
+                curOrder.setId(orderObj.value(QStringLiteral("order_id")).toDouble());
+                curOrder.setCharacterId(charId);
+                curOrder.setStationId(orderObj.value(QStringLiteral("location_id")).toDouble());
+                curOrder.setVolumeEntered(orderObj.value(QStringLiteral("volume_total")).toDouble());
+                curOrder.setVolumeRemaining(orderObj.value(QStringLiteral("volume_remain")).toDouble());
+                curOrder.setMinVolume(orderObj.value(QStringLiteral("min_volume")).toDouble());
+                curOrder.setState(getStateFromString(orderObj.value(QStringLiteral("state")).toString()));
+                curOrder.setTypeId(orderObj.value(QStringLiteral("type_id")).toDouble());
+                curOrder.setRange(getMarketOrderRangeFromString(orderObj.value(QStringLiteral("range")).toString()));
+                curOrder.setDuration(orderObj.value(QStringLiteral("duration")).toInt());
+                curOrder.setEscrow(orderObj.value(QStringLiteral("escrow")).toDouble());
+                curOrder.setPrice(orderObj.value(QStringLiteral("price")).toDouble());
+                curOrder.setType((orderObj.value(QStringLiteral("is_buy_order")).toBool()) ? (MarketOrder::Type::Buy) : (MarketOrder::Type::Sell));
+                curOrder.setIssued(issued);
+                curOrder.setFirstSeen(issued);
+            });
+
+            callback(std::move(orders), {});
+        });
+    }
+
     void ESIManager::openMarketDetails(EveType::IdType typeId, Character::IdType charId) const
     {
         selectNextInterface().openMarketDetails(typeId, charId, [=](const auto &errorText) {
@@ -527,7 +568,15 @@ namespace Evernus
                 query.addQueryItem(QStringLiteral("client_id"), mClientId);
                 query.addQueryItem(
                     QStringLiteral("scope"),
-                    QStringLiteral("esi-skills.read_skills.v1 esi-wallet.read_character_wallet.v1 esi-assets.read_assets.v1 esi-ui.open_window.v1 esi-ui.write_waypoint.v1 esi-markets.structure_markets.v1")
+                    QStringLiteral(
+                        "esi-skills.read_skills.v1 "
+                        "esi-wallet.read_character_wallet.v1 "
+                        "esi-assets.read_assets.v1 "
+                        "esi-ui.open_window.v1 "
+                        "esi-ui.write_waypoint.v1 "
+                        "esi-markets.structure_markets.v1 "
+                        "esi-markets.read_character_orders.v1"
+                    )
                 );
 
                 url.setQuery(query);
@@ -884,6 +933,33 @@ namespace Evernus
         mCurrentInterface = (mCurrentInterface + 1) % mInterfaces.size();
 
         return interface;
+    }
+
+    MarketOrder::State ESIManager::getStateFromString(const QString &state)
+    {
+        static const QHash<QString, MarketOrder::State> states = {
+            { QStringLiteral("open"), MarketOrder::State::Active },
+            { QStringLiteral("closed"), MarketOrder::State::Closed },
+            { QStringLiteral("expired"), MarketOrder::State::Fulfilled },
+            { QStringLiteral("cancelled"), MarketOrder::State::Cancelled },
+            { QStringLiteral("pending"), MarketOrder::State::Pending },
+            { QStringLiteral("character_deleted"), MarketOrder::State::CharacterDeleted },
+        };
+
+        // assume unknown is active, since there shouldn't be non-open orders returned anyway
+        return (states.contains(state)) ? (states[state]) : (MarketOrder::State::Active);
+    }
+
+    short ESIManager::getMarketOrderRangeFromString(const QString &range)
+    {
+        static const QHash<QString, short> ranges = {
+            { QStringLiteral("station"), MarketOrder::rangeStation },
+            { QStringLiteral("region"), MarketOrder::rangeRegion },
+            { QStringLiteral("solarsystem"), MarketOrder::rangeSystem },
+        };
+
+        // assume unknown is active, since there shouldn't be non-open orders returned anyway
+        return (ranges.contains(range)) ? (ranges[range]) : (range.toShort());
     }
 
     QNetworkRequest ESIManager::getVerifyRequest(const QByteArray &accessToken)

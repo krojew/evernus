@@ -58,6 +58,7 @@ namespace Evernus
         void fetchRaces(const JsonCallback &callback) const;
         void fetchBloodlines(const JsonCallback &callback) const;
         void fetchCharacterWallet(Character::IdType charId, const StringCallback &callback) const;
+        void fetchCharacterMarketOrders(Character::IdType charId, const JsonCallback &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const;
 

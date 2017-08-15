@@ -946,6 +946,41 @@ namespace Evernus
         });
     }
 
+    void EvernusApplication::importMarketOrdersFromXML(Character::IdType id, uint importSubtask)
+    {
+        if (!checkImportAndEndTask(id, TimerType::MarketOrders, importSubtask))
+            return;
+
+        try
+        {
+            const auto key = getCharacterKey(id);
+            doRefreshMarketOrdersFromAPI<&EvernusApplication::marketOrdersChanged>(*key, id, importSubtask, TimerType::MarketOrders);
+        }
+        catch (const KeyRepository::NotFoundException &)
+        {
+            emit taskEnded(importSubtask, tr("Key not found!"));
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            emit taskEnded(importSubtask, tr("Character not found!"));
+        }
+    }
+
+    void EvernusApplication::importMarketOrdersFromESI(Character::IdType id, uint importSubtask)
+    {
+        mESIManager->fetchCharacterMarketOrders(id, [=](auto &&data, const auto &error) {
+            if (error.isEmpty())
+            {
+                importMarketOrders(id, data, false);
+
+                emit marketOrdersChanged();
+                emit externalOrdersChangedWithMarketOrders();
+            }
+
+            emit taskEnded(importSubtask, error);
+        });
+    }
+
     void EvernusApplication::refreshContracts(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing contracts: " << id;
@@ -1142,22 +1177,10 @@ namespace Evernus
         const auto task = startTask(tr("Fetching market orders for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        if (!checkImportAndEndTask(id, TimerType::MarketOrders, task))
-            return;
-
-        try
-        {
-            const auto key = getCharacterKey(id);
-            doRefreshMarketOrdersFromAPI<&EvernusApplication::marketOrdersChanged>(*key, id, task, TimerType::MarketOrders);
-        }
-        catch (const KeyRepository::NotFoundException &)
-        {
-            emit taskEnded(task, tr("Key not found!"));
-        }
-        catch (const CharacterRepository::NotFoundException &)
-        {
-            emit taskEnded(task, tr("Character not found!"));
-        }
+        if (shouldUseESIOverXML())
+            importMarketOrdersFromESI(id, task);
+        else
+            importMarketOrdersFromXML(id, task);
     }
 
     void EvernusApplication::refreshMarketOrdersFromLogs(Character::IdType id, uint parentTask)

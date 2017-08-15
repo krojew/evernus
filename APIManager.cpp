@@ -18,6 +18,7 @@
 #include <QDomDocument>
 #include <QXmlQuery>
 #include <QDateTime>
+#include <QHash>
 
 #include "ConquerableStationListXmlReceiver.h"
 #include "WalletTransactionsXmlReceiver.h"

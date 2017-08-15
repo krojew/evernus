@@ -42,6 +42,10 @@ namespace Evernus
 
         static const auto characterAccountKey = 1000;
 
+        static const short rangeStation = -1;
+        static const short rangeSystem = 0;
+        static const short rangeRegion = 32767;
+
         using CutomLocationType = boost::optional<quint64>;
         using Type = PriceType;
 

@@ -380,6 +380,8 @@ namespace Evernus
         void importMarketOrders(Character::IdType id, MarketOrders &orders, bool corp);
         void importAssetsFromXML(Character::IdType id, uint assetSubtask);
         void importAssetsFromESI(Character::IdType id, uint assetSubtask);
+        void importMarketOrdersFromXML(Character::IdType id, uint importSubtask);
+        void importMarketOrdersFromESI(Character::IdType id, uint importSubtask);
 
         KeyRepository::EntityPtr getCharacterKey(Character::IdType id) const;
         CorpKeyRepository::EntityPtr getCorpKey(Character::IdType id) const;

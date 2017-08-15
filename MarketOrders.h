@@ -19,5 +19,5 @@
 
 namespace Evernus
 {
-    typedef std::vector<MarketOrder> MarketOrders;
+    using MarketOrders = std::vector<MarketOrder>;
 }

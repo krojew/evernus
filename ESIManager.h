@@ -28,7 +28,9 @@
 #include "MarketHistoryEntry.h"
 #include "SSOAuthWidget.h"
 #include "ESIInterface.h"
+#include "MarketOrders.h"
 #include "SimpleCrypt.h"
+#include "MarketOrder.h"
 #include "Character.h"
 #include "AssetList.h"
 #include "EveType.h"
@@ -78,6 +80,7 @@ namespace Evernus
         void fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const;
         void fetchRaces(const Callback<NameMap> &callback) const;
         void fetchBloodlines(const Callback<NameMap> &callback) const;
+        void fetchCharacterMarketOrders(Character::IdType charId, const Callback<MarketOrders> &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
 
@@ -137,6 +140,9 @@ namespace Evernus
         void scheduleNextTokenFetch();
 
         const ESIInterface &selectNextInterface() const;
+
+        static MarketOrder::State getStateFromString(const QString &state);
+        static short getMarketOrderRangeFromString(const QString &range);
 
         static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
     };
