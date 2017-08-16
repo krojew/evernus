@@ -77,7 +77,7 @@ namespace Evernus
                                       uint regionId,
                                       Character::IdType charId,
                                       const MarketOrderCallback &callback) const;
-        void fetchAssets(Character::IdType charId, const Callback<AssetList> &callback) const;
+        void fetchCharacterAssets(Character::IdType charId, const Callback<AssetList> &callback) const;
         void fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const;
         void fetchRaces(const Callback<NameMap> &callback) const;
         void fetchBloodlines(const Callback<NameMap> &callback) const;

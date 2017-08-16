@@ -2418,7 +2418,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::ESIManager</name>
     <message>
-        <location filename="../ESIManager.cpp" line="616"/>
+        <location filename="../ESIManager.cpp" line="617"/>
         <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2435,27 +2435,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="598"/>
+        <location filename="../ESIManager.cpp" line="599"/>
         <source>SSO Authentication for unknown character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="600"/>
+        <location filename="../ESIManager.cpp" line="601"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="689"/>
+        <location filename="../ESIManager.cpp" line="690"/>
         <source>Empty access token!</source>
         <translation type="unfinished">Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="763"/>
+        <location filename="../ESIManager.cpp" line="764"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished">Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="797"/>
+        <location filename="../ESIManager.cpp" line="798"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished">Proszę dać dostęp do postaci: %1</translation>
     </message>

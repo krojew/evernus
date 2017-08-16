@@ -100,7 +100,7 @@ namespace Evernus
         });
     }
 
-    void ESIInterface::fetchAssets(Character::IdType charId, const JsonCallback &callback) const
+    void ESIInterface::fetchCharacterAssets(Character::IdType charId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching assets for" << charId;
 

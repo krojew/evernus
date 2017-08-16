@@ -938,7 +938,7 @@ namespace Evernus
         Q_ASSERT(mESIManager);
 
         markImport(id, TimerType::AssetList);
-        mESIManager->fetchAssets(id, [=](auto &&assets, const auto &error, const auto &expires) {
+        mESIManager->fetchCharacterAssets(id, [=](auto &&assets, const auto &error, const auto &expires) {
             unmarkImport(id, TimerType::AssetList);
 
             if (error.isEmpty())

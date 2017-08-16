@@ -192,9 +192,9 @@ namespace Evernus
         selectNextInterface().fetchCitadelMarketOrders(citadelId, charId, getMarketOrderCallback(regionId, callback));
     }
 
-    void ESIManager::fetchAssets(Character::IdType charId, const Callback<AssetList> &callback) const
+    void ESIManager::fetchCharacterAssets(Character::IdType charId, const Callback<AssetList> &callback) const
     {
-        selectNextInterface().fetchAssets(charId, [=](auto &&data, const auto &error, const auto &expires) {
+        selectNextInterface().fetchCharacterAssets(charId, [=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error, expires);
