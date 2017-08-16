@@ -575,7 +575,8 @@ namespace Evernus
                         "esi-ui.open_window.v1 "
                         "esi-ui.write_waypoint.v1 "
                         "esi-markets.structure_markets.v1 "
-                        "esi-markets.read_character_orders.v1"
+                        "esi-markets.read_character_orders.v1 "
+                        "esi-contracts.read_character_contracts.v1"
                     )
                 );
 
