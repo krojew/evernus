@@ -18,17 +18,21 @@
 #include <unordered_set>
 #include <functional>
 #include <vector>
+#include <memory>
 #include <map>
 
 #include <boost/optional.hpp>
 
 #include <QNetworkAccessManager>
 #include <QScopedPointer>
+#include <QDateTime>
 #include <QString>
 #include <QDate>
 
 #include "MarketHistoryEntry.h"
 #include "WalletJournalEntry.h"
+#include "WalletTransactions.h"
+#include "WalletTransaction.h"
 #include "SSOAuthWidget.h"
 #include "WalletJournal.h"
 #include "ESIInterface.h"
@@ -89,6 +93,9 @@ namespace Evernus
         void fetchCharacterWalletJournal(Character::IdType charId,
                                          WalletJournalEntry::IdType tillId,
                                          const Callback<WalletJournal> &callback) const;
+        void fetchCharacterWalletTransactions(Character::IdType charId,
+                                              WalletTransaction::IdType tillId,
+                                              const Callback<WalletTransactions> &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
 
@@ -141,6 +148,11 @@ namespace Evernus
                                          const boost::optional<WalletJournalEntry::IdType> &fromId,
                                          WalletJournalEntry::IdType tillId,
                                          const Callback<WalletJournal> &callback) const;
+        void fetchCharacterWalletTransactions(Character::IdType charId,
+                                              const boost::optional<WalletTransaction::IdType> &fromId,
+                                              WalletTransaction::IdType tillId,
+                                              std::shared_ptr<WalletTransactions> &&transactions,
+                                              const Callback<WalletTransactions> &callback) const;
 
         void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
 
@@ -156,6 +168,7 @@ namespace Evernus
 
         static MarketOrder::State getStateFromString(const QString &state);
         static short getMarketOrderRangeFromString(const QString &range);
+        static QDateTime getDateTimeFromString(const QString &value);
 
         static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
     };

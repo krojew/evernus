@@ -1043,6 +1043,60 @@ namespace Evernus
         });
     }
 
+    void EvernusApplication::importCharacterWalletTransactionsFromXML(Character::IdType id, uint importSubtask)
+    {
+        try
+        {
+            const auto key = getCharacterKey(id);
+            const auto maxId = mWalletTransactionRepository->getLatestEntryId(id);
+
+            if (maxId == WalletTransaction::invalidId)
+                emit taskInfoChanged(importSubtask, tr("Fetching wallet transactions for character %1 (this may take a while)...").arg(id));
+
+            markImport(id, TimerType::WalletTransactions);
+            mAPIManager.fetchWalletTransactions(*key, id, WalletTransaction::invalidId, maxId,
+                                                [=](const auto &data, const auto &error) {
+                unmarkImport(id, TimerType::WalletTransactions);
+
+                if (error.isEmpty())
+                    updateCharacterWalletTransactions(id, data);
+
+                emit taskEnded(importSubtask, error);
+            });
+        }
+        catch (const KeyRepository::NotFoundException &)
+        {
+            emit taskEnded(importSubtask, tr("Key not found!"));
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            emit taskEnded(importSubtask, tr("Character not found!"));
+        }
+    }
+
+    void EvernusApplication::importCharacterWalletTransactionsFromESI(Character::IdType id, uint importSubtask)
+    {
+        const auto maxId = mWalletTransactionRepository->getLatestEntryId(id);
+
+        if (maxId == WalletTransaction::invalidId)
+            emit taskInfoChanged(importSubtask, tr("Fetching wallet transactions for character %1 (this may take a while)...").arg(id));
+
+        Q_ASSERT(mESIManager);
+
+        markImport(id, TimerType::WalletTransactions);
+        mESIManager->fetchCharacterWalletTransactions(id, maxId, [=](auto &&data, const auto &error, const auto &expires) {
+            unmarkImport(id, TimerType::WalletTransactions);
+
+            if (error.isEmpty())
+            {
+                setUtcCacheTimer(id, TimerType::WalletTransactions, expires);
+                updateCharacterWalletTransactions(id, data);
+            }
+
+            emit taskEnded(importSubtask, error);
+        });
+    }
+
     void EvernusApplication::refreshCharacterContracts(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing contracts: " << id;
@@ -1118,6 +1172,7 @@ namespace Evernus
             return;
 
         // TODO: enable when complete
+        // https://github.com/ccpgames/esi-issues/issues/493
 //        if (shouldUseESIOverXML())
 //            importCharacterWalletJournalFromESI(id, task);
 //        else
@@ -1134,53 +1189,12 @@ namespace Evernus
         if (!force && !checkImportAndEndTask(id, TimerType::WalletTransactions, task))
             return;
 
-        try
-        {
-            const auto key = getCharacterKey(id);
-            const auto maxId = mWalletTransactionRepository->getLatestEntryId(id);
-
-            if (maxId == WalletTransaction::invalidId)
-                emit taskInfoChanged(task, tr("Fetching wallet transactions for character %1 (this may take a while)...").arg(id));
-
-            markImport(id, TimerType::WalletTransactions);
-            mAPIManager.fetchWalletTransactions(*key, id, WalletTransaction::invalidId, maxId,
-                                                [task, id, this](const auto &data, const auto &error) {
-                unmarkImport(id, Evernus::TimerType::WalletTransactions);
-
-                if (error.isEmpty())
-                {
-                    asyncBatchStore(*mWalletTransactionRepository, data, true);
-                    saveUpdateTimer(Evernus::TimerType::WalletTransactions, mWalletTransactionsUtcUpdateTimes, id);
-
-                    QSettings settings;
-                    if (settings.value(Evernus::PriceSettings::autoAddCustomItemCostKey, Evernus::PriceSettings::autoAddCustomItemCostDefault).toBool() &&
-                        !mPendingAutoCostOrders.empty())
-                    {
-                        computeAutoCosts(id,
-                                         mCharacterOrderProvider->getBuyOrders(id),
-                                         std::bind(&Evernus::WalletTransactionRepository::fetchForCharacterInRange,
-                                                   mWalletTransactionRepository.get(),
-                                                   id,
-                                                   std::placeholders::_1,
-                                                   std::placeholders::_2,
-                                                   Evernus::WalletTransactionRepository::EntryType::Buy,
-                                                   std::placeholders::_3));
-                    }
-
-                    emit characterWalletTransactionsChanged();
-                }
-
-                emit taskEnded(task, error);
-            });
-        }
-        catch (const KeyRepository::NotFoundException &)
-        {
-            emit taskEnded(task, tr("Key not found!"));
-        }
-        catch (const CharacterRepository::NotFoundException &)
-        {
-            emit taskEnded(task, tr("Character not found!"));
-        }
+        // TODO: enable when complete
+        // https://github.com/ccpgames/esi-issues/issues/493
+//        if (shouldUseESIOverXML())
+//            importCharacterWalletTransactionsFromESI(id, task);
+//        else
+            importCharacterWalletTransactionsFromXML(id, task);
     }
 
     void EvernusApplication::refreshCharacterMarketOrdersFromAPI(Character::IdType id, uint parentTask)
@@ -2736,6 +2750,29 @@ namespace Evernus
         saveUpdateTimer(TimerType::WalletJournal, mWalletJournalUtcUpdateTimes, id);
 
         emit characterWalletJournalChanged();
+    }
+
+    void EvernusApplication::updateCharacterWalletTransactions(Character::IdType id, const WalletTransactions &data)
+    {
+        asyncBatchStore(*mWalletTransactionRepository, data, true);
+        saveUpdateTimer(TimerType::WalletTransactions, mWalletTransactionsUtcUpdateTimes, id);
+
+        QSettings settings;
+        if (settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool() &&
+            !mPendingAutoCostOrders.empty())
+        {
+            computeAutoCosts(id,
+                             mCharacterOrderProvider->getBuyOrders(id),
+                             std::bind(&WalletTransactionRepository::fetchForCharacterInRange,
+                                       mWalletTransactionRepository.get(),
+                                       id,
+                                       std::placeholders::_1,
+                                       std::placeholders::_2,
+                                       WalletTransactionRepository::EntryType::Buy,
+                                       std::placeholders::_3));
+        }
+
+        emit characterWalletTransactionsChanged();
     }
 
     double EvernusApplication::getTotalAssetListValue(const AssetList &list) const

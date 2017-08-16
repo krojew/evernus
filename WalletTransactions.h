@@ -19,5 +19,5 @@
 
 namespace Evernus
 {
-    typedef std::set<WalletTransaction> WalletTransactions;
+    using WalletTransactions = std::set<WalletTransaction>;
 }

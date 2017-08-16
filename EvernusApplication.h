@@ -60,6 +60,7 @@
 #include "CacheTimerProvider.h"
 #include "RepositoryProvider.h"
 #include "ContractRepository.h"
+#include "WalletTransactions.h"
 #include "CitadelRepository.h"
 #include "EveTypeRepository.h"
 #include "RefTypeRepository.h"
@@ -385,6 +386,8 @@ namespace Evernus
         void importCharacterMarketOrdersFromESI(Character::IdType id, uint importSubtask);
         void importCharacterWalletJournalFromXML(Character::IdType id, uint importSubtask);
         void importCharacterWalletJournalFromESI(Character::IdType id, uint importSubtask);
+        void importCharacterWalletTransactionsFromXML(Character::IdType id, uint importSubtask);
+        void importCharacterWalletTransactionsFromESI(Character::IdType id, uint importSubtask);
 
         KeyRepository::EntityPtr getCharacterKey(Character::IdType id) const;
         CorpKeyRepository::EntityPtr getCorpKey(Character::IdType id) const;
@@ -397,6 +400,7 @@ namespace Evernus
         void updateCharacterAssets(Character::IdType id, AssetList &list);
         void updateCharacter(Character &character);
         void updateCharacterWalletJournal(Character::IdType id, const WalletJournal &data);
+        void updateCharacterWalletTransactions(Character::IdType id, const WalletTransactions &data);
 
         double getTotalAssetListValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;

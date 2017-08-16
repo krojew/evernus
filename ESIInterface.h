@@ -25,6 +25,7 @@
 #include <QString>
 
 #include "WalletJournalEntry.h"
+#include "WalletTransaction.h"
 #include "Character.h"
 #include "EveType.h"
 
@@ -65,6 +66,9 @@ namespace Evernus
         void fetchCharacterWalletJournal(Character::IdType charId,
                                          const boost::optional<WalletJournalEntry::IdType> &fromId,
                                          const JsonCallback &callback) const;
+        void fetchCharacterWalletTransactions(Character::IdType charId,
+                                              const boost::optional<WalletTransaction::IdType> &fromId,
+                                              const JsonCallback &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const;
 

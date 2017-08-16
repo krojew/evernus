@@ -364,7 +364,8 @@ namespace Evernus
 
     void WalletTransactionsModel::updateNames()
     {
-        emit dataChanged(index(0, characterColumn), index(rowCount() - 1, characterColumn), QVector<int>{} << Qt::UserRole << Qt::DisplayRole);
+        emit dataChanged(index(0, characterColumn), index(rowCount() - 1, characterColumn), { Qt::UserRole, Qt::DisplayRole });
+        emit dataChanged(index(0, clientColumn), index(rowCount() - 1, clientColumn), { Qt::UserRole, Qt::DisplayRole });
     }
 
     void WalletTransactionsModel::processData(const WalletTransactionRepository::EntityList &entries)

@@ -14,6 +14,8 @@
  */
 #include <algorithm>
 #include <atomic>
+#include <limits>
+#include <mutex>
 
 #include <QtConcurrent>
 
@@ -29,7 +31,6 @@
 #include <QByteArray>
 #include <QUrlQuery>
 #include <QSettings>
-#include <QDateTime>
 #include <QDebug>
 
 #include <boost/scope_exit.hpp>
@@ -498,8 +499,7 @@ namespace Evernus
             QtConcurrent::blockingMap(orderArray, [&, charId](const auto &order) {
                 const auto orderObj = order.toObject();
 
-                auto issued = QDateTime::fromString(orderObj.value("issued").toString(), Qt::ISODate);
-                issued.setTimeSpec(Qt::UTC);
+                const auto issued = getDateTimeFromString(orderObj.value("issued").toString());
 
                 auto &curOrder = orders[index++];
                 curOrder.setId(orderObj.value(QStringLiteral("order_id")).toDouble());
@@ -528,6 +528,13 @@ namespace Evernus
                                                  const Callback<WalletJournal> &callback) const
     {
         fetchCharacterWalletJournal(charId, boost::none, tillId, callback);
+    }
+
+    void ESIManager::fetchCharacterWalletTransactions(Character::IdType charId,
+                                                      WalletTransaction::IdType tillId,
+                                                      const Callback<WalletTransactions> &callback) const
+    {
+        fetchCharacterWalletTransactions(charId, boost::none, tillId, std::make_shared<WalletTransactions>(), callback);
     }
 
     void ESIManager::openMarketDetails(EveType::IdType typeId, Character::IdType charId) const
@@ -762,6 +769,85 @@ namespace Evernus
         });
     }
 
+    void ESIManager::fetchCharacterWalletTransactions(Character::IdType charId,
+                                                      const boost::optional<WalletTransaction::IdType> &fromId,
+                                                      WalletTransaction::IdType tillId,
+                                                      std::shared_ptr<WalletTransactions> &&transactions,
+                                                      const Callback<WalletTransactions> &callback) const
+    {
+        selectNextInterface().fetchCharacterWalletTransactions(
+            charId,
+            fromId,
+            [=, transactions = std::move(transactions)](auto &&data, const auto &error, const auto &expires) mutable {
+                if (Q_UNLIKELY(!error.isEmpty()))
+                {
+                    callback({}, error, expires);
+                    return;
+                }
+
+                auto nextFromId = std::numeric_limits<WalletTransaction::IdType>::max();
+                std::atomic_bool reachedEnd{transactions->empty()};
+
+                std::mutex resultMutex;
+
+                auto transactionsArray = data.array();
+                QtConcurrent::blockingMap(
+                    transactionsArray,
+                    [&](const auto &value) {
+                        const auto transactionObj = value.toObject();
+
+                        WalletTransaction transaction{transactionObj.value(QStringLiteral("transaction_id")).toDouble()};
+
+                        const auto id = transaction.getId();
+                        if (id > tillId)
+                        {
+                            transaction.setCharacterId(charId);
+                            transaction.setTimestamp(getDateTimeFromString(transactionObj.value(QStringLiteral("date")).toString()));
+                            transaction.setQuantity(transactionObj.value(QStringLiteral("quantity")).toDouble());
+                            transaction.setTypeId(transactionObj.value(QStringLiteral("type_id")).toDouble());
+                            transaction.setPrice(transactionObj.value(QStringLiteral("unit_price")).toDouble());
+                            transaction.setClientId(transactionObj.value(QStringLiteral("client_id")).toDouble());
+                            transaction.setClientName(mDataProvider.getGenericName(transaction.getClientId()));
+                            transaction.setLocationId(transactionObj.value(QStringLiteral("location_id")).toDouble());
+                            transaction.setType(
+                                (transactionObj.value(QStringLiteral("is_buy")).toBool()) ?
+                                (WalletTransaction::Type::Buy) :
+                                (WalletTransaction::Type::Sell)
+                            );
+                            transaction.setJournalId(transactionObj.value(QStringLiteral("journal_ref_id")).toDouble());
+
+                            {
+                                std::lock_guard<std::mutex> lock{resultMutex};
+
+                                transactions->emplace(std::move(transaction));
+                                if (nextFromId > id)
+                                    nextFromId = id;
+                            }
+                        }
+                        else
+                        {
+                            reachedEnd = true;
+                        }
+                    }
+                );
+
+                if (reachedEnd)
+                {
+                    callback(std::move(*transactions), {}, expires);
+                }
+                else
+                {
+                    fetchCharacterWalletTransactions(
+                        charId,
+                        nextFromId,
+                        tillId,
+                        std::move(transactions),
+                        callback
+                    );
+                }
+        });
+    }
+
     void ESIManager::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
     {
         try
@@ -873,9 +959,6 @@ namespace Evernus
     {
         const auto range = object.value("range").toString();
 
-        auto issued = QDateTime::fromString(object.value("issued").toString(), Qt::ISODate);
-        issued.setTimeSpec(Qt::UTC);
-
         ExternalOrder order;
 
         order.setId(object.value("order_id").toDouble()); // https://bugreports.qt.io/browse/QTBUG-28560
@@ -901,7 +984,7 @@ namespace Evernus
         order.setVolumeEntered(object.value("volume_total").toInt());
         order.setVolumeRemaining(object.value("volume_remain").toInt());
         order.setMinVolume(object.value("min_volume").toInt());
-        order.setIssued(issued);
+        order.setIssued(getDateTimeFromString(object.value("issued").toString()));
         order.setDuration(object.value("duration").toInt());
 
         return order;
@@ -1002,6 +1085,14 @@ namespace Evernus
 
         // assume unknown is active, since there shouldn't be non-open orders returned anyway
         return (ranges.contains(range)) ? (ranges[range]) : (range.toShort());
+    }
+
+    QDateTime ESIManager::getDateTimeFromString(const QString &value)
+    {
+        auto dt = QDateTime::fromString(value, Qt::ISODate);
+        dt.setTimeSpec(Qt::UTC);
+
+        return dt;
     }
 
     QNetworkRequest ESIManager::getVerifyRequest(const QByteArray &accessToken)
