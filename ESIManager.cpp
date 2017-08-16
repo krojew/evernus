@@ -214,7 +214,7 @@ namespace Evernus
             {
                 const auto item = itemObj.toObject();
 
-                auto newItem = std::make_unique<Item>(item.value(QStringLiteral("item_id")).toDouble());
+                auto newItem = std::make_unique<Item>(static_cast<Item::IdType>(item.value(QStringLiteral("item_id")).toDouble()));
                 newItem->setLocationId(item.value(QStringLiteral("location_id")).toDouble());
                 newItem->setTypeId(item.value(QStringLiteral("type_id")).toDouble());
                 newItem->setQuantity(item.value(QStringLiteral("quantity")).toDouble());
@@ -796,7 +796,9 @@ namespace Evernus
                     [&](const auto &value) {
                         const auto transactionObj = value.toObject();
 
-                        WalletTransaction transaction{transactionObj.value(QStringLiteral("transaction_id")).toDouble()};
+                        WalletTransaction transaction{
+                            static_cast<WalletTransaction::IdType>(transactionObj.value(QStringLiteral("transaction_id")).toDouble())
+                        };
 
                         const auto id = transaction.getId();
                         if (id > tillId)
