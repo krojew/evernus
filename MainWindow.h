@@ -115,12 +115,12 @@ namespace Evernus
         void taskEnded(uint taskId, const QString &error);
 
         void importCharacter(Character::IdType id);
-        void importAssets(Character::IdType id);
-        void importContracts(Character::IdType id);
-        void importWalletJournal(Character::IdType id);
-        void importWalletTransactions(Character::IdType id);
-        void importMarketOrdersFromAPI(Character::IdType id);
-        void importMarketOrdersFromLogs(Character::IdType id);
+        void importCharacterAssets(Character::IdType id);
+        void importCharacterContracts(Character::IdType id);
+        void importCharacterWalletJournal(Character::IdType id);
+        void importCharacterWalletTransactions(Character::IdType id);
+        void importCharacterMarketOrdersFromAPI(Character::IdType id);
+        void importCharacterMarketOrdersFromLogs(Character::IdType id);
         void importCorpAssets(Character::IdType id);
         void importCorpContracts(Character::IdType id);
         void importCorpWalletJournal(Character::IdType id);

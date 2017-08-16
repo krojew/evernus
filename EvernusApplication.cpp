@@ -891,7 +891,7 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::refreshAssets(Character::IdType id, uint parentTask)
+    void EvernusApplication::refreshCharacterAssets(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing assets: " << id;
 
@@ -902,12 +902,12 @@ namespace Evernus
             return;
 
         if (shouldUseESIOverXML())
-            importAssetsFromESI(id, assetSubtask);
+            importCharacterAssetsFromESI(id, assetSubtask);
         else
-            importAssetsFromXML(id, assetSubtask);
+            importCharacterAssetsFromXML(id, assetSubtask);
     }
 
-    void EvernusApplication::importAssetsFromXML(Character::IdType id, uint assetSubtask)
+    void EvernusApplication::importCharacterAssetsFromXML(Character::IdType id, uint importSubtask)
     {
         try
         {
@@ -920,20 +920,20 @@ namespace Evernus
                 if (error.isEmpty())
                     updateCharacterAssets(id, data);
 
-                emit taskEnded(assetSubtask, error);
+                emit taskEnded(importSubtask, error);
             });
         }
         catch (const KeyRepository::NotFoundException &)
         {
-            emit taskEnded(assetSubtask, tr("Key not found!"));
+            emit taskEnded(importSubtask, tr("Key not found!"));
         }
         catch (const CharacterRepository::NotFoundException &)
         {
-            emit taskEnded(assetSubtask, tr("Character not found!"));
+            emit taskEnded(importSubtask, tr("Character not found!"));
         }
     }
 
-    void EvernusApplication::importAssetsFromESI(Character::IdType id, uint assetSubtask)
+    void EvernusApplication::importCharacterAssetsFromESI(Character::IdType id, uint importSubtask)
     {
         Q_ASSERT(mESIManager);
 
@@ -947,11 +947,11 @@ namespace Evernus
                 updateCharacterAssets(id, assets);
             }
 
-            emit taskEnded(assetSubtask, error);
+            emit taskEnded(importSubtask, error);
         });
     }
 
-    void EvernusApplication::importMarketOrdersFromXML(Character::IdType id, uint importSubtask)
+    void EvernusApplication::importCharacterMarketOrdersFromXML(Character::IdType id, uint importSubtask)
     {
         try
         {
@@ -968,7 +968,7 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::importMarketOrdersFromESI(Character::IdType id, uint importSubtask)
+    void EvernusApplication::importCharacterMarketOrdersFromESI(Character::IdType id, uint importSubtask)
     {
         markImport(id, TimerType::MarketOrders);
         mESIManager->fetchCharacterMarketOrders(id, [=](auto &&data, const auto &error, const auto &expires) {
@@ -987,7 +987,7 @@ namespace Evernus
         });
     }
 
-    void EvernusApplication::refreshContracts(Character::IdType id, uint parentTask)
+    void EvernusApplication::refreshCharacterContracts(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing contracts: " << id;
 
@@ -1051,7 +1051,7 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::refreshWalletJournal(Character::IdType id, uint parentTask)
+    void EvernusApplication::refreshCharacterWalletJournal(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing wallet journal: " << id;
 
@@ -1117,7 +1117,7 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::refreshWalletTransactions(Character::IdType id, uint parentTask, bool force)
+    void EvernusApplication::refreshCharacterWalletTransactions(Character::IdType id, uint parentTask, bool force)
     {
         qDebug() << "Refreshing wallet transactions: " << id;
 
@@ -1176,7 +1176,7 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::refreshMarketOrdersFromAPI(Character::IdType id, uint parentTask)
+    void EvernusApplication::refreshCharacterMarketOrdersFromAPI(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing market orders from API: " << id;
 
@@ -1187,12 +1187,12 @@ namespace Evernus
             return;
 
         if (shouldUseESIOverXML())
-            importMarketOrdersFromESI(id, task);
+            importCharacterMarketOrdersFromESI(id, task);
         else
-            importMarketOrdersFromXML(id, task);
+            importCharacterMarketOrdersFromXML(id, task);
     }
 
-    void EvernusApplication::refreshMarketOrdersFromLogs(Character::IdType id, uint parentTask)
+    void EvernusApplication::refreshCharacterMarketOrdersFromLogs(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing market orders from logs: " << id;
 
@@ -2533,7 +2533,7 @@ namespace Evernus
                 if (corp)
                     refreshCorpWalletTransactions(id, TaskConstants::invalidTask, true);
                 else
-                    refreshWalletTransactions(id, TaskConstants::invalidTask, true);
+                    refreshCharacterWalletTransactions(id, TaskConstants::invalidTask, true);
             }
 
             if (settings.value(PriceSettings::refreshPricesWithOrdersKey).toBool())

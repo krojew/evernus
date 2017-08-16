@@ -200,12 +200,12 @@ namespace Evernus
     public slots:
         void refreshCharacters();
         void refreshCharacter(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
-        void refreshAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
-        void refreshContracts(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
-        void refreshWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
-        void refreshWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask, bool force = false);
-        void refreshMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
-        void refreshMarketOrdersFromLogs(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshCharacterAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshCharacterContracts(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshCharacterWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshCharacterWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask, bool force = false);
+        void refreshCharacterMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshCharacterMarketOrdersFromLogs(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpContracts(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
@@ -378,10 +378,10 @@ namespace Evernus
         void importExternalOrders(const std::string &importerName, Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
         void importMarketOrdersFromLogs(Character::IdType id, uint task, bool corp);
         void importMarketOrders(Character::IdType id, MarketOrders &orders, bool corp);
-        void importAssetsFromXML(Character::IdType id, uint assetSubtask);
-        void importAssetsFromESI(Character::IdType id, uint assetSubtask);
-        void importMarketOrdersFromXML(Character::IdType id, uint importSubtask);
-        void importMarketOrdersFromESI(Character::IdType id, uint importSubtask);
+        void importCharacterAssetsFromXML(Character::IdType id, uint importSubtask);
+        void importCharacterAssetsFromESI(Character::IdType id, uint importSubtask);
+        void importCharacterMarketOrdersFromXML(Character::IdType id, uint importSubtask);
+        void importCharacterMarketOrdersFromESI(Character::IdType id, uint importSubtask);
 
         KeyRepository::EntityPtr getCharacterKey(Character::IdType id) const;
         CorpKeyRepository::EntityPtr getCorpKey(Character::IdType id) const;

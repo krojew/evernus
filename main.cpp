@@ -261,18 +261,18 @@ int main(int argc, char *argv[])
                              &app, &Evernus::EvernusApplication::refreshCitadels);
             QObject::connect(&mainWnd, &Evernus::MainWindow::importCharacter,
                              &app, [&app](auto id) { app.refreshCharacter(id); });
-            QObject::connect(&mainWnd, &Evernus::MainWindow::importAssets,
-                             &app, [&app](auto id) { app.refreshAssets(id); });
-            QObject::connect(&mainWnd, &Evernus::MainWindow::importContracts,
-                             &app, [&app](auto id) { app.refreshContracts(id); });
-            QObject::connect(&mainWnd, &Evernus::MainWindow::importWalletJournal,
-                             &app, [&app](auto id) { app.refreshWalletJournal(id); });
-            QObject::connect(&mainWnd, &Evernus::MainWindow::importWalletTransactions,
-                             &app, [&app](auto id) { app.refreshWalletTransactions(id); });
-            QObject::connect(&mainWnd, &Evernus::MainWindow::importMarketOrdersFromAPI,
-                             &app, [&app](auto id) { app.refreshMarketOrdersFromAPI(id); });
-            QObject::connect(&mainWnd, &Evernus::MainWindow::importMarketOrdersFromLogs,
-                             &app, [&app](auto id) { app.refreshMarketOrdersFromLogs(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCharacterAssets,
+                             &app, [&app](auto id) { app.refreshCharacterAssets(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCharacterContracts,
+                             &app, [&app](auto id) { app.refreshCharacterContracts(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCharacterWalletJournal,
+                             &app, [&app](auto id) { app.refreshCharacterWalletJournal(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCharacterWalletTransactions,
+                             &app, [&app](auto id) { app.refreshCharacterWalletTransactions(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCharacterMarketOrdersFromAPI,
+                             &app, [&app](auto id) { app.refreshCharacterMarketOrdersFromAPI(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCharacterMarketOrdersFromLogs,
+                             &app, [&app](auto id) { app.refreshCharacterMarketOrdersFromLogs(id); });
             QObject::connect(&mainWnd, &Evernus::MainWindow::importCorpAssets,
                              &app, [&app](auto id) { app.refreshCorpAssets(id); });
             QObject::connect(&mainWnd, &Evernus::MainWindow::importCorpContracts,

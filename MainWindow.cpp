@@ -316,12 +316,12 @@ namespace Evernus
                 if (corp)
                     emit importCorpAssets(id);
 
-                emit importAssets(id);
+                emit importCharacterAssets(id);
             });
         }
         else if (mCurrentCharacterId != Character::invalidId)
         {
-            emit importAssets(mCurrentCharacterId);
+            emit importCharacterAssets(mCurrentCharacterId);
         }
     }
 
@@ -335,7 +335,7 @@ namespace Evernus
                 if (corp)
                     emit importCorpContracts(id);
 
-                emit importContracts(id);
+                emit importCharacterContracts(id);
             });
         }
         else if (mCurrentCharacterId != Character::invalidId)
@@ -343,7 +343,7 @@ namespace Evernus
             if (settings.value(ImportSettings::updateCorpDataKey).toBool())
                 emit importCorpContracts(mCurrentCharacterId);
 
-            emit importContracts(mCurrentCharacterId);
+            emit importCharacterContracts(mCurrentCharacterId);
         }
     }
 
@@ -357,7 +357,7 @@ namespace Evernus
                 if (corp)
                     emit importCorpWalletJournal(id);
 
-                emit importWalletJournal(id);
+                emit importCharacterWalletJournal(id);
             });
         }
         else if (mCurrentCharacterId != Character::invalidId)
@@ -365,7 +365,7 @@ namespace Evernus
             if (settings.value(ImportSettings::updateCorpDataKey).toBool())
                 emit importCorpWalletJournal(mCurrentCharacterId);
 
-            emit importWalletJournal(mCurrentCharacterId);
+            emit importCharacterWalletJournal(mCurrentCharacterId);
         }
     }
 
@@ -379,7 +379,7 @@ namespace Evernus
                 if (corp)
                     emit importCorpWalletTransactions(id);
 
-                emit importWalletTransactions(id);
+                emit importCharacterWalletTransactions(id);
             });
         }
         else if (mCurrentCharacterId != Character::invalidId)
@@ -387,7 +387,7 @@ namespace Evernus
             if (settings.value(ImportSettings::updateCorpDataKey).toBool())
                 emit importCorpWalletTransactions(mCurrentCharacterId);
 
-            emit importWalletTransactions(mCurrentCharacterId);
+            emit importCharacterWalletTransactions(mCurrentCharacterId);
         }
     }
 
@@ -401,7 +401,7 @@ namespace Evernus
                 if (corp)
                     emit importCorpMarketOrdersFromAPI(id);
 
-                emit importMarketOrdersFromAPI(id);
+                emit importCharacterMarketOrdersFromAPI(id);
             });
         }
         else if (mCurrentCharacterId != Character::invalidId)
@@ -409,7 +409,7 @@ namespace Evernus
             if (settings.value(ImportSettings::updateCorpDataKey).toBool())
                 emit importCorpMarketOrdersFromAPI(mCurrentCharacterId);
 
-            emit importMarketOrdersFromAPI(mCurrentCharacterId);
+            emit importCharacterMarketOrdersFromAPI(mCurrentCharacterId);
         }
     }
 
@@ -423,7 +423,7 @@ namespace Evernus
                 if (corp)
                     emit importCorpMarketOrdersFromLogs(id);
 
-                emit importMarketOrdersFromLogs(id);
+                emit importCharacterMarketOrdersFromLogs(id);
             });
         }
         else if (mCurrentCharacterId != Character::invalidId)
@@ -431,7 +431,7 @@ namespace Evernus
             if (settings.value(ImportSettings::updateCorpDataKey).toBool())
                 emit importCorpMarketOrdersFromLogs(mCurrentCharacterId);
 
-            emit importMarketOrdersFromLogs(mCurrentCharacterId);
+            emit importCharacterMarketOrdersFromLogs(mCurrentCharacterId);
         }
     }
 
@@ -756,7 +756,7 @@ namespace Evernus
                                           false,
                                           this};
         addTab(assetsTab, tr("Assets"), TabType::Character);
-        connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importAssets);
+        connect(assetsTab, &AssetsWidget::importFromAPI, this, &MainWindow::importCharacterAssets);
         connect(assetsTab, &AssetsWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(assetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setWaypoint);
@@ -780,8 +780,8 @@ namespace Evernus
                                               false,
                                               this};
         addTab(orderTab, tr("Character orders"), TabType::Character);
-        connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importMarketOrdersFromAPI);
-        connect(orderTab, &MarketOrderWidget::importFromLogs, this, &MainWindow::importMarketOrdersFromLogs);
+        connect(orderTab, &MarketOrderWidget::importFromAPI, this, &MainWindow::importCharacterMarketOrdersFromAPI);
+        connect(orderTab, &MarketOrderWidget::importFromLogs, this, &MainWindow::importCharacterMarketOrdersFromLogs);
         connect(orderTab, &MarketOrderWidget::importPricesFromWeb, this, &MainWindow::importExternalOrdersFromWeb);
         connect(orderTab, &MarketOrderWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(orderTab, &MarketOrderWidget::openMarginTool, this, &MainWindow::showMarginTool);
@@ -804,7 +804,7 @@ namespace Evernus
                                                   false,
                                                   this};
         addTab(journalTab, tr("Character journal"), TabType::Character);
-        connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importWalletJournal);
+        connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importCharacterWalletJournal);
         connect(this, &MainWindow::walletJournalChanged, journalTab, &WalletJournalWidget::updateData);
 
         auto transactionsTab = new WalletTransactionsWidget{mRepositoryProvider.getWalletTransactionRepository(),
@@ -816,7 +816,7 @@ namespace Evernus
                                                             false,
                                                             this};
         addTab(transactionsTab, tr("Character transactions"), TabType::Character);
-        connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importWalletTransactions);
+        connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importCharacterWalletTransactions);
         connect(transactionsTab, &WalletTransactionsWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
         connect(this, &MainWindow::charactersChanged, transactionsTab, &WalletTransactionsWidget::updateCharacters);
@@ -829,7 +829,7 @@ namespace Evernus
                                                false,
                                                this};
         addTab(contractsTab, tr("Character contracts"), TabType::Character);
-        connect(contractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importContracts);
+        connect(contractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importCharacterContracts);
         connect(this, &MainWindow::contractsChanged, contractsTab, &ContractWidget::updateData);
 
         auto corpAssetsTab = new AssetsWidget{corpAssetProvider,
