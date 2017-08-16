@@ -875,6 +875,9 @@ namespace Evernus
         {
             const auto charSubtask = startTask(parentTask, getCharacterImportMessage(id));
 
+            if (!checkImportAndEndTask(id, TimerType::Character, charSubtask))
+                return;
+
             if (shouldUseESIOverXML())
                 importCharacterFromESI(id, charSubtask, *getCharacterKey(id));
             else
@@ -895,17 +898,13 @@ namespace Evernus
         const auto assetSubtask = startTask(parentTask, tr("Fetching assets for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        if (shouldUseESIOverXML())
-        {
-            importAssetsFromESI(id, assetSubtask);
-        }
-        else
-        {
-            if (!checkImportAndEndTask(id, TimerType::AssetList, assetSubtask))
-                return;
+        if (!checkImportAndEndTask(id, TimerType::AssetList, assetSubtask))
+            return;
 
+        if (shouldUseESIOverXML())
+            importAssetsFromESI(id, assetSubtask);
+        else
             importAssetsFromXML(id, assetSubtask);
-        }
     }
 
     void EvernusApplication::importAssetsFromXML(Character::IdType id, uint assetSubtask)
@@ -938,7 +937,10 @@ namespace Evernus
     {
         Q_ASSERT(mESIManager);
 
+        markImport(id, TimerType::AssetList);
         mESIManager->fetchAssets(id, [=](auto &&assets, const auto &error, const auto &expires) {
+            unmarkImport(id, TimerType::AssetList);
+
             if (error.isEmpty())
             {
                 setUtcCacheTimer(id, TimerType::AssetList, expires);
@@ -951,9 +953,6 @@ namespace Evernus
 
     void EvernusApplication::importMarketOrdersFromXML(Character::IdType id, uint importSubtask)
     {
-        if (!checkImportAndEndTask(id, TimerType::MarketOrders, importSubtask))
-            return;
-
         try
         {
             const auto key = getCharacterKey(id);
@@ -971,7 +970,10 @@ namespace Evernus
 
     void EvernusApplication::importMarketOrdersFromESI(Character::IdType id, uint importSubtask)
     {
+        markImport(id, TimerType::MarketOrders);
         mESIManager->fetchCharacterMarketOrders(id, [=](auto &&data, const auto &error, const auto &expires) {
+            unmarkImport(id, TimerType::MarketOrders);
+
             if (error.isEmpty())
             {
                 setUtcCacheTimer(id, TimerType::MarketOrders, expires);
@@ -1180,6 +1182,9 @@ namespace Evernus
 
         const auto task = startTask(tr("Fetching market orders for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        if (!checkImportAndEndTask(id, TimerType::MarketOrders, task))
+            return;
 
         if (shouldUseESIOverXML())
             importMarketOrdersFromESI(id, task);
@@ -2137,9 +2142,6 @@ namespace Evernus
 
     void EvernusApplication::importCharacterFromXML(Character::IdType id, uint task, const Key &key)
     {
-        if (!checkImportAndEndTask(id, TimerType::Character, task))
-            return;
-
         markImport(id, TimerType::Character);
         mAPIManager.fetchCharacter(key, id, [task, id, this](Character &&data, const QString &error) {
             unmarkImport(id, TimerType::Character);
@@ -2153,7 +2155,10 @@ namespace Evernus
 
     void EvernusApplication::importCharacterFromESI(Character::IdType id, uint task, const Key &key)
     {
+        markImport(id, TimerType::Character);
         mESIManager->fetchCharacter(id, [=](auto &&data, const auto &error, const auto &expires) {
+            unmarkImport(id, TimerType::Character);
+
             if (error.isEmpty())
             {
                 data.setKeyId(key.getId());
