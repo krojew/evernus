@@ -941,8 +941,8 @@ namespace Evernus
         mESIManager->fetchAssets(id, [=](auto &&assets, const auto &error, const auto &expires) {
             if (error.isEmpty())
             {
-                updateCharacterAssets(id, assets);
                 setUtcCacheTimer(id, TimerType::AssetList, expires);
+                updateCharacterAssets(id, assets);
             }
 
             emit taskEnded(assetSubtask, error);
@@ -974,8 +974,8 @@ namespace Evernus
         mESIManager->fetchCharacterMarketOrders(id, [=](auto &&data, const auto &error, const auto &expires) {
             if (error.isEmpty())
             {
-                importMarketOrders(id, data, false);
                 setUtcCacheTimer(id, TimerType::MarketOrders, expires);
+                importMarketOrders(id, data, false);
 
                 emit marketOrdersChanged();
                 emit externalOrdersChangedWithMarketOrders();
