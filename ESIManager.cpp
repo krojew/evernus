@@ -616,7 +616,7 @@ namespace Evernus
 
                 mAuthView->setWindowModality(Qt::ApplicationModal);
                 mAuthView->adjustSize();
-                mAuthView->move(QApplication::desktop()->screenGeometry(QApplication::activeWindow()).center() -
+                mAuthView->move(QApplication::desktop()->screenGeometry(mAuthView.data()).center() -
                                 mAuthView->rect().center());
                 mAuthView->show();
 
