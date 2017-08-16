@@ -959,7 +959,7 @@ namespace Evernus
         try
         {
             const auto key = getCharacterKey(id);
-            doRefreshMarketOrdersFromAPI<&EvernusApplication::marketOrdersChanged>(*key, id, importSubtask, TimerType::MarketOrders);
+            doRefreshMarketOrdersFromAPI<&EvernusApplication::characterMarketOrdersChanged>(*key, id, importSubtask, TimerType::MarketOrders);
         }
         catch (const KeyRepository::NotFoundException &)
         {
@@ -982,7 +982,7 @@ namespace Evernus
                 setUtcCacheTimer(id, TimerType::MarketOrders, expires);
                 importMarketOrders(id, data, false);
 
-                emit marketOrdersChanged();
+                emit characterMarketOrdersChanged();
                 emit externalOrdersChangedWithMarketOrders();
             }
 
@@ -1032,7 +1032,7 @@ namespace Evernus
 
                     saveUpdateTimer(Evernus::TimerType::Contracts, mContractsUtcUpdateTimes, id);
 
-                    this->handleIncomingContracts<&Evernus::EvernusApplication::contractsChanged>(key,
+                    this->handleIncomingContracts<&Evernus::EvernusApplication::characterContractsChanged>(key,
                                                                                                   data,
                                                                                                   id,
                                                                                                   *mContractItemRepository,
@@ -1104,7 +1104,7 @@ namespace Evernus
 
                     saveUpdateTimer(Evernus::TimerType::WalletJournal, mWalletJournalUtcUpdateTimes, id);
 
-                    emit walletJournalChanged();
+                    emit characterWalletJournalChanged();
                 }
 
                 emit taskEnded(task, error);
@@ -1163,7 +1163,7 @@ namespace Evernus
                                                    std::placeholders::_3));
                     }
 
-                    emit walletTransactionsChanged();
+                    emit characterWalletTransactionsChanged();
                 }
 
                 emit taskEnded(task, error);
@@ -1705,7 +1705,7 @@ namespace Evernus
 
         mCharacterOrderProvider->clearArchived();
 
-        emit marketOrdersChanged();
+        emit characterMarketOrdersChanged();
     }
 
     void EvernusApplication::syncLMeve(Character::IdType id)
@@ -1824,13 +1824,13 @@ namespace Evernus
             return;
 
         mMarketOrderUpdateScheduled = true;
-        QMetaObject::invokeMethod(this, "updateMarketOrders", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, "updateCharacterMarketOrders", Qt::QueuedConnection);
     }
 
-    void EvernusApplication::updateMarketOrders()
+    void EvernusApplication::updateCharacterMarketOrders()
     {
         mMarketOrderUpdateScheduled = false;
-        emit marketOrdersChanged();
+        emit characterMarketOrdersChanged();
     }
 
     void EvernusApplication::scheduleCorpMarketOrderChange()
@@ -2309,7 +2309,7 @@ namespace Evernus
                 if (corp)
                     emit corpMarketOrdersChanged();
                 else
-                    emit marketOrdersChanged();
+                    emit characterMarketOrdersChanged();
 
                 emit externalOrdersChangedWithMarketOrders();
 
@@ -2644,7 +2644,7 @@ namespace Evernus
 
         saveUpdateTimer(Evernus::TimerType::AssetList, mAssetsUtcUpdateTimes, id);
 
-        emit assetsChanged();
+        emit characterAssetsChanged();
     }
 
     void EvernusApplication::updateCharacter(Character &character)

@@ -177,13 +177,13 @@ namespace Evernus
         void conquerableStationsChanged();
         void citadelsChanged();
         void charactersChanged();
-        void assetsChanged();
+        void characterAssetsChanged();
         void externalOrdersChanged();
         void externalOrdersChangedWithMarketOrders();
-        void walletJournalChanged();
-        void walletTransactionsChanged();
-        void marketOrdersChanged();
-        void contractsChanged();
+        void characterWalletJournalChanged();
+        void characterWalletTransactionsChanged();
+        void characterMarketOrdersChanged();
+        void characterContractsChanged();
         void corpAssetsChanged();
         void corpWalletJournalChanged();
         void corpWalletTransactionsChanged();
@@ -240,7 +240,7 @@ namespace Evernus
         void updateCharacters();
 
         void scheduleMarketOrderChange();
-        void updateMarketOrders();
+        void updateCharacterMarketOrders();
 
         void scheduleCorpMarketOrderChange();
         void updateCorpMarketOrders();

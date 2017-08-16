@@ -724,10 +724,10 @@ namespace Evernus
         connect(charTab, &CharacterWidget::importAll, this, &MainWindow::refreshAll);
         connect(charTab, &CharacterWidget::characterDataChanged, this, &MainWindow::characterDataChanged);
         connect(this, &MainWindow::charactersChanged, charTab, &CharacterWidget::updateData);
-        connect(this, &MainWindow::assetsChanged, charTab, &CharacterWidget::updateTimerList);
-        connect(this, &MainWindow::walletJournalChanged, charTab, &CharacterWidget::updateTimerList);
-        connect(this, &MainWindow::walletTransactionsChanged, charTab, &CharacterWidget::updateTimerList);
-        connect(this, &MainWindow::marketOrdersChanged, charTab, &CharacterWidget::updateMarketData);
+        connect(this, &MainWindow::characterAssetsChanged, charTab, &CharacterWidget::updateTimerList);
+        connect(this, &MainWindow::characterWalletJournalChanged, charTab, &CharacterWidget::updateTimerList);
+        connect(this, &MainWindow::characterWalletTransactionsChanged, charTab, &CharacterWidget::updateTimerList);
+        connect(this, &MainWindow::characterMarketOrdersChanged, charTab, &CharacterWidget::updateMarketData);
 
         auto statsTab = new StatisticsWidget{mRepositoryProvider,
                                              mEveDataProvider,
@@ -739,13 +739,13 @@ namespace Evernus
         });
         connect(this, &MainWindow::charactersChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::externalOrdersChanged, statsTab, &StatisticsWidget::updateBalanceData);
-        connect(this, &MainWindow::assetsChanged, statsTab, &StatisticsWidget::updateBalanceData);
-        connect(this, &MainWindow::walletJournalChanged, statsTab, &StatisticsWidget::updateBalanceData);
-        connect(this, &MainWindow::walletJournalChanged, statsTab, &StatisticsWidget::updateJournalData);
+        connect(this, &MainWindow::characterAssetsChanged, statsTab, &StatisticsWidget::updateBalanceData);
+        connect(this, &MainWindow::characterWalletJournalChanged, statsTab, &StatisticsWidget::updateBalanceData);
+        connect(this, &MainWindow::characterWalletJournalChanged, statsTab, &StatisticsWidget::updateJournalData);
         connect(this, &MainWindow::corpWalletJournalChanged, statsTab, &StatisticsWidget::updateJournalData);
         connect(this, &MainWindow::corpWalletJournalChanged, statsTab, &StatisticsWidget::updateBalanceData);
         connect(this, &MainWindow::snapshotsTaken, statsTab, &StatisticsWidget::updateBalanceData);
-        connect(this, &MainWindow::walletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
+        connect(this, &MainWindow::characterWalletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
         connect(this, &MainWindow::corpWalletTransactionsChanged, statsTab, &StatisticsWidget::updateTransactionData);
         connect(this, &MainWindow::preferencesChanged, statsTab, &StatisticsWidget::handleNewPreferences);
 
@@ -763,7 +763,7 @@ namespace Evernus
         connect(assetsTab, &AssetsWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::citadelsChanged, assetsTab, &AssetsWidget::updateData);
-        connect(this, &MainWindow::assetsChanged, assetsTab, &AssetsWidget::updateData);
+        connect(this, &MainWindow::characterAssetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChangedWithMarketOrders, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::itemVolumeChanged, assetsTab, &AssetsWidget::updateData);
@@ -788,7 +788,7 @@ namespace Evernus
         connect(orderTab, &MarketOrderWidget::showExternalOrders, this, &MainWindow::showMarketBrowser);
         connect(orderTab, &MarketOrderWidget::showInEve, this, &MainWindow::showInEve);
         connect(orderTab, &MarketOrderWidget::fpcExecutorChanged, &mFPCController, &FPCController::changeExecutor);
-        connect(this, &MainWindow::marketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
+        connect(this, &MainWindow::characterMarketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::corpMarketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::conquerableStationsChanged, orderTab, &MarketOrderWidget::updateData);
@@ -805,7 +805,7 @@ namespace Evernus
                                                   this};
         addTab(journalTab, tr("Character journal"), TabType::Character);
         connect(journalTab, &WalletJournalWidget::importFromAPI, this, &MainWindow::importCharacterWalletJournal);
-        connect(this, &MainWindow::walletJournalChanged, journalTab, &WalletJournalWidget::updateData);
+        connect(this, &MainWindow::characterWalletJournalChanged, journalTab, &WalletJournalWidget::updateData);
 
         auto transactionsTab = new WalletTransactionsWidget{mRepositoryProvider.getWalletTransactionRepository(),
                                                             mRepositoryProvider.getCharacterRepository(),
@@ -818,7 +818,7 @@ namespace Evernus
         addTab(transactionsTab, tr("Character transactions"), TabType::Character);
         connect(transactionsTab, &WalletTransactionsWidget::importFromAPI, this, &MainWindow::importCharacterWalletTransactions);
         connect(transactionsTab, &WalletTransactionsWidget::showInEve, this, &MainWindow::showInEve);
-        connect(this, &MainWindow::walletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
+        connect(this, &MainWindow::characterWalletTransactionsChanged, transactionsTab, &WalletTransactionsWidget::updateData);
         connect(this, &MainWindow::charactersChanged, transactionsTab, &WalletTransactionsWidget::updateCharacters);
 
         auto contractsTab = new ContractWidget{cacheTimerProvider,
@@ -830,7 +830,7 @@ namespace Evernus
                                                this};
         addTab(contractsTab, tr("Character contracts"), TabType::Character);
         connect(contractsTab, &ContractWidget::importFromAPI, this, &MainWindow::importCharacterContracts);
-        connect(this, &MainWindow::contractsChanged, contractsTab, &ContractWidget::updateData);
+        connect(this, &MainWindow::characterContractsChanged, contractsTab, &ContractWidget::updateData);
 
         auto corpAssetsTab = new AssetsWidget{corpAssetProvider,
                                               mEveDataProvider,
@@ -918,7 +918,7 @@ namespace Evernus
                                                       mRepositoryProvider.getCorpWalletTransactionRepository(),
                                                       mEveDataProvider,
                                                       this};
-        connect(this, &MainWindow::walletTransactionsChanged, itemHistoryTab, &ItemHistoriesWidget::updateData);
+        connect(this, &MainWindow::characterWalletTransactionsChanged, itemHistoryTab, &ItemHistoriesWidget::updateData);
         connect(this, &MainWindow::corpWalletTransactionsChanged, itemHistoryTab, &ItemHistoriesWidget::updateData);
         connect(this, &MainWindow::preferencesChanged, itemHistoryTab, &ItemHistoriesWidget::handleNewPreferences);
         addTab(itemHistoryTab, tr("Item history"), TabType::Other);
@@ -946,7 +946,7 @@ namespace Evernus
         connect(marketBrowserTab, &MarketBrowserWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
         connect(corpOrderTab, &MarketOrderWidget::showExternalOrders, marketBrowserTab, &MarketBrowserWidget::showOrdersForType);
         connect(orderTab, &MarketOrderWidget::showExternalOrders, marketBrowserTab, &MarketBrowserWidget::showOrdersForType);
-        connect(this, &MainWindow::marketOrdersChanged, marketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
+        connect(this, &MainWindow::characterMarketOrdersChanged, marketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
         connect(this, &MainWindow::corpMarketOrdersChanged, marketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
         connect(this, &MainWindow::externalOrdersChanged, marketBrowserTab, &MarketBrowserWidget::updateData);
         connect(this, &MainWindow::itemVolumeChanged, marketBrowserTab, &MarketBrowserWidget::updateData);

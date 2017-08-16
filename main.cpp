@@ -321,20 +321,20 @@ int main(int argc, char *argv[])
                              &mainWnd, &Evernus::MainWindow::citadelsChanged);
             QObject::connect(&app, &Evernus::EvernusApplication::charactersChanged,
                              &mainWnd, &Evernus::MainWindow::updateCharacters);
-            QObject::connect(&app, &Evernus::EvernusApplication::assetsChanged,
-                             &mainWnd, &Evernus::MainWindow::assetsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::characterAssetsChanged,
+                             &mainWnd, &Evernus::MainWindow::characterAssetsChanged);
             QObject::connect(&app, &Evernus::EvernusApplication::externalOrdersChanged,
                              &mainWnd, &Evernus::MainWindow::externalOrdersChanged);
             QObject::connect(&app, &Evernus::EvernusApplication::externalOrdersChangedWithMarketOrders,
                              &mainWnd, &Evernus::MainWindow::externalOrdersChangedWithMarketOrders);
-            QObject::connect(&app, &Evernus::EvernusApplication::walletJournalChanged,
-                             &mainWnd, &Evernus::MainWindow::walletJournalChanged);
-            QObject::connect(&app, &Evernus::EvernusApplication::walletTransactionsChanged,
-                             &mainWnd, &Evernus::MainWindow::walletTransactionsChanged);
-            QObject::connect(&app, &Evernus::EvernusApplication::marketOrdersChanged,
-                             &mainWnd, &Evernus::MainWindow::marketOrdersChanged);
-            QObject::connect(&app, &Evernus::EvernusApplication::contractsChanged,
-                             &mainWnd, &Evernus::MainWindow::contractsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::characterWalletJournalChanged,
+                             &mainWnd, &Evernus::MainWindow::characterWalletJournalChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::characterWalletTransactionsChanged,
+                             &mainWnd, &Evernus::MainWindow::characterWalletTransactionsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::characterMarketOrdersChanged,
+                             &mainWnd, &Evernus::MainWindow::characterMarketOrdersChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::characterContractsChanged,
+                             &mainWnd, &Evernus::MainWindow::characterContractsChanged);
             QObject::connect(&app, &Evernus::EvernusApplication::corpAssetsChanged,
                              &mainWnd, &Evernus::MainWindow::corpAssetsChanged);
             QObject::connect(&app, &Evernus::EvernusApplication::corpWalletJournalChanged,

@@ -8143,14 +8143,14 @@ Suma: %7</translation>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="79"/>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="93"/>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="231"/>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="371"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="237"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="377"/>
         <source>Volume</source>
         <translation type="unfinished">Wolumen</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="103"/>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="374"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="380"/>
         <source>Unusual volume</source>
         <translation type="unfinished">Nieprzeciętny wolumen</translation>
     </message>
@@ -8180,34 +8180,34 @@ Suma: %7</translation>
         <translation type="unfinished">RSI (14 dni)</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="172"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="174"/>
         <source>RSI</source>
         <translation type="unfinished">RSI</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="181"/>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="202"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="183"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="208"/>
         <source>MACD</source>
         <translation type="unfinished">MACD</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="195"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="201"/>
         <source>MACD Divergence</source>
         <translation type="unfinished">Rozbieżność MACD</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="205"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="211"/>
         <source>MACD Signal</source>
         <translation type="unfinished">Sygnał MACD</translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="231"/>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="371"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="237"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="377"/>
         <source>Order count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedGraphWidget.cpp" line="374"/>
+        <location filename="../TypeAggregatedGraphWidget.cpp" line="380"/>
         <source>Unusual order count</source>
         <translation type="unfinished"></translation>
     </message>

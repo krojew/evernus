@@ -89,13 +89,13 @@ namespace Evernus
         void citadelsChanged();
         void citadelsEdited();
         void charactersChanged();
-        void assetsChanged();
+        void characterAssetsChanged();
         void externalOrdersChanged();
         void externalOrdersChangedWithMarketOrders();
-        void walletJournalChanged();
-        void walletTransactionsChanged();
-        void marketOrdersChanged();
-        void contractsChanged();
+        void characterWalletJournalChanged();
+        void characterWalletTransactionsChanged();
+        void characterMarketOrdersChanged();
+        void characterContractsChanged();
         void corpWalletJournalChanged();
         void corpWalletTransactionsChanged();
         void corpMarketOrdersChanged();
