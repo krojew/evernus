@@ -20,13 +20,17 @@
 #include <vector>
 #include <map>
 
+#include <boost/optional.hpp>
+
 #include <QNetworkAccessManager>
 #include <QScopedPointer>
 #include <QString>
 #include <QDate>
 
 #include "MarketHistoryEntry.h"
+#include "WalletJournalEntry.h"
 #include "SSOAuthWidget.h"
+#include "WalletJournal.h"
 #include "ESIInterface.h"
 #include "MarketOrders.h"
 #include "SimpleCrypt.h"
@@ -82,6 +86,9 @@ namespace Evernus
         void fetchRaces(const Callback<NameMap> &callback) const;
         void fetchBloodlines(const Callback<NameMap> &callback) const;
         void fetchCharacterMarketOrders(Character::IdType charId, const Callback<MarketOrders> &callback) const;
+        void fetchCharacterWalletJournal(Character::IdType charId,
+                                         WalletJournalEntry::IdType tillId,
+                                         const Callback<WalletJournal> &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
 
@@ -130,11 +137,16 @@ namespace Evernus
 
         std::unordered_set<Character::IdType> mPendingTokenRefresh;
 
+        void fetchCharacterWalletJournal(Character::IdType charId,
+                                         const boost::optional<WalletJournalEntry::IdType> &fromId,
+                                         WalletJournalEntry::IdType tillId,
+                                         const Callback<WalletJournal> &callback) const;
+
         void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
 
         QNetworkRequest getAuthRequest() const;
 
-        ExternalOrder getOrderFromJson(const QJsonObject &object, uint regionId) const;
+        ExternalOrder getExternalOrderFromJson(const QJsonObject &object, uint regionId) const;
         ESIInterface::PaginatedCallback getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const;
 
         void createInterfaces();

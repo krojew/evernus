@@ -17,11 +17,14 @@
 #include <unordered_map>
 #include <functional>
 
+#include <boost/optional.hpp>
+
 #include <QNetworkAccessManager>
 #include <QSettings>
 #include <QDateTime>
 #include <QString>
 
+#include "WalletJournalEntry.h"
 #include "Character.h"
 #include "EveType.h"
 
@@ -59,6 +62,9 @@ namespace Evernus
         void fetchBloodlines(const JsonCallback &callback) const;
         void fetchCharacterWallet(Character::IdType charId, const StringCallback &callback) const;
         void fetchCharacterMarketOrders(Character::IdType charId, const JsonCallback &callback) const;
+        void fetchCharacterWalletJournal(Character::IdType charId,
+                                         const boost::optional<WalletJournalEntry::IdType> &fromId,
+                                         const JsonCallback &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const;
 

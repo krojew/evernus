@@ -19,5 +19,5 @@
 
 namespace Evernus
 {
-    typedef std::set<WalletJournalEntry> WalletJournal;
+    using WalletJournal = std::set<WalletJournalEntry>;
 }

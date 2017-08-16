@@ -973,6 +973,8 @@ namespace Evernus
 
     void EvernusApplication::importCharacterMarketOrdersFromESI(Character::IdType id, uint importSubtask)
     {
+        Q_ASSERT(mESIManager);
+
         markImport(id, TimerType::MarketOrders);
         mESIManager->fetchCharacterMarketOrders(id, [=](auto &&data, const auto &error, const auto &expires) {
             unmarkImport(id, TimerType::MarketOrders);
@@ -984,6 +986,57 @@ namespace Evernus
 
                 emit characterMarketOrdersChanged();
                 emit externalOrdersChangedWithMarketOrders();
+            }
+
+            emit taskEnded(importSubtask, error);
+        });
+    }
+
+    void EvernusApplication::importCharacterWalletJournalFromXML(Character::IdType id, uint importSubtask)
+    {
+        try
+        {
+            const auto key = getCharacterKey(id);
+            const auto maxId = mWalletJournalEntryRepository->getLatestEntryId(id);
+
+            if (maxId == WalletJournalEntry::invalidId)
+                emit taskInfoChanged(importSubtask, tr("Fetching wallet journal for character %1 (this may take a while)...").arg(id));
+
+            mAPIManager.fetchWalletJournal(*key, id, WalletJournalEntry::invalidId, maxId,
+                                           [=](const WalletJournal &data, const QString &error) {
+                if (error.isEmpty())
+                    updateCharacterWalletJournal(id, data);
+
+                emit taskEnded(importSubtask, error);
+            });
+        }
+        catch (const KeyRepository::NotFoundException &)
+        {
+            emit taskEnded(importSubtask, tr("Key not found!"));
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            emit taskEnded(importSubtask, tr("Character not found!"));
+        }
+    }
+
+    void EvernusApplication::importCharacterWalletJournalFromESI(Character::IdType id, uint importSubtask)
+    {
+        const auto maxId = mWalletJournalEntryRepository->getLatestEntryId(id);
+
+        if (maxId == WalletJournalEntry::invalidId)
+            emit taskInfoChanged(importSubtask, tr("Fetching wallet journal for character %1 (this may take a while)...").arg(id));
+
+        Q_ASSERT(mESIManager);
+
+        markImport(id, TimerType::WalletJournal);
+        mESIManager->fetchCharacterWalletJournal(id, maxId, [=](auto &&data, const auto &error, const auto &expires) {
+            unmarkImport(id, TimerType::WalletJournal);
+
+            if (error.isEmpty())
+            {
+                setUtcCacheTimer(id, TimerType::WalletJournal, expires);
+                updateCharacterWalletJournal(id, data);
             }
 
             emit taskEnded(importSubtask, error);
@@ -1033,10 +1086,10 @@ namespace Evernus
                     saveUpdateTimer(Evernus::TimerType::Contracts, mContractsUtcUpdateTimes, id);
 
                     this->handleIncomingContracts<&Evernus::EvernusApplication::characterContractsChanged>(key,
-                                                                                                  data,
-                                                                                                  id,
-                                                                                                  *mContractItemRepository,
-                                                                                                  task);
+                                                                                                           data,
+                                                                                                           id,
+                                                                                                           *mContractItemRepository,
+                                                                                                           task);
                 }
                 else
                 {
@@ -1061,63 +1114,14 @@ namespace Evernus
         const auto task = startTask(tr("Fetching wallet journal for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        try
-        {
-            const auto key = getCharacterKey(id);
-            const auto maxId = mWalletJournalEntryRepository->getLatestEntryId(id);
+        if (!checkImportAndEndTask(id, TimerType::WalletJournal, task))
+            return;
 
-            if (maxId == WalletJournalEntry::invalidId)
-                emit taskInfoChanged(task, tr("Fetching wallet journal for character %1 (this may take a while)...").arg(id));
-
-            mAPIManager.fetchWalletJournal(*key, id, WalletJournalEntry::invalidId, maxId,
-                                           [task, id, this](const WalletJournal &data, const QString &error) {
-                if (error.isEmpty())
-                {
-                    QSettings settings;
-                    if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
-                    {
-                        std::vector<Evernus::WalletSnapshot> snapshots;
-                        snapshots.reserve(data.size());
-
-                        QSet<QDateTime> usedSnapshots;
-
-                        for (auto &entry : data)
-                        {
-                            const auto timestamp = entry.getTimestamp();
-
-                            if (!usedSnapshots.contains(timestamp))
-                            {
-                                Evernus::WalletSnapshot snapshot;
-                                snapshot.setTimestamp(timestamp);
-                                snapshot.setBalance(entry.getBalance());
-                                snapshot.setCharacterId(entry.getCharacterId());
-
-                                snapshots.emplace_back(std::move(snapshot));
-                                usedSnapshots << timestamp;
-                            }
-                        }
-
-                        asyncBatchStore(*mWalletSnapshotRepository, snapshots, false);
-                    }
-
-                    asyncBatchStore(*mWalletJournalEntryRepository, data, true);
-
-                    saveUpdateTimer(Evernus::TimerType::WalletJournal, mWalletJournalUtcUpdateTimes, id);
-
-                    emit characterWalletJournalChanged();
-                }
-
-                emit taskEnded(task, error);
-            });
-        }
-        catch (const KeyRepository::NotFoundException &)
-        {
-            emit taskEnded(task, tr("Key not found!"));
-        }
-        catch (const CharacterRepository::NotFoundException &)
-        {
-            emit taskEnded(task, tr("Character not found!"));
-        }
+        // TODO: enable when complete
+//        if (shouldUseESIOverXML())
+//            importCharacterWalletJournalFromESI(id, task);
+//        else
+            importCharacterWalletJournalFromXML(id, task);
     }
 
     void EvernusApplication::refreshCharacterWalletTransactions(Character::IdType id, uint parentTask, bool force)
@@ -2158,6 +2162,8 @@ namespace Evernus
 
     void EvernusApplication::importCharacterFromESI(Character::IdType id, uint task, const Key &key)
     {
+        Q_ASSERT(mESIManager);
+
         markImport(id, TimerType::Character);
         mESIManager->fetchCharacter(id, [=](auto &&data, const auto &error, const auto &expires) {
             unmarkImport(id, TimerType::Character);
@@ -2657,7 +2663,7 @@ namespace Evernus
         {
             const auto prevData = mCharacterRepository->find(charId);
 
-            if (!settings.value(Evernus::ImportSettings::importSkillsKey, Evernus::ImportSettings::importSkillsDefault).toBool())
+            if (!settings.value(ImportSettings::importSkillsKey, ImportSettings::importSkillsDefault).toBool())
             {
                 character.setOrderAmountSkills(prevData->getOrderAmountSkills());
                 character.setTradeRangeSkills(prevData->getTradeRangeSkills());
@@ -2669,7 +2675,7 @@ namespace Evernus
             character.setFactionStanding(prevData->getFactionStanding());
             character.setEnabled(prevData->isEnabled());
         }
-        catch (const Evernus::CharacterRepository::NotFoundException &)
+        catch (const CharacterRepository::NotFoundException &)
         {
         }
 
@@ -2680,7 +2686,7 @@ namespace Evernus
         if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
             createWalletSnapshot(charId, character.getISK());
 
-        saveUpdateTimer(Evernus::TimerType::Character, mCharacterUtcUpdateTimes, charId);
+        saveUpdateTimer(TimerType::Character, mCharacterUtcUpdateTimes, charId);
 
         QMetaObject::invokeMethod(this, "scheduleCharacterUpdate", Qt::QueuedConnection);
 
@@ -2689,11 +2695,47 @@ namespace Evernus
         {
             Evernus::CacheTimer timer;
             timer.setCharacterId(charId);
-            timer.setType(Evernus::TimerType::Character);
+            timer.setType(TimerType::Character);
             timer.setCacheUntil(cacheTimer);
 
             mCacheTimerRepository->store(timer);
         }
+    }
+
+    void EvernusApplication::updateCharacterWalletJournal(Character::IdType id, const WalletJournal &data)
+    {
+        QSettings settings;
+        if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
+        {
+            std::vector<WalletSnapshot> snapshots;
+            snapshots.reserve(data.size());
+
+            QSet<QDateTime> usedSnapshots;
+
+            for (auto &entry : data)
+            {
+                const auto timestamp = entry.getTimestamp();
+
+                if (!usedSnapshots.contains(timestamp))
+                {
+                    WalletSnapshot snapshot;
+                    snapshot.setTimestamp(timestamp);
+                    snapshot.setBalance(entry.getBalance());
+                    snapshot.setCharacterId(entry.getCharacterId());
+
+                    snapshots.emplace_back(std::move(snapshot));
+                    usedSnapshots << timestamp;
+                }
+            }
+
+            asyncBatchStore(*mWalletSnapshotRepository, snapshots, false);
+        }
+
+        asyncBatchStore(*mWalletJournalEntryRepository, data, true);
+
+        saveUpdateTimer(TimerType::WalletJournal, mWalletJournalUtcUpdateTimes, id);
+
+        emit characterWalletJournalChanged();
     }
 
     double EvernusApplication::getTotalAssetListValue(const AssetList &list) const

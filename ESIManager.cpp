@@ -117,7 +117,7 @@ namespace Evernus
                 result.reserve(items.size());
 
                 for (const auto &item : items)
-                    result.emplace_back(getOrderFromJson(item.toObject(), regionId));
+                    result.emplace_back(getExternalOrderFromJson(item.toObject(), regionId));
 
                 return result;
             }));
@@ -523,6 +523,13 @@ namespace Evernus
         });
     }
 
+    void ESIManager::fetchCharacterWalletJournal(Character::IdType charId,
+                                                 WalletJournalEntry::IdType tillId,
+                                                 const Callback<WalletJournal> &callback) const
+    {
+        fetchCharacterWalletJournal(charId, boost::none, tillId, callback);
+    }
+
     void ESIManager::openMarketDetails(EveType::IdType typeId, Character::IdType charId) const
     {
         selectNextInterface().openMarketDetails(typeId, charId, [=](const auto &errorText) {
@@ -721,6 +728,40 @@ namespace Evernus
         createInterfaces();
     }
 
+    void ESIManager::fetchCharacterWalletJournal(Character::IdType charId,
+                                                 const boost::optional<WalletJournalEntry::IdType> &fromId,
+                                                 WalletJournalEntry::IdType tillId,
+                                                 const Callback<WalletJournal> &callback) const
+    {
+        // TODO: finish when properly implemented in ESI
+        selectNextInterface().fetchCharacterWalletJournal(charId, fromId, [=](auto &&data, const auto &error, const auto &expires) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error, expires);
+                return;
+            }
+
+            // https://bugreports.qt.io/browse/QTBUG-61145
+            std::function<void (WalletJournal &, const WalletJournalEntry &)> addToJournal = [](auto &journal, const auto &entry) {
+                journal.emplace(entry);
+            };
+
+            auto journal = QtConcurrent::blockingMappedReduced(
+                data.array(),
+                std::function<WalletJournalEntry (const QJsonValue &)>{[](const auto &value) {
+                    const auto entryObj = value.toObject();
+
+                    WalletJournalEntry entry{};
+
+                    return entry;
+                }},
+                addToJournal.target<void (WalletJournal &, const WalletJournalEntry &)>()
+            );
+
+            callback(std::move(journal), {}, expires);
+        });
+    }
+
     void ESIManager::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
     {
         try
@@ -828,7 +869,7 @@ namespace Evernus
         return request;
     }
 
-    ExternalOrder ESIManager::getOrderFromJson(const QJsonObject &object, uint regionId) const
+    ExternalOrder ESIManager::getExternalOrderFromJson(const QJsonObject &object, uint regionId) const
     {
         const auto range = object.value("range").toString();
 
@@ -883,7 +924,7 @@ namespace Evernus
             std::atomic_size_t nextIndex{curSize};
 
             const auto parseItem = [&](const auto &item) {
-                (*orders)[nextIndex++] = getOrderFromJson(item.toObject(), regionId);
+                (*orders)[nextIndex++] = getExternalOrderFromJson(item.toObject(), regionId);
             };
 
             QtConcurrent::blockingMap(items, parseItem);

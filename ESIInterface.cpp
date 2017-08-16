@@ -203,6 +203,34 @@ namespace Evernus
         });
     }
 
+    void ESIInterface::fetchCharacterWalletJournal(Character::IdType charId,
+                                                   const boost::optional<WalletJournalEntry::IdType> &fromId,
+                                                   const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching character wallet journal for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, tr("Cannot fetch character wallet journal with no character selected."), {});
+            return;
+        }
+
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+            {
+                callback({}, error, {});
+            }
+            else
+            {
+                QString query;
+                if (fromId)
+                    query = QStringLiteral("from_id=%1").arg(*fromId);
+
+                asyncGet(charId, QStringLiteral("/v1/characters/%1/wallet/journal/").arg(charId), query, callback, getNumRetries());
+            }
+        });
+    }
+
     void ESIInterface::openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const
     {
         qDebug() << "Opening market details for" << typeId;

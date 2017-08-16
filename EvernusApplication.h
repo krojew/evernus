@@ -71,6 +71,7 @@
 #include "ItemRepository.h"
 #include "TaskConstants.h"
 #include "KeyRepository.h"
+#include "WalletJournal.h"
 #include "ESIManager.h"
 #include "TaskManager.h"
 #include "APIManager.h"
@@ -382,6 +383,8 @@ namespace Evernus
         void importCharacterAssetsFromESI(Character::IdType id, uint importSubtask);
         void importCharacterMarketOrdersFromXML(Character::IdType id, uint importSubtask);
         void importCharacterMarketOrdersFromESI(Character::IdType id, uint importSubtask);
+        void importCharacterWalletJournalFromXML(Character::IdType id, uint importSubtask);
+        void importCharacterWalletJournalFromESI(Character::IdType id, uint importSubtask);
 
         KeyRepository::EntityPtr getCharacterKey(Character::IdType id) const;
         CorpKeyRepository::EntityPtr getCorpKey(Character::IdType id) const;
@@ -393,6 +396,7 @@ namespace Evernus
 
         void updateCharacterAssets(Character::IdType id, AssetList &list);
         void updateCharacter(Character &character);
+        void updateCharacterWalletJournal(Character::IdType id, const WalletJournal &data);
 
         double getTotalAssetListValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;
