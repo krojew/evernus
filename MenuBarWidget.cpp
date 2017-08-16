@@ -25,8 +25,8 @@
 namespace Evernus
 {
     MenuBarWidget::MenuBarWidget(const CharacterRepository &characterRepository, QWidget *parent)
-        : QWidget(parent)
-        , mCharacterRepository(characterRepository)
+        : QWidget{parent}
+        , mCharacterRepository{characterRepository}
     {
         auto mainLayout = new QHBoxLayout{this};
         mainLayout->setContentsMargins(QMargins{});
@@ -40,7 +40,9 @@ namespace Evernus
         mainLayout->addWidget(mCharacterCombo);
         mCharacterCombo->setMinimumWidth(180);
         mCharacterCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-        connect(mCharacterCombo, SIGNAL(currentIndexChanged(int)), SLOT(changeCharacter(int)), Qt::QueuedConnection);
+        connect(mCharacterCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                this, &MenuBarWidget::changeCharacter,
+                Qt::QueuedConnection);
 
         refreshCharacters();
     }

@@ -144,8 +144,10 @@ namespace Evernus
         rsiAxisRect->axis(QCPAxis::atLeft)->setLabel(tr("RSI (14 days)"));
         rsiAxisRect->axis(QCPAxis::atBottom)->grid()->setLayer("grid");
 
-        connect(mHistoryPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), rsiAxisRect->axis(QCPAxis::atBottom), SLOT(setRange(QCPRange)));
-        connect(rsiAxisRect->axis(QCPAxis::atBottom), SIGNAL(rangeChanged(QCPRange)), mHistoryPlot->xAxis, SLOT(setRange(QCPRange)));
+        connect(mHistoryPlot->xAxis, QOverload<const QCPRange &>::of(&QCPAxis::rangeChanged),
+                rsiAxisRect->axis(QCPAxis::atBottom), QOverload<const QCPRange &>::of(&QCPAxis::setRange));
+        connect(rsiAxisRect->axis(QCPAxis::atBottom), QOverload<const QCPRange &>::of(&QCPAxis::rangeChanged),
+                mHistoryPlot->xAxis, QOverload<const QCPRange &>::of(&QCPAxis::setRange));
 
         auto marginGroup = new QCPMarginGroup{mHistoryPlot};
         mHistoryPlot->axisRect()->setMarginGroup(QCP::msLeft | QCP::msRight, marginGroup);
@@ -182,10 +184,14 @@ namespace Evernus
         macdAxisRect->axis(QCPAxis::atBottom)->grid()->setLayer("grid");
         macdAxisRect->setMarginGroup(QCP::msLeft | QCP::msRight, marginGroup);
 
-        connect(mHistoryPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), macdAxisRect->axis(QCPAxis::atBottom), SLOT(setRange(QCPRange)));
-        connect(macdAxisRect->axis(QCPAxis::atBottom), SIGNAL(rangeChanged(QCPRange)), mHistoryPlot->xAxis, SLOT(setRange(QCPRange)));
-        connect(rsiAxisRect->axis(QCPAxis::atBottom), SIGNAL(rangeChanged(QCPRange)), macdAxisRect->axis(QCPAxis::atBottom), SLOT(setRange(QCPRange)));
-        connect(macdAxisRect->axis(QCPAxis::atBottom), SIGNAL(rangeChanged(QCPRange)), rsiAxisRect->axis(QCPAxis::atBottom), SLOT(setRange(QCPRange)));
+        connect(mHistoryPlot->xAxis, QOverload<const QCPRange &>::of(&QCPAxis::rangeChanged),
+                macdAxisRect->axis(QCPAxis::atBottom), QOverload<const QCPRange &>::of(&QCPAxis::setRange));
+        connect(macdAxisRect->axis(QCPAxis::atBottom), QOverload<const QCPRange &>::of(&QCPAxis::rangeChanged),
+                mHistoryPlot->xAxis, QOverload<const QCPRange &>::of(&QCPAxis::setRange));
+        connect(rsiAxisRect->axis(QCPAxis::atBottom), QOverload<const QCPRange &>::of(&QCPAxis::rangeChanged),
+                macdAxisRect->axis(QCPAxis::atBottom), QOverload<const QCPRange &>::of(&QCPAxis::setRange));
+        connect(macdAxisRect->axis(QCPAxis::atBottom), QOverload<const QCPRange &>::of(&QCPAxis::rangeChanged),
+                rsiAxisRect->axis(QCPAxis::atBottom), QOverload<const QCPRange &>::of(&QCPAxis::setRange));
 
         auto macdDivergenceGraph = std::make_unique<QCPBars>(macdAxisRect->axis(QCPAxis::atBottom), macdAxisRect->axis(QCPAxis::atLeft));
         mMACDDivergenceGraph = macdDivergenceGraph.get();

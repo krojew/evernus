@@ -61,8 +61,8 @@ namespace Evernus
         mainLayout->addWidget(btnBox);
         connect(btnBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-        connect(&mCharacterModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
-                SIGNAL(charactersChanged()));
+        connect(&mCharacterModel, &CharacterModel::dataChanged,
+                this, &CharacterManagerDialog::charactersChanged);
 
         mCorpKeyModel.setTable(mCorpKeyRepository.getTableName());
         mCorpKeyModel.setRelation(

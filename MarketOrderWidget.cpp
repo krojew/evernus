@@ -123,7 +123,8 @@ namespace Evernus
         mGroupingCombo->addItem(tr("Type"), static_cast<int>(MarketOrderModel::Grouping::Type));
         mGroupingCombo->addItem(tr("Group"), static_cast<int>(MarketOrderModel::Grouping::Group));
         mGroupingCombo->addItem(tr("Station"), static_cast<int>(MarketOrderModel::Grouping::Station));
-        connect(mGroupingCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeGrouping()));
+        connect(mGroupingCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                this, &MarketOrderWidget::changeGrouping);
 
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);

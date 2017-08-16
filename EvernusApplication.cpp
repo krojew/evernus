@@ -223,9 +223,12 @@ namespace Evernus
 
         settings.setValue(versionKey, applicationVersion());
 
-        connect(&mSmtp, SIGNAL(authenticationFailed(const QByteArray &)), SLOT(showSmtpError(const QByteArray &)));
-        connect(&mSmtp, SIGNAL(connectionFailed(const QByteArray &)), SLOT(showSmtpError(const QByteArray &)));
-        connect(&mSmtp, SIGNAL(encryptionFailed(const QByteArray &)), SLOT(showSmtpError(const QByteArray &)));
+        connect(&mSmtp, QOverload<const QByteArray &>::of(&QxtSmtp::authenticationFailed),
+                this, &EvernusApplication::showSmtpError);
+        connect(&mSmtp, QOverload<const QByteArray &>::of(&QxtSmtp::connectionFailed),
+                this, &EvernusApplication::showSmtpError);
+        connect(&mSmtp, QOverload<const QByteArray &>::of(&QxtSmtp::encryptionFailed),
+                this, &EvernusApplication::showSmtpError);
         connect(&mSmtp, &QxtSmtp::finished, &mSmtp, &QxtSmtp::disconnectFromHost);
         setSmtpSettings();
 

@@ -55,7 +55,8 @@ namespace Evernus
         mPriceEdit->setMinimum(1.);
         mPriceEdit->setMaximum(1000000000000.);
         mPriceEdit->setEnabled(false);
-        connect(mPriceEdit, SIGNAL(valueChanged(double)), this, SLOT(valueChanged(double)));
+        connect(mPriceEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+                this, &DeviationSourceWidget::valueChanged);
 
         connect(mFixedValueBtn, &QRadioButton::toggled, mPriceEdit, &QDoubleSpinBox::setEnabled);
     }
