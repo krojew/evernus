@@ -16,6 +16,10 @@
 
 namespace Evernus
 {
+    const short MarketOrder::rangeStation;
+    const short MarketOrder::rangeSystem;
+    const short MarketOrder::rangeRegion;
+
     Character::IdType MarketOrder::getCharacterId() const
     {
         return mCharacterId;

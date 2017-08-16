@@ -289,7 +289,7 @@ namespace Evernus
 
                             selectNextInterface().fetchCharacterWallet(
                                 charId,
-                                [=, corpData = std::move(corpData), publicDataObj = std::move(publicDataObj), skillData = std::move(skillData)](auto &walletData, const auto &error, const auto &expires) {
+                                [=, corpData = std::move(corpData), publicDataObj = std::move(publicDataObj), skillData = std::move(skillData)](auto &&walletData, const auto &error, const auto &expires) {
                                     if (Q_UNLIKELY(!error.isEmpty()))
                                     {
                                         callback({}, error, expires);
