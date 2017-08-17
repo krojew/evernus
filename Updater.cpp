@@ -221,25 +221,37 @@ namespace Evernus
     {
         qDebug() << "Update core from" << majorVersion << "." << minorVersion;
 
-        if (majorVersion < 2)
+        if (majorVersion < 3)
         {
-            if (majorVersion == 0)
+            if (majorVersion < 2)
             {
-                if (minorVersion < 3)
-                    migrateCoreTo03();
-            }
-
-            if (minorVersion < 36)
-            {
-                if (minorVersion < 30)
+                if (majorVersion == 0)
                 {
-                    if (minorVersion < 13)
-                        migrateCoreTo113();
+                    if (minorVersion < 3)
+                        migrateCoreTo03();
 
-                    migrateCoreTo130();
+                    minorVersion = 0;
                 }
 
-                migrateCoreTo136();
+                if (minorVersion < 36)
+                {
+                    if (minorVersion < 30)
+                    {
+                        if (minorVersion < 13)
+                            migrateCoreTo113();
+
+                        migrateCoreTo130();
+                    }
+
+                    migrateCoreTo136();
+                }
+
+                minorVersion = 0;
+            }
+
+            if (minorVersion < 3)
+            {
+                migrateCoreTo23();
             }
         }
 
@@ -358,7 +370,6 @@ namespace Evernus
                     if (minorVersion < 2)
                         migrateDatabaseTo22(citadelRepo, corpItemRepo);
 
-                    migrateCoreTo23();
                     migrateDatabaseTo23(citadelRepo);
                 }
             }
