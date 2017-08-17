@@ -338,7 +338,7 @@ namespace Evernus
         if (mAccessTokens[charId].mExpiry < QDateTime::currentDateTime() || mAccessTokens[charId].mToken.isEmpty())
         {
             mPendingAuthRequests.insert(std::make_pair(charId, std::forward<T>(continuation)));
-            if (mPendingAuthRequests.size() == 1)
+            if (mPendingAuthRequests.count(charId) == 1)
                 emit tokenRequested(charId);
         }
         else

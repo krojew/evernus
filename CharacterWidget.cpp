@@ -584,7 +584,7 @@ namespace Evernus
                 const auto reprocessingSkills = character->getReprocessingSkills();
 
                 mNameLabel->setText(character->getName());
-                mBackgroundLabel->setText(QString{"%1 %2, %3, %4"}
+                mBackgroundLabel->setText(QStringLiteral("%1 %2, %3, %4")
                     .arg(character->getGender())
                     .arg(character->getRace())
                     .arg(character->getBloodline())
