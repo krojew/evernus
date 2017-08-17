@@ -2460,12 +2460,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished">Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="891"/>
+        <location filename="../ESIManager.cpp" line="893"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished">Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="925"/>
+        <location filename="../ESIManager.cpp" line="927"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished">Proszę dać dostęp do postaci: %1</translation>
     </message>

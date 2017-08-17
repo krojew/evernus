@@ -1861,12 +1861,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="891"/>
+        <location filename="../ESIManager.cpp" line="893"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="925"/>
+        <location filename="../ESIManager.cpp" line="927"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
