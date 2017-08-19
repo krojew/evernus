@@ -38,6 +38,7 @@
 #include "StationSelectButton.h"
 #include "AdjustableTableView.h"
 #include "MarketDataProvider.h"
+#include "LookupActionGroup.h"
 #include "EveDataProvider.h"
 #include "RegionComboBox.h"
 #include "ImportSettings.h"
@@ -56,6 +57,7 @@ namespace Evernus
                                                          const RegionStationPresetRepository &regionStationPresetRepository,
                                                          QWidget *parent)
         : StandardModelProxyWidget{mInterRegionDataModel, mInterRegionViewProxy, parent}
+        , EveTypeProvider{}
         , mDataProvider{dataProvider}
         , mMarketDataProvider{marketDataProvider}
         , mInterRegionDataModel{mDataProvider}
@@ -177,7 +179,16 @@ namespace Evernus
         mInterRegionTypeDataView->addAction(mShowDetailsAct);
         connect(mShowDetailsAct, &QAction::triggered, this, &InterRegionAnalysisWidget::showDetailsForCurrent);
 
+        mLookupGroup = new LookupActionGroup{*this, this};
+        mLookupGroup->setEnabled(false);
+        mInterRegionTypeDataView->addActions(mLookupGroup->actions());
+
         installOnView(mInterRegionTypeDataView);
+    }
+
+    EveType::IdType InterRegionAnalysisWidget::getTypeId() const
+    {
+        return mInterRegionDataModel.getTypeId(mInterRegionViewProxy.mapToSource(mInterRegionTypeDataView->currentIndex()));
     }
 
     void InterRegionAnalysisWidget::setPriceTypes(PriceType src, PriceType dst) noexcept
@@ -294,6 +305,7 @@ namespace Evernus
     {
         const auto enabled = !selected.isEmpty();
         mShowDetailsAct->setEnabled(enabled);
+        mLookupGroup->setEnabled(enabled);
     }
 
     void InterRegionAnalysisWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)

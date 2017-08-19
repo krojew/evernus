@@ -19,6 +19,7 @@
 
 #include "StandardModelProxyWidget.h"
 #include "ImportingDataModel.h"
+#include "EveTypeProvider.h"
 #include "Character.h"
 #include "EveType.h"
 
@@ -37,10 +38,12 @@ namespace Evernus
     class RegionStationPresetRepository;
     class AdjustableTableView;
     class MarketDataProvider;
+    class LookupActionGroup;
     class EveDataProvider;
 
     class ImportingAnalysisWidget
         : public StandardModelProxyWidget
+        , public EveTypeProvider
     {
         Q_OBJECT
 
@@ -52,6 +55,8 @@ namespace Evernus
         ImportingAnalysisWidget(const ImportingAnalysisWidget &) = default;
         ImportingAnalysisWidget(ImportingAnalysisWidget &&) = default;
         virtual ~ImportingAnalysisWidget() = default;
+
+        virtual EveType::IdType getTypeId() const override;
 
         void setPriceTypes(PriceType src, PriceType dst) noexcept;
 
@@ -91,6 +96,7 @@ namespace Evernus
         AdjustableTableView *mDataView = nullptr;
 
         QAction *mShowDetailsAct = nullptr;
+        LookupActionGroup *mLookupGroup = nullptr;
 
         quint64 mSrcStation = 0;
         quint64 mDstStation = 0;

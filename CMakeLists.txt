@@ -302,6 +302,7 @@ add_executable(
     EvernusApplication.h
     EveType.cpp
     EveType.h
+    EveTypeProvider.h
     EveTypeRepository.cpp
     EveTypeRepository.h
     ExcelDoubleSpinBox.cpp
@@ -430,6 +431,8 @@ add_executable(
     LocationBookmarkRepository.h
     LocationBookmarkSelectDialog.cpp
     LocationBookmarkSelectDialog.h
+    LookupActionGroup.cpp
+    LookupActionGroup.h
     main.cpp
     MainWindow.cpp
     MainWindow.h

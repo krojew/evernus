@@ -17,6 +17,7 @@
 #include <QWidget>
 
 #include "MarketOrderFilterProxyModel.h"
+#include "EveTypeProvider.h"
 #include "MarketOrder.h"
 #include "EveType.h"
 
@@ -28,6 +29,7 @@ class QColor;
 namespace Evernus
 {
     class MarketOrdersInfoWidget;
+    class LookupActionGroup;
     class ItemCostProvider;
     class MarketOrderModel;
     class EveDataProvider;
@@ -35,6 +37,7 @@ namespace Evernus
 
     class MarketOrderView
         : public QWidget
+        , public EveTypeProvider
     {
         Q_OBJECT
 
@@ -45,6 +48,8 @@ namespace Evernus
                         const ItemCostProvider &itemCostProvider,
                         QWidget *parent = nullptr);
         virtual ~MarketOrderView() = default;
+
+        virtual EveType::IdType getTypeId() const override;
 
         QItemSelectionModel *getSelectionModel() const;
         const QAbstractProxyModel &getProxyModel() const;
@@ -81,9 +86,6 @@ namespace Evernus
     private slots:
         void showPriceInfo(const QModelIndex &index);
 
-        void lookupOnEveMarketdata();
-        void lookupOnEveCentral();
-
         void selectOrder(const QItemSelection &selected);
         void removeOrders();
         void showExternalOrdersForCurrent();
@@ -111,9 +113,8 @@ namespace Evernus
         QAction *mChangeCustomStationAct = nullptr;
         QAction *mChangeColorTagAct = nullptr;
         QAction *mRemoveColorTagAct = nullptr;
-        QActionGroup *mLookupGroup = nullptr;
+        LookupActionGroup *mLookupGroup = nullptr;
 
-        void lookupOnWeb(const QString &baseUrl) const;
         void showInEveFor(const QModelIndex &index) const;
 
         void executeFPC(int delta);

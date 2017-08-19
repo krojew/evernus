@@ -32,6 +32,7 @@
 #include "MarketAnalysisSettings.h"
 #include "CalculatingDataWidget.h"
 #include "AdjustableTableView.h"
+#include "LookupActionGroup.h"
 #include "EveDataProvider.h"
 #include "FlowLayout.h"
 
@@ -44,14 +45,15 @@ namespace Evernus
                                                const EveDataProvider &dataProvider,
                                                const MarketDataProvider &marketDataProvider,
                                                QWidget *parent)
-        : StandardModelProxyWidget(mTypeDataModel, mTypeViewProxy, parent)
-        , mDataProvider(dataProvider)
-        , mMarketDataProvider(marketDataProvider)
-        , mTypeDataModel(mDataProvider)
-        , mTypeViewProxy(TypeAggregatedMarketDataModel::getVolumeColumn(),
+        : StandardModelProxyWidget{mTypeDataModel, mTypeViewProxy, parent}
+        , EveTypeProvider{}
+        , mDataProvider{dataProvider}
+        , mMarketDataProvider{marketDataProvider}
+        , mTypeDataModel{mDataProvider}
+        , mTypeViewProxy{TypeAggregatedMarketDataModel::getVolumeColumn(),
                          TypeAggregatedMarketDataModel::getMarginColumn(),
                          TypeAggregatedMarketDataModel::getBuyPriceColumn(),
-                         TypeAggregatedMarketDataModel::getSellPriceColumn())
+                         TypeAggregatedMarketDataModel::getSellPriceColumn()}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -194,7 +196,7 @@ namespace Evernus
         mTypeViewProxy.setSortRole(Qt::UserRole);
         mTypeViewProxy.setSourceModel(&mTypeDataModel);
 
-        mRegionTypeDataView = new AdjustableTableView{"marketAnalysisRegionView", this};
+        mRegionTypeDataView = new AdjustableTableView{QStringLiteral("marketAnalysisRegionView"), this};
         mRegionDataStack->addWidget(mRegionTypeDataView);
         mRegionTypeDataView->setSortingEnabled(true);
         mRegionTypeDataView->setAlternatingRowColors(true);
@@ -213,7 +215,16 @@ namespace Evernus
         mRegionTypeDataView->addAction(mShowDetailsAct);
         connect(mShowDetailsAct, &QAction::triggered, this, &RegionAnalysisWidget::showDetailsForCurrent);
 
+        mLookupGroup = new LookupActionGroup{*this, this};
+        mLookupGroup->setEnabled(false);
+        mRegionTypeDataView->addActions(mLookupGroup->actions());
+
         installOnView(mRegionTypeDataView);
+    }
+
+    EveType::IdType RegionAnalysisWidget::getTypeId() const
+    {
+        return mTypeDataModel.getTypeId(mTypeViewProxy.mapToSource(mRegionTypeDataView->currentIndex()));
     }
 
     void RegionAnalysisWidget::setPriceTypes(PriceType src, PriceType dst) noexcept
@@ -356,7 +367,9 @@ namespace Evernus
 
     void RegionAnalysisWidget::selectRegionType(const QItemSelection &selected)
     {
-        mShowDetailsAct->setEnabled(!selected.isEmpty());
+        const auto enabled = !selected.isEmpty();
+        mShowDetailsAct->setEnabled(enabled);
+        mLookupGroup->setEnabled(enabled);
     }
 
     void RegionAnalysisWidget::showDetailsForCurrent()

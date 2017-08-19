@@ -32,6 +32,7 @@
 #include "AdjustableTableView.h"
 #include "StationSelectButton.h"
 #include "MarketDataProvider.h"
+#include "LookupActionGroup.h"
 #include "EveDataProvider.h"
 #include "RegionComboBox.h"
 #include "FlowLayout.h"
@@ -45,8 +46,9 @@ namespace Evernus
                                                              const RegionStationPresetRepository &regionStationPresetRepository,
                                                              const QString &viewConfigName,
                                                              QWidget *parent)
-        : StandardModelProxyWidget(mDataProxy, parent)
-        , mMarketDataProvider(marketDataProvider)
+        : StandardModelProxyWidget{mDataProxy, parent}
+        , EveTypeProvider{}
+        , mMarketDataProvider{marketDataProvider}
     {
         const auto mainLayout = new QVBoxLayout{this};
 
@@ -207,10 +209,21 @@ namespace Evernus
         mDataView->setModel(&mDataProxy);
         mDataView->setContextMenuPolicy(Qt::ActionsContextMenu);
         mDataView->restoreHeaderState();
+        connect(mDataView->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &ReprocessingArbitrageWidget::selectType);
 
         mDataStack->setCurrentWidget(mDataView);
 
+        mLookupGroup = new LookupActionGroup{*this, this};
+        mLookupGroup->setEnabled(false);
+        mDataView->addActions(mLookupGroup->actions());
+
         installOnView(mDataView);
+    }
+
+    EveType::IdType ReprocessingArbitrageWidget::getTypeId() const
+    {
+        return mDataModel->getTypeId(mDataProxy.mapToSource(mDataView->currentIndex()));
     }
 
     void ReprocessingArbitrageWidget::setCharacter(std::shared_ptr<Character> character)
@@ -265,6 +278,12 @@ namespace Evernus
 
         mDataStack->setCurrentWidget(mDataView);
         mDataStack->repaint();
+    }
+
+    void ReprocessingArbitrageWidget::selectType(const QItemSelection &selected)
+    {
+        const auto enabled = !selected.isEmpty();
+        mLookupGroup->setEnabled(enabled);
     }
 
     void ReprocessingArbitrageWidget::setSourceModel(ReprocessingArbitrageModel *model)

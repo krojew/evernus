@@ -20,6 +20,7 @@
 
 #include "ReprocessingArbitrageModel.h"
 #include "StandardModelProxyWidget.h"
+#include "EveTypeProvider.h"
 #include "PriceType.h"
 
 class QStackedWidget;
@@ -34,12 +35,14 @@ namespace Evernus
     class ReprocessingArbitrageModel;
     class AdjustableTableView;
     class MarketDataProvider;
+    class LookupActionGroup;
     class EveDataProvider;
     class RegionComboBox;
     class Character;
 
     class ReprocessingArbitrageWidget
         : public StandardModelProxyWidget
+        , public EveTypeProvider
     {
         Q_OBJECT
 
@@ -53,6 +56,8 @@ namespace Evernus
         ReprocessingArbitrageWidget(ReprocessingArbitrageWidget &&) = default;
         virtual ~ReprocessingArbitrageWidget() = default;
 
+        virtual EveType::IdType getTypeId() const override;
+
         void setCharacter(std::shared_ptr<Character> character);
         void clearData();
 
@@ -63,6 +68,9 @@ namespace Evernus
 
     public slots:
         void recalculateData();
+
+    private slots:
+        void selectType(const QItemSelection &selected);
 
     protected:
         void setSourceModel(ReprocessingArbitrageModel *model);
@@ -86,6 +94,8 @@ namespace Evernus
 
         QSortFilterProxyModel mDataProxy;
         ReprocessingArbitrageModel *mDataModel = nullptr;
+
+        LookupActionGroup *mLookupGroup = nullptr;
 
         PriceType mDstPriceType = PriceType::Buy;
 

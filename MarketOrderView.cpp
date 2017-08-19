@@ -14,7 +14,6 @@
  */
 #include <algorithm>
 
-#include <QDesktopServices>
 #include <QWidgetAction>
 #include <QApplication>
 #include <QActionGroup>
@@ -27,12 +26,12 @@
 #include <QAction>
 #include <QLabel>
 #include <QMenu>
-#include <QUrl>
 
 #include "MarketOrderVolumeItemDelegate.h"
 #include "MarketOrdersInfoWidget.h"
 #include "MarketOrderInfoWidget.h"
 #include "StationSelectDialog.h"
+#include "LookupActionGroup.h"
 #include "MarketOrderModel.h"
 #include "StyledTreeView.h"
 #include "PriceSettings.h"
@@ -46,10 +45,11 @@ namespace Evernus
                                      MarketOrdersInfoWidget *infoWidget,
                                      const ItemCostProvider &itemCostProvider,
                                      QWidget *parent)
-        : QWidget(parent)
-        , mDataProvider(dataProvider)
-        , mInfoWidget(infoWidget)
-        , mProxy(mDataProvider, itemCostProvider)
+        : QWidget{parent}
+        , EveTypeProvider{}
+        , mDataProvider{dataProvider}
+        , mInfoWidget{infoWidget}
+        , mProxy{mDataProvider, itemCostProvider}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -123,20 +123,19 @@ namespace Evernus
         if (mInfoWidget != nullptr)
             mainLayout->addWidget(mInfoWidget);
 
-        mLookupGroup = new QActionGroup{this};
+        mLookupGroup = new LookupActionGroup{*this, this};
         mLookupGroup->setEnabled(false);
 
-        auto action = mLookupGroup->addAction(tr("Lookup item on eve-marketdata.com"));
-        connect(action, &QAction::triggered, this, &MarketOrderView::lookupOnEveMarketdata);
-
-        action = mLookupGroup->addAction(tr("Lookup item on eve-central.com"));
-        connect(action, &QAction::triggered, this, &MarketOrderView::lookupOnEveCentral);
-
-        action = new QAction{this};
+        const auto action = new QAction{this};
         action->setSeparator(true);
 
         mView->addAction(action);
         mView->addActions(mLookupGroup->actions());
+    }
+
+    EveType::IdType MarketOrderView::getTypeId() const
+    {
+        return (mSource == nullptr) ? (EveType::invalidId) : (mSource->getOrderTypeId(mProxy.mapToSource(mView->currentIndex())));
     }
 
     QItemSelectionModel *MarketOrderView::getSelectionModel() const
@@ -289,16 +288,6 @@ namespace Evernus
         connect(this, &MarketOrderView::closeOrderInfo, infoWidget, &MarketOrderInfoWidget::deleteLater);
     }
 
-    void MarketOrderView::lookupOnEveMarketdata()
-    {
-        lookupOnWeb("http://eve-marketdata.com/price_check.php?type_id=%1");
-    }
-
-    void MarketOrderView::lookupOnEveCentral()
-    {
-        lookupOnWeb("https://eve-central.com/home/quicklook.html?typeid=%1");
-    }
-
     void MarketOrderView::selectOrder(const QItemSelection &selected)
     {
         if (mSource == nullptr)
@@ -343,16 +332,6 @@ namespace Evernus
     void MarketOrderView::showInEveForCurrent()
     {
         showInEveFor(mProxy.mapToSource(mView->currentIndex()));
-    }
-
-    void MarketOrderView::lookupOnWeb(const QString &baseUrl) const
-    {
-        if (mSource == nullptr)
-            return;
-
-        const auto typeId = mSource->getOrderTypeId(mProxy.mapToSource(mView->currentIndex()));
-        if (typeId != EveType::invalidId)
-            QDesktopServices::openUrl(baseUrl.arg(typeId));
     }
 
     void MarketOrderView::showInEveFor(const QModelIndex &index) const

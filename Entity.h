@@ -20,7 +20,7 @@ namespace Evernus
     class Entity
     {
     public:
-        typedef Id IdType;
+        using IdType = Id;
 
         static const IdType invalidId;
 
