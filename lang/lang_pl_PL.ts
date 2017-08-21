@@ -453,7 +453,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../AboutDialog.cpp" line="43"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Created by &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;German translation by &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Hel+O%27Ween&apos;&gt;Hel O&apos;Ween&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Thanks to &lt;strong&gt;&lt;a href=&apos;https://www.twitch.tv/maximilon&apos;&gt;Robert Knox&lt;/a&gt;&lt;/strong&gt; for testing and tips.&lt;br /&gt;All donations are welcome :)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;New forum topic: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;&lt;br /&gt;Old forum topic: &lt;a href=&apos;%5&apos;&gt;%5&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;%1&lt;/strong&gt;&lt;br /&gt;%2&lt;br /&gt;&lt;br /&gt;Autor: &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Pete+Butcher&apos;&gt;Pete Butcher&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Niemieckie tłumaczenie: &lt;strong&gt;&lt;a href=&apos;http://evewho.com/pilot/Hel+O%27Ween&apos;&gt;Hel O&apos;Ween&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;Podziękowania dla &lt;strong&gt;&lt;a href=&apos;https://www.twitch.tv/maximilon&apos;&gt;Robert Knox&lt;/a&gt;&lt;/strong&gt; za pomoc w testowaniu.&lt;br /&gt;Wszelkie podarunki są mile widziane:)&lt;br /&gt;&lt;br /&gt;&lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;br /&gt;Twitter: &lt;a href=&apos;http://twitter.com/evernusproject&apos;&gt;@evernusproject&lt;/a&gt;&lt;br /&gt;Forum: &lt;a href=&apos;%4&apos;&gt;%4&lt;/a&gt;&lt;br /&gt;Stare forum: &lt;a href=&apos;%5&apos;&gt;%5&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../AboutDialog.cpp" line="68"/>
@@ -484,149 +484,149 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="59"/>
         <source>This tab allows you to create custom reports aggregating historic market order data.</source>
-        <translation type="unfinished">Ta zakładka pozwala na tworzenie własnych raportów agregujących historyczne dane zleceń.</translation>
+        <translation>Ta zakładka pozwala na tworzenie własnych raportów agregujących historyczne dane zleceń.</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="67"/>
         <source>Simple aggregation</source>
-        <translation type="unfinished">Prosta agregacja</translation>
+        <translation>Prosta agregacja</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="77"/>
         <source>Group by:</source>
-        <translation type="unfinished">Grupuj po:</translation>
+        <translation>Grupuj po:</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="81"/>
         <source>Type</source>
-        <translation type="unfinished">Typ</translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="82"/>
         <source>Location</source>
-        <translation type="unfinished">Lokacja</translation>
+        <translation>Lokacja</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="84"/>
         <source>Order by:</source>
-        <translation type="unfinished">Sortuj po:</translation>
+        <translation>Sortuj po:</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="88"/>
         <source>Id</source>
-        <translation type="unfinished">Identyfikator</translation>
+        <translation>Identyfikator</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="89"/>
         <source>Count</source>
-        <translation type="unfinished">Ilość</translation>
+        <translation>Ilość</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="90"/>
         <source>Price</source>
-        <translation type="unfinished">Cena</translation>
+        <translation>Cena</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="91"/>
         <source>Volume</source>
-        <translation type="unfinished">Wolumen</translation>
+        <translation>Wolumen</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="93"/>
         <source>Limit:</source>
-        <translation type="unfinished">Limit:</translation>
+        <translation>Limit:</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="99"/>
         <source>none</source>
-        <translation type="unfinished">brak</translation>
+        <translation>brak</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="101"/>
         <source>Include active</source>
-        <translation type="unfinished">Uwzględnij aktywne</translation>
+        <translation>Uwzględnij aktywne</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="104"/>
         <source>Include expired/cancelled</source>
-        <translation type="unfinished">Uwzględnij wygasłe/anulowane</translation>
+        <translation>Uwzględnij wygasłe/anulowane</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="107"/>
         <location filename="../AdvancedStatisticsWidget.cpp" line="138"/>
         <source>Apply</source>
-        <translation type="unfinished">Zastosuj</translation>
+        <translation>Zastosuj</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="114"/>
         <source>Script processing</source>
-        <translation type="unfinished">Przetwarzanie skryptem</translation>
+        <translation>Przetwarzanie skryptem</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="130"/>
         <source>see the online help to learn how to use script processing</source>
-        <translation type="unfinished">zajrzyj do pomocy online, aby się dowiedzieć jak używać skryptów</translation>
+        <translation>zajrzyj do pomocy online, aby się dowiedzieć jak używać skryptów</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="143"/>
         <source>Save script...</source>
-        <translation type="unfinished">Zapisz skrypt...</translation>
+        <translation>Zapisz skrypt...</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="147"/>
         <source>Load script...</source>
-        <translation type="unfinished">Załaduj skrypt...</translation>
+        <translation>Załaduj skrypt...</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="151"/>
         <source>Delete script...</source>
-        <translation type="unfinished">Usuń skrypt...</translation>
+        <translation>Usuń skrypt...</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="155"/>
         <source>Mode</source>
-        <translation type="unfinished">Tryb</translation>
+        <translation>Tryb</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="160"/>
         <source>For each</source>
-        <translation type="unfinished">Dla każdego</translation>
+        <translation>Dla każdego</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="164"/>
         <source>Aggregate</source>
-        <translation type="unfinished">Agregacja</translation>
+        <translation>Agregacja</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="252"/>
         <source>Script error</source>
-        <translation type="unfinished">Błąd skryptu</translation>
+        <translation>Błąd skryptu</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="258"/>
         <source>Save script</source>
-        <translation type="unfinished">Zapis skryptu</translation>
+        <translation>Zapis skryptu</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="258"/>
         <source>Enter script name:</source>
-        <translation type="unfinished">Nazwa skryptu:</translation>
+        <translation>Nazwa skryptu:</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="273"/>
         <source>Load script</source>
-        <translation type="unfinished">Załadowanie skryptu</translation>
+        <translation>Załadowanie skryptu</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="273"/>
         <location filename="../AdvancedStatisticsWidget.cpp" line="290"/>
         <source>Select script:</source>
-        <translation type="unfinished">Wybierz skrypt:</translation>
+        <translation>Wybierz skrypt:</translation>
     </message>
     <message>
         <location filename="../AdvancedStatisticsWidget.cpp" line="290"/>
         <source>Delete script</source>
-        <translation type="unfinished">Usuwanie skryptu</translation>
+        <translation>Usuwanie skryptu</translation>
     </message>
 </context>
 <context>
@@ -634,17 +634,17 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../AggregatedAssetModel.cpp" line="93"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
     <message>
         <location filename="../AggregatedAssetModel.cpp" line="95"/>
         <source>Quantity</source>
-        <translation type="unfinished">Ilość</translation>
+        <translation>Ilość</translation>
     </message>
     <message>
         <location filename="../AggregatedAssetModel.cpp" line="97"/>
         <source>Total value</source>
-        <translation type="unfinished">Suma</translation>
+        <translation>Suma</translation>
     </message>
 </context>
 <context>
@@ -700,7 +700,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../AssetModel.cpp" line="185"/>
         <source>Custom value</source>
-        <translation type="unfinished"></translation>
+        <translation>Własna wartość</translation>
     </message>
     <message>
         <location filename="../AssetModel.cpp" line="186"/>
@@ -783,7 +783,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../AssetsWidget.cpp" line="131"/>
         <source>Inventory</source>
-        <translation type="unfinished"></translation>
+        <translation>Inwentarz</translation>
     </message>
     <message>
         <location filename="../AssetsWidget.cpp" line="138"/>
@@ -799,17 +799,17 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <location filename="../AssetsWidget.cpp" line="148"/>
         <location filename="../AssetsWidget.cpp" line="270"/>
         <source>Set custom value</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustaw własną wartość</translation>
     </message>
     <message>
         <location filename="../AssetsWidget.cpp" line="153"/>
         <source>Clear custom value</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń własną wartość</translation>
     </message>
     <message>
         <location filename="../AssetsWidget.cpp" line="159"/>
         <source>Aggregated</source>
-        <translation type="unfinished"></translation>
+        <translation>Zagregowane</translation>
     </message>
     <message>
         <location filename="../AssetsWidget.cpp" line="165"/>
@@ -829,7 +829,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../AssetsWidget.cpp" line="270"/>
         <source>ISK:</source>
-        <translation type="unfinished"></translation>
+        <translation>ISK:</translation>
     </message>
 </context>
 <context>
@@ -837,45 +837,45 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="71"/>
         <source>Combine statistics for all characters</source>
-        <translation type="unfinished">Połącz statystyki wszystkich postaci</translation>
+        <translation>Połącz statystyki wszystkich postaci</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="81"/>
         <source>Make snapshot</source>
-        <translation type="unfinished">Zachowaj wartość</translation>
+        <translation>Zachowaj wartość</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="87"/>
         <source>Balance</source>
-        <translation type="unfinished">Bilans</translation>
+        <translation>Bilans</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="97"/>
         <source>Wallet journal</source>
-        <translation type="unfinished">Dziennik</translation>
+        <translation>Dziennik</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="112"/>
         <location filename="../BasicStatisticsWidget.cpp" line="144"/>
         <source>Total income:</source>
-        <translation type="unfinished">Całkowity zysk:</translation>
+        <translation>Całkowity zysk:</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="118"/>
         <location filename="../BasicStatisticsWidget.cpp" line="150"/>
         <source>Total cost:</source>
-        <translation type="unfinished">Całkowity koszt:</translation>
+        <translation>Całkowity koszt:</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="124"/>
         <location filename="../BasicStatisticsWidget.cpp" line="156"/>
         <source>Balance:</source>
-        <translation type="unfinished">Bilans:</translation>
+        <translation>Bilans:</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="132"/>
         <source>Wallet transactions</source>
-        <translation type="unfinished">Transakcje</translation>
+        <translation>Transakcje</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="698"/>
@@ -886,7 +886,7 @@ Corp. wallet: %4
 Buy orders: %5
 Sell orders: %6
 Total: %7</source>
-        <translation type="unfinished">Aktywa: %1
+        <translation>Aktywa: %1
 Aktywa kroporacji: %2
 Portfel: %3
 Portfel korporacji: %4
@@ -897,57 +897,57 @@ Suma: %7</translation>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="712"/>
         <source>Asset value</source>
-        <translation type="unfinished">Aktywa</translation>
+        <translation>Aktywa</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="715"/>
         <source>Wallet balance</source>
-        <translation type="unfinished">Portfel</translation>
+        <translation>Portfel</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="718"/>
         <source>Corp. wallet balance</source>
-        <translation type="unfinished">Portfel korporacji</translation>
+        <translation>Portfel korporacji</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="721"/>
         <source>Corp. asset value</source>
-        <translation type="unfinished">Aktywa korporacji</translation>
+        <translation>Aktywa korporacji</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="724"/>
         <source>Buy order value</source>
-        <translation type="unfinished">Zlecenia kupna</translation>
+        <translation>Zlecenia kupna</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="727"/>
         <source>Sell order value</source>
-        <translation type="unfinished">Zlecenia sprzedaży</translation>
+        <translation>Zlecenia sprzedaży</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="730"/>
         <source>Total value</source>
-        <translation type="unfinished">Suma</translation>
+        <translation>Suma</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="734"/>
         <source>Incoming</source>
-        <translation type="unfinished">Przychód</translation>
+        <translation>Przychód</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="735"/>
         <source>Outgoing</source>
-        <translation type="unfinished">Koszt</translation>
+        <translation>Koszt</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="737"/>
         <source>Sell</source>
-        <translation type="unfinished">Sprzedaż</translation>
+        <translation>Sprzedaż</translation>
     </message>
     <message>
         <location filename="../BasicStatisticsWidget.cpp" line="738"/>
         <source>Buy</source>
-        <translation type="unfinished">Kupno</translation>
+        <translation>Kupno</translation>
     </message>
 </context>
 <context>
@@ -1150,7 +1150,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CachingEveDataProvider.cpp" line="399"/>
         <source>- unknown location -</source>
-        <translation type="unfinished"></translation>
+        <translation>- nieznana lokacja -</translation>
     </message>
 </context>
 <context>
@@ -1158,7 +1158,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CalculatingDataWidget.cpp" line="29"/>
         <source>Calculating data...</source>
-        <translation type="unfinished">Obliczanie danych...</translation>
+        <translation>Obliczanie danych...</translation>
     </message>
 </context>
 <context>
@@ -1170,7 +1170,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CallbackExternalOrderImporter.cpp" line="24"/>
         <source>EVE import: waiting for %1 server replies</source>
-        <translation type="unfinished"></translation>
+        <translation>Import z EVE oczekuje na %1 odpowiedzi serwera</translation>
     </message>
 </context>
 <context>
@@ -1465,112 +1465,112 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CharacterWidget.cpp" line="274"/>
         <source>Reprocessing skills</source>
-        <translation type="unfinished"></translation>
+        <translation>Umiejętności przetwarzania</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="282"/>
         <source>Reprocessing implant bonus:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bonus implantu przetwarzania:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="300"/>
         <source>Arkonor processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Arkonor:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="302"/>
         <source>Bistot processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Bistot:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="304"/>
         <source>Crokite processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Crokite:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="306"/>
         <source>Dark Ochre processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Dark Ochre:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="308"/>
         <source>Gneiss processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Gneiss:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="314"/>
         <source>Hedbergite processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Hedbergite:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="316"/>
         <source>Hemorphite processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Hemorphite:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="318"/>
         <source>Ice processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie lodu:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="320"/>
         <source>Jaspet processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Jaspet:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="322"/>
         <source>Kernite processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Kernite:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="328"/>
         <source>Mercoxit processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Mercoxit:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="330"/>
         <source>Omber processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Omber:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="332"/>
         <source>Plagioclase processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Plagioclase:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="334"/>
         <source>Pyroxeres processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Pyroxeres:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="336"/>
         <source>Reprocessing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="342"/>
         <source>Reprocessing efficiency:</source>
-        <translation type="unfinished"></translation>
+        <translation>Reprocessing efficiency:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="344"/>
         <source>Scordite processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Scordite:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="346"/>
         <source>Scrapmetal processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie złomu:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="348"/>
         <source>Spodumain processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Spodumain:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="350"/>
         <source>Veldspar processing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie Veldspar:</translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="392"/>
@@ -1658,12 +1658,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CheckableTreeView.cpp" line="38"/>
         <source>Check</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaznacz</translation>
     </message>
     <message>
         <location filename="../CheckableTreeView.cpp" line="41"/>
         <source>Uncheck</source>
-        <translation type="unfinished"></translation>
+        <translation>Odznacz</translation>
     </message>
 </context>
 <context>
@@ -1671,12 +1671,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CitadelLocationWidget.cpp" line="44"/>
         <source>Expand all</source>
-        <translation type="unfinished">Rozwiń wszystko</translation>
+        <translation>Rozwiń wszystko</translation>
     </message>
     <message>
         <location filename="../CitadelLocationWidget.cpp" line="50"/>
         <source>Collapse all</source>
-        <translation type="unfinished">Zwiń wszystko</translation>
+        <translation>Zwiń wszystko</translation>
     </message>
 </context>
 <context>
@@ -1684,17 +1684,17 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CitadelManagerDialog.cpp" line="35"/>
         <source>Ignored citadels</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorowane cytadele</translation>
     </message>
     <message>
         <location filename="../CitadelManagerDialog.cpp" line="40"/>
         <source>Ignored citadels will not have their data imported.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorowane cytadele będą wykluczone z importu danych.</translation>
     </message>
     <message>
         <location filename="../CitadelManagerDialog.cpp" line="51"/>
         <source>Citadel manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Menadżer cytadel</translation>
     </message>
 </context>
 <context>
@@ -2179,22 +2179,22 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../CustomFPCDialog.cpp" line="35"/>
         <source>You can copy raw data into the clipboard for use as a custom Fast Price Copy source. The first column should contain item type id, and the second its price to copy (optional).</source>
-        <translation type="unfinished"></translation>
+        <translation>Możesz wkleić dane ze schowka jako źródło szybkiego kopiowania ceny. Pierwsza kolumna powinna zawierać identifikator typu, a druga opcjonalnie jego cenę do skopiowania.</translation>
     </message>
     <message>
         <location filename="../CustomFPCDialog.cpp" line="42"/>
         <source>Paste data</source>
-        <translation type="unfinished"></translation>
+        <translation>Wklej dane</translation>
     </message>
     <message>
         <location filename="../CustomFPCDialog.cpp" line="49"/>
         <source>Type</source>
-        <translation type="unfinished">Typ</translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../CustomFPCDialog.cpp" line="49"/>
         <source>Price</source>
-        <translation type="unfinished">Cena</translation>
+        <translation>Cena</translation>
     </message>
 </context>
 <context>
@@ -2350,12 +2350,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../DoubleTypeCompareWidget.cpp" line="52"/>
         <source>Avg. price [ISK]</source>
-        <translation type="unfinished"></translation>
+        <translation>Średnia cena [ISK]</translation>
     </message>
     <message>
         <location filename="../DoubleTypeCompareWidget.cpp" line="67"/>
         <source>Volume</source>
-        <translation type="unfinished">Wolumen</translation>
+        <translation>Wolumen</translation>
     </message>
 </context>
 <context>
@@ -2364,17 +2364,17 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <location filename="../DumpUploader.cpp" line="36"/>
         <location filename="../DumpUploader.cpp" line="42"/>
         <source>Evernus</source>
-        <translation type="unfinished">Evernus</translation>
+        <translation>Evernus</translation>
     </message>
     <message>
         <location filename="../DumpUploader.cpp" line="37"/>
         <source>The application crashed in a previous run. Create bug report and upload crash data?</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplikacja poprzednio nieprawidłowo zakończyła pracę. Czy chcesz utworzyć raport o błędzie i wysłać dane go dotyczące?</translation>
     </message>
     <message>
         <location filename="../DumpUploader.cpp" line="42"/>
         <source>Delete crash reports?</source>
-        <translation type="unfinished"></translation>
+        <translation>Usunąć dane błędów?</translation>
     </message>
 </context>
 <context>
@@ -2382,47 +2382,47 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../ESIInterface.cpp" line="91"/>
         <source>Cannot fetch citadels with no character selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można pobrać cytadel bez wybranej postaci.</translation>
     </message>
     <message>
         <location filename="../ESIInterface.cpp" line="109"/>
         <source>Cannot fetch assets with no character selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można pobrać aktywów bez wybranej postaci.</translation>
     </message>
     <message>
         <location filename="../ESIInterface.cpp" line="127"/>
         <source>Cannot fetch character with no character selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można pobrać danych postaci bez wybranej postaci.</translation>
     </message>
     <message>
         <location filename="../ESIInterface.cpp" line="140"/>
         <source>Cannot fetch character skills with no character selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można pobrać umiejętności bez wybranej postaci.</translation>
     </message>
     <message>
         <location filename="../ESIInterface.cpp" line="176"/>
         <source>Cannot fetch character wallet with no character selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można pobrać portfela bez wybranej postaci.</translation>
     </message>
     <message>
         <location filename="../ESIInterface.cpp" line="194"/>
         <source>Cannot fetch character market orders with no character selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można pobrać zleceń bez wybranej postaci.</translation>
     </message>
     <message>
         <location filename="../ESIInterface.cpp" line="214"/>
         <source>Cannot fetch character wallet journal with no character selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można pobrać dziennika portfela bez wybranej postaci.</translation>
     </message>
     <message>
         <location filename="../ESIInterface.cpp" line="242"/>
         <source>Cannot fetch character wallet transactions with no character selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można pobrać transakcji bez wybranej postaci.</translation>
     </message>
     <message>
         <location filename="../ESIInterface.cpp" line="268"/>
         <source>Cannot open market window for invalid character. Check if there&apos;s a character associated with the item you wish to view.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można otworzyć okna rynku dla nieprawidłowej postaci. Sprawdź, czy istnieje postać powiązana z przedmiotem, który chcesz zobaczyć.</translation>
     </message>
 </context>
 <context>
@@ -2430,44 +2430,46 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     <message>
         <location filename="../ESIManager.cpp" line="631"/>
         <source>SSO authorization failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieudana autoryzacja SSO.</translation>
     </message>
     <message>
         <location filename="../ESIManager.cpp" line="184"/>
         <source>Citadel order import</source>
-        <translation type="unfinished"></translation>
+        <translation>Import cytadel</translation>
     </message>
     <message>
         <location filename="../ESIManager.cpp" line="184"/>
         <source>Seems like you are importing citadel orders for the first time. CCP only allows importing orders from citadels you have access to. This means you need to authenticate yourself with Eve SSO, if you haven&apos;t done that already (please wait for the SSO window to open).
 
 Also, please note that due to large numbers of citadels in some regions, the import might take much longer. Remember you can toggle citadel import in the Preferences.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyglada na to, że importujesz cytadele po raz pierwszy. CPP pozwana na import cytadel, do których masz dostęp. Oznacz to, że musisz autoryzować się przy pomocy Eve SSO, jeśli jescze tego nie zrobiłeś (okno SSO powinno się otworzyć).
+
+Z powodu dużej ilości cytadel w niektórych regionach, import może zająć dużo czasu. Pamiętaj, że możesz przełączyć import cytadel w ustawieniach.</translation>
     </message>
     <message>
         <location filename="../ESIManager.cpp" line="613"/>
         <source>SSO Authentication for unknown character: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Uwierzytelnienie SSO dla nieznanej postaci: %1</translation>
     </message>
     <message>
         <location filename="../ESIManager.cpp" line="615"/>
         <source>SSO Authentication for character: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Uwierzytelnienie SSO dla postaci: %1</translation>
     </message>
     <message>
         <location filename="../ESIManager.cpp" line="704"/>
         <source>Empty access token!</source>
-        <translation type="unfinished">Pusty token dostępu!</translation>
+        <translation>Pusty token dostępu!</translation>
     </message>
     <message>
         <location filename="../ESIManager.cpp" line="893"/>
         <source>Empty refresh token!</source>
-        <translation type="unfinished">Pusty token odświeżania!</translation>
+        <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
         <location filename="../ESIManager.cpp" line="927"/>
         <source>Please authorize access for character: %1</source>
-        <translation type="unfinished">Proszę dać dostęp do postaci: %1</translation>
+        <translation>Proszę dać dostęp do postaci: %1</translation>
     </message>
 </context>
 <context>
@@ -2528,12 +2530,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     <message>
         <location filename="../EvernusApplication.cpp" line="119"/>
         <source>SSO client id</source>
-        <translation type="unfinished"></translation>
+        <translation>Id klienta SSO</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="120"/>
         <source>SSO client secret</source>
-        <translation type="unfinished"></translation>
+        <translation>Tajny klucz klienta SSO</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="200"/>
@@ -3100,7 +3102,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../FavoriteLocationsButton.cpp" line="31"/>
         <source>Select favorite locations.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz ulubione lokacje.</translation>
     </message>
 </context>
 <context>
@@ -3141,7 +3143,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../GeneralPreferencesWidget.cpp" line="75"/>
         <source>Use packaged size for ships and modules</source>
-        <translation type="unfinished"></translation>
+        <translation>Używaj spakowanego rozmiaru statków i modułów</translation>
     </message>
     <message>
         <source>Use packaged size for ships</source>
@@ -3537,7 +3539,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="54"/>
         <source>CSV separator:</source>
-        <translation type="unfinished"></translation>
+        <translation>Separator CSV:</translation>
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="57"/>
@@ -3587,12 +3589,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="142"/>
         <source>Email notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Powiadomienia email</translation>
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="142"/>
         <source>Email notifications will be disabled since destination address or SMTP host is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Powiadomienia email zostaną wyłączone, gdyż adres docelowy lub adres SMTP jest pusty.</translation>
     </message>
     <message>
         <source> min</source>
@@ -3707,17 +3709,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="83"/>
         <source>ESI</source>
-        <translation type="unfinished"></translation>
+        <translation>ESI</translation>
     </message>
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="80"/>
         <source>Eve data import type:</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ importu danych z Eve:</translation>
     </message>
     <message>
         <location filename="../ImportSourcePreferencesWidget.cpp" line="82"/>
         <source>XML</source>
-        <translation type="unfinished"></translation>
+        <translation>XML</translation>
     </message>
     <message>
         <source>CREST</source>
@@ -3757,103 +3759,103 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="61"/>
         <source>Source:</source>
-        <translation type="unfinished">Źródło:</translation>
+        <translation>Źródło:</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="76"/>
         <source>Destination:</source>
-        <translation type="unfinished">Cel:</translation>
+        <translation>Cel:</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="92"/>
         <source>Analysis period:</source>
-        <translation type="unfinished"></translation>
+        <translation>Okres analizy:</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="97"/>
         <location filename="../ImportingAnalysisWidget.cpp" line="107"/>
         <source> days</source>
-        <translation type="unfinished"></translation>
+        <translation> dni</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="98"/>
         <source>The number of days going back from today, to use for analysis. If the destination has been in use for shorter time, be sure to adjust this accordingly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość dni wstecz od dziś do użycia podczas analizy. Jeśli rynek w miejscu docelowym istnieje krócej, odpowiednio dostosuj to ustawienie.</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="102"/>
         <source>Aggregate over:</source>
-        <translation type="unfinished"></translation>
+        <translation>Agreguj po:</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="108"/>
         <source>The number of days to aggregate movement over. This should reflect how fast you want your stock to sell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość dni do agregacji sprzedaży. Powinien odzwierciedlać docelową szybkość sprzedaży inwentarza.</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="112"/>
         <source>Price per m³:</source>
-        <translation type="unfinished"></translation>
+        <translation>Koszt za m³:</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="118"/>
         <source>Addtional cost added to buy price. This is multiplied by item size and desired volume to move (which in turn is based on aggregation days).</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodatkowy koszt dodany do ceny kupna. Jest on pomnożony przez wielkość przedmiotu i wybrany wolumen do sprzedaży (który z kolei zależy od dni agrgacji).</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="121"/>
         <source>Collateral:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zabezpieczenie:</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="127"/>
         <source>Addtional cost added to buy price. This is the percetange of the base price.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodatkowy koszt dodany do ceny kupna. Jest to procent z ceny bazowej.</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="133"/>
         <source>buy</source>
-        <translation type="unfinished">kupno</translation>
+        <translation>kupno</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="137"/>
         <source>sell</source>
-        <translation type="unfinished">sprzedaż</translation>
+        <translation>sprzedaż</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="141"/>
         <source>Hide empty source sell orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryj dane bez zleceń sprzedaży u źródła</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="143"/>
         <source>Hide item types which have 0 source orders when source price type is set to &quot;Sell&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryj dane, które mają 0 zleceń sprzedaży kiedy typ źródła to &quot;Kupno&quot;.</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="147"/>
         <source>Apply</source>
-        <translation type="unfinished">Zastosuj</translation>
+        <translation>Zastosuj</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="151"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
-        <translation type="unfinished"></translation>
+        <translation>Naciśnij &quot;Zastosuj&quot; aby zobaczyć wynik. Dodatkowe akcje są dostępne z menu kontekstowego.</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="174"/>
         <source>Show details</source>
-        <translation type="unfinished">Pokaż szczegóły</translation>
+        <translation>Pokaż szczegóły</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="324"/>
         <source>Station change</source>
-        <translation type="unfinished">Zmiana stacji</translation>
+        <translation>Zmiana stacji</translation>
     </message>
     <message>
         <location filename="../ImportingAnalysisWidget.cpp" line="324"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
-        <translation type="unfinished">Zmiana stacji wymaga ponownego przeliczenia danych. Zrobić to teraz?</translation>
+        <translation>Zmiana stacji wymaga ponownego przeliczenia danych. Zrobić to teraz?</translation>
     </message>
 </context>
 <context>
@@ -3861,77 +3863,77 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../ImportingDataModel.cpp" line="148"/>
         <source>Double-click for detailed market information.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kliknij dwa razy, aby zobaczyć szczegółowe informacje.</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="168"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="170"/>
         <source>Avg. dst. volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Średni docelowy wolumen</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="172"/>
         <source>Median dst. volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Mediana docelowego wolumenu</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="174"/>
         <source>Dst. volume mean absolute deviation</source>
-        <translation type="unfinished"></translation>
+        <translation>Średnie odchylenie bezwzględne decelowego wolumenu</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="176"/>
         <source>Dst. remaining volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozostały wolumen u celu</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="178"/>
         <source>Relative dst. remaining volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Relatywny wolumen u celu</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="180"/>
         <source>Source order count</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość zleceń u źródła</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="182"/>
         <source>Destination order count</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość zleceń u celu</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="184"/>
         <source>5% volume destination price</source>
-        <translation type="unfinished">Cena 5% celu</translation>
+        <translation>Cena 5% celu</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="186"/>
         <source>5% volume source price</source>
-        <translation type="unfinished">Cena 5% źródła</translation>
+        <translation>Cena 5% źródła</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="188"/>
         <source>Import price (src. price + price per m³ + collateral)</source>
-        <translation type="unfinished"></translation>
+        <translation>Cena importu (cena źródła + cena za m³ + zabezpieczenie)</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="190"/>
         <source>Price difference</source>
-        <translation type="unfinished">Różnica cen</translation>
+        <translation>Różnica cen</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="192"/>
         <source>Margin</source>
-        <translation type="unfinished">Marża</translation>
+        <translation>Marża</translation>
     </message>
     <message>
         <location filename="../ImportingDataModel.cpp" line="194"/>
         <source>Projected profit</source>
-        <translation type="unfinished"></translation>
+        <translation>Przewidywany zysk</translation>
     </message>
 </context>
 <context>
@@ -3939,47 +3941,47 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="81"/>
         <source>Source:</source>
-        <translation type="unfinished">Źródło:</translation>
+        <translation>Źródło:</translation>
     </message>
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="91"/>
         <source>Destination:</source>
-        <translation type="unfinished">Cel:</translation>
+        <translation>Cel:</translation>
     </message>
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="114"/>
         <source>Volume:</source>
-        <translation type="unfinished">Wolumen:</translation>
+        <translation>Wolumen:</translation>
     </message>
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="132"/>
         <source>Margin:</source>
-        <translation type="unfinished">Marża:</translation>
+        <translation>Marża:</translation>
     </message>
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="150"/>
         <source>Apply</source>
-        <translation type="unfinished">Zastosuj</translation>
+        <translation>Zastosuj</translation>
     </message>
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="154"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
-        <translation type="unfinished"></translation>
+        <translation>Naciśnij &quot;Zastosuj&quot; aby zobaczyć wynik. Dodatkowe akcje są dostępne z menu kontekstowego.</translation>
     </message>
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="177"/>
         <source>Show details</source>
-        <translation type="unfinished">Pokaż szczegóły</translation>
+        <translation>Pokaż szczegóły</translation>
     </message>
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="318"/>
         <source>Station change</source>
-        <translation type="unfinished">Zmiana stacji</translation>
+        <translation>Zmiana stacji</translation>
     </message>
     <message>
         <location filename="../InterRegionAnalysisWidget.cpp" line="318"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
-        <translation type="unfinished">Zmiana stacji wymaga ponownego przeliczenia danych. Zrobić to teraz?</translation>
+        <translation>Zmiana stacji wymaga ponownego przeliczenia danych. Zrobić to teraz?</translation>
     </message>
 </context>
 <context>
@@ -3987,7 +3989,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="137"/>
         <source>Double-click for detailed market information.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kliknij dwa razy, aby zobaczyć szczegółowe informacje.</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="157"/>
@@ -4007,32 +4009,32 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="163"/>
         <source>5% volume source price (buy)</source>
-        <translation type="unfinished"></translation>
+        <translation>Cena 5% źródła (kupno)</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="165"/>
         <source>5% volume source price (sell)</source>
-        <translation type="unfinished"></translation>
+        <translation>Cena 5% źródła (sprzedaż)</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="167"/>
         <source>Source order count (b/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość zleceń u źródła (k/s)</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="171"/>
         <source>5% volume destination price (buy)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceny 5% celu (kupno)</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="173"/>
         <source>5% volume destination price (sell)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceny 5% celu (sprzedaż)</translation>
     </message>
     <message>
         <location filename="../InterRegionMarketDataModel.cpp" line="175"/>
         <source>Destination order count (b/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość zleceń u celu (k/s)</translation>
     </message>
     <message>
         <source>5% volume source price (b/s)</source>
@@ -4084,12 +4086,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../InterRegionTypeDetailsWidget.cpp" line="43"/>
         <source>Individual</source>
-        <translation type="unfinished">Pojedyncze</translation>
+        <translation>Pojedyncze</translation>
     </message>
     <message>
         <location filename="../InterRegionTypeDetailsWidget.cpp" line="50"/>
         <source>Combined</source>
-        <translation type="unfinished"></translation>
+        <translation>Połączone</translation>
     </message>
 </context>
 <context>
@@ -4143,17 +4145,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../ItemCostWidget.cpp" line="77"/>
         <source>Import CSV...</source>
-        <translation type="unfinished"></translation>
+        <translation>Import CSV...</translation>
     </message>
     <message>
         <location filename="../ItemCostWidget.cpp" line="78"/>
         <source>Export CSV...</source>
-        <translation type="unfinished"></translation>
+        <translation>Eksport CSV...</translation>
     </message>
     <message>
         <location filename="../ItemCostWidget.cpp" line="80"/>
         <source>Import/export  </source>
-        <translation type="unfinished"></translation>
+        <translation>Import/eksport  </translation>
     </message>
     <message>
         <location filename="../ItemCostWidget.cpp" line="88"/>
@@ -4174,23 +4176,23 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <location filename="../ItemCostWidget.cpp" line="233"/>
         <location filename="../ItemCostWidget.cpp" line="273"/>
         <source>Open file</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz plik</translation>
     </message>
     <message>
         <location filename="../ItemCostWidget.cpp" line="235"/>
         <location filename="../ItemCostWidget.cpp" line="275"/>
         <source>CSV (*.csv)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV (*.csv)</translation>
     </message>
     <message>
         <location filename="../ItemCostWidget.cpp" line="247"/>
         <source>CSV import</source>
-        <translation type="unfinished"></translation>
+        <translation>Import CSV</translation>
     </message>
     <message>
         <location filename="../ItemCostWidget.cpp" line="247"/>
         <source>CSV file must have at least two columns: item id and value.</source>
-        <translation type="unfinished"></translation>
+        <translation>Plik CSV musi mieć przynajmniej dwie kolumny: identyfikator typu i wartość.</translation>
     </message>
 </context>
 <context>
@@ -4500,12 +4502,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../LookupActionGroup.cpp" line="28"/>
         <source>Lookup item on eve-marketdata.com</source>
-        <translation type="unfinished">Sprawdź cenę na eve-marketdata.com</translation>
+        <translation>Sprawdź cenę na eve-marketdata.com</translation>
     </message>
     <message>
         <location filename="../LookupActionGroup.cpp" line="31"/>
         <source>Lookup item on eve-central.com</source>
-        <translation type="unfinished">Sprawdź cenę na eve-central.com</translation>
+        <translation>Sprawdź cenę na eve-central.com</translation>
     </message>
 </context>
 <context>
@@ -4607,7 +4609,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MainWindow.cpp" line="642"/>
         <source>Citadel manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Menadżer cytadel</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="643"/>
@@ -4617,7 +4619,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MainWindow.cpp" line="644"/>
         <source>Custom &amp;Fast Price Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Własne &amp;szybkie kopiowanie ceny</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="646"/>
@@ -4964,7 +4966,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="100"/>
         <source>Saving orders makes them available to other parts of the application, even across restarts.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisanie zleceń spowoduje, że będą dostępne w innych miejscach w aplikacji, nawet po restarcie.</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="108"/>
@@ -4974,7 +4976,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="110"/>
         <source>Ignore item types which have active market orders.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoruj typy z aktywnymi zleceniami na rynku.</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="120"/>
@@ -4984,12 +4986,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="123"/>
         <source>Use heuristics based on average price to determine if a given order is legit.</source>
-        <translation type="unfinished"></translation>
+        <translation>Użyj heurystyki bazującej na średniej cenie, aby stwierdzić czy zlecenie jest poprawne.</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="147"/>
         <source>How much a price can deviate from the average price to consider it legit.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jak bardzo cena może odstawać od średniej ceny, aby uznać ją za poprawną.</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="161"/>
@@ -5009,7 +5011,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="181"/>
         <source>Type of orders used for buying items.</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ zleceń użyty do kupna przedmiotów.</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="183"/>
@@ -5019,7 +5021,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="185"/>
         <source>Type of orders used for selling items.</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ zleceń użyty do sprzedaży przedmiotów.</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="187"/>
@@ -5029,12 +5031,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="310"/>
         <source>Making %1 ESI order requests...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tworzenie %1 zapytań ESI o zlecenia...</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="313"/>
         <source>Making %1 ESI history requests...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tworzenie %1 zapytań ESI o historię...</translation>
     </message>
     <message>
         <source>Region:</source>
@@ -5132,17 +5134,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="244"/>
         <source>Importing</source>
-        <translation type="unfinished"></translation>
+        <translation>Importowanie</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="245"/>
         <source>Ore reprocessing arbitrage</source>
-        <translation type="unfinished"></translation>
+        <translation>Arbitraż przetwarzania rudy</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="246"/>
         <source>Scrapmetal reprocessing arbitrage</source>
-        <translation type="unfinished"></translation>
+        <translation>Arbitraż przetwarzania złomu</translation>
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="309"/>
@@ -5409,22 +5411,22 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="731"/>
         <source>Importing data...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importowanie danych...</translation>
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="733"/>
         <source>Making %1 Eve-Central order requests...</source>
-        <translation type="unfinished">Tworzenie %1 zapytań Eve-Central o zlecenia...</translation>
+        <translation>Tworzenie %1 zapytań Eve-Central o zlecenia...</translation>
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="734"/>
         <source>Making %1 ESI order requests...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tworzenie %1 zapytań ESI o zlecenia...</translation>
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="753"/>
         <source>Saving %1 imported orders...</source>
-        <translation type="unfinished">Zapisywanie %1 zaimportowanych zleceń...</translation>
+        <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
         <location filename="../MarketBrowserWidget.cpp" line="829"/>
@@ -5838,7 +5840,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <location filename="../MarketOrderDataFetcher.cpp" line="82"/>
         <location filename="../MarketOrderDataFetcher.cpp" line="96"/>
         <source>Waiting for %1 order server replies...</source>
-        <translation type="unfinished">Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
+        <translation>Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
 </context>
 <context>
@@ -5983,17 +5985,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../MarketOrderPerformanceModel.cpp" line="98"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
     <message>
         <location filename="../MarketOrderPerformanceModel.cpp" line="100"/>
         <source>Volume</source>
-        <translation type="unfinished">Wolumen</translation>
+        <translation>Wolumen</translation>
     </message>
     <message>
         <location filename="../MarketOrderPerformanceModel.cpp" line="102"/>
         <source>Median turnover time</source>
-        <translation type="unfinished"></translation>
+        <translation>Mediana czasu sprzedaży</translation>
     </message>
 </context>
 <context>
@@ -6573,12 +6575,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="126"/>
         <source>Max. retries:</source>
-        <translation type="unfinished"></translation>
+        <translation>Maks. ponowne próby:</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="131"/>
         <source>Max. ESI network threads:</source>
-        <translation type="unfinished"></translation>
+        <translation>Maks. ilość wątków ESI:</translation>
     </message>
     <message>
         <location filename="../NetworkPreferencesWidget.cpp" line="136"/>
@@ -6623,22 +6625,22 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <location filename="../OrderPreferencesWidget.cpp" line="84"/>
         <location filename="../OrderPreferencesWidget.cpp" line="121"/>
         <source>none</source>
-        <translation type="unfinished">brak</translation>
+        <translation>brak</translation>
     </message>
     <message>
         <location filename="../OrderPreferencesWidget.cpp" line="85"/>
         <source>Default custom station:</source>
-        <translation type="unfinished"></translation>
+        <translation>Domyślna własna stacja:</translation>
     </message>
     <message>
         <location filename="../OrderPreferencesWidget.cpp" line="89"/>
         <source>If you change the default custom station, your orders will still retain the one previously set. You can change it by right-clicking on the order(s).</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeśli zmienisz domyślną własną stację, Twoje zlecenia ciągle będą miały ustawioną poprzednio. Możesz to zmienić z menu kontekstowego zleceń.</translation>
     </message>
     <message>
         <location filename="../OrderPreferencesWidget.cpp" line="94"/>
         <source>Try to import orders from citadels</source>
-        <translation type="unfinished"></translation>
+        <translation>Spróbuj importować zlecenia z cytadel</translation>
     </message>
     <message>
         <source>Delete old entries</source>
@@ -6886,12 +6888,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="175"/>
         <source>Forward shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrót do przodu:</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="185"/>
         <source>Backward shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrót do tyłu:</translation>
     </message>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="195"/>
@@ -6975,82 +6977,82 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="63"/>
         <source>Region:</source>
-        <translation type="unfinished">Region:</translation>
+        <translation>Region:</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="84"/>
         <source>Limit to solar system:</source>
-        <translation type="unfinished">Ogranicz do systemu:</translation>
+        <translation>Ogranicz do systemu:</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="98"/>
         <source>Volume:</source>
-        <translation type="unfinished">Wolumen:</translation>
+        <translation>Wolumen:</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="116"/>
         <source>Margin:</source>
-        <translation type="unfinished">Marża:</translation>
+        <translation>Marża:</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="137"/>
         <source>Buy price:</source>
-        <translation type="unfinished">Cena kupna:</translation>
+        <translation>Cena kupna:</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="153"/>
         <source>Sell price:</source>
-        <translation type="unfinished">Cena sprzedaży:</translation>
+        <translation>Cena sprzedaży:</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="169"/>
         <source>Avg. period:</source>
-        <translation type="unfinished"></translation>
+        <translation>Okres dla średnich:</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="173"/>
         <source> days</source>
-        <translation type="unfinished"></translation>
+        <translation> dni</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="174"/>
         <source>The number of days used to calculate averages.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość dni do obliczenia średnich.</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="178"/>
         <source>Ignore price percentiles</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoruj procentowe wolumeny przy cenach</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="180"/>
         <source>Use simple min/max prices from market orders, instead of calculating volume-based percetiles.</source>
-        <translation type="unfinished"></translation>
+        <translation>Uży min./maks. wartości ze zleceń, zamiast obliczać procent zależny od wolumenu.</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="185"/>
         <source>Apply</source>
-        <translation type="unfinished">Zastosuj</translation>
+        <translation>Zastosuj</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="189"/>
         <source>Double-click an item for additional information. Additional actions are available via the right-click menu. Remember to select desired &lt;b&gt;source price&lt;/b&gt; and &lt;b&gt;destination price&lt;/b&gt; from the dropdowns at the top, otherwise your differences might be skewed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kliknij dwa razy, aby zobaczyć dodatkowe informacje. Dodatkowe akcje są dostępne z menu kontekstowego. Pamiętaj, aby wybrać &lt;b&gt;typ ceny źródła&lt;/b&gt; i &lt;b&gt;typ ceny celu&lt;/b&gt; dostępne wyżej, w przeciwnym razie wartości mogą być inne niż zakładane.</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="213"/>
         <source>Show details</source>
-        <translation type="unfinished">Pokaż szczegóły</translation>
+        <translation>Pokaż szczegóły</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="362"/>
         <source>%1 in %2</source>
-        <translation type="unfinished">%1 w %2</translation>
+        <translation>%1 w %2</translation>
     </message>
     <message>
         <location filename="../RegionAnalysisWidget.cpp" line="385"/>
         <source>- all -</source>
-        <translation type="unfinished">- wszystkie -</translation>
+        <translation>- wszystkie -</translation>
     </message>
 </context>
 <context>
@@ -7059,17 +7061,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <location filename="../RegionComboBox.cpp" line="105"/>
         <location filename="../RegionComboBox.cpp" line="150"/>
         <source>- all -</source>
-        <translation type="unfinished">- wszystkie -</translation>
+        <translation>- wszystkie -</translation>
     </message>
     <message>
         <location filename="../RegionComboBox.cpp" line="117"/>
         <source>- multiple -</source>
-        <translation type="unfinished">- wiele -</translation>
+        <translation>- wiele -</translation>
     </message>
     <message>
         <location filename="../RegionComboBox.cpp" line="127"/>
         <source>- none -</source>
-        <translation type="unfinished">- brak -</translation>
+        <translation>- brak -</translation>
     </message>
 </context>
 <context>
@@ -7077,42 +7079,42 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../RegionStationPresetDialog.cpp" line="42"/>
         <source>Preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Preset</translation>
     </message>
     <message>
         <location filename="../RegionStationPresetDialog.cpp" line="47"/>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa:</translation>
     </message>
     <message>
         <location filename="../RegionStationPresetDialog.cpp" line="54"/>
         <source>Select a present and press Load to load it, or type a name and press Save to save a new one or replace an existing one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz preset i kliknij &quot;Załaduj&quot;, aby go załadować, albo wpisz nazwę i kliknij &quot;Zapisz&quot;, aby zapiswać nowy lub zastąpić istniejący.</translation>
     </message>
     <message>
         <location filename="../RegionStationPresetDialog.cpp" line="56"/>
         <source>Load</source>
-        <translation type="unfinished"></translation>
+        <translation>Załaduj</translation>
     </message>
     <message>
         <location filename="../RegionStationPresetDialog.cpp" line="60"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisz</translation>
     </message>
     <message>
         <location filename="../RegionStationPresetDialog.cpp" line="64"/>
         <source>Remove</source>
-        <translation type="unfinished">Usuń</translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <location filename="../RegionStationPresetDialog.cpp" line="80"/>
         <source>Source regions/station</source>
-        <translation type="unfinished"></translation>
+        <translation>Źródłowe regiony/stacje</translation>
     </message>
     <message>
         <location filename="../RegionStationPresetDialog.cpp" line="91"/>
         <source>Destination regions/station</source>
-        <translation type="unfinished"></translation>
+        <translation>Docelowe regiony/stacje</translation>
     </message>
 </context>
 <context>
@@ -7145,12 +7147,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="123"/>
         <source>Save preset...</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisz preset...</translation>
     </message>
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="127"/>
         <source>Load preset...</source>
-        <translation type="unfinished"></translation>
+        <translation>Załaduj preset...</translation>
     </message>
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="162"/>
@@ -7165,22 +7167,22 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="178"/>
         <source>Save preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisz preset</translation>
     </message>
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="178"/>
         <source>Enter preset name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa presetu:</translation>
     </message>
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="203"/>
         <source>Load preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Załaduj preset</translation>
     </message>
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="203"/>
         <source>Select preset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz preset:</translation>
     </message>
     <message>
         <location filename="../RegionTypeSelectDialog.cpp" line="136"/>
@@ -7193,52 +7195,52 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../ReportsWidget.cpp" line="77"/>
         <source>Combine for all characters</source>
-        <translation type="unfinished">Połącz dla wszystkich postaci</translation>
+        <translation>Połącz dla wszystkich postaci</translation>
     </message>
     <message>
         <location filename="../ReportsWidget.cpp" line="87"/>
         <source>Combine with corp. data</source>
-        <translation type="unfinished"></translation>
+        <translation>Połącz z danymi korporacji</translation>
     </message>
     <message>
         <location filename="../ReportsWidget.cpp" line="97"/>
         <source>The accuracy of reports depends on the frequency of imports - import data frequently to get the most of it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jakość raportów zależy od częstotliwości importowania - importuj dane często, żeby mieć najlepsze raporty.</translation>
     </message>
     <message>
         <location filename="../ReportsWidget.cpp" line="102"/>
         <source>Best items</source>
-        <translation type="unfinished"></translation>
+        <translation>Najlepsze przedmioty</translation>
     </message>
     <message>
         <location filename="../ReportsWidget.cpp" line="117"/>
         <source>Fastest orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Najszybsze zlecenia</translation>
     </message>
     <message>
         <location filename="../ReportsWidget.cpp" line="129"/>
         <source>Station profit</source>
-        <translation type="unfinished"></translation>
+        <translation>Zyski ze stacji</translation>
     </message>
     <message>
         <location filename="../ReportsWidget.cpp" line="143"/>
         <source>Size [m³]</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmiar [m³]</translation>
     </message>
     <message>
         <location filename="../ReportsWidget.cpp" line="151"/>
         <source>Total profit</source>
-        <translation type="unfinished">Całkowity zysk</translation>
+        <translation>Całkowity zysk</translation>
     </message>
     <message>
         <location filename="../ReportsWidget.cpp" line="158"/>
         <source>Total costs</source>
-        <translation type="unfinished"></translation>
+        <translation>Całkowite koszty</translation>
     </message>
     <message>
         <location filename="../ReportsWidget.cpp" line="165"/>
         <source>Total size</source>
-        <translation type="unfinished">Całkowita objętość</translation>
+        <translation>Całkowita objętość</translation>
     </message>
 </context>
 <context>
@@ -7246,32 +7248,32 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../ReprocessingArbitrageModel.cpp" line="97"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageModel.cpp" line="99"/>
         <source>Volume</source>
-        <translation type="unfinished">Wolumen</translation>
+        <translation>Wolumen</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageModel.cpp" line="101"/>
         <source>Total profit</source>
-        <translation type="unfinished">Całkowity zysk</translation>
+        <translation>Całkowity zysk</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageModel.cpp" line="103"/>
         <source>Total cost</source>
-        <translation type="unfinished">Całkowity koszt</translation>
+        <translation>Całkowity koszt</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageModel.cpp" line="105"/>
         <source>Difference</source>
-        <translation type="unfinished">Różnica</translation>
+        <translation>Różnica</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageModel.cpp" line="107"/>
         <source>Margin</source>
-        <translation type="unfinished">Marża</translation>
+        <translation>Marża</translation>
     </message>
 </context>
 <context>
@@ -7279,97 +7281,97 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="67"/>
         <source>Source:</source>
-        <translation type="unfinished">Źródło:</translation>
+        <translation>Źródło:</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="77"/>
         <source>Destination:</source>
-        <translation type="unfinished">Cel:</translation>
+        <translation>Cel:</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="98"/>
         <source>Base yield:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bazowa wydajność:</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="104"/>
         <source>The base yield of the station you are reprocessing in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bazowa wydajność stacji, w której przetwarzasz.</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="113"/>
         <source>Volume limit selling with sell orders:</source>
-        <translation type="unfinished"></translation>
+        <translation>Limit wolumenu przy sprzedaży zleceniami:</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="119"/>
         <source>If you wish to sell using sell orders (not recommended due to fast nature of arbitrage and additional taxes), you should specify the percentage of current market volume you wish to sell. For example, using 100% means you wish to sell the exact amount of materials which is currently on the market. Using higher values will give more total profit, but assumes you can actually sell such amounts. Therefore you should set this percentage to a reasonable value, like 10%.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeśli chcesz sprzedawać używając zleceń sprzedaży (niezalecane z powodu szybkiej natury arbitrażu i dodatkowych podatków), powinienneś określić procent wolumenu aktualnie na rynku, który chcesz sprzedać. Przykładowo użycie 100% oznacza chęć sprzedaży dokładnie takiego wolumeny, jaki jest aktualnie na rynku. Użycie większych wartości może dać większe zyski, ale zakłada, że faktycznie da się taki wolumen sprzedać. Dlatego też powinienneś użyć rozsądnych wartości, np. 10%.</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="133"/>
         <source>Include station tax</source>
-        <translation type="unfinished"></translation>
+        <translation>Uwzględnij podatki stacji</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="143"/>
         <source>Ignore orders with min. volume &gt; 1</source>
-        <translation type="unfinished">Ignoruj zlecenia z min. wolumenem &gt; 1</translation>
+        <translation>Ignoruj zlecenia z min. wolumenem &gt; 1</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="145"/>
         <source>Ignore orders wich require minimum volume larger than 1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoruj zlecenia, które mają minimalny wolumen większy niż 1.</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="154"/>
         <source>Only high-sec orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Tylko zlecenia w high sec</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="164"/>
         <source>Custom station tax</source>
-        <translation type="unfinished"></translation>
+        <translation>Własny podatek stacji</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="178"/>
         <source>When including station tax, use this value instead of cumputed one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Podczas uwzględniania podatku stacji, użyj tej wartości zamiast obliczonej.</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="189"/>
         <source>Apply</source>
-        <translation type="unfinished">Zastosuj</translation>
+        <translation>Zastosuj</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="193"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
-        <translation type="unfinished"></translation>
+        <translation>Naciśnij &quot;Zastosuj&quot; aby zobaczyć wynik. Dodatkowe akcje są dostępne z menu kontekstowego.</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="194"/>
         <source>If you wish to make the fastest trade as possible, be sure to set the correct &lt;b&gt;destination price type&lt;/b&gt;. &lt;b&gt;Buying always uses sell orders.&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeśli chcesz dokonać jak najszybszej sprzedaży, ustaw odpowieni &lt;b&gt;typ ceny docelowej&lt;/b&gt;. &lt;b&gt;Kupno zawsze używa cen sprzedaży.&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="195"/>
         <source>Due to the fast nature of arbitrage, prices are not based on volume percentile.</source>
-        <translation type="unfinished"></translation>
+        <translation>Z powodu szybkiej natury arbitrażu, ceny nie uwzględniają procentu wolumenu.</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="196"/>
         <source>Remember to import the source and resulting items to reprocess, otherwise you won&apos;t see any data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pamiętaj o zaimportowaniu źródłowych i doeclowych typów, inaczej nie zoabczysz żadnych danych.</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="302"/>
         <source>Station change</source>
-        <translation type="unfinished">Zmiana stacji</translation>
+        <translation>Zmiana stacji</translation>
     </message>
     <message>
         <location filename="../ReprocessingArbitrageWidget.cpp" line="302"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
-        <translation type="unfinished">Zmiana stacji wymaga ponownego przeliczenia danych. Zrobić to teraz?</translation>
+        <translation>Zmiana stacji wymaga ponownego przeliczenia danych. Zrobić to teraz?</translation>
     </message>
 </context>
 <context>
@@ -7377,32 +7379,32 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../SSOAuthWidget.cpp" line="42"/>
         <source>Toggle external browser</source>
-        <translation type="unfinished">Przełącz przeglądarkę</translation>
+        <translation>Przełącz przeglądarkę</translation>
     </message>
     <message>
         <location filename="../SSOAuthWidget.cpp" line="66"/>
         <source>To authorize inside the browser, use the following link and paste the resulting code below: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished">Aby uwierzytelnić się przez przeglądarkę, użynij podanego linku i wklej poniżej wynikowy kod: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</translation>
+        <translation>Aby uwierzytelnić się przez przeglądarkę, użynij podanego linku i wklej poniżej wynikowy kod: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../SSOAuthWidget.cpp" line="78"/>
         <source>paste the resulting code here</source>
-        <translation type="unfinished">wklej wynikowy kod tutaj</translation>
+        <translation>wklej wynikowy kod tutaj</translation>
     </message>
     <message>
         <location filename="../SSOAuthWidget.cpp" line="80"/>
         <source>Authorize</source>
-        <translation type="unfinished">Uwierzytelnij</translation>
+        <translation>Uwierzytelnij</translation>
     </message>
     <message>
         <location filename="../SSOAuthWidget.cpp" line="101"/>
         <source>SSO Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Uwierzytelnianie SSO</translation>
     </message>
     <message>
         <location filename="../SSOAuthWidget.cpp" line="102"/>
         <source>The supplied code is invalid. Please make sure all characters were copied or use internal browser authorization.</source>
-        <translation type="unfinished">Wprowadzony kod jest nieprawidłowy. Upewnij się, że skopiowałeś wszystkie znaki, lub użyj wewnętrznej przeglądarki.</translation>
+        <translation>Wprowadzony kod jest nieprawidłowy. Upewnij się, że skopiowałeś wszystkie znaki, lub użyj wewnętrznej przeglądarki.</translation>
     </message>
 </context>
 <context>
@@ -7410,12 +7412,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../SSOMessageBox.cpp" line="24"/>
         <source>SSO error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd SSO</translation>
     </message>
     <message>
         <location filename="../SSOMessageBox.cpp" line="26"/>
         <source>Don&apos;t show again</source>
-        <translation type="unfinished">Nie pokazuj ponownie</translation>
+        <translation>Nie pokazuj ponownie</translation>
     </message>
 </context>
 <context>
@@ -7465,12 +7467,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../StandardModelProxyWidget.cpp" line="52"/>
         <source>Show in EVE</source>
-        <translation type="unfinished">Pokaż w EVE</translation>
+        <translation>Pokaż w EVE</translation>
     </message>
     <message>
         <location filename="../StandardModelProxyWidget.cpp" line="57"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished">&amp;Kopiuj</translation>
+        <translation>&amp;Kopiuj</translation>
     </message>
 </context>
 <context>
@@ -7481,7 +7483,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <location filename="../StationSelectButton.cpp" line="50"/>
         <location filename="../StationSelectButton.cpp" line="96"/>
         <source>- any station -</source>
-        <translation type="unfinished">- dowolna stacja -</translation>
+        <translation>- dowolna stacja -</translation>
     </message>
 </context>
 <context>
@@ -7586,12 +7588,12 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="114"/>
         <source>Default period for item details graphs:</source>
-        <translation type="unfinished"></translation>
+        <translation>Domyślny okres dla szczegółowych wykresów typów:</translation>
     </message>
     <message>
         <location filename="../StatisticsPreferencesWidget.cpp" line="116"/>
         <source> days</source>
-        <translation type="unfinished"></translation>
+        <translation> dni</translation>
     </message>
 </context>
 <context>
@@ -7625,7 +7627,7 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     <message>
         <location filename="../StatisticsWidget.cpp" line="46"/>
         <source>Reports</source>
-        <translation type="unfinished"></translation>
+        <translation>Raporty</translation>
     </message>
     <message>
         <source>Script error</source>
@@ -7893,27 +7895,27 @@ Suma: %7</translation>
     <message>
         <location filename="../SyncDialog.cpp" line="235"/>
         <source>Dropbox requires authenticating Evernus first. Please click on &lt;a href=&apos;%1&apos;&gt;this link&lt;/a&gt;, authorize Evernus and wait for the application to proceed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dropbox wymaga autoryzowania aplikacji. Kliknij na &lt;a href=&apos;%1&apos;&gt;ten link&lt;/a&gt;, autoryzuj Evernusa i poczekaj aż aplikacja przejdzie dalej.</translation>
     </message>
     <message>
         <location filename="../SyncDialog.cpp" line="243"/>
         <source>Dropbox requires authenticating Evernus first. Please click on &lt;a href=&apos;%1&apos;&gt;this link&lt;/a&gt;, authorize Evernus and enter the resulting code below.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dropbox wymaga autoryzowania aplikacji. Kliknij na &lt;a href=&apos;%1&apos;&gt;ten link&lt;/a&gt;, autoryzuj Evernusa i wpisz wynikowy kod poniżej.</translation>
     </message>
     <message>
         <location filename="../SyncDialog.cpp" line="279"/>
         <source>Security warning</source>
-        <translation type="unfinished"></translation>
+        <translation>Ostrzeżenie bezpieczeństwa</translation>
     </message>
     <message>
         <location filename="../SyncDialog.cpp" line="279"/>
         <source>Encountered certificate errors while contacting Dropbox. Aborting synchronization.</source>
-        <translation type="unfinished"></translation>
+        <translation>Napotkano na błąd certyfikatu podczas łączenia się z Dropbox. Synchornizacja została anulowana.</translation>
     </message>
     <message>
         <location filename="../SyncDialog.cpp" line="288"/>
         <source>Dropbox error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd Dropbox</translation>
     </message>
     <message>
         <location filename="../SyncDialog.cpp" line="308"/>
@@ -8014,67 +8016,67 @@ Suma: %7</translation>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="35"/>
         <source>From:</source>
-        <translation type="unfinished">Od:</translation>
+        <translation>Od:</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="52"/>
         <source>To:</source>
-        <translation type="unfinished">Do:</translation>
+        <translation>Do:</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="64"/>
         <source>Moving average days:</source>
-        <translation type="unfinished">Dni średniej kroczącej:</translation>
+        <translation>Dni średniej kroczącej:</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="71"/>
         <source>MACD days:</source>
-        <translation type="unfinished">Dni MACD:</translation>
+        <translation>Dni MACD:</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="75"/>
         <source>Fast days.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krótkoterminowe dni.</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="81"/>
         <source>Slow days.</source>
-        <translation type="unfinished"></translation>
+        <translation>Długoterminowe dni.</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="87"/>
         <source>EMA days.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dni średniej.</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="91"/>
         <source>Volume graph:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wykres wolumenu:</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="95"/>
         <source>Volume</source>
-        <translation type="unfinished">Wolumen</translation>
+        <translation>Wolumen</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="96"/>
         <source>Order count</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość zleceń</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="101"/>
         <source>Apply</source>
-        <translation type="unfinished">Zastosuj</translation>
+        <translation>Zastosuj</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="127"/>
         <source>Add trend line</source>
-        <translation type="unfinished">Dodaj linię trendu</translation>
+        <translation>Dodaj linię trendu</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedDetailsFilterWidget.cpp" line="136"/>
         <source>Show legend</source>
-        <translation type="unfinished">Pokaż legendę</translation>
+        <translation>Pokaż legendę</translation>
     </message>
 </context>
 <context>
@@ -8164,70 +8166,70 @@ Suma: %7</translation>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="237"/>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="377"/>
         <source>Volume</source>
-        <translation type="unfinished">Wolumen</translation>
+        <translation>Wolumen</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="103"/>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="380"/>
         <source>Unusual volume</source>
-        <translation type="unfinished">Nieprzeciętny wolumen</translation>
+        <translation>Nieprzeciętny wolumen</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="113"/>
         <source>Value</source>
-        <translation type="unfinished">Wartość</translation>
+        <translation>Wartość</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="124"/>
         <source>SMA</source>
-        <translation type="unfinished">SMA</translation>
+        <translation>SMA</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="128"/>
         <source>Bollinger upper band</source>
-        <translation type="unfinished">Górna wstęga Bollingera</translation>
+        <translation>Górna wstęga Bollingera</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="132"/>
         <source>Bollinger lower band</source>
-        <translation type="unfinished">Dolna wstęga Bollingera</translation>
+        <translation>Dolna wstęga Bollingera</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="144"/>
         <source>RSI (14 days)</source>
-        <translation type="unfinished">RSI (14 dni)</translation>
+        <translation>RSI (14 dni)</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="174"/>
         <source>RSI</source>
-        <translation type="unfinished">RSI</translation>
+        <translation>RSI</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="183"/>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="208"/>
         <source>MACD</source>
-        <translation type="unfinished">MACD</translation>
+        <translation>MACD</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="201"/>
         <source>MACD Divergence</source>
-        <translation type="unfinished">Rozbieżność MACD</translation>
+        <translation>Rozbieżność MACD</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="211"/>
         <source>MACD Signal</source>
-        <translation type="unfinished">Sygnał MACD</translation>
+        <translation>Sygnał MACD</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="237"/>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="377"/>
         <source>Order count</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość zleceń</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedGraphWidget.cpp" line="380"/>
         <source>Unusual order count</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprzeciętna ilość zleceń</translation>
     </message>
 </context>
 <context>
@@ -8235,7 +8237,7 @@ Suma: %7</translation>
     <message>
         <location filename="../TypeAggregatedMarketDataModel.cpp" line="109"/>
         <source>Double-click for detailed market information.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kliknij dwa razy, aby zobaczyć szczegółowe informacje.</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedMarketDataModel.cpp" line="129"/>
@@ -8255,7 +8257,7 @@ Suma: %7</translation>
     <message>
         <location filename="../TypeAggregatedMarketDataModel.cpp" line="133"/>
         <source>Best source price</source>
-        <translation type="unfinished"></translation>
+        <translation>Najlepsza cena źródłowa</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedMarketDataModel.cpp" line="135"/>
@@ -8265,22 +8267,22 @@ Suma: %7</translation>
     <message>
         <location filename="../TypeAggregatedMarketDataModel.cpp" line="135"/>
         <source>Best destination price</source>
-        <translation type="unfinished"></translation>
+        <translation>Najlepsza cena docelowa</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedMarketDataModel.cpp" line="139"/>
         <source>Buy order count</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość zleceń kupna</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedMarketDataModel.cpp" line="141"/>
         <source>Sell order count</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość zleceń sprzedaży</translation>
     </message>
     <message>
         <location filename="../TypeAggregatedMarketDataModel.cpp" line="143"/>
         <source>Avg. volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Średni wolumen</translation>
     </message>
     <message>
         <source>5% volume buy price</source>
@@ -8314,37 +8316,37 @@ Suma: %7</translation>
     <message>
         <location filename="../TypePerformanceModel.cpp" line="116"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
     <message>
         <location filename="../TypePerformanceModel.cpp" line="118"/>
         <source>Sell volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Wolumen sprzedaży</translation>
     </message>
     <message>
         <location filename="../TypePerformanceModel.cpp" line="120"/>
         <source>Buy volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Wolumen kupna</translation>
     </message>
     <message>
         <location filename="../TypePerformanceModel.cpp" line="122"/>
         <source>Profit</source>
-        <translation type="unfinished">Zysk</translation>
+        <translation>Zysk</translation>
     </message>
     <message>
         <location filename="../TypePerformanceModel.cpp" line="124"/>
         <source>Profit per item</source>
-        <translation type="unfinished">Zysk jednostkowy</translation>
+        <translation>Zysk jednostkowy</translation>
     </message>
     <message>
         <location filename="../TypePerformanceModel.cpp" line="126"/>
         <source>Profit per m³</source>
-        <translation type="unfinished"></translation>
+        <translation>Zysk na m³</translation>
     </message>
     <message>
         <location filename="../TypePerformanceModel.cpp" line="128"/>
         <source>Margin</source>
-        <translation type="unfinished">Marża</translation>
+        <translation>Marża</translation>
     </message>
 </context>
 <context>
@@ -8897,12 +8899,12 @@ Czy chcesz ściągnąć ją teraz?</translation>
     <message>
         <location filename="../MarginToolDialog.cpp" line="632"/>
         <source>Range threshold:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tolerancja zakresu:</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="638"/>
         <source> jumps</source>
-        <translation type="unfinished"></translation>
+        <translation> skoki</translation>
     </message>
     <message>
         <location filename="../MarginToolDialog.cpp" line="647"/>
@@ -9094,7 +9096,7 @@ Czy chcesz rozpocząć aktualizację?</translation>
     <message>
         <location filename="../Updater.cpp" line="529"/>
         <source>This update requires re-importing citadels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta aktualizacja wymaga ponownego importu cytadel.</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="98"/>
@@ -9183,17 +9185,17 @@ Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     <message>
         <location filename="../main.cpp" line="369"/>
         <source>New version</source>
-        <translation type="unfinished"></translation>
+        <translation>Nowa wersja</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="370"/>
         <source>Would you like to see what&apos;s new in this version?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz zobaczyć co się zmieniło w tej wersji?</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="383"/>
         <source>Import source</source>
-        <translation type="unfinished"></translation>
+        <translation>Źródło importu</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="384"/>
@@ -9202,17 +9204,21 @@ Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
 Using ESI gives access to more data, e.g. citadel assets, and lower cache timers but requires additional autorization. Support for more ESI endpoints is ongoing.
 
 You can always change it in Preferences-&gt;Import-&gt;Source.</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz użyć ESI do importu danych, gdzie jest to możliwe?
+
+Użycie ESI może dać dostęp do większej ilość danyc, np. aktywów w cytadelach, i krótszego czasu odświeżenia, ale wymaga dodatkowej autoryzacji. Obsługa kolejnych typów danych z ESI pojawi się w kolejnych wersjach.
+
+Możesz zawsze zmienić swój wybór w Ustawieniach importu.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="394"/>
         <source>Use ESI and XML API</source>
-        <translation type="unfinished"></translation>
+        <translation>Użyj ESI i XML</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="395"/>
         <source>Use only XML API</source>
-        <translation type="unfinished"></translation>
+        <translation>Użyj tylko XML</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="432"/>
