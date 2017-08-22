@@ -214,6 +214,8 @@ namespace Evernus
         NameMap mRaceNameCache;
         NameMap mBloodlineNameCache;
 
+        uint mManufacturingActivityId = 1; // 1 - fallback id at the time of writing
+
         EveTypeRepository::EntityPtr getEveType(EveType::IdType id) const;
 
         MarketGroupRepository::EntityPtr getMarketGroupParent(MarketGroup::IdType id) const;
@@ -226,6 +228,7 @@ namespace Evernus
         uint getCitadelSolarSystemId(Citadel::IdType id) const;
         const Citadel &getCitadel(Citadel::IdType id) const;
 
+        void findManufaturingActivity();
         void readCache(const QString &cacheFileName, NameMap &cache);
 
         template<class Cache>

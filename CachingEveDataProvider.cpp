@@ -86,6 +86,7 @@ namespace Evernus
         , mEveDb{eveDb}
     {
         readCache(nameCacheFileName, mGenericNameCache);
+        findManufaturingActivity();
         handleNewPreferences();
     }
 
@@ -1341,6 +1342,19 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         }
 
         return type.getVolume();
+    }
+
+    void CachingEveDataProvider::findManufaturingActivity()
+    {
+        QSqlQuery query{mEveDb};
+        query.prepare("SELECT activityID FROM ramActivities WHERE activityName = ?");
+        query.bindValue(0, QStringLiteral("Manufacturing"));
+
+        DatabaseUtils::execQuery(query);
+        if (query.next())
+            mManufacturingActivityId = query.value(0).toUInt();
+        else
+            qWarning() << "Manufacturing activity id not found - assuming:" << mManufacturingActivityId;
     }
 
     void CachingEveDataProvider::readCache(const QString &cacheFileName, NameMap &cache)
