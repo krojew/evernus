@@ -7163,47 +7163,47 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation>Typy</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="123"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="118"/>
         <source>Save preset...</source>
         <translation>Zapisz preset...</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="127"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="122"/>
         <source>Load preset...</source>
         <translation>Załaduj preset...</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="162"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="157"/>
         <source>Order import</source>
         <translation>Importowanie zleceń</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="162"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="157"/>
         <source>Please select at least one region and type.</source>
         <translation>Wybierz przynajmniej jeden region i typ.</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="178"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="173"/>
         <source>Save preset</source>
         <translation>Zapisz preset</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="178"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="173"/>
         <source>Enter preset name:</source>
         <translation>Nazwa presetu:</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="203"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="198"/>
         <source>Load preset</source>
         <translation>Załaduj preset</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="203"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="198"/>
         <source>Select preset:</source>
         <translation>Wybierz preset:</translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="136"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="131"/>
         <source>Select regions and types</source>
         <translation>Wybierz regiony i typy</translation>
     </message>

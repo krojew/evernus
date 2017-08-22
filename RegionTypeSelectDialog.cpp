@@ -22,10 +22,10 @@
 #include <QListWidget>
 #include <QPushButton>
 #include <QGroupBox>
-#include <QTreeView>
 #include <QSettings>
 
 #include "RegionTypePresetRepository.h"
+#include "TradeableTypesTreeView.h"
 #include "RegionTypePreset.h"
 #include "EveDataProvider.h"
 
@@ -43,7 +43,6 @@ namespace Evernus
                                                    QWidget *parent)
         : QDialog{parent}
         , mRegionTypePresetRepo{regionTypePresetRepo}
-        , mTypeModel{typeRepo, groupRepo}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -102,20 +101,14 @@ namespace Evernus
         auto typeLayout = new QVBoxLayout{typesGroup};
 
         const auto selectedTypes = settings.value(settingsTypesKey).toList();
-        TradeableTypesTreeModel::TypeSet types;
+        TradeableTypesTreeView::TypeSet types;
 
         for (const auto &type : selectedTypes)
             types.emplace(type.value<EveType::IdType>());
 
-        mTypeModel.selectTypes(types);
-
-        mTypeProxy.setSourceModel(&mTypeModel);
-        mTypeProxy.sort(0);
-
-        mTypeView = new QTreeView{this};
+        mTypeView = new TradeableTypesTreeView{typeRepo, groupRepo, this};
         typeLayout->addWidget(mTypeView);
-        mTypeView->setHeaderHidden(true);
-        mTypeView->setModel(&mTypeProxy);
+        mTypeView->selectTypes(types);
 
         const auto presetLayout = new QHBoxLayout{};
         mainLayout->addLayout(presetLayout);
@@ -141,7 +134,7 @@ namespace Evernus
         ExternalOrderImporter::TypeLocationPairs result;
 
         const auto regions = mRegionList->selectedItems();
-        const auto types = mTypeModel.getSelectedTypes();
+        const auto types = mTypeView->getSelectedTypes();
 
         QVariantList selectedRegions, selectedTypes;
 
@@ -190,7 +183,7 @@ namespace Evernus
             }
 
             RegionTypePreset preset{name};
-            preset.setTypes(mTypeModel.getSelectedTypes());
+            preset.setTypes(mTypeView->getSelectedTypes());
             preset.setRegions(std::move(regions));
 
             mRegionTypePresetRepo.store(preset);
@@ -220,7 +213,7 @@ namespace Evernus
                     item->setSelected(regions.find(regionId) != std::end(regions));
                 }
 
-                mTypeModel.selectTypes(preset->getTypes());
+                mTypeView->selectTypes(preset->getTypes());
 
                 mLastLoadedPreset = name;
             }

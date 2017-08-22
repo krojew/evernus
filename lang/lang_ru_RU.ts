@@ -5826,47 +5826,47 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="123"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="118"/>
         <source>Save preset...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="127"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="122"/>
         <source>Load preset...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="136"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="131"/>
         <source>Select regions and types</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="162"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="157"/>
         <source>Order import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="162"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="157"/>
         <source>Please select at least one region and type.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="178"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="173"/>
         <source>Save preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="178"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="173"/>
         <source>Enter preset name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="203"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="198"/>
         <source>Load preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="203"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="198"/>
         <source>Select preset:</source>
         <translation type="unfinished"></translation>
     </message>

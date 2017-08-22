@@ -708,6 +708,8 @@ add_executable(
     TimerTypes.h
     TradeableTypesTreeModel.cpp
     TradeableTypesTreeModel.h
+    TradeableTypesTreeView.cpp
+    TradeableTypesTreeView.h
     TypeAggregatedDetailsFilterWidget.cpp
     TypeAggregatedDetailsFilterWidget.h
     TypeAggregatedDetailsWidget.cpp

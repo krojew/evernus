@@ -14,18 +14,18 @@
  */
 #pragma once
 
-#include <QSortFilterProxyModel>
 #include <QDialog>
 
-#include "TradeableTypesTreeModel.h"
 #include "ExternalOrderImporter.h"
 
 class QListWidget;
-class QTreeView;
 
 namespace Evernus
 {
     class RegionTypePresetRepository;
+    class TradeableTypesTreeView;
+    class MarketGroupRepository;
+    class EveTypeRepository;
     class EveDataProvider;
 
     class RegionTypeSelectDialog
@@ -59,10 +59,7 @@ namespace Evernus
         const RegionTypePresetRepository &mRegionTypePresetRepo;
 
         QListWidget *mRegionList = nullptr;
-        QTreeView *mTypeView = nullptr;
-
-        TradeableTypesTreeModel mTypeModel;
-        QSortFilterProxyModel mTypeProxy;
+        TradeableTypesTreeView *mTypeView = nullptr;
 
         QString mLastLoadedPreset;
     };
