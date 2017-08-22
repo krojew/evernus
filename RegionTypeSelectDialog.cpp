@@ -33,8 +33,8 @@
 
 namespace Evernus
 {
-    const QString RegionTypeSelectDialog::settingsRegionsKey = "regionTypeSelect/regions";
-    const QString RegionTypeSelectDialog::settingsTypesKey = "regionTypeSelect/types";
+    const QString RegionTypeSelectDialog::settingsRegionsKey = QStringLiteral("regionTypeSelect/regions");
+    const QString RegionTypeSelectDialog::settingsTypesKey = QStringLiteral("regionTypeSelect/types");
 
     RegionTypeSelectDialog::RegionTypeSelectDialog(const EveDataProvider &dataProvider,
                                                    const EveTypeRepository &typeRepo,

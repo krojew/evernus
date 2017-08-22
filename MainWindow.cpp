@@ -990,6 +990,8 @@ namespace Evernus
 
         const auto industryTab = new IndustryManufacturingWidget{mEveDataProvider,
                                                                  mRepositoryProvider.getRegionStationPresetRepository(),
+                                                                 mRepositoryProvider.getEveTypeRepository(),
+                                                                 mRepositoryProvider.getMarketGroupRepository(),
                                                                  this};
         addTab(industryTab, tr("Industry"), TabType::Other);
 

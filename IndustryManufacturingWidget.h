@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <QGraphicsScene>
 #include <QVariant>
 #include <QWidget>
 
@@ -22,6 +23,9 @@
 namespace Evernus
 {
     class RegionStationPresetRepository;
+    class TradeableTypesTreeView;
+    class MarketGroupRepository;
+    class EveTypeRepository;
     class EveDataProvider;
     class RegionComboBox;
 
@@ -33,6 +37,8 @@ namespace Evernus
     public:
         IndustryManufacturingWidget(const EveDataProvider &dataProvider,
                                     const RegionStationPresetRepository &regionStationPresetRepository,
+                                    const EveTypeRepository &typeRepo,
+                                    const MarketGroupRepository &groupRepo,
                                     QWidget *parent = nullptr);
         IndustryManufacturingWidget(const IndustryManufacturingWidget &) = default;
         IndustryManufacturingWidget(IndustryManufacturingWidget &&) = default;
@@ -47,8 +53,12 @@ namespace Evernus
     private:
         const EveDataProvider &mDataProvider;
 
+        QGraphicsScene mManufacturingScene;
+
         RegionComboBox *mSourceRegionCombo = nullptr;
         RegionComboBox *mDestRegionCombo = nullptr;
+
+        TradeableTypesTreeView *mTypeView = nullptr;
 
         quint64 mSrcStation = 0;
         quint64 mDstStation = 0;

@@ -12,11 +12,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QGraphicsView>
+#include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QSplitter>
+#include <QGroupBox>
 #include <QSettings>
 #include <QLabel>
 
 #include "FavoriteLocationsButton.h"
+#include "TradeableTypesTreeView.h"
 #include "StationSelectButton.h"
 #include "IndustrySettings.h"
 #include "EveDataProvider.h"
@@ -29,6 +34,8 @@ namespace Evernus
 {
     IndustryManufacturingWidget::IndustryManufacturingWidget(const EveDataProvider &dataProvider,
                                                              const RegionStationPresetRepository &regionStationPresetRepository,
+                                                             const EveTypeRepository &typeRepo,
+                                                             const MarketGroupRepository &groupRepo,
                                                              QWidget *parent)
         : QWidget{parent}
         , mDataProvider{dataProvider}
@@ -77,6 +84,32 @@ namespace Evernus
             srcStationBtn->setSelectedStationId(srcStationId);
             dstStationBtn->setSelectedStationId(dstStationId);
         });
+
+        const auto contentSplitter = new QSplitter{this};
+        mainLayout->addWidget(contentSplitter, 1);
+
+        mManufacturingScene.setBackgroundBrush(Qt::darkGray);
+
+        const auto manufacturingView = new QGraphicsView{&mManufacturingScene, this};
+        contentSplitter->addWidget(manufacturingView);
+
+        const auto typesGroup = new QGroupBox{tr("Visible types"), this};
+        contentSplitter->addWidget(typesGroup);
+
+        contentSplitter->setStretchFactor(0, 1);
+
+        const auto typesGroupLayout = new QVBoxLayout{typesGroup};
+
+        mTypeView = new TradeableTypesTreeView{typeRepo, groupRepo, this};
+        typesGroupLayout->addWidget(mTypeView);
+
+        const auto selectedTypes = settings.value(IndustrySettings::manufacturingTypesKey).toList();
+        TradeableTypesTreeView::TypeSet types;
+
+        for (const auto &type : selectedTypes)
+            types.emplace(type.value<EveType::IdType>());
+
+        mTypeView->selectTypes(types);
     }
 
     void IndustryManufacturingWidget::setCharacter(Character::IdType id)
