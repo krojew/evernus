@@ -53,7 +53,6 @@ namespace Evernus
 
         setWindowTitle(tr("Select station"));
         setMinimumWidth(300);
-        setMaximumWidth(510);
     }
 
     QVariantList StationSelectDialog::getSelectedPath() const
