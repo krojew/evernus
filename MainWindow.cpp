@@ -37,6 +37,7 @@
 #   include <utime.h>
 #endif
 
+#include "IndustryManufacturingWidget.h"
 #include "WalletTransactionsWidget.h"
 #include "CharacterManagerDialog.h"
 #include "MarketAnalysisWidget.h"
@@ -986,6 +987,11 @@ namespace Evernus
         connect(marketAnalysisTab, &MarketAnalysisWidget::showInEve, this, &MainWindow::showInEve);
         connect(this, &MainWindow::preferencesChanged, marketAnalysisTab, &MarketAnalysisWidget::preferencesChanged);
         addTab(marketAnalysisTab, tr("Market analysis"), TabType::Other);
+
+        const auto industryTab = new IndustryManufacturingWidget{mEveDataProvider,
+                                                                 mRepositoryProvider.getRegionStationPresetRepository(),
+                                                                 this};
+        addTab(industryTab, tr("Industry"), TabType::Other);
 
         QSettings settings;
 

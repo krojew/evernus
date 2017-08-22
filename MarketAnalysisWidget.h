@@ -21,6 +21,7 @@
 #include "MarketDataProvider.h"
 #include "ExternalOrder.h"
 #include "TaskConstants.h"
+#include "Character.h"
 
 class QComboBox;
 class QCheckBox;

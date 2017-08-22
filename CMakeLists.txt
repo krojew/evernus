@@ -361,6 +361,9 @@ add_executable(
     ImportSettings.h
     ImportSourcePreferencesWidget.cpp
     ImportSourcePreferencesWidget.h
+    IndustryManufacturingWidget.cpp
+    IndustryManufacturingWidget.h
+    IndustrySettings.h
     InterRegionAnalysisWidget.cpp
     InterRegionAnalysisWidget.h
     InterRegionMarketDataFilterProxyModel.cpp
