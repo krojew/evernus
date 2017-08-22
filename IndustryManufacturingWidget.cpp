@@ -102,6 +102,7 @@ namespace Evernus
 
         mTypeView = new TradeableTypesTreeView{typeRepo, groupRepo, this};
         typesGroupLayout->addWidget(mTypeView);
+        connect(mTypeView, &TradeableTypesTreeView::typesChanged, this, &IndustryManufacturingWidget::refreshTypes);
 
         const auto selectedTypes = settings.value(IndustrySettings::manufacturingTypesKey).toList();
         TradeableTypesTreeView::TypeSet types;
@@ -113,6 +114,10 @@ namespace Evernus
     }
 
     void IndustryManufacturingWidget::setCharacter(Character::IdType id)
+    {
+    }
+
+    void IndustryManufacturingWidget::refreshTypes()
     {
     }
 

@@ -27,6 +27,8 @@ namespace Evernus
     class TradeableTypesTreeView
         : public QTreeView
     {
+        Q_OBJECT
+
     public:
         using TypeSet = TradeableTypesTreeModel::TypeSet;
 
@@ -43,8 +45,16 @@ namespace Evernus
         TradeableTypesTreeView &operator =(const TradeableTypesTreeView &) = default;
         TradeableTypesTreeView &operator =(TradeableTypesTreeView &&) = default;
 
+    signals:
+        void typesChanged();
+
+    private slots:
+        void emitTypesChanged();
+
     private:
         TradeableTypesTreeModel mTypeModel;
         QSortFilterProxyModel mTypeProxy;
+
+        bool mTypesChangeScheduled = false;
     };
 }

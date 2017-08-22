@@ -27,6 +27,14 @@ namespace Evernus
 
         setHeaderHidden(true);
         setModel(&mTypeProxy);
+
+        connect(&mTypeModel, &TradeableTypesTreeModel::dataChanged, this, [=](const auto &, const auto &, const auto &roles) {
+            if (!mTypesChangeScheduled && roles.contains(Qt::CheckStateRole))
+            {
+                mTypesChangeScheduled = true;
+                QMetaObject::invokeMethod(this, "emitTypesChanged", Qt::QueuedConnection);
+            }
+        });
     }
 
     TradeableTypesTreeView::TypeSet TradeableTypesTreeView::getSelectedTypes() const
@@ -37,5 +45,11 @@ namespace Evernus
     void TradeableTypesTreeView::selectTypes(const TypeSet &types)
     {
         mTypeModel.selectTypes(types);
+    }
+
+    void TradeableTypesTreeView::emitTypesChanged()
+    {
+        mTypesChangeScheduled = false;
+        emit typesChanged();
     }
 }

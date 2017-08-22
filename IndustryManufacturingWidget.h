@@ -50,6 +50,9 @@ namespace Evernus
     public slots:
         void setCharacter(Character::IdType id);
 
+    private slots:
+        void refreshTypes();
+
     private:
         const EveDataProvider &mDataProvider;
 
