@@ -215,7 +215,7 @@ namespace Evernus
             usedTypes.insert(typeId);
         }
 
-        const auto historyLimit = QDate::currentDate().addDays(-static_cast<int>(mAvgPeriod));
+        const auto historyLimit = QDate::currentDate().addDays(-static_cast<int>(mAvgPeriod) + 1);
         PriceUtils::Taxes taxes;
 
         QSettings settings;

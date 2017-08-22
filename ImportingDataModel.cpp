@@ -309,7 +309,7 @@ namespace Evernus
             }
         });
 
-        const auto historyLimit = QDate::currentDate().addDays(-analysisDays);
+        const auto historyLimit = QDate::currentDate().addDays(-analysisDays + 1);
 
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
