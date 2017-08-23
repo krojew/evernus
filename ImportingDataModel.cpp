@@ -258,7 +258,7 @@ namespace Evernus
         if (srcHistory == std::end(history))
             return;
 
-        struct TypeData
+        struct TypeMapData
         {
             quint64 mTotalVolume = 0;
             quint64 mMedianVolume = 0;
@@ -268,7 +268,7 @@ namespace Evernus
             quint64 mDstOrderCount = 0;
         };
 
-        TypeMap<TypeData> typeMap;
+        TypeMap<TypeMapData> typeMap;
         TypeMap<quint64> srcVolumes, dstVolumes, dstSellVolumes;
         TypeMap<std::multiset<std::reference_wrapper<const ExternalOrder>, ExternalOrder::LowToHigh>> dstOrders;
         TypeMap<std::multiset<std::reference_wrapper<const ExternalOrder>, ExternalOrder::HighToLow>> srcOrders;
@@ -439,16 +439,13 @@ namespace Evernus
             if (hideEmptySell && type.second.mSrcOrderCount == 0)
                 return;
 
-            {
-                std::lock_guard<std::mutex> lock{dataMutex};
-                mData.emplace_back();
-            }
+            const auto dstVolume = dstSellVolumes.find(type.first);
 
-            auto &data = mData.back();
+            TypeData data;
             data.mId = type.first;
             data.mAvgVolume = static_cast<double>(type.second.mTotalVolume) * aggrDays / analysisDays;
             data.mMedianVolume = type.second.mMedianVolume;
-            data.mDstVolume = dstSellVolumes[data.mId];
+            data.mDstVolume = (dstVolume == std::end(dstSellVolumes)) ? (0) : (dstVolume->second);
             data.mSrcOrderCount = type.second.mSrcOrderCount;
             data.mDstOrderCount = type.second.mDstOrderCount;
 
@@ -489,6 +486,9 @@ namespace Evernus
             data.mPriceDifference = data.mDstPrice - data.mImportPrice;
             data.mMargin = (qFuzzyIsNull(data.mDstPrice)) ? (0.) : (100. * data.mPriceDifference / data.mDstPrice);
             data.mProjectedProfit = data.mAvgVolume * data.mPriceDifference;
+
+            std::lock_guard<std::mutex> lock{dataMutex};
+            mData.emplace_back(std::move(data));
         });
     }
 

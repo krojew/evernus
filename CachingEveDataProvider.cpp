@@ -197,6 +197,8 @@ namespace Evernus
 
     double CachingEveDataProvider::getTypeVolume(EveType::IdType id) const
     {
+        std::lock_guard<std::mutex> lock{mTypeCacheMutex};
+
         const auto it = mTypeCache.find(id);
         if (it != std::end(mTypeCache))
             return (mUsePackagedVolume) ? (getPackagedVolume(*it->second)) : (it->second->getVolume());
@@ -1022,6 +1024,8 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
     void CachingEveDataProvider::handleNewPreferences()
     {
         QSettings settings;
+
+        std::lock_guard<std::mutex> lock{mTypeCacheMutex};
         mUsePackagedVolume = settings.value(UISettings::usePackagedVolumeKey, UISettings::usePackagedVolumeDefault).toBool();
     }
 

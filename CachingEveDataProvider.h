@@ -182,7 +182,9 @@ namespace Evernus
         mutable std::unordered_map<uint, uint> mSolarSystemRegionCache;
         mutable std::unordered_map<uint, uint> mSolarSystemConstellationCache;
         mutable std::unordered_map<quint64, uint> mLocationSolarSystemCache;
+
         mutable std::mutex mLocationSolarSystemCacheMutex;
+        mutable std::mutex mTypeCacheMutex;
 
         mutable std::unordered_map<uint, double> mSecurityStatuses;
 
