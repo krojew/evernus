@@ -12,12 +12,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QGraphicsView>
+#include <QQuickWidget>
+#include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QSplitter>
 #include <QGroupBox>
 #include <QSettings>
+#include <QDebug>
 #include <QLabel>
 
 #include "FavoriteLocationsButton.h"
@@ -88,10 +90,10 @@ namespace Evernus
         const auto contentSplitter = new QSplitter{this};
         mainLayout->addWidget(contentSplitter, 1);
 
-        mManufacturingScene.setBackgroundBrush(Qt::darkGray);
-
-        const auto manufacturingView = new QGraphicsView{&mManufacturingScene, this};
+        const auto manufacturingView = new QQuickWidget{this};
         contentSplitter->addWidget(manufacturingView);
+        manufacturingView->setClearColor(Qt::darkGray);
+        connect(manufacturingView, &QQuickWidget::sceneGraphError, this, &IndustryManufacturingWidget::showSceneGraphError);
 
         const auto typesGroup = new QGroupBox{tr("Output"), this};
         contentSplitter->addWidget(typesGroup);
@@ -120,6 +122,12 @@ namespace Evernus
     void IndustryManufacturingWidget::refreshTypes()
     {
         mSetup.setOutputTypes(mTypeView->getSelectedTypes());
+    }
+
+    void IndustryManufacturingWidget::showSceneGraphError(QQuickWindow::SceneGraphError error, const QString &message)
+    {
+        qCritical() << "Scene graph error:" << error << message;
+        QMessageBox::warning(this, tr("View error"), tr("There was an error initializing the manufacturing view: %1").arg(message));
     }
 
     void IndustryManufacturingWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)

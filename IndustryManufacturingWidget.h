@@ -14,9 +14,10 @@
  */
 #pragma once
 
-#include <QGraphicsScene>
+#include <QQuickWindow>
 #include <QVariant>
 #include <QWidget>
+#include <QString>
 
 #include "IndustryManufacturingSetup.h"
 #include "Character.h"
@@ -54,10 +55,10 @@ namespace Evernus
     private slots:
         void refreshTypes();
 
+        void showSceneGraphError(QQuickWindow::SceneGraphError error, const QString &message);
+
     private:
         const EveDataProvider &mDataProvider;
-
-        QGraphicsScene mManufacturingScene;
 
         RegionComboBox *mSourceRegionCombo = nullptr;
         RegionComboBox *mDestRegionCombo = nullptr;

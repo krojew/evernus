@@ -3628,7 +3628,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished">Ziel:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="96"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="95"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>

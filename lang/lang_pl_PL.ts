@@ -3949,7 +3949,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="unfinished">Cel:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="96"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="95"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
