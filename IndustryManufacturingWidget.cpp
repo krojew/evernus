@@ -93,7 +93,7 @@ namespace Evernus
         const auto manufacturingView = new QGraphicsView{&mManufacturingScene, this};
         contentSplitter->addWidget(manufacturingView);
 
-        const auto typesGroup = new QGroupBox{tr("Visible types"), this};
+        const auto typesGroup = new QGroupBox{tr("Output"), this};
         contentSplitter->addWidget(typesGroup);
 
         contentSplitter->setStretchFactor(0, 1);
@@ -119,6 +119,7 @@ namespace Evernus
 
     void IndustryManufacturingWidget::refreshTypes()
     {
+        mSetup.setOutputTypes(mTypeView->getSelectedTypes());
     }
 
     void IndustryManufacturingWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)

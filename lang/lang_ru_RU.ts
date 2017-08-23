@@ -678,7 +678,7 @@ Total: %7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CachingEveDataProvider.cpp" line="400"/>
+        <location filename="../CachingEveDataProvider.cpp" line="402"/>
         <source>- unknown location -</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3105,13 +3105,18 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::IndustryManufacturingWidget</name>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="41"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="48"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="59"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="66"/>
         <source>Destination:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="96"/>
+        <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3883,17 +3888,17 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="994"/>
+        <location filename="../MainWindow.cpp" line="996"/>
         <source>Industry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1015"/>
+        <location filename="../MainWindow.cpp" line="1017"/>
         <source>Toggle character tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1021"/>
+        <location filename="../MainWindow.cpp" line="1023"/>
         <source>Toggle corporation tabs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5801,72 +5806,72 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::RegionTypeSelectDialog</name>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="53"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="52"/>
         <source>Regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="78"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="77"/>
         <source>Select all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="82"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="81"/>
         <source>Deselect all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="86"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="85"/>
         <source>Select without wormholes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="99"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="98"/>
         <source>Types</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="118"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="116"/>
         <source>Save preset...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="122"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="120"/>
         <source>Load preset...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="131"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="129"/>
         <source>Select regions and types</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="157"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="155"/>
         <source>Order import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="157"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="155"/>
         <source>Please select at least one region and type.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="173"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="171"/>
         <source>Save preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="173"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="171"/>
         <source>Enter preset name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="198"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="196"/>
         <source>Load preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../RegionTypeSelectDialog.cpp" line="198"/>
+        <location filename="../RegionTypeSelectDialog.cpp" line="196"/>
         <source>Select preset:</source>
         <translation type="unfinished"></translation>
     </message>
