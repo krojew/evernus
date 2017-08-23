@@ -54,6 +54,7 @@ namespace Evernus
 
     private slots:
         void refreshTypes();
+        void importData();
 
         void showSceneGraphError(QQuickWindow::SceneGraphError error, const QString &message);
 

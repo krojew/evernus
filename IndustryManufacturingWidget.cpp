@@ -16,6 +16,7 @@
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QPushButton>
 #include <QSplitter>
 #include <QGroupBox>
 #include <QSettings>
@@ -46,6 +47,11 @@ namespace Evernus
 
         const auto toolBarLayout = new FlowLayout{};
         mainLayout->addLayout(toolBarLayout);
+
+        const auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import data for current setup "), this};
+        toolBarLayout->addWidget(importFromWeb);
+        importFromWeb->setFlat(true);
+        connect(importFromWeb, &QPushButton::clicked, this, &IndustryManufacturingWidget::importData);
 
         toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
 
@@ -122,6 +128,10 @@ namespace Evernus
     void IndustryManufacturingWidget::refreshTypes()
     {
         mSetup.setOutputTypes(mTypeView->getSelectedTypes());
+    }
+
+    void IndustryManufacturingWidget::importData()
+    {
     }
 
     void IndustryManufacturingWidget::showSceneGraphError(QQuickWindow::SceneGraphError error, const QString &message)
