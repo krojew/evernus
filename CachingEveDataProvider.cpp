@@ -1220,8 +1220,9 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         if (it == std::end(mTypeManufacturingInfoCache))
         {
             QSqlQuery query{mEveDb};
-            query.prepare(QStringLiteral("SELECT materialTypeID, quantity FROM industryActivityMaterials WHERE typeID = ?"));
+            query.prepare(QStringLiteral("SELECT materialTypeID, quantity FROM industryActivityMaterials WHERE typeID = ? AND activityID = ?"));
             query.bindValue(0, typeId);
+            query.bindValue(1, mManufacturingActivityId);
 
             std::vector<MaterialInfo> info;
 
