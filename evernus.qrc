@@ -58,5 +58,6 @@
         <file>sounds/click.wav</file>
 
         <file>qml/IndustryManufacturingView.qml</file>
+        <file>qml/IndustryType.qml</file>
     </qresource>
 </RCC>
