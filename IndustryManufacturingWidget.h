@@ -19,6 +19,7 @@
 #include <QWidget>
 #include <QString>
 
+#include "IndustryManufacturingSetupModel.h"
 #include "IndustryManufacturingSetup.h"
 #include "Character.h"
 
@@ -70,6 +71,7 @@ namespace Evernus
         quint64 mDstStation = 0;
 
         IndustryManufacturingSetup mSetup;
+        IndustryManufacturingSetupModel mSetupModel{mSetup, mDataProvider};
 
         void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
     };

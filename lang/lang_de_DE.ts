@@ -3105,32 +3105,32 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::IndustryManufacturingWidget</name>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="51"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="52"/>
         <source>Import data for current setup </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="56"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="57"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="74"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="75"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="104"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="110"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="140"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="147"/>
         <source>View error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="140"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="147"/>
         <source>There was an error initializing the manufacturing view: %1</source>
         <translation type="unfinished"></translation>
     </message>

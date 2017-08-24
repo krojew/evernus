@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QQuickWidget>
+#include <QQmlContext>
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -101,6 +102,11 @@ namespace Evernus
         manufacturingView->setClearColor(Qt::darkGray);
         connect(manufacturingView, &QQuickWidget::sceneGraphError, this, &IndustryManufacturingWidget::showSceneGraphError);
 
+        const auto ctxt = manufacturingView->rootContext();
+        Q_ASSERT(ctxt != nullptr);
+
+        ctxt->setContextProperty(QStringLiteral("setupModel"), &mSetupModel);
+
         const auto typesGroup = new QGroupBox{tr("Output"), this};
         contentSplitter->addWidget(typesGroup);
 
@@ -128,6 +134,7 @@ namespace Evernus
     void IndustryManufacturingWidget::refreshTypes()
     {
         mSetup.setOutputTypes(mTypeView->getSelectedTypes());
+        mSetupModel.refreshData();
     }
 
     void IndustryManufacturingWidget::importData()

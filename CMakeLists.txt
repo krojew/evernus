@@ -366,6 +366,8 @@ add_executable(
     ImportSourcePreferencesWidget.h
     IndustryManufacturingSetup.cpp
     IndustryManufacturingSetup.h
+    IndustryManufacturingSetupModel.cpp
+    IndustryManufacturingSetupModel.h
     IndustryManufacturingWidget.cpp
     IndustryManufacturingWidget.h
     IndustrySettings.h
