@@ -70,7 +70,7 @@ namespace Evernus
         quint64 mSrcStation = 0;
         quint64 mDstStation = 0;
 
-        IndustryManufacturingSetup mSetup;
+        IndustryManufacturingSetup mSetup{mDataProvider};
         IndustryManufacturingSetupModel mSetupModel{mSetup, mDataProvider};
 
         void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);

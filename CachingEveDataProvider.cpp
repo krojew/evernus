@@ -851,7 +851,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
                 auto &info = mOreReprocessingInfo[query.value(0).value<EveType::IdType>()];
                 info.mPortionSize = query.value(3).toUInt();
                 info.mGroupId = query.value(4).toUInt();
-                info.mMaterials.emplace_back(ReprocessingMaterialInfo{
+                info.mMaterials.emplace_back(MaterialInfo{
                     query.value(1).value<EveType::IdType>(),
                     query.value(2).toUInt()
                 });
@@ -889,7 +889,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
                 auto &info = mTypeReprocessingInfo[query.value(0).value<EveType::IdType>()];
                 info.mPortionSize = query.value(3).toUInt();
                 info.mGroupId = query.value(4).toUInt();
-                info.mMaterials.emplace_back(ReprocessingMaterialInfo{
+                info.mMaterials.emplace_back(MaterialInfo{
                     query.value(1).value<EveType::IdType>(),
                     query.value(2).toUInt()
                 });
@@ -1212,6 +1212,28 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
     QString CachingEveDataProvider::getBloodlineName(uint bloodlineId) const
     {
         return mBloodlineNameCache.value(bloodlineId);
+    }
+
+    const std::vector<CachingEveDataProvider::MaterialInfo> &CachingEveDataProvider::getTypeManufacturingInfo(EveType::IdType typeId) const
+    {
+        auto it = mTypeManufacturingInfoCache.find(typeId);
+        if (it == std::end(mTypeManufacturingInfoCache))
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare(QStringLiteral("SELECT materialTypeID, quantity FROM industryActivityMaterials WHERE typeID = ?"));
+            query.bindValue(0, typeId);
+
+            std::vector<MaterialInfo> info;
+
+            DatabaseUtils::execQuery(query);
+
+            while (query.next())
+                info.emplace_back(MaterialInfo{query.value(0).value<EveType::IdType>(), query.value(1).toUInt()});
+
+            it = mTypeManufacturingInfoCache.emplace(typeId, std::move(info)).first;
+        }
+
+        return it->second;
     }
 
     QString CachingEveDataProvider::getCitadelName(Citadel::IdType id) const

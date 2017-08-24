@@ -14,18 +14,31 @@
  */
 #pragma once
 
+#include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
+#include "EveDataProvider.h"
 #include "EveType.h"
 
 namespace Evernus
 {
+    class EveDataProvider;
+
     class IndustryManufacturingSetup final
     {
     public:
         using TypeSet = std::unordered_set<EveType::IdType>;
 
-        IndustryManufacturingSetup() = default;
+        enum class InventorySource
+        {
+            BuyFromSource,
+            Manufacture,
+            TakeAssetsThenBuyFromSource,
+            TakeAssetsThenManufacture,
+        };
+
+        explicit IndustryManufacturingSetup(const EveDataProvider &dataProvider);
         IndustryManufacturingSetup(const IndustryManufacturingSetup &) = default;
         IndustryManufacturingSetup(IndustryManufacturingSetup &&) = default;
         ~IndustryManufacturingSetup() = default;
@@ -36,6 +49,18 @@ namespace Evernus
         IndustryManufacturingSetup &operator =(IndustryManufacturingSetup &&) = default;
 
     private:
+        struct TypeSettings
+        {
+            InventorySource mSource = InventorySource::Manufacture;
+        };
+
+        const EveDataProvider &mDataProvider;
+
+        std::unordered_map<EveType::IdType, TypeSettings> mTypeSettings;
+        std::unordered_map<EveType::IdType, std::vector<EveDataProvider::MaterialInfo>> mSourceInfo;
+
         TypeSet mOutputTypes;
+
+        void fillManufacturingInfo(EveType::IdType typeId, TypeSet &usedTypes);
     };
 }
