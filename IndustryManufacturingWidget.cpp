@@ -96,7 +96,7 @@ namespace Evernus
         const auto contentSplitter = new QSplitter{this};
         mainLayout->addWidget(contentSplitter, 1);
 
-        const auto manufacturingView = new QQuickWidget{this};
+        const auto manufacturingView = new QQuickWidget{QUrl{QStringLiteral("qrc:/qml/IndustryManufacturingView.qml")}, this};
         contentSplitter->addWidget(manufacturingView);
         manufacturingView->setClearColor(Qt::darkGray);
         connect(manufacturingView, &QQuickWidget::sceneGraphError, this, &IndustryManufacturingWidget::showSceneGraphError);

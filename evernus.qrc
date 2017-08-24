@@ -56,5 +56,7 @@
         <file>html/http_template.html</file>
 
         <file>sounds/click.wav</file>
+
+        <file>qml/IndustryManufacturingView.qml</file>
     </qresource>
 </RCC>
