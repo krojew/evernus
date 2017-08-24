@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(PROJECT_NAME "evernus")
 set(MAJOR_VERSION "2")
-set(MINOR_VERSION "4")
+set(MINOR_VERSION "5")
 
 find_package(Boost REQUIRED)
 find_package(Breakpad REQUIRED)
