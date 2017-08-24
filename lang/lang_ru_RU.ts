@@ -1829,7 +1829,7 @@ Total: %7</source>
 <context>
     <name>Evernus::ESIManager</name>
     <message>
-        <location filename="../ESIManager.cpp" line="631"/>
+        <location filename="../ESIManager.cpp" line="619"/>
         <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1846,27 +1846,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="613"/>
+        <location filename="../ESIManager.cpp" line="601"/>
         <source>SSO Authentication for unknown character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="615"/>
+        <location filename="../ESIManager.cpp" line="603"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="704"/>
+        <location filename="../ESIManager.cpp" line="692"/>
         <source>Empty access token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="893"/>
+        <location filename="../ESIManager.cpp" line="881"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="927"/>
+        <location filename="../ESIManager.cpp" line="915"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3105,18 +3105,33 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::IndustryManufacturingWidget</name>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="48"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="51"/>
+        <source>Import data for current setup </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="56"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="66"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="74"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="95"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="104"/>
         <source>Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="140"/>
+        <source>View error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="140"/>
+        <source>There was an error initializing the manufacturing view: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

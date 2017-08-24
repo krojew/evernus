@@ -213,26 +213,14 @@ namespace Evernus
             for (const auto &itemObj : assets)
             {
                 const auto item = itemObj.toObject();
+                const int rawQuantity = item.value(QStringLiteral("quantity")).toDouble();
 
                 auto newItem = std::make_unique<Item>(static_cast<Item::IdType>(item.value(QStringLiteral("item_id")).toDouble()));
                 newItem->setLocationId(item.value(QStringLiteral("location_id")).toDouble());
                 newItem->setTypeId(item.value(QStringLiteral("type_id")).toDouble());
-                newItem->setQuantity(item.value(QStringLiteral("quantity")).toDouble());
-
-                // ESI doesn't return raw quantity, so let's try to guess BPO/BPC status
-                const auto name = mDataProvider.getTypeName(newItem->getTypeId());
-                if (name.endsWith(QStringLiteral("Blueprint")))
-                {
-                    // BPC's are singletons (I hope...)
-                    if (item.value(QStringLiteral("is_singleton")).toBool())
-                        newItem->setRawQuantity(Item::magicBPCQuantity);
-                    else
-                        newItem->setRawQuantity(Item::magicBPOQuantity);
-                }
-                else
-                {
-                    newItem->setRawQuantity(newItem->getQuantity());
-                }
+                newItem->setRawQuantity(rawQuantity);
+                // https://forums.eveonline.com/t/esi-assets-blueprints-and-quantities/19345/4
+                newItem->setQuantity((rawQuantity < 0) ? (1) : (rawQuantity));
 
                 itemMap.emplace(newItem->getId(), newItem.get());
                 allItems.emplace_back(std::move(newItem));
