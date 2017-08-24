@@ -988,12 +988,12 @@ namespace Evernus
         connect(this, &MainWindow::preferencesChanged, marketAnalysisTab, &MarketAnalysisWidget::preferencesChanged);
         addTab(marketAnalysisTab, tr("Market analysis"), TabType::Other);
 
-        const auto industryTab = new IndustryManufacturingWidget{mEveDataProvider,
-                                                                 mRepositoryProvider.getRegionStationPresetRepository(),
-                                                                 mRepositoryProvider.getEveTypeRepository(),
-                                                                 mRepositoryProvider.getMarketGroupRepository(),
-                                                                 this};
-        addTab(industryTab, tr("Industry"), TabType::Other);
+//        const auto industryTab = new IndustryManufacturingWidget{mEveDataProvider,
+//                                                                 mRepositoryProvider.getRegionStationPresetRepository(),
+//                                                                 mRepositoryProvider.getEveTypeRepository(),
+//                                                                 mRepositoryProvider.getMarketGroupRepository(),
+//                                                                 this};
+//        addTab(industryTab, tr("Industry"), TabType::Other);
 
         QSettings settings;
 

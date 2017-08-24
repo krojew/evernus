@@ -3903,11 +3903,6 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="996"/>
-        <source>Industry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../MainWindow.cpp" line="1017"/>
         <source>Toggle character tabs</source>
         <translation type="unfinished"></translation>
