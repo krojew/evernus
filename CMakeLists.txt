@@ -15,7 +15,7 @@ set(MINOR_VERSION "4")
 find_package(Boost REQUIRED)
 find_package(Breakpad REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
-find_package(Qt5Core 5.7 REQUIRED)
+find_package(Qt5Core 5.8 REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
@@ -153,6 +153,8 @@ add_executable(
     BasicStatisticsWidget.h
     ButtonWithTimer.cpp
     ButtonWithTimer.h
+    BezierCurve.cpp
+    BezierCurve.h
     CacheTimer.cpp
     CacheTimer.h
     CacheTimerProvider.h

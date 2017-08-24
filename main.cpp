@@ -19,6 +19,7 @@
 #include <QLocalSocket>
 #include <QLocalServer>
 #include <QMessageBox>
+#include <QQmlEngine>
 #include <QSettings>
 #include <QSysInfo>
 #include <QDebug>
@@ -43,6 +44,7 @@
 #include "EvernusApplication.h"
 #include "UpdaterSettings.h"
 #include "ImportSettings.h"
+#include "BezierCurve.h"
 #include "MainWindow.h"
 #include "VolumeType.h"
 #include "Version.h"
@@ -235,6 +237,8 @@ int main(int argc, char *argv[])
         app.registerImporter(Evernus::ExternalOrderImporterNames::webImporter, std::move(webImporter));
         app.registerImporter(Evernus::ExternalOrderImporterNames::logImporter,
                              std::make_unique<Evernus::MarketLogExternalOrderImporter>());
+
+        qmlRegisterType<BezierCurve>("com.evernus.qmlcomponents", 1, 0, "BezierCurve");
 
         try
         {
