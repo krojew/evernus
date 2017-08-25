@@ -306,7 +306,7 @@ namespace Evernus
         const auto minSellPrice = mMinSellPriceEdit->text();
         const auto maxSellPrice = mMaxSellPriceEdit->text();
         const auto ignorePricePercetiles = mIgnorePricePercentilesBtn->isChecked();
-        const auto avgPeriod = mAvgDaysEdit->value();
+        const uint avgPeriod = mAvgDaysEdit->value();
 
         QSettings settings;
         settings.setValue(MarketAnalysisSettings::minVolumeFilterKey, minVolume);
