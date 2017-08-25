@@ -737,11 +737,7 @@ namespace Evernus
             }
 
             // https://bugreports.qt.io/browse/QTBUG-61145
-            std::function<void (WalletJournal &, const WalletJournalEntry &)> addToJournal = [](auto &journal, const auto &entry) {
-                journal.emplace(entry);
-            };
-
-            auto journal = QtConcurrent::blockingMappedReduced(
+            auto journal = QtConcurrent::blockingMappedReduced<WalletJournal>(
                 data.array(),
                 std::function<WalletJournalEntry (const QJsonValue &)>{[](const auto &value) {
                     const auto entryObj = value.toObject();
@@ -750,7 +746,9 @@ namespace Evernus
 
                     return entry;
                 }},
-                addToJournal.target<void (WalletJournal &, const WalletJournalEntry &)>()
+                [](auto &journal, const auto &entry) {
+                    journal.emplace(entry);
+                }
             );
 
             callback(std::move(journal), {}, expires);
@@ -902,7 +900,7 @@ namespace Evernus
 
                         const auto doc = QJsonDocument::fromJson(charReply->readAll());
                         const auto object = doc.object();
-                        const auto realCharId = object["CharacterID"].toInt(Character::invalidId);
+                        const Character::IdType realCharId = object["CharacterID"].toDouble(Character::invalidId);
 
                         mRefreshTokens[realCharId] = refreshToken;
 

@@ -47,7 +47,7 @@ namespace Evernus
 
     int ExternalOrderBuyModel::columnCount(const QModelIndex &parent) const
     {
-        return (mGrouping == Grouping::None) ? (numUngroupedColumns) : (numGroupedColumns);
+        return (mGrouping == Grouping::None) ? (static_cast<int>(numUngroupedColumns)) : (static_cast<int>(numGroupedColumns));
     }
 
     QVariant ExternalOrderBuyModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -121,7 +121,7 @@ namespace Evernus
 
     int ExternalOrderBuyModel::getPriceColumn() const
     {
-        return (mGrouping == Grouping::None) ? (priceColumn) : (highestPriceColumn);
+        return (mGrouping == Grouping::None) ? (static_cast<int>(priceColumn)) : (static_cast<int>(highestPriceColumn));
     }
 
     Qt::SortOrder ExternalOrderBuyModel::getPriceSortOrder() const
