@@ -50,7 +50,7 @@
 #include "Version.h"
 #include "Defines.h"
 
-#ifdef EVERNUS_CREATE_DUMPS
+#if EVERNUS_CREATE_DUMPS
 #   include <iostream>
 
 #   include "DumpUploader.h"
