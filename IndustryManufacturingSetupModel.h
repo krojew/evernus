@@ -54,7 +54,8 @@ namespace Evernus
     private:
         enum
         {
-            NameRole = Qt::UserRole
+            NameRole = Qt::UserRole,
+            TypeIdRole
         };
 
         class TreeItem;

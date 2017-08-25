@@ -1,29 +1,45 @@
 import QtGraphicalEffects 1.0
-import QtQuick 2.8
+import QtQuick.Controls 1.4
+import QtQuick 2.7
 
 Item {
+    readonly property int glowRadius: 10
+
+    property bool selected: false
+
     width: 300
     height: 50
     
     RectangularGlow {
-        anchors.fill: rect
-        glowRadius: 10
+        anchors.fill: parent
+        glowRadius: 0
         cornerRadius: rect.radius + glowRadius
+        visible: selected
     }
-    
+
     Rectangle {
-        id: rect
-        color: "black"
-        anchors.centerIn: parent
-        width: Math.round(parent.width / 1.5)
-        height: Math.round(parent.height / 2)
-        radius: 25
-    }
-    
-    Text {
-        id: name
-        color: "white"
-        anchors.left: parent.left
-        anchors.top: parent.top
+        id: header
+        color: "lightgray"
+        border.width: 1
+        border.color: "black"
+        width: parent.width - glowRadius * 2
+        height: parent.height - glowRadius * 2
+
+        Image {
+            id: icon
+            anchors.left: parent.left
+            anchors.top: parent.top
+            height: parent.height
+            source: "https://image.eveonline.com/Type/" + typeId + "_64.png"
+            fillMode: Image.PreserveAspectFit
+        }
+
+        Label {
+            font.bold: true
+            text: name
+            anchors.left: icon.right
+            anchors.top: parent.top
+            anchors.margins: 5
+        }
     }
 }

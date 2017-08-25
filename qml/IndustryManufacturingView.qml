@@ -1,8 +1,10 @@
 import QtQuick 2.8
 
-ListView {
-    model: setupModel
-    delegate: Text {
-        text: name
+import "qrc:/qml"
+
+Column {
+    Repeater {
+        model: setupModel
+        delegate: IndustryType {}
     }
 }

@@ -18,12 +18,14 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QQmlEngine>
 #include <QSplitter>
 #include <QGroupBox>
 #include <QSettings>
 #include <QDebug>
 #include <QLabel>
 
+#include "CachingNetworkAccessManagerFactory.h"
 #include "FavoriteLocationsButton.h"
 #include "TradeableTypesTreeView.h"
 #include "StationSelectButton.h"
@@ -107,16 +109,18 @@ namespace Evernus
         const auto contentSplitter = new QSplitter{this};
         mainLayout->addWidget(contentSplitter, 1);
 
-        const auto manufacturingView = new QQuickWidget{QUrl{QStringLiteral("qrc:/qml/IndustryManufacturingView.qml")}, this};
+        const auto manufacturingView = new QQuickWidget{this};
         contentSplitter->addWidget(manufacturingView);
         manufacturingView->setClearColor(Qt::darkGray);
         manufacturingView->setResizeMode(QQuickWidget::SizeRootObjectToView);
+        manufacturingView->engine()->setNetworkAccessManagerFactory(new CachingNetworkAccessManagerFactory{this});
         connect(manufacturingView, &QQuickWidget::sceneGraphError, this, &IndustryManufacturingWidget::showSceneGraphError);
 
         const auto ctxt = manufacturingView->rootContext();
         Q_ASSERT(ctxt != nullptr);
 
         ctxt->setContextProperty(QStringLiteral("setupModel"), &mSetupModel);
+        manufacturingView->setSource(QUrl{QStringLiteral("qrc:/qml/IndustryManufacturingView.qml")});
 
         const auto typesGroup = new QGroupBox{tr("Output"), this};
         contentSplitter->addWidget(typesGroup);

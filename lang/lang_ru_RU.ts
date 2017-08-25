@@ -3105,47 +3105,47 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::IndustryManufacturingWidget</name>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="62"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="63"/>
         <source>Import data for current setup </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="67"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="68"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="85"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="86"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="120"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="124"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="185"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="189"/>
         <source>Importing data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="187"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="191"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="188"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="192"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="199"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="203"/>
         <source>View error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="199"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="203"/>
         <source>There was an error initializing the manufacturing view: %1</source>
         <translation type="unfinished"></translation>
     </message>

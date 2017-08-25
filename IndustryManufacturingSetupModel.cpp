@@ -99,6 +99,8 @@ namespace Evernus
         switch (role) {
         case NameRole:
             return mDataProvider.getTypeName(item->getTypeId());
+        case TypeIdRole:
+            return item->getTypeId();
         }
 
         return {};
@@ -140,7 +142,8 @@ namespace Evernus
     QHash<int, QByteArray> IndustryManufacturingSetupModel::roleNames() const
     {
         return {
-            { NameRole, QByteArrayLiteral("name") }
+            { NameRole, QByteArrayLiteral("name") },
+            { TypeIdRole, QByteArrayLiteral("typeId") },
         };
     }
 
