@@ -110,6 +110,7 @@ namespace Evernus
         const auto manufacturingView = new QQuickWidget{QUrl{QStringLiteral("qrc:/qml/IndustryManufacturingView.qml")}, this};
         contentSplitter->addWidget(manufacturingView);
         manufacturingView->setClearColor(Qt::darkGray);
+        manufacturingView->setResizeMode(QQuickWidget::SizeRootObjectToView);
         connect(manufacturingView, &QQuickWidget::sceneGraphError, this, &IndustryManufacturingWidget::showSceneGraphError);
 
         const auto ctxt = manufacturingView->rootContext();
