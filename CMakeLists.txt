@@ -12,8 +12,9 @@ set(PROJECT_NAME "evernus")
 set(MAJOR_VERSION "2")
 set(MINOR_VERSION "5")
 
+option(EVERNUS_CREATE_DUMPS "create crash dumps using Google Breakpad" ON)
+
 find_package(Boost REQUIRED)
-find_package(Breakpad REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
 find_package(Qt5Core 5.8 REQUIRED)
 find_package(Qt5Gui REQUIRED)
@@ -28,6 +29,11 @@ find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
 find_package(Qt5WebEngineWidgets REQUIRED)
 find_package(Qt5Widgets REQUIRED)
+
+if(EVERNUS_CREATE_DUMPS)
+    find_package(Breakpad REQUIRED)
+    add_definitions(-DEVERNUS_CREATE_DUMPS=1)
+endif()
 
 if(DEFINED EVERNUS_CLIENT_ID AND DEFINED EVERNUS_CLIENT_SECRET)
     add_definitions(-DEVERNUS_CLIENT_ID=${EVERNUS_CLIENT_ID} -DEVERNUS_CLIENT_SECRET=${EVERNUS_CLIENT_SECRET})
@@ -805,7 +811,6 @@ endif()
 target_link_libraries(
     ${PROJECT_NAME}
     Boost::boost
-    Breakpad::Client
     Qt5::Concurrent
     Qt5::Core
     Qt5::Gui
@@ -821,6 +826,13 @@ target_link_libraries(
     Qt5::Widgets
     ${ADDITIONAL_LIBS}
 )
+
+if(EVERNUS_CREATE_DUMPS)
+    target_link_libraries(
+        ${PROJECT_NAME}
+        Breakpad::Client
+    )
+endif()
 
 set(RESOURCES
     "resources"

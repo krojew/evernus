@@ -29,7 +29,10 @@
 #endif
 
 #ifdef NDEBUG
-#   define EVERNUS_CREATE_DUMPS 1
+#   ifndef EVERNUS_CREATE_DUMPS
+#       define EVERNUS_CREATE_DUMPS 1
+#   endif
 #else
+#   undef EVERNUS_CREATE_DUMPS
 #   define EVERNUS_CREATE_DUMPS 0
 #endif

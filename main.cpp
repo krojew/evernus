@@ -59,7 +59,7 @@
 #       include <client/linux/handler/exception_handler.h>
 #   elif defined(Q_OS_OSX)
 #       include <client/mac/handler/exception_handler.h>
-#else
+#   else
 #       include <client/windows/handler/exception_handler.h>
 #   endif
 #endif
