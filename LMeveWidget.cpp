@@ -168,9 +168,9 @@ namespace Evernus
         }
     }
 
-    ExternalOrderImporter::TypeLocationPairs LMeveWidget::getImportTarget() const
+    TypeLocationPairs LMeveWidget::getImportTarget() const
     {
-        ExternalOrderImporter::TypeLocationPairs result;
+        TypeLocationPairs result;
 
         const auto stationId = mTaskModel.getStationId();
         if (stationId != 0)

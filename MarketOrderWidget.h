@@ -63,8 +63,8 @@ namespace Evernus
 
         void importFromLogs(Character::IdType id);
 
-        void importPricesFromWeb(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
-        void importPricesFromFile(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromWeb(Character::IdType id, const TypeLocationPairs &target);
+        void importPricesFromFile(Character::IdType id, const TypeLocationPairs &target);
 
         void openMarginTool();
 
@@ -120,7 +120,7 @@ namespace Evernus
 
         virtual void handleNewCharacter(Character::IdType id) override;
 
-        ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
+        TypeLocationPairs getImportTarget() const;
 
         void expandAll();
     };

@@ -22,11 +22,11 @@ namespace Evernus
 {
     namespace SSOUtils
     {
-        bool useWholeMarketImport(const ExternalOrderImporter::TypeLocationPairs &target,
+        bool useWholeMarketImport(const TypeLocationPairs &target,
                                   const EveDataProvider &dataProvider)
         {
             std::unordered_set<uint> regions;
-            ExternalOrderImporter::TypeLocationPairs typeRegions;
+            TypeLocationPairs typeRegions;
 
             for (const auto &pair : target)
             {

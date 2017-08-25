@@ -52,8 +52,8 @@ namespace Evernus
         return !mHistoryCounter.isEmpty();
     }
 
-    void MarketAnalysisDataFetcher::importData(const ExternalOrderImporter::TypeLocationPairs &pairs,
-                                               const MarketOrderRepository::TypeLocationPairs &ignored,
+    void MarketAnalysisDataFetcher::importData(const TypeLocationPairs &pairs,
+                                               const TypeLocationPairs &ignored,
                                                Character::IdType charId)
     {
         mPreparingRequests = true;
@@ -155,8 +155,8 @@ namespace Evernus
             finishHistoryImport();
     }
 
-    void MarketAnalysisDataFetcher::importWholeMarketData(const ExternalOrderImporter::TypeLocationPairs &pairs,
-                                                          const MarketOrderRepository::TypeLocationPairs &ignored)
+    void MarketAnalysisDataFetcher::importWholeMarketData(const TypeLocationPairs &pairs,
+                                                          const TypeLocationPairs &ignored)
     {
         std::unordered_set<uint> regions;
         for (const auto &pair : pairs)
@@ -189,8 +189,8 @@ namespace Evernus
         }
     }
 
-    void MarketAnalysisDataFetcher::importIndividualData(const ExternalOrderImporter::TypeLocationPairs &pairs,
-                                                         const MarketOrderRepository::TypeLocationPairs &ignored)
+    void MarketAnalysisDataFetcher::importIndividualData(const TypeLocationPairs &pairs,
+                                                         const TypeLocationPairs &ignored)
     {
         QSettings settings;
         const auto webImporter = static_cast<ImportSettings::WebImporterType>(
@@ -227,8 +227,8 @@ namespace Evernus
         }
     }
 
-    void MarketAnalysisDataFetcher::importCitadelData(const ExternalOrderImporter::TypeLocationPairs &pairs,
-                                                      const MarketOrderRepository::TypeLocationPairs &ignored,
+    void MarketAnalysisDataFetcher::importCitadelData(const TypeLocationPairs &pairs,
+                                                      const TypeLocationPairs &ignored,
                                                       Character::IdType charId)
     {
         std::unordered_set<uint> regions;
@@ -284,7 +284,7 @@ namespace Evernus
         mEventProcessor.processEvents();
     }
 
-    void MarketAnalysisDataFetcher::filterOrders(std::vector<ExternalOrder> &orders, const ExternalOrderImporter::TypeLocationPairs &pairs)
+    void MarketAnalysisDataFetcher::filterOrders(std::vector<ExternalOrder> &orders, const TypeLocationPairs &pairs)
     {
         orders.erase(std::remove_if(std::begin(orders), std::end(orders), [&](const auto &order) {
             return pairs.find(std::make_pair(order.getTypeId(), order.getRegionId())) == std::end(pairs);

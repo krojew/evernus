@@ -346,9 +346,9 @@ namespace Evernus
             .arg(TextUtils::currencyToString(mInventoryModel.getTotalSellPrice(), locale)));
     }
 
-    ExternalOrderImporter::TypeLocationPairs AssetsWidget::getImportTarget() const
+    TypeLocationPairs AssetsWidget::getImportTarget() const
     {
-        ExternalOrderImporter::TypeLocationPairs target;
+        TypeLocationPairs target;
 
         auto buildImportTargetFromList = [&target, this](const auto &assets) {
             for (const auto &item : *assets)
@@ -387,7 +387,7 @@ namespace Evernus
         return mInventoryModelProxy.mapToSource(mAssetView->currentIndex());
     }
 
-    void AssetsWidget::buildImportTarget(ExternalOrderImporter::TypeLocationPairs &target, const Item &item, quint64 locationId)
+    void AssetsWidget::buildImportTarget(TypeLocationPairs &target, const Item &item, quint64 locationId)
     {
         target.insert(std::make_pair(item.getTypeId(), locationId));
         for (const auto &child : item)

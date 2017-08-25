@@ -80,7 +80,7 @@ namespace Evernus
         virtual ~MarketBrowserWidget() = default;
 
     signals:
-        void importPricesFromFile(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromFile(Character::IdType id, const TypeLocationPairs &target);
 
         void externalOrdersChanged();
         void preferencesChanged();
@@ -126,7 +126,7 @@ namespace Evernus
         void cleanAllOrders();
         void cleanCurrentType();
 
-        void importData(const ExternalOrderImporter::TypeLocationPairs &pairs);
+        void importData(const TypeLocationPairs &pairs);
 
         void updateOrderTask(const QString &text);
         void endOrderTask(const MarketOrderDataFetcher::OrderResultType &orders, const QString &error);
@@ -208,7 +208,7 @@ namespace Evernus
 
         std::once_flag mKnownNamesFlag;
 
-        ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
+        TypeLocationPairs getImportTarget() const;
 
         void fillRegions();
         void fillKnownItemNames();

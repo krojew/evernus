@@ -48,7 +48,7 @@ namespace Evernus
         return !mOrderCounter.isEmpty();
     }
 
-    void MarketOrderDataFetcher::importData(const ExternalOrderImporter::TypeLocationPairs &pairs, Character::IdType charId)
+    void MarketOrderDataFetcher::importData(const TypeLocationPairs &pairs, Character::IdType charId)
     {
         mPreparingRequests = true;
         BOOST_SCOPE_EXIT(this_) {
@@ -116,7 +116,7 @@ namespace Evernus
             finishOrderImport();
     }
 
-    void MarketOrderDataFetcher::importWholeMarketData(const ExternalOrderImporter::TypeLocationPairs &pairs)
+    void MarketOrderDataFetcher::importWholeMarketData(const TypeLocationPairs &pairs)
     {
         std::unordered_set<quint64> regions;
         for (const auto &pair : pairs)
@@ -138,7 +138,7 @@ namespace Evernus
         }
     }
 
-    void MarketOrderDataFetcher::importIndividualData(const ExternalOrderImporter::TypeLocationPairs &pairs)
+    void MarketOrderDataFetcher::importIndividualData(const TypeLocationPairs &pairs)
     {
         QSettings settings;
         const auto webImporter = static_cast<ImportSettings::WebImporterType>(
@@ -166,7 +166,7 @@ namespace Evernus
         }
     }
 
-    void MarketOrderDataFetcher::importCitadelData(const ExternalOrderImporter::TypeLocationPairs &pairs, Character::IdType charId)
+    void MarketOrderDataFetcher::importCitadelData(const TypeLocationPairs &pairs, Character::IdType charId)
     {
         std::unordered_set<quint64> regions;
         for (const auto &pair : pairs)
@@ -210,7 +210,7 @@ namespace Evernus
         mEventProcessor.processEvents();
     }
 
-    void MarketOrderDataFetcher::filterOrders(std::vector<ExternalOrder> &orders, const ExternalOrderImporter::TypeLocationPairs &pairs)
+    void MarketOrderDataFetcher::filterOrders(std::vector<ExternalOrder> &orders, const TypeLocationPairs &pairs)
     {
         orders.erase(std::remove_if(std::begin(orders), std::end(orders), [&](const auto &order) {
             return pairs.find(std::make_pair(order.getTypeId(), order.getRegionId())) == std::end(pairs);

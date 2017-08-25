@@ -51,8 +51,8 @@ namespace Evernus
 
         void openPreferences();
 
-        void importPricesFromWeb(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
-        void importPricesFromFile(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromWeb(Character::IdType id, const TypeLocationPairs &target);
+        void importPricesFromFile(Character::IdType id, const TypeLocationPairs &target);
 
     public slots:
         void setCharacter(Character::IdType id);
@@ -82,6 +82,6 @@ namespace Evernus
 
         void refreshImportTimer();
 
-        ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
+        TypeLocationPairs getImportTarget() const;
     };
 }

@@ -388,7 +388,7 @@ namespace Evernus
         return populate(query);
     }
 
-    MarketOrderRepository::TypeLocationPairs MarketOrderRepository::fetchActiveTypes() const
+    TypeLocationPairs MarketOrderRepository::fetchActiveTypes() const
     {
         auto query = prepare(QStringLiteral("SELECT type_id, location_id FROM %1 WHERE state = ?").arg(getTableName()));
         query.bindValue(0, static_cast<int>(MarketOrder::State::Active));

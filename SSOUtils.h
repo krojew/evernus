@@ -22,7 +22,7 @@ namespace Evernus
 
     namespace SSOUtils
     {
-        bool useWholeMarketImport(const ExternalOrderImporter::TypeLocationPairs &target,
+        bool useWholeMarketImport(const TypeLocationPairs &target,
                                   const EveDataProvider &dataProvider);
     }
 }

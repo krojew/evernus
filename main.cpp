@@ -38,7 +38,6 @@
 #include "ExternalOrderImporterNames.h"
 #include "MarketAnalysisDataFetcher.h"
 #include "ContractFilterProxyModel.h"
-#include "MarketOrderRepository.h"
 #include "ChainableFileLogger.h"
 #include "ExternalOrderModel.h"
 #include "EvernusApplication.h"
@@ -205,8 +204,7 @@ int main(int argc, char *argv[])
         qRegisterMetaType<Evernus::MarketOrderFilterProxyModel::PriceStatusFilters>("MarketOrderFilterProxyModel::PriceStatusFilters");
         qRegisterMetaType<Evernus::MarketOrderFilterProxyModel::PriceStatusFilters>("PriceStatusFilters");
         qRegisterMetaType<std::vector<Evernus::ExternalOrder>>("std::vector<ExternalOrder>");
-        qRegisterMetaType<Evernus::ExternalOrderImporter::TypeLocationPairs>("ExternalOrderImporter::TypeLocationPairs");
-        qRegisterMetaType<Evernus::MarketOrderRepository::TypeLocationPairs>("MarketOrderRepository::TypeLocationPairs");
+        qRegisterMetaType<Evernus::TypeLocationPairs>("TypeLocationPairs");
         qRegisterMetaType<Evernus::ExternalOrderModel::DeviationSourceType>("ExternalOrderModel::DeviationSourceType");
         qRegisterMetaType<Evernus::ExternalOrderModel::DeviationSourceType>("DeviationSourceType");
         qRegisterMetaType<Evernus::ContractFilterProxyModel::StatusFilters>("ContractFilterProxyModel::StatusFilters");

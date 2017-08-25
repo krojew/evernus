@@ -25,7 +25,6 @@
 
 #include "TypeAggregatedMarketDataModel.h"
 #include "AggregatedEventProcessor.h"
-#include "ExternalOrderImporter.h"
 #include "MarketOrderRepository.h"
 #include "MarketHistoryEntry.h"
 #include "ProgressiveCounter.h"
@@ -66,8 +65,8 @@ namespace Evernus
         void genericError(const QString &text);
 
     public slots:
-        void importData(const ExternalOrderImporter::TypeLocationPairs &pairs,
-                        const MarketOrderRepository::TypeLocationPairs &ignored,
+        void importData(const TypeLocationPairs &pairs,
+                        const TypeLocationPairs &ignored,
                         Character::IdType charId);
 
         void handleNewPreferences();
@@ -91,12 +90,12 @@ namespace Evernus
         void processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText);
         void processHistory(uint regionId, EveType::IdType typeId, std::map<QDate, MarketHistoryEntry> &&history, const QString &errorText);
 
-        void importWholeMarketData(const ExternalOrderImporter::TypeLocationPairs &pairs,
-                                   const MarketOrderRepository::TypeLocationPairs &ignored);
-        void importIndividualData(const ExternalOrderImporter::TypeLocationPairs &pairs,
-                                  const MarketOrderRepository::TypeLocationPairs &ignored);
-        void importCitadelData(const ExternalOrderImporter::TypeLocationPairs &pairs,
-                               const MarketOrderRepository::TypeLocationPairs &ignored,
+        void importWholeMarketData(const TypeLocationPairs &pairs,
+                                   const TypeLocationPairs &ignored);
+        void importIndividualData(const TypeLocationPairs &pairs,
+                                  const TypeLocationPairs &ignored);
+        void importCitadelData(const TypeLocationPairs &pairs,
+                               const TypeLocationPairs &ignored,
                                Character::IdType charId);
 
         void finishOrderImport();
@@ -104,6 +103,6 @@ namespace Evernus
 
         void processEvents();
 
-        static void filterOrders(std::vector<ExternalOrder> &orders, const ExternalOrderImporter::TypeLocationPairs &pairs);
+        static void filterOrders(std::vector<ExternalOrder> &orders, const TypeLocationPairs &pairs);
     };
 }

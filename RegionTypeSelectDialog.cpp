@@ -131,7 +131,7 @@ namespace Evernus
 
     void RegionTypeSelectDialog::accept()
     {
-        ExternalOrderImporter::TypeLocationPairs result;
+        TypeLocationPairs result;
 
         const auto regions = mRegionList->selectedItems();
         const auto types = mTypeView->getSelectedTypes();
@@ -143,7 +143,7 @@ namespace Evernus
 
         for (const auto region : regions)
         {
-            const auto regionId = region->data(Qt::UserRole).value<ExternalOrderImporter::TypeLocationPair::second_type>();
+            const auto regionId = region->data(Qt::UserRole).value<TypeLocationPair::second_type>();
             for (const auto type : types)
                 result.emplace(type, regionId);
 
@@ -209,7 +209,7 @@ namespace Evernus
                     const auto item = mRegionList->item(i);
                     Q_ASSERT(item != nullptr);
 
-                    const auto regionId = item->data(Qt::UserRole).value<ExternalOrderImporter::TypeLocationPair::second_type>();
+                    const auto regionId = item->data(Qt::UserRole).value<TypeLocationPair::second_type>();
                     item->setSelected(regions.find(regionId) != std::end(regions));
                 }
 

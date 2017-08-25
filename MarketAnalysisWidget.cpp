@@ -288,7 +288,7 @@ namespace Evernus
         dlg.exec();
     }
 
-    void MarketAnalysisWidget::importData(const ExternalOrderImporter::TypeLocationPairs &pairs)
+    void MarketAnalysisWidget::importData(const TypeLocationPairs &pairs)
     {
         mOrders = std::make_shared<MarketAnalysisDataFetcher::OrderResultType::element_type>();
         mHistory = std::make_shared<MarketAnalysisDataFetcher::HistoryResultType::element_type>();
@@ -313,7 +313,7 @@ namespace Evernus
             mHistorySubtask = mTaskManager.startTask(mainTask, tr("Making %1 ESI history requests...").arg(pairs.size()));
         }
 
-        MarketOrderRepository::TypeLocationPairs ignored;
+        TypeLocationPairs ignored;
         if (mIgnoreExistingOrdersBtn->isChecked())
         {
             auto ignoreTypes = [&](const auto &activeTypes) {
@@ -328,8 +328,8 @@ namespace Evernus
         QMetaObject::invokeMethod(&mDataFetcher,
                                   "importData",
                                   Qt::QueuedConnection,
-                                  Q_ARG(ExternalOrderImporter::TypeLocationPairs, pairs),
-                                  Q_ARG(MarketOrderRepository::TypeLocationPairs, ignored),
+                                  Q_ARG(TypeLocationPairs, pairs),
+                                  Q_ARG(TypeLocationPairs, ignored),
                                   Q_ARG(Character::IdType, mCharacterId));
     }
 

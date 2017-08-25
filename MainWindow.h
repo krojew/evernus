@@ -128,8 +128,8 @@ namespace Evernus
         void importCorpMarketOrdersFromAPI(Character::IdType id);
         void importCorpMarketOrdersFromLogs(Character::IdType id);
 
-        void importExternalOrdersFromWeb(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
-        void importExternalOrdersFromFile(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
+        void importExternalOrdersFromWeb(Character::IdType id, const TypeLocationPairs &target);
+        void importExternalOrdersFromFile(Character::IdType id, const TypeLocationPairs &target);
 
         void importFromMentat();
 

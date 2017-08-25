@@ -80,7 +80,7 @@ namespace Evernus
     private slots:
         void prepareOrderImport();
 
-        void importData(const ExternalOrderImporter::TypeLocationPairs &pairs);
+        void importData(const TypeLocationPairs &pairs);
         void storeOrders();
 
         void updateOrderTask(const QString &text);

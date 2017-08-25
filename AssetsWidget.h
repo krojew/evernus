@@ -52,8 +52,8 @@ namespace Evernus
         virtual ~AssetsWidget() = default;
 
     signals:
-        void importPricesFromWeb(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
-        void importPricesFromFile(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
+        void importPricesFromWeb(Character::IdType id, const TypeLocationPairs &target);
+        void importPricesFromFile(Character::IdType id, const TypeLocationPairs &target);
 
         void setDestinationInEve(quint64 locationId);
         void showInEve(EveType::IdType id, Character::IdType charId);
@@ -105,10 +105,10 @@ namespace Evernus
         void resetModel();
         void setNewInfo();
 
-        ExternalOrderImporter::TypeLocationPairs getImportTarget() const;
+        TypeLocationPairs getImportTarget() const;
 
         QModelIndex getCurrentIndex() const;
 
-        static void buildImportTarget(ExternalOrderImporter::TypeLocationPairs &target, const Item &item, quint64 locationId);
+        static void buildImportTarget(TypeLocationPairs &target, const Item &item, quint64 locationId);
     };
 }

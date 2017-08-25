@@ -720,7 +720,7 @@ namespace Evernus
         emit externalOrdersChanged();
     }
 
-    void MarketBrowserWidget::importData(const ExternalOrderImporter::TypeLocationPairs &pairs)
+    void MarketBrowserWidget::importData(const TypeLocationPairs &pairs)
     {
         if (!mDataFetcher.hasPendingOrderRequests())
         {
@@ -757,9 +757,9 @@ namespace Evernus
         mTaskManager.endTask(mOrderSubtask, error);
     }
 
-    ExternalOrderImporter::TypeLocationPairs MarketBrowserWidget::getImportTarget() const
+    TypeLocationPairs MarketBrowserWidget::getImportTarget() const
     {
-        ExternalOrderImporter::TypeLocationPairs result;
+        TypeLocationPairs result;
 
         QSqlQuery query{mOrderRepo.getDatabase()};
         query.prepare(QString{"SELECT DISTINCT ids.type_id, ids.location_id FROM ("

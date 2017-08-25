@@ -16,7 +16,7 @@
 
 #include <QDialog>
 
-#include "ExternalOrderImporter.h"
+#include "TypeLocationPairs.h"
 
 class QListWidget;
 
@@ -44,7 +44,7 @@ namespace Evernus
         virtual ~RegionTypeSelectDialog() = default;
 
     signals:
-        void selected(const ExternalOrderImporter::TypeLocationPairs &pairs);
+        void selected(const TypeLocationPairs &pairs);
 
     public slots:
         virtual void accept() override;

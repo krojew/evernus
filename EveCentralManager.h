@@ -19,7 +19,7 @@
 
 #include <QNetworkAccessManager>
 
-#include "ExternalOrderImporter.h"
+#include "TypeLocationPairs.h"
 #include "ExternalOrder.h"
 
 namespace Evernus
@@ -32,9 +32,6 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        using TypeLocationPair = ExternalOrderImporter::TypeLocationPair;
-        using TypeLocationPairs = ExternalOrderImporter::TypeLocationPairs;
-
         using Callback = std::function<void (std::vector<ExternalOrder> &&data, const QString &error)>;
 
         explicit EveCentralManager(const EveDataProvider &dataProvider, QObject *parent = nullptr);

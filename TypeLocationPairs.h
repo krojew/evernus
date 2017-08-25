@@ -14,32 +14,14 @@
  */
 #pragma once
 
-#include <vector>
+#include <unordered_set>
 
-#include <QObject>
+#include <boost/functional/hash.hpp>
 
-#include "TypeLocationPairs.h"
-#include "Character.h"
+#include "EveType.h"
 
 namespace Evernus
 {
-    class ExternalOrder;
-
-    class ExternalOrderImporter
-        : public QObject
-    {
-        Q_OBJECT
-
-    public:
-        using QObject::QObject;
-        virtual ~ExternalOrderImporter() = default;
-
-        virtual void fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const = 0;
-
-    signals:
-        void externalOrdersChanged(const std::vector<ExternalOrder> &orders) const;
-        void error(const QString &info) const;
-        void genericError(const QString &info) const;
-        void statusChanged(const QString &status) const;
-    };
+    using TypeLocationPair = std::pair<EveType::IdType, quint64>;
+    using TypeLocationPairs = std::unordered_set<TypeLocationPair, boost::hash<TypeLocationPair>>;
 }

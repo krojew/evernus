@@ -24,9 +24,9 @@
 #include <QDate>
 
 #include "AggregatedEventProcessor.h"
-#include "ExternalOrderImporter.h"
 #include "MarketOrderRepository.h"
 #include "ProgressiveCounter.h"
+#include "TypeLocationPairs.h"
 #include "EveCentralManager.h"
 #include "ExternalOrder.h"
 #include "ESIManager.h"
@@ -60,7 +60,7 @@ namespace Evernus
         void genericError(const QString &text);
 
     public slots:
-        void importData(const ExternalOrderImporter::TypeLocationPairs &pairs,
+        void importData(const TypeLocationPairs &pairs,
                         Character::IdType charId);
 
         void handleNewPreferences();
@@ -82,15 +82,15 @@ namespace Evernus
 
         void processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText);
 
-        void importWholeMarketData(const ExternalOrderImporter::TypeLocationPairs &pairs);
-        void importIndividualData(const ExternalOrderImporter::TypeLocationPairs &pairs);
-        void importCitadelData(const ExternalOrderImporter::TypeLocationPairs &pairs,
+        void importWholeMarketData(const TypeLocationPairs &pairs);
+        void importIndividualData(const TypeLocationPairs &pairs);
+        void importCitadelData(const TypeLocationPairs &pairs,
                                Character::IdType charId);
 
         void finishOrderImport();
 
         void processEvents();
 
-        static void filterOrders(std::vector<ExternalOrder> &orders, const ExternalOrderImporter::TypeLocationPairs &pairs);
+        static void filterOrders(std::vector<ExternalOrder> &orders, const TypeLocationPairs &pairs);
     };
 }

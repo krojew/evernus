@@ -1548,7 +1548,7 @@ namespace Evernus
 
     void EvernusApplication::refreshAllExternalOrders(Character::IdType id)
     {
-        ExternalOrderImporter::TypeLocationPairs target;
+        TypeLocationPairs target;
 
         QSqlQuery query{mMainDb};
         query.prepare(QString{"SELECT DISTINCT ids.type_id, ids.location_id FROM ("
@@ -1578,12 +1578,12 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::refreshExternalOrdersFromWeb(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target)
+    void EvernusApplication::refreshExternalOrdersFromWeb(Character::IdType id, const TypeLocationPairs &target)
     {
         importExternalOrders(ExternalOrderImporterNames::webImporter, id, target);
     }
 
-    void EvernusApplication::refreshExternalOrdersFromFile(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target)
+    void EvernusApplication::refreshExternalOrdersFromFile(Character::IdType id, const TypeLocationPairs &target)
     {
         importExternalOrders(ExternalOrderImporterNames::logImporter, id, target);
     }
@@ -2192,7 +2192,7 @@ namespace Evernus
         });
     }
 
-    void EvernusApplication::importExternalOrders(const std::string &importerName, Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target)
+    void EvernusApplication::importExternalOrders(const std::string &importerName, Character::IdType id, const TypeLocationPairs &target)
     {
         if (mCurrentExternalOrderImportTask != TaskConstants::invalidTask)
             return;

@@ -217,8 +217,8 @@ namespace Evernus
         void refreshConquerableStations();
         void refreshCitadels();
         void refreshAllExternalOrders(Character::IdType id);
-        void refreshExternalOrdersFromWeb(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
-        void refreshExternalOrdersFromFile(Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
+        void refreshExternalOrdersFromWeb(Character::IdType id, const TypeLocationPairs &target);
+        void refreshExternalOrdersFromFile(Character::IdType id, const TypeLocationPairs &target);
 
         void finishExternalOrderImport(const std::vector<ExternalOrder> &orders);
         void updateExternalOrdersAndAssetValue(const std::vector<ExternalOrder> &orders);
@@ -377,7 +377,7 @@ namespace Evernus
 
         void importCharacterFromXML(Character::IdType id, uint task, const Key &key);
         void importCharacterFromESI(Character::IdType id, uint task, const Key &key);
-        void importExternalOrders(const std::string &importerName, Character::IdType id, const ExternalOrderImporter::TypeLocationPairs &target);
+        void importExternalOrders(const std::string &importerName, Character::IdType id, const TypeLocationPairs &target);
         void importMarketOrdersFromLogs(Character::IdType id, uint task, bool corp);
         void importMarketOrders(Character::IdType id, MarketOrders &orders, bool corp);
         void importCharacterAssetsFromXML(Character::IdType id, uint importSubtask);

@@ -733,6 +733,7 @@ add_executable(
     TypeAggregatedMarketDataFilterProxyModel.h
     TypeAggregatedMarketDataModel.cpp
     TypeAggregatedMarketDataModel.h
+    TypeLocationPairs.h
     TypePerformanceModel.cpp
     TypePerformanceModel.h
     UISettings.h

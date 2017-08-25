@@ -297,7 +297,7 @@ namespace Evernus
 
     void CachingEveDataProvider::updateExternalOrders(const std::vector<ExternalOrder> &orders)
     {
-        ExternalOrderImporter::TypeLocationPairs affectedOrders;
+        TypeLocationPairs affectedOrders;
 
         std::vector<std::reference_wrapper<const ExternalOrder>> toStore;
         for (const auto &order : orders)

@@ -285,7 +285,7 @@ namespace Evernus
         return result;
     }
 
-    void ExternalOrderRepository::removeObsolete(const ExternalOrderImporter::TypeLocationPairs &set) const
+    void ExternalOrderRepository::removeObsolete(const TypeLocationPairs &set) const
     {
         if (set.empty())
             return;
