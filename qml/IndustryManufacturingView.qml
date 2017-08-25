@@ -1,5 +1,10 @@
-import QtQuick.Layouts 1.3
+import QtQuick 2.8
 
-ColumnLayout {
-    id: mainLayout
+ListView {
+    width: 1000
+    height: 500
+    model: setupModel
+    delegate: Text {
+        text: name
+    }
 }
