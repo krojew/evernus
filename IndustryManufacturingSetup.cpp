@@ -67,6 +67,22 @@ namespace Evernus
         throw std::logic_error{"Missing mnufacturing info for: " + std::to_string(typeId)};
     }
 
+    IndustryManufacturingSetup::TypeSet IndustryManufacturingSetup::getAllTypes() const
+    {
+        auto types = mOutputTypes;
+        for (const auto &type : mTypeSettings)
+            types.insert(type.first);
+
+        return types;
+    }
+
+    void IndustryManufacturingSetup::clear() noexcept
+    {
+        mOutputTypes.clear();
+        mTypeSettings.clear();
+        mSourceInfo.clear();
+    }
+
     void IndustryManufacturingSetup::fillManufacturingInfo(EveType::IdType typeId, TypeSet &usedTypes)
     {
         if (mSourceInfo.find(typeId) != std::end(mSourceInfo))

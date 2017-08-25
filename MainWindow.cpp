@@ -992,8 +992,13 @@ namespace Evernus
                                                                  mRepositoryProvider.getRegionStationPresetRepository(),
                                                                  mRepositoryProvider.getEveTypeRepository(),
                                                                  mRepositoryProvider.getMarketGroupRepository(),
+                                                                 mRepositoryProvider.getCharacterRepository(),
+                                                                 taskManager,
+                                                                 clientId,
+                                                                 clientSecret,
                                                                  this};
         addTab(industryTab, tr("Industry"), TabType::Other);
+        connect(this, &MainWindow::preferencesChanged, industryTab, &IndustryManufacturingWidget::preferencesChanged);
 
         QSettings settings;
 

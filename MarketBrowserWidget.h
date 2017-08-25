@@ -22,7 +22,6 @@
 #include "MarketOrderDataFetcher.h"
 #include "ExternalOrderSellModel.h"
 #include "ExternalOrderBuyModel.h"
-#include "ExternalOrderImporter.h"
 #include "ItemNameModel.h"
 #include "TaskConstants.h"
 #include "Character.h"

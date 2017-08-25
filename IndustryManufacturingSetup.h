@@ -48,6 +48,10 @@ namespace Evernus
 
         const std::vector<EveDataProvider::MaterialInfo> &getMaterialInfo(EveType::IdType typeId) const;
 
+        TypeSet getAllTypes() const;
+
+        void clear() noexcept;
+
         IndustryManufacturingSetup &operator =(const IndustryManufacturingSetup &) = default;
         IndustryManufacturingSetup &operator =(IndustryManufacturingSetup &&) = default;
 

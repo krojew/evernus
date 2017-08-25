@@ -27,9 +27,13 @@
 #include "FavoriteLocationsButton.h"
 #include "TradeableTypesTreeView.h"
 #include "StationSelectButton.h"
+#include "TypeLocationPairs.h"
 #include "IndustrySettings.h"
 #include "EveDataProvider.h"
 #include "RegionComboBox.h"
+#include "ImportSettings.h"
+#include "SSOMessageBox.h"
+#include "TaskManager.h"
 #include "FlowLayout.h"
 
 #include "IndustryManufacturingWidget.h"
@@ -40,9 +44,15 @@ namespace Evernus
                                                              const RegionStationPresetRepository &regionStationPresetRepository,
                                                              const EveTypeRepository &typeRepo,
                                                              const MarketGroupRepository &groupRepo,
+                                                             const CharacterRepository &characterRepo,
+                                                             TaskManager &taskManager,
+                                                             QByteArray clientId,
+                                                             QByteArray clientSecret,
                                                              QWidget *parent)
         : QWidget{parent}
         , mDataProvider{dataProvider}
+        , mTaskManager{taskManager}
+        , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
     {
         const auto mainLayout = new QVBoxLayout{this};
 
@@ -125,10 +135,23 @@ namespace Evernus
             types.emplace(type.value<EveType::IdType>());
 
         mTypeView->selectTypes(types);
+
+        connect(&mDataFetcher, &MarketOrderDataFetcher::orderStatusUpdated,
+                this, &IndustryManufacturingWidget::updateOrderTask);
+        connect(&mDataFetcher, &MarketOrderDataFetcher::orderImportEnded,
+                this, &IndustryManufacturingWidget::endOrderTask);
+        connect(&mDataFetcher, &MarketOrderDataFetcher::genericError,
+                this, [=](const auto &text) {
+            SSOMessageBox::showMessage(text, this);
+        });
+        connect(this, &IndustryManufacturingWidget::preferencesChanged,
+                &mDataFetcher, &MarketOrderDataFetcher::handleNewPreferences);
     }
 
     void IndustryManufacturingWidget::setCharacter(Character::IdType id)
     {
+        mCharacterId = id;
+        mSetup.clear();
     }
 
     void IndustryManufacturingWidget::refreshTypes()
@@ -139,12 +162,58 @@ namespace Evernus
 
     void IndustryManufacturingWidget::importData()
     {
+        const auto types = mSetup.getAllTypes();
+
+        auto regions = mSourceRegionCombo->getSelectedRegionList();
+        const auto dstRegions = mDestRegionCombo->getSelectedRegionList();
+
+        regions.insert(std::begin(dstRegions), std::end(dstRegions));
+
+        TypeLocationPairs pairs;
+        for (const auto type : types)
+        {
+            for (const auto region : regions)
+                pairs.emplace(std::make_pair(type, region));
+        }
+
+        if (!mDataFetcher.hasPendingOrderRequests())
+        {
+            QSettings settings;
+            const auto webImporter = static_cast<ImportSettings::WebImporterType>(
+                settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
+
+            const auto mainTask = mTaskManager.startTask(tr("Importing data..."));
+            const auto infoText = (webImporter == ImportSettings::WebImporterType::EveCentral) ?
+                                  (tr("Making %1 Eve-Central order requests...")) :
+                                  (tr("Making %1 ESI order requests..."));
+
+            mOrderSubtask = mTaskManager.startTask(mainTask, infoText.arg(pairs.size()));
+        }
+
+        mDataFetcher.importData(pairs, mCharacterId);
     }
 
     void IndustryManufacturingWidget::showSceneGraphError(QQuickWindow::SceneGraphError error, const QString &message)
     {
         qCritical() << "Scene graph error:" << error << message;
         QMessageBox::warning(this, tr("View error"), tr("There was an error initializing the manufacturing view: %1").arg(message));
+    }
+
+    void IndustryManufacturingWidget::updateOrderTask(const QString &text)
+    {
+        mTaskManager.updateTask(mOrderSubtask, text);
+    }
+
+    void IndustryManufacturingWidget::endOrderTask(const MarketOrderDataFetcher::OrderResultType &orders, const QString &error)
+    {
+        Q_ASSERT(orders);
+
+        if (error.isEmpty())
+        {
+            // TODO: process
+        }
+
+        mTaskManager.endTask(mOrderSubtask, error);
     }
 
     void IndustryManufacturingWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)

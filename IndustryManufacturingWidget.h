@@ -21,6 +21,8 @@
 
 #include "IndustryManufacturingSetupModel.h"
 #include "IndustryManufacturingSetup.h"
+#include "MarketOrderDataFetcher.h"
+#include "TaskConstants.h"
 #include "Character.h"
 
 namespace Evernus
@@ -28,9 +30,11 @@ namespace Evernus
     class RegionStationPresetRepository;
     class TradeableTypesTreeView;
     class MarketGroupRepository;
+    class CharacterRepository;
     class EveTypeRepository;
     class EveDataProvider;
     class RegionComboBox;
+    class TaskManager;
 
     class IndustryManufacturingWidget
         : public QWidget
@@ -42,6 +46,10 @@ namespace Evernus
                                     const RegionStationPresetRepository &regionStationPresetRepository,
                                     const EveTypeRepository &typeRepo,
                                     const MarketGroupRepository &groupRepo,
+                                    const CharacterRepository &characterRepo,
+                                    TaskManager &taskManager,
+                                    QByteArray clientId,
+                                    QByteArray clientSecret,
                                     QWidget *parent = nullptr);
         IndustryManufacturingWidget(const IndustryManufacturingWidget &) = default;
         IndustryManufacturingWidget(IndustryManufacturingWidget &&) = default;
@@ -49,6 +57,9 @@ namespace Evernus
 
         IndustryManufacturingWidget &operator =(const IndustryManufacturingWidget &) = default;
         IndustryManufacturingWidget &operator =(IndustryManufacturingWidget &&) = default;
+
+    signals:
+        void preferencesChanged();
 
     public slots:
         void setCharacter(Character::IdType id);
@@ -59,8 +70,12 @@ namespace Evernus
 
         void showSceneGraphError(QQuickWindow::SceneGraphError error, const QString &message);
 
+        void updateOrderTask(const QString &text);
+        void endOrderTask(const MarketOrderDataFetcher::OrderResultType &orders, const QString &error);
+
     private:
         const EveDataProvider &mDataProvider;
+        TaskManager &mTaskManager;
 
         RegionComboBox *mSourceRegionCombo = nullptr;
         RegionComboBox *mDestRegionCombo = nullptr;
@@ -70,8 +85,14 @@ namespace Evernus
         quint64 mSrcStation = 0;
         quint64 mDstStation = 0;
 
+        Character::IdType mCharacterId = Character::invalidId;
+
         IndustryManufacturingSetup mSetup{mDataProvider};
         IndustryManufacturingSetupModel mSetupModel{mSetup, mDataProvider};
+
+        MarketOrderDataFetcher mDataFetcher;
+
+        uint mOrderSubtask = TaskConstants::invalidTask;
 
         void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
     };
