@@ -44,6 +44,9 @@ namespace Evernus
         ~IndustryManufacturingSetup() = default;
 
         void setOutputTypes(TypeSet types);
+        TypeSet getOutputTypes() const;
+
+        const std::vector<EveDataProvider::MaterialInfo> &getMaterialInfo(EveType::IdType typeId) const;
 
         IndustryManufacturingSetup &operator =(const IndustryManufacturingSetup &) = default;
         IndustryManufacturingSetup &operator =(IndustryManufacturingSetup &&) = default;

@@ -14,12 +14,17 @@
  */
 #pragma once
 
+#include <vector>
+#include <memory>
+
 #include <QAbstractItemModel>
+
+#include "EveDataProvider.h"
+#include "EveType.h"
 
 namespace Evernus
 {
     class IndustryManufacturingSetup;
-    class EveDataProvider;
 
     class IndustryManufacturingSetupModel
         : public QAbstractItemModel
@@ -52,7 +57,43 @@ namespace Evernus
             NameRole = Qt::UserRole
         };
 
+        class TreeItem;
+
+        using TreeItemPtr = std::unique_ptr<TreeItem>;
+
+        class TreeItem final
+        {
+        public:
+            TreeItem() = default;
+            explicit TreeItem(EveType::IdType typeId);
+            ~TreeItem() = default;
+
+            EveType::IdType getTypeId() const noexcept;
+
+            TreeItem *getChild(int row) const;
+            TreeItem *getParent() const noexcept;
+
+            int getRow() const noexcept;
+
+            int getChildCount() const noexcept;
+
+            void appendChild(std::unique_ptr<TreeItem> child);
+            void clearChildren() noexcept;
+
+        private:
+            TreeItem *mParent = nullptr;
+            EveType::IdType mTypeId = EveType::invalidId;
+            std::vector<TreeItemPtr> mChildItems;
+        };
+
         IndustryManufacturingSetup &mSetup;
         const EveDataProvider &mDataProvider;
+
+        TreeItem mRoot;
+
+        void fillChildren(TreeItem &item) const;
+
+        static TreeItemPtr createOutputItem(EveType::IdType typeId);
+        static TreeItemPtr createSourceItem(const EveDataProvider::MaterialInfo &info);
     };
 }

@@ -12,13 +12,67 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <boost/scope_exit.hpp>
+
 #include "IndustryManufacturingSetup.h"
-#include "EveDataProvider.h"
 
 #include "IndustryManufacturingSetupModel.h"
 
 namespace Evernus
 {
+    IndustryManufacturingSetupModel::TreeItem::TreeItem(EveType::IdType typeId)
+        : mTypeId{typeId}
+    {
+    }
+
+    EveType::IdType IndustryManufacturingSetupModel::TreeItem::getTypeId() const noexcept
+    {
+        return mTypeId;
+    }
+
+    IndustryManufacturingSetupModel::TreeItem *IndustryManufacturingSetupModel::TreeItem::getChild(int row) const
+    {
+        return (row >= static_cast<int>(mChildItems.size())) ? (nullptr) : (mChildItems[row].get());
+    }
+
+    IndustryManufacturingSetupModel::TreeItem *IndustryManufacturingSetupModel::TreeItem::getParent() const noexcept
+    {
+        return mParent;
+    }
+
+    int IndustryManufacturingSetupModel::TreeItem::getRow() const noexcept
+    {
+        if (mParent != nullptr)
+        {
+            auto row = 0;
+            for (const auto &child : mParent->mChildItems)
+            {
+                if (child.get() == this)
+                    return row;
+
+                ++row;
+            }
+        }
+
+        return 0;
+    }
+
+    int IndustryManufacturingSetupModel::TreeItem::getChildCount() const noexcept
+    {
+        return static_cast<int>(mChildItems.size());
+    }
+
+    void IndustryManufacturingSetupModel::TreeItem::appendChild(std::unique_ptr<TreeItem> child)
+    {
+        child->mParent = this;
+        mChildItems.emplace_back(std::move(child));
+    }
+
+    void IndustryManufacturingSetupModel::TreeItem::clearChildren() noexcept
+    {
+        mChildItems.clear();
+    }
+
     IndustryManufacturingSetupModel::IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
                                                                      const EveDataProvider &dataProvider,
                                                                      QObject *parent)
@@ -39,17 +93,48 @@ namespace Evernus
         if (Q_UNLIKELY(!index.isValid()))
             return {};
 
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
+        Q_ASSERT(item != nullptr);
+
+        switch (role) {
+        case NameRole:
+            return mDataProvider.getTypeName(item->getTypeId());
+        }
+
         return {};
     }
 
     QModelIndex IndustryManufacturingSetupModel::index(int row, int column, const QModelIndex &parent) const
     {
-        return {};
+        if (!hasIndex(row, column, parent))
+             return {};
+
+         const TreeItem *parentItem = nullptr;
+
+         if (!parent.isValid())
+             parentItem = &mRoot;
+         else
+             parentItem = static_cast<const TreeItem *>(parent.internalPointer());
+
+         const auto childItem = parentItem->getChild(row);
+         if (childItem)
+             return createIndex(row, column, childItem);
+
+         return {};
     }
 
     QModelIndex IndustryManufacturingSetupModel::parent(const QModelIndex &index) const
     {
-        return {};
+        if (!index.isValid())
+            return {};
+
+        const auto childItem = static_cast<const TreeItem *>(index.internalPointer());
+        const auto parentItem = childItem->getParent();
+
+        if (parentItem == &mRoot)
+            return {};
+
+        return createIndex(parentItem->getRow(), 0, parentItem);
     }
 
     QHash<int, QByteArray> IndustryManufacturingSetupModel::roleNames() const
@@ -61,12 +146,57 @@ namespace Evernus
 
     int IndustryManufacturingSetupModel::rowCount(const QModelIndex &parent) const
     {
-        return 0;
+        const TreeItem *parentItem = nullptr;
+         if (parent.column() > 0)
+             return 0;
+
+         if (!parent.isValid())
+             parentItem = &mRoot;
+         else
+             parentItem = static_cast<const TreeItem *>(parent.internalPointer());
+
+         return parentItem->getChildCount();
     }
 
     void IndustryManufacturingSetupModel::refreshData()
     {
         beginResetModel();
-        endResetModel();
+
+        BOOST_SCOPE_EXIT(this_) {
+            this_->endResetModel();
+        } BOOST_SCOPE_EXIT_END
+
+        mRoot.clearChildren();
+
+        const auto output = mSetup.getOutputTypes();
+        for (const auto outputType : output)
+        {
+            auto child = createOutputItem(outputType);
+            fillChildren(*child);
+
+            mRoot.appendChild(std::move(child));
+        }
+    }
+
+    void IndustryManufacturingSetupModel::fillChildren(TreeItem &item) const
+    {
+        const auto &sources = mSetup.getMaterialInfo(item.getTypeId());
+        for (const auto &source : sources)
+        {
+            auto child = createSourceItem(source);
+            fillChildren(*child);
+
+            item.appendChild(std::move(child));
+        }
+    }
+
+    IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel::createOutputItem(EveType::IdType typeId)
+    {
+        return std::make_unique<TreeItem>(typeId);
+    }
+
+    IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel::createSourceItem(const EveDataProvider::MaterialInfo &info)
+    {
+        return std::make_unique<TreeItem>(info.mMaterialId);
     }
 }

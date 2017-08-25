@@ -30,18 +30,18 @@
 
 namespace Evernus
 {
-    void AssetModel::TreeItem::appendChild(std::unique_ptr<TreeItem> &&child)
+    void AssetModel::TreeItem::appendChild(std::unique_ptr<TreeItem> child)
     {
         child->mParentItem = this;
         mChildItems.emplace_back(std::move(child));
     }
 
-    void AssetModel::TreeItem::clearChildren()
+    void AssetModel::TreeItem::clearChildren() noexcept
     {
         mChildItems.clear();
     }
 
-    AssetModel::TreeItem *AssetModel::TreeItem::child(int row) const
+    AssetModel::TreeItem *AssetModel::TreeItem::child(int row) const noexcept
     {
         return (row >= static_cast<int>(mChildItems.size())) ? (nullptr) : (mChildItems[row].get());
     }
@@ -146,7 +146,7 @@ namespace Evernus
         mId = id;
     }
 
-    int AssetModel::TreeItem::row() const
+    int AssetModel::TreeItem::row() const noexcept
     {
         if (mParentItem != nullptr)
         {

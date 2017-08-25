@@ -74,16 +74,16 @@ namespace Evernus
         void updateNames();
 
     private:
-        class TreeItem
+        class TreeItem final
         {
         public:
             TreeItem() = default;
             ~TreeItem() = default;
 
-            void appendChild(std::unique_ptr<TreeItem> &&child);
-            void clearChildren();
+            void appendChild(std::unique_ptr<TreeItem> child);
+            void clearChildren() noexcept;
 
-            TreeItem *child(int row) const;
+            TreeItem *child(int row) const noexcept;
 
             int childCount() const noexcept;
             int columnCount() const;
@@ -114,7 +114,7 @@ namespace Evernus
             Item::IdType id() const noexcept;
             void setId(Item::IdType id) noexcept;
 
-            int row() const;
+            int row() const noexcept;
 
             TreeItem *parent() const noexcept;
 
