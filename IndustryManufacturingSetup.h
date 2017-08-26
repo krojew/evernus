@@ -46,7 +46,7 @@ namespace Evernus
         void setOutputTypes(TypeSet types);
         TypeSet getOutputTypes() const;
 
-        const std::vector<EveDataProvider::MaterialInfo> &getMaterialInfo(EveType::IdType typeId) const;
+        const EveDataProvider::ManufacturingInfo &getManufacturingInfo(EveType::IdType typeId) const;
 
         TypeSet getAllTypes() const;
 
@@ -64,7 +64,7 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         std::unordered_map<EveType::IdType, TypeSettings> mTypeSettings;
-        std::unordered_map<EveType::IdType, std::vector<EveDataProvider::MaterialInfo>> mSourceInfo;
+        std::unordered_map<EveType::IdType, EveDataProvider::ManufacturingInfo> mManufacturingInfo;
 
         TypeSet mOutputTypes;
 

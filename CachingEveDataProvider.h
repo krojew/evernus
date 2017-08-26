@@ -114,7 +114,7 @@ namespace Evernus
         virtual QString getRaceName(uint raceId) const override;
         virtual QString getBloodlineName(uint bloodlineId) const override;
 
-        virtual const std::vector<MaterialInfo> &getTypeManufacturingInfo(EveType::IdType typeId) const override;
+        virtual const ManufacturingInfo &getTypeManufacturingInfo(EveType::IdType typeId) const override;
 
         void precacheNames(const ESIManager &esiManager);
         void precacheJumpMap();
@@ -215,7 +215,7 @@ namespace Evernus
         mutable ReprocessingMap mOreReprocessingInfo;
         mutable ReprocessingMap mTypeReprocessingInfo;
 
-        mutable std::unordered_map<EveType::IdType, std::vector<MaterialInfo>> mTypeManufacturingInfoCache;
+        mutable std::unordered_map<EveType::IdType, ManufacturingInfo> mTypeManufacturingInfoCache;
 
         NameMap mRaceNameCache;
         NameMap mBloodlineNameCache;

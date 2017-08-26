@@ -26,7 +26,7 @@ namespace Evernus
     void IndustryManufacturingSetup::setOutputTypes(TypeSet types)
     {
         mOutputTypes = std::move(types);
-        mSourceInfo.clear();
+        mManufacturingInfo.clear();
 
         TypeSet usedTypes;
 
@@ -58,13 +58,13 @@ namespace Evernus
         return mOutputTypes;
     }
 
-    const std::vector<EveDataProvider::MaterialInfo> &IndustryManufacturingSetup::getMaterialInfo(EveType::IdType typeId) const
+    const EveDataProvider::ManufacturingInfo &IndustryManufacturingSetup::getManufacturingInfo(EveType::IdType typeId) const
     {
-        const auto it = mSourceInfo.find(typeId);
-        if (Q_LIKELY(it != std::end(mSourceInfo)))
+        const auto it = mManufacturingInfo.find(typeId);
+        if (Q_LIKELY(it != std::end(mManufacturingInfo)))
             return it->second;
 
-        throw std::logic_error{"Missing mnufacturing info for: " + std::to_string(typeId)};
+        throw std::logic_error{"Missing manufacturing info for: " + std::to_string(typeId)};
     }
 
     IndustryManufacturingSetup::TypeSet IndustryManufacturingSetup::getAllTypes() const
@@ -80,16 +80,16 @@ namespace Evernus
     {
         mOutputTypes.clear();
         mTypeSettings.clear();
-        mSourceInfo.clear();
+        mManufacturingInfo.clear();
     }
 
     void IndustryManufacturingSetup::fillManufacturingInfo(EveType::IdType typeId, TypeSet &usedTypes)
     {
-        if (mSourceInfo.find(typeId) != std::end(mSourceInfo))
+        if (mManufacturingInfo.find(typeId) != std::end(mManufacturingInfo))
             return;
 
-        const auto sources = mSourceInfo.emplace(typeId, mDataProvider.getTypeManufacturingInfo(typeId)).first;
-        for (const auto &source : sources->second)
+        const auto info = mManufacturingInfo.emplace(typeId, mDataProvider.getTypeManufacturingInfo(typeId)).first;
+        for (const auto &source : info->second.mMaterials)
         {
             mTypeSettings.insert(std::make_pair(source.mMaterialId, TypeSettings{}));
 

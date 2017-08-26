@@ -183,8 +183,8 @@ namespace Evernus
 
     void IndustryManufacturingSetupModel::fillChildren(TreeItem &item) const
     {
-        const auto &sources = mSetup.getMaterialInfo(item.getTypeId());
-        for (const auto &source : sources)
+        const auto &info = mSetup.getManufacturingInfo(item.getTypeId());
+        for (const auto &source : info.mMaterials)
         {
             auto child = createSourceItem(source);
             fillChildren(*child);

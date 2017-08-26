@@ -1214,22 +1214,31 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         return mBloodlineNameCache.value(bloodlineId);
     }
 
-    const std::vector<CachingEveDataProvider::MaterialInfo> &CachingEveDataProvider::getTypeManufacturingInfo(EveType::IdType typeId) const
+    const CachingEveDataProvider::ManufacturingInfo &CachingEveDataProvider::getTypeManufacturingInfo(EveType::IdType typeId) const
     {
         auto it = mTypeManufacturingInfoCache.find(typeId);
         if (it == std::end(mTypeManufacturingInfoCache))
         {
             QSqlQuery query{mEveDb};
-            query.prepare(QStringLiteral("SELECT materialTypeID, quantity FROM industryActivityMaterials WHERE typeID = ? AND activityID = ?"));
-            query.bindValue(0, typeId);
-            query.bindValue(1, mManufacturingActivityId);
+            query.prepare(QStringLiteral(R"(
+SELECT m.materialTypeID, m.quantity, p.quantity FROM industryActivityMaterials m
+    INNER JOIN industryActivityProducts p
+        ON m.typeID = p.typeID AND m.activityID = p.activityID AND p.productTypeID = ? AND p.activityID = ?
+            )"));
+            query.addBindValue(typeId);
+            query.addBindValue(mManufacturingActivityId);
 
-            std::vector<MaterialInfo> info;
+            ManufacturingInfo info{0};
 
             DatabaseUtils::execQuery(query);
 
             while (query.next())
-                info.emplace_back(MaterialInfo{query.value(0).value<EveType::IdType>(), query.value(1).toUInt()});
+            {
+                if (info.mQuantity == 0)
+                    info.mQuantity = query.value(2).toUInt();
+
+                info.mMaterials.emplace_back(MaterialInfo{query.value(0).value<EveType::IdType>(), query.value(1).toUInt()});
+            }
 
             it = mTypeManufacturingInfoCache.emplace(typeId, std::move(info)).first;
         }

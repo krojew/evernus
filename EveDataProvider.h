@@ -52,6 +52,12 @@ namespace Evernus
             std::vector<MaterialInfo> mMaterials;
         };
 
+        struct ManufacturingInfo
+        {
+            uint mQuantity;
+            std::vector<MaterialInfo> mMaterials;
+        };
+
         struct MapTreeLocation
         {
             uint mParent;
@@ -119,7 +125,7 @@ namespace Evernus
         virtual QString getRaceName(uint raceId) const = 0;
         virtual QString getBloodlineName(uint bloodlineId) const = 0;
 
-        virtual const std::vector<MaterialInfo> &getTypeManufacturingInfo(EveType::IdType typeId) const = 0;
+        virtual const ManufacturingInfo &getTypeManufacturingInfo(EveType::IdType typeId) const = 0;
 
         static quint64 getStationIdFromPath(const QVariantList &path);
 
