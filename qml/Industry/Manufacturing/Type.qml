@@ -9,7 +9,7 @@ Item {
 
     width: 300
     height: 50
-    
+
     RectangularGlow {
         anchors.fill: parent
         glowRadius: 0

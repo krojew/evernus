@@ -57,7 +57,8 @@
 
         <file>sounds/click.wav</file>
 
-        <file>qml/IndustryManufacturingView.qml</file>
-        <file>qml/IndustryType.qml</file>
+        <file>qml/Industry/Manufacturing/TypeDelegateModel.qml</file>
+        <file>qml/Industry/Manufacturing/View.qml</file>
+        <file>qml/Industry/Manufacturing/Type.qml</file>
     </qresource>
 </RCC>

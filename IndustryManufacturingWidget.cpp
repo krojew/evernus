@@ -120,7 +120,7 @@ namespace Evernus
         Q_ASSERT(ctxt != nullptr);
 
         ctxt->setContextProperty(QStringLiteral("setupModel"), &mSetupModel);
-        manufacturingView->setSource(QUrl{QStringLiteral("qrc:/qml/IndustryManufacturingView.qml")});
+        manufacturingView->setSource(QUrl{QStringLiteral("qrc:/qml/Industry/Manufacturing/View.qml")});
 
         const auto typesGroup = new QGroupBox{tr("Output"), this};
         contentSplitter->addWidget(typesGroup);
