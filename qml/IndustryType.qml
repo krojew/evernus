@@ -13,7 +13,6 @@ Item {
     RectangularGlow {
         anchors.fill: parent
         glowRadius: 0
-        cornerRadius: rect.radius + glowRadius
         visible: selected
     }
 
