@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
+
 #include "EveDataProvider.h"
 
 #include "MarketOrderTreeModel.h"
@@ -207,7 +209,12 @@ namespace Evernus
         std::vector<const MarketOrder *> orders;
         orders.reserve(indexes.size());
 
-        for (const auto &index : indexes)
+        auto sortedIndexes = indexes;
+        std::sort(std::begin(sortedIndexes), std::end(sortedIndexes), [](const auto &a, const auto &b) {
+            return a.row() > b.row();   // highest to lowest
+        });
+
+        for (const auto &index : sortedIndexes)
         {
             const auto order = getOrder(index);
             if (Q_LIKELY(order != nullptr))
@@ -217,7 +224,7 @@ namespace Evernus
         for (const auto order : orders)
             handleOrderRemoval(*order);
 
-        for (const auto &index : indexes)
+        for (const auto &index : sortedIndexes)
         {
             beginRemoveRows(parent(index), index.row(), index.row() + 1);
             endRemoveRows();
