@@ -21,6 +21,8 @@ Item {
         color: "lightgray"
         border.width: 1
         border.color: "black"
+        x: glowRadius
+        y: glowRadius
         width: parent.width - glowRadius * 2
         height: parent.height - glowRadius * 2
 

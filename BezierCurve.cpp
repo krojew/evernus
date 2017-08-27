@@ -64,10 +64,6 @@ BezierCurve::BezierCurve(QQuickItem *parent)
     setFlag(ItemHasContents, true);
 }
 
-BezierCurve::~BezierCurve()
-{
-}
-
 void BezierCurve::setP1(const QPointF &p)
 {
     if (p == m_p1)

@@ -11,13 +11,37 @@ DelegateModel {
         ColumnLayout {
             Repeater {
                 id: materials
+
+                onItemAdded: {
+                    var connection = Qt.createQmlObject("
+import com.evernus.qmlcomponents 1.0
+
+BezierCurve {
+    anchors.fill: parent
+}", connections);
+                    connection.p1 = Qt.point(0, (item.y + item.height / 2) / connections.height);
+                    connection.p2 = Qt.point(0.1, (item.y + item.height / 2) / connections.height);
+                    connection.p3 = Qt.point(0.9, (item.y + item.height / 2) / connections.height);
+                    connection.p4 = Qt.point(1, (item.y + item.height / 2) / connections.height);
+                }
             }
         }
 
-        Type {}
+        Item {
+            id: connections
+            width: 50
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+
+        Type {
+            id: type
+        }
 
         Component.onCompleted: {
             if (model && model.hasModelChildren) {
+                var component = Qt.createComponent("TypeDelegateModel.qml");
+
                 function finishCreation() {
                     function finishObject(object) {
                         materials.model = object;
@@ -44,9 +68,10 @@ DelegateModel {
                     }
                 }
 
-                var component = Qt.createComponent("TypeDelegateModel.qml");
                 if (component.status === Component.Ready)
                     finishCreation();
+                else if (component.status === Component.Error)
+                    console.error("Error loading component:", component.errorString());
                 else
                     component.statusChanged.connect(finishCreation);
             }

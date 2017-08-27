@@ -64,7 +64,7 @@ class BezierCurve : public QQuickItem
 
 public:
     BezierCurve(QQuickItem *parent = 0);
-    ~BezierCurve();
+    virtual ~BezierCurve() = default;
 
     QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *);
 
