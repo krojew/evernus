@@ -3,10 +3,15 @@ import QtQuick 2.7
 
 import "qrc:/qml/Industry/Manufacturing"
 
-ColumnLayout {
-    Repeater {
-        model: TypeDelegateModel {
-            model: setupModel
+Flickable {
+    contentWidth: contentItem.childrenRect.width
+    contentHeight: contentItem.childrenRect.height
+
+    ColumnLayout {
+        Repeater {
+            model: TypeDelegateModel {
+                model: setupModel
+            }
         }
     }
 }

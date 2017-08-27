@@ -7,7 +7,7 @@ import "qrc:/qml/Industry/Manufacturing"
 DelegateModel {
     id: mainModel
 
-    delegate: Row {
+    delegate: RowLayout {
         ColumnLayout {
             Repeater {
                 id: materials
