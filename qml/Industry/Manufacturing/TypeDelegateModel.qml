@@ -19,15 +19,26 @@ DelegateModel {
         Component.onCompleted: {
             if (model && model.hasModelChildren) {
                 function finishCreation() {
+                    function finishObject(object) {
+                        materials.model = object;
+                    }
+
                     if (component.status === Component.Ready) {
-                        var object = component.createObject(materials, {
+                        var incubator = component.incubateObject(materials, {
                             "model": mainModel.model,
                             "rootIndex": mainModel.modelIndex(index)
-                        });
-                        if (object === null)
-                            console.error("Error creating source object!");
-                        else
-                            materials.model = object;
+                        }, Qt.Asynchronous);
+
+                        if (incubator.status !== Component.Ready) {
+                            incubator.onStatusChanged = function(status) {
+                                if (status === Component.Ready)
+                                    finishObject(incubator.object);
+                                else
+                                    console.error("Error creating source object:", status);
+                            };
+                        } else {
+                            finishObject(incubator.object);
+                        }
                     } else if (component.status === Component.Error) {
                         console.error("Error loading component:", component.errorString());
                     }
