@@ -111,7 +111,7 @@ namespace Evernus
 
         const auto manufacturingView = new QQuickWidget{this};
         contentSplitter->addWidget(manufacturingView);
-        manufacturingView->setClearColor(Qt::darkGray);
+        manufacturingView->setClearColor(QColor{40, 40, 40});
         manufacturingView->setResizeMode(QQuickWidget::SizeRootObjectToView);
         manufacturingView->engine()->setNetworkAccessManagerFactory(new CachingNetworkAccessManagerFactory{this});
         connect(manufacturingView, &QQuickWidget::sceneGraphError, this, &IndustryManufacturingWidget::showSceneGraphError);
