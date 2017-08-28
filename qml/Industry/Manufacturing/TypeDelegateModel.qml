@@ -5,6 +5,8 @@ import QtQuick 2.7
 import "qrc:/qml/Industry/Manufacturing"
 
 DelegateModel {
+    property bool isOutput: false
+
     id: mainModel
 
     delegate: RowLayout {
@@ -45,6 +47,7 @@ BezierCurve {
 
         Type {
             id: type
+            isOutput: mainModel.isOutput
         }
 
         Component.onCompleted: {

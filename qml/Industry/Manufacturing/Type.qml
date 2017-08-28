@@ -1,10 +1,13 @@
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
+import QtQml.Models 2.2
 import QtQuick 2.7
 
 Item {
     readonly property int targetGlowRadius: 10
+
+    property bool isOutput: false
 
     id: root
     width: 400
@@ -85,15 +88,53 @@ Item {
                 source: "https://image.eveonline.com/Type/" + typeId + "_64.png"
             }
 
-            Column {
+            ColumnLayout {
                 Layout.alignment: Qt.AlignTop | Qt.AlignLeft
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                Text {
+                Label {
                     text: qsTr("Quantity produced: %L1").arg(quantityProduced)
                     color: "#cccccc"
                     visible: quantityProduced > 0
+                    Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
+
+                Item {
+                    visible: !isOutput
+                    Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.rightMargin: 10
+
+                    Label {
+                        id: sourceLabel
+                        text: qsTr("Source:")
+                        color: "#cccccc"
+                        anchors.verticalCenter: sourceCombo.verticalCenter
+                        anchors.left: parent.left
+                    }
+
+                    ComboBox {
+                        id: sourceCombo
+                        anchors.top: parent.top
+                        anchors.left: sourceLabel.right
+                        anchors.right: parent.right
+                        anchors.leftMargin: 10
+                        model: ListModel {
+                            ListElement { text: qsTr("Buy from source") }
+                            ListElement { text: qsTr("Take assets then buy from source") }
+                        }
+
+                        Component.onCompleted: {
+                            if (quantityProduced > 0) {
+                                model.append({ text: qsTr("Manufacture") });
+                                model.append({ text: qsTr("Take assets then manufacture") });
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -111,9 +152,16 @@ Item {
 
     MouseArea {
         anchors.fill: parent
+        propagateComposedEvents: true
         onClicked: {
             root.selected(typeId)
+            mouse.accepted = false
         }
+        onPressed: mouse.accepted = false
+        onReleased: mouse.accepted = false
+        onDoubleClicked: mouse.accepted = false
+        onPositionChanged: mouse.accepted = false
+        onPressAndHold: mouse.accepted = false
     }
 
     Component.onCompleted: {

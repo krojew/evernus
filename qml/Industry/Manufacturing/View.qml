@@ -11,6 +11,7 @@ Flickable {
         Repeater {
             model: TypeDelegateModel {
                 model: setupModel
+                isOutput: true
             }
         }
     }
