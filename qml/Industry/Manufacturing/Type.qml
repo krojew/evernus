@@ -11,7 +11,7 @@ Item {
 
     id: root
     width: 400
-    height: 100
+    height: header.height + 64
 
     signal selected(int typeId)
 
@@ -62,7 +62,7 @@ Item {
             GradientStop { position: 1; color: "#353535" }
         }
 
-        Label {
+        Text {
             id: typeName
             font.bold: true
             text: name
@@ -74,65 +74,58 @@ Item {
     }
 
     Rectangle {
+        id: content
         anchors.top: header.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
+        height: 64
         color: "#171916"
 
-        RowLayout {
-            anchors.fill: parent
+        Image {
+            id: icon
+            source: "https://image.eveonline.com/Type/" + typeId + "_64.png"
+            anchors.top: parent.top
+            anchors.left: parent.left
+        }
 
-            Image {
-                id: icon
-                source: "https://image.eveonline.com/Type/" + typeId + "_64.png"
-            }
+        ColumnLayout {
+            anchors.left: icon.right
+            anchors.top: parent.top
 
-            ColumnLayout {
-                Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+            Text {
+                id: quantityText
+                text: qsTr("Quantity produced: %L1").arg(quantityProduced)
+                color: "#cccccc"
+                visible: quantityProduced > 0
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+            }
 
-                Label {
-                    text: qsTr("Quantity produced: %L1").arg(quantityProduced)
+            Item {
+                visible: !isOutput
+                Layout.fillWidth: true
+
+                Text {
+                    id: sourceText
+                    text: qsTr("Source:")
                     color: "#cccccc"
-                    visible: quantityProduced > 0
-                    Layout.alignment: Qt.AlignTop | Qt.AlignLeft
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
+                    anchors.verticalCenter: sourceCombo.verticalCenter
+                    anchors.left: parent.left
                 }
 
-                Item {
-                    visible: !isOutput
-                    Layout.alignment: Qt.AlignTop | Qt.AlignLeft
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Layout.rightMargin: 10
-
-                    Label {
-                        id: sourceLabel
-                        text: qsTr("Source:")
-                        color: "#cccccc"
-                        anchors.verticalCenter: sourceCombo.verticalCenter
-                        anchors.left: parent.left
+                ComboBox {
+                    id: sourceCombo
+                    anchors.left: sourceText.right
+                    model: ListModel {
+                        ListElement { text: qsTr("Buy from source") }
+                        ListElement { text: qsTr("Take assets then buy from source") }
                     }
 
-                    ComboBox {
-                        id: sourceCombo
-                        anchors.top: parent.top
-                        anchors.left: sourceLabel.right
-                        anchors.right: parent.right
-                        anchors.leftMargin: 10
-                        model: ListModel {
-                            ListElement { text: qsTr("Buy from source") }
-                            ListElement { text: qsTr("Take assets then buy from source") }
-                        }
-
-                        Component.onCompleted: {
-                            if (quantityProduced > 0) {
-                                model.append({ text: qsTr("Manufacture") });
-                                model.append({ text: qsTr("Take assets then manufacture") });
-                            }
+                    Component.onCompleted: {
+                        if (quantityProduced > 0) {
+                            model.append({ text: qsTr("Manufacture") });
+                            model.append({ text: qsTr("Take assets then manufacture") });
                         }
                     }
                 }
@@ -154,8 +147,8 @@ Item {
         anchors.fill: parent
         propagateComposedEvents: true
         onClicked: {
-            root.selected(typeId)
-            mouse.accepted = false
+            root.selected(typeId);
+            mouse.accepted = false;
         }
         onPressed: mouse.accepted = false
         onReleased: mouse.accepted = false
