@@ -30,6 +30,16 @@ namespace Evernus
         return mTypeId;
     }
 
+    uint IndustryManufacturingSetupModel::TreeItem::getQuantityProduced() const noexcept
+    {
+        return mQuantityProduced;
+    }
+
+    void IndustryManufacturingSetupModel::TreeItem::setQuantityProduced(uint value) noexcept
+    {
+        mQuantityProduced = value;
+    }
+
     IndustryManufacturingSetupModel::TreeItem *IndustryManufacturingSetupModel::TreeItem::getChild(int row) const
     {
         return (row >= static_cast<int>(mChildItems.size())) ? (nullptr) : (mChildItems[row].get());
@@ -101,6 +111,8 @@ namespace Evernus
             return mDataProvider.getTypeName(item->getTypeId());
         case TypeIdRole:
             return item->getTypeId();
+        case QuantityProducedRole:
+            return item->getQuantityProduced();
         }
 
         return {};
@@ -144,6 +156,7 @@ namespace Evernus
         return {
             { NameRole, QByteArrayLiteral("name") },
             { TypeIdRole, QByteArrayLiteral("typeId") },
+            { QuantityProducedRole, QByteArrayLiteral("quantityProduced") },
         };
     }
 
@@ -193,13 +206,24 @@ namespace Evernus
         }
     }
 
-    IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel::createOutputItem(EveType::IdType typeId)
+    IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel::createOutputItem(EveType::IdType typeId) const
     {
-        return std::make_unique<TreeItem>(typeId);
+        const auto &manufacturingInfo = mSetup.getManufacturingInfo(typeId);
+
+        auto item = std::make_unique<TreeItem>(typeId);
+        item->setQuantityProduced(manufacturingInfo.mQuantity);
+
+        return item;
     }
 
-    IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel::createSourceItem(const EveDataProvider::MaterialInfo &info)
+    IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel
+    ::createSourceItem(const EveDataProvider::MaterialInfo &materialInfo) const
     {
-        return std::make_unique<TreeItem>(info.mMaterialId);
+        const auto &manufacturingInfo = mSetup.getManufacturingInfo(materialInfo.mMaterialId);
+
+        auto item = std::make_unique<TreeItem>(materialInfo.mMaterialId);
+        item->setQuantityProduced(manufacturingInfo.mQuantity);
+
+        return item;
     }
 }

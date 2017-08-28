@@ -84,6 +84,18 @@ Item {
                 id: icon
                 source: "https://image.eveonline.com/Type/" + typeId + "_64.png"
             }
+
+            Column {
+                Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                Text {
+                    text: qsTr("Quantity produced: %L1").arg(quantityProduced)
+                    color: "#cccccc"
+                    visible: quantityProduced > 0
+                }
+            }
         }
     }
 

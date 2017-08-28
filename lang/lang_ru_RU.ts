@@ -7249,6 +7249,14 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
 </context>
 <context>
+    <name>Type</name>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="94"/>
+        <source>Quantity produced: %L1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Updater</name>
     <message>
         <location filename="../Updater.cpp" line="98"/>
