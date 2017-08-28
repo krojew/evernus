@@ -14,7 +14,7 @@ DelegateModel {
 
                 onItemAdded: {
                     var connection = Qt.createQmlObject("
-import com.evernus.qmlcomponents 1.0
+import com.evernus.qmlcomponents 2.6
 
 BezierCurve {
     anchors.fill: parent

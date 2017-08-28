@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
         app.registerImporter(Evernus::ExternalOrderImporterNames::logImporter,
                              std::make_unique<Evernus::MarketLogExternalOrderImporter>());
 
-        qmlRegisterType<BezierCurve>("com.evernus.qmlcomponents", 1, 0, "BezierCurve");
+        qmlRegisterType<BezierCurve>("com.evernus.qmlcomponents", version::major(), version::minor(), "BezierCurve");
 
         try
         {
