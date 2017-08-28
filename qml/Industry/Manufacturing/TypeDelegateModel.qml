@@ -20,8 +20,8 @@ BezierCurve {
     anchors.fill: parent
 }", connections);
                     connection.p1 = Qt.point(0, (item.y + item.height / 2) / connections.height);
-                    connection.p2 = Qt.point(0.1, (item.y + item.height / 2) / connections.height);
-                    connection.p3 = Qt.point(0.9, (item.y + item.height / 2) / connections.height);
+                    connection.p2 = Qt.point(0.3, (item.y + item.height / 2) / connections.height);
+                    connection.p3 = Qt.point(0.7, (item.y + item.height / 2) / connections.height);
                     connection.p4 = Qt.point(1, (item.y + item.height / 2) / connections.height);
                 }
             }
