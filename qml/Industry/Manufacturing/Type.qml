@@ -3,17 +3,43 @@ import QtQuick.Controls 1.4
 import QtQuick 2.7
 
 Item {
-    readonly property int glowRadius: 10
+    readonly property int targetGlowRadius: 10
 
-    property bool selected: false
+    width: 400
+    height: 70
 
-    width: 300
-    height: 50
+    states: [
+        State {
+            PropertyChanges {
+                target: glow
+                glowRadius: 0
+            }
+        },
+        State {
+            name: "selected"
+            PropertyChanges {
+                target: glow
+                glowRadius: targetGlowRadius
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: "*"
+            to: "*"
+            NumberAnimation {
+                properties: "glowRadius"
+                target: glow
+            }
+        }
+
+    ]
 
     RectangularGlow {
+        id: glow
         anchors.fill: parent
         glowRadius: 0
-        visible: selected
     }
 
     Rectangle {
@@ -39,5 +65,10 @@ Item {
             anchors.top: parent.top
             anchors.margins: 5
         }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: parent.state = "selected"
     }
 }
