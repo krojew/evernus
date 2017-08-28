@@ -32,6 +32,7 @@
 #endif
 
 #include "MarketLogExternalOrderImporterThread.h"
+#include "IndustryManufacturingSetupController.h"
 #include "MarketLogExternalOrderImporter.h"
 #include "ProxyWebExternalOrderImporter.h"
 #include "MarketOrderFilterProxyModel.h"
@@ -236,7 +237,16 @@ int main(int argc, char *argv[])
         app.registerImporter(Evernus::ExternalOrderImporterNames::logImporter,
                              std::make_unique<Evernus::MarketLogExternalOrderImporter>());
 
-        qmlRegisterType<Evernus::BezierCurve>("com.evernus.qmlcomponents", version::major(), version::minor(), "BezierCurve");
+        const auto evernusQmlUri = "com.evernus.qmlcomponents";
+
+        qmlRegisterType<Evernus::BezierCurve>(evernusQmlUri, version::major(), version::minor(), "BezierCurve");
+        qmlRegisterUncreatableType<Evernus::IndustryManufacturingSetupController>(
+            evernusQmlUri,
+            version::major(),
+            version::minor(),
+            "IndustryManufacturingSetupController",
+            QStringLiteral("Type reserved.")
+        );
 
         try
         {

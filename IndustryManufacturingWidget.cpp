@@ -120,6 +120,7 @@ namespace Evernus
         Q_ASSERT(ctxt != nullptr);
 
         ctxt->setContextProperty(QStringLiteral("setupModel"), &mSetupModel);
+        ctxt->setContextProperty(QStringLiteral("SetupController"), &mSetupController);
         manufacturingView->setSource(QUrl{QStringLiteral("qrc:/qml/Industry/Manufacturing/View.qml")});
 
         const auto typesGroup = new QGroupBox{tr("Output"), this};

@@ -19,6 +19,7 @@
 #include <QWidget>
 #include <QString>
 
+#include "IndustryManufacturingSetupController.h"
 #include "IndustryManufacturingSetupModel.h"
 #include "IndustryManufacturingSetup.h"
 #include "MarketOrderDataFetcher.h"
@@ -89,6 +90,7 @@ namespace Evernus
 
         IndustryManufacturingSetup mSetup{mDataProvider};
         IndustryManufacturingSetupModel mSetupModel{mSetup, mDataProvider};
+        IndustryManufacturingSetupController mSetupController;
 
         MarketOrderDataFetcher mDataFetcher;
 

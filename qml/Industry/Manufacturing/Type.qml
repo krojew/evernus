@@ -5,8 +5,11 @@ import QtQuick 2.7
 Item {
     readonly property int targetGlowRadius: 10
 
+    id: root
     width: 400
     height: 70
+
+    signal selected(int typeId)
 
     states: [
         State {
@@ -67,8 +70,24 @@ Item {
         }
     }
 
+    Connections {
+        target: SetupController
+        onTypeSelected: {
+            if (id == typeId)
+                root.state = "selected";
+            else
+                root.state = "";
+        }
+    }
+
     MouseArea {
         anchors.fill: parent
-        onClicked: parent.state = "selected"
+        onClicked: {
+            root.selected(typeId)
+        }
+    }
+
+    Component.onCompleted: {
+        root.selected.connect(SetupController.typeSelected);
     }
 }
