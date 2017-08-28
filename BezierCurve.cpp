@@ -47,71 +47,80 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+#include <QSGFlatColorMaterial>
+#include <QSGNode>
 
 #include "BezierCurve.h"
-
-#include <QtQuick/qsgnode.h>
-#include <QtQuick/qsgflatcolormaterial.h>
 
 namespace Evernus
 {
     BezierCurve::BezierCurve(QQuickItem *parent)
         : QQuickItem(parent)
-        , m_p1(0, 0)
-        , m_p2(1, 0)
-        , m_p3(0, 1)
-        , m_p4(1, 1)
+        , mP1(0, 0)
+        , mP2(1, 0)
+        , mP3(0, 1)
+        , mP4(1, 1)
     {
         setFlag(ItemHasContents, true);
     }
 
     void BezierCurve::setP1(const QPointF &p)
     {
-        if (p == m_p1)
+        if (p == mP1)
             return;
 
-        m_p1 = p;
+        mP1 = p;
         emit p1Changed(p);
         update();
     }
 
     void BezierCurve::setP2(const QPointF &p)
     {
-        if (p == m_p2)
+        if (p == mP2)
             return;
 
-        m_p2 = p;
+        mP2 = p;
         emit p2Changed(p);
         update();
     }
 
     void BezierCurve::setP3(const QPointF &p)
     {
-        if (p == m_p3)
+        if (p == mP3)
             return;
 
-        m_p3 = p;
+        mP3 = p;
         emit p3Changed(p);
         update();
     }
 
     void BezierCurve::setP4(const QPointF &p)
     {
-        if (p == m_p4)
+        if (p == mP4)
             return;
 
-        m_p4 = p;
+        mP4 = p;
         emit p4Changed(p);
         update();
     }
 
     void BezierCurve::setSegmentCount(int count)
     {
-        if (m_segmentCount == count)
+        if (mSegmentCount == count)
             return;
 
-        m_segmentCount = count;
+        mSegmentCount = count;
         emit segmentCountChanged(count);
+        update();
+    }
+
+    void BezierCurve::setColor(const QColor &color)
+    {
+        if (mColor == color)
+            return;
+
+        mColor = color;
+        emit colorChanged(color);
         update();
     }
 
@@ -123,14 +132,14 @@ namespace Evernus
         if (oldNode == nullptr)
         {
             node = new QSGGeometryNode;
-            geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), m_segmentCount);
+            geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), mSegmentCount);
             geometry->setLineWidth(2);
             geometry->setDrawingMode(QSGGeometry::DrawLineStrip);
             node->setGeometry(geometry);
             node->setFlag(QSGNode::OwnsGeometry);
 
             const auto material = new QSGFlatColorMaterial;
-            material->setColor(QColor(255, 0, 0));
+            material->setColor(mColor);
             node->setMaterial(material);
             node->setFlag(QSGNode::OwnsMaterial);
         }
@@ -138,21 +147,21 @@ namespace Evernus
         {
             node = static_cast<QSGGeometryNode *>(oldNode);
             geometry = node->geometry();
-            geometry->allocate(m_segmentCount);
+            geometry->allocate(mSegmentCount);
         }
 
         const auto bounds = boundingRect();
         const auto vertices = geometry->vertexDataAsPoint2D();
 
-        for (auto i = 0; i < m_segmentCount; ++i)
+        for (auto i = 0; i < mSegmentCount; ++i)
         {
-            const auto t = i / qreal(m_segmentCount - 1);
+            const auto t = i / qreal(mSegmentCount - 1);
             const auto invt = 1 - t;
 
-            const auto pos = invt * invt * invt * m_p1
-                             + 3 * invt * invt * t * m_p2
-                             + 3 * invt * t * t * m_p3
-                             + t * t * t * m_p4;
+            const auto pos = invt * invt * invt * mP1
+                             + 3 * invt * invt * t * mP2
+                             + 3 * invt * t * t * mP3
+                             + t * t * t * mP4;
 
             float x = bounds.x() + pos.x() * bounds.width();
             float y = bounds.y() + pos.y() * bounds.height();

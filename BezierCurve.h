@@ -65,18 +65,22 @@ namespace Evernus
 
         Q_PROPERTY(int segmentCount READ segmentCount WRITE setSegmentCount NOTIFY segmentCountChanged)
 
+        Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
+
     public:
         explicit BezierCurve(QQuickItem *parent = nullptr);
         virtual ~BezierCurve() = default;
 
         QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *);
 
-        QPointF p1() const { return m_p1; }
-        QPointF p2() const { return m_p2; }
-        QPointF p3() const { return m_p3; }
-        QPointF p4() const { return m_p4; }
+        QPointF p1() const { return mP1; }
+        QPointF p2() const { return mP2; }
+        QPointF p3() const { return mP3; }
+        QPointF p4() const { return mP4; }
 
-        int segmentCount() const { return m_segmentCount; }
+        int segmentCount() const noexcept { return mSegmentCount; }
+
+        QColor color() const { return mColor; }
 
         void setP1(const QPointF &p);
         void setP2(const QPointF &p);
@@ -84,6 +88,8 @@ namespace Evernus
         void setP4(const QPointF &p);
 
         void setSegmentCount(int count);
+
+        void setColor(const QColor &color);
 
     signals:
         void p1Changed(const QPointF &p);
@@ -93,12 +99,16 @@ namespace Evernus
 
         void segmentCountChanged(int count);
 
-    private:
-        QPointF m_p1;
-        QPointF m_p2;
-        QPointF m_p3;
-        QPointF m_p4;
+        void colorChanged(const QColor &color);
 
-        int m_segmentCount = 32;
+    private:
+        QPointF mP1;
+        QPointF mP2;
+        QPointF mP3;
+        QPointF mP4;
+
+        int mSegmentCount = 32;
+
+        QColor mColor{Qt::white};
     };
 }
