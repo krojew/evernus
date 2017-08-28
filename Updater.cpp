@@ -607,7 +607,7 @@ namespace Evernus
 
     std::pair<uint, uint> Updater::getCurrentCoreVersion()
     {
-        return std::make_pair(QString{version::majorStr()}.toUInt(), QString{version::minorStr()}.toUInt());
+        return std::make_pair(version::major(), version::minor());
     }
 
     std::pair<uint, uint> Updater::getDbVersion(const QSqlDatabase &db, uint defaultMajor, uint defaultMinor)

@@ -7,6 +7,9 @@ constexpr const char *minorStr() { return MINOR; }
 constexpr const char *fullStr() { return MAJOR "." MINOR; }
 
 constexpr const char *dbTableName() { return "version"; }
+
+constexpr unsigned int major() { return ${MAJOR_VERSION}; }
+constexpr unsigned int minor() { return ${MINOR_VERSION}; }
 }
 
 #undef MINOR
