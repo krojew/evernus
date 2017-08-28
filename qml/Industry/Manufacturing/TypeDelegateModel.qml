@@ -18,6 +18,7 @@ import com.evernus.qmlcomponents 2.6
 
 BezierCurve {
     anchors.fill: parent
+    antialiasing: true
 }", connections);
 
                     function setCurveSourcePoints() {
