@@ -42,6 +42,10 @@ Item {
         }
     ]
 
+    function selectCurrentType() {
+        root.selected(typeId);
+    }
+
     RectangularGlow {
         id: glow
         anchors.fill: parent
@@ -71,6 +75,11 @@ Item {
             anchors.margins: 5
             color: "white"
         }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: selectCurrentType()
+        }
     }
 
     Rectangle {
@@ -87,6 +96,11 @@ Item {
             source: "https://image.eveonline.com/Type/" + typeId + "_64.png"
             anchors.top: parent.top
             anchors.left: parent.left
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: selectCurrentType()
         }
 
         ColumnLayout {
@@ -141,20 +155,6 @@ Item {
             else
                 root.state = "";
         }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        propagateComposedEvents: true
-        onClicked: {
-            root.selected(typeId);
-            mouse.accepted = false;
-        }
-        onPressed: mouse.accepted = false
-        onReleased: mouse.accepted = false
-        onDoubleClicked: mouse.accepted = false
-        onPositionChanged: mouse.accepted = false
-        onPressAndHold: mouse.accepted = false
     }
 
     Component.onCompleted: {
