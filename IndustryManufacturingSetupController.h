@@ -27,6 +27,8 @@ namespace Evernus
 
     public:
         using QObject::QObject;
+
+        IndustryManufacturingSetupController() = default;
         IndustryManufacturingSetupController(const IndustryManufacturingSetupController &) = default;
         IndustryManufacturingSetupController(IndustryManufacturingSetupController &&) = default;
         virtual ~IndustryManufacturingSetupController() = default;

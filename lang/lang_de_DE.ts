@@ -7254,27 +7254,27 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="111"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="114"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="124"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="127"/>
         <source>Buy from source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="130"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="133"/>
         <source>Manufacture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="125"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="128"/>
         <source>Take assets then buy from source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="131"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="134"/>
         <source>Take assets then manufacture</source>
         <translation type="unfinished"></translation>
     </message>
