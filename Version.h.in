@@ -2,14 +2,14 @@
 #define MINOR "${MINOR_VERSION}"
 
 namespace version {
-constexpr const char *majorStr() { return MAJOR; }
-constexpr const char *minorStr() { return MINOR; }
-constexpr const char *fullStr() { return MAJOR "." MINOR; }
+inline constexpr const char *majorStr() noexcept { return MAJOR; }
+inline constexpr const char *minorStr() noexcept { return MINOR; }
+inline constexpr const char *fullStr() noexcept { return MAJOR "." MINOR; }
 
-constexpr const char *dbTableName() { return "version"; }
+inline constexpr const char *dbTableName() noexcept { return "version"; }
 
-constexpr unsigned int major() { return ${MAJOR_VERSION}; }
-constexpr unsigned int minor() { return ${MINOR_VERSION}; }
+inline constexpr unsigned int major() noexcept { return ${MAJOR_VERSION}; }
+inline constexpr unsigned int minor() noexcept { return ${MINOR_VERSION}; }
 }
 
 #undef MINOR
