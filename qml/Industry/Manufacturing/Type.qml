@@ -147,7 +147,10 @@ Item {
                     anchors.left: sourceText.right
                     model: ListModel {
                         ListElement { text: qsTr("Buy from source") }
+                        ListElement { text: qsTr("Acquire for free") }
+                        ListElement { text: qsTr("Buy at custom cost") }
                         ListElement { text: qsTr("Take assets then buy from source") }
+                        ListElement { text: qsTr("Take assets then buy at custom cost") }
                     }
 
                     Component.onCompleted: {

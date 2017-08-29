@@ -34,8 +34,11 @@ namespace Evernus
         {
             BuyFromSource,
             Manufacture,
+            AcquireForFree,
+            BuyAtCustomCost,
             TakeAssetsThenBuyFromSource,
             TakeAssetsThenManufacture,
+            TakeAssetsThenBuyAtCustomCost,
         };
 
         explicit IndustryManufacturingSetup(const EveDataProvider &dataProvider);

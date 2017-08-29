@@ -7264,17 +7264,32 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="155"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="150"/>
+        <source>Acquire for free</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="151"/>
+        <source>Buy at custom cost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="153"/>
+        <source>Take assets then buy at custom cost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="158"/>
         <source>Manufacture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="150"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="152"/>
         <source>Take assets then buy from source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="156"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="159"/>
         <source>Take assets then manufacture</source>
         <translation type="unfinished"></translation>
     </message>
