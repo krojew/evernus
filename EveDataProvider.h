@@ -18,6 +18,7 @@
 #include <unordered_set>
 #include <vector>
 #include <memory>
+#include <chrono>
 
 #include <QDateTime>
 #include <QVariant>
@@ -55,6 +56,7 @@ namespace Evernus
         struct ManufacturingInfo
         {
             uint mQuantity;
+            std::chrono::seconds mTime;
             std::vector<MaterialInfo> mMaterials;
         };
 

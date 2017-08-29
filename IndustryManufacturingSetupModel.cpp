@@ -48,6 +48,16 @@ namespace Evernus
         mQuantityRequired = value;
     }
 
+    std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getTime() const noexcept
+    {
+        return mTime;
+    }
+
+    void IndustryManufacturingSetupModel::TreeItem::setTime(std::chrono::seconds value) noexcept
+    {
+        mTime = value;
+    }
+
     IndustryManufacturingSetupModel::TreeItem *IndustryManufacturingSetupModel::TreeItem::getChild(int row) const
     {
         return (row >= static_cast<int>(mChildItems.size())) ? (nullptr) : (mChildItems[row].get());
@@ -127,6 +137,11 @@ namespace Evernus
                 return item->getQuantityRequired();
             case SourceRole:
                 return static_cast<int>(mSetup.getTypeSettings(item->getTypeId()).mSource);
+            case TimeRole:
+                {
+                    const qulonglong time = item->getTime().count();
+                    return QStringLiteral("%1:%2:%3").arg(time / 3600, 2, 10, QLatin1Char('0')).arg((time / 60) % 60, 2, 10, QLatin1Char('0')).arg(time % 60, 2, 10, QLatin1Char('0'));
+                }
             }
         }
         catch (const IndustryManufacturingSetup::NotSourceTypeException &e)
@@ -179,6 +194,7 @@ namespace Evernus
             { QuantityProducedRole, QByteArrayLiteral("quantityProduced") },
             { QuantityRequiredRole, QByteArrayLiteral("quantityRequired") },
             { SourceRole, QByteArrayLiteral("source") },
+            { TimeRole, QByteArrayLiteral("time") },
         };
     }
 
@@ -249,6 +265,7 @@ namespace Evernus
 
         auto item = std::make_unique<TreeItem>(typeId);
         item->setQuantityProduced(manufacturingInfo.mQuantity);
+        item->setTime(manufacturingInfo.mTime);
 
         return item;
     }
@@ -261,6 +278,7 @@ namespace Evernus
         auto item = std::make_unique<TreeItem>(materialInfo.mMaterialId);
         item->setQuantityProduced(manufacturingInfo.mQuantity);
         item->setQuantityRequired(materialInfo.mQuantity);
+        item->setTime(manufacturingInfo.mTime);
 
         return item;
     }

@@ -18,6 +18,7 @@
 #include <functional>
 #include <vector>
 #include <memory>
+#include <chrono>
 
 #include <QAbstractItemModel>
 
@@ -62,6 +63,7 @@ namespace Evernus
             QuantityProducedRole,
             QuantityRequiredRole,
             SourceRole,
+            TimeRole,
         };
 
         class TreeItem;
@@ -83,6 +85,9 @@ namespace Evernus
             uint getQuantityRequired() const noexcept;
             void setQuantityRequired(uint value) noexcept;
 
+            std::chrono::seconds getTime() const noexcept;
+            void setTime(std::chrono::seconds value) noexcept;
+
             TreeItem *getChild(int row) const;
             TreeItem *getParent() const noexcept;
 
@@ -98,6 +103,7 @@ namespace Evernus
             EveType::IdType mTypeId = EveType::invalidId;
             uint mQuantityProduced = 0;
             uint mQuantityRequired = 0;
+            std::chrono::seconds mTime;
             std::vector<TreeItemPtr> mChildItems;
         };
 

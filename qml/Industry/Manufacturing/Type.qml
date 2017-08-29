@@ -135,7 +135,7 @@ Item {
 
                 Text {
                     id: quantityText
-                    text: qsTr("Quantity produced: %L1").arg(quantityProduced)
+                    text: qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(time)
                     color: "#cccccc"
                     visible: quantityProduced > 0
                     Layout.fillWidth: true

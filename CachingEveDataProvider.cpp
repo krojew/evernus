@@ -1221,9 +1221,11 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         {
             QSqlQuery query{mEveDb};
             query.prepare(QStringLiteral(R"(
-SELECT m.materialTypeID, m.quantity, p.quantity FROM industryActivityMaterials m
+SELECT m.materialTypeID, m.quantity, p.quantity, a.time FROM industryActivityMaterials m
     INNER JOIN industryActivityProducts p
         ON m.typeID = p.typeID AND m.activityID = p.activityID AND p.productTypeID = ? AND p.activityID = ?
+    INNER JOIN industryActivity a
+        ON a.typeID = p.typeID AND a.activityID = m.activityID
             )"));
             query.addBindValue(typeId);
             query.addBindValue(mManufacturingActivityId);
@@ -1235,7 +1237,10 @@ SELECT m.materialTypeID, m.quantity, p.quantity FROM industryActivityMaterials m
             while (query.next())
             {
                 if (info.mQuantity == 0)
+                {
                     info.mQuantity = query.value(2).toUInt();
+                    info.mTime = std::chrono::seconds{query.value(3).toUInt()};
+                }
 
                 info.mMaterials.emplace_back(MaterialInfo{query.value(0).value<EveType::IdType>(), query.value(1).toUInt()});
             }
