@@ -168,7 +168,7 @@ Item {
                             }
 
                             Component.onCompleted: {
-                                if (!isOutput)
+                                if (isOutput)
                                     return;
 
                                 if (quantityProduced > 0) {
