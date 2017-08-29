@@ -77,7 +77,13 @@ namespace
         return succeeded;
     }
 #   elif defined(Q_OS_OSX)
-    //TODO: implement
+    bool dumpCallback(const char *dump_dir, const char *minidump_id, void *context, bool succeeded)
+    {
+        Q_UNUSED(context);
+
+        std::cerr << "Created dump: " << dump_dir << " " << minidump_id << std::endl;
+        return succeeded;
+    }
 #   else
     bool dumpCallback(const wchar_t *dump_path,
                       const wchar_t *minidump_id,
@@ -125,7 +131,14 @@ int main(int argc, char *argv[])
             -1
         };
 #   elif defined(Q_OS_OSX)
-        //TODO: implement
+        google_breakpad::ExceptionHandler eh{
+            dumpPath.toStdString(),
+            nullptr
+            dumpCallback,
+            nullptr,
+            true,
+            nullptr
+        };
 #   else
         new google_breakpad::ExceptionHandler{
             dumpPath.toStdWString(),
