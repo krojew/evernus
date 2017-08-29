@@ -16,10 +16,13 @@
 
 #include <QObject>
 
+#include "IndustryManufacturingSetup.h"
 #include "EveType.h"
 
 namespace Evernus
 {
+    class IndustryManufacturingSetupModel;
+
     class IndustryManufacturingSetupController
         : public QObject
     {
@@ -28,7 +31,7 @@ namespace Evernus
     public:
         using QObject::QObject;
 
-        IndustryManufacturingSetupController() = default;
+        explicit IndustryManufacturingSetupController(IndustryManufacturingSetupModel &model);
         IndustryManufacturingSetupController(const IndustryManufacturingSetupController &) = default;
         IndustryManufacturingSetupController(IndustryManufacturingSetupController &&) = default;
         virtual ~IndustryManufacturingSetupController() = default;
@@ -36,7 +39,14 @@ namespace Evernus
         IndustryManufacturingSetupController &operator =(const IndustryManufacturingSetupController &) = default;
         IndustryManufacturingSetupController &operator =(IndustryManufacturingSetupController &&) = default;
 
+    public slots:
+        void setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);
+
     signals:
         void typeSelected(EveType::IdType id);
+        void sourceChanged(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);
+
+    private:
+        IndustryManufacturingSetupModel &mModel;
     };
 }

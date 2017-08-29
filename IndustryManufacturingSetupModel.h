@@ -14,18 +14,19 @@
  */
 #pragma once
 
+#include <unordered_map>
+#include <functional>
 #include <vector>
 #include <memory>
 
 #include <QAbstractItemModel>
 
+#include "IndustryManufacturingSetup.h"
 #include "EveDataProvider.h"
 #include "EveType.h"
 
 namespace Evernus
 {
-    class IndustryManufacturingSetup;
-
     class IndustryManufacturingSetupModel
         : public QAbstractItemModel
     {
@@ -48,6 +49,8 @@ namespace Evernus
 
         void refreshData();
 
+        void setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);
+
         IndustryManufacturingSetupModel &operator =(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;
 
@@ -58,6 +61,7 @@ namespace Evernus
             TypeIdRole,
             QuantityProducedRole,
             QuantityRequiredRole,
+            SourceRole,
         };
 
         class TreeItem;
@@ -102,7 +106,9 @@ namespace Evernus
 
         TreeItem mRoot;
 
-        void fillChildren(TreeItem &item) const;
+        std::unordered_multimap<EveType::IdType, std::reference_wrapper<TreeItem>> mTypeItemMap;
+
+        void fillChildren(TreeItem &item);
 
         TreeItemPtr createOutputItem(EveType::IdType typeId) const;
         TreeItemPtr createSourceItem(const EveDataProvider::MaterialInfo &materialInfo) const;

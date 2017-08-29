@@ -37,6 +37,7 @@
 #include "ProxyWebExternalOrderImporter.h"
 #include "MarketOrderFilterProxyModel.h"
 #include "ExternalOrderImporterNames.h"
+#include "IndustryManufacturingSetup.h"
 #include "MarketAnalysisDataFetcher.h"
 #include "ContractFilterProxyModel.h"
 #include "ChainableFileLogger.h"
@@ -214,6 +215,7 @@ int main(int argc, char *argv[])
         qRegisterMetaType<Evernus::MarketAnalysisDataFetcher::HistoryResultType>("MarketAnalysisDataFetcher::HistoryResultType");
         qRegisterMetaType<Evernus::MarketAnalysisDataFetcher::HistoryResultType>("HistoryResultType");
         qRegisterMetaType<Evernus::VolumeType>("VolumeType");
+        qRegisterMetaType<Evernus::IndustryManufacturingSetup::InventorySource>("IndustryManufacturingSetup::InventorySource");
 
         Evernus::EvernusApplication app{argc, argv};
 

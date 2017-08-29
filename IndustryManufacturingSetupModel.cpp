@@ -14,8 +14,6 @@
  */
 #include <boost/scope_exit.hpp>
 
-#include "IndustryManufacturingSetup.h"
-
 #include "IndustryManufacturingSetupModel.h"
 
 namespace Evernus
@@ -116,15 +114,25 @@ namespace Evernus
         const auto item = static_cast<const TreeItem *>(index.internalPointer());
         Q_ASSERT(item != nullptr);
 
-        switch (role) {
-        case NameRole:
-            return mDataProvider.getTypeName(item->getTypeId());
-        case TypeIdRole:
-            return item->getTypeId();
-        case QuantityProducedRole:
-            return item->getQuantityProduced();
-        case QuantityRequiredRole:
-            return item->getQuantityRequired();
+        try
+        {
+            switch (role) {
+            case NameRole:
+                return mDataProvider.getTypeName(item->getTypeId());
+            case TypeIdRole:
+                return item->getTypeId();
+            case QuantityProducedRole:
+                return item->getQuantityProduced();
+            case QuantityRequiredRole:
+                return item->getQuantityRequired();
+            case SourceRole:
+                return static_cast<int>(mSetup.getTypeSettings(item->getTypeId()).mSource);
+            }
+        }
+        catch (const IndustryManufacturingSetup::NotSourceTypeException &e)
+        {
+            // ignore request for invalid items
+            qDebug() << "Ignoring setup exception:" << e.what();
         }
 
         return {};
@@ -170,6 +178,7 @@ namespace Evernus
             { TypeIdRole, QByteArrayLiteral("typeId") },
             { QuantityProducedRole, QByteArrayLiteral("quantityProduced") },
             { QuantityRequiredRole, QByteArrayLiteral("quantityRequired") },
+            { SourceRole, QByteArrayLiteral("source") },
         };
     }
 
@@ -196,6 +205,7 @@ namespace Evernus
         } BOOST_SCOPE_EXIT_END
 
         mRoot.clearChildren();
+        mTypeItemMap.clear();
 
         const auto output = mSetup.getOutputTypes();
         for (const auto outputType : output)
@@ -203,11 +213,24 @@ namespace Evernus
             auto child = createOutputItem(outputType);
             fillChildren(*child);
 
+            mTypeItemMap.emplace(outputType, std::ref(*child));
             mRoot.appendChild(std::move(child));
         }
     }
 
-    void IndustryManufacturingSetupModel::fillChildren(TreeItem &item) const
+    void IndustryManufacturingSetupModel::setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source)
+    {
+        mSetup.setSource(id, source);
+
+        const auto items = mTypeItemMap.equal_range(id);
+        for (auto item = items.first; item != items.second; ++item)
+        {
+            const auto idx = createIndex(item->second.get().getRow(), 0, &item->second.get());
+            emit dataChanged(idx, idx, { SourceRole });
+        }
+    }
+
+    void IndustryManufacturingSetupModel::fillChildren(TreeItem &item)
     {
         const auto &info = mSetup.getManufacturingInfo(item.getTypeId());
         for (const auto &source : info.mMaterials)
@@ -215,6 +238,7 @@ namespace Evernus
             auto child = createSourceItem(source);
             fillChildren(*child);
 
+            mTypeItemMap.emplace(source.mMaterialId, std::ref(*child));
             item.appendChild(std::move(child));
         }
     }

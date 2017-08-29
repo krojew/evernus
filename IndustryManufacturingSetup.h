@@ -16,6 +16,7 @@
 
 #include <unordered_map>
 #include <unordered_set>
+#include <stdexcept>
 #include <vector>
 
 #include "EveDataProvider.h"
@@ -41,6 +42,17 @@ namespace Evernus
             TakeAssetsThenBuyAtCustomCost,
         };
 
+        struct TypeSettings
+        {
+            InventorySource mSource = InventorySource::Manufacture;
+        };
+
+        struct NotSourceTypeException : std::runtime_error
+        {
+            using std::runtime_error::runtime_error;
+            virtual ~NotSourceTypeException() = default;
+        };
+
         explicit IndustryManufacturingSetup(const EveDataProvider &dataProvider);
         IndustryManufacturingSetup(const IndustryManufacturingSetup &) = default;
         IndustryManufacturingSetup(IndustryManufacturingSetup &&) = default;
@@ -50,20 +62,18 @@ namespace Evernus
         TypeSet getOutputTypes() const;
 
         const EveDataProvider::ManufacturingInfo &getManufacturingInfo(EveType::IdType typeId) const;
+        const TypeSettings &getTypeSettings(EveType::IdType typeId) const;
 
         TypeSet getAllTypes() const;
 
         void clear() noexcept;
 
+        void setSource(EveType::IdType id, InventorySource source);
+
         IndustryManufacturingSetup &operator =(const IndustryManufacturingSetup &) = default;
         IndustryManufacturingSetup &operator =(IndustryManufacturingSetup &&) = default;
 
     private:
-        struct TypeSettings
-        {
-            InventorySource mSource = InventorySource::Manufacture;
-        };
-
         const EveDataProvider &mDataProvider;
 
         std::unordered_map<EveType::IdType, TypeSettings> mTypeSettings;

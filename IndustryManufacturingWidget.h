@@ -90,7 +90,7 @@ namespace Evernus
 
         IndustryManufacturingSetup mSetup{mDataProvider};
         IndustryManufacturingSetupModel mSetupModel{mSetup, mDataProvider};
-        IndustryManufacturingSetupController mSetupController;
+        IndustryManufacturingSetupController mSetupController{mSetupModel};
 
         MarketOrderDataFetcher mDataFetcher;
 

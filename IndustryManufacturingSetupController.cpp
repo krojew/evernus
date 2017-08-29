@@ -12,9 +12,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "IndustryManufacturingSetupModel.h"
+
 #include "IndustryManufacturingSetupController.h"
 
 namespace Evernus
 {
+    IndustryManufacturingSetupController::IndustryManufacturingSetupController(IndustryManufacturingSetupModel &model)
+        : mModel{model}
+    {
+    }
 
+    void IndustryManufacturingSetupController::setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source)
+    {
+        mModel.setSource(id, source);
+        emit sourceChanged(id, source);
+    }
 }

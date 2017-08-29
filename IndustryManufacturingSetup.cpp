@@ -12,8 +12,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdexcept>
-
 #include "IndustryManufacturingSetup.h"
 
 namespace Evernus
@@ -64,7 +62,16 @@ namespace Evernus
         if (Q_LIKELY(it != std::end(mManufacturingInfo)))
             return it->second;
 
-        throw std::logic_error{"Missing manufacturing info for: " + std::to_string(typeId)};
+        throw NotSourceTypeException{"Missing manufacturing info for: " + std::to_string(typeId)};
+    }
+
+    const IndustryManufacturingSetup::TypeSettings &IndustryManufacturingSetup::getTypeSettings(EveType::IdType typeId) const
+    {
+        const auto it = mTypeSettings.find(typeId);
+        if (Q_LIKELY(it != std::end(mTypeSettings)))
+            return it->second;
+
+        throw NotSourceTypeException{"Missing type settings for: " + std::to_string(typeId)};
     }
 
     IndustryManufacturingSetup::TypeSet IndustryManufacturingSetup::getAllTypes() const
@@ -81,6 +88,18 @@ namespace Evernus
         mOutputTypes.clear();
         mTypeSettings.clear();
         mManufacturingInfo.clear();
+    }
+
+    void IndustryManufacturingSetup::setSource(EveType::IdType id, InventorySource source)
+    {
+        const auto it = mTypeSettings.find(id);
+        if (Q_LIKELY(it != std::end(mTypeSettings)))
+        {
+            it->second.mSource = source;
+            return;
+        }
+
+        throw NotSourceTypeException{"Missing type settings for: " + std::to_string(id)};
     }
 
     void IndustryManufacturingSetup::fillManufacturingInfo(EveType::IdType typeId, TypeSet &usedTypes)
