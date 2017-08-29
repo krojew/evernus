@@ -128,6 +128,7 @@ Item {
             anchors.left: icon.right
             anchors.top: parent.top
             anchors.right: parent.right
+            anchors.bottom: parent.bottom
 
             ColumnLayout {
                 Layout.alignment: Qt.AlignTop | Qt.AlignLeft
@@ -138,7 +139,6 @@ Item {
                     color: "#cccccc"
                     visible: quantityProduced > 0
                     Layout.fillWidth: true
-                    Layout.fillHeight: true
                 }
 
                 Item {
