@@ -40,6 +40,16 @@ namespace Evernus
         mQuantityProduced = value;
     }
 
+    uint IndustryManufacturingSetupModel::TreeItem::getQuantityRequired() const noexcept
+    {
+        return mQuantityRequired;
+    }
+
+    void IndustryManufacturingSetupModel::TreeItem::setQuantityRequired(uint value) noexcept
+    {
+        mQuantityRequired = value;
+    }
+
     IndustryManufacturingSetupModel::TreeItem *IndustryManufacturingSetupModel::TreeItem::getChild(int row) const
     {
         return (row >= static_cast<int>(mChildItems.size())) ? (nullptr) : (mChildItems[row].get());
@@ -113,6 +123,8 @@ namespace Evernus
             return item->getTypeId();
         case QuantityProducedRole:
             return item->getQuantityProduced();
+        case QuantityRequiredRole:
+            return item->getQuantityRequired();
         }
 
         return {};
@@ -157,6 +169,7 @@ namespace Evernus
             { NameRole, QByteArrayLiteral("name") },
             { TypeIdRole, QByteArrayLiteral("typeId") },
             { QuantityProducedRole, QByteArrayLiteral("quantityProduced") },
+            { QuantityRequiredRole, QByteArrayLiteral("quantityRequired") },
         };
     }
 
@@ -223,6 +236,7 @@ namespace Evernus
 
         auto item = std::make_unique<TreeItem>(materialInfo.mMaterialId);
         item->setQuantityProduced(manufacturingInfo.mQuantity);
+        item->setQuantityRequired(materialInfo.mQuantity);
 
         return item;
     }

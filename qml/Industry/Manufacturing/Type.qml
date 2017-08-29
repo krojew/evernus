@@ -117,49 +117,61 @@ Item {
             onClicked: selectCurrentType()
         }
 
-        ColumnLayout {
+        RowLayout {
             anchors.left: icon.right
             anchors.top: parent.top
+            anchors.right: parent.right
 
-            Text {
-                id: quantityText
-                text: qsTr("Quantity produced: %L1").arg(quantityProduced)
-                color: "#cccccc"
-                visible: quantityProduced > 0
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
-
-            Item {
-                visible: !isOutput
-                Layout.fillWidth: true
+            ColumnLayout {
+                Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 
                 Text {
-                    id: sourceText
-                    text: qsTr("Source:")
+                    id: quantityText
+                    text: qsTr("Quantity produced: %L1").arg(quantityProduced)
                     color: "#cccccc"
-                    anchors.verticalCenter: sourceCombo.verticalCenter
-                    anchors.left: parent.left
+                    visible: quantityProduced > 0
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
                 }
 
-                ComboBox {
-                    id: sourceCombo
-                    anchors.left: sourceText.right
-                    model: ListModel {
-                        ListElement { text: qsTr("Buy from source") }
-                        ListElement { text: qsTr("Acquire for free") }
-                        ListElement { text: qsTr("Buy at custom cost") }
-                        ListElement { text: qsTr("Take assets then buy from source") }
-                        ListElement { text: qsTr("Take assets then buy at custom cost") }
-                    }
+                Item {
+                    visible: !isOutput
+                    Layout.fillWidth: true
 
-                    Component.onCompleted: {
-                        if (quantityProduced > 0) {
-                            model.append({ text: qsTr("Manufacture") });
-                            model.append({ text: qsTr("Take assets then manufacture") });
+                    RowLayout {
+                        Text {
+                            id: sourceText
+                            text: qsTr("Source:")
+                            color: "#cccccc"
                         }
+
+                        ComboBox {
+                            id: sourceCombo
+                            model: ListModel {
+                                ListElement { text: qsTr("Buy from source") }
+                                ListElement { text: qsTr("Acquire for free") }
+                                ListElement { text: qsTr("Buy at custom cost") }
+                                ListElement { text: qsTr("Take assets then buy from source") }
+                                ListElement { text: qsTr("Take assets then buy at custom cost") }
+                            }
+
+                            Component.onCompleted: {
+                                if (quantityProduced > 0) {
+                                    model.append({ text: qsTr("Manufacture") });
+                                    model.append({ text: qsTr("Take assets then manufacture") });
+                                }
+                            }
+                        }
+
                     }
                 }
+            }
+
+            Text {
+                visible: !isOutput
+                text: qsTr("%L1").arg(quantityRequired)
+                color: "#cccccc"
+                font.bold: true
             }
         }
     }

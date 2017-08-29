@@ -57,6 +57,7 @@ namespace Evernus
             NameRole = Qt::UserRole,
             TypeIdRole,
             QuantityProducedRole,
+            QuantityRequiredRole,
         };
 
         class TreeItem;
@@ -75,6 +76,9 @@ namespace Evernus
             uint getQuantityProduced() const noexcept;
             void setQuantityProduced(uint value) noexcept;
 
+            uint getQuantityRequired() const noexcept;
+            void setQuantityRequired(uint value) noexcept;
+
             TreeItem *getChild(int row) const;
             TreeItem *getParent() const noexcept;
 
@@ -89,6 +93,7 @@ namespace Evernus
             TreeItem *mParent = nullptr;
             EveType::IdType mTypeId = EveType::invalidId;
             uint mQuantityProduced = 0;
+            uint mQuantityRequired = 0;
             std::vector<TreeItemPtr> mChildItems;
         };
 
