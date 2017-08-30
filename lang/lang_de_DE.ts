@@ -7288,6 +7288,11 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../qml/Industry/Manufacturing/Type.qml" line="200"/>
+        <source>Runs:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="215"/>
         <source>%L1</source>
         <translation type="unfinished"></translation>
     </message>

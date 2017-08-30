@@ -190,7 +190,22 @@ Item {
                                 }
                             }
                         }
+                    }
+                }
 
+                RowLayout {
+                    visible: isOutput
+
+                    Text {
+                        text: qsTr("Runs:")
+                        color: "#cccccc"
+                    }
+
+                    TextField {
+                        text: runs
+                        validator: IntValidator {
+                            bottom: 1
+                        }
                     }
                 }
             }
