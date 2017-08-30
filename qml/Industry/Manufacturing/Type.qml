@@ -201,11 +201,10 @@ Item {
                         color: "#cccccc"
                     }
 
-                    TextField {
-                        text: runs
-                        validator: IntValidator {
-                            bottom: 1
-                        }
+                    SpinBox {
+                        value: runs
+                        minimumValue: 1
+                        maximumValue: 1000000
                     }
                 }
             }
