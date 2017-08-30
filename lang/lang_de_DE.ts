@@ -3125,28 +3125,36 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="191"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="194"/>
         <source>Importing data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="193"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="196"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="194"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="197"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="205"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="208"/>
         <source>View error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="205"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="208"/>
         <source>There was an error initializing the manufacturing view: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::IndustryWidget</name>
+    <message>
+        <location filename="../IndustryWidget.cpp" line="49"/>
+        <source>Manufacturing analysis</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3691,244 +3699,244 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::MainWindow</name>
     <message>
-        <location filename="../MainWindow.cpp" line="259"/>
-        <location filename="../MainWindow.cpp" line="519"/>
+        <location filename="../MainWindow.cpp" line="258"/>
+        <location filename="../MainWindow.cpp" line="518"/>
         <source>Evernus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="259"/>
+        <location filename="../MainWindow.cpp" line="258"/>
         <source>You can show/hide table columns via right-click menu. Columns can also be moved around via dragging.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="274"/>
+        <location filename="../MainWindow.cpp" line="273"/>
         <source>No active tasks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="279"/>
+        <location filename="../MainWindow.cpp" line="278"/>
         <source>Active tasks: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="288"/>
+        <location filename="../MainWindow.cpp" line="287"/>
         <source>Wallet: &lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="519"/>
+        <location filename="../MainWindow.cpp" line="518"/>
         <source>HTTP link was copied to the clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="627"/>
+        <location filename="../MainWindow.cpp" line="615"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="628"/>
+        <location filename="../MainWindow.cpp" line="616"/>
         <source>Select character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="629"/>
+        <location filename="../MainWindow.cpp" line="617"/>
         <source>&amp;Manage characters...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="631"/>
-        <location filename="../MainWindow.cpp" line="633"/>
+        <location filename="../MainWindow.cpp" line="619"/>
+        <location filename="../MainWindow.cpp" line="621"/>
         <source>&amp;Preferences...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="636"/>
+        <location filename="../MainWindow.cpp" line="624"/>
         <source>Import EVE Mentat order history...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="638"/>
+        <location filename="../MainWindow.cpp" line="626"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="640"/>
+        <location filename="../MainWindow.cpp" line="628"/>
         <source>&amp;Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="641"/>
+        <location filename="../MainWindow.cpp" line="629"/>
         <source>Import conquerable stations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="642"/>
+        <location filename="../MainWindow.cpp" line="630"/>
         <source>Import citadels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="643"/>
+        <location filename="../MainWindow.cpp" line="631"/>
         <source>Citadel manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="644"/>
+        <location filename="../MainWindow.cpp" line="632"/>
         <source>Ma&amp;rgin tool...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="645"/>
+        <location filename="../MainWindow.cpp" line="633"/>
         <source>Custom &amp;Fast Price Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="647"/>
+        <location filename="../MainWindow.cpp" line="635"/>
         <source>Copy HTTP link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="650"/>
+        <location filename="../MainWindow.cpp" line="638"/>
         <source>Upload data to cloud...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="653"/>
+        <location filename="../MainWindow.cpp" line="641"/>
         <source>&amp;View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="654"/>
+        <location filename="../MainWindow.cpp" line="642"/>
         <source>Show/hide tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="655"/>
+        <location filename="../MainWindow.cpp" line="643"/>
         <source>Show/hide table columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="657"/>
+        <location filename="../MainWindow.cpp" line="645"/>
         <source>Always on top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="681"/>
+        <location filename="../MainWindow.cpp" line="669"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="682"/>
+        <location filename="../MainWindow.cpp" line="670"/>
         <source>&amp;Online help...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="683"/>
+        <location filename="../MainWindow.cpp" line="671"/>
         <source>Check for &amp;updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="685"/>
+        <location filename="../MainWindow.cpp" line="673"/>
         <source>&amp;About...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="723"/>
+        <location filename="../MainWindow.cpp" line="711"/>
         <source>Character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="737"/>
+        <location filename="../MainWindow.cpp" line="725"/>
         <source>Statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="759"/>
+        <location filename="../MainWindow.cpp" line="747"/>
         <source>Assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="783"/>
+        <location filename="../MainWindow.cpp" line="771"/>
         <source>Character orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="807"/>
+        <location filename="../MainWindow.cpp" line="795"/>
         <source>Character journal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="819"/>
+        <location filename="../MainWindow.cpp" line="807"/>
         <source>Character transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="832"/>
+        <location filename="../MainWindow.cpp" line="820"/>
         <source>Character contracts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="842"/>
+        <location filename="../MainWindow.cpp" line="830"/>
         <source>Corporation assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="866"/>
+        <location filename="../MainWindow.cpp" line="854"/>
         <source>Corporation orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="889"/>
+        <location filename="../MainWindow.cpp" line="877"/>
         <source>Corporation journal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="901"/>
+        <location filename="../MainWindow.cpp" line="889"/>
         <source>Corporation transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="914"/>
+        <location filename="../MainWindow.cpp" line="902"/>
         <source>Corporation contracts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="925"/>
+        <location filename="../MainWindow.cpp" line="913"/>
         <source>Item history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="944"/>
+        <location filename="../MainWindow.cpp" line="932"/>
         <source>Market browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="957"/>
+        <location filename="../MainWindow.cpp" line="945"/>
         <source>Item costs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="966"/>
+        <location filename="../MainWindow.cpp" line="954"/>
         <source>LMeve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="989"/>
+        <location filename="../MainWindow.cpp" line="977"/>
         <source>Market analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1000"/>
+        <location filename="../MainWindow.cpp" line="988"/>
         <source>Industry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1022"/>
+        <location filename="../MainWindow.cpp" line="1010"/>
         <source>Toggle character tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1028"/>
+        <location filename="../MainWindow.cpp" line="1016"/>
         <source>Toggle corporation tabs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7249,11 +7257,6 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Type</name>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="137"/>
-        <source>Quantity produced: %L1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qml/Industry/Manufacturing/Type.qml" line="151"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
@@ -7291,6 +7294,11 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../qml/Industry/Manufacturing/Type.qml" line="161"/>
         <source>Take assets then buy from source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="138"/>
+        <source>Quantity produced: %L1 / %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7415,49 +7423,49 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="159"/>
-        <location filename="../main.cpp" line="174"/>
+        <location filename="../main.cpp" line="172"/>
+        <location filename="../main.cpp" line="187"/>
         <source>Already running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="159"/>
+        <location filename="../main.cpp" line="172"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="174"/>
+        <location filename="../main.cpp" line="187"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="183"/>
-        <location filename="../main.cpp" line="437"/>
+        <location filename="../main.cpp" line="196"/>
+        <location filename="../main.cpp" line="450"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="184"/>
+        <location filename="../main.cpp" line="197"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="383"/>
+        <location filename="../main.cpp" line="396"/>
         <source>New version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="384"/>
+        <location filename="../main.cpp" line="397"/>
         <source>Would you like to see what&apos;s new in this version?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="397"/>
+        <location filename="../main.cpp" line="410"/>
         <source>Import source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="398"/>
+        <location filename="../main.cpp" line="411"/>
         <source>Would you like to use ESI for data import where applicable?
 
 Using ESI gives access to more data, e.g. citadel assets, and lower cache timers but requires additional autorization. Support for more ESI endpoints is ongoing.
@@ -7466,17 +7474,17 @@ You can always change it in Preferences-&gt;Import-&gt;Source.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="408"/>
+        <location filename="../main.cpp" line="421"/>
         <source>Use ESI and XML API</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="409"/>
+        <location filename="../main.cpp" line="422"/>
         <source>Use only XML API</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="446"/>
+        <location filename="../main.cpp" line="459"/>
         <source>Initialization error</source>
         <translation type="unfinished"></translation>
     </message>

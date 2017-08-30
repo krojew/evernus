@@ -150,8 +150,11 @@ namespace Evernus
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
         });
-        connect(this, &IndustryManufacturingWidget::preferencesChanged,
-                &mDataFetcher, &MarketOrderDataFetcher::handleNewPreferences);
+    }
+
+    void IndustryManufacturingWidget::handleNewPreferences()
+    {
+        mDataFetcher.handleNewPreferences();
     }
 
     void IndustryManufacturingWidget::setCharacter(Character::IdType id)

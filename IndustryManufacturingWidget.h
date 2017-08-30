@@ -26,6 +26,8 @@
 #include "TaskConstants.h"
 #include "Character.h"
 
+class QByteArray;
+
 namespace Evernus
 {
     class RegionStationPresetRepository;
@@ -59,10 +61,8 @@ namespace Evernus
         IndustryManufacturingWidget &operator =(const IndustryManufacturingWidget &) = default;
         IndustryManufacturingWidget &operator =(IndustryManufacturingWidget &&) = default;
 
-    signals:
-        void preferencesChanged();
-
     public slots:
+        void handleNewPreferences();
         void setCharacter(Character::IdType id);
 
     private slots:

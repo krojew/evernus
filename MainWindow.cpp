@@ -36,7 +36,6 @@
 #   include <utime.h>
 #endif
 
-#include "IndustryManufacturingWidget.h"
 #include "WalletTransactionsWidget.h"
 #include "CharacterManagerDialog.h"
 #include "MarketAnalysisWidget.h"
@@ -53,6 +52,7 @@
 #include "StatisticsWidget.h"
 #include "CharacterWidget.h"
 #include "CustomFPCDialog.h"
+#include "IndustryWidget.h"
 #include "ContractWidget.h"
 #include "ItemCostWidget.h"
 #include "ImportSettings.h"
@@ -976,17 +976,17 @@ namespace Evernus
         connect(this, &MainWindow::preferencesChanged, marketAnalysisTab, &MarketAnalysisWidget::preferencesChanged);
         addTab(marketAnalysisTab, tr("Market analysis"), TabType::Other);
 
-        const auto industryTab = new IndustryManufacturingWidget{mEveDataProvider,
-                                                                 mRepositoryProvider.getRegionStationPresetRepository(),
-                                                                 mRepositoryProvider.getEveTypeRepository(),
-                                                                 mRepositoryProvider.getMarketGroupRepository(),
-                                                                 mRepositoryProvider.getCharacterRepository(),
-                                                                 taskManager,
-                                                                 clientId,
-                                                                 clientSecret,
-                                                                 this};
+        const auto industryTab = new IndustryWidget{mEveDataProvider,
+                                                    mRepositoryProvider.getRegionStationPresetRepository(),
+                                                    mRepositoryProvider.getEveTypeRepository(),
+                                                    mRepositoryProvider.getMarketGroupRepository(),
+                                                    mRepositoryProvider.getCharacterRepository(),
+                                                    taskManager,
+                                                    clientId,
+                                                    clientSecret,
+                                                    this};
         addTab(industryTab, tr("Industry"), TabType::Other);
-        connect(this, &MainWindow::preferencesChanged, industryTab, &IndustryManufacturingWidget::preferencesChanged);
+        connect(this, &MainWindow::preferencesChanged, industryTab, &IndustryWidget::handleNewPreferences);
 
         QSettings settings;
 

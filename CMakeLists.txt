@@ -381,6 +381,8 @@ add_executable(
     IndustryManufacturingWidget.cpp
     IndustryManufacturingWidget.h
     IndustrySettings.h
+    IndustryWidget.cpp
+    IndustryWidget.h
     InterRegionAnalysisWidget.cpp
     InterRegionAnalysisWidget.h
     InterRegionMarketDataFilterProxyModel.cpp
