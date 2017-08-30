@@ -24,10 +24,13 @@
 
 #include "IndustryManufacturingSetup.h"
 #include "EveDataProvider.h"
+#include "Character.h"
 #include "EveType.h"
 
 namespace Evernus
 {
+    class AssetProvider;
+
     class IndustryManufacturingSetupModel
         : public QAbstractItemModel
     {
@@ -36,6 +39,7 @@ namespace Evernus
     public:
         IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
                                         const EveDataProvider &dataProvider,
+                                        const AssetProvider &assetProvider,
                                         QObject *parent = nullptr);
         IndustryManufacturingSetupModel(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel(IndustryManufacturingSetupModel &&) = default;
@@ -49,9 +53,12 @@ namespace Evernus
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
 
         void refreshData();
+        void refreshAssets();
 
         void setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);
         void setRuns(EveType::IdType id, uint runs);
+
+        void setCharacter(Character::IdType id);
 
         IndustryManufacturingSetupModel &operator =(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;
@@ -75,8 +82,11 @@ namespace Evernus
         class TreeItem final
         {
         public:
-            TreeItem() = default;
-            explicit TreeItem(EveType::IdType typeId);
+            TreeItem(IndustryManufacturingSetupModel &model,
+                     const IndustryManufacturingSetup &setup);
+            TreeItem(EveType::IdType typeId,
+                     IndustryManufacturingSetupModel &model,
+                     const IndustryManufacturingSetup &setup);
             ~TreeItem() = default;
 
             EveType::IdType getTypeId() const noexcept;
@@ -84,9 +94,11 @@ namespace Evernus
             uint getQuantityProduced() const noexcept;
             void setQuantityProduced(uint value) noexcept;
 
+            uint getEffectiveQuantityRequired() const noexcept;
             uint getQuantityRequired() const noexcept;
             void setQuantityRequired(uint value) noexcept;
 
+            uint getEffectiveRuns() const noexcept;
             uint getRuns() const noexcept;
             void setRuns(uint value) noexcept;
 
@@ -103,7 +115,29 @@ namespace Evernus
             void appendChild(std::unique_ptr<TreeItem> child);
             void clearChildren() noexcept;
 
+            inline auto begin() noexcept
+            {
+                return std::begin(mChildItems);
+            }
+
+            inline auto begin() const noexcept
+            {
+                return std::begin(mChildItems);
+            }
+
+            inline auto end() noexcept
+            {
+                return std::end(mChildItems);
+            }
+
+            inline auto end() const noexcept
+            {
+                return std::end(mChildItems);
+            }
+
         private:
+            IndustryManufacturingSetupModel &mModel;
+            const IndustryManufacturingSetup &mSetup;
             TreeItem *mParent = nullptr;
             EveType::IdType mTypeId = EveType::invalidId;
             uint mQuantityProduced = 0;
@@ -113,17 +147,35 @@ namespace Evernus
             std::vector<TreeItemPtr> mChildItems;
         };
 
+        struct AssetQuantity
+        {
+            quint64 mInitialQuantity = 0;
+            quint64 mCurrentQuantity = 0;
+        };
+
         IndustryManufacturingSetup &mSetup;
         const EveDataProvider &mDataProvider;
+        const AssetProvider &mAssetProvider;
 
-        TreeItem mRoot;
+        TreeItem mRoot{*this, mSetup};
+
+        Character::IdType mCharacterId = Character::invalidId;
 
         std::unordered_multimap<EveType::IdType, std::reference_wrapper<TreeItem>> mTypeItemMap;
+
+        std::unordered_map<EveType::IdType, AssetQuantity> mAssetQuantities;
 
         void fillChildren(TreeItem &item);
 
         TreeItemPtr createOutputItem(EveType::IdType typeId,
-                                     const IndustryManufacturingSetup::OutputSettings &settings) const;
-        TreeItemPtr createSourceItem(const EveDataProvider::MaterialInfo &materialInfo) const;
+                                     const IndustryManufacturingSetup::OutputSettings &settings);
+        TreeItemPtr createSourceItem(const EveDataProvider::MaterialInfo &materialInfo);
+
+        template<class Iterator>
+        void fillAssetList(Iterator begin, Iterator end);
+
+        quint64 takeAssets(EveType::IdType typeId, quint64 max);
+
+        void signalQuantityChange(TreeItem &item);
     };
 }

@@ -44,7 +44,7 @@ namespace Evernus
 
         struct TypeSettings
         {
-            InventorySource mSource = InventorySource::Manufacture;
+            InventorySource mSource = InventorySource::BuyFromSource;
             uint mMaterialEfficiency = 0;
             uint mTimeEfficiency = 0;
         };

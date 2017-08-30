@@ -41,6 +41,7 @@ namespace Evernus
 
         TypeSet getSelectedTypes() const;
         void selectTypes(const TypeSet &types);
+        void deselectAll();
 
         TradeableTypesTreeView &operator =(const TradeableTypesTreeView &) = default;
         TradeableTypesTreeView &operator =(TradeableTypesTreeView &&) = default;

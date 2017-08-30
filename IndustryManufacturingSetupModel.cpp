@@ -12,14 +12,31 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
+#include <cmath>
+
 #include <boost/scope_exit.hpp>
+
+#include "AssetProvider.h"
+#include "AssetList.h"
 
 #include "IndustryManufacturingSetupModel.h"
 
 namespace Evernus
 {
-    IndustryManufacturingSetupModel::TreeItem::TreeItem(EveType::IdType typeId)
-        : mTypeId{typeId}
+    IndustryManufacturingSetupModel::TreeItem::TreeItem(IndustryManufacturingSetupModel &model,
+                                                        const IndustryManufacturingSetup &setup)
+        : mModel{model}
+        , mSetup{setup}
+    {
+    }
+
+    IndustryManufacturingSetupModel::TreeItem::TreeItem(EveType::IdType typeId,
+                                                        IndustryManufacturingSetupModel &model,
+                                                        const IndustryManufacturingSetup &setup)
+        : mModel{model}
+        , mSetup{setup}
+        , mTypeId{typeId}
     {
     }
 
@@ -38,6 +55,28 @@ namespace Evernus
         mQuantityProduced = value;
     }
 
+    uint IndustryManufacturingSetupModel::TreeItem::getEffectiveQuantityRequired() const noexcept
+    {
+        if (Q_UNLIKELY(mParent == nullptr || mQuantityRequired == 0))
+            return 0;
+
+        const auto &settings = mSetup.getTypeSettings(mTypeId);
+        if (settings.mSource == IndustryManufacturingSetup::InventorySource::Manufacture ||
+            settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
+        {
+            return getEffectiveRuns() * mQuantityProduced;
+        }
+
+        auto required = mParent->getEffectiveRuns() * mQuantityRequired;
+        if (settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyAtCustomCost ||
+            settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyFromSource)
+        {
+            required -= mModel.takeAssets(mTypeId, required);
+        }
+
+        return required;
+    }
+
     uint IndustryManufacturingSetupModel::TreeItem::getQuantityRequired() const noexcept
     {
         return mQuantityRequired;
@@ -46,6 +85,27 @@ namespace Evernus
     void IndustryManufacturingSetupModel::TreeItem::setQuantityRequired(uint value) noexcept
     {
         mQuantityRequired = value;
+    }
+
+    uint IndustryManufacturingSetupModel::TreeItem::getEffectiveRuns() const noexcept
+    {
+        if (Q_UNLIKELY(mQuantityRequired == 0 || mParent == nullptr))
+            return mRuns;
+
+        const auto &settings = mSetup.getTypeSettings(mTypeId);
+        if (settings.mSource == IndustryManufacturingSetup::InventorySource::Manufacture ||
+            settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
+        {
+            auto required = mQuantityRequired * mParent->getEffectiveRuns();
+            if (settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
+                required -= mModel.takeAssets(mTypeId, required);
+
+            Q_ASSERT(mQuantityProduced > 0);
+            return std::ceil(required / mQuantityProduced);
+        }
+
+        // we're buying this stuff, so no production
+        return 0;
     }
 
     uint IndustryManufacturingSetupModel::TreeItem::getRuns() const noexcept
@@ -113,10 +173,12 @@ namespace Evernus
 
     IndustryManufacturingSetupModel::IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
                                                                      const EveDataProvider &dataProvider,
+                                                                     const AssetProvider &assetProvider,
                                                                      QObject *parent)
         : QAbstractItemModel{parent}
         , mSetup{setup}
         , mDataProvider{dataProvider}
+        , mAssetProvider{assetProvider}
     {
     }
 
@@ -144,7 +206,7 @@ namespace Evernus
             case QuantityProducedRole:
                 return item->getQuantityProduced();
             case QuantityRequiredRole:
-                return item->getQuantityRequired();
+                return item->getEffectiveQuantityRequired();
             case SourceRole:
                 return static_cast<int>(mSetup.getTypeSettings(item->getTypeId()).mSource);
             case TimeRole:
@@ -236,6 +298,16 @@ namespace Evernus
         mRoot.clearChildren();
         mTypeItemMap.clear();
 
+        if (mAssetQuantities.empty())
+        {
+            refreshAssets();
+        }
+        else
+        {
+            for (auto &asset : mAssetQuantities)
+                asset.second.mCurrentQuantity = asset.second.mInitialQuantity;
+        }
+
         const auto &output = mSetup.getOutputTypes();
         for (const auto &outputType : output)
         {
@@ -247,22 +319,72 @@ namespace Evernus
         }
     }
 
+    void IndustryManufacturingSetupModel::refreshAssets()
+    {
+        beginResetModel();
+
+        BOOST_SCOPE_EXIT(this_) {
+            this_->endResetModel();
+        } BOOST_SCOPE_EXIT_END
+
+        mAssetQuantities.clear();
+
+        const auto assets = mAssetProvider.fetchAssetsForCharacter(mCharacterId);
+        Q_ASSERT(assets);
+
+        fillAssetList(std::begin(*assets), std::end(*assets));
+    }
+
     void IndustryManufacturingSetupModel
     ::setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source)
     {
         mSetup.setSource(id, source);
+        mAssetQuantities[id].mCurrentQuantity = mAssetQuantities[id].mInitialQuantity;
 
         const auto items = mTypeItemMap.equal_range(id);
         for (auto item = items.first; item != items.second; ++item)
         {
             const auto idx = createIndex(item->second.get().getRow(), 0, &item->second.get());
-            emit dataChanged(idx, idx, { SourceRole });
+            emit dataChanged(idx, idx, { SourceRole, QuantityRequiredRole });
         }
     }
 
     void IndustryManufacturingSetupModel::setRuns(EveType::IdType id, uint runs)
     {
         mSetup.setRuns(id, runs);
+
+        const auto output = std::find_if(std::begin(mRoot), std::end(mRoot), [=](const auto &item) {
+            Q_ASSERT(item);
+            return item->getTypeId() == id;
+        });
+        if (Q_LIKELY(output != std::end(mRoot)))
+        {
+            const auto &item = *output;
+            Q_ASSERT(item);
+
+            item->setRuns(runs);
+
+            const auto idx = createIndex(item->getRow(), 0, item.get());
+            emit dataChanged(idx, idx, { RunsRole });
+
+            for (const auto &child : *item)
+                signalQuantityChange(*child);
+        }
+    }
+
+    void IndustryManufacturingSetupModel::setCharacter(Character::IdType id)
+    {
+        beginResetModel();
+
+        BOOST_SCOPE_EXIT(this_) {
+            this_->endResetModel();
+        } BOOST_SCOPE_EXIT_END
+
+        mCharacterId = id;
+
+        mRoot.clearChildren();
+        mTypeItemMap.clear();
+        mAssetQuantities.clear();
     }
 
     void IndustryManufacturingSetupModel::fillChildren(TreeItem &item)
@@ -279,11 +401,11 @@ namespace Evernus
     }
 
     IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel
-    ::createOutputItem(EveType::IdType typeId, const IndustryManufacturingSetup::OutputSettings &settings) const
+    ::createOutputItem(EveType::IdType typeId, const IndustryManufacturingSetup::OutputSettings &settings)
     {
         const auto &manufacturingInfo = mSetup.getManufacturingInfo(typeId);
 
-        auto item = std::make_unique<TreeItem>(typeId);
+        auto item = std::make_unique<TreeItem>(typeId, *this, mSetup);
         item->setQuantityProduced(manufacturingInfo.mQuantity);
         item->setRuns(settings.mRuns);
         item->setTime(manufacturingInfo.mTime);
@@ -292,15 +414,52 @@ namespace Evernus
     }
 
     IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel
-    ::createSourceItem(const EveDataProvider::MaterialInfo &materialInfo) const
+    ::createSourceItem(const EveDataProvider::MaterialInfo &materialInfo)
     {
         const auto &manufacturingInfo = mSetup.getManufacturingInfo(materialInfo.mMaterialId);
 
-        auto item = std::make_unique<TreeItem>(materialInfo.mMaterialId);
+        auto item = std::make_unique<TreeItem>(materialInfo.mMaterialId, *this, mSetup);
         item->setQuantityProduced(manufacturingInfo.mQuantity);
         item->setQuantityRequired(materialInfo.mQuantity);
         item->setTime(manufacturingInfo.mTime);
 
         return item;
+    }
+
+    template<class Iterator>
+    void IndustryManufacturingSetupModel::fillAssetList(Iterator begin, Iterator end)
+    {
+        while (begin != end)
+        {
+            const auto &item = *begin;
+
+            mAssetQuantities[item->getTypeId()].mInitialQuantity += item->getQuantity();
+            mAssetQuantities[item->getTypeId()].mCurrentQuantity += item->getQuantity();
+
+            fillAssetList(std::begin(*item), std::end(*item));
+
+            ++begin;
+        }
+    }
+
+    quint64 IndustryManufacturingSetupModel::takeAssets(EveType::IdType typeId, quint64 max)
+    {
+        auto &quantities = mAssetQuantities[typeId];
+
+        const auto quantityTaken = std::min(max, quantities.mCurrentQuantity);
+        quantities.mCurrentQuantity -= quantityTaken;
+
+        return quantityTaken;
+    }
+
+    void IndustryManufacturingSetupModel::signalQuantityChange(TreeItem &item)
+    {
+        mAssetQuantities[item.getTypeId()].mCurrentQuantity = mAssetQuantities[item.getTypeId()].mInitialQuantity;
+
+        const auto idx = createIndex(item.getRow(), 0, &item);
+        emit dataChanged(idx, idx, { QuantityRequiredRole, RunsRole });
+
+        for (const auto &child : item)
+            signalQuantityChange(*child);
     }
 }

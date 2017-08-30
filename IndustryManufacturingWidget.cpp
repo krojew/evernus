@@ -48,12 +48,14 @@ namespace Evernus
                                                              const MarketGroupRepository &groupRepo,
                                                              const CharacterRepository &characterRepo,
                                                              TaskManager &taskManager,
+                                                             const AssetProvider &assetProvider,
                                                              QByteArray clientId,
                                                              QByteArray clientSecret,
                                                              QWidget *parent)
         : QWidget{parent}
         , mDataProvider{dataProvider}
         , mTaskManager{taskManager}
+        , mSetupModel{mSetup, mDataProvider, assetProvider}
         , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
     {
         const auto mainLayout = new QVBoxLayout{this};
@@ -152,6 +154,11 @@ namespace Evernus
         });
     }
 
+    void IndustryManufacturingWidget::refreshAssets()
+    {
+        mSetupModel.refreshAssets();
+    }
+
     void IndustryManufacturingWidget::handleNewPreferences()
     {
         mDataFetcher.handleNewPreferences();
@@ -160,7 +167,10 @@ namespace Evernus
     void IndustryManufacturingWidget::setCharacter(Character::IdType id)
     {
         mCharacterId = id;
+
         mSetup.clear();
+        mSetupModel.setCharacter(mCharacterId);
+        mTypeView->deselectAll();
     }
 
     void IndustryManufacturingWidget::refreshTypes()

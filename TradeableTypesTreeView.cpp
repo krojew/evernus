@@ -47,6 +47,11 @@ namespace Evernus
         mTypeModel.selectTypes(types);
     }
 
+    void TradeableTypesTreeView::deselectAll()
+    {
+        mTypeModel.deselectAll();
+    }
+
     void TradeableTypesTreeView::emitTypesChanged()
     {
         mTypesChangeScheduled = false;

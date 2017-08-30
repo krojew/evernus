@@ -353,4 +353,11 @@ namespace Evernus
         mSelectedSet = types;
         endResetModel();
     }
+
+    void TradeableTypesTreeModel::deselectAll()
+    {
+        beginResetModel();
+        mSelectedSet.clear();
+        endResetModel();
+    }
 }

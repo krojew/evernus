@@ -51,6 +51,7 @@ namespace Evernus
 
         TypeSet getSelectedTypes() const;
         void selectTypes(const TypeSet &types);
+        void deselectAll();
 
     private:
         class TypeItem

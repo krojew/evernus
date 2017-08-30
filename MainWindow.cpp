@@ -982,11 +982,13 @@ namespace Evernus
                                                     mRepositoryProvider.getMarketGroupRepository(),
                                                     mRepositoryProvider.getCharacterRepository(),
                                                     taskManager,
+                                                    charAssetProvider,
                                                     clientId,
                                                     clientSecret,
                                                     this};
         addTab(industryTab, tr("Industry"), TabType::Other);
         connect(this, &MainWindow::preferencesChanged, industryTab, &IndustryWidget::handleNewPreferences);
+        connect(this, &MainWindow::characterAssetsChanged, industryTab, &IndustryWidget::refreshAssets);
 
         QSettings settings;
 

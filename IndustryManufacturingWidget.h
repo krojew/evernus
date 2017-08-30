@@ -37,6 +37,7 @@ namespace Evernus
     class EveTypeRepository;
     class EveDataProvider;
     class RegionComboBox;
+    class AssetProvider;
     class TaskManager;
 
     class IndustryManufacturingWidget
@@ -51,12 +52,15 @@ namespace Evernus
                                     const MarketGroupRepository &groupRepo,
                                     const CharacterRepository &characterRepo,
                                     TaskManager &taskManager,
+                                    const AssetProvider &assetProvider,
                                     QByteArray clientId,
                                     QByteArray clientSecret,
                                     QWidget *parent = nullptr);
         IndustryManufacturingWidget(const IndustryManufacturingWidget &) = default;
         IndustryManufacturingWidget(IndustryManufacturingWidget &&) = default;
         virtual ~IndustryManufacturingWidget() = default;
+
+        void refreshAssets();
 
         IndustryManufacturingWidget &operator =(const IndustryManufacturingWidget &) = default;
         IndustryManufacturingWidget &operator =(IndustryManufacturingWidget &&) = default;
@@ -89,7 +93,7 @@ namespace Evernus
         Character::IdType mCharacterId = Character::invalidId;
 
         IndustryManufacturingSetup mSetup{mDataProvider};
-        IndustryManufacturingSetupModel mSetupModel{mSetup, mDataProvider};
+        IndustryManufacturingSetupModel mSetupModel;
         IndustryManufacturingSetupController mSetupController{mSetupModel};
 
         MarketOrderDataFetcher mDataFetcher;

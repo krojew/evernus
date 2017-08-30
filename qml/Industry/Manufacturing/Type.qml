@@ -203,7 +203,6 @@ Item {
 
                     SpinBox {
                         value: runs
-                        minimumValue: 1
                         maximumValue: 1000000
 
                         onValueChanged: SetupController.setRuns(typeId, value)
