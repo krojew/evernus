@@ -121,7 +121,8 @@ namespace Evernus
 
         void fillChildren(TreeItem &item);
 
-        TreeItemPtr createOutputItem(EveType::IdType typeId, uint runs) const;
+        TreeItemPtr createOutputItem(EveType::IdType typeId,
+                                     const IndustryManufacturingSetup::OutputSettings &settings) const;
         TreeItemPtr createSourceItem(const EveDataProvider::MaterialInfo &materialInfo) const;
     };
 }

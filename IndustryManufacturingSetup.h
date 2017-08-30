@@ -29,7 +29,6 @@ namespace Evernus
     class IndustryManufacturingSetup final
     {
     public:
-        using OutputTypeMap = std::unordered_map<EveType::IdType, uint>;
         using TypeSet = std::unordered_set<EveType::IdType>;
 
         enum class InventorySource
@@ -46,6 +45,15 @@ namespace Evernus
         struct TypeSettings
         {
             InventorySource mSource = InventorySource::Manufacture;
+            uint mMaterialEfficiency = 0;
+            uint mTimeEfficiency = 0;
+        };
+
+        struct OutputSettings
+        {
+            uint mRuns = 1;
+            uint mMaterialEfficiency = 0;
+            uint mTimeEfficiency = 0;
         };
 
         struct NotSourceTypeException : std::runtime_error
@@ -53,6 +61,8 @@ namespace Evernus
             using std::runtime_error::runtime_error;
             virtual ~NotSourceTypeException() = default;
         };
+
+        using OutputTypeMap = std::unordered_map<EveType::IdType, OutputSettings>;
 
         explicit IndustryManufacturingSetup(const EveDataProvider &dataProvider);
         IndustryManufacturingSetup(const IndustryManufacturingSetup &) = default;

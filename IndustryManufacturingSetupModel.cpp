@@ -247,7 +247,8 @@ namespace Evernus
         }
     }
 
-    void IndustryManufacturingSetupModel::setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source)
+    void IndustryManufacturingSetupModel
+    ::setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source)
     {
         mSetup.setSource(id, source);
 
@@ -273,13 +274,13 @@ namespace Evernus
     }
 
     IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel
-    ::createOutputItem(EveType::IdType typeId, uint runs) const
+    ::createOutputItem(EveType::IdType typeId, const IndustryManufacturingSetup::OutputSettings &settings) const
     {
         const auto &manufacturingInfo = mSetup.getManufacturingInfo(typeId);
 
         auto item = std::make_unique<TreeItem>(typeId);
         item->setQuantityProduced(manufacturingInfo.mQuantity);
-        item->setRuns(runs);
+        item->setRuns(settings.mRuns);
         item->setTime(manufacturingInfo.mTime);
 
         return item;

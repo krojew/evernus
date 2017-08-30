@@ -27,7 +27,7 @@ namespace Evernus
         mManufacturingInfo.clear();
 
         for (const auto type : types)
-            mOutputTypes.emplace(type, 1);
+            mOutputTypes.emplace(type, OutputSettings{});
 
         TypeSet usedTypes;
 
