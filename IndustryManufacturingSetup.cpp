@@ -23,14 +23,17 @@ namespace Evernus
 
     void IndustryManufacturingSetup::setOutputTypes(TypeSet types)
     {
-        mOutputTypes = std::move(types);
+        mOutputTypes.clear();
         mManufacturingInfo.clear();
+
+        for (const auto type : types)
+            mOutputTypes.emplace(type, 1);
 
         TypeSet usedTypes;
 
         // build source info
-        for (const auto output : mOutputTypes)
-            fillManufacturingInfo(output, usedTypes);
+        for (const auto &output : mOutputTypes)
+            fillManufacturingInfo(output.first, usedTypes);
 
         // clean setup of unused types; mTypeSettings now contains both new and old sources
         for (auto it = std::begin(mTypeSettings); it != std::end(mTypeSettings);)
@@ -44,14 +47,14 @@ namespace Evernus
         // if type is already used as a source, remove from output; mTypeSettings should contain all types except for output
         for (auto it = std::begin(mOutputTypes); it != std::end(mOutputTypes);)
         {
-            if (mTypeSettings.find(*it) != std::end(mTypeSettings))
+            if (mTypeSettings.find(it->first) != std::end(mTypeSettings))
                 it = mOutputTypes.erase(it);
             else
                 ++it;
         }
     }
 
-    IndustryManufacturingSetup::TypeSet IndustryManufacturingSetup::getOutputTypes() const
+    const IndustryManufacturingSetup::OutputTypeMap &IndustryManufacturingSetup::getOutputTypes() const
     {
         return mOutputTypes;
     }
@@ -76,7 +79,10 @@ namespace Evernus
 
     IndustryManufacturingSetup::TypeSet IndustryManufacturingSetup::getAllTypes() const
     {
-        auto types = mOutputTypes;
+        TypeSet types;
+
+        for (const auto &output : mOutputTypes)
+            types.insert(output.first);
         for (const auto &type : mTypeSettings)
             types.insert(type.first);
 

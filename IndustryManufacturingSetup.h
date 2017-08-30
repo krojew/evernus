@@ -29,6 +29,7 @@ namespace Evernus
     class IndustryManufacturingSetup final
     {
     public:
+        using OutputTypeMap = std::unordered_map<EveType::IdType, uint>;
         using TypeSet = std::unordered_set<EveType::IdType>;
 
         enum class InventorySource
@@ -59,7 +60,7 @@ namespace Evernus
         ~IndustryManufacturingSetup() = default;
 
         void setOutputTypes(TypeSet types);
-        TypeSet getOutputTypes() const;
+        const OutputTypeMap &getOutputTypes() const;
 
         const EveDataProvider::ManufacturingInfo &getManufacturingInfo(EveType::IdType typeId) const;
         const TypeSettings &getTypeSettings(EveType::IdType typeId) const;
@@ -79,7 +80,7 @@ namespace Evernus
         std::unordered_map<EveType::IdType, TypeSettings> mTypeSettings;
         std::unordered_map<EveType::IdType, EveDataProvider::ManufacturingInfo> mManufacturingInfo;
 
-        TypeSet mOutputTypes;
+        OutputTypeMap mOutputTypes;
 
         void fillManufacturingInfo(EveType::IdType typeId, TypeSet &usedTypes);
     };

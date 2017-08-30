@@ -64,6 +64,7 @@ namespace Evernus
             QuantityRequiredRole,
             SourceRole,
             TimeRole,
+            RunsRole,
         };
 
         class TreeItem;
@@ -85,6 +86,9 @@ namespace Evernus
             uint getQuantityRequired() const noexcept;
             void setQuantityRequired(uint value) noexcept;
 
+            uint getRuns() const noexcept;
+            void setRuns(uint value) noexcept;
+
             std::chrono::seconds getTime() const noexcept;
             void setTime(std::chrono::seconds value) noexcept;
 
@@ -103,6 +107,7 @@ namespace Evernus
             EveType::IdType mTypeId = EveType::invalidId;
             uint mQuantityProduced = 0;
             uint mQuantityRequired = 0;
+            uint mRuns = 1;
             std::chrono::seconds mTime;
             std::vector<TreeItemPtr> mChildItems;
         };
@@ -116,7 +121,7 @@ namespace Evernus
 
         void fillChildren(TreeItem &item);
 
-        TreeItemPtr createOutputItem(EveType::IdType typeId) const;
+        TreeItemPtr createOutputItem(EveType::IdType typeId, uint runs) const;
         TreeItemPtr createSourceItem(const EveDataProvider::MaterialInfo &materialInfo) const;
     };
 }

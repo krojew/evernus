@@ -48,6 +48,16 @@ namespace Evernus
         mQuantityRequired = value;
     }
 
+    uint IndustryManufacturingSetupModel::TreeItem::getRuns() const noexcept
+    {
+        return mRuns;
+    }
+
+    void IndustryManufacturingSetupModel::TreeItem::setRuns(uint value) noexcept
+    {
+        mRuns = value;
+    }
+
     std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getTime() const noexcept
     {
         return mTime;
@@ -142,6 +152,8 @@ namespace Evernus
                     const qulonglong time = item->getTime().count();
                     return QStringLiteral("%1:%2:%3").arg(time / 3600, 2, 10, QLatin1Char('0')).arg((time / 60) % 60, 2, 10, QLatin1Char('0')).arg(time % 60, 2, 10, QLatin1Char('0'));
                 }
+            case RunsRole:
+                return item->getRuns();
             }
         }
         catch (const IndustryManufacturingSetup::NotSourceTypeException &e)
@@ -195,6 +207,7 @@ namespace Evernus
             { QuantityRequiredRole, QByteArrayLiteral("quantityRequired") },
             { SourceRole, QByteArrayLiteral("source") },
             { TimeRole, QByteArrayLiteral("time") },
+            { RunsRole, QByteArrayLiteral("runs") },
         };
     }
 
@@ -223,13 +236,13 @@ namespace Evernus
         mRoot.clearChildren();
         mTypeItemMap.clear();
 
-        const auto output = mSetup.getOutputTypes();
-        for (const auto outputType : output)
+        const auto &output = mSetup.getOutputTypes();
+        for (const auto &outputType : output)
         {
-            auto child = createOutputItem(outputType);
+            auto child = createOutputItem(outputType.first, outputType.second);
             fillChildren(*child);
 
-            mTypeItemMap.emplace(outputType, std::ref(*child));
+            mTypeItemMap.emplace(outputType.first, std::ref(*child));
             mRoot.appendChild(std::move(child));
         }
     }
@@ -259,12 +272,14 @@ namespace Evernus
         }
     }
 
-    IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel::createOutputItem(EveType::IdType typeId) const
+    IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel
+    ::createOutputItem(EveType::IdType typeId, uint runs) const
     {
         const auto &manufacturingInfo = mSetup.getManufacturingInfo(typeId);
 
         auto item = std::make_unique<TreeItem>(typeId);
         item->setQuantityProduced(manufacturingInfo.mQuantity);
+        item->setRuns(runs);
         item->setTime(manufacturingInfo.mTime);
 
         return item;
