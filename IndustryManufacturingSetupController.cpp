@@ -28,4 +28,9 @@ namespace Evernus
         mModel.setSource(id, source);
         emit sourceChanged(id, source);
     }
+
+    void IndustryManufacturingSetupController::setRuns(EveType::IdType id, uint runs)
+    {
+        mModel.setRuns(id, runs);
+    }
 }

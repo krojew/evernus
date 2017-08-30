@@ -260,6 +260,11 @@ namespace Evernus
         }
     }
 
+    void IndustryManufacturingSetupModel::setRuns(EveType::IdType id, uint runs)
+    {
+        mSetup.setRuns(id, runs);
+    }
+
     void IndustryManufacturingSetupModel::fillChildren(TreeItem &item)
     {
         const auto &info = mSetup.getManufacturingInfo(item.getTypeId());

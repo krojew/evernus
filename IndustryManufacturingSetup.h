@@ -80,6 +80,7 @@ namespace Evernus
         void clear() noexcept;
 
         void setSource(EveType::IdType id, InventorySource source);
+        void setRuns(EveType::IdType id, uint runs);
 
         IndustryManufacturingSetup &operator =(const IndustryManufacturingSetup &) = default;
         IndustryManufacturingSetup &operator =(IndustryManufacturingSetup &&) = default;

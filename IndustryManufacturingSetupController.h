@@ -41,6 +41,7 @@ namespace Evernus
 
     public slots:
         void setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);
+        void setRuns(EveType::IdType id, uint runs);
 
     signals:
         void typeSelected(EveType::IdType id);

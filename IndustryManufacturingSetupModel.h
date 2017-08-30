@@ -51,6 +51,7 @@ namespace Evernus
         void refreshData();
 
         void setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);
+        void setRuns(EveType::IdType id, uint runs);
 
         IndustryManufacturingSetupModel &operator =(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;

@@ -108,6 +108,18 @@ namespace Evernus
         throw NotSourceTypeException{"Missing type settings for: " + std::to_string(id)};
     }
 
+    void IndustryManufacturingSetup::setRuns(EveType::IdType id, uint runs)
+    {
+        const auto it = mOutputTypes.find(id);
+        if (Q_LIKELY(it != std::end(mOutputTypes)))
+        {
+            it->second.mRuns = runs;
+            return;
+        }
+
+        throw NotSourceTypeException{"Missing output settings for: " + std::to_string(id)};
+    }
+
     void IndustryManufacturingSetup::fillManufacturingInfo(EveType::IdType typeId, TypeSet &usedTypes)
     {
         if (mManufacturingInfo.find(typeId) != std::end(mManufacturingInfo))
