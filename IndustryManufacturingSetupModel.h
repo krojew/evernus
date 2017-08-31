@@ -176,6 +176,6 @@ namespace Evernus
 
         quint64 takeAssets(EveType::IdType typeId, quint64 max);
 
-        void signalQuantityChange(TreeItem &item);
+        void signalQuantityChange(EveType::IdType typeId);
     };
 }

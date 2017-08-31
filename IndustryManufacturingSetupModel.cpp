@@ -346,6 +346,12 @@ namespace Evernus
         {
             const auto idx = createIndex(item->second.get().getRow(), 0, &item->second.get());
             emit dataChanged(idx, idx, { SourceRole, QuantityRequiredRole });
+
+            for (const auto &child : item->second.get())
+            {
+                Q_ASSERT(child);
+                signalQuantityChange(child->getTypeId());
+            }
         }
     }
 
@@ -368,7 +374,7 @@ namespace Evernus
             emit dataChanged(idx, idx, { RunsRole });
 
             for (const auto &child : *item)
-                signalQuantityChange(*child);
+                signalQuantityChange(child->getTypeId());
         }
     }
 
@@ -452,14 +458,33 @@ namespace Evernus
         return quantityTaken;
     }
 
-    void IndustryManufacturingSetupModel::signalQuantityChange(TreeItem &item)
+    void IndustryManufacturingSetupModel::signalQuantityChange(EveType::IdType typeId)
     {
-        mAssetQuantities[item.getTypeId()].mCurrentQuantity = mAssetQuantities[item.getTypeId()].mInitialQuantity;
+        std::unordered_set<EveType::IdType> remaining{typeId}, inspected;
 
-        const auto idx = createIndex(item.getRow(), 0, &item);
-        emit dataChanged(idx, idx, { QuantityRequiredRole, RunsRole });
+        do {
+            const auto nextId = *std::begin(remaining);
+            remaining.erase(std::begin(remaining));
 
-        for (const auto &child : item)
-            signalQuantityChange(*child);
+            Q_ASSERT(inspected.find(nextId) == std::end(inspected));
+            inspected.emplace(nextId);
+
+            auto &quantities = mAssetQuantities[nextId];
+            quantities.mCurrentQuantity = quantities.mInitialQuantity;
+
+            const auto &manufacturingInfo = mSetup.getManufacturingInfo(nextId);
+            for (const auto &source : manufacturingInfo.mMaterials)
+            {
+                if (inspected.find(source.mMaterialId) == std::end(inspected))
+                    remaining.insert(source.mMaterialId);
+            }
+
+            const auto items = mTypeItemMap.equal_range(nextId);
+            for (auto item = items.first; item != items.second; ++item)
+            {
+                const auto idx = createIndex(item->second.get().getRow(), 0, &item->second.get());
+                emit dataChanged(idx, idx, { RunsRole, QuantityRequiredRole });
+            }
+        } while (!remaining.empty());
     }
 }
