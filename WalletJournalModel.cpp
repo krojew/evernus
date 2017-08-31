@@ -241,8 +241,7 @@ namespace Evernus
 
         for (const auto &entry : entries)
         {
-            const auto argName = entry->getArgName();
-            auto reason = entry->getReason();
+            const auto extraInfoId = entry->getExtraInfoId();
 
             mData.emplace_back();
             auto &data = mData.back();
@@ -253,10 +252,10 @@ namespace Evernus
                 << mDataProvider.getRefTypeName(entry->getRefTypeId())
                 << entry->getOwnerName1()
                 << entry->getOwnerName2()
-                << ((argName) ? (*argName) : (QVariant{}))
+                << (extraInfoId != 0) ? (mDataProvider.getGenericName(extraInfoId)) : (QVariant{})
                 << entry->getAmount()
                 << entry->getBalance()
-                << ((reason) ? (reason->remove(re)) : (QVariant{}))
+                << entry->getReason().remove(re)
                 << entry->getId();
         }
     }

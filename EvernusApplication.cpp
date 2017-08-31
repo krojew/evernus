@@ -1171,11 +1171,9 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::WalletJournal, task))
             return;
 
-        // TODO: enable when complete
-        // https://github.com/ccpgames/esi-issues/issues/493
-//        if (shouldUseESIOverXML())
-//            importCharacterWalletJournalFromESI(id, task);
-//        else
+        if (shouldUseESIOverXML())
+            importCharacterWalletJournalFromESI(id, task);
+        else
             importCharacterWalletJournalFromXML(id, task);
     }
 
@@ -1189,11 +1187,9 @@ namespace Evernus
         if (!force && !checkImportAndEndTask(id, TimerType::WalletTransactions, task))
             return;
 
-        // TODO: enable when complete
-        // https://github.com/ccpgames/esi-issues/issues/493
-//        if (shouldUseESIOverXML())
-//            importCharacterWalletTransactionsFromESI(id, task);
-//        else
+        if (shouldUseESIOverXML())
+            importCharacterWalletTransactionsFromESI(id, task);
+        else
             importCharacterWalletTransactionsFromXML(id, task);
     }
 

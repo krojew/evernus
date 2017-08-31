@@ -739,10 +739,50 @@ namespace Evernus
             // https://bugreports.qt.io/browse/QTBUG-61145
             auto journal = QtConcurrent::blockingMappedReduced<WalletJournal>(
                 data.array(),
-                std::function<WalletJournalEntry (const QJsonValue &)>{[](const auto &value) {
+                std::function<WalletJournalEntry (const QJsonValue &)>{[=](const auto &value) {
                     const auto entryObj = value.toObject();
 
-                    WalletJournalEntry entry{};
+                    WalletJournalEntry entry{static_cast<WalletJournalEntry::IdType>(entryObj.value(QStringLiteral("ref_id")).toDouble())};
+                    entry.setCharacterId(charId);
+                    entry.setTimestamp(getDateTimeFromString(entryObj.value(QStringLiteral("date")).toString()));
+                    entry.setRefType(entryObj.value(QStringLiteral("ref_type")).toString());
+                    entry.setOwnerId1(entryObj.value(QStringLiteral("first_party_id")).toDouble());
+                    entry.setOwnerId2(entryObj.value(QStringLiteral("second_party_id")).toDouble());
+
+                    if (entryObj.contains(QStringLiteral("extra_info")))
+                    {
+                        const auto extraInfo = entryObj.value(QStringLiteral("extra_info")).toObject();
+                        const auto checkAndSetExtraInfo = [&](const auto &key) {
+                            if (extraInfo.contains(key))
+                            {
+                                entry.setExtraInfoId(extraInfo.value(key).toDouble());
+                                entry.setExtraInfoType(key);
+                                return true;
+                            }
+
+                            return false;
+                        };
+
+                        checkAndSetExtraInfo(QStringLiteral("alliance_id")) &&
+                        checkAndSetExtraInfo(QStringLiteral("character_id")) &&
+                        checkAndSetExtraInfo(QStringLiteral("contract_id")) &&
+                        checkAndSetExtraInfo(QStringLiteral("corporation_id")) &&
+                        checkAndSetExtraInfo(QStringLiteral("destroyed_ship_type_id")) &&
+                        checkAndSetExtraInfo(QStringLiteral("job_id")) &&
+                        checkAndSetExtraInfo(QStringLiteral("location_id")) &&
+                        checkAndSetExtraInfo(QStringLiteral("npc_id")) &&
+                        checkAndSetExtraInfo(QStringLiteral("planet_id")) &&
+                        checkAndSetExtraInfo(QStringLiteral("system_id")) &&
+                        checkAndSetExtraInfo(QStringLiteral("transaction_id"));
+                    }
+
+                    entry.setAmount(entryObj.value(QStringLiteral("amount")).toDouble());
+                    entry.setReason(entryObj.value(QStringLiteral("reason")).toString());
+
+                    if (entryObj.contains(QStringLiteral("tax_reciever_id")))
+                        entry.setTaxReceiverId(entryObj.value(QStringLiteral("tax_reciever_id")).toDouble());
+                    if (entryObj.contains(QStringLiteral("tax")))
+                        entry.setTaxAmount(entryObj.value(QStringLiteral("tax")).toDouble());
 
                     return entry;
                 }},
@@ -1078,7 +1118,10 @@ namespace Evernus
     QDateTime ESIManager::getDateTimeFromString(const QString &value)
     {
         auto dt = QDateTime::fromString(value, Qt::ISODate);
-        dt.setTimeSpec(Qt::UTC);
+        if (Q_UNLIKELY(!dt.isValid()))
+            dt = QDateTime::currentDateTimeUtc();   // just to be safe
+        else
+            dt.setTimeSpec(Qt::UTC);
 
         return dt;
     }

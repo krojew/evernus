@@ -26,10 +26,9 @@ namespace Evernus
         : public Entity<quint64>
     {
     public:
-        typedef boost::optional<QString> ArgType;
-        typedef boost::optional<QString> ReasonType;
-        typedef boost::optional<quint64> TaxReceiverType;
-        typedef boost::optional<double> TaxAmountType;
+        using TaxReceiverType = boost::optional<quint64>;
+        using ExtraInfoIdType = boost::optional<quint64>;
+        using TaxAmountType = boost::optional<double>;
 
         using Entity::Entity;
 
@@ -44,8 +43,10 @@ namespace Evernus
         QDateTime getTimestamp() const;
         void setTimestamp(const QDateTime &dt);
 
-        uint getRefTypeId() const noexcept;
-        void setRefTypeId(uint id) noexcept;
+        QString getRefType() const &;
+        QString &&getRefType() && noexcept;
+        void setRefType(const QString &type);
+        void setRefType(QString &&type) noexcept;
 
         QString getOwnerName1() const &;
         QString &&getOwnerName1() && noexcept;
@@ -63,13 +64,13 @@ namespace Evernus
         quint64 getOwnerId2() const noexcept;
         void setOwnerId2(quint64 id) noexcept;
 
-        ArgType getArgName() const &;
-        ArgType &&getArgName() && noexcept;
-        void setArgName(const ArgType &name);
-        void setArgName(ArgType &&name);
+        ExtraInfoIdType getExtraInfoId() const noexcept;
+        void setExtraInfoId(ExtraInfoIdType id) noexcept;
 
-        quint64 getArgId() const noexcept;
-        void setArgId(quint64 id) noexcept;
+        QString getExtraInfoType() const &;
+        QString &&getExtraInfoType() && noexcept;
+        void setExtraInfoType(const QString &type);
+        void setExtraInfoType(QString &&type) noexcept;
 
         double getAmount() const noexcept;
         void setAmount(double value) noexcept;
@@ -77,10 +78,10 @@ namespace Evernus
         double getBalance() const noexcept;
         void setBalance(double value) noexcept;
 
-        ReasonType getReason() const &;
-        ReasonType &&getReason() && noexcept;
-        void setReason(const ReasonType &reason);
-        void setReason(ReasonType &&reason);
+        QString getReason() const &;
+        QString &&getReason() && noexcept;
+        void setReason(const QString &reason);
+        void setReason(QString &&reason);
 
         TaxReceiverType getTaxReceiverId() const noexcept;
         void setTaxReceiverId(TaxReceiverType id) noexcept;
@@ -100,16 +101,16 @@ namespace Evernus
     private:
         Character::IdType mCharacterId = Character::invalidId;
         QDateTime mTimestamp;
-        uint mRefTypeId = 0;
+        QString mRefType = 0;
         QString mOwnerName1;
         quint64 mOwnerId1 = 0;
         QString mOwnerName2;
         quint64 mOwnerId2 = 0;
-        ArgType mArgName;
-        quint64 mArgId = 0;
+        ExtraInfoIdType mExtraInfoId;
+        QString mExtraInfoType;
         double mAmount = 0.;
         double mBalance = 0.;
-        ReasonType mReason;
+        QString mReason;
         TaxReceiverType mTaxReceiverId = static_cast<quint64>(0u);
         TaxAmountType mTaxAmount = 0.;
         quint64 mCorporationId = 0;

@@ -37,9 +37,8 @@ namespace Evernus
 
     WalletJournalEntryRepository::EntityPtr WalletJournalEntryRepository::populate(const QSqlRecord &record) const
     {
-        const auto argName = record.value("arg_name");
-        const auto reason = record.value("reason");
         const auto taxReceiverId = record.value("tax_receiver_id");
+        const auto extraInfoId = record.value("extra_info_id");
         const auto taxAmount = record.value("tax_amount");
 
         auto timestamp = record.value("timestamp").toDateTime();
@@ -48,20 +47,20 @@ namespace Evernus
         auto walletJournalEntry = std::make_shared<WalletJournalEntry>(record.value("id").value<WalletJournalEntry::IdType>());
         walletJournalEntry->setCharacterId(record.value("character_id").value<Character::IdType>());
         walletJournalEntry->setTimestamp(timestamp);
-        walletJournalEntry->setRefTypeId(record.value("ref_type_id").toUInt());
         walletJournalEntry->setOwnerName1(record.value("owner_name_1").toString());
         walletJournalEntry->setOwnerId1(record.value("owner_id_1").toULongLong());
         walletJournalEntry->setOwnerName2(record.value("owner_name_2").toString());
         walletJournalEntry->setOwnerId2(record.value("owner_id_2").toULongLong());
-        walletJournalEntry->setArgName((argName.isNull()) ? (WalletJournalEntry::ArgType{}) : (argName.toString()));
-        walletJournalEntry->setArgId(record.value("arg_id").toULongLong());
+        walletJournalEntry->setExtraInfoId((extraInfoId.isNull()) ? (WalletJournalEntry::ExtraInfoIdType{}) : (extraInfoId.toULongLong()));
         walletJournalEntry->setAmount(record.value("amount").toDouble());
         walletJournalEntry->setBalance(record.value("balance").toDouble());
-        walletJournalEntry->setReason((reason.isNull()) ? (WalletJournalEntry::ReasonType{}) : (reason.toString()));
+        walletJournalEntry->setReason(record.value("reason").toString());
         walletJournalEntry->setTaxReceiverId((taxReceiverId.isNull()) ? (WalletJournalEntry::TaxReceiverType{}) : (taxReceiverId.toULongLong()));
         walletJournalEntry->setTaxAmount((taxAmount.isNull()) ? (WalletJournalEntry::TaxAmountType{}) : (taxAmount.toDouble()));
         walletJournalEntry->setCorporationId(record.value("corporation_id").toULongLong());
         walletJournalEntry->setIgnored(record.value("ignored").toBool());
+        walletJournalEntry->setExtraInfoType(record.value(QStringLiteral("extra_info_type")).toString());
+        walletJournalEntry->setRefType(record.value(QStringLiteral("ref_type")).toString());
         walletJournalEntry->setNew(false);
 
         return walletJournalEntry;
@@ -69,25 +68,25 @@ namespace Evernus
 
     void WalletJournalEntryRepository::create(const Repository<Character> &characterRepo) const
     {
-        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+        exec(QStringLiteral("CREATE TABLE IF NOT EXISTS %1 ("
             "id INTEGER PRIMARY KEY,"
             "character_id BIGINT NOT NULL %2,"
             "timestamp DATETIME NOT NULL,"
-            "ref_type_id INTEGER NOT NULL,"
             "owner_name_1 TEXT NOT NULL,"
             "owner_id_1 BIGINT NOT NULL,"
             "owner_name_2 TEXT NOT NULL,"
             "owner_id_2 BIGINT NOT NULL,"
-            "arg_name TEXT NULL,"
-            "arg_id BIGINT NOT NULL,"
+            "extra_info_id BIGINT NULL,"
             "amount NUMERIC NOT NULL,"
             "balance NUMERIC NOT NULL,"
             "reason TEXT NULL,"
             "tax_receiver_id BIGINT NULL,"
             "tax_amount NUMERIC NULL,"
             "corporation_id BIGINT NOT NULL,"
-            "ignored TINYINT NOT NULL"
-        ")"}.arg(getTableName()).arg(
+            "ignored TINYINT NOT NULL,"
+            "extra_info_type TEXT NULL,"
+            "ref_type TEXT NULL"
+        ")").arg(getTableName()).arg(
             (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
 
         exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
@@ -196,22 +195,22 @@ namespace Evernus
             << "owner_id_1"
             << "owner_name_2"
             << "owner_id_2"
-            << "arg_name"
-            << "arg_id"
+            << "extra_info_id"
             << "amount"
             << "balance"
             << "reason"
             << "tax_receiver_id"
             << "tax_amount"
             << "corporation_id"
-            << "ignored";
+            << "ignored"
+            << "extra_info_type"
+            << "ref_type";
     }
 
     void WalletJournalEntryRepository::bindValues(const WalletJournalEntry &entity, QSqlQuery &query) const
     {
-        const auto argName = entity.getArgName();
-        const auto reason = entity.getReason();
         const auto taxReceiverId = entity.getTaxReceiverId();
+        const auto extraInfoId = entity.getExtraInfoId();
         const auto taxAmount = entity.getTaxAmount();
 
         if (entity.getId() != WalletJournalEntry::invalidId)
@@ -219,27 +218,26 @@ namespace Evernus
 
         query.bindValue(":character_id", entity.getCharacterId());
         query.bindValue(":timestamp", entity.getTimestamp());
-        query.bindValue(":ref_type_id", entity.getRefTypeId());
         query.bindValue(":owner_name_1", entity.getOwnerName1());
         query.bindValue(":owner_id_1", entity.getOwnerId1());
         query.bindValue(":owner_name_2", entity.getOwnerName2());
         query.bindValue(":owner_id_2", entity.getOwnerId2());
-        query.bindValue(":argName", (argName) ? (*argName) : (QVariant{QVariant::String}));
-        query.bindValue(":arg_id", entity.getArgId());
+        query.bindValue(":extra_info_id", (extraInfoId) ? (*extraInfoId) : (QVariant{QVariant::ULongLong}));
         query.bindValue(":amount", entity.getAmount());
         query.bindValue(":balance", entity.getBalance());
-        query.bindValue(":reason", (reason) ? (*reason) : (QVariant{QVariant::String}));
+        query.bindValue(":reason", entity.getReason());
         query.bindValue(":tax_receiver_id", (taxReceiverId) ? (*taxReceiverId) : (QVariant{QVariant::ULongLong}));
         query.bindValue(":tax_amount", (taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
         query.bindValue(":corporation_id", entity.getCorporationId());
         query.bindValue(":ignored", entity.isIgnored());
+        query.bindValue(":extra_info_type", entity.getExtraInfoType());
+        query.bindValue(":ref_type", entity.getRefType());
     }
 
     void WalletJournalEntryRepository::bindPositionalValues(const WalletJournalEntry &entity, QSqlQuery &query) const
     {
-        const auto argName = entity.getArgName();
-        const auto reason = entity.getReason();
         const auto taxReceiverId = entity.getTaxReceiverId();
+        const auto extraInfoId = entity.getExtraInfoId();
         const auto taxAmount = entity.getTaxAmount();
 
         if (entity.getId() != WalletJournalEntry::invalidId)
@@ -247,20 +245,20 @@ namespace Evernus
 
         query.addBindValue(entity.getCharacterId());
         query.addBindValue(entity.getTimestamp());
-        query.addBindValue(entity.getRefTypeId());
         query.addBindValue(entity.getOwnerName1());
         query.addBindValue(entity.getOwnerId1());
         query.addBindValue(entity.getOwnerName2());
         query.addBindValue(entity.getOwnerId2());
-        query.addBindValue((argName) ? (*argName) : (QVariant{QVariant::String}));
-        query.addBindValue(entity.getArgId());
+        query.addBindValue((extraInfoId) ? (*extraInfoId) : (QVariant{QVariant::ULongLong}));
         query.addBindValue(entity.getAmount());
         query.addBindValue(entity.getBalance());
-        query.addBindValue((reason) ? (*reason) : (QVariant{QVariant::String}));
+        query.addBindValue(entity.getReason());
         query.addBindValue((taxReceiverId) ? (*taxReceiverId) : (QVariant{QVariant::ULongLong}));
         query.addBindValue((taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
         query.addBindValue(entity.getCorporationId());
         query.addBindValue(entity.isIgnored());
+        query.addBindValue(entity.getExtraInfoType());
+        query.addBindValue(entity.getRefType());
     }
 
     template<class T>

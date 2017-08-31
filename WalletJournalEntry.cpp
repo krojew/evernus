@@ -36,14 +36,24 @@ namespace Evernus
         mTimestamp = dt;
     }
 
-    uint WalletJournalEntry::getRefTypeId() const noexcept
+    QString WalletJournalEntry::getRefType() const &
     {
-        return mRefTypeId;
+        return mRefType;
     }
 
-    void WalletJournalEntry::setRefTypeId(uint id) noexcept
+    QString &&WalletJournalEntry::getRefType() && noexcept
     {
-        mRefTypeId = id;
+        return std::move(mRefType);
+    }
+
+    void WalletJournalEntry::setRefType(const QString &type)
+    {
+        mRefType = type;
+    }
+
+    void WalletJournalEntry::setRefType(QString &&type) noexcept
+    {
+        mRefType = std::move(type);
     }
 
     QString WalletJournalEntry::getOwnerName1() const &
@@ -106,34 +116,34 @@ namespace Evernus
         mOwnerId2 = id;
     }
 
-    WalletJournalEntry::ArgType WalletJournalEntry::getArgName() const &
+    WalletJournalEntry::ExtraInfoIdType WalletJournalEntry::getExtraInfoId() const noexcept
     {
-        return mArgName;
+        return mExtraInfoId;
     }
 
-    WalletJournalEntry::ArgType &&WalletJournalEntry::getArgName() && noexcept
+    void WalletJournalEntry::setExtraInfoId(ExtraInfoIdType id) noexcept
     {
-        return std::move(mArgName);
+        mExtraInfoId = id;
     }
 
-    void WalletJournalEntry::setArgName(const ArgType &name)
+    QString WalletJournalEntry::getExtraInfoType() const &
     {
-        mArgName = name;
+        return mExtraInfoType;
     }
 
-    void WalletJournalEntry::setArgName(ArgType &&name)
+    QString &&WalletJournalEntry::getExtraInfoType() && noexcept
     {
-        mArgName = std::move(name);
+        return std::move(mExtraInfoType);
     }
 
-    quint64 WalletJournalEntry::getArgId() const noexcept
+    void WalletJournalEntry::setExtraInfoType(const QString &type)
     {
-        return mArgId;
+        mExtraInfoType = type;
     }
 
-    void WalletJournalEntry::setArgId(quint64 id) noexcept
+    void WalletJournalEntry::setExtraInfoType(QString &&type) noexcept
     {
-        mArgId = id;
+        mExtraInfoType = std::move(type);
     }
 
     double WalletJournalEntry::getAmount() const noexcept
@@ -156,22 +166,22 @@ namespace Evernus
         mBalance = value;
     }
 
-    WalletJournalEntry::ReasonType WalletJournalEntry::getReason() const &
+    QString WalletJournalEntry::getReason() const &
     {
         return mReason;
     }
 
-    WalletJournalEntry::ReasonType &&WalletJournalEntry::getReason() && noexcept
+    QString &&WalletJournalEntry::getReason() && noexcept
     {
         return std::move(mReason);
     }
 
-    void WalletJournalEntry::setReason(const ReasonType &reason)
+    void WalletJournalEntry::setReason(const QString &reason)
     {
         mReason = reason;
     }
 
-    void WalletJournalEntry::setReason(ReasonType &&reason)
+    void WalletJournalEntry::setReason(QString &&reason)
     {
         mReason = std::move(reason);
     }

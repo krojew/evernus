@@ -37,7 +37,8 @@ namespace Evernus
         }
         else if (localName == "refTypeID")
         {
-            mCurrentElement->setRefTypeId(convert<uint>(strValue));
+            // TODO: convert to ESI
+            //mCurrentElement->setRefTypeId(convert<uint>(strValue));
         }
         else if (localName == "ownerName1")
         {
@@ -55,13 +56,9 @@ namespace Evernus
         {
             mCurrentElement->setOwnerId2(convert<uint>(strValue));
         }
-        else if (localName == "argName1" && !strValue.isEmpty())
-        {
-            mCurrentElement->setArgName(strValue);
-        }
         else if (localName == "argID1")
         {
-            mCurrentElement->setArgId(convert<quint64>(strValue));
+            mCurrentElement->setExtraInfoId(convert<quint64>(strValue));
         }
         else if (localName == "amount")
         {
