@@ -101,7 +101,7 @@ namespace Evernus
                 required -= mModel.takeAssets(mTypeId, required);
 
             Q_ASSERT(mQuantityProduced > 0);
-            return std::ceil(required / mQuantityProduced);
+            return std::ceil(static_cast<float>(required) / mQuantityProduced);
         }
 
         // we're buying this stuff, so no production
