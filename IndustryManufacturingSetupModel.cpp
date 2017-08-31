@@ -216,6 +216,22 @@ namespace Evernus
                 }
             case RunsRole:
                 return item->getRuns();
+            case MaterialEfficiencyRole:
+                {
+                    const auto id = item->getTypeId();
+                    if (item->getParent() == &mRoot)
+                        return mSetup.getOutputSettings(id).mMaterialEfficiency;
+
+                    return mSetup.getTypeSettings(id).mMaterialEfficiency;
+                }
+            case TimeEfficiencyRole:
+                {
+                    const auto id = item->getTypeId();
+                    if (item->getParent() == &mRoot)
+                        return mSetup.getOutputSettings(id).mTimeEfficiency;
+
+                    return mSetup.getTypeSettings(id).mTimeEfficiency;
+                }
             }
         }
         catch (const IndustryManufacturingSetup::NotSourceTypeException &e)
@@ -270,6 +286,8 @@ namespace Evernus
             { SourceRole, QByteArrayLiteral("source") },
             { TimeRole, QByteArrayLiteral("time") },
             { RunsRole, QByteArrayLiteral("runs") },
+            { MaterialEfficiencyRole, QByteArrayLiteral("materialEfficiency") },
+            { TimeEfficiencyRole, QByteArrayLiteral("timeEfficiency") },
         };
     }
 

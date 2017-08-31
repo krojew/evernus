@@ -62,6 +62,12 @@ namespace Evernus
             virtual ~NotSourceTypeException() = default;
         };
 
+        struct NotOutputTypeException : std::runtime_error
+        {
+            using std::runtime_error::runtime_error;
+            virtual ~NotOutputTypeException() = default;
+        };
+
         using OutputTypeMap = std::unordered_map<EveType::IdType, OutputSettings>;
 
         explicit IndustryManufacturingSetup(const EveDataProvider &dataProvider);
@@ -74,6 +80,7 @@ namespace Evernus
 
         const EveDataProvider::ManufacturingInfo &getManufacturingInfo(EveType::IdType typeId) const;
         const TypeSettings &getTypeSettings(EveType::IdType typeId) const;
+        const OutputSettings &getOutputSettings(EveType::IdType typeId) const;
 
         TypeSet getAllTypes() const;
 

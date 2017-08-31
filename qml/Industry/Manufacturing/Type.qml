@@ -206,6 +206,28 @@ Item {
                         onValueChanged: SetupController.setRuns(typeId, value)
                     }
                 }
+
+                RowLayout {
+                    Text {
+                        text: qsTr("ME:")
+                        color: "#cccccc"
+                    }
+
+                    SpinBox {
+                        value: materialEfficiency
+                        maximumValue: 10
+                    }
+
+                    Text {
+                        text: qsTr("TE:")
+                        color: "#cccccc"
+                    }
+
+                    SpinBox {
+                        value: timeEfficiency
+                        maximumValue: 20
+                    }
+                }
             }
 
             Text {
@@ -213,6 +235,7 @@ Item {
                 text: qsTr("%L1").arg(quantityRequired)
                 color: "#cccccc"
                 font.bold: true
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
             }
         }
     }

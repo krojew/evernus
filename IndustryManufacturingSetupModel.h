@@ -73,6 +73,8 @@ namespace Evernus
             SourceRole,
             TimeRole,
             RunsRole,
+            MaterialEfficiencyRole,
+            TimeEfficiencyRole,
         };
 
         class TreeItem;
