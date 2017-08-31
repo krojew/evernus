@@ -3105,47 +3105,47 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::IndustryManufacturingWidget</name>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="64"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="66"/>
         <source>Import data for current setup </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="69"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="71"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="87"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="89"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="126"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="128"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="194"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="204"/>
         <source>Importing data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="196"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="206"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="197"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="207"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="208"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="218"/>
         <source>View error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="208"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="218"/>
         <source>There was an error initializing the manufacturing view: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3153,7 +3153,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::IndustryWidget</name>
     <message>
-        <location filename="../IndustryWidget.cpp" line="49"/>
+        <location filename="../IndustryWidget.cpp" line="51"/>
         <source>Manufacturing analysis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3926,17 +3926,17 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="988"/>
+        <location filename="../MainWindow.cpp" line="989"/>
         <source>Industry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1010"/>
+        <location filename="../MainWindow.cpp" line="1012"/>
         <source>Toggle character tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1016"/>
+        <location filename="../MainWindow.cpp" line="1018"/>
         <source>Toggle corporation tabs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7259,47 +7259,47 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Type</name>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="151"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="150"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="158"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="157"/>
         <source>Buy from source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="159"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="158"/>
         <source>Acquire for free</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="160"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="159"/>
         <source>Buy at custom cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="162"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="161"/>
         <source>Take assets then buy at custom cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="175"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="174"/>
         <source>Manufacture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="200"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="198"/>
         <source>Runs:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="215"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="213"/>
         <source>%L1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="161"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="160"/>
         <source>Take assets then buy from source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7309,7 +7309,7 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="176"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="175"/>
         <source>Take assets then manufacture</source>
         <translation type="unfinished"></translation>
     </message>

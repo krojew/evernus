@@ -141,53 +141,51 @@ Item {
                     Layout.fillWidth: true
                 }
 
-                Item {
+                RowLayout {
                     visible: !isOutput
                     Layout.fillWidth: true
 
-                    RowLayout {
-                        Text {
-                            id: sourceText
-                            text: qsTr("Source:")
-                            color: "#cccccc"
+                    Text {
+                        id: sourceText
+                        text: qsTr("Source:")
+                        color: "#cccccc"
+                    }
+
+                    ComboBox {
+                        id: sourceCombo
+                        model: ListModel {
+                            ListElement { text: qsTr("Buy from source"); value: 0; }
+                            ListElement { text: qsTr("Acquire for free"); value: 2; }
+                            ListElement { text: qsTr("Buy at custom cost"); value: 3; }
+                            ListElement { text: qsTr("Take assets then buy from source"); value: 4; }
+                            ListElement { text: qsTr("Take assets then buy at custom cost"); value: 6; }
                         }
 
-                        ComboBox {
-                            id: sourceCombo
-                            model: ListModel {
-                                ListElement { text: qsTr("Buy from source"); value: 0; }
-                                ListElement { text: qsTr("Acquire for free"); value: 2; }
-                                ListElement { text: qsTr("Buy at custom cost"); value: 3; }
-                                ListElement { text: qsTr("Take assets then buy from source"); value: 4; }
-                                ListElement { text: qsTr("Take assets then buy at custom cost"); value: 6; }
+                        onCurrentIndexChanged: {
+                            if (!isOutput)
+                                SetupController.setSource(typeId, model.get(currentIndex).value);
+                        }
+
+                        Component.onCompleted: {
+                            if (isOutput)
+                                return;
+
+                            if (quantityProduced > 0) {
+                                model.append({ text: qsTr("Manufacture"), value: 1 });
+                                model.append({ text: qsTr("Take assets then manufacture"), value: 5 });
                             }
 
-                            onCurrentIndexChanged: {
-                                if (!isOutput)
-                                    SetupController.setSource(typeId, model.get(currentIndex).value);
-                            }
 
-                            Component.onCompleted: {
-                                if (isOutput)
-                                    return;
+                            setSourceTypeCombo();
+                        }
 
-                                if (quantityProduced > 0) {
-                                    model.append({ text: qsTr("Manufacture"), value: 1 });
-                                    model.append({ text: qsTr("Take assets then manufacture"), value: 5 });
-                                }
+                        Connections {
+                            target: SetupController
+                            enabled: !isOutput
 
-
-                                setSourceTypeCombo();
-                            }
-
-                            Connections {
-                                target: SetupController
-                                enabled: !isOutput
-
-                                onSourceChanged: {
-                                    if (id == typeId)
-                                        setSourceTypeCombo();
-                                }
+                            onSourceChanged: {
+                                if (id == typeId)
+                                    setSourceTypeCombo();
                             }
                         }
                     }
