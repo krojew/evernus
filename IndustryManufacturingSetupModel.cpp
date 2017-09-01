@@ -96,12 +96,15 @@ namespace Evernus
         if (settings.mSource == IndustryManufacturingSetup::InventorySource::Manufacture ||
             settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
         {
-            auto required = mQuantityRequired * mParent->getEffectiveRuns();
+            const auto runs = mParent->getEffectiveRuns();
+            const auto materialModifier = 1.f; // TODO: implement
+
+            auto required = std::max(static_cast<float>(runs), std::ceil(runs * mQuantityRequired * materialModifier));
             if (settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
                 required -= mModel.takeAssets(mTypeId, required);
 
             Q_ASSERT(mQuantityProduced > 0);
-            return std::ceil(static_cast<float>(required) / mQuantityProduced);
+            return std::ceil(required / mQuantityProduced);
         }
 
         // we're buying this stuff, so no production
