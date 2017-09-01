@@ -34,9 +34,8 @@ class QDir;
 namespace Evernus
 {
     class ConquerableStationRepository;
+    class EveDataManagerProvider;
     class MarketOrderRepository;
-    class ESIManager;
-    class APIManager;
 
     class CachingEveDataProvider
         : public EveDataProvider
@@ -54,7 +53,7 @@ namespace Evernus
                                const ConquerableStationRepository &conquerableStationRepository,
                                const MarketGroupRepository &marketGroupRepository,
                                const CitadelRepository &citadelRepository,
-                               const APIManager &apiManager,
+                               const EveDataManagerProvider &dataManagerProvider,
                                const QSqlDatabase &eveDb,
                                QObject *parent = nullptr);
         virtual ~CachingEveDataProvider();
@@ -111,7 +110,7 @@ namespace Evernus
 
         virtual const ManufacturingInfo &getTypeManufacturingInfo(EveType::IdType typeId) const override;
 
-        void precacheNames(const ESIManager &esiManager);
+        void precacheNames();
         void precacheJumpMap();
         void precacheRefTypes();
 
@@ -145,7 +144,7 @@ namespace Evernus
         const MarketGroupRepository &mMarketGroupRepository;
         const CitadelRepository &mCitadelRepository;
 
-        const APIManager &mAPIManager;
+        const EveDataManagerProvider &mDataManagerProvider;
 
         QSqlDatabase mEveDb;
 

@@ -525,6 +525,19 @@ namespace Evernus
         fetchCharacterWalletTransactions(charId, boost::none, tillId, std::make_shared<WalletTransactions>(), callback);
     }
 
+    void ESIManager::fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const
+    {
+        selectNextInterface().fetchGenericName(id, [=](auto &&data, const auto &error) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error);
+                return;
+            }
+
+            callback(std::move(data), error);
+        });
+    }
+
     void ESIManager::openMarketDetails(EveType::IdType typeId, Character::IdType charId) const
     {
         selectNextInterface().openMarketDetails(typeId, charId, [=](const auto &errorText) {

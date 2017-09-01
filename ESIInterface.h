@@ -44,6 +44,7 @@ namespace Evernus
         using PaginatedCallback = std::function<void (QJsonDocument &&data, bool atEnd, const QString &error, const QDateTime &expires)>;
         using ErrorCallback = std::function<void (const QString &error)>;
         using StringCallback = std::function<void (QString &&data, const QString &error, const QDateTime &expires)>;  // https://bugreports.qt.io/browse/QTBUG-62502
+        using PersistentStringCallback = std::function<void (QString &&data, const QString &error)>;
 
         using QObject::QObject;
         ESIInterface() = default;
@@ -69,6 +70,7 @@ namespace Evernus
         void fetchCharacterWalletTransactions(Character::IdType charId,
                                               const boost::optional<WalletTransaction::IdType> &fromId,
                                               const JsonCallback &callback) const;
+        void fetchGenericName(quint64 id, const PersistentStringCallback &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const;
 
@@ -126,8 +128,11 @@ namespace Evernus
                       const T &continuation,
                       uint retries,
                       bool suppressForbidden = false) const;
+
         template<class T>
         void post(Character::IdType charId, const QString &url, const QString &query, T &&errorCallback) const;
+        template<class T>
+        void post(const QString &url, const QByteArray &body, ErrorCallback &&errorCallback, T &&resultCallback) const;
 
         template<class T>
         void tryAuthAndContinue(Character::IdType charId, T &&continuation) const;
@@ -137,6 +142,7 @@ namespace Evernus
 
         uint getNumRetries() const;
 
+        static QString getError(const QByteArray &reply);
         static QString getError(const QString &url, const QString &query, QNetworkReply &reply);
         static QDateTime getExpireTime(const QNetworkReply &reply);
     };

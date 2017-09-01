@@ -24,10 +24,10 @@
 #include <QDir>
 
 #include "ConquerableStationRepository.h"
+#include "EveDataManagerProvider.h"
 #include "MarketOrderRepository.h"
 #include "ESIManager.h"
 #include "UISettings.h"
-#include "APIManager.h"
 
 #include "CachingEveDataProvider.h"
 
@@ -67,7 +67,7 @@ namespace Evernus
                                                    const ConquerableStationRepository &conquerableStationRepository,
                                                    const MarketGroupRepository &marketGroupRepository,
                                                    const CitadelRepository &citadelRepository,
-                                                   const APIManager &apiManager,
+                                                   const EveDataManagerProvider &dataManagerProvider,
                                                    const QSqlDatabase &eveDb,
                                                    QObject *parent)
         : EveDataProvider{parent}
@@ -79,7 +79,7 @@ namespace Evernus
         , mConquerableStationRepository{conquerableStationRepository}
         , mMarketGroupRepository{marketGroupRepository}
         , mCitadelRepository{citadelRepository}
-        , mAPIManager{apiManager}
+        , mDataManagerProvider{dataManagerProvider}
         , mEveDb{eveDb}
     {
         readCache(nameCacheFileName, mGenericNameCache);
@@ -175,15 +175,16 @@ namespace Evernus
 
             mPendingNameRequests.emplace(id);
 
-            mAPIManager.fetchGenericName(id, [id, this](auto &&data, const auto &error) {
+            mDataManagerProvider.getESIManager().fetchGenericName(id, [=](auto &&data, const auto &error) {
                 qDebug() << "Got generic name:" << id << data << " (" << error << ")";
+
+                mPendingNameRequests.erase(id);
 
                 if (error.isEmpty())
                     mGenericNameCache[id] = std::move(data);
                 else
                     mGenericNameCache[id] = tr("(unknown)");
 
-                mPendingNameRequests.erase(id);
                 if (mPendingNameRequests.empty())
                     emit namesChanged();
             });
@@ -913,14 +914,14 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         return 0;
     }
 
-    void CachingEveDataProvider::precacheNames(const ESIManager &esiManager)
+    void CachingEveDataProvider::precacheNames()
     {
         readCache(raceCacheFileName, mRaceNameCache);
         readCache(bloodlineCacheFileName, mBloodlineNameCache);
 
         if (mRaceNameCache.isEmpty())
         {
-            esiManager.fetchRaces([=](auto &&data, const auto &error, const auto &expires) {
+            mDataManagerProvider.getESIManager().fetchRaces([=](auto &&data, const auto &error, const auto &expires) {
                 Q_UNUSED(expires);
 
                 if (!error.isEmpty())
@@ -936,7 +937,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
 
         if (mBloodlineNameCache.isEmpty())
         {
-            esiManager.fetchBloodlines([=](auto &&data, const auto &error, const auto &expires) {
+            mDataManagerProvider.getESIManager().fetchBloodlines([=](auto &&data, const auto &error, const auto &expires) {
                 Q_UNUSED(expires);
 
                 if (!error.isEmpty())

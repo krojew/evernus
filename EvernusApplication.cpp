@@ -68,16 +68,17 @@ namespace Evernus
     const QString EvernusApplication::versionKey = "version";
 
     EvernusApplication::EvernusApplication(int &argc, char *argv[])
-        : QApplication(argc, argv)
-        , ExternalOrderImporterRegistry()
-        , CacheTimerProvider()
-        , ItemCostProvider()
-        , RepositoryProvider()
-        , LMeveDataProvider()
-        , TaskManager()
-        , mMainDb(QSqlDatabase::addDatabase("QSQLITE", "main"))
-        , mEveDb(QSqlDatabase::addDatabase("QSQLITE", "eve"))
-        , mAPIManager(*this)
+        : QApplication{argc, argv}
+        , ExternalOrderImporterRegistry{}
+        , CacheTimerProvider{}
+        , ItemCostProvider{}
+        , RepositoryProvider{}
+        , LMeveDataProvider{}
+        , TaskManager{}
+        , EveDataManagerProvider{}
+        , mMainDb{QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("main"))}
+        , mEveDb{QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("eve"))}
+        , mAPIManager{*this}
     {
         QSettings settings;
 
@@ -177,7 +178,7 @@ namespace Evernus
                                                                  *mConquerableStationRepository,
                                                                  *mMarketGroupRepository,
                                                                  *mCitadelRepository,
-                                                                 mAPIManager,
+                                                                 *this,
                                                                  mEveDb);
 
         showSplashMessage(tr("Precaching timers..."), splash);
@@ -234,7 +235,7 @@ namespace Evernus
         mESIManager = std::make_unique<ESIManager>(mClientId, mClientSecret, *mDataProvider, *mCharacterRepository);
         connect(mESIManager.get(), &ESIManager::error, this, &EvernusApplication::showGenericError);
 
-        mDataProvider->precacheNames(*mESIManager);
+        mDataProvider->precacheNames();
     }
 
     void EvernusApplication::registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer)
@@ -747,6 +748,12 @@ namespace Evernus
                                   Qt::QueuedConnection,
                                   Q_ARG(uint, taskId),
                                   Q_ARG(QString, error));
+    }
+
+    const ESIManager &EvernusApplication::getESIManager() const
+    {
+        Q_ASSERT(mESIManager);
+        return *mESIManager;
     }
 
     QByteArray EvernusApplication::getSSOClientId() const

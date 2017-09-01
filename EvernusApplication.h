@@ -41,6 +41,7 @@
 #include "WalletSnapshotRepository.h"
 #include "ExternalOrderRepository.h"
 #include "CachingContractProvider.h"
+#include "EveDataManagerProvider.h"
 #include "FavoriteItemRepository.h"
 #include "CachingEveDataProvider.h"
 #include "ContractItemRepository.h"
@@ -92,6 +93,7 @@ namespace Evernus
         , public RepositoryProvider
         , public LMeveDataProvider
         , public TaskManager
+        , public EveDataManagerProvider
     {
         Q_OBJECT
 
@@ -154,6 +156,8 @@ namespace Evernus
         virtual uint startTask(uint parentTask, const QString &description) override;
         virtual void updateTask(uint taskId, const QString &description) override;
         virtual void endTask(uint taskId, const QString &error = QString{}) override;
+
+        virtual const ESIManager &getESIManager() const override;
 
         QByteArray getSSOClientId() const;
         QByteArray getSSOClientSecret() const;

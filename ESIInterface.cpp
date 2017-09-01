@@ -259,6 +259,24 @@ namespace Evernus
         });
     }
 
+    void ESIInterface::fetchGenericName(quint64 id, const PersistentStringCallback &callback) const
+    {
+        qDebug() << "Fetching generic name:" << id;
+        post(QStringLiteral("/v2/universe/names/"),
+             QStringLiteral("[%1]").arg(id).toLatin1(),
+             [=](const auto &error) {
+            callback({}, error);
+        }, [=](const auto &data) {
+            const auto doc = QJsonDocument::fromJson(data);
+            const auto names = doc.array();
+
+            if (Q_LIKELY(names.size() > 0))
+                callback(names.first().toObject().value(QStringLiteral("name")).toString(), {});
+            else
+                callback({}, tr("Missing name data for: %1").arg(id));
+        });
+    }
+
     void ESIInterface::openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const
     {
         qDebug() << "Opening market details for" << typeId;
@@ -515,9 +533,43 @@ namespace Evernus
             }
             else
             {
-                const auto errorText = reply->readAll();
-                if (Q_UNLIKELY(!errorText.isEmpty()))
-                    errorCallback(errorText);
+                const auto error = getError(reply->readAll());
+                if (!error.isEmpty())
+                    errorCallback(error);
+            }
+        });
+    }
+
+    template<class T>
+    void ESIInterface::post(const QString &url, const QByteArray &body, ErrorCallback &&errorCallback, T &&resultCallback) const
+    {
+        qDebug() << "ESI request:" << url << ":" << body;
+
+        auto request = prepareRequest(url, {});
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+        auto reply = mNetworkManager.post(request, body);
+        Q_ASSERT(reply != nullptr);
+
+        new ReplyTimeout{*reply};
+
+        connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
+        connect(reply, &QNetworkReply::finished, this, [=] {
+            reply->deleteLater();
+
+            const auto error = reply->error();
+            if (Q_UNLIKELY(error != QNetworkReply::NoError))
+            {
+                errorCallback(getError(url, {}, *reply));
+            }
+            else
+            {
+                const auto resultText = reply->readAll();
+                const auto error = getError(resultText);
+                if (!error.isEmpty())
+                    errorCallback(error);
+                else
+                    resultCallback(resultText);
             }
         });
     }
@@ -562,11 +614,17 @@ namespace Evernus
         return mSettings.value(NetworkSettings::maxRetriesKey, NetworkSettings::maxRetriesDefault).toUInt();
     }
 
+    QString ESIInterface::getError(const QByteArray &reply)
+    {
+        // try to get ESI error
+        const auto errorDoc = QJsonDocument::fromJson(reply);
+        return errorDoc.object().value(QStringLiteral("error")).toString();
+    }
+
     QString ESIInterface::getError(const QString &url, const QString &query, QNetworkReply &reply)
     {
         // try to get ESI error
-        const auto errorDoc = QJsonDocument::fromJson(reply.readAll());
-        auto errorString = errorDoc.object().value(QStringLiteral("error")).toString();
+        auto errorString = getError(reply.readAll());
         if (errorString.isEmpty())
             errorString = reply.errorString();
 

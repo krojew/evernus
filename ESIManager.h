@@ -60,6 +60,8 @@ namespace Evernus
     public:
         template<class T>
         using Callback = std::function<void (T &&data, const QString &error, const QDateTime &expires)>;
+        template<class T>
+        using PesistentDataCallback = std::function<void (T &&data, const QString &error)>;
         using ExternalOrderList = std::vector<ExternalOrder>;
         using MarketOrderCallback = Callback<ExternalOrderList>;
         using HistoryMap = std::map<QDate, MarketHistoryEntry>;
@@ -96,6 +98,7 @@ namespace Evernus
         void fetchCharacterWalletTransactions(Character::IdType charId,
                                               WalletTransaction::IdType tillId,
                                               const Callback<WalletTransactions> &callback) const;
+        void fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
 
