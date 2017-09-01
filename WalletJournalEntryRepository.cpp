@@ -27,38 +27,42 @@ namespace Evernus
 
     QString WalletJournalEntryRepository::getTableName() const
     {
-        return (mCorp) ? ("corp_wallet_journal") : ("wallet_journal");
+        return (mCorp) ? (QStringLiteral("corp_wallet_journal")) : (QStringLiteral("wallet_journal"));
     }
 
     QString WalletJournalEntryRepository::getIdColumn() const
     {
-        return "id";
+        return QStringLiteral("id");
     }
 
     WalletJournalEntryRepository::EntityPtr WalletJournalEntryRepository::populate(const QSqlRecord &record) const
     {
-        const auto taxReceiverId = record.value("tax_receiver_id");
-        const auto extraInfoId = record.value("extra_info_id");
-        const auto taxAmount = record.value("tax_amount");
+        const auto taxReceiverId = record.value(QStringLiteral("tax_receiver_id"));
+        const auto extraInfoId = record.value(QStringLiteral("extra_info_id"));
+        const auto firstPartyId = record.value(QStringLiteral("first_party_id"));
+        const auto secondPartyId = record.value(QStringLiteral("second_party_id"));
+        const auto taxAmount = record.value(QStringLiteral("tax_amount"));
+        const auto balance = record.value(QStringLiteral("balance"));
+        const auto amount = record.value(QStringLiteral("amount"));
 
-        auto timestamp = record.value("timestamp").toDateTime();
+        auto timestamp = record.value(QStringLiteral("timestamp")).toDateTime();
         timestamp.setTimeSpec(Qt::UTC);
 
-        auto walletJournalEntry = std::make_shared<WalletJournalEntry>(record.value("id").value<WalletJournalEntry::IdType>());
-        walletJournalEntry->setCharacterId(record.value("character_id").value<Character::IdType>());
+        auto walletJournalEntry = std::make_shared<WalletJournalEntry>(record.value(getIdColumn()).value<WalletJournalEntry::IdType>());
+        walletJournalEntry->setCharacterId(record.value(QStringLiteral("character_id")).value<Character::IdType>());
         walletJournalEntry->setTimestamp(timestamp);
-        walletJournalEntry->setOwnerName1(record.value("owner_name_1").toString());
-        walletJournalEntry->setOwnerId1(record.value("owner_id_1").toULongLong());
-        walletJournalEntry->setOwnerName2(record.value("owner_name_2").toString());
-        walletJournalEntry->setOwnerId2(record.value("owner_id_2").toULongLong());
+        walletJournalEntry->setFirstPartyId((firstPartyId.isNull()) ? (WalletJournalEntry::PartyIdType{}) : (firstPartyId.toULongLong()));
+        walletJournalEntry->setSecondPartyId((secondPartyId.isNull()) ? (WalletJournalEntry::PartyIdType{}) : (secondPartyId.toULongLong()));
         walletJournalEntry->setExtraInfoId((extraInfoId.isNull()) ? (WalletJournalEntry::ExtraInfoIdType{}) : (extraInfoId.toULongLong()));
-        walletJournalEntry->setAmount(record.value("amount").toDouble());
-        walletJournalEntry->setBalance(record.value("balance").toDouble());
-        walletJournalEntry->setReason(record.value("reason").toString());
+        walletJournalEntry->setFirstPartyType(record.value(QStringLiteral("first_party_type")).toString());
+        walletJournalEntry->setSecondPartyType(record.value(QStringLiteral("second_party_type")).toString());
+        walletJournalEntry->setAmount((amount.isNull()) ? (WalletJournalEntry::ISKType{}) : (amount.toDouble()));
+        walletJournalEntry->setBalance((balance.isNull()) ? (WalletJournalEntry::ISKType{}) : (balance.toDouble()));
+        walletJournalEntry->setReason(record.value(QStringLiteral("reason")).toString());
         walletJournalEntry->setTaxReceiverId((taxReceiverId.isNull()) ? (WalletJournalEntry::TaxReceiverType{}) : (taxReceiverId.toULongLong()));
-        walletJournalEntry->setTaxAmount((taxAmount.isNull()) ? (WalletJournalEntry::TaxAmountType{}) : (taxAmount.toDouble()));
-        walletJournalEntry->setCorporationId(record.value("corporation_id").toULongLong());
-        walletJournalEntry->setIgnored(record.value("ignored").toBool());
+        walletJournalEntry->setTaxAmount((taxAmount.isNull()) ? (WalletJournalEntry::ISKType{}) : (taxAmount.toDouble()));
+        walletJournalEntry->setCorporationId(record.value(QStringLiteral("corporation_id")).toULongLong());
+        walletJournalEntry->setIgnored(record.value(QStringLiteral("ignored")).toBool());
         walletJournalEntry->setExtraInfoType(record.value(QStringLiteral("extra_info_type")).toString());
         walletJournalEntry->setRefType(record.value(QStringLiteral("ref_type")).toString());
         walletJournalEntry->setNew(false);
@@ -72,13 +76,13 @@ namespace Evernus
             "id INTEGER PRIMARY KEY,"
             "character_id BIGINT NOT NULL %2,"
             "timestamp DATETIME NOT NULL,"
-            "owner_name_1 TEXT NOT NULL,"
-            "owner_id_1 BIGINT NOT NULL,"
-            "owner_name_2 TEXT NOT NULL,"
-            "owner_id_2 BIGINT NOT NULL,"
+            "first_party_id BIGINT NULL,"
+            "second_party_id BIGINT NULL,"
+            "first_party_type TEXT NULL,"
+            "second_party_type TEXT NULL,"
             "extra_info_id BIGINT NULL,"
-            "amount NUMERIC NOT NULL,"
-            "balance NUMERIC NOT NULL,"
+            "amount NUMERIC NULL,"
+            "balance NUMERIC NULL,"
             "reason TEXT NULL,"
             "tax_receiver_id BIGINT NULL,"
             "tax_amount NUMERIC NULL,"
@@ -87,17 +91,17 @@ namespace Evernus
             "extra_info_type TEXT NULL,"
             "ref_type TEXT NULL"
         ")").arg(getTableName()).arg(
-            (mCorp) ? (QString{}) : (QString{"REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE"}.arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
+            (mCorp) ? (QString{}) : (QStringLiteral("REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE").arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
 
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)"}.arg(getTableName()).arg(characterRepo.getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)"}.arg(getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp ON %1(character_id, timestamp)"}.arg(getTableName()));
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_character_timestamp_amount ON %1(character_id, timestamp, amount)"}.arg(getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)").arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_timestamp ON %1(timestamp)").arg(getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_character_timestamp ON %1(character_id, timestamp)").arg(getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_character_timestamp_amount ON %1(character_id, timestamp, amount)").arg(getTableName()));
 
         try
         {
-            exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_timestamp ON %1(corporation_id, timestamp)"}.arg(getTableName()));
-            exec(QString{"CREATE INDEX IF NOT EXISTS %1_corporation_timestamp_amount ON %1(corporation_id, timestamp, amount)"}.arg(getTableName()));
+            exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_corporation_timestamp ON %1(corporation_id, timestamp)").arg(getTableName()));
+            exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_corporation_timestamp_amount ON %1(corporation_id, timestamp, amount)").arg(getTableName()));
         }
         catch (const std::exception &)
         {
@@ -108,7 +112,7 @@ namespace Evernus
 
     WalletJournalEntry::IdType WalletJournalEntryRepository::getLatestEntryId(Character::IdType characterId) const
     {
-        auto query = prepare(QString{"SELECT MAX(%1) FROM %2 WHERE character_id = ?"}.arg(getIdColumn()).arg(getTableName()));
+        auto query = prepare(QStringLiteral("SELECT MAX(%1) FROM %2 WHERE character_id = ?").arg(getIdColumn()).arg(getTableName()));
         query.bindValue(0, characterId);
 
         DatabaseUtils::execQuery(query);
@@ -119,7 +123,7 @@ namespace Evernus
 
     void WalletJournalEntryRepository::setIgnored(WalletJournalEntry::IdType id, bool ignored) const
     {
-        auto query = prepare(QString{"UPDATE %1 SET ignored = ? WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
+        auto query = prepare(QStringLiteral("UPDATE %1 SET ignored = ? WHERE %2 = ?").arg(getTableName()).arg(getIdColumn()));
         query.bindValue(0, ignored);
         query.bindValue(1, id);
 
@@ -128,7 +132,7 @@ namespace Evernus
 
     void WalletJournalEntryRepository::deleteOldEntries(const QDateTime &from) const
     {
-        auto query = prepare(QString{"DELETE FROM %1 WHERE timestamp < ?"}.arg(getTableName()));
+        auto query = prepare(QStringLiteral("DELETE FROM %1 WHERE timestamp < ?").arg(getTableName()));
         query.bindValue(0, from);
 
         DatabaseUtils::execQuery(query);
@@ -136,7 +140,7 @@ namespace Evernus
 
     void WalletJournalEntryRepository::deleteAll() const
     {
-        exec(QString{"DELETE FROM %1"}.arg(getTableName()));
+        exec(QStringLiteral("DELETE FROM %1").arg(getTableName()));
     }
 
     WalletJournalEntryRepository::EntityList WalletJournalEntryRepository
@@ -145,13 +149,13 @@ namespace Evernus
         QString queryStr;
         switch (type) {
         case EntryType::Incomig:
-            queryStr = "SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ? AND amount >= 0";
+            queryStr = QStringLiteral("SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ? AND amount >= 0");
             break;
         case EntryType::Outgoing:
-            queryStr = "SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ? AND amount < 0";
+            queryStr = QStringLiteral("SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ? AND amount < 0");
             break;
         default:
-            queryStr = "SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ?";
+            queryStr = QStringLiteral("SELECT * FROM %1 WHERE timestamp BETWEEN ? AND ?");
         }
 
         auto query = prepare(queryStr.arg(getTableName()));
@@ -175,83 +179,91 @@ namespace Evernus
     WalletJournalEntryRepository::EntityList WalletJournalEntryRepository
     ::fetchForCharacterInRange(Character::IdType characterId, const QDateTime &from, const QDateTime &till, EntryType type) const
     {
-        return fetchForColumnInRange(characterId, from, till, type, "character_id");
+        return fetchForColumnInRange(characterId, from, till, type, QStringLiteral("character_id"));
     }
 
     WalletJournalEntryRepository::EntityList WalletJournalEntryRepository
     ::fetchForCorporationInRange(quint64 corporationId, const QDateTime &from, const QDateTime &till, EntryType type) const
     {
-        return fetchForColumnInRange(corporationId, from, till, type, "corporation_id");
+        return fetchForColumnInRange(corporationId, from, till, type, QStringLiteral("corporation_id"));
     }
 
     QStringList WalletJournalEntryRepository::getColumns() const
     {
-        return QStringList{}
-            << "id"
-            << "character_id"
-            << "timestamp"
-            << "ref_type_id"
-            << "owner_name_1"
-            << "owner_id_1"
-            << "owner_name_2"
-            << "owner_id_2"
-            << "extra_info_id"
-            << "amount"
-            << "balance"
-            << "reason"
-            << "tax_receiver_id"
-            << "tax_amount"
-            << "corporation_id"
-            << "ignored"
-            << "extra_info_type"
-            << "ref_type";
+        return {
+            QStringLiteral("id"),
+            QStringLiteral("character_id"),
+            QStringLiteral("timestamp"),
+            QStringLiteral("first_party_id"),
+            QStringLiteral("second_party_id"),
+            QStringLiteral("first_party_type"),
+            QStringLiteral("second_party_type"),
+            QStringLiteral("extra_info_id"),
+            QStringLiteral("amount"),
+            QStringLiteral("balance"),
+            QStringLiteral("reason"),
+            QStringLiteral("tax_receiver_id"),
+            QStringLiteral("tax_amount"),
+            QStringLiteral("corporation_id"),
+            QStringLiteral("ignored"),
+            QStringLiteral("extra_info_type"),
+            QStringLiteral("ref_type"),
+        };
     }
 
     void WalletJournalEntryRepository::bindValues(const WalletJournalEntry &entity, QSqlQuery &query) const
     {
         const auto taxReceiverId = entity.getTaxReceiverId();
         const auto extraInfoId = entity.getExtraInfoId();
+        const auto firstPartyId = entity.getFirstPartyId();
+        const auto secondPartyId = entity.getSecondPartyId();
         const auto taxAmount = entity.getTaxAmount();
+        const auto amount = entity.getAmount();
+        const auto balance = entity.getBalance();
 
         if (entity.getId() != WalletJournalEntry::invalidId)
-            query.bindValue(":id", entity.getId());
+            query.bindValue(QStringLiteral(":id"), entity.getId());
 
-        query.bindValue(":character_id", entity.getCharacterId());
-        query.bindValue(":timestamp", entity.getTimestamp());
-        query.bindValue(":owner_name_1", entity.getOwnerName1());
-        query.bindValue(":owner_id_1", entity.getOwnerId1());
-        query.bindValue(":owner_name_2", entity.getOwnerName2());
-        query.bindValue(":owner_id_2", entity.getOwnerId2());
-        query.bindValue(":extra_info_id", (extraInfoId) ? (*extraInfoId) : (QVariant{QVariant::ULongLong}));
-        query.bindValue(":amount", entity.getAmount());
-        query.bindValue(":balance", entity.getBalance());
-        query.bindValue(":reason", entity.getReason());
-        query.bindValue(":tax_receiver_id", (taxReceiverId) ? (*taxReceiverId) : (QVariant{QVariant::ULongLong}));
-        query.bindValue(":tax_amount", (taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
-        query.bindValue(":corporation_id", entity.getCorporationId());
-        query.bindValue(":ignored", entity.isIgnored());
-        query.bindValue(":extra_info_type", entity.getExtraInfoType());
-        query.bindValue(":ref_type", entity.getRefType());
+        query.bindValue(QStringLiteral(":character_id"), entity.getCharacterId());
+        query.bindValue(QStringLiteral(":timestamp"), entity.getTimestamp());
+        query.bindValue(QStringLiteral(":first_party_id"), (firstPartyId) ? (*firstPartyId) : (QVariant{QVariant::ULongLong}));
+        query.bindValue(QStringLiteral(":second_party_id"), (secondPartyId) ? (*secondPartyId) : (QVariant{QVariant::ULongLong}));
+        query.bindValue(QStringLiteral(":first_party_type"), entity.getFirstPartyType());
+        query.bindValue(QStringLiteral(":second_party_type"), entity.getSecondPartyType());
+        query.bindValue(QStringLiteral(":extra_info_id"), (extraInfoId) ? (*extraInfoId) : (QVariant{QVariant::ULongLong}));
+        query.bindValue(QStringLiteral(":amount"), (amount) ? (*amount) : (QVariant{QVariant::Double}));
+        query.bindValue(QStringLiteral(":balance"), (balance) ? (*balance) : (QVariant{QVariant::Double}));
+        query.bindValue(QStringLiteral(":reason"), entity.getReason());
+        query.bindValue(QStringLiteral(":tax_receiver_id"), (taxReceiverId) ? (*taxReceiverId) : (QVariant{QVariant::ULongLong}));
+        query.bindValue(QStringLiteral(":tax_amount"), (taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
+        query.bindValue(QStringLiteral(":corporation_id"), entity.getCorporationId());
+        query.bindValue(QStringLiteral(":ignored"), entity.isIgnored());
+        query.bindValue(QStringLiteral(":extra_info_type"), entity.getExtraInfoType());
+        query.bindValue(QStringLiteral(":ref_type"), entity.getRefType());
     }
 
     void WalletJournalEntryRepository::bindPositionalValues(const WalletJournalEntry &entity, QSqlQuery &query) const
     {
         const auto taxReceiverId = entity.getTaxReceiverId();
         const auto extraInfoId = entity.getExtraInfoId();
+        const auto firstPartyId = entity.getFirstPartyId();
+        const auto secondPartyId = entity.getSecondPartyId();
         const auto taxAmount = entity.getTaxAmount();
+        const auto amount = entity.getAmount();
+        const auto balance = entity.getBalance();
 
         if (entity.getId() != WalletJournalEntry::invalidId)
             query.addBindValue(entity.getId());
 
         query.addBindValue(entity.getCharacterId());
         query.addBindValue(entity.getTimestamp());
-        query.addBindValue(entity.getOwnerName1());
-        query.addBindValue(entity.getOwnerId1());
-        query.addBindValue(entity.getOwnerName2());
-        query.addBindValue(entity.getOwnerId2());
+        query.addBindValue((firstPartyId) ? (*firstPartyId) : (QVariant{QVariant::ULongLong}));
+        query.addBindValue((secondPartyId) ? (*secondPartyId) : (QVariant{QVariant::ULongLong}));
+        query.addBindValue(entity.getFirstPartyType());
+        query.addBindValue(entity.getSecondPartyType());
         query.addBindValue((extraInfoId) ? (*extraInfoId) : (QVariant{QVariant::ULongLong}));
-        query.addBindValue(entity.getAmount());
-        query.addBindValue(entity.getBalance());
+        query.addBindValue((amount) ? (*amount) : (QVariant{QVariant::Double}));
+        query.addBindValue((balance) ? (*balance) : (QVariant{QVariant::Double}));
         query.addBindValue(entity.getReason());
         query.addBindValue((taxReceiverId) ? (*taxReceiverId) : (QVariant{QVariant::ULongLong}));
         query.addBindValue((taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
@@ -271,13 +283,13 @@ namespace Evernus
         QString queryStr;
         switch (type) {
         case EntryType::Incomig:
-            queryStr = "SELECT * FROM %1 WHERE %2 = ? AND timestamp BETWEEN ? AND ? AND amount >= 0";
+            queryStr = QStringLiteral("SELECT * FROM %1 WHERE %2 = ? AND timestamp BETWEEN ? AND ? AND amount >= 0");
             break;
         case EntryType::Outgoing:
-            queryStr = "SELECT * FROM %1 WHERE %2 = ? AND timestamp BETWEEN ? AND ? AND amount < 0";
+            queryStr = QStringLiteral("SELECT * FROM %1 WHERE %2 = ? AND timestamp BETWEEN ? AND ? AND amount < 0");
             break;
         default:
-            queryStr = "SELECT * FROM %1 WHERE %2 = ? AND timestamp BETWEEN ? AND ?";
+            queryStr = QStringLiteral("SELECT * FROM %1 WHERE %2 = ? AND timestamp BETWEEN ? AND ?");
         }
 
         auto query = prepare(queryStr.arg(getTableName()).arg(column));

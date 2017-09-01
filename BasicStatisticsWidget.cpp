@@ -501,15 +501,18 @@ namespace Evernus
                 auto &value = values[entry->getTimestamp().toLocalTime().date()];
 
                 const auto amount = entry->getAmount();
-                if (amount < 0.)
+                if (Q_UNLIKELY(!amount))
+                    continue;
+
+                if (*amount < 0.)
                 {
-                    totalOutcome -= amount;
-                    value.first -= amount;
+                    totalOutcome -= *amount;
+                    value.first -= *amount;
                 }
                 else
                 {
-                    totalIncome += amount;
-                    value.second += amount;
+                    totalIncome += *amount;
+                    value.second += *amount;
                 }
             }
         };

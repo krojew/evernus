@@ -28,7 +28,8 @@ namespace Evernus
     public:
         using TaxReceiverType = boost::optional<quint64>;
         using ExtraInfoIdType = boost::optional<quint64>;
-        using TaxAmountType = boost::optional<double>;
+        using PartyIdType = boost::optional<quint64>;
+        using ISKType = boost::optional<double>;
 
         using Entity::Entity;
 
@@ -48,21 +49,21 @@ namespace Evernus
         void setRefType(const QString &type);
         void setRefType(QString &&type) noexcept;
 
-        QString getOwnerName1() const &;
-        QString &&getOwnerName1() && noexcept;
-        void setOwnerName1(const QString &name);
-        void setOwnerName1(QString &&name);
+        PartyIdType getFirstPartyId() const noexcept;
+        void setFirstPartyId(PartyIdType id) noexcept;
 
-        quint64 getOwnerId1() const noexcept;
-        void setOwnerId1(quint64 id) noexcept;
+        PartyIdType getSecondPartyId() const noexcept;
+        void setSecondPartyId(PartyIdType id) noexcept;
 
-        QString getOwnerName2() const &;
-        QString &&getOwnerName2() && noexcept;
-        void setOwnerName2(const QString &name);
-        void setOwnerName2(QString &&name);
+        QString getFirstPartyType() const &;
+        QString &&getFirstPartyType() && noexcept;
+        void setFirstPartyType(const QString &type);
+        void setFirstPartyType(QString &&type) noexcept;
 
-        quint64 getOwnerId2() const noexcept;
-        void setOwnerId2(quint64 id) noexcept;
+        QString getSecondPartyType() const &;
+        QString &&getSecondPartyType() && noexcept;
+        void setSecondPartyType(const QString &type);
+        void setSecondPartyType(QString &&type) noexcept;
 
         ExtraInfoIdType getExtraInfoId() const noexcept;
         void setExtraInfoId(ExtraInfoIdType id) noexcept;
@@ -72,11 +73,11 @@ namespace Evernus
         void setExtraInfoType(const QString &type);
         void setExtraInfoType(QString &&type) noexcept;
 
-        double getAmount() const noexcept;
-        void setAmount(double value) noexcept;
+        ISKType getAmount() const noexcept;
+        void setAmount(ISKType value) noexcept;
 
-        double getBalance() const noexcept;
-        void setBalance(double value) noexcept;
+        ISKType getBalance() const noexcept;
+        void setBalance(ISKType value) noexcept;
 
         QString getReason() const &;
         QString &&getReason() && noexcept;
@@ -86,8 +87,8 @@ namespace Evernus
         TaxReceiverType getTaxReceiverId() const noexcept;
         void setTaxReceiverId(TaxReceiverType id) noexcept;
 
-        TaxAmountType getTaxAmount() const noexcept;
-        void setTaxAmount(TaxAmountType amount) noexcept;
+        ISKType getTaxAmount() const noexcept;
+        void setTaxAmount(ISKType amount) noexcept;
 
         quint64 getCorporationId() const noexcept;
         void setCorporationId(quint64 id) noexcept;
@@ -101,18 +102,18 @@ namespace Evernus
     private:
         Character::IdType mCharacterId = Character::invalidId;
         QDateTime mTimestamp;
-        QString mRefType = 0;
-        QString mOwnerName1;
-        quint64 mOwnerId1 = 0;
-        QString mOwnerName2;
-        quint64 mOwnerId2 = 0;
+        QString mRefType;
+        PartyIdType mFirstPartyId;
+        PartyIdType mSecondPartyId;
+        QString mFirstPartyType;
+        QString mSecondPartyType;
         ExtraInfoIdType mExtraInfoId;
         QString mExtraInfoType;
-        double mAmount = 0.;
-        double mBalance = 0.;
+        ISKType mAmount;
+        ISKType mBalance;
         QString mReason;
-        TaxReceiverType mTaxReceiverId = static_cast<quint64>(0u);
-        TaxAmountType mTaxAmount = 0.;
+        TaxReceiverType mTaxReceiverId;
+        ISKType mTaxAmount;
         quint64 mCorporationId = 0;
         bool mIgnored = false;
     };

@@ -146,14 +146,14 @@ namespace Evernus
 
             const std::function<std::pair<QDate, MarketHistoryEntry> (const QJsonValue &)> parseItem = [](const auto &item) {
                 const auto itemObject = item.toObject();
-                auto date = QDate::fromString(itemObject.value("date").toString(), Qt::ISODate);
+                auto date = QDate::fromString(itemObject.value(QStringLiteral("date")).toString(), Qt::ISODate);
 
                 MarketHistoryEntry entry;
-                entry.mAvgPrice = itemObject.value("average").toDouble();
-                entry.mHighPrice = itemObject.value("highest").toDouble();
-                entry.mLowPrice = itemObject.value("lowest").toDouble();
-                entry.mOrders = itemObject.value("order_count").toInt();
-                entry.mVolume = itemObject.value("volume").toDouble();
+                entry.mAvgPrice = itemObject.value(QStringLiteral("average")).toDouble();
+                entry.mHighPrice = itemObject.value(QStringLiteral("highest")).toDouble();
+                entry.mLowPrice = itemObject.value(QStringLiteral("lowest")).toDouble();
+                entry.mOrders = itemObject.value(QStringLiteral("order_count")).toInt();
+                entry.mVolume = itemObject.value(QStringLiteral("volume")).toDouble();
 
                 return std::make_pair(std::move(date), std::move(entry));
             };
@@ -657,7 +657,7 @@ namespace Evernus
                         {
                             qWarning() << "Error refreshing token:" << reply->errorString();
 
-                            const auto error = object.value("error").toString();
+                            const auto error = object.value(QStringLiteral("error")).toString();
 
                             qWarning() << "Returned error:" << error;
 
@@ -670,7 +670,7 @@ namespace Evernus
                             }
                             else
                             {
-                                const auto desc = object.value("error_description").toString();
+                                const auto desc = object.value(QStringLiteral("error_description")).toString();
                                 emit tokenError(charId, (desc.isEmpty()) ? (reply->errorString()) : (desc));
 
                                 scheduleNextTokenFetch();
@@ -685,7 +685,7 @@ namespace Evernus
                             this_->scheduleNextTokenFetch();
                         } BOOST_SCOPE_EXIT_END
 
-                        const auto accessToken = object.value("access_token").toString();
+                        const auto accessToken = object.value(QStringLiteral("access_token")).toString();
                         if (accessToken.isEmpty())
                         {
                             qWarning() << "Empty access token!";
@@ -694,7 +694,7 @@ namespace Evernus
                         }
 
                         emit acquiredToken(charId, accessToken,
-                                           QDateTime::currentDateTime().addSecs(doc.object().value("expires_in").toInt() - 10));
+                                           QDateTime::currentDateTime().addSecs(doc.object().value(QStringLiteral("expires_in")).toInt() - 10));
                     }
                     catch (...)
                     {
@@ -746,8 +746,14 @@ namespace Evernus
                     entry.setCharacterId(charId);
                     entry.setTimestamp(getDateTimeFromString(entryObj.value(QStringLiteral("date")).toString()));
                     entry.setRefType(entryObj.value(QStringLiteral("ref_type")).toString());
-                    entry.setOwnerId1(entryObj.value(QStringLiteral("first_party_id")).toDouble());
-                    entry.setOwnerId2(entryObj.value(QStringLiteral("second_party_id")).toDouble());
+
+                    if (entryObj.contains(QStringLiteral("first_party_id")))
+                        entry.setFirstPartyId(entryObj.value(QStringLiteral("first_party_id")).toDouble());
+                    if (entryObj.contains(QStringLiteral("second_party_id")))
+                        entry.setSecondPartyId(entryObj.value(QStringLiteral("second_party_id")).toDouble());
+
+                    entry.setFirstPartyType(entryObj.value(QStringLiteral("first_party_type")).toString());
+                    entry.setSecondPartyType(entryObj.value(QStringLiteral("second_party_type")).toString());
 
                     if (entryObj.contains(QStringLiteral("extra_info")))
                     {
@@ -776,9 +782,12 @@ namespace Evernus
                         checkAndSetExtraInfo(QStringLiteral("transaction_id"));
                     }
 
-                    entry.setAmount(entryObj.value(QStringLiteral("amount")).toDouble());
                     entry.setReason(entryObj.value(QStringLiteral("reason")).toString());
 
+                    if (entryObj.contains(QStringLiteral("amount")))
+                        entry.setAmount(entryObj.value(QStringLiteral("amount")).toDouble());
+                    if (entryObj.contains(QStringLiteral("balance")))
+                        entry.setBalance(entryObj.value(QStringLiteral("balance")).toDouble());
                     if (entryObj.contains(QStringLiteral("tax_reciever_id")))
                         entry.setTaxReceiverId(entryObj.value(QStringLiteral("tax_reciever_id")).toDouble());
                     if (entryObj.contains(QStringLiteral("tax")))

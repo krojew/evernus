@@ -15,6 +15,7 @@
 #include <QRegularExpression>
 #include <QLocale>
 #include <QColor>
+#include <QHash>
 #include <QFont>
 
 #include "CharacterRepository.h"
@@ -30,11 +31,11 @@ namespace Evernus
                                            const EveDataProvider &dataProvider,
                                            bool corp,
                                            QObject *parent)
-        : QAbstractTableModel(parent)
-        , mJournalRepository(journalRepo)
-        , mCharacterRepository(characterRepository)
-        , mDataProvider(dataProvider)
-        , mCorp(corp)
+        : QAbstractTableModel{parent}
+        , mJournalRepository{journalRepo}
+        , mCharacterRepository{characterRepository}
+        , mDataProvider{dataProvider}
+        , mCorp{corp}
     {
         mColumns
             << tr("Ignored")
@@ -46,6 +47,8 @@ namespace Evernus
             << tr("Amount")
             << tr("Balance after")
             << tr("Reason");
+
+        connect(&mDataProvider, &EveDataProvider::namesChanged, this, &WalletJournalModel::updateNames);
     }
 
     Qt::ItemFlags WalletJournalModel::flags(const QModelIndex &index) const
@@ -83,6 +86,13 @@ namespace Evernus
 
         switch (role) {
         case Qt::UserRole:
+            switch (column) {
+            case firstPartyColumn:
+            case secondPartyColumn:
+            case extraInfoColumn:
+                if (!mData[row][column].isNull())
+                    return mDataProvider.getGenericName(mData[row][column].toULongLong());
+            }
             return mData[row][column];
         case Qt::DisplayRole:
             switch (column) {
@@ -90,6 +100,12 @@ namespace Evernus
                 return QVariant{};
             case timestampColumn:
                 return TextUtils::dateTimeToString(mData[row][timestampColumn].toDateTime().toLocalTime(), QLocale{});
+            case firstPartyColumn:
+            case secondPartyColumn:
+            case extraInfoColumn:
+                if (!mData[row][column].isNull())
+                    return mDataProvider.getGenericName(mData[row][column].toULongLong());
+                break;
             case amountColumn:
             case balanceColumn:
                 return TextUtils::currencyToString(mData[row][column].toDouble(), QLocale{});
@@ -118,7 +134,7 @@ namespace Evernus
                 return Qt::AlignRight;
         }
 
-        return QVariant{};
+        return {};
     }
 
     bool WalletJournalModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -233,15 +249,24 @@ namespace Evernus
         endResetModel();
     }
 
+    void WalletJournalModel::updateNames()
+    {
+        emit dataChanged(index(0, firstPartyColumn), index(rowCount() - 1, extraInfoColumn), { Qt::UserRole, Qt::DisplayRole });
+    }
+
     void WalletJournalModel::processData(const WalletJournalEntryRepository::EntityList &entries)
     {
         mData.reserve(entries.size());
 
-        QRegularExpression re{"^DESC: "};
+        QRegularExpression re{QStringLiteral("^DESC: ")};
 
         for (const auto &entry : entries)
         {
             const auto extraInfoId = entry->getExtraInfoId();
+            const auto firstPartyId = entry->getFirstPartyId();
+            const auto secondPartyId = entry->getSecondPartyId();
+            const auto amount = entry->getAmount();
+            const auto balance = entry->getBalance();
 
             mData.emplace_back();
             auto &data = mData.back();
@@ -249,14 +274,50 @@ namespace Evernus
             data
                 << entry->isIgnored()
                 << entry->getTimestamp()
-                << mDataProvider.getRefTypeName(entry->getRefTypeId())
-                << entry->getOwnerName1()
-                << entry->getOwnerName2()
-                << (extraInfoId != 0) ? (mDataProvider.getGenericName(extraInfoId)) : (QVariant{})
-                << entry->getAmount()
-                << entry->getBalance()
+                << translateRefType(entry->getRefType())
+                << ((firstPartyId) ? (*firstPartyId) : (QVariant{}))
+                << ((secondPartyId) ? (*secondPartyId) : (QVariant{}))
+                << ((extraInfoId) ? (*extraInfoId) : (QVariant{}))
+                << ((amount) ? (QVariant{*amount}) : (QVariant{}))
+                << ((balance) ? (QVariant{*balance}) : (QVariant{}))
                 << entry->getReason().remove(re)
                 << entry->getId();
         }
+    }
+
+    QString WalletJournalModel::translateRefType(const QString &type)
+    {
+        static const QHash<QString, QString> mapping{
+            { QStringLiteral("player_trading"), tr("Player Trading") },
+            { QStringLiteral("market_transaction"), tr("Market Transaction") },
+            { QStringLiteral("player_donation"), tr("Player Donation") },
+            { QStringLiteral("office_rental_fee"), tr("Office Rental Fee") },
+            { QStringLiteral("bounty_prize_historical"), tr("Bounty Prize Historical") },
+            { QStringLiteral("insurance"), tr("Insurance") },
+            { QStringLiteral("mission_reward"), tr("Mission Reward") },
+            { QStringLiteral("mission_reward_bonus"), tr("Mission Reward Bonus") },
+            { QStringLiteral("cspa"), tr("CSPA") },
+            { QStringLiteral("corp_account_withdrawal"), tr("Corp Account Withdrawal") },
+            { QStringLiteral("logo_change_fee"), tr("Logo Change Fee") },
+            { QStringLiteral("market_escrow"), tr("Market Escrow") },
+            { QStringLiteral("broker_fee"), tr("Broker Fee") },
+            { QStringLiteral("alliance_maintenance_fee"), tr("Alliance Maintenance Fee") },
+            { QStringLiteral("sales_tax"), tr("Sales Tax") },
+            { QStringLiteral("jump_clone_installation_fee"), tr("Jump Clone Installation Fee") },
+            { QStringLiteral("manufacturing"), tr("Manufacturing") },
+            { QStringLiteral("contract"), tr("Contract") },
+            { QStringLiteral("bounty_prizes"), tr("Bounty Prizes") },
+            { QStringLiteral("medal_creation_fee"), tr("Medal Creation Fee") },
+            { QStringLiteral("medal_issuing_fee"), tr("Medal Issuing Fee") },
+            { QStringLiteral("customs_office_import_duty"), tr("Customs Office Import Duty") },
+            { QStringLiteral("customs_office_export_duty"), tr("Customs Office Export Duty") },
+            { QStringLiteral("corporate_reward_payout"), tr("Corporate Reward Payout") },
+            { QStringLiteral("industry_facility_tax"), tr("Industry Facility Tax") },
+            { QStringLiteral("project_discovery_reward"), tr("Project Discovery Reward") },
+            { QStringLiteral("reprocessing_fee"), tr("Reprocessing Fee") },
+            { QStringLiteral("jump_clone_activation_fee"), tr("Jump Clone Activation Fee") },
+        };
+
+        return mapping.value(type, QStringLiteral("Unknown"));
     }
 }

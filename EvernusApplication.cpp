@@ -1364,13 +1364,18 @@ namespace Evernus
 
                         for (auto &entry : data)
                         {
+                            const auto balance = entry.getBalance();
+
+                            if (Q_UNLIKELY(!balance))
+                                continue;
+
                             const auto timestamp = entry.getTimestamp();
 
                             if (!usedSnapshots.contains(timestamp))
                             {
                                 Evernus::CorpWalletSnapshot snapshot;
                                 snapshot.setTimestamp(timestamp);
-                                snapshot.setBalance(entry.getBalance());
+                                snapshot.setBalance(*balance);
                                 snapshot.setCorporationId(entry.getCorporationId());
 
                                 snapshots.emplace_back(std::move(snapshot));
@@ -2689,9 +2694,9 @@ namespace Evernus
         {
         }
 
-        mMainDb.exec("PRAGMA foreign_keys = OFF;");
+        mMainDb.exec(QStringLiteral("PRAGMA foreign_keys = OFF;"));
         mCharacterRepository->store(character);
-        mMainDb.exec("PRAGMA foreign_keys = ON;");
+        mMainDb.exec(QStringLiteral("PRAGMA foreign_keys = ON;"));
 
         if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
             createWalletSnapshot(charId, character.getISK());
@@ -2724,13 +2729,18 @@ namespace Evernus
 
             for (auto &entry : data)
             {
+                const auto balance = entry.getBalance();
+
+                if (Q_UNLIKELY(!balance))
+                    continue;
+
                 const auto timestamp = entry.getTimestamp();
 
                 if (!usedSnapshots.contains(timestamp))
                 {
                     WalletSnapshot snapshot;
                     snapshot.setTimestamp(timestamp);
-                    snapshot.setBalance(entry.getBalance());
+                    snapshot.setBalance(*balance);
                     snapshot.setCharacterId(entry.getCharacterId());
 
                     snapshots.emplace_back(std::move(snapshot));

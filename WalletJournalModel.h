@@ -17,6 +17,7 @@
 #include <vector>
 
 #include <QAbstractTableModel>
+#include <QString>
 #include <QDate>
 
 #include "WalletJournalEntryRepository.h"
@@ -54,12 +55,24 @@ namespace Evernus
 
         void reset();
 
+    private slots:
+        void updateNames();
+
     private:
-        static const auto ignoredColumn = 0;
-        static const auto timestampColumn = 1;
-        static const auto amountColumn = 6;
-        static const auto balanceColumn = 7;
-        static const auto idColumn = 9;
+        // note: take a look at updateNames() when changing those (indexes)
+        enum
+        {
+            ignoredColumn,
+            timestampColumn,
+            typeColumn,
+            firstPartyColumn,
+            secondPartyColumn,
+            extraInfoColumn,
+            amountColumn,
+            balanceColumn,
+            reasonColumn,
+            idColumn,
+        };
 
         const WalletJournalEntryRepository &mJournalRepository;
         const CharacterRepository &mCharacterRepository;
@@ -77,5 +90,7 @@ namespace Evernus
         bool mCorp = false;
 
         void processData(const WalletJournalEntryRepository::EntityList &entries);
+
+        static QString translateRefType(const QString &type);
     };
 }

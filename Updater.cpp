@@ -590,6 +590,8 @@ namespace Evernus
 
         update(walletJournalRepo);
         update(corpWalletJournalRepo);
+
+        QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing wallet journal."));
     }
 
     void Updater::migrateCoreTo130() const

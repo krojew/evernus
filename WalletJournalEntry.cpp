@@ -56,64 +56,64 @@ namespace Evernus
         mRefType = std::move(type);
     }
 
-    QString WalletJournalEntry::getOwnerName1() const &
+    WalletJournalEntry::PartyIdType WalletJournalEntry::getFirstPartyId() const noexcept
     {
-        return mOwnerName1;
+        return mFirstPartyId;
     }
 
-    QString &&WalletJournalEntry::getOwnerName1() && noexcept
+    void WalletJournalEntry::setFirstPartyId(PartyIdType id) noexcept
     {
-        return std::move(mOwnerName1);
+        mFirstPartyId = std::move(id);
     }
 
-    void WalletJournalEntry::setOwnerName1(const QString &name)
+    WalletJournalEntry::PartyIdType WalletJournalEntry::getSecondPartyId() const noexcept
     {
-        mOwnerName1 = name;
+        return mSecondPartyId;
     }
 
-    void WalletJournalEntry::setOwnerName1(QString &&name)
+    void WalletJournalEntry::setSecondPartyId(PartyIdType id) noexcept
     {
-        mOwnerName1 = std::move(name);
+        mSecondPartyId = std::move(id);
     }
 
-    quint64 WalletJournalEntry::getOwnerId1() const noexcept
+    QString WalletJournalEntry::getFirstPartyType() const &
     {
-        return mOwnerId1;
+        return mFirstPartyType;
     }
 
-    void WalletJournalEntry::setOwnerId1(quint64 id) noexcept
+    QString &&WalletJournalEntry::getFirstPartyType() && noexcept
     {
-        mOwnerId1 = id;
+        return std::move(mFirstPartyType);
     }
 
-    QString WalletJournalEntry::getOwnerName2() const &
+    void WalletJournalEntry::setFirstPartyType(const QString &type)
     {
-        return mOwnerName2;
+        mFirstPartyType = type;
     }
 
-    QString &&WalletJournalEntry::getOwnerName2() && noexcept
+    void WalletJournalEntry::setFirstPartyType(QString &&type) noexcept
     {
-        return std::move(mOwnerName2);
+        mFirstPartyType = std::move(type);
     }
 
-    void WalletJournalEntry::setOwnerName2(const QString &name)
+    QString WalletJournalEntry::getSecondPartyType() const &
     {
-        mOwnerName2 = name;
+        return mSecondPartyType;
     }
 
-    void WalletJournalEntry::setOwnerName2(QString &&name)
+    QString &&WalletJournalEntry::getSecondPartyType() && noexcept
     {
-        mOwnerName2 = std::move(name);
+        return std::move(mSecondPartyType);
     }
 
-    quint64 WalletJournalEntry::getOwnerId2() const noexcept
+    void WalletJournalEntry::setSecondPartyType(const QString &type)
     {
-        return mOwnerId2;
+        mSecondPartyType = type;
     }
 
-    void WalletJournalEntry::setOwnerId2(quint64 id) noexcept
+    void WalletJournalEntry::setSecondPartyType(QString &&type) noexcept
     {
-        mOwnerId2 = id;
+        mSecondPartyType = std::move(type);
     }
 
     WalletJournalEntry::ExtraInfoIdType WalletJournalEntry::getExtraInfoId() const noexcept
@@ -146,24 +146,24 @@ namespace Evernus
         mExtraInfoType = std::move(type);
     }
 
-    double WalletJournalEntry::getAmount() const noexcept
+    WalletJournalEntry::ISKType WalletJournalEntry::getAmount() const noexcept
     {
         return mAmount;
     }
 
-    void WalletJournalEntry::setAmount(double value) noexcept
+    void WalletJournalEntry::setAmount(ISKType value) noexcept
     {
-        mAmount = value;
+        mAmount = std::move(value);
     }
 
-    double WalletJournalEntry::getBalance() const noexcept
+    WalletJournalEntry::ISKType WalletJournalEntry::getBalance() const noexcept
     {
         return mBalance;
     }
 
-    void WalletJournalEntry::setBalance(double value) noexcept
+    void WalletJournalEntry::setBalance(ISKType value) noexcept
     {
-        mBalance = value;
+        mBalance = std::move(value);
     }
 
     QString WalletJournalEntry::getReason() const &
@@ -196,12 +196,12 @@ namespace Evernus
         mTaxReceiverId = id;
     }
 
-    WalletJournalEntry::TaxAmountType WalletJournalEntry::getTaxAmount() const noexcept
+    WalletJournalEntry::ISKType WalletJournalEntry::getTaxAmount() const noexcept
     {
         return mTaxAmount;
     }
 
-    void WalletJournalEntry::setTaxAmount(TaxAmountType amount) noexcept
+    void WalletJournalEntry::setTaxAmount(ISKType amount) noexcept
     {
         mTaxAmount = amount;
     }

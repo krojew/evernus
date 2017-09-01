@@ -31,12 +31,12 @@ namespace Evernus
                                                      const ItemCostProvider &itemCostProvider,
                                                      bool corp,
                                                      QObject *parent)
-        : QAbstractTableModel(parent)
-        , mTransactionsRepository(transactionsRepo)
-        , mCharacterRepository(characterRepository)
-        , mDataProvider(dataProvider)
-        , mItemCostProvider(itemCostProvider)
-        , mCorp(corp)
+        : QAbstractTableModel{parent}
+        , mTransactionsRepository{transactionsRepo}
+        , mCharacterRepository{characterRepository}
+        , mDataProvider{dataProvider}
+        , mItemCostProvider{itemCostProvider}
+        , mCorp{corp}
     {
         mColumns
             << tr("Ignored")
