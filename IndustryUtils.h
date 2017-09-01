@@ -20,6 +20,8 @@ namespace Evernus
 {
     namespace IndustryUtils
     {
-        quint64 getRequiredQuantity(uint runs, uint baseQuantity);
+        quint64 getRequiredQuantity(uint runs,
+                                    uint baseQuantity,
+                                    uint materialEfficiency);
     }
 }

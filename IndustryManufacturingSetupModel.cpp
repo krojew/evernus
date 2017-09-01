@@ -57,7 +57,7 @@ namespace Evernus
 
     uint IndustryManufacturingSetupModel::TreeItem::getEffectiveQuantityRequired() const noexcept
     {
-        if (Q_UNLIKELY(mParent == nullptr || mQuantityRequired == 0))
+        if (Q_UNLIKELY(isOutput()))
             return 0;
 
         const auto &settings = mSetup.getTypeSettings(mTypeId);
@@ -89,14 +89,16 @@ namespace Evernus
 
     uint IndustryManufacturingSetupModel::TreeItem::getEffectiveRuns() const noexcept
     {
-        if (Q_UNLIKELY(mQuantityRequired == 0 || mParent == nullptr))
+        if (Q_UNLIKELY(isOutput()))
             return mRuns;
 
         const auto &settings = mSetup.getTypeSettings(mTypeId);
         if (settings.mSource == IndustryManufacturingSetup::InventorySource::Manufacture ||
             settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
         {
-            auto required = IndustryUtils::getRequiredQuantity(mParent->getEffectiveRuns(), mQuantityRequired);
+            auto required = IndustryUtils::getRequiredQuantity(mParent->getEffectiveRuns(),
+                                                               mQuantityRequired,
+                                                               mParent->getMaterialEfficiency());
             if (settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
                 required -= mModel.takeAssets(mTypeId, required);
 
@@ -169,6 +171,23 @@ namespace Evernus
     void IndustryManufacturingSetupModel::TreeItem::clearChildren() noexcept
     {
         mChildItems.clear();
+    }
+
+    uint IndustryManufacturingSetupModel::TreeItem::getMaterialEfficiency() const
+    {
+        if (Q_UNLIKELY(isOutput()))
+        {
+            const auto &settings = mSetup.getOutputSettings(mTypeId);
+            return settings.mMaterialEfficiency;
+        }
+
+        const auto &settings = mSetup.getTypeSettings(mTypeId);
+        return settings.mMaterialEfficiency;
+    }
+
+    bool IndustryManufacturingSetupModel::TreeItem::isOutput() const
+    {
+        return mQuantityRequired == 0 || mParent == nullptr;
     }
 
     IndustryManufacturingSetupModel::IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,

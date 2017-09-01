@@ -21,9 +21,11 @@ namespace Evernus
 {
     namespace IndustryUtils
     {
-        quint64 getRequiredQuantity(uint runs, uint baseQuantity)
+        quint64 getRequiredQuantity(uint runs,
+                                    uint baseQuantity,
+                                    uint materialEfficiency)
         {
-            const auto materialModifier = 1.f; // TODO: implement
+            const auto materialModifier = 1.f - materialEfficiency / 100.f; // TODO: implement
             return std::max(static_cast<float>(runs), std::ceil(runs * baseQuantity * materialModifier));
         }
     }

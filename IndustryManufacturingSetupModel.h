@@ -149,6 +149,10 @@ namespace Evernus
             uint mRuns = 1;
             std::chrono::seconds mTime;
             std::vector<TreeItemPtr> mChildItems;
+
+            uint getMaterialEfficiency() const;
+
+            bool isOutput() const;
         };
 
         struct AssetQuantity
