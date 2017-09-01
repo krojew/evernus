@@ -12,11 +12,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <algorithm>
 #include <cmath>
 
 #include <boost/scope_exit.hpp>
 
+#include "IndustryUtils.h"
 #include "AssetProvider.h"
 #include "AssetList.h"
 
@@ -96,10 +96,7 @@ namespace Evernus
         if (settings.mSource == IndustryManufacturingSetup::InventorySource::Manufacture ||
             settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
         {
-            const auto runs = mParent->getEffectiveRuns();
-            const auto materialModifier = 1.f; // TODO: implement
-
-            auto required = std::max(static_cast<float>(runs), std::ceil(runs * mQuantityRequired * materialModifier));
+            auto required = IndustryUtils::getRequiredQuantity(mParent->getEffectiveRuns(), mQuantityRequired);
             if (settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
                 required -= mModel.takeAssets(mTypeId, required);
 
