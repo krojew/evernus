@@ -28,7 +28,6 @@
 #include "EveTypeRepository.h"
 #include "EveDataProvider.h"
 #include "Citadel.h"
-#include "RefType.h"
 
 class QDir;
 
@@ -36,7 +35,6 @@ namespace Evernus
 {
     class ConquerableStationRepository;
     class MarketOrderRepository;
-    class RefTypeRepository;
     class ESIManager;
     class APIManager;
 
@@ -55,7 +53,6 @@ namespace Evernus
                                const MarketOrderRepository &corpMarketOrderRepository,
                                const ConquerableStationRepository &conquerableStationRepository,
                                const MarketGroupRepository &marketGroupRepository,
-                               const RefTypeRepository &refTypeRepository,
                                const CitadelRepository &citadelRepository,
                                const APIManager &apiManager,
                                const QSqlDatabase &eveDb,
@@ -82,8 +79,6 @@ namespace Evernus
         virtual QString getLocationName(quint64 id) const override;
         virtual QString getRegionName(uint id) const override;
         virtual QString getSolarSystemName(uint id) const override;
-
-        virtual QString getRefTypeName(uint id) const override;
 
         virtual const std::vector<MapLocation> &getRegions() const override;
         virtual const std::vector<MapLocation> &getConstellations(uint regionId) const override;
@@ -148,7 +143,6 @@ namespace Evernus
         const MarketOrderRepository &mMarketOrderRepository, &mCorpMarketOrderRepository;
         const ConquerableStationRepository &mConquerableStationRepository;
         const MarketGroupRepository &mMarketGroupRepository;
-        const RefTypeRepository &mRefTypeRepository;
         const CitadelRepository &mCitadelRepository;
 
         const APIManager &mAPIManager;
@@ -173,8 +167,6 @@ namespace Evernus
 
         mutable std::unordered_map<EveType::IdType, MarketGroupRepository::EntityPtr> mTypeMarketGroupParentCache;
         mutable std::unordered_map<EveType::IdType, MarketGroupRepository::EntityPtr> mTypeMarketGroupCache;
-
-        std::unordered_map<RefType::IdType, QString> mRefTypeNames;
 
         mutable NameMap mGenericNameCache;
         mutable std::unordered_set<quint64> mPendingNameRequests;

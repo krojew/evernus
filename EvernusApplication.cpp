@@ -176,13 +176,9 @@ namespace Evernus
                                                                  *mCorpMarketOrderRepository,
                                                                  *mConquerableStationRepository,
                                                                  *mMarketGroupRepository,
-                                                                 *mRefTypeRepository,
                                                                  *mCitadelRepository,
                                                                  mAPIManager,
                                                                  mEveDb);
-
-        showSplashMessage(tr("Precaching ref types..."), splash);
-        mDataProvider->precacheRefTypes();
 
         showSplashMessage(tr("Precaching timers..."), splash);
         precacheCacheTimers();
@@ -1972,7 +1968,6 @@ namespace Evernus
         mCorpAssetValueSnapshotRepository.reset(new CorpAssetValueSnapshotRepository{mMainDb});
         mWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{false, mMainDb});
         mCorpWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{true, mMainDb});
-        mRefTypeRepository.reset(new RefTypeRepository{mMainDb});
         mCacheTimerRepository.reset(new CacheTimerRepository{mMainDb});
         mUpdateTimerRepository.reset(new UpdateTimerRepository{mMainDb});
         mWalletTransactionRepository.reset(new WalletTransactionRepository{false, mMainDb});
@@ -2034,7 +2029,6 @@ namespace Evernus
         mContractItemRepository->create(*mContractRepository);
         mCorpContractItemRepository->create(*mCorpContractRepository);
         mLMeveTaskRepository->create(*mCharacterRepository);
-        mRefTypeRepository->create();
         mCitadelRepository->create();
         mRegionTypePresetRepository->create();
         mRegionStationPresetRepository->create();

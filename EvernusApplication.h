@@ -63,7 +63,6 @@
 #include "WalletTransactions.h"
 #include "CitadelRepository.h"
 #include "EveTypeRepository.h"
-#include "RefTypeRepository.h"
 #include "CorpKeyRepository.h"
 #include "LMeveDataProvider.h"
 #include "ItemCostProvider.h"
@@ -278,7 +277,6 @@ namespace Evernus
         std::unique_ptr<AssetValueSnapshotRepository> mAssetValueSnapshotRepository;
         std::unique_ptr<CorpAssetValueSnapshotRepository> mCorpAssetValueSnapshotRepository;
         std::unique_ptr<WalletJournalEntryRepository> mWalletJournalEntryRepository, mCorpWalletJournalEntryRepository;
-        std::unique_ptr<RefTypeRepository> mRefTypeRepository;
         std::unique_ptr<CacheTimerRepository> mCacheTimerRepository;
         std::unique_ptr<UpdateTimerRepository> mUpdateTimerRepository;
         std::unique_ptr<WalletTransactionRepository> mWalletTransactionRepository, mCorpWalletTransactionRepository;

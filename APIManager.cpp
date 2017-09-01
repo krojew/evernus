@@ -29,7 +29,6 @@
 #include "ContractsXmlReceiver.h"
 #include "AssetListXmlReceiver.h"
 #include "GenericNameDomParser.h"
-#include "RefTypeXmlReceiver.h"
 #include "CharacterDomParser.h"
 #include "CacheTimerProvider.h"
 #include "APIUtils.h"
@@ -197,26 +196,6 @@ namespace Evernus
             catch (const std::exception &e)
             {
                 callback(ConquerableStationList{}, e.what());
-            }
-        });
-    }
-
-    void APIManager::fetchRefTypes(const Callback<RefTypeList> &callback) const
-    {
-#if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
-        mInterface.fetchRefTypes([=, callback = callback](const QString &response, const QString &error) {
-#else
-        mInterface.fetchRefTypes([=](const QString &response, const QString &error) {
-#endif
-            try
-            {
-                handlePotentialError(response, error);
-
-                callback(parseResults<RefType, APIXmlReceiver<RefType>::CurElemType>(response, "refTypes"), QString{});
-            }
-            catch (const std::exception &e)
-            {
-                callback(RefTypeList{}, e.what());
             }
         });
     }

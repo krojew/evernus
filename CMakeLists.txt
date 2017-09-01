@@ -634,12 +634,6 @@ add_executable(
     qxtwebevent.h
     qxtwebslotservice.cpp
     qxtwebslotservice.h
-    RefType.cpp
-    RefType.h
-    RefTypeRepository.cpp
-    RefTypeRepository.h
-    RefTypeXmlReceiver.cpp
-    RefTypeXmlReceiver.h
     RegionAnalysisWidget.cpp
     RegionAnalysisWidget.h
     RegionComboBox.cpp

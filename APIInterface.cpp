@@ -60,11 +60,6 @@ namespace Evernus
         makeRequest("/eve/ConquerableStationList.xml.aspx", Key{}, callback, getNumRetries());
     }
 
-    void APIInterface::fetchRefTypes(const Callback &callback) const
-    {
-        makeRequest("/eve/RefTypes.xml.aspx", Key{}, callback, getNumRetries());
-    }
-
     void APIInterface::fetchWalletJournal(const Key &key,
                                           Character::IdType characterId,
                                           WalletJournalEntry::IdType fromId,

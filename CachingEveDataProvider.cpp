@@ -25,7 +25,6 @@
 
 #include "ConquerableStationRepository.h"
 #include "MarketOrderRepository.h"
-#include "RefTypeRepository.h"
 #include "ESIManager.h"
 #include "UISettings.h"
 #include "APIManager.h"
@@ -67,7 +66,6 @@ namespace Evernus
                                                    const MarketOrderRepository &corpMarketOrderRepository,
                                                    const ConquerableStationRepository &conquerableStationRepository,
                                                    const MarketGroupRepository &marketGroupRepository,
-                                                   const RefTypeRepository &refTypeRepository,
                                                    const CitadelRepository &citadelRepository,
                                                    const APIManager &apiManager,
                                                    const QSqlDatabase &eveDb,
@@ -80,7 +78,6 @@ namespace Evernus
         , mCorpMarketOrderRepository{corpMarketOrderRepository}
         , mConquerableStationRepository{conquerableStationRepository}
         , mMarketGroupRepository{marketGroupRepository}
-        , mRefTypeRepository{refTypeRepository}
         , mCitadelRepository{citadelRepository}
         , mAPIManager{apiManager}
         , mEveDb{eveDb}
@@ -437,12 +434,6 @@ namespace Evernus
             return mSolarSystemNameCache.emplace(id, QString{}).first->second;
 
         return mSolarSystemNameCache.emplace(id, query.value(0).toString()).first->second;
-    }
-
-    QString CachingEveDataProvider::getRefTypeName(uint id) const
-    {
-        const auto it = mRefTypeNames.find(id);
-        return (it != std::end(mRefTypeNames)) ? (it->second) : (QString{});
     }
 
     const std::vector<EveDataProvider::MapLocation> &CachingEveDataProvider::getRegions() const
@@ -973,32 +964,6 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         {
             QDataStream cacheStream{&distanceCache};
             cacheStream >> mSystemDistances;
-        }
-    }
-
-    void CachingEveDataProvider::precacheRefTypes()
-    {
-        const auto refs = mRefTypeRepository.fetchAll();
-        if (refs.empty())
-        {
-            qDebug() << "Fetching ref types...";
-            mAPIManager.fetchRefTypes([this](const auto &refs, const auto &error) {
-                if (error.isEmpty())
-                {
-                    mRefTypeRepository.batchStore(refs, true);
-                    for (const auto &ref : refs)
-                        mRefTypeNames.emplace(ref.getId(), std::move(ref).getName());
-                }
-                else
-                {
-                    qDebug() << error;
-                }
-            });
-        }
-        else
-        {
-            for (const auto &ref : refs)
-                mRefTypeNames.emplace(ref->getId(), std::move(*ref).getName());
         }
     }
 

@@ -591,6 +591,9 @@ namespace Evernus
         update(walletJournalRepo);
         update(corpWalletJournalRepo);
 
+        // ref type repo doesn't exist anymore...
+        safelyExecQuery(walletJournalRepo, QStringLiteral("DROP TABLE IF EXISTS ref_types"));
+
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing wallet journal."));
     }
 

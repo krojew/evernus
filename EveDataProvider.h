@@ -96,8 +96,6 @@ namespace Evernus
         virtual QString getRegionName(uint id) const = 0;
         virtual QString getSolarSystemName(uint id) const = 0;
 
-        virtual QString getRefTypeName(uint id) const = 0;
-
         virtual const std::vector<MapLocation> &getRegions() const = 0;
         virtual const std::vector<MapLocation> &getConstellations(uint regionId) const = 0;
         virtual const std::vector<MapTreeLocation> &getConstellations() const = 0;
