@@ -126,7 +126,39 @@ namespace Evernus
             return;
         }
 
-        throw NotSourceTypeException{"Missing output settings for: " + std::to_string(id)};
+        throw NotOutputTypeException{"Missing output settings for: " + std::to_string(id)};
+    }
+
+    void IndustryManufacturingSetup::setMaterialEfficiency(EveType::IdType id, uint value)
+    {
+        const auto findInMap = [=](auto &map) {
+            const auto it = map.find(id);
+            if (it != std::end(map))
+            {
+                it->second.mMaterialEfficiency = value;
+                return true;
+            }
+
+            return false;
+        };
+
+        findInMap(mOutputTypes) && findInMap(mTypeSettings);
+    }
+
+    void IndustryManufacturingSetup::setTimeEfficiency(EveType::IdType id, uint value)
+    {
+        const auto findInMap = [=](auto &map) {
+            const auto it = map.find(id);
+            if (it != std::end(map))
+            {
+                it->second.mTimeEfficiency = value;
+                return true;
+            }
+
+            return false;
+        };
+
+        findInMap(mOutputTypes) && findInMap(mTypeSettings);
     }
 
     void IndustryManufacturingSetup::fillManufacturingInfo(EveType::IdType typeId, TypeSet &usedTypes)

@@ -7394,6 +7394,11 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Type</name>
     <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="138"/>
+        <source>Quantity produced: %L1 / %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qml/Industry/Manufacturing/Type.qml" line="150"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
@@ -7414,6 +7419,11 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="160"/>
+        <source>Take assets then buy from source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qml/Industry/Manufacturing/Type.qml" line="161"/>
         <source>Take assets then buy at custom cost</source>
         <translation type="unfinished"></translation>
@@ -7421,6 +7431,11 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     <message>
         <location filename="../qml/Industry/Manufacturing/Type.qml" line="174"/>
         <source>Manufacture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="175"/>
+        <source>Take assets then manufacture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7434,28 +7449,13 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="222"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="234"/>
         <source>TE:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="235"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="259"/>
         <source>%L1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="160"/>
-        <source>Take assets then buy from source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="138"/>
-        <source>Quantity produced: %L1 / %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="175"/>
-        <source>Take assets then manufacture</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

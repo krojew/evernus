@@ -214,8 +214,20 @@ Item {
                     }
 
                     SpinBox {
+                        id: me
                         value: materialEfficiency
                         maximumValue: 10
+
+                        onValueChanged: SetupController.setMaterialEfficiency(typeId, value)
+
+                        Connections {
+                            target: SetupController
+
+                            onMaterialEfficiencyChanged: {
+                                if (id == typeId)
+                                    me.value = value;
+                            }
+                        }
                     }
 
                     Text {
@@ -224,8 +236,20 @@ Item {
                     }
 
                     SpinBox {
+                        id: te
                         value: timeEfficiency
                         maximumValue: 20
+
+                        onValueChanged: SetupController.setTimeEfficiency(typeId, value)
+
+                        Connections {
+                            target: SetupController
+
+                            onTimeEfficiencyChanged: {
+                                if (id == typeId)
+                                    te.value = value;
+                            }
+                        }
                     }
                 }
             }

@@ -362,18 +362,7 @@ namespace Evernus
         mSetup.setSource(id, source);
         mAssetQuantities[id].mCurrentQuantity = mAssetQuantities[id].mInitialQuantity;
 
-        const auto items = mTypeItemMap.equal_range(id);
-        for (auto item = items.first; item != items.second; ++item)
-        {
-            const auto idx = createIndex(item->second.get().getRow(), 0, &item->second.get());
-            emit dataChanged(idx, idx, { SourceRole, QuantityRequiredRole });
-
-            for (const auto &child : item->second.get())
-            {
-                Q_ASSERT(child);
-                signalQuantityChange(child->getTypeId());
-            }
-        }
+        roleAndQuantityChange(id, { SourceRole, QuantityRequiredRole });
     }
 
     void IndustryManufacturingSetupModel::setRuns(EveType::IdType id, uint runs)
@@ -397,6 +386,18 @@ namespace Evernus
             for (const auto &child : *item)
                 signalQuantityChange(child->getTypeId());
         }
+    }
+
+    void IndustryManufacturingSetupModel::setMaterialEfficiency(EveType::IdType id, uint value)
+    {
+        mSetup.setMaterialEfficiency(id, value);
+        roleAndQuantityChange(id, { QuantityRequiredRole }); // note: don't change efficiency role because of binding loop
+    }
+
+    void IndustryManufacturingSetupModel::setTimeEfficiency(EveType::IdType id, uint value)
+    {
+        mSetup.setTimeEfficiency(id, value);
+        roleAndQuantityChange(id, { QuantityRequiredRole }); // note: don't change efficiency role because of binding loop
     }
 
     void IndustryManufacturingSetupModel::setCharacter(Character::IdType id)
@@ -507,5 +508,21 @@ namespace Evernus
                 emit dataChanged(idx, idx, { RunsRole, QuantityRequiredRole });
             }
         } while (!remaining.empty());
+    }
+
+    void IndustryManufacturingSetupModel::roleAndQuantityChange(EveType::IdType typeId, const QVector<int> &roles)
+    {
+        const auto items = mTypeItemMap.equal_range(typeId);
+        for (auto item = items.first; item != items.second; ++item)
+        {
+            const auto idx = createIndex(item->second.get().getRow(), 0, &item->second.get());
+            emit dataChanged(idx, idx, roles);
+
+            for (const auto &child : item->second.get())
+            {
+                Q_ASSERT(child);
+                signalQuantityChange(child->getTypeId());
+            }
+        }
     }
 }

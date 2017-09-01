@@ -33,4 +33,16 @@ namespace Evernus
     {
         mModel.setRuns(id, runs);
     }
+
+    void IndustryManufacturingSetupController::setMaterialEfficiency(EveType::IdType id, uint value)
+    {
+        mModel.setMaterialEfficiency(id, value);
+        emit materialEfficiencyChanged(id, value);
+    }
+
+    void IndustryManufacturingSetupController::setTimeEfficiency(EveType::IdType id, uint value)
+    {
+        mModel.setTimeEfficiency(id, value);
+        emit timeEfficiencyChanged(id, value);
+    }
 }

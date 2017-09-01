@@ -88,6 +88,8 @@ namespace Evernus
 
         void setSource(EveType::IdType id, InventorySource source);
         void setRuns(EveType::IdType id, uint runs);
+        void setMaterialEfficiency(EveType::IdType id, uint value);
+        void setTimeEfficiency(EveType::IdType id, uint value);
 
         IndustryManufacturingSetup &operator =(const IndustryManufacturingSetup &) = default;
         IndustryManufacturingSetup &operator =(IndustryManufacturingSetup &&) = default;

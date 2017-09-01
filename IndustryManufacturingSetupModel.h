@@ -57,6 +57,8 @@ namespace Evernus
 
         void setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);
         void setRuns(EveType::IdType id, uint runs);
+        void setMaterialEfficiency(EveType::IdType id, uint value);
+        void setTimeEfficiency(EveType::IdType id, uint value);
 
         void setCharacter(Character::IdType id);
 
@@ -179,5 +181,6 @@ namespace Evernus
         quint64 takeAssets(EveType::IdType typeId, quint64 max);
 
         void signalQuantityChange(EveType::IdType typeId);
+        void roleAndQuantityChange(EveType::IdType typeId, const QVector<int> &roles);
     };
 }
