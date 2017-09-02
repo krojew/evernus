@@ -27,6 +27,7 @@
 #include "Character.h"
 
 class QByteArray;
+class QComboBox;
 
 namespace Evernus
 {
@@ -84,6 +85,10 @@ namespace Evernus
 
         RegionComboBox *mSourceRegionCombo = nullptr;
         RegionComboBox *mDestRegionCombo = nullptr;
+
+        QComboBox *mFacilityTypeCombo = nullptr;
+        QComboBox *mSecurityStatusCombo = nullptr;
+        QComboBox *mMaterialRigCombo = nullptr;
 
         TradeableTypesTreeView *mTypeView = nullptr;
 

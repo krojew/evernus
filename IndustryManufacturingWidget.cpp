@@ -19,6 +19,7 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QQmlEngine>
+#include <QComboBox>
 #include <QSplitter>
 #include <QGroupBox>
 #include <QSettings>
@@ -35,6 +36,7 @@
 #include "RegionComboBox.h"
 #include "ImportSettings.h"
 #include "SSOMessageBox.h"
+#include "IndustryUtils.h"
 #include "TaskManager.h"
 #include "FlowLayout.h"
 
@@ -107,6 +109,38 @@ namespace Evernus
             srcStationBtn->setSelectedStationId(srcStationId);
             dstStationBtn->setSelectedStationId(dstStationId);
         });
+
+        toolBarLayout->addWidget(new QLabel{tr("Facility type:"), this});
+
+        mFacilityTypeCombo = new QComboBox{this};
+        toolBarLayout->addWidget(mFacilityTypeCombo);
+        mFacilityTypeCombo->addItem(tr("Station"), static_cast<int>(IndustryUtils::FacilityType::Station));
+        mFacilityTypeCombo->addItem(tr("Engineering Complex"), static_cast<int>(IndustryUtils::FacilityType::EngineeringComplex));
+        mFacilityTypeCombo->addItem(tr("Assembly Array"), static_cast<int>(IndustryUtils::FacilityType::AssemblyArray));
+        mFacilityTypeCombo->addItem(tr("Thukker Component Array"), static_cast<int>(IndustryUtils::FacilityType::ThukkerComponentArray));
+        mFacilityTypeCombo->addItem(tr("Rapid Assembly Array"), static_cast<int>(IndustryUtils::FacilityType::RapidAssemblyArray));
+        mFacilityTypeCombo->setCurrentIndex(mFacilityTypeCombo->findData(
+            settings.value(IndustrySettings::manufacturingFacilityTypeKey, IndustrySettings::manufacturingFacilityTypeDefault).toInt()));
+
+        toolBarLayout->addWidget(new QLabel{tr("Security status:"), this});
+
+        mSecurityStatusCombo = new QComboBox{this};
+        toolBarLayout->addWidget(mSecurityStatusCombo);
+        mSecurityStatusCombo->addItem(tr("High sec"), static_cast<int>(IndustryUtils::SecurityStatus::HighSec));
+        mSecurityStatusCombo->addItem(tr("Low sec"), static_cast<int>(IndustryUtils::SecurityStatus::LowSec));
+        mSecurityStatusCombo->addItem(tr("Null sec/WH"), static_cast<int>(IndustryUtils::SecurityStatus::NullSecWH));
+        mSecurityStatusCombo->setCurrentIndex(mSecurityStatusCombo->findData(
+            settings.value(IndustrySettings::manufacturingSecurityStatusKey, IndustrySettings::manufacturingSecurityStatusDefault).toInt()));
+
+        toolBarLayout->addWidget(new QLabel{tr("Material rig:"), this});
+
+        mMaterialRigCombo = new QComboBox{this};
+        toolBarLayout->addWidget(mMaterialRigCombo);
+        mMaterialRigCombo->addItem(tr("None"), static_cast<int>(IndustryUtils::RigType::None));
+        mMaterialRigCombo->addItem(tr("T1"), static_cast<int>(IndustryUtils::RigType::T1));
+        mMaterialRigCombo->addItem(tr("T2"), static_cast<int>(IndustryUtils::RigType::T2));
+        mMaterialRigCombo->setCurrentIndex(mMaterialRigCombo->findData(
+            settings.value(IndustrySettings::manufacturingMaterialRigKey, IndustrySettings::manufacturingMaterialRigDefault).toInt()));
 
         const auto contentSplitter = new QSplitter{this};
         mainLayout->addWidget(contentSplitter, 1);

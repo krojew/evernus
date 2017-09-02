@@ -16,14 +16,23 @@
 
 #include <QString>
 
+#include "IndustryUtils.h"
+
 namespace Evernus
 {
     namespace IndustrySettings
     {
+        const auto manufacturingFacilityTypeDefault = static_cast<int>(IndustryUtils::FacilityType::Station);
+        const auto manufacturingSecurityStatusDefault = static_cast<int>(IndustryUtils::SecurityStatus::HighSec);
+        const auto manufacturingMaterialRigDefault = static_cast<int>(IndustryUtils::RigType::None);
+
         const auto srcManufacturingRegionKey = QStringLiteral("industry/manufacturing/srcRegion");
         const auto dstManufacturingRegionKey = QStringLiteral("industry/manufacturing/dstRegion");
         const auto srcManufacturingStationKey = QStringLiteral("industry/manufacturing/srcStation");
         const auto dstManufacturingStationKey = QStringLiteral("industry/manufacturing/dstStation");
         const auto manufacturingTypesKey = QStringLiteral("industry/manufacturing/types");
+        const auto manufacturingFacilityTypeKey = QStringLiteral("industry/manufacturing/facilityType");
+        const auto manufacturingSecurityStatusKey = QStringLiteral("industry/manufacturing/securityStatus");
+        const auto manufacturingMaterialRigKey = QStringLiteral("industry/manufacturing/materialRig");
     }
 }
