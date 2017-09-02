@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import QtGraphicalEffects 1.0
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtQml.Models 2.2
 import QtQuick 2.7
@@ -21,9 +21,11 @@ import QtQuick 2.7
 Item {
     property bool isOutput: false
 
+    readonly property int contentPadding: 10
+
     id: root
-    width: 400
-    height: header.height + 64
+    width: 500
+    height: childrenRect.height
 
     signal selected(int typeId)
 
@@ -87,7 +89,7 @@ Item {
             GradientStop { position: 1; color: "#353535" }
         }
 
-        Text {
+        Label {
             id: typeName
             font.bold: true
             text: name
@@ -108,14 +110,13 @@ Item {
         anchors.top: header.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        height: 64
+        height: Math.max(icon.height, contentLayout.height) + contentPadding * 2
         color: "#171916"
 
         Image {
             id: icon
             source: "https://image.eveonline.com/Type/" + typeId + "_64.png"
-            anchors.top: parent.top
+            anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
         }
 
@@ -125,98 +126,100 @@ Item {
         }
 
         RowLayout {
+            id: contentLayout
+            anchors.topMargin: contentPadding
             anchors.left: icon.right
             anchors.top: parent.top
             anchors.right: parent.right
-            anchors.bottom: parent.bottom
 
-            ColumnLayout {
+            GridLayout {
                 Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+                columns: 2
 
-                Text {
+                Label {
                     id: quantityText
                     text: qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(time)
                     color: "#cccccc"
                     visible: quantityProduced > 0
                     Layout.fillWidth: true
+                    Layout.columnSpan: 2
                 }
 
-                RowLayout {
+                Label {
                     visible: !isOutput
-                    Layout.fillWidth: true
+                    id: sourceText
+                    text: qsTr("Source:")
+                    color: "#cccccc"
+                }
 
-                    Text {
-                        id: sourceText
-                        text: qsTr("Source:")
-                        color: "#cccccc"
+                ComboBox {
+                    visible: !isOutput
+                    id: sourceCombo
+                    textRole: "text"
+                    Layout.fillWidth: true
+                    model: ListModel {
+                        ListElement { text: qsTr("Buy from source"); value: 0; }
+                        ListElement { text: qsTr("Acquire for free"); value: 2; }
+                        ListElement { text: qsTr("Buy at custom cost"); value: 3; }
+                        ListElement { text: qsTr("Take assets then buy from source"); value: 4; }
+                        ListElement { text: qsTr("Take assets then buy at custom cost"); value: 6; }
                     }
 
-                    ComboBox {
-                        id: sourceCombo
-                        model: ListModel {
-                            ListElement { text: qsTr("Buy from source"); value: 0; }
-                            ListElement { text: qsTr("Acquire for free"); value: 2; }
-                            ListElement { text: qsTr("Buy at custom cost"); value: 3; }
-                            ListElement { text: qsTr("Take assets then buy from source"); value: 4; }
-                            ListElement { text: qsTr("Take assets then buy at custom cost"); value: 6; }
+                    onCurrentIndexChanged: {
+                        if (!isOutput)
+                            SetupController.setSource(typeId, model.get(currentIndex).value);
+                    }
+
+                    Component.onCompleted: {
+                        if (isOutput)
+                            return;
+
+                        if (quantityProduced > 0) {
+                            model.append({ text: qsTr("Manufacture"), value: 1 });
+                            model.append({ text: qsTr("Take assets then manufacture"), value: 5 });
                         }
 
-                        onCurrentIndexChanged: {
-                            if (!isOutput)
-                                SetupController.setSource(typeId, model.get(currentIndex).value);
-                        }
 
-                        Component.onCompleted: {
-                            if (isOutput)
-                                return;
+                        setSourceTypeCombo();
+                    }
 
-                            if (quantityProduced > 0) {
-                                model.append({ text: qsTr("Manufacture"), value: 1 });
-                                model.append({ text: qsTr("Take assets then manufacture"), value: 5 });
-                            }
+                    Connections {
+                        target: SetupController
+                        enabled: !isOutput
 
-
-                            setSourceTypeCombo();
-                        }
-
-                        Connections {
-                            target: SetupController
-                            enabled: !isOutput
-
-                            onSourceChanged: {
-                                if (id == typeId)
-                                    setSourceTypeCombo();
-                            }
+                        onSourceChanged: {
+                            if (id == typeId)
+                                setSourceTypeCombo();
                         }
                     }
                 }
 
-                RowLayout {
+                Label {
+                    text: qsTr("Runs:")
+                    color: "#cccccc"
+                    visible: isOutput
+                }
+
+                SpinBox {
+                    value: runs
+                    to: 1000000
+                    editable: true
                     visible: isOutput
 
-                    Text {
-                        text: qsTr("Runs:")
-                        color: "#cccccc"
-                    }
+                    onValueChanged: SetupController.setRuns(typeId, value)
+                }
 
-                    SpinBox {
-                        value: runs
-                        maximumValue: 1000000
-
-                        onValueChanged: SetupController.setRuns(typeId, value)
-                    }
+                Label {
+                    text: qsTr("ME:")
+                    color: "#cccccc"
                 }
 
                 RowLayout {
-                    Text {
-                        text: qsTr("ME:")
-                        color: "#cccccc"
-                    }
-
                     SpinBox {
                         id: me
                         value: materialEfficiency
-                        maximumValue: 10
+                        to: 10
+                        editable: true
 
                         onValueChanged: SetupController.setMaterialEfficiency(typeId, value)
 
@@ -230,7 +233,7 @@ Item {
                         }
                     }
 
-                    Text {
+                    Label {
                         text: qsTr("TE:")
                         color: "#cccccc"
                     }
@@ -238,7 +241,8 @@ Item {
                     SpinBox {
                         id: te
                         value: timeEfficiency
-                        maximumValue: 20
+                        to: 20
+                        editable: true
 
                         onValueChanged: SetupController.setTimeEfficiency(typeId, value)
 
@@ -254,7 +258,7 @@ Item {
                 }
             }
 
-            Text {
+            Label {
                 visible: !isOutput
                 text: qsTr("%L1").arg(quantityRequired)
                 color: "#cccccc"

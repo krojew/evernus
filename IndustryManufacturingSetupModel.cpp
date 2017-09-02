@@ -383,24 +383,32 @@ namespace Evernus
 
     void IndustryManufacturingSetupModel::setRuns(EveType::IdType id, uint runs)
     {
-        mSetup.setRuns(id, runs);
-
-        const auto output = std::find_if(std::begin(mRoot), std::end(mRoot), [=](const auto &item) {
-            Q_ASSERT(item);
-            return item->getTypeId() == id;
-        });
-        if (Q_LIKELY(output != std::end(mRoot)))
+        try
         {
-            const auto &item = *output;
-            Q_ASSERT(item);
+            mSetup.setRuns(id, runs);
 
-            item->setRuns(runs);
+            const auto output = std::find_if(std::begin(mRoot), std::end(mRoot), [=](const auto &item) {
+                Q_ASSERT(item);
+                return item->getTypeId() == id;
+            });
+            if (Q_LIKELY(output != std::end(mRoot)))
+            {
+                const auto &item = *output;
+                Q_ASSERT(item);
 
-            const auto idx = createIndex(item->getRow(), 0, item.get());
-            emit dataChanged(idx, idx, { RunsRole });
+                item->setRuns(runs);
 
-            for (const auto &child : *item)
-                signalQuantityChange(child->getTypeId());
+                // note: don't emit for runs role because of binding loop
+//                const auto idx = createIndex(item->getRow(), 0, item.get());
+//                emit dataChanged(idx, idx, { RunsRole });
+
+                for (const auto &child : *item)
+                    signalQuantityChange(child->getTypeId());
+            }
+        }
+        catch (const IndustryManufacturingSetup::NotOutputTypeException &)
+        {
+            qDebug() << "Ignoring setting of runs for non-output type:" << id;
         }
     }
 
