@@ -238,38 +238,38 @@ namespace Evernus
 
         auto orderAmountLayout = new QFormLayout{orderAmountGroup};
 
-        orderAmountLayout->addRow(tr("Trade:"), createSkillEdit(mTradeSkillEdit, "trade_skill"));
-        orderAmountLayout->addRow(tr("Retail:"), createSkillEdit(mRetailSkillEdit, "retail_skill"));
-        orderAmountLayout->addRow(tr("Wholesale:"), createSkillEdit(mWholesaleSkillEdit, "wholesale_skill"));
-        orderAmountLayout->addRow(tr("Tycoon:"), createSkillEdit(mTycoonSkillEdit, "tycoon_skill"));
+        orderAmountLayout->addRow(tr("Trade:"), createSkillEdit(mTradeSkillEdit, QStringLiteral("trade_skill")));
+        orderAmountLayout->addRow(tr("Retail:"), createSkillEdit(mRetailSkillEdit, QStringLiteral("retail_skill")));
+        orderAmountLayout->addRow(tr("Wholesale:"), createSkillEdit(mWholesaleSkillEdit, QStringLiteral("wholesale_skill")));
+        orderAmountLayout->addRow(tr("Tycoon:"), createSkillEdit(mTycoonSkillEdit, QStringLiteral("tycoon_skill")));
 
         auto tradeRangeGroup = new QGroupBox{tr("Trade range skills"), this};
         skillsLayout->addWidget(tradeRangeGroup);
 
         auto tradeRangeLayout = new QFormLayout{tradeRangeGroup};
 
-        tradeRangeLayout->addRow(tr("Marketing:"), createSkillEdit(mMarketingSkillEdit, "marketing_skill"));
-        tradeRangeLayout->addRow(tr("Procurement:"), createSkillEdit(mProcurementSkillEdit, "procurement_skill"));
-        tradeRangeLayout->addRow(tr("Daytrading:"), createSkillEdit(mDaytradingSkillEdit, "daytrading_skill"));
-        tradeRangeLayout->addRow(tr("Visibility:"), createSkillEdit(mVisibilitySkillEdit, "visibility_skill"));
+        tradeRangeLayout->addRow(tr("Marketing:"), createSkillEdit(mMarketingSkillEdit, QStringLiteral("marketing_skill")));
+        tradeRangeLayout->addRow(tr("Procurement:"), createSkillEdit(mProcurementSkillEdit, QStringLiteral("procurement_skill")));
+        tradeRangeLayout->addRow(tr("Daytrading:"), createSkillEdit(mDaytradingSkillEdit, QStringLiteral("daytrading_skill")));
+        tradeRangeLayout->addRow(tr("Visibility:"), createSkillEdit(mVisibilitySkillEdit, QStringLiteral("visibility_skill")));
 
         auto feeGroup = new QGroupBox{tr("Fee skills"), this};
         skillsLayout->addWidget(feeGroup);
 
         auto feeLayout = new QFormLayout{feeGroup};
 
-        feeLayout->addRow(tr("Accounting:"), createSkillEdit(mAccountingSkillEdit, "accounting_skill"));
-        feeLayout->addRow(tr("Broker relations:"), createSkillEdit(mBrokerRelationsSkillEdit, "broker_relations_skill"));
-        feeLayout->addRow(tr("Margin trading:"), createSkillEdit(mMarginTradingSkillEdit, "margin_trading_skill"));
+        feeLayout->addRow(tr("Accounting:"), createSkillEdit(mAccountingSkillEdit, QStringLiteral("accounting_skill")));
+        feeLayout->addRow(tr("Broker relations:"), createSkillEdit(mBrokerRelationsSkillEdit, QStringLiteral("broker_relations_skill")));
+        feeLayout->addRow(tr("Margin trading:"), createSkillEdit(mMarginTradingSkillEdit, QStringLiteral("margin_trading_skill")));
 
         auto contractingGroup = new QGroupBox{tr("Contracting skills"), this};
         skillsLayout->addWidget(contractingGroup);
 
         auto contractingLayout = new QFormLayout{contractingGroup};
 
-        contractingLayout->addRow(tr("Contracting:"), createSkillEdit(mContractingSkillEdit, "contracting_skill"));
+        contractingLayout->addRow(tr("Contracting:"), createSkillEdit(mContractingSkillEdit, QStringLiteral("contracting_skill")));
         contractingLayout->addRow(tr("Corporation contracting:"),
-                                  createSkillEdit(mCorporationContractingSkillEdit, "corporation_contracting_skill"));
+                                  createSkillEdit(mCorporationContractingSkillEdit, QStringLiteral("corporation_contracting_skill")));
 
         const auto reprocessingSkillsGroup = new QGroupBox{tr("Reprocessing skills"), this};
         mainLayout->addWidget(reprocessingSkillsGroup);
@@ -298,73 +298,139 @@ namespace Evernus
         reprocessingSkillsLayout->addLayout(reprocessingSkills1Layout);
 
         reprocessingSkills1Layout->addRow(tr("Arkonor processing:"),
-                                          createSkillEdit(mArkonorProcessingSkillEdit, "arkonor_processing"));
+                                          createSkillEdit(mArkonorProcessingSkillEdit, QStringLiteral("arkonor_processing")));
         reprocessingSkills1Layout->addRow(tr("Bistot processing:"),
-                                          createSkillEdit(mBistotProcessingSkillEdit, "bistot_processing"));
+                                          createSkillEdit(mBistotProcessingSkillEdit, QStringLiteral("bistot_processing")));
         reprocessingSkills1Layout->addRow(tr("Crokite processing:"),
-                                          createSkillEdit(mCrokiteProcessingSkillEdit, "crokite_processing"));
+                                          createSkillEdit(mCrokiteProcessingSkillEdit, QStringLiteral("crokite_processing")));
         reprocessingSkills1Layout->addRow(tr("Dark Ochre processing:"),
-                                          createSkillEdit(mDarkOchreProcessingSkillEdit, "dark_ochre_processing"));
+                                          createSkillEdit(mDarkOchreProcessingSkillEdit, QStringLiteral("dark_ochre_processing")));
         reprocessingSkills1Layout->addRow(tr("Gneiss processing:"),
-                                          createSkillEdit(mGneissProcessingSkillEdit, "gneiss_processing"));
+                                          createSkillEdit(mGneissProcessingSkillEdit, QStringLiteral("gneiss_processing")));
 
         const auto reprocessingSkills2Layout = new QFormLayout{};
         reprocessingSkillsLayout->addLayout(reprocessingSkills2Layout);
 
         reprocessingSkills2Layout->addRow(tr("Hedbergite processing:"),
-                                          createSkillEdit(mHedbergiteProcessingSkillEdit, "hedbergite_processing"));
+                                          createSkillEdit(mHedbergiteProcessingSkillEdit, QStringLiteral("hedbergite_processing")));
         reprocessingSkills2Layout->addRow(tr("Hemorphite processing:"),
-                                          createSkillEdit(mHemorphiteProcessingSkillEdit, "hemorphite_processing"));
+                                          createSkillEdit(mHemorphiteProcessingSkillEdit, QStringLiteral("hemorphite_processing")));
         reprocessingSkills2Layout->addRow(tr("Ice processing:"),
-                                          createSkillEdit(mIceProcessingSkillEdit, "ice_processing"));
+                                          createSkillEdit(mIceProcessingSkillEdit, QStringLiteral("ice_processing")));
         reprocessingSkills2Layout->addRow(tr("Jaspet processing:"),
-                                          createSkillEdit(mJaspetProcessingSkillEdit, "jaspet_processing"));
+                                          createSkillEdit(mJaspetProcessingSkillEdit, QStringLiteral("jaspet_processing")));
         reprocessingSkills2Layout->addRow(tr("Kernite processing:"),
-                                          createSkillEdit(mKerniteProcessingSkillEdit, "kernite_processing"));
+                                          createSkillEdit(mKerniteProcessingSkillEdit, QStringLiteral("kernite_processing")));
 
         const auto reprocessingSkills3Layout = new QFormLayout{};
         reprocessingSkillsLayout->addLayout(reprocessingSkills3Layout);
 
         reprocessingSkills3Layout->addRow(tr("Mercoxit processing:"),
-                                          createSkillEdit(mMercoxitProcessingSkillEdit, "mercoxit_processing"));
+                                          createSkillEdit(mMercoxitProcessingSkillEdit, QStringLiteral("mercoxit_processing")));
         reprocessingSkills3Layout->addRow(tr("Omber processing:"),
-                                          createSkillEdit(mOmberProcessingSkillEdit, "omber_processing"));
+                                          createSkillEdit(mOmberProcessingSkillEdit, QStringLiteral("omber_processing")));
         reprocessingSkills3Layout->addRow(tr("Plagioclase processing:"),
-                                          createSkillEdit(mPlagioclaseProcessingSkillEdit, "plagioclase_processing"));
+                                          createSkillEdit(mPlagioclaseProcessingSkillEdit, QStringLiteral("plagioclase_processing")));
         reprocessingSkills3Layout->addRow(tr("Pyroxeres processing:"),
-                                          createSkillEdit(mPyroxeresProcessingSkillEdit, "pyroxeres_processing"));
+                                          createSkillEdit(mPyroxeresProcessingSkillEdit, QStringLiteral("pyroxeres_processing")));
         reprocessingSkills3Layout->addRow(tr("Reprocessing:"),
-                                          createSkillEdit(mReprocessingSkillEdit, "reprocessing"));
+                                          createSkillEdit(mReprocessingSkillEdit, QStringLiteral("reprocessing")));
 
         const auto reprocessingSkills4Layout = new QFormLayout{};
         reprocessingSkillsLayout->addLayout(reprocessingSkills4Layout);
 
         reprocessingSkills4Layout->addRow(tr("Reprocessing efficiency:"),
-                                          createSkillEdit(mReprocessingEfficiencySkillEdit, "reprocessing_efficiency"));
+                                          createSkillEdit(mReprocessingEfficiencySkillEdit, QStringLiteral("reprocessing_efficiency")));
         reprocessingSkills4Layout->addRow(tr("Scordite processing:"),
-                                          createSkillEdit(mScorditeProcessingSkillEdit, "scordite_processing"));
+                                          createSkillEdit(mScorditeProcessingSkillEdit, QStringLiteral("scordite_processing")));
         reprocessingSkills4Layout->addRow(tr("Scrapmetal processing:"),
-                                          createSkillEdit(mScrapmetalProcessingSkillEdit, "scrapmetal_processing"));
+                                          createSkillEdit(mScrapmetalProcessingSkillEdit, QStringLiteral("scrapmetal_processing")));
         reprocessingSkills4Layout->addRow(tr("Spodumain processing:"),
-                                          createSkillEdit(mSpodumainProcessingSkillEdit, "spodumain_processing"));
+                                          createSkillEdit(mSpodumainProcessingSkillEdit, QStringLiteral("spodumain_processing")));
         reprocessingSkills4Layout->addRow(tr("Veldspar processing:"),
-                                          createSkillEdit(mVeldsparProcessingSkillEdit, "veldspar_processing"));
+                                          createSkillEdit(mVeldsparProcessingSkillEdit, QStringLiteral("veldspar_processing")));
 
         const auto industrySkillsGroup = new QGroupBox{tr("Industry skills"), this};
         mainLayout->addWidget(industrySkillsGroup);
 
-        const auto industrySkillsGroupLayout = new QHBoxLayout{industrySkillsGroup};
+        const auto industrySkillsGroupLayout = new QVBoxLayout{industrySkillsGroup};
 
-        industrySkillsGroupLayout->addWidget(new QLabel{tr("Manufacturing time implant bonus:"), this});
+        const auto manufacturingTimeImplantBonusLayout = new QHBoxLayout{};
+        industrySkillsGroupLayout->addLayout(manufacturingTimeImplantBonusLayout);
+
+        manufacturingTimeImplantBonusLayout->addWidget(new QLabel{tr("Manufacturing time implant bonus:"), this});
 
         mManufacturingTimeImplantBonusEdit = new QDoubleSpinBox{this};
-        industrySkillsGroupLayout->addWidget(mManufacturingTimeImplantBonusEdit);
+        manufacturingTimeImplantBonusLayout->addWidget(mManufacturingTimeImplantBonusEdit);
         mManufacturingTimeImplantBonusEdit->setRange(0., 100.);
         mManufacturingTimeImplantBonusEdit->setSuffix(locale().percent());
         connect(mManufacturingTimeImplantBonusEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
                 this, &CharacterWidget::setManufacturingTimeImplantBonus);
 
-        industrySkillsGroupLayout->addStretch();
+        manufacturingTimeImplantBonusLayout->addStretch();
+
+        const auto industrySkillsLayout = new QHBoxLayout{};
+        industrySkillsGroupLayout->addLayout(industrySkillsLayout);
+
+        const auto industrySkills1Layout = new QFormLayout{};
+        industrySkillsLayout->addLayout(industrySkills1Layout);
+
+        industrySkills1Layout->addRow(tr("Industry:"),
+                                      createSkillEdit(mIndustrySkillEdit, QStringLiteral("industry")));
+        industrySkills1Layout->addRow(tr("Advanced industry:"),
+                                      createSkillEdit(mAdvancedIndustrySkillEdit, QStringLiteral("advanced_industry")));
+        industrySkills1Layout->addRow(tr("Advanced small ship construction:"),
+                                      createSkillEdit(mAdvancedSmallShipConstructionSkillEdit, QStringLiteral("advanced_small_ship_construction")));
+        industrySkills1Layout->addRow(tr("Advanced medium ship construction:"),
+                                      createSkillEdit(mAdvancedMediumShipConstructionSkillEdit, QStringLiteral("advanced_medium_ship_construction")));
+        industrySkills1Layout->addRow(tr("Advanced large ship construction:"),
+                                      createSkillEdit(mAdvancedLargeShipConstructionSkillEdit, QStringLiteral("advanced_large_ship_construction")));
+        industrySkills1Layout->addRow(tr("Avanced industrial ship construction:"),
+                                      createSkillEdit(mAvancedIndustrialShipConstructionSkillEdit, QStringLiteral("avanced_industrial_ship_construction")));
+
+        const auto industrySkills2Layout = new QFormLayout{};
+        industrySkillsLayout->addLayout(industrySkills2Layout);
+
+        industrySkills2Layout->addRow(tr("Amarr starship engineering:"),
+                                      createSkillEdit(mAmarrStarshipEngineeringSkillEdit, QStringLiteral("amarr_starship_engineering")));
+        industrySkills2Layout->addRow(tr("Caldari starship engineering:"),
+                                      createSkillEdit(mCaldariStarshipEngineeringSkillEdit, QStringLiteral("caldari_starship_engineering")));
+        industrySkills2Layout->addRow(tr("Gallente starship engineering:"),
+                                      createSkillEdit(mGallenteStarshipEngineeringSkillEdit, QStringLiteral("gallente_starship_engineering")));
+        industrySkills2Layout->addRow(tr("Minmatar starship engineering:"),
+                                      createSkillEdit(mMinmatarStarshipEngineeringSkillEdit, QStringLiteral("minmatar_starship_engineering")));
+        industrySkills2Layout->addRow(tr("Electromagnetic physics:"),
+                                      createSkillEdit(mElectromagneticPhysicsSkillEdit, QStringLiteral("electromagnetic_physics")));
+        industrySkills2Layout->addRow(tr("Electronic engineering:"),
+                                      createSkillEdit(mElectronicEngineeringSkillEdit, QStringLiteral("electronic_engineering")));
+
+        const auto industrySkills3Layout = new QFormLayout{};
+        industrySkillsLayout->addLayout(industrySkills3Layout);
+
+        industrySkills3Layout->addRow(tr("Graviton physics:"),
+                                      createSkillEdit(mGravitonPhysicsSkillEdit, QStringLiteral("graviton_physics")));
+        industrySkills3Layout->addRow(tr("High energy physics:"),
+                                      createSkillEdit(mHighEnergyPhysicsSkillEdit, QStringLiteral("high_energy_physics")));
+        industrySkills3Layout->addRow(tr("Hydromagnetic physics:"),
+                                      createSkillEdit(mHydromagneticPhysicsSkillEdit, QStringLiteral("hydromagnetic_physics")));
+        industrySkills3Layout->addRow(tr("Laser physics:"),
+                                      createSkillEdit(mLaserPhysicsSkillEdit, QStringLiteral("laser_physics")));
+        industrySkills3Layout->addRow(tr("Mechanical engineering:"),
+                                      createSkillEdit(mMechanicalEngineeringSkillEdit, QStringLiteral("mechanical_engineering")));
+        industrySkills3Layout->addRow(tr("Molecular engineering:"),
+                                      createSkillEdit(mMolecularEngineeringSkillEdit, QStringLiteral("molecular_engineering")));
+
+        const auto industrySkills4Layout = new QFormLayout{};
+        industrySkillsLayout->addLayout(industrySkills4Layout);
+
+        industrySkills4Layout->addRow(tr("Nuclear physics:"),
+                                      createSkillEdit(mNuclearPhysicsSkillEdit, QStringLiteral("nuclear_physics")));
+        industrySkills4Layout->addRow(tr("Plasma physics:"),
+                                      createSkillEdit(mPlasmaPhysicsSkillEdit, QStringLiteral("plasma_physics")));
+        industrySkills4Layout->addRow(tr("Quantum physics:"),
+                                      createSkillEdit(mQuantumPhysicsSkillEdit, QStringLiteral("quantum_physics")));
+        industrySkills4Layout->addRow(tr("Rocket science:"),
+                                      createSkillEdit(mRocketScienceSkillEdit, QStringLiteral("rocket_science")));
 
         mainLayout->addStretch();
 
@@ -597,6 +663,29 @@ namespace Evernus
 
             mManufacturingTimeImplantBonusEdit->setValue(0.);
 
+            mIndustrySkillEdit->setValue(0);
+            mAdvancedIndustrySkillEdit->setValue(0);
+            mAdvancedSmallShipConstructionSkillEdit->setValue(0);
+            mAdvancedMediumShipConstructionSkillEdit->setValue(0);
+            mAdvancedLargeShipConstructionSkillEdit->setValue(0);
+            mAvancedIndustrialShipConstructionSkillEdit->setValue(0);
+            mAmarrStarshipEngineeringSkillEdit->setValue(0);
+            mCaldariStarshipEngineeringSkillEdit->setValue(0);
+            mGallenteStarshipEngineeringSkillEdit->setValue(0);
+            mMinmatarStarshipEngineeringSkillEdit->setValue(0);
+            mElectromagneticPhysicsSkillEdit->setValue(0);
+            mElectronicEngineeringSkillEdit->setValue(0);
+            mGravitonPhysicsSkillEdit->setValue(0);
+            mHighEnergyPhysicsSkillEdit->setValue(0);
+            mHydromagneticPhysicsSkillEdit->setValue(0);
+            mLaserPhysicsSkillEdit->setValue(0);
+            mMechanicalEngineeringSkillEdit->setValue(0);
+            mMolecularEngineeringSkillEdit->setValue(0);
+            mNuclearPhysicsSkillEdit->setValue(0);
+            mPlasmaPhysicsSkillEdit->setValue(0);
+            mQuantumPhysicsSkillEdit->setValue(0);
+            mRocketScienceSkillEdit->setValue(0);
+
             mPortrait->setPixmap(defaultPortrait);
         }
         else
@@ -610,6 +699,7 @@ namespace Evernus
                 const auto feeSkills = character->getFeeSkills();
                 const auto contractSkills = character->getContractSkills();
                 const auto reprocessingSkills = character->getReprocessingSkills();
+                const auto industrySkills = character->getIndustrySkills();
 
                 mNameLabel->setText(character->getName());
                 mBackgroundLabel->setText(QStringLiteral("%1 %2, %3, %4")
@@ -682,6 +772,29 @@ namespace Evernus
                 mVeldsparProcessingSkillEdit->setValue(reprocessingSkills.mVeldsparProcessing);
 
                 mManufacturingTimeImplantBonusEdit->setValue(character->getManufacturingTimeImplantBonus());
+
+                mIndustrySkillEdit->setValue(industrySkills.mIndustry);
+                mAdvancedIndustrySkillEdit->setValue(industrySkills.mAdvancedIndustry);
+                mAdvancedSmallShipConstructionSkillEdit->setValue(industrySkills.mAdvancedSmallShipConstruction);
+                mAdvancedMediumShipConstructionSkillEdit->setValue(industrySkills.mAdvancedMediumShipConstruction);
+                mAdvancedLargeShipConstructionSkillEdit->setValue(industrySkills.mAdvancedLargeShipConstruction);
+                mAvancedIndustrialShipConstructionSkillEdit->setValue(industrySkills.mAvancedIndustrialShipConstruction);
+                mAmarrStarshipEngineeringSkillEdit->setValue(industrySkills.mAmarrStarshipEngineering);
+                mCaldariStarshipEngineeringSkillEdit->setValue(industrySkills.mCaldariStarshipEngineering);
+                mGallenteStarshipEngineeringSkillEdit->setValue(industrySkills.mGallenteStarshipEngineering);
+                mMinmatarStarshipEngineeringSkillEdit->setValue(industrySkills.mMinmatarStarshipEngineering);
+                mElectromagneticPhysicsSkillEdit->setValue(industrySkills.mElectromagneticPhysics);
+                mElectronicEngineeringSkillEdit->setValue(industrySkills.mElectronicEngineering);
+                mGravitonPhysicsSkillEdit->setValue(industrySkills.mGravitonPhysics);
+                mHighEnergyPhysicsSkillEdit->setValue(industrySkills.mHighEnergyPhysics);
+                mHydromagneticPhysicsSkillEdit->setValue(industrySkills.mHydromagneticPhysics);
+                mLaserPhysicsSkillEdit->setValue(industrySkills.mLaserPhysics);
+                mMechanicalEngineeringSkillEdit->setValue(industrySkills.mMechanicalEngineering);
+                mMolecularEngineeringSkillEdit->setValue(industrySkills.mMolecularEngineering);
+                mNuclearPhysicsSkillEdit->setValue(industrySkills.mNuclearPhysics);
+                mPlasmaPhysicsSkillEdit->setValue(industrySkills.mPlasmaPhysics);
+                mQuantumPhysicsSkillEdit->setValue(industrySkills.mQuantumPhysics);
+                mRocketScienceSkillEdit->setValue(industrySkills.mRocketScience);
 
                 QSettings settings;
                 if (settings.value(ImportSettings::importPortraitKey, ImportSettings::importPortraitDefault).toBool())

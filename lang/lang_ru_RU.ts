@@ -1026,87 +1026,197 @@ Total: %7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="358"/>
+        <location filename="../CharacterWidget.cpp" line="361"/>
         <source>Manufacturing time implant bonus:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="408"/>
-        <source>never imported</source>
+        <location filename="../CharacterWidget.cpp" line="378"/>
+        <source>Industry:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="413"/>
-        <source>Character sheet: %1</source>
+        <location filename="../CharacterWidget.cpp" line="380"/>
+        <source>Advanced industry:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="382"/>
+        <source>Advanced small ship construction:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="384"/>
+        <source>Advanced medium ship construction:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="386"/>
+        <source>Advanced large ship construction:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="388"/>
+        <source>Avanced industrial ship construction:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="394"/>
+        <source>Amarr starship engineering:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="396"/>
+        <source>Caldari starship engineering:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="398"/>
+        <source>Gallente starship engineering:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="400"/>
+        <source>Minmatar starship engineering:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="402"/>
+        <source>Electromagnetic physics:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="404"/>
+        <source>Electronic engineering:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="410"/>
+        <source>Graviton physics:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="412"/>
+        <source>High energy physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="414"/>
-        <source>Asset list: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CharacterWidget.cpp" line="415"/>
-        <source>Market orders: %1</source>
+        <source>Hydromagnetic physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="416"/>
-        <source>Wallet journal: %1</source>
+        <source>Laser physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="417"/>
-        <source>Wallet transactions: %1</source>
+        <location filename="../CharacterWidget.cpp" line="418"/>
+        <source>Mechanical engineering:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="420"/>
-        <source>Contracts: %1</source>
+        <source>Molecular engineering:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="426"/>
-        <source>Corp. asset list: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CharacterWidget.cpp" line="427"/>
-        <source>Corp. market orders: %1</source>
+        <source>Nuclear physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="428"/>
-        <source>Corp. wallet journal: %1</source>
+        <source>Plasma physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="429"/>
-        <source>Corp. wallet transactions: %1</source>
+        <location filename="../CharacterWidget.cpp" line="430"/>
+        <source>Quantum physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="432"/>
+        <source>Rocket science:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="474"/>
+        <source>never imported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="479"/>
+        <source>Character sheet: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="480"/>
+        <source>Asset list: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="481"/>
+        <source>Market orders: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="482"/>
+        <source>Wallet journal: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="483"/>
+        <source>Wallet transactions: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="486"/>
+        <source>Contracts: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="492"/>
+        <source>Corp. asset list: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="493"/>
+        <source>Corp. market orders: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="494"/>
+        <source>Corp. wallet journal: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="495"/>
+        <source>Corp. wallet transactions: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="498"/>
         <source>Corp. contracts: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="703"/>
+        <location filename="../CharacterWidget.cpp" line="816"/>
         <source>Character error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="703"/>
+        <location filename="../CharacterWidget.cpp" line="816"/>
         <source>Character not found in DB. Refresh characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="789"/>
+        <location filename="../CharacterWidget.cpp" line="902"/>
         <source>&lt;strong&gt;%1 of %2&lt;/strong&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="799"/>
+        <location filename="../CharacterWidget.cpp" line="912"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation type="unfinished"></translation>
     </message>
