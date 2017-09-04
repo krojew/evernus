@@ -24,6 +24,7 @@
 
 #include "IndustryManufacturingSetup.h"
 #include "EveDataProvider.h"
+#include "IndustryUtils.h"
 #include "Character.h"
 #include "EveType.h"
 
@@ -61,6 +62,9 @@ namespace Evernus
         void setTimeEfficiency(EveType::IdType id, uint value);
 
         void setCharacter(Character::IdType id);
+        void setFacilityType(IndustryUtils::FacilityType type);
+        void setSecurityStatus(IndustryUtils::SecurityStatus status);
+        void setRigType(IndustryUtils::RigType type);
 
         IndustryManufacturingSetupModel &operator =(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;
@@ -98,11 +102,12 @@ namespace Evernus
             uint getQuantityProduced() const noexcept;
             void setQuantityProduced(uint value) noexcept;
 
-            uint getEffectiveQuantityRequired() const noexcept;
+            quint64 getEffectiveQuantityRequired() const;
             uint getQuantityRequired() const noexcept;
+            quint64 getQuantityRequiredForParent() const;
             void setQuantityRequired(uint value) noexcept;
 
-            uint getEffectiveRuns() const noexcept;
+            uint getEffectiveRuns() const;
             uint getRuns() const noexcept;
             void setRuns(uint value) noexcept;
 
@@ -173,6 +178,10 @@ namespace Evernus
 
         std::unordered_map<EveType::IdType, AssetQuantity> mAssetQuantities;
 
+        IndustryUtils::FacilityType mFacilityType = IndustryUtils::FacilityType::Station;
+        IndustryUtils::SecurityStatus mSecurityStatus = IndustryUtils::SecurityStatus::HighSec;
+        IndustryUtils::RigType mRigType = IndustryUtils::RigType::None;
+
         void fillChildren(TreeItem &item);
 
         TreeItemPtr createOutputItem(EveType::IdType typeId,
@@ -185,6 +194,8 @@ namespace Evernus
         quint64 takeAssets(EveType::IdType typeId, quint64 max);
 
         void signalQuantityChange(EveType::IdType typeId);
+        void signalQuantityChange();
+        void signalQuantityChange(TreeItem &item);
         void roleAndQuantityChange(EveType::IdType typeId, const QVector<int> &roles);
     };
 }

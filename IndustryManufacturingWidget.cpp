@@ -112,6 +112,11 @@ namespace Evernus
 
         toolBarLayout->addWidget(new QLabel{tr("Facility type:"), this});
 
+        const auto rememberSetting = [](const auto combo, const auto &key) {
+            QSettings settings;
+            settings.setValue(key, combo->currentData().toInt());
+        };
+
         mFacilityTypeCombo = new QComboBox{this};
         toolBarLayout->addWidget(mFacilityTypeCombo);
         mFacilityTypeCombo->addItem(tr("Station"), static_cast<int>(IndustryUtils::FacilityType::Station));
@@ -119,8 +124,6 @@ namespace Evernus
         mFacilityTypeCombo->addItem(tr("Assembly Array"), static_cast<int>(IndustryUtils::FacilityType::AssemblyArray));
         mFacilityTypeCombo->addItem(tr("Thukker Component Array"), static_cast<int>(IndustryUtils::FacilityType::ThukkerComponentArray));
         mFacilityTypeCombo->addItem(tr("Rapid Assembly Array"), static_cast<int>(IndustryUtils::FacilityType::RapidAssemblyArray));
-        mFacilityTypeCombo->setCurrentIndex(mFacilityTypeCombo->findData(
-            settings.value(IndustrySettings::manufacturingFacilityTypeKey, IndustrySettings::manufacturingFacilityTypeDefault).toInt()));
 
         toolBarLayout->addWidget(new QLabel{tr("Security status:"), this});
 
@@ -129,6 +132,10 @@ namespace Evernus
         mSecurityStatusCombo->addItem(tr("High sec"), static_cast<int>(IndustryUtils::SecurityStatus::HighSec));
         mSecurityStatusCombo->addItem(tr("Low sec"), static_cast<int>(IndustryUtils::SecurityStatus::LowSec));
         mSecurityStatusCombo->addItem(tr("Null sec/WH"), static_cast<int>(IndustryUtils::SecurityStatus::NullSecWH));
+        connect(mSecurityStatusCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=] {
+            rememberSetting(mSecurityStatusCombo, IndustrySettings::manufacturingSecurityStatusKey);
+            mSetupModel.setSecurityStatus(static_cast<IndustryUtils::SecurityStatus>(mSecurityStatusCombo->currentData().toInt()));
+        });
         mSecurityStatusCombo->setCurrentIndex(mSecurityStatusCombo->findData(
             settings.value(IndustrySettings::manufacturingSecurityStatusKey, IndustrySettings::manufacturingSecurityStatusDefault).toInt()));
 
@@ -139,8 +146,22 @@ namespace Evernus
         mMaterialRigCombo->addItem(tr("None"), static_cast<int>(IndustryUtils::RigType::None));
         mMaterialRigCombo->addItem(tr("T1"), static_cast<int>(IndustryUtils::RigType::T1));
         mMaterialRigCombo->addItem(tr("T2"), static_cast<int>(IndustryUtils::RigType::T2));
+        mMaterialRigCombo->setEnabled(shouldEnableRigCombo());
+        connect(mMaterialRigCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=] {
+            rememberSetting(mMaterialRigCombo, IndustrySettings::manufacturingMaterialRigKey);
+            mSetupModel.setRigType(static_cast<IndustryUtils::RigType>(mMaterialRigCombo->currentData().toInt()));
+        });
         mMaterialRigCombo->setCurrentIndex(mMaterialRigCombo->findData(
             settings.value(IndustrySettings::manufacturingMaterialRigKey, IndustrySettings::manufacturingMaterialRigDefault).toInt()));
+
+        connect(mFacilityTypeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=] {
+            rememberSetting(mFacilityTypeCombo, IndustrySettings::manufacturingFacilityTypeKey);
+
+            mSetupModel.setFacilityType(static_cast<IndustryUtils::FacilityType>(mFacilityTypeCombo->currentData().toInt()));
+            mMaterialRigCombo->setEnabled(shouldEnableRigCombo());
+        });
+        mFacilityTypeCombo->setCurrentIndex(mFacilityTypeCombo->findData(
+            settings.value(IndustrySettings::manufacturingFacilityTypeKey, IndustrySettings::manufacturingFacilityTypeDefault).toInt()));
 
         const auto contentSplitter = new QSplitter{this};
         mainLayout->addWidget(contentSplitter, 1);
@@ -273,5 +294,10 @@ namespace Evernus
     {
         QSettings settings;
         settings.setValue(settingName, path);
+    }
+
+    bool IndustryManufacturingWidget::shouldEnableRigCombo() const
+    {
+        return static_cast<IndustryUtils::FacilityType>(mFacilityTypeCombo->currentData().toInt()) == IndustryUtils::FacilityType::EngineeringComplex;
     }
 }

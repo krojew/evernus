@@ -20,13 +20,14 @@ namespace Evernus
 {
     namespace IndustryUtils
     {
+        // note: changing these requires changes to getRequiredQuantity()
         enum class FacilityType
         {
             Station,
-            EngineeringComplex,
             AssemblyArray,
             ThukkerComponentArray,
             RapidAssemblyArray,
+            EngineeringComplex,
         };
 
         enum class SecurityStatus
@@ -43,8 +44,18 @@ namespace Evernus
             T2,
         };
 
+        enum class Size
+        {
+            Medium,
+            Large,
+            XLarge,
+        };
+
         quint64 getRequiredQuantity(uint runs,
                                     uint baseQuantity,
-                                    uint materialEfficiency);
+                                    uint materialEfficiency,
+                                    FacilityType facilityType,
+                                    SecurityStatus securityStatus,
+                                    RigType rigType);
     }
 }

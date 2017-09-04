@@ -106,5 +106,7 @@ namespace Evernus
         uint mOrderSubtask = TaskConstants::invalidTask;
 
         void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
+
+        bool shouldEnableRigCombo() const;
     };
 }

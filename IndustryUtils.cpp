@@ -23,10 +23,43 @@ namespace Evernus
     {
         quint64 getRequiredQuantity(uint runs,
                                     uint baseQuantity,
-                                    uint materialEfficiency)
+                                    uint materialEfficiency,
+                                    FacilityType facilityType,
+                                    SecurityStatus securityStatus,
+                                    RigType rigType)
         {
-            const auto materialModifier = 1.f - materialEfficiency / 100.f; // TODO: implement
-            return std::max(static_cast<float>(runs), std::ceil(runs * baseQuantity * materialModifier));
+            Q_ASSERT(facilityType == FacilityType::AssemblyArray ||
+                     facilityType == FacilityType::RapidAssemblyArray ||
+                     facilityType == FacilityType::Station ||
+                     facilityType == FacilityType::ThukkerComponentArray ||
+                     facilityType == FacilityType::EngineeringComplex);
+
+            auto facilityMod = 1.f;
+            if (facilityType == FacilityType::AssemblyArray ||
+                facilityType == FacilityType::RapidAssemblyArray ||
+                facilityType == FacilityType::Station ||
+                facilityType == FacilityType::ThukkerComponentArray)
+            {
+                const float mods[] = { 1.f, 0.98f, 0.85f, 1.05f };
+                facilityMod = mods[static_cast<int>(facilityType)];
+            }
+            else
+            {
+                Q_ASSERT(securityStatus == SecurityStatus::HighSec ||
+                         securityStatus == SecurityStatus::LowSec ||
+                         securityStatus == SecurityStatus::NullSecWH);
+                Q_ASSERT(rigType == RigType::None ||
+                         rigType == RigType::T1 ||
+                         rigType == RigType::T2);
+
+                const float rigMods[] = { 0.f, 2.f, 2.4f };
+                const float secMods[] = { 1.f, 1.9f, 2.1f };
+
+                facilityMod = 0.99f * (100.f - (rigMods[static_cast<int>(rigType)] * secMods[static_cast<int>(securityStatus)])) / 100.f;
+            }
+
+            const auto materialModifier = 1.f - materialEfficiency / 100.f;
+            return std::max(static_cast<float>(runs), std::ceil(runs * baseQuantity * materialModifier * facilityMod));
         }
     }
 }

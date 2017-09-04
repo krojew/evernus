@@ -16,7 +16,6 @@
 
 #include <boost/scope_exit.hpp>
 
-#include "IndustryUtils.h"
 #include "AssetProvider.h"
 #include "AssetList.h"
 
@@ -55,7 +54,7 @@ namespace Evernus
         mQuantityProduced = value;
     }
 
-    uint IndustryManufacturingSetupModel::TreeItem::getEffectiveQuantityRequired() const noexcept
+    quint64 IndustryManufacturingSetupModel::TreeItem::getEffectiveQuantityRequired() const
     {
         if (Q_UNLIKELY(isOutput()))
             return 0;
@@ -67,7 +66,7 @@ namespace Evernus
             return getEffectiveRuns() * mQuantityProduced;
         }
 
-        auto required = mParent->getEffectiveRuns() * mQuantityRequired;
+        auto required = getQuantityRequiredForParent();
         if (settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyAtCustomCost ||
             settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyFromSource)
         {
@@ -82,12 +81,22 @@ namespace Evernus
         return mQuantityRequired;
     }
 
+    quint64 IndustryManufacturingSetupModel::TreeItem::getQuantityRequiredForParent() const
+    {
+        return IndustryUtils::getRequiredQuantity(mParent->getEffectiveRuns(),
+                                                  mQuantityRequired,
+                                                  mParent->getMaterialEfficiency(),
+                                                  mModel.mFacilityType,
+                                                  mModel.mSecurityStatus,
+                                                  mModel.mRigType);
+    }
+
     void IndustryManufacturingSetupModel::TreeItem::setQuantityRequired(uint value) noexcept
     {
         mQuantityRequired = value;
     }
 
-    uint IndustryManufacturingSetupModel::TreeItem::getEffectiveRuns() const noexcept
+    uint IndustryManufacturingSetupModel::TreeItem::getEffectiveRuns() const
     {
         if (Q_UNLIKELY(isOutput()))
             return mRuns;
@@ -96,9 +105,7 @@ namespace Evernus
         if (settings.mSource == IndustryManufacturingSetup::InventorySource::Manufacture ||
             settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
         {
-            auto required = IndustryUtils::getRequiredQuantity(mParent->getEffectiveRuns(),
-                                                               mQuantityRequired,
-                                                               mParent->getMaterialEfficiency());
+            auto required = getQuantityRequiredForParent();
             if (settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
                 required -= mModel.takeAssets(mTypeId, required);
 
@@ -439,6 +446,24 @@ namespace Evernus
         mAssetQuantities.clear();
     }
 
+    void IndustryManufacturingSetupModel::setFacilityType(IndustryUtils::FacilityType type)
+    {
+        mFacilityType = type;
+        signalQuantityChange();
+    }
+
+    void IndustryManufacturingSetupModel::setSecurityStatus(IndustryUtils::SecurityStatus status)
+    {
+        mSecurityStatus = status;
+        signalQuantityChange();
+    }
+
+    void IndustryManufacturingSetupModel::setRigType(IndustryUtils::RigType type)
+    {
+        mRigType = type;
+        signalQuantityChange();
+    }
+
     void IndustryManufacturingSetupModel::fillChildren(TreeItem &item)
     {
         const auto &info = mSetup.getManufacturingInfo(item.getTypeId());
@@ -527,11 +552,20 @@ namespace Evernus
 
             const auto items = mTypeItemMap.equal_range(nextId);
             for (auto item = items.first; item != items.second; ++item)
-            {
-                const auto idx = createIndex(item->second.get().getRow(), 0, &item->second.get());
-                emit dataChanged(idx, idx, { RunsRole, QuantityRequiredRole });
-            }
+                signalQuantityChange(item->second.get());
         } while (!remaining.empty());
+    }
+
+    void IndustryManufacturingSetupModel::signalQuantityChange()
+    {
+        for (const auto &item : mTypeItemMap)
+            signalQuantityChange(item.second.get());
+    }
+
+    void IndustryManufacturingSetupModel::signalQuantityChange(TreeItem &item)
+    {
+        const auto idx = createIndex(item.getRow(), 0, &item);
+        emit dataChanged(idx, idx, { RunsRole, QuantityRequiredRole });
     }
 
     void IndustryManufacturingSetupModel::roleAndQuantityChange(EveType::IdType typeId, const QVector<int> &roles)
