@@ -17,6 +17,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtQml.Models 2.2
 import QtQuick 2.7
+import QtQml 2.2
 
 Item {
     property bool isOutput: false
@@ -260,7 +261,7 @@ Item {
 
             Label {
                 visible: !isOutput
-                text: qsTr("%L1").arg(quantityRequired)
+                text: Number(quantityRequired).toLocaleString(Qt.locale(), "f", 0)
                 color: "#cccccc"
                 font.bold: true
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignRight

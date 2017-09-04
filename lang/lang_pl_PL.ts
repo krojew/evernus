@@ -7469,68 +7469,63 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Type</name>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="141"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="142"/>
         <source>Quantity produced: %L1 / %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="151"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="152"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="161"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="162"/>
         <source>Buy from source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="162"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="163"/>
         <source>Acquire for free</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="163"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="164"/>
         <source>Buy at custom cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="164"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="165"/>
         <source>Take assets then buy from source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="165"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="166"/>
         <source>Take assets then buy at custom cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="178"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="179"/>
         <source>Manufacture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="179"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="180"/>
         <source>Take assets then manufacture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="198"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="199"/>
         <source>Runs:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="213"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="214"/>
         <source>ME:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="237"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="238"/>
         <source>TE:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="263"/>
-        <source>%L1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
